@@ -7,12 +7,11 @@
 
 /* Mensajes de error */
 #dataEntry .inputError {position: relative; display: flex;}
-#dataEntry .mensajeAyuda {max-width: 300px;}
 #dataEntry .mensajeError {max-width: 300px;}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-circle-question {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
-#dataEntry .mensajeAyuda {max-width: 300px; right: -10px;}
+#dataEntry .ayudaClick {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
+#dataEntry .ayudaMostrar {max-width: 300px; right: -10px;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-evenly; align-items: center;}

@@ -6,8 +6,8 @@
 #dataEntry #datos select {padding: 0px 2px;}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-circle-question {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
-#dataEntry .mensajeAyuda {max-width: 300px; right: -10px;}
+#dataEntry .ayudaClick {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
+#dataEntry .ayudaMostrar {max-width: 300px; right: -10px;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}

@@ -7,9 +7,9 @@ main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
 /* Imagen */
-form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
+form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .ayudaMostrar {left: 50%; }
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
-form #imagen .mensajeAyuda {top: 53%; transform: translateX(-50%);}
+form #imagen .ayudaMostrar {top: 53%; transform: translateX(-50%);}
 form #imagen .mensajeError {top: 120%; transform: translateX(-50%);}
 form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
 form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);}
@@ -58,18 +58,18 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
-.mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .inputError .fa-solid, 
+.ayudaMostrar, .ayudaMostrar::before {z-index: 1; line-height: 1.2rem;}
+.mensajeError, .mensajeError::before, .ayudaMostrar, .ayudaMostrar::before, .inputError .fa-solid, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #edicion.linkRCLV {font-size: 1.15rem;}
 .mensajeError {max-width: 200px; left: 20px;}
-.mensajeAyuda {max-width: 300px;}
+.ayudaMostrar {max-width: 300px;}
 .mensajeError::before {left: -12px;}
-.mensajeAyuda::before {left: -20px;}
+.ayudaMostrar::before {left: -20px;}
 
 /* Mensajes de ayuda */
-#datos .fa-circle-question {right: -20px;}
-#datos .mensajeAyuda {right: -25px; transform: translate(100%, -50%);}
+#datos .ayudaClick {right: -20px;}
+#datos .ayudaMostrar {right: -25px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
 #datos .mensajeError {left: 20px; }

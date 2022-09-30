@@ -6,11 +6,11 @@ window.addEventListener("load", () => {
 	let email = document.querySelector(".inputError .input[name='email']");
 	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
 	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
-	let mensajes = document.querySelectorAll(".inputError .mensajeError");
+	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 
 	// Funciones -----------------------------
 	let mostrarIconos = (mensaje, i) => {
-		mensajes[i].innerHTML = mensaje;
+		mensajesError[i].innerHTML = mensaje;
 		if (mensaje) {
 			iconosError[i].classList.remove("ocultar");
 			iconosOK[i].classList.add("ocultar");

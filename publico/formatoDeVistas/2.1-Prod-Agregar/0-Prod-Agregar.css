@@ -19,11 +19,11 @@
 #dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Todos los mensajes */
-#dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
+#dataEntry .mensajeError, #dataEntry .ayudaMostrar {z-index: 1; line-height: 1.2rem;}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-circle-question {right: -20px;}
-#dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); z-index: 2;}
+#dataEntry .ayudaClick {right: -20px;}
+#dataEntry .ayudaMostrar {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); z-index: 2;}
 
 /*  Mensajes de error*/
 #dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -20px;}
@@ -36,14 +36,14 @@
 /* Resultados */
 /* Todos */
 .mensajeError, .mensajeError::before, 
-.mensajeAyuda, .mensajeAyuda::before,
+.ayudaMostrar, .ayudaMostrar::before,
 .fa-circle-check, .fa-circle-question, 
 .fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold;}
 /* Exito */
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
+.ayudaMostrar::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 /* Error */
 .mensajeError {left: 20px;}
 .mensajeError::before {left: -12px;}

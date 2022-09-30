@@ -30,7 +30,7 @@
 #cuerpo .inputError .mensajeError::before {left: -12px;}
 
 /* Íconos y Mensajes de Ayuda */
-#cuerpo .mensajeAyuda, #cuerpo .mensajeAyuda::before, 
+#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before, 
 #cuerpo .fa-circle-question {transform: translateY(-50%); top: 50%;}
 
 /* Flechas */
