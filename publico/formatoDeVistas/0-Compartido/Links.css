@@ -74,7 +74,7 @@
 #datos .inputError .mensajeError::before {left: -22px;}
 
 /* Ayuda para la Acción */
-#datos .yaExistentes .mensajeAyuda {right: 20px; transform: translate(0%, -50%)}
+#datos .yaExistentes .ayudaMostrar {right: 20px; transform: translate(0%, -50%)}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}
