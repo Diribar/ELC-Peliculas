@@ -13,11 +13,12 @@
 				autofocus autocomplete="off"
 			>
 			<!-- Ayuda -->
-			<i class="fa-solid fa-circle-question"></i>
-			<ul class="mensajeAyuda ocultar">
-				<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
-				<li>Escribí de manera precisa todas las palabras que sepas.</li>
-			</ul>
+			<i class="fa-solid fa-circle-question despl_click">
+				<ul class="mensajeAyuda ocultar despl_mostrar">
+					<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
+					<li>Escribí de manera precisa todas las palabras que sepas.</li>
+				</ul>
+			</i>
 			<%- include("CMP-errorOK_oculto", {display: false}) %>
 		</div>
 		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar"></i>

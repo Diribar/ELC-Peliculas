@@ -1,12 +1,13 @@
 <section style="margin-bottom: 0px;" class="label-input">
+	<% let inputOK = dataEntry.sinopsis && !errores.sinopsis %>
 	<label>Sinopsis</label>
 	<div class="inputError">
 		<textarea 
-			name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
-			<% if (dataEntry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
+			name="sinopsis" rows="1" class="input<% if (inputOK) { %> despl_click<% } %>" placeholder="Ingresa aquí la sinopsis"
+			<% if (inputOK) { %>disabled<% } %>
 		><%= dataEntry.sinopsis %></textarea>
 		<!-- Ayuda -->
-		<%- (dataEntry.sinopsis && !errores.sinopsis) ? include("PA3-DD9-Mensajes") : "" %>
+		<%- include("PA3-DD9-Mensajes") %>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 	</div>

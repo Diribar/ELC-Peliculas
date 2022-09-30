@@ -1,14 +1,15 @@
 <section class="label-input">
+	<% let inputOK = dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo] %>
 	<label><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="text" class="input" name="<%= registro.nombreDelCampo %>" autocomplete="off"
+		<input type="text" class="input<% if (inputOK) { %> despl_click<% } %>" name="<%= registro.nombreDelCampo %>" autocomplete="off"
 			value="<%= dataEntry[registro.nombreDelCampo] %>"
 			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
-			<% if (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) { %>disabled<% } else { %>autofocus<% } %>
+			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 		>
 		<!-- Ayuda -->
-		<%- (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) ? include("PA3-DD9-Mensajes") : "" %>
+		<%- include("PA3-DD9-Mensajes") %>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 	</div>
