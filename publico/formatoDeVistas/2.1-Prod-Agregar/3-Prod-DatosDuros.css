@@ -40,10 +40,6 @@
 #dataEntry #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
 #dataEntry #paises_id .inputError select {width: 100%; padding: 0;}
 
-/* Mensajes */
-#dataEntry #datos .ayudaMostrar {max-width: 270px; right: -5px;}
-#dataEntry .mensajeError {max-width: 200px;}
-
 /* Imagen de la película */
 #dataEntry #segundaColumna {width: 200px; height: 100%; position: relative;}
 #dataEntry #segundaColumna, #dataEntry #segundaColumna label {display: flex; flex-direction: column; justify-content: center; align-items: center;}

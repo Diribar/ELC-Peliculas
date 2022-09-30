@@ -19,12 +19,6 @@
 #dataEntry .label-input .inputError .linkRCLV.edicion {right: -60px; font-size: 1.15rem;}
 #dataEntry #bloqueRCLV {min-height: 104px;}
 
-/* Mensajes */
-#dataEntry .ayudaMostrar {max-width: 400px;}
-#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -40px;}
-#dataEntry .RCLV .fa-circle-xmark, #dataEntry .RCLV .fa-circle-check {right: -60px;}
-#dataEntry .mensajeError {max-width: 200px;}
-
 /* Anchos específicos de inputs */
 #dataEntry .label-input .inputError select.angosto {width: 70px}	
 

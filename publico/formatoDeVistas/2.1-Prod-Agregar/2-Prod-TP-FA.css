@@ -5,13 +5,7 @@
 #dataEntry #datos {display: flex; flex-direction: column; align-items: flex-start;}
 #dataEntry #datos textarea, #dataEntry input {width: 250px; padding: 2px 5px; }
 
-/* Mensajes de error */
-#dataEntry .inputError {position: relative; display: flex;}
-#dataEntry .mensajeError {max-width: 300px;}
-
-/* Mensajes de ayuda */
-#dataEntry .ayudaClick {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
-#dataEntry .ayudaMostrar {max-width: 300px; right: -10px;}
+#dataEntry .inputError {display: flex;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-evenly; align-items: center;}
