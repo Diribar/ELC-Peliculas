@@ -2,9 +2,9 @@
 #cuerpo #tituloPrincipal, #dataEntry #tituloSecundario {align-self: flex-start;}
 
 /* Formato del título */
-#cuerpo #tituloPrincipal #titulo {background-color: var(--gris-oscuro); color: var(--colorAyuda);}
+#cuerpo #tituloPrincipal #titulo {background-color: var(--backgroundTitulo); color: var(--colorTitulo);}
 #cuerpo #tituloPrincipal #titulo {font-family: var(--Arial); font-weight: bold;}
-#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1rem;}
+#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1.2rem;}
 #cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px; border-style: none;}
 
 /* Contenedores del ayudaClick */
