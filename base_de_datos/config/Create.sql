@@ -44,26 +44,37 @@ CREATE TABLE aux_roles_iglesia (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO aux_roles_iglesia (id, orden, nombre, usuario, personaje, varon, mujer)
-VALUES 
-('PC', 0, 'Computadora', 0, 0, 0, 0),
-('LC', 1, 'Laico/a'    , 1, 1, 1, 1),
-('RE', 2, 'Religioso/a', 1, 1, 1, 1),
-('SC', 3, 'Sacerdote'  , 1, 1, 1, 0),
-('PP', 4, 'Papa'       , 0, 1, 1, 0),
-('AP', 5, 'Apóstata'   , 0, 1, 1, 1),
-('NN', 6, 'Ninguno'    , 1, 0, 1, 1)
+VALUES
+('PC' ,  0, 'Computadora', 0, 0, 0, 0),
+('LC' ,  1, 'Laico/a'    , 1, 1, 1, 1),
+('LCV',  2, 'Laico'      , 1, 1, 1, 0),
+('LCM',  3, 'Laica'      , 1, 1, 0, 1),
+('RE' ,  4, 'Religioso/a', 1, 1, 1, 1),
+('REV',  5, 'Religioso'  , 1, 1, 1, 0),
+('REM',  6, 'Religiosa'  , 1, 1, 0, 1),
+('SC' ,  7, 'Sacerdote'  , 1, 1, 1, 0),
+('SCV',  8, 'Sacerdote'  , 1, 1, 1, 0),
+('PP' ,  9, 'Papa'       , 0, 1, 1, 0),
+('PPV', 10, 'Papa'       , 0, 1, 1, 0),
+('AP' , 11, 'Apóstata'   , 0, 1, 1, 1),
+('APV', 12, 'Apóstata'   , 0, 1, 1, 0),
+('APM', 13, 'Apóstata'   , 0, 1, 0, 1),
+('NN' , 14, 'Ninguno'    , 1, 0, 1, 1)
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL,
+	varon BOOLEAN NULL,
+	mujer BOOLEAN NULL,
 	letra_final VARCHAR(1) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_sexos (id, orden, nombre, letra_final)
+INSERT INTO aux_sexos (id, orden, varon, mujer, nombre, letra_final)
 VALUES 
-('M', 1, 'Mujer', 'a'), 
-('V', 2, 'Varón', 'o')
+('M', 1, 0, 1, 'Mujer', 'a'), 
+('V', 2, 1, 0, 'Varón', 'o'),
+('A', 2, 1, 1, 'Ambos', '')
 ;
 
 /* TABLAS AUXILIARES PARA USUARIOS */;
@@ -179,13 +190,12 @@ CREATE TABLE usuarios (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO usuarios (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
-VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 3, '2021-01-01','2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 3, '2021-01-01','2021-01-02')
+INSERT INTO usuarios (id, email, contrasena, apodo,       nombre,           apellido, rol_usuario_id, status_registro_id, creado_en,    completado_en) VALUES
+(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 'Configuración', 'inicial', 2,              5,                  '2021-01-01', '2021-01-02'),
+(2, 'sinMail2', 'sinContraseña', 'Datos de start-up',     'Datos',     'de start-up', 2,              5,                  '2021-01-01', '2021-01-02')
 ;
 INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo, docum_numero, docum_pais_id, docum_avatar,        avatar,          fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en, completado_en, version_elc_ultimo_login) VALUES
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',   '23198601',          'AR', null,                '1617370359746.jpg', '1969-08-16',     'V',     'AR',    2,              'LC',          1,             3,            '2021-01-01',  '2021-01-02',  '1.0'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',   '23198601',          'AR', null,                '1617370359746.jpg', '1969-08-16',     'V',     'AR',    2,              'LC',          1,             5,            '2021-01-01',  '2021-01-02',  '1.0'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego', '21072001',          null, '1617370359747.jpg', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LC',          1,             5,            '2021-01-01',  '2021-01-02',  '1.0'),
 (12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', 'Varias',    'Consultas',   null,          null, null,                '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LC',          1,             3,            '2021-01-01',  '2021-01-02',  '1.0')
 ;
@@ -373,16 +383,16 @@ CREATE TABLE rclv_proc_canoniz (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_proc_canoniz (id, orden, nombre)
 VALUES 
-('ST', 1, 'Santo'),
+('ST', 1, 'Santo/a'),
 ('STV', 1, 'Santo'),
 ('STM', 1, 'Santa'),
-('BT', 2, 'Beato'),
+('BT', 2, 'Beato/a'),
 ('BTV', 2, 'Beato'),
 ('BTM', 2, 'Beata'),
 ('VN', 3, 'Venerable'),
 ('VNV', 3, 'Venerable'),
 ('VNM', 3, 'Venerable'),
-('SD', 4, 'Siervo de Dios'),
+('SD', 4, 'Siervo/a de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
 ('SDM', 4, 'Sierva de Dios')
 ;
@@ -464,6 +474,8 @@ VALUES
 CREATE TABLE rclv_1personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
+	apodo VARCHAR(30) NULL,
+	sexo_id VARCHAR(1) NULL,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
 	perenne BOOLEAN DEFAULT 0,
@@ -479,6 +491,9 @@ CREATE TABLE rclv_1personajes (
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_por_id INT UNSIGNED NULL,
+	alta_analizada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -496,6 +511,7 @@ CREATE TABLE rclv_1personajes (
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
+	FOREIGN KEY (sexo_id) REFERENCES aux_sexos(id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
@@ -504,6 +520,7 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 
@@ -514,28 +531,27 @@ CREATE TABLE rclv_1personajes (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, creado_en, nombre) 
 VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
-VALUES 
-(11, NULL,   0, 'CFC', 'JSS', NULL, NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús'),
-(12, NULL, -15, 'CFC', 'CNT', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús'),
-(13,   79, -20, 'CFC', 'CNT', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús')
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre, apodo) VALUES
+(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús', 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús', 'Santa María'),
+(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús', 'San José')
 ;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre, apodo)
 VALUES 
-(21, 249, 1910, 'CFC', 'HAG', 'ST', 'RE', 2, 3, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
-(22, 285, 1958, 'CFC', 'HAG', 'ST', 'PP', 2, 3, '2022-03-16 23:25:20', 'Juan XXIII'),
-(23,  31, 1815, 'CFC', 'HAG', 'ST', 'SC', 2, 3, '2022-03-16 23:25:20', 'Juan Bosco'),
-(24, 296, 1920, 'CFC', 'HAG', 'ST', 'PP', 2, 3, '2022-03-16 23:25:20', 'Juan Pablo II'),
-(25, 107, 1844, 'CFC', 'HAG', 'ST', 'RE', 2, 3, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
-(26, 305, 1483, 'CFC', 'HIG', null, 'AP', 2, 3, '2022-03-16 23:25:20', 'Martín Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
+(21, 249, 1910, 'CFC', 'HAG', 'STM', 'REM', 2, 3, '2022-03-16 23:25:20', 'Teresa de Calcuta', 'Madre Teresa'),
+(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan XXIII', 'Juan XXIII'),
+(23,  31, 1815, 'CFC', 'HAG', 'STV', 'SCV', 2, 3, '2022-03-16 23:25:20', 'Juan Bosco', 'Don Bosco'),
+(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan Pablo II', 'Juan Pablo II'),
+(25, 107, 1844, 'CFC', 'HAG', 'STM', 'REM', 2, 3, '2022-03-16 23:25:20', 'Bernadette Soubirous', 'Bernadette'),
+(26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, 3, '2022-03-16 23:25:20', 'Martín Lutero', 'Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'ST' ,  'LC', 2, 3, '2022-03-16 23:25:20', 'Pastorcitos de Fátima', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, status_registro_id, creado_en, nombre, apodo)
 VALUES 
-(51,  30, 1869, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Mahatma Gandhi'),
-(52, 340, 1918, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Nelson Mandela')
+(51,  30, 1869, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Mohandas Gandhi', 'Mahatma Gandhi'),
+(52, 340, 1918, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Nelson Mandela' , 'Madiba Mandela')
 ;
 UPDATE rclv_1personajes SET perenne = true;
 CREATE TABLE rclv_2hechos (
@@ -555,6 +571,9 @@ CREATE TABLE rclv_2hechos (
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_por_id INT UNSIGNED NULL,
+	alta_analizada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -575,6 +594,7 @@ CREATE TABLE rclv_2hechos (
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 
@@ -615,6 +635,9 @@ CREATE TABLE rclv_3valores (
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_por_id INT UNSIGNED NULL,
+	alta_analizada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -634,6 +657,7 @@ CREATE TABLE rclv_3valores (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 
@@ -654,6 +678,9 @@ VALUES
 (16, 1, 3, '2022-03-16 23:25:20', 'Valores en el deporte')
 ;
 UPDATE rclv_3valores SET perenne = true;
+UPDATE rclv_1personajes SET alta_analizada_por_id=2, alta_analizada_en='2022-03-17 23:25:20', lead_time_edicion=24;
+UPDATE rclv_2hechos SET alta_analizada_por_id=2, alta_analizada_en='2022-03-17 23:25:20', lead_time_edicion=24;
+UPDATE rclv_3valores SET alta_analizada_por_id=2, alta_analizada_en='2022-03-17 23:25:20', lead_time_edicion=24;
 CREATE TABLE rclv_4edicion (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	personaje_id SMALLINT UNSIGNED NULL,
@@ -1137,6 +1164,7 @@ CREATE TABLE links (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
+	vigencia_revisada_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
@@ -1206,15 +1234,8 @@ CREATE TABLE links_edicion (
 CREATE TABLE aux_historial_de_cambios_de_status(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
-	pelicula_id INT UNSIGNED NULL,
-	coleccion_id INT UNSIGNED NULL,
-	capitulo_id INT UNSIGNED NULL,
-
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-	
-	link_id INT UNSIGNED NULL,
+	entidad_id INT UNSIGNED NOT NULL,
+	entidad VARCHAR(11) NOT NULL,
 
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NOT NULL,
@@ -1231,16 +1252,6 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
-	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
-	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
-	
-	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	
-	FOREIGN KEY (link_id) REFERENCES links(id),
-
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),

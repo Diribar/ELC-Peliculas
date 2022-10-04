@@ -1,5 +1,6 @@
 /* Zona Título */
-#cuerpo #tituloPrincipal {align-self: flex-start;}
+#cuerpo #tituloPrincipal, #dataEntry #tituloSecundario {align-self: flex-start;}
+
 /* Formato del título */
 #cuerpo #tituloPrincipal #titulo {background-color: var(--gris-oscuro); color: var(--colorAyuda);}
 #cuerpo #tituloPrincipal #titulo {font-family: var(--Arial); font-weight: bold;}
@@ -29,6 +30,8 @@
 /* Formato del mensaje del tituloPrincipal */
 #cuerpo #tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(100%); max-width: 350px;}
 #cuerpo #tituloPrincipal .ayudaMostrar::before {top: 5px;}
+#cuerpo #tituloSecundario .ayudaMostrar {top: 50%; transform: translate(100%,-50%); max-width: 350px;}
+#cuerpo #tituloSecundario .ayudaMostrar::before {top: 50%; transform: translateY(-50%);}
 
 /* Formato del mensaje fuera del tituloPrincipal */
 #cuerpo .inputError .ayudaMostrar, #cuerpo .inputError .ayudaMostrar::before {top: 50%;}

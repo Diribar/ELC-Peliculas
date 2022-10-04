@@ -1,4 +1,5 @@
 #dataEntry {min-height: 180px; }
+#dataEntry #tituloSecundario {margin-bottom: 20px;}
 
 /* Partes específicas del formulario */
 #dataEntry #fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}

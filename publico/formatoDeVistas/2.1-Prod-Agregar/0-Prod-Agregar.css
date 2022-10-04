@@ -7,8 +7,9 @@
 #cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
-#dataEntry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
-	padding: 5px 10px; border-radius: 10px;}
+
+#dataEntry #tituloSecundario h2 {color: white; background-color: var(--azul-oscuro);}
+#dataEntry #tituloSecundario h2 {padding: 5px 10px; border-radius: 10px;}
 #dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
