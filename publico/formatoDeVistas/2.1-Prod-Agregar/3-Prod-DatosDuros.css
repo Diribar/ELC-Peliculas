@@ -49,5 +49,4 @@
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}
 
