@@ -10,23 +10,21 @@
 		<section id="datos">
 			<!-- Tipo de Producto -->
 			<h3>Tipo de Producto</h3>
-			<div class="inputError">
-				<select name="entidad" class="input" autofocus>
-					<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
-					<option value="peliculas"
-						<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
-						Película
-					</option>
-					<option value="colecciones"
-						<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
-						Colección
-					</option>
-					<option value="capitulos"
-						<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
-						Capítulo de una colección
-					</option>
-				</select>
-			</div>
+			<select name="entidad" class="input" autofocus>
+				<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+				<option value="peliculas"
+					<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
+					Película
+				</option>
+				<option value="colecciones"
+					<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
+					Colección
+				</option>
+				<option value="capitulos"
+					<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
+					Capítulo de una colección
+				</option>
+			</select>
 			<div class="invisible">
 				<!-- Datos del capítulo -->
 				<h3>Nombre de la Colección</h3>
