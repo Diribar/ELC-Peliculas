@@ -10,61 +10,69 @@
 		<section id="datos">
 			<!-- Tipo de Producto -->
 			<h3>Tipo de Producto</h3>
-			<select name="entidad" class="input" autofocus>
-				<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
-				<option value="peliculas"
-					<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
-					Película
-				</option>
-				<option value="colecciones"
-					<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
-					Colección
-				</option>
-				<option value="capitulos"
-					<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
-					Capítulo de una colección
-				</option>
-			</select>
+			<div class="inputError">
+				<select name="entidad" class="input" autofocus>
+					<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+					<option value="peliculas"
+						<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
+						Película
+					</option>
+					<option value="colecciones"
+						<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
+						Colección
+					</option>
+					<option value="capitulos"
+						<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
+						Capítulo de una colección
+					</option>
+				</select>
+			</div>
 			<div class="invisible">
 				<!-- Datos del capítulo -->
 				<h3>Nombre de la Colección</h3>
-				<div class="flex-row">
-					<!-- Data Entry -->
+				<!-- Data Entry -->
+				<div class="inputError">
 					<select name="coleccion_id" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question ayudaClick  despl_click">
-						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-							<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+								<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 				<h3>Número de Temporada</h3>
-				<div class="flex-row">
+				<div class="inputError">
 					<!-- Data Entry -->
 					<select name="temporada" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question ayudaClick  despl_click">
-						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 				<h3>Número de Capítulo</h3>
-				<div class="flex-row">
+				<div class="inputError">
 					<select name="capitulo" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question ayudaClick  despl_click">
-						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 			</div>
 		</section>

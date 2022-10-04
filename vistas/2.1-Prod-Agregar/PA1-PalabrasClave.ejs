@@ -6,11 +6,13 @@
 	<div id="tituloSecundario">
 		<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-				<li>Ingresá palabras del Título de la Película.</li>
-			</ul>	
-		</i>
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+					<li>Ingresá palabras del Título de la Película.</li>
+				</ul>	
+			</i>
+		</div>
 	</div>
 	<!-- Datos -->
 	<section  id="datos" class="flex-row space-between">
@@ -20,12 +22,14 @@
 				autofocus autocomplete="off"
 			>
 			<!-- Ayuda -->
-			<i class="fa-solid fa-circle-question ayudaClick despl_click">
-				<ul class="ayudaMostrar ocultar despl_mostrar">
-					<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
-					<li>Escribí de manera precisa todas las palabras que sepas.</li>
-				</ul>
-			</i>
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick despl_click">
+					<ul class="ayudaMostrar ocultar despl_mostrar">
+						<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
+						<li>Escribí de manera precisa todas las palabras que sepas.</li>
+					</ul>
+				</i>
+			</div>
 			<%- include("CMP-errorOK_oculto", {display: false}) %>
 		</div>
 		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar"></i>

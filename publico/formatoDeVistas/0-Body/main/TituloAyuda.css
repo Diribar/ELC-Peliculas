@@ -1,20 +1,20 @@
+/* Zona Título */
+#cuerpo #tituloPrincipal {align-self: flex-start;}
 /* Formato del título */
-#cuerpo #tituloPrincipal {align-self: flex-start; display: flex; flex-direction: row; align-items: center;}
 #cuerpo #tituloPrincipal #titulo {background-color: var(--gris-oscuro); color: var(--colorAyuda);}
 #cuerpo #tituloPrincipal #titulo {font-family: var(--Arial); font-weight: bold;}
 #cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1rem;}
 #cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px; border-style: none;}
 
+/* Contenedores del ayudaClick */
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario, #cuerpo .inputError {position: relative;}
+#cuerpo .ayuda {position: absolute;}
+#cuerpo .ayuda {right: -10px; transform: translate(100%,-50%); top: 50%;}
+
 /* Formato del ícono compartido */
 #cuerpo .ayudaClick {position: relative; z-index: 2;}
 #cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
 #cuerpo .ayudaClick {background-color: var(--colorAyuda); color: var(--backgroundAyuda); border: 1px solid var(--colorAyuda);}
-
-/* Formato del ícono del tituloPrincipal */
-#cuerpo #tituloPrincipal .ayudaClick {margin-left: 10px;}
-
-/* Formato del ícono fuera del tituloPrincipal */
-#columna2 .ayudaClick {margin-left: 5px;}
 
 /* Formato del mensaje compartido */
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; z-index: 2; cursor: default;}
@@ -31,8 +31,8 @@
 #cuerpo #tituloPrincipal .ayudaMostrar::before {top: 5px;}
 
 /* Formato del mensaje fuera del tituloPrincipal */
-#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {top: 50%;}
-#cuerpo .ayudaMostrar {transform: translate(100%, -50%); max-width: 200px;}
-#cuerpo .ayudaMostrar::before {transform: translateY(-50%);}
+#cuerpo .inputError .ayudaMostrar, #cuerpo .inputError .ayudaMostrar::before {top: 50%;}
+#cuerpo .inputError .ayudaMostrar {transform: translate(100%, -50%); max-width: 200px;}
+#cuerpo .inputError .ayudaMostrar::before {transform: translateY(-50%);}
 
 /* ******************************************* */

@@ -17,7 +17,7 @@ main #cuerpo-y-footer #tapar-el-fondo {background-color: var(--gris-claro); opac
 main #cuerpo-y-footer #cuerpo .inactivo, 
 main #cuerpo-y-footer #cuerpo .inactivo * {cursor: not-allowed;}
 main #cuerpo-y-footer #cuerpo .mensajeError::before,
-main #cuerpo-y-footer #cuerpo .ayudaMostrar::before {left: -10px; content: ""; border: 5px solid;}
+main #cuerpo-y-footer #cuerpo .ayudaMostrar::before {left: -10px; content: ""; border-width: 5px; border-style: solid;}
 
 /* Footer */
 main #cuerpo-y-footer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
