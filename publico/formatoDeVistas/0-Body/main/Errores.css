@@ -10,7 +10,7 @@
 .fa-circle-xmark {z-index: 1;}
 .fa-circle-xmark {color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 .fa-circle-check {color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-.fa-circle-check {color: var(--verde-oscuro); cursor: default;}
+.fa-circle-check {cursor: default;}
 .fa-circle-xmark:hover .ayudaMostrar {display: inline;}
 
 
