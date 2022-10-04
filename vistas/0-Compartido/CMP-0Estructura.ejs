@@ -4,10 +4,9 @@
 	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
 	<!-- Heads personalizados -->
-	<% if (tema == "usuario") { %><%- include("US0-1Head") %><% } %>
-	<% if (tema == "prod_agregar") { %><%- include("PA0-1Head") %><% } %>
-	<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-1Head") %><% } %>	
-	<% if (tema == "rclv") { %><%- include("RCLV-1Head") %><% } %>
+	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
+	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
+	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud") { %><%- include("CR-1Head") %><% } %>	
 	<% if (tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
 	<% if (tema == "productos") { %><%- include("0-Productos-Head") %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include("MI-1Head") %><% } %>
@@ -19,20 +18,21 @@
 		<!-- Cartel -->
 		<% if (locals.cartel) { %><%- include('CMP-Cartel') %><% } %>
 		<!-- Vistas fuera de estándar -->
-		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion') %>
-		<% } else if (tema == "rclv" && codigo == "detalle") { %><%- include('RCLV-2Cuerpo') %>
-		<!-- Vistas estándar -->
+		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR-2Cuerpo') %>
 		<% } else { %>
-			<section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
+			<!-- Imagen Derecha -->
+			<% if (tema != "rclv_crud" || codigo != "detalle") { %><section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section><% } %>
+			<!-- Vistas estándar -->
 			<section id="cuerpo-y-footer">
 				<%- include('CMP-3Footer') %>
 				<!--**************************** CUERPO ******************************-->
-				<% if (tema == "usuario") { %><%- include("US0-2Cuerpo") %><% } %>
-				<% if (tema == "prod_agregar") { %><%- include("PA0-2Cuerpo") %><% } %>
-				<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-2Cuerpo") %><% } %>
-				<% if (tema == "rclv") { %><%- include("RCLV-2Cuerpo") %><% } %>
-				<% if (tema == "revisionEnts") { %><%- include("RE0-Cuerpo") %><% } %>
-				<% if (tema == "revisionUs") { %><%- include("RU0-Cuerpo") %><% } %>
+				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
+				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
+				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>
+				<% if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %><% } %>
+				<% if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %><% } %>
+				<% if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %><% } %>
+				<% if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %><% } %>
 				<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
 				<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
 			</section>

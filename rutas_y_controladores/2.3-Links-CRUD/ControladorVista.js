@@ -12,7 +12,7 @@ module.exports = {
 		// DETALLE - ABM
 		// Tema y Código
 		const tema = "links_crud";
-		const codigo = "links";
+		const codigo = "abm";
 		// Obtener los datos identificatorios del producto y del usuario
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;

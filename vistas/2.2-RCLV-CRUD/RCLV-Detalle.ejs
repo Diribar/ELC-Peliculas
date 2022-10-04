@@ -1,25 +1,30 @@
-<div id="cuerpo">
-	<section id="tituloConAyuda">
+<div id="datos">
+	<div id="tituloConAyuda">
 		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
 		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 		<ul class="mensajeAyuda ocultar" type="dots">
 			<li>.</li>
 		</ul>	
-	</section>
-	<section id="datosLargos">
+	</div>
+	<div id="datosLargos">
 		<div id="contenido">
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">
 		</div>
 		<!-- Botones -->
-	</section>
+	</div>
 </div>
-<section id="datosBreves">
-	<% for (campo of resumen) { %>
-		<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status_<%= campo.status %>"<% } %>>
-			<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
-		</p>
-	<% } %>
-</section>
+<div id="datosBreves">
+	<!-- Título -->
+	<div><p><strong><u style="font-size: 1.1rem;">Ficha Técnica</u></strong></p></div>
+	<!-- Texto -->
+	<div id="texto">
+		<% for (campo of resumen) { %>
+			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status_<%= campo.status %>"<% } %>>
+				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+			</p>
+		<% } %>
+	</div>
+</div>
