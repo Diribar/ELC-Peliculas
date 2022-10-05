@@ -54,7 +54,7 @@ module.exports = async (req, res, next) => {
 			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 		};
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	}
 
 	// Continuar

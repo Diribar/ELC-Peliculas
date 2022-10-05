@@ -150,7 +150,7 @@ module.exports = {
 			cartel: codigo == "edicion",
 			dataEntry: {},
 			campo: "",
-			omitirImagenDerecha: true,
+			omitirImagenDerecha: codigo == "edicion",
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {

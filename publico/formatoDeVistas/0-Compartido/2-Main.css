@@ -14,6 +14,7 @@ main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; positio
 main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 main #cuerpo-y-footer #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #cuerpo-y-footer #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+main #cuerpo-y-footer #cuerpo {flex-grow: 1; position: relative;}
 main #cuerpo-y-footer #cuerpo .inactivo, 
 main #cuerpo-y-footer #cuerpo .inactivo * {cursor: not-allowed;}
 main #cuerpo-y-footer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}

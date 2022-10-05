@@ -147,7 +147,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Fin
-	if (informacion) return res.render("MI-Cartel", {informacion});
+	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else next();
 };
 

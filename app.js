@@ -99,5 +99,5 @@ app.use((req, res) => {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 	};
-	res.status(404).render("MI-Cartel", {informacion});
+	res.status(404).render("CMP-0Estructura", {informacion});
 });
