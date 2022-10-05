@@ -148,6 +148,8 @@ module.exports = {
 			paises,
 			prodNombre,
 			cartel: codigo == "edicion",
+			dataEntry: {},
+			campo:""
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {
