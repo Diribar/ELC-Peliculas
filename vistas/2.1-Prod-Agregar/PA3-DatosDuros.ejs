@@ -47,13 +47,13 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Primeros campos -->
-			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
 			<!-- País -->
 			<%- include("PA3-DD2-Pais") %>
 			<!-- Idioma original -->
 			<%- include("PA3-DD3-Idioma", {idioma_id: dataEntry.idioma_original_id}) %>
 			<!-- Siguientes campos -->
-			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("PA3-DD4-Sinopsis") %>
 		</div>
