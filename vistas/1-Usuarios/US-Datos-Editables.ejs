@@ -6,7 +6,7 @@
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="inputError">
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
-			<%- include("CMP-errores", {campo: "apodo", display: true}) %>
+			<%- include("CMP-Errores", {campo: "apodo", display: true}) %>
 		</div>
 	</section>
 	<!--Pais de residencia-->
@@ -37,7 +37,7 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<%- include("CMP-errores", {campo: "pais_id", display: true}) %>
+			<%- include("CMP-Errores", {campo: "pais_id", display: true}) %>
 		</div>
 	</section>
 	<!--Rol en la iglesia-->
@@ -50,7 +50,7 @@
 					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %>
 			</select>
-			<%- include("CMP-errores", {campo: "rol_iglesia_id", display: true}) %>
+			<%- include("CMP-Errores", {campo: "rol_iglesia_id", display: true}) %>
 		</div>
 	</section>
 	<!--Imagen de perfil-->

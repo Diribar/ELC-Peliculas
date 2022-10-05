@@ -22,7 +22,7 @@
 				<div class="inputError">
 					<% nombre = dataEntry ? dataEntry.nombre : "" %>
 					<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
-					<%- include("CMP-errores", {campo: "nombre", display: true}) %> 
+					<%- include("CMP-Errores", {campo: "nombre", display: true}) %> 
 				</div>
 			</div>
 			<!--Apellido-->
@@ -31,7 +31,7 @@
 				<div class="inputError">
 					<% apellido = dataEntry ? dataEntry.apellido : "" %>
 					<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
-					<%- include("CMP-errores", {campo: "apellido", display: true}) %> 
+					<%- include("CMP-Errores", {campo: "apellido", display: true}) %> 
 				</div>
 			</div>
 			<!--Sexo-->
@@ -45,7 +45,7 @@
 							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 						<% } %> 
 					</select>
-					<%- include("CMP-errores", {campo: "sexo_id", display: true}) %> 
+					<%- include("CMP-Errores", {campo: "sexo_id", display: true}) %> 
 				</div>
 			</div>
 			<!--Fecha de Nacimiento-->
@@ -54,7 +54,7 @@
 				<div class="inputError">
 					<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 					<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-					<%- include("CMP-errores", {campo: "fecha_nacimiento", display: true}) %> 
+					<%- include("CMP-Errores", {campo: "fecha_nacimiento", display: true}) %> 
 				</div>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 				<label for="docum_numero">Número de Documento</label>
 				<div class="inputError">
 					<input type="text" id="docum_numero" class="input" name="docum_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.docum_numero : "" %>">
-					<%- include("CMP-errores", {campo: "docum_numero", display: true}) %>
+					<%- include("CMP-Errores", {campo: "docum_numero", display: true}) %>
 				</div>
 			</div>
 			<!--Expedido en qué país-->
@@ -96,7 +96,7 @@
 							<% } %>
 						</optgroup>
 					</select>
-					<%- include("CMP-errores", {campo: "docum_pais_id", display: true}) %>
+					<%- include("CMP-Errores", {campo: "docum_pais_id", display: true}) %>
 				</div>
 			</div>
 			<!--Credenciales Inválidas-->
@@ -120,7 +120,7 @@
 						<img src="<%= docum_avatar %>">
 					</label>
 					<input name="docum_avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar" value="<%= dataEntry ? dataEntry.docum_avatar : "" %>">
-					<%- include("CMP-errores", {campo: "docum_avatar", display: true}) %>
+					<%- include("CMP-Errores", {campo: "docum_avatar", display: true}) %>
 				</div>
 			</div>
 		</div>

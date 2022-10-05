@@ -3,14 +3,13 @@
 .fa-circle-check, .fa-circle-xmark {border-radius: 50%;}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
-
-/* Hover */
+.inputError {align-items: center;}
 .inputError .fa-circle-check, .inputError .fa-circle-xmark {font-size: 1rem;}
 .inputError .fa-circle-check {cursor: default;}
 .inputError .fa-circle-xmark {z-index: 1; position: relative;}
 .inputError .fa-circle-xmark:hover .mensajeError {display: inline;}
 
-/* Resultados */
+/* mensajeError */
 .inputError .fa-circle-xmark .mensajeError,
 .inputError .fa-circle-xmark .mensajeError::before {position: absolute; top: 50%;}
 .inputError .fa-circle-xmark .mensajeError {display: none; right: -5px; transform: translate(100%,-50%);}
