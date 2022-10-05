@@ -21,7 +21,7 @@
 /* Partes del resultado */
 #dataEntry #imagenChica, #dataEntry #texto {height: 100%;}
 #dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between;}
-#dataEntry #texto, #texto * {color: inherit;}
+#dataEntry #texto, #dataEntry #texto * {color: inherit;}
 #dataEntry #infoPeli {margin: 10px 15px;}
 #dataEntry #coleccion {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
 #dataEntry #prod_nuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
