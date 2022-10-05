@@ -1,7 +1,9 @@
-<section id="tapar-el-fondo" class="ocultar"></section>
-<section id="cartel" class="ocultar">
-	<i id="error" class="fa-solid fa-triangle-exclamation"></i>
-	<img id="gracias" src="/imagenes/0-Base/Check.png" height="100px">
-	<ul id="mensajes"></ul>
-	<div id="flechasCartel"></div>
-</section>
+<% if (locals.si) { %>
+	<section id="tapar-el-fondo" class="<% - !locals.informacion ? 'ocultar' : '' %>"></section>
+	<section id="cartel" class="<%- locals.informacion && informacion.colorFondo ? informacion.colorFondo : 'ocultar' %>">
+		<i id="error" class="fa-solid fa-triangle-exclamation"></i>
+		<img id="gracias" src="/imagenes/0-Base/Check.png" height="100px">
+		<ul id="mensajes"></ul>
+		<div id="flechasCartel"></div>
+	</section>
+<% } %>

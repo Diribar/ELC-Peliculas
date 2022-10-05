@@ -169,6 +169,7 @@ module.exports = {
 			codigo,
 			titulo: "Detalle de " + nombre,
 			resumen,
+			omitirImagenDerecha: true
 		});
 	},
 };

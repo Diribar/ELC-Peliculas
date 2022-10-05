@@ -10,7 +10,7 @@
 <!-- Font Awesome --><link href="/formatoDeVistas/fontawesome-free-6.1.1-web/css/solid.css" rel="stylesheet">
 
 <!-- FONTS--><link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
-<!-- Título en la pestaña --><title><%= titulo %></title>
+<!-- Título en la pestaña --><title><%= locals.titulo ? titulo : locals.informacion && informacion.titulo ? informacion.titulo: "Error" %></title>
 <!-- Logo en la pestaña --><link rel="icon" href="/imagenes/0-Base/Sagrada Familia.jpg">
 
 <!-- ESTILOS PERSONALIZADOS-->
