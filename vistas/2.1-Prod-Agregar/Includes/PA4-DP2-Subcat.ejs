@@ -3,7 +3,7 @@
 	<label><%= registro.titulo %></label>
 	<div id="ayudaSubcat" class="inputError">
 		<!-- Input -->
-		<select name="subcategoria_id" class="input <%- registro.angosto ? 'angosto' : '' %>" autofocus>
+		<select name="subcategoria_id" class="input" autofocus>
 			<option value="" class="ocultar" <% if (!dataEntry.subcategoria_id) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
