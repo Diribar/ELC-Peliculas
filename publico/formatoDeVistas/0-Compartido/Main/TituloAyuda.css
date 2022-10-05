@@ -1,27 +1,14 @@
-/* Comunes entre Errores y Ayuda */
+/* Formato común entre Errores y Ayuda */
 #cuerpo .ayuda , .inputError .errores {right: -7.5px; line-height: 1rem; font-size: 1rem;}
 
-/* Zona Título */
-#cuerpo #tituloPrincipal, #dataEntry #tituloSecundario {align-self: flex-start; z-index: 3;}
-
-/* Formato del título */
-#cuerpo #tituloPrincipal #titulo {background-color: var(--backTitulo); color: var(--colorTitulo);}
-#cuerpo #tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--borderTitulo)  var(--borderTitulo) transparent}
-#cuerpo #tituloPrincipal #titulo {font-size: 1.20rem;font-family: var(--Arial); font-weight: bold;}
-#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1.2rem;}
-#cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
-
-/* Contenedores del ayudaClick */
-#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {position: relative;}
-#cuerpo .ayuda {position: absolute; z-index: 3;}
-#cuerpo .ayuda {transform: translate(100%,-50%); top: 50%;}
-
-/* Formato del ícono compartido */
+/* Formato compartido entre Titulo e inputError */
+/* Sector Ayuda */
+#cuerpo .ayuda {position: absolute; transform: translate(100%,-50%); top: 50%;}
+/* AyudaClick */
 #cuerpo .ayudaClick {position: relative;}
 #cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
 #cuerpo .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border: 1px solid var(--colorAyuda);}
-
-/* Formato del mensaje compartido */
+/* AyudaMostrar */
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; cursor: default;}
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar * {background-color: var(--backAyuda); color: var(--colorAyuda);}
 #cuerpo .ayudaMostrar {right: -5px; width: max-content; padding: 7px 10px;}
@@ -32,15 +19,29 @@
 #cuerpo ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px;}
 #cuerpo .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
 
-/* Formato del mensaje del tituloPrincipal */
+/* Formato del mensaje del Título Principal y Secundario*/
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {position: relative;}
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {align-self: flex-start; z-index: 3;}
 #cuerpo #tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(100%); max-width: 350px;}
 #cuerpo #tituloPrincipal .ayudaMostrar::before {top: 5px;}
 #cuerpo #tituloSecundario .ayudaMostrar {top: 50%; transform: translate(100%,-50%); max-width: 350px;}
 #cuerpo #tituloSecundario .ayudaMostrar::before {top: 50%; transform: translateY(-50%);}
 
-/* Formato del mensaje fuera del tituloPrincipal */
-#cuerpo .inputError .ayudaMostrar, #cuerpo .inputError .ayudaMostrar::before {top: 50%;}
-#cuerpo .inputError .ayudaMostrar {transform: translate(100%, -50%); max-width: 250px;}
-#cuerpo .inputError .ayudaMostrar::before {transform: translateY(-50%);}
+/* Formato del título */
+#cuerpo #tituloPrincipal #titulo {background-color: var(--backTitulo); color: var(--colorTitulo);}
+#cuerpo #tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--borderTitulo)  var(--borderTitulo) transparent}
+#cuerpo #tituloPrincipal #titulo {font-size: 1.20rem;font-family: var(--Arial); font-weight: bold;}
+#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1.2rem;}
+#cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
+
+/* Formato del mensaje compartido */
+
+/* Formato del mensaje en inputError */
+#cuerpo .inputError .ayuda {z-index: 3; display: flex;}
+#cuerpo .inputError .ayuda {transform: translate(100%,-50%); top: 50%;}
+#cuerpo .inputError .ayuda .ayudaMostrar,
+#cuerpo .inputError .ayuda .ayudaMostrar::before {top: 50%;}
+#cuerpo .inputError .ayuda .ayudaMostrar {transform: translate(100%, -50%); max-width: 250px;}
+#cuerpo .inputError .ayuda .ayudaMostrar::before {transform: translateY(-50%);}
 
 /* ******************************************* */
