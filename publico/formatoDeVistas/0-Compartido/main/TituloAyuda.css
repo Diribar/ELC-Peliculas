@@ -1,12 +1,12 @@
 /* Comunes entre Errores y Ayuda */
-#cuerpo .ayuda , .inputError .errores {right: -7.5px;}
+#cuerpo .ayuda , .inputError .errores {right: -7.5px; line-height: 1rem; font-size: 1rem;}
 
 /* Zona Título */
-#cuerpo #tituloPrincipal, #dataEntry #tituloSecundario {align-self: flex-start;}
+#cuerpo #tituloPrincipal, #dataEntry #tituloSecundario {align-self: flex-start; z-index: 3;}
 
 /* Formato del título */
 #cuerpo #tituloPrincipal #titulo {background-color: var(--backTitulo); color: var(--colorTitulo);}
-#cuerpo #tituloPrincipal #titulo {font-family: var(--Arial); font-weight: bold;}
+#cuerpo #tituloPrincipal #titulo {font-size: 1.20rem;font-family: var(--Arial); font-weight: bold;}
 #cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1.2rem;}
 #cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px; border-style: none;}
 
@@ -28,7 +28,7 @@
 #cuerpo .ayudaMostrar {border-radius: 6px; border: 1px var(--colorAyuda) solid;}
 #cuerpo .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
 #cuerpo .ayudaMostrar::before {left: -10px; content: ""; border-width: 5px; border-style: solid;}
-#cuerpo .ayudaMostrar ul li {list-style-position: outside; margin-left: 15px;}
+#cuerpo ul.ayudaMostrar li {list-style-position: outside; margin-left: 15px;}
 #cuerpo .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
 
 /* Formato del mensaje del tituloPrincipal */

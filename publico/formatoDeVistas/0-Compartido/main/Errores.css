@@ -5,23 +5,23 @@
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 
 /* inputError */
-.inputError {align-items: center;}
-.inputError .errores {position: absolute; z-index: 1}
+.inputError {align-items: center; z-index: 2}
+.inputError .errores {position: absolute; z-index: 2}
 .inputError .errores {top: 50%; transform: translate(100%, -50%);}
 
 .errores .fa-circle-check, .errores .fa-circle-xmark {font-size: 1rem;}
 .errores .fa-circle-check {cursor: default;}
-.errores .fa-circle-xmark {z-index: 1; position: relative;}
+.errores .fa-circle-xmark {position: relative; z-index: 2;}
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 
 /* mensajeError */
 .errores .fa-circle-xmark .mensajeError,
-.errores .fa-circle-xmark .mensajeError::before {position: absolute; top: 50%;}
+.errores .fa-circle-xmark .mensajeError::before {position: absolute; top: 50%; z-index: 2;}
 .errores .fa-circle-xmark .mensajeError {display: none; right: -6px; transform: translate(100%,-50%);}
 .errores .fa-circle-xmark .mensajeError {max-width: 200px; width: max-content;}
 .errores .fa-circle-xmark .mensajeError {border-radius: 10px; padding: 3px 7px;}
 .errores .fa-circle-xmark .mensajeError {font-size: 1rem; font-weight: normal;}
-.errores .fa-circle-xmark .mensajeError {line-height: 1.2rem; text-align: left; z-index: 1;}
+.errores .fa-circle-xmark .mensajeError {line-height: 1.2rem; text-align: left;}
 .errores .fa-circle-xmark .mensajeError {color: var(--colorMensajeError); background-color: var(--backMensajeError); border: var(--colorMensajeError) solid 2px;}
 .errores .fa-circle-xmark .mensajeError::before {transform: translate(-100%,-50%);}
 .errores .fa-circle-xmark .mensajeError::before {border-color: transparent var(--rojo-oscuro) transparent transparent;}

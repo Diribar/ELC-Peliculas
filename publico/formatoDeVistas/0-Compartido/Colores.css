@@ -21,9 +21,9 @@ body {
 
 	/* Colores por Tema */
 	--colorAyuda: white;
-	--backAyuda: var(--verde-oscuro);
-	--colorTitulo: var(--gris-claro);
-	--backTitulo: var(--gris-oscuro);
+	--backAyuda: var(--gris-oscuro);
+	--colorTitulo: var(--azul-oscuro);
+	--backTitulo: var(--amarillo-claro);
 	--colorMensajeError: var(--rojo-oscuro);
 	--backMensajeError: var(--amarillo-claro);
 	--backIcono: white

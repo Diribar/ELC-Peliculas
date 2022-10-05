@@ -32,4 +32,4 @@
 
 /* Submit button */
 #dataEntry #submit {position: static; transform: none;}
-#dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}
+#dataEntry button em {color: inherit; background-color: inherit;}
