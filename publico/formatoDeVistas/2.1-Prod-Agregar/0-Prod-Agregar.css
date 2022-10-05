@@ -14,7 +14,6 @@
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}
 #dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
-#dataEntry .inputError .errores {top: 50%; transform: translate(100%, -50%);}
 
 /* Procesando información */
 #dataEntry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
