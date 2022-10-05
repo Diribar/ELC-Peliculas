@@ -12,22 +12,27 @@
 #datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100); position: relative;}
 #datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
 #datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px; overflow-y: scroll;}
-/* Sinopsis - Ayuda */
-#sinopsis .ayuda {top: 25px;}
-/* Sinopsis - Ocultar la 'side-bar' */
-#datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
-#datosLargos #contenido #sinopsis nav {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
+#datosLargos #contenido #sinopsis .ayuda {top: 25px;}
 
 /* Datos Breves */
-#datosBreves {display: flex; flex-direction: column; justify-content: center; width: max-content; }
-#datosBreves #calificacionesGrafico {width:180px;}
-#datosBreves #texto {margin-right: 15px;}
-#datosBreves #texto p {margin-top: 10px;}
-#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
-#datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
-#datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
+#datosBreves {width: max-content; max-height: 88%; margin: auto 15px;}
+#datosBreves {display: flex; flex-direction: column; justify-content: flex-start;}
+#datosBreves {border: var(--gris-oscuro) 3px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
+#datosBreves {padding: 15px 20px; border-radius: 15px; background-color: snow;}
+#datosBreves .info {max-height: 500px; overflow-y: scroll;}
+#datosBreves .info #calificacionesGrafico {width: 180px;}
+#datosBreves .info #texto {margin-right: 15px;}
+#datosBreves .info #texto p {margin-top: 10px;}
+#datosBreves .info #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves .info #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
+#datosBreves .info #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
+#datosBreves .info #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
 
+/* Ocultar la 'side-bar' */
+#datosLargos #contenido #sinopsis nav::-webkit-scrollbar,
+#datosBreves .info::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
+#datosLargos #contenido #sinopsis nav,
+#datosBreves .info {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos i {margin: 0 15px;}
