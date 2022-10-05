@@ -12,7 +12,7 @@
 
 /* Contenedores del ayudaClick */
 #cuerpo #tituloPrincipal, #cuerpo #tituloSecundario, #cuerpo .inputError {position: relative;}
-#cuerpo .ayuda {position: absolute;}
+#cuerpo .ayuda {position: absolute; z-index: 3;}
 #cuerpo .ayuda {transform: translate(100%,-50%); top: 50%;}
 
 /* Formato del ícono compartido */
