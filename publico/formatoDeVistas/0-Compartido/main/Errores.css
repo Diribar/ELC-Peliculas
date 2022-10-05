@@ -1,26 +1,29 @@
 /* Estándares para check y xmark */
-.fa-circle-check, .fa-circle-xmark {background-color: white; border-color: white;}
+.fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border: 1px solid var(--backIcono);}
 .fa-circle-check, .fa-circle-xmark {border-radius: 50%;}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 
 /* inputError */
 .inputError {align-items: center;}
-.inputError .errores {position: absolute;}
-.inputError .errores .fa-circle-check, .inputError .errores .fa-circle-xmark {font-size: 1rem;}
-.inputError .errores .fa-circle-check {cursor: default;}
-.inputError .errores .fa-circle-xmark {z-index: 1; position: relative;}
-.inputError .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
+.inputError .errores {position: absolute; z-index: 1}
+.errores .fa-circle-check, .errores .fa-circle-xmark {font-size: 1rem;}
+.errores .fa-circle-check {cursor: default;}
+.errores .fa-circle-xmark {z-index: 1; position: relative;}
+.errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 
 /* mensajeError */
-.inputError .errores .fa-circle-xmark .mensajeError,
-.inputError .errores .fa-circle-xmark .mensajeError::before {position: absolute; top: 50%;}
-.inputError .errores .fa-circle-xmark .mensajeError {display: none; right: -5px; transform: translate(100%,-50%);}
-.inputError .errores .fa-circle-xmark .mensajeError {max-width: 200px; width: max-content; padding: 3px 7px;}
-.inputError .errores .fa-circle-xmark .mensajeError {font-size: 1rem; line-height: 1.2rem; text-align: left; z-index: 1;}
-.inputError .errores .fa-circle-xmark .mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px;}
-.inputError .errores .fa-circle-xmark .mensajeError::before {transform: translateY(-50%);}
-.inputError .errores .fa-circle-xmark .mensajeError::before {border-color: transparent var(--rojo-oscuro) transparent transparent;}
+.errores .fa-circle-xmark .mensajeError,
+.errores .fa-circle-xmark .mensajeError::before {position: absolute; top: 50%;}
+.errores .fa-circle-xmark .mensajeError {display: none; right: -6px; transform: translate(100%,-50%);}
+.errores .fa-circle-xmark .mensajeError {max-width: 200px; width: max-content;}
+.errores .fa-circle-xmark .mensajeError {border-radius: 10px; padding: 3px 7px;}
+.errores .fa-circle-xmark .mensajeError {font-size: 1rem; font-weight: normal;}
+.errores .fa-circle-xmark .mensajeError {line-height: 1.2rem; text-align: left; z-index: 1;}
+.errores .fa-circle-xmark .mensajeError {color: var(--colorMensajeError); background-color: var(--backMensajeError); border: var(--colorMensajeError) solid 2px;}
+.errores .fa-circle-xmark .mensajeError::before {transform: translate(-100%,-50%);}
+.errores .fa-circle-xmark .mensajeError::before {border-color: transparent var(--rojo-oscuro) transparent transparent;}
+.errores .fa-circle-xmark .mensajeError::before {left: -1px; content: ""; border-width: 6px; border-style: solid;}
 
 /* Mensajes */
 .resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; text-align: center;}

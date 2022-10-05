@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
 		docum_numero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos
 			docum_numero.value = docum_numero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
-			let mensaje = !docum_numero.value ? "Necesitamos que completes este campo" : "";
+			let mensaje = !docum_numero.value ? "Necesitamos que completes este campo." : "";
 			mostrarIconos(mensaje, 1);
 		});
 		docum_pais_id.addEventListener("input", () => {
