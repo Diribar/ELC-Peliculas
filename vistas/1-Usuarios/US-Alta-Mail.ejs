@@ -5,7 +5,7 @@
 	<section class="label-input flex-row">
 		<div class="inputError">
 			<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= dataEntry.email %>" autofocus>
-			<%- include("CMP-errorOK_visible", {campo: "email"}) %>
+			<%- include("CMP-errores", {campo: "email", display: true}) %>
 		</div>
 	</section>
 	<!--Número de Documento y País-->
@@ -18,7 +18,7 @@
 			</label>
 			<div class="inputError">
 				<input type="text" id="docum_numero" class="input" name="docum_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.docum_numero : "" %>">
-				<%- include("CMP-errorOK_visible", {campo: "docum_numero"}) %> 
+				<%- include("CMP-errores", {campo: "docum_numero", display: true}) %> 
 			</div>
 		</div>
 		<!--Expedido en qué país-->
@@ -52,7 +52,7 @@
 						<% } %>
 					</optgroup>
 				</select>
-				<%- include("CMP-errorOK_visible", {campo: "docum_pais_id"}) %> 
+				<%- include("CMP-errores", {campo: "docum_pais_id", display: true}) %> 
 			</div>
 		</div>
 	<% } %>

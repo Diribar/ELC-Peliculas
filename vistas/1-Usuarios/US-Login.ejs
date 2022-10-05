@@ -19,7 +19,7 @@
 					<!-- Ojito contraseña -->
 					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 					<!-- Error/OK -->
-					<%- include("CMP-errorOK_visible", {campo: variable.name}) %>
+					<%- include("CMP-errores", {campo: variable.name, display: true}) %>
 				</div>
 			</div>
 		<% } %>
