@@ -16,12 +16,12 @@
 #cuerpo .ayuda {transform: translate(100%,-50%); top: 50%;}
 
 /* Formato del ícono compartido */
-#cuerpo .ayudaClick {position: relative; z-index: 2;}
+#cuerpo .ayudaClick {position: relative;}
 #cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
 #cuerpo .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border: 1px solid var(--colorAyuda);}
 
 /* Formato del mensaje compartido */
-#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; z-index: 2; cursor: default;}
+#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; cursor: default;}
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar * {background-color: var(--backAyuda); color: var(--colorAyuda);}
 #cuerpo .ayudaMostrar {right: -5px; width: max-content; padding: 7px 10px;}
 #cuerpo .ayudaMostrar {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
