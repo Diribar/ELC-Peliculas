@@ -4,7 +4,7 @@
 		<!-- Ayuda -->
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick despl_click">
-				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="none">
 					<li>Podés editar los datos y los links.</li>
 				</ul>	
 			</i>
@@ -15,7 +15,7 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("CR-Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis inputError">
+			<div id="sinopsis" class="inputError">
 				<nav><%= producto.sinopsis %></nav>
 				<!-- Ayuda -->
 				<div class="ayuda">
