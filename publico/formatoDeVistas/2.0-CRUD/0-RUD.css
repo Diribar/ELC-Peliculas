@@ -1,4 +1,4 @@
-#cuerpo-y-footer {width: 70vw;}
+#cuerpoFooter {width: 70vw;}
 
 /* Cuerpo */
 #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}

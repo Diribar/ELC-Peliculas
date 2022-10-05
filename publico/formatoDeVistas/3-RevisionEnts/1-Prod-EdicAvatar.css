@@ -1,5 +1,5 @@
-#cuerpo-y-footer {display: flex; flex-direction: column-reverse;}
-#cuerpo-y-footer #cuerpo {background-color: transparent;}
+#cuerpoFooter {display: flex; flex-direction: column-reverse;}
+#cuerpoFooter #cuerpo {background-color: transparent;}
 
 /* Sección información */
 #cuerpo #informacion {display: flex; flex-direction: row; flex-grow: 1; position: relative;}
