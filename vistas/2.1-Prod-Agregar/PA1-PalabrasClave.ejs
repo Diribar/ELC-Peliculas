@@ -18,7 +18,7 @@
 	<section  id="datos" class="flex-row space-between">
 		<div class="inputError">
 			<input type="text" class="input" name="palabrasClave" placeholder="Escribilo acá"
-				value="<%= palabrasClave %>"
+				value="<%= dataEntry.palabrasClave %>"
 				autofocus autocomplete="off"
 			>
 			<!-- Ayuda -->
@@ -30,9 +30,9 @@
 					</ul>
 				</i>
 			</div>
-			<%- include("CMP-errorOK_oculto", {display: false}) %>
+			<%- include("CMP-Errores", {errores:"", display: false, campo:"palabrasClave"}) %>
 		</div>
-		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar"></i>
+		<i id="submit" class="fa-solid fa-circle-question naranja inactivo pointer" title="Verificar"></i>
 	</section>
 	<!-- Comentarios generales -->
 	<section>
