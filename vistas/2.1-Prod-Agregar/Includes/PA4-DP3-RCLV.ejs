@@ -33,7 +33,7 @@
 			<% } %>
 		</select>
 		<%- include("PA4-DP9-Ayuda") %>
-		<%- include("CMP-Errores", {errores:"", display: false}) %>
+		<%- include("CMP-Errores") %>
 		<!-- Link a Relación con la vida -->
 		<% if (registro.grupo=="RCLV") { %>
 			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
