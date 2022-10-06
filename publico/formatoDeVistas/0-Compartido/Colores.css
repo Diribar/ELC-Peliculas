@@ -23,7 +23,7 @@ body {
 	--colorAyuda: white;
 	--backAyuda: var(--gris-oscuro);
 	--borderAyuda: var(--amarillo-claro);
-	--colorTitulo: var(--azul-oscuro);
+	--colorTitulo: var(--gris-oscuro);
 	--backTitulo: var(--amarillo-claro);
 	--borderTitulo: var(--naranja-oscuro);
 	--colorMensajeError: var(--rojo-oscuro);

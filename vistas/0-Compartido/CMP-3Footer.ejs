@@ -1,4 +1,6 @@
-<footer  class="flex-row">
-	<p><a href="/quienes-somos" tabindex="-1">Quiénes Somos</a></p>
-	<p>Versión 1.0 - Año 2022</p>
-</footer>
+<% if (locals.si) { %>
+	<footer>
+		<p><a href="/quienes-somos" tabindex="-1">Quiénes Somos</a></p>
+		<p>Versión 1.0 - Año 2022</p>
+	</footer>
+<% } %>

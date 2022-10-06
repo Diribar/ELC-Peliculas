@@ -1,4 +1,4 @@
-#cuerpo-y-footer {width: 70vw;}
+#cuerpoFooter {width: 70vw;}
 
 /* Datos */
 #datos {display: flex; flex-direction: row; flex-grow: 1;}

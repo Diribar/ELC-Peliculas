@@ -98,7 +98,7 @@ module.exports = {
 			colorFondo: "verde",
 		};
 		// Redireccionar
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	},
 	editablesForm: async (req, res) => {
 		const tema = "usuario";
@@ -176,7 +176,7 @@ module.exports = {
 			colorFondo: "verde",
 		};
 		// Fin
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	},
 	documentoForm: async (req, res) => {
 		const tema = "usuario";
@@ -268,7 +268,7 @@ module.exports = {
 			colorFondo: "verde",
 		};
 		// Fin
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	},
 	// Edición
 	edicionForm: async (req, res) => {
@@ -354,7 +354,7 @@ module.exports = {
 			colorFondo: "gris",
 		};
 		// Fin
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
 		let url = req.session.urlSinUsuario;
@@ -389,6 +389,6 @@ module.exports = {
 		const codigo = req.path.slice(1);
 		let informacion = procesos.cartelInformacion(codigo);
 		// Redireccionar
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	},
 };

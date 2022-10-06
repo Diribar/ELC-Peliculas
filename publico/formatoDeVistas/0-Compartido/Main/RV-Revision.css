@@ -3,7 +3,7 @@
 #cuerpo {position: relative;}
 
 /* Imagen */
-#imagen-derecha {background-color: var(--gris-intermedio);}
+#imagenDerecha {background-color: var(--gris-intermedio);}
 
 /* Comandos y Flechas */
 #cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto;}

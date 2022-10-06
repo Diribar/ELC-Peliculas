@@ -7,7 +7,7 @@
 #cartel.verde {background-color: var(--verde-oscuro);}
 
 /* Alineación interna */
-#cartel {display: flex; flex-direction: column; align-items: center; width: fit-content; max-width: 600px;}
+#cartel {display: flex; flex-direction: column; align-items: center; width: max-content; max-width: 600px;}
 #cartel.ocultar {display: none;}
 
 /* Partes internas */

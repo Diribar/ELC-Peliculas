@@ -148,6 +148,9 @@ module.exports = {
 			paises,
 			prodNombre,
 			cartel: codigo == "edicion",
+			dataEntry: {},
+			campo: "",
+			omitirImagenDerecha: codigo == "edicion",
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {

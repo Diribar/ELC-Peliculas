@@ -1,3 +1,6 @@
+/* Cuerpo y Footer */
+#cuerpoFooter {width: 70vw;}
+
 /* Cuerpo */
 #cuerpo {flex-direction: row;}
 
@@ -13,15 +16,15 @@
 #datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
 #datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px; overflow-y: scroll;}
 #datosLargos #contenido #sinopsis .ayuda {top: 25px;}
+#datosLargos {display: non;}
 
 /* Datos Breves */
-#datosBreves {width: max-content; max-height: 88%; margin: auto 15px;}
+#datosBreves {max-height: 88%; margin: auto 15px; width: 520px;}
 #datosBreves {display: flex; flex-direction: column; justify-content: flex-start;}
 #datosBreves {border: var(--gris-oscuro) 3px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
 #datosBreves {padding: 15px 20px; border-radius: 15px; background-color: snow;}
 #datosBreves .info {max-height: 500px; overflow-y: scroll;}
-#datosBreves .info #calificacionesGrafico {width: 180px;}
-#datosBreves .info #texto {margin-right: 15px;}
+/* #datosBreves .info #calificacionesGrafico {width: 180px;} */
 #datosBreves .info #texto p {margin-top: 10px;}
 #datosBreves .info #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
 #datosBreves .info #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
