@@ -7,7 +7,6 @@
 #cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
-
 #dataEntry #tituloSecundario h2 {color: white; background-color: var(--azul-oscuro);}
 #dataEntry #tituloSecundario h2 {padding: 5px 10px; border-radius: 10px;}
 #dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
@@ -33,4 +32,4 @@
 
 /* Submit button */
 #dataEntry #submit {position: static; transform: none;}
-#dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}
+#dataEntry button em {color: inherit; background-color: inherit;}

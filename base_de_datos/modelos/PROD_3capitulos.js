@@ -19,7 +19,7 @@ module.exports = (sequelize, dt) => {
 		musica: {type: dt.STRING(100)},
 		actuacion: {type: dt.STRING(500)},
 		produccion: {type: dt.STRING(100)},
-		sinopsis: {type: dt.STRING(900)},
+		sinopsis: {type: dt.STRING(1004)},
 		avatar: {type: dt.STRING(100)},
 		en_castellano_id: {type: dt.INTEGER},
 		en_color_id: {type: dt.INTEGER},

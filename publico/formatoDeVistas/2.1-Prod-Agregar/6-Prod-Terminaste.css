@@ -8,6 +8,8 @@
 #dataEntry #datos {padding-left: 20px;}
 #dataEntry #datos .texto {margin: 5px 0; font-size: 1.2rem;}
 #dataEntry #datos #liConAyuda {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}
+#dataEntry #datos #liConAyuda .ayudaClick {margin-left: 10px;}
+#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar {max-width: 350px;}
 #dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
 #dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
 #dataEntry #datos #partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
