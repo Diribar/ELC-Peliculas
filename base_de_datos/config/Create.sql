@@ -74,7 +74,7 @@ INSERT INTO aux_sexos (id, orden, varon, mujer, nombre, letra_final)
 VALUES 
 ('M', 1, 0, 1, 'Mujer', 'a'), 
 ('V', 2, 1, 0, 'Varón', 'o'),
-('A', 2, 1, 1, 'Ambos', '')
+('A', 3, 1, 1, 'Ambos', '')
 ;
 
 /* TABLAS AUXILIARES PARA USUARIOS */;
@@ -734,7 +734,7 @@ CREATE TABLE prod_1peliculas (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(900) NULL,
+	sinopsis VARCHAR(1004) NULL,
 	avatar VARCHAR(100) NULL,
 
 	en_castellano_id TINYINT UNSIGNED NULL,
@@ -834,7 +834,7 @@ CREATE TABLE prod_2colecciones (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(50) NULL,
-	sinopsis VARCHAR(900) NULL,
+	sinopsis VARCHAR(1004) NULL,
 	avatar VARCHAR(100) NULL,
 	
 	en_castellano_id TINYINT UNSIGNED NULL,
@@ -931,7 +931,7 @@ CREATE TABLE prod_3capitulos (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(900) NULL,
+	sinopsis VARCHAR(1004) NULL,
 	avatar VARCHAR(100) NULL,
 	
 	en_castellano_id TINYINT UNSIGNED NULL,
