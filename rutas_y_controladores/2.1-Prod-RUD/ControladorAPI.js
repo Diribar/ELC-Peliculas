@@ -15,7 +15,10 @@ module.exports = {
 		let calificaciones = [];
 		// Datos generales
 		datos = await BD_genericas.obtenerPorId(entidad, prodID).then((n) =>
-			n.fe_valores != null
+			n.fe_valores != null &&
+			n.entretiene != null &&
+			n.calidad_tecnica != null &&
+			n.calificacion != null
 				? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
 				: ""
 		);

@@ -4,7 +4,7 @@ main {height: 91vh;}
 /* Headings */
 main h1 {font-size: 1.25rem;}
 main h2 {font-size: 1.20rem;}
-main h3 {font-size: 1.15rem;}
+main h3 {font-size: 1.10rem;}
 
 /* Imagen Derecha */
 main #imagen-derecha {width: 30vw; height: 100%; position: relative;}
@@ -16,8 +16,6 @@ main #cuerpo-y-footer #tapar-el-fondo {position: absolute; left: 0px; top: 0px; 
 main #cuerpo-y-footer #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 main #cuerpo-y-footer #cuerpo .inactivo, 
 main #cuerpo-y-footer #cuerpo .inactivo * {cursor: not-allowed;}
-main #cuerpo-y-footer #cuerpo .mensajeError::before,
-main #cuerpo-y-footer #cuerpo .ayudaMostrar::before {left: -10px; content: ""; border-width: 5px; border-style: solid;}
 
 /* Footer */
 main #cuerpo-y-footer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}

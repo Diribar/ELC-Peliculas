@@ -19,9 +19,14 @@ body {
 	--verde-oscuro:rgb(79,98,40);
 	--verde-ingles: #009879;
 
-	--colorAyuda: var(--verde-claro);
-	--backgroundAyuda: var(--verde-oscuro);
-
-	--colorTitulo: var(--gris-claro);
-	--backgroundTitulo: var(--gris-oscuro);
+	/* Colores por Tema */
+	--colorAyuda: white;
+	--backAyuda: var(--gris-oscuro);
+	--borderAyuda: var(--amarillo-claro);
+	--colorTitulo: var(--azul-oscuro);
+	--backTitulo: var(--amarillo-claro);
+	--borderTitulo: var(--naranja-oscuro);
+	--colorMensajeError: var(--rojo-oscuro);
+	--backMensajeError: var(--amarillo-claro);
+	--backIcono: white
 }
