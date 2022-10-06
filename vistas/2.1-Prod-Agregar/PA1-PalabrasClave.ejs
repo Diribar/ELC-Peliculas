@@ -11,7 +11,7 @@
 		<div class="inputError">
 			<input type="text" class="input" name="palabrasClave" placeholder="Escribilo acá"
 				value="<%= dataEntry.palabrasClave %>"
-				autofocus autocomplete="off"
+				autofocus autocomplete="off" tabindex="1"				
 			>
 			<!-- Ayuda -->
 			<div class="ayuda">
@@ -24,7 +24,7 @@
 			</div>
 			<%- include("CMP-Errores", {campo:"palabrasClave"}) %>
 		</div>
-		<i id="submit" class="fa-solid fa-circle-question naranja inactivo pointer" title="Verificar"></i>
+		<i id="submit" class="fa-solid fa-circle-question naranja inactivo pointer" title="Verificar" tabindex="2"></i>
 	</section>
 	<!-- Comentarios generales -->
 	<section>
