@@ -25,6 +25,7 @@ body {
 	--borderAyuda: var(--amarillo-claro);
 	--colorTitulo: var(--azul-oscuro);
 	--backTitulo: var(--amarillo-claro);
+	--borderTitulo: var(--naranja-oscuro);
 	--colorMensajeError: var(--rojo-oscuro);
 	--backMensajeError: var(--amarillo-claro);
 	--backIcono: white
