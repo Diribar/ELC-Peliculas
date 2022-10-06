@@ -1,5 +1,5 @@
 /* Formato común entre Errores y Ayuda */
-#cuerpo .ayuda , .inputError .errores {right: -7.5px; line-height: 1rem; font-size: 1rem;}
+#cuerpo .ayuda , .inputError .errores {right: -5px; line-height: 1rem; font-size: 1rem;}
 
 /* Formato compartido entre Titulo e inputError */
 /* Sector Ayuda */

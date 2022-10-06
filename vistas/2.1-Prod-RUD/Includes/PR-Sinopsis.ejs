@@ -3,8 +3,7 @@
 		<textarea
 			name="sinopsis" class="input" placeholder="Ingresa aquí la sinopsis"
 		><%= producto.sinopsis %></textarea>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
