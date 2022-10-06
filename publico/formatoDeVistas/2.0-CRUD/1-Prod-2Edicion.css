@@ -6,20 +6,23 @@ main form #cuerpo .inputError {display: flex; flex-direction: row;}
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
-/* Imagen */
+/* Imagen - Íconos */
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
 form #imagen .ayuda,
 form #imagen .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
 form #imagen .errores {z-index: 4;}
-form #imagen .ayuda .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border: 1px solid var(--colorAyuda);}
-form #imagen.inputError .ayuda .ayudaMostrar,
-form #imagen.inputError .errores .mensajeError {right: auto; top: auto;}
+
+/* Imagen - AyudaMostrar */
+form #imagen.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
 form #imagen.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
 form #imagen.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
 form #imagen.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-/* form #imagen .mensajeError {bottom: -20%; transform: translateX(-50%);} */
-/* form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;} */
-/* form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);} */
+
+/* Imagen - MensajeError */
+form #imagen.inputError .errores .mensajeError {right: auto; top: auto;}
+form #imagen.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
+form #imagen.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
+form #imagen.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
 
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
