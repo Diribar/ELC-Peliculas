@@ -10,4 +10,3 @@
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-evenly; align-items: center;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}

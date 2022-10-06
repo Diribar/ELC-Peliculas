@@ -18,7 +18,10 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
-		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+		let dataEntry = {};
+		dataEntry.palabrasClave = req.session.palabrasClave
+			? req.session.palabrasClave
+			: req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
@@ -26,7 +29,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Palabras Clave",
-			palabrasClave,
+			dataEntry,
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {

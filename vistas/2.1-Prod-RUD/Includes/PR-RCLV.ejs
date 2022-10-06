@@ -8,12 +8,14 @@
 			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
 		</select>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-				<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
-				<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
-			</ul>
-		</i>
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+					<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
+					<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
+				</ul>
+			</i>
+		</div>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 		<!-- Aviso de cambio en el data-entry -->

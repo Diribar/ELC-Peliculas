@@ -9,14 +9,16 @@
 		<img src="<%= avatar %>" class="ocultar">
 	</label>
 	<!-- Ayuda -->
-	<i class="fa-solid fa-circle-question ayudaClick despl_click">
-		<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-			<li>Haciendo <em>click</em> en la imagen podés reemplazarla por otra.</li>
-			<li>La extensión de la imagen debe ser <em><strong>JPG</strong></em> o <em><strong>PNG</strong></em></li>
-		</ul>
-	</i>
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+				<li>Haciendo <em>click</em> en la imagen podés reemplazarla por otra.</li>
+				<li>La extensión de la imagen debe ser <em><strong>JPG</strong></em> o <em><strong>PNG</strong></em></li>
+			</ul>
+		</i>
+	</div>
 	<!-- Errores/OK -->
-	<%- include("CMP-errorOK_oculto", {display: true}) %>
+	<%- include("CMP-Errores", {errores:"", display: true}) %>
 	<!-- Aviso de cambio en el data-entry -->
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
 </section>

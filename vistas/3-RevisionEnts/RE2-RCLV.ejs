@@ -2,12 +2,14 @@
 <section id="tituloPrincipal">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
-	<i class="fa-solid fa-circle-question ayudaClick despl_click">
-		<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-			<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
-			<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
-		</ul>
-	</i>
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
+				<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+			</ul>
+		</i>
+	</div>
 </section>
 <section id="zonaDeGrow">
 	<div id="dataEntry" class="flex-col">
@@ -17,40 +19,45 @@
 			<div id="primeraCol">
 				<!-- Nombre: Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo relative">
+					<div class="margenBottomTitulo tituloSecundario">
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question ayudaClick despl_click">
-							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-								<% if (entidad == "personajes") { %>
-									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-								<% } %>
-								<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
-							</ul>
-						</i>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<% if (entidad == "personajes") { %>
+										<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+										<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+									<% } %>
+									<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
+								</ul>
+							</i>
+						</div>
+				
 						<!-- Error/OK -->
-						<%- include("CMP-errorOK_visible", {campo: "nombre"}) %>
+						<%- include("CMP-Errores", {campo: "nombre", display: true}) %>
 					</div>
 				</div>
 				<!-- Nombre: Input -->
 				<input type="text" name="nombre" class="input" value="<%= RCLV_original.nombre %>" autofocus autocomplete="off">
 				<!-- Fecha Representativa: Título, Ayuda y Error/OK -->
 				<div class="borderTop flex-row">
-					<div class="margenBottomTitulo relative">
+					<div class="margenBottomTitulo tituloSecundario">
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question ayudaClick despl_click">
-							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-								<li>Usamos la fecha en que se lo recuerda.</li>
-								<li>Para los santos o beatos, es la fecha en el santoral.</li>
-								<li>Para los demás, suele ser la fecha de su muerte.</li>
-							</ul>
-						</i>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<li>Usamos la fecha en que se lo recuerda.</li>
+									<li>Para los santos o beatos, es la fecha en el santoral.</li>
+									<li>Para los demás, suele ser la fecha de su muerte.</li>
+								</ul>
+							</i>
+						</div>
 						<!-- Error/OK -->
-						<%- include("CMP-errorOK_visible", {campo: "fecha"}) %>
+						<%- include("CMP-Errores", {campo: "fecha", display: true}) %>
 					</div>
 				</div>
 				<!-- Fecha Representativa: Valores -->
@@ -100,20 +107,22 @@
 				<!-- Año de nacimiento u ocurrencia -->
 				<% if (entidad != "valores") { %>
 					<div class="borderTop flex-row">
-						<div class="margenBottomTitulo relative flex-row align-center">
+						<div class="margenBottomTitulo tituloSecundario flex-row align-center">
 							<!-- Título -->
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= RCLV_original.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-									<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
-									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-									<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
-								</ul>
-							</i>
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick despl_click">
+									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+										<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
+										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+										<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+									</ul>
+								</i>
+							</div>
 							<!-- Error/OK -->
-							<%- include("CMP-errorOK_visible", {campo: "ano"}) %>
+							<%- include("CMP-Errores", {campo: "ano", display: true}) %>
 						</div>
 					</div>
 				<% } %>
@@ -123,7 +132,7 @@
 				<div class="relative">
 					<h3>Nombres con esa fecha</h3>
 					<!-- Error/OK -->
-					<%- include("CMP-errorOK_visible", {campo: "duplicados"}) %>
+					<%- include("CMP-Errores", {campo: "duplicados", display: true}) %>
 				</div>
 				<p>Destildalos para controlar si no está ya en nuestra BD</p>
 				<ul type="none" id="posiblesRepetidos"></ul>
@@ -139,7 +148,7 @@
 						<!-- Título -->
 						<h3 class="">Relación con la Iglesia</h3>
 						<!-- Error/OK -->
-						<%- include("CMP-errorOK_visible", {campo: "RCLI"}) %>
+						<%- include("CMP-Errores", {campo: "RCLI", display: true}) %>
 					</div>
 					<!-- ¿En proceso de canonización? -->
 					<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>

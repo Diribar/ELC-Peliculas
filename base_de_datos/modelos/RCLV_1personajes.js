@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		nombre: {type: dt.STRING(30)},
 		apodo: {type: dt.STRING(30)},
+		sexo_id: {type: dt.STRING(1)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 		perenne: {type: dt.BOOLEAN},
@@ -43,6 +44,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});

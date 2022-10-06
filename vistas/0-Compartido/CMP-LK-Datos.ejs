@@ -81,7 +81,7 @@
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question ayudaClick<%- !link.status_registro.gr_pasivos ? ' ocultar' : '' %>" tabindex="-1" title="Motivo">
-			<p class="ayudaMostrar ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </p>
+			<span class="ayudaMostrar ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </span>
 		</i>
 	</td>
 </tr>

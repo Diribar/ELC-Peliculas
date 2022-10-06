@@ -2,11 +2,14 @@
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-				<li>Podés editar los datos y los links.</li>
-			</ul>	
-		</i>
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y los links.</li>
+					<li>Si el contenido de los recuadros se ve parcial, podés deslizar con la ruedita del mouse dentro del recuadro.</li>
+				</ul>
+			</i>
+		</div>
 	</div>
 	<div id="datosLargos">
 		<div id="contenido">
@@ -15,12 +18,6 @@
 			<!-- Sinopsis -->
 			<div id="sinopsis">
 				<nav><%= producto.sinopsis %></nav>
-				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question ayudaClick despl_click">
-					<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
-						<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
-					</ul>
-				</i>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
@@ -46,27 +43,28 @@
 	</div>
 </section>
 <section id="datosBreves">
-	<!-- Calificaciones -->
-	<div>
-		<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
-		<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
-		<p id="calificacionesResultados"></p>
-	</div>
-	<div id="calificacionesGrafico"></div>
-	<!-- Texto -->
-	<div id="texto">
-		<% for (bloque of bloquesDerecha) { %>
-			<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
-				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
-				<% if (bloque.RCLV_entidad) { %>
-					<% let destino = "origen=DT" %>
-					<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
-					<% let datosProd = "prodEntidad=" + entidad + "&prodID=" + prodID %> 
-					<a href="/rclv/detalle/?<%= destino %>&<%= datosRCLV %>&<%= datosProd %>">
-						<i class="fa-solid fa-circle-info"></i>
-					</a>
-				<% } %>
-			</p>
-		<% } %>
+	<div class="info">
+		<!-- Calificaciones -->
+		<div>
+			<p><strong>Calificaciones</strong></p>
+			<p id="calificacionesResultados"></p>
+		</div>
+		<div id="calificacionesGrafico"></div>
+		<!-- Texto -->
+		<div id="texto">
+			<% for (bloque of bloquesDerecha) { %>
+				<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
+					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+					<% if (bloque.RCLV_entidad) { %>
+						<% let destino = "origen=DT" %>
+						<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
+						<% let datosProd = "prodEntidad=" + entidad + "&prodID=" + prodID %> 
+						<a href="/rclv/detalle/?<%= destino %>&<%= datosRCLV %>&<%= datosProd %>">
+							<i class="fa-solid fa-circle-info"></i>
+						</a>
+					<% } %>
+				</p>
+			<% } %>
+		</div>
 	</div>
 </section>

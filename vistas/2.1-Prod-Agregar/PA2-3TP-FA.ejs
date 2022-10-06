@@ -21,19 +21,21 @@
 					autofocus
 				>
 				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question ayudaClick despl_click">
-					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-						<strong><u>Pasos</u></strong>:<br>
-						<li>
-							Buscá la película o colección en 
-							<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
-						</li>
-						<li>Seleccioná la dirección (url)</li>
-						<li>Copiala</li>
-						<li>Pegala en el casillero de la izquierda</li>
-					</ul>
-				</i>
-				<%- include("CMP-errorOK_oculto", {display: true}) %>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<strong><u>Pasos</u></strong>:<br>
+							<li>
+								Buscá la película o colección en 
+								<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
+							</li>
+							<li>Seleccioná la dirección (url)</li>
+							<li>Copiala</li>
+							<li>Pegala en el casillero de la izquierda</li>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {errores:"", display: true}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
 			<div class="inputError">
@@ -43,33 +45,37 @@
 					autocomplete="off"
 				>
 				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question ayudaClick despl_click" id="ayuda_avatar">
-					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-						<p><strong><u>Pasos</u></strong>:</p>
-						<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
-						<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
-						<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
-					</ul>
-				</i>
-				<%- include("CMP-errorOK_oculto", {display: true}) %>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click" id="ayuda_avatar">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<p><strong><u>Pasos</u></strong>:</p>
+							<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
+							<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
+							<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {display: true}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="inputError">
 				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question ayudaClick despl_click">
-					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-						<strong><u>Pasos</u></strong>:<br>
-						<li>
-							En la página de FA, seleccioná desde
-							el <strong><em><u>título en castellano</u></em></strong> 
-							hasta el final de la <strong><em><u>sinopsis</u></em></strong>.
-						</li>
-						<li>Copialo.</li>
-						<li>Pegalo en el casillero de la izquierda.</li>
-					</ul>
-				</i>
-				<%- include("CMP-errorOK_oculto", {display: true}) %>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<strong><u>Pasos</u></strong>:<br>
+							<li>
+								En la página de FA, seleccioná desde
+								el <strong><em><u>título en castellano</u></em></strong> 
+								hasta el final de la <strong><em><u>sinopsis</u></em></strong>.
+							</li>
+							<li>Copialo.</li>
+							<li>Pegalo en el casillero de la izquierda.</li>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {display: true}) %>
 			</div>
 			<div id="resultado"><br></div>
 		</section>

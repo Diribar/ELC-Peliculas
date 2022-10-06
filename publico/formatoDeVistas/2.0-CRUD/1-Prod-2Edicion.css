@@ -1,6 +1,6 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-main form .inputError {position: relative; display: flex; flex-direction: row;}
+main form .inputError {display: flex; flex-direction: row;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
