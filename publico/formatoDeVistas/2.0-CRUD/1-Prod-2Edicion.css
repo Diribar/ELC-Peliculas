@@ -1,19 +1,22 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 main form #cuerpo .inputError {display: flex; flex-direction: row;}
-main form #imagen.inputError {display: flex; flex-direction: column;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
 /* Imagen */
-form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .ayudaMostrar {left: 50%; }
-form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
-form #imagen .ayudaMostrar {top: 53%; transform: translateX(-50%);}
-form #imagen .mensajeError {bottom: -20%; transform: translateX(-50%);}
-form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
-form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);}
+form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
+form #imagen .ayuda {position: absolute; left: 50%; transform: translate(-50%,-50%); right: auto;}
+form #imagen .ayuda .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border: 1px solid var(--colorAyuda);}
+form #imagen.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
+form #imagen.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
+form #imagen.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
+form #imagen.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
+/* form #imagen .mensajeError {bottom: -20%; transform: translateX(-50%);} */
+/* form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;} */
+/* form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);} */
 
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
@@ -27,7 +30,9 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 /* Partes específicas del formulario */
 #datos .label-input .inputError .input,
 #datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
-#datos .inputError {margin-left: 5px;}
+#datos .label-input .inputError {margin-left: 5px;}
+#datos .label-input .inputError .ayuda {right: -5px;}
+
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
 #datos h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
@@ -41,7 +46,7 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 
 /* País */
 #datos #paises_id {align-items: center;}
-#datos #paises_id .inputError {width: 200px; min-width: 200px;}
+#datos #paises_id .inputError {width: 200px;}
 #datos #paises_id .inputError input#mostrarPaises,
 #datos #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}

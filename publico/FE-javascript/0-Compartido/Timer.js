@@ -62,12 +62,10 @@ window.addEventListener("load", async () => {
 		// Partes del cartel
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
-		let gracias = document.querySelector("#gracias");
 		let mensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
-		gracias.classList.add("ocultar");
 		// Mensajes
 		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));

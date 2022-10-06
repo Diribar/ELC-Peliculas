@@ -1,7 +1,8 @@
 <form method="POST" enctype="multipart/form-data">
+	<%- include('CMP-Cartel', {si: true}) %>
 	<%- include("PR-Edicion1-Avatar") %> 
 	<section id="cuerpoFooter">
-		<%- include('CMP-3Footer') %>
+		<%- include('CMP-3Footer', {si: true}) %>
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
 			<%- include('CMP-TimerContador') %>

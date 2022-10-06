@@ -3,7 +3,8 @@
 
 /* Formato compartido entre Titulo e inputError */
 /* Sector Ayuda */
-#cuerpo .ayuda {position: absolute; transform: translate(100%,-50%); top: 50%;}
+#cuerpo .ayuda {position: absolute; top: 50%; transform: translate(100%,-50%);}
+
 /* AyudaClick */
 #cuerpo .ayudaClick {position: relative;}
 #cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
@@ -37,8 +38,7 @@
 /* Formato del mensaje compartido */
 
 /* Formato del mensaje en inputError */
-#cuerpo .inputError .ayuda {z-index: 3; display: flex;}
-#cuerpo .inputError .ayuda {transform: translate(100%,-50%); top: 50%;}
+#cuerpo .inputError .ayuda {z-index: 3;}
 #cuerpo .inputError .ayuda .ayudaMostrar,
 #cuerpo .inputError .ayuda .ayudaMostrar::before {top: 50%;}
 #cuerpo .inputError .ayuda .ayudaMostrar {transform: translate(100%, -50%); max-width: 250px;}
