@@ -6,7 +6,7 @@
 #cuerpo .ayuda {position: absolute; top: 50%; transform: translate(100%,-50%);}
 
 /* AyudaClick */
-#cuerpo .ayudaClick {position: relative;}
+#cuerpo .ayudaClick {position: relative; cursor: pointer;}
 #cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
 #cuerpo .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border: 1px solid var(--colorAyuda);}
 /* AyudaMostrar */
