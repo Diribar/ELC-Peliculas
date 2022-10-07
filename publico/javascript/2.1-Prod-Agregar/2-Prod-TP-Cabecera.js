@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 	entidad.addEventListener("change", async () => {
 		// Es una película o colección
 		if (entidad.value != "capitulos") {
-			// Dejar visible y accesible  solamente el campo "entidad"
+			// Dejar visible y accesible solamente el campo "entidad"
 			invisible.classList.add("invisible");
 			utilizar(entidad);
 			// Limpiar las opciones de lo relacionado con colecciones

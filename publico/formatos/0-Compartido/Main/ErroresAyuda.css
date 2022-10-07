@@ -30,7 +30,7 @@
 .ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
 .ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 250px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMostrar::before, .mensajeError::before {left: -2px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: "";  border-style: solid;}
+.ayudaMostrar::before, .mensajeError::before {left: -2px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
 
 /* Desplegables Ayuda - Temas generales */
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
@@ -41,8 +41,8 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 
 /* Desplegables - Temas particulares */
 #tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
-#tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(-100%);}
-#tituloPrincipal .ayudaMostrar::before {top: 5px;}
+#tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%);}
+#tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%);}
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 
 /* Mensajes */

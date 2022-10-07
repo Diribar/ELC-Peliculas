@@ -7,7 +7,7 @@
 			<option value="" class="ocultar" <% if (!dataEntry.subcategoria_id) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
-					class="<%= (valor.cfc ? 'CFC ' : '') + (valor.vpc ? 'VPC ' : '')  %>" <% // Coloca la categoría_id en la clase %>
+					class="<%= (valor.cfc ? 'CFC ' : '') + (valor.vpc ? 'VPC ' : '') %>" <% // Coloca la categoría_id en la clase %>
 					<% if (valor.id == dataEntry.subcategoria_id) { %>selected<% } %> <% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
 				>
 					<%= valor[nombre] %>

@@ -1,6 +1,6 @@
 /* Formato del título */
 #cuerpo #tituloPrincipal #titulo {background-color: var(--backTitulo); color: var(--colorTitulo);}
-#cuerpo #tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--bordeTitulo)  var(--bordeTitulo) transparent}
+#cuerpo #tituloPrincipal #titulo {border-width: 2px; border-style: solid; border-color: transparent var(--bordeTitulo) var(--bordeTitulo) transparent}
 #cuerpo #tituloPrincipal #titulo {font-size: 1.20rem;font-family: var(--Arial); font-weight: bold;}
 #cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1.2rem;}
 #cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px;}

@@ -32,21 +32,21 @@
 					<option value="" <% if (!dataEntry.docum_pais_id) {%>selected <%}%>class="ocultar">Elejí un país</option>
 					<optgroup label="América (habla hispana)">
 						<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+							<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>	
 					</optgroup>
 					<optgroup label="Europa/África (habla hispana)">
 						<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+							<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>
 					</optgroup>
 					<optgroup label="Países de habla no hispana">
 						<% for (let pais of hablaNoHispana) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+							<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>
@@ -67,7 +67,7 @@
 			<a href="/usuarios/olvido-contrasena" tabindex="-1"><i class="fa-solid fa-circle-xmark icono" title="Olvidé mi contraseña"></i></a>
 		<% } %>
 		<!-- Alta de mail -->
-		<% if (codigo == "olvido-contrasena") {  %>
+		<% if (codigo == "olvido-contrasena") { %>
 			<a href="/usuarios/alta-mail" tabindex="-1"><i class="fa-solid fa-user-plus icono" title="Registro de mail"></i></a>
 		<% } %>
 	</section>
