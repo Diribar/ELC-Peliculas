@@ -14,9 +14,10 @@ window.addEventListener("load", () => {
 		// En caso negativo, no hace nada
 		if (e.target != busquedaRapida_input)
 			for (let i = 0; i < clicks.length; i++)
-				e.target == clicks[i] && !clicks[i].classList.contains("inactivo")
-					? mostrar[i].classList.toggle("ocultar")
-					: mostrar[i].classList.add("ocultar");
+				if (e.target.parentElement != mostrar[i])
+					e.target == clicks[i] && !clicks[i].classList.contains("inactivo")
+						? mostrar[i].classList.toggle("ocultar")
+						: mostrar[i].classList.add("ocultar");
 
 		// Foco en búsqueda rápida
 		if (!busquedaRapida_mostrar.classList.contains("ocultar")) busquedaRapida_input.focus();
