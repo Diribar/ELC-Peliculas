@@ -1,26 +1,32 @@
-<div id="tituloConAyuda">
+<div id="tituloPrincipal">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>Estos registros están pendientes de revisar.</li>
-		<li>Se necesita revisarlos a todos.</li>
-		<li>Las tareas figuran por orden de criticidad.</li>
-	</ul>	
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<li>Estos registros están pendientes de revisar.</li>
+				<li>Se necesita revisarlos a todos.</li>
+				<li>Las tareas figuran por orden de criticidad.</li>
+			</ul>
+		</i>
+	</div>
 </div>
 <!-- Datos -->
-<section id="familias" class="input-error">
+<section id="familias" class="inputError">
 	<!-- Productos -->
 	<div id="primeraColumna">
 		<div class="bloques">
-			<div class="datos">
+			<div class="datos tituloSecundario">
 				<h2>PRODUCTOS</h2>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<li>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</li>
-					<li>Las columnas son: <em>Tipo de Prod.</em> (Colección, Película, Capítulo), <em>Nombre</em>, <em>Apodo</em> de quien propuso la novedad, y <em>Fecha</em> de la novedad</li>
-				</ul>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</li>
+							<li>Las columnas son: <em>Tipo de Prod.</em> (Colección, Película, Capítulo), <em>Nombre</em>, <em>Apodo</em> de quien propuso la novedad, y <em>Fecha</em> de la novedad</li>
+						</ul>
+					</i>
+				</div>
 			</div>
 			<% let rp = "revision/producto/" %>
 			<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
@@ -33,16 +39,19 @@
 	<div id="segundaColumna">
 		<!-- RCLV -->
 		<div class="bloques">
-			<div class="datos">
+			<div class="datos tituloSecundario">
 				<h2>RCLV</h2>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ol class="mensajeAyuda ocultar" type="dots">
-					<p>Los <u>RCLV</u> cumplen estas condiciones:</p>
-					<li>Las <u>altas</u> a analizar, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
-					<li>Las <u>ediciones</u> a revisar son de algún RCLV aprobado.</li>
-					<li>Los registros a <u>inactivar</u> no tienen asociado ningún producto creado o aprobado.</li>
-				</ol>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ol class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<p>Los <u>RCLV</u> cumplen estas condiciones:</p>
+							<li>Las <u>altas</u> a analizar, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
+							<li>Las <u>ediciones</u> a revisar son de algún RCLV aprobado.</li>
+							<li>Los registros a <u>inactivar</u> no tienen asociado ningún producto creado o aprobado.</li>
+						</ol>
+					</i>
+				</div>
 			</div>
 			<% let rr = "revision/rclv/" %>
 			<!-- Ediciones Pend. Aprobar -->
@@ -51,15 +60,18 @@
 		</div>
 		<!-- Links -->
 		<div class="bloques">
-			<div class="datos">
+			<div class="datos tituloSecundario">
 				<h2>LINKS</h2>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ol class="mensajeAyuda ocultar" type="dots">
-					<p>Los <u>productos</u> cumplen todas estas condiciones:</p>
-					<li>Están aprobados.</li>
-					<li>Tienen algún link cuya novedad es ajena a vos.</li>
-				</ol>
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ol class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<p>Los <u>productos</u> cumplen todas estas condiciones:</p>
+							<li>Están aprobados.</li>
+							<li>Tienen algún link cuya novedad es ajena a vos.</li>
+						</ol>
+					</i>
+				</div>
 			</div>
 			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LR, url: "links"}) %>
 			<%- include("RE0-Registros", {titulo: "Productos sin Links", regs: productos.SL, url: "links"}) %>

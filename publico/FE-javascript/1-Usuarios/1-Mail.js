@@ -3,14 +3,14 @@ window.addEventListener("load", () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let email = document.querySelector(".input-error .input[name='email']");
-	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
-	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
-	let mensajes = document.querySelectorAll(".input-error .mensajeError");
+	let email = document.querySelector(".inputError .input[name='email']");
+	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
+	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 
 	// Funciones -----------------------------
 	let mostrarIconos = (mensaje, i) => {
-		mensajes[i].innerHTML = mensaje;
+		mensajesError[i].innerHTML = mensaje;
 		if (mensaje) {
 			iconosError[i].classList.remove("ocultar");
 			iconosOK[i].classList.add("ocultar");
@@ -42,8 +42,8 @@ window.addEventListener("load", () => {
 		let mensaje = errores[campo];
 		mostrarIconos(mensaje, 0);
 	});
-	let docum_numero = document.querySelector(".input-error .input#docum_numero");
-	let docum_pais_id = document.querySelector(".input-error .input#docum_pais_id");
+	let docum_numero = document.querySelector(".inputError .input#docum_numero");
+	let docum_pais_id = document.querySelector(".inputError .input#docum_pais_id");
 	if (docum_numero && docum_pais_id) {
 		docum_numero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos

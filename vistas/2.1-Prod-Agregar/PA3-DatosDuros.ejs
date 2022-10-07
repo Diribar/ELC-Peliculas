@@ -6,14 +6,17 @@
 <form method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
 	<section id="titulos">
 		<!-- Título y Ayuda -->
-		<div id="tituloConAyuda">
+		<div id="tituloSecundario">
 			<h2>Paso 3 de 5: Completá los Datos Duros</h2>
 			<!-- Ayuda -->
-			<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-			<ul class="mensajeAyuda ocultar" type="dots">
-				<li>Necesitamos que nos des la información que no disponemos.</li>
-				<li>Arriba de la imagen, disponés de links útiles para conseguirla.</li>
-			</ul>	
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick despl_click">
+					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+						<li>Necesitamos que nos des la información que no disponemos.</li>
+						<li>Arriba de la imagen, disponés de links útiles para conseguirla.</li>
+					</ul>	
+				</i>
+			</div>
 		</div>
 		<!-- Links a otras páginas de consulta -->
 		<div class="flex-col" id="links">
@@ -44,18 +47,18 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Primeros campos -->
-			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
 			<!-- País -->
 			<%- include("PA3-DD2-Pais") %>
 			<!-- Idioma original -->
 			<%- include("PA3-DD3-Idioma", {idioma_id: dataEntry.idioma_original_id}) %>
 			<!-- Siguientes campos -->
-			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("PA3-DD4-Sinopsis") %>
 		</div>
 		<!--Segunda columna-->
-		<div id="segundaColumna" class="input-error">
+		<div id="segundaColumna" class="inputError">
 			<!-- Si existe una imagen y viene desde TMDB -->
 			<% if (dataEntry.avatar && dataEntry.fuente == "TMDB") { %>
 				<img src="<%= dataEntry.avatar %>" alt="afiche">
@@ -73,7 +76,7 @@
 				<!-- Rutina para todos los casos -->
 				<input name="avatar" id="inputImagen" type="file" accept="image/*" class="ocultar input">
 				<!-- Errores/OK -->
-				<%- include("CMP-errorOK_oculto", {display: false}) %>
+				<%- include("CMP-Errores") %>
 			<% } %>
 		</div>	
 	</section>

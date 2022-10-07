@@ -2,7 +2,7 @@
 #datos {display: flex; flex-direction: row; flex-grow: 1;}
 
 /* Datos Largos */
-#datosLargos {margin: 20px 0 5px; padding: 40px 40px 20px; max-width: 70vw;}
+#datosLargos {margin: 20px 0 5px; padding: 40px 40px 20px;}
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
 #datosLargos h1 {font-size: 1.5rem;}
 #datosLargos #contenido {height: 300px; overflow-y: auto; background-color: var(--gris-intermedio); padding: 0 5px;}
@@ -21,9 +21,6 @@
 #datosLargos #contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
 #datosLargos #contenido #ingrs tr .campoTitulo {width: 150px;}
 #datosLargos #contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-solid {position: absolute; top: 50%; transform: translateY(-50%);}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-check {left: 0}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-xmark {left: 25px}
 #datosLargos #contenido #ingrs tr .motivos select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */

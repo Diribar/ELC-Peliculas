@@ -17,32 +17,28 @@
 #dataEntry h1 {margin-bottom: 15px;}
 #dataEntry label {margin-top: 3px; margin-right: 25px; font-weight: bold;}
 #dataEntry label {margin-top: 3px; font-weight: bold;}
-#dataEntry .input-error {display: flex;}
-#dataEntry .input-error input.input, #dataEntry .input-error select[name="idioma_original_id"], #dataEntry .input-error textarea {align-self: center; width: 200px;}
-#dataEntry .input-error input.input, #dataEntry .input-error textarea {padding: 0px 5px;}
-#dataEntry .input-error input.input.angosto {width: 90px;}
-#dataEntry .input-error textarea {padding: 0px 5px; resize:vertical; max-height: 100px; min-height: 18px;}
+#dataEntry .inputError {display: flex;}
+#dataEntry .inputError input.input, #dataEntry .inputError select[name="idioma_original_id"], #dataEntry .inputError textarea {align-self: center; width: 200px;}
+#dataEntry .inputError input.input, #dataEntry .inputError textarea {padding: 0px 5px;}
+#dataEntry .inputError input.input.angosto {width: 90px;}
+#dataEntry .inputError textarea {padding: 0px 5px; resize:vertical; max-height: 100px; min-height: 18px;}
 
 /* Temas de input 'número' */
-#dataEntry .input-error #numero {width: 90px; text-align: right;}
+#dataEntry .inputError #numero {width: 90px; text-align: right;}
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#dataEntry .input-error #numero::-webkit-outer-spin-button,
-#dataEntry .input-error #numero::-webkit-inner-spin-button 
+#dataEntry .inputError #numero::-webkit-outer-spin-button,
+#dataEntry .inputError #numero::-webkit-inner-spin-button 
     {-webkit-appearance: none; margin: 0;}
 /* Quitar flechas del input - Firefox */
-#dataEntry .input-error #numero[type=number] {-moz-appearance: textfield;}
+#dataEntry .inputError #numero[type=number] {-moz-appearance: textfield;}
 
 /* País */
 #dataEntry #paises_id {align-items: center;}
-#dataEntry #paises_id .input-error {width: 200px;}
-#dataEntry #paises_id .input-error input,
-#dataEntry #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
-#dataEntry #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
-#dataEntry #paises_id .input-error select {width: 100%; padding: 0;}
-
-/* Mensajes */
-#dataEntry #datos .mensajeAyuda {max-width: 270px; right: -5px;}
-#dataEntry .mensajeError {max-width: 200px;}
+#dataEntry #paises_id .inputError {width: 200px;}
+#dataEntry #paises_id .inputError input,
+#dataEntry #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
+#dataEntry #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
+#dataEntry #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* Imagen de la película */
 #dataEntry #segundaColumna {width: 200px; height: 100%; position: relative;}
@@ -53,5 +49,4 @@
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}
 

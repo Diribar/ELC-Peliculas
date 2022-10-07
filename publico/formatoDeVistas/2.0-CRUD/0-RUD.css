@@ -1,25 +1,13 @@
-#cuerpo-y-footer {width: 70vw;}
-
 /* Cuerpo */
 #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
 #cuerpo {position: relative;}
 
-/* Título */
-#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
-#cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
-/* Título - Ayuda */
-#cuerpo .mensajeAyuda {max-width: 350px;}
-#cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
-#cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
-#cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
-
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
-#cuerpo #encabezado #nombres h1 {margin: 0; }
-#cuerpo #encabezado #nombres h1 {font-size: 1.5rem; padding-bottom: 3px;}
-/* #cuerpo #encabezado #nombres h1 em {font-size: 1.1rem;} */
-#cuerpo #encabezado #nombres h2 {color: var(--gris-oscuro); font-weight: normal; font-size: 1rem;}
+#cuerpo #encabezado #nombres h2 {margin: 0; }
+#cuerpo #encabezado #nombres h2 {padding-bottom: 3px;}
+#cuerpo #encabezado #nombres h3 {color: var(--gris-oscuro); font-weight: normal; font-size: 1rem;}
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap #colecciones,
 #cuerpo #encabezado #colCap #tempCapI,
@@ -38,19 +26,17 @@
 #imagen, #imagen #imagenProducto {width: 30vw; background-color: var(--gris-claro); position: relative}
 #imagen img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
 
-/* Ayuda */
-.mensajeAyuda {padding: 7px 10px; z-index: 2;}
-.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
-
 /* Comandos y Flechas */
-#cuerpo #comandos, #cuerpo #flechas {background-color: var(--azul-oscuro);}
-#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 5px; border-radius: 15px;}
-#cuerpo #comandos i, #cuerpo #flechas i {color: white; font-size: 1.25rem;}
+#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
+#cuerpo #comandos i, #cuerpo #flechas i {font-size: 1.25rem;}
 
 /* Comandos - Particularidades */
-#cuerpo #comandos {background-color: var(--verde-oscuro);}
+#cuerpo #comandos {background-color: var(--backComandos);}
+#cuerpo #comandos i {color: white;}
 
 /* Flechas - Particularidades */
+#cuerpo #flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
 #cuerpo #flechas i, #cuerpo #flechas .pack {margin: 0 15px;}
+#cuerpo #flechas i.fa-circle-left {color: var(--bordeFlechas); border: none;}
 #cuerpo #flechas .pack i {margin: 0;}

@@ -1,0 +1,35 @@
+body {
+	--amarillo-claro:rgb(255,242,204);
+	--amarillo-oscuro: rgb(255, 230, 153);
+	--celeste-claro: rgb(220,230,242);
+	--celeste-oscuro: #C7D7EA;
+	--gris-claro: rgb(242,242,242);
+	--rojo-claro: rgb(255,189,189);
+	--verde-claro: rgb(217, 223, 205);
+	
+	--gris-intermedio: rgb(170,170,170);
+	--verde-intermedio: rgb(188, 199, 167);
+
+	--gris-oscuro: rgb(100, 100, 100);
+	--gris-mas-oscuro: rgb(80, 80, 80);
+	--azul-oscuro: rgb(37,64,97);
+	--azul-frances: rgb(31,73,125);
+	--naranja-oscuro: #F57C00;
+	--rojo-oscuro: rgb(209, 65, 40);
+	--verde-oscuro:rgb(79,98,40);
+	--verde-ingles: #009879;
+
+	/* Colores por Tema */
+	--colorAyuda: white;
+	--backAyuda: var(--gris-oscuro);
+	--bordeAyuda: var(--amarillo-claro);
+	--colorTitulo: var(--gris-oscuro);
+	--backTitulo: var(--amarillo-claro);
+	--bordeTitulo: var(--naranja-oscuro);
+	--colorMensajeError: var(--rojo-oscuro);
+	--backMensajeError: var(--amarillo-claro);
+	--backIcono: white;
+	--backFlechas: var(--celeste-oscuro);
+	--bordeFlechas: var(--azul-oscuro);
+	--backComandos: var(--verde-oscuro);
+}

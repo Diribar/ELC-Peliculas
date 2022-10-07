@@ -13,11 +13,11 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#dataEntry");
 	let submit = document.querySelector("#dataEntry #submit");
 	// Datos
-	let inputs = document.querySelectorAll(".input-error .input");
+	let inputs = document.querySelectorAll(".inputError .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	if (paso.PC) {
 		var resultado = document.querySelector("#dataEntry #resultado");
 		var rutaObtenerCantProds = (input) => {
@@ -99,7 +99,7 @@ window.addEventListener("load", async () => {
 	}
 	if (paso.DP) {
 		// Ayuda Sub-categoría
-		var iconoAyudaSubcat = document.querySelector("#ayudaSubcat .fa-circle-question");
+		var iconoAyudaSubcat = document.querySelector("#ayudaSubcat .ayudaClick");
 		var mensajesAyudaSubcat = document.querySelectorAll("#ayudaSubcat ul li");
 		// Categoría y subcategoría
 		var categoriaSelect = document.querySelector("select[name='categoria_id']");
@@ -109,11 +109,11 @@ window.addEventListener("load", async () => {
 		var subcategoria;
 		// Datos RCLV
 		var etiquetasRCLV = document.querySelectorAll(".label-input.RCLV");
-		var inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
-		var linkAltaJSS = document.querySelector(".input-error .linkRCLV.alta");
-		var linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
-		var iconosOK_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-check");
-		var iconosError_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-xmark");
+		var inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
+		var linkAltaJSS = document.querySelector(".inputError .linkRCLV.alta");
+		var linksEdicion = document.querySelectorAll(".inputError .linkRCLV.edicion");
+		var iconosOK_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-check");
+		var iconosError_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-xmark");
 		var opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option.RCLV");
 		var opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option.RCLV");
 	}

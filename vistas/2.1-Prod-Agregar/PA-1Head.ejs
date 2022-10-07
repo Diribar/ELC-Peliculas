@@ -1,13 +1,8 @@
 <!-- Uso compartido -->
 <link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Agregar/0-Prod-Agregar.css">
+
 <% if (codigo == "palabrasClave" || codigo == "datosDuros"|| codigo == "datosPers") { %>
 	<script src="/FE-javascript/2.1-Prod-Agregar/0-Prod-InputError.js"></script>
-<% } %>
-<% if (codigo != "palabrasClave" && codigo != "terminaste") { %>
-	<script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
-<% } %>
-<% if (codigo != "desambiguar" || codigo != "datosDuros") { %>
-	<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 <% } %>
 
 <!-- Uso particular formato -->
@@ -27,12 +22,9 @@
 	<script src="/FE-javascript/2.1-Prod-Agregar/2-Prod-DS-Desplazam.js"></script>
 <% } else if (codigo == "tipoProducto") { %><script src="/FE-javascript/2.1-Prod-Agregar/2-Prod-TP-Cabecera.js"></script>
 <% } else if (codigo == "copiarFA") { %><script src="/FE-javascript/2.1-Prod-Agregar/2-Prod-TP-FA.js"></script>
-<% } else if (codigo == "datosDuros") { %>
-	<script src="/FE-javascript/2.1-Prod-Agregar/3-Prod-DD-Ayuda.js"></script>
-	<% if (dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
-		<script src="/FE-javascript/0-Compartido/Mostrar-imagen.js"></script>
-		<script src="/FE-javascript/2.1-Prod-Agregar/3-Prod-DD-Imagen.js"></script>
-	<% } %>
+<% } else if (codigo == "datosDuros" && dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
+	<script src="/FE-javascript/0-Compartido/MostrarImagen.js"></script>
+	<script src="/FE-javascript/2.1-Prod-Agregar/3-Prod-DD-Imagen.js"></script>
 <% } else if (codigo == "datosPers") { %>
 	<script src="/FE-javascript/2.1-Prod-Agregar/4-Prod-DP-vista_RCLV.js"></script>
 <% } %>

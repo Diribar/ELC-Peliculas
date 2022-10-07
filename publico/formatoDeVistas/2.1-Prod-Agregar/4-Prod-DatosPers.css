@@ -10,23 +10,18 @@
 #dataEntry h1 {margin-bottom: 15px;}
 #dataEntry h3 {margin-bottom: 0; color: var(--verde-oscuro);}
 #dataEntry .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
-#dataEntry .label-input .input-error {margin-left: 5px;}
-#dataEntry .label-input .input-error .input {align-self: center; width: 150px;}
-#dataEntry .label-input .input-error input {padding: 0px 5px;}
-#dataEntry .label-input .input-error select {padding: 0;}
-#dataEntry .label-input .input-error .linkRCLV {width: 15px; position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
-#dataEntry .label-input .input-error .linkRCLV.alta {right: -40px; font-size: 1rem;}
-#dataEntry .label-input .input-error .linkRCLV.edicion {right: -60px; font-size: 1.15rem;}
+#dataEntry .label-input .inputError {margin-left: 5px;}
+#dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
+#dataEntry .label-input .inputError input {padding: 0px 5px;}
+#dataEntry .label-input .inputError select {padding: 0;}
+#dataEntry .label-input .inputError .linkRCLV {width: 15px; position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
+#dataEntry .label-input .inputError .linkRCLV.alta {right: -40px; font-size: 1rem;}
+#dataEntry .label-input .inputError .linkRCLV.edicion {right: -60px; font-size: 1.15rem;}
 #dataEntry #bloqueRCLV {min-height: 104px;}
-
-/* Mensajes */
-#dataEntry .mensajeAyuda {max-width: 400px;}
-#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -40px;}
-#dataEntry .RCLV .fa-circle-xmark, #dataEntry .RCLV .fa-circle-check {right: -60px;}
-#dataEntry .mensajeError {max-width: 200px;}
+#cuerpo .inputError .ayudaMostrar {max-width: 400px;}
 
 /* Anchos específicos de inputs */
-#dataEntry .label-input .input-error select.angosto {width: 70px}	
+#dataEntry .label-input .inputError select.angosto {width: 70px}	
 
 /* Imagen de la película */
 #dataEntry #imagenPeli {position: relative; height: 100%; width: 250px;}
@@ -35,4 +30,3 @@
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}

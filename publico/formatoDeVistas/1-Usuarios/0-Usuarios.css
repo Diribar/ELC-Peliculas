@@ -18,14 +18,8 @@
 #cuerpo form select {text-align: left;}
 #cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
-/* Íconos y Mensajes de error */
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.input-error .fa-circle-check, .input-error .fa-circle-xmark,
-.fa-circle-question {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-#cuerpo .input-error {position: relative;}
-#cuerpo .input-error .fa-circle-check, #cuerpo .input-error .fa-circle-xmark {left: -20px;}
-#cuerpo .mensajeError {left: 20px; max-width: 200px;}
-#cuerpo .mensajeError::before {left: -12px;}
+/* Íconos y Mensajes de Error */
+#cuerpo .inputError .mensajeError {left: 20px;}
 
 /* Flechas */
 #cuerpo #flechas {margin: 15px auto 5px; padding-top: 5px; display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}

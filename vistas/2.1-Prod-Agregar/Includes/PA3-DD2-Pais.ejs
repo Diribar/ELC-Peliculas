@@ -1,12 +1,13 @@
 <section id="paises_id">
+	<% let inputOK = dataEntry.paises_id && !errores.paises_id %>
 	<label>País/es de origen</label>
-	<div class="input-error">
+	<div class="inputError">
 		<!-- Lugar donde almacenar los ID -->
-		<input name="paises_id" type="text" <% if (dataEntry.paises_id) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input">
+		<input name="paises_id" type="text" <% if (inputOK) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (dataEntry.paises_id) { %>disabled<% } %>>
+		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (inputOK) { %>disabled class="despl_click"<% } %>>
 		<!-- Opciones de países -->
-		<% if (!dataEntry.paises_id) { %>
+		<% if (!inputOK) { %>
 			<select autofocus>
 				<option value="" selected class="ocultar">Elejí un país</option>
 				<option value="borrar">Borrar todo/s</option>
@@ -20,10 +21,8 @@
 				<% } %> 
 			</select>
 		<% } else { %>
-			<!-- Ayuda -->
-			<%- include("PA3-DD9-Mensajes") %>
+			<%- include("PA3-DD9-Mensajes", {inputOK}) %>
 		<% } %>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<%- include("CMP-Errores", {campo: "paises_id"}) %>
 	</div>
 </section>

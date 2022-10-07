@@ -1,9 +1,9 @@
 <% registro = camposDP.find(n => n.nombreDelCampo == "subcategoria_id") %>
 <section class="label-input">
 	<label><%= registro.titulo %></label>
-	<div id="ayudaSubcat" class="input-error">
+	<div id="ayudaSubcat" class="inputError">
 		<!-- Input -->
-		<select name="subcategoria_id" class="input <%- registro.angosto ? 'angosto' : '' %>" autofocus>
+		<select name="subcategoria_id" class="input" autofocus>
 			<option value="" class="ocultar" <% if (!dataEntry.subcategoria_id) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
@@ -14,13 +14,7 @@
 				</option>
 			<% } %>
 		</select>
-		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question inactivo"></i>
-		<ul type="dots" class="mensajeAyuda ocultar">
-			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
-			<% for (let mensaje of registro.mensajes) { %><li class="<%= mensaje.categ %>"><%= mensaje.texto %></li><% } %> 
-		</ul>
-		<!-- Errores -->
-		<%- include("CMP-errorOK_oculto", {display: false}) %>
+		<%- include("PA4-DP9-Ayuda") %>
+		<%- include("CMP-Errores") %>
 	</div>
 </section>

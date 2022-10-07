@@ -1,6 +1,6 @@
 <section id="paises_id" class="label-input">
 	<label>País/es de origen</label>
-	<div class="input-error">
+	<div class="inputError">
 		<!-- Lugar donde almacenar los ID -->
 		<input name="paises_id" type="text" value="<%= producto.paises_id %>" class="ocultar input">
 		<!-- Lugar donde mostrar los nombres -->
@@ -17,8 +17,7 @@
 				</optgroup>
 			<% } %> 
 		</select>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

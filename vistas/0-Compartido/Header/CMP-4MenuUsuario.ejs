@@ -1,0 +1,43 @@
+<% if (locals.usuario) { %>
+	<div class="despl_mostrar menu_mostrar menuFondo ocultar" id="menu-usuario">
+		<!-- Mi interés en algunos productos -->
+		<a href="#" class="menu_opcion inactivo">
+			<i class="fa-solid fa-heart icono"></i>
+			<span>Mi interés en productos</span>
+		</a>
+		<!-- Mis estadísticas -->
+		<a href="#" class="menu_opcion inactivo">
+			<i class="fa-solid fa-film icono"></i>
+			<span>Mi historial de películas</span>
+		</a>
+		<hr />
+		<% if (locals.usuario && locals.usuario.rol_usuario.perm_inputs) { %>
+			<!-- Status de Productos agregados por mí -->
+			<a href="#" class="menu_opcion inactivo">
+				<i class="fa-solid fa-chart-pie icono"></i>
+				<span>Status de mis agregados</span>
+			</a>
+			<!-- % de entidades aprobadas / presentadas -->
+			<a href="#" class="menu_opcion inactivo">
+				<i class="fa-solid fa-thumbs-up icono"></i>
+				<span>Mi precisión de inputs</span>
+			</a>
+			<!-- Historial de penalizaciones -->
+			<a href="#" class="menu_opcion inactivo">
+				<i class="fa-solid fa-thumbs-up icono"></i>
+				<span>Historial de penalizaciones</span>
+			</a>
+			<hr />
+		<% } %>
+		<!-- Detalle del usuario -->
+		<a href="/usuarios/edicion" class="menu_opcion inactivo">
+			<i class="fa-solid fa-user icono"></i>
+			<span>Edición de usuario</span>
+		</a>
+		<!-- Logout -->
+		<a href="/usuarios/pre-logout" class="menu_opcion">
+			<i class="fa-solid fa-right-from-bracket icono"></i>
+			<span>Logout</span>
+		</a>
+	</div>
+<% } %>

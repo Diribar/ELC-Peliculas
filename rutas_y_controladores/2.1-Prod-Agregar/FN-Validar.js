@@ -93,7 +93,7 @@ module.exports = {
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
 			{nombre: "produccion", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 100},
 			{nombre: "actuacion", idioma: "medio", cartel: cartelActuacion, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "amplio", cartel: cartelCampoVacio, corto: 15, largo: 900},
+			{nombre: "sinopsis", idioma: "amplio", cartel: cartelCampoVacio, corto: 15, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
@@ -284,11 +284,11 @@ let castellano = {
 		return !formato.test(dato);
 	},
 	medio: (dato) => {
-		let formato = /^[a-záéíóúüñ ,.'"()\d\-]+$/i;
+		let formato = /^[a-záéíóúüñ ,.:'"()\d\-]+$/i;
 		return !formato.test(dato);
 	},
 	basico: (dato) => {
-		let formato = /^[a-záéíóúüñ -,']+$/i;
+		let formato = /^[a-záéíóúüñ ,.']+$/i;
 		return !formato.test(dato);
 	},
 };

@@ -1,8 +1,10 @@
-<div id="tituloConAyuda">
+<div id="tituloPrincipal">
 	<h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 </div>
 <div class="flex-col" id="dataEntry">
-	<h2 id="paso2">Paso 1 de 5: Tipo de Producto</h2>
+	<div id="tituloSecundario">
+		<h2 id="paso2">Paso 1 de 5: Tipo de Producto</h2>
+	</div>
 	<form action="<%= link %>-dd" method="POST">
 		<!-- Datos a completar -->
 		<section id="datos">
@@ -26,43 +28,49 @@
 			<div class="invisible">
 				<!-- Datos del capítulo -->
 				<h3>Nombre de la Colección</h3>
-				<div class="flex-row">
-					<!-- Data Entry -->
+				<!-- Data Entry -->
+				<div class="inputError">
 					<select name="coleccion_id" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-							<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+								<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 				<h3>Número de Temporada</h3>
-				<div class="flex-row">
+				<div class="inputError">
 					<!-- Data Entry -->
 					<select name="temporada" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 				<h3>Número de Capítulo</h3>
-				<div class="flex-row">
+				<div class="inputError">
 					<select name="capitulo" class="input" disabled>
 						<option value="">Elejí una opción</option>
 					</select>
 					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
-						</ul>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick  despl_click">
+							<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+								<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
+							</ul>
+						</i>
+					</div>
 				</div>
 			</div>
 		</section>

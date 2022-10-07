@@ -1,0 +1,7 @@
+/* FONTS */
+body {--Calibri: Calibri, 'Trebuchet MS', sans-serif}
+body {--Arial: Arial, Helvetica, sans-serif}
+
+/* GENERAL */
+* {font-family: var(--Calibri); font-size: 14px;}
+body, optgroup, button, select, option, input, i {color: var(--azul-oscuro);}

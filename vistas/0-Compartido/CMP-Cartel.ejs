@@ -1,7 +1,23 @@
-<section id="tapar-el-fondo" class="ocultar"></section>
-<section id="cartel" class="ocultar">
-	<i id="error" class="fa-solid fa-triangle-exclamation"></i>
-	<img id="gracias" src="/imagenes/0-Base/Check.png" height="100px">
-	<ul id="mensajes"></ul>
-	<div id="flechasCartel"></div>
-</section>
+<% if (locals.si || locals.informacion) { %>
+	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Main/Cartel.css">
+	<section id="tapar-el-fondo" class="<%- !locals.informacion ? 'ocultar' : '' %>"></section>
+	<section id="cartel" class="<%- !locals.informacion ? 'ocultar' : informacion.colorFondo ? informacion.colorFondo : '' %>">
+		<i id="error" class="fa-solid fa-triangle-exclamation"></i>
+		<% if (locals.gracias) { %><img id="gracias" src="/imagenes/0-Base/Check.png" height="100px"><% } %>
+		<% if (locals.informacion) { %>
+			<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %> ">
+				<% for (mensaje of informacion.mensajes) { %>
+					<li><%= mensaje %> </li>
+				<% } %>
+			</ul>
+		<% } else { %>
+			<ul id="mensajes"></ul>
+		<% } %>
+		<div id="flechasCartel">
+			<% if (locals.informacion) { for (icono of informacion.iconos) { %>
+				<% let autoFocus = informacion.iconos.length==1 || icono.autofocus %> 
+				<a href="<%= icono.link %>" <% if (autoFocus) { %>autofocus<% } %>><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
+			<% }} %>
+		</div>
+	</section>
+<% } %>

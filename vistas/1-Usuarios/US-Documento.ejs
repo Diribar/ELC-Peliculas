@@ -1,16 +1,16 @@
 <div id="tapar-el-fondo"></div>
 <form method="POST" enctype="multipart/form-data">
-	<div id="tituloConAyuda">
-		<h1><%= titulo %></h1>
+	<div id="tituloPrincipal">
+		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question">
-			<span class="mensajeAyuda ocultar">
-				<ul class="" type="dots">
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
 					<li>Por favor brindanos los datos que figuran en tu Documento <em><u>Nacional</u></em> de Identidad.</li>
 					<li>La fidelidad de los datos es condición necesaria para validar tu identidad.</li>
 				</ul>
-			</span>
-		</i>
+			</i>	
+		</div>
 	</div>
 	<!-- Datos -->
 	<section class="flex-row">
@@ -19,25 +19,25 @@
 			<!--Nombre-->
 			<div class="label-input flex-col">
 				<label for="nombre">Nombre</label>
-				<div class="input-error">
+				<div class="inputError">
 					<% nombre = dataEntry ? dataEntry.nombre : "" %>
 					<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
-					<%- include("CMP-errorOK_visible", {campo: "nombre"}) %> 
+					<%- include("CMP-Errores", {campo: "nombre", display: true}) %> 
 				</div>
 			</div>
 			<!--Apellido-->
 			<div class="label-input flex-col">
 				<label for="apellido">Apellido</label>
-				<div class="input-error">
+				<div class="inputError">
 					<% apellido = dataEntry ? dataEntry.apellido : "" %>
 					<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
-					<%- include("CMP-errorOK_visible", {campo: "apellido"}) %> 
+					<%- include("CMP-Errores", {campo: "apellido", display: true}) %> 
 				</div>
 			</div>
 			<!--Sexo-->
 			<div class="label-input flex-col">
 				<label for="sexo_id">Sexo</label>
-				<div class="input-error">
+				<div class="inputError">
 					<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 					<select name="sexo_id" class="input">
 						<option value=""  <% if (sexo_id=="") { %>selected<% } %> class="ocultar">Elegí una opción</option>
@@ -45,16 +45,16 @@
 							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 						<% } %> 
 					</select>
-					<%- include("CMP-errorOK_visible", {campo: "sexo_id"}) %> 
+					<%- include("CMP-Errores", {campo: "sexo_id", display: true}) %> 
 				</div>
 			</div>
 			<!--Fecha de Nacimiento-->
 			<div class="label-input flex-col">
 				<label for="fecha_nacimiento">Fecha de Nacimiento</label>
-				<div class="input-error">
+				<div class="inputError">
 					<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 					<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-					<%- include("CMP-errorOK_visible", {campo: "fecha_nacimiento"}) %> 
+					<%- include("CMP-Errores", {campo: "fecha_nacimiento", display: true}) %> 
 				</div>
 			</div>
 		</div>
@@ -63,15 +63,15 @@
 			<!--Número de Documento-->
 			<div class="label-input flex-col">
 				<label for="docum_numero">Número de Documento</label>
-				<div class="input-error">
+				<div class="inputError">
 					<input type="text" id="docum_numero" class="input" name="docum_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.docum_numero : "" %>">
-					<%- include("CMP-errorOK_visible", {campo: "docum_numero"}) %>
+					<%- include("CMP-Errores", {campo: "docum_numero", display: true}) %>
 				</div>
 			</div>
 			<!--Expedido en qué país-->
 			<div class="label-input flex-col">
 				<label for="docum_pais_id">Expedido en qué país</label>
-				<div class="input-error">
+				<div class="inputError">
 					<select id="docum_pais_id" name="docum_pais_id" class="input">
 						<option value="" <% if (dataEntry.docum_pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
 						<optgroup label="América (habla hispana)">
@@ -96,29 +96,31 @@
 							<% } %>
 						</optgroup>
 					</select>
-					<%- include("CMP-errorOK_visible", {campo: "docum_pais_id"}) %>
+					<%- include("CMP-Errores", {campo: "docum_pais_id", display: true}) %>
 				</div>
 			</div>
 			<!--Credenciales Inválidas-->
 			<% if (errores && errores.credenciales) { %>
-				<div id="credencialesInvalidas" class="input-error">
+				<div id="credencialesInvalidas" class="inputError">
 					<p class="resultadoInvalido">
 						Credenciales inválidas
 					</p>
-					<i class="fa-solid fa-circle-question">
-						<span class="mensajeAyuda ocultar">Ya tenemos ingresada esa combinación de <em>Número de Documento</em> y <em>País</em> en nuestra Base de Datos.</span>
-					</i>
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick">
+							<span class="ayudaMostrar ocultar">Ya tenemos ingresada esa combinación de <em>Número de Documento</em> y <em>País</em> en nuestra Base de Datos.</span>
+						</i>	
+					</div>
 				</div>
 			<% } %>
 			<!--Imagen del documento-->
 			<div class="label-input flex-col">
 				<label>Imagen del documento</label>
-				<div class="input-error flex-col" id="divImagen">
+				<div class="inputError flex-col" id="divImagen">
 					<label for="inputImagen" id="preview">
 						<img src="<%= docum_avatar %>">
 					</label>
 					<input name="docum_avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar" value="<%= dataEntry ? dataEntry.docum_avatar : "" %>">
-					<%- include("CMP-errorOK_visible", {campo: "docum_avatar"}) %>
+					<%- include("CMP-Errores", {campo: "docum_avatar", display: true}) %>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,3 @@
-/* Título - Ayuda */
-#cuerpo .mensajeAyuda {max-width: 350px;}
-
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}

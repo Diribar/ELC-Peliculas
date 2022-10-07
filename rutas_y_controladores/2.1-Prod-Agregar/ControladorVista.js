@@ -18,7 +18,10 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
-		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+		let dataEntry = {};
+		dataEntry.palabrasClave = req.session.palabrasClave
+			? req.session.palabrasClave
+			: req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
@@ -26,7 +29,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Palabras Clave",
-			palabrasClave,
+			dataEntry,
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {
@@ -329,7 +332,6 @@ module.exports = {
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 5. Preparar variables para la vista
 		let camposDP = await variables.camposDP(userID);
-		console.log(camposDP);
 		// 6. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -469,7 +471,7 @@ module.exports = {
 					},
 				],
 			};
-			return res.render("MI-Cartel", {informacion});
+			return res.render("CMP-0Estructura", {informacion});
 		}
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.gr_creado)

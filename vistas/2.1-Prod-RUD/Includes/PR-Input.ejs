@@ -1,13 +1,12 @@
 <section class="label-input">
 	<label><%= campo.titulo %></label>
 	<!-- Data-entry y Errores -->
-	<div class="input-error">
+	<div class="inputError">
 		<input type="text" name="<%= campo.nombreDelCampo %>" value="<%= producto[campo.nombreDelCampo] %>" autofocus autocomplete="off" 
 			class="input <% if (campo.numero) { %>numero<% } %>"
 			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
 		>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError "></span></i>
+		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

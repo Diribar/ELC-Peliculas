@@ -6,23 +6,26 @@
 <form method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<!-- Título y Ayuda -->
-		<div id="tituloConAyuda">
+		<div id="tituloSecundario">
 			<h2>Paso 5 de 5: Confirmá el agregado</h2>
 			<!-- Ayuda -->
-			<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-			<ul class="mensajeAyuda ocultar" type="dots">
-				<li>Éste es el último paso.</li>
-				<li>Una vez que confirmes, <u><strong style="color:var(--amarillo-claro)">no hay marcha atrás</strong></u>.</li>
-				<li>Figurará para siempre como creada por vos.</li>
-			</ul>	
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick despl_click">
+					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+						<li>Éste es el último paso.</li>
+						<li>Una vez que confirmes, <u><strong style="color:var(--amarillo-claro)">no hay marcha atrás</strong></u>.</li>
+						<li>Figurará para siempre como creada por vos.</li>
+					</ul>
+				</i>
+			</div>
 		</div>
 		<img id="running" src="/imagenes/8-Agregar/Confirma.svg" alt="Confirma">
 		<ul id="datos">
 			<li class="texto">Estamos listos para agregar el producto a nuestra Base de Datos</li>
-			<div id="liConAyuda" class="input-error">
+			<div id="liConAyuda" class="inputError">
 				<li class="texto">La calidad de tu trabajo, hace a la confianza que te vamos teniendo</li>
-				<i class="fa-solid fa-circle-question">
-					<ul class="mensajeAyuda ocultar" type="disc">
+				<i class="fa-solid fa-circle-question ayudaClick despl_click">
+					<ul class="ayudaMostrar ocultar despl_mostrar" type="disc">
 						<li>Aspectos que consideramos:</li>
 						<ol id="subPuntos">
 							<li>Que el producto esté alineado con nuestro perfil.</li>

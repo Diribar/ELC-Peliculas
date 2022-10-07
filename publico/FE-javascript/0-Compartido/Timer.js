@@ -22,10 +22,17 @@ window.addEventListener("load", async () => {
 	horarioFinal.setHours(horarioFinal.getHours() + 1);
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
-	let tiempoRestante = (horarioFinal.getTime() - ahora.getTime()) / unMinuto;
-	// Minutos y Segundos disponibles
 	let tiempoMax = 60;
-	let minutosDispon = tiempoRestante > 0 ? tiempoRestante : tiempoRestante <= -60 ? tiempoMax : 0;
+	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / unMinuto);
+	// Minutos y Segundos disponibles
+	let minutosDispon =
+		// ¿Hay tiempo restante?
+		tiempoRestante > 0
+			? tiempoRestante
+			: // ¿Pasó más de una hora?
+			tiempoRestante <= -60
+			? tiempoMax
+			: 0;
 	let segundosDispon = Math.round((minutosDispon % 1) * 60);
 
 	// FUNCIONES -------------------------------------------------------------
@@ -55,12 +62,10 @@ window.addEventListener("load", async () => {
 		// Partes del cartel
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
-		let gracias = document.querySelector("#gracias");
 		let mensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
-		gracias.classList.add("ocultar");
 		// Mensajes
 		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));

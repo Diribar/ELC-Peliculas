@@ -1,0 +1,23 @@
+/* Formato general del cartel */
+#cartel {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12;}
+#cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
+#cartel , #cartel * {color:var(--gris-claro)}
+#cartel {background-color: var(--rojo-oscuro);}
+#cartel.gris {background-color: var(--gris-oscuro);}
+#cartel.verde {background-color: var(--verde-oscuro);}
+
+/* Alineación interna */
+#cartel {display: flex; flex-direction: column; align-items: center; width: max-content; max-width: 600px;}
+#cartel.ocultar {display: none;}
+
+/* Partes internas */
+#cartel #error {font-size: 4rem; color: var(--amarillo-oscuro);}
+#cartel #mensajes {margin: 40px 20px; text-align: center;}
+#cartel #mensajes li {text-align: left;}
+#cartel #mensajes, #cartel #mensajes li, #cartel #mensajes li * {font-size: 1.2rem; line-height: 1.5;}
+#cartel #mensajes span {font-weight: bold; font-style: italic; color: inherit; font-size: inherit; line-height: inherit;}
+
+/* Botones 'Cancelar', 'Entendido' y 'Continuar' */
+#cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
+#cartel #flechasCartel * {border-radius: 50%;}
+#cartel #flechasCartel a i {color: white; font-size: 2rem; cursor: pointer;}

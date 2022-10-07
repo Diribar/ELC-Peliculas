@@ -3,36 +3,38 @@
 </div>
 <form method="POST" class="flex-col" id="dataEntry">
 	<!-- Título sin Ayuda -->
-	<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
-	<h3>Ingresá palabras del Título de la Película</h3>
+	<div id="tituloSecundario">
+		<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
+	</div>
 	<!-- Datos -->
 	<section  id="datos" class="flex-row space-between">
-		<div class="input-error">
+		<div class="inputError">
 			<input type="text" class="input" name="palabrasClave" placeholder="Escribilo acá"
-				value="<%= palabrasClave %>"
-				autofocus autocomplete="off"
+				value="<%= dataEntry.palabrasClave %>"
+				autofocus autocomplete="off" tabindex="1"				
 			>
 			<!-- Ayuda -->
-			<i class="fa-solid fa-circle-question"></i>
-			<ul class="mensajeAyuda ocultar">
-				<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
-				<li>Escribí de manera precisa todas las palabras que sepas.</li>
-			</ul>
-			<%- include("CMP-errorOK_oculto", {display: false}) %>
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick despl_click">
+					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+						<li>Ingresá palabras del <strong><u>Título de la Película</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
+						<li>Escribí de manera precisa todas las palabras que sepas.</li>
+					</ul>
+				</i>
+			</div>
+			<%- include("CMP-Errores", {campo:"palabrasClave"}) %>
 		</div>
-		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar"></i>
+		<i id="submit" class="fa-solid fa-circle-question naranja inactivo pointer" title="Verificar" tabindex="2"></i>
 	</section>
 	<!-- Comentarios generales -->
 	<section>
 		<div id="resultado" class="sinResultado"><br></div>
 		<ul id="fuentesDeInfo" type="circle">
-			<li>
-				Las mayúsculas y los acentos no afectan el resultado
-			</li>
+			<li>Las mayúsculas y los acentos no afectan el resultado</li>
 			<li>
 				Contamos con el soporte de 
-				<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a>
-				para conseguir información de las películas
+				<a target="_blank" href="https://www.themoviedb.org/?language=es" tabindex="-1">TMDB</a>
+				para conseguir la información
 			</li>
 		</ul>
 		

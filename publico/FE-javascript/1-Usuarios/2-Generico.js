@@ -4,11 +4,11 @@ window.addEventListener("load", () => {
 	// Datos del formulario
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll("form .input-error .input");
+	let inputs = document.querySelectorAll("form .inputError .input");
 	// OK/Errores
-	let iconosOK = document.querySelectorAll("form .input-error .fa-circle-check");
-	let iconosError = document.querySelectorAll("form .input-error .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll("form .input-error .mensajeError");
+	let iconosOK = document.querySelectorAll("form .inputError .fa-circle-check");
+	let iconosError = document.querySelectorAll("form .inputError .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll("form .inputError .mensajeError");
 	// Varias
 	let tarea = window.location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);

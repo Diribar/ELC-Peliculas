@@ -1,22 +1,21 @@
 <section class="label-input">
+	<% let inputOK = idioma_id && !errores.idioma_original_id %>
 	<label>Idioma original</label>
-	<div class="input-error">
-		<select name="idioma_original_id" autofocus class="input" <% if (idioma_id) { %>disabled<% } %>>
+	<div class="inputError">
+		<select name="idioma_original_id" autofocus class="input<% if (inputOK) { %> despl_click<% } %>" <% if (inputOK) { %>disabled<% } %>>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %> class="ocultar">Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
-					<option value="<%= idioma.id %>" <% if (idioma_id==idioma.id) { %>selected<% } %>><%= idioma.nombre %></option>
+					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
 				<% } %>	
 			</optgroup>
 			<optgroup label="Demás idiomas">
 				<% for (let idioma of idiomas.filter(n => !n.mas_frecuente)) { %>
-					<option value="<%= idioma.id %>" <% if (idioma_id==idioma.id) { %>selected<% } %>><%= idioma.nombre %></option>
+					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
 				<% } %>	
 			</optgroup>
 		</select>
-		<!-- Ayuda -->
-		<%- (dataEntry.idioma_original_id && !errores.idioma_original_id) ? include("PA3-DD9-Mensajes") : "" %>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<%- include("PA3-DD9-Mensajes", {inputOK}) %>
+		<%- include("CMP-Errores", {campo: "idioma_original_id"}) %>
 	</div>
 </section>

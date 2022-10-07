@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	}
 	if (informacion) {
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
-		return res.render("MI-Cartel", {informacion});
+		return res.render("CMP-0Estructura", {informacion});
 	}
 	next();
 };

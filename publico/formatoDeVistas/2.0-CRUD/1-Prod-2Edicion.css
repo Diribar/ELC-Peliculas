@@ -1,84 +1,80 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-main form .input-error {position: relative; display: flex; flex-direction: row;}
+main form #cuerpo .inputError {display: flex; flex-direction: row;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
-/* Imagen */
-form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
-form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
-form #imagen .mensajeAyuda {top: 53%; transform: translateX(-50%);}
-form #imagen .mensajeError {top: 120%; transform: translateX(-50%);}
-form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
-form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);}
+/* Imagen - Íconos */
+form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
+form #imagen .ayuda,
+form #imagen .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
+form #imagen .errores {z-index: 4;}
+
+/* Imagen - AyudaMostrar */
+form #imagen.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
+form #imagen.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
+form #imagen.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
+form #imagen.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
+
+/* Imagen - MensajeError */
+form #imagen.inputError .errores .mensajeError {right: auto; top: auto;}
+form #imagen.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
+form #imagen.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
+form #imagen.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
 
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
 #datos #primeraColumna {width: 40%;}
 #datos #segundaColumna {width: 45%;}
-#datos #primeraColumna .label-input .input-error .input {width: 200px;}
-#datos #primeraColumna .label-input .input-error .input.angosto {width: 70px}
-#datos #primeraColumna .label-input .input-error .input.numero {width: 70px; text-align: right;}
-#datos #segundaColumna .label-input .input-error .input {width: 240px;}
+#datos #primeraColumna .label-input .inputError .input {width: 200px;}
+#datos #primeraColumna .label-input .inputError .input.angosto {width: 70px}
+#datos #primeraColumna .label-input .inputError .input.numero {width: 70px; text-align: right;}
+#datos #segundaColumna .label-input .inputError .input {width: 240px;}
 
 /* Partes específicas del formulario */
-#datos .label-input .input-error .input,
-#datos .label-input .input-error input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
-#datos .input-error {margin-left: 5px;}
+#datos .label-input .inputError .input,
+#datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .label-input .inputError {margin-left: 5px;}
+#datos .label-input .inputError .ayuda {right: -5px;}
+
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
 #datos h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
-#datos .label-input .input-error .input {align-self: center;}
-#datos .label-input .input-error input {padding: 0px 5px;}
-#datos .label-input .input-error select {padding: 0;}
-#datos .label-input .input-error .input:disabled, 
+#datos .label-input .inputError .input {align-self: center;}
+#datos .label-input .inputError input {padding: 0px 5px;}
+#datos .label-input .inputError select {padding: 0;}
+#datos .label-input .inputError .input:disabled, 
 #datos .label-input#paises_id input#mostrarPaises:disabled,
 #datos .label-input#paises_id select:disabled {background-color: var(--amarillo-claro); opacity: 1; color: inherit;}
 
 /* País */
 #datos #paises_id {align-items: center;}
-#datos #paises_id .input-error {width: 200px; min-width: 200px;}
-#datos #paises_id .input-error input#mostrarPaises,
-#datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-#datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
-#datos #paises_id .input-error select {width: 100%; padding: 0;}
+#datos #paises_id .inputError {width: 200px;}
+#datos #paises_id .inputError input#mostrarPaises,
+#datos #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+#datos #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
+#datos #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* RCLV */
-#datos .label-input .input-error .linkRCLV {width: 15px;}
-#datos .label-input .input-error #alta.linkRCLV {right: -40px;}
-#datos .label-input .input-error #edicion.linkRCLV {right: -60px;}
+#datos .label-input .inputError .linkRCLV {width: 15px;}
+#datos .label-input .inputError #alta.linkRCLV {right: -40px;}
+#datos .label-input .inputError #edicion.linkRCLV {right: -60px;}
 
 /* Sinopsis */
-#datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
+#datos .label-input#sinopsis .inputError {width: 100%; margin-left: 0;} 
 #datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
-/* Todos los mensajes */
-.mensajeError, .mensajeError::before, 
-.mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fa-solid, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #edicion.linkRCLV {font-size: 1.15rem;}
-.mensajeError {max-width: 200px; left: 20px;}
-.mensajeAyuda {max-width: 300px;}
-.mensajeError::before {left: -12px;}
-.mensajeAyuda::before {left: -20px;}
-
-/* Mensajes de ayuda */
-#datos .fa-circle-question {right: -20px;}
-#datos .mensajeAyuda {right: -25px; transform: translate(100%, -50%);}
-
-/*  Mensajes de error*/
-#datos .mensajeError {left: 20px; }
-#datos .fa-circle-xmark, #datos .fa-circle-check {right: -20px;}
-#datos .fa-circle-xmark {z-index: 1;}
 
 /* Mensajes de aviso de cambio de data-entry */
-.input-error .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); color: var(--verde-oscuro);}
-form #imagen.input-error .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
+.inputError .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); top: 50%;}
+.inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
+form #imagen.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {padding: 0;}

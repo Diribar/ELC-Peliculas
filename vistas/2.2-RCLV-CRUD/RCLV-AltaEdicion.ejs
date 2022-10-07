@@ -2,58 +2,65 @@
 	<%- include('CMP-TimerContador') %>
 	<%- include('CMP-Cartel') %>
 <% } %>
-<div id="tituloConAyuda">
+<div id="tituloPrincipal">
 	<h1 id="titulo"><%= tituloCuerpo %> </h1>
 	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>.</li>
-	</ul>	
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<li>Ayuda...</li>
+			</ul>
+		</i>
+	</div>
 </div>
 <form method="POST" id="dataEntry">
 	<!-- Nombre y Fechas -->
-	<section id="datos" class="flex-row space-between OK">
+	<section id="datos" class="OK">
 		<!--Primera columna-->
 		<div id="primeraCol">
 			<!-- Nombre -->
-			<div class="input-error">
+			<div class="flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo relative">
+					<div class="margenBottomTitulo inputError">
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<% if (entidad == "personajes") { %>
-								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-								<li>Primero el nombre, después el apellido.</li>
-							<% } %>
-							<li>La primera letra en mayúscula, sin puntos ni comas</li>
-						</ul>
-						<!-- Errores/OK -->
-						<%- include("CMP-errorOK_oculto", {display: true}) %>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<% if (entidad == "personajes") { %>
+										<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+										<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+										<li>Primero el nombre, después el apellido.</li>
+									<% } %>
+									<li>La primera letra en mayúscula, sin puntos ni comas</li>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 			</div>
 			<!-- Fecha Representativa -->
-			<div class="borderTop flex-col input-error">
+			<div class="borderTop flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo relative">
+					<div class="margenBottomTitulo inputError">
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Usamos la fecha en que se lo recuerda.</li>
-							<li>Para los santos o beatos, es la fecha en el santoral.</li>
-							<li>Para los demás, suele ser la fecha de su muerte.</li>
-						</ul>
-						<!-- Errores/OK -->
-						<%- include("CMP-errorOK_oculto", {display: true}) %>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<li>Usamos la fecha en que se lo recuerda.</li>
+									<li>Para los santos o beatos, es la fecha en el santoral.</li>
+									<li>Para los demás, suele ser la fecha de su muerte.</li>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<!-- Valores -->
@@ -102,39 +109,43 @@
 		<!--Segunda columna-->
 		<div id="segundaCol">
 			<!-- Repetidos -->
-			<div class="input-error">
+			<div class="flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo relative">
+					<div class="margenBottomTitulo inputError">
 						<!-- Título -->
 						<h3>Nombres con esa fecha</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Destildalos para controlar si no está ya en nuestra BD</li>
-						</ul>
-						<!-- Errores/OK -->
-						<%- include("CMP-errorOK_oculto", {display: true}) %>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<li>Destildalos para controlar si no está ya en nuestra BD</li>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
 			<% if (entidad != "valores") { %>
 				<!-- Año de nacimiento u ocurrencia -->
-				<div class="borderTop flex-row input-error">
-					<div class="relative flex-row align-center">
+				<div class="borderTop flex-row">
+					<div class="flex-row align-center inputError">
 						<!-- Título -->
 						<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Nos ayuda a ubicarlo cronológicamente.</li>
-							<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-							<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
-						</ul>
-						<!-- Errores/OK -->
-						<%- include("CMP-errorOK_oculto", {display: true}) %>
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<li>Nos ayuda a ubicarlo cronológicamente.</li>
+									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+									<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 			<% } %>
@@ -142,13 +153,12 @@
 	</section>
 	<% if (entidad != "valores") { %>
 		<!-- Preguntas de contexto -->
-		<section id="preguntas" class="borderTop flex-col OK ocultar">
+		<section id="preguntas" class="borderTop OK ocultar">
 			<!-- Título y Error/OK -->
-			<div class="flex-row margenBottomTitulo relative">
+			<div class="flex-row margenBottomTitulo inputError">
 				<!-- Título -->
 				<h3 class="">Preguntas de contexto</h3>
-				<!-- Errores/OK -->
-				<%- include("CMP-errorOK_oculto", {display: true}) %>
+				<%- include("CMP-errores", {display: true}) %>
 			</div>
 			<% if (entidad == "personajes") { %>
 				<div id="personajes">

@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+	<% let tema=locals.tema %> 
 	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
 	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud") { %><%- include("CR-1Head") %><% } %>	
-	<% if (tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
+	<% if (tema && tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
 	<% if (tema == "productos") { %><%- include("0-Productos-Head") %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include("MI-1Head") %><% } %>
 </head>
 <body>
 	<!-- Header genérico -->
 	<%- include('CMP-2Header') %>
-	<main class="flex-row">
-		<!-- Cartel -->
-		<% if (locals.cartel) { %><%- include('CMP-Cartel') %><% } %>
-		<!-- Vistas fuera de estándar -->
-		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR-2Cuerpo') %>
-		<% } else { %>
-			<!-- Imagen Derecha -->
-			<% if (tema != "rclv_crud" || codigo != "detalle") { %><section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section><% } %>
-			<!-- Vistas estándar -->
-			<section id="cuerpo-y-footer">
-				<%- include('CMP-3Footer') %>
-				<!--**************************** CUERPO ******************************-->
+	<main class="flex-row-reverse">
+		<!-- Imagen Derecha -->
+		<%- include('CMP-ImagenDerecha', {si: !locals.omitirImagenDerecha}) %>
+		<!-- Cuerpo y Footer -->
+		<section id="cuerpoFooter">
+			<!-- Footer -->
+			<%- include('CMP-3Footer', {si: !locals.omitirImagenDerecha}) %>
+			<section id="cuerpo">
+				<!-- Cartel -->
+				<%- include('CMP-Cartel', {si: !locals.omitirImagenDerecha && locals.cartel}) %>
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
 				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
 				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>
@@ -36,7 +35,7 @@
 				<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
 				<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
 			</section>
-		<% } %>
+		</section>
 	</main>
 </body>
 </html>

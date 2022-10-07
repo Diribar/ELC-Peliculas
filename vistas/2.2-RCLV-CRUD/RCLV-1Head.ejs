@@ -1,11 +1,10 @@
 <!-- Uso compartido -->
-<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RCLV.css">
 
 <!-- Uso específico -->
 <% if (codigo == "agregar" || codigo == "edicion") { %>
-	<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
+	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/2-RCLV-AltaEdicion.css">
 	<script src="/FE-javascript/2.0-CRUD/2-RCLV.js"></script>
 <% } %> 
 <% if (codigo == "detalle") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/2-RCLV-Detalle.css">	
+	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/2-RCLV-Detalle.css">
 <% } %>

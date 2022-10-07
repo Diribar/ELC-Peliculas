@@ -28,6 +28,7 @@ module.exports = (sequelize, dt) => {
 		edic_analizada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
+		vigencia_revisada_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},

@@ -6,19 +6,22 @@
 </head>
 <body>
 	<%- include('CMP-2Header') %>
-	<main id="cuerpo-y-footer">
+	<main id="cuerpoFooter">
 		<%- include('CMP-Cartel') %>
 		<%- include('CMP-3Footer') %>
 		<section id="cuerpo">
 			<%- include('CMP-TimerContador') %>
-			<div id="tituloConAyuda">
+			<div id="tituloPrincipal">
 				<h1 id="titulo"><%= titulo %></h1>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
-					<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
-				</ul>	
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
+							<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
+						</ul>
+					</i>
+				</div>
 			</div>			
 			<div id="informacion">
 				<!-- Ficha técnica -->

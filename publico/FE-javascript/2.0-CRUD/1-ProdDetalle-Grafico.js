@@ -1,8 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let url = window.location.pathname.slice(1, -1);
-	let detalle = url == "producto/detalle";
+	let detalle = window.location.pathname == "/producto/detalle/";
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 

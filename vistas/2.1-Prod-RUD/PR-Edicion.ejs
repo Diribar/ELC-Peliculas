@@ -1,18 +1,22 @@
 <form method="POST" enctype="multipart/form-data">
+	<%- include('CMP-Cartel', {si: true}) %>
 	<%- include("PR-Edicion1-Avatar") %> 
-	<section id="cuerpo-y-footer">
-		<%- include('CMP-3Footer') %>
+	<section id="cuerpoFooter">
+		<%- include('CMP-3Footer', {si: true}) %>
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
 			<%- include('CMP-TimerContador') %>
-			<div id="tituloConAyuda">
+			<div id="tituloPrincipal">
 				<h1 id="titulo"><%= titulo %></h1>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<li>Al terminar, es importante que vayas a la vista <em>Detalle de Producto</em> para liberarlo y ver el resultado de tu edición.</li>
-					<li>Sólo se pueden eliminar ediciones de productos aprobados.</li>
-				</ul>	
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>Al terminar, es importante que vayas a la vista <em>Detalle de Producto</em> para liberarlo y ver el resultado de tu edición.</li>
+							<li>Sólo se pueden eliminar ediciones de productos aprobados.</li>
+						</ul>	
+					</i>
+				</div>
 			</div>
 			<div id="edicionForm">
 				<%- include('PR-Edicion2-Datos') %>

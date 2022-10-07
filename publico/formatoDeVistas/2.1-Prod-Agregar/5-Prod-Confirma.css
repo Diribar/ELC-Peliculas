@@ -2,18 +2,17 @@
 #dataEntry {max-width: 80%; position: relative}
 
 /* Título */
-#dataEntry #tituloConAyuda {margin-bottom: 10px;}
+#dataEntry #tituloSecundario {margin-bottom: 10px;}
 #dataEntry #running {position: absolute; right: 30px; max-width: 150px; max-height: 80px}
 
 /* Texto */
 #dataEntry #datos {padding-left: 20px;}
 #dataEntry #datos .texto {margin: 3px 0; font-size: 1.2rem;}
 #dataEntry #datos #liConAyuda {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}
-#dataEntry #datos #liConAyuda .fa-circle-question {transform: none; top: initial; right: initial;}
-#dataEntry #datos #liConAyuda .fa-circle-question {margin-left: 10px; position: relative;}
-#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda {max-width: 350px; right: -10px; cursor: default;}
-#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos {margin-left: 20px; margin-bottom: 5px;}
-#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos li {padding-top: 0;}
+#dataEntry #datos #liConAyuda .ayudaClick {margin-left: 10px;}
+#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar {max-width: 350px;}
+#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
+#dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
 
 /* Datos del producto */
 #dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: row; width: 85%; align-self: center;}
@@ -23,4 +22,3 @@
 
 #dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}
