@@ -6,7 +6,7 @@
 			name="sinopsis" rows="1" class="input<% if (inputOK) { %> despl_click<% } %>" placeholder="Ingresa aquí la sinopsis"
 			<% if (inputOK) { %>disabled<% } %>
 		><%= dataEntry.sinopsis %></textarea>
-		<%- include("PA3-DD9-Mensajes", {inputOK}) %>
+		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
 		<%- include("CMP-Errores", {campo: "sinopsis"}) %>
 	</div>
 </section>

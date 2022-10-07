@@ -1,8 +1,8 @@
 <!-- Ayuda -->
+<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
 <div class="ayuda">
 	<i class="fa-solid fa-circle-question ayudaClick despl_click">
-		<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+		<ul type="<%- registro.mensajes.length>1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar despl_mostrar">
 			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 	</i>

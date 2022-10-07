@@ -17,6 +17,7 @@ window.addEventListener("load", async () => {
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
 	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
 	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	if (paso.PC) {
 		var resultado = document.querySelector("#dataEntry #resultado");
@@ -148,6 +149,9 @@ window.addEventListener("load", async () => {
 				errores[campo] && mostrarIconoError
 					? iconosError[indice].classList.remove("ocultar")
 					: iconosError[indice].classList.add("ocultar");
+				errores[campo]
+					? iconosOK[indice].classList.add("ocultar")
+					: iconosOK[indice].classList.remove("ocultar");
 			}
 		});
 		// Fin
@@ -513,6 +517,6 @@ window.addEventListener("load", async () => {
 		DP.iconosEdicionRCLVs();
 	}
 	// Errores y boton 'Submit'
-	let mostrarIconoError = paso.DD;
+	let mostrarIconoError = paso.DD // En DD se muestran los errores iniciales siempre;
 	statusInicial(mostrarIconoError);
 });
