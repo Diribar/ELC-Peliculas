@@ -12,7 +12,7 @@
 
 /* Estándares para donde se hace 'click' y desplegables */
 .ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, 
-.fa-circle-left, .fa-circle-right {border-radius: 50%;}
+.fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
 .fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question
 .ayudaMostrar {border-width: 1px; border-style: solid}
 .errores .fa-circle-xmark .mensajeError {border-width: 2px; border-style: solid}
@@ -24,29 +24,24 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar, .mensajeError {transform: translate(100%, -50%); max-width: 250px; width: max-content;}
-.ayudaMostrar, .mensajeError {right: -5px; padding: 3px 7px; border-radius: 8px;}
+.ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
+.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 250px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMostrar::before, .mensajeError::before {top: 50%; content: "";  border-style: solid;}
-.mensajeError::before {left: -1px; transform: translate(-100%, -50%); border-width: 6px;}
+.ayudaMostrar::before, .mensajeError::before {left: -2px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: "";  border-style: solid;}
 
 /* Desplegables Ayuda - Temas generales */
-.ayudaMostrar {top: 50%; z-index: 4;}
+.ayudaMostrar {z-index: 4;}
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
 ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px;}
-.ayudaMostrar::before {transform: translateY(-50%);}
 
 /* Desplegables Errores - Temas generales */
-.mensajeError {display: none; z-index: 5;}
-.mensajeError::before {left: -10px; border-width: 5px;}
-
+.mensajeError {display: non; z-index: 5;}
 
 /* Desplegables - Temas particulares */
-#cuerpo #tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(100%); max-width: 350px;}
-#cuerpo #tituloPrincipal .ayudaMostrar::before {top: 5px;}
-#cuerpo #tituloSecundario .ayudaMostrar {top: 50%; transform: translate(100%,-50%); max-width: 350px;}
-#cuerpo #tituloSecundario .ayudaMostrar::before {top: 50%; transform: translateY(-50%);}
-#cuerpo .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
+#tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
+#tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(-100%);}
+#tituloPrincipal .ayudaMostrar::before {top: 5px;}
+.errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 
 /* Mensajes */
 .resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold; text-align: center;}
@@ -54,13 +49,13 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 .resultadoInvalido {background-color: var(--rojo-oscuro);}
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
 
-.link {text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
+.link {text-align: center; font-weight: bold; line-height: 1; padding: 1px; }
 
 /* Colores */
 .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
 .ayudaMostrar, .ayudaMostrar * {background-color: var(--backAyuda); color: var(--colorAyuda);}
 .ayudaMostrar {border-color: var(--bordeAyuda);}
 .mensajeError {color: var(--colorMensajeError); background-color: var(--backMensajeError); border-color: var(--colorMensajeError);}
+.link {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
 .mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}
-.link {background-color: var(--gris-oscuro); color: var(--gris-claro);}
