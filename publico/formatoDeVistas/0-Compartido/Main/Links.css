@@ -10,9 +10,9 @@
 #datos #tags .traslucido {opacity: 50%; cursor: pointer;}
 
 /* Tablas - Temas generales */
-/* #datos table {margin-top: 20px;} */
 #datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos table * {font-size: 1.1rem;}
+#datos table .fa-solid {font-size: 1rem;}
 #datos table thead tr th, #datos table tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
 #datos table thead tr th {padding: 5px; background-color: var(--verde-ingles); color: var(--amarillo-claro);}
 #datos table tbody tr td.motivo {background-color: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
@@ -27,6 +27,9 @@
 #datos table thead, #datos table tbody {display: block;}
 #datos table tbody {max-height: 200px; overflow-y: auto; overflow-x: clip;}
 #datos table tbody {padding-top: 15px; padding-bottom: 15px;}
+
+/* Temas de altas y edición */
+#datos table tbody tr .inputError .errores {right: 5px;}
 
 /* Temas de edición */
 #datos table tbody tr {height: 30px;}

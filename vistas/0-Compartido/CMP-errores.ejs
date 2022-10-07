@@ -1,6 +1,9 @@
 <!-- Errores -->
 <div class="errores">
-	<i class="fa-solid fa-circle-xmark<%- !locals.errores || locals.campo && !errores[campo] ? ' ocultar' : '' %> ">
+	<i 
+		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.campo && !errores[campo] ? ' ocultar' : '' %>"
+		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
+	>
 		<span class="mensajeError"><%- locals.errores && locals.campo && errores[campo] ? errores[campo] : "" %></span>
 	</i>
 	<i 
