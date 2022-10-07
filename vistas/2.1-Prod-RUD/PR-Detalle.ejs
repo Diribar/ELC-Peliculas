@@ -16,8 +16,8 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("CR-Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis">
-				<nav><%= producto.sinopsis %></nav>
+			<div id="sinopsis" class="desplazam">
+				<nav class="infoDesplazam"><%= producto.sinopsis %></nav>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
@@ -42,8 +42,8 @@
 		<%- include("CR-Flechas") %>
 	</div>
 </section>
-<section id="datosBreves">
-	<div class="info">
+<section id="datosBreves" class="desplazam">
+	<div class="infoDesplazam">
 		<!-- Calificaciones -->
 		<div>
 			<p><strong>Calificaciones</strong></p>
