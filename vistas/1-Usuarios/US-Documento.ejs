@@ -40,7 +40,7 @@
 				<div class="inputError">
 					<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 					<select name="sexo_id" class="input">
-						<option value=""  <% if (sexo_id=="") { %>selected<% } %> class="ocultar">Elegí una opción</option>
+						<option value="" <% if (sexo_id=="") { %>selected<% } %> class="ocultar">Elegí una opción</option>
 						<% for (let sexo of sexos) { %>
 							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 						<% } %> 
@@ -76,21 +76,21 @@
 						<option value="" <% if (dataEntry.docum_pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
 						<optgroup label="América (habla hispana)">
 							<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
-								<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+								<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 									<%= pais.nombre %>
 								</option>
 							<% } %>	
 						</optgroup>
 						<optgroup label="Europa/África (habla hispana)">
 							<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
-								<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+								<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 									<%= pais.nombre %>
 								</option>
 							<% } %>
 						</optgroup>
 						<optgroup label="Países de habla no hispana">
 							<% for (let pais of hablaNoHispana) { %>
-								<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
+								<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 									<%= pais.nombre %>
 								</option>
 							<% } %>

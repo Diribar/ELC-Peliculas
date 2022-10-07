@@ -4,7 +4,7 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 main #familias .bloques .datos {position: relative; min-width: 270px;}
 
-main #familias .bloques  .datos h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background-color: var(--verde-oscuro); color: var(--gris-claro);}
-main #familias .bloques  .datos .ayudaMostrar p {font-size: 1.15rem; margin-bottom: 3px;}
+main #familias .bloques .datos h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background-color: var(--verde-oscuro); color: var(--gris-claro);}
+main #familias .bloques .datos .ayudaMostrar p {font-size: 1.15rem; margin-bottom: 3px;}
 main #familias .bloques .contenido {padding: 10px 10px 0;}
 main #familias .bloques .contenido h3 {margin-bottom: 2px;}

@@ -15,7 +15,7 @@
 #datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px; overflow-y: scroll;}
 /* Sinopsis - Ayuda */
 /* Sinopsis - Ocultar la 'side-bar' */
-#datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
+#datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none; /* Safari and Chrome */}
 #datosLargos #contenido #sinopsis nav {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 
 /* Datos Breves */

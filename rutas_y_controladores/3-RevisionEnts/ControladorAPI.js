@@ -90,7 +90,7 @@ module.exports = {
 		if (edicAprob) prodOrig = await actualizaOriginal(prodOrig, prodEdic, datos, userID);
 		// Actualizaciones en el USUARIO
 		await accionesEnUsuario(req, prodOrig, prodEdic);
-		// Limpia la edición  y cambia el status del producto si corresponde
+		// Limpia la edición y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
 		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob);

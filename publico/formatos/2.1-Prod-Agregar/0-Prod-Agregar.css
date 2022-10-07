@@ -9,7 +9,7 @@
 /* Partes específicas del formulario */
 #dataEntry #tituloSecundario h2 {color: white; background-color: var(--azul-oscuro);}
 #dataEntry #tituloSecundario h2 {padding: 5px 10px; border-radius: 10px;}
-#dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
+#dataEntry h3 {margin: 15px 0 3px; align-self: flex-start;}
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}

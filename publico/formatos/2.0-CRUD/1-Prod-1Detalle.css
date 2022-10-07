@@ -33,7 +33,7 @@
 
 /* Ocultar la 'side-bar' */
 #datosLargos #contenido #sinopsis nav::-webkit-scrollbar,
-#datosBreves .info::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
+#datosBreves .info::-webkit-scrollbar {display: none; /* Safari and Chrome */}
 #datosLargos #contenido #sinopsis nav,
 #datosBreves .info {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 

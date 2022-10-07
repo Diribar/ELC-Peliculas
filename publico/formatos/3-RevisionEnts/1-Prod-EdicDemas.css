@@ -13,7 +13,7 @@
 #datosLargos #contenido #reemps .infoMostrar .orig, 
 #datosLargos #contenido #reemps .infoMostrar .edic {padding: 2px 4px; border-radius: 5px;}
 /* Ocultar la 'side-bar' */
-#datosLargos #contenido::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
+#datosLargos #contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
 #datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 #datosLargos .fa-trash-can {color: var(--rojo-oscuro);}
 

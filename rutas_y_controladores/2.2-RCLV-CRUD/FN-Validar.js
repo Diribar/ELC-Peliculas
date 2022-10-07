@@ -5,7 +5,7 @@ const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	consolidado: async function (datos) {
-		// Campos  que siempre están
+		// Campos que siempre están
 		let errores = {
 			nombre: await this.nombreCompleto(datos),
 			fecha: this.fecha(datos),

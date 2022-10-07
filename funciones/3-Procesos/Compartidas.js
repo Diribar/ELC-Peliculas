@@ -302,7 +302,7 @@ module.exports = {
 		// await transporter.sendMail(datos);
 	},
 	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en  'string de nombres'
+		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
 		if (paises_id.length) {
 			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
