@@ -23,6 +23,7 @@ main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-
 main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 
-.fa-circle-left, .fa-circle-right, 
-.fa-circle-check, .fa-circle-xmark, 
-.fa-circle-question {border-radius: 50%;}
+/* Íconos de Error */
+.fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check {color: var(--verde-oscuro);}
+.fa-circle-xmark {color: var(--rojo-oscuro);}
