@@ -38,8 +38,7 @@
 								</ul>
 							</i>
 						</div>
-						<!-- Errores/OK -->
-						<%- include("CMP-Errores", {display: true}) %>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
@@ -61,8 +60,7 @@
 								</ul>
 							</i>
 						</div>
-						<!-- Errores/OK -->
-						<%- include("CMP-Errores", {display: true}) %>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<!-- Valores -->
@@ -125,8 +123,7 @@
 								</ul>
 							</i>
 						</div>
-						<!-- Errores/OK -->
-						<%- include("CMP-Errores", {display: true}) %>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
@@ -148,8 +145,7 @@
 								</ul>
 							</i>
 						</div>
-						<!-- Errores/OK -->
-						<%- include("CMP-Errores", {display: true}) %>
+						<%- include("CMP-errores", {display: true}) %>
 					</div>
 				</div>
 			<% } %>
@@ -157,13 +153,12 @@
 	</section>
 	<% if (entidad != "valores") { %>
 		<!-- Preguntas de contexto -->
-		<section id="preguntas" class="borderTop flex-col OK ocultar">
+		<section id="preguntas" class="borderTop OK ocultar">
 			<!-- Título y Error/OK -->
 			<div class="flex-row margenBottomTitulo inputError">
 				<!-- Título -->
 				<h3 class="">Preguntas de contexto</h3>
-				<!-- Errores/OK -->
-				<%- include("CMP-Errores", {display: true}) %>
+				<%- include("CMP-errores", {display: true}) %>
 			</div>
 			<% if (entidad == "personajes") { %>
 				<div id="personajes">

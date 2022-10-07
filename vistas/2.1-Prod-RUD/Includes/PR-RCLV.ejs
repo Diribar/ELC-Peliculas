@@ -3,6 +3,7 @@
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
+		<% console.log(6, campo) %>
 		<select name="<%= campo.nombreDelCampo %>" class="input RCLV">
 			<option value="1">Ninguno</option>
 			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
@@ -16,8 +17,7 @@
 				</ul>
 			</i>
 		</div>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->

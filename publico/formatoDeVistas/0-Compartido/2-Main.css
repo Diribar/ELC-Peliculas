@@ -6,6 +6,8 @@ main h1 {font-size: 1.25rem;}
 main h2 {font-size: 1.20rem;}
 main h3 {font-size: 1.10rem;}
 
+main .fa-solid {line-height: normal;}
+
 /* Imagen Derecha */
 main #imagenDerecha {width: 30vw; height: 100%; position: relative;}
 main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
@@ -20,3 +22,7 @@ main #cuerpoFooter #cuerpo .inactivo * {cursor: not-allowed;}
 main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
+
+.fa-circle-left, .fa-circle-right, 
+.fa-circle-check, .fa-circle-xmark, 
+.fa-circle-question {border-radius: 50%;}

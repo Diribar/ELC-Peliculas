@@ -284,7 +284,7 @@ let castellano = {
 		return !formato.test(dato);
 	},
 	medio: (dato) => {
-		let formato = /^[a-záéíóúüñ ,.'"()\d\-]+$/i;
+		let formato = /^[a-záéíóúüñ ,.:'"()\d\-]+$/i;
 		return !formato.test(dato);
 	},
 	basico: (dato) => {

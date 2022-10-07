@@ -11,6 +11,7 @@
 #dataEntry .flexRowAlign input[type='checkbox'] {margin-right: 5px;}
 #dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
 #dataEntry .flexRowAlign .derecha {margin-left: 15px;}
+#dataEntry .inputError .errores {left: -5px; transform: translate(-100%, -50%); right: auto;}
 #dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {transform: scale(.8);}
 #dataEntry input[type="radio"] {margin-right: 3px;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
@@ -27,6 +28,7 @@
 #dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 #dataEntry #datos .input[name='ano'] {width: 50px; margin-left: 10px; text-align: center;}
+#dataEntry #preguntas {display: flex; flex-direction: column;}
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas #genero div {margin-right: 12px;}
@@ -40,8 +42,7 @@
 #dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 20px; justify-content: space-evenly;}
+#dataEntry #flechas {margin-top: 20px;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
-#dataEntry #flechas i {font-size: 2rem;}
+#dataEntry #flechas i {font-size: 1.5rem;}
 /* #dataEntry #flechas i {color: var(--gris-oscuro)} */
-#dataEntry #flechas #submit {position: static; transform: none;}
