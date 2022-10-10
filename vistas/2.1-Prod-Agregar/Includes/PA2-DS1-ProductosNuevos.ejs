@@ -1,5 +1,4 @@
 <% for (let prod_nuevo of prod_nuevos) { %>
-<li>
 	<form method="POST">
 		<!-- Campos para luego enviar a Datos Duros -->
 		<input class="ocultar" type="text" name="TMDB_entidad" value="<%= prod_nuevo.TMDB_entidad %>">
@@ -37,5 +36,4 @@
 			<span class="mensajeError">Esta película pertenece a una colección, que no figura en nuestra BD. Para avanzar, podés agregar la colección y la película se agregará automáticamente.</span>
 		</i>
 	</form>
-</li>
 <% } %>

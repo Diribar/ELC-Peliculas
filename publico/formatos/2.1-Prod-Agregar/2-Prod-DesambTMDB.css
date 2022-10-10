@@ -5,8 +5,7 @@
 #dataEntry #encabezado #tituloSecundario h2 {margin-bottom: 5px;}
 #dataEntry #encabezado #tituloSecundario .ayudaMostrar {max-width: none;}
 #dataEntry #resultadoDesamb {width: 660px; overflow-x: auto; display: flex; flex-direction: row;}
-#dataEntry #resultadoDesamb li {list-style-type: none}
-#dataEntry form {position: relative;}
+#dataEntry #resultadoDesamb form {position: relative;}
 
 /* Resultados */
 #dataEntry button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
