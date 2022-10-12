@@ -19,13 +19,13 @@
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
 	</div>
 	<div id="cuadroDeResultados">
-		<i class="fa-solid fa-caret-left mover"></i>
+		<i class="fa-solid fa-caret-left mover inactivo"></i>
 		<ul id="resultadosDesamb">
 			<%- include('PA2-DS1-ProductosNuevos', { prod_nuevos }) %>
 			<%- include('PA2-DS2-IngresoManual') %>
 			<%- include('PA2-DS3-ProductosYaEnBD', { prod_yaEnBD }) %>
 		</ul>
-		<i class="fa-solid fa-caret-right mover"></i>
+		<i class="fa-solid fa-caret-right mover inactivo"></i>
 	</div>
 	<div id="flechas" class="flex-row">
 		<a href="/producto/agregar/palabras-clave" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>

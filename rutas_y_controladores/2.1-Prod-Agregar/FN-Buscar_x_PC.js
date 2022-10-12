@@ -183,21 +183,18 @@ let unificarResultados = (lectura, TMDB_entidad, datos, page) => {
 	return datos;
 };
 let eliminarDuplicados = (datos) => {
-	datos.resultados.map((n) => {
-		let contar = datos.resultados.filter(
-			(m) =>
-				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) && m.desempate3 == n.desempate3
-		);
-		if (contar.length > 1) {
-			let indice = datos.resultados.findIndex(
-				(m) =>
-					(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
-					m.desempate3 == n.desempate3 &&
-					m.TMDB_entidad == "tv"
-			);
-			indice != -1 ? datos.resultados.splice(indice, 1) : "";
+	for (let indice = datos.resultados.length - 1; indice >= 0; indice--) {
+		let resultado = datos.resultados[indice];
+		if (resultado.TMDB_entidad == "tv") {
+			let coincidencias = datos.resultados.filter(
+				(n) =>
+					(n.desempate1 == resultado.desempate1 || n.desempate2 == resultado.desempate2) &&
+					n.desempate3 == resultado.desempate3
+			).length;
+			if (coincidencias > 1) datos.resultados.splice(indice, 1);
 		}
-	});
+	}
+	// Fin
 	return datos;
 };
 let averiguarSiYaEnBD = async (datos) => {
