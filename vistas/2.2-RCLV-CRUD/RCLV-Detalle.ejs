@@ -1,4 +1,4 @@
-<div id="peliculas">
+<div id="datosLargos">
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
@@ -26,7 +26,7 @@
 	<!-- Texto -->
 	<div id="texto">
 		<% for (campo of resumen) { %>
-			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status_<%= campo.status %>"<% } %>>
+			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
 				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 			</p>
 		<% } %>

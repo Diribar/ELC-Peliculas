@@ -123,13 +123,7 @@ module.exports = {
 			// Obtener el mensaje de la tarea realizada
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
-				: await comp.guardar_edicion(
-						entidad,
-						"rclvs_edicion",
-						RCLV_original,
-						RCLV_editado,
-						userID
-				  ); // Guarda la edición
+				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, RCLV_editado, userID); // Guarda la edición
 		}
 		// 8. Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];
@@ -160,7 +154,7 @@ module.exports = {
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
 		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
 		// Bloque Derecha
-		let resumen = await funcionResumen({...RCLV,entidad});
+		let resumen = await funcionResumen({...RCLV, entidad});
 		// 5. Ir a la vista
 		// return res.send(resumen);
 		// return res.send(RCLV);
@@ -169,7 +163,7 @@ module.exports = {
 			codigo,
 			titulo: "Detalle de " + nombre,
 			resumen,
-			omitirImagenDerecha: true
+			omitirImagenDerecha: true,
 		});
 	},
 };
@@ -191,7 +185,12 @@ let funcionResumen = async (RCLV) => {
 	// Variable status
 	let creado = RCLV.status_registro.gr_creado;
 	let aprobado = RCLV.status_registro.aprobado;
-	let status = creado ? "creado" : aprobado ? "aprobado" : "inactivo";
+	let statusResumido = creado
+		? {id: 1, nombre: "Pend. Aprobac."}
+		: aprobado
+		? {id: 2, nombre: "Aprobado"}
+		: {id: 3, nombre: "Inactivado"};
+
 	// Comenzar a armar el resumen
 	let resumen = [
 		{titulo: "Nombre", valor: RCLV.nombre},
@@ -208,8 +207,8 @@ let funcionResumen = async (RCLV) => {
 		{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 		{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 		{titulo: "Última actualizac.", valor: ultimaActualizacion},
-		{titulo: "Status del registro", valor: RCLV.status_registro.nombre, status}
+		{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 	);
 	// Fin
-	return resumen
+	return resumen;
 };
