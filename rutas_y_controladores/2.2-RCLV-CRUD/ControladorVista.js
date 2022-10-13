@@ -163,9 +163,10 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Detalle de " + entidadNombre,
+			titulo: "Detalle de un " + entidadNombre,
 			bloqueDerecha: await funcionResumen({...RCLV, entidad}, cantProdsEnBD),
 			omitirImagenDerecha: true,
+			omitirFooter: false,
 			prodsYaEnBD,
 			prodsNuevos,
 			procCanoniz: await funcionProcCanoniz(RCLV),
@@ -267,7 +268,13 @@ let funcionProdsNuevos = async (RCLV) => {
 		});
 		prodsNuevos = aux;
 	}
+	// Ordenar por año (decreciente)
+	prodsNuevos.sort((a, b) => (a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0));
+	// Separa entre colecciones y resto
+	let colecciones = prodsNuevos.filter((n) => n.entidad == "colecciones");
+	let noColecciones = prodsNuevos.filter((n) => n.entidad != "colecciones");
 	// Fin
+	prodsNuevos = [...colecciones, ...noColecciones];
 	return prodsNuevos;
 };
 let funcionProcCanoniz = async (RCLV) => {

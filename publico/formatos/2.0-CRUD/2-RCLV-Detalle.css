@@ -1,11 +1,16 @@
-/* Cuerpo */
-#cuerpo {flex-direction: row; flex-grow: 1;}
-#cuerpo #datosLargos {display: flex; flex-direction: column; width: 82%;}
-#cuerpo #datosBreves {width: 18%;}
-
+#cuerpo {background-color: transparent;}
 /* Datos */
-#datosLargos #datos {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-around; padding: 20px 40px 20px;}
-#datosLargos #datos #cuadroDeResultados {width: 990px; position: relative; margin-top: 10px;}
+#cuerpo #datos {display: flex; flex-direction: row; align-items: center; justify-content: space-around;}
+#cuerpo #datos {position: absolute; transform: translate(-50%, -50%); top: 50%; left: 50%; width: 100%;}
+#cuerpo #datosLargos {max-width: 83%;border: 1px solid red;}
+#cuerpo #datosBreves {max-width: 17%;}
+
+/* Datos Largos */
+#cuerpo #datosLargos {display: flex; flex-direction: column; align-items: center;}
+#cuerpo #datosLargos {position: relative; padding: 30px 40px; border-radius: 20px; margin: auto;}
+#cuerpo #datosLargos {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #datosLargos #encabezado {align-self: stretch;}
+#cuerpo #datosLargos #cuadroDeResultados {width: 990px; position: relative; margin-bottom: 20px;}
 
 /* Datos Breves */
 #datosBreves {max-height: 88%; margin: auto 15px;}

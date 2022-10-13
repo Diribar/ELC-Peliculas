@@ -16,7 +16,7 @@ main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; positio
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
-main #cuerpoFooter #cuerpo {flex-grow: 1; position: relative;}
+main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 main #cuerpoFooter #cuerpo .inactivo, 
 main #cuerpoFooter #cuerpo .inactivo * {cursor: not-allowed;}
 main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
