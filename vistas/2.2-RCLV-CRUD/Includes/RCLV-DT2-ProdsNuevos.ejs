@@ -1,14 +1,17 @@
 <% for (let prodNuevo of prodsNuevos) { %>
 	<li>
-		<form method="POST">
+		<form action=""></form>
+		<form action="/producto/agregar/desambiguar" method="POST">
 			<!-- Campos para luego enviar a Datos Duros -->
 			<input class="ocultar" type="text" name="TMDB_entidad" value="<%= prodNuevo.TMDB_entidad %>">
 			<input class="ocultar" type="text" name="TMDB_id" value="<%= prodNuevo.TMDB_id %>">
-			<!-- Los dos siguientes campos se agregan porque las colecciones no tienen este dato en el detalle -->
-			<input class="ocultar" type="text" name="nombre_original" value="<%= prodNuevo.nombre_original %>">
-			<input class="ocultar" type="text" name="idioma_original_id" value="<%= prodNuevo.idioma_original_id %>">
+			<% if (prodNuevo.TMDB_entidad=="collections") { %>
+				<!-- Los siguientes campos se agregan porque las colecciones no tienen este dato en el detalle -->
+				<input class="ocultar" type="text" name="nombre_original" value="<%= prodNuevo.nombre_original %>">
+				<input class="ocultar" type="text" name="idioma_original_id" value="<%= prodNuevo.idioma_original_id %>">
+			<% } %>
 			<!-- Info a mostrar -->
-			<button type="submit" class="flex-row" id= "prodNuevo" <% if (prodNuevo==prodsNuevos[0]) { %>autofocus<% } %>>
+			<button type="submit" class="flex-row" id= "prodNuevo" autofocus>
 				<img class="imagenChica" 
 					src="<%= "https://image.tmdb.org/t/p/original" + prodNuevo.avatar %>"
 					alt="<%= prodNuevo.nombre_original %>" 
@@ -21,9 +24,6 @@
 						<p class="interlineadoChico"><em><%= prodNuevo.nombre_castellano %></em></p>	
 						<br>
 						<p class="interlineadoChico"><%= prodNuevo.ano_estreno + " - " + prodNuevo.prodNombre %></p>
-						<% if (prodNuevo.capitulos) { %>
-							<p class="interlineadoChico"><%= prodNuevo.capitulos %> capitulos</p>
-						<% } %>
 					</div>
 					<!-- Coleccion -->
 					<div id="coleccion" class="ocultar">

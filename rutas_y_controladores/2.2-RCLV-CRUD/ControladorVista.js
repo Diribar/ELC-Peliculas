@@ -148,69 +148,58 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
-		let nombre = comp.obtenerEntidadNombre(entidad);
+		let entidadNombre = comp.obtenerEntidadNombre(entidad);
 		// Obtener RCLV con produtos
 		let entProductos = ["peliculas", "colecciones", "capitulos"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
 		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
-		// Bloque Izquierda
-		let prodsYaEnBD = [];
-		entProductos.forEach((entidad) => {
-			let aux = RCLV[entidad].map((n) => {
-				let avatar = n.avatar.includes("/")
-					? n.avatar
-					: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
-				return {...n, entidad, avatar, prodNombre: comp.obtenerEntidadNombre(entidad)};
-			});
-			prodsYaEnBD.push(...aux);
-		});
-		prodsYaEnBD.sort((a, b) =>
-			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
-		);
-		prodsYaEnBD = [
-			...prodsYaEnBD.filter((n) => n.entidad == "colecciones"),
-			...prodsYaEnBD.filter((n) => n.entidad != "colecciones"),
-		];
-		let prodsNuevos = await buscar_x_PC
-			.search(RCLV.nombre, false)
-			.then((n) => n.resultados)
-			.then((n) => n.filter((m) => !m.YaEnBD));
-		if (entidad == "personajes" && RCLV.apodo && RCLV.apodo != RCLV.nombre) {
-			prodsNuevos.push(
-				...(await buscar_x_PC
-					.search(RCLV.apodo, false)
-					.then((n) => n.resultados)
-					.then((n) => n.filter((m) => !m.YaEnBD)))
+		// Productos
+		let prodsYaEnBD = funcionProdsYaEnBD(entProductos, RCLV);
+		let prodsNuevos = await funcionProdsNuevos(RCLV);
+		let cantProdsEnBD = prodsYaEnBD.length;
+		// Prefijo "Santo"
+		let procCanoniz = "";
+		// Averigua si el RCLV tiene algún "proceso de canonización"
+		if (RCLV.proceso_id) {
+			// Obtiene los procesos de canonización
+			let proceso = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+				n.find((m) => m.id == RCLV.proceso_id)
 			);
-			let aux = [];
-			prodsNuevos.forEach((prod) => {
-				if (aux.findIndex((n) => n.entidad == prod.entidad && n.TMDB_id == prod.TMDB_id) == -1)
-					aux.push(prod);
-			});
-			prodsNuevos = aux;
+			// Asigna el nombre del proceso
+			procCanoniz = proceso.nombre + " ";
+			// Verificación si el nombre del proceso es "Santo"
+			if (RCLV.proceso_id == "STV") {
+				// Nombres que llevan el prefijo "Santo"
+				let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
+				// Obtiene el primer nombre del RCLV
+				let nombre = RCLV.nombre;
+				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+				// Si el primer nombre no es "especial", cambia el prefijo por "San"
+				if (!nombresEspeciales.includes(nombre)) procCanoniz = "San ";
+			}
 		}
-		// Bloque Derecha
-		let resumen = await funcionResumen({...RCLV, entidad});
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Detalle de " + nombre,
-			resumen,
+			titulo: "Detalle de " + entidadNombre,
+			bloqueDerecha: await funcionResumen({...RCLV, entidad}, cantProdsEnBD),
 			omitirImagenDerecha: true,
 			prodsYaEnBD,
 			prodsNuevos,
+			procCanoniz,
+			RCLVnombre: RCLV.nombre,
 		});
 	},
 };
 
-// Funcion
+// Funciones
 let valorNombreApellido = (valor) => {
 	return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
 };
-let funcionResumen = async (RCLV) => {
+let funcionResumen = async (RCLV, cantProdsEnBD) => {
 	// Variable fecha
 	let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
 	let dia = diaDelAno.dia;
@@ -244,8 +233,61 @@ let funcionResumen = async (RCLV) => {
 		{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 		{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 		{titulo: "Última actualizac.", valor: ultimaActualizacion},
+		{titulo: "Productos en BD", valor: cantProdsEnBD},
 		{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 	);
 	// Fin
 	return resumen;
+};
+let funcionProdsYaEnBD = (entProductos, RCLV) => {
+	// Variables
+	let prodsYaEnBD = [];
+	// Completar la información de cada registro
+	entProductos.forEach((entidad) => {
+		let aux = RCLV[entidad].map((n) => {
+			let avatar = n.avatar.includes("/")
+				? n.avatar
+				: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
+			return {...n, entidad, avatar, prodNombre: comp.obtenerEntidadNombre(entidad)};
+		});
+		prodsYaEnBD.push(...aux);
+	});
+	// Ordenar por año (decreciente)
+	prodsYaEnBD.sort((a, b) => (a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0));
+	// Separa entre colecciones y resto
+	let colecciones = prodsYaEnBD.filter((n) => n.entidad == "colecciones");
+	let noColecciones = prodsYaEnBD.filter((n) => n.entidad != "colecciones");
+	// Elimina capitulos si las colecciones están presentes
+	let coleccionesId = colecciones.map((n) => n.id);
+	for (let i = noColecciones.length - 1; i >= 0; i--)
+		if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
+	// Fin
+	prodsYaEnBD = [...colecciones, ...noColecciones];
+	return prodsYaEnBD;
+};
+let funcionProdsNuevos = async (RCLV) => {
+	// Obtener los Productos Nuevos
+	let prodsNuevos = await buscar_x_PC
+		.search(RCLV.nombre, false)
+		.then((n) => n.resultados)
+		.then((n) => n.filter((m) => !m.YaEnBD));
+	// Si el RCLV tiene apodo...
+	if (RCLV.apodo && RCLV.apodo != RCLV.nombre) {
+		// Buscar también por apodo
+		prodsNuevos.push(
+			...(await buscar_x_PC
+				.search(RCLV.apodo, false)
+				.then((n) => n.resultados)
+				.then((n) => n.filter((m) => !m.YaEnBD)))
+		);
+		// Eliminar duplicados
+		let aux = [];
+		prodsNuevos.forEach((prod) => {
+			if (aux.findIndex((n) => n.entidad == prod.entidad && n.TMDB_id == prod.TMDB_id) == -1)
+				aux.push(prod);
+		});
+		prodsNuevos = aux;
+	}
+	// Fin
+	return prodsNuevos;
 };
