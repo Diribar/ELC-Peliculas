@@ -1,5 +1,7 @@
+/* Aspectos generales */
 #dataEntry {width: 754px; height: 456px}
 #dataEntry #cuadroDeResultados {width: 660px; position: relative; margin-top: 10px;}
+#dataEntry #tituloSecundario ul li {max-width: 350px;}
 
 /* Partes particulares */
 #dataEntry #encabezado {display: flex; flex-direction: column;}
