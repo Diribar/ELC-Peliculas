@@ -1,20 +1,20 @@
 <!-- Flechas -->
-<script src="/FE-javascript/2.0-CRUD/0-RUD-Flechas.js"></script>
+<script src="/javascript/2.0-CRUD/0-RUD-Flechas.js"></script>
 <!-- Colecciones y Capítulos -->
-<% if (entidad != "peliculas") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarColCap.js"></script><% } %>
+<% if (entidad != "peliculas") { %><script src="/javascript/2.0-CRUD/0-RUD-AlternarColCap.js"></script><% } %>
 <!-- Capítulos -->
-<% if (entidad == "capitulos") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarTempCap.js"></script><% } %>
+<% if (entidad == "capitulos") { %><script src="/javascript/2.0-CRUD/0-RUD-AlternarTempCap.js"></script><% } %>
 
 <!-- Detalle para Producto -->
 <% if (codigo == "detalle") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/1-Prod-1Detalle.css">
+	<link rel="stylesheet" href="/formatos/2.0-CRUD/1-Prod-1Detalle.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="/FE-javascript/2.0-CRUD/1-ProdDetalle-Grafico.js"></script>
+	<script src="/javascript/2.0-CRUD/1-ProdDetalle-Grafico.js"></script>
 <% } %>
 
 <!-- Edición -->
 <% if (codigo == "edicion") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/1-Prod-2Edicion.css">
-	<script src="/FE-javascript/2.0-CRUD/1-ProdEdic-InputError.js"></script>
-	<script src="/FE-javascript/2.0-CRUD/1-ProdEdic-vista_RCLV.js"></script>
+	<link rel="stylesheet" href="/formatos/2.0-CRUD/1-Prod-2Edicion.css">
+	<script src="/javascript/2.0-CRUD/1-ProdEdic-InputError.js"></script>
+	<script src="/javascript/2.0-CRUD/1-ProdEdic-vista_RCLV.js"></script>
 <% } %>

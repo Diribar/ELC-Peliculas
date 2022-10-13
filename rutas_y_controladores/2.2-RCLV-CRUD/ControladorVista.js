@@ -1,6 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("./FN-Validar");
@@ -123,13 +124,7 @@ module.exports = {
 			// Obtener el mensaje de la tarea realizada
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
-				: await comp.guardar_edicion(
-						entidad,
-						"rclvs_edicion",
-						RCLV_original,
-						RCLV_editado,
-						userID
-				  ); // Guarda la edición
+				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, RCLV_editado, userID); // Guarda la edición
 		}
 		// 8. Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];
@@ -153,32 +148,37 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
-		let nombre = comp.obtenerEntidadNombre(entidad);
+		let entidadNombre = comp.obtenerEntidadNombre(entidad);
 		// Obtener RCLV con produtos
-		let includes = ["peliculas", "colecciones", "capitulos", "status_registro"];
-		includes.push("creado_por", "alta_analizada_por");
+		let entProductos = ["peliculas", "colecciones", "capitulos"];
+		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
 		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
-		// Bloque Derecha
-		let resumen = await funcionResumen({...RCLV,entidad});
+		// Productos
+		let prodsYaEnBD = funcionProdsYaEnBD(entProductos, RCLV);
+		let prodsNuevos = await funcionProdsNuevos(RCLV);
+		let cantProdsEnBD = prodsYaEnBD.length;
 		// 5. Ir a la vista
-		// return res.send(resumen);
-		// return res.send(RCLV);
+		//return res.send(prodsYaEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Detalle de " + nombre,
-			resumen,
-			omitirImagenDerecha: true
+			titulo: "Detalle de " + entidadNombre,
+			bloqueDerecha: await funcionResumen({...RCLV, entidad}, cantProdsEnBD),
+			omitirImagenDerecha: true,
+			prodsYaEnBD,
+			prodsNuevos,
+			procCanoniz: await funcionProcCanoniz(RCLV),
+			RCLVnombre: RCLV.nombre,
 		});
 	},
 };
 
-// Funcion
+// Funciones
 let valorNombreApellido = (valor) => {
 	return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
 };
-let funcionResumen = async (RCLV) => {
+let funcionResumen = async (RCLV, cantProdsEnBD) => {
 	// Variable fecha
 	let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
 	let dia = diaDelAno.dia;
@@ -191,12 +191,16 @@ let funcionResumen = async (RCLV) => {
 	// Variable status
 	let creado = RCLV.status_registro.gr_creado;
 	let aprobado = RCLV.status_registro.aprobado;
-	let status = creado ? "creado" : aprobado ? "aprobado" : "inactivo";
+	let statusResumido = creado
+		? {id: 1, nombre: "Pend. Aprobac."}
+		: aprobado
+		? {id: 2, nombre: "Aprobado"}
+		: {id: 3, nombre: "Inactivado"};
+
 	// Comenzar a armar el resumen
-	let resumen = [
-		{titulo: "Nombre", valor: RCLV.nombre},
-		{titulo: "Día del año", valor: fecha},
-	];
+	let resumen = [{titulo: "Nombre", valor: RCLV.nombre}];
+	if (RCLV.apodo) resumen.push({titulo: "Apodo", valor: RCLV.apodo});
+	resumen.push({titulo: "Día del año", valor: fecha});
 	if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
 		resumen.push(
 			{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
@@ -208,8 +212,86 @@ let funcionResumen = async (RCLV) => {
 		{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 		{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 		{titulo: "Última actualizac.", valor: ultimaActualizacion},
-		{titulo: "Status del registro", valor: RCLV.status_registro.nombre, status}
+		{titulo: "Productos en BD", valor: cantProdsEnBD},
+		{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 	);
 	// Fin
-	return resumen
+	return resumen;
+};
+let funcionProdsYaEnBD = (entProductos, RCLV) => {
+	// Variables
+	let prodsYaEnBD = [];
+	// Completar la información de cada registro
+	entProductos.forEach((entidad) => {
+		let aux = RCLV[entidad].map((n) => {
+			let avatar = n.avatar.includes("/")
+				? n.avatar
+				: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
+			return {...n, entidad, avatar, prodNombre: comp.obtenerEntidadNombre(entidad)};
+		});
+		prodsYaEnBD.push(...aux);
+	});
+	// Ordenar por año (decreciente)
+	prodsYaEnBD.sort((a, b) => (a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0));
+	// Separa entre colecciones y resto
+	let colecciones = prodsYaEnBD.filter((n) => n.entidad == "colecciones");
+	let noColecciones = prodsYaEnBD.filter((n) => n.entidad != "colecciones");
+	// Elimina capitulos si las colecciones están presentes
+	let coleccionesId = colecciones.map((n) => n.id);
+	for (let i = noColecciones.length - 1; i >= 0; i--)
+		if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
+	// Fin
+	prodsYaEnBD = [...colecciones, ...noColecciones];
+	return prodsYaEnBD;
+};
+let funcionProdsNuevos = async (RCLV) => {
+	// Obtener los Productos Nuevos
+	let prodsNuevos = await buscar_x_PC
+		.search(RCLV.nombre, false)
+		.then((n) => n.resultados)
+		.then((n) => n.filter((m) => !m.YaEnBD));
+	// Si el RCLV tiene apodo...
+	if (RCLV.apodo && RCLV.apodo != RCLV.nombre) {
+		// Buscar también por apodo
+		prodsNuevos.push(
+			...(await buscar_x_PC
+				.search(RCLV.apodo, false)
+				.then((n) => n.resultados)
+				.then((n) => n.filter((m) => !m.YaEnBD)))
+		);
+		// Eliminar duplicados
+		let aux = [];
+		prodsNuevos.forEach((prod) => {
+			if (aux.findIndex((n) => n.entidad == prod.entidad && n.TMDB_id == prod.TMDB_id) == -1)
+				aux.push(prod);
+		});
+		prodsNuevos = aux;
+	}
+	// Fin
+	return prodsNuevos;
+};
+let funcionProcCanoniz = async (RCLV) => {
+	// Variables
+	let procCanoniz = "";
+	// Averigua si el RCLV tiene algún "proceso de canonización"
+	if (RCLV.proceso_id) {
+		// Obtiene los procesos de canonización
+		let proceso = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+			n.find((m) => m.id == RCLV.proceso_id)
+		);
+		// Asigna el nombre del proceso
+		procCanoniz = proceso.nombre + " ";
+		// Verificación si el nombre del proceso es "Santo"
+		if (RCLV.proceso_id == "STV") {
+			// Nombres que llevan el prefijo "Santo"
+			let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
+			// Obtiene el primer nombre del RCLV
+			let nombre = RCLV.nombre;
+			nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+			// Si el primer nombre no es "especial", cambia el prefijo por "San"
+			if (!nombresEspeciales.includes(nombre)) procCanoniz = "San ";
+		}
+	}
+	// Fin
+	return procCanoniz;
 };

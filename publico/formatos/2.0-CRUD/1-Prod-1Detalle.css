@@ -1,0 +1,34 @@
+/* Cuerpo y Footer */
+#cuerpoFooter {width: 70vw;}
+
+/* Cuerpo */
+#cuerpo {flex-direction: row;}
+#cuerpo #datosLargos {width: 78%;}
+#cuerpo #datosBreves {width: 22%;}
+
+/* Datos */
+#datosLargos {display: flex; flex-direction: column; flex-grow: 1;}
+#datosLargos #datos {display: flex; flex-direction: column; justify-content: space-around; padding: 20px 40px 20px; flex-grow: 1;}
+#datosLargos #datos #contenido .datosAdicionales {margin-top: 10px;}
+#datosLargos #datos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
+#datosLargos #datos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px;}
+#datosLargos #datos #contenido #sinopsis .ayuda {top: 25px;}
+
+/* Datos Breves */
+#datosBreves {max-height: 88%; margin: auto 15px;}
+#datosBreves {display: flex; flex-direction: column;}
+#datosBreves {border: var(--gris-oscuro) 3px solid;}
+#datosBreves {padding: 15px 20px; border-radius: 15px; background-color: snow;}
+#datosBreves .infoDesplazam {max-height: 500px;}
+#datosBreves .infoDesplazam #texto p {margin-top: 10px;}
+#datosBreves .infoDesplazam #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves .infoDesplazam #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
+#datosBreves .infoDesplazam #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
+#datosBreves .infoDesplazam #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
+
+/* Desplazamiento - Desplazar el contenido*/
+.desplazam {position: relative; box-shadow: 0px 0px 10px rgb(100 100 100);}
+.desplazam .infoDesplazam {overflow-y: scroll;}
+/* Desplazamiento - Ocultar la 'side-bar' */
+.desplazam .infoDesplazam::-webkit-scrollbar {display: none; /* Safari and Chrome */}
+.desplazam .infoDesplazam {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}

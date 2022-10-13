@@ -1,32 +1,32 @@
 <form action="/registro" method="POST" class="flex-col">
-    <h1><%= titulo %></h1>
-    <section id="portal" class="flex-col"><!--Portales de películas-->
-        <label id="titulo" for="nombre">Portales de películas a los que está abonado:</label>
-        <section id="portales" class="flex-row">
-            <div class = "flex-col">
-                <label><input type="checkbox" name="portales" value="CB">Cura Brochero (Arg)</label>
-                <label><input type="checkbox" name="portales" value="FF">Famflix (Méx)</label>
-                <label><input type="checkbox" name="portales" value="FP">Famiplay (Esp)</label>
-            </div>
-            <div class = "flex-col">
-                <label><input type="checkbox" name="portales" value="FR">Formed (US)</label>
-                <label><input type="checkbox" name="portales" value="NT">Netflix (US)</label>
-                <label><input type="checkbox" name="portales" value="QB">Qubit (Arg)</label>
-            </div>
-            <div class = "flex-col">
-                <label><input type="checkbox" name="portales" value="PF">Pureflix</label>
-                <label><input type="checkbox" name="portales" value="None">Ninguno</label>
-                <label><input type="checkbox" name="portales" value="NN">Otro</label>
-            </div>
+	<h1><%= titulo %></h1>
+	<section id="portal" class="flex-col"><!--Portales de películas-->
+		<label id="titulo" for="nombre">Portales de películas a los que está abonado:</label>
+		<section id="portales" class="flex-row">
+			<div class = "flex-col">
+				<label><input type="checkbox" name="portales" value="CB">Cura Brochero (Arg)</label>
+				<label><input type="checkbox" name="portales" value="FF">Famflix (Méx)</label>
+				<label><input type="checkbox" name="portales" value="FP">Famiplay (Esp)</label>
+			</div>
+			<div class = "flex-col">
+				<label><input type="checkbox" name="portales" value="FR">Formed (US)</label>
+				<label><input type="checkbox" name="portales" value="NT">Netflix (US)</label>
+				<label><input type="checkbox" name="portales" value="QB">Qubit (Arg)</label>
+			</div>
+			<div class = "flex-col">
+				<label><input type="checkbox" name="portales" value="PF">Pureflix</label>
+				<label><input type="checkbox" name="portales" value="None">Ninguno</label>
+				<label><input type="checkbox" name="portales" value="NN">Otro</label>
+			</div>
 
-        </section>
-    </section>
-    <div><!--Capcha-->
-    </div>
-    <section id="buttons"><!--Buttons-->
-        <div class="flex-row">
-            <button type="submit">Enviar</button>
-            <button onclick="retroceder()" type="button">Cancelar</button>
-        </div>
-    </section>
+		</section>
+	</section>
+	<div><!--Capcha-->
+	</div>
+	<section id="buttons"><!--Buttons-->
+		<div class="flex-row">
+			<button type="submit">Enviar</button>
+			<button onclick="retroceder()" type="button">Cancelar</button>
+		</div>
+	</section>
 </form>

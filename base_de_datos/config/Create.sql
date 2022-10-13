@@ -192,7 +192,7 @@ CREATE TABLE usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO usuarios (id, email, contrasena, apodo,       nombre,           apellido, rol_usuario_id, status_registro_id, creado_en,    completado_en) VALUES
 (1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 'Configuración', 'inicial', 2,              5,                  '2021-01-01', '2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Datos de start-up',     'Datos',     'de start-up', 2,              5,                  '2021-01-01', '2021-01-02')
+(2, 'sinMail2', 'sinContraseña', 'Start-up',     'Datos',     'de start-up', 2,              5,                  '2021-01-01', '2021-01-02')
 ;
 INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo, docum_numero, docum_pais_id, docum_avatar,        avatar,          fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en, completado_en, version_elc_ultimo_login) VALUES
 (10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',   '23198601',          'AR', null,                '1617370359746.jpg', '1969-08-16',     'V',     'AR',    2,              'LC',          1,             5,            '2021-01-01',  '2021-01-02',  '1.0'),
@@ -607,21 +607,21 @@ INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, cread
 VALUES (1, 1, 1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
 INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(11, 1, 1, 1, 1, 359,  0, 1, 3, '2022-03-16 23:25:20', 'Navidad'),
-(12, 1, 1, 1, 1, 100, 33, 1, 3, '2022-03-16 23:25:20', 'Semana Santa'),
-(13, 1, 1, 1, 1, 105, 33, 1, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
-(14, 1, 1, 1, 1, 107, 33, 1, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
-(15, 1, 0, 1, 1, 150, 33, 1, 3, '2022-03-16 23:25:20', 'Pentecostés')
+(11, 1, 1, 1, 1, 359,  0, 2, 3, '2022-03-16 23:25:20', 'Navidad'),
+(12, 1, 1, 1, 1, 100, 33, 2, 3, '2022-03-16 23:25:20', 'Semana Santa'),
+(13, 1, 1, 1, 1, 105, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
+(14, 1, 1, 1, 1, 107, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
+(15, 1, 0, 1, 1, 150, 33, 2, 3, '2022-03-16 23:25:20', 'Pentecostés')
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
+(16, 1, 1, 42, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(21, 210, 1914, 1, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
-(22, 245, 1942, 1, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
+(21, 210, 1914, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
+(22, 245, 1942, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
 ;
 UPDATE rclv_2hechos SET perenne = true;
 ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
@@ -670,12 +670,12 @@ INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, creado_en, nom
 VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
 INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
-(11, 1, 3, '2022-03-16 23:25:20', 'Matrimonio y familia'),
-(12, 1, 3, '2022-03-16 23:25:20', 'Servicio al prójimo'),
-(13, 1, 3, '2022-03-16 23:25:20', 'Pacificar un país dividido'),
-(14, 1, 3, '2022-03-16 23:25:20', 'Amistad'),
-(15, 1, 3, '2022-03-16 23:25:20', 'Superación personal'),
-(16, 1, 3, '2022-03-16 23:25:20', 'Valores en el deporte')
+(11, 2, 3, '2022-03-16 23:25:20', 'Matrimonio y familia'),
+(12, 2, 3, '2022-03-16 23:25:20', 'Servicio al prójimo'),
+(13, 2, 3, '2022-03-16 23:25:20', 'Pacificar un país dividido'),
+(14, 2, 3, '2022-03-16 23:25:20', 'Amistad'),
+(15, 2, 3, '2022-03-16 23:25:20', 'Superación personal'),
+(16, 2, 3, '2022-03-16 23:25:20', 'Valores en el deporte')
 ;
 UPDATE rclv_3valores SET perenne = true;
 UPDATE rclv_1personajes SET alta_analizada_por_id=2, alta_analizada_en='2022-03-17 23:25:20', lead_time_edicion=24;

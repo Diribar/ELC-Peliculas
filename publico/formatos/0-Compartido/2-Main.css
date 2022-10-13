@@ -1,0 +1,48 @@
+/* Main */
+main {height: 91vh;}
+
+/* Headings */
+main h1 {font-size: 1.25rem;}
+main h2 {font-size: 1.20rem;}
+main h3 {font-size: 1.10rem;}
+
+main .fa-solid {line-height: normal;}
+
+/* Imagen Derecha */
+main #imagenDerecha {width: 30vw; height: 100%; position: relative;}
+main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
+
+/* Cuerpo y Footer */
+main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
+main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
+main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+main #cuerpoFooter #cuerpo {flex-grow: 1; position: relative;}
+main #cuerpoFooter #cuerpo .inactivo, 
+main #cuerpoFooter #cuerpo .inactivo * {cursor: not-allowed;}
+main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
+main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
+main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
+
+/* Íconos de Error */
+.fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check {color: var(--verde-oscuro);}
+.fa-circle-xmark {color: var(--rojo-oscuro);}
+
+/* Comandos y Flechas */
+#comandos, #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
+#comandos i, #flechas i {font-size: 1.25rem; margin: 0 15px;}
+#comandos .pack, #flechas .pack {margin: 0 20px;}
+
+/* Comandos */
+#comandos {background-color: var(--backComandos);}
+#comandos i {color: white; }
+#comandos .pack {display: flex; flex-direction: row; align-items: center;}
+
+/* Flechas */
+#flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+#flechas .fa-circle-left, #flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
+#flechas .pack i {margin: 0;}
+
+/* Varios */
+.inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}

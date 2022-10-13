@@ -254,7 +254,7 @@
 								</div>
 							</div>
 						</div>
-						<select name="ap_mar_id" id="ap_mar_id"  class="ocultar RCLI cfc">
+						<select name="ap_mar_id" id="ap_mar_id" class="ocultar RCLI cfc">
 							<option value="" selected class="ocultar">Elejí una opción</option>
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>

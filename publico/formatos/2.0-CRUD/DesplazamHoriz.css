@@ -1,0 +1,33 @@
+/* Cuadro de Resultados */
+#cuadroDeResultados #listado {overflow-x: auto; display: flex; flex-direction: row;}
+#cuadroDeResultados #listado li {list-style-type: none}
+#cuadroDeResultados #listado li form {position: relative;}
+/* Íconos para mover */
+#cuadroDeResultados .mover {position: absolute; font-size: 1.75rem; cursor: pointer; top: 50%;}
+#cuadroDeResultados .mover.fa-caret-left {transform: translate(-100%, -50%); left: 0;}
+#cuadroDeResultados .mover.fa-caret-right {transform: translate(100%, -50%); right: 0;}
+/* Botones para productos */
+#listado button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
+#listado button {border: none; text-align: left; width: 290px;}
+#listado button#prodNuevo {background-color: var(--verde-intermedio);}
+#listado button#prodNuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#listado button#ingrManual {background-color: var(--rojo-claro);}
+#listado button#ingrManual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#listado button#prodYaEnBD {background-color: var(--celeste-oscuro);}
+#listado button#prodYaEnBD:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
+
+/* Partes del resultado */
+#listado button .imagenChica, #listado button #texto {height: 100%;}
+#listado button #texto {display: flex; flex-direction: column; justify-content: space-between;}
+#listado button #texto, #listado button #texto * {color: inherit;}
+#listado button #infoPeli {margin: 10px 15px;}
+#listado button #coleccion {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
+#listado button #prodNuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#listado button #coleccion #colec_nombre {font-weight: bold; font-style: italic}
+#listado button .interlineadoChico {margin-top: 5px;}
+
+/* Barra de desplazamiento */
+::-webkit-scrollbar {outline: transparent;}
+::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
+::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+/* ::-webkit-scrollbar-button {background: red;} */

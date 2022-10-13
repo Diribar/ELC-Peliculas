@@ -1,0 +1,28 @@
+/* Configuración general */
+header {height: 9vh; z-index: 10;}
+header {background-color: var(--azul-oscuro); justify-content: space-between; z-index: 1;}
+header, header section {display: flex; flex-direction: row; align-items: center;}
+header section {margin: 0 15px;}
+
+/* Formato de íconos */
+header section .grupos {margin: 0 15px; position: relative;}
+header section .grupos.margenDerecho {margin-right: 40px;}
+header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; transform: none;}
+header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
+header #icono-usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
+header section .grupos .scale {transition: 300ms;}
+header section .grupos .scale:hover {transform: scale(1.3);}
+
+/* Ícono de agregar producto */
+header section .grupos .iconoComb {position: relative;}
+header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 3px; transform: translateY(-50%);}
+header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro); z-index: 1;}
+
+/* Formato del Título */
+header #tituloHeader {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
+
+/* Íconos de usuario */
+header #icono-usuario {border-radius: 50%; overflow: hidden; }
+header #icono-usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+header #icono-usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
+header #icono-usuario #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}

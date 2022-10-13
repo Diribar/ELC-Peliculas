@@ -58,6 +58,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD"),
+	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts"),

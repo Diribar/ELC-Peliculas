@@ -1,4 +1,4 @@
-<div id="peliculas">
+<div id="datosLargos">
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
@@ -11,13 +11,35 @@
 		</div>
 	</div>
 	<div id="datos">
-		<div id="linksPeliculas">
+		<div id="encabezado">
+			<div id="tituloSecundario">
+				<h2><%= procCanoniz %><%= RCLVnombre %> </h2>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>El grupo de opciones con fondo azul, son las películas que ya tenemos en nuestra BD.</li>
+							<li>El grupo de opciones con fondo verde, son películas que no tenemos en nuestra BD.</li>
+							<li>Dentro de cada grupo, primero figuran las colecciones y luego las películas.</li>
+							<li>Están ordenadas desde la más reciente a las más antigua.</li>
+						</ul>	
+					</i>
+				</div>
+			</div>
+		</div>	
+		<div id="cuadroDeResultados">
+			<i class="fa-solid fa-caret-left mover inactivo"></i>
+			<ul id="listado">
+				<%- include('RCLV-DT1-ProdsYaEnBD', {prodsYaEnBD}) %>
+				<%- include('PA2-DS2-IngrManual') %>
+				<%- include('RCLV-DT2-ProdsNuevos', { prodsNuevos }) %>
+			</ul>
+			<i class="fa-solid fa-caret-right mover inactivo"></i>
 		</div>
-		<!-- Comandos -->
-		<div id="comandos">
-			<div>Comandos...</div>
+		<!-- Flechas -->
+		<div id="flechas">
+			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</div>
-		<!-- Botones -->
 	</div>
 </div>
 <div id="datosBreves">
@@ -25,8 +47,8 @@
 	<div><p><strong><u style="font-size: 1.1rem;">Ficha Técnica</u></strong></p></div>
 	<!-- Texto -->
 	<div id="texto">
-		<% for (campo of resumen) { %>
-			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status_<%= campo.status %>"<% } %>>
+		<% for (campo of bloqueDerecha) { %>
+			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
 				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 			</p>
 		<% } %>

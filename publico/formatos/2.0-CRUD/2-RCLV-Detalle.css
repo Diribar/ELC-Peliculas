@@ -1,0 +1,21 @@
+/* Cuerpo */
+#cuerpo {flex-direction: row; flex-grow: 1;}
+#cuerpo #datosLargos {display: flex; flex-direction: column; width: 82%;}
+#cuerpo #datosBreves {width: 18%;}
+
+/* Datos */
+#datosLargos #datos {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-around; padding: 20px 40px 20px;}
+#datosLargos #datos #cuadroDeResultados {width: 990px; position: relative; margin-top: 10px;}
+
+/* Datos Breves */
+#datosBreves {max-height: 88%; margin: auto 15px;}
+#datosBreves {display: flex; flex-direction: column;}
+#datosBreves {border: var(--gris-oscuro) 3px solid;}
+#datosBreves {padding: 15px 20px; border-radius: 15px; background-color: snow;}
+#datosBreves #texto p {margin-top: 10px;}
+
+#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
+#datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
+#datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
+
