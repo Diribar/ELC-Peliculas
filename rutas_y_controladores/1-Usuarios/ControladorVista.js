@@ -344,7 +344,9 @@ module.exports = {
 		let usuario = req.session.usuario;
 		let informacion = {
 			mensajes: [
-				"¿Estás segur" + (usuario.sexo_id == "M" ? "a" : "o") + " de que te querés desloguear?",
+				"¿Estás segur" +
+					(usuario.sexo_id == "M" ? "a" : usuario.sexo_id == "V" ? "o" : "o/a") +
+					" de que te querés desloguear?",
 			],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Cancelar"},

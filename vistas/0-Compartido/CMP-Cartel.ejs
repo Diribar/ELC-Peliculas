@@ -1,11 +1,11 @@
-<% if (locals.si || locals.informacion) { %>
+<% if (locals.mostrar || locals.informacion) { %>
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Cartel.css">
 	<section id="tapar-el-fondo" class="<%- !locals.informacion ? 'ocultar' : '' %>"></section>
 	<section id="cartel" class="<%- !locals.informacion ? 'ocultar' : informacion.colorFondo ? informacion.colorFondo : '' %>">
 		<i id="error" class="fa-solid fa-triangle-exclamation"></i>
 		<% if (locals.gracias) { %><img id="gracias" src="/imagenes/0-Base/Check.png" height="100px"><% } %>
 		<% if (locals.informacion) { %>
-			<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %> ">
+			<ul id="mensajes" type="<%- informacion.mensajes.length > 1 ? 'dots' : 'none' %>">
 				<% for (mensaje of informacion.mensajes) { %>
 					<li><%= mensaje %> </li>
 				<% } %>

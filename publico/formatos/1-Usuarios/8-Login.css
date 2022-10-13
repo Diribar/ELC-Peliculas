@@ -1,5 +1,7 @@
-/* Rutina */
-#cuerpo form #rutina {margin-bottom: 15px;}
+#cuerpo form {padding-right: 25px;}
+
+/* Datos */
+#cuerpo form #datos {margin-bottom: 15px;}
 
 /* Credenciales inválidas*/
 #cuerpo form .resultadoInvalido {border-radius: 7px; margin: 5px auto 0px; font-style: italic;}
