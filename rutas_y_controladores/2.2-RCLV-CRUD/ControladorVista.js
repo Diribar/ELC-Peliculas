@@ -158,27 +158,6 @@ module.exports = {
 		let prodsYaEnBD = funcionProdsYaEnBD(entProductos, RCLV);
 		let prodsNuevos = await funcionProdsNuevos(RCLV);
 		let cantProdsEnBD = prodsYaEnBD.length;
-		// Prefijo "Santo"
-		let procCanoniz = "";
-		// Averigua si el RCLV tiene algún "proceso de canonización"
-		if (RCLV.proceso_id) {
-			// Obtiene los procesos de canonización
-			let proceso = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
-				n.find((m) => m.id == RCLV.proceso_id)
-			);
-			// Asigna el nombre del proceso
-			procCanoniz = proceso.nombre + " ";
-			// Verificación si el nombre del proceso es "Santo"
-			if (RCLV.proceso_id == "STV") {
-				// Nombres que llevan el prefijo "Santo"
-				let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
-				// Obtiene el primer nombre del RCLV
-				let nombre = RCLV.nombre;
-				nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
-				// Si el primer nombre no es "especial", cambia el prefijo por "San"
-				if (!nombresEspeciales.includes(nombre)) procCanoniz = "San ";
-			}
-		}
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);
 		return res.render("CMP-0Estructura", {
@@ -189,7 +168,7 @@ module.exports = {
 			omitirImagenDerecha: true,
 			prodsYaEnBD,
 			prodsNuevos,
-			procCanoniz,
+			procCanoniz: await funcionProcCanoniz(RCLV),
 			RCLVnombre: RCLV.nombre,
 		});
 	},
@@ -290,4 +269,29 @@ let funcionProdsNuevos = async (RCLV) => {
 	}
 	// Fin
 	return prodsNuevos;
+};
+let funcionProcCanoniz = async (RCLV) => {
+	// Variables
+	let procCanoniz = "";
+	// Averigua si el RCLV tiene algún "proceso de canonización"
+	if (RCLV.proceso_id) {
+		// Obtiene los procesos de canonización
+		let proceso = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+			n.find((m) => m.id == RCLV.proceso_id)
+		);
+		// Asigna el nombre del proceso
+		procCanoniz = proceso.nombre + " ";
+		// Verificación si el nombre del proceso es "Santo"
+		if (RCLV.proceso_id == "STV") {
+			// Nombres que llevan el prefijo "Santo"
+			let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
+			// Obtiene el primer nombre del RCLV
+			let nombre = RCLV.nombre;
+			nombre = nombre.includes(" ") ? nombre.slice(0, nombre.indexOf(" ")) : nombre;
+			// Si el primer nombre no es "especial", cambia el prefijo por "San"
+			if (!nombresEspeciales.includes(nombre)) procCanoniz = "San ";
+		}
+	}
+	// Fin
+	return procCanoniz;
 };
