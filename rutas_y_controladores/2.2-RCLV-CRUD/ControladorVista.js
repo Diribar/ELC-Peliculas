@@ -190,8 +190,6 @@ module.exports = {
 			});
 			prodsNuevos = aux;
 		}
-		//return res.send(prodsNuevos);
-
 		// Bloque Derecha
 		let resumen = await funcionResumen({...RCLV, entidad});
 		// 5. Ir a la vista
