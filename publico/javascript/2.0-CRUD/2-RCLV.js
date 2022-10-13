@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 	if (personajes) {
 		// Inputs
 		var categoria_id = document.querySelectorAll("input[name='categoria_id']");
-		var genero = document.querySelectorAll("input[name='genero']");
+		var sexo_id = document.querySelectorAll("input[name='sexo_id']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		var proceso_id = document.querySelector("select[name='proceso_id']");
@@ -247,11 +247,11 @@ window.addEventListener("load", async () => {
 	};
 	let funcionGenero = () => {
 		// Definir variables
-		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
-		if (generoElegido) {
+		let sexoElegido = sexo_id[0].checked ? sexo_id[0].value : sexo_id[1].checked ? sexo_id[1].value : "";
+		if (sexoElegido) {
 			// Actualizar el género de la leyenda 'Santo o en proceso de canonización'
-			let letraActual = generoElegido == "V" ? "o" : "a";
-			let letraAnterior = generoElegido == "V" ? "a" : "o";
+			let letraActual = sexoElegido == "V" ? "o" : "a";
+			let letraAnterior = sexoElegido == "V" ? "a" : "o";
 			if (santosanta.innerHTML.includes("ant" + letraAnterior))
 				santosanta.innerHTML = santosanta.innerHTML.replace(
 					"ant" + letraAnterior,
@@ -260,27 +260,27 @@ window.addEventListener("load", async () => {
 			// Dejar solamente las opciones alineadas con el género
 			let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
 			opciones_proc.forEach((n) =>
-				n.value.length < 2 || n.value[2] != generoElegido
+				n.value.length < 2 || n.value[2] != sexoElegido
 					? n.classList.add("ocultar")
 					: n.classList.remove("ocultar")
 			);
 			let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
 			opciones_rol.forEach((n) =>
-				n.value.length < 2 || n.value[2] != generoElegido
+				n.value.length < 2 || n.value[2] != sexoElegido
 					? n.classList.add("ocultar")
 					: n.classList.remove("ocultar")
 			);
-			// Cambiar la opción anterior por el nuevo genero
+			// Cambiar la opción anterior por el nuevo sexo_id
 			// Proceso de canonización
-			if (proceso_id.value && proceso_id.value.length != 2 && proceso_id.value[2] != generoElegido)
-				proceso_id.value = proceso_id.value.slice(0, 2) + generoElegido;
+			if (proceso_id.value && proceso_id.value.length != 2 && proceso_id.value[2] != sexoElegido)
+				proceso_id.value = proceso_id.value.slice(0, 2) + sexoElegido;
 			// Rol en la Iglesia
 			if (
 				rol_iglesia_id.value &&
 				rol_iglesia_id.value.length != 2 &&
-				rol_iglesia_id.value[2] != generoElegido
+				rol_iglesia_id.value[2] != sexoElegido
 			) {
-				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
+				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + sexoElegido;
 				if (rol_iglesia_id.value == "") rol_iglesia_id.value = "";
 			}
 		}
@@ -297,7 +297,7 @@ window.addEventListener("load", async () => {
 			num++;
 			if (inputCategID != "CFC") this.limpiar(num);
 			else {
-				[params, inputGenero] = this.inputRadio(params, num, "genero", genero);
+				[params, inputGenero] = this.inputRadio(params, num, "sexo_id", sexo_id);
 				// Rol en la Iglesia
 				num++;
 				if (!inputGenero) this.limpiar(num);
@@ -491,7 +491,7 @@ window.addEventListener("load", async () => {
 		// Campos para !valores
 		if (!valores && campo == "ano") await validar.ano();
 		// Campos RCLI
-		if (personajes && campo == "genero") funcionGenero();
+		if (personajes && campo == "sexo_id") funcionGenero();
 		if (!valores && camposRCLI.includes(campo)) await mostrarRCLI[entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);

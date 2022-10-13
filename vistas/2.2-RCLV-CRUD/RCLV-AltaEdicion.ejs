@@ -14,7 +14,7 @@
 	</div>
 </div>
 <form method="POST" id="dataEntry">
-	<!-- Nombre y Fechas -->
+	<!-- Encabezado -->
 	<section id="datos" class="OK">
 		<!--Primera columna-->
 		<div id="primeraCol">
@@ -22,9 +22,9 @@
 			<div class="flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo inputError">
+					<div class="margenBottomTitulo inputError" style="z-index: 5;">
 						<!-- Título -->
-						<h3>Nombre</h3>
+						<h3>Nombre y Apodo</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -38,16 +38,27 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {display: true}) %>
+						<%- include("CMP-errores", {campo:"nombre", display: true}) %>
 					</div>
 				</div>
-				<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+				<!-- Valores -->
+				<div id="valoresNombre" class="flex-col space-between">
+					<!-- Nombre -->
+					<div class="flexRowAlign space-between">
+						<label>Nombre:</label>
+						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+					</div>
+					<div class="flexRowAlign space-between">
+						<label>Apodo:</label>
+						<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autofocus autocomplete="off">
+					</div>
+				</div>
 			</div>
 			<!-- Fecha Representativa -->
 			<div class="borderTop flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo inputError">
+					<div class="margenBottomTitulo inputError" style="z-index: 4;">
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
@@ -60,7 +71,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {display: true}) %>
+						<%- include("CMP-errores", {campo:"fecha", display: true}) %>
 					</div>
 				</div>
 				<!-- Valores -->
@@ -76,12 +87,8 @@
 								</option>
 							<% } %>
 						</select>
-						<a id="wiki" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
-						</a>
-						<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
-						</a>
+						<a id="wiki" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
+						<a id="santopedia" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia"></a>
 					</div>
 					<!-- Días -->
 					<div class="flexRowAlign">
@@ -112,18 +119,18 @@
 			<div class="flex-col">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
-					<div class="margenBottomTitulo inputError">
+					<div class="margenBottomTitulo inputError" style="z-index: 3;">
 						<!-- Título -->
 						<h3>Nombres con esa fecha</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+								<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
 									<li>Destildalos para controlar si no está ya en nuestra BD</li>
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {display: true}) %>
+						<%- include("CMP-errores", {campo:"repetido", display: true}) %>
 					</div>
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
@@ -131,7 +138,7 @@
 			<% if (entidad != "valores") { %>
 				<!-- Año de nacimiento u ocurrencia -->
 				<div class="borderTop flex-row">
-					<div class="flex-row align-center inputError">
+					<div class="flex-row align-center inputError" style="z-index: 2;">
 						<!-- Título -->
 						<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
@@ -145,7 +152,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {display: true}) %>
+						<%- include("CMP-errores", {campo:"ano", display: true}) %>
 					</div>
 				</div>
 			<% } %>
@@ -158,7 +165,7 @@
 			<div class="flex-row margenBottomTitulo inputError">
 				<!-- Título -->
 				<h3 class="">Preguntas de contexto</h3>
-				<%- include("CMP-errores", {display: true}) %>
+				<%- include("CMP-errores", {campo:"RCLI", display: true}) %>
 			</div>
 			<% if (entidad == "personajes") { %>
 				<div id="personajes">
@@ -179,14 +186,14 @@
 					<!-- Género y Rol en la Iglesia -->
 					<div id="sectorGeneroRol" class="flexRowAlign altoFila space-between ocultar cfc">
 						<!-- Genero -->
-						<div id="genero" class="flexRowAlign">
+						<div id="sexo_id" class="flexRowAlign">
 							<label class="izquierda">Género:</label>
 							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="V") { %>checked<% } %> class="RCLI">
+								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.varon) { %>checked<% } %> class="RCLI">
 								<label for="V">Varón</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="M") { %>checked<% } %> class="RCLI">
+								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.mujer) { %>checked<% } %> class="RCLI">
 								<label for="M">Mujer</label>
 							</div>
 						</div>						
@@ -196,7 +203,7 @@
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected class="ocultar">Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
-									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected<% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 								<% } %> 
 							</select>
 						</div>
@@ -212,7 +219,7 @@
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0 || !dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
+									<input type="radio" name="enProcCan" value="0" <% if (DE&&(dataEntry.enProcCan==0 || !dataEntry.proceso_id)) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -234,7 +241,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT") { %>checked<% } %> class="RCLI">
+								<input type="radio" name="cnt" value="0" <% if (DE&&(dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT")) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>
@@ -249,7 +256,7 @@
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0 || !dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+									<input type="radio" name="ap_mar" value="0" <% if (DE&&(dataEntry.ap_mar==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -273,7 +280,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="solo_cfc" value="0" <% if (DE&&dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>
@@ -287,7 +294,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="jss" value="0" <% if (dataEntry.jss==0) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="jss" value="0" <% if (DE&&dataEntry.jss==0) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>
@@ -301,7 +308,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="cnt" value="0" <% if (DE&&dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>
@@ -315,7 +322,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="exclusivo" value="0" <% if (DE&&dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>
@@ -329,7 +336,7 @@
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="ap_mar" value="0" <% if (DE&&dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
 								<label>NO</label>
 							</div>
 						</div>

@@ -88,7 +88,7 @@ module.exports = {
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (datos.categoria_id == "VPC") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.genero) respuesta = "Necesitamos saber el género de la persona";
+		else if (!datos.sexo_id) respuesta = "Necesitamos saber el género de la persona";
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
 		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
 		else if (datos.enProcCan == "1" && !datos.proceso_id)

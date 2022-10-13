@@ -166,16 +166,16 @@
 				<!-- Sectores ocultos salvo que esté en proceso de canonización -->
 				<div id="ocultarEnProcCan" class="invisible flex-col space-between">
 					<!-- Genero -->
-					<div id="genero" class="flex-row oculta">
+					<div id="sexo_id" class="flex-row oculta">
 						<h4>Género:</h4>
 						<div class="flex-row">
 							<% let rol_iglesia_id = RCLV_original.rol_iglesia_id ? RCLV_original.rol_iglesia_id.slice(-1) : "" %>
 							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="V" <% if (rol_iglesia_id=="V") { %>checked<% } %>>
+								<input type="radio" name="sexo_id" value="V" <% if (rol_iglesia_id=="V") { %>checked<% } %>>
 								<label>Varón</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="M" <% if (rol_iglesia_id=="M") { %>checked<% } %>>
+								<input type="radio" name="sexo_id" value="M" <% if (rol_iglesia_id=="M") { %>checked<% } %>>
 								<label>Mujer</label>
 							</div>
 						</div>
