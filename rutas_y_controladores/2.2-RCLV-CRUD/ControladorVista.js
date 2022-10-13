@@ -176,7 +176,7 @@ module.exports = {
 			.search(RCLV.nombre, false)
 			.then((n) => n.resultados)
 			.then((n) => n.filter((m) => !m.YaEnBD));
-		if ((entidad == "personajes" && RCLV.apodo != RCLV.nombre) || true) {
+		if ((entidad == "personajes" && RCLV.apodo && RCLV.apodo != RCLV.nombre) || true) {
 			prodsNuevos.push(
 				...(await buscar_x_PC
 					.search(RCLV.apodo, true)
