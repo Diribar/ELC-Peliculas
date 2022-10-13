@@ -1,6 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("./FN-Validar");
@@ -149,21 +150,60 @@ module.exports = {
 		let RCLV_id = req.query.id;
 		let nombre = comp.obtenerEntidadNombre(entidad);
 		// Obtener RCLV con produtos
-		let includes = ["peliculas", "colecciones", "capitulos", "status_registro"];
-		includes.push("creado_por", "alta_analizada_por");
+		let entProductos = ["peliculas", "colecciones", "capitulos"];
+		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
 		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
+		// Bloque Izquierda
+		let prodsYaEnBD = [];
+		entProductos.forEach((entidad) => {
+			let aux = RCLV[entidad].map((n) => {
+				let avatar = n.avatar.includes("/")
+					? n.avatar
+					: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
+				return {...n, entidad, avatar, prodNombre: comp.obtenerEntidadNombre(entidad)};
+			});
+			prodsYaEnBD.push(...aux);
+		});
+		prodsYaEnBD.sort((a, b) =>
+			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
+		);
+		prodsYaEnBD = [
+			...prodsYaEnBD.filter((n) => n.entidad == "colecciones"),
+			...prodsYaEnBD.filter((n) => n.entidad != "colecciones"),
+		];
+		let prodsNuevos = await buscar_x_PC
+			.search(RCLV.nombre, false)
+			.then((n) => n.resultados)
+			.then((n) => n.filter((m) => !m.YaEnBD));
+		if ((entidad == "personajes" && RCLV.apodo != RCLV.nombre) || true) {
+			prodsNuevos.push(
+				...(await buscar_x_PC
+					.search(RCLV.apodo, true)
+					.then((n) => n.resultados)
+					.then((n) => n.filter((m) => !m.YaEnBD)))
+			);
+			let aux = [];
+			prodsNuevos.forEach((prod) => {
+				if (aux.findIndex((n) => n.entidad == prod.entidad && n.TMDB_id == prod.TMDB_id) == -1)
+					aux.push(prod);
+			});
+			prodsNuevos = aux;
+		}
+		//return res.send(prodsNuevos);
+
 		// Bloque Derecha
 		let resumen = await funcionResumen({...RCLV, entidad});
 		// 5. Ir a la vista
-		// return res.send(resumen);
-		// return res.send(RCLV);
+		//return res.send(prodsYaEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Detalle de " + nombre,
 			resumen,
 			omitirImagenDerecha: true,
+			prodsYaEnBD,
+			prodsNuevos,
 		});
 	},
 };
@@ -192,10 +232,9 @@ let funcionResumen = async (RCLV) => {
 		: {id: 3, nombre: "Inactivado"};
 
 	// Comenzar a armar el resumen
-	let resumen = [
-		{titulo: "Nombre", valor: RCLV.nombre},
-		{titulo: "Día del año", valor: fecha},
-	];
+	let resumen = [{titulo: "Nombre", valor: RCLV.nombre}];
+	if (RCLV.apodo) resumen.push({titulo: "Apodo", valor: RCLV.apodo});
+	resumen.push({titulo: "Día del año", valor: fecha});
 	if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
 		resumen.push(
 			{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},

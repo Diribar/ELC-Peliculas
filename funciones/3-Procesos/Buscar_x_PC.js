@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../../funciones/1-APIs_TMDB/1-Search");
-const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
-const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const searchTMDB = require("../1-APIs_TMDB/1-Search");
+const detailsTMDB = require("../1-APIs_TMDB/2-Details");
+const BD_genericas = require("../2-BD/Genericas");
+const BD_especificas = require("../2-BD/Especificas");
+const compartidas = require("./Compartidas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
@@ -23,8 +23,8 @@ module.exports = {
 						.then((n) => estandarizarNombres(n, TMDB_entidad))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					if (TMDB_entidad == "collection" && lectura.resultados.length && mostrar)
-						lectura.resultados = await agregarLanzamiento(lectura.resultados);
+					// if (TMDB_entidad == "collection" && lectura.resultados.length && mostrar)
+					// 	lectura.resultados = await agregaAnoEstreno(lectura.resultados);
 					datos = unificarResultados(lectura, TMDB_entidad, datos, page);
 				}
 			}
@@ -56,13 +56,13 @@ let infoQueQueda = (datos) => {
 };
 let estandarizarNombres = (dato, TMDB_entidad) => {
 	let resultados = dato.resultados.map((m) => {
-		let prodNombre, entidad, ano, nombre_original, nombre_castellano, desempate3;
+		let prodNombre, entidad, ano_estreno, nombre_original, nombre_castellano, desempate3;
 		// Estandarizar los nombres
 		if (TMDB_entidad == "collection")
 			if (typeof m.poster_path != "undefined" && m.poster_path != null) {
 				prodNombre = "Colección";
 				entidad = "colecciones";
-				ano = "-";
+				ano_estreno = "-";
 				nombre_original = m.original_name;
 				nombre_castellano = m.name;
 				desempate3 = "-";
@@ -77,7 +77,7 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 			) {
 				prodNombre = "Colección";
 				entidad = "colecciones";
-				ano = parseInt(m.first_air_date.slice(0, 4));
+				ano_estreno = parseInt(m.first_air_date.slice(0, 4));
 				nombre_original = m.original_name;
 				nombre_castellano = m.name;
 				desempate3 = m.first_air_date;
@@ -92,7 +92,7 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 			) {
 				prodNombre = "Película";
 				entidad = "peliculas";
-				ano = parseInt(m.release_date.slice(0, 4));
+				ano_estreno = parseInt(m.release_date.slice(0, 4));
 				nombre_original = m.original_title;
 				nombre_castellano = m.title;
 				desempate3 = m.release_date;
@@ -115,7 +115,7 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 			nombre_original,
 			nombre_castellano,
 			idioma_original_id: m.original_language,
-			lanzamiento: ano,
+			ano_estreno,
 			avatar: m.poster_path,
 			comentario: m.overview,
 			desempate1,
@@ -124,7 +124,7 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 		};
 	});
 	return {
-		resultados: resultados,
+		resultados,
 		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
@@ -153,16 +153,16 @@ let eliminarIncompletos = (dato) => {
 	}
 	return dato;
 };
-let agregarLanzamiento = async (dato) => {
+let agregaAnoEstreno = async (dato) => {
 	for (let i = 0; i < dato.length; i++) {
-		// Obtener todas las fechas de lanzamiento
+		// Obtener todas las fechas de ano_estreno
 		let TMDB_id = dato[i].TMDB_id;
 		let detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
 			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
-		// Obtener el año de lanzamiento
+		// Obtener el año de ano_estreno
 		let ano = detalles.reduce((a, b) => (a < b ? a : b));
-		dato[i].lanzamiento = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
+		dato[i].ano_estreno = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
 		dato[i].capitulos = detalles.length;
 	}
 	return dato;
@@ -215,7 +215,7 @@ let averiguarSiYaEnBD = async (datos) => {
 		}
 		datos.resultados[i] = {
 			...datos.resultados[i],
-			YaEnBD: YaEnBD,
+			YaEnBD,
 		};
 	}
 	return datos;

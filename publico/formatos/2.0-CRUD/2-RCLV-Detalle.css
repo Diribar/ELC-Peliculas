@@ -1,11 +1,11 @@
 /* Cuerpo */
-#cuerpo {flex-direction: row;}
-#cuerpo #datosLargos {display: flex; flex-direction: column; width: 78%;}
-#cuerpo #datosBreves {width: 22%;}
+#cuerpo {flex-direction: row; flex-grow: 1;}
+#cuerpo #datosLargos {display: flex; flex-direction: column; width: 82%;}
+#cuerpo #datosBreves {width: 18%;}
 
 /* Datos */
 #datosLargos #datos {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-around; padding: 20px 40px 20px;}
-#datosLargos #datos #contenido .datosAdicionales {margin-top: 10px;}
+#datosLargos #datos #cuadroDeResultados {width: 990px; position: relative; margin-top: 10px;}
 
 /* Datos Breves */
 #datosBreves {max-height: 88%; margin: auto 15px;}

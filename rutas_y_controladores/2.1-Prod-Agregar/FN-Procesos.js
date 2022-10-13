@@ -28,10 +28,10 @@ module.exports = {
 	},
 	// ControllerVista (desambiguarForm)
 	DS_prepararMensaje: (desambiguar) => {
-		let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
-		let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+		let prodsNuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
+		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
 		let coincidencias = desambiguar.resultados.length;
-		let nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+		let nuevos = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
 		let mensaje =
 			"Encontramos " +
@@ -44,7 +44,7 @@ module.exports = {
 			" está" +
 			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 			" en nuestra BD.";
-		return [prod_nuevos, prod_yaEnBD, mensaje];
+		return [prodsNuevos, prodsYaEnBD, mensaje];
 	},
 
 	// MOVIES *****************************
