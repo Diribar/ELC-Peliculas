@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const buscar_x_PC = require("./FN-Buscar_x_PC");
+const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 

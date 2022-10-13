@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 		};
 		var mostrarResultados = async (lectura) => {
 			// Averiguar cantidad de coincidencias
-			let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD == false).length;
+			let prodsNuevos = lectura.resultados.filter((n) => !n.YaEnBD).length;
 			let cantResultados = lectura.cantResultados;
 			let hayMas = lectura.hayMas;
 			// Determinar oracion y formato
@@ -43,16 +43,16 @@ window.addEventListener("load", async () => {
 				oracion =
 					"Encontramos " +
 					(cantResultados == 1
-						? "1 sola coincidencia, que " + (prod_nuevos ? "no" : "ya")
+						? "1 sola coincidencia, que " + (prodsNuevos ? "no" : "ya")
 						: cantResultados +
 						  " coincidencias, " +
-						  (prod_nuevos == cantResultados
+						  (prodsNuevos == cantResultados
 								? "y ninguna"
-								: prod_nuevos
-								? prod_nuevos + " no"
+								: prodsNuevos
+								? prodsNuevos + " no"
 								: "y todas")) +
 					" está" +
-					(prod_nuevos > 1 && prod_nuevos != cantResultados ? "n" : "") +
+					(prodsNuevos > 1 && prodsNuevos != cantResultados ? "n" : "") +
 					" en nuestra BD";
 				formatoVigente = "resultadoExitoso";
 			} else {
@@ -483,14 +483,14 @@ window.addEventListener("load", async () => {
 			// Obtener el valor para 'campo'
 			let campo = e.target.name;
 			let datos;
-			// (Título original / castellano) + año lanzamiento
+			// (Título original / castellano) + año ano_estreno
 			if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
 				datos = {campo1: "nombre_original", campo2: "ano_estreno"};
 				DD.dosCampos(datos, campo);
 				datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
 				DD.dosCampos(datos, campo);
 			}
-			// Año de lanzamiento + año de finalización
+			// Año de ano_estreno + año de finalización
 			if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
 				datos = {campo1: "ano_estreno", campo2: "ano_fin"};
 				DD.dosCampos(datos, campo);

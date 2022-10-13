@@ -3,10 +3,10 @@ window.addEventListener("load", async () => {
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");
 	let derecha = document.querySelector(".fa-caret-right");
-	let resultados = document.querySelector("#resultadosDesamb");
+	let resultados = document.querySelector("#listado");
 	let resultadosAnchoVisible = resultados.offsetWidth;
-	let botones = document.querySelectorAll("#resultadosDesamb button");
-	let botonesAncho = document.querySelector("#resultadosDesamb li").clientWidth;
+	let botones = document.querySelectorAll("#listado button");
+	let botonesAncho = document.querySelector("#listado li").clientWidth;
 	let cantBotonesVisibles = parseInt(resultadosAnchoVisible / botonesAncho);
 	let indiceFocus = 0;
 	let posicion = 0;

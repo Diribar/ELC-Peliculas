@@ -6,9 +6,9 @@ const requestPromise = require("request-promise");
 // Definir funciones
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const buscar_x_PC = require("./FN-Buscar_x_PC");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
@@ -56,7 +56,7 @@ module.exports = {
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: await buscar_x_PC.search(palabrasClave, true);
-		let [prod_nuevos, prod_yaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
+		let [prodsNuevos, prodsYaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
@@ -64,8 +64,8 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
-			prod_nuevos,
-			prod_yaEnBD,
+			prodsNuevos,
+			prodsYaEnBD,
 			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
 		});

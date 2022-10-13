@@ -15,8 +15,8 @@
 #datosLargos #datos #contenido #sinopsis .ayuda {top: 25px;}
 
 /* Datos Breves */
-#datosBreves {max-height: 88%; margin: auto 15px; width: 520px;}
-#datosBreves {display: flex; flex-direction: column; justify-content: flex-start;}
+#datosBreves {max-height: 88%; margin: auto 15px;}
+#datosBreves {display: flex; flex-direction: column;}
 #datosBreves {border: var(--gris-oscuro) 3px solid;}
 #datosBreves {padding: 15px 20px; border-radius: 15px; background-color: snow;}
 #datosBreves .infoDesplazam {max-height: 500px;}
