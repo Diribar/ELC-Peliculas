@@ -306,7 +306,7 @@ module.exports = {
 		let paisesNombre = [];
 		if (paises_id.length) {
 			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
+			let paises_idArray = paises_id.split(", ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
 				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
