@@ -179,7 +179,7 @@ module.exports = {
 		if (entidad == "personajes" && RCLV.apodo && RCLV.apodo != RCLV.nombre) {
 			prodsNuevos.push(
 				...(await buscar_x_PC
-					.search(RCLV.apodo, true)
+					.search(RCLV.apodo, false)
 					.then((n) => n.resultados)
 					.then((n) => n.filter((m) => !m.YaEnBD)))
 			);
