@@ -249,7 +249,7 @@ window.addEventListener("load", async () => {
 		// Definir variables
 		let sexoElegido = sexo_id[0].checked ? sexo_id[0].value : sexo_id[1].checked ? sexo_id[1].value : "";
 		if (sexoElegido) {
-			// Actualizar el género de la leyenda 'Santo o en proceso de canonización'
+			// Actualizar el sexo de la leyenda 'Santo o en proceso de canonización'
 			let letraActual = sexoElegido == "V" ? "o" : "a";
 			let letraAnterior = sexoElegido == "V" ? "a" : "o";
 			if (santosanta.innerHTML.includes("ant" + letraAnterior))
@@ -257,7 +257,7 @@ window.addEventListener("load", async () => {
 					"ant" + letraAnterior,
 					"ant" + letraActual
 				);
-			// Dejar solamente las opciones alineadas con el género
+			// Dejar solamente las opciones alineadas con el sexo
 			let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
 			opciones_proc.forEach((n) =>
 				n.value.length < 2 || n.value[2] != sexoElegido
