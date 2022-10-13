@@ -4,29 +4,35 @@
 #dataEntry #encabezado {display: flex; flex-direction: column;}
 #dataEntry #encabezado #tituloSecundario h2 {margin-bottom: 5px;}
 #dataEntry #encabezado #tituloSecundario .ayudaMostrar {max-width: none;}
-#dataEntry #resultadoDesamb {width: 660px; overflow-x: auto; display: flex; flex-direction: row;}
-#dataEntry #resultadoDesamb li {list-style-type: none}
-#dataEntry form {position: relative;}
 
-/* Resultados */
-#dataEntry button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
-#dataEntry button {margin: 30px 20px 20px; border: none; text-align: left; width:290px;}
-#dataEntry #prod_nuevo {background-color: var(--verde-intermedio);}
-#dataEntry #ingr_manual {background-color: var(--rojo-claro);}
-#dataEntry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
-#dataEntry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
-#dataEntry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#dataEntry #prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
+/* Desambiguar */
+#dataEntry #cuadroDeResultados {width: 660px; position: relative; margin-top: 10px;}
+#dataEntry #cuadroDeResultados #resultadosDesamb {overflow-x: auto; display: flex; flex-direction: row;}
+#dataEntry #cuadroDeResultados #resultadosDesamb li {list-style-type: none}
+#dataEntry #cuadroDeResultados #resultadosDesamb li form {position: relative;}
+/* Íconos para mover */
+#cuadroDeResultados .mover {position: absolute; font-size: 1.75rem; cursor: pointer; top: 50%;}
+#cuadroDeResultados .mover.fa-caret-left {transform: translate(-100%, -50%); left: 0;}
+#cuadroDeResultados .mover.fa-caret-right {transform: translate(100%, -50%); right: 0;}
+/* Botones para productos */
+#resultadosDesamb button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
+#resultadosDesamb button {border: none; text-align: left; width: 290px;}
+#resultadosDesamb button#prod_nuevo {background-color: var(--verde-intermedio);}
+#resultadosDesamb button#prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#resultadosDesamb button#ingr_manual {background-color: var(--rojo-claro);}
+#resultadosDesamb button#ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#resultadosDesamb button#prod_yaEnBD {background-color: var(--celeste-oscuro);}
+#resultadosDesamb button#prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */
-#dataEntry #imagenChica, #dataEntry #texto {height: 100%;}
-#dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between;}
-#dataEntry #texto, #dataEntry #texto * {color: inherit;}
-#dataEntry #infoPeli {margin: 10px 15px;}
-#dataEntry #coleccion {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
-#dataEntry #prod_nuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#dataEntry #coleccion #colec_nombre {font-weight: bold; font-style: italic}
-#dataEntry .interlineadoChico {margin-top: 5px;}
+#resultadosDesamb button .imagenChica, #resultadosDesamb button #texto {height: 100%;}
+#resultadosDesamb button #texto {display: flex; flex-direction: column; justify-content: space-between;}
+#resultadosDesamb button #texto, #resultadosDesamb button #texto * {color: inherit;}
+#resultadosDesamb button #infoPeli {margin: 10px 15px;}
+#resultadosDesamb button #coleccion {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
+#resultadosDesamb button #prod_nuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#resultadosDesamb button #coleccion #colec_nombre {font-weight: bold; font-style: italic}
+#resultadosDesamb button .interlineadoChico {margin-top: 5px;}
 
 /* Barra de desplazamiento */
 ::-webkit-scrollbar {outline: transparent;}

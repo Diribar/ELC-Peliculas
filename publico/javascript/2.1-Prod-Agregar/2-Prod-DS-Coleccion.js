@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Definir las variables
-	let forms = document.querySelectorAll("#resultadoDesamb form");
-	let colecciones = document.querySelectorAll("#resultadoDesamb form #coleccion");
-	let colec_nombre = document.querySelectorAll("#resultadoDesamb form #coleccion #colec_nombre");
-	let mensaje = document.querySelectorAll("#resultadoDesamb form .fa-circle-xmark");
+	let forms = document.querySelectorAll("#resultadosDesamb form");
+	let colecciones = document.querySelectorAll("#resultadosDesamb form #coleccion");
+	let colec_nombre = document.querySelectorAll("#resultadosDesamb form #coleccion #colec_nombre");
+	let mensaje = document.querySelectorAll("#resultadosDesamb form .fa-circle-xmark");
 	let ruta = "/producto/agregar/api/DS-averiguar-coleccion/?TMDB_id=";
 
 	// Rutina para detectar si pertenece a una pelicula

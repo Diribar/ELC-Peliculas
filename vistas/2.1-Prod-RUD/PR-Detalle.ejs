@@ -1,23 +1,23 @@
-<section id="datos">
+<section id="datosLargos">
 	<div id="tituloPrincipal">
 		<h1 id="titulo"><%= titulo %></h1>
 		<!-- Ayuda -->
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick despl_click">
 				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y los links.</li>
+					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.</li>
 					<li>Si el contenido de los recuadros se ve parcial, podés deslizarlo con la ruedita del mouse dentro del recuadro.</li>
 				</ul>
 			</i>
 		</div>
 	</div>
-	<div id="datosLargos">
+	<div id="datos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("CR-Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis">
-				<nav><%= producto.sinopsis %></nav>
+			<div id="sinopsis" class="desplazam">
+				<nav class="infoDesplazam"><%= producto.sinopsis %></nav>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
@@ -42,8 +42,8 @@
 		<%- include("CR-Flechas") %>
 	</div>
 </section>
-<section id="datosBreves">
-	<div class="info">
+<section id="datosBreves" class="desplazam">
+	<div class="infoDesplazam">
 		<!-- Calificaciones -->
 		<div>
 			<p><strong>Calificaciones</strong></p>

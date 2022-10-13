@@ -1,18 +1,46 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Definir variables
-	let resultado = document.querySelector("#resultadoDesamb"); // Todo el 'ul'
-	let ventana = resultado.offsetWidth; // El ancho de la ventana de lo que se ve (700)
-	let anchoForm = document.querySelector("#resultadoDesamb li").clientWidth; // El ancho del formulario (330)
-	let cantFormsVisibles = parseInt(ventana / anchoForm); // Cant. de forms visibles en simultáneo
-	let boton = document.querySelectorAll("#resultadoDesamb button");
+	let izquierda = document.querySelector(".fa-caret-left");
+	let derecha = document.querySelector(".fa-caret-right");
+	let resultados = document.querySelector("#resultadosDesamb");
+	let resultadosAnchoVisible = resultados.offsetWidth;
+	let botones = document.querySelectorAll("#resultadosDesamb button");
+	let botonesAncho = document.querySelector("#resultadosDesamb li").clientWidth;
+	let cantBotonesVisibles = parseInt(resultadosAnchoVisible / botonesAncho);
 	let indiceFocus = 0;
+	let posicion = 0;
+
+	// Fórmulas
+	let ocultaIconosMovim = () => {
+		posicion == 0 ? izquierda.classList.add("inactivo") : izquierda.classList.remove("inactivo");
+		posicion >= (botones.length - 2) * botonesAncho
+			? derecha.classList.add("inactivo")
+			: derecha.classList.remove("inactivo");
+	};
+	let movimientos = () => {
+		// Mantiene el foco dentro de valores aceptables
+		indiceFocus = Math.max(0, indiceFocus);
+		indiceFocus = Math.min(indiceFocus, botones.length - 1);
+
+		// Mantiene la posicion dentro de valores aceptables
+		posicion = Math.min(posicion, indiceFocus * botonesAncho);
+		console.log(posicion / botonesAncho, indiceFocus);
+		posicion = Math.max(0, posicion, (indiceFocus - 1) * botonesAncho);
+		console.log(posicion / botonesAncho, indiceFocus);
+
+		// Foco en el botón y mueve el 'ul'
+		botones[indiceFocus].focus();
+		resultados.scrollTo(posicion, 0);
+
+		// Fin
+		ocultaIconosMovim();
+		return;
+	};
 
 	// Desplazamiento por teclado
 	window.addEventListener("keydown", (e) => {
-		// Comandos iniciales
-		let posicion = resultado.scrollLeft;
-		let mover = true;
+		// Anular desplazamientos naturales
 		let teclasDesplazamiento = [
 			"Home",
 			"End",
@@ -25,35 +53,45 @@ window.addEventListener("load", async () => {
 			"Tab",
 		];
 		if (teclasDesplazamiento.includes(e.key)) e.preventDefault();
+		// Si fue otra tecla, termina el proceso
+		else return;
 
 		// Home y End
 		if (e.key == "Home") indiceFocus = 0;
-		else if (e.key == "End") indiceFocus = boton.length - 1;
+		else if (e.key == "End") indiceFocus = botones.length - 1;
 		// Page Up / Down
-		else if (e.key == "PageUp" || (e.key == "Tab" && e.shiftKey))
-			indiceFocus = indiceFocus - cantFormsVisibles;
-		else if (e.key == "PageDown" || (e.key == "Tab" && !e.shiftKey))
-			indiceFocus = indiceFocus + cantFormsVisibles;
+		else if (e.key == "PageUp" || (e.key == "Tab" && e.shiftKey)) {
+			indiceFocus = indiceFocus - cantBotonesVisibles;
+			posicion = resultados.scrollLeft - resultadosAnchoVisible;
+		} else if (e.key == "PageDown" || (e.key == "Tab" && !e.shiftKey)) {
+			indiceFocus = indiceFocus + cantBotonesVisibles;
+			posicion = resultados.scrollLeft + resultadosAnchoVisible;
+		}
 		// Arrows
 		else if (e.key == "ArrowUp" || e.key == "ArrowLeft") indiceFocus = indiceFocus - 1;
 		else if (e.key == "ArrowDown" || e.key == "ArrowRight") indiceFocus = indiceFocus + 1;
-		// No hacer nada
-		else mover = false;
 
-		// Asignar el nuevo 'focus'
-		if (mover) {
-			indiceFocus =
-				indiceFocus < 0 ? 0 : indiceFocus > boton.length - 1 ? boton.length - 1 : indiceFocus;
-
-			// si el indice x anchoForm < posición => posición=indice x anchoForm
-			if (indiceFocus * anchoForm < posicion) posicion = indiceFocus * anchoForm;
-
-			// si el (indice+1) x anchoForm > (posición+ventana) => posición=posicion - anchoForm
-			if ((indiceFocus + 1) * anchoForm > posicion + ventana)
-				posicion = indiceFocus * anchoForm - anchoForm;
-
-			boton[indiceFocus].focus();
-			resultado.scrollTo(posicion, 0);
-		}
+		// Fin
+		movimientos();
 	});
+	// Desplazamiento por íconos
+	izquierda.addEventListener("click", () => {
+		if (!izquierda.className.includes("inactivo")) {
+			indiceFocus = indiceFocus - cantBotonesVisibles;
+			posicion = resultados.scrollLeft - resultadosAnchoVisible;
+			// Fin
+			movimientos(indiceFocus);
+		} else botones[indiceFocus].focus();
+	});
+	derecha.addEventListener("click", () => {
+		if (!derecha.className.includes("inactivo")) {
+			indiceFocus = indiceFocus + cantBotonesVisibles;
+			posicion = resultados.scrollLeft + resultadosAnchoVisible;
+			// Fin
+			movimientos(indiceFocus);
+		} else botones[indiceFocus].focus();
+	});
+
+	// Statup
+	ocultaIconosMovim()
 });

@@ -27,3 +27,22 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 .fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
+
+/* Comandos y Flechas */
+#comandos, #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
+#comandos i, #flechas i {font-size: 1.25rem; margin: 0 15px;}
+#comandos .pack, #flechas .pack {margin: 0 20px;}
+
+/* Comandos */
+#comandos {background-color: var(--backComandos);}
+#comandos i {color: white; }
+#comandos .pack {display: flex; flex-direction: row; align-items: center;}
+
+/* Flechas */
+#flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+#flechas .fa-circle-left, #flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
+#flechas .pack i {margin: 0;}
+
+/* Varios */
+.inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}

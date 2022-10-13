@@ -1,5 +1,5 @@
 /* Configuración general */
-header {height: 9vh; z-index: 5;}
+header {height: 9vh; z-index: 10;}
 header {background-color: var(--azul-oscuro); justify-content: space-between; z-index: 1;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
