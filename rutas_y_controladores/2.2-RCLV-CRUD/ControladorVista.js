@@ -56,6 +56,7 @@ module.exports = {
 			titulo,
 			tituloCuerpo,
 			dataEntry,
+			DE: !!Object.keys(dataEntry).length,
 			meses,
 			roles_iglesia,
 			procesos_canonizacion,

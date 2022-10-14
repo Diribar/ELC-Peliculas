@@ -18,12 +18,13 @@
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 #dataEntry input[type='number']::-webkit-outer-spin-button, #dataEntry input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#dataEntry input[type=number] {-moz-appearance: textfield;} /* Quitar flechas del input - Firefox */
+#dataEntry input[type='number'] {-moz-appearance: textfield;} /* Quitar flechas del input - Firefox */
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Temas específicos de dataEntry */
 #dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #datos .input[name="nombre"] {width: 100%; padding-left: 5px;}
+#dataEntry #datos #valoresNombre {height: 50px;}
+#dataEntry #datos #valoresNombre .input {width: 135px; padding-left: 5px;}
 #dataEntry #datos #valoresFecha {height: 80px;}
 #dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
@@ -31,12 +32,12 @@
 #dataEntry #preguntas {display: flex; flex-direction: column;}
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
-#dataEntry #preguntas #genero div {margin-right: 12px;}
+#dataEntry #preguntas #sexo_id div {margin-right: 12px;}
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarPorAno, #dataEntry #preguntas .ocultarPorRCLI {display: none;}
 #dataEntry #preguntas .altoFila {height: 25px;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
-#dataEntry #posiblesRepetidos {height: 70px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
+#dataEntry #posiblesRepetidos {height: 95px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
 #dataEntry #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
 #dataEntry #posiblesRepetidos li input {margin-right: 5px;}
 #dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}

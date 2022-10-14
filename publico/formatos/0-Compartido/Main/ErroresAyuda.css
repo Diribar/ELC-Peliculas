@@ -28,7 +28,7 @@
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
 .ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
-.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 250px; width: max-content;}
+.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 320px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 .ayudaMostrar::before, .mensajeError::before {left: -2px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
 
