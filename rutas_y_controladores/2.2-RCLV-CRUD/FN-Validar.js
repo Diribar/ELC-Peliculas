@@ -114,9 +114,9 @@ module.exports = {
 // Variables
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelVacio = {
-	ano: "Necesitamos que completes el año",
-	apodo: "Necesitamos que completes el apodo",
 	nombre: "Necesitamos que completes el nombre",
+	apodo: "Necesitamos que completes el apodo",
+	ano: "Necesitamos que completes el año",
 };
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
