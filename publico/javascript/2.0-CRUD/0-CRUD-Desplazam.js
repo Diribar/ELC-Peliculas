@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	// Fórmulas
 	let ocultaIconosMovim = () => {
 		posicion == 0 ? izquierda.classList.add("inactivo") : izquierda.classList.remove("inactivo");
-		posicion >= (botones.length - 2) * botonesAncho
+		posicion >= (botones.length - cantBotonesVisibles) * botonesAncho
 			? derecha.classList.add("inactivo")
 			: derecha.classList.remove("inactivo");
 	};
@@ -25,9 +25,7 @@ window.addEventListener("load", async () => {
 
 		// Mantiene la posicion dentro de valores aceptables
 		posicion = Math.min(posicion, indiceFocus * botonesAncho);
-		console.log(posicion / botonesAncho, indiceFocus);
 		posicion = Math.max(0, posicion, (indiceFocus - 1) * botonesAncho);
-		console.log(posicion / botonesAncho, indiceFocus);
 
 		// Foco en el botón y mueve el 'ul'
 		botones[indiceFocus].focus();

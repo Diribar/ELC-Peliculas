@@ -151,6 +151,7 @@ module.exports = {
 			dataEntry: {},
 			campo: "",
 			omitirImagenDerecha: codigo == "edicion",
+			omitirFooter: codigo == "edicion",
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {
