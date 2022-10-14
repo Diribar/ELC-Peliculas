@@ -333,7 +333,7 @@ window.addEventListener("load", async () => {
 			let inputCategID, inputGenero, inputRol, inputProcCan, inputProcID, inputCnt, inputAM, AM_id;
 			// categoria_id
 			[params, inputCategID] = this.inputRadio(params, num, "categoria_id", v.categoria_id);
-			// Género
+			// Sexo
 			num++;
 			if (inputCategID != "CFC") this.limpiar(num);
 			else {
