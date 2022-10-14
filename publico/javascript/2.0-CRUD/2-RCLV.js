@@ -221,6 +221,7 @@ window.addEventListener("load", async () => {
 				}
 				v.preguntas.classList.remove("ocultar");
 			} else v.preguntas.classList.add("ocultar");
+			console.log(OK.ano);
 
 			// Fin
 			await mostrarRCLI[v.entidad](false);
@@ -396,7 +397,7 @@ window.addEventListener("load", async () => {
 		},
 		hechos: async function (mostrarErrores) {
 			let num = -1;
-			let params = "&entidad=" + entidad;
+			let params = "&entidad=" + v.entidad;
 			let inputCFC, inputJSS, inputCNT, inputEXC, inputAM;
 			// Sólo CFC
 			[params, inputCFC] = this.inputRadio(params, num, "solo_cfc", v.solo_cfc);
@@ -539,7 +540,7 @@ window.addEventListener("load", async () => {
 	v.dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if ((campo == "nombre" || campo == "apodo") && v.nombre.value && v.apodo.value)
+		if ((campo == "nombre" || campo == "apodo") && v.nombre.value && (!v.apodo || v.apodo.value))
 			await validar.nombreApodo();
 		if (campo == "mes_id") diasDelMes();
 		if (

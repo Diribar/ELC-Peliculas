@@ -101,7 +101,7 @@ module.exports = {
 		else if (datos.jss == "0" && !datos.cnt)
 			respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
 		else if ((datos.jss == "1" || datos.cnt == "1") && !datos.exclusivo)
-			respuesta = "Necesitamos saber si ocurrió solamente durante su vida";
+			respuesta = "Necesitamos saber si ocurrió solamente durante la vida de los Apóstoles";
 		else if (datos.jss == "0" && datos.cnt == "0" && !datos.ap_mar)
 			respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";

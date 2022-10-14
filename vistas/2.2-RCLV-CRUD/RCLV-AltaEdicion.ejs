@@ -44,12 +44,12 @@
 				<!-- Valores -->
 				<div id="valoresNombre" class="flex-col space-between">
 					<!-- Nombre -->
-					<div class="flexRowAlign space-between">
+					<div class="flexRowAlign space-between altoFila">
 						<label>Nombre:</label>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
 					<% if (entidad == "personajes") { %>
-						<div class="flexRowAlign space-between">
+						<div class="flexRowAlign space-between altoFila">
 							<label>Apodo:</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
 						</div>
@@ -79,7 +79,7 @@
 				<!-- Valores -->
 				<div id="valoresFecha" class="flex-col space-between">
 					<!-- Meses -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Mes:</label>
 						<select name="mes_id" class="input">
 							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
@@ -93,7 +93,7 @@
 						<a id="santopedia" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia"></a>
 					</div>
 					<!-- Días -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Día:</label>
 						<select name="dia" class="input">
 							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
@@ -108,7 +108,7 @@
 						</select>
 					</div>
 					<!-- Fecha desconocida -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (codigo == "edicion" && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
 						<label for="desconocida">Sin fecha representativa</label>
 					</div>
@@ -118,7 +118,7 @@
 		<!--Segunda columna-->
 		<div id="segundaCol">
 			<!-- Repetidos -->
-			<div class="flex-col">
+			<div id="repetidos">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
 					<div class="margenBottomTitulo inputError" style="z-index: 3;">
@@ -300,7 +300,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">Por favor confirmanos que ocurrió durante la vida terrenal de Jesús</label>
+						<label class="derecha">¿Ocurrió durante la vida terrenal de Jesús?</label>
 					</div>
 					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
@@ -314,7 +314,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">Por favor confirmanos que ocurrió durante la vida de los Apóstoles</label>
+						<label class="derecha">¿Ocurrió durante la vida de los Apóstoles?</label>
 					</div>
 					<!-- Exclusivo -->
 					<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
@@ -328,7 +328,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Terminó en ese período de tiempo?</label>
+						<label class="derecha">¿Terminó durante la vida de los apóstoles (año 100 aprox.)?</label>
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
