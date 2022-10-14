@@ -221,7 +221,6 @@ window.addEventListener("load", async () => {
 				}
 				v.preguntas.classList.remove("ocultar");
 			} else v.preguntas.classList.add("ocultar");
-			console.log(OK.ano);
 
 			// Fin
 			await mostrarRCLI[v.entidad](false);
