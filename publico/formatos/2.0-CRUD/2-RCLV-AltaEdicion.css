@@ -1,3 +1,5 @@
+#cuerpo {background-color: transparent;}
+
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
 #cuerpo #dataEntry {display: flex; flex-direction: column;}
@@ -17,8 +19,10 @@
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
-#dataEntry input[type='number']::-webkit-outer-spin-button, #dataEntry input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#dataEntry input[type='number'] {-moz-appearance: textfield;} /* Quitar flechas del input - Firefox */
+/* Quitar flechas del input - Chrome, Safari, Edge, Opera */
+#dataEntry input[type='number']::-webkit-outer-spin-button, #dataEntry input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
+/* Quitar flechas del input - Firefox */
+#dataEntry input[type='number'] {-moz-appearance: textfield;} 
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Temas específicos de dataEntry */

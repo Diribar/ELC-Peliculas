@@ -48,10 +48,12 @@
 						<label>Nombre:</label>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
-					<div class="flexRowAlign space-between">
-						<label>Apodo:</label>
-						<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autofocus autocomplete="off">
-					</div>
+					<% if (entidad == "personajes") { %>
+						<div class="flexRowAlign space-between">
+							<label>Apodo:</label>
+							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+						</div>
+					<% } %>
 				</div>
 			</div>
 			<!-- Fecha Representativa -->
@@ -159,7 +161,7 @@
 		</div>
 	</section>
 	<% if (entidad != "valores") { %>
-		<!-- Preguntas de contexto -->
+		<!-- Preguntas de RCLV -->
 		<section id="preguntas" class="borderTop OK ocultar">
 			<!-- Título y Error/OK -->
 			<div class="flex-row margenBottomTitulo inputError">
