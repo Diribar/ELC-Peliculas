@@ -1,6 +1,6 @@
 /* Aspectos generales */
 #dataEntry {display: flex; flex-direction: column;}
-#dataEntry #cuadroDeResultados {width: 660px; position: relative; margin-top: 10px;}
+#dataEntry #cuadroDeResultados {width: 990px; position: relative; margin-top: 10px;}
 #dataEntry #tituloSecundario ul li {max-width: 350px;}
 
 /* Partes particulares */

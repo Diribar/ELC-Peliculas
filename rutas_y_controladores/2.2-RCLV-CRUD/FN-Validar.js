@@ -176,7 +176,7 @@ let nombreExpress = (datos, campo) => {
 	// Mensaje
 	let respuesta = inicialMayuscula(valor, campo);
 	if (!respuesta) respuesta = castellano(valor, campo);
-	if (!respuesta) respuesta = prefijo(valor, campo);
+	if (!respuesta && campo == "nombre") respuesta = prefijo(valor, campo);
 	return respuesta;
 };
 let nombreCompleto = async function (datos, campo) {

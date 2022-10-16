@@ -68,6 +68,7 @@ module.exports = {
 			prodsYaEnBD,
 			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
+			omitirImagenDerecha:true,
 		});
 	},
 	desambiguarGuardar: async (req, res) => {
