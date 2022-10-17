@@ -70,23 +70,30 @@ module.exports = {
 		}
 		return respuesta;
 	},
-	desdeHasta: function (datos) {
+	desdeHasta: function (variable) {
+		// Variables
+		let datos = {...variable};
 		let mensaje;
+		datos.desde = datos.ano;
+		// Revisar 'desde'
 		if (!mensaje) {
 			datos.ano = datos.desde;
 			mensaje = this.ano(datos);
 			if (mensaje) mensaje += " (año 'desde')";
 		}
+		// Revisar 'hasta'
 		if (!mensaje) {
 			datos.ano = datos.hasta;
 			mensaje = this.ano(datos);
 			if (mensaje) mensaje += " (año 'hasta')";
 		}
+		// Revisar 'combinados'
 		if (!mensaje) {
 			let desde = parseInt(datos.desde);
 			let hasta = parseInt(datos.hasta);
 			if (desde > hasta) mensaje = "El año 'desde' no debe superar al año 'hasta'";
 		}
+		// Fin
 		return mensaje;
 	},
 	RCLI_personaje: (datos) => {
@@ -121,12 +128,10 @@ module.exports = {
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (!datos.cnt)
-			respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
+		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
 		else if (!datos.exclusivo)
 			respuesta = "Necesitamos saber si ocurrió solamente durante la vida de los Apóstoles";
-		else if (!datos.ap_mar)
-			respuesta = "Necesitamos saber si es una aparición mariana";
+		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
 		// Fin
