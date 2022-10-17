@@ -30,11 +30,12 @@
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<% if (entidad == "personajes") { %>
-										<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+										<li>Sin prefijo (San, Santa, Madre, Don, Papa).</li>
 										<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 										<li>Primero el nombre, después el apellido.</li>
 									<% } %>
 									<li>La primera letra en mayúscula, sin puntos ni comas</li>
+									<li>Sólo se aceptan letras del alfabeto castellano</li>
 								</ul>
 							</i>
 						</div>
@@ -44,12 +45,12 @@
 				<!-- Valores -->
 				<div id="valoresNombre" class="flex-col space-between">
 					<!-- Nombre -->
-					<div class="flexRowAlign space-between">
+					<div class="flexRowAlign space-between altoFila">
 						<label>Nombre:</label>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
 					<% if (entidad == "personajes") { %>
-						<div class="flexRowAlign space-between">
+						<div class="flexRowAlign space-between altoFila">
 							<label>Apodo:</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
 						</div>
@@ -67,9 +68,11 @@
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-									<li>Usamos la fecha en que se lo recuerda.</li>
-									<li>Para los santos o beatos, es la fecha en el santoral.</li>
-									<li>Para los demás, suele ser la fecha de su muerte.</li>
+									<p>Usamos la fecha en que se lo recuerda.</p>
+									<% if (entidad == "personajes") { %>
+										<li>Para los santos o beatos, es la fecha en el santoral.</li>
+										<li>Para los demás, suele ser la fecha de su muerte.</li>
+									<% } %>
 								</ul>
 							</i>
 						</div>
@@ -79,7 +82,7 @@
 				<!-- Valores -->
 				<div id="valoresFecha" class="flex-col space-between">
 					<!-- Meses -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Mes:</label>
 						<select name="mes_id" class="input">
 							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
@@ -93,7 +96,7 @@
 						<a id="santopedia" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia"></a>
 					</div>
 					<!-- Días -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Día:</label>
 						<select name="dia" class="input">
 							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
@@ -108,7 +111,7 @@
 						</select>
 					</div>
 					<!-- Fecha desconocida -->
-					<div class="flexRowAlign">
+					<div class="flexRowAlign altoFila">
 						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (codigo == "edicion" && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
 						<label for="desconocida">Sin fecha representativa</label>
 					</div>
@@ -118,7 +121,7 @@
 		<!--Segunda columna-->
 		<div id="segundaCol">
 			<!-- Repetidos -->
-			<div class="flex-col">
+			<div id="repetidos">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
 					<div class="margenBottomTitulo inputError" style="z-index: 3;">
@@ -300,7 +303,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">Por favor confirmanos que ocurrió durante la vida terrenal de Jesús</label>
+						<label class="derecha">¿Ocurrió durante la vida terrenal de Jesús?</label>
 					</div>
 					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
@@ -314,7 +317,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">Por favor confirmanos que ocurrió durante la vida de los Apóstoles</label>
+						<label class="derecha">¿Ocurrió durante la vida de los Apóstoles?</label>
 					</div>
 					<!-- Exclusivo -->
 					<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
@@ -328,7 +331,7 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Terminó en ese período de tiempo?</label>
+						<label class="derecha">¿Terminó durante la vida de los apóstoles (año 100 aprox.)?</label>
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
