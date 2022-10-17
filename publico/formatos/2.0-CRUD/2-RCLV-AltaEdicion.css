@@ -33,6 +33,7 @@
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 #dataEntry #datos .input.angosto {width: 50px; margin-left: 5px; text-align: center;}
 #dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#dataEntry #segundaCol #anosHechos {display: flex; flex-direction: column; width: 100%;}
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas #sexo_id div {margin-right: 12px;}
