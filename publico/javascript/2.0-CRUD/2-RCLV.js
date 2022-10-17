@@ -549,9 +549,8 @@ window.addEventListener("load", async () => {
 			// Impide guiones en el medio
 			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
 			// Revisa los errores y los publica si existen
-			await validar[campo]();
-			feedback(OK, errores, true);
-			console.log(OK, errores);
+			// await validar[campo]();
+			// feedback(OK, errores, true);
 		}
 	});
 	v.dataEntry.addEventListener("change", async (e) => {
