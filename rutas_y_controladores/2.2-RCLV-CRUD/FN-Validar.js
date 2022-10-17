@@ -11,12 +11,16 @@ module.exports = {
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
-		// Campos cuando la entidad difiere de 'valores'
-		if (datos.entidad != "valores") errores.ano = this.ano(datos);
 		// Campos exclusivos de 'personajes'
-		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
+		if (datos.entidad == "personajes") {
+			errores.ano = this.ano(datos);
+			errores.RCLI = this.RCLI_personaje(datos);
+		}
 		// Campos exclusivos de 'hechos'
-		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
+		if (datos.entidad == "hechos") {
+			errores.desdeHasta = this.desdeHasta(datos);
+			errores.RCLI = this.RCLI_hecho(datos);
+		}
 		// Completar con 'hay errores'
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -66,15 +70,41 @@ module.exports = {
 		}
 		return respuesta;
 	},
+	desdeHasta: function (variable) {
+		// Variables
+		let datos = {...variable};
+		let mensaje;
+		datos.desde = datos.ano;
+		// Revisar 'desde'
+		if (!mensaje) {
+			datos.ano = datos.desde;
+			mensaje = this.ano(datos);
+			if (mensaje) mensaje += " (año 'desde')";
+		}
+		// Revisar 'hasta'
+		if (!mensaje) {
+			datos.ano = datos.hasta;
+			mensaje = this.ano(datos);
+			if (mensaje) mensaje += " (año 'hasta')";
+		}
+		// Revisar 'combinados'
+		if (!mensaje) {
+			let desde = parseInt(datos.desde);
+			let hasta = parseInt(datos.hasta);
+			if (desde > hasta) mensaje = "El año 'desde' no debe superar al año 'hasta'";
+		}
+		// Fin
+		return mensaje;
+	},
 	RCLI_personaje: (datos) => {
 		let respuesta;
 		if (false) {
 		}
 		// Respuesta
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
+		else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
 		else if (datos.categoria_id == "VPC") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
 		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
 		else if (datos.enProcCan == "1" && !datos.proceso_id)
@@ -98,12 +128,10 @@ module.exports = {
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (datos.jss == "0" && !datos.cnt)
-			respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if ((datos.jss == "1" || datos.cnt == "1") && !datos.exclusivo)
+		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
+		else if (!datos.exclusivo)
 			respuesta = "Necesitamos saber si ocurrió solamente durante la vida de los Apóstoles";
-		else if (datos.jss == "0" && datos.cnt == "0" && !datos.ap_mar)
-			respuesta = "Necesitamos saber si es una aparición mariana";
+		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
 		// Fin
@@ -134,7 +162,7 @@ let inicialMayuscula = (valor, campo) => {
 	return !formato.test(valor, campo) ? "La primera letra del " + campo + " debe ser en mayúscula" : "";
 };
 let castellano = (valor, campo) => {
-	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-]+$/;
+	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-\d]+$/;
 	return !formato.test(valor) ? "Sólo se admiten letras del abecedario castellano (" + campo + ")" : "";
 };
 let prefijo = (valor, campo) => {

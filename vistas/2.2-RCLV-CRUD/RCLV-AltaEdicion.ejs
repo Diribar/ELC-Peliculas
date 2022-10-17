@@ -140,13 +140,13 @@
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
-			<% if (entidad != "valores") { %>
+			<% if (entidad == "personajes") { %>
 				<!-- Año de nacimiento u ocurrencia -->
 				<div class="borderTop flex-row">
 					<div class="flex-row align-center inputError" style="z-index: 2;">
 						<!-- Título -->
-						<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-						<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+						<h3>Año de Nacimiento</h3>
+						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -158,6 +158,42 @@
 							</i>
 						</div>
 						<%- include("CMP-errores", {campo:"ano", display: true}) %>
+					</div>
+				</div>
+			<% } %>
+			<% if (entidad == "hechos") { %>
+				<!-- Años -->
+				<div class="borderTop flex-row">
+					<div id="anosHechos" style="z-index: 2;">
+						<!-- Título, Ayuda y Error/OK -->
+						<div class="flex-row">
+							<div class="margenBottomTitulo inputError" style="z-index: 5;">
+								<!-- Título -->
+								<h3>Años</h3>
+								<!-- Ayuda -->
+								<div class="ayuda">
+									<i class="fa-solid fa-circle-question ayudaClick despl_click">
+										<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+											<li>Nos ayuda a ubicarlo cronológicamente.</li>
+											<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+											<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+										</ul>
+									</i>
+								</div>
+								<%- include("CMP-errores", {campo:"desdeHasta", display: true}) %>
+							</div>
+						</div>
+						<!-- Valores -->
+						<div id="valoresAno" class="flex-row space-between">
+							<div class="flexRowAlign altoFila">
+								<label for="ano">Desde:</label>
+								<input id="ano" type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autocomplete="off">
+							</div>
+							<div class="flexRowAlign altoFila">
+								<label for="hasta">Hasta:</label>
+								<input id="hasta" type="text" name="hasta" class="input angosto" value="<%= dataEntry.hasta %>" autocomplete="off">
+							</div>
+						</div>
 					</div>
 				</div>
 			<% } %>
@@ -175,23 +211,23 @@
 			<% if (entidad == "personajes") { %>
 				<div id="personajes">
 					<!-- CFC/VPC -->
-					<div class="flexRowAlign altoFila">
+					<div class="flexRowAlign altoFila cfc">
 						<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
+								<input id="catSI" type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
+								<label for="catSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
+								<input id="catNO" type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
+								<label for="catNO">NO</label>
 							</div>
 						</div>
 					</div>
 					<!-- Sexo y Rol en la Iglesia -->
-					<div id="sectorGeneroRol" class="flexRowAlign altoFila space-between ocultar cfc">
-						<!-- Genero -->
-						<div id="sexo_id" class="flexRowAlign">
+					<div class="flexRowAlign altoFila space-between">
+						<!-- Sexo -->
+						<div id="sexo_id" class="flexRowAlign ocultar cfc">
 							<label class="izquierda">Sexo:</label>
 							<div class="flexRowAlign">
 								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.varon) { %>checked<% } %> class="RCLI">
@@ -203,7 +239,7 @@
 							</div>
 						</div>						
 						<!-- Rol en la Iglesia -->
-						<div id="sectorRol_iglesia" class="flexRowAlign cfc">
+						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected class="ocultar">Elejí una opción</option>
@@ -214,18 +250,18 @@
 						</div>
 					</div>
 					<!-- ¿En proceso de canonización? y status -->
-					<div id="sectorEnProceso" class="flexRowAlign altoFila space-between ocultar cfc">
+					<div class="flexRowAlign altoFila space-between ocultar cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
 							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
-									<label>SI</label>
+									<input id="enProcCanSI" type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
+									<label for="enProcCanSI">SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="enProcCan" value="0" <% if (DE&&(dataEntry.enProcCan==0 || !dataEntry.proceso_id)) { %>checked<% } %> class="RCLI">
-									<label>NO</label>
+									<input id="enProcCanNO" type="radio" name="enProcCan" value="0" <% if (DE&&(dataEntry.enProcCan==0 || !dataEntry.proceso_id)) { %>checked<% } %> class="RCLI">
+									<label for="enProcCanNO">NO</label>
 								</div>
 							</div>
 						</div>
@@ -242,12 +278,12 @@
 						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
+								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
+								<label for="cntSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (DE&&(dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT")) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
+								<input id="cntNO" type="radio" name="cnt" value="0" <% if (DE&&(dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT")) { %>checked<% } %> class="RCLI">
+								<label for="cntNO">NO</label>
 							</div>
 						</div>
 					</div>
@@ -257,12 +293,12 @@
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
-									<label>SI</label>
+									<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+									<label for="ap_marSI">SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="ap_mar" value="0" <% if (DE&&(dataEntry.ap_mar==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
-									<label>NO</label>
+									<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&(dataEntry.ap_mar==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
+									<label for="ap_marNO">NO</label>
 								</div>
 							</div>
 						</div>
@@ -278,71 +314,29 @@
 			<% if (entidad == "hechos") { %>
 				<div id="hechos">
 					<!-- Sólo CFC -->
-					<div class="flexRowAlign altoFila">
+					<div class="flexRowAlign altoFila cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc==1) { %>checked<% } %> class="RCLI">
-								<label>SI</label>
+								<input id="solo_cfcSI" type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc==1) { %>checked<% } %> class="RCLI">
+								<label for="solo_cfcSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="solo_cfc" value="0" <% if (DE&&dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
+								<input id="solo_cfcNO" type="radio" name="solo_cfc" value="0" <% if (DE&&dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
+								<label for="solo_cfcNO">NO</label>
 							</div>
 						</div>
 						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de Jesús? -->
-					<div id="sector_jss" class="flexRowAlign altoFila ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="jss" value="0" <% if (DE&&dataEntry.jss==0) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida terrenal de Jesús?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
-					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (DE&&dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida de los Apóstoles?</label>
-					</div>
-					<!-- Exclusivo -->
-					<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo==1) { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="exclusivo" value="0" <% if (DE&&dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Terminó durante la vida de los apóstoles (año 100 aprox.)?</label>
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
-								<label>SI</label>
+								<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
+								<label for="ap_marSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="ap_mar" value="0" <% if (DE&&dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
-								<label>NO</label>
+								<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+								<label for="ap_marNO">NO</label>
 							</div>
 						</div>
 						<label class="derecha">¿Es una aparición mariana?</label>
