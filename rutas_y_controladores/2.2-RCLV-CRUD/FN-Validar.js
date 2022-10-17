@@ -7,7 +7,7 @@ module.exports = {
 	consolidado: async function (datos) {
 		// Campos que siempre están
 		let errores = {
-			nombre: await this.nombreCompleto(datos),
+			nombre: await this.nombreApodo(datos),
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
@@ -21,55 +21,41 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	nombreExpress: (datos) => {
-		let {nombre} = datos;
-		return !nombre
-			? ""
-			: inicialMayuscula(nombre)
-			? cartelMayuscula
-			: castellano(nombre)
-			? cartelCastellano
-			: prefijo(nombre)
-			? cartelPrefijo
-			: "";
+	nombre: (datos) => {
+		return nombreExpress(datos, "nombre");
 	},
-	nombreCompleto: async function (datos) {
-		let {nombre} = datos;
-		if (nombre) var nombreExpress = this.nombreExpress(datos);
-		if (nombre && !nombreExpress) var longitud = validarLongitud(nombre, 4, 30);
-		if (nombre && !nombreExpress && !longitud)
-			var repetido = (await BD_especificas.validarRepetidos(["nombre"], datos))
-				? cartelRepetido({entidad: datos.entidad, id: repetido})
-				: "";
-		return !nombre
-			? cartelCampoVacio
-			: nombreExpress
-			? nombreExpress
-			: longitud
-			? longitud
-			: repetido
-			? repetido
-			: "";
+	apodo: (datos) => {
+		return nombreExpress(datos, "apodo");
+	},
+	nombreApodo: async function (datos) {
+		let mensaje;
+		if (!mensaje) mensaje = this.nombre(datos);
+		if (!mensaje) mensaje = await nombreCompleto(datos, "nombre");
+		if (datos.entidad == "personajes") {
+			if (!mensaje) mensaje = this.apodo(datos);
+			if (!mensaje) mensaje = await nombreCompleto(datos, "apodo");
+		}
+		return mensaje;
 	},
 	fecha: (datos) => {
-		let error = "";
+		let respuesta = "";
 		if (datos.desconocida == "false" || !datos.desconocida) {
-			if (!datos.mes_id || !datos.dia) error = cartelFechaIncompleta;
+			if (!datos.mes_id || !datos.dia) respuesta = cartelFechaIncompleta;
 			else {
 				let mes = datos.mes_id;
 				let dia = datos.dia;
 				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
-					error = cartelSupera;
+					respuesta = cartelSupera;
 			}
 		}
-		return error;
+		return respuesta;
 	},
 	ano: (datos) => {
-		let error;
-		if (!datos.ano) error = cartelCampoVacio;
+		let respuesta;
+		if (!datos.ano) respuesta = cartelVacio.ano;
 		else {
 			let ano = parseInt(datos.ano);
-			error =
+			respuesta =
 				typeof ano != "number"
 					? "No es un número válido"
 					: ano > new Date().getFullYear()
@@ -78,7 +64,7 @@ module.exports = {
 					? "El año debe ser mayor"
 					: "";
 		}
-		return error;
+		return respuesta;
 	},
 	RCLI_personaje: (datos) => {
 		let respuesta;
@@ -127,46 +113,47 @@ module.exports = {
 
 // Variables
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
-const cartelCampoVacio = "Necesitamos que completes este campo";
+const cartelVacio = {
+	nombre: "Necesitamos que completes el nombre",
+	apodo: "Necesitamos que completes el apodo",
+	ano: "Necesitamos que completes el año",
+};
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
-const cartelMayuscula = "La primera letra debe ser en mayúscula";
-const cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-const cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
 // Funciones
-let validarLongitud = (dato, corto, largo) => {
-	return dato.length < corto
-		? "El nombre debe ser más largo"
-		: dato.length > largo
-		? "El nombre debe ser más corto"
+let longitud = (datos, campo, corto, largo) => {
+	return datos[campo].length < corto
+		? "El " + campo + " debe ser más largo"
+		: datos[campo].length > largo
+		? "El " + campo + " debe ser más corto"
 		: "";
 };
-let inicialMayuscula = (dato) => {
+let inicialMayuscula = (valor, campo) => {
 	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-	return !formato.test(dato);
+	return !formato.test(valor, campo) ? "La primera letra del " + campo + " debe ser en mayúscula" : "";
 };
-let castellano = (dato) => {
+let castellano = (valor, campo) => {
 	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-]+$/;
-	return !formato.test(dato);
+	return !formato.test(valor) ? "Sólo se admiten letras del abecedario castellano (" + campo + ")" : "";
 };
-let prefijo = (nombre) => {
-	return (
-		nombre.startsWith("San ") ||
-		nombre.startsWith("Santa ") ||
-		nombre.startsWith("Santo ") ||
-		nombre.startsWith("Beato ") ||
-		nombre.startsWith("Beata ") ||
-		nombre.startsWith("Ven. ") ||
-		nombre.startsWith("Venerable ") ||
-		nombre.startsWith("Madre ") ||
-		nombre.startsWith("Hna. ") ||
-		nombre.startsWith("Hermana ") ||
-		nombre.startsWith("Padre ") ||
-		nombre.startsWith("Don ") ||
-		nombre.startsWith("Doña ") ||
-		nombre.startsWith("Papa ")
-	);
+let prefijo = (valor, campo) => {
+	return valor.startsWith("San ") ||
+		valor.startsWith("Santa ") ||
+		valor.startsWith("Santo ") ||
+		valor.startsWith("Beato ") ||
+		valor.startsWith("Beata ") ||
+		valor.startsWith("Ven. ") ||
+		valor.startsWith("Venerable ") ||
+		valor.startsWith("Madre ") ||
+		valor.startsWith("Hna. ") ||
+		valor.startsWith("Hermana ") ||
+		valor.startsWith("Padre ") ||
+		valor.startsWith("Don ") ||
+		valor.startsWith("Doña ") ||
+		valor.startsWith("Papa ")
+		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
+		: "";
 };
 let cartelRepetido = (datos) => {
 	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
@@ -181,4 +168,24 @@ let cartelRepetido = (datos) => {
 		"</strong></u></a>" +
 		" ya se encuentra en nuestra base de datos"
 	);
+};
+let nombreExpress = (datos, campo) => {
+	// Variables
+	let valor = datos[campo];
+	if (!valor) return "";
+	// Mensaje
+	let respuesta = inicialMayuscula(valor, campo);
+	if (!respuesta) respuesta = castellano(valor, campo);
+	if (!respuesta) respuesta = prefijo(valor, campo);
+	return respuesta;
+};
+let nombreCompleto = async function (datos, campo) {
+	let respuesta;
+	if (!datos[campo]) respuesta = cartelVacio[campo];
+	if (!respuesta) respuesta = longitud(datos, campo, 4, 30);
+	if (!respuesta) {
+		let repetido = await BD_especificas.validarRepetidos([campo], datos);
+		if (repetido) respuesta = cartelRepetido({entidad: datos.entidad, id: repetido});
+	}
+	return respuesta;
 };

@@ -23,7 +23,7 @@ const todos = [...todosAgregar, id, permUserReg, capturaActivar];
 // Rutas *******************************************
 // Rutas de APIs
 router.get("/api/otros-casos", API.buscarOtrosCasos);
-router.get("/api/validar-sector", API.validarSector);
+router.get("/api/validar-sector", API.validarParcial);
 
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", ...todosAgregar, vista.altaEdicForm);
