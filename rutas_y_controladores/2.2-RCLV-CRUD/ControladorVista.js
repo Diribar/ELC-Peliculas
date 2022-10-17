@@ -269,7 +269,7 @@ let funcionDE = async (datos) => {
 			.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 			.then((n) => n.id);
 	// Año
-	if (datos.entidad != "valores") DE.ano = datos.entidad == "personajes" ? datos.ano : datos.desde;
+	if (datos.entidad != "valores") DE.ano = datos.ano;
 	// Datos para personajes
 	if (datos.entidad == "personajes") {
 		// Datos sencillos
@@ -290,11 +290,12 @@ let funcionDE = async (datos) => {
 		}
 	}
 	if (datos.entidad == "hechos") {
+		DE.hasta = datos.hasta;
 		DE.solo_cfc = datos.solo_cfc;
 		if (datos.solo_cfc == "1") {
-			DE.jss = datos.jss;
-			DE.cnt = datos.cnt;
-			DE.exclusivo = datos.exclusivo;
+			DE.jss = datos.ano > 33 || datos.hasta < 0 ? 0 : 1;
+			DE.cnt = datos.ano > 100 || datos.hasta < 0 ? 0 : 1;
+			DE.exclusivo = datos.ano >= 0 || datos.hasta <= 100 ? 1 : 0;
 			DE.ap_mar = datos.ap_mar;
 		}
 	}

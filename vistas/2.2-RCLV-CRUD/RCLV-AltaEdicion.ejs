@@ -186,8 +186,8 @@
 						<!-- Valores -->
 						<div id="valoresAno" class="flex-row space-between">
 							<div class="flexRowAlign altoFila">
-								<label for="desde">Desde:</label>
-								<input id="desde" type="text" name="desde" class="input angosto" value="<%= dataEntry.desde %>" autocomplete="off">
+								<label for="ano">Desde:</label>
+								<input id="ano" type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autocomplete="off">
 							</div>
 							<div class="flexRowAlign altoFila">
 								<label for="hasta">Hasta:</label>
@@ -326,48 +326,6 @@
 							</div>
 						</div>
 						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de Jesús? -->
-					<div id="sector_jss" class="flexRowAlign altoFila ocultar cfc ocultarPorAno">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input id="jssSI" type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
-								<label for="jssSI">SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input id="jssNO" type="radio" name="jss" value="0" <% if (DE&&dataEntry.jss==0) { %>checked<% } %> class="RCLI">
-								<label for="jssNO">NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida terrenal de Jesús?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
-					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc ocultarPorAno">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
-								<label for="cntSI">SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input id="cntNO" type="radio" name="cnt" value="0" <% if (DE&&dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
-								<label for="cntNO">NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida de los Apóstoles?</label>
-					</div>
-					<!-- Exclusivo -->
-					<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc ocultarPorAno">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input id="exclSI" type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo==1) { %>checked<% } %> class="RCLI">
-								<label for="exclSI">SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input id="exclNO" type="radio" name="exclusivo" value="0" <% if (DE&&dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
-								<label for="exclNO">NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Terminó durante la vida de los apóstoles (año 100 aprox.)?</label>
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">

@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 	}
 	// Valores para hechos
 	if (v.hechos) {
-		v.desde = document.querySelector("#dataEntry input[name='desde']");
+		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.hasta = document.querySelector("#dataEntry input[name='hasta']");
 		v.campos = ["solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"];
 		// Inputs
@@ -205,68 +205,38 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		desde: async () => {
-			// Verifica errores en el sector 'desdeHasta', campo 'desde'
-			let params = "&ano=" + v.desde.value;
-			errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
-			if (errores.desdeHasta) {
-				errores.desdeHasta += " (año 'desde')";
-				OK.desdeHasta = false;
-			}
-			// Fin
-			return;
-		},
-		hasta: async () => {
-			// Verifica errores en el sector 'desdeHasta', campo 'hasta'
-			let params = "&ano=" + v.hasta.value;
-			errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
-			if (errores.desdeHasta) {
-				errores.desdeHasta += " (año 'hasta')";
-				OK.desdeHasta = false;
-			}
-			// Fin
-			return;
-		},
+		// desde: async () => {
+		// 	// Verifica errores en el sector 'desdeHasta', campo 'desde'
+		// 	let params = "&ano=" + v.ano.value;
+		// 	errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
+		// 	if (errores.desdeHasta) {
+		// 		errores.desdeHasta += " (año 'desde')";
+		// 		OK.desdeHasta = false;
+		// 	}
+		// 	// Fin
+		// 	return;
+		// },
+		// hasta: async () => {
+		// 	// Verifica errores en el sector 'desdeHasta', campo 'hasta'
+		// 	let params = "&ano=" + v.hasta.value;
+		// 	errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
+		// 	if (errores.desdeHasta) {
+		// 		errores.desdeHasta += " (año 'hasta')";
+		// 		OK.desdeHasta = false;
+		// 	}
+		// 	// Fin
+		// 	return;
+		// },
 		desdeHasta: async () => {
 			// Verifica errores en el sector 'desdeHasta'
-			let params = "&entidad=" + v.entidad + "&desde=" + v.desde.value + "&hasta=" + v.hasta.value;
+			let params = "&entidad=" + v.entidad + "&ano=" + v.ano.value + "&hasta=" + v.hasta.value;
 			errores.desdeHasta = await fetch(v.rutaValidacion + "desdeHasta" + params).then((n) => n.json());
 			// Consolidar la info
 			OK.desdeHasta = !errores.desdeHasta;
 			// Impacto en RCLV
 			if (OK.desdeHasta) {
-				// Vida de Jesús
-				if (v.desde.value > 33 || v.hasta.value < 0) {
-					v.jss[1].checked = true;
-					v.jss[1].disabled = false;
-					v.jss[0].disabled = true;
-				} else {
-					v.jss[0].checked = true;
-					v.jss[0].disabled = false;
-					v.jss[1].disabled = true;
-				}
-				// Contemp. Jesús
-				if (v.desde.value > 100 || v.hasta.value < 0) {
-					v.cnt[1].checked = true;
-					v.cnt[1].disabled = false;
-					v.cnt[0].disabled = true;
-				} else {
-					v.cnt[0].checked = true;
-					v.cnt[0].disabled = false;
-					v.cnt[1].disabled = true;
-				}
-				// Exclusivo
-				if (v.desde.value >= 0 && v.hasta.value <= 100) {
-					v.exclusivo[0].checked = true;
-					v.exclusivo[0].disabled = false;
-					v.exclusivo[1].disabled = true;
-				} else {
-					v.exclusivo[1].checked = true;
-					v.exclusivo[1].disabled = false;
-					v.exclusivo[0].disabled = true;
-				}
 				// Aparición Mariana
-				if (v.desde.value > 33) {
+				if (v.ano.value > 33) {
 					v.ap_mar[0].disabled = false;
 					v.sectorApMar.classList.remove("ocultarPorAno");
 				} else {
@@ -481,14 +451,14 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (v.nombre.value && v.apodo.value) await validar.nombreApodo();
+		if (v.nombre.value && (!v.apodo || v.apodo.value)) await validar.nombreApodo();
 		if (v.mes_id.value) diasDelMes(v.mes_id, v.dia);
 		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
 			await validar.fechas();
 			validar.repetido();
 		}
-		if (v.ano && v.ano.value) await validar.ano();
-		if (v.desde && v.desde.value && v.hasta && v.hasta.value) await validar.desdeHasta();
+		if (v.entidad == "personajes" && v.ano.value) await validar.ano();
+		if (v.entidad == "hechos" && v.ano.value && v.hasta.value) await validar.desdeHasta();
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
@@ -543,7 +513,7 @@ window.addEventListener("load", async () => {
 			await validar[campo]();
 			feedback(OK, errores, true);
 		}
-		if (campo == "ano" || campo == "desde" || campo == "hasta") {
+		if (campo == "ano" || campo == "hasta") {
 			// Sólo números
 			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
 			// Impide guiones en el medio
@@ -565,8 +535,8 @@ window.addEventListener("load", async () => {
 		)
 			await validar.fechas();
 		if (campo == "repetido") validar.repetido();
-		if (campo == "ano") await validar.ano();
-		if ((campo == "desde" || campo == "hasta") && v.desde.value && v.hasta.value)
+		if (v.entidad == "personajes" && campo == "ano") await validar.ano();
+		if (v.entidad == "hechos" && (campo == "ano" || campo == "hasta") && v.ano.value && v.hasta.value)
 			await validar.desdeHasta();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") funcionSexo();

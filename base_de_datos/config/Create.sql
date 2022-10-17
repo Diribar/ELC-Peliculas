@@ -531,27 +531,27 @@ CREATE TABLE rclv_1personajes (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, creado_en, nombre) 
 VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre, apodo) VALUES
-(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús', 'Jesús'),
-(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús', 'Santa María'),
-(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús', 'San José')
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, sexo_id, creado_en, nombre, apodo) VALUES
+(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, 'V', '2022-03-16 23:25:20', 'Jesús', 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, 'M', '2022-03-16 23:25:20', 'María, madre de Jesús', 'Santa María'),
+(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, 'V', '2022-03-16 23:25:20', 'José, padre de Jesús', 'San José')
 ;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre, apodo)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, sexo_id, creado_en, nombre, apodo)
 VALUES 
-(21, 249, 1910, 'CFC', 'HAG', 'STM', 'REM', 2, 3, '2022-03-16 23:25:20', 'Teresa de Calcuta', 'Madre Teresa'),
-(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan XXIII', 'Juan XXIII'),
-(23,  31, 1815, 'CFC', 'HAG', 'STV', 'SCV', 2, 3, '2022-03-16 23:25:20', 'Juan Bosco', 'Don Bosco'),
-(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan Pablo II', 'Juan Pablo II'),
-(25, 107, 1844, 'CFC', 'HAG', 'STM', 'REM', 2, 3, '2022-03-16 23:25:20', 'Bernadette Soubirous', 'Bernadette'),
-(26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, 3, '2022-03-16 23:25:20', 'Martín Lutero', 'Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'ST' ,  'LC', 2, 3, '2022-03-16 23:25:20', 'Pastorcitos de Fátima', 'Pastorcitos de Fátima')
+(21, 249, 1910, 'CFC', 'HAG', 'STM', 'REM', 2, 3, 'M', '2022-03-16 23:25:20', 'Teresa de Calcuta', 'Madre Teresa'),
+(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, 'V', '2022-03-16 23:25:20', 'Juan XXIII', 'Juan XXIII'),
+(23,  31, 1815, 'CFC', 'HAG', 'STV', 'SCV', 2, 3, 'V', '2022-03-16 23:25:20', 'Juan Bosco', 'Don Bosco'),
+(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, 'V', '2022-03-16 23:25:20', 'Juan Pablo II', 'Juan Pablo II'),
+(25, 107, 1844, 'CFC', 'HAG', 'STM', 'REM', 2, 3, 'M', '2022-03-16 23:25:20', 'Bernadette Soubirous', 'Bernadette'),
+(26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, 3, 'V', '2022-03-16 23:25:20', 'Martín Lutero', 'Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'ST' ,  'LC', 2, 3, 'M', '2022-03-16 23:25:20', 'Pastorcitos de Fátima', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, status_registro_id, creado_en, nombre, apodo)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, status_registro_id, sexo_id, creado_en, nombre, apodo)
 VALUES 
-(51,  30, 1869, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Mohandas Gandhi', 'Mahatma Gandhi'),
-(52, 340, 1918, 'VPC', 2, 3, '2022-03-16 23:25:20', 'Nelson Mandela' , 'Madiba Mandela')
+(51,  30, 1869, 'VPC', 2, 3, 'V', '2022-03-16 23:25:20', 'Mohandas Gandhi', 'Mahatma Gandhi'),
+(52, 340, 1918, 'VPC', 2, 3, 'V', '2022-03-16 23:25:20', 'Nelson Mandela' , 'Madiba Mandela')
 ;
 UPDATE rclv_1personajes SET perenne = true;
 CREATE TABLE rclv_2hechos (
@@ -605,23 +605,23 @@ CREATE TABLE rclv_2hechos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES (1, 1, 1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
-INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(11, 1, 1, 1, 1, 359,  0, 2, 3, '2022-03-16 23:25:20', 'Navidad'),
-(12, 1, 1, 1, 1, 100, 33, 2, 3, '2022-03-16 23:25:20', 'Semana Santa'),
-(13, 1, 1, 1, 1, 105, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
-(14, 1, 1, 1, 1, 107, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
-(15, 1, 0, 1, 1, 150, 33, 2, 3, '2022-03-16 23:25:20', 'Pentecostés')
+(11, 1, 1, 1, 1, 359,  0,  0, 2, 3, '2022-03-16 23:25:20', 'Navidad'),
+(12, 1, 1, 1, 1, 100, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Semana Santa'),
+(13, 1, 1, 1, 1, 105, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
+(14, 1, 1, 1, 1, 107, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
+(15, 1, 0, 1, 1, 150, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Pentecostés')
 ;
-INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
+(16, 1, 1, 42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(21, 210, 1914, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
-(22, 245, 1942, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
+(21, 210, 1914, 1918, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
+(22, 245, 1939, 1945, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
 ;
 UPDATE rclv_2hechos SET perenne = true;
 ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
