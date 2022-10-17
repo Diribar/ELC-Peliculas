@@ -63,14 +63,24 @@ window.addEventListener("load", async () => {
 
 	// Valores para !valores
 	if (!v.valores) {
-		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.cfc = document.querySelectorAll("#preguntas .cfc");
 		v.preguntas = document.querySelector("#dataEntry #preguntas");
 	}
 	// Valores para personajes
 	if (v.personajes) {
-		// Inputs
 		v.apodo = document.querySelector("#dataEntry input[name='apodo']");
+		v.ano = document.querySelector("#dataEntry input[name='ano']");
+		v.campos = [
+			"categoria_id",
+			"sexo_id",
+			"rol_iglesia_id",
+			"enProcCan",
+			"proceso_id",
+			"cnt",
+			"ap_mar",
+			"ap_mar_id",
+		];
+		// Inputs
 		v.categoria_id = document.querySelectorAll("input[name='categoria_id']");
 		v.sexo_id = document.querySelectorAll("input[name='sexo_id']");
 		v.rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
@@ -79,20 +89,23 @@ window.addEventListener("load", async () => {
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		v.ap_mar = document.querySelectorAll("input[name='ap_mar']");
 		v.ap_mar_id = document.querySelector("select[name='ap_mar_id']");
-		v.santosanta = document.querySelector("#dataEntry #santosanta");
 		// Para ocultar
+		v.santosanta = document.querySelector("#dataEntry #santosanta");
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 	}
 	// Valores para hechos
 	if (v.hechos) {
+		v.desde = document.querySelector("#dataEntry input[name='desde']");
+		v.hasta = document.querySelector("#dataEntry input[name='hasta']");
+		v.campos = ["solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"];
 		// Inputs
 		v.solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
 		v.jss = document.querySelectorAll("input[name='jss']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		v.exclusivo = document.querySelectorAll("input[name='exclusivo']");
 		v.ap_mar = document.querySelectorAll("input[name='ap_mar']");
-		// Para ocultarrutaValidacion
+		// Para ocultar
 		v.sector_jss = document.querySelector("#preguntas #sector_jss");
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sectorApMar = document.querySelector("#preguntas #sectorApMar");
@@ -165,65 +178,114 @@ window.addEventListener("load", async () => {
 			OK.ano = !errores.ano;
 			//
 			if (OK.ano) {
-				if (v.personajes) {
-					// Contemporáneo de Jesús
-					if (v.ano.value < -50 || v.ano.value > 100) {
-						v.cnt[1].checked = true;
-						v.cnt[1].disabled = false;
-						v.cnt[0].disabled = true;
-						v.sector_cnt.classList.add("ocultarPorAno");
-					} else {
-						v.cnt[0].disabled = false;
-						v.sector_cnt.classList.remove("ocultarPorAno");
-					}
-					// Aparición Mariana
-					if (v.ano.value < 0) {
-						v.ap_mar[1].checked = true;
-						v.ap_mar[1].disabled = false;
-						v.ap_mar[0].disabled = true;
-						v.sectorAp_mar.classList.add("ocultarPorAno");
-					} else {
-						v.ap_mar[0].disabled = false;
-						v.sectorAp_mar.classList.remove("ocultarPorAno");
-					}
+				// Contemporáneo de Jesús
+				if (v.ano.value < -50 || v.ano.value > 100) {
+					v.cnt[1].checked = true;
+					v.cnt[1].disabled = false;
+					v.cnt[0].disabled = true;
+					v.sector_cnt.classList.add("ocultarPorAno");
+				} else {
+					v.cnt[0].disabled = false;
+					v.sector_cnt.classList.remove("ocultarPorAno");
 				}
-				if (v.hechos) {
-					// Vida de Jesús
-					if (v.ano.value > 33) {
-						v.jss[1].checked = true;
-						v.jss[1].disabled = false;
-						v.jss[0].disabled = true;
-						v.sector_jss.classList.add("ocultarPorAno");
-					} else {
-						v.jss[0].disabled = false;
-						v.sector_jss.classList.remove("ocultarPorAno");
-					}
-					// Contemp. Jesús
-					if (v.ano.value > 100) {
-						v.cnt[1].checked = true;
-						v.cnt[1].disabled = false;
-						v.cnt[0].disabled = true;
-						v.sector_cnt.classList.add("ocultarPorAno");
-					} else {
-						v.cnt[0].disabled = false;
-						v.sector_cnt.classList.remove("ocultarPorAno");
-					}
-					// Aparición Mariana
-					if (v.ano.value < 33) {
-						v.ap_mar[1].checked = true;
-						v.ap_mar[1].disabled = false;
-						v.ap_mar[0].disabled = true;
-						v.sectorApMar.classList.add("ocultarPorAno");
-					} else {
-						v.ap_mar[0].disabled = false;
-						v.sectorApMar.classList.remove("ocultarPorAno");
-					}
+				// Aparición Mariana
+				if (v.ano.value < 33) {
+					v.ap_mar[1].checked = true;
+					v.ap_mar[1].disabled = false;
+					v.ap_mar[0].disabled = true;
+					v.sectorAp_mar.classList.add("ocultarPorAno");
+				} else {
+					v.ap_mar[0].disabled = false;
+					v.sectorAp_mar.classList.remove("ocultarPorAno");
 				}
+				await mostrarRCLI[v.entidad](false);
 				v.preguntas.classList.remove("ocultar");
 			} else v.preguntas.classList.add("ocultar");
 
 			// Fin
-			await mostrarRCLI[v.entidad](false);
+			return;
+		},
+		desde: async () => {
+			// Verifica errores en el sector 'desdeHasta', campo 'desde'
+			let params = "&ano=" + v.desde.value;
+			errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
+			if (errores.desdeHasta) {
+				errores.desdeHasta += " (año 'desde')";
+				OK.desdeHasta = false;
+			}
+			// Fin
+			return;
+		},
+		hasta: async () => {
+			// Verifica errores en el sector 'desdeHasta', campo 'hasta'
+			let params = "&ano=" + v.hasta.value;
+			errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
+			if (errores.desdeHasta) {
+				errores.desdeHasta += " (año 'hasta')";
+				OK.desdeHasta = false;
+			}
+			// Fin
+			return;
+		},
+		desdeHasta: async () => {
+			// Verifica errores en el sector 'desdeHasta'
+			let params = "&entidad=" + v.entidad + "&desde=" + v.desde.value + "&hasta=" + v.hasta.value;
+			errores.desdeHasta = await fetch(v.rutaValidacion + "desdeHasta" + params).then((n) => n.json());
+			// Consolidar la info
+			OK.desdeHasta = !errores.desdeHasta;
+			// Impacto en RCLV
+			if (OK.desdeHasta) {
+				// Vida de Jesús
+				if (
+					(v.desde.value >= 0 && v.desde.value <= 33) ||
+					(v.hasta.value >= 0 && v.hasta.value <= 33)
+				) {
+					v.jss[0].checked = true;
+					v.jss[0].disabled = false;
+					v.jss[1].disabled = true;
+				} else {
+					v.jss[1].checked = true;
+					v.jss[1].disabled = false;
+					v.jss[0].disabled = true;
+				}
+				// Contemp. Jesús
+				if (
+					(v.desde.value >= 0 && v.desde.value <= 100) ||
+					(v.hasta.value >= 0 && v.hasta.value <= 100)
+				) {
+					v.cnt[0].checked = true;
+					v.cnt[0].disabled = false;
+					v.cnt[1].disabled = true;
+				} else {
+					v.cnt[1].checked = true;
+					v.cnt[1].disabled = false;
+					v.cnt[0].disabled = true;
+				}
+				// Exclusivo
+				if (v.desde.value >= 0 && v.hasta.value <= 100) {
+					v.exclusivo[0].checked = true;
+					v.exclusivo[0].disabled = false;
+					v.exclusivo[1].disabled = true;
+				} else {
+					v.exclusivo[1].checked = true;
+					v.exclusivo[1].disabled = false;
+					v.exclusivo[0].disabled = true;
+				}
+				// Aparición Mariana
+				if (v.desde.value > 33) {
+					v.ap_mar[0].disabled = false;
+					v.sectorApMar.classList.remove("ocultarPorAno");
+				} else {
+					v.ap_mar[1].checked = true;
+					v.ap_mar[1].disabled = false;
+					v.ap_mar[0].disabled = true;
+					v.sectorApMar.classList.add("ocultarPorAno");
+				}
+				// Mostrar RCLI
+				await mostrarRCLI[v.entidad](false);
+				v.preguntas.classList.remove("ocultar");
+			} else v.preguntas.classList.add("ocultar");
+			// Fin
 			return;
 		},
 	};
@@ -328,62 +390,38 @@ window.addEventListener("load", async () => {
 	};
 	let mostrarRCLI = {
 		personajes: async function (mostrarErrores) {
-			let num = -1;
+			// Variables
 			let params = "&entidad=" + v.entidad;
-			let inputCategID, inputGenero, inputRol, inputProcCan, inputProcID, inputCnt, inputAM, AM_id;
-			// categoria_id
-			[params, inputCategID] = this.inputRadio(params, num, "categoria_id", v.categoria_id);
-			// Sexo
-			num++;
-			if (inputCategID != "CFC") this.limpiar(num);
-			else {
-				[params, inputGenero] = this.inputRadio(params, num, "sexo_id", v.sexo_id);
-				// Rol en la Iglesia
-				num++;
-				if (!inputGenero) this.limpiar(num);
+			let inputs = {};
+			// Rutina
+			for (let indice = 0; indice < v.campos.length; indice++) {
+				// Obtiene el campo
+				let campo = v.campos[indice];
+				// Obtiene el valor del campo
+				[params, inputs[campo]] = this.obtieneValores(params, campo);
+				// Particularidad para 'sexo_id'
+				if (campo == "sexo_id" && inputs.categoria_id != "CFC") {
+					this.ocultar(indice + 1);
+					break;
+				}
+				// Particularidades para enProcCan y ap_mar
+				if ((campo == "enProcCan" || campo == "ap_mar") && inputs[campo] == "0") {
+					// Oculta el siguiente campo
+					v.cfc[indice + 1].classList.add("ocultar");
+					// Muestra el campo subsiguiente
+					if (indice + 2 < v.campos.length) v.cfc[indice + 2].classList.remove("ocultar");
+					// Saltea el campo subsiguiente
+					indice++;
+					// Fin
+					continue;
+				}
+				// Particularidad para el último campo
+				if (indice == v.campos.length - 1) break;
+				// Caso genérico
+				if (inputs[campo]) v.cfc[indice + 1].classList.remove("ocultar");
 				else {
-					[params, inputRol] = this.inputSelect(params, num, "rol_iglesia_id", v.rol_iglesia_id);
-					// En proceso de canonización
-					num++;
-					if (!inputRol) this.limpiar(num);
-					else {
-						[params, inputProcCan] = this.inputRadio(params, num, "enProcCan", v.enProcCan);
-						// Proceso de canonizacion ID
-						num++;
-						if (!inputProcCan) this.limpiar(num);
-						else {
-							if (inputProcCan == "1")
-								[params, inputProcID] = this.inputSelect(
-									params,
-									num,
-									"proceso_id",
-									v.proceso_id
-								);
-							else v.cfc[num].classList.add("ocultar");
-							// Contemporáneo
-							num++;
-							if (inputProcCan != "0" && !inputProcID) this.limpiar(v.num);
-							else {
-								[params, inputCnt] = this.inputRadio(params, num, "cnt", v.cnt);
-								// Aparición mariana - SI/NO
-								num++;
-								if (!inputCnt) this.limpiar(num);
-								else {
-									[params, inputAM] = this.inputRadio(params, num, "ap_mar", v.ap_mar);
-									// Aparición mariana - Cuál
-									num++;
-									if (inputAM != "1") this.limpiar(num);
-									else
-										[params, AM_id] = this.inputSelect(
-											params,
-											num,
-											"ap_mar_id",
-											v.ap_mar_id
-										);
-								}
-							}
-						}
-					}
+					this.ocultar(indice + 1);
+					break;
 				}
 			}
 			// OK y Errores
@@ -395,38 +433,27 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		hechos: async function (mostrarErrores) {
-			let num = -1;
+			// Variables
 			let params = "&entidad=" + v.entidad;
-			let inputCFC, inputJSS, inputCNT, inputEXC, inputAM;
-			// Sólo CFC
-			[params, inputCFC] = this.inputRadio(params, num, "solo_cfc", v.solo_cfc);
-			// Jesús
-			num++;
-			if (inputCFC != "1") this.limpiar(num);
-			else {
-				[params, inputJSS] = this.inputRadio(params, num, "jss", v.jss);
-				// Contemporaneos
-				num++;
-				if (!inputJSS) this.limpiar(num);
+			let inputs = {};
+			// Rutina
+			for (let indice = 0; indice < v.campos.length; indice++) {
+				// Obtiene el campo
+				let campo = v.campos[indice];
+				// Obtiene el valor del campo
+				[params, inputs[campo]] = this.obtieneValores(params, campo);
+				// Particularidad para 'solo_cfc'
+				if (campo == "solo_cfc" && inputs[campo] != "1") {
+					this.ocultar(indice + 1);
+					break;
+				}
+				// Particularidad para el último campo
+				if (indice == v.campos.length - 1) break;
+				// Caso genérico
+				if (inputs[campo]) v.cfc[indice + 1].classList.remove("ocultar");
 				else {
-					if (inputJSS == "1") {
-						v.cnt[0].checked = true;
-						v.cnt[0].disabled = false;
-						v.cnt[1].disabled = true;
-						sector_cnt.classList.add("ocultarPorRCLI");
-					} else {
-						v.cnt[1].disabled = false;
-						sector_cnt.classList.remove("ocultarPorRCLI");
-					}
-					[params, inputCNT] = this.inputRadio(params, num, "cnt", v.cnt);
-					// Exclusivo
-					num++;
-					if (inputJSS != "1" && inputCNT != "1") this.limpiar(num);
-					else [params, inputEXC] = this.inputRadio(params, num, "exclusivo", v.exclusivo);
-					// Aparición Mariana
-					num++;
-					if (inputJSS != "0" || inputCNT != "0") this.limpiar(num);
-					else [params, inputAM] = this.inputRadio(params, num, "ap_mar", v.ap_mar);
+					this.ocultar(indice + 1);
+					break;
 				}
 			}
 			// OK y Errores
@@ -437,20 +464,26 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		limpiar: (num) => {
-			for (let i = num; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
+		ocultar: (indice) => {
+			for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
 			return;
 		},
-		inputRadio: (params, num, campo, input) => {
-			if (num >= 0) v.cfc[num].classList.remove("ocultar");
-			let inputElegido = input[0].checked ? input[0].value : input[1].checked ? input[1].value : "";
+		obtieneValores: (params, campo) => {
+			// Obtiene el inputElegido
+			let input = v[campo];
+			let inputElegido =
+				v[campo][0].localName == "input"
+					? input[0].checked
+						? input[0].value
+						: input[1].checked
+						? input[1].value
+						: ""
+					: v[campo][0].localName == "option"
+					? input.value
+					: "";
 			params += "&" + campo + "=" + inputElegido;
+			// Fin
 			return [params, inputElegido];
-		},
-		inputSelect: (params, num, campo, input) => {
-			v.cfc[num].classList.remove("ocultar");
-			params += "&" + campo + "=" + input.value;
-			return [params, input.value];
 		},
 	};
 	let startUp = async () => {
@@ -461,26 +494,22 @@ window.addEventListener("load", async () => {
 			validar.repetido();
 		}
 		if (v.ano && v.ano.value) await validar.ano();
-		if (!v.valores) {
-			if (v.personajes && v.categoria_id[0].checked) funcionSexo();
-			if (
-				(v.personajes && (v.categoria_id[0].checked || v.categoria_id[1].checked)) ||
-				(v.hechos && (v.solo_cfc[0].checked || v.solo_cfc[1].checked))
-			)
-				await mostrarRCLI[v.entidad](false);
-		}
+		if (v.desde && v.desde.value && v.hasta && v.hasta.value) await validar.desdeHasta();
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
-		if (!v.valores) sectores.push("ano", "RCLI");
+		if (v.personajes) sectores.push("ano");
+		if (v.hechos) sectores.push("desdeHasta");
+		if (!v.valores) sectores.push("RCLI");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
-			OK[sector] && (sector != "nombre" || !ocultarOK)
+			//OK[sector] && ((sector != "nombre" && sector != "desdeHasta") || !ocultarOK)
+			OK[sector] && !ocultarOK
 				? v.iconoOK[i].classList.remove("ocultar")
 				: v.iconoOK[i].classList.add("ocultar");
-			// Ícono de error
+			// Íconos de error
 			errores[sector]
 				? v.iconoError[i].classList.remove("ocultar")
 				: v.iconoError[i].classList.add("ocultar");
@@ -506,34 +535,29 @@ window.addEventListener("load", async () => {
 	// Add Event Listeners - compatible RCLV x 3
 	v.dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
-		if (campo == "nombre") {
+		if (campo == "nombre" || campo == "apodo") {
 			// Quita los caracteres no deseados
-			v.nombre.value = v.nombre.value.replace(/[^a-záéíóúüñ'\s]/gi, "").replace(/ +/g, " ");
+			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
 			// Quita los caracteres que exceden el largo permitido
-			if (v.nombre.value.length > 30) v.nombre.value = v.nombre.value.slice(0, 30);
+			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Agrega el link a los íconos de búsqueda
-			if (v.nombre.value.length > 3) {
+			if (campo == "nombre" && v.nombre.value && v.nombre.value.length > 3) {
 				v.wiki.href = v.url_wiki + v.nombre.value;
 				v.santopedia.href = v.url_santopedia + v.nombre.value;
 			}
 			// Revisa los errores y los publica si existen
-			await validar.nombre();
+			await validar[campo]();
 			feedback(OK, errores, true);
 		}
-		if (campo == "apodo") {
-			// Quita los caracteres no deseados
-			v.apodo.value = v.apodo.value.replace(/[^a-záéíóúüñ'\s]/gi, "").replace(/ +/g, " ");
-			// Quita los caracteres que exceden el largo permitido
-			if (v.apodo.value.length > 30) v.apodo.value = v.apodo.value.slice(0, 30);
+		if (campo == "ano" || campo == "desde" || campo == "hasta") {
+			// Sólo números
+			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
+			// Impide guiones en el medio
+			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
 			// Revisa los errores y los publica si existen
-			await validar.apodo();
+			await validar[campo]();
 			feedback(OK, errores, true);
-		}
-		if (campo == "ano") {
-			v.ano.value = v.ano.value.replace(/[^-\d]/g, "");
-			if (v.ano.value.lastIndexOf("-") > 0) v.ano.value = v.ano.value.replace(/[-]/g, "");
-			if (parseInt(v.ano.value) > new Date().getFullYear()) v.ano.value = new Date().getFullYear();
-			if (parseInt(v.ano.value) < -32768) v.ano.value = -32768;
+			console.log(OK, errores);
 		}
 	});
 	v.dataEntry.addEventListener("change", async (e) => {
@@ -548,8 +572,9 @@ window.addEventListener("load", async () => {
 		)
 			await validar.fechas();
 		if (campo == "repetido") validar.repetido();
-		// Campos para !valores
-		if (!v.valores && campo == "ano") await validar.ano();
+		if (campo == "ano") await validar.ano();
+		if ((campo == "desde" || campo == "hasta") && v.desde.value && v.hasta.value)
+			await validar.desdeHasta();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") funcionSexo();
 		if (!v.valores && v.camposRCLI().includes(campo)) await mostrarRCLI[v.entidad](false);
@@ -569,13 +594,13 @@ window.addEventListener("load", async () => {
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		if (v.botonSubmit.classList.contains("inactivo")) {
-			await validar.nombre("Completo");
+			await validar.nombreApodo();
 			await validar.fechas();
 			validar.repetido();
-			if (!v.valores) {
-				await validar.ano();
-				await mostrarRCLI[v.entidad](true);
-			}
+			if (v.personajes) await validar.ano();
+			if (v.hechos) await validar.desdeHasta();
+			if (!v.valores) await mostrarRCLI[v.entidad](true);
+			// Fin
 			feedback(OK, errores);
 		} else {
 			// Grabar cambios e ir a la vista de origen
