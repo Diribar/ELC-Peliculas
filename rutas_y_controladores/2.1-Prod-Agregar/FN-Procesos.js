@@ -92,7 +92,7 @@ module.exports = {
 			}
 			// año de estreno, duración, país de origen
 			if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
-			if (datosAPI.runtime != null) datos.duracion = datosAPI.runtime;
+			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
 				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
 			// sinopsis, avatar
@@ -101,12 +101,12 @@ module.exports = {
 				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = consolidarValores(datosAPI.production_companies);
+				datos.produccion = limpiarValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				datos.direccion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				datos.guion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				datos.musica = consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				datos.direccion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
@@ -189,25 +189,25 @@ module.exports = {
 				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				produccion += consolidarValores(datosAPI.production_companies) + ", ";
+				produccion += limpiarValores(datosAPI.production_companies) + ", ";
 			// Crew
 			if (datosAPI.crew.length > 0) {
 				direccion +=
-					consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
-				guion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
-				musica += consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
+					limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+				guion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
+				musica += limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
 			// Cast
 			if (datosAPI.cast.length > 0) actuacion += funcionCast(datosAPI.cast) + ", ";
 		}
 		// Procesar los resultados
 		let cantCapitulos = datos.capitulosTMDB_id.length;
-		if (paises_id) exportar.paises_id = datosColeccion(paises_id, cantCapitulos).replace(/,/g, "");
-		if (produccion) exportar.produccion = datosColeccion(produccion, cantCapitulos);
-		if (direccion) exportar.direccion = datosColeccion(direccion, cantCapitulos);
-		if (guion) exportar.guion = datosColeccion(guion, cantCapitulos);
-		if (musica) exportar.musica = datosColeccion(musica, cantCapitulos);
-		if (actuacion) exportar.actuacion = datosColeccion(actuacion, cantCapitulos);
+		if (paises_id) exportar.paises_id = consolidarValores(paises_id, cantCapitulos).replace(/,/g, "");
+		if (produccion) exportar.produccion = consolidarValores(produccion, cantCapitulos);
+		if (direccion) exportar.direccion = consolidarValores(direccion, cantCapitulos);
+		if (guion) exportar.guion = consolidarValores(guion, cantCapitulos);
+		if (musica) exportar.musica = consolidarValores(musica, cantCapitulos);
+		if (actuacion) exportar.actuacion = consolidarValores(actuacion, cantCapitulos);
 		// Fin
 		return exportar;
 	},
@@ -298,13 +298,12 @@ module.exports = {
 			if (datosAPI.created_by.length > 0)
 				datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = consolidarValores(datosAPI.production_companies);
-			// Credits
+				datos.produccion = limpiarValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				datos.direccion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				datos.guion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				datos.musica = consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				datos.direccion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
@@ -343,9 +342,9 @@ module.exports = {
 		if (datosCap.name) datos.nombre_castellano = datosCap.name;
 		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
 		if (datosCap.crew.length > 0) {
-			datos.direccion = consolidarValores(datosCap.crew.filter((n) => n.department == "Directing"));
-			datos.guion = consolidarValores(datosCap.crew.filter((n) => n.department == "Writing"));
-			datos.musica = consolidarValores(datosCap.crew.filter((n) => n.department == "Sound"));
+			datos.direccion = limpiarValores(datosCap.crew.filter((n) => n.department == "Directing"));
+			datos.guion = limpiarValores(datosCap.crew.filter((n) => n.department == "Writing"));
+			datos.musica = limpiarValores(datosCap.crew.filter((n) => n.department == "Sound"));
 		}
 		let actuacion = [];
 		if (datosTemp.cast.length) actuacion.push(...datosTemp.cast);
@@ -487,7 +486,7 @@ let funcionParentesis = (dato) => {
 	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
-let datosColeccion = (datos, cantCapitulos) => {
+let consolidarValores = (datos, cantCapitulos) => {
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
 	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
@@ -525,7 +524,7 @@ let datosColeccion = (datos, cantCapitulos) => {
 	resultado = resultado.join(", ");
 	return resultado;
 };
-let consolidarValores = (datos) => {
+let limpiarValores = (datos) => {
 	// Variables
 	let largo = 100;
 	let valores = [];

@@ -259,6 +259,7 @@ module.exports = {
 		return {
 			personajes: [
 				"nombre",
+				"apodo",
 				"dia_del_ano_id",
 				"ano",
 				"categoria_id",

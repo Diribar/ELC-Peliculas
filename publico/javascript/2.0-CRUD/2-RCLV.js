@@ -454,7 +454,7 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (v.nombre.value && v.apodo.value) await validar.nombre("Completo");
+		if (v.nombre.value && v.apodo.value) await validar.nombreApodo();
 		if (v.mes_id.value) diasDelMes(v.mes_id, v.dia);
 		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
 			await validar.fechas();
