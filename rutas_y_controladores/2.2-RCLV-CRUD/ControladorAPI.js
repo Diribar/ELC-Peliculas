@@ -13,12 +13,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	validarParcial: async (req, res) => {
+	validar: async (req, res) => {
 		let mensaje = await validar[req.query.funcion](req.query);
 		return res.json(mensaje);
-	},
-	validarConsolidado: async (req, res) => {
-		let errores = await validar.consolidado(req.query);
-		return res.json(errores);
 	},
 };

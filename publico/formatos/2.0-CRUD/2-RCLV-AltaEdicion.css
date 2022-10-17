@@ -31,7 +31,7 @@
 #dataEntry #datos #valoresNombre .input {width: 135px; padding-left: 5px;}
 #dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
-#dataEntry #datos .input[name='ano'] {width: 50px; margin-left: 10px; text-align: center;}
+#dataEntry #datos .input.angosto {width: 50px; margin-left: 5px; text-align: center;}
 #dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
