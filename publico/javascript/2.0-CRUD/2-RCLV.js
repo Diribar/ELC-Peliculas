@@ -236,30 +236,24 @@ window.addEventListener("load", async () => {
 			// Impacto en RCLV
 			if (OK.desdeHasta) {
 				// Vida de Jesús
-				if (
-					(v.desde.value >= 0 && v.desde.value <= 33) ||
-					(v.hasta.value >= 0 && v.hasta.value <= 33)
-				) {
-					v.jss[0].checked = true;
-					v.jss[0].disabled = false;
-					v.jss[1].disabled = true;
-				} else {
+				if (v.desde.value > 33 || v.hasta.value < 0) {
 					v.jss[1].checked = true;
 					v.jss[1].disabled = false;
 					v.jss[0].disabled = true;
+				} else {
+					v.jss[0].checked = true;
+					v.jss[0].disabled = false;
+					v.jss[1].disabled = true;
 				}
 				// Contemp. Jesús
-				if (
-					(v.desde.value >= 0 && v.desde.value <= 100) ||
-					(v.hasta.value >= 0 && v.hasta.value <= 100)
-				) {
-					v.cnt[0].checked = true;
-					v.cnt[0].disabled = false;
-					v.cnt[1].disabled = true;
-				} else {
+				if (v.desde.value > 100 || v.hasta.value < 0) {
 					v.cnt[1].checked = true;
 					v.cnt[1].disabled = false;
 					v.cnt[0].disabled = true;
+				} else {
+					v.cnt[0].checked = true;
+					v.cnt[0].disabled = false;
+					v.cnt[1].disabled = true;
 				}
 				// Exclusivo
 				if (v.desde.value >= 0 && v.hasta.value <= 100) {
