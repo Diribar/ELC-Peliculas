@@ -105,7 +105,7 @@ module.exports = {
 		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
 		let prodsYaEnBD = procesos.prodsYaEnBD(entProductos, RCLV);
-		let prodsNuevos = await procesos.prodsNuevos(RCLV);
+		//let prodsNuevos = await procesos.prodsNuevos(RCLV);
 		let cantProdsEnBD = prodsYaEnBD.length;
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);
@@ -117,7 +117,7 @@ module.exports = {
 			omitirImagenDerecha: true,
 			omitirFooter: false,
 			prodsYaEnBD,
-			prodsNuevos,
+			// prodsNuevos,
 			procCanoniz: await procesos.procCanoniz(RCLV),
 			RCLVnombre: RCLV.nombre,
 			entidad,

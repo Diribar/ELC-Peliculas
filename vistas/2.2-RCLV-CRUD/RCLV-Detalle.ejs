@@ -28,9 +28,8 @@
 		<div id="cuadroDeResultados">
 			<i class="fa-solid fa-caret-left mover inactivo"></i>
 			<ul id="listado">
-				<%- include('RCLV-DT1-ProdsYaEnBD', {prodsYaEnBD}) %>
-				<%- include('PA2-DS2-IngrManual') %>
-				<%- include('RCLV-DT2-ProdsNuevos', { prodsNuevos }) %>
+				<% if (prodsYaEnBD.length) { %><%- include('RCLV-DT1-ProdsYaEnBD', {prodsYaEnBD}) %>
+				<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
 			</ul>
 			<i class="fa-solid fa-caret-right mover inactivo"></i>
 		</div>
