@@ -34,15 +34,17 @@ module.exports = {
 	// Miscelaneas
 	redireccionar: async (req, res) => {
 		// Variables
-		let {origen, prodEntidad, prodID} = req.query;
+		let {origen, prodEntidad, prodID, entidad, id} = req.query;
 		// Si es 'tablero', ir a tablero
 		if (origen == "DP") origen = "/producto/agregar/datos-personalizados";
 		if (origen == "ED") origen = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
-		if (origen == "DT") origen = "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID;
+		if (origen == "DT_RCLV") origen = "/rclv/detalle/?entidad=" + entidad + "&id=" + id;
 		if (origen == "tableroUs") origen = "/revision/usuarios/tablero-de-control";
 		if (origen == "tableroEnts") origen = "/revision/tablero-de-control";
 		if (!origen) origen = "/";
 		// Redireccionar a la vista que corresponda
 		return res.redirect(origen);
+		// Ya no se usa...
+		// if (origen == "DTP") origen = "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID;
 	},
 };

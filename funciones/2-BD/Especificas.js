@@ -18,7 +18,7 @@ module.exports = {
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondiciones: (palabras, campos) => {
+	quickSearchCondics: (palabras, campos, userID) => {
 		//Convertir las palabras en un array
 		palabras = palabras.split(" ");
 		// Crear el objeto literal con los valores a buscar
@@ -26,6 +26,7 @@ module.exports = {
 		for (let campo of campos) {
 			let condicionesDeCampo = [];
 			for (let palabra of palabras) {
+				// Que encuentre la palabra en el campo
 				let condicionDePalabra = {
 					[Op.or]: [
 						{[campo]: {[Op.like]: "% " + palabra + "%"}},
@@ -40,8 +41,19 @@ module.exports = {
 			// Almacena la condición en una matriz
 			valoresOR.push(resumenDeCampo);
 		}
-		// Se fija que la condición se cumpla en alguno de los campos
-		let condiciones = {[Op.or]: valoresOR};
+		// Se fija que la condición de palabras se cumpla en alguno de los campos
+		let condicionPalabra = {[Op.or]: valoresOR};
+		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
+		let stGrCreadoID = status_registro.filter((n) => n.gr_creado).map((n) => n.id);
+		let stAprobadoID = status_registro.find((n) => n.aprobado).id;
+		let condicionStatus = {
+			[Op.or]: [
+				{status_registro_id: stAprobadoID},
+				{[Op.and]: [{status_registro_id: stGrCreadoID}, {creado_por_id: userID}]},
+			],
+		};
+		// Consolidado
+		let condiciones = {[Op.and]: [condicionPalabra, condicionStatus]};
 		// Fin
 		return condiciones;
 	},

@@ -18,10 +18,11 @@ module.exports = {
 		let familias = ["producto", "rclv"];
 		let condiciones;
 		let resultados = [];
+		let userID = req.session.usuario ? req.session.usuario.id : 0;
 		// Rutina
 		for (let i = 0; i < entidades.length; i++) {
 			// Obtiene las condiciones
-			condiciones = BD_especificas.quickSearchCondiciones(req.query.palabras, campos[i]);
+			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, campos[i], userID);
 			// Obtiene los registros que cumplen las condiciones
 			let resultado = await BD_especificas.quickSearchRegistros(
 				condiciones,

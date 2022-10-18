@@ -559,6 +559,7 @@ CREATE TABLE rclv_2hechos (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
+	hasta SMALLINT NULL,
 	perenne BOOLEAN DEFAULT 0,
 	
 	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
@@ -690,6 +691,7 @@ CREATE TABLE rclv_4edicion (
 	nombre VARCHAR(30) NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
+	hasta SMALLINT NULL,
 	ap_mar BOOLEAN NULL,
 
 	/* Campos para PERSONAJES */

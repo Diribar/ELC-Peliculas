@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
+		hasta: {type: dt.INTEGER},
 		ap_mar: {type: dt.BOOLEAN},
 
 		// Campos para PERSONAJES
