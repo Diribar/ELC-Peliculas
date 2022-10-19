@@ -11,4 +11,4 @@
 #cuerpo #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
 #cuerpo #cuadro-de-texto .bloque h2 {margin-bottom: 5px;}
 #cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;}
-#cuerpo #cuadro-de-texto .bloque ul li {margin-bottom: 5px; font-size: 1.1rem; color:rgb(102,51,0);}
+.bloque p, .bloque ul * {margin-bottom: 5px; font-size: 1.1rem; color:rgb(102,51,0);}

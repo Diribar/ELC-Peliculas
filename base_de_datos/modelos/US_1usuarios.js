@@ -13,6 +13,7 @@ module.exports = (sequelize, dt) => {
 		rol_iglesia_id: {type: dt.STRING(3)},
 		rol_usuario_id: {type: dt.INTEGER},
 		bloqueo_perm_inputs: {type: dt.BOOLEAN},
+		mostrar_cartel_respons: {type: dt.BOOLEAN},
 		autorizado_fa: {type: dt.BOOLEAN},
 		docum_numero: {type: dt.STRING(15)},
 		docum_pais_id: {type: dt.STRING(2)},

@@ -8,7 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables
 	req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.session.usuario.email);
-	const usuario = req.session.usuario;
+	let usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 
@@ -26,6 +26,8 @@ module.exports = async (req, res, next) => {
 		}
 		// Actualizar el registro
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
+		// Actualizar la variable usuario
+		usuario = {...usuario, ...datos};
 	};
 	let usuarioPenalizado = () => {
 		// Variables
@@ -135,15 +137,15 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 
-	// VERIFICACIÓN 1: Penalidad acumulada
+	// Penalidad acumulada
 	penalidadAcum();
-	// VERIFICACIÓN 2: Usuario penalizado
+	// VERIFICACIÓN 1: Usuario penalizado
 	if (!informacion) informacion = usuarioPenalizado();
-	// VERIFICACIÓN 3: Tiene identidad validada
+	// VERIFICACIÓN 2: Tiene identidad validada
 	if (!informacion) informacion = identidadValidada();
-	// VERIFICACIÓN 4: Permiso input
+	// VERIFICACIÓN 3: Permiso input
 	if (!informacion) informacion = permInputs();
-	// VERIFICACIÓN 5: Nivel de Confianza
+	// VERIFICACIÓN 4: Nivel de Confianza
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Fin

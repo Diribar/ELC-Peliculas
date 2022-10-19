@@ -1,8 +1,8 @@
 <div id="tapar-el-fondo"></div>
-<div id="dataEntry">
+<div id="dataEntry" class="flex-col">
 	<p id="subtitulo">Estimad<%= usuario.sexo.letra_final %> <u><%= usuario.nombre %></u>:</p>
-	<p>Estás a punto de pedirnos el permiso para ingresar <em><u>Películas</u></em> y <em><u>Colecciones</u></em> a nuestra base de datos.</p>
-	<p>El contenido de nuestra base de datos es algo <strong><u>diferencial</u></strong> de nuestro sitio. Por favor tené en cuenta que:</p>
+	<p>El contenido de nuestra base de datos es algo <strong><u>diferencial</u></strong> de nuestro sitio.</p>
+	<p>Al ingresar productos, por favor tené en cuenta que:</p>
 	<ol>
 		<li class="ol">Cumpla siempre con alguna de estas características, o ambas:
 			<ul>
@@ -17,6 +17,6 @@
 		<!-- Salir -->
 		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
 		<!-- Submit -->
-		<a href="" tabindex="-1"><i class="fa-solid fa-circle-right icono" title="Avanzar"></i></a>
+		<a href="/producto/agregar/palabras-clave" autofocus><i class="fa-solid fa-circle-right icono" title="Avanzar"></i></a>
 	</div>
 </div>

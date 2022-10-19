@@ -14,12 +14,30 @@ module.exports = {
 		});
 	},
 	quienesSomos: (req, res) => {
-		const tema = "miscelaneas";
+		const tema = "institucional";
 		const codigo = "quienes-somos";
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Quiénes somos",
+		});
+	},
+	copyright: (req, res) => {
+		const tema = "institucional";
+		const codigo = "copyright";
+		return res.render("CMP-0Estructura", {
+			tema,
+			codigo,
+			titulo: "Nuestra Política sobre DA",
+		});
+	},
+	perfilProductos: (req, res) => {
+		const tema = "institucional";
+		const codigo = "perfil-productos";
+		return res.render("CMP-0Estructura", {
+			tema,
+			codigo,
+			titulo: "Perfil de Películas",
 		});
 	},
 

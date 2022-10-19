@@ -68,7 +68,7 @@ module.exports = {
 			prodsYaEnBD,
 			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
-			omitirImagenDerecha:true,
+			omitirImagenDerecha: true,
 		});
 	},
 	desambiguarGuardar: async (req, res) => {
@@ -495,6 +495,14 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
+		});
+	},
+	responsabilidad: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "prod_agregar",
+			codigo: "responsab",
+			titulo: "Responsabilidad",
+			urlSalir: req.session.urlSinPermInput,
 		});
 	},
 };

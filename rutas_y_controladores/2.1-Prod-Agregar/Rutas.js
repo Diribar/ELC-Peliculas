@@ -10,6 +10,7 @@ const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const aptoInput = require("../../middlewares/usuarios/aptoInput");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
+const cartelRespons = require("../../middlewares/usuarios/cartelRespons");
 const algunos = [soloUsuarios, aptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
@@ -35,7 +36,7 @@ router.get("/api/obtener-subcategorias", API.obtenerSubcategorias);
 router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 
 // VISTAS
-router.get("/palabras-clave", ...algunos, vista.palabrasClaveForm);
+router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
 router.post("/desambiguar", ...algunos, vista.desambiguarGuardar);
@@ -53,6 +54,8 @@ router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", ...algunos, entidad, id, vista.terminasteForm);
+// Miscelaneas
+router.get("/responsabilidad", soloUsuarios, vista.responsabilidad);
 
 // Fin
 module.exports = router;
