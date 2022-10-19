@@ -10,7 +10,7 @@ module.exports = {
 		// Variable fecha
 		let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
-		let mes = meses[diaDelAno.mes_id - 1];
+		let mes = mesesAbrev[diaDelAno.mes_id - 1];
 		let fecha = dia + "/" + mes;
 		// Variable ultimaActualizacion
 		let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
