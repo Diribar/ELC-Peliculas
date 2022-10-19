@@ -31,8 +31,9 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 /* Comandos y Flechas */
 #comandos, #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
-#comandos i, #flechas i, #flechas img {font-size: 1.25rem; margin: 0 15px;}
+#comandos i, #flechas i, #flechas img, #flechas a {font-size: 1.25rem; margin: 0 15px; border-radius: 50%;}
 #comandos .pack, #flechas .pack {margin: 0 20px;}
+#flechas a i {margin: 0;}
 
 /* Comandos */
 #comandos {background-color: var(--backComandos);}
