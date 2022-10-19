@@ -178,6 +178,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
 	},
+	//	<p>Estás a punto de pedirnos el permiso para ingresar <em><u>Películas</u></em> y <em><u>Colecciones</u></em> a nuestra base de datos.</p>
 	documentoForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";

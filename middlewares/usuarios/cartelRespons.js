@@ -1,0 +1,14 @@
+"use strict";
+// Requires
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+
+module.exports = (req, res, next) => {
+	// Variables
+	const usuario = req.session.usuario;
+	console.log(req.session.usuario.mostrar_cartel_respons);
+	if (req.session.usuario.mostrar_cartel_respons) {
+		// BD_genericas.actualizarPorId("usuarios", usuario.id, {mostrar_cartel_respons: false});
+		return res.redirect("/producto/agregar/responsabilidad");
+	}
+	next();
+};

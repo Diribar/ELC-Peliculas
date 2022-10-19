@@ -497,4 +497,11 @@ module.exports = {
 			ruta: "/producto/",
 		});
 	},
+	responsabilidad:(req,res)=>{
+		return res.render("CMP-0Estructura", {
+			tema:"prod_agregar",
+			codigo:"responsab",
+			urlSalir:req.session.urlSinPermInput,
+		});
+	}
 };
