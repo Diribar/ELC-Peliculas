@@ -27,7 +27,7 @@ main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: 
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 
 /* Íconos de Error */
-.fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check, .fa-circle-xmark, .fa-circle-left {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 

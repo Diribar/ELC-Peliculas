@@ -34,8 +34,7 @@ module.exports = {
 
 	subOpcion: async (req, res) => {
 		// Averiguar la sub-opción elegida
-		let url = req.url.slice(1);
-		let opcion = url.slice(0, url.indexOf("/"));
+		let opcion = req.path.slice(1, -1);
 		let opcionSubOpcion = req.url.slice(1);
 		// Obtener datos en función de la opción elegida
 		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);

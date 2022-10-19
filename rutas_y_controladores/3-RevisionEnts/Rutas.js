@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
+const vistaAltaRCLV = require("../2.2-RCLV-CRUD/ControladorVista");
 
 // Middlewares ***********************************************
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
@@ -35,7 +36,7 @@ router.get("/producto/edicion", ...todos, vista.prod_Edicion);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
 // RCLV
-router.get("/rclv/alta", ...todos, vista.RCLV_Alta);
+router.get("/rclv/alta", ...todos, vistaAltaRCLV.altaEdicForm);
 // Links
 router.get("/links", ...todos, vista.links);
 
