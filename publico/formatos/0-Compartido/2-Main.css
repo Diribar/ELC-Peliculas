@@ -47,3 +47,7 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 
 /* Varios */
 .inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}
+
+/* Aparece */
+@keyframes aparece {0% {opacity: 0} 100% {opacity: 1}}
+.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .5s; animation-timing-function: linear; animation-fill-mode: forwards;}

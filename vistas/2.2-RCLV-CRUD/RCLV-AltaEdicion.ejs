@@ -13,7 +13,7 @@
 		</i>
 	</div>
 </div>
-<form method="POST" id="dataEntry">
+<form method="POST" id="dataEntry" class="aparece">
 	<!-- Encabezado -->
 	<section id="datos" class="OK">
 		<!--Primera columna-->
@@ -30,11 +30,10 @@
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<% if (entidad == "personajes") { %>
-										<li>Los nombres sin prefijo de canonización (ej: San, Santa).</li>
-										<li>Nombre Alternativo: cuando la persona es conocido de dos maneras (ej: Juan Pablo II / Karol Wojtyla).</li>
+										<li>Nombre Alternativo: se usa cuando la persona es conocida con dos nombres distintos (ej: Juan Pablo II / Karol Wojtyla).</li>
 									<% } %>
-									<li>La primera letra en mayúscula</li>
-									<li>Sólo se aceptan letras del alfabeto castellano</li>
+									<li>La primera letra debe ser en mayúscula.</li>
+									<li>Sólo se aceptan letras del alfabeto castellano.</li>
 								</ul>
 							</i>
 						</div>
@@ -69,7 +68,7 @@
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<p>Usamos la fecha en que se lo recuerda.</p>
 									<% if (entidad == "personajes") { %>
-										<li>Para los santos o beatos, es la fecha en el santoral (Novus Ordo).</li>
+										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
 										<li>Para los demás, suele ser la fecha de su muerte.</li>
 									<% } %>
 								</ul>
@@ -156,7 +155,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {campo:"ano", display: true}) %>
+						<%- include("CMP-Errores", {campo:"ano", display: true}) %>
 					</div>
 				</div>
 			<% } %>
