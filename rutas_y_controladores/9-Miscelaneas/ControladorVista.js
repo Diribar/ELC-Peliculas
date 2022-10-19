@@ -28,7 +28,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Nuestra Política sobre Derechos de Autor",
+			titulo: "Nuestra Política sobre DA",
 		});
 	},
 	perfilProductos: (req, res) => {
