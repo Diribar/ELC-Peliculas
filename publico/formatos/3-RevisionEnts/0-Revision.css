@@ -1,3 +1,6 @@
+/* Cuerpo */
+#cuerpo {background-color: var(--gris-claro); flex-direction: column;}
+
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
@@ -9,10 +12,3 @@
 #cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
 #cuerpo #encabezado #colCap #tempCapI strong {margin-right: 5px;}
 #cuerpo #encabezado #colCap #tempCapS #capitulo {margin-left: 5px;}
-
-/* Flechas - Particularidades */
-#cuerpo #flechas i, #cuerpo #flechas .pack {margin: 0 15px;}
-
-/* Comandos - Particularidades */
-#cuerpo #comandos {padding: 7px 5px; border-radius: 15px;}
-#cuerpo #comandos i {color: white; font-size: 1.25rem; cursor: pointer;}

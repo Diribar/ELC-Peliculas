@@ -12,6 +12,7 @@ main .fa-solid {line-height: normal;}
 /* main #imagenDerecha {width: 30vw; height: 100%; position: relative;} */
 /* main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;} */
 main #imagenDerecha {display: flex; flex-direction: column; justify-content: center;}
+main #imagenDerecha {background-color: var(--gris-claro);}
 main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo y Footer */
