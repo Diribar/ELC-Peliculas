@@ -18,12 +18,13 @@ module.exports = {
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondics: (palabras, campos, userID) => {
-		//Convertir las palabras en un array
+	quickSearchCondics: (palabras, dato, userID) => {
+		// Convierte las palabras en un array
 		palabras = palabras.split(" ");
-		// Crear el objeto literal con los valores a buscar
+		// Crea el objeto literal con los valores a buscar
 		let valoresOR = [];
-		for (let campo of campos) {
+		// Almacena la condición en una matriz
+		for (let campo of dato.campos) {
 			let condicionesDeCampo = [];
 			for (let palabra of palabras) {
 				// Que encuentre la palabra en el campo
@@ -38,7 +39,7 @@ module.exports = {
 			}
 			// Condición: se fija que cada palabra esté en el campo
 			let resumenDeCampo = {[Op.and]: condicionesDeCampo};
-			// Almacena la condición en una matriz
+			// Consolida el resultado
 			valoresOR.push(resumenDeCampo);
 		}
 		// Se fija que la condición de palabras se cumpla en alguno de los campos
@@ -57,35 +58,27 @@ module.exports = {
 		// Fin
 		return condiciones;
 	},
-	quickSearchRegistros: async (condiciones, campoOrden, entidades, familia) => {
+	quickSearchRegistros: async (condiciones, dato) => {
 		// Variables
 		let hallazgos = [];
 		let resultado = [];
 		// Obtener los registros
-		entidades.forEach((entidad) => {
-			let registros = db[entidad]
-				.findAll({where: condiciones, limit: 10})
-				.then((n) => n.map((m) => m.toJSON()))
-				.then((n) =>
-					n.map((m) => {
-						return {
-							id: m.id,
-							ano: m.ano_estreno,
-							nombre: m[campoOrden],
-							entidad,
-							familia,
-						};
-					})
-				);
-			hallazgos.push(registros);
-		});
-		// Consolidar los hallazgos
-		hallazgos = await Promise.all([...hallazgos]);
-		hallazgos.forEach((hallazgo) => resultado.push(...hallazgo));
-		// Ordenar el resultado
-		resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+		let registros = await db[dato.entidad]
+			.findAll({where: condiciones, limit: 10})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) =>
+				n.map((m) => {
+					return {
+						id: m.id,
+						ano: m.ano_estreno,
+						nombre: m[dato.campos[0]],
+						entidad:dato.entidad,
+						familia: dato.familia,
+					};
+				})
+			);
 		// Enviar el resultado
-		return resultado;
+		return registros;
 	},
 
 	// AgregarProductos - ControladorAPI

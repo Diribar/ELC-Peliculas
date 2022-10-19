@@ -27,7 +27,7 @@ module.exports = {
 
 		// Comenzar a armar el resumen
 		let resumen = [{titulo: "Nombre", valor: RCLV.nombre}];
-		if (RCLV.apodo) resumen.push({titulo: "Apodo", valor: RCLV.apodo});
+		if (RCLV.apodo) resumen.push({titulo: "Alternativo", valor: RCLV.apodo});
 		resumen.push({titulo: "Día del año", valor: fecha});
 		if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
 			resumen.push(
