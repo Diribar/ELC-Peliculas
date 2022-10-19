@@ -10,7 +10,7 @@
 	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud") { %><%- include("CR-1Head") %><% } %>	
 	<% if (tema && tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
 	<% if (tema == "productos") { %><%- include("0-Productos-Head") %><% } %>
-	<% if (tema == "miscelaneas") { %><%- include("MI-1Head") %><% } %>
+	<% if (tema == "miscelaneas" || tema == "institucional") { %><%- include("MI-1Head") %><% } %>
 </head>
 <body>
 	<!-- Header genérico -->
@@ -33,7 +33,7 @@
 				<% if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %><% } %>
 				<% if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %><% } %>
 				<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
-				<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
+				<% if (tema == "miscelaneas" || tema == "institucional") { %><%- include("MI-2Cuerpo") %><% } %>
 			</section>
 		</section>
 	</main>
