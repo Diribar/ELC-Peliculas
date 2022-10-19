@@ -26,7 +26,6 @@ module.exports = {
 			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, datos[i], userID);
 			// Obtiene los registros que cumplen las condiciones
 			let resultado = await BD_especificas.quickSearchRegistros(condiciones, datos[i]);
-			if (resultado.length) console.log(...resultado);
 			if (resultado.length) resultados.push(...resultado);
 		}
 		// Ordena los resultados
