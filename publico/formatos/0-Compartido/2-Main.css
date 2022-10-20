@@ -9,8 +9,10 @@ main h3 {font-size: 1.10rem;}
 main .fa-solid {line-height: normal;}
 
 /* Imagen Derecha */
-main #imagenDerecha {width: 30vw; height: 100%; position: relative;}
-main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
+/* main #imagenDerecha {width: 30vw; height: 100%; position: relative;} */
+/* main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;} */
+main #imagenDerecha {display: flex; flex-direction: column; justify-content: center;}
+main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo y Footer */
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
@@ -47,3 +49,7 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 
 /* Varios */
 .inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}
+
+/* Aparece */
+@keyframes aparece {0% {opacity: 0} 100% {opacity: 1}}
+.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .5s; animation-timing-function: linear; animation-fill-mode: forwards;}

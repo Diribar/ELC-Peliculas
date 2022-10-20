@@ -6,7 +6,8 @@
 #cuerpo #informacion {align-self: flex-start; justify-content: center; width: 100%;}
 
 /* Sección ficha técnica */
-#fichaTecnica {padding: 25px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); max-width: 30vw;}
+#fichaTecnica {position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
+#fichaTecnica {padding: 25px; max-width: 30vw; }
 #fichaTecnica div {background-color: var(--gris-claro);border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #fichaTecnica div {padding: 15px 20px; border-radius: 20px;}
 #fichaTecnica div p {line-height: 1.5;}
@@ -32,12 +33,3 @@
 
 /* Ayuda */
 #cuerpo .ayudaClick {background-color: var(--gris-claro); border-radius: 50%;}
-
-/* Animaciones */
-@keyframes aparece {0% {opacity: 0} 50% {opacity: 0.2} 100% {opacity: 1}}
-.aparece {
-	animation-name: aparece;
-	animation-duration: 1s;
-	animation-iteration-count: 1;
-	animation-direction: normal;	
-}

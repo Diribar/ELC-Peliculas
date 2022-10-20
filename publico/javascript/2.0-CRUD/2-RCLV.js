@@ -13,10 +13,8 @@ window.addEventListener("load", async () => {
 		rutaValidacion: "/rclv/api/validar-sector/?funcion=",
 		rutaOtrosCasos: "/rclv/api/otros-casos/",
 		// Links a otros sitios
-		wiki: document.querySelector("#dataEntry #wiki"),
-		url_wiki: "https://es.wikipedia.org/wiki/",
-		santopedia: document.querySelector("#dataEntry #santopedia"),
-		url_santopedia: "https://www.santopedia.com/buscar?q=",
+		linksClick: document.querySelectorAll("#dataEntry #valoresFecha .links"),
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
@@ -480,9 +478,13 @@ window.addEventListener("load", async () => {
 			// Mensaje de error
 			v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
 		});
-		// Mostrar logo de Wikipedia
-		if (OK.nombre) v.wiki.classList.remove("ocultar");
-		else v.wiki.classList.add("ocultar");
+		// Mostrar logo de Wiki y Santopedia
+		if (OK.nombre)
+			v.linksClick.forEach((link, i) => {
+				link.href = v.linksUrl[i] + v.nombre.value;
+				link.classList.remove("ocultar");
+			});
+		else for (link of v.linksClick) link.classList.add("ocultar");
 		// Conclusiones
 		let resultado = Object.values(OK);
 		let resultadoTrue = resultado.length
@@ -504,11 +506,6 @@ window.addEventListener("load", async () => {
 			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
 			// Quita los caracteres que exceden el largo permitido
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
-			// Agrega el link a los íconos de búsqueda
-			if (campo == "nombre" && v.nombre.value && v.nombre.value.length > 3) {
-				v.wiki.href = v.url_wiki + v.nombre.value;
-				v.santopedia.href = v.url_santopedia + v.nombre.value;
-			}
 			// Revisa los errores y los publica si existen
 			await validar[campo]();
 			feedback(OK, errores, true);

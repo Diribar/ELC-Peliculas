@@ -159,7 +159,7 @@ let longitud = (datos, campo, corto, largo) => {
 };
 let inicialMayuscula = (valor, campo) => {
 	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-	return !formato.test(valor, campo) ? "La primera letra del " + campo + " debe ser en mayúscula" : "";
+	return !formato.test(valor, campo) ? "La primera letra debe ser en mayúscula" : "";
 };
 let castellano = (valor, campo) => {
 	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-\d]+$/;
@@ -172,14 +172,7 @@ let prefijo = (valor, campo) => {
 		valor.startsWith("Beato ") ||
 		valor.startsWith("Beata ") ||
 		valor.startsWith("Ven. ") ||
-		valor.startsWith("Venerable ") ||
-		valor.startsWith("Madre ") ||
-		valor.startsWith("Hna. ") ||
-		valor.startsWith("Hermana ") ||
-		valor.startsWith("Padre ") ||
-		valor.startsWith("Don ") ||
-		valor.startsWith("Doña ") ||
-		valor.startsWith("Papa ")
+		valor.startsWith("Venerable ") 
 		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
 		: "";
 };

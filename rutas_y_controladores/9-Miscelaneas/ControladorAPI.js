@@ -9,29 +9,28 @@ module.exports = {
 	// Quick Search
 	quickSearch: async (req, res) => {
 		// Declaración de variables
-		let campos = [["nombre_original", "nombre_castellano"], ["nombre"]];
-		let entidades = [
-			["peliculas", "colecciones", "capitulos"],
-			["personajes", "hechos", "valores"],
+		let datos = [
+			{familia: "producto", entidad: "peliculas", campos: ["nombre_castellano", "nombre_original"]},
+			{familia: "producto", entidad: "colecciones", campos: ["nombre_castellano", "nombre_original"]},
+			{familia: "producto", entidad: "capitulos", campos: ["nombre_castellano", "nombre_original"]},
+			{familia: "rclv", entidad: "personajes", campos: ["nombre", "apodo"]},
+			{familia: "rclv", entidad: "hechos", campos: ["nombre"]},
+			{familia: "rclv", entidad: "valores", campos: ["nombre"]},
 		];
-		let campoOrden = ["nombre_castellano", "nombre"];
-		let familias = ["producto", "rclv"];
 		let condiciones;
 		let resultados = [];
 		let userID = req.session.usuario ? req.session.usuario.id : 0;
 		// Rutina
-		for (let i = 0; i < entidades.length; i++) {
+		for (let i = 0; i < datos.length; i++) {
 			// Obtiene las condiciones
-			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, campos[i], userID);
+			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, datos[i], userID);
 			// Obtiene los registros que cumplen las condiciones
-			let resultado = await BD_especificas.quickSearchRegistros(
-				condiciones,
-				campoOrden[i],
-				entidades[i],
-				familias[i]
-			);
-			resultados.push(...resultado);
+			let resultado = await BD_especificas.quickSearchRegistros(condiciones, datos[i]);
+			if (resultado.length) resultados.push(...resultado);
 		}
+		// Ordena los resultados
+		resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+		resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
 		// Enviar la info al FE
 		return res.json(resultados);
 	},
