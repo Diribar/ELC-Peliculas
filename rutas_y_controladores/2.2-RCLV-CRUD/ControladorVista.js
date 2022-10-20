@@ -132,6 +132,7 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
+			Entidad: comp.obtenerEntidadNombre(entidad)
 		});
 	},
 };

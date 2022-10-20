@@ -17,8 +17,8 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("RE0-2Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis" class="inputError">
-				<nav><%= prodOrig.sinopsis %></nav>
+			<div id="sinopsis" class="desplazam">
+				<nav class="infoDesplazam"><%= prodOrig.sinopsis %></nav>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -67,14 +67,14 @@
 		</div>
 	</section>
 	<section id="datosBreves">
-		<p class="titulo">Datos del Producto</p>
+		<h3>Datos del Producto</h3>
 		<div id="texto">
 			<% for (campo of bloqueDer[0]) { %>
 				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
 			<% } %>
-			<p class="titulo">Datos del Usuario</p>
+			<h3>Datos del Usuario</h3>
 			<% for (campo in bloqueDer[1]) { %>
 				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
 		<% } %> 

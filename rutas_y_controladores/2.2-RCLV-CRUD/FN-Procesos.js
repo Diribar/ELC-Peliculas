@@ -25,20 +25,22 @@ module.exports = {
 			? {id: 2, nombre: "Aprobado"}
 			: {id: 3, nombre: "Inactivado"};
 
-		// Comenzar a armar el resumen
-		let resumen = [{titulo: "Nombre", valor: RCLV.nombre}];
-		if (RCLV.apodo) resumen.push({titulo: "Alternativo", valor: RCLV.apodo});
-		resumen.push({titulo: "Día del año", valor: fecha});
+		// Comienza a armar el resumen
+		let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
+		if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
+		resumenRCLV.push({titulo: "Día del año", valor: fecha});
 		if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
-			resumen.push(
+			resumenRCLV.push(
 				{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
 				{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
 				{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
 			);
+		// Datos del registro
 		let valorNombreApellido = (valor) => {
 			return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
 		};
-		resumen.push(
+		let resumenRegistro = [];
+		resumenRegistro.push(
 			{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
 			{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 			{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
@@ -47,7 +49,7 @@ module.exports = {
 			{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 		);
 		// Fin
-		return resumen;
+		return {resumenRCLV, resumenRegistro};
 	},
 	prodsYaEnBD: (entProductos, RCLV) => {
 		// Variables

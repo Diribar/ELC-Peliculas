@@ -447,7 +447,7 @@ window.addEventListener("load", async () => {
 				link.href = v.linksUrl[i] + v.nombre.value;
 				link.classList.remove("ocultar");
 			});
-		else for (link of v.linksClick) link.classList.add("ocultar");
+		else for (let link of v.linksClick) link.classList.add("ocultar");
 		// Conclusiones
 		let resultado = Object.values(OK);
 		let resultadoTrue = resultado.length
@@ -471,7 +471,7 @@ window.addEventListener("load", async () => {
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validar[campo]();
-			feedback(OK, errores, true);
+			feedback(OK, errores);
 		}
 		if (campo == "ano" || campo == "hasta") {
 			// Sólo números
@@ -489,11 +489,8 @@ window.addEventListener("load", async () => {
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value && (!v.apodo || v.apodo.value))
 			await validar.nombreApodo();
 		if (campo == "mes_id") diasDelMes();
-		if (
-			(campo == "mes_id" || campo == "dia" || campo == "desconocida") &&
-			((v.mes_id.value && v.dia.value) || v.desconocida.checked)
-		)
-			await validar.fechas();
+		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await validar.fechas();
+		if (campo == "desconocida") await validar.fechas();
 		if (campo == "repetido") validar.repetido();
 		if (v.entidad == "personajes" && campo == "ano") await validar.ano();
 		if (v.entidad == "hechos" && (campo == "ano" || campo == "hasta") && v.ano.value && v.hasta.value)

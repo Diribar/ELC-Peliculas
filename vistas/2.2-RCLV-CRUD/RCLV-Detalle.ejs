@@ -41,11 +41,15 @@
 		</div>
 	</div>
 	<div id="datosBreves">
-		<!-- Título -->
-		<div><p><strong><u style="font-size: 1.1rem;">Ficha Técnica</u></strong></p></div>
-		<!-- Texto -->
+		<h3>Datos del <%= Entidad %></h3>
 		<div id="texto">
-			<% for (campo of bloqueDerecha) { %>
+			<% for (campo of bloqueDerecha.resumenRCLV) { %>
+				<p><strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span></p>
+			<% } %>
+		</div>
+		<h3>Datos del Registro</h3>
+		<div id="texto">
+			<% for (campo of bloqueDerecha.resumenRegistro) { %>
 				<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
