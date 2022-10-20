@@ -7,7 +7,6 @@ window.addEventListener("load", async () => {
 		id: new URL(window.location.href).searchParams.get("id"),
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
-		botonSalir: document.querySelector("#flechas #salir"),
 		botonSubmit: document.querySelector("#flechas #submit"),
 		// Rutas
 		rutaValidacion: "/rclv/api/validar-sector/?funcion=",
@@ -34,16 +33,6 @@ window.addEventListener("load", async () => {
 				if (i > campos.indexOf(campos[i])) campos.splice(i, 1);
 			return campos;
 		},
-		// Botón salir
-		origen: new URL(window.location.href).searchParams.get("origen"),
-		prodEntidad: new URL(window.location.href).searchParams.get("prodEntidad"),
-		prodID: new URL(window.location.href).searchParams.get("prodID"),
-		rdp: "agregar/datos-personalizados",
-		vista: () => {
-			let vista = window.location.pathname;
-			vista = vista.slice(0, vista.lastIndexOf("/"));
-			return vista;
-		},
 	};
 	v = {
 		...v,
@@ -51,10 +40,6 @@ window.addEventListener("load", async () => {
 		personajes: v.entidad == "personajes",
 		hechos: v.entidad == "hechos",
 		valores: v.entidad == "valores",
-		// Botón salir
-		entidadID: "?entidad=" + v.entidad + "&id=" + v.id,
-		prodEntidadID: "&prodEntidad=" + v.prodEntidad + "&prodID=" + v.prodID,
-		rutaOrigen: "/producto/" + (v.origen == "DP" ? v.rdp : v.origen == "ED" ? "edicion/" : "detalle/"),
 	};
 	let OK = {};
 	let errores = {};
@@ -203,28 +188,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		// desde: async () => {
-		// 	// Verifica errores en el sector 'desdeHasta', campo 'desde'
-		// 	let params = "&ano=" + v.ano.value;
-		// 	errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
-		// 	if (errores.desdeHasta) {
-		// 		errores.desdeHasta += " (año 'desde')";
-		// 		OK.desdeHasta = false;
-		// 	}
-		// 	// Fin
-		// 	return;
-		// },
-		// hasta: async () => {
-		// 	// Verifica errores en el sector 'desdeHasta', campo 'hasta'
-		// 	let params = "&ano=" + v.hasta.value;
-		// 	errores.desdeHasta = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
-		// 	if (errores.desdeHasta) {
-		// 		errores.desdeHasta += " (año 'hasta')";
-		// 		OK.desdeHasta = false;
-		// 	}
-		// 	// Fin
-		// 	return;
-		// },
 		desdeHasta: async () => {
 			// Verifica errores en el sector 'desdeHasta'
 			let params = "&entidad=" + v.entidad + "&ano=" + v.ano.value + "&hasta=" + v.hasta.value;
@@ -540,17 +503,6 @@ window.addEventListener("load", async () => {
 		if (!v.valores && v.camposRCLI().includes(campo)) await mostrarRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
-	});
-	v.botonSalir.addEventListener("click", () => {
-		// Ruta salir
-		let rutaSalir =
-			v.vista() == "/rclv/agregar"
-				? // Va a la vista de origen
-				  v.rutaOrigen + (v.origen != "DP" ? "?entidad=" + v.prodEntidad + "&id=" + v.prodID : "")
-				: // Inactivar e ir a la vista de origen
-				  "/inactivar-captura/" + v.entidadID + "&origen=" + v.origen + v.prodEntidadID;
-		// Va a la vista de origen sin guardar cambios
-		window.location.href = rutaSalir;
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		if (v.botonSubmit.classList.contains("inactivo")) {

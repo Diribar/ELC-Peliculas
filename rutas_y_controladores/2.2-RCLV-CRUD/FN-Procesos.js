@@ -219,4 +219,36 @@ module.exports = {
 		// Fin
 		return;
 	},
+	rutaSalir: (codigo, datos) => {
+		// Variables
+		let rutaSalir;
+		// Obtiene la ruta
+		if (codigo == "agregar") {
+			// Desde vista 'agregar' no hace falta inactivar => vuelve al origen
+			let rutaOrigen =
+				datos.origen == "DP"
+					? "/producto/agregar/datos-personalizados"
+					: datos.origen == "ED"
+					? "/producto/edicion/"
+					: "/";
+			let entidadIdOrigen =
+				datos.origen && datos.origen != "DP"
+					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
+					: "";
+			rutaSalir = rutaOrigen + entidadIdOrigen;
+		} else {
+			// Desde vista distinta a 'agregar' hace falta inactivar
+			// La vista actual puede ser '/rclv/edicion' o '/revisar/rclv/alta'
+			let entidadIdActual = "?entidad=" + datos.entidad + "&id=" + datos.id;
+			let entidadIdOrigen =
+				datos.origen && datos.origen != "DP"
+					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
+					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DP'
+			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);
+			// rutaSalir
+			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;
+		}
+		// Fin
+		return rutaSalir;
+	},
 };
