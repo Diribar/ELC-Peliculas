@@ -4,13 +4,13 @@ const searchTMDB = require("../1-APIs_TMDB/1-Search");
 const detailsTMDB = require("../1-APIs_TMDB/2-Details");
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const compartidas = require("./Compartidas");
+const comp = require("./Compartidas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave, mostrar) => {
-		palabrasClave = compartidas.convertirLetrasAlIngles(palabrasClave);
+		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
@@ -134,9 +134,9 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 		if (typeof m == "undefined" || m == null) return;
 		for (let palabra of palabras) {
 			if (
-				compartidas.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
-				compartidas.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
-				compartidas.convertirLetrasAlIngles(m.comentario).includes(palabra)
+				comp.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
+				comp.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
+				comp.convertirLetrasAlIngles(m.comentario).includes(palabra)
 			)
 				return m;
 		}

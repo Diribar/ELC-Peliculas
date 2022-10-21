@@ -390,6 +390,85 @@ module.exports = {
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
+	eliminarRepetidos: (prods) => {
+		let IDs = [];
+		for (let i = prods.length - 1; i >= 0; i--) 
+			if (!IDs.includes(prod.id)) IDs.push(prods[i].id)
+			else prods.splice(i, 1);
+		return prods;
+	},
+	usuario_Ficha: async (userID, ahora) => {
+		// Obtener los datos del usuario
+		let includes = "rol_iglesia";
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+		// Variables
+		let unAno = unDia * 365;
+		let enviar = {apodo: ["Apodo", usuario.apodo]};
+		// Edad
+		if (usuario.fecha_nacimiento) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+			enviar.edad = ["Edad", edad];
+		}
+		// Antigüedad
+		let antiguedad =
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
+				.toFixed(1)
+				.replace(".", ",") + " años";
+		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		// Fin
+		return enviar;
+	},
+	obtenerProdsDeLinks: (links, ahora, userID) => {
+		// Variables
+		let peliculas = [];
+		let colecciones = [];
+		let capitulos = [];
+		// Abrir los productos por entidad
+		links.forEach((link) => {
+			if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
+			if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
+			if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
+		});
+		// Eliminar repetidos
+		if (peliculas.length) peliculas = comp.eliminarRepetidos(peliculas);
+		if (colecciones.length) colecciones = comp.eliminarRepetidos(colecciones);
+		if (capitulos.length) capitulos = comp.eliminarRepetidos(capitulos);
+		// Consolidar
+		let productos = [...peliculas, ...colecciones, ...capitulos];
+		// Depurar los productos que no cumplen ciertas condiciones
+		let limpieza = (productos, ahora, userID) => {
+			// Variables
+			// Declarar las variables
+			const aprobado_id = status_registro.find((n) => n.aprobado).id;
+			const haceUnaHora = comp.nuevoHorario(-1, ahora);
+			const haceDosHoras = comp.nuevoHorario(-2, ahora);
+			// Dejar solamente los productos aprobados
+			productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+			// Dejar solamente los productos creados hace más de una hora
+			productos = productos.filter((n) => n.creado_en < haceUnaHora);
+			// Dejar solamente los productos que no tengan problemas de captura
+			productos = productos.filter(
+				(n) =>
+					// Que no esté capturado
+					!n.capturado_en ||
+					// Que esté capturado hace más de dos horas
+					n.capturado_en < haceDosHoras ||
+					// Que la captura haya sido por otro usuario y hace más de una hora
+					(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+					// Que la captura haya sido por otro usuario y esté inactiva
+					(n.capturado_por_id != userID && !n.captura_activa) ||
+					// Que esté capturado por este usuario hace menos de una hora
+					(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+			);
+			return productos;
+		};
+		productos = limpieza(productos, ahora, userID);
+		// Fin
+		return productos;
+	},
+
 };
 
 // Funciones

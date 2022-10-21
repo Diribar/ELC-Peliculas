@@ -126,7 +126,7 @@ module.exports = {
 		}
 		// Verificación paso 3: muestra el cartel de error
 		if (!prodEdic) {
-			let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
+			let informacion = await procesos.infoProdEdicion(entidad, prodID, producto_id, userID);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 		// 3. Obtiene la versión original
@@ -145,7 +145,7 @@ module.exports = {
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
 		let quedanCampos;
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) return res.render("CMP-0Estructura", cartelNoQuedanCampos());
+		if (!quedanCampos) return res.render("CMP-0Estructura", procesos.cartelNoQuedanCampos());
 
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
@@ -223,7 +223,7 @@ module.exports = {
 		if (prodEntidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = problemasLinks(producto, req.session.urlAnterior);
+		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtener todos los links
 		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
@@ -272,55 +272,4 @@ module.exports = {
 			cartel: true,
 		});
 	},
-};
-
-let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
-	// Generar la info del error
-	let informacion = {
-		mensajes: ["No encontramos ninguna edición ajena para revisar"],
-		iconos: [
-			{
-				nombre: "fa-spell-check ",
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
-				titulo: "Regresar al Tablero de Control",
-			},
-		],
-	};
-	return informacion;
-};
-let problemasLinks = (producto, urlAnterior) => {
-	// Variables
-	let informacion;
-	const vistaAnterior = variables.vistaAnterior(urlAnterior);
-	const vistaTablero = variables.vistaTablero();
-
-	// El producto no está en status 'aprobado'
-	if (!informacion && !producto.status_registro.aprobado)
-		informacion = {
-			mensajes: [
-				"El producto no está en status 'Aprobado'",
-				"Su status es " + producto.status_registro.nombre,
-			],
-		};
-
-	// El producto no posee links
-	if (!informacion && !producto.links.length)
-		informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
-	// Agregar los íconos
-	if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
-
-	// Fin
-	return informacion;
-};
-let cartelNoQuedanCampos = () => {
-	return {
-		mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
-		iconos: [
-			{
-				nombre: "fa-spell-check",
-				link: "/revision/tablero-de-control",
-				titulo: "Ir al 'Tablero de Control' de Revisiones",
-			},
-		],
-	};
 };

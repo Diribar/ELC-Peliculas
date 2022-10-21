@@ -3,7 +3,7 @@
 const fs = require("fs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
@@ -145,21 +145,21 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.editables(datos);
 		if (errores.hay) {
-			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
-			if (usuario.avatar) compartidas.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
+			if (usuario.avatar) comp.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario("editables", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
@@ -229,7 +229,7 @@ module.exports = {
 		let errores = await validar.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
-			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/documento");
@@ -237,16 +237,16 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar/", usuario.docum_avatar);
+				comp.borraUnArchivo("./publico/imagenes/5-DocsRevisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
-		req.body.fecha_revisores = compartidas.ahora();
+		req.body.fecha_revisores = comp.ahora();
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
@@ -334,7 +334,7 @@ module.exports = {
 		// 7. Guarda el mail en cookie
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
-		let hoyAhora = compartidas.ahora();
+		let hoyAhora = comp.ahora();
 		procesos.actualizarElContadorDeLogins(usuario, hoyAhora);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");

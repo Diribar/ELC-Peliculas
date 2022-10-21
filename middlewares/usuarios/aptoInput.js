@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
 		let penalizac_acum = parseInt(Number(usuario.penalizac_acum));
 		if (penalizac_acum) {
 			// Variables
-			let ahora = compartidas.ahora().setHours(0, 0, 0);
+			let ahora = comp.ahora().setHours(0, 0, 0);
 			// Agregar valores en datos
 			datos.penalizado_hasta = Math.max(ahora, usuario.penalizado_hasta) + penalizac_acum * unDia;
 			datos.penalizado_en = ahora;
@@ -35,8 +35,8 @@ module.exports = async (req, res, next) => {
 		// Variables
 		let informacion;
 		// Proceso
-		if (usuario.penalizado_hasta && usuario.penalizado_hasta > compartidas.ahora()) {
-			let fecha = compartidas.fechaTexto(usuario.penalizado_hasta);
+		if (usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
+			let fecha = comp.fechaTexto(usuario.penalizado_hasta);
 			informacion = {
 				mensajes: [
 					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa.",
@@ -57,7 +57,7 @@ module.exports = async (req, res, next) => {
 					mensajes: [
 						"Para ingresar información, se requiere tener tus datos validados.",
 						"Nos informaste tu documento el " +
-							compartidas.fechaHorarioTexto(usuario.fecha_revisores) +
+							comp.fechaHorarioTexto(usuario.fecha_revisores) +
 							".",
 						"Tenés que esperar a que el equipo de Revisores haga la validación.",
 						"Luego de la validación, recibirás un mail de feedback.",

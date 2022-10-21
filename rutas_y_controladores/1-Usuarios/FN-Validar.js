@@ -4,7 +4,7 @@ const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	altaMail: async (email) => {
@@ -133,7 +133,7 @@ module.exports = {
 				!datos.docum_avatar
 					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 					: // Que exista el archivo
-					!compartidas.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
+					!comp.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
 					? "El archivo de imagen no existe"
 					: "";
 
@@ -191,7 +191,7 @@ module.exports = {
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
 			// Verifica si la dirección de mail fue validada
-			let fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
+			let fechaHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
 			if (!usuario.status_registro.mail_validado) {
 				errores = {
 					email:
@@ -200,8 +200,8 @@ module.exports = {
 				};
 			} else {
 				// Verifica si ya se envió un mail en el día
-				let ahora = compartidas.fechaTexto(compartidas.ahora());
-				let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
+				let ahora = comp.fechaTexto(comp.ahora());
+				let fecha = comp.fechaTexto(usuario.fecha_contrasena);
 				if (ahora == fecha)
 					errores = {
 						email:
@@ -276,8 +276,8 @@ let extension = (nombre) => {
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);
-	let max = compartidas.ahora();
-	let min = compartidas.ahora();
+	let max = comp.ahora();
+	let min = comp.ahora();
 	max.setFullYear(max.getFullYear() - 5);
 	min.setFullYear(min.getFullYear() - 100);
 	return fecha > max || fecha < min ? true : false;
