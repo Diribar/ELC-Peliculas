@@ -141,9 +141,9 @@ module.exports = {
 			: entidad == "capitulos"
 			? "Capítulo"
 			: entidad.includes("personaje")
-			? "Personaje Histórico"
+			? "Personaje"
 			: entidad.includes("hecho")
-			? "Hecho Histórico"
+			? "Hecho"
 			: entidad.includes("valor")
 			? "Valor"
 			: entidad == "links"

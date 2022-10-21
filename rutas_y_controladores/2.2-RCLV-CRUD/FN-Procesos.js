@@ -25,20 +25,22 @@ module.exports = {
 			? {id: 2, nombre: "Aprobado"}
 			: {id: 3, nombre: "Inactivado"};
 
-		// Comenzar a armar el resumen
-		let resumen = [{titulo: "Nombre", valor: RCLV.nombre}];
-		if (RCLV.apodo) resumen.push({titulo: "Alternativo", valor: RCLV.apodo});
-		resumen.push({titulo: "Día del año", valor: fecha});
+		// Comienza a armar el resumen
+		let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
+		if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
+		resumenRCLV.push({titulo: "Día del año", valor: fecha});
 		if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
-			resumen.push(
+			resumenRCLV.push(
 				{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
 				{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
 				{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
 			);
+		// Datos del registro
 		let valorNombreApellido = (valor) => {
 			return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
 		};
-		resumen.push(
+		let resumenRegistro = [];
+		resumenRegistro.push(
 			{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
 			{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 			{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
@@ -47,7 +49,7 @@ module.exports = {
 			{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 		);
 		// Fin
-		return resumen;
+		return {resumenRCLV, resumenRegistro};
 	},
 	prodsYaEnBD: (entProductos, RCLV) => {
 		// Variables
@@ -218,5 +220,37 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
 		return;
+	},
+	rutaSalir: (codigo, datos) => {
+		// Variables
+		let rutaSalir;
+		// Obtiene la ruta
+		if (codigo == "agregar") {
+			// Desde vista 'agregar' no hace falta inactivar => vuelve al origen
+			let rutaOrigen =
+				datos.origen == "DP"
+					? "/producto/agregar/datos-personalizados"
+					: datos.origen == "ED"
+					? "/producto/edicion/"
+					: "/";
+			let entidadIdOrigen =
+				datos.origen && datos.origen != "DP"
+					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
+					: "";
+			rutaSalir = rutaOrigen + entidadIdOrigen;
+		} else {
+			// Desde vista distinta a 'agregar' hace falta inactivar
+			// La vista actual puede ser '/rclv/edicion' o '/revisar/rclv/alta'
+			let entidadIdActual = "?entidad=" + datos.entidad + "&id=" + datos.id;
+			let entidadIdOrigen =
+				datos.origen && datos.origen != "DP"
+					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
+					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DP'
+			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);
+			// rutaSalir
+			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;
+		}
+		// Fin
+		return rutaSalir;
 	},
 };

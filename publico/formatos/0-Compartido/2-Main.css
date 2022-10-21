@@ -26,6 +26,26 @@ main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-
 main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 
+/* Desplazamiento - Desplazar el contenido*/
+.desplazam {position: relative; box-shadow: 0px 0px 10px rgb(100 100 100);}
+.desplazam .infoDesplazam {overflow-y: scroll;}
+/* Desplazamiento - Ocultar la 'side-bar' */
+.desplazam .infoDesplazam::-webkit-scrollbar {display: none; /* Safari and Chrome */}
+.desplazam .infoDesplazam {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
+
+/* Datos breves */
+#datosBreves {display: flex; flex-direction: column; justify-content: center}
+#datosBreves {border: var(--gris-oscuro) 3px solid; margin: auto 15px;}
+#datosBreves {padding: 20px; border-radius: 15px; background-color: snow;}
+#datosBreves h3 {background-color: var(--gris-oscuro); color: snow;}
+#datosBreves h3 {padding: 3px; border-radius: 10px; text-align: center;}
+#datosBreves h3:nth-child(n+2) {margin-top: 20px;}
+#datosBreves p {margin-top: 10px;}
+#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves #texto p#status1 span {background-color: var(--azul-oscuro); color: snow;}
+#datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
+#datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
+
 /* Íconos de Error */
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
@@ -53,4 +73,4 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 
 /* Aparece */
 @keyframes aparece {0% {opacity: 0} 100% {opacity: 1}}
-.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .5s; animation-timing-function: linear; animation-fill-mode: forwards;}
+.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .25s; animation-timing-function: linear; animation-fill-mode: forwards;}

@@ -9,9 +9,9 @@ module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Tema y Código
-		const tema = "rclv_crud";
-		let url = req.url.slice(1);
-		const codigo = url.slice(0, url.indexOf("/"));
+		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
+		const codigo = req.path.slice(1, -1);
+		const datos = req.query;
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
@@ -21,10 +21,14 @@ module.exports = {
 			? req.cookies[entidad]
 			: {};
 		let nombre = comp.obtenerEntidadNombre(entidad);
-		let titulo = (codigo == "agregar" ? "Agregar - " : "Edición - ") + nombre;
+		let titulo =
+			(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
 		let tituloCuerpo =
-			(codigo == "agregar" ? "Agregá un " + nombre + " a" : "Editá el " + nombre + " de") +
-			" nuestra Base de Datos";
+			(codigo == "agregar"
+				? "Agregá un " + nombre + " a"
+				: codigo == "edicion"
+				? "Editá el " + nombre + " de"
+				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
 			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
@@ -35,10 +39,11 @@ module.exports = {
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
 		}
 		// 4. Pasos exclusivos para edición
-		if (codigo == "edicion") {
+		if (codigo != "agregar") {
 			let id = req.query.id;
 			let includes = entidad == "personajes" ? "rol_iglesia" : "";
-			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes); // Pisa el data entry de session
+			// Pisa el data entry de session
+			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
@@ -47,6 +52,10 @@ module.exports = {
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
 		}
+		// Botón salir
+		let rutaSalir = procesos.rutaSalir(codigo, datos);
+		//console.log(rutaSalir);
+		//console.log(dataEntry);
 		// 5. Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -60,6 +69,7 @@ module.exports = {
 			roles_iglesia,
 			procesos_canonizacion,
 			apariciones_marianas,
+			rutaSalir,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
@@ -122,6 +132,7 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
+			Entidad: comp.obtenerEntidadNombre(entidad)
 		});
 	},
 };
