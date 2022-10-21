@@ -8,7 +8,7 @@ const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero
-	tablero_obtenerProds: async (ahora, userID) => {
+	TC_obtenerProds: async (ahora, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
 		let entidades = ["peliculas", "colecciones"];
@@ -16,25 +16,25 @@ module.exports = {
 		// - Obtener los resultados de status creado_id
 		let creado_id = status_registro.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
-		let PA = await tablero_obtenerRegs(...campos);
+		let PA = await TC_obtenerRegs(...campos); // PA: Pendientes de aprobar (en status gr_creado)
 		// - Obtener los resultados de status creado_aprob sin edición
 		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
 		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
-		let SE = await tablero_obtenerRegs(...campos);
-		SE = SE.filter((n) => !n.ediciones.length);
+		let SE = await TC_obtenerRegs(...campos);
+		SE = SE.filter((n) => !n.ediciones.length); // SE: Sin edición (en status gr_creado)
 		// - Obtener los resultados de status inactivar_id
 		let inactivar_id = status_registro.find((n) => n.inactivar).id;
 		campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let IN = await tablero_obtenerRegs(...campos);
+		let IN = await TC_obtenerRegs(...campos); // IN: En staus 'inactivar'
 		// - Obtener los resultados de status recuperar_id
 		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let RC = await tablero_obtenerRegs(...campos);
+		let RC = await TC_obtenerRegs(...campos); // RC: En status 'recuperar'
 
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsConEdicAjena: async (ahora, userID) => {
+	TC_obtenerProdsConEdicAjena: async (ahora, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -48,7 +48,7 @@ module.exports = {
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
-		let ediciones = await BD_especificas.tablero_obtenerEdicsAjenasDeProds(userID, includes);
+		let ediciones = await BD_especificas.TC_obtenerEdicsAjenasDeProds(userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -114,10 +114,10 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerProdsConLink: async (ahora, userID) => {
+	TC_obtenerProdsConLink: async (ahora, userID) => {
 		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
 		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks_y_Edics();
+		let links = await BD_especificas.TC_obtenerLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtener los links ajenos
@@ -134,11 +134,11 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerProdsSinLink: async (ahora, userID) => {
+	TC_obtenerProdsSinLink: async (ahora, userID) => {
 		// Obtener todos los productos aprobados, sin ningún link
 		return [];
 		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks_y_Edics();
+		let links = await BD_especificas.TC_obtenerLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtener los links ajenos
@@ -155,7 +155,7 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerRCLVs: async (ahora, userID) => {
+	TC_obtenerRCLVs: async (ahora, userID) => {
 		// Obtener los siguients RCLVs:
 		// creado y ajeno,
 		// Declarar las variables
@@ -166,7 +166,7 @@ module.exports = {
 		// - Obtener los resultados de status creado_id
 		let creado_id = status_registro.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
-		regs = await tablero_obtenerRegs(...campos);
+		regs = await TC_obtenerRegs(...campos);
 		// Separar entre c/prod y s/prod
 		regs.forEach((n) => {
 			if (n.peliculas || n.colecciones || n.capitulos || n.prods_edic) PA.push(n);
@@ -175,10 +175,10 @@ module.exports = {
 		// Fin
 		return {PA};
 	},
-	tablero_obtenerRCLVsConEdic: async (ahora, userID) => {
+	TC_obtenerRCLVsConEdicAjena: async (ahora, userID) => {
 		// - edicRCLV ajena, pend. aprobar
 	},
-	tablero_prod_ProcesarCampos: (productos) => {
+	TC_prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
 		// Variables
 		const anchoMax = 40;
@@ -208,7 +208,7 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_RCLV_ProcesarCampos: (RCLVs) => {
+	TC_RCLV_ProcesarCampos: (RCLVs) => {
 		// Procesar los registros
 		let anchoMax = 30;
 		const rubros = Object.keys(RCLVs);
@@ -585,13 +585,13 @@ let limpieza = (productos, ahora, userID) => {
 	);
 	return productos;
 };
-let tablero_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
+let TC_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
 	// Variables
 	let campos = [ahora, status, userID, includes, fechaRef, autor_id];
 	let resultadosPorEntidad = [];
 	// Obtener el resultado por entidad
 	for (let i = 0; i < entidades.length; i++)
-		resultadosPorEntidad.push(BD_especificas.tablero_obtenerRegs(entidades[i], ...campos));
+		resultadosPorEntidad.push(BD_especificas.TC_obtenerRegs(entidades[i], ...campos));
 	// Consolidar los resultados
 	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
 	// Eliminar los propuestos por el Revisor

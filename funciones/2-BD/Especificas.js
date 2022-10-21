@@ -124,7 +124,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	tablero_obtenerRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
+	TC_obtenerRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
 		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 		return db[entidad]
@@ -154,7 +154,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	tablero_obtenerEdicsAjenasDeProds: (userID, includes) => {
+	TC_obtenerEdicsAjenasDeProds: (userID, includes) => {
 		return db.prods_edicion
 			.findAll({
 				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creada por otro usuario
@@ -162,7 +162,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	tablero_obtenerLinks_y_Edics: async () => {
+	TC_obtenerLinks_y_Edics: async () => {
 		// Variables
 		let gr_estables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let includes = ["pelicula", "coleccion", "capitulo"];
