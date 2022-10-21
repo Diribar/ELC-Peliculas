@@ -136,7 +136,7 @@ module.exports = {
 	},
 	tablero_obtenerProdsSinLink: async (ahora, userID) => {
 		// Obtener todos los productos aprobados, sin ningún link
-		return []
+		return [];
 		// Obtener los links 'a revisar'
 		let links = await BD_especificas.tablero_obtenerLinks_y_Edics();
 		// Si no hay => salir
@@ -157,39 +157,23 @@ module.exports = {
 	},
 	tablero_obtenerRCLVs: async (ahora, userID) => {
 		// Obtener los siguients RCLVs:
-		// creado y creados ajeno,
-		//		PA: c/producto o edicProd
-		//		IN: s/producto o edicProd --> inactivarlo
-		// IP: inactivo c/prod --> a status creadoAprob
-		// - SP: aprobado, s/producto o edicProd
-
+		// creado y ajeno,
 		// Declarar las variables
 		let entidades = ["personajes", "hechos", "valores"];
-		let includes = ["peliculas", "colecciones", "capitulos", "ediciones_producto"];
+		let includes = ["peliculas", "colecciones", "capitulos", "prods_edic"];
 		let campos, regs;
-		let PA = [];
-		let IN = [];
-		let IP = [];
+		let PA = []; //	Pendientes de Aprobar (c/producto o c/edicProd)
 		// - Obtener los resultados de status creado_id
 		let creado_id = status_registro.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
 		regs = await tablero_obtenerRegs(...campos);
 		// Separar entre c/prod y s/prod
-		if (regs.length) {
-			regs.map((n) => {
-				n.peliculas || n.colecciones || n.capitulos || n.ediciones_producto ? PA.push(n) : IN.push(n);
-				return;
-			});
-		}
-		// - Obtener los resultados de status inactivo_id
-		let inactivo_id = status_registro.find((n) => n.inactivo).id;
-		campos = [entidades, ahora, inactivo_id, userID, "sugerido_por_id", "sugerido_en", includes];
-		regs = await tablero_obtenerRegs(...campos);
-		// Filtrar por c/prod
-		IP = regs.filter((n) => n.peliculas || n.colecciones || n.capitulos || n.ediciones_producto);
+		regs.forEach((n) => {
+			if (n.peliculas || n.colecciones || n.capitulos || n.prods_edic) PA.push(n);
+		});
 
 		// Fin
-		return {PA, IN, IP};
+		return {PA};
 	},
 	tablero_obtenerRCLVsConEdic: async (ahora, userID) => {
 		// - edicRCLV ajena, pend. aprobar
