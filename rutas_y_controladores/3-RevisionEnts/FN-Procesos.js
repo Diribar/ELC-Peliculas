@@ -533,7 +533,7 @@ let valorDelCampo = (producto, campo) => {
 let RCLV_valorVinculo = (RCLV, campo) => {
 	return campo == "dia_del_ano_id"
 		? RCLV.dia_del_ano
-			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
+			? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
 			: RCLV.dia_del_ano
 		: campo == "proceso_id"
 		? RCLV.proc_canoniz

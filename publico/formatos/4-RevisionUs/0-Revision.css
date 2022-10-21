@@ -1,2 +1,2 @@
-/* Flechas - Particularidades */
-#cuerpo #flechas i {margin: 0 25px; font-size: 2rem;}
+/* Cuerpo */
+#cuerpo {background-color: var(--gris-claro); flex-direction: column;}

@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	let timer = document.querySelector("#timer");
 	// Temas de horario y fechas
 	let unMinuto = 60 * 1000;
-	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+	let mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Horario Inicial
 	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) =>
 		n.json()
@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 		return (
 			horario.getDate() +
 			"/" +
-			meses[horario.getMonth()] +
+			mesesAbrev[horario.getMonth()] +
 			" " +
 			horario.getHours() +
 			":" +

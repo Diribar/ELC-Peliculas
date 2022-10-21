@@ -197,7 +197,7 @@ module.exports = {
 	fechaTexto: (fecha) => {
 		fecha = new Date(fecha);
 		let dia = fecha.getDate();
-		let mes = meses[fecha.getMonth()];
+		let mes = mesesAbrev[fecha.getMonth()];
 		let ano = fecha.getFullYear().toString().slice(-2);
 		fecha = dia + "/" + mes + "/" + ano;
 		return fecha;
@@ -207,7 +207,7 @@ module.exports = {
 		return (
 			horario.getDate() +
 			"/" +
-			meses[horario.getMonth()] +
+			mesesAbrev[horario.getMonth()] +
 			" a las " +
 			horario.getHours() +
 			":" +

@@ -1,7 +1,7 @@
 // VARIABLES GLOBALES -------------------------------------------------
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
-global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'

@@ -40,8 +40,7 @@ module.exports = {
 	prod_Alta: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		let url = req.url.slice(1);
-		const codigo = url.slice(0, url.lastIndexOf("/"));
+		const codigo = req.path.slice(1, -1);
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;
@@ -59,9 +58,7 @@ module.exports = {
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOrig.paises_id
-			? await compartidas.paises_idToNombre(prodOrig.paises_id)
-			: "";
+		let paises = prodOrig.paises_id ? await compartidas.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
@@ -114,21 +111,12 @@ module.exports = {
 				"hecho",
 				"valor",
 			];
-			var prodEdic = await BD_genericas.obtenerPorIdConInclude(
-				"prods_edicion",
-				edicID,
-				includesEdic
-			);
+			var prodEdic = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
 		}
 		// Verificación paso 2: averigua si existe otra ajena y en caso afirmativo recarga la vista
 		if (!prodEdic) {
 			// Averigua si existe otra ajena
-			prodEdic = await BD_especificas.obtenerEdicionAjena(
-				"prods_edicion",
-				producto_id,
-				prodID,
-				userID
-			);
+			prodEdic = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
 			// En caso afirmativo recarga la vista con el ID de la nueva edición
 			if (prodEdic) {
 				let ruta = req.baseUrl + req.path;
@@ -148,12 +136,14 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
 		if (!prodEdic[producto_id] || prodEdic[producto_id] != prodID)
-			return res.redirect("/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + prodID);
+			return res.redirect(
+				"/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + prodID
+			);
 		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
-		let quedanCampos
+		let quedanCampos;
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		if (!quedanCampos) return res.render("CMP-0Estructura", cartelNoQuedanCampos());
 
@@ -212,52 +202,6 @@ module.exports = {
 			bloqueDer,
 			vista,
 			title: prodOrig.nombre_castellano,
-			cartel: true,
-		});
-	},
-	// RCLV
-	RCLV_Alta: async (req, res) => {
-		// 1. Tema y Código
-		const tema = "revisionEnts";
-		const codigo = "rclv/alta";
-		// 2. Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let includes = ["status_registro"];
-		if (entidad == "personajes") includes.push("rol_iglesia");
-		let dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
-		if (dataEntry.dia_del_ano_id) {
-			let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
-				n.find((m) => m.id == dataEntry.dia_del_ano_id)
-			);
-			dataEntry.dia = dia_del_ano.dia;
-			dataEntry.mes_id = dia_del_ano.mes_id;
-		}
-		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		let nombre = compartidas.obtenerEntidadNombre(entidad);
-		let titulo = "Revisar - " + nombre;
-		let tituloCuerpo = "Revisá el " + nombre;
-		// 3. Variables específicas para personajes
-		if (entidad == "personajes") {
-			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
-			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
-			var roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
-			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			var apariciones_marianas = await BD_genericas.obtenerTodos("hechos", "nombre");
-			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
-		}
-		// 4. Render
-		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			entidad: entidad,
-			titulo,
-			tituloCuerpo,
-			dataEntry,
-			meses,
-			roles_iglesia,
-			procesos_canonizacion,
-			apariciones_marianas,
 			cartel: true,
 		});
 	},

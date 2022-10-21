@@ -12,6 +12,7 @@ main .fa-solid {line-height: normal;}
 /* main #imagenDerecha {width: 30vw; height: 100%; position: relative;} */
 /* main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;} */
 main #imagenDerecha {display: flex; flex-direction: column; justify-content: center;}
+main #imagenDerecha {background-color: var(--gris-claro);}
 main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo y Footer */
@@ -26,7 +27,7 @@ main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: 
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 
 /* Íconos de Error */
-.fa-circle-check, .fa-circle-xmark {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check, .fa-circle-xmark, .fa-circle-left {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 

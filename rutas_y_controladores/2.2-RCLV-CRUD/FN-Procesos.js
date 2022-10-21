@@ -10,7 +10,7 @@ module.exports = {
 		// Variable fecha
 		let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
-		let mes = meses[diaDelAno.mes_id - 1];
+		let mes = mesesAbrev[diaDelAno.mes_id - 1];
 		let fecha = dia + "/" + mes;
 		// Variable ultimaActualizacion
 		let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
@@ -188,8 +188,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let origen = req.query.origen;
 		let userID = req.session.usuario.id;
-		let url = req.url.slice(1);
-		const codigo = url.slice(0, url.indexOf("/"));
+		const codigo = req.path.slice(1, -1);
 		// Tareas
 		if (codigo == "agregar") {
 			// Guarda el nuevo registro
