@@ -2,7 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesosProd = require("../2.1-Prod-RUD/FN-Procesos");
 const procesos = require("./FN-Procesos");
 
@@ -24,7 +24,7 @@ module.exports = {
 			userID
 		);
 		// Obtener el avatar
-		let avatar = compartidas.nombreAvatar(prodOrig,prodEdic)
+		let avatar = comp.nombreAvatar(prodOrig,prodEdic)
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
 		// Obtener información de BD
@@ -33,7 +33,7 @@ module.exports = {
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos") {

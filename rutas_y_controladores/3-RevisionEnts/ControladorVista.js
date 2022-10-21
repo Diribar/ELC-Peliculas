@@ -2,7 +2,7 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 
@@ -14,7 +14,7 @@ module.exports = {
 		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
-		const ahora = compartidas.ahora();
+		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos;
 		productos = await procesos.TC_obtenerProds(ahora, userID);
@@ -55,10 +55,10 @@ module.exports = {
 			? (!avatar.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOrig.paises_id ? await compartidas.paises_idToNombre(prodOrig.paises_id) : "";
+		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
@@ -91,7 +91,7 @@ module.exports = {
 		const prodID = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
-		const producto_id = compartidas.obtenerEntidad_id(entidad);
+		const producto_id = comp.obtenerEntidad_id(entidad);
 
 		// Verificaciones ------------------------------------------
 		// Verificacion 1:
@@ -182,7 +182,7 @@ module.exports = {
 			vista = "CMP-0Estructura";
 		}
 		// 5. Configurar el título de la vista
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
@@ -216,7 +216,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Configurar el título
-		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
 		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
@@ -226,7 +226,7 @@ module.exports = {
 		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtener todos los links
-		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",

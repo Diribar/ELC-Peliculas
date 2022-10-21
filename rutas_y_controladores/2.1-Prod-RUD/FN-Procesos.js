@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// Producto
@@ -28,10 +28,10 @@ module.exports = {
 		]);
 		// Obtener el producto EDITADO
 		let prodEdic = "";
-		let producto_id = compartidas.obtenerEntidad_id(entidad);
+		let producto_id = comp.obtenerEntidad_id(entidad);
 		if (prodOrig) {
 			// Quitarle los campos 'null'
-			prodOrig = compartidas.todos_quitarCamposSinContenido(prodOrig);
+			prodOrig = comp.todos_quitarCamposSinContenido(prodOrig);
 			// Obtener los datos EDITADOS del producto
 			prodEdic = userID
 				? await BD_genericas.obtenerPorCamposConInclude(
@@ -41,7 +41,7 @@ module.exports = {
 				  )
 				: {};
 			// Quitarle los campos 'null'
-			if (prodEdic) prodEdic = compartidas.todos_quitarCamposSinContenido(prodEdic);
+			if (prodEdic) prodEdic = comp.todos_quitarCamposSinContenido(prodEdic);
 		}
 		return [prodOrig, prodEdic];
 	},
