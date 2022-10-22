@@ -196,7 +196,7 @@ module.exports = {
 			// Guarda el nuevo registro
 			let id = await comp.crear_registro(entidad, DE, userID);
 			// Agregar el RCLV a DP/ED
-			let entidad_id = comp.obtenerEntidad_id(entidad);
+			let entidad_id = comp.obtieneEntidad_id(entidad);
 			if (origen == "DP") {
 				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};

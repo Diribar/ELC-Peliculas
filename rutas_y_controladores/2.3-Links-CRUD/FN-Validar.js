@@ -17,10 +17,7 @@ module.exports = {
 				? longitud
 				: !datos.url.includes("/")
 				? "Por favor ingresá una url válida"
-				: variables
-						.provsQueNoRespetanCopyright
-						.map((n) => n.url)
-						.some((n) => datos.url.includes(n))
+				: variables.provsQueNoRespetanCopyright.map((n) => n.url).some((n) => datos.url.includes(n))
 				? "No nos consta que ese proveedor respete los derechos de autor."
 				: variables.provsListaNegra.some((n) => datos.url.includes(n))
 				? "Los videos de ese portal son ajenos a nuestro perfil"
@@ -86,33 +83,19 @@ module.exports = {
 
 // Funciones **************************
 let validarLinkRepetidos = async (datos) => {
+	// Variables
+	datos = {...datos, entidad: "links"};
+	let respuesta = "";
 	// Obtener casos
-	let averiguar = await BD_genericas.obtenerPorCampos("links", {url: datos.url});
-	// Si se encontró algún caso, compara las ID
-	let repetido = averiguar ? averiguar.id != datos.id : false;
-	// Si hay casos --> mensaje de error con la entidad y el id
-	let mensaje;
-	if (repetido) {
-		mensaje =
-			"Este " +
-			"<a href='/links/abm/?entidad=" +
-			(averiguar.pelicula_id
-				? "peliculas"
-				: averiguar.coleccion_id
-				? "colecciones"
-				: averiguar.capitulo_id
-				? "capitulos"
-				: "") +
-			"&id=" +
-			(averiguar.pelicula_id
-				? averiguar.pelicula_id
-				: averiguar.coleccion_id
-				? averiguar.coleccion_id
-				: averiguar.capitulo_id
-				? averiguar.capitulo_id
-				: "") +
-			"' target='_blank'><u><strong>link</strong></u></a>" +
-			" ya se encuentra en nuestra base de datos";
-	} else mensaje = "";
+	let id = await BD_especificas.validarRepetidos(["url"], datos);
+	if (id) {
+		let link = await BD_genericas.obtenerPorId("links", id);
+		let prodEntidad = comp.obtieneEntidadDesdeBelongs(link);
+		let entidadId = comp.obtieneEntidad_id(prodEntidad);
+		let prodId = link[entidadId];
+		datos = {entidad: prodEntidad, id: prodId};
+		respuesta = comp.cartelRepetido(datos);
+	}
+	// Fin
 	return mensaje;
 };

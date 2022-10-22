@@ -86,7 +86,7 @@ module.exports = {
 		// 1. Elimina el registro de la edición
 		await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
 		// 2. Averigua si tiene errores
-		let entidadOrig = this.obtieneEntidadDesdeEdicion(prodEdic);
+		let entidadOrig = this.obtieneEntidadDesdeBelongs(prodEdic);
 		let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
 		// 2. Acciones si el original no tiene errores y está en status 'gr_creado'
 		if (!errores.hay && prodOrig.status_registro.gr_creado) {
@@ -144,7 +144,7 @@ module.exports = {
 		// Averiguar si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtener el campo 'entidad_id'
-		let entidad_id = this.obtenerEntidad_id(entidadOrig);
+		let entidad_id = this.obtieneEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtenerPorCampos(entidadEdic, objeto);
@@ -164,7 +164,7 @@ module.exports = {
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
 			: entidad == "links"
-			? "link"
+			? "links"
 			: "";
 	},
 	obtenerEntidadNombre: (entidad) => {
@@ -186,7 +186,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtenerEntidad_id: (entidad) => {
+	obtieneEntidad_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -203,7 +203,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadDesdeEdicion: (edicion) => {
+	obtieneEntidadDesdeBelongs: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
 			: edicion.coleccion_id

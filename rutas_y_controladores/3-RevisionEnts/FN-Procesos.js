@@ -496,7 +496,7 @@ module.exports = {
 		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
 		for (let entidad of RCLV_entidades) {
-			let campo = comp.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let campo = comp.obtieneEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let RCLV_id = producto[campo]; // Obtener el RCLV_id
 			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
 			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prods_aprob: true});

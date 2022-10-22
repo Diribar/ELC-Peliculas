@@ -28,7 +28,7 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let producto_id = comp.obtenerEntidad_id(entidad);
+			let producto_id = comp.obtieneEntidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
 				usuario_id: userID,
 				[producto_id]: prodID,
