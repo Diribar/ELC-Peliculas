@@ -12,24 +12,21 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-
 	editables: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("apodo")) {
-			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
-			let longitud = datos.apodo ? comp.longitud(datos.apodo, 2, 30) : "";
-			errores.apodo = !datos.apodo
-				? comp.cartelVacio
-				: castellano(datos.apodo)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: longitud
-				? longitud
-				: "";
+			let dato = datos.apodo;
+			let respuesta = "";
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+			} else respuesta = comp.cartelVacio;
+			// Fin
+			errores.apodo = respuesta;
 		}
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
 		if (campos.includes("rol_iglesia_id"))
@@ -49,36 +46,36 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	documentoFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("nombre")) {
-			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
-			let longitud = datos.nombre ? comp.longitud(datos.nombre, 2, 30) : "";
-			errores.nombre = !datos.nombre
-				? comp.cartelVacio
-				: castellano(datos.nombre)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: longitud
-				? longitud
-				: "";
+			// Variables
+			let respuesta = "";
+			let dato = datos.nombre;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) respuesta = comp.longitud(datos.nombre, 2, 30);
+			} else respuesta = comp.cartelVacio;
+			// Fin
+			errores.nombre = respuesta;
 		}
 		if (campos.includes("apellido")) {
-			let inicialMayuscula = datos.apellido ? comp.inicialMayuscula(datos.apellido) : "";
-			errores.apellido = !datos.apellido
-				? comp.cartelVacio
-				: castellano(datos.apellido)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: largoPerenne
-				? largoPerenne
-				: "";
+			// Variables
+			let respuesta = "";
+			let dato = datos.apellido;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) comp.longitud(datos.nombre, 2, 30);
+			} else respuesta = comp.cartelVacio;
+			// Fin
+			errores.apellido = respuesta;
 		}
 		if (campos.includes("sexo_id"))
 			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
@@ -142,7 +139,6 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	login: (datos) => {
 		// Variables
 		let {email, contrasena} = datos;
@@ -155,7 +151,6 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
@@ -177,7 +172,6 @@ module.exports = {
 		// Fin
 		return {errores, usuario};
 	},
-
 	olvidoContrBE: async (datos) => {
 		// Variables
 		let errores = {};
@@ -243,10 +237,6 @@ let formatoMail = (email) => {
 };
 let largoContrasena = (dato) => {
 	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
-};
-let castellano = (dato) => {
-	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
-	return !formato.test(dato);
 };
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable

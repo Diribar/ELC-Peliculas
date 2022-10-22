@@ -408,6 +408,7 @@ module.exports = {
 		return !formato.test(dato);
 	},
 	cartelVacio: "Necesitamos que completes este campo",
+	selectVacio:"Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto
 			? "El contenido debe ser más largo"
@@ -422,6 +423,14 @@ module.exports = {
 		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
 			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
 			: "";
+	},
+	castellBasico: (dato) => {
+		let formato = /^[a-z áéíóúüñ']+/i;
+		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+	},
+	castellAdic: (dato) => {
+		let formato = /[¿?"/()\d+-]+/;
+		return !formato.test(dato);
 	},
 
 	// Varios
