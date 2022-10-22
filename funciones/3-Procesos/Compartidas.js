@@ -464,17 +464,16 @@ module.exports = {
 		return respuesta;
 	},
 	cartelRepetido: function (datos) {
-		let prodNombre = this.obtenerEntidadNombre(datos.entidad).toLowerCase();
 		return (
-			"Este/a " +
-			"<a href='/producto/detalle/?entidad=" +
+			"Este/a <a href='/" +
+			this.obtenerFamiliaEnSingular(datos.entidad) +
+			"/detalle/?entidad=" +
 			datos.entidad +
 			"&id=" +
 			datos.id +
 			"' target='_blank'><u><strong>" +
-			prodNombre +
-			"</strong></u></a>" +
-			" ya se encuentra en nuestra base de datos"
+			this.obtenerEntidadNombre(datos.entidad).toLowerCase() +
+			"</strong></u></a> ya se encuentra en nuestra base de datos"
 		);
 	},
 
