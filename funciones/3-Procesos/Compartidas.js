@@ -45,7 +45,7 @@ module.exports = {
 			// Obtiene los campos a comparar
 			let campos = [];
 			variables.camposRevisar[familia].forEach((campo) => {
-				campos.push(campo.nombreDelCampo);
+				campos.push(campo.nombre);
 				if (campo.relac_include) campos.push(campo.relac_include);
 			});
 

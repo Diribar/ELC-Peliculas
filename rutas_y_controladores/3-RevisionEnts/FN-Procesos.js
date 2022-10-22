@@ -310,7 +310,7 @@ module.exports = {
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
 		let campos = variables.camposRevisarProd;
 		for (let i = campos.length - 1; i >= 0; i--) {
-			let campoNombre = campos[i].nombreDelCampo;
+			let campoNombre = campos[i].nombre;
 			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
 			if (!Object.keys(prodEdic).includes(campoNombre)) campos.splice(i, 1);
 			else {
@@ -549,7 +549,7 @@ module.exports = {
 		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]);
 		// Genera un objeto con valores null
 		let camposVacios = {};
-		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
+		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombre] = null));
 		// Purga cada edición
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;

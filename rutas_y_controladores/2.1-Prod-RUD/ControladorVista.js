@@ -55,8 +55,8 @@ module.exports = {
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			camposDD1 = camposDD.filter((n) => n.antesDePais);
-			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
-			camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
+			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombre != "produccion");
+			camposDD3 = camposDD.filter((n) => n.nombre == "produccion");
 			BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));

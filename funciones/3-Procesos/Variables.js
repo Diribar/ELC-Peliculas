@@ -7,7 +7,7 @@ module.exports = {
 	camposDD: [
 		{
 			titulo: "Título original",
-			nombreDelCampo: "nombre_original",
+			nombre: "nombre_original",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -15,7 +15,7 @@ module.exports = {
 		},
 		{
 			titulo: "Título en castellano",
-			nombreDelCampo: "nombre_castellano",
+			nombre: "nombre_castellano",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -23,7 +23,7 @@ module.exports = {
 		},
 		{
 			titulo: "Año de estreno",
-			nombreDelCampo: "ano_estreno",
+			nombre: "ano_estreno",
 			numero: true,
 			peliculas: true,
 			colecciones: true,
@@ -32,7 +32,7 @@ module.exports = {
 		},
 		{
 			titulo: "Año de finalización",
-			nombreDelCampo: "ano_fin",
+			nombre: "ano_fin",
 			numero: true,
 			peliculas: false,
 			colecciones: true,
@@ -41,7 +41,7 @@ module.exports = {
 		},
 		{
 			titulo: "Duración (minutos)",
-			nombreDelCampo: "duracion",
+			nombre: "duracion",
 			numero: true,
 			peliculas: true,
 			colecciones: false,
@@ -49,14 +49,14 @@ module.exports = {
 			antesDePais: true,
 		},
 		{
-			nombreDelCampo: "paises_id",
+			nombre: "paises_id",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 			omitirRutinaVista: true,
 		},
 		{
-			nombreDelCampo: "idioma_original_id",
+			nombre: "idioma_original_id",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -64,48 +64,48 @@ module.exports = {
 		},
 		{
 			titulo: "Dirección",
-			nombreDelCampo: "direccion",
+			nombre: "direccion",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 		},
 		{
 			titulo: "Guión",
-			nombreDelCampo: "guion",
+			nombre: "guion",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 		},
 		{
 			titulo: "Música",
-			nombreDelCampo: "musica",
+			nombre: "musica",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 		},
 		{
 			titulo: "Actuación",
-			nombreDelCampo: "actuacion",
+			nombre: "actuacion",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 		},
 		{
 			titulo: "Producción",
-			nombreDelCampo: "produccion",
+			nombre: "produccion",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 		},
 		{
-			nombreDelCampo: "sinopsis",
+			nombre: "sinopsis",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
 			omitirRutinaVista: true,
 		},
 		{
-			nombreDelCampo: "avatar",
+			nombre: "avatar",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -134,7 +134,7 @@ module.exports = {
 		return [
 			{
 				titulo: "Existe una versión en castellano",
-				nombreDelCampo: "en_castellano_id",
+				nombre: "en_castellano_id",
 				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
 				mensajePeli: [
 					"SI - cuando es el idioma de toda la película, o está subtitulada.",
@@ -152,7 +152,7 @@ module.exports = {
 			},
 			{
 				titulo: "Es a Color",
-				nombreDelCampo: "en_color_id",
+				nombre: "en_color_id",
 				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
 				mensajePeli: ["SI - es a color.", "NO - es en blanco y negro."],
 				mensajeColec: ["En caso de que algunos capítulos sean a color y otros no, elegí PARCIAL"],
@@ -160,7 +160,7 @@ module.exports = {
 			},
 			{
 				titulo: "Público sugerido",
-				nombreDelCampo: "publico_sugerido_id",
+				nombre: "publico_sugerido_id",
 				valores: userID ? await BD_genericas.obtenerTodos("publicos_sugeridos", "orden") : [],
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
@@ -172,7 +172,7 @@ module.exports = {
 			},
 			{
 				titulo: "Categoría",
-				nombreDelCampo: "categoria_id",
+				nombre: "categoria_id",
 				valores: userID ? await BD_genericas.obtenerTodos("categorias", "orden") : [],
 				mensajes: [
 					"CENTRADAS EN LA FE CATÓLICA - significa que el rol de la Fe Católica es protagónico.",
@@ -182,7 +182,7 @@ module.exports = {
 			},
 			{
 				titulo: "Sub-categoría",
-				nombreDelCampo: "subcategoria_id",
+				nombre: "subcategoria_id",
 				valores: userID ? await BD_genericas.obtenerTodos("subcategorias", "orden") : [],
 				mensajes: [
 					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: ""},
@@ -195,7 +195,7 @@ module.exports = {
 			},
 			{
 				titulo: "Personaje histórico",
-				nombreDelCampo: "personaje_id",
+				nombre: "personaje_id",
 				valores: userID ? registrosRCLV.personajes : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual (salvo excepciones), haciendo click en los íconos de al lado.",
@@ -206,7 +206,7 @@ module.exports = {
 			},
 			{
 				titulo: "Hecho histórico",
-				nombreDelCampo: "hecho_id",
+				nombre: "hecho_id",
 				valores: userID ? registrosRCLV.hechos : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
@@ -217,7 +217,7 @@ module.exports = {
 			},
 			{
 				titulo: "Valor principal",
-				nombreDelCampo: "valor_id",
+				nombre: "valor_id",
 				valores: userID ? registrosRCLV.valores : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
@@ -227,7 +227,7 @@ module.exports = {
 			},
 			{
 				titulo: "Inspira fe y/o valores",
-				nombreDelCampo: "fe_valores_id",
+				nombre: "fe_valores_id",
 				valores: userID ? await BD_genericas.obtenerTodos("fe_valores", "orden") : [],
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				angosto: true,
@@ -235,7 +235,7 @@ module.exports = {
 			},
 			{
 				titulo: "Entretiene",
-				nombreDelCampo: "entretiene_id",
+				nombre: "entretiene_id",
 				valores: userID ? await BD_genericas.obtenerTodos("entretiene", "orden") : [],
 				mensajes: ["¿Se disfruta el rato viéndola?"],
 				angosto: true,
@@ -243,7 +243,7 @@ module.exports = {
 			},
 			{
 				titulo: "Calidad sonora y visual",
-				nombreDelCampo: "calidad_tecnica_id",
+				nombre: "calidad_tecnica_id",
 				valores: userID ? await BD_genericas.obtenerTodos("calidad_tecnica", "orden") : [],
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				angosto: true,
@@ -280,59 +280,59 @@ module.exports = {
 	// Entorno Revisiones
 	camposRevisar: {
 		productos: [
-			{titulo: "Avatar", nombreDelCampo: "avatar"},
-			{titulo: "Avatar (archivo)", nombreDelCampo: "avatar_archivo"},
-			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
-			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
-			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},
-			{titulo: "Año de finalización", nombreDelCampo: "ano_fin", angosto: true, input: true},
-			{titulo: "Duración", nombreDelCampo: "duracion", angosto: true, input: true},
-			{titulo: "País/es", nombreDelCampo: "paises_id"},
+			{titulo: "Avatar", nombre: "avatar"},
+			{titulo: "Avatar (archivo)", nombre: "avatar_archivo"},
+			{titulo: "Título original", nombre: "nombre_original", input: true},
+			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true},
+			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true},
+			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true},
+			{titulo: "Duración", nombre: "duracion", angosto: true, input: true},
+			{titulo: "País/es", nombre: "paises_id"},
 			{
 				titulo: "Idioma Original",
-				nombreDelCampo: "idioma_original_id",
-				relac_include: "idioma_original.nombre",
+				nombre: "idioma_original_id",
+				relac_include: "idioma_original",
 				campo_include: "nombre",
 			},
-			{titulo: "Dirección", nombreDelCampo: "direccion", input: true},
-			{titulo: "Guión", nombreDelCampo: "guion", input: true},
-			{titulo: "Música", nombreDelCampo: "musica", input: true},
-			{titulo: "Actuación", nombreDelCampo: "actuacion", input: true},
-			{titulo: "Producción", nombreDelCampo: "produccion", input: true},
-			{titulo: "Sinopsis", nombreDelCampo: "sinopsis", input: true},
+			{titulo: "Dirección", nombre: "direccion", input: true},
+			{titulo: "Guión", nombre: "guion", input: true},
+			{titulo: "Música", nombre: "musica", input: true},
+			{titulo: "Actuación", nombre: "actuacion", input: true},
+			{titulo: "Producción", nombre: "produccion", input: true},
+			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
 			{
 				titulo: "Versión en castellano",
-				nombreDelCampo: "en_castellano_id",
+				nombre: "en_castellano_id",
 				relac_include: "en_castellano",
 				campo_include: "productos",
 			},
 			{
 				titulo: "Es a Color",
-				nombreDelCampo: "en_color_id",
+				nombre: "en_color_id",
 				relac_include: "en_color",
 				campo_include: "productos",
 			},
 			{
 				titulo: "Categoría",
-				nombreDelCampo: "categoria_id",
+				nombre: "categoria_id",
 				relac_include: "categoria",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Sub-categoría",
-				nombreDelCampo: "subcategoria_id",
+				nombre: "subcategoria_id",
 				relac_include: "subcategoria",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Público sugerido",
-				nombreDelCampo: "publico_sugerido_id",
+				nombre: "publico_sugerido_id",
 				relac_include: "publico_sugerido",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Personaje histórico",
-				nombreDelCampo: "personaje_id",
+				nombre: "personaje_id",
 				relac_include: "personaje",
 				campo_include: "nombre",
 				rclv: true,
@@ -340,7 +340,7 @@ module.exports = {
 			},
 			{
 				titulo: "Hecho histórico",
-				nombreDelCampo: "hecho_id",
+				nombre: "hecho_id",
 				relac_include: "hecho",
 				campo_include: "nombre",
 				rclv: true,
@@ -348,7 +348,7 @@ module.exports = {
 			},
 			{
 				titulo: "Valor principal",
-				nombreDelCampo: "valor_id",
+				nombre: "valor_id",
 				relac_include: "valor",
 				campo_include: "nombre",
 				rclv: true,
@@ -356,12 +356,12 @@ module.exports = {
 			},
 		],
 		links: [
-			{nombreDelCampo: "calidad"},
-			{nombreDelCampo: "castellano"},
-			{nombreDelCampo: "gratuito"},
-			{nombreDelCampo: "tipo_id"},
-			{nombreDelCampo: "completo"},
-			{nombreDelCampo: "parte"},
+			{nombre: "calidad"},
+			{nombre: "castellano"},
+			{nombre: "gratuito"},
+			{nombre: "tipo_id"},
+			{nombre: "completo"},
+			{nombre: "parte"},
 		],
 	},
 
