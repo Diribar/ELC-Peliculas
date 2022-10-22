@@ -305,7 +305,7 @@ let actualizaOriginal = async (original, edicion, datos, userID) => {
 		editado_en: edicion.editado_en,
 		edic_analizada_por_id: userID,
 		edic_analizada_en: ahora,
-		lead_time_edicion: comp.todos_obtenerLeadTime(edicion.editado_en, ahora),
+		lead_time_edicion: comp.obtenerLeadTime(edicion.editado_en, ahora),
 	};
 	// Actualiza el registro ORIGINAL ***********************************************
 	await BD_genericas.actualizarPorId(entidad, original.id, datos);

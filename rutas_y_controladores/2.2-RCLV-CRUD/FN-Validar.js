@@ -157,10 +157,6 @@ let longitud = (datos, campo, corto, largo) => {
 		? "El " + campo + " debe ser más corto"
 		: "";
 };
-let inicialMayuscula = (valor, campo) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-	return !formato.test(valor, campo) ? "La primera letra debe ser en mayúscula" : "";
-};
 let castellano = (valor, campo) => {
 	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-\d]+$/;
 	return !formato.test(valor) ? "Sólo se admiten letras del abecedario castellano (" + campo + ")" : "";
@@ -195,7 +191,7 @@ let nombreExpress = (datos, campo) => {
 	let valor = datos[campo];
 	if (!valor) return "";
 	// Mensaje
-	let respuesta = inicialMayuscula(valor, campo);
+	let respuesta = comp.inicialMayuscula(valor);
 	if (!respuesta) respuesta = castellano(valor, campo);
 	if (!respuesta && campo == "nombre") respuesta = prefijo(valor, campo);
 	return respuesta;

@@ -31,7 +31,7 @@ module.exports = {
 		let producto_id = comp.obtenerEntidad_id(entidad);
 		if (prodOrig) {
 			// Quitarle los campos 'null'
-			prodOrig = comp.todos_quitarCamposSinContenido(prodOrig);
+			prodOrig = comp.quitarCamposSinContenido(prodOrig);
 			// Obtener los datos EDITADOS del producto
 			prodEdic = userID
 				? await BD_genericas.obtenerPorCamposConInclude(
@@ -41,7 +41,7 @@ module.exports = {
 				  )
 				: {};
 			// Quitarle los campos 'null'
-			if (prodEdic) prodEdic = comp.todos_quitarCamposSinContenido(prodEdic);
+			if (prodEdic) prodEdic = comp.quitarCamposSinContenido(prodEdic);
 		}
 		return [prodOrig, prodEdic];
 	},
