@@ -302,6 +302,15 @@ module.exports = {
 			writer.on("error", (error) => reject(error));
 		});
 	},
+	nombreAvatar: (prodOrig, prodEdic) => {
+		return prodEdic.avatar
+			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
+			: prodOrig.avatar
+			? !prodOrig.avatar.startsWith("http")
+				? "/imagenes/3-Productos/" + prodOrig.avatar
+				: prodOrig.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+	},
 
 	// Castellano
 	convertirLetrasAlIngles: (resultado) => {
@@ -393,17 +402,16 @@ module.exports = {
 			? "El contenido debe ser más corto"
 			: "";
 	},
+	extension: (nombre) => {
+		if (!nombre) return "";
+		let ext = path.extname(nombre);
+		if (ext) ext = ext.slice(1).toUpperCase();
+		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
+			: "";
+	},
 
 	// Varios
-	nombreAvatar: (prodOrig, prodEdic) => {
-		return prodEdic.avatar
-			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
-			: prodOrig.avatar
-			? !prodOrig.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOrig.avatar
-				: prodOrig.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
-	},
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -521,14 +529,6 @@ module.exports = {
 				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 		);
 		return productos;
-	},
-	extension: (nombre) => {
-		if (!nombre) return "";
-		let ext = path.extname(nombre);
-		if (ext) ext = ext.slice(1).toUpperCase();
-		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
-			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
-			: "";
 	},
 };
 
