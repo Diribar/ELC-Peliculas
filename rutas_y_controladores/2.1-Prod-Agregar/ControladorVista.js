@@ -74,8 +74,8 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
 		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
-		// 2. Averiguar si hay errores de validación
-		let errores = await validar.desambiguar(infoTMDBparaDD);
+		// 2. Averiguar si es una película y pertenece a una colección
+		let errores = await validar.averiguarSiEsColeccion(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
 		if (errores.mensaje == "agregarCapitulos") {
 			await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);

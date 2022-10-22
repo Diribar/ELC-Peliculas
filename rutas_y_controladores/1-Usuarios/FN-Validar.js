@@ -22,7 +22,7 @@ module.exports = {
 			let respuesta = "";
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
 			// Fin
@@ -49,7 +49,7 @@ module.exports = {
 			// Validaciones
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
 			// Fin
@@ -62,7 +62,7 @@ module.exports = {
 			// Validaciones
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
 			// Fin

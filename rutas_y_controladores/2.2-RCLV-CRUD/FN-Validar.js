@@ -184,7 +184,7 @@ let nombreExpress = (datos, campo) => {
 	let valor = datos[campo];
 	if (!valor) return "";
 	// Mensaje
-	let respuesta = comp.inicialMayuscula(valor);
+	let respuesta = comp.inicial.basico(valor);
 	if (!respuesta) respuesta = castellano(valor, campo);
 	if (!respuesta && campo == "nombre") respuesta = prefijo(valor, campo);
 	return respuesta;

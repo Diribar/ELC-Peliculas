@@ -399,14 +399,6 @@ module.exports = {
 	},
 
 	// Validaciones
-	inicialMayuscula: (dato) => {
-		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
-	},
-	inicialEspeciales: (dato) => {
-		let formato = /^[¡¿"\d]/;
-		return !formato.test(dato);
-	},
 	inputVacio: "Necesitamos que completes este campo",
 	selectVacio: "Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
@@ -424,13 +416,29 @@ module.exports = {
 			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
 			: "";
 	},
-	castellBasico: (dato) => {
-		let formato = /^[a-z áéíóúüñ']+/i;
-		return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+	castellano: {
+		basico: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.']+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		sinopsis: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\r\n\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},	
 	},
-	castellAdic: (dato) => {
-		let formato = /[¿?"/()\d+-]+/;
-		return !formato.test(dato);
+	inicial:{
+		basico: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato);
+		},
 	},
 	avatar: function(datos) {
 		// Variables
