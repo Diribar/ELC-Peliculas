@@ -308,7 +308,7 @@ module.exports = {
 		return [quedanCampos, edicion, statusAprob];
 	},
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
-		let campos = variables.camposRevisarProd();
+		let campos = variables.camposRevisarProd;
 		for (let i = campos.length - 1; i >= 0; i--) {
 			let campoNombre = campos[i].nombreDelCampo;
 			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
@@ -523,7 +523,7 @@ module.exports = {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
-		const vistaTablero = variables.vistaTablero();
+		const vistaTablero = variables.vistaTablero;
 
 		// El producto no está en status 'aprobado'
 		if (!informacion && !producto.status_registro.aprobado)
@@ -549,7 +549,7 @@ module.exports = {
 		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]);
 		// Genera un objeto con valores null
 		let camposVacios = {};
-		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
+		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
 		// Purga cada edición
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;

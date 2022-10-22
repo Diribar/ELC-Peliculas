@@ -142,7 +142,7 @@ module.exports = {
 		// Variables
 		let DE = {};
 		// Estandarizar los campos como 'null'
-		variables.camposRCLV()[datos.entidad].forEach((campo) => {
+		variables.camposRCLV[datos.entidad].forEach((campo) => {
 			DE[campo] = null;
 		});
 		// Nombre

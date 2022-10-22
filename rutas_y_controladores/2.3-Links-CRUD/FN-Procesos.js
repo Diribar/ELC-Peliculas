@@ -11,7 +11,7 @@ module.exports = {
 		// Variables
 		let producto_id = comp.obtenerEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
-		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
+		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombreDelCampo);
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",

@@ -51,7 +51,7 @@ module.exports = {
 			prodComb = {...prodComb, ...edicion};
 			// Variables de 'Edición'
 			let camposDD = variables
-				.camposDD()
+				.camposDD
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			camposDD1 = camposDD.filter((n) => n.antesDePais);

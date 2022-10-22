@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinCaptura);
 	const vistaInactivar = variables.vistaInactivar(req);
 	const vistaAnteriorInactivar = [vistaAnterior, vistaInactivar];
-	const vistaTablero = variables.vistaTablero();
+	const vistaTablero = variables.vistaTablero;
 	const vistaAnteriorTablero = () => {
 		let vista = [vistaAnterior];
 		let usuario = req.session.usuario;

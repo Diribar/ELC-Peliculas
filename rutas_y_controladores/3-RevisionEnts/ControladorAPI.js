@@ -333,7 +333,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 		// Amplía la información
 		datos = {
 			...datos,
-			titulo: variables.camposRevisarProd().find((n) => n.nombreDelCampo == campo).titulo,
+			titulo: variables.camposRevisarProd.find((n) => n.nombreDelCampo == campo).titulo,
 			evaluado_por_id: userID,
 		};
 		// Si fue rechazado, agregar campos
