@@ -26,7 +26,7 @@ module.exports = {
 				? cartelCampoVacio
 				: castellano(datos.apodo)
 				? cartelCastellano
-				: inicialMayuscula && comp.inicialEspeciales(datos.apodo)
+				: inicialMayuscula
 				? inicialMayuscula
 				: largoApodo
 				? largoApodo
