@@ -28,7 +28,7 @@ module.exports = {
 		]);
 		// Obtener el producto EDITADO
 		let prodEdic = "";
-		let producto_id = comp.obtenerEntidad_id(entidad);
+		let producto_id = comp.obtieneEntidad_id(entidad);
 		if (prodOrig) {
 			// Quitarle los campos 'null'
 			prodOrig = comp.quitarCamposSinContenido(prodOrig);

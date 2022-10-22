@@ -10,18 +10,16 @@ module.exports = {
 		let errores = {};
 		// url
 		if (campos.includes("url")) {
+			let longitud = datos.url ? comp.longitud(datos.url, 5, 100) : "";
 			errores.url = !datos.url
-				? cartelCampoVacio
-				: longitud(datos.url, 5, 100)
-				? longitud(datos.url, 5, 100)
+				? comp.inputVacio
+				: longitud
+				? longitud
 				: !datos.url.includes("/")
 				? "Por favor ingresá una url válida"
-				: variables
-						.provsQueNoRespetanCopyright()
-						.map((n) => n.url)
-						.some((n) => datos.url.includes(n))
+				: variables.provsQueNoRespetanCopyright.map((n) => n.url).some((n) => datos.url.includes(n))
 				? "No nos consta que ese proveedor respete los derechos de autor."
-				: variables.provsListaNegra().some((n) => datos.url.includes(n))
+				: variables.provsListaNegra.some((n) => datos.url.includes(n))
 				? "Los videos de ese portal son ajenos a nuestro perfil"
 				: "";
 			if (!errores.url) {
@@ -30,12 +28,12 @@ module.exports = {
 			}
 		}
 		// calidad
-		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? cartelCampoVacio : "";
+		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? comp.inputVacio : "";
 		// castellano
 		if (campos.includes("castellano")) {
 			errores.castellano =
 				datos.castellano == ""
-					? cartelCampoVacio
+					? comp.inputVacio
 					: datos.castellano != "0" && datos.castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -44,7 +42,7 @@ module.exports = {
 		if (campos.includes("subtit_castellano")) {
 			errores.subtit_castellano =
 				datos.subtit_castellano == ""
-					? cartelCampoVacio
+					? comp.inputVacio
 					: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -53,7 +51,7 @@ module.exports = {
 		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
-					? cartelCampoVacio
+					? comp.inputVacio
 					: datos.gratuito != "0" && datos.gratuito != "1"
 					? "Valor inválido"
 					: "";
@@ -61,18 +59,18 @@ module.exports = {
 		// tipo_id
 		if (campos.includes("tipo_id")) {
 			errores.tipo_id = !datos.tipo_id
-				? cartelCampoVacio
+				? comp.inputVacio
 				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
 		}
 		// completo
 		if (campos.includes("completo") && datos.tipo_id != "1")
-			errores.completo = !datos.completo ? cartelCampoVacio : "";
+			errores.completo = !datos.completo ? comp.inputVacio : "";
 		// parte
 		if (campos.includes("parte") && datos.completo == "0") {
 			errores.parte = !datos.parte
-				? cartelCampoVacio
+				? comp.inputVacio
 				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
 				? "Necesitamos que ingreses un número positivo"
 				: "";
@@ -83,44 +81,21 @@ module.exports = {
 	},
 };
 
-// Variables **************************
-let cartelCampoVacio = "Necesitamos que completes esta información";
-
-let longitud = (dato, corto, largo) => {
-	return dato.length < corto
-		? "El contenido debe ser más largo"
-		: dato.length > largo
-		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
-		: "";
-};
+// Funciones **************************
 let validarLinkRepetidos = async (datos) => {
+	// Variables
+	datos = {...datos, entidad: "links"};
+	let respuesta = "";
 	// Obtener casos
-	let averiguar = await BD_genericas.obtenerPorCampos("links", {url: datos.url});
-	// Si se encontró algún caso, compara las ID
-	let repetido = averiguar ? averiguar.id != datos.id : false;
-	// Si hay casos --> mensaje de error con la entidad y el id
-	let mensaje;
-	if (repetido) {
-		mensaje =
-			"Este " +
-			"<a href='/links/abm/?entidad=" +
-			(averiguar.pelicula_id
-				? "peliculas"
-				: averiguar.coleccion_id
-				? "colecciones"
-				: averiguar.capitulo_id
-				? "capitulos"
-				: "") +
-			"&id=" +
-			(averiguar.pelicula_id
-				? averiguar.pelicula_id
-				: averiguar.coleccion_id
-				? averiguar.coleccion_id
-				: averiguar.capitulo_id
-				? averiguar.capitulo_id
-				: "") +
-			"' target='_blank'><u><strong>link</strong></u></a>" +
-			" ya se encuentra en nuestra base de datos";
-	} else mensaje = "";
+	let id = await BD_especificas.validarRepetidos(["url"], datos);
+	if (id) {
+		let link = await BD_genericas.obtenerPorId("links", id);
+		let prodEntidad = comp.obtieneEntidadDesdeBelongs(link);
+		let entidadId = comp.obtieneEntidad_id(prodEntidad);
+		let prodId = link[entidadId];
+		datos = {entidad: prodEntidad, id: prodId};
+		respuesta = comp.cartelRepetido(datos);
+	}
+	// Fin
 	return mensaje;
 };

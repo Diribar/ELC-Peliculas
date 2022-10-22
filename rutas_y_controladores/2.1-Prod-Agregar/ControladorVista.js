@@ -74,8 +74,8 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
 		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
-		// 2. Averiguar si hay errores de validación
-		let errores = await validar.desambiguar(infoTMDBparaDD);
+		// 2. Averiguar si es una película y pertenece a una colección
+		let errores = await validar.averiguarSiEsColeccion(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
 		if (errores.mensaje == "agregarCapitulos") {
 			await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
@@ -209,7 +209,7 @@ module.exports = {
 				: datosDuros.fuente == "IM"
 				? "tipo-producto"
 				: "palabras-clave";
-		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		// 5. Obtiene los errores
 		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
 		let errores = req.session.erroresDD
@@ -252,7 +252,7 @@ module.exports = {
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 3. Averiguar si hay errores de validación
-		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
 		let avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validar.datosDuros(camposDD_errores, {...datosDuros, avatar});

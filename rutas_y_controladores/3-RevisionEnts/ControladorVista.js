@@ -91,7 +91,7 @@ module.exports = {
 		const prodID = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
-		const producto_id = comp.obtenerEntidad_id(entidad);
+		const producto_id = comp.obtieneEntidad_id(entidad);
 
 		// Verificaciones ------------------------------------------
 		// Verificacion 1:
@@ -226,7 +226,7 @@ module.exports = {
 		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtener todos los links
-		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",
@@ -249,7 +249,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
-		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
+		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombreDelCampo);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {

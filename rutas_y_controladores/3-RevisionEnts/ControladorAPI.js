@@ -34,7 +34,7 @@ module.exports = {
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(prodEntidad, prodID);
 		let creador_ID = producto.creado_por_id;
-		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
 		datos = {
 			[entidad_id]: prodID,
 			sugerido_por_id: creador_ID,
@@ -296,7 +296,7 @@ let obtieneCamposLinkEdic = (edicAprob, linkEdicion, campo) => {
 let actualizaOriginal = async (original, edicion, datos, userID) => {
 	// Variables
 	const ahora = comp.ahora();
-	const entidad = comp.obtieneEntidadDesdeEdicion(edicion);
+	const entidad = comp.obtieneEntidadDesdeBelongs(edicion);
 
 	// Genera la información a actualizar
 	datos = {
@@ -333,7 +333,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 		// Amplía la información
 		datos = {
 			...datos,
-			titulo: variables.camposRevisarProd().find((n) => n.nombreDelCampo == campo).titulo,
+			titulo: variables.camposRevisarProd.find((n) => n.nombreDelCampo == campo).titulo,
 			evaluado_por_id: userID,
 		};
 		// Si fue rechazado, agregar campos

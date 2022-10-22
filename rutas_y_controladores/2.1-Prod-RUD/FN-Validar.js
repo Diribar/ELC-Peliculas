@@ -11,7 +11,7 @@ module.exports = {
 		let entidad = datos.entidad;
 		// Obtener los campos
 		if (!campos) {
-			let camposDD = variables.camposDD().filter((n) => n[entidad]);
+			let camposDD = variables.camposDD.filter((n) => n[entidad]);
 			let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}

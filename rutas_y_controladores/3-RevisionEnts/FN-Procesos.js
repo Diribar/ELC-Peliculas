@@ -308,7 +308,7 @@ module.exports = {
 		return [quedanCampos, edicion, statusAprob];
 	},
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
-		let campos = variables.camposRevisarProd();
+		let campos = variables.camposRevisarProd;
 		for (let i = campos.length - 1; i >= 0; i--) {
 			let campoNombre = campos[i].nombreDelCampo;
 			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
@@ -496,7 +496,7 @@ module.exports = {
 		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
 		for (let entidad of RCLV_entidades) {
-			let campo = comp.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let campo = comp.obtieneEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let RCLV_id = producto[campo]; // Obtener el RCLV_id
 			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
 			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prods_aprob: true});
@@ -523,7 +523,7 @@ module.exports = {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
-		const vistaTablero = variables.vistaTablero();
+		const vistaTablero = variables.vistaTablero;
 
 		// El producto no está en status 'aprobado'
 		if (!informacion && !producto.status_registro.aprobado)
@@ -549,7 +549,7 @@ module.exports = {
 		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]);
 		// Genera un objeto con valores null
 		let camposVacios = {};
-		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
+		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
 		// Purga cada edición
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;

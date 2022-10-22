@@ -13,14 +13,14 @@ module.exports = async (req, res, next) => {
 	}
 	// Para tener en 'session' las opciones
 	if (!req.session.menuOpciones) {
-		req.session.menuOpciones = variables.menuOpciones();
+		req.session.menuOpciones = variables.menuOpciones;
 		req.session.menuOpciones_url = req.session.menuOpciones.map((n) => n.url);
 	}
 	// Para tener en 'session' las menuSubOpciones_algunas
 	if (!req.session.menuSubOpciones_todas) {
 		req.session.menuSubOpciones_todas = [];
 		// Obtener las menuSubOpciones_todas para Sugeridos y Listado
-		let menuSubOpciones_todas = variables.subMenuOpciones();
+		let menuSubOpciones_todas = variables.subMenuOpciones;
 		menuSubOpciones_todas.map((n) =>
 			req.session.menuSubOpciones_todas.push({nombre: n.nombre, url: "sugeridas/" + n.url})
 		);
@@ -52,7 +52,7 @@ module.exports = async (req, res, next) => {
 	) {
 		let informacion = {
 			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 		};
 		return res.render("CMP-0Estructura", {informacion});
 	}

@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
@@ -13,76 +12,63 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-
 	editables: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("apodo")) {
-			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
-			let largoApodo = datos.apodo ? longitud(datos.apodo, 2, 30) : "";
-			errores.apodo = !datos.apodo
-				? cartelCampoVacio
-				: castellano(datos.apodo)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: largoApodo
-				? largoApodo
-				: "";
+			let dato = datos.apodo;
+			let respuesta = "";
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.apodo = respuesta;
 		}
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
 		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		if (campos.includes("avatar")) {
-			let extension = datos.avatar ? comp.extension(datos.avatar) : "";
-			errores.avatar = !datos.avatar
-				? ""
-				: extension
-				? extension
-				: datos.tamano > 1100000
-				? "El archivo es de " +
-				  parseInt(datos.tamano / 10000) / 100 +
-				  " MB. Necesitamos que no supere 1 MB"
-				: "";
+			errores.avatar = comp.avatar(datos);
 		}
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	documentoFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("nombre")) {
-			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
-			let largoPerenne = datos.nombre ? longitud(datos.nombre, 2, 30) : "";
-			errores.nombre = !datos.nombre
-				? cartelCampoVacio
-				: castellano(datos.nombre)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: largoPerenne
-				? largoPerenne
-				: "";
+			// Variables
+			let respuesta = "";
+			let dato = datos.nombre;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.nombre = respuesta;
 		}
 		if (campos.includes("apellido")) {
-			let inicialMayuscula = datos.apellido ? comp.inicialMayuscula(datos.apellido) : "";
-			errores.apellido = !datos.apellido
-				? cartelCampoVacio
-				: castellano(datos.apellido)
-				? cartelCastellano
-				: inicialMayuscula
-				? inicialMayuscula
-				: largoPerenne
-				? largoPerenne
-				: "";
+			// Variables
+			let respuesta = "";
+			let dato = datos.apellido;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.apellido = respuesta;
 		}
-		if (campos.includes("sexo_id"))
-			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
+		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
 		if (campos.includes("fecha_nacimiento"))
 			errores.fecha_nacimiento = !datos.fecha_nacimiento
 				? "Necesitamos que ingreses la fecha"
@@ -91,27 +77,20 @@ module.exports = {
 				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
-			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
-			errores.docum_numero = !datos.docum_numero ? cartelCampoVacio : largoNumero ? largoNumero : "";
+			// Variables
+			let dato = datos.docum_numero;
+			let respuesta = "";
+			// Validaciones
+			if (dato) respuesta = comp.longitud(dato, 4, 15);
+			else respuesta = comp.inputVacio;
+			// Fin
+			errores.docum_numero = respuesta;
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
-			errores.docum_pais_id = !datos.docum_pais_id ? cartelElejiUnValor : "";
+			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("docum_avatar")) {
-			// Variables
-			let extension = datos.docum_avatar ? comp.extension(datos.docum_avatar) : "";
-			let tamano =
-				datos.docum_avatar && datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
-			// Validaciones
-			errores.docum_avatar = !datos.docum_avatar
-				? ""
-				: extension
-				? extension
-				: tamano > 1.1
-				? "El archivo es de " + tamano + " MB. Necesitamos que no supere 1 MB"
-				: "";
-		}
+		if (campos.includes("docum_avatar")) errores.docum_avatar = comp.avatar(datos.docum_avatar);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -143,7 +122,6 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	login: (datos) => {
 		// Variables
 		let {email, contrasena} = datos;
@@ -156,7 +134,6 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
@@ -178,7 +155,6 @@ module.exports = {
 		// Fin
 		return {errores, usuario};
 	},
-
 	olvidoContrBE: async (datos) => {
 		// Variables
 		let errores = {};
@@ -213,12 +189,12 @@ module.exports = {
 				else if (usuario.status_registro.ident_a_validar) {
 					// Verifica los posibles errores
 					errores.docum_numero = !datos.docum_numero
-						? cartelCampoVacio
+						? comp.inputVacio
 						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
 					errores.docum_pais_id = !datos.docum_pais_id
-						? cartelElejiUnValor
+						? comp.selectVacio
 						: datos.docum_pais_id != usuario.docum_pais_id
 						? "El país no coincide con el de nuestra Base de Datos"
 						: "";
@@ -232,35 +208,17 @@ module.exports = {
 	},
 };
 
+// Variables y Funciones
 let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
-let cartelCampoVacio = "Necesitamos que completes este campo";
-let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
-let cartelElejiUnValor = "Necesitamos que elijas un valor";
-
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
 };
-
 let largoContrasena = (dato) => {
 	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
 };
-
-let longitud = (dato, corto, largo) => {
-	return dato && dato.length < corto
-		? "El nombre debe ser más largo"
-		: dato && dato.length > largo
-		? "El nombre debe ser más corto"
-		: "";
-};
-
-let castellano = (dato) => {
-	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
-	return !formato.test(dato);
-};
-
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);

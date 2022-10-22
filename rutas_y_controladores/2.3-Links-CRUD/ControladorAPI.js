@@ -23,7 +23,7 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		// Completa la info
-		let producto_id = comp.obtenerEntidad_id(datos.prodEntidad);
+		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
 		datos.prov_id = await obtenerProveedorID(datos.url);
 		// Obtiene el link

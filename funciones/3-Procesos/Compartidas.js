@@ -82,11 +82,11 @@ module.exports = {
 	accionesSiNoQuedanCampos: async function (prodOrig, prodEdic) {
 		// Variables
 		let statusAprob = false;
-		let ahora=comp.ahora()
+		let ahora = comp.ahora();
 		// 1. Elimina el registro de la edición
 		await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
 		// 2. Averigua si tiene errores
-		let entidadOrig = this.obtieneEntidadDesdeEdicion(prodEdic);
+		let entidadOrig = this.obtieneEntidadDesdeBelongs(prodEdic);
 		let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
 		// 2. Acciones si el original no tiene errores y está en status 'gr_creado'
 		if (!errores.hay && prodOrig.status_registro.gr_creado) {
@@ -144,7 +144,7 @@ module.exports = {
 		// Averiguar si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtener el campo 'entidad_id'
-		let entidad_id = this.obtenerEntidad_id(entidadOrig);
+		let entidad_id = this.obtieneEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtenerPorCampos(entidadEdic, objeto);
@@ -157,14 +157,14 @@ module.exports = {
 		return "Edición guardada";
 	},
 
-	// Conversión de nombres
+	// Conversiones
 	obtenerFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
 			: entidad == "links"
-			? "link"
+			? "links"
 			: "";
 	},
 	obtenerEntidadNombre: (entidad) => {
@@ -186,7 +186,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtenerEntidad_id: (entidad) => {
+	obtieneEntidad_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -203,7 +203,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadDesdeEdicion: (edicion) => {
+	obtieneEntidadDesdeBelongs: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
 			: edicion.coleccion_id
@@ -219,6 +219,92 @@ module.exports = {
 			: edicion.link_id
 			? "links"
 			: "";
+	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
+	},
+	convertirLetrasAlIngles: (resultado) => {
+		return resultado
+			.toLowerCase()
+			.replace(/-/g, " ")
+			.replace(/á/g, "a")
+			.replace(/é/g, "e")
+			.replace(/í/g, "i")
+			.replace(/ó/g, "o")
+			.replace(/úü/g, "u")
+			.replace(/ñ/g, "n")
+			.replace(/:¿![.][?]/g, "")
+			.replace(/ +/g, " ");
+	},
+	convertirLetrasAlCastellano: (resultado) => {
+		let campos = Object.keys(resultado);
+		let valores = Object.values(resultado);
+		for (let i = 0; i < campos.length; i++) {
+			if (typeof valores[i] == "string") {
+				resultado[campos[i]] = valores[i]
+					.replace(/  /g, " ")
+					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+					.replace(/[àâãäåāăą]/g, "a")
+					.replace(/Æ/g, "Ae")
+					.replace(/æ/g, "ae")
+					.replace(/[ÇĆĈĊČ]/g, "C")
+					.replace(/[çćĉċč]/g, "c")
+					.replace(/[ÐĎ]/g, "D")
+					.replace(/[đď]/g, "d")
+					.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+					.replace(/[èêëēĕėęě]/g, "e")
+					.replace(/[ĜĞĠĢ]/g, "G")
+					.replace(/[ĝğġģ]/g, "g")
+					.replace(/[ĦĤ]/g, "H")
+					.replace(/[ħĥ]/g, "h")
+					.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+					.replace(/[ìîïĩīĭįı]/g, "i")
+					.replace(/Ĳ/g, "Ij")
+					.replace(/ĳ/g, "ij")
+					.replace(/Ĵ/g, "J")
+					.replace(/ĵ/g, "j")
+					.replace(/Ķ/g, "K")
+					.replace(/[ķĸ]/g, "k")
+					.replace(/[ĹĻĽĿŁ]/g, "L")
+					.replace(/[ĺļľŀł]/g, "l")
+					.replace(/[ŃŅŇ]/g, "N")
+					.replace(/[ńņňŉ]/g, "n")
+					.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+					.replace(/[òôõōðōŏő]/g, "o")
+					.replace(/[ÖŒ]/g, "Oe")
+					.replace(/[ö]/g, "o")
+					.replace(/[œ]/g, "oe")
+					.replace(/[ŔŖŘ]/g, "R")
+					.replace(/[ŕŗř]/g, "r")
+					.replace(/[ŚŜŞŠ]/g, "S")
+					.replace(/[śŝşš]/g, "s")
+					.replace(/[ŢŤŦ]/g, "T")
+					.replace(/[ţťŧ]/g, "t")
+					.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+					.replace(/[ùûũūŭůűų]/g, "u")
+					.replace(/Ŵ/g, "W")
+					.replace(/ŵ/g, "w")
+					.replace(/[ÝŶŸ]/g, "Y")
+					.replace(/[ýŷÿ]/g, "y")
+					.replace(/[ŽŹŻŽ]/g, "Z")
+					.replace(/[žźżž]/g, "z")
+					.replace(/[”“«»]/g, '"')
+					.replace(/[º]/g, "°");
+			}
+		}
+		return resultado;
 	},
 
 	// Fecha y Hora
@@ -302,89 +388,6 @@ module.exports = {
 			writer.on("error", (error) => reject(error));
 		});
 	},
-
-	// Castellano
-	convertirLetrasAlIngles: (resultado) => {
-		return resultado
-			.toLowerCase()
-			.replace(/-/g, " ")
-			.replace(/á/g, "a")
-			.replace(/é/g, "e")
-			.replace(/í/g, "i")
-			.replace(/ó/g, "o")
-			.replace(/úü/g, "u")
-			.replace(/ñ/g, "n")
-			.replace(/:¿![.][?]/g, "")
-			.replace(/ +/g, " ");
-	},
-	convertirLetrasAlCastellano: (resultado) => {
-		let campos = Object.keys(resultado);
-		let valores = Object.values(resultado);
-		for (let i = 0; i < campos.length; i++) {
-			if (typeof valores[i] == "string") {
-				resultado[campos[i]] = valores[i]
-					.replace(/  /g, " ")
-					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
-					.replace(/[àâãäåāăą]/g, "a")
-					.replace(/Æ/g, "Ae")
-					.replace(/æ/g, "ae")
-					.replace(/[ÇĆĈĊČ]/g, "C")
-					.replace(/[çćĉċč]/g, "c")
-					.replace(/[ÐĎ]/g, "D")
-					.replace(/[đď]/g, "d")
-					.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-					.replace(/[èêëēĕėęě]/g, "e")
-					.replace(/[ĜĞĠĢ]/g, "G")
-					.replace(/[ĝğġģ]/g, "g")
-					.replace(/[ĦĤ]/g, "H")
-					.replace(/[ħĥ]/g, "h")
-					.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
-					.replace(/[ìîïĩīĭįı]/g, "i")
-					.replace(/Ĳ/g, "Ij")
-					.replace(/ĳ/g, "ij")
-					.replace(/Ĵ/g, "J")
-					.replace(/ĵ/g, "j")
-					.replace(/Ķ/g, "K")
-					.replace(/[ķĸ]/g, "k")
-					.replace(/[ĹĻĽĿŁ]/g, "L")
-					.replace(/[ĺļľŀł]/g, "l")
-					.replace(/[ŃŅŇ]/g, "N")
-					.replace(/[ńņňŉ]/g, "n")
-					.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-					.replace(/[òôõōðōŏő]/g, "o")
-					.replace(/[ÖŒ]/g, "Oe")
-					.replace(/[ö]/g, "o")
-					.replace(/[œ]/g, "oe")
-					.replace(/[ŔŖŘ]/g, "R")
-					.replace(/[ŕŗř]/g, "r")
-					.replace(/[ŚŜŞŠ]/g, "S")
-					.replace(/[śŝşš]/g, "s")
-					.replace(/[ŢŤŦ]/g, "T")
-					.replace(/[ţťŧ]/g, "t")
-					.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
-					.replace(/[ùûũūŭůűų]/g, "u")
-					.replace(/Ŵ/g, "W")
-					.replace(/ŵ/g, "w")
-					.replace(/[ÝŶŸ]/g, "Y")
-					.replace(/[ýŷÿ]/g, "y")
-					.replace(/[ŽŹŻŽ]/g, "Z")
-					.replace(/[žźżž]/g, "z")
-					.replace(/[”“«»]/g, '"')
-					.replace(/[º]/g, "°");
-			}
-		}
-		return resultado;
-	},
-	inicialMayuscula: (dato) => {
-		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
-	},
-	inicialEspeciales: (dato) => {
-		let formato = /^[¡¿"\d]/;
-		return !formato.test(dato);
-	},
-
-	// Varios
 	nombreAvatar: (prodOrig, prodEdic) => {
 		return prodEdic.avatar
 			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
@@ -394,6 +397,87 @@ module.exports = {
 				: prodOrig.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 	},
+
+	// Validaciones
+	inputVacio: "Necesitamos que completes este campo",
+	selectVacio: "Necesitamos que elijas un valor",
+	longitud: (dato, corto, largo) => {
+		return dato.length < corto
+			? "El contenido debe ser más largo"
+			: dato.length > largo
+			? "El contenido debe ser más corto"
+			: "";
+	},
+	castellano: {
+		basico: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.']+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		sinopsis: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\r\n\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+	},
+	inicial: {
+		basico: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato);
+		},
+		sinopsis: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato);
+		},
+	},
+	avatar: (datos) => {
+		// Función
+		let extension = (nombre) => {
+			if (!nombre) return "";
+			let ext = path.extname(nombre);
+			if (ext) ext = ext.slice(1).toUpperCase();
+			return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+				? "Usaste un archivo con la extensión '" +
+						ext +
+						"'. Las extensiones válidas son JPG, JPEG y PNG"
+				: "";
+		};
+		// Variables
+		let dato = datos.avatar;
+		let respuesta = "";
+		// Validaciones
+		if (dato) {
+			if (!respuesta) respuesta = extension(dato);
+			if (!respuesta && datos.tamano > 1100000)
+				respuesta =
+					"El archivo es de " +
+					parseInt(datos.tamano / 10000) / 100 +
+					" MB. Necesitamos que no supere 1 MB";
+		}
+		// Fin
+		return respuesta;
+	},
+	cartelRepetido: function (datos) {
+		return (
+			"Este/a <a href='/" +
+			this.obtenerFamiliaEnSingular(datos.entidad) +
+			"/detalle/?entidad=" +
+			datos.entidad +
+			"&id=" +
+			datos.id +
+			"' target='_blank'><u><strong>" +
+			this.obtenerEntidadNombre(datos.entidad).toLowerCase() +
+			"</strong></u></a> ya se encuentra en nuestra base de datos"
+		);
+	},
+
+	// Varios
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -415,21 +499,6 @@ module.exports = {
 		await transporter.sendMail(datos);
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
-	},
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
 	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
@@ -511,14 +580,6 @@ module.exports = {
 				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 		);
 		return productos;
-	},
-	extension: (nombre) => {
-		if (!nombre) return "";
-		let ext = path.extname(nombre);
-		if (ext) ext = ext.slice(1).toUpperCase();
-		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
-			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
-			: "";
 	},
 };
 
