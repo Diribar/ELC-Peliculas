@@ -150,13 +150,6 @@ const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 // Funciones
-let longitud = (datos, campo, corto, largo) => {
-	return datos[campo].length < corto
-		? "El " + campo + " debe ser más largo"
-		: datos[campo].length > largo
-		? "El " + campo + " debe ser más corto"
-		: "";
-};
 let castellano = (valor, campo) => {
 	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-\d]+$/;
 	return !formato.test(valor) ? "Sólo se admiten letras del abecedario castellano (" + campo + ")" : "";
@@ -199,7 +192,7 @@ let nombreExpress = (datos, campo) => {
 let nombreCompleto = async function (datos, campo) {
 	let respuesta;
 	if (!datos[campo]) respuesta = cartelVacio[campo];
-	if (!respuesta) respuesta = longitud(datos, campo, 4, 30);
+	if (!respuesta) respuesta = comp.longitud(datos.campo, 4, 30);
 	if (!respuesta) {
 		let repetido = await BD_especificas.validarRepetidos([campo], datos);
 		if (repetido) respuesta = cartelRepetido({entidad: datos.entidad, id: repetido});

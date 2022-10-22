@@ -10,11 +10,8 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		errores.palabrasClave = !dato
-			? comp.cartelCampoVacio
-			: longitud(dato, 3, 50)
-			? longitud(dato, 3, 50)
-			: "";
+		let longitud = dato ? comp.longitud(dato, 3, 50) : "";
+		errores.palabrasClave = !dato ? comp.cartelCampoVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -87,10 +84,16 @@ module.exports = {
 		let errores = {};
 		let cartelMusica = comp.cartelCampoVacio + '. Si no tiene música, poné "No tiene música"';
 		let cartelActuacion =
-		comp.cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
+			comp.cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
 			{nombre: "nombre_original", idioma: "medio", cartel: comp.cartelCampoVacio, corto: 3, largo: 50},
-			{nombre: "nombre_castellano", idioma: "medio", cartel: comp.cartelCampoVacio, corto: 3, largo: 50},
+			{
+				nombre: "nombre_castellano",
+				idioma: "medio",
+				cartel: comp.cartelCampoVacio,
+				corto: 3,
+				largo: 50,
+			},
 			{nombre: "direccion", idioma: "basico", cartel: comp.cartelCampoVacio, corto: 3, largo: 100},
 			{nombre: "guion", idioma: "basico", cartel: comp.cartelCampoVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
@@ -103,11 +106,12 @@ module.exports = {
 			let nombre = campo.nombre;
 			let idioma = campo.idioma;
 			if (campos.includes(nombre)) {
+				let longitud = datos[nombre] ? comp.longitud(datos[nombre], campo.corto, campo.largo) : "";
 				let inicialMayuscula = datos[nombre] ? comp.inicialMayuscula(datos[nombre]) : "";
 				errores[nombre] = !datos[nombre]
 					? campo.cartel
-					: longitud(datos[nombre], campo.corto, campo.largo)
-					? longitud(datos[nombre], campo.corto, campo.largo)
+					: longitud
+					? longitud
 					: castellano[idioma](datos[nombre])
 					? cartelCastellano
 					: inicialMayuscula && comp.inicialEspeciales(datos[nombre])
@@ -242,14 +246,6 @@ module.exports = {
 // Variables **************************
 let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
-
-let longitud = (dato, corto, largo) => {
-	return dato.length < corto
-		? "El contenido debe ser más largo"
-		: dato.length > largo
-		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
-		: "";
-};
 let formatoAno = (dato) => {
 	let formato = /^\d{4}$/;
 	return !formato.test(dato);

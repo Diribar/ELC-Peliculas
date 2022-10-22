@@ -20,7 +20,7 @@ module.exports = {
 		// Validaciones
 		if (campos.includes("apodo")) {
 			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
-			let longitud = datos.apodo ? comp.longitud(datos, "apodo", 2, 30) : "";
+			let longitud = datos.apodo ? comp.longitud(datos.apodo, 2, 30) : "";
 			errores.apodo = !datos.apodo
 				? comp.cartelCampoVacio
 				: castellano(datos.apodo)
@@ -57,7 +57,7 @@ module.exports = {
 		// Validaciones
 		if (campos.includes("nombre")) {
 			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
-			let longitud = datos.nombre ? longitud(datos, "nombre", 2, 30) : "";
+			let longitud = datos.nombre ? comp.longitud(datos.nombre, 2, 30) : "";
 			errores.nombre = !datos.nombre
 				? comp.cartelCampoVacio
 				: castellano(datos.nombre)
@@ -90,7 +90,7 @@ module.exports = {
 				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
-			let longitud = datos.docum_numero ? comp.longitud(datos, "docum_numero", 2, 15) : "";
+			let longitud = datos.docum_numero ? comp.longitud(datos.docum_numero, 2, 15) : "";
 			errores.docum_numero = !datos.docum_numero ? comp.cartelCampoVacio : longitud ? longitud : "";
 		}
 		// Revisar 'docum_pais_id'

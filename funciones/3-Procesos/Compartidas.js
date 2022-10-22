@@ -82,7 +82,7 @@ module.exports = {
 	accionesSiNoQuedanCampos: async function (prodOrig, prodEdic) {
 		// Variables
 		let statusAprob = false;
-		let ahora=comp.ahora()
+		let ahora = comp.ahora();
 		// 1. Elimina el registro de la edición
 		await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
 		// 2. Averigua si tiene errores
@@ -386,13 +386,13 @@ module.exports = {
 		return !formato.test(dato);
 	},
 	cartelCampoVacio: "Necesitamos que completes este campo",
-	longitud: (datos, campo, corto, largo) => {
-		return datos[campo].length < corto
-			? "El " + campo + " debe ser más largo"
-			: datos[campo].length > largo
-			? "El " + campo + " debe ser más corto"
+	longitud: (dato, corto, largo) => {
+		return dato.length < corto
+			? "El contenido debe ser más largo"
+			: dato.length > largo
+			? "El contenido debe ser más corto"
 			: "";
-	},	
+	},
 
 	// Varios
 	nombreAvatar: (prodOrig, prodEdic) => {

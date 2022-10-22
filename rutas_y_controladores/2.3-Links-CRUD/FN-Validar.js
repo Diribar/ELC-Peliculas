@@ -10,10 +10,11 @@ module.exports = {
 		let errores = {};
 		// url
 		if (campos.includes("url")) {
+			let longitud = datos.url ? comp.longitud(datos.url, 5, 100) : "";
 			errores.url = !datos.url
 				? comp.cartelCampoVacio
-				: longitud(datos.url, 5, 100)
-				? longitud(datos.url, 5, 100)
+				: longitud
+				? longitud
 				: !datos.url.includes("/")
 				? "Por favor ingresá una url válida"
 				: variables
@@ -84,13 +85,6 @@ module.exports = {
 };
 
 // Funciones **************************
-let longitud = (dato, corto, largo) => {
-	return dato.length < corto
-		? "El contenido debe ser más largo"
-		: dato.length > largo
-		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
-		: "";
-};
 let validarLinkRepetidos = async (datos) => {
 	// Obtener casos
 	let averiguar = await BD_genericas.obtenerPorCampos("links", {url: datos.url});
