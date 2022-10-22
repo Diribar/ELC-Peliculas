@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 				return
 			}
 
-			// Obtener los datos necesarios para saber si la película pertenece a una colección
+			// Obtiene los datos necesarios para saber si la película pertenece a una colección
 			let tmdb_id = forms[i].children[1].value;
 			let datos = await fetch(ruta + tmdb_id).then((n) => n.json());
 

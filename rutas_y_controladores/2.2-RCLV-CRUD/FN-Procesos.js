@@ -80,7 +80,7 @@ module.exports = {
 		return prodsYaEnBD;
 	},
 	prodsNuevos: async (RCLV) => {
-		// Obtener los Productos Nuevos
+		// Obtiene los Productos Nuevos
 		let prodsNuevos = await buscar_x_PC
 			.search(RCLV.nombre, false)
 			.then((n) => n.resultados)
@@ -207,7 +207,7 @@ module.exports = {
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
 		} else if (codigo == "edicion") {
-			// Obtener el registro original
+			// Obtiene el registro original
 			let id = req.query.id;
 			let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición

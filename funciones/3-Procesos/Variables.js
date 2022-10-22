@@ -116,7 +116,7 @@ module.exports = {
 		// Variables
 		let camposRCLV = ["personajes", "hechos", "valores"];
 		let registrosRCLV = {};
-		// Obtener los registros en status 'aprobado' y 'creado' (del usuario)
+		// Obtiene los registros en status 'aprobado' y 'creado' (del usuario)
 		if (userID)
 			camposRCLV.forEach(async (campo) => {
 				let aux = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>

@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 			for (let i = 0; i < submit.length; i++) {
 				submit[i].classList.add("inactivo");
 			}
-			// Obtener el listado de las colecciones
+			// Obtiene el listado de las colecciones
 			let colecciones = await fetch("/producto/agregar/api/TP-averiguar-colecciones").then(
 				(n) => n.json()
 			);
@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 		if (!coleccion_id.value) return;
 		// Limpiar las opciones de lo relacionado con temporadas
 		limpiarOpciones(temporada);
-		// Obtener la cantidad de temporadas de la colección
+		// Obtiene la cantidad de temporadas de la colección
 		let cantTemporadas = await fetch(
 			"/producto/agregar/api/TP-averiguar-cant-temporadas/?id=" + coleccion_id.value
 		).then((n) => n.json());
@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 		if (!temporada.value) return;
 		// Limpiar las opciones de lo relacionado con capitulos
 		limpiarOpciones(capitulo);
-		// Obtener los capitulos de la temporada
+		// Obtiene los capitulos de la temporada
 		let ruta = "/crud/api/averiguar-capitulos/";
 		let capitulos = await fetch(
 			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value

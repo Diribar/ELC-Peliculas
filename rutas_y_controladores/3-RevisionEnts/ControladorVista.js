@@ -19,7 +19,7 @@ module.exports = {
 		let productos;
 		productos = await procesos.TC_obtenerProds(ahora, userID);
 		productos.ED = await procesos.TC_obtenerProdsConEdicAjena(ahora, userID);
-		// Obtener Links
+		// Obtiene Links
 		productos.CL = await procesos.TC_obtenerProdsConLink(ahora, userID);
 		productos.SL = await procesos.TC_obtenerProdsSinLink(ahora, userID);
 		productos = procesos.TC_prod_ProcesarCampos(productos);
@@ -41,15 +41,15 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
-		// 2. Obtener los datos identificatorios del producto
+		// 2. Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;
-		// 4. Obtener los datos ORIGINALES del producto
+		// 4. Obtiene los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		if (entidad == "colecciones") includes.push("capitulos");
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
-		// 5. Obtener avatar original
+		// 5. Obtiene avatar original
 		let avatar = prodOrig.avatar;
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + avatar
@@ -57,7 +57,7 @@ module.exports = {
 		// 6. Configurar el título de la vista
 		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// 7. Obtener los países
+		// 7. Obtiene los países
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
@@ -169,9 +169,9 @@ module.exports = {
 			};
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
-			// Obtener los ingresos y reemplazos
+			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
-			// Obtener el avatar
+			// Obtiene el avatar
 			avatar = prodOrig.avatar;
 			avatar = avatar
 				? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
@@ -218,14 +218,14 @@ module.exports = {
 		// Configurar el título
 		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
 		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtener el producto con sus links originales para verificar que los tenga
+		// Obtiene el producto con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
 		if (prodEntidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
 		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
-		// Obtener todos los links
+		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(

@@ -62,7 +62,7 @@ module.exports = {
 		// Variables
 		let hallazgos = [];
 		let resultado = [];
-		// Obtener los registros
+		// Obtiene los registros
 		let registros = await db[dato.entidad]
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
@@ -166,11 +166,11 @@ module.exports = {
 		// Variables
 		let gr_estables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let includes = ["pelicula", "coleccion", "capitulo"];
-		// Obtener los links en status 'a revisar'
+		// Obtiene los links en status 'a revisar'
 		let originales = db.links
 			.findAll({where: {status_registro_id: gr_estables}, include: [...includes, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
-		// Obtener todas las ediciones
+		// Obtiene todas las ediciones
 		let ediciones = db.links_edicion.findAll({include: includes}).then((n) => n.map((m) => m.toJSON()));
 		// Consolidarlos
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
@@ -179,7 +179,7 @@ module.exports = {
 	// Revisar - producto/edicion
 	obtenerEdicionAjena: async (entidad, producto_id, prodID, userID) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
-		// Obtener un registro que cumpla ciertas condiciones
+		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
 			.findOne({
 				where: {

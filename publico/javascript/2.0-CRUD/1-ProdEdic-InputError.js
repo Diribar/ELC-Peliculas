@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 	rutaVersiones += "?entidad=" + entidad + "&id=" + prodID;
 	let producto_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
-	// Obtener versiones ORIGINAL, EDICION GUARDADA, y EDICION NUEVA
+	// Obtiene versiones ORIGINAL, EDICION GUARDADA, y EDICION NUEVA
 	[datos.orig, datos.edicG] = await fetch(rutaVersiones).then((n) => n.json());
 	datos.orig.avatar = avatarAgregarLaRutaAlNombre(datos.orig.avatar, "original");
 	datos.edicG = {...datos.orig, ...datos.edicG};

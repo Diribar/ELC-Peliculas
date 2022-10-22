@@ -42,7 +42,7 @@ module.exports = {
 	pulirEdicion: function (original, edicion) {
 		// Funciones
 		let quitarLosCamposQueNoSeComparan = (edicion, ent) => {
-			// Obtener los campos a comparar
+			// Obtiene los campos a comparar
 			let campos = [];
 			variables["camposRevisar" + ent]().forEach((campo) => {
 				campos.push(campo.nombreDelCampo);
@@ -122,7 +122,7 @@ module.exports = {
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
-		// Obtener el status_id de 'inactivar'
+		// Obtiene el status_id de 'inactivar'
 		let inactivarID = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
 			(n) => n.id
 		);
@@ -143,7 +143,7 @@ module.exports = {
 		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
 		// Averiguar si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
-		// Obtener el campo 'entidad_id'
+		// Obtiene el campo 'entidad_id'
 		let entidad_id = this.obtieneEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
@@ -511,7 +511,7 @@ module.exports = {
 		return prods;
 	},
 	usuario_Ficha: async (userID, ahora) => {
-		// Obtener los datos del usuario
+		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Variables

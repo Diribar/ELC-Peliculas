@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	const id = req.query.id;
 	if (req.session.usuario) {
 
-		// Obtener el registro de la entidad
+		// Obtiene el registro de la entidad
 		let registro = await BD_genericas.obtenerPorId(entidad, id);
 		
 		// Verificar que tenga una captura activa del usuario

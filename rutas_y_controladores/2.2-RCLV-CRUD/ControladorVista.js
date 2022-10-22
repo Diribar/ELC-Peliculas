@@ -108,7 +108,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
 		let entidadNombre = comp.obtenerEntidadNombre(entidad);
-		// Obtener RCLV con produtos
+		// Obtiene RCLV con produtos
 		let entProductos = ["peliculas", "colecciones", "capitulos"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");

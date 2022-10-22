@@ -8,13 +8,13 @@ const procesos = require("./FN-Procesos");
 
 module.exports = {
 	TC_obtenerProdsSinLink: async (ahora, userID) => {
-		// Obtener todos los productos aprobados, sin ningún link
+		// Obtiene todos los productos aprobados, sin ningún link
 		return [];
-		// Obtener los links 'a revisar'
+		// Obtiene los links 'a revisar'
 		let links = await BD_especificas.TC_obtenerLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
-		// Obtener los links ajenos
+		// Obtiene los links ajenos
 		let linksAjenos = links.filter(
 			(n) =>
 				(n.status_registro &&
@@ -23,7 +23,7 @@ module.exports = {
 							n.sugerido_por_id != userID))) ||
 				(!n.status_registro && n.editado_por_id != userID)
 		);
-		// Obtener los productos
+		// Obtiene los productos
 		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;

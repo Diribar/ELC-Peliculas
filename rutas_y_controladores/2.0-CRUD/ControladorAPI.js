@@ -20,17 +20,17 @@ module.exports = {
 	},
 	obtenerCapAntPostID: async (req, res) => {
 		let {id} = req.query;
-		// Obtener la coleccion_id, la temporada y el capítulo
+		// Obtiene la coleccion_id, la temporada y el capítulo
 		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtenerPorId("capitulos", id);
 		// Averiguar los datos del capítulo anterior **********************
-		// Obtener los datos del capítulo anterior (temporada y capítulo)
+		// Obtiene los datos del capítulo anterior (temporada y capítulo)
 		let tempAnt = temporada;
 		let capAnt = 0;
 		if (temporada == 1 && capitulo == 1) capAnt = false;
 		else if (capitulo > 1) capAnt = capitulo - 1;
 		else {
 			tempAnt = temporada - 1;
-			// Obtener el último número de capítulo de la temporada anterior
+			// Obtiene el último número de capítulo de la temporada anterior
 			capAnt = await BD_genericas.obtenerTodosPorCampos("capitulos", {
 				coleccion_id: coleccion_id,
 				temporada: tempAnt,
@@ -39,21 +39,21 @@ module.exports = {
 				.then((n) => Math.max(...n));
 		}
 		// Averiguar los datos del capítulo posterior ********************
-		// Obtener datos de la colección y el capítulo
+		// Obtiene datos de la colección y el capítulo
 		let [ultCap, ultTemp] = await Promise.all([
-			// Obtener el último número de capítulo de la temporada actual
+			// Obtiene el último número de capítulo de la temporada actual
 			BD_genericas.obtenerTodosPorCampos("capitulos", {
 				coleccion_id: coleccion_id,
 				temporada: temporada,
 			})
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
-			// Obtener el último número de temporada de la colección
+			// Obtiene el último número de temporada de la colección
 			BD_genericas.obtenerPorId("colecciones", coleccion_id).then((n) => n.cant_temporadas),
 		]).then(([a, b]) => {
 			return [a, b];
 		});
-		// Obtener los datos del capítulo posterior (temporada y capítulo)
+		// Obtiene los datos del capítulo posterior (temporada y capítulo)
 		let tempPost = temporada;
 		let capPost = 0;
 		if (temporada == ultTemp && capitulo == ultCap) capPost = false;
@@ -62,9 +62,9 @@ module.exports = {
 			tempPost = temporada + 1;
 			capPost = 1;
 		}
-		// Obtener los ID
+		// Obtiene los ID
 		let [capAntID, capPostID] = await Promise.all([
-			// Obtener el ID del capítulo anterior
+			// Obtiene el ID del capítulo anterior
 			capAnt
 				? BD_genericas.obtenerPorCampos("capitulos", {
 						coleccion_id: coleccion_id,

@@ -116,14 +116,14 @@ module.exports = async (req, res, next) => {
 	let compararRegistrosConNivelDeConfianza = async () => {
 		// Variables
 		let informacion;
-		// Obtener datos del url
+		// Obtiene datos del url
 		const originalUrl = req.originalUrl;
-		// Obtener la tarea
+		// Obtiene la tarea
 		const producto = originalUrl.startsWith("/producto/agregar/");
 		const edicion = originalUrl.startsWith("/producto/edicion/");
 		const rclv = originalUrl.startsWith("/rclv/");
 		const links = originalUrl.startsWith("/links/abm/");
-		// Obtener su nivel de confianza
+		// Obtiene su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros
 		const contarRegistros = contar_registros(usuario, producto, rclv, links, edicion);
@@ -156,7 +156,7 @@ module.exports = async (req, res, next) => {
 };
 
 let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
-	// Obtener la cantidad de aprobaciones
+	// Obtiene la cantidad de aprobaciones
 	const aprob = producto
 		? usuario.prods_aprob
 		: rclv
@@ -166,7 +166,7 @@ let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 		: edicion
 		? usuario.edics_aprob
 		: 0;
-	// Obtener la cantidad de rechazos
+	// Obtiene la cantidad de rechazos
 	const rech = producto
 		? usuario.prods_rech
 		: rclv
@@ -180,7 +180,7 @@ let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 	const cantMinima = parseInt(process.env.cantMinima);
 	const acelerador = parseInt(process.env.acelerador);
 	const cantDesempeno = aprob - rech + acelerador;
-	// Obtener el nivel de confianza
+	// Obtiene el nivel de confianza
 	const nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
 	// Fin
 	return nivelDeConfianza;

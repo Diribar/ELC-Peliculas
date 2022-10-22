@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	// Para tener en 'session' las menuSubOpciones_algunas
 	if (!req.session.menuSubOpciones_todas) {
 		req.session.menuSubOpciones_todas = [];
-		// Obtener las menuSubOpciones_todas para Sugeridos y Listado
+		// Obtiene las menuSubOpciones_todas para Sugeridos y Listado
 		let menuSubOpciones_todas = variables.subMenuOpciones;
 		menuSubOpciones_todas.map((n) =>
 			req.session.menuSubOpciones_todas.push({nombre: n.nombre, url: "sugeridas/" + n.url})
@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
 		menuSubOpciones_todas.map((n) =>
 			req.session.menuSubOpciones_todas.push({nombre: n.nombre, url: "listado/" + n.url})
 		);
-		// Obtener las menuSubOpciones_algunas para CFC y VPC
+		// Obtiene las menuSubOpciones_algunas para CFC y VPC
 		req.session.menuSubOpciones_todas.push(
 			...(await BD_genericas.obtenerTodos("subcategorias", "orden").then((n) =>
 				n.map((m) => {
@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {
 		);
 	}
 
-	// Obtener las menuSubOpciones_algunas para la opción elegida
+	// Obtiene las menuSubOpciones_algunas para la opción elegida
 	req.session.menuSubOpciones_algunas = req.session.menuSubOpciones_todas.filter(
 		(n) => n.url.slice(0, n.url.indexOf("/")) == opcion
 	);

@@ -18,7 +18,7 @@ module.exports = {
 			rol_usuario_id: rol_consultas_id,
 			status_registro_id: status_docum_revisar_id,
 		};
-		// Obtener el usuario
+		// Obtiene el usuario
 		// let includes = [];
 		let usuarios = await BD_especificas.obtenerUsuarioDistintoIdMasFiltros(userID, campos);
 		usuarios = this.formatoUsuarios(usuarios, "fecha_revisores");

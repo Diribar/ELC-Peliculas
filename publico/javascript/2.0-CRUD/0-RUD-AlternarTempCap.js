@@ -6,19 +6,19 @@ window.addEventListener("load", async () => {
 	let vista = window.location.pathname;
 	let ruta
 
-	// Obtener el ID de la colección
+	// Obtiene el ID de la colección
 	ruta = "/crud/api/obtener-col-cap/?entidad=capitulos&id=";
 	let colID = await fetch(ruta + prodID).then((n) => n.json());
 
-	// Obtener DOM de Temporada y Capítulos
+	// Obtiene DOM de Temporada y Capítulos
 	let tempSelect = document.querySelector("#encabezado select#temporada");
 	let capSelect = document.querySelector("#encabezado select#capitulo");
 
 	// CAMBIOS EN LA TEMPORADA --> se deben actualizar los capítulos
 	tempSelect.addEventListener("change", async () => {
-		// Obtener la temporada
+		// Obtiene la temporada
 		let tempNum = temporada.value.slice(10);
-		// Obtener los capítulos de la temporada
+		// Obtiene los capítulos de la temporada
 		let ruta = "/crud/api/averiguar-capitulos/";
 		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then(
 			(n) => n.json()
@@ -33,10 +33,10 @@ window.addEventListener("load", async () => {
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
 	capSelect.addEventListener("change", async () => {
-		// Obtener los datos para conseguir el capID
+		// Obtiene los datos para conseguir el capID
 		let tempNum = temporada.value.slice(10);
 		let capNum = capitulo.value.slice(9);
-		// Obtener el capID
+		// Obtiene el capID
 		let ruta = "/crud/api/obtener-cap-id/?entidad=capitulos";
 		let capID = await fetch(
 			ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum
@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 	});	
 	
 	// CAPÍTULOS ANTERIOR O POSTERIOR
-	// Obtener el ID del capítulo anterior y del posterior
+	// Obtiene el ID del capítulo anterior y del posterior
 	ruta = "/crud/api/obtener-cap-ant-y-post/?id=";
 	let [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
 	// Acción si se elije "capítulo anterior"

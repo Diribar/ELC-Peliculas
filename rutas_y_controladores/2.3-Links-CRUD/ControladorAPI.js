@@ -54,7 +54,7 @@ module.exports = {
 		// Averiguar si no existe el 'url'
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
-			// Obtener el link
+			// Obtiene el link
 			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, ["status_registro"]);
 			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
@@ -87,13 +87,13 @@ module.exports = {
 		let respuesta = {};
 		// Completar la info
 		let recuperar_id = status_registro.find((n) => n.recuperar).id;
-		// Obtener el link
+		// Obtiene el link
 		let link = await BD_genericas.obtenerPorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
 		);
-		// Obtener el mensaje de la tarea realizada
+		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
 			: link.status_registro.recuperar // El link ya estaba en status recuperar
@@ -117,13 +117,13 @@ module.exports = {
 		// Completar la info
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let inactivo_id = status_registro.find((n) => n.inactivo).id;
-		// Obtener el link
+		// Obtiene el link
 		let link = await BD_genericas.obtenerPorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
 		);
-		// Obtener el mensaje de la tarea realizada
+		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
 			: link.status_registro.creado
@@ -160,7 +160,7 @@ module.exports = {
 };
 
 let obtenerProveedorID = async (url) => {
-	// Obtener el proveedor
+	// Obtiene el proveedor
 	let proveedores = await BD_genericas.obtenerTodos("links_provs", "nombre");
 	// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 	let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));

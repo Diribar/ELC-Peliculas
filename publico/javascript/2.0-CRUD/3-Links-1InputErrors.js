@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let rutaObtenerProvs = "/links/api/obtener-provs-links";
+	let rutaObtieneProvs = "/links/api/obtener-provs-links";
 	let inputs = document.querySelectorAll("tbody .inputError .input");
 	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
 	let columnas = camposInput.length;
@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		// Generales
 		colecciones: new URL(window.location.href).searchParams.get("entidad") == "colecciones",
 		form: document.querySelector("#datos form"),
-		proveedores: await fetch(rutaObtenerProvs).then((n) => n.json()),
+		proveedores: await fetch(rutaObtieneProvs).then((n) => n.json()),
 		guardar: document.querySelectorAll("tbody .fa-floppy-disk"),
 
 		// Variables de Edición y Alta
@@ -42,9 +42,9 @@ window.addEventListener("load", async () => {
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
 		obtenerFilaColumna: (e) => {
-			// Obtener campo
+			// Obtiene campo
 			let campo = e.target.name;
-			// Obtener la columna y fila del input
+			// Obtiene la columna y fila del input
 			let columna = camposInput.indexOf(campo);
 			for (var fila = 0; fila < filas; fila++)
 				if (e.target === inputs[fila * columnas + columna]) break;
@@ -56,9 +56,9 @@ window.addEventListener("load", async () => {
 				/[^A-Za-záéíóúüñ?=&./\d]/gi,
 				""
 			);
-			// Obtener el valor actual
+			// Obtiene el valor actual
 			let valor = v.urlInputs[v.filaAlta].value;
-			// Obtener ambos índices
+			// Obtiene ambos índices
 			let indice1 = valor.indexOf("www.");
 			let indice2 = valor.indexOf("//");
 			let url =
@@ -162,7 +162,7 @@ window.addEventListener("load", async () => {
 			// Barrer el formato de izquierda a derecha
 			let indice;
 			for (let col = columna; col < columnas - 1; col++) {
-				// Obtener el índice
+				// Obtiene el índice
 				indice = fila * columnas + col;
 				// Acciones si el campo tiene un valor y está aprobado
 				if (inputs[indice].value && !v.iconosOK[indice].classList.contains("ocultar")) {
@@ -225,7 +225,7 @@ window.addEventListener("load", async () => {
 		if (focoEnColumna) inputs[focoEnColumna].focus();
 	};
 	let obtenerProveedor = (fila) => {
-		// Obtener el url
+		// Obtiene el url
 		let url = v.urlInputs[fila].value;
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 		let proveedor = v.proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
@@ -244,16 +244,16 @@ window.addEventListener("load", async () => {
 		return proveedor;
 	};
 	let mensajeDeError = async (fila, campo) => {
-		// Obtener la columna
+		// Obtiene la columna
 		let columna = camposInput.indexOf(campo);
-		// Obtener el índice
+		// Obtiene el índice
 		let indice = fila * columnas + columna;
 		// completo o n° parte
 		let [campoAnt, valorAnt] =
 			campo == "completo" || campo == "parte"
 				? [inputs[indice - 1].name + "=", inputs[indice - 1].value + "&"]
 				: ["", ""];
-		// Obtener los datos de campo y valor
+		// Obtiene los datos de campo y valor
 		let valor = encodeURIComponent(inputs[indice].value);
 		// Consolidar la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
@@ -275,7 +275,7 @@ window.addEventListener("load", async () => {
 
 	// Event Listeners
 	v.form.addEventListener("input", async (e) => {
-		// Obtener la fila y columna
+		// Obtiene la fila y columna
 		let [fila, columna] = fn.obtenerFilaColumna(e);
 		// Si hubo un error (fila=filas), interrumpir
 		if (fila == filas) return;

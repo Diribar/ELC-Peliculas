@@ -155,12 +155,12 @@ let eliminarIncompletos = (dato) => {
 };
 let agregaAnoEstreno = async (dato) => {
 	for (let i = 0; i < dato.length; i++) {
-		// Obtener todas las fechas de ano_estreno
+		// Obtiene todas las fechas de ano_estreno
 		let TMDB_id = dato[i].TMDB_id;
 		let detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
 			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
-		// Obtener el año de ano_estreno
+		// Obtiene el año de ano_estreno
 		let ano = detalles.reduce((a, b) => (a < b ? a : b));
 		dato[i].ano_estreno = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
 		dato[i].capitulos = detalles.length;

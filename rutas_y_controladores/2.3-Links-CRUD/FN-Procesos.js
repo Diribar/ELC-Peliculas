@@ -12,7 +12,7 @@ module.exports = {
 		let producto_id = comp.obtieneEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombreDelCampo);
-		// Obtener los linksOriginales
+		// Obtiene los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",
 			{[producto_id]: prodID},
@@ -37,25 +37,25 @@ module.exports = {
 		// Variables
 		let datos = {};
 		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
-		// Obtener el producto con include a links
+		// Obtiene el producto con include a links
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
 			"links_gratuitos_cargados",
 			"links_gratuitos_en_la_web",
 			"links",
 			"status_registro",
 		]);
-		// Obtener los links gratuitos de películas del producto
+		// Obtiene los links gratuitos de películas del producto
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
 			"status_registro",
 			"tipo",
 		])
 			.then((n) => (n.length ? n.filter((n) => n.gratuito) : ""))
 			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
-		// Obtener los links 'Aprobados' y 'TalVez'
+		// Obtiene los links 'Aprobados' y 'TalVez'
 		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
 		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_creado) : [];
 		if (linksActivos.length || linksTalVez.length) {
-			// Obtener los ID de si, no y TalVez
+			// Obtiene los ID de si, no y TalVez
 			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
 			let si = si_no_parcial.find((n) => n.si).id;
 			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;

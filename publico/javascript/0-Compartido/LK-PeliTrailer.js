@@ -9,7 +9,7 @@ window.addEventListener("load", () => {
 
 	// Add Event Listener
 	selectTipo.addEventListener("change", () => {
-		// Obtener el valor
+		// Obtiene el valor
 		let valor = selectTipo.value;
 		// Ocultar y mostrar las filas que correspondan
 		if (filasExistentes.length)

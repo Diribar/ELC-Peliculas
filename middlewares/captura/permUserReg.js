@@ -205,7 +205,7 @@ module.exports = async (req, res, next) => {
 		// Variables
 		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
-		// Obtener el usuario con los includes
+		// Obtiene el usuario con los includes
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
 		// Rutina por cada asociación
 		let i = 0;

@@ -72,7 +72,7 @@ module.exports = {
 		});
 	},
 	desambiguarGuardar: async (req, res) => {
-		// 1. Obtener más información del producto
+		// 1. Obtiene más información del producto
 		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
 		// 2. Averiguar si es una película y pertenece a una colección
 		let errores = await validar.averiguarSiEsColeccion(infoTMDBparaDD);
@@ -401,7 +401,7 @@ module.exports = {
 		// 1. Si se perdió la info, volver a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
-		// 2. Obtener la calificación
+		// 2. Obtiene la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
 			BD_genericas.obtenerPorCampos("fe_valores", {id: confirma.fe_valores_id}).then((n) => n.valor),
 			BD_genericas.obtenerPorCampos("entretiene", {id: confirma.entretiene_id}).then((n) => n.valor),
@@ -455,10 +455,10 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
-		// 2. Obtener los datos clave del producto
+		// 2. Obtiene los datos clave del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;
-		// 4. Obtener los demás datos del producto
+		// 4. Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) {
@@ -477,7 +477,7 @@ module.exports = {
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.gr_creado)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
-		// 5. Obtener el producto
+		// 5. Obtiene el producto
 		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");

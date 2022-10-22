@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSessionCookies();
-			// Obtener la RCLV_entidad
+			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
 			window.location.href = "/rclv/agregar/" + entidad + "&origen=DP";
@@ -39,9 +39,9 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSessionCookies();
-			// Obtener la RCLV_entidad
+			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
-			// Obtener el RCLV_id
+			// Obtiene el RCLV_id
 			let id = "&id=" + inputsRCLV[i].value;
 			// Para ir a la vista RCLV
 			window.location.href = "/rclv/edicion/" + entidad + id + "&origen=DP";

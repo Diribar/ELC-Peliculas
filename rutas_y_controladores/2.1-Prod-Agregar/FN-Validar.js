@@ -224,7 +224,7 @@ module.exports = {
 		}
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
-			// Obtener el registro de la subcategoría
+			// Obtiene el registro de la subcategoría
 			let subcategoria = await BD_genericas.obtenerPorId("subcategorias", datos.subcategoria_id);
 			let rclv_necesario = subcategoria.rclv_necesario;
 			// Relación con la vida

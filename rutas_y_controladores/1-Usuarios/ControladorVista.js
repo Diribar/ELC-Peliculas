@@ -34,7 +34,7 @@ module.exports = {
 				: codigo == "olvido-contrasena"
 				? "Olvido de Contraseña"
 				: "";
-		// Obtener el e-mail de session
+		// Obtiene el e-mail de session
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
 		let errores =
