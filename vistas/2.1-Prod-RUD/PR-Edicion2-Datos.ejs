@@ -26,17 +26,17 @@
 		<%- include("PR-Select", {nombreDelCampo: "publico_sugerido_id", campoDato: "nombre"}) %>
 	</div>
 	<div id="segundaColumna">
-		<!-- Personas -->
+		<!-- Cast/Crew -->
 		<h3>Personas</h3>
 		<% for (let campo of camposDD2) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- Relación con la vida -->
 		<h3>Relación con la vida</h3>
 		<!--Personaje histórico-->
-		<%- include("PR-RCLV", {nombre: "personaje_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "personaje_id", campoDato: "nombre"}) %>
 		<!--Hecho histórico-->
-		<%- include("PR-RCLV", {nombre: "hecho_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "hecho_id", campoDato: "nombre"}) %>
 		<!--Valor-->
-		<%- include("PR-RCLV", {nombre: "valor_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "valor_id", campoDato: "nombre"}) %>
 		<h3>Sinopsis</h3>
 		<!--Sinopsis-->
 		<%- include("PR-Sinopsis") %>

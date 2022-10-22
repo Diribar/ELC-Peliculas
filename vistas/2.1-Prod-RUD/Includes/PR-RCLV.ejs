@@ -3,9 +3,9 @@
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= campo.nombre %>" class="input RCLV">
+		<select name="<%= nombreDelCampo %>" class="input RCLV">
 			<option value="1">Ninguno</option>
-			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombre] == valor.id) { %>selected<% } %>><%= valor[campo.nombre] %></option><% } %>
+			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[campoDato] %></option><% } %>
 		</select>
 		<!-- Ayuda -->
 		<div class="ayuda">
@@ -20,7 +20,7 @@
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->
-		<i id="alta" class="fa-solid fa-circle-plus linkRCLV ocultar <%= campo.nombre %>" title='Agregar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
-		<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= campo.nombre %>" title='Editar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+		<i id="alta" class="fa-solid fa-circle-plus linkRCLV ocultar <%= nombreDelCampo %>" title='Agregar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+		<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= nombreDelCampo %>" title='Editar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
 	</div>
 </section>
