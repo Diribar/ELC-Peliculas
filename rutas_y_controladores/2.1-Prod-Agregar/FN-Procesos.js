@@ -52,7 +52,7 @@ module.exports = {
 	DS_infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("movie", datos.TMDB_id),
 			creditsTMDB("movie", datos.TMDB_id),
@@ -114,12 +114,12 @@ module.exports = {
 		return comp.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
-		// Obtener la API
+		// Obtiene la API
 		let datosAPI = await detailsTMDB("movie", TMDB_id);
 		// Datos de la colección a la que pertenece, si corresponde
 		let datos = {};
 		if (datosAPI.belongs_to_collection != null) {
-			// Obtener datos de la colección
+			// Obtiene datos de la colección
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
@@ -143,7 +143,7 @@ module.exports = {
 			TMDB_entidad: "collection",
 			cant_temporadas: 1,
 		};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
 		// Procesar la información
 		if (Object.keys(datosAPI).length) {
@@ -176,7 +176,7 @@ module.exports = {
 		let exportar = {};
 		// Rutina por cada capítulo
 		for (let capTMDB_id of datos.capitulosTMDB_id) {
-			// Obtener las API
+			// Obtiene las API
 			let datosAPI = await Promise.all([
 				detailsTMDB("movie", capTMDB_id),
 				creditsTMDB("movie", capTMDB_id),
@@ -243,9 +243,9 @@ module.exports = {
 	},
 	// ControllerVista (confirma)
 	agregarCapitulosNuevos: async function (coleccion_id, TMDB_id) {
-		// Obtener el API actualizada de la colección
+		// Obtiene el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
-		// Obtener el ID de los capitulos
+		// Obtiene el ID de los capitulos
 		let capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
 		// Agregar los capítulos que correspondan
 		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
@@ -263,7 +263,7 @@ module.exports = {
 			fuente: "TMDB",
 			TMDB_entidad: "tv",
 		};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("tv", datos.TMDB_id),
 			creditsTMDB("tv", datos.TMDB_id),
@@ -373,7 +373,7 @@ module.exports = {
 			// Loop de CAPITULOS ********************************************
 			for (let episode of datosTemp.episodes) {
 				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
-				// Obtener las API
+				// Obtiene las API
 				await BD_genericas.agregarRegistro(datosCap.entidad, datosCap);
 			}
 		}
@@ -383,7 +383,7 @@ module.exports = {
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)
 	infoFAparaDD: async function (dato) {
-		// Obtener los campos del formulario
+		// Obtiene los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
 		let prodNombre = comp.obtenerEntidadNombre(entidad);
@@ -530,7 +530,7 @@ let limpiarValores = (datos) => {
 	let valores = [];
 	// Procesar si hay información
 	if (datos.length) {
-		// Obtener el nombre y descartar lo demás
+		// Obtiene el nombre y descartar lo demás
 		datos = datos.map((n) => n.name);
 		// Quitar duplicados
 		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);

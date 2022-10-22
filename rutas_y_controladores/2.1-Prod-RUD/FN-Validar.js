@@ -7,9 +7,9 @@ module.exports = {
 	// ControllerAPI (validarEdicion_changes)
 	// ControllerVista (Edicion - Form + Grabar)
 	consolidado: async (campos, datos) => {
-		// Obtener la entidad
+		// Obtiene la entidad
 		let entidad = datos.entidad;
-		// Obtener los campos
+		// Obtiene los campos
 		if (!campos) {
 			let camposDD = variables.camposDD.filter((n) => n[entidad]);
 			let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));

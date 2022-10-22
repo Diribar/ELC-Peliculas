@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let vista = window.location.pathname;
 	let ruta = "/crud/api/obtener-col-cap/?entidad=";
-	// Obtener el botón de 'alternancia'
+	// Obtiene el botón de 'alternancia'
 	let botonAlternancia = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 	
 	// Obtiene el 'id' que falta (colección o capítulo)

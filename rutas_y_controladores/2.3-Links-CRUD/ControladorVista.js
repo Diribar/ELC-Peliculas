@@ -13,21 +13,21 @@ module.exports = {
 		// Tema y Código
 		const tema = "links_crud";
 		const codigo = "abm";
-		// Obtener los datos identificatorios del producto y del usuario
+		// Obtiene los datos identificatorios del producto y del usuario
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		let [prodOrig, prodEdic] = await procesosProd.obtenerVersionesDelProducto(
 			prodEntidad,
 			prodID,
 			userID
 		);
-		// Obtener el avatar
+		// Obtiene el avatar
 		let avatar = comp.nombreAvatar(prodOrig,prodEdic)
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
-		// Obtener información de BD
+		// Obtiene información de BD
 		let links = await procesos.obtenerLinksActualizados(prodEntidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
@@ -35,7 +35,7 @@ module.exports = {
 		// Configurar el producto, el título
 		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtener datos para la vista
+		// Obtiene datos para la vista
 		if (prodEntidad == "capitulos") {
 			let coleccion_id =
 				prodEdic && prodEdic.coleccion_id

@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
-			// Obtener los datos 
+			// Obtiene los datos 
 			let objeto = obtenerDataEntry(fila);
 			// Submit
 			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
@@ -52,7 +52,7 @@ window.addEventListener("load", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonRecuperar.classList.contains("inactivo")) return;
 			botonRecuperar.classList.add("inactivo");
-			// Obtener los datos del link
+			// Obtiene los datos del link
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonDeshacer.classList.contains("inactivo")) return;
 			botonDeshacer.classList.add("inactivo");
-			// Obtener los datos del link
+			// Obtiene los datos del link
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit

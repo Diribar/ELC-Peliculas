@@ -38,7 +38,7 @@ module.exports = {
 	horarioInicial: async (req, res) => {
 		// Variables
 		let {entidad, id} = req.query;
-		// Obtener el registro
+		// Obtiene el registro
 		let registro = await BD_genericas.obtenerPorId(entidad, id);
 		let datos = {
 			creado_en: registro.creado_en,

@@ -3,7 +3,7 @@
 const db = require("../../base_de_datos/modelos");
 
 module.exports = {
-	// Obtener
+	// Obtiene
 	obtenerTodos: (entidad, orden) => {
 		return db[entidad]
 			.findAll({

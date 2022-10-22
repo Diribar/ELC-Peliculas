@@ -21,13 +21,13 @@ window.addEventListener("load", async () => {
 	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	if (paso.PC) {
 		var resultado = document.querySelector("#dataEntry #resultado");
-		var rutaObtenerCantProds = (input) => {
+		var rutaObtieneCantProds = (input) => {
 			let palabrasClave = input.trim();
 			// Procesando la información
 			resultado.innerHTML = "Procesando la información...";
 			resultado.classList.remove(...resultado.classList);
 			resultado.classList.add("resultadoEnEspera");
-			// Obtener el link
+			// Obtiene el link
 			return "/producto/agregar/api/PC-cant-prod/?palabrasClave=" + palabrasClave;
 		};
 		var mostrarResultados = async (lectura) => {
@@ -171,7 +171,7 @@ window.addEventListener("load", async () => {
 			if (submit.classList.contains("fa-circle-question")) {
 				if (!submit.classList.contains("inactivo")) {
 					submit.classList.add("inactivo");
-					let ruta = rutaObtenerCantProds(inputs[0].value);
+					let ruta = rutaObtieneCantProds(inputs[0].value);
 					let cantProds = await fetch(ruta).then((n) => n.json());
 					mostrarResultados(cantProds);
 					submit.classList.remove("inactivo");
@@ -205,7 +205,7 @@ window.addEventListener("load", async () => {
 				let indice = campos.indexOf(camposComb[i]);
 				datosUrl += "&" + camposComb[i] + "=" + inputs[indice].value;
 			}
-			// Obtener el mensaje para el campo
+			// Obtiene el mensaje para el campo
 			await muestraLosErrores(datosUrl, true);
 			actualizaBotonSubmit();
 			return;
@@ -367,7 +367,7 @@ window.addEventListener("load", async () => {
 			// Cambia el contenido del Personaje o Hecho
 			// Acciones si se cambia el personaje
 			if (campo == "personaje_id") {
-				// Obtener del personaje, el 'id' de la Aparición Mariana
+				// Obtiene del personaje, el 'id' de la Aparición Mariana
 				let clases = Array.from(opcionesPersonaje).find(
 					(n) => n.value == inputsRCLV[0].value
 				).classList;
@@ -480,7 +480,7 @@ window.addEventListener("load", async () => {
 	});
 	form.addEventListener("change", async (e) => {
 		if (paso.DP) {
-			// Obtener el valor para 'campo'
+			// Obtiene el valor para 'campo'
 			let campo = e.target.name;
 			let datos;
 			// (Título original / castellano) + año ano_estreno

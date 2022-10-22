@@ -57,18 +57,18 @@ module.exports = {
 	obtenerVersionesDelProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
 	prod_EliminarEdic: async (req, res) => {
-		// Obtener los datos identificatorios del producto
+		// Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 
-		// Obtener los datos ORIGINALES y EDITADOS del producto
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;

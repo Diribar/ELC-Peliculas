@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 	};
 	v = {
 		...v,
-		// Obtener la entidad en formato booleano
+		// Obtiene la entidad en formato booleano
 		personajes: v.entidad == "personajes",
 		hechos: v.entidad == "hechos",
 		valores: v.entidad == "valores",
@@ -236,7 +236,7 @@ window.addEventListener("load", async () => {
 	};
 	let registrosConEsaFecha = async () => {
 		// Buscar otros casos en esa fecha
-		// Obtener los casos
+		// Obtiene los casos
 		let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
 		if (v.id) params += "&id=" + v.id;
 		let casos = await fetch(v.rutaOtrosCasos + params).then((n) => n.json());

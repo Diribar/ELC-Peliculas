@@ -15,7 +15,7 @@ module.exports = {
 	opcion: async (req, res) => {
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
-		// Obtener datos en función de la opción elegida
+		// Obtiene datos en función de la opción elegida
 		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
 		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
 		// Va a la vista
@@ -36,7 +36,7 @@ module.exports = {
 		// Averiguar la sub-opción elegida
 		let opcion = req.path.slice(1, -1);
 		let opcionSubOpcion = req.url.slice(1);
-		// Obtener datos en función de la opción elegida
+		// Obtiene datos en función de la opción elegida
 		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
 		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
 		let subOpcionElegida_campos = req.session.menuSubOpciones_algunas.find(
