@@ -408,14 +408,6 @@ module.exports = {
 			? "El contenido debe ser más corto"
 			: "";
 	},
-	extension: (nombre) => {
-		if (!nombre) return "";
-		let ext = path.extname(nombre);
-		if (ext) ext = ext.slice(1).toUpperCase();
-		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
-			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
-			: "";
-	},
 	castellano: {
 		basico: (dato) => {
 			let formato = /^[a-záéíóúüñ ,.']+$/i;
@@ -428,9 +420,9 @@ module.exports = {
 		sinopsis: (dato) => {
 			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\r\n\-]+$/i;
 			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
-		},	
+		},
 	},
-	inicial:{
+	inicial: {
 		basico: (dato) => {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
 			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
@@ -439,14 +431,29 @@ module.exports = {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
 			return !formato.test(dato);
 		},
+		sinopsis: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato);
+		},
 	},
-	avatar: function(datos) {
+	avatar: (datos) => {
+		// Función
+		let extension = (nombre) => {
+			if (!nombre) return "";
+			let ext = path.extname(nombre);
+			if (ext) ext = ext.slice(1).toUpperCase();
+			return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+				? "Usaste un archivo con la extensión '" +
+						ext +
+						"'. Las extensiones válidas son JPG, JPEG y PNG"
+				: "";
+		};
 		// Variables
 		let dato = datos.avatar;
 		let respuesta = "";
 		// Validaciones
 		if (dato) {
-			if (!respuesta) respuesta = this.extension(dato);
+			if (!respuesta) respuesta = extension(dato);
 			if (!respuesta && datos.tamano > 1100000)
 				respuesta =
 					"El archivo es de " +
@@ -454,7 +461,21 @@ module.exports = {
 					" MB. Necesitamos que no supere 1 MB";
 		}
 		// Fin
-		return respuesta
+		return respuesta;
+	},
+	cartelRepetido: function (datos) {
+		let prodNombre = this.obtenerEntidadNombre(datos.entidad).toLowerCase();
+		return (
+			"Este/a " +
+			"<a href='/producto/detalle/?entidad=" +
+			datos.entidad +
+			"&id=" +
+			datos.id +
+			"' target='_blank'><u><strong>" +
+			prodNombre +
+			"</strong></u></a>" +
+			" ya se encuentra en nuestra base de datos"
+		);
 	},
 
 	// Varios
