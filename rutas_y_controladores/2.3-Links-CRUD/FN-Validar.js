@@ -83,7 +83,7 @@ module.exports = {
 	},
 };
 
-// Variables **************************
+// Funciones **************************
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"

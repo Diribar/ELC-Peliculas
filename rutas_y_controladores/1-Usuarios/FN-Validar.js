@@ -20,15 +20,15 @@ module.exports = {
 		// Validaciones
 		if (campos.includes("apodo")) {
 			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
-			let largoApodo = datos.apodo ? longitud(datos.apodo, 2, 30) : "";
+			let longitud = datos.apodo ? comp.longitud(datos, "apodo", 2, 30) : "";
 			errores.apodo = !datos.apodo
 				? comp.cartelCampoVacio
 				: castellano(datos.apodo)
 				? cartelCastellano
 				: inicialMayuscula
 				? inicialMayuscula
-				: largoApodo
-				? largoApodo
+				: longitud
+				? longitud
 				: "";
 		}
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
@@ -57,15 +57,15 @@ module.exports = {
 		// Validaciones
 		if (campos.includes("nombre")) {
 			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
-			let largoPerenne = datos.nombre ? longitud(datos.nombre, 2, 30) : "";
+			let longitud = datos.nombre ? longitud(datos, "nombre", 2, 30) : "";
 			errores.nombre = !datos.nombre
 				? comp.cartelCampoVacio
 				: castellano(datos.nombre)
 				? cartelCastellano
 				: inicialMayuscula
 				? inicialMayuscula
-				: largoPerenne
-				? largoPerenne
+				: longitud
+				? longitud
 				: "";
 		}
 		if (campos.includes("apellido")) {
@@ -90,12 +90,8 @@ module.exports = {
 				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
-			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
-			errores.docum_numero = !datos.docum_numero
-				? comp.cartelCampoVacio
-				: largoNumero
-				? largoNumero
-				: "";
+			let longitud = datos.docum_numero ? comp.longitud(datos, "docum_numero", 2, 15) : "";
+			errores.docum_numero = !datos.docum_numero ? comp.cartelCampoVacio : longitud ? longitud : "";
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
@@ -245,24 +241,13 @@ let formatoMail = (email) => {
 	let formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
 };
-
 let largoContrasena = (dato) => {
 	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
 };
-
-let longitud = (dato, corto, largo) => {
-	return dato && dato.length < corto
-		? "El nombre debe ser más largo"
-		: dato && dato.length > largo
-		? "El nombre debe ser más corto"
-		: "";
-};
-
 let castellano = (dato) => {
 	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
 };
-
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);

@@ -386,6 +386,13 @@ module.exports = {
 		return !formato.test(dato);
 	},
 	cartelCampoVacio: "Necesitamos que completes este campo",
+	longitud: (datos, campo, corto, largo) => {
+		return datos[campo].length < corto
+			? "El " + campo + " debe ser más largo"
+			: datos[campo].length > largo
+			? "El " + campo + " debe ser más corto"
+			: "";
+	},	
 
 	// Varios
 	nombreAvatar: (prodOrig, prodEdic) => {
