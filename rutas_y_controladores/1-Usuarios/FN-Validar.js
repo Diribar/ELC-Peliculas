@@ -20,13 +20,14 @@ module.exports = {
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("apodo")) {
-			if (datos.apodo) var largoApodo = longitud(datos.apodo, 2, 30);
+			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
+			let largoApodo = datos.apodo ? longitud(datos.apodo, 2, 30) : "";
 			errores.apodo = !datos.apodo
 				? cartelCampoVacio
 				: castellano(datos.apodo)
 				? cartelCastellano
-				: mayuscula(datos.apodo)
-				? cartelMayuscula
+				: inicialMayuscula && comp.inicialEspeciales(datos.apodo)
+				? inicialMayuscula
 				: largoApodo
 				? largoApodo
 				: "";
@@ -35,13 +36,11 @@ module.exports = {
 		if (campos.includes("rol_iglesia_id"))
 			errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
 		if (campos.includes("avatar")) {
-			if (datos.avatar) var extAvatar = extension(datos.avatar);
+			let extension = datos.avatar ? comp.extension(datos.avatar) : "";
 			errores.avatar = !datos.avatar
 				? ""
-				: extAvatar
-				? "Usaste un archivo con la extensión " +
-				  extAvatar.slice(1).toUpperCase() +
-				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
+				: extension
+				? extension
 				: datos.tamano > 1100000
 				? "El archivo es de " +
 				  parseInt(datos.tamano / 10000) / 100 +
@@ -58,27 +57,30 @@ module.exports = {
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("nombre")) {
-			if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
+			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
+			let largoPerenne = datos.nombre ? longitud(datos.nombre, 2, 30) : "";
 			errores.nombre = !datos.nombre
 				? cartelCampoVacio
 				: castellano(datos.nombre)
 				? cartelCastellano
-				: mayuscula(datos.nombre)
-				? cartelMayuscula
+				: inicialMayuscula
+				? inicialMayuscula
 				: largoPerenne
 				? largoPerenne
 				: "";
 		}
-		if (campos.includes("apellido"))
+		if (campos.includes("apellido")) {
+			let inicialMayuscula = datos.apellido ? comp.inicialMayuscula(datos.apellido) : "";
 			errores.apellido = !datos.apellido
 				? cartelCampoVacio
 				: castellano(datos.apellido)
 				? cartelCastellano
-				: mayuscula(datos.apellido)
-				? cartelMayuscula
+				: inicialMayuscula
+				? inicialMayuscula
 				: largoPerenne
 				? largoPerenne
 				: "";
+		}
 		if (campos.includes("sexo_id"))
 			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
 		if (campos.includes("fecha_nacimiento"))
@@ -98,16 +100,14 @@ module.exports = {
 		// Revisar 'avatar'
 		if (campos.includes("docum_avatar")) {
 			// Variables
-			if (datos.docum_avatar) var extAvatar = extension(datos.docum_avatar);
-			if (datos.docum_avatar)
-				var tamano = datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
+			let extension = datos.docum_avatar ? comp.extension(datos.docum_avatar) : "";
+			let tamano =
+				datos.docum_avatar && datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
 			// Validaciones
 			errores.docum_avatar = !datos.docum_avatar
 				? ""
-				: extAvatar
-				? "Usaste un archivo con la extensión " +
-				  extAvatar.slice(1).toUpperCase() +
-				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
+				: extension
+				? extension
 				: tamano > 1.1
 				? "El archivo es de " + tamano + " MB. Necesitamos que no supere 1 MB"
 				: "";
@@ -237,7 +237,6 @@ let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 let cartelCampoVacio = "Necesitamos que completes este campo";
 let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
-let cartelMayuscula = "La primera letra debe ser en mayúscula";
 let cartelElejiUnValor = "Necesitamos que elijas un valor";
 
 let formatoMail = (email) => {
@@ -260,17 +259,6 @@ let longitud = (dato, corto, largo) => {
 let castellano = (dato) => {
 	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
-};
-
-let mayuscula = (dato) => {
-	let formato = /^[A-Z]/;
-	return !formato.test(dato);
-};
-
-let extension = (nombre) => {
-	if (!nombre) return false;
-	let ext = path.extname(nombre);
-	return ![".jpg", ".png", ".jpeg"].includes(ext) ? ext : false;
 };
 
 let fechaRazonable = (dato) => {
