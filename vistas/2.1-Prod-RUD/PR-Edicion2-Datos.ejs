@@ -12,18 +12,18 @@
 		<!-- Idioma original -->
 		<%- include("PR-Idioma", {idioma_id: producto.idioma_original_id}) %>
 		<!--Existe una versión en castellano-->
-		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", campoDato: "productos"}) %>
 		<!--Es a Color-->
-		<%- include("PR-Select", {nombreDelCampo: "en_color_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_color_id", campoDato: "productos"}) %>
 		<!-- Producción -->
 		<% for (let campo of camposDD3) { %><%- include("PR-Input", {campo}) %><% } %>
 		<h3>Datos Subjetivos</h3>
 		<!--Categoría-->
-		<%- include("PR-Select", {nombreDelCampo: "categoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "categoria_id", campoDato: "nombre"}) %>
 		<!--Sub-categoría-->
-		<%- include("PR-Select", {nombreDelCampo: "subcategoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "subcategoria_id", campoDato: "nombre"}) %>
 		<!--Público sugerido-->
-		<%- include("PR-Select", {nombreDelCampo: "publico_sugerido_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "publico_sugerido_id", campoDato: "nombre"}) %>
 	</div>
 	<div id="segundaColumna">
 		<!-- Personas -->
