@@ -28,20 +28,11 @@ module.exports = {
 			// Fin
 			errores.apodo = respuesta;
 		}
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
 		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		if (campos.includes("avatar")) {
-			let extension = datos.avatar ? comp.extension(datos.avatar) : "";
-			errores.avatar = !datos.avatar
-				? ""
-				: extension
-				? extension
-				: datos.tamano > 1100000
-				? "El archivo es de " +
-				  parseInt(datos.tamano / 10000) / 100 +
-				  " MB. Necesitamos que no supere 1 MB"
-				: "";
+			errores.avatar = comp.avatar(datos);
 		}
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -59,7 +50,7 @@ module.exports = {
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellBasico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
-				if (!respuesta) respuesta = comp.longitud(datos.nombre, 2, 30);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
 			// Fin
 			errores.nombre = respuesta;
@@ -72,13 +63,12 @@ module.exports = {
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellBasico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
-				if (!respuesta) comp.longitud(datos.nombre, 2, 30);
+				if (!respuesta) comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
 			// Fin
 			errores.apellido = respuesta;
 		}
-		if (campos.includes("sexo_id"))
-			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
+		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
 		if (campos.includes("fecha_nacimiento"))
 			errores.fecha_nacimiento = !datos.fecha_nacimiento
 				? "Necesitamos que ingreses la fecha"
@@ -87,27 +77,20 @@ module.exports = {
 				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
-			let longitud = datos.docum_numero ? comp.longitud(datos.docum_numero, 2, 15) : "";
-			errores.docum_numero = !datos.docum_numero ? comp.inputVacio : longitud ? longitud : "";
+			// Variables
+			let dato = datos.docum_numero;
+			let respuesta = "";
+			// Validaciones
+			if (dato) respuesta = comp.longitud(dato, 4, 15);
+			else respuesta = comp.inputVacio;
+			// Fin
+			errores.docum_numero = respuesta;
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
-			errores.docum_pais_id = !datos.docum_pais_id ? cartelElejiUnValor : "";
+			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("docum_avatar")) {
-			// Variables
-			let extension = datos.docum_avatar ? comp.extension(datos.docum_avatar) : "";
-			let tamano =
-				datos.docum_avatar && datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
-			// Validaciones
-			errores.docum_avatar = !datos.docum_avatar
-				? ""
-				: extension
-				? extension
-				: tamano > 1.1
-				? "El archivo es de " + tamano + " MB. Necesitamos que no supere 1 MB"
-				: "";
-		}
+		if (campos.includes("docum_avatar")) errores.docum_avatar = comp.avatar(datos.docum_avatar);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -211,7 +194,7 @@ module.exports = {
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
 					errores.docum_pais_id = !datos.docum_pais_id
-						? cartelElejiUnValor
+						? comp.selectVacio
 						: datos.docum_pais_id != usuario.docum_pais_id
 						? "El país no coincide con el de nuestra Base de Datos"
 						: "";
@@ -225,12 +208,10 @@ module.exports = {
 	},
 };
 
+// Variables y Funciones
 let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
-let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
-let cartelElejiUnValor = "Necesitamos que elijas un valor";
-
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);

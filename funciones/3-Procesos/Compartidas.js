@@ -408,7 +408,7 @@ module.exports = {
 		return !formato.test(dato);
 	},
 	inputVacio: "Necesitamos que completes este campo",
-	selectVacio:"Necesitamos que elijas un valor",
+	selectVacio: "Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto
 			? "El contenido debe ser más largo"
@@ -431,6 +431,22 @@ module.exports = {
 	castellAdic: (dato) => {
 		let formato = /[¿?"/()\d+-]+/;
 		return !formato.test(dato);
+	},
+	avatar: function(datos) {
+		// Variables
+		let dato = datos.avatar;
+		let respuesta = "";
+		// Validaciones
+		if (dato) {
+			if (!respuesta) respuesta = this.extension(dato);
+			if (!respuesta && datos.tamano > 1100000)
+				respuesta =
+					"El archivo es de " +
+					parseInt(datos.tamano / 10000) / 100 +
+					" MB. Necesitamos que no supere 1 MB";
+		}
+		// Fin
+		return respuesta
 	},
 
 	// Varios
