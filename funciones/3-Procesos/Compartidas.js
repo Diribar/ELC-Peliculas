@@ -39,7 +39,7 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	pulirEdicion: function (original, edicion) {
+	pulirEdicion: function (original, edicion, familia) {
 		// Funciones
 		let quitarLosCamposQueNoSeComparan = (edicion, familia) => {
 			// Obtiene los campos a comparar
@@ -73,7 +73,7 @@ module.exports = {
 		};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
-		edicion = quitarLosCamposQueNoSeComparan(edicion, "productos");
+		edicion = quitarLosCamposQueNoSeComparan(edicion, familia);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
 		// Fin

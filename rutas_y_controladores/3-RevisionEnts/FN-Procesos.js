@@ -299,7 +299,7 @@ module.exports = {
 			editado_en: prodEdic.editado_en,
 		};
 		// Pule la información a tener en cuenta
-		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic, "productos");
 		// Acciones si no quedan campos
 		let statusAprob = prodOrig.status_registro.aprobado;
 		if (!quedanCampos) statusAprob = comp.accionesSiNoQuedanCampos(prodOrig, prodEdic);
@@ -554,7 +554,7 @@ module.exports = {
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
-			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic);
+			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic, "links");
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizarPorId("links_edicion", edicID, {
