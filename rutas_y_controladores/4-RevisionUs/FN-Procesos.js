@@ -8,7 +8,7 @@ const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero
-	tablero_validarIdentidades: async function (userID) {
+	TC_validarIdentidades: async function (userID) {
 		// Rol no permInputs
 		let rol_consultas_id = roles_us.find((n) => !n.perm_inputs).id;
 		// Status Documento

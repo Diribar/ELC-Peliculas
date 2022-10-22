@@ -23,8 +23,10 @@ module.exports = async (req, res, next) => {
 			datos.penalizado_hasta = Math.max(ahora, usuario.penalizado_hasta) + penalizac_acum * unDia;
 			datos.penalizado_en = ahora;
 			datos.penalizac_acum -= penalizac_acum;
+			// Activa el cartel de Responsabilidad
+			datos.mostrar_cartel_respons = true;
 		}
-		// Actualizar el registro
+		// Actualiza el registro
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
 		// Actualizar la variable usuario
 		usuario = {...usuario, ...datos};

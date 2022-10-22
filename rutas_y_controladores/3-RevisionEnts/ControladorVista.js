@@ -17,15 +17,15 @@ module.exports = {
 		const ahora = compartidas.ahora();
 		// Productos y Ediciones
 		let productos;
-		productos = await procesos.tablero_obtenerProds(ahora, userID);
-		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, userID);
+		productos = await procesos.TC_obtenerProds(ahora, userID);
+		productos.ED = await procesos.TC_obtenerProdsConEdicAjena(ahora, userID);
 		// Obtener Links
-		productos.LR = await procesos.tablero_obtenerProdsConLink(ahora, userID);
-		productos.SL = await procesos.tablero_obtenerProdsSinLink(ahora, userID);
-		productos = procesos.tablero_prod_ProcesarCampos(productos);
+		productos.CL = await procesos.TC_obtenerProdsConLink(ahora, userID);
+		productos.SL = await procesos.TC_obtenerProdsSinLink(ahora, userID);
+		productos = procesos.TC_prod_ProcesarCampos(productos);
 		// RCLV
-		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, userID);
-		RCLVs = procesos.tablero_RCLV_ProcesarCampos(RCLVs);
+		let RCLVs = await procesos.TC_obtenerRCLVs(ahora, userID);
+		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
 		// return res.send([productos,RCLVs]);
 		return res.render("CMP-0Estructura", {
