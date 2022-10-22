@@ -11,7 +11,7 @@ module.exports = {
 		// Campo palabrasClave
 		let errores = {};
 		let longitud = dato ? comp.longitud(dato, 3, 50) : "";
-		errores.palabrasClave = !dato ? comp.cartelVacio : longitud ? longitud : "";
+		errores.palabrasClave = !dato ? comp.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -48,7 +48,7 @@ module.exports = {
 		// Dirección
 		let url = datos.direccion;
 		errores.direccion = !url
-			? comp.cartelVacio
+			? comp.inputVacio
 			: !url.includes("www.filmaffinity.com/") ||
 			  !(
 					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
@@ -67,7 +67,7 @@ module.exports = {
 		// Contenido
 		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
-			? comp.cartelVacio
+			? comp.inputVacio
 			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
 			: "";
@@ -82,24 +82,24 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let cartelMusica = comp.cartelVacio + '. Si no tiene música, poné "No tiene música"';
+		let cartelMusica = comp.inputVacio + '. Si no tiene música, poné "No tiene música"';
 		let cartelActuacion =
-			comp.cartelVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
+			comp.inputVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "medio", cartel: comp.cartelVacio, corto: 3, largo: 50},
+			{nombre: "nombre_original", idioma: "medio", cartel: comp.inputVacio, corto: 3, largo: 50},
 			{
 				nombre: "nombre_castellano",
 				idioma: "medio",
-				cartel: comp.cartelVacio,
+				cartel: comp.inputVacio,
 				corto: 3,
 				largo: 50,
 			},
-			{nombre: "direccion", idioma: "basico", cartel: comp.cartelVacio, corto: 3, largo: 100},
-			{nombre: "guion", idioma: "basico", cartel: comp.cartelVacio, corto: 3, largo: 100},
+			{nombre: "direccion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
+			{nombre: "guion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-			{nombre: "produccion", idioma: "medio", cartel: comp.cartelVacio, corto: 3, largo: 100},
+			{nombre: "produccion", idioma: "medio", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "actuacion", idioma: "medio", cartel: cartelActuacion, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "amplio", cartel: comp.cartelVacio, corto: 15, largo: 1004},
+			{nombre: "sinopsis", idioma: "amplio", cartel: comp.inputVacio, corto: 15, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
@@ -122,7 +122,7 @@ module.exports = {
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("ano_estreno"))
 			errores.ano_estreno = !datos.ano_estreno
-				? comp.cartelVacio
+				? comp.inputVacio
 				: formatoAno(datos.ano_estreno)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_estreno < 1900
@@ -132,7 +132,7 @@ module.exports = {
 				: "";
 		if (campos.includes("ano_fin"))
 			errores.ano_fin = !datos.ano_fin
-				? comp.cartelVacio
+				? comp.inputVacio
 				: formatoAno(datos.ano_fin)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_fin < 1900
@@ -142,7 +142,7 @@ module.exports = {
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
-				? comp.cartelVacio
+				? comp.inputVacio
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
 				: datos.duracion > 300
@@ -150,12 +150,12 @@ module.exports = {
 				: "";
 		if (campos.includes("paises_id"))
 			errores.paises_id = !datos.paises_id
-				? comp.cartelVacio
+				? comp.inputVacio
 				: datos.paises_id.length > 2 * 1 + 4 * 3
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idioma_original_id"))
-			errores.idioma_original_id = !datos.idioma_original_id ? comp.cartelVacio : "";
+			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) {
 			let extension = datos.avatar ? comp.extension(datos.avatar) : "";

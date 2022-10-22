@@ -24,7 +24,7 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellBasico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
-			} else respuesta = comp.cartelVacio;
+			} else respuesta = comp.inputVacio;
 			// Fin
 			errores.apodo = respuesta;
 		}
@@ -60,7 +60,7 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellBasico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) respuesta = comp.longitud(datos.nombre, 2, 30);
-			} else respuesta = comp.cartelVacio;
+			} else respuesta = comp.inputVacio;
 			// Fin
 			errores.nombre = respuesta;
 		}
@@ -73,7 +73,7 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellBasico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) comp.longitud(datos.nombre, 2, 30);
-			} else respuesta = comp.cartelVacio;
+			} else respuesta = comp.inputVacio;
 			// Fin
 			errores.apellido = respuesta;
 		}
@@ -88,7 +88,7 @@ module.exports = {
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			let longitud = datos.docum_numero ? comp.longitud(datos.docum_numero, 2, 15) : "";
-			errores.docum_numero = !datos.docum_numero ? comp.cartelVacio : longitud ? longitud : "";
+			errores.docum_numero = !datos.docum_numero ? comp.inputVacio : longitud ? longitud : "";
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
@@ -206,7 +206,7 @@ module.exports = {
 				else if (usuario.status_registro.ident_a_validar) {
 					// Verifica los posibles errores
 					errores.docum_numero = !datos.docum_numero
-						? comp.cartelVacio
+						? comp.inputVacio
 						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";

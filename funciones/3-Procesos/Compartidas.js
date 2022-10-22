@@ -407,7 +407,7 @@ module.exports = {
 		let formato = /^[¡¿"\d]/;
 		return !formato.test(dato);
 	},
-	cartelVacio: "Necesitamos que completes este campo",
+	inputVacio: "Necesitamos que completes este campo",
 	selectVacio:"Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto

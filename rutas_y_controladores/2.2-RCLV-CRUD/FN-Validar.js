@@ -56,7 +56,7 @@ module.exports = {
 	},
 	ano: (datos) => {
 		let respuesta;
-		if (!datos.ano) respuesta = cartelVacio.ano;
+		if (!datos.ano) respuesta = inputVacio.ano;
 		else {
 			let ano = parseInt(datos.ano);
 			respuesta =
@@ -141,7 +141,7 @@ module.exports = {
 
 // Variables
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
-const cartelVacio = {
+const inputVacio = {
 	nombre: "Necesitamos que completes el nombre",
 	apodo: "Necesitamos que completes el apodo",
 	ano: "Necesitamos que completes el año",
@@ -191,7 +191,7 @@ let nombreExpress = (datos, campo) => {
 };
 let nombreCompleto = async function (datos, campo) {
 	let respuesta;
-	if (!datos[campo]) respuesta = cartelVacio[campo];
+	if (!datos[campo]) respuesta = inputVacio[campo];
 	if (!respuesta) respuesta = comp.longitud(datos.campo, 4, 30);
 	if (!respuesta) {
 		let repetido = await BD_especificas.validarRepetidos([campo], datos);
