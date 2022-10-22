@@ -12,18 +12,18 @@
 		<!-- Idioma original -->
 		<%- include("PR-Idioma", {idioma_id: producto.idioma_original_id}) %>
 		<!--Existe una versión en castellano-->
-		<%- include("PR-Select", {nombre: "en_castellano_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", nombre: "productos"}) %>
 		<!--Es a Color-->
-		<%- include("PR-Select", {nombre: "en_color_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_color_id", nombre: "productos"}) %>
 		<!-- Producción -->
 		<% for (let campo of camposDD3) { %><%- include("PR-Input", {campo}) %><% } %>
 		<h3>Datos Subjetivos</h3>
 		<!--Categoría-->
-		<%- include("PR-Select", {nombre: "categoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "categoria_id", nombre: "nombre"}) %>
 		<!--Sub-categoría-->
-		<%- include("PR-Select", {nombre: "subcategoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "subcategoria_id", nombre: "nombre"}) %>
 		<!--Público sugerido-->
-		<%- include("PR-Select", {nombre: "publico_sugerido_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "publico_sugerido_id", nombre: "nombre"}) %>
 	</div>
 	<div id="segundaColumna">
 		<!-- Personas -->

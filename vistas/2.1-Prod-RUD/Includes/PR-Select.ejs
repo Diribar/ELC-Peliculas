@@ -1,4 +1,4 @@
-<% let campo = camposDP.find(n => n.nombre == nombre) %>
+<% let campo = camposDP.find(n => n.nombre == nombreDelCampo) %>
 <section class="label-input">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
@@ -11,7 +11,7 @@
 					<% if (campo.nombre == "subcategoria_id") { %>class="<%= (valor.cfc ? "CFC" : "") + " " + (valor.vpc ? "VPC" : "") %>"<% } %>
 					<% if (entidad != "colecciones" && (campo.nombre == "en_castellano_id" || campo.nombre == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
 				>
-					<%= valor[nombre] %>
+					<%= valor[campo.nombre] %>
 				</option>
 			<% } %>
 		</select>

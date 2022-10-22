@@ -1,4 +1,4 @@
-<% let campo = camposDP.find(n => n.nombre == nombre) %>
+<% let campo = camposDP.find(n => n.nombre == nombreDelCampo) %>
 <section class="label-input RCLV">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
@@ -6,7 +6,7 @@
 		<% console.log(6, campo) %>
 		<select name="<%= campo.nombre %>" class="input RCLV">
 			<option value="1">Ninguno</option>
-			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombre] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
+			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombre] == valor.id) { %>selected<% } %>><%= valor[nombreDelCampo] %></option><% } %>
 		</select>
 		<!-- Ayuda -->
 		<div class="ayuda">

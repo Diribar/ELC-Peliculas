@@ -113,24 +113,31 @@ module.exports = {
 		},
 	],
 	camposDP: async (userID) => {
-		// Variables
-		let camposRCLV = ["personajes", "hechos", "valores"];
-		let registrosRCLV = {};
-		// Obtiene los registros en status 'aprobado' y 'creado' (del usuario)
-		if (userID)
-			camposRCLV.forEach(async (campo) => {
-				let aux = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>
-					n.filter(
-						(n) =>
-							n.status_registro.aprobado ||
-							(n.status_registro.creado && n.creado_por_id == userID)
-					)
+		// Funcion
+		let funcionRegistrosRCLV = (userID) => {
+			// Obtiene los registros RCLV en status 'aprobado' y 'creado' (del usuario)
+			// Variables
+			let entidadRCLV = ["personajes", "hechos", "valores"];
+			let registrosRCLV = {};
+			// Rutina por entidadRCLV
+			entidadRCLV.forEach(async (campo) => {
+				let aprobados = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then(
+					(n) => n.filter((n) => n.status_registro.aprobado)
 				);
-				if (!Array.isArray(aux)) console.log(131, campo, aux);
-				aux.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
-				registrosRCLV[campo] = aux;
-				if (!Array.isArray(aux)) console.log(134, campo, aux);
+				let creados = [];
+				if (userID)
+					creados = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>
+						n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
+					);
+				let registros = [...creados, ...aprobados];
+				registros.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+				registrosRCLV[campo] = registros;
 			});
+			// Fin
+			return registrosRCLV
+		};
+		// Variables
+		let registrosRCLV = funcionRegistrosRCLV(userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",
