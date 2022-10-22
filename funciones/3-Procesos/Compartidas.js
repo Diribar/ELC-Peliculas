@@ -303,53 +303,7 @@ module.exports = {
 		});
 	},
 
-	// Varios
-	nombreAvatar: (prodOrig, prodEdic) => {
-		return prodEdic.avatar
-			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
-			: prodOrig.avatar
-			? !prodOrig.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOrig.avatar
-				: prodOrig.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
-	},
-	enviarMail: async (asunto, mail, comentario) => {
-		// create reusable transporter object using the default SMTP transport
-		let transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true, // true for 465, false for other ports
-			auth: {
-				user: process.env.direccMail, // dirección de gmail
-				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
-			},
-		});
-		let datos = {
-			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
-			to: mail,
-			subject: asunto, // Subject line
-			text: comentario, // plain text body
-			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
-		};
-		await transporter.sendMail(datos);
-		// datos.to = "diegoiribarren2015@gmail.com";
-		// await transporter.sendMail(datos);
-	},
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
-	},
+	// Castellano
 	convertirLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()
@@ -420,6 +374,62 @@ module.exports = {
 			}
 		}
 		return resultado;
+	},
+	inicialMayuscula: (dato) => {
+		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+	},
+	inicialEspeciales: (dato) => {
+		let formato = /^[¡¿"\d]/;
+		return !formato.test(dato);
+	},
+
+	// Varios
+	nombreAvatar: (prodOrig, prodEdic) => {
+		return prodEdic.avatar
+			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
+			: prodOrig.avatar
+			? !prodOrig.avatar.startsWith("http")
+				? "/imagenes/3-Productos/" + prodOrig.avatar
+				: prodOrig.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+	},
+	enviarMail: async (asunto, mail, comentario) => {
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport({
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true, // true for 465, false for other ports
+			auth: {
+				user: process.env.direccMail, // dirección de gmail
+				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
+			},
+		});
+		let datos = {
+			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
+			to: mail,
+			subject: asunto, // Subject line
+			text: comentario, // plain text body
+			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+		};
+		await transporter.sendMail(datos);
+		// datos.to = "diegoiribarren2015@gmail.com";
+		// await transporter.sendMail(datos);
+	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
 	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
@@ -501,14 +511,6 @@ module.exports = {
 				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 		);
 		return productos;
-	},
-	inicialMayuscula: (dato) => {
-		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
-	},
-	inicialEspeciales: (dato) => {
-		let formato = /^[¡¿"\d]/;
-		return !formato.test(dato);
 	},
 	extension: (nombre) => {
 		if (!nombre) return "";
