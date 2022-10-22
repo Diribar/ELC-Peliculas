@@ -9,9 +9,12 @@ module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
-		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.palabrasClave = !dato ? cartelCampoVacio : longitud(dato, 3, 50) ? longitud(dato, 3, 50) : "";
+		errores.palabrasClave = !dato
+			? comp.cartelCampoVacio
+			: longitud(dato, 3, 50)
+			? longitud(dato, 3, 50)
+			: "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -48,7 +51,7 @@ module.exports = {
 		// Dirección
 		let url = datos.direccion;
 		errores.direccion = !url
-			? cartelCampoVacio
+			? comp.cartelCampoVacio
 			: !url.includes("www.filmaffinity.com/") ||
 			  !(
 					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
@@ -67,7 +70,7 @@ module.exports = {
 		// Contenido
 		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
-			? cartelCampoVacio
+			? comp.cartelCampoVacio
 			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
 			: "";
@@ -82,18 +85,18 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let cartelMusica = cartelCampoVacio + '. Si no tiene música, poné "No tiene música"';
+		let cartelMusica = comp.cartelCampoVacio + '. Si no tiene música, poné "No tiene música"';
 		let cartelActuacion =
-			cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
+		comp.cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 50},
-			{nombre: "nombre_castellano", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 50},
-			{nombre: "direccion", idioma: "basico", cartel: cartelCampoVacio, corto: 3, largo: 100},
-			{nombre: "guion", idioma: "basico", cartel: cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "nombre_original", idioma: "medio", cartel: comp.cartelCampoVacio, corto: 3, largo: 50},
+			{nombre: "nombre_castellano", idioma: "medio", cartel: comp.cartelCampoVacio, corto: 3, largo: 50},
+			{nombre: "direccion", idioma: "basico", cartel: comp.cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "guion", idioma: "basico", cartel: comp.cartelCampoVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-			{nombre: "produccion", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "produccion", idioma: "medio", cartel: comp.cartelCampoVacio, corto: 3, largo: 100},
 			{nombre: "actuacion", idioma: "medio", cartel: cartelActuacion, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "amplio", cartel: cartelCampoVacio, corto: 15, largo: 1004},
+			{nombre: "sinopsis", idioma: "amplio", cartel: comp.cartelCampoVacio, corto: 15, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
@@ -115,7 +118,7 @@ module.exports = {
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("ano_estreno"))
 			errores.ano_estreno = !datos.ano_estreno
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: formatoAno(datos.ano_estreno)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_estreno < 1900
@@ -125,7 +128,7 @@ module.exports = {
 				: "";
 		if (campos.includes("ano_fin"))
 			errores.ano_fin = !datos.ano_fin
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: formatoAno(datos.ano_fin)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_fin < 1900
@@ -135,7 +138,7 @@ module.exports = {
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
 				: datos.duracion > 300
@@ -143,12 +146,12 @@ module.exports = {
 				: "";
 		if (campos.includes("paises_id"))
 			errores.paises_id = !datos.paises_id
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: datos.paises_id.length > 2 * 1 + 4 * 3
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idioma_original_id"))
-			errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "";
+			errores.idioma_original_id = !datos.idioma_original_id ? comp.cartelCampoVacio : "";
 		// Personas
 		if (campos.includes("avatar")) {
 			let extension = datos.avatar ? comp.extension(datos.avatar) : "";
@@ -237,7 +240,6 @@ module.exports = {
 };
 
 // Variables **************************
-let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
 

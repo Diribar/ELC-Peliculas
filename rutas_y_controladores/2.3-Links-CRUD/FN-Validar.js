@@ -11,7 +11,7 @@ module.exports = {
 		// url
 		if (campos.includes("url")) {
 			errores.url = !datos.url
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: longitud(datos.url, 5, 100)
 				? longitud(datos.url, 5, 100)
 				: !datos.url.includes("/")
@@ -30,12 +30,12 @@ module.exports = {
 			}
 		}
 		// calidad
-		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? cartelCampoVacio : "";
+		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? comp.cartelCampoVacio : "";
 		// castellano
 		if (campos.includes("castellano")) {
 			errores.castellano =
 				datos.castellano == ""
-					? cartelCampoVacio
+					? comp.cartelCampoVacio
 					: datos.castellano != "0" && datos.castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -44,7 +44,7 @@ module.exports = {
 		if (campos.includes("subtit_castellano")) {
 			errores.subtit_castellano =
 				datos.subtit_castellano == ""
-					? cartelCampoVacio
+					? comp.cartelCampoVacio
 					: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -53,7 +53,7 @@ module.exports = {
 		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
-					? cartelCampoVacio
+					? comp.cartelCampoVacio
 					: datos.gratuito != "0" && datos.gratuito != "1"
 					? "Valor inválido"
 					: "";
@@ -61,18 +61,18 @@ module.exports = {
 		// tipo_id
 		if (campos.includes("tipo_id")) {
 			errores.tipo_id = !datos.tipo_id
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
 		}
 		// completo
 		if (campos.includes("completo") && datos.tipo_id != "1")
-			errores.completo = !datos.completo ? cartelCampoVacio : "";
+			errores.completo = !datos.completo ? comp.cartelCampoVacio : "";
 		// parte
 		if (campos.includes("parte") && datos.completo == "0") {
 			errores.parte = !datos.parte
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
 				? "Necesitamos que ingreses un número positivo"
 				: "";
@@ -84,8 +84,6 @@ module.exports = {
 };
 
 // Variables **************************
-let cartelCampoVacio = "Necesitamos que completes esta información";
-
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"

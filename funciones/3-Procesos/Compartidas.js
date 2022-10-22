@@ -375,6 +375,8 @@ module.exports = {
 		}
 		return resultado;
 	},
+
+	// Validaciones
 	inicialMayuscula: (dato) => {
 		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
 		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
@@ -383,6 +385,7 @@ module.exports = {
 		let formato = /^[¡¿"\d]/;
 		return !formato.test(dato);
 	},
+	cartelCampoVacio: "Necesitamos que completes este campo",
 
 	// Varios
 	nombreAvatar: (prodOrig, prodEdic) => {

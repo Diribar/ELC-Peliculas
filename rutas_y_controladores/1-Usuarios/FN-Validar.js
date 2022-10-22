@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
@@ -23,7 +22,7 @@ module.exports = {
 			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
 			let largoApodo = datos.apodo ? longitud(datos.apodo, 2, 30) : "";
 			errores.apodo = !datos.apodo
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: castellano(datos.apodo)
 				? cartelCastellano
 				: inicialMayuscula
@@ -60,7 +59,7 @@ module.exports = {
 			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
 			let largoPerenne = datos.nombre ? longitud(datos.nombre, 2, 30) : "";
 			errores.nombre = !datos.nombre
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: castellano(datos.nombre)
 				? cartelCastellano
 				: inicialMayuscula
@@ -72,7 +71,7 @@ module.exports = {
 		if (campos.includes("apellido")) {
 			let inicialMayuscula = datos.apellido ? comp.inicialMayuscula(datos.apellido) : "";
 			errores.apellido = !datos.apellido
-				? cartelCampoVacio
+				? comp.cartelCampoVacio
 				: castellano(datos.apellido)
 				? cartelCastellano
 				: inicialMayuscula
@@ -92,7 +91,11 @@ module.exports = {
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
-			errores.docum_numero = !datos.docum_numero ? cartelCampoVacio : largoNumero ? largoNumero : "";
+			errores.docum_numero = !datos.docum_numero
+				? comp.cartelCampoVacio
+				: largoNumero
+				? largoNumero
+				: "";
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
@@ -213,7 +216,7 @@ module.exports = {
 				else if (usuario.status_registro.ident_a_validar) {
 					// Verifica los posibles errores
 					errores.docum_numero = !datos.docum_numero
-						? cartelCampoVacio
+						? comp.cartelCampoVacio
 						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
@@ -235,7 +238,6 @@ module.exports = {
 let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
-let cartelCampoVacio = "Necesitamos que completes este campo";
 let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 let cartelElejiUnValor = "Necesitamos que elijas un valor";
 
