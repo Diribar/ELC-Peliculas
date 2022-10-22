@@ -12,7 +12,7 @@ module.exports = {
 		if (campos.includes("url")) {
 			let longitud = datos.url ? comp.longitud(datos.url, 5, 100) : "";
 			errores.url = !datos.url
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: longitud
 				? longitud
 				: !datos.url.includes("/")
@@ -31,12 +31,12 @@ module.exports = {
 			}
 		}
 		// calidad
-		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? comp.cartelCampoVacio : "";
+		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? comp.cartelVacio : "";
 		// castellano
 		if (campos.includes("castellano")) {
 			errores.castellano =
 				datos.castellano == ""
-					? comp.cartelCampoVacio
+					? comp.cartelVacio
 					: datos.castellano != "0" && datos.castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -45,7 +45,7 @@ module.exports = {
 		if (campos.includes("subtit_castellano")) {
 			errores.subtit_castellano =
 				datos.subtit_castellano == ""
-					? comp.cartelCampoVacio
+					? comp.cartelVacio
 					: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
 					? "Valor inválido"
 					: "";
@@ -54,7 +54,7 @@ module.exports = {
 		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
-					? comp.cartelCampoVacio
+					? comp.cartelVacio
 					: datos.gratuito != "0" && datos.gratuito != "1"
 					? "Valor inválido"
 					: "";
@@ -62,18 +62,18 @@ module.exports = {
 		// tipo_id
 		if (campos.includes("tipo_id")) {
 			errores.tipo_id = !datos.tipo_id
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
 		}
 		// completo
 		if (campos.includes("completo") && datos.tipo_id != "1")
-			errores.completo = !datos.completo ? comp.cartelCampoVacio : "";
+			errores.completo = !datos.completo ? comp.cartelVacio : "";
 		// parte
 		if (campos.includes("parte") && datos.completo == "0") {
 			errores.parte = !datos.parte
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
 				? "Necesitamos que ingreses un número positivo"
 				: "";

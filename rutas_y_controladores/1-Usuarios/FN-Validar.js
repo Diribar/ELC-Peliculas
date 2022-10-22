@@ -22,7 +22,7 @@ module.exports = {
 			let inicialMayuscula = datos.apodo ? comp.inicialMayuscula(datos.apodo) : "";
 			let longitud = datos.apodo ? comp.longitud(datos.apodo, 2, 30) : "";
 			errores.apodo = !datos.apodo
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: castellano(datos.apodo)
 				? cartelCastellano
 				: inicialMayuscula
@@ -59,7 +59,7 @@ module.exports = {
 			let inicialMayuscula = datos.nombre ? comp.inicialMayuscula(datos.nombre) : "";
 			let longitud = datos.nombre ? comp.longitud(datos.nombre, 2, 30) : "";
 			errores.nombre = !datos.nombre
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: castellano(datos.nombre)
 				? cartelCastellano
 				: inicialMayuscula
@@ -71,7 +71,7 @@ module.exports = {
 		if (campos.includes("apellido")) {
 			let inicialMayuscula = datos.apellido ? comp.inicialMayuscula(datos.apellido) : "";
 			errores.apellido = !datos.apellido
-				? comp.cartelCampoVacio
+				? comp.cartelVacio
 				: castellano(datos.apellido)
 				? cartelCastellano
 				: inicialMayuscula
@@ -91,7 +91,7 @@ module.exports = {
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			let longitud = datos.docum_numero ? comp.longitud(datos.docum_numero, 2, 15) : "";
-			errores.docum_numero = !datos.docum_numero ? comp.cartelCampoVacio : longitud ? longitud : "";
+			errores.docum_numero = !datos.docum_numero ? comp.cartelVacio : longitud ? longitud : "";
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
@@ -212,7 +212,7 @@ module.exports = {
 				else if (usuario.status_registro.ident_a_validar) {
 					// Verifica los posibles errores
 					errores.docum_numero = !datos.docum_numero
-						? comp.cartelCampoVacio
+						? comp.cartelVacio
 						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";

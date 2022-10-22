@@ -385,7 +385,7 @@ module.exports = {
 		let formato = /^[¡¿"\d]/;
 		return !formato.test(dato);
 	},
-	cartelCampoVacio: "Necesitamos que completes este campo",
+	cartelVacio: "Necesitamos que completes este campo",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto
 			? "El contenido debe ser más largo"
