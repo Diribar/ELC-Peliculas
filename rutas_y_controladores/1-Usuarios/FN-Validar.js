@@ -21,7 +21,7 @@ module.exports = {
 			let dato = datos.apodo;
 			let respuesta = "";
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
@@ -48,7 +48,7 @@ module.exports = {
 			let dato = datos.nombre;
 			// Validaciones
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
@@ -61,7 +61,7 @@ module.exports = {
 			let dato = datos.apellido;
 			// Validaciones
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellBasico(dato);
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicialMayuscula(dato);
 				if (!respuesta) comp.longitud(dato, 2, 30);
 			} else respuesta = comp.inputVacio;
