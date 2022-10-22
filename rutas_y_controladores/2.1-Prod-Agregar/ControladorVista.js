@@ -7,7 +7,7 @@ const requestPromise = require("request-promise");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
@@ -116,7 +116,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			prodNombre: compartidas.obtenerEntidadNombre(req.body.entidad),
+			prodNombre: comp.obtenerEntidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -138,7 +138,7 @@ module.exports = {
 		procesos.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.prodNombre = compartidas.obtenerEntidadNombre(req.body.entidad);
+			req.body.prodNombre = comp.obtenerEntidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -194,7 +194,7 @@ module.exports = {
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
 		if (aux && aux.avatar_archivo)
-			compartidas.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
+			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -216,7 +216,7 @@ module.exports = {
 			? req.session.erroresDD
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
-		let paises = datosDuros.paises_id ? await compartidas.paises_idToNombre(datosDuros.paises_id) : "";
+		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
@@ -285,16 +285,16 @@ module.exports = {
 				avatar_archivo = Date.now() + path.extname(datosDuros.avatar);
 				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar_archivo;
 				// Descargar
-				compartidas.descargar(datosDuros.avatar, rutaYnombre);
+				comp.descargar(datosDuros.avatar, rutaYnombre);
 			}
 			// Revisar errores nuevamente
-			errores.avatar = compartidas.revisarImagen(tipo, tamano);
+			errores.avatar = comp.revisarImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			compartidas.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
+			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
 			// Guardar los errores en 'session' porque pueden ser muy específicos
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -424,7 +424,7 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		compartidas.guardar_edicion(
+		comp.guardar_edicion(
 			confirma.entidad,
 			"prods_edicion",
 			registro,
@@ -440,7 +440,7 @@ module.exports = {
 		// 6. Guarda las calificaciones
 		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		compartidas.mueveUnArchivoImagen(confirma.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
+		comp.mueveUnArchivoImagen(confirma.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
@@ -478,7 +478,7 @@ module.exports = {
 		if (!registroProd.status_registro.gr_creado)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
 		// 5. Obtener el producto
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

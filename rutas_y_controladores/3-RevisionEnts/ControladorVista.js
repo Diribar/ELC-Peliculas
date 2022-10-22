@@ -2,7 +2,7 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 
@@ -14,7 +14,7 @@ module.exports = {
 		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
-		const ahora = compartidas.ahora();
+		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos;
 		productos = await procesos.TC_obtenerProds(ahora, userID);
@@ -55,10 +55,10 @@ module.exports = {
 			? (!avatar.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOrig.paises_id ? await compartidas.paises_idToNombre(prodOrig.paises_id) : "";
+		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
@@ -91,7 +91,7 @@ module.exports = {
 		const prodID = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
-		const producto_id = compartidas.obtenerEntidad_id(entidad);
+		const producto_id = comp.obtenerEntidad_id(entidad);
 
 		// Verificaciones ------------------------------------------
 		// Verificacion 1:
@@ -126,7 +126,7 @@ module.exports = {
 		}
 		// Verificación paso 3: muestra el cartel de error
 		if (!prodEdic) {
-			let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
+			let informacion = await procesos.infoProdEdicion(entidad, prodID, producto_id, userID);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 		// 3. Obtiene la versión original
@@ -145,7 +145,7 @@ module.exports = {
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
 		let quedanCampos;
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) return res.render("CMP-0Estructura", cartelNoQuedanCampos());
+		if (!quedanCampos) return res.render("CMP-0Estructura", procesos.cartelNoQuedanCampos());
 
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
@@ -182,7 +182,7 @@ module.exports = {
 			vista = "CMP-0Estructura";
 		}
 		// 5. Configurar el título de la vista
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
@@ -216,17 +216,17 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Configurar el título
-		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
 		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
 		if (prodEntidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = problemasLinks(producto, req.session.urlAnterior);
+		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtener todos los links
-		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",
@@ -272,55 +272,4 @@ module.exports = {
 			cartel: true,
 		});
 	},
-};
-
-let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
-	// Generar la info del error
-	let informacion = {
-		mensajes: ["No encontramos ninguna edición ajena para revisar"],
-		iconos: [
-			{
-				nombre: "fa-spell-check ",
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
-				titulo: "Regresar al Tablero de Control",
-			},
-		],
-	};
-	return informacion;
-};
-let problemasLinks = (producto, urlAnterior) => {
-	// Variables
-	let informacion;
-	const vistaAnterior = variables.vistaAnterior(urlAnterior);
-	const vistaTablero = variables.vistaTablero();
-
-	// El producto no está en status 'aprobado'
-	if (!informacion && !producto.status_registro.aprobado)
-		informacion = {
-			mensajes: [
-				"El producto no está en status 'Aprobado'",
-				"Su status es " + producto.status_registro.nombre,
-			],
-		};
-
-	// El producto no posee links
-	if (!informacion && !producto.links.length)
-		informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
-	// Agregar los íconos
-	if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
-
-	// Fin
-	return informacion;
-};
-let cartelNoQuedanCampos = () => {
-	return {
-		mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
-		iconos: [
-			{
-				nombre: "fa-spell-check",
-				link: "/revision/tablero-de-control",
-				titulo: "Ir al 'Tablero de Control' de Revisiones",
-			},
-		],
-	};
 };

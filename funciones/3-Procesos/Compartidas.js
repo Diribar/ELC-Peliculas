@@ -2,6 +2,7 @@
 // Definir variables
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
+const BD_especificas = require("../2-BD/Especificas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
@@ -10,11 +11,11 @@ const variables = require("./Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Temas de Entidades
-	todos_quitarCamposSinContenido: (objeto) => {
+	quitarCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	todos_obtenerLeadTime: (desde, hasta) => {
+	obtenerLeadTime: (desde, hasta) => {
 		// Corregir domingo
 		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
 		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
@@ -38,43 +39,76 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
-		// Obtener los campos a comparar
-		let campos = [];
-		variables["camposRevisar" + ent]().forEach((campo) => {
-			campos.push(campo.nombreDelCampo);
-			if (campo.relac_include) campos.push(campo.relac_include);
-		});
-
-		// Quitar de edicion los campos que no se comparan
-		for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
-
-		// Fin
-		return edicion;
-	},
-	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		// Eliminar campo si:
-		// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
-		// - edición es estrictamente igual al original
-		for (let campo in edicion)
-			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
-				delete edicion[campo];
-		return edicion;
-	},
-	quedanCampos: (datos) => {
-		// Averiguar si queda algún campo
-		return !!Object.keys(datos).length;
-	},
 	pulirEdicion: function (original, edicion) {
+		// Funciones
+		let quitarLosCamposQueNoSeComparan = (edicion, ent) => {
+			// Obtener los campos a comparar
+			let campos = [];
+			variables["camposRevisar" + ent]().forEach((campo) => {
+				campos.push(campo.nombreDelCampo);
+				if (campo.relac_include) campos.push(campo.relac_include);
+			});
+
+			// Quitar de edicion los campos que no se comparan
+			for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+
+			// Fin
+			return edicion;
+		};
+		let quitarLasCoincidenciasConOriginal = (original, edicion) => {
+			// Eliminar campo si:
+			// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+			// - edición es estrictamente igual al original
+			for (let campo in edicion)
+				if (
+					(edicion[campo] && edicion[campo] == original[campo]) ||
+					edicion[campo] === original[campo]
+				)
+					delete edicion[campo];
+			return edicion;
+		};
+		let quedanCampos = (datos) => {
+			// Averiguar si queda algún campo
+			return !!Object.keys(datos).length;
+		};
 		// Pulir la información a tener en cuenta
-		edicion = this.todos_quitarCamposSinContenido(edicion);
-		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
+		edicion = this.quitarCamposSinContenido(edicion);
+		edicion = quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
-		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
-		let quedanCampos = this.quedanCampos(edicion);
+		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
 		// Fin
-		return [edicion, quedanCampos];
+		return [edicion, quedanCampos(edicion)];
 	},
+	accionesSiNoQuedanCampos: async function (prodOrig, prodEdic) {
+		// Variables
+		let statusAprob = false;
+		let ahora=comp.ahora()
+		// 1. Elimina el registro de la edición
+		await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
+		// 2. Averigua si tiene errores
+		let entidadOrig = this.obtieneEntidadDesdeEdicion(prodEdic);
+		let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
+		// 2. Acciones si el original no tiene errores y está en status 'gr_creado'
+		if (!errores.hay && prodOrig.status_registro.gr_creado) {
+			// Genera la información a actualizar en el registro original
+			let datos = {
+				alta_terminada_en: funcionAhora(),
+				lead_time_creacion: this.obtenerLeadTime(prodOrig.creado_en, ahora),
+				status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
+			};
+			// Cambia el status del producto e inactiva la captura
+			await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
+			// Si es una colección, le cambia el status también a los capítulos
+			if (entidadOrig == "colecciones") {
+				datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora}; // Amplía los datos
+				BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos); // Actualiza el status de los capitulos
+			}
+			// Cambia el valor de la variable que se informará
+			statusAprob = true;
+		}
+		return statusAprob;
+	},
+
 	// ABM de registros
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
@@ -169,20 +203,20 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadOrigDesdeEdicion: (entidad) => {
-		return entidad.pelicula_id
+	obtieneEntidadDesdeEdicion: (edicion) => {
+		return edicion.pelicula_id
 			? "peliculas"
-			: entidad.coleccion_id
+			: edicion.coleccion_id
 			? "colecciones"
-			: entidad.capitulo_id
+			: edicion.capitulo_id
 			? "capitulos"
-			: entidad.personaje_id
+			: edicion.personaje_id
 			? "personajes"
-			: entidad.hecho_id
+			: edicion.hecho_id
 			? "hechos"
-			: entidad.valor_id
+			: edicion.valor_id
 			? "valores"
-			: entidad.link_id
+			: edicion.link_id
 			? "links"
 			: "";
 	},
@@ -269,53 +303,7 @@ module.exports = {
 		});
 	},
 
-	// Varios
-	nombreAvatar: (prodOrig, prodEdic) => {
-		return prodEdic.avatar
-			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
-			: prodOrig.avatar
-			? !prodOrig.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOrig.avatar
-				: prodOrig.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
-	},
-	enviarMail: async (asunto, mail, comentario) => {
-		// create reusable transporter object using the default SMTP transport
-		let transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true, // true for 465, false for other ports
-			auth: {
-				user: process.env.direccMail, // dirección de gmail
-				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
-			},
-		});
-		let datos = {
-			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
-			to: mail,
-			subject: asunto, // Subject line
-			text: comentario, // plain text body
-			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
-		};
-		await transporter.sendMail(datos);
-		// datos.to = "diegoiribarren2015@gmail.com";
-		// await transporter.sendMail(datos);
-	},
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
-	},
+	// Castellano
 	convertirLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()
@@ -387,8 +375,150 @@ module.exports = {
 		}
 		return resultado;
 	},
+	inicialMayuscula: (dato) => {
+		let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+		return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+	},
+	inicialEspeciales: (dato) => {
+		let formato = /^[¡¿"\d]/;
+		return !formato.test(dato);
+	},
+
+	// Varios
+	nombreAvatar: (prodOrig, prodEdic) => {
+		return prodEdic.avatar
+			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
+			: prodOrig.avatar
+			? !prodOrig.avatar.startsWith("http")
+				? "/imagenes/3-Productos/" + prodOrig.avatar
+				: prodOrig.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+	},
+	enviarMail: async (asunto, mail, comentario) => {
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport({
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true, // true for 465, false for other ports
+			auth: {
+				user: process.env.direccMail, // dirección de gmail
+				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
+			},
+		});
+		let datos = {
+			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
+			to: mail,
+			subject: asunto, // Subject line
+			text: comentario, // plain text body
+			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+		};
+		await transporter.sendMail(datos);
+		// datos.to = "diegoiribarren2015@gmail.com";
+		// await transporter.sendMail(datos);
+	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
+	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
+	},
+	eliminarRepetidos: (prods) => {
+		let IDs = [];
+		for (let i = prods.length - 1; i >= 0; i--)
+			if (!IDs.includes(prod.id)) IDs.push(prods[i].id);
+			else prods.splice(i, 1);
+		return prods;
+	},
+	usuario_Ficha: async (userID, ahora) => {
+		// Obtener los datos del usuario
+		let includes = "rol_iglesia";
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+		// Variables
+		let unAno = unDia * 365;
+		let enviar = {apodo: ["Apodo", usuario.apodo]};
+		// Edad
+		if (usuario.fecha_nacimiento) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+			enviar.edad = ["Edad", edad];
+		}
+		// Antigüedad
+		let antiguedad =
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
+				.toFixed(1)
+				.replace(".", ",") + " años";
+		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		// Fin
+		return enviar;
+	},
+	obtenerProdsDeLinks: function (links, ahora, userID) {
+		// Variables
+		let peliculas = [];
+		let colecciones = [];
+		let capitulos = [];
+		// Abrir los productos por entidad
+		links.forEach((link) => {
+			if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
+			if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
+			if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
+		});
+		// Eliminar repetidos
+		if (peliculas.length) peliculas = this.eliminarRepetidos(peliculas);
+		if (colecciones.length) colecciones = this.eliminarRepetidos(colecciones);
+		if (capitulos.length) capitulos = this.eliminarRepetidos(capitulos);
+		// Consolidar
+		let productos = [...peliculas, ...colecciones, ...capitulos];
+		// Depurar los productos que no cumplen ciertas condiciones
+		productos = limpiezaProds(productos, ahora, userID);
+		// Fin
+		return productos;
+	},
+	limpiezaProds: (productos, ahora, userID) => {
+		// Variables
+		// Declarar las variables
+		const aprobado_id = status_registro.find((n) => n.aprobado).id;
+		const haceUnaHora = nuevoHorario(-1, ahora);
+		const haceDosHoras = nuevoHorario(-2, ahora);
+		// Dejar solamente los productos aprobados
+		productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+		// Dejar solamente los productos creados hace más de una hora
+		productos = productos.filter((n) => n.creado_en < haceUnaHora);
+		// Dejar solamente los productos que no tengan problemas de captura
+		productos = productos.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturado_en ||
+				// Que esté capturado hace más de dos horas
+				n.capturado_en < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturado_por_id != userID && !n.captura_activa) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+		);
+		return productos;
+	},
+	extension: (nombre) => {
+		if (!nombre) return "";
+		let ext = path.extname(nombre);
+		if (ext) ext = ext.slice(1).toUpperCase();
+		return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+			? "Usaste un archivo con la extensión '" + ext + "'. Las extensiones válidas son JPG, JPEG y PNG"
+			: "";
 	},
 };
 

@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
@@ -23,7 +23,7 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		// Completa la info
-		let producto_id = compartidas.obtenerEntidad_id(datos.prodEntidad);
+		let producto_id = comp.obtenerEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
 		datos.prov_id = await obtenerProveedorID(datos.url);
 		// Obtiene el link
@@ -35,10 +35,10 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		let link_edicion = datos;
 		let mensaje = !link_original
-			? await compartidas.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
+			? await comp.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await compartidas.actualizar_registro("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await compartidas.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
+			? await comp.actualizar_registro("links", link_original.id, link_edicion) // Actualizar el link_original
+			: await comp.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -73,7 +73,7 @@ module.exports = {
 				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
-				await compartidas.inactivar_registro("links", link.id, userID, motivo_id);
+				await comp.inactivar_registro("links", link.id, userID, motivo_id);
 				procesos.prodCampoLG(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}

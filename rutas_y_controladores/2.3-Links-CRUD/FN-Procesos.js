@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
 	obtenerLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
-		let producto_id = compartidas.obtenerEntidad_id(entidad);
+		let producto_id = comp.obtenerEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Obtener los linksOriginales
@@ -36,7 +36,7 @@ module.exports = {
 	prodCampoLG: async (prodEntidad, prodID) => {
 		// Variables
 		let datos = {};
-		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
 		// Obtener el producto con include a links
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
 			"links_gratuitos_cargados",

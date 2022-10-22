@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
@@ -12,8 +12,8 @@ module.exports = async (req, res, next) => {
 		? "usuarios"
 		: "";
 	const entidadID = req.query.id;
-	const haceUnaHora = compartidas.nuevoHorario(-1);
-	const haceDosHoras = compartidas.nuevoHorario(-2);
+	const haceUnaHora = comp.nuevoHorario(-1);
+	const haceDosHoras = comp.nuevoHorario(-2);
 	const usuario = req.session.usuario;
 	const userID = usuario.id;
 	const tipoUsuario = req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios";
@@ -28,9 +28,9 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
-	const horarioFinalCreado = compartidas.fechaHorarioTexto(compartidas.nuevoHorario(1, creado_en));
+	const horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, creado_en));
 	const capturado_en = registro.capturado_en;
-	const horarioFinalCaptura = compartidas.fechaHorarioTexto(compartidas.nuevoHorario(1, capturado_en));
+	const horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinCaptura);
 	const vistaInactivar = variables.vistaInactivar(req);
@@ -111,7 +111,7 @@ module.exports = async (req, res, next) => {
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidadCodigo = prodCapturado.entidad;
-			const pc_entidadNombre = compartidas.obtenerEntidadNombre(pc_entidadCodigo);
+			const pc_entidadNombre = comp.obtenerEntidadNombre(pc_entidadCodigo);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
@@ -126,7 +126,7 @@ module.exports = async (req, res, next) => {
 				link: linkInactivar,
 				titulo: "Liberar automáticamente",
 			};
-			const horario = compartidas.fechaHorarioTexto(prodCapturado.capturado_en);
+			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
 				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"

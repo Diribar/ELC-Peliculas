@@ -2,7 +2,7 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -36,9 +36,9 @@ module.exports = {
 		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
+		comp.enviarMail(asunto, email, comentario).catch(console.error);
 		// Obtiene el horario de envío de mail
-		let ahora = compartidas.ahora().setSeconds(0); // Descarta los segundos en el horario
+		let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario
 		// Genera el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		// Fin

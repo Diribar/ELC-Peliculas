@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 
@@ -14,7 +14,7 @@ module.exports = {
 		const creadoAprob = req.query.aprob == "true";
 		const decision = edicAprob ? "prods_aprob" : "prods_rech";
 		const userID = req.session.usuario.id;
-		const ahora = compartidas.ahora();
+		const ahora = comp.ahora();
 		// Obtiene el nuevo status_id
 		let nuevoStatusID = creadoAprob
 			? status_registro.find((n) => n.creado_aprob).id
@@ -34,7 +34,7 @@ module.exports = {
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(prodEntidad, prodID);
 		let creador_ID = producto.creado_por_id;
-		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
+		let entidad_id = comp.obtenerEntidad_id(prodEntidad);
 		datos = {
 			[entidad_id]: prodID,
 			sugerido_por_id: creador_ID,
@@ -132,7 +132,7 @@ module.exports = {
 			status_registro_id: aprobado_id,
 		});
 		// Preparar lead_time_creacion
-		let alta_analizada_en = compartidas.ahora();
+		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
 		// Preparar la información a ingresar
 		datos = {
@@ -160,7 +160,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const st_aprobado = status_registro.find((n) => n.aprobado).id;
 		const st_inactivo = status_registro.find((n) => n.inactivo).id;
-		const ahora = compartidas.ahora();
+		const ahora = comp.ahora();
 		let datos;
 		// Averiguar si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
@@ -192,7 +192,7 @@ module.exports = {
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
-			datos.alta_analizada_en = compartidas.ahora();
+			datos.alta_analizada_en = comp.ahora();
 			datos.lead_time_creacion = 1;
 			if (!creadoAprob) {
 				datos.sugerido_por_id = userID;
@@ -268,19 +268,19 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 	// Acciones si el avatarEdic fue aprobado
 	if (edicAprob) {
 		// Mueve el 'avatar editado' a la carpeta definitiva
-		compartidas.mueveUnArchivoImagen(prodEdic.avatar, "4-ProdsRevisar", "3-Productos");
+		comp.mueveUnArchivoImagen(prodEdic.avatar, "4-ProdsRevisar", "3-Productos");
 		// Elimina el 'avatar original' (si es un archivo)
 		let avatar = prodOrig.avatar;
 		if (!avatar.startsWith("http")) {
 			let ruta = prodOrig.status_registro.creado_aprob ? "4-ProdsRevisar/" : "3-Productos/";
-			compartidas.borraUnArchivo("./publico/imagenes/" + ruta, avatar);
+			comp.borraUnArchivo("./publico/imagenes/" + ruta, avatar);
 		}
 	} else {
 		// Elimina el 'avatar editado'
-		compartidas.borraUnArchivo("./publico/imagenes/4-ProdsRevisar", prodEdic.avatar);
+		comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar", prodEdic.avatar);
 		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'creadoAprob')
 		if (prodOrig.status_registro.creado_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
-			compartidas.mueveUnArchivoImagen(prodOrig.avatar, "4-ProdsRevisar", "3-Productos");
+			comp.mueveUnArchivoImagen(prodOrig.avatar, "4-ProdsRevisar", "3-Productos");
 	}
 	return prodEdic;
 };
@@ -295,8 +295,8 @@ let obtieneCamposLinkEdic = (edicAprob, linkEdicion, campo) => {
 };
 let actualizaOriginal = async (original, edicion, datos, userID) => {
 	// Variables
-	const ahora = compartidas.ahora();
-	const entidad = compartidas.obtieneEntidadOrigDesdeEdicion(edicion);
+	const ahora = comp.ahora();
+	const entidad = comp.obtieneEntidadDesdeEdicion(edicion);
 
 	// Genera la información a actualizar
 	datos = {
@@ -305,7 +305,7 @@ let actualizaOriginal = async (original, edicion, datos, userID) => {
 		editado_en: edicion.editado_en,
 		edic_analizada_por_id: userID,
 		edic_analizada_en: ahora,
-		lead_time_edicion: compartidas.todos_obtenerLeadTime(edicion.editado_en, ahora),
+		lead_time_edicion: comp.obtenerLeadTime(edicion.editado_en, ahora),
 	};
 	// Actualiza el registro ORIGINAL ***********************************************
 	await BD_genericas.actualizarPorId(entidad, original.id, datos);

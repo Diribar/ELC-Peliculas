@@ -2,7 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 // const validar = require("./FN-Validar");
@@ -44,7 +44,7 @@ module.exports = {
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = await BD_genericas.obtenerPorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
-		let fecha_nacimiento = compartidas.fechaTexto(usuario.fecha_nacimiento);
+		let fecha_nacimiento = comp.fechaTexto(usuario.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
@@ -125,7 +125,7 @@ module.exports = {
 				}
 		} else {
 			// Elimina el archivo 'avatar'
-			compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar", usuario.docum_avatar);
+			comp.borraUnArchivo("./publico/imagenes/5-DocsRevisar", usuario.docum_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			rutinasIdentGuardar("docum_avatar", usuario, revID, motivo);
@@ -137,7 +137,7 @@ module.exports = {
 			// Actualiza el status del usuario
 			status_registro_id = st_ident_validada_ID;
 			// Mueve la imagen del documento a su carpeta definitiva
-			compartidas.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
+			comp.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
 		}
 		// Le asigna al usuario el rol que le corresponda ('Consultas' o 'permInput')
 		let rol_usuario_id =
@@ -149,7 +149,7 @@ module.exports = {
 				  roles_us.find((n) => !n.perm_inputs).id;
 
 		// Actualiza el usuario
-		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: compartidas.ahora()};
+		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: comp.ahora()};
 		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
 		if (durac_penalidad)
@@ -174,7 +174,7 @@ let validarContenidoIF = (usuario, avatar) => {
 		!usuario.status_registro.ident_a_validar ||
 		usuario.status_registro.ident_validada ||
 		!avatar ||
-		!compartidas.averiguaSiExisteUnArchivo(avatar)
+		!comp.averiguaSiExisteUnArchivo(avatar)
 	)
 		redireccionar = true;
 	// Fin
@@ -198,7 +198,7 @@ let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 		input_por_id: usuario.id,
 		input_en: usuario.fecha_revisores,
 		evaluado_por_id: revID,
-		evaluado_en: compartidas.ahora(),
+		evaluado_en: comp.ahora(),
 	};
 	BD_genericas.agregarRegistro("edics_rech", datos);
 

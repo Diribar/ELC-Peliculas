@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
@@ -15,12 +15,12 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 	const urlBase = req.baseUrl;
 	// Variables - De tiempo
-	let ahora = compartidas.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
-	const haceDosHoras = compartidas.nuevoHorario(-2, ahora);
+	let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
+	const haceDosHoras = comp.nuevoHorario(-2, ahora);
 	let capturado_en = registro.capturado_en;
 	capturado_en ? capturado_en.setSeconds(0) : (capturado_en = 0);
-	let horarioFinal = compartidas.nuevoHorario(1, capturado_en);
-	horarioFinal = compartidas.fechaHorarioTexto(horarioFinal);
+	let horarioFinal = comp.nuevoHorario(1, capturado_en);
+	horarioFinal = comp.fechaHorarioTexto(horarioFinal);
 
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
 	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)

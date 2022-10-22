@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("../2.1-Prod-RUD/FN-Validar");
 
@@ -41,7 +41,7 @@ module.exports = {
 		// Y además los productos sean aptos p/captura y en status c/creadoAprob o aprobados,
 
 		// Declarar las variables
-		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
+		const haceUnaHora = comp.nuevoHorario(-1, ahora);
 		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let gr_aprobado = [creado_aprob_id, aprobado_id];
@@ -89,9 +89,9 @@ module.exports = {
 					});
 			});
 			// Eliminar los repetidos
-			if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
-			if (colecciones.length) colecciones = eliminarRepetidos(colecciones);
-			if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
+			if (peliculas.length) peliculas = comp.eliminarRepetidos(peliculas);
+			if (colecciones.length) colecciones = comp.eliminarRepetidos(colecciones);
+			if (capitulos.length) capitulos = comp.eliminarRepetidos(capitulos);
 			// Consolidar los productos
 			productos = [...peliculas, ...colecciones, ...capitulos];
 			// Dejar solamente los productos de gr_aprobado
@@ -130,28 +130,7 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtener los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
-		// Fin
-		return productos;
-	},
-	TC_obtenerProdsSinLink: async (ahora, userID) => {
-		// Obtener todos los productos aprobados, sin ningún link
-		return [];
-		// Obtener los links 'a revisar'
-		let links = await BD_especificas.TC_obtenerLinks_y_Edics();
-		// Si no hay => salir
-		if (!links.length) return [];
-		// Obtener los links ajenos
-		let linksAjenos = links.filter(
-			(n) =>
-				(n.status_registro &&
-					((n.status_registro.creado && n.creado_por_id != userID) ||
-						((n.status_registro.inactivar || n.status_registro.recuperar) &&
-							n.sugerido_por_id != userID))) ||
-				(!n.status_registro && n.editado_por_id != userID)
-		);
-		// Obtener los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = linksAjenos.length ? comp.obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},
@@ -233,8 +212,28 @@ module.exports = {
 
 	// Productos Alta
 	prodAlta_ficha: async (prodOrig, paises) => {
+		// Funciones
+		let usuario_CalidadAltas = async (userID) => {
+			// 1. Obtener los datos del usuario
+			let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
+			// 2. Contar los casos aprobados y rechazados
+			let cantAprob = usuario.prods_aprob;
+			let cantRech = usuario.prods_rech;
+			// 3. Precisión de altas
+			let cantAltas = cantAprob + cantRech;
+			let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
+			// let diasPenalizacion = usuario.dias_penalizacion
+			// Datos a enviar
+			let enviar = {
+				calidadAltas: ["Calidad Altas", calidadInputs],
+				cantAltas: ["Cant. Prod. Agregados", cantAltas],
+				// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+			};
+			// Fin
+			return enviar;
+		};
 		// Definir el 'ahora'
-		let ahora = compartidas.ahora().getTime();
+		let ahora = comp.ahora().getTime();
 		// Bloque izquierdo
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 		// Bloque 1
@@ -257,10 +256,10 @@ module.exports = {
 		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		let fecha = compartidas.fechaTexto(prodOrig.creado_en);
+		let fecha = comp.fechaTexto(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await usuario_Ficha(prodOrig.creado_por_id, ahora);
+		let fichaDelUsuario = await comp.usuario_Ficha(prodOrig.creado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
 		let calidadAltas = await usuario_CalidadAltas(prodOrig.creado_por_id);
 		// Bloque derecho consolidado
@@ -268,12 +267,27 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// Producto Edición
+	infoProdEdicion: async (entidad, prodID, producto_id, userID) => {
+		// Generar la info del error
+		let informacion = {
+			mensajes: ["No encontramos ninguna edición ajena para revisar"],
+			iconos: [
+				{
+					nombre: "fa-spell-check ",
+					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
+					titulo: "Regresar al Tablero de Control",
+				},
+			],
+		};
+		return informacion;
+	},
 	prodEdic_feedback: async (prodOrig, prodEdic, campo) => {
 		// 1. Actualiza el registro de edición
 		// 2. Averigua si quedan campos por procesar
 		// 3. Elimina el registro de edición si ya no tiene más datos
 		// 4. Actualiza el status del registro original, si corresponde
 
+		// Variables
 		let datos = {[campo]: null};
 		if (campo == "avatar") datos.avatar_archivo = null;
 		if (campo) await BD_genericas.actualizarPorId("prods_edicion", prodEdic.id, datos);
@@ -285,10 +299,10 @@ module.exports = {
 			editado_en: prodEdic.editado_en,
 		};
 		// Pule la información a tener en cuenta
-		let [edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic);
 		// Acciones si no quedan campos
 		let statusAprob = prodOrig.status_registro.aprobado;
-		if (!quedanCampos) statusAprob = accionesSiNoQuedanCampos(prodOrig, prodEdic);
+		if (!quedanCampos) statusAprob = comp.accionesSiNoQuedanCampos(prodOrig, prodEdic);
 		else edicion = {...edicion, ...datosEdicion, [campo]: null};
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
@@ -321,8 +335,29 @@ module.exports = {
 		return [ingresos, reemplazos];
 	},
 	prodEdic_ficha: async (prodOrig, prodEdic) => {
+		// Funciones
+		let usuario_CalidadEdic = async (userID) => {
+			// 1. Obtener los datos del usuario
+			let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
+			// 2. Contar los casos aprobados y rechazados
+			let cantAprob = usuario.edics_aprob;
+			let cantRech = usuario.edics_rech;
+			// 3. Precisión de ediciones
+			let cantEdics = cantAprob + cantRech;
+			let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
+			// let diasPenalizacion = usuario.dias_penalizacion
+			// Datos a enviar
+			let enviar = {
+				calidadEdiciones: ["Calidad Edición", calidadInputs],
+				cantEdiciones: ["Cant. Campos Proces.", cantEdics],
+				// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+			};
+			// Fin
+			return enviar;
+		};
+
 		// Definir el 'ahora'
-		let ahora = compartidas.ahora().getTime();
+		let ahora = comp.ahora().getTime();
 		// Bloque derecho
 		let bloque1 = [];
 		let fecha;
@@ -331,13 +366,13 @@ module.exports = {
 		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		fecha = compartidas.fechaTexto(prodOrig.creado_en);
+		fecha = comp.fechaTexto(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// Obtener la fecha de edicion
-		fecha = compartidas.fechaTexto(prodEdic.editado_en);
+		fecha = comp.fechaTexto(prodEdic.editado_en);
 		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await usuario_Ficha(prodEdic.editado_por_id, ahora);
+		let fichaDelUsuario = await comp.usuario_Ficha(prodEdic.editado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
 		let calidadEdic = await usuario_CalidadEdic(prodEdic.editado_por_id);
 		// Bloque derecho consolidado
@@ -345,6 +380,30 @@ module.exports = {
 		return derecha;
 	},
 	prodEdic_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
+		let valorDelCampo = (producto, campo) => {
+			// Variables
+			let camposConVinculo = [
+				{campo: "en_castellano_id", vinculo: "en_castellano"},
+				{campo: "en_color_id", vinculo: "en_color"},
+				{campo: "idioma_original_id", vinculo: "idioma_original"},
+				{campo: "categoria_id", vinculo: "categoria"},
+				{campo: "subcategoria_id", vinculo: "subcategoria"},
+				{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
+				{campo: "personaje_id", vinculo: "personaje"},
+				{campo: "hecho_id", vinculo: "hecho"},
+				{campo: "valor_id", vinculo: "valor"},
+			];
+			let campos = camposConVinculo.map((n) => n.campo);
+			let indice = campos.indexOf(campo);
+			// Resultado
+			return indice < 0
+				? producto[campo]
+				: producto[camposConVinculo.vinculo]
+				? camposConVinculo.campo == "en_castellano_id" || camposConVinculo.campo == "en_color_id"
+					? producto[camposConVinculo.vinculo].productos
+					: producto[camposConVinculo.vinculo].nombre
+				: null;
+		};
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
@@ -355,11 +414,39 @@ module.exports = {
 		// Fin
 		return {valor_aprob, valor_rech};
 	},
+	cartelNoQuedanCampos: () => {
+		return {
+			mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
+			iconos: [
+				{
+					nombre: "fa-spell-check",
+					link: "/revision/tablero-de-control",
+					titulo: "Ir al 'Tablero de Control' de Revisiones",
+				},
+			],
+		};
+	},
 
 	// RCLV Alta
 	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
+		// Funcion
+		let RCLV_valorVinculo = (RCLV, campo) => {
+			return campo == "dia_del_ano_id"
+				? RCLV.dia_del_ano
+					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
+					: ""
+				: campo == "proceso_id"
+				? RCLV.proc_canoniz
+					? RCLV.proc_canoniz.nombre
+					: ""
+				: campo == "rol_iglesia_id"
+				? RCLV.rol_iglesia
+					? RCLV.rol_iglesia.nombre
+					: ""
+				: RCLV[campo];
+		};
 		// Variables
-		let ahora = compartidas.ahora();
+		let ahora = comp.ahora();
 		// Campos a comparar
 		let camposComparar = [
 			{campo: "nombre", titulo: "Nombre"},
@@ -409,7 +496,7 @@ module.exports = {
 		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
 		for (let entidad of RCLV_entidades) {
-			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let campo = comp.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let RCLV_id = producto[campo]; // Obtener el RCLV_id
 			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
 			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prods_aprob: true});
@@ -431,7 +518,31 @@ module.exports = {
 		return;
 	},
 
-	// Links Edicion
+	// Links
+	problemasLinks: (producto, urlAnterior) => {
+		// Variables
+		let informacion;
+		const vistaAnterior = variables.vistaAnterior(urlAnterior);
+		const vistaTablero = variables.vistaTablero();
+
+		// El producto no está en status 'aprobado'
+		if (!informacion && !producto.status_registro.aprobado)
+			informacion = {
+				mensajes: [
+					"El producto no está en status 'Aprobado'",
+					"Su status es " + producto.status_registro.nombre,
+				],
+			};
+
+		// El producto no posee links
+		if (!informacion && !producto.links.length)
+			informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
+		// Agregar los íconos
+		if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
+
+		// Fin
+		return informacion;
+	},
 	linksEdic_LimpiarEdiciones: async (linkOrig) => {
 		// Limpia las ediciones
 		// 1. Obtiene el link con sus ediciones
@@ -443,7 +554,7 @@ module.exports = {
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
-			[quedanCampos, linkEdic] = await compartidas.pulirEdicion(linkOrig, linkEdic);
+			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizarPorId("links_edicion", edicID, {
@@ -468,122 +579,19 @@ module.exports = {
 		}
 	},
 
-	// Prod. Alta/Edición, Links Alta/Edición
-	usuario_Penalizar: async (userID, motivo) => {
+	// API: Prod. Alta/Edición, Links Alta/Edición
+	usuario_Penalizar: (userID, motivo) => {
 		// Variables
-		let datos = {};
-		// Averiguar si el motivo amerita bloquear
-		if (motivo.bloqueo_perm_inputs) {
-			// Obtener el rol de 'Consultas', sin permiso para Inputs
-			let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
-			datos.rol_usuario_id = rol_usuario_id;
-		}
-		// Obtiene los datos del usuario
-		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-		// Averigua la nueva penalización acumulada y la duración
-		datos.penalizac_acum = Number(usuario.penalizac_acum) + Number(motivo.duracion);
-		// Actualizar el registro
-		await BD_genericas.actualizarPorId("usuarios", userID, datos);
+		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		// Se le baja el rol a 'Consultas', si el motivo lo amerita
+		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizarPorId("usuarios", userID, {rol_usuario_id});
+
+		// Aumenta la penalización acumulada si corresponde
+		let aumentarPenalizac = Number(motivo.duracion);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, aumentarPenalizac);
 		// Fin
 		return;
 	},
-};
-
-// Funciones ----------------------------
-let valorDelCampo = (producto, campo) => {
-	// Variables
-	let camposConVinculo = [
-		{campo: "en_castellano_id", vinculo: "en_castellano"},
-		{campo: "en_color_id", vinculo: "en_color"},
-		{campo: "idioma_original_id", vinculo: "idioma_original"},
-		{campo: "categoria_id", vinculo: "categoria"},
-		{campo: "subcategoria_id", vinculo: "subcategoria"},
-		{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
-		{campo: "personaje_id", vinculo: "personaje"},
-		{campo: "hecho_id", vinculo: "hecho"},
-		{campo: "valor_id", vinculo: "valor"},
-	];
-	let campos = camposConVinculo.map((n) => n.campo);
-	let indice = campos.indexOf(campo);
-	// Resultado
-	return indice < 0
-		? producto[campo]
-		: producto[camposConVinculo.vinculo]
-		? camposConVinculo.campo == "en_castellano_id" || camposConVinculo.campo == "en_color_id"
-			? producto[camposConVinculo.vinculo].productos
-			: producto[camposConVinculo.vinculo].nombre
-		: null;
-};
-let RCLV_valorVinculo = (RCLV, campo) => {
-	return campo == "dia_del_ano_id"
-		? RCLV.dia_del_ano
-			? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
-			: RCLV.dia_del_ano
-		: campo == "proceso_id"
-		? RCLV.proc_canoniz
-			? RCLV.proc_canoniz.nombre
-			: ""
-		: campo == "rol_iglesia_id"
-		? RCLV.rol_iglesia
-			? RCLV.rol_iglesia.nombre
-			: ""
-		: RCLV[campo];
-};
-let obtenerProdsDeLinks = (links, ahora, userID) => {
-	// Variables
-	let peliculas = [];
-	let colecciones = [];
-	let capitulos = [];
-	// Abrir los productos por entidad
-	links.forEach((link) => {
-		if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
-		if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
-		if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
-	});
-	// Eliminar repetidos
-	if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
-	if (colecciones.length) colecciones = eliminarRepetidos(colecciones);
-	if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
-	// Consolidar
-	let productos = [...peliculas, ...colecciones, ...capitulos];
-	// Depurar los productos que no cumplen ciertas condiciones
-	productos = limpieza(productos, ahora, userID);
-	// Fin
-	return productos;
-};
-let eliminarRepetidos = (productos) => {
-	let aux = [];
-	for (let i = productos.length - 1; i >= 0; i--) {
-		if (aux.includes(productos[i].id)) productos.splice(i, 1);
-		else aux.push(productos[i].id);
-	}
-	return productos;
-};
-let limpieza = (productos, ahora, userID) => {
-	// Variables
-	// Declarar las variables
-	const aprobado_id = status_registro.find((n) => n.aprobado).id;
-	const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
-	const haceDosHoras = compartidas.nuevoHorario(-2, ahora);
-	// Dejar solamente los productos aprobados
-	productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-	// Dejar solamente los productos creados hace más de una hora
-	productos = productos.filter((n) => n.creado_en < haceUnaHora);
-	// Dejar solamente los productos que no tengan problemas de captura
-	productos = productos.filter(
-		(n) =>
-			// Que no esté capturado
-			!n.capturado_en ||
-			// Que esté capturado hace más de dos horas
-			n.capturado_en < haceDosHoras ||
-			// Que la captura haya sido por otro usuario y hace más de una hora
-			(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
-			// Que la captura haya sido por otro usuario y esté inactiva
-			(n.capturado_por_id != userID && !n.captura_activa) ||
-			// Que esté capturado por este usuario hace menos de una hora
-			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
-	);
-	return productos;
 };
 let TC_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
 	// Variables
@@ -595,7 +603,7 @@ let TC_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id
 	// Consolidar los resultados
 	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
 	// Eliminar los propuestos por el Revisor
-	const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
+	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
 			if (resultados[i][fechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
@@ -604,93 +612,4 @@ let TC_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id
 	if (resultados.length) resultados.sort((a, b) => new Date(a[fechaRef]) - new Date(b[fechaRef]));
 	// Fin
 	return resultados;
-};
-let usuario_Ficha = async (userID, ahora) => {
-	// Obtener los datos del usuario
-	let includes = "rol_iglesia";
-	let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
-	// Variables
-	let unAno = unDia * 365;
-	let enviar = {apodo: ["Apodo", usuario.apodo]};
-	// Edad
-	if (usuario.fecha_nacimiento) {
-		let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
-		enviar.edad = ["Edad", edad];
-	}
-	// Antigüedad
-	let antiguedad =
-		(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
-			.toFixed(1)
-			.replace(".", ",") + " años";
-	enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-	// Rol en la iglesia
-	if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-	// Fin
-	return enviar;
-};
-let usuario_CalidadAltas = async (userID) => {
-	// 1. Obtener los datos del usuario
-	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.prods_aprob;
-	let cantRech = usuario.prods_rech;
-	// 3. Precisión de altas
-	let cantAltas = cantAprob + cantRech;
-	let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-	// let diasPenalizacion = usuario.dias_penalizacion
-	// Datos a enviar
-	let enviar = {
-		calidadAltas: ["Calidad Altas", calidadInputs],
-		cantAltas: ["Cant. Prod. Agregados", cantAltas],
-		// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-	};
-	// Fin
-	return enviar;
-};
-let usuario_CalidadEdic = async (userID) => {
-	// 1. Obtener los datos del usuario
-	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.edics_aprob;
-	let cantRech = usuario.edics_rech;
-	// 3. Precisión de ediciones
-	let cantEdics = cantAprob + cantRech;
-	let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-	// let diasPenalizacion = usuario.dias_penalizacion
-	// Datos a enviar
-	let enviar = {
-		calidadEdiciones: ["Calidad Edición", calidadInputs],
-		cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-		// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-	};
-	// Fin
-	return enviar;
-};
-let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
-	// Variables
-	let statusAprob = false;
-	// 1. Elimina el registro de la edición
-	await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
-	// 2. Averigua si tiene errores
-	let entidadOrig = compartidas.obtieneEntidadOrigDesdeEdicion(prodEdic);
-	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-	// 2. Acciones si el original no tiene errores y está en status 'creado_aprob'
-	if (!errores.hay && prodOrig.status_registro.creado_aprob) {
-		// Genera la información a actualizar en el registro original
-		let datos = {
-			alta_terminada_en: compartidas.ahora(),
-			lead_time_creacion: compartidas.todos_obtenerLeadTime(prodOrig.creado_en, ahora),
-			status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
-		};
-		// Cambia el status del producto e inactiva la captura
-		await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
-		// Si es una colección, le cambia el status también a los capítulos
-		if (entidadOrig == "colecciones") {
-			datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora}; // Amplía los datos
-			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos); // Actualiza el status de los capitulos
-		}
-		// Cambia el valor de la variable que se informará
-		statusAprob = true;
-	}
-	return statusAprob;
 };

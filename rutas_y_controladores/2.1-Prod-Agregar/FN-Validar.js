@@ -2,7 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
 
 module.exports = {
@@ -99,16 +99,18 @@ module.exports = {
 		for (let campo of camposPosibles) {
 			let nombre = campo.nombre;
 			let idioma = campo.idioma;
-			if (campos.includes(nombre))
+			if (campos.includes(nombre)) {
+				let inicialMayuscula = datos[nombre] ? comp.inicialMayuscula(datos[nombre]) : "";
 				errores[nombre] = !datos[nombre]
 					? campo.cartel
 					: longitud(datos[nombre], campo.corto, campo.largo)
 					? longitud(datos[nombre], campo.corto, campo.largo)
 					: castellano[idioma](datos[nombre])
 					? cartelCastellano
-					: inicialMayuscula(datos[nombre])
-					? cartelMayuscula
+					: inicialMayuscula && comp.inicialEspeciales(datos[nombre])
+					? inicialMayuscula
 					: "";
+			}
 		}
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("ano_estreno"))
@@ -148,12 +150,14 @@ module.exports = {
 		if (campos.includes("idioma_original_id"))
 			errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "";
 		// Personas
-		if (campos.includes("avatar"))
+		if (campos.includes("avatar")) {
+			let extension = datos.avatar ? comp.extension(datos.avatar) : "";
 			errores.avatar = !datos.avatar
 				? "Necesitamos que agregues una imagen"
-				: extensiones(datos.avatar)
-				? "Las extensiones de archivo válidas son jpg y png"
+				: extension
+				? extension
 				: "";
+		}
 		// ***** CAMPOS COMBINADOS *******
 		// Nombre Original y Año de Estreno
 		if (
@@ -235,8 +239,6 @@ module.exports = {
 // Variables **************************
 let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
-let cartelMayuscula = "La primera letra debe ser en mayúscula";
-
 let cartelSelectVacio = "Necesitamos que elijas una opción";
 
 let longitud = (dato, corto, largo) => {
@@ -258,13 +260,8 @@ let formatoNumero = (dato, minimo) => {
 		? "Debe ser un número mayor a " + minimo
 		: "";
 };
-let extensiones = (nombre) => {
-	if (!nombre) return false;
-	let ext = nombre.slice(nombre.length - 4);
-	return ![".jpg", ".png"].includes(ext);
-};
 let cartelRepetido = (datos) => {
-	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
+	let prodNombre = comp.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este/a " +
 		"<a href='/producto/detalle/?entidad=" +
@@ -291,8 +288,4 @@ let castellano = {
 		let formato = /^[a-záéíóúüñ ,.']+$/i;
 		return !formato.test(dato);
 	},
-};
-let inicialMayuscula = (dato) => {
-	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d]/;
-	return !formato.test(dato);
 };
