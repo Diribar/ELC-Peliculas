@@ -38,7 +38,7 @@ router.get("/producto/recuperar");
 // RCLV
 router.get("/rclv/alta", ...todos, vistaAltaRCLV.altaEdicForm);
 // Links
-router.get("/links", ...todos, vista.links);
+router.get("/links", ...todos, vista.linksForm);
 
 // Exportarlo **********************************************
 module.exports = router;

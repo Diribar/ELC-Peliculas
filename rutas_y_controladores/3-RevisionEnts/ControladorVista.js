@@ -206,7 +206,7 @@ module.exports = {
 		});
 	},
 	// Links
-	links: async (req, res) => {
+	linksForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "links";
