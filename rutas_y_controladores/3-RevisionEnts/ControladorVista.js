@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
+const procesos = require("./Procesos");
 
 module.exports = {
 	// Uso general
@@ -37,7 +37,7 @@ module.exports = {
 		});
 	},
 	// Productos
-	prod_Alta: async (req, res) => {
+	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
@@ -82,7 +82,7 @@ module.exports = {
 			cartel: true,
 		});
 	},
-	prod_Edicion: async (req, res) => {
+	prodEdicForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "producto/edicion";

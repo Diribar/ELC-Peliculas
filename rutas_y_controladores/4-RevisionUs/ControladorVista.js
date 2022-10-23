@@ -4,7 +4,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
+const procesos = require("./Procesos");
 // const validar = require("./FN-Validar");
 
 module.exports = {
