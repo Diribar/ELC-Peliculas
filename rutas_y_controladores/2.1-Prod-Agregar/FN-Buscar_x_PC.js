@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../1-APIs_TMDB/1-Search");
-const detailsTMDB = require("../1-APIs_TMDB/2-Details");
-const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
-const comp = require("./Compartidas");
+const searchTMDB = require("../../funciones/1-APIs_TMDB/1-Search");
+const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)

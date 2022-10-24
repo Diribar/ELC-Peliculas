@@ -1,7 +1,6 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const buscar_x_PC = require("../../funciones/3-Procesos/Buscar_x_PC");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
@@ -78,40 +77,6 @@ module.exports = {
 		// Fin
 		prodsYaEnBD = [...colecciones, ...noColecciones];
 		return prodsYaEnBD;
-	},
-	prodsNuevos: async (RCLV) => {
-		// Obtiene los Productos Nuevos
-		let prodsNuevos = await buscar_x_PC
-			.search(RCLV.nombre, false)
-			.then((n) => n.resultados)
-			.then((n) => n.filter((m) => !m.YaEnBD));
-		// Si el RCLV tiene apodo...
-		if (RCLV.apodo && RCLV.apodo != RCLV.nombre) {
-			// Buscar también por apodo
-			prodsNuevos.push(
-				...(await buscar_x_PC
-					.search(RCLV.apodo, false)
-					.then((n) => n.resultados)
-					.then((n) => n.filter((m) => !m.YaEnBD)))
-			);
-			// Eliminar duplicados
-			let aux = [];
-			prodsNuevos.forEach((prod) => {
-				if (aux.findIndex((n) => n.entidad == prod.entidad && n.TMDB_id == prod.TMDB_id) == -1)
-					aux.push(prod);
-			});
-			prodsNuevos = aux;
-		}
-		// Ordenar por año (decreciente)
-		prodsNuevos.sort((a, b) =>
-			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
-		);
-		// Separa entre colecciones y resto
-		let colecciones = prodsNuevos.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsNuevos.filter((n) => n.entidad != "colecciones");
-		// Fin
-		prodsNuevos = [...colecciones, ...noColecciones];
-		return prodsNuevos;
 	},
 	procCanoniz: async (RCLV) => {
 		// Variables
