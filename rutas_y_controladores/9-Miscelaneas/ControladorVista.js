@@ -4,13 +4,12 @@
 module.exports = {
 	// Vistas de vistas - Institucional
 	home: (req, res) => {
-		const tema = "miscelaneas";
+		const tema = "institucional";
 		const codigo = "inicio";
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Inicio",
-			avatar: "/imagenes/8-Inicio/Inicio.jpg",
 		});
 	},
 	quienesSomos: (req, res) => {
