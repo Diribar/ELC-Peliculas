@@ -211,7 +211,7 @@ module.exports = {
 				: "palabras-clave";
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		// 5. Obtiene los errores
-		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
+		let camposDD_errores = camposDD.map((n) => n.nombre);
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await validar.datosDuros(camposDD_errores, datosDuros);
@@ -253,7 +253,7 @@ module.exports = {
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 3. Averiguar si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
-		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
+		let camposDD_errores = camposDD.map((n) => n.nombre);
 		let avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validar.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
@@ -357,7 +357,7 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 5. Averiguar si hay errores de validación
-		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombreDelCampo));
+		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombre));
 		let errores = await validar.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("/producto/agregar/datos-personalizados");

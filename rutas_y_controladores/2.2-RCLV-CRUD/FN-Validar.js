@@ -171,7 +171,7 @@ let nombreExpress = (datos, campo) => {
 let nombreCompleto = async function (datos, campo) {
 	let respuesta;
 	if (!datos[campo]) respuesta = comp.inputVacio;
-	if (!respuesta) respuesta = comp.longitud(datos.campo, 4, 30);
+	if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
 	if (!respuesta) {
 		let id = await BD_especificas.validarRepetidos([campo], datos);
 		if (id) respuesta = comp.cartelRepetido({...datos, id});

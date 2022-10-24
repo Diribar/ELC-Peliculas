@@ -1,17 +1,17 @@
-<% let campo = camposDP.find(n => n.nombreDelCampo == nombreDelCampo) %>
+<% let campo = camposDP.find(n => n.nombre == nombreDelCampo) %>
 <section class="label-input">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
-			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
+		<select name="<%= nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
+			<option value="" class="ocultar" <% if (!producto[nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
-					<% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>
-					<% if (campo.nombreDelCampo == "subcategoria_id") { %>class="<%= (valor.cfc ? "CFC" : "") + " " + (valor.vpc ? "VPC" : "") %>"<% } %>
-					<% if (entidad != "colecciones" && (campo.nombreDelCampo == "en_castellano_id" || campo.nombreDelCampo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
+					<% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>
+					<% if (nombreDelCampo == "subcategoria_id") { %>class="<%= (valor.cfc ? "CFC" : "") + " " + (valor.vpc ? "VPC" : "") %>"<% } %>
+					<% if (entidad != "colecciones" && (nombreDelCampo == "en_castellano_id" || nombreDelCampo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
 				>
-					<%= valor[nombre] %>
+					<%= valor[campoDato] %>
 				</option>
 			<% } %>
 		</select>

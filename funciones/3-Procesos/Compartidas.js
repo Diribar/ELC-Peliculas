@@ -39,13 +39,13 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	pulirEdicion: function (original, edicion) {
+	pulirEdicion: function (original, edicion, familia) {
 		// Funciones
-		let quitarLosCamposQueNoSeComparan = (edicion, ent) => {
+		let quitarLosCamposQueNoSeComparan = (edicion, familia) => {
 			// Obtiene los campos a comparar
 			let campos = [];
-			variables["camposRevisar" + ent]().forEach((campo) => {
-				campos.push(campo.nombreDelCampo);
+			variables.camposRevisar[familia].forEach((campo) => {
+				campos.push(campo.nombre);
 				if (campo.relac_include) campos.push(campo.relac_include);
 			});
 
@@ -73,7 +73,7 @@ module.exports = {
 		};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
-		edicion = quitarLosCamposQueNoSeComparan(edicion, "Prod");
+		edicion = quitarLosCamposQueNoSeComparan(edicion, familia);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
 		// Fin

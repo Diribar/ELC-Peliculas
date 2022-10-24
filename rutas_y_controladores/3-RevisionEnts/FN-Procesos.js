@@ -299,7 +299,7 @@ module.exports = {
 			editado_en: prodEdic.editado_en,
 		};
 		// Pule la información a tener en cuenta
-		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic, "productos");
 		// Acciones si no quedan campos
 		let statusAprob = prodOrig.status_registro.aprobado;
 		if (!quedanCampos) statusAprob = comp.accionesSiNoQuedanCampos(prodOrig, prodEdic);
@@ -310,7 +310,7 @@ module.exports = {
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
 		let campos = variables.camposRevisarProd;
 		for (let i = campos.length - 1; i >= 0; i--) {
-			let campoNombre = campos[i].nombreDelCampo;
+			let campoNombre = campos[i].nombre;
 			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
 			if (!Object.keys(prodEdic).includes(campoNombre)) campos.splice(i, 1);
 			else {
@@ -549,12 +549,12 @@ module.exports = {
 		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]);
 		// Genera un objeto con valores null
 		let camposVacios = {};
-		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
+		variables.camposRevisarLinks.forEach((campo) => (camposVacios[campo.nombre] = null));
 		// Purga cada edición
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
-			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic);
+			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic, "links");
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizarPorId("links_edicion", edicID, {

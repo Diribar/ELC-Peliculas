@@ -249,7 +249,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
-		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombreDelCampo);
+		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {

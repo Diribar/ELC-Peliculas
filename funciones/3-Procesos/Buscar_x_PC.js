@@ -98,14 +98,8 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 				desempate3 = m.release_date;
 			} else return;
 		// Definir el título sin "distractores", para encontrar duplicados
-		let desempate1 = compartidas
-			.convertirLetrasAlIngles(nombre_original)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
-		let desempate2 = compartidas
-			.convertirLetrasAlIngles(nombre_castellano)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
+		let desempate1 = comp.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		let desempate2 = comp.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			prodNombre,
