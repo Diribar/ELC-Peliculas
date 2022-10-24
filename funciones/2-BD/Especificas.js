@@ -176,15 +176,15 @@ module.exports = {
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;
 	},
-	// Revisar - producto/edicion
-	obtenerEdicionAjena: async (entidad, producto_id, prodID, userID) => {
+	// Revisar - producto/edicion y rclv/edicion
+	obtenerEdicionAjena: async (entidad, entidad_id, entID, userID) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
 			.findOne({
 				where: {
 					// Que pertenezca al producto que nos interesa
-					[producto_id]: prodID,
+					[entidad_id]: entID,
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 				},
