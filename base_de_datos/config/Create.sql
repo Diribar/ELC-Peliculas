@@ -226,6 +226,7 @@ CREATE TABLE aux_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
 	gr_creado BOOLEAN DEFAULT 0,
+	gr_aprobado BOOLEAN DEFAULT 0,
 	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_pasivos BOOLEAN DEFAULT 0,
@@ -239,8 +240,8 @@ CREATE TABLE aux_status_registro (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_creado) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_creado) VALUES (2, 2, 'Alta-aprobada',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_creado, gr_aprobado) VALUES (2, 2, 'Alta-aprobada',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
@@ -617,8 +618,8 @@ VALUES
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
+(16, 1, 1,  42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 134, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
@@ -709,7 +710,7 @@ CREATE TABLE rclv_4edicion (
 	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true/false */
 
 	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
+	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
