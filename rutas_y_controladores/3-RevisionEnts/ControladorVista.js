@@ -16,15 +16,15 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
-		let productos;
-		productos = await procesos.TC_obtenerProds(ahora, userID);
+		let productos = await procesos.TC_obtenerProds(ahora, userID);
 		productos.ED = await procesos.TC_obtenerProdsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtenerProdsConLink(ahora, userID);
-		productos.SL = await procesos.TC_obtenerProdsSinLink(ahora, userID);
-		productos = procesos.TC_prod_ProcesarCampos(productos);
 		// RCLV
 		let RCLVs = await procesos.TC_obtenerRCLVs(ahora, userID);
+		RCLVs.ED = await procesos.TC_obtenerRCLVsConEdicAjena(ahora, userID);
+		// Procesar los campos
+		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
 		// return res.send([productos,RCLVs]);

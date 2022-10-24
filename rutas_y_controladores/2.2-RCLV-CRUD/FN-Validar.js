@@ -127,10 +127,6 @@ module.exports = {
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if (!datos.exclusivo)
-			respuesta = "Necesitamos saber si ocurrió solamente durante la vida de los Apóstoles";
 		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
@@ -162,7 +158,7 @@ let nombreExpress = (datos, campo) => {
 	let respuesta=""
 	// Validaciones
 	if (dato) {
-		if (!respuesta) respuesta = comp.castellano.basico(dato);
+		if (!respuesta) respuesta = comp.castellano.completo(dato);
 		if (!respuesta) respuesta = comp.inicial.basico(dato);
 		if (!respuesta && campo == "nombre") respuesta = prefijo(dato, campo);
 	}
