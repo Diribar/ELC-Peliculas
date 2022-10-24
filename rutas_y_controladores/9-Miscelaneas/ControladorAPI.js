@@ -34,7 +34,6 @@ module.exports = {
 		// Enviar la info al FE
 		return res.json(resultados);
 	},
-
 	horarioInicial: async (req, res) => {
 		// Variables
 		let {entidad, id} = req.query;
