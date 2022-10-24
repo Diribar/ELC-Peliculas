@@ -179,7 +179,7 @@ module.exports = {
 			if (datos.solo_cfc == "1") {
 				DE.jss = datos.ano > 33 || datos.hasta < 0 ? 0 : 1;
 				DE.cnt = datos.ano > 100 || datos.hasta < 0 ? 0 : 1;
-				DE.exclusivo = datos.ano >= 0 || datos.hasta <= 100 ? 1 : 0;
+				DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0;
 				DE.ap_mar = datos.ap_mar;
 			}
 		}
