@@ -81,7 +81,7 @@ module.exports = {
 		return registros;
 	},
 
-	// AgregarProductos - ControladorAPI
+	// CRUD
 	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
@@ -154,8 +154,8 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	TC_obtenerEdicsAjenasDeProds: (userID, includes) => {
-		return db.prods_edicion
+	TC_obtenerEdicsAjenas: (entidad, userID, includes) => {
+		return db[entidad]
 			.findAll({
 				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creada por otro usuario
 				include: includes,
