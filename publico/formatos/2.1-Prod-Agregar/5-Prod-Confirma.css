@@ -16,4 +16,4 @@
 
 #dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row; }
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
-#dataEntry #flechas #running {height: 40px; margin: 0;}
+#dataEntry #flechas #llegada {height: 40px; margin: 0;}
