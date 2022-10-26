@@ -362,6 +362,26 @@ module.exports = {
 				input: true,
 			},
 		],
+		RCLVs:[
+			// Personajes
+			{nombre: "nombre"},
+			{nombre: "apodo"},
+			{nombre: "sexo_id"},
+			{nombre: "dia_del_ano_id"},
+			{nombre: "ano"},
+			{nombre: "hasta"},
+			{nombre: "categoria_id"},
+			{nombre: "subcategoria_id"},
+			{nombre: "ap_mar_id"},
+			{nombre: "proceso_id"},
+			{nombre: "rol_iglesia_id"},
+			// Hechos
+			{nombre: "solo_cfc"},
+			{nombre: "jss"},
+			{nombre: "cnt"},
+			{nombre: "exclusivo"},
+			{nombre: "ap_mar"},
+		],
 		links: [
 			{nombre: "calidad"},
 			{nombre: "castellano"},

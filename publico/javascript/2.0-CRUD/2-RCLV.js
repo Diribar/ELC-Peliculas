@@ -81,16 +81,11 @@ window.addEventListener("load", async () => {
 	if (v.hechos) {
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.hasta = document.querySelector("#dataEntry input[name='hasta']");
-		v.campos = ["solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"];
+		v.campos = ["solo_cfc", "ap_mar"];
 		// Inputs
 		v.solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
-		v.jss = document.querySelectorAll("input[name='jss']");
-		v.cnt = document.querySelectorAll("input[name='cnt']");
-		v.exclusivo = document.querySelectorAll("input[name='exclusivo']");
 		v.ap_mar = document.querySelectorAll("input[name='ap_mar']");
 		// Para ocultar
-		v.sector_jss = document.querySelector("#preguntas #sector_jss");
-		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sectorApMar = document.querySelector("#preguntas #sectorApMar");
 	}
 

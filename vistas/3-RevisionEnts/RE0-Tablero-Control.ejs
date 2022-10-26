@@ -54,8 +54,7 @@
 				</div>
 			</div>
 			<% let rr = "revision/rclv/" %>
-			<!-- Ediciones Pend. Aprobar -->
-			<!-- Aprobar el Alta -->
+			<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: RCLVs.ED, url: rr + "edicion"}) %>
 			<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: rr + "alta"}) %>
 		</div>
 		<!-- Links -->

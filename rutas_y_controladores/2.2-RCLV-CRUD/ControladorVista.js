@@ -54,8 +54,6 @@ module.exports = {
 		}
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
-		//console.log(rutaSalir);
-		//console.log(dataEntry);
 		// 5. Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,

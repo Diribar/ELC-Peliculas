@@ -31,14 +31,14 @@ router.get("/api/link-eliminar", ...algunos, API.linkAlta);
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...algunos, vista.tableroControl);
 // Producto
-router.get("/producto/alta", ...todos, vista.prod_Alta);
-router.get("/producto/edicion", ...todos, vista.prod_Edicion);
+router.get("/producto/alta", ...todos, vista.prodAltaForm);
+router.get("/producto/edicion", ...todos, vista.prodEdicForm);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
 // RCLV
 router.get("/rclv/alta", ...todos, vistaAltaRCLV.altaEdicForm);
 // Links
-router.get("/links", ...todos, vista.links);
+router.get("/links", ...todos, vista.linksForm);
 
 // Exportarlo **********************************************
 module.exports = router;

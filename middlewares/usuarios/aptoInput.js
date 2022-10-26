@@ -114,6 +114,66 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 	let compararRegistrosConNivelDeConfianza = async () => {
+		// Funciones
+		let contar_registros = async (usuario, producto, rclv, links, edicion) => {
+			// Contar registros
+			let contarRegistros = 0;
+			// Contar registros con status 'a revisar'
+			let entidades;
+			if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
+			else if (rclv) entidades = ["personajes", "hechos", "valores"];
+			else if (links) entidades = ["links"];
+			if (entidades) contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
+			// Contar registros de edición
+			else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
+			// Fin
+			return contarRegistros;
+		};
+		let mensajes = (edicion) => {
+			return edicion
+				? [
+						"Gracias por los ediciones sugeridas anteriormente.",
+						"Queremos analizarlas, antes de que sigas editando otros registros.",
+						"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
+						"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+				  ]
+				: [
+						"Gracias por los registros agregados anteriormente.",
+						"Queremos analizarlos, antes de que sigas agregando otros.",
+						"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
+						"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+				  ];
+		};
+		let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
+			// Obtiene la cantidad de aprobaciones
+			const aprob = producto
+				? usuario.prods_aprob
+				: rclv
+				? usuario.rclvs_aprob
+				: links
+				? usuario.links_aprob
+				: edicion
+				? usuario.edics_aprob
+				: 0;
+			// Obtiene la cantidad de rechazos
+			const rech = producto
+				? usuario.prods_rech
+				: rclv
+				? usuario.rclvs_rech
+				: links
+				? usuario.links_rech
+				: edicion
+				? usuario.edics_rech
+				: 0;
+			// Preparar los parámetros
+			const cantMinima = parseInt(process.env.cantMinima);
+			const acelerador = parseInt(process.env.acelerador);
+			const cantDesempeno = aprob - rech + acelerador;
+			// Obtiene el nivel de confianza
+			const nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
+			// Fin
+			return nivelDeConfianza;
+		};				
 		// Variables
 		let informacion;
 		// Obtiene datos del url
@@ -153,64 +213,4 @@ module.exports = async (req, res, next) => {
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else next();
-};
-
-let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
-	// Obtiene la cantidad de aprobaciones
-	const aprob = producto
-		? usuario.prods_aprob
-		: rclv
-		? usuario.rclvs_aprob
-		: links
-		? usuario.links_aprob
-		: edicion
-		? usuario.edics_aprob
-		: 0;
-	// Obtiene la cantidad de rechazos
-	const rech = producto
-		? usuario.prods_rech
-		: rclv
-		? usuario.rclvs_rech
-		: links
-		? usuario.links_rech
-		: edicion
-		? usuario.edics_rech
-		: 0;
-	// Preparar los parámetros
-	const cantMinima = parseInt(process.env.cantMinima);
-	const acelerador = parseInt(process.env.acelerador);
-	const cantDesempeno = aprob - rech + acelerador;
-	// Obtiene el nivel de confianza
-	const nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
-	// Fin
-	return nivelDeConfianza;
-};
-let contar_registros = async (usuario, producto, rclv, links, edicion) => {
-	// Contar registros
-	let contarRegistros = 0;
-	// Contar registros con status 'a revisar'
-	let entidades;
-	if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
-	else if (rclv) entidades = ["personajes", "hechos", "valores"];
-	else if (links) entidades = ["links"];
-	if (entidades) contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
-	// Contar registros de edición
-	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
-	// Fin
-	return contarRegistros;
-};
-let mensajes = (edicion) => {
-	return edicion
-		? [
-				"Gracias por los ediciones sugeridas anteriormente.",
-				"Queremos analizarlas, antes de que sigas editando otros registros.",
-				"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
-				"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-		  ]
-		: [
-				"Gracias por los registros agregados anteriormente.",
-				"Queremos analizarlos, antes de que sigas agregando otros.",
-				"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
-				"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-		  ];
 };

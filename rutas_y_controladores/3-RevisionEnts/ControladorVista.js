@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
+const procesos = require("./Procesos");
 
 module.exports = {
 	// Uso general
@@ -16,15 +16,15 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
-		let productos;
-		productos = await procesos.TC_obtenerProds(ahora, userID);
+		let productos = await procesos.TC_obtenerProds(ahora, userID);
 		productos.ED = await procesos.TC_obtenerProdsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtenerProdsConLink(ahora, userID);
-		productos.SL = await procesos.TC_obtenerProdsSinLink(ahora, userID);
-		productos = procesos.TC_prod_ProcesarCampos(productos);
 		// RCLV
 		let RCLVs = await procesos.TC_obtenerRCLVs(ahora, userID);
+		RCLVs.ED = await procesos.TC_obtenerRCLVsConEdicAjena(ahora, userID);
+		// Procesar los campos
+		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
 		// return res.send([productos,RCLVs]);
@@ -37,7 +37,7 @@ module.exports = {
 		});
 	},
 	// Productos
-	prod_Alta: async (req, res) => {
+	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
@@ -82,7 +82,7 @@ module.exports = {
 			cartel: true,
 		});
 	},
-	prod_Edicion: async (req, res) => {
+	prodEdicForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "producto/edicion";
@@ -206,7 +206,7 @@ module.exports = {
 		});
 	},
 	// Links
-	links: async (req, res) => {
+	linksForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "links";

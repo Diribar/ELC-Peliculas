@@ -67,17 +67,15 @@ module.exports = {
 					delete edicion[campo];
 			return edicion;
 		};
-		let quedanCampos = (datos) => {
-			// Averiguar si queda algún campo
-			return !!Object.keys(datos).length;
-		};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
 		edicion = quitarLosCamposQueNoSeComparan(edicion, familia);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
+		// Averigua si queda algún campo
+		let quedanCampos = !!Object.keys(edicion).length;
 		// Fin
-		return [edicion, quedanCampos(edicion)];
+		return [edicion, quedanCampos];
 	},
 	accionesSiNoQuedanCampos: async function (prodOrig, prodEdic) {
 		// Variables
@@ -139,8 +137,16 @@ module.exports = {
 	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Variables
 		let quedanCampos;
+		let familia =
+			entidadEdic == "prods_edicion"
+				? "productos"
+				: entidadEdic == "rclvs_edicion"
+				? "RCLVs"
+				: entidadEdic == "links_edicion"
+				? "links"
+				: "";
 		// Quitar los coincidencias con el original
-		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
+		[edicion, quedanCampos] = this.pulirEdicion(original, edicion, familia);
 		// Averiguar si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtiene el campo 'entidad_id'
@@ -506,7 +512,7 @@ module.exports = {
 	eliminarRepetidos: (prods) => {
 		let IDs = [];
 		for (let i = prods.length - 1; i >= 0; i--)
-			if (!IDs.includes(prod.id)) IDs.push(prods[i].id);
+			if (!IDs.includes(prods[i].id)) IDs.push(prods[i].id);
 			else prods.splice(i, 1);
 		return prods;
 	},
@@ -551,34 +557,34 @@ module.exports = {
 		// Consolidar
 		let productos = [...peliculas, ...colecciones, ...capitulos];
 		// Depurar los productos que no cumplen ciertas condiciones
+		let limpiezaProds= (productos, ahora, userID) => {
+			// Variables
+			// Declarar las variables
+			const aprobado_id = status_registro.find((n) => n.aprobado).id;
+			const haceUnaHora = nuevoHorario(-1, ahora);
+			const haceDosHoras = nuevoHorario(-2, ahora);
+			// Dejar solamente los productos aprobados
+			productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+			// Dejar solamente los productos creados hace más de una hora
+			productos = productos.filter((n) => n.creado_en < haceUnaHora);
+			// Dejar solamente los productos que no tengan problemas de captura
+			productos = productos.filter(
+				(n) =>
+					// Que no esté capturado
+					!n.capturado_en ||
+					// Que esté capturado hace más de dos horas
+					n.capturado_en < haceDosHoras ||
+					// Que la captura haya sido por otro usuario y hace más de una hora
+					(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+					// Que la captura haya sido por otro usuario y esté inactiva
+					(n.capturado_por_id != userID && !n.captura_activa) ||
+					// Que esté capturado por este usuario hace menos de una hora
+					(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+			);
+			return productos;
+		}
 		productos = limpiezaProds(productos, ahora, userID);
 		// Fin
-		return productos;
-	},
-	limpiezaProds: (productos, ahora, userID) => {
-		// Variables
-		// Declarar las variables
-		const aprobado_id = status_registro.find((n) => n.aprobado).id;
-		const haceUnaHora = nuevoHorario(-1, ahora);
-		const haceDosHoras = nuevoHorario(-2, ahora);
-		// Dejar solamente los productos aprobados
-		productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-		// Dejar solamente los productos creados hace más de una hora
-		productos = productos.filter((n) => n.creado_en < haceUnaHora);
-		// Dejar solamente los productos que no tengan problemas de captura
-		productos = productos.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturado_en ||
-				// Que esté capturado hace más de dos horas
-				n.capturado_en < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturado_por_id != userID && !n.captura_activa) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
-		);
 		return productos;
 	},
 };
