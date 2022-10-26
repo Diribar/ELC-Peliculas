@@ -182,8 +182,8 @@ module.exports = {
 				nombre: "categoria_id",
 				valores: userID ? await BD_genericas.obtenerTodos("categorias", "orden") : [],
 				mensajes: [
-					"CENTRADAS EN LA FE CATÓLICA - significa que el rol de la Fe Católica es protagónico.",
-					"VALORES PRESENTES EN LA CULTURA - los buenos valores deben ser evidentes.",
+					"Centradas en la Fe Católica: significa que el rol de la Fe Católica es protagónico.",
+					"Valores Presentes en la Cultura: los buenos valores deben ser evidentes.",
 					"Si la fe es cristiana pero no católica, se pone como Valores Presentes en la Cultura.",
 				],
 			},

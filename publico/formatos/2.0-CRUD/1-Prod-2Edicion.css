@@ -7,22 +7,22 @@ main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
 /* Imagen - Íconos */
-form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
-form #imagen .ayuda,
-form #imagen .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
-form #imagen .errores {z-index: 4;}
+form #imagenDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
+form #imagenDerecha .ayuda,
+form #imagenDerecha .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
+form #imagenDerecha .errores {z-index: 4;}
 
 /* Imagen - AyudaMostrar */
-form #imagen.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
-form #imagen.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
-form #imagen.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
-form #imagen.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 
 /* Imagen - MensajeError */
-form #imagen.inputError .errores .mensajeError {right: auto; top: auto;}
-form #imagen.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
-form #imagen.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
-form #imagen.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
+form #imagenDerecha.inputError .errores .mensajeError {right: auto; top: auto;}
+form #imagenDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
+form #imagenDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
+form #imagenDerecha.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
 
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
@@ -74,7 +74,7 @@ form #imagen.inputError .errores .mensajeError::before {border-color: var(--colo
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); top: 50%;}
 .inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
-form #imagen.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
+form #imagenDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos .pack i.fa-slash {transform: rotate(85deg); cursor: default; padding: 5px 0px; border: none;}
