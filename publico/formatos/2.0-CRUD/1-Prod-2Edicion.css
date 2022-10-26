@@ -80,4 +80,4 @@ form #imagenDerecha.inputError .fa-arrow-right-long {left: 5px; transform: trans
 #cuerpo #comandos .pack i.fa-slash {transform: rotate(85deg); cursor: default; padding: 5px 0px; border: none;}
 #cuerpo #comandos .pack i {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
 #cuerpo #comandos .pack i.activar.activo {border-color: var(--amarillo-oscuro);}
-#cuerpo #comandos .pack i, #cuerpo #flechas i {font-size: 1rem;}
+#cuerpo #comandos {padding: 0;}
