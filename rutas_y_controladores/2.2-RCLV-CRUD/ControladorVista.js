@@ -41,9 +41,14 @@ module.exports = {
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
 			let id = req.query.id;
-			let includes = entidad == "personajes" ? "rol_iglesia" : "";
+			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
+			includes.push("status_registro");
 			// Pisa el data entry de session
 			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+			// 3. Revisar error de revisión
+			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
+				res.redirect("/revision/tablero-de-control");
+			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
@@ -128,7 +133,7 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
-			Entidad: comp.obtenerEntidadNombre(entidad)
+			Entidad: comp.obtenerEntidadNombre(entidad),
 		});
 	},
 };
