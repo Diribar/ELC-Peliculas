@@ -164,14 +164,14 @@ module.exports = {
 	},
 	TC_obtenerLinks_y_Edics: async () => {
 		// Variables
-		let gr_estables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
-		let includes = ["pelicula", "coleccion", "capitulo"];
+		let gr_inestables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
+		let include = ["pelicula", "coleccion", "capitulo"];
 		// Obtiene los links en status 'a revisar'
 		let originales = db.links
-			.findAll({where: {status_registro_id: gr_estables}, include: [...includes, "status_registro"]})
+			.findAll({where: {status_registro_id: gr_inestables}, include})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtiene todas las ediciones
-		let ediciones = db.links_edicion.findAll({include: includes}).then((n) => n.map((m) => m.toJSON()));
+		let ediciones = db.links_edicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
 		// Consolidarlos
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;

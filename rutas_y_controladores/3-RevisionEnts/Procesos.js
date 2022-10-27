@@ -4,32 +4,31 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero
 	TC_obtenerProds: async (ahora, userID) => {
-		// Obtiene productos en status no estables
-		// Declarar las variables
+		// Obtiene productos en situaciones particulares
+		// Variables
 		let entidades = ["peliculas", "colecciones"];
-		let campos;
-		// - Obtiene los resultados de status creado_id
 		let creado_id = status_registro.find((n) => n.creado).id;
-		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
-		let PA = await TC_obtenerRegs(...campos); // PA: Pendientes de aprobar (en status gr_creado)
-		// - Obtiene los resultados de status creado_aprob sin edición
 		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
+		let inactivar_id = status_registro.find((n) => n.inactivar).id;
+		let recuperar_id = status_registro.find((n) => n.recuperar).id;
+		let campos;
+		// PA: Pendientes de Aprobar (en status creado)
+		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
+		let PA = await TC_obtenerRegs(...campos);
+		// SE: Sin Edición (en status creado_aprob)
 		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 		let SE = await TC_obtenerRegs(...campos);
-		SE = SE.filter((n) => !n.ediciones.length); // SE: Sin edición (en status gr_creado)
-		// - Obtiene los resultados de status inactivar_id
-		let inactivar_id = status_registro.find((n) => n.inactivar).id;
+		SE = SE.filter((n) => !n.ediciones.length);
+		// IN: En staus 'inactivar'
 		campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let IN = await TC_obtenerRegs(...campos); // IN: En staus 'inactivar'
-		// - Obtiene los resultados de status recuperar_id
-		let recuperar_id = status_registro.find((n) => n.recuperar).id;
+		let IN = await TC_obtenerRegs(...campos);
+		// RC: En status 'recuperar'
 		campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let RC = await TC_obtenerRegs(...campos); // RC: En status 'recuperar'
+		let RC = await TC_obtenerRegs(...campos);
 
 		// Fin
 		return {PA, IN, RC, SE};
@@ -40,7 +39,7 @@ module.exports = {
 		// - Sin RCLV no aprobados
 		// Y además los productos sean aptos p/captura y en status c/creadoAprob o aprobados,
 
-		// Declarar las variables
+		// Variables
 		const haceUnaHora = comp.nuevoHorario(-1, ahora);
 		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
@@ -48,7 +47,7 @@ module.exports = {
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtiene todas las ediciones ajenas
-		let ediciones = await BD_especificas.TC_obtenerEdicsAjenasDeProds(userID, includes);
+		let ediciones = await BD_especificas.TC_obtenerEdicsAjenas("prods_edicion", userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -105,11 +104,8 @@ module.exports = {
 						!n.captura_activa ||
 						n.capturado_por_id == userID
 				);
-			// Ordenar por fecha de edición, y luego por status_registro
-			if (productos.length) {
-				productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
-				productos.sort((a, b) => new Date(a.status_registro_id) - new Date(b.status_registro_id));
-			}
+			// Ordenar por fecha de edición
+			if (productos.length) productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
 		}
 		// Fin
 		return productos;
@@ -135,27 +131,82 @@ module.exports = {
 		return productos;
 	},
 	TC_obtenerRCLVs: async (ahora, userID) => {
-		// Obtiene los siguients RCLVs:
-		// creado y ajeno,
-		// Declarar las variables
+		// Obtiene RCLVs en situaciones particulares
+		// Variables
 		let entidades = ["personajes", "hechos", "valores"];
-		let includes = ["peliculas", "colecciones", "capitulos", "prods_edic"];
-		let campos, regs;
-		let PA = []; //	Pendientes de Aprobar (c/producto o c/edicProd)
-		// - Obtiene los resultados de status creado_id
 		let creado_id = status_registro.find((n) => n.creado).id;
+		let campos, regs, includes;
+		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
+		includes = ["peliculas", "colecciones", "capitulos", "prods_edic"];
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
-		regs = await TC_obtenerRegs(...campos);
-		// Separar entre c/prod y s/prod
-		regs.forEach((n) => {
-			if (n.peliculas || n.colecciones || n.capitulos || n.prods_edic) PA.push(n);
-		});
+		let PA = await TC_obtenerRegs(...campos);
+		PA = PA.filter((n) => n.peliculas || n.colecciones || n.capitulos || n.prods_edic);
 
 		// Fin
 		return {PA};
 	},
 	TC_obtenerRCLVsConEdicAjena: async (ahora, userID) => {
-		// - edicRCLV ajena, pend. aprobar
+		// Obtiene los RCLVs que tengan alguna edición ajena
+
+		// Variables
+		const haceUnaHora = comp.nuevoHorario(-1, ahora);
+		let aprobado_id = status_registro.find((n) => n.aprobado).id;
+		let includes = ["personaje", "hecho", "valor"];
+		let RCLVs = [];
+		// Obtiene todas las ediciones ajenas
+		let ediciones = await BD_especificas.TC_obtenerEdicsAjenas("rclvs_edicion", userID, includes);
+		// Obtiene los RCLVs
+		if (ediciones.length) {
+			// Variables
+			let personajes = [];
+			let hechos = [];
+			let valores = [];
+			// Obtiene los RCLVs originales
+			ediciones.map((n) => {
+				if (n.personaje_id)
+					personajes.push({
+						...n.personaje,
+						entidad: "personajes",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.hecho_id)
+					hechos.push({
+						...n.hecho,
+						entidad: "hechos",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.valor_id)
+					valores.push({
+						...n.valor,
+						entidad: "valores",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+			});
+			// Elimina los RCLVs repetidos
+			if (personajes.length) personajes = comp.eliminarRepetidos(personajes);
+			if (hechos.length) hechos = comp.eliminarRepetidos(hechos);
+			if (valores.length) valores = comp.eliminarRepetidos(valores);
+			// Consolida los RCLVs
+			RCLVs = [...personajes, ...hechos, ...valores];
+			// Deja solamente los RCLVs aprobados
+			RCLVs = RCLVs.filter((n) => n.status_registro_id == aprobado_id);
+			// Deja solamente los RCLVs que no tengan problemas de captura
+			if (RCLVs.length)
+				RCLVs = RCLVs.filter(
+					(n) =>
+						!n.capturado_en ||
+						n.capturado_en < haceUnaHora ||
+						!n.captura_activa ||
+						n.capturado_por_id == userID
+				);
+			// Ordena por fecha de edición
+			if (RCLVs.length) RCLVs.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+		}
+		// Fin
+		return RCLVs;
 	},
 	TC_prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
@@ -596,13 +647,11 @@ module.exports = {
 let TC_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
 	// Variables
 	let campos = [ahora, status, userID, includes, fechaRef, autor_id];
-	let resultadosPorEntidad = [];
+	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let i = 0; i < entidades.length; i++)
-		resultadosPorEntidad.push(BD_especificas.TC_obtenerRegs(entidades[i], ...campos));
-	// Consolidar los resultados
-	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
-	// Eliminar los propuestos por el Revisor
+	for (let entidad of entidades)
+		resultados.push(...(await BD_especificas.TC_obtenerRegs(entidad, ...campos)));
+	// Eliminar los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)

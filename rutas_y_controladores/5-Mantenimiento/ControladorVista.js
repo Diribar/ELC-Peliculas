@@ -24,7 +24,7 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtiene los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = linksAjenos.length ? comp.obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},

@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../1-APIs_TMDB/1-Search");
-const detailsTMDB = require("../1-APIs_TMDB/2-Details");
-const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
-const comp = require("./Compartidas");
+const searchTMDB = require("../../funciones/1-APIs_TMDB/1-Search");
+const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
@@ -200,8 +200,8 @@ let averiguarSiYaEnBD = async (datos) => {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
 			YaEnBD = await BD_especificas.obtenerELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
 			if (YaEnBD) {
-				capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
-				coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
+				let capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
+				let coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
 				datos.resultados[i].prodNombre =
 					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';

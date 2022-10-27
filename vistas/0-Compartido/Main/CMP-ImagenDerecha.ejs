@@ -1,3 +1,11 @@
 <% if (mostrar) { %>
-	<section id="imagenDerecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
+	<% let rutaImagen, tituloImagen %>
+	<!-- Imagen Institucional -->
+	<% if (tema == "institucional") {rutaImagen = '/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
+	<!-- Imagen Personalizada -->
+	<% if (!rutaImagen && locals.avatar) {rutaImagen = avatar; tituloImagen=locals.tituloAvatar} %>
+	<!-- Imagen Diaria -->
+	<% if (!rutaImagen) {rutaImagen = '/imagenes/0-Base/ImagenDiaria.jpg'; tituloImagen=locals.tituloImagenDer} %>
+	<!-- Mostrar la Imagen -->
+	<section id="imagenDerecha"><img src="<%= rutaImagen %>" title="<%= tituloImagen %>"></section>
 <% } %>

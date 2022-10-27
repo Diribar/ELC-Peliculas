@@ -205,6 +205,7 @@ module.exports = {
 			cartel: true,
 		});
 	},
+	// RCLVsForm lo toma del CRUD
 	// Links
 	linksForm: async (req, res) => {
 		// 1. Tema y Código
