@@ -5,6 +5,8 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./Procesos");
+const procesosCRUD = require("../2.2-RCLV-CRUD/FN-Procesos");
+const validarCRUD = require("../2.2-RCLV-CRUD/FN-Validar");
 
 module.exports = {
 	// Uso general
@@ -145,7 +147,7 @@ module.exports = {
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
 		let quedanCampos;
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) return res.render("CMP-0Estructura", procesos.cartelNoQuedanCampos());
+		if (!quedanCampos) return res.render("CMP-0Estructura", procesos.cartelNoQuedanCampos);
 
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
@@ -206,34 +208,44 @@ module.exports = {
 		});
 	},
 	// RCLVs
-	altaGuardar: async (req, res) => {
+	rclvAltaGuardar: async (req, res) => {
 		// 1. Variables
 		const {entidad, id} = req.query;
 		let datos = {...req.body, ...req.query};
+		let userID = req.session.usuario.id;
+		let creado_id = status_registro.find((n) => n.creado).id;
+		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		// 2. Averigua si hay errores de validación y toma acciones
-		let errores = await validar.consolidado(datos);
+		let errores = await validarCRUD.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
-		// Obtiene las diferencias con el original
-		let revision = await comp.procesarRCLV(datos);
-		let original = await BD_genericas.obtenerPorId(entidad, id);
-		revision = await comp.pulirEdicion(original, revision, "RCLVs");
-		// Consecuencias de las diferencias
-
+		// PROBLEMA: El registro no está en status creado
+		let includes = [];
+		if (entidad != "valores") includes.push("dia_del_ano");
+		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
+		let original = await BD_genericas.obtenerPorIdConInclude(entidad, id,includes);
+		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
+		// Procesa el data-entry
+		let dataEntry = await comp.procesarRCLV(datos);
 		// Genera la información para guardar
-		let DE = await comp.procesarRCLV({...original, ...revision});
-		DE = {
-			...DE,
-			statusAprobado: status_registro.find((n) => n.aprobado).id,
+		let alta_analizada_en = comp.ahora();
+		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
+		dataEntry = {
+			...dataEntry,
 			alta_analizada_por_id: userID,
-			alta_analizada_en: ahora,
-			captura_activa: 0,
+			alta_analizada_en,
+			lead_time_creacion,
+			captura_activa: false,
+			status_registro_id: aprobado_id,
 		};
-		// Guarda los cambios del RCLV
-		await procesos.guardarCambios(req, res, DE);
+		// return res.send(dataEntry);
+		// Guarda los cambios
+		await procesosCRUD.guardarCambios(req, res, dataEntry);
+		// Consecuencias de las diferencias
+		procesos.RCLV_BD_AprobRech(entidad, original, userID);
 		// 9. Redirecciona a la siguiente instancia
 		return res.redirect("/revision/tablero-de-control");
 	},

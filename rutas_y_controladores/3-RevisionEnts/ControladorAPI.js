@@ -98,60 +98,6 @@ module.exports = {
 		return res.json([quedanCampos, statusAprob]);
 	},
 
-	// RCLV
-	// Aprobar el alta
-	RCLV_Alta: async (req, res) => {
-		// Variables
-		let datos = req.query;
-		let asociaciones = ["peliculas", "colecciones", "capitulos"];
-		// Campos en el Include
-		let includes = ["dia_del_ano"];
-		if (datos.entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
-		// Obtiene el RCLV_original
-		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(datos.entidad, datos.id, [
-			...asociaciones,
-			...includes,
-		]);
-		// Obtiene los status
-		let creado_id = status_registro.find((n) => n.creado).id;
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
-		// PROBLEMA 1: Registro no encontrado
-		if (!RCLV_original) return res.json("Registro no encontrado");
-		// PROBLEMA 2: El registro no está en status creado
-		if (RCLV_original.status_registro_id != creado_id)
-			return res.json("El registro no está en status creado");
-		// Preparar el campo 'dia_del_ano_id'
-		if (datos.desconocida == "false" && datos.mes_id && datos.dia) {
-			let objeto = {mes_id: datos.mes_id, dia: datos.dia};
-			let dia_del_ano = await BD_genericas.obtenerPorCampos("dias_del_ano", objeto);
-			datos.dia_del_ano_id = dia_del_ano.id;
-		} else if (datos.desconocida) datos.dia_del_ano_id = null;
-		// Obtiene el campo 'prods_aprob'
-		let prods_aprob = await procesos.RCLV_averiguarSiTieneProdAprob({
-			...RCLV_original,
-			status_registro_id: aprobado_id,
-		});
-		// Preparar lead_time_creacion
-		let alta_analizada_en = comp.ahora();
-		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
-		// Preparar la información a ingresar
-		datos = {
-			...datos,
-			prods_aprob,
-			alta_analizada_por_id: req.session.usuario.id,
-			alta_analizada_en,
-			lead_time_creacion,
-			status_registro_id: aprobado_id,
-		};
-		// Actualizar la versión original
-		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
-		// Actualizar la info de aprobados/rechazados
-		procesos.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
-
-		// Fin
-		return res.json("Resultado exitoso");
-	},
-
 	// Links
 	linkAlta: async (req, res) => {
 		// Variables

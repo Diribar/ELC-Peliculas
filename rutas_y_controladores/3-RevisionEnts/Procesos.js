@@ -465,27 +465,26 @@ module.exports = {
 		// Fin
 		return {valor_aprob, valor_rech};
 	},
-	cartelNoQuedanCampos: () => {
-		return {
-			mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
-			iconos: [
-				{
-					nombre: "fa-spell-check",
-					link: "/revision/tablero-de-control",
-					titulo: "Ir al 'Tablero de Control' de Revisiones",
-				},
-			],
-		};
+	cartelNoQuedanCampos: {
+		mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
+		iconos: [
+			{
+				nombre: "fa-spell-check",
+				link: "/revision/tablero-de-control",
+				titulo: "Ir al 'Tablero de Control' de Revisiones",
+			},
+		],
 	},
 
 	// RCLV Alta
-	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
+	RCLV_BD_AprobRech: async (entidad, original, userID) => {
+		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
 			return campo == "dia_del_ano_id"
 				? RCLV.dia_del_ano
 					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
-					: ""
+					: "Sin fecha conocida"
 				: campo == "proceso_id"
 				? RCLV.proc_canoniz
 					? RCLV.proc_canoniz.nombre
@@ -498,48 +497,52 @@ module.exports = {
 		};
 		// Variables
 		let ahora = comp.ahora();
-		// Campos a comparar
-		let camposComparar = [
-			{campo: "nombre", titulo: "Nombre"},
-			{campo: "dia_del_ano_id", titulo: "Día del año"},
-		];
-		if (entidad != "valores") camposComparar.push({campo: "ano", titulo: "Año de referencia"});
-		if (entidad == "personajes")
-			camposComparar.push(
-				{campo: "proceso_id", titulo: "Proceso de Canonización"},
-				{campo: "rol_iglesia_id", titulo: "Rol en la Iglesia"}
-			);
-		// Obtiene RCLV actual
-		let RCLV_actual = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_original.id, includes);
-		// Obtiene el motivo genérico
-		let motivoGenericoID = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1}).then(
-			(n) => n.id
+		let camposComparar = variables.camposRevisar.RCLVs.filter((n) => !!n.titulo).filter(
+			(n) => n[entidad]
 		);
+		// Obtiene RCLV actual
+		let includes = [];
+		if (entidad != "valores") includes.push("dia_del_ano");
+		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
+		let RCLV_actual = await BD_genericas.obtenerPorIdConInclude(entidad, original.id, includes);
+		// Obtiene los motivos posibles
+		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech");
+		let motivoGenerico = motivos.find((n) => n.generico);
+		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
 		// Rutina para comparar los campos
 		for (let campoComparar of camposComparar) {
+			// Valor aprobado
+			let valor_aprob = RCLV_valorVinculo(RCLV_actual, campoComparar.nombre);
+			let valor_rech = RCLV_valorVinculo(original, campoComparar.nombre);
+			if (!valor_aprob && !valor_rech) continue;
 			// Generar la información
 			let datos = {
 				entidad,
-				entidad_id: RCLV_original.id,
-				campo: campoComparar.campo,
+				entidad_id: original.id,
+				campo: campoComparar.nombre,
 				titulo: campoComparar.titulo,
-				valor_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
-				input_por_id: RCLV_original.creado_por_id,
-				input_en: RCLV_original.creado_en,
+				valor_aprob,
+				input_por_id: original.creado_por_id,
+				input_en: original.creado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
 			};
-			if (RCLV_original[campoComparar.campo] != RCLV_actual[campoComparar.campo]) {
-				datos.valor_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
-				datos.motivo_id = motivoGenericoID;
-			}
-			// Guardar los registros
-			let entidad =
-				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
-					? "edics_aprob"
-					: "edics_rech";
-			await BD_genericas.agregarRegistro(entidad, datos);
+			// Obtiene la entidad
+			let entidadAprobRech;
+			if (original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]) {
+				entidadAprobRech = "edics_rech";
+				datos.valor_rech = valor_rech;
+				motivo =
+					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo"
+						? motivoGenerico
+						: motivoInfoErronea;
+				datos.motivo_id = motivo.id;
+				datos.duracion = motivo.duracion;
+			} else entidadAprobRech = "edics_aprob";
+			// Guarda los registros
+			await BD_genericas.agregarRegistro(entidadAprobRech, datos);
 		}
+		// Fin
 		return;
 	},
 	RCLVs_ActualizarProdAprobOK: async (producto) => {
