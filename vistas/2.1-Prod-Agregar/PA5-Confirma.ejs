@@ -19,7 +19,6 @@
 				</i>
 			</div>
 		</div>
-		<img id="running" src="/imagenes/8-Agregar/Confirma.svg" alt="Confirma">
 		<ul id="datos">
 			<li class="texto">Estamos listos para agregar el producto a nuestra Base de Datos</li>
 			<div id="liConAyuda" class="inputError">
@@ -38,18 +37,17 @@
 			</div>
 		</ul>
 		<div id="datosProd">
-			<img id="afiche" src="<%= dataEntry.mostrarAvatar %>" alt="afiche">
-			<div id="referenciasProd">
-				<p><%= dataEntry.prodNombre %>: <strong><%= dataEntry.nombre_castellano %></strong></p>
-				<p>Año de estreno: <strong><%= dataEntry.ano_estreno %></strong></p>
-				<p>Dirección: <strong><%= direccion %></strong></p>
-				<p>Actuación: <%= actuacion %></p>
-			</div>
+			<p><%= dataEntry.prodNombre %>: <strong><%= dataEntry.nombre_castellano %></strong></p>
+			<p>Año de estreno: <strong><%= dataEntry.ano_estreno %></strong></p>
+			<p>Dirección: <strong><%= direccion %></strong></p>
+			<p>Actuación: <%= actuacion %></p>
 		</div>
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
 		<a href="/producto/agregar/datos-personalizados" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
-		<button type="submit" autofocus title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
-	</section>	
+		<button type="submit" autofocus title="Avanzar">
+			<img id="llegada" src="/imagenes/8-Agregar/Llegada.jpg" alt="Confirma">
+		</button>
+	</section>
 </form>

@@ -390,6 +390,21 @@ module.exports = {
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
+			let paisNombreToId = async (pais_nombre) => {
+				// Función para convertir 'string de nombre' en  'string de ID'
+				let resultado = [];
+				if (pais_nombre.length) {
+					let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+					pais_nombreArray = pais_nombre.split(", ");
+					// Convertir 'array de nombres' en 'string de ID"
+					for (let pais_nombre of pais_nombreArray) {
+						let aux = BD_paises.find((n) => n.nombre == pais_nombre);
+						aux ? resultado.push(aux.id) : "";
+					}
+				}
+				resultado = resultado.length ? resultado.join(" ") : "";
+				return resultado;
+			};			
 			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
@@ -459,7 +474,6 @@ module.exports = {
 		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
-
 	// ConfirmarGuardar
 	guardar_cal_registros: (confirma, registro) => {
 		let producto_id = comp.obtieneEntidad_id(confirma.entidad);
@@ -553,19 +567,4 @@ let funcionCast = (dato) => {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
 	return actuacion;
-};
-let paisNombreToId = async (pais_nombre) => {
-	// Función para convertir 'string de nombre' en  'string de ID'
-	let resultado = [];
-	if (pais_nombre.length) {
-		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		pais_nombreArray = pais_nombre.split(", ");
-		// Convertir 'array de nombres' en 'string de ID"
-		for (let pais_nombre of pais_nombreArray) {
-			let aux = BD_paises.find((n) => n.nombre == pais_nombre);
-			aux ? resultado.push(aux.id) : "";
-		}
-	}
-	resultado = resultado.length ? resultado.join(" ") : "";
-	return resultado;
 };

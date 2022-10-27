@@ -340,6 +340,8 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
+			avatar: datosPers.mostrarAvatar,
+			tituloAvatar: datosPers.nombre_castellano,
 		});
 	},
 	datosPersGuardar: async (req, res) => {
@@ -395,6 +397,8 @@ module.exports = {
 			dataEntry: confirma,
 			direccion,
 			actuacion,
+			avatar: confirma.mostrarAvatar,
+			tituloAvatar: confirma.nombre_castellano,
 		});
 	},
 	confirmaGuardar: async (req, res) => {
@@ -484,7 +488,7 @@ module.exports = {
 		let indice = parseInt(Math.random() * muchasGracias.length);
 		if (indice == muchasGracias.length) indice--;
 		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
-		// 4. Render del formulario
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -495,6 +499,8 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
+			avatar: comp.nombreAvatar(registroProd, {}),
+			tituloAvatar: registroProd.nombre_castellano,
 		});
 	},
 	responsabilidad: (req, res) => {

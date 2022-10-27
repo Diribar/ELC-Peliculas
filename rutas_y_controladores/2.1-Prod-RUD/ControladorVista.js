@@ -50,10 +50,7 @@ module.exports = {
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicion};
 			// Variables de 'Edición'
-			let camposDD = variables
-				.camposDD
-				.filter((n) => n[entidad])
-				.filter((n) => !n.omitirRutinaVista);
+			let camposDD = variables.camposDD.filter((n) => n[entidad]).filter((n) => !n.omitirRutinaVista);
 			camposDD1 = camposDD.filter((n) => n.antesDePais);
 			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombre != "produccion");
 			camposDD3 = camposDD.filter((n) => n.nombre == "produccion");
@@ -134,7 +131,7 @@ module.exports = {
 			prodID,
 			producto: prodComb,
 			avatar,
-			title: prodComb.nombre_castellano,
+			tituloAvatar: prodComb.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
 			camposDD1,
