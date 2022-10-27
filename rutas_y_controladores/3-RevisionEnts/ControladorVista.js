@@ -205,7 +205,38 @@ module.exports = {
 			cartel: true,
 		});
 	},
-	// RCLVsForm lo toma del CRUD
+	// RCLVs
+	altaGuardar: async (req, res) => {
+		// 1. Variables
+		const {entidad, id} = req.query;
+		let datos = {...req.body, ...req.query};
+		// 2. Averigua si hay errores de validación y toma acciones
+		let errores = await validar.consolidado(datos);
+		if (errores.hay) {
+			req.session[entidad] = datos;
+			res.cookie(entidad, datos, {maxAge: unDia});
+			return res.redirect(req.originalUrl);
+		}
+		// Obtiene las diferencias con el original
+		let revision = await comp.procesarRCLV(datos);
+		let original = await BD_genericas.obtenerPorId(entidad, id);
+		revision = await comp.pulirEdicion(original, revision, "RCLVs");
+		// Consecuencias de las diferencias
+
+		// Genera la información para guardar
+		let DE = await comp.procesarRCLV({...original, ...revision});
+		DE = {
+			...DE,
+			statusAprobado: status_registro.find((n) => n.aprobado).id,
+			alta_analizada_por_id: userID,
+			alta_analizada_en: ahora,
+			captura_activa: 0,
+		};
+		// Guarda los cambios del RCLV
+		await procesos.guardarCambios(req, res, DE);
+		// 9. Redirecciona a la siguiente instancia
+		return res.redirect("/revision/tablero-de-control");
+	},
 	// Links
 	linksForm: async (req, res) => {
 		// 1. Tema y Código

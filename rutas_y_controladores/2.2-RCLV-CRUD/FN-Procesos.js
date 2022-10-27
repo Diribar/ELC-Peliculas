@@ -103,61 +103,14 @@ module.exports = {
 		// Fin
 		return procCanoniz;
 	},
-	DE: async (datos) => {
-		// Variables
-		let DE = {};
-		// Estandarizar los campos como 'null'
-		variables.camposRCLV[datos.entidad].forEach((campo) => {
-			DE[campo] = null;
-		});
-		// Nombre
-		DE.nombre = datos.nombre;
-		// Día del año
-		if (!datos.desconocida)
-			DE.dia_del_ano_id = await BD_genericas.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
-				.then((n) => n.id);
-		// Año
-		if (datos.entidad != "valores") DE.ano = datos.ano;
-		// Datos para personajes
-		if (datos.entidad == "personajes") {
-			// Datos sencillos
-			DE.apodo = datos.apodo;
-			DE.sexo_id = datos.sexo_id;
-			DE.categoria_id = datos.categoria_id;
-			if (datos.categoria_id == "CFC") {
-				// subcategoria_id
-				let santo_beato =
-					datos.enProcCan == "1" &&
-					(datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT"));
-				DE.subcategoria_id =
-					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : "HIG";
-				// Otros
-				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
-				if (datos.ap_mar == "1") DE.ap_mar_id = datos.ap_mar_id;
-				DE.rol_iglesia_id = datos.rol_iglesia_id;
-			}
-		}
-		if (datos.entidad == "hechos") {
-			DE.hasta = datos.hasta;
-			DE.solo_cfc = datos.solo_cfc;
-			if (datos.solo_cfc == "1") {
-				DE.jss = datos.ano > 33 || datos.hasta < 0 ? 0 : 1;
-				DE.cnt = datos.ano > 100 || datos.hasta < 0 ? 0 : 1;
-				DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0;
-				DE.ap_mar = datos.ap_mar;
-			}
-		}
-		return DE;
-	},
 	guardarCambios: async (req, res, DE) => {
 		// Variables
 		let entidad = req.query.entidad;
 		let origen = req.query.origen;
 		let userID = req.session.usuario.id;
-		const codigo = req.path.slice(1, -1);
+		const codigo = req.baseUrl + req.path;
 		// Tareas
-		if (codigo == "agregar") {
+		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.crear_registro(entidad, DE, userID);
 			// Agregar el RCLV a DP/ED
@@ -171,7 +124,7 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} else if (codigo == "edicion") {
+		} else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
@@ -179,6 +132,11 @@ module.exports = {
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualizar_registro(entidad, id, DE) // Actualizar el registro original
 				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+		} else if (codigo == "/revision/rclv/alta/") {
+			// Obtiene el registro original
+			let id = req.query.id;
+			// Actualiza el registro o crea una edición
+			await comp.actualizar_registro(entidad, id, DE); // Actualizar el registro original
 		}
 		// Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];
