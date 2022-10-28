@@ -211,6 +211,7 @@ module.exports = {
 		if (prodEdic.avatar_archivo) {
 			// Vista 'Edición-Avatar'
 			codigo += "avatar";
+			omitirImagenDerecha = true;
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOrig.avatar
