@@ -1,82 +1,64 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<%- include('CMP-1Head') %>
-	<%- include('RE-1Head') %>
-</head>
-<body>
-	<%- include('CMP-2Header') %>
-	<main id="cuerpoFooter">
-		<%- include('CMP-Cartel') %>
-		<%- include('CMP-3Footer') %>
-		<section id="cuerpo">
-			<%- include('CMP-TimerContador') %>
-			<div id="tituloPrincipal">
-				<h1 id="titulo"><%= titulo %></h1>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick despl_click">
-						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
-							<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
-						</ul>
-					</i>
-				</div>
-			</div>			
-			<div id="informacion">
-				<!-- Ficha técnica -->
-				<div id="fichaTecnica" class="aparece">
-					<div>
-						<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
-						<p>Año de estreno: <strong><%= prodOrig.ano_estreno %></strong></p>
-						<p>Dirección: <strong><%= prodOrig.direccion %></strong></p>	
-					</div>
-				</div>
-				<!-- Imagen sugerida -->
-				<div id="imgSugerida" class="tituloMasImagen">
-					<h2>Archivo a Evaluar</h2>
-					<!-- Imagen -->
-					<div class="contenedorImagen">
-						<img class="aparece" src="<%= avatar.edicion %>" title="Realizar el reemplazo">
-					</div>
-					<section id="motivosRechazo" class="ocultar">
-						<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
-						<select>
-							<option value="" selected class="ocultar">Elegí una opción</option>	
-							<% for (motivo of motivos) { %>
-								<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
-							<% } %>
-						</select>
-						<div id="comandosRechazar">
-							<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-							<i class="fa-solid fa-circle-right" title="Continuar"></i>
-						</div>
-					</section>
-				</div>
-				<!-- Imagen vigente -->
-				<!-- avatar.mostrarOriginal -->
-				<% if (avatar.mostrarOriginal) { %> 
-					<div id="imgActual" class="tituloMasImagen">
-						<h2><%= avatar.original.startsWith("http") ? 'Link' : 'Archivo' %> Actual</h2>
-						<!-- Imagen -->
-						<div class="contenedorImagen">
-							<img class="aparece" src="<%= avatar.original %>">
-						</div>
-					</div>
+<%- include('CMP-TimerContador') %>
+<div id="tituloPrincipal">
+	<h1 id="titulo"><%= titulo %></h1>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
+				<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
+			</ul>
+		</i>
+	</div>
+</div>			
+<div id="informacion">
+	<!-- Ficha técnica -->
+	<div id="fichaTecnica" class="aparece">
+		<div>
+			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
+			<p>Año de estreno: <strong><%= prodOrig.ano_estreno %></strong></p>
+			<p>Dirección: <strong><%= prodOrig.direccion %></strong></p>	
+		</div>
+	</div>
+	<!-- Imagen sugerida -->
+	<div id="imgSugerida" class="tituloMasImagen">
+		<h2>Archivo a Evaluar</h2>
+		<!-- Imagen -->
+		<div class="contenedorImagen">
+			<img class="aparece" src="<%= avatar.edicion %>" title="Realizar el reemplazo">
+		</div>
+		<section id="motivosRechazo" class="ocultar">
+			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
+			<select>
+				<option value="" selected class="ocultar">Elegí una opción</option>	
+				<% for (motivo of motivos) { %>
+					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 				<% } %>
-			</div>
-			<!-- Flechas -->
-			<div id="flechas">
-				<!-- Liberar y salir -->
-				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
-					<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
-				</a>
-				<!-- Aceptar -->
-				<i class="fa-solid fa-circle-check" title="Aceptar"></i>
-				<!-- Rechazar -->
-				<i class="fa-solid fa-circle-xmark" title="Rechazar"></i>
+			</select>
+			<div id="comandosRechazar">
+				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
+				<i class="fa-solid fa-circle-right" title="Continuar"></i>
 			</div>
 		</section>
-	</main>
-</body>
-</html>
+	</div>
+	<!-- Imagen vigente -->
+	<!-- avatar.mostrarOriginal -->
+	<div id="imgActual" class="tituloMasImagen">
+		<h2><%= avatar.original.startsWith("http") ? 'Link' : 'Archivo' %> Actual</h2>
+		<!-- Imagen -->
+		<div class="contenedorImagen">
+			<img class="aparece" src="<%= avatar.original %>">
+		</div>
+	</div>
+</div>
+<!-- Flechas -->
+<div id="flechas">
+	<!-- Liberar y salir -->
+	<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
+		<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+	</a>
+	<!-- Aceptar -->
+	<i class="fa-solid fa-circle-check" title="Aceptar"></i>
+	<!-- Rechazar -->
+	<i class="fa-solid fa-circle-xmark" title="Rechazar"></i>
+</div>
