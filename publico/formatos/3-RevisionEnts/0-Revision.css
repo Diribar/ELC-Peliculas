@@ -12,3 +12,7 @@
 #cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
 #cuerpo #encabezado #colCap #tempCapI strong {margin-right: 5px;}
 #cuerpo #encabezado #colCap #tempCapS #capitulo {margin-left: 5px;}
+
+/* Flechas */
+#flechas button {margin: 0 15px; border-radius: 50%; border: none;}
+#flechas button i {margin: 0;}

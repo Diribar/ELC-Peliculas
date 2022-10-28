@@ -49,6 +49,7 @@ module.exports = {
 		// 4. Obtiene los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		if (entidad == "colecciones") includes.push("capitulos");
+		// Detecta si el registro no está en status creado
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtiene avatar original
@@ -66,6 +67,7 @@ module.exports = {
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
+		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Va a la vista
 		//return res.send(prodOrig)
 		return res.render("CMP-0Estructura", {
@@ -82,18 +84,72 @@ module.exports = {
 			prodNombre,
 			title: prodOrig.nombre_castellano,
 			cartel: true,
+			url,
 		});
+	},
+	prodAltaGuardar: async (req, res) => {
+		// En caso de error, redirije
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		const urlRedirect = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+		if (rechazado && !motivo_id) return res.redirect(urlRedirect);
+		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
+		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
+		// Variables
+		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
+		const userID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+		// Obtiene el nuevo status_id
+		let creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
+		let inactivoID = status_registro.find((n) => n.inactivo).id;
+		let status_registro_id = rechazado ? inactivoID : creadoAprobID;
+		// Genera la info
+		let datosEntidad = {
+			status_registro_id,
+			alta_analizada_por_id: userID,
+			alta_analizada_en: ahora,
+		};
+		// Actualiza el status en el registro original
+		await BD_genericas.actualizarPorId(entidad, id, datosEntidad);
+		// Agrega el registro en el historial_cambios_de_status
+		let producto = await BD_genericas.obtenerPorId(entidad, id);
+		let creador_ID = producto.creado_por_id;
+		let datosHistorial = {
+			entidad_id: id,
+			entidad,
+			sugerido_por_id: creador_ID,
+			sugerido_en: producto.creado_en,
+			analizado_por_id: userID,
+			analizado_en: ahora,
+			status_original_id: status_registro.find((n) => n.creado).id,
+			status_final_id: status_registro_id,
+			aprobado: !rechazado,
+		};
+		if (rechazado) {
+			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
+			datosHistorial.motivo_id = motivo.id;
+			datosHistorial.duracion = Number(motivo.duracion);
+		}
+		BD_genericas.agregarRegistro("historial_cambios_de_status", datosHistorial);
+		// Asienta la aprob/rech en el registro del usuario
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
+		// Penaliza al usuario si corresponde
+		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
+		// Fin
+		return res.redirect(urlEdicion);
 	},
 	prodEdicForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		const codigo = "producto/edicion";
+		let codigo = "producto/edicion/";
 		// 2. Constantes
 		const entidad = req.query.entidad;
-		const prodID = req.query.id;
+		const id = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
+		let omitirImagenDerecha = false;
 
 		// Verificaciones ------------------------------------------
 		// Verificacion 1:
@@ -118,29 +174,27 @@ module.exports = {
 		// Verificación paso 2: averigua si existe otra ajena y en caso afirmativo recarga la vista
 		if (!prodEdic) {
 			// Averigua si existe otra ajena
-			prodEdic = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
+			prodEdic = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, id, userID);
 			// En caso afirmativo recarga la vista con el ID de la nueva edición
 			if (prodEdic) {
 				let ruta = req.baseUrl + req.path;
-				let terminacion = "?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + prodEdic.id;
+				let terminacion = "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
 				return res.redirect(ruta + terminacion);
 			}
 		}
 		// Verificación paso 3: muestra el cartel de error
 		if (!prodEdic) {
-			let informacion = await procesos.infoProdEdicion(entidad, prodID, producto_id, userID);
+			let informacion = await procesos.infoProdEdicion(entidad, id, producto_id, userID);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 		// 3. Obtiene la versión original
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
+		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includesOrig);
 		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
-		if (!prodEdic[producto_id] || prodEdic[producto_id] != prodID)
-			return res.redirect(
-				"/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + prodID
-			);
+		if (!prodEdic[producto_id] || prodEdic[producto_id] != id)
+			return res.redirect("/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + id);
 		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
@@ -152,11 +206,12 @@ module.exports = {
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
-		let vista, avatar, ingresos, reemplazos, bloqueDer;
+		let avatar, ingresos, reemplazos, bloqueDer;
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEdic.avatar_archivo) {
 			// Vista 'Edición-Avatar'
-			vista = "RE1-Prod-Avatar";
+			codigo += "avatar";
+			omitirImagenDerecha = true;
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOrig.avatar
@@ -181,14 +236,13 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
-			vista = "CMP-0Estructura";
 		}
 		// 5. Configurar el título de la vista
 		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
-		return res.render(vista, {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -200,11 +254,11 @@ module.exports = {
 			avatar,
 			motivos,
 			entidad,
-			id: prodID,
+			id,
 			bloqueDer,
-			vista,
 			title: prodOrig.nombre_castellano,
 			cartel: true,
+			omitirImagenDerecha,
 		});
 	},
 	// RCLVs
@@ -226,7 +280,7 @@ module.exports = {
 		let includes = [];
 		if (entidad != "valores") includes.push("dia_del_ano");
 		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
-		let original = await BD_genericas.obtenerPorIdConInclude(entidad, id,includes);
+		let original = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
 		// Procesa el data-entry
 		let dataEntry = await comp.procesarRCLV(datos);
@@ -256,27 +310,23 @@ module.exports = {
 		const codigo = "links";
 		// Otras variables
 		let includes;
-		let prodEntidad = req.query.entidad;
-		let prodID = req.query.id;
+		let entidad = req.query.entidad;
+		let id = req.query.id;
 		let userID = req.session.usuario.id;
 		// Configurar el título
-		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
-		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
+		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene el producto con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
-		if (prodEntidad == "capitulos") includes.push("coleccion");
-		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
+		if (entidad == "capitulos") includes.push("coleccion");
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
 		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
-		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
+		let entidad_id = comp.obtieneEntidad_id(entidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
-			"links",
-			{[entidad_id]: prodID},
-			includes
-		);
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
@@ -300,8 +350,8 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			entidad: prodEntidad,
-			id: prodID,
+			entidad,
+			id,
 			producto,
 			links,
 			provs,

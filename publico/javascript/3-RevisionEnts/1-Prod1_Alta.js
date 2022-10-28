@@ -1,11 +1,6 @@
 "use strict";
 window.addEventListener("load", () => {
-	// Variables
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
-
 	// Flechas
-	let aprobar = document.querySelector("#flechas .fa-circle-check");
 	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
 
 	// Motivos para borrar
@@ -13,21 +8,9 @@ window.addEventListener("load", () => {
 	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
 	let motivosRechazo = document.querySelector("#motivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
+	let inactivar = document.querySelector("#comandosRechazar button");
 
-	// ruta
-	let rutaAprobRech = "/revision/api/producto-alta/?entidad=" + prodEntidad + "&id=" + prodID + "&aprob=";
-	let rutaInactivarCaptura = "/inactivar-captura/?origen=tableroEnts&entidad=" + prodEntidad + "&id=" + prodID;
-
-	// Aprobar el alta
-	aprobar.addEventListener("click", async () => {
-		aprobar.style.transform = "scale(1)";
-		aprobar.style.cursor = "wait";
-		await fetch(rutaAprobRech + "true");
-		window.location.href = rutaInactivarCaptura;
-	});
-
-	// Menú inactivar
+	// Menú motivos para borrar
 	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
@@ -39,14 +22,15 @@ window.addEventListener("load", () => {
 		taparElFondo.classList.add("ocultar");
 	});
 
+	// Elegir motivo rechazo
+	motivosRechazo.addEventListener("click", () => {
+		if (motivosRechazo.value) inactivar.classList.remove("inactivo")
+		else inactivar.classList.add("inactivo")
+	});
+
 	// Inactivar
-	inactivar.addEventListener("click", async () => {
+	inactivar.addEventListener("click", (e) => {
 		let motivo = motivosRechazo.value;
-		if (motivo) {
-			// rechazar.style.transform = "scale(1)";
-			// rechazar.style.cursor = "wait";
-			await fetch(rutaAprobRech + "false&motivo_id=" + motivo);
-			window.location.href = rutaInactivarCaptura;
-		}
+		if (!motivo) e.preventDefault();
 	});
 });

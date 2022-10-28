@@ -5,6 +5,7 @@
 #cartel {background-color: var(--rojo-oscuro);}
 #cartel.gris {background-color: var(--gris-oscuro);}
 #cartel.verde {background-color: var(--verde-oscuro);}
+#cartel.azul {background-color: var(--azul-oscuro);}
 
 /* Alineación interna */
 #cartel {display: flex; flex-direction: column; align-items: center; width: max-content; max-width: 600px;}
@@ -22,3 +23,5 @@
 #cartel #flechasCartel * {border-radius: 50%;}
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
 #cartel .fa-house, #cartel .fa-thumbs-up, #cartel .fa-spell-check {color: var(--backIcono); border: solid 2px var(--backIcono); background-color: var(--azul-oscuro);}
+#cartel .fa-circle-left {color: var(--gris-oscuro);}
+#cartel .fa-circle-right {color: var(--verde-oscuro);}
