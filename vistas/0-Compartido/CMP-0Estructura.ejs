@@ -17,15 +17,12 @@
 	<!-- Header genérico -->
 	<%- include('CMP-2Header') %>
 	<main class="flex-row-reverse">
-		<!-- Imagen Derecha -->
 		<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
 		<!-- Cuerpo y Footer -->
 		<section id="cuerpoFooter">
-			<!-- Footer -->
 			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
-				<!-- Cartel -->
-				<%- include('CMP-Cartel', {mostrar: !locals.omitirImagenDerecha && locals.cartel}) %>
+				<%- include('CMP-Cartel', {mostrar: locals.cartel}) %>
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
 				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
 				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>

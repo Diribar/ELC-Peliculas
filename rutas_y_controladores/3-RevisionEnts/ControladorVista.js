@@ -142,14 +142,13 @@ module.exports = {
 	prodEdicForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		let codigo = "producto/edicion/";
+		let codigo = "producto/edicion";
 		// 2. Constantes
 		const entidad = req.query.entidad;
 		const id = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let omitirImagenDerecha = false;
 
 		// Verificaciones ------------------------------------------
 		// Verificacion 1:
@@ -209,9 +208,8 @@ module.exports = {
 		let avatar, ingresos, reemplazos, bloqueDer;
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEdic.avatar_archivo) {
-			// Vista 'Edición-Avatar'
-			codigo += "avatar";
-			omitirImagenDerecha = true;
+			// Variables
+			codigo += "/avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOrig.avatar
@@ -258,7 +256,7 @@ module.exports = {
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
 			cartel: true,
-			omitirImagenDerecha,
+			omitirImagenDerecha: codigo == "producto/edicion/avatar",
 		});
 	},
 	// RCLVs
