@@ -114,7 +114,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.longitud(dato, campo.corto, campo.largo);
 					if (!respuesta) respuesta = comp.castellano[idioma](dato);
 					if (!respuesta) respuesta = comp.inicial[idioma](dato);
-				} else campo.inputVacio;
+				} else respuesta =comp.inputVacio;
 				// Fin
 				errores[nombre] = respuesta;
 			}

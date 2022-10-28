@@ -109,7 +109,6 @@ window.addEventListener("load", async () => {
 		var subcategorias = await fetch("/producto/agregar/api/obtener-subcategorias").then((n) => n.json());
 		var subcategoria;
 		// Datos RCLV
-		var etiquetasRCLV = document.querySelectorAll(".label-input.RCLV");
 		var inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
 		var linkAltaJSS = document.querySelector(".inputError .linkRCLV.alta");
 		var linksEdicion = document.querySelectorAll(".inputError .linkRCLV.edicion");
@@ -117,6 +116,7 @@ window.addEventListener("load", async () => {
 		var iconosError_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-xmark");
 		var opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option.RCLV");
 		var opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option.RCLV");
+		var invisibles = document.querySelectorAll(".invisible");
 	}
 	// Ruta
 	let rutaValidar = "/producto/agregar/api/validar/" + paso.paso + "/?";
@@ -354,12 +354,12 @@ window.addEventListener("load", async () => {
 						});
 				}
 				// Muestra los campos RCLV
-				for (let etiqueta of etiquetasRCLV) etiqueta.classList.remove("invisible");
+				for (let invisible of invisibles) invisible.classList.remove("invisible");
 			}
 			// Opciones si la subcategoría no tiene valor
 			else {
 				// Oculta los campos RCLV
-				for (let etiqueta of etiquetasRCLV) etiqueta.classList.add("invisible");
+				for (let invisible of invisibles) invisible.classList.add("invisible");
 			}
 			return;
 		},
@@ -517,6 +517,6 @@ window.addEventListener("load", async () => {
 		DP.iconosEdicionRCLVs();
 	}
 	// Errores y boton 'Submit'
-	let mostrarIconoError = paso.DD // En DD se muestran los errores iniciales siempre;
+	let mostrarIconoError = paso.DD; // En DD se muestran los errores iniciales siempre;
 	statusInicial(mostrarIconoError);
 });

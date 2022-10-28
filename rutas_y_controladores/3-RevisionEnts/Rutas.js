@@ -29,7 +29,7 @@ router.get("/api/link-eliminar", ...algunos, API.linkAlta);
 router.get("/tablero-de-control", ...algunos, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...todos, vista.prodAltaForm);
-router.get("/producto/alta/aprob", ...algunos, vista.prodAltaGuardar);
+router.post("/producto/alta", ...todos, vista.prodAltaGuardar);
 router.get("/producto/edicion", ...todos, vista.prodEdicForm);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");

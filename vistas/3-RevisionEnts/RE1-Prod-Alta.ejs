@@ -11,7 +11,7 @@
 		</i>
 	</div>
 </div>
-<div id="datos">
+<form action="<%= url %> " method="POST" id="datos">
 	<section id="datosLargos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
@@ -38,7 +38,7 @@
 			<% } %>
 		</div>
 		<!-- Comandos -->
-		<div id="comandos">
+		<div id="comandos" class="inactivo">
 			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
@@ -56,7 +56,7 @@
 		</div>
 		<div id="motivosRechazo" class="ocultar">
 			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
-			<select>
+			<select name="motivo_id">
 				<option value="" selected class="ocultar">Elegí una opción</option>	
 				<% for (motivo of motivosRechazo) { %>
 					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
@@ -64,7 +64,9 @@
 			</select>
 			<div id="comandosRechazar">
 				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-				<i class="fa-solid fa-circle-right" title="Continuar"></i>
+				<button type="submit" formaction="<%= url %>&rechazado=true" class="inactivo">
+					<i class="fa-solid fa-circle-right" title="Continuar"></i>
+				</button>
 			</div>
 		</div>
 	</section>
@@ -82,4 +84,4 @@
 		<% } %> 
 		</div>
 	</section>
-</div>
+</form>

@@ -5,10 +5,12 @@
 /* General del formulario */
 #cuerpo form {background-color: var(--gris-oscuro); border-radius: 10px;}
 #cuerpo form {padding: 20px; z-index: 11; min-width: 360px;}
+#cuerpo form {display: flex; flex-direction: column;}
+#cuerpo form #tituloPrincipal {align-self: center;}
 
 /* Partes del formulario */
-#cuerpo form h1 {color: var(--amarillo-claro); margin-bottom: 25px;}
-#cuerpo form h1 {font-weight: bold; font-size: 1.5em; text-align: center;}
+#cuerpo form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
+#cuerpo form h1 {font-size: 1.5em; text-align: center;}
 #cuerpo form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
 
 /* Input del formulario */

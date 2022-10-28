@@ -47,16 +47,17 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 #datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
 
 /* Íconos de Error */
-.fa-circle-check, .fa-circle-xmark, .fa-circle-left {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 
 /* Comandos y Flechas */
 #comandos, #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
-#comandos i, #flechas i, #flechas img, #flechas a {font-size: 1.25rem; margin: 0 15px; border-radius: 50%;}
+#comandos i, #flechas i, #flechas img, #flechas a, #flechas button {font-size: 1.25rem; margin: 0 15px; border-radius: 50%;}
 #comandos .pack, #flechas .pack {margin: 0 20px;}
-#flechas a i {margin: 0;}
+#flechas a i, #flechas button i {margin: 0;}
+#flechas button {border: none;}
 
 /* Comandos */
 #comandos {background-color: var(--backComandos);}

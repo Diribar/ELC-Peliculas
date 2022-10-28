@@ -41,9 +41,10 @@ module.exports = {
 
 		// Variables
 		const haceUnaHora = comp.nuevoHorario(-1, ahora);
-		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
-		let gr_aprobado = [creado_aprob_id, aprobado_id];
+		const creado_id = status_registro.find((n) => n.creado).id;
+		const creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
+		const aprobado_id = status_registro.find((n) => n.aprobado).id;
+		const gr_aprobado = [creado_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtiene todas las ediciones ajenas
@@ -94,7 +95,8 @@ module.exports = {
 			// Consolidar los productos
 			productos = [...peliculas, ...colecciones, ...capitulos];
 			// Dejar solamente los productos de gr_aprobado
-			productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
+			// productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
+			productos = productos.filter((n) => n.status_registro_id!=creado_id);
 			// Dejar solamente los productos que no tengan problemas de captura
 			if (productos.length)
 				productos = productos.filter(
@@ -477,7 +479,7 @@ module.exports = {
 	},
 	obtieneProdOrig: async (entidad, id, includes, edicAprob, prodEdic, campo) => {
 		// Formulas
-		let accionesSiElCampoEsAvatar= (edicAprob, prodOrig, prodEdic) => {
+		let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 			// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
 			let datos = {avatar: prodEdic.avatar_archivo, avatar_archivo: null};
 			prodEdic = {...prodEdic, ...datos};
@@ -503,7 +505,7 @@ module.exports = {
 					comp.mueveUnArchivoImagen(prodOrig.avatar, "4-ProdsRevisar", "3-Productos");
 			}
 			return prodEdic;
-		};	
+		};
 		// Obtiene el registro original
 		includes.push("status_registro");
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
@@ -686,12 +688,13 @@ module.exports = {
 	usuario_Penalizar: (userID, motivo) => {
 		// Variables
 		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		console.log(689, rol_usuario_id);
 		// Se le baja el rol a 'Consultas', si el motivo lo amerita
 		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizarPorId("usuarios", userID, {rol_usuario_id});
 
 		// Aumenta la penalización acumulada si corresponde
 		let aumentarPenalizac = Number(motivo.duracion);
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, aumentarPenalizac);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "penalizac_acum", aumentarPenalizac);
 		// Fin
 		return;
 	},

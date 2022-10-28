@@ -45,11 +45,13 @@
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
 			<!-- Relación con la vida -->
-			<h3 style="margin-top: 0;">Relación con la vida</h3>
+			<h3 style="margin-top: 0;">Categorización</h3>
 			<!--Categoría-->
 			<%- include("PA4-DP1-Select", {campo: "categoria_id", nombre: "nombre"}) %>
 			<!--Sub-categoría-->
 			<%- include("PA4-DP2-Subcat", {campo: "subcategoria_id", nombre: "nombre"}) %>
+			<!-- Relación con la vida -->
+			<h3 class="invisible">Relación con la vida</h3>
 			<!--Personaje histórico-->
 			<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
 			<!--Hecho histórico-->

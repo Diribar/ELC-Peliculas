@@ -90,7 +90,7 @@ module.exports = async (req, res, next) => {
 						},
 					],
 					titulo: "Aviso",
-					colorFondo: "verde",
+					colorFondo: "azul",
 				};
 		}
 
@@ -200,7 +200,7 @@ module.exports = async (req, res, next) => {
 	};
 
 	// Penalidad acumulada
-	penalidadAcum();
+	await penalidadAcum(); // Debe ser await para que primero se bloquee y después se fije si está bloqueado
 	// VERIFICACIÓN 1: Usuario penalizado
 	if (!informacion) informacion = usuarioPenalizado();
 	// VERIFICACIÓN 2: Tiene identidad validada

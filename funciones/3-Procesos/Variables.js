@@ -117,27 +117,27 @@ module.exports = {
 		let funcionRegistrosRCLV = (userID) => {
 			// Obtiene los registros RCLV en status 'aprobado' y 'creado' (del usuario)
 			// Variables
-			let entidadRCLV = ["personajes", "hechos", "valores"];
+			let entidadesRCLV = ["personajes", "hechos", "valores"];
 			let registrosRCLV = {};
 			// Rutina por entidadRCLV
-			entidadRCLV.forEach(async (campo) => {
-				let aprobados = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then(
+			entidadesRCLV.forEach(async (entidadRCLV) => {
+				let aprobados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then(
 					(n) => n.filter((n) => n.status_registro.aprobado)
 				);
 				let creados = [];
 				if (userID)
-					creados = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>
+					creados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then((n) =>
 						n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
 					);
 				let registros = [...creados, ...aprobados];
 				registros.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
-				registrosRCLV[campo] = registros;
+				registrosRCLV[entidadRCLV] = registros;
 			});
 			// Fin
 			return registrosRCLV;
 		};
 		// Variables
-		let registrosRCLV = funcionRegistrosRCLV(userID);
+		const registrosRCLV = funcionRegistrosRCLV(userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",
