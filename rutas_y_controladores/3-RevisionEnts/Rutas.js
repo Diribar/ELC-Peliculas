@@ -19,7 +19,6 @@ const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
-router.get("/api/producto-alta", ...algunos, API.prodAlta);
 router.get("/api/producto-edicion", ...algunos, API.prodEdic);
 // Links
 router.get("/api/link-alta", ...algunos, API.linkAlta);
@@ -30,6 +29,7 @@ router.get("/api/link-eliminar", ...algunos, API.linkAlta);
 router.get("/tablero-de-control", ...algunos, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...todos, vista.prodAltaForm);
+router.get("/producto/alta/aprob", ...algunos, vista.prodAltaGuardar);
 router.get("/producto/edicion", ...todos, vista.prodEdicForm);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
