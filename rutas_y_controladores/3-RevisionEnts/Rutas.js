@@ -21,8 +21,6 @@ const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 // Producto
 router.get("/api/producto-alta", ...algunos, API.prodAlta);
 router.get("/api/producto-edicion", ...algunos, API.prodEdic);
-// RCLV-Alta
-router.get("/api/rclv-alta", ...algunos, API.RCLV_Alta);
 // Links
 router.get("/api/link-alta", ...algunos, API.linkAlta);
 router.get("/api/link-edicion", ...algunos, API.linkEdic);
@@ -37,6 +35,7 @@ router.get("/producto/inactivar");
 router.get("/producto/recuperar");
 // RCLV
 router.get("/rclv/alta", ...todos, vistaAltaRCLV.altaEdicForm);
+router.post("/rclv/alta", ...todos, vista.rclvAltaGuardar);
 // Links
 router.get("/links", ...todos, vista.linksForm);
 

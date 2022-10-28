@@ -134,7 +134,7 @@ module.exports = {
 				registrosRCLV[campo] = registros;
 			});
 			// Fin
-			return registrosRCLV
+			return registrosRCLV;
 		};
 		// Variables
 		let registrosRCLV = funcionRegistrosRCLV(userID);
@@ -362,25 +362,25 @@ module.exports = {
 				input: true,
 			},
 		],
-		RCLVs:[
+		RCLVs: [
 			// Personajes
-			{nombre: "nombre"},
-			{nombre: "apodo"},
-			{nombre: "sexo_id"},
-			{nombre: "dia_del_ano_id"},
-			{nombre: "ano"},
-			{nombre: "hasta"},
-			{nombre: "categoria_id"},
-			{nombre: "subcategoria_id"},
-			{nombre: "ap_mar_id"},
-			{nombre: "proceso_id"},
-			{nombre: "rol_iglesia_id"},
+			{nombre: "nombre", titulo: "Nombre Más Conocido", personajes: true, hechos: true, valores: true},
+			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
+			{nombre: "sexo_id", titulo: "Sexo", personajes: true},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
+			{nombre: "ano", titulo: "Año Desde", personajes: true, hechos: true},
+			{nombre: "hasta", titulo: "Año Hasta", personajes: true, hechos: true},
+			{nombre: "categoria_id", titulo: "Categoría", personajes: true},
+			{nombre: "subcategoria_id", titulo: "", personajes: true},
+			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true},
+			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true},
+			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true},
 			// Hechos
-			{nombre: "solo_cfc"},
-			{nombre: "jss"},
-			{nombre: "cnt"},
-			{nombre: "exclusivo"},
-			{nombre: "ap_mar"},
+			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
+			{nombre: "jss", titulo: "", hechos: true},
+			{nombre: "cnt", titulo: "", hechos: true},
+			{nombre: "exclusivo", titulo: "", hechos: true},
+			{nombre: "ap_mar", titulo: "", hechos: true},
 		],
 		links: [
 			{nombre: "calidad"},

@@ -32,8 +32,6 @@ module.exports = (sequelize, dt) => {
 
 		prods_aprob: {type: dt.INTEGER},
 		prods_rech: {type: dt.INTEGER},
-		rclvs_aprob: {type: dt.INTEGER},
-		rclvs_rech: {type: dt.INTEGER},
 		links_aprob: {type: dt.INTEGER},
 		links_rech: {type: dt.INTEGER},
 		edics_aprob: {type: dt.INTEGER},

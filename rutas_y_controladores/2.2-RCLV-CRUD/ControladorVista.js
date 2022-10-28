@@ -41,9 +41,14 @@ module.exports = {
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
 			let id = req.query.id;
-			let includes = entidad == "personajes" ? "rol_iglesia" : "";
+			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
+			includes.push("status_registro");
 			// Pisa el data entry de session
 			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+			// 3. Revisar error de revisión
+			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
+				res.redirect("/revision/tablero-de-control");
+			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
@@ -76,7 +81,7 @@ module.exports = {
 		let {entidad, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// return res.send(datos)
-		// 2. Averiguar si hay errores de validación y tomar acciones
+		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await validar.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
@@ -84,10 +89,10 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// 3. Obtiene el dataEntry
-		let DE = await procesos.DE(datos);
+		let DE = await comp.procesarRCLV(datos);
 		// Guarda los cambios del RCLV
 		await procesos.guardarCambios(req, res, DE);
-		// 9. Redireccionar a la siguiente instancia
+		// 9. Redirecciona a la siguiente instancia
 		let destino =
 			origen == "DP"
 				? "/producto/agregar/datos-personalizados"
@@ -128,7 +133,7 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
-			Entidad: comp.obtenerEntidadNombre(entidad)
+			Entidad: comp.obtenerEntidadNombre(entidad),
 		});
 	},
 };
