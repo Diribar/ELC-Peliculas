@@ -134,8 +134,9 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
+	guardar_edicion: async function (entidadOrig, entidadEdic, original, datosEdicion, userID) {
 		// Variables
+		let edicion = {...datosEdicion};
 		let quedanCampos;
 		let familia =
 			entidadEdic == "prods_edicion"
@@ -557,7 +558,7 @@ module.exports = {
 		// Consolidar
 		let productos = [...peliculas, ...colecciones, ...capitulos];
 		// Depurar los productos que no cumplen ciertas condiciones
-		let limpiezaProds= (productos, ahora, userID) => {
+		let limpiezaProds = (productos, ahora, userID) => {
 			// Variables
 			// Declarar las variables
 			const aprobado_id = status_registro.find((n) => n.aprobado).id;
@@ -582,7 +583,7 @@ module.exports = {
 					(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 			);
 			return productos;
-		}
+		};
 		productos = limpiezaProds(productos, ahora, userID);
 		// Fin
 		return productos;

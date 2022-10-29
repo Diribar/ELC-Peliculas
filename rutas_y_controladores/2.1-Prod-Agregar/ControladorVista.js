@@ -89,7 +89,7 @@ module.exports = {
 		// 5. Guardar los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// 6. Generar la session para la siguiente instancia
-		req.session.datosDuros = infoTMDBparaDD;
+		req.session.datosDuros = {...infoTMDBparaDD};
 		delete req.session.datosDuros.avatar;
 		req.session.datosDuros.avatar_url = infoTMDBparaDD.avatar;
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
@@ -163,7 +163,7 @@ module.exports = {
 		// 3. Averiguar si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposDD_errores = camposDD.map((n) => n.nombre);
-		let avatar = req.file ? req.file.filename : datosDuros.avatar_url;
+		let avatar = datosDuros.avatar_url;
 		let errores = await validar.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
@@ -180,7 +180,7 @@ module.exports = {
 		// 5. Si no hay errores de imagen, revisar el archivo de imagen
 		let avatar_archivo;
 		if (!errores.avatar) {
-			let tipo, tamano, rutaYnombre
+			let tipo, tamano, rutaYnombre;
 			if (req.file) {
 				// En caso de archivo por multer
 				tipo = req.file.mimetype;
@@ -189,13 +189,13 @@ module.exports = {
 				rutaYnombre = req.file.path;
 			} else {
 				// En caso de archivo sin multer
-				let datos = await requestPromise.head(datosDuros.avatar);
+				let datos = await requestPromise.head(datosDuros.avatar_url);
 				tipo = datos["content-type"];
 				tamano = datos["content-length"];
-				avatar_archivo = Date.now() + path.extname(datosDuros.avatar);
+				avatar_archivo = Date.now() + path.extname(datosDuros.avatar_url);
 				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar_archivo;
 				// Descargar
-				comp.descargar(datosDuros.avatar, rutaYnombre);
+				comp.descargar(datosDuros.avatar_url, rutaYnombre);
 			}
 			// Revisar errores nuevamente
 			errores.avatar = comp.revisarImagen(tipo, tamano);
@@ -336,13 +336,7 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		comp.guardar_edicion(
-			confirma.entidad,
-			"prods_edicion",
-			registro,
-			confirma, // Se debe enviar así para preservar la variable de cambios
-			req.session.usuario.id
-		);
+		comp.guardar_edicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"

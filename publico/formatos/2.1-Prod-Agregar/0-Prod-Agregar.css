@@ -31,5 +31,4 @@
 #dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 
 /* Submit button */
-#dataEntry #submit {position: static; transform: none;}
 #dataEntry button em {color: inherit; background-color: inherit;}
