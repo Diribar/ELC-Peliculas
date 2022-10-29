@@ -56,7 +56,7 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 #comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
 #comandos i, #flechas i, #flechas img, #flechas a, #flechas button {margin: 0 15px; border-radius: 50%;}
 #comandos i, #flechas i, #flechas img, #flechas a, #flechas button {transition: 250ms; cursor: pointer;}
-#comandos i:hover, #flechas i:hover, #flechas img:hover, #flechas a:hover, #flechas button:hover {transform: scale(1.3);}
+#comandos i:hover, #flechas i:hover, #flechas img:hover {transform: scale(1.3);}
 #comandos .pack, #flechas .pack {margin: 0 20px;}
 #flechas a i, #flechas button i {margin: 0;}
 #flechas button {border: none;}

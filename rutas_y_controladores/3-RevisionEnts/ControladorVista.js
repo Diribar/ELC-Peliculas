@@ -113,6 +113,9 @@ module.exports = {
 		};
 		// Actualiza el status en el registro original
 		await BD_genericas.actualizarPorId(entidad, id, datosEntidad);
+		// Actualiza el status en los registros de los capítulos
+		if (entidad == "colecciones")
+			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
 		// Agrega el registro en el historial_cambios_de_status
 		let producto = await BD_genericas.obtenerPorId(entidad, id);
 		let creador_ID = producto.creado_por_id;
@@ -173,7 +176,6 @@ module.exports = {
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includesOrig);
-
 		// 1. Actualiza el registro de edición y obtiene su versión mínima
 		// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);

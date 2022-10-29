@@ -105,7 +105,7 @@ module.exports = {
 			omitirRutinaVista: true,
 		},
 		{
-			nombre: "avatar",
+			nombre: "avatar_url",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,

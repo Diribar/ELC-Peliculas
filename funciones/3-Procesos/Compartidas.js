@@ -398,9 +398,9 @@ module.exports = {
 		return prodEdic.avatar
 			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
 			: prodOrig.avatar
-			? !prodOrig.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOrig.avatar
-				: prodOrig.avatar
+			? prodOrig.avatar.startsWith("http")
+				? prodOrig.avatar
+				: "/imagenes/3-Productos/" + prodOrig.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 	},
 
@@ -460,7 +460,7 @@ module.exports = {
 		// Validaciones
 		if (dato) {
 			if (!respuesta) respuesta = extension(dato);
-			if (!respuesta && datos.tamano > 1100000)
+			if (!respuesta && datos.tamano && datos.tamano > 1100000)
 				respuesta =
 					"El archivo es de " +
 					parseInt(datos.tamano / 10000) / 100 +

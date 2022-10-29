@@ -47,7 +47,7 @@ router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
 router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...todos, vista.datosDurosForm);
-router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
+router.post("/datos-duros", ...todos, multer.single("avatar_url"), vista.datosDurosGuardar);
 router.get("/datos-personalizados", ...todos, vista.datosPersForm);
 router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
