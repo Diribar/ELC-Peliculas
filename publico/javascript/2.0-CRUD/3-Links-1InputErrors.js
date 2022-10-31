@@ -76,7 +76,6 @@ window.addEventListener("load", async () => {
 			return url;
 		},
 		controlesEnUrl: async (fila) => {
-			console.log(83, fila, v.filaAlta);
 			// Detectar errores y aplicar consecuencias
 			let error = fila == v.filaAlta ? await mensajeDeError(fila, "url") : "";
 			return !error || !error.url;
@@ -105,7 +104,6 @@ window.addEventListener("load", async () => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = v.castellanoInputs[fila].value == "1";
 			if (condicion) v.subtit_castellano[fila].value = "-";
-			console.log(v.subtit_castellano[fila].value);
 			v.subtit_castellano[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
 			let error = await mensajeDeError(fila, "subtit_castellano");
@@ -259,7 +257,6 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(inputs[indice].value);
 		// Consolidar la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
-		// console.log(condiciones);
 		// Averiguar si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
 		// Guarda el mensaje de error
