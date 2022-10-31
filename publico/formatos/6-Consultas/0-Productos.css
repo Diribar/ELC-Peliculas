@@ -8,9 +8,12 @@
 #cuerpo #contador-de-peliculas {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}
 #cuerpo #contador-de-peliculas {font-size: 1.1rem; font-weight: bold;}
 
-
 /* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
 #cuerpo #zona-de-pelis {align-items: flex-start; margin-left: 40px; height: 100%;}
+
+/* Para ocultar la flecha de los select */
+#zona-de-pelis select {-moz-appearance: none;/* for Firefox */-webkit-appearance: none;/* for Chrome */}
+#zona-de-pelis select::-ms-expand {display: none;/* For IE10 */}
 
 /* Menú de Opciones */
 #zona-de-pelis #menuOpciones,
