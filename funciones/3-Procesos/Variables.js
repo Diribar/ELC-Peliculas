@@ -114,21 +114,20 @@ module.exports = {
 	],
 	camposDP: async (userID) => {
 		// Funcion
-		let funcionRegistrosRCLV = (userID) => {
+		let funcionRegistrosRCLV = async (userID) => {
 			// Obtiene los registros RCLV en status 'aprobado' y 'creado' (del usuario)
 			// Variables
 			let entidadesRCLV = ["personajes", "hechos", "valores"];
 			let registrosRCLV = {};
 			// Rutina por entidadRCLV
-			entidadesRCLV.forEach(async (entidadRCLV) => {
-				let aprobados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then(
-					(n) => n.filter((n) => n.status_registro.aprobado)
+			await entidadesRCLV.forEach(async (entidadRCLV) => {
+				let aprobados = await BD_genericas.obtenerTodosConInclude(
+					entidadRCLV,
+					"status_registro"
+				).then((n) => n.filter((n) => n.status_registro.aprobado));
+				let creados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then(
+					(n) => n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
 				);
-				let creados = [];
-				if (userID)
-					creados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then((n) =>
-						n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
-					);
 				let registros = [...creados, ...aprobados];
 				registros.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 				registrosRCLV[entidadRCLV] = registros;
@@ -137,7 +136,7 @@ module.exports = {
 			return registrosRCLV;
 		};
 		// Variables
-		const registrosRCLV = funcionRegistrosRCLV(userID);
+		const registrosRCLV = await funcionRegistrosRCLV(userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",

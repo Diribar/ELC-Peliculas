@@ -88,12 +88,13 @@ module.exports = {
 		});
 	},
 	prodAltaGuardar: async (req, res) => {
-		// En caso de error, redirije
+		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
 		const urlRedirect = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-		if (rechazado && !motivo_id) return res.redirect(urlRedirect);
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
+		// En caso de error, redirije
+		if (rechazado && !motivo_id) return res.redirect(urlRedirect);
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// Variables
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
@@ -142,76 +143,53 @@ module.exports = {
 	prodEdicForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		let codigo = "producto/edicion/";
+		let codigo = "producto/edicion";
 		// 2. Constantes
 		const entidad = req.query.entidad;
 		const id = req.query.id;
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let omitirImagenDerecha = false;
-
-		// Verificaciones ------------------------------------------
-		// Verificacion 1:
-		// 1. Averigua si se recibió el dato de 'edicID' y si existe la edición a analizar
-		// 2. Si no existe, averigua si existe otra ajena y recarga la vista
-		// 3. Si no existe, muestra el cartel de error
-		// Verificación paso 1: averigua si existe la edición a analizar
-		if (parseInt(edicID)) {
-			var includesEdic = [
-				"en_castellano",
-				"en_color",
-				"idioma_original",
-				"categoria",
-				"subcategoria",
-				"publico_sugerido",
-				"personaje",
-				"hecho",
-				"valor",
-			];
-			var prodEdic = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
-		}
-		// Verificación paso 2: averigua si existe otra ajena y en caso afirmativo recarga la vista
-		if (!prodEdic) {
-			// Averigua si existe otra ajena
-			prodEdic = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, id, userID);
-			// En caso afirmativo recarga la vista con el ID de la nueva edición
-			if (prodEdic) {
-				let ruta = req.baseUrl + req.path;
-				let terminacion = "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
-				return res.redirect(ruta + terminacion);
-			}
-		}
-		// Verificación paso 3: muestra el cartel de error
+		let quedanCampos;
+		// Obtiene la edición a analizar
+		let prodEdic = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, id, userID);
+		// Posible Error: no existe una edición
 		if (!prodEdic) {
 			let informacion = await procesos.infoProdEdicion(entidad, id, producto_id, userID);
 			return res.render("CMP-0Estructura", {informacion});
 		}
-		// 3. Obtiene la versión original
+		// Si la edición es distinta a la del url, recarga la vista con el ID de la nueva edición
+		if (prodEdic.id != edicID) {
+			let ruta = req.baseUrl + req.path;
+			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
+			return res.redirect(ruta);
+		}
+		// Obtiene la edición con sus includes
+		let includesEdic = ["en_castellano", "en_color", "idioma_original", "categoria", "subcategoria"];
+		includesEdic.push("publico_sugerido", "personaje", "hecho", "valor");
+		prodEdic = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
+		// Obtiene la versión original
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includesOrig);
-		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
-		if (!prodEdic[producto_id] || prodEdic[producto_id] != id)
-			return res.redirect("/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + id);
-		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
-		// La consulta también tiene otros efectos:
-		// 1. Elimina el registro de edición si ya no tiene más datos
-		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
-		let quedanCampos;
-		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) return res.render("CMP-0Estructura", procesos.cartelNoQuedanCampos);
 
+		// 1. Actualiza el registro de edición y obtiene su versión mínima
+		// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
+		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
+		if (!quedanCampos) {
+			// Si no quedan campos de 'edicion' por procesar --> lo avisa
+			let informacion = procesos.cartelNoQuedanCampos;
+			return res.render("CMP-0Estructura", {informacion});
+		}
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 		let avatar, ingresos, reemplazos, bloqueDer;
-		// 4. Acciones dependiendo de si está editado el avatar
+		// 4. Acciones dependiendo de si está presente el avatar
 		if (prodEdic.avatar_archivo) {
-			// Vista 'Edición-Avatar'
-			codigo += "avatar";
-			omitirImagenDerecha = true;
+			// Variables
+			codigo += "/avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOrig.avatar
@@ -222,7 +200,6 @@ module.exports = {
 							: "") + prodOrig.avatar
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar_archivo,
-				mostrarOriginal: !!prodEdic.avatar,
 			};
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
@@ -230,14 +207,13 @@ module.exports = {
 			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
 			// Obtiene el avatar
 			avatar = prodOrig.avatar;
-			avatar = avatar
-				? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
-				: "/imagenes/8-Agregar/IM.jpg";
+			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
+			if (!avatar) avatar = "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 		}
-		// 5. Configurar el título de la vista
+		// 5. Configura el título de la vista
 		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
@@ -258,7 +234,7 @@ module.exports = {
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
 			cartel: true,
-			omitirImagenDerecha,
+			omitirImagenDerecha: codigo == "producto/edicion/avatar",
 		});
 	},
 	// RCLVs

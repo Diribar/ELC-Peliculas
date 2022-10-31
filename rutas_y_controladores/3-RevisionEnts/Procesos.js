@@ -96,7 +96,7 @@ module.exports = {
 			productos = [...peliculas, ...colecciones, ...capitulos];
 			// Dejar solamente los productos de gr_aprobado
 			// productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
-			productos = productos.filter((n) => n.status_registro_id!=creado_id);
+			productos = productos.filter((n) => n.status_registro_id != creado_id);
 			// Dejar solamente los productos que no tengan problemas de captura
 			if (productos.length)
 				productos = productos.filter(
