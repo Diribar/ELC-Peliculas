@@ -14,15 +14,13 @@ module.exports = async (req, res, next) => {
 	if (!informacion) {
 		var opcionOK = menuOpciones.find((n) => req.path.startsWith("/" + n.url));
 		if (!opcionOK) informacion = respuesta;
-		console.log(17, opcionOK);
 	}
 	// Averigua la subopción
 	if (!informacion) {
 		let seEligioUnaSubOpcion = "/" + opcionOK.url != req.path;
 		let subOpcionOK = seEligioUnaSubOpcion
-			? menuSubOpciones[opcionOK.url].find((n) => req.path == "/" + opcionOK.url + "/" + n.url)
+			? menusSubOpciones[opcionOK.url].find((n) => req.path == "/" + opcionOK.url + "/" + n.url)
 			: true;
-		console.log(24, seEligioUnaSubOpcion, "/" + opcionOK.url, req.path);
 		if (!subOpcionOK) informacion = respuesta;
 	}
 	// Validar que la url sea de alguna opción o sub-opción válida

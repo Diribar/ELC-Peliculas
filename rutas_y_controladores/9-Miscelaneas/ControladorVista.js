@@ -1,15 +1,15 @@
 "use strict";
+const variables = require("../../funciones/3-Procesos/Variables");
 
 // *********** Controlador ***********
 module.exports = {
 	// Vistas de vistas - Institucional
 	home: (req, res) => {
-		const tema = "institucional";
-		const codigo = "inicio";
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
+			tema: "institucional",
+			codigo: "inicio",
 			titulo: "Inicio",
+			opciones: variables.opcionesInicio,
 		});
 	},
 	quienesSomos: (req, res) => {

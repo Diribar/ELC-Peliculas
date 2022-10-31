@@ -17,7 +17,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 	global.menuOpciones = variables.menuOpciones;
 	let subOpcionesListado = variables.menuSubOpcionesListado;
 	let subOpcionesCFC_VPC = await BD_genericas.obtenerTodos("subcategorias", "orden");
-	global.menuSubOpciones = {
+	global.menusSubOpciones = {
 		listado: subOpcionesListado,
 		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
 		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
@@ -77,6 +77,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
 	path.resolve(__dirname, "./vistas/6-Consultas"),
+	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 

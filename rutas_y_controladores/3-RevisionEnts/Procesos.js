@@ -361,7 +361,8 @@ module.exports = {
 		return [quedanCampos, edicion, statusAprob];
 	},
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
-		let campos = variables.camposRevisarProd;
+		let campos = variables.camposRevisar.productos;
+
 		for (let i = campos.length - 1; i >= 0; i--) {
 			let campoNombre = campos[i].nombre;
 			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
