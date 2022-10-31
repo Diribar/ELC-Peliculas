@@ -26,4 +26,5 @@
 #informacion .tituloMasImagen .contenedorImagen img {border-radius: 10px; max-height: 100%; max-width: 100%;}
 
 /* Flechas */
+#flechas {margin-top: 15px; margin-bottom: 15px;}
 #flechas i {font-size: 2rem;}

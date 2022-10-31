@@ -17,6 +17,7 @@ module.exports = (sequelize, dt) => {
 		actuacion: {type: dt.STRING(500)},
 		produccion: {type: dt.STRING(100)},
 		sinopsis: {type: dt.STRING(900)},
+		avatar_url: {type: dt.STRING(100)},
 		avatar_archivo: {type: dt.STRING(17)},
 
 		en_castellano_id: {type: dt.INTEGER},
