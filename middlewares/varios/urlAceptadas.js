@@ -12,16 +12,16 @@ module.exports = async (req, res, next) => {
 	};
 	// Averigua si hay un error de opción
 	if (!informacion) {
-		var opcionOK = menuOpciones.find((n) => req.path.startsWith("/" + n.url));
-		if (!opcionOK) informacion = respuesta;
+		var opcion = menuOpciones.find((n) => req.params.codigo == n.url);
+		if (!opcion) informacion = respuesta;
 	}
 	// Averigua la subopción
 	if (!informacion) {
-		let seEligioUnaSubOpcion = "/" + opcionOK.url != req.path;
-		let subOpcionOK = seEligioUnaSubOpcion
-			? menusSubOpciones[opcionOK.url].find((n) => req.path == "/" + opcionOK.url + "/" + n.url)
+		let seEligioUnaSubOpcion = "/" + opcion.url != req.path;
+		let subOpcion = seEligioUnaSubOpcion
+			? menusSubOpciones[opcion.url].find((n) => req.params.subOpcion == n.url)
 			: true;
-		if (!subOpcionOK) informacion = respuesta;
+		if (!subOpcion) informacion = respuesta;
 	}
 	// Validar que la url sea de alguna opción o sub-opción válida
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
