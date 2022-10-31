@@ -394,13 +394,6 @@ module.exports = {
 	// Entorno Mostrar Productos
 	menuOpciones: [
 		{
-			nombre: "Sugeridas para el momento del año",
-			url: "sugeridas",
-			titulo: "Sugeridas",
-			vista: "1-Listado",
-			comentario: "Las películas más afines con la época del año",
-		},
-		{
 			nombre: "Todas las Películas",
 			url: "listado",
 			titulo: "Listado",
@@ -422,11 +415,11 @@ module.exports = {
 			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
 		},
 	],
-	subMenuOpciones: [
+	menuSubOpcionesListado: [
+		{nombre: "Sugeridas para el momento del año", url: "sugeridas"},
 		{nombre: "Por mejor calificación", url: "calificacion"},
 		{nombre: "Por año de estreno más reciente", url: "estreno"},
 		{nombre: "Por incorporación más reciente", url: "incorporacion"},
-		{nombre: "Por orden de visita más reciente", url: "visita"},
 	],
 
 	// Vistas

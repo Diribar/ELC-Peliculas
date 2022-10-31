@@ -378,7 +378,7 @@ module.exports = {
 	},
 	revisarImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
-		return tipo.slice(0, 6) != "image/"
+		return !tipo.startsWith("image/")
 			? "Necesitamos un archivo de imagen"
 			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
 			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"

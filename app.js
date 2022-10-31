@@ -12,6 +12,16 @@ require("dotenv").config(); // Para usar el archivo '.env'
 	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
 	global.status_registro_us = await BD_genericas.obtenerTodos("status_registro_us", "orden");
 	global.roles_us = await BD_genericas.obtenerTodos("roles_usuarios", "orden");
+	// Menus de consultas
+	const variables = require("./funciones/3-Procesos/Variables");
+	global.menuOpciones = variables.menuOpciones;
+	let subOpcionesListado = variables.menuSubOpcionesListado;
+	let subOpcionesCFC_VPC = await BD_genericas.obtenerTodos("subcategorias", "orden");
+	global.menuSubOpciones = {
+		listado: subOpcionesListado,
+		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
+		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
+	};
 })();
 
 const path = require("path");
@@ -66,7 +76,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/6-Productos"),
+	path.resolve(__dirname, "./vistas/6-Consultas"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
@@ -95,7 +105,6 @@ app.use("/consultas", rutaConsultas);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
-const variables = require("./funciones/3-Procesos/Variables");
 app.use((req, res) => {
 	let informacion = {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
