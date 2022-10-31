@@ -12,14 +12,14 @@ module.exports = async (req, res, next) => {
 	};
 	// Averigua si hay un error de opción
 	if (!informacion) {
-		var opcion = menuOpciones.find((n) => req.params.codigo == n.url);
+		var opcion = menuOpciones.find((n) => n.url == req.params.codigo);
 		if (!opcion) informacion = respuesta;
 	}
 	// Averigua la subopción
 	if (!informacion) {
 		let seEligioUnaSubOpcion = "/" + opcion.url != req.path;
 		let subOpcion = seEligioUnaSubOpcion
-			? menusSubOpciones[opcion.url].find((n) => req.params.subOpcion == n.url)
+			? menusSubOpciones[opcion.url].find((n) => n.url == req.params.subOpcion)
 			: true;
 		if (!subOpcion) informacion = respuesta;
 	}
