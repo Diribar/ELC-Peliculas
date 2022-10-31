@@ -107,6 +107,7 @@ app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
 app.use((req, res) => {
+	const variables = require("./funciones/3-Procesos/Variables");
 	let informacion = {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],

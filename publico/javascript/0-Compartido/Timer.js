@@ -64,8 +64,6 @@ window.addEventListener("load", async () => {
 		let cartel = document.querySelector("#cartel");
 		let mensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
-		// Formatos
-		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		// Mensajes
 		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));

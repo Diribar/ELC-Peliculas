@@ -24,6 +24,7 @@ window.addEventListener("load", async () => {
 		urlInputs: document.querySelectorAll(".inputError input[name='url'"),
 		calidadInputs: document.querySelectorAll(".calidad .inputError .input"),
 		castellanoInputs: document.querySelectorAll(".castellano .inputError .input"),
+		subtit_castellano: document.querySelectorAll(".subtit_castellano .inputError .input"),
 		gratuitoInputs: document.querySelectorAll(".gratuito .inputError .input"),
 		tipoInputs: document.querySelectorAll(".tipo .inputError .input"),
 		completoInputs: document.querySelectorAll(".completo .inputError .input"),
@@ -51,11 +52,6 @@ window.addEventListener("load", async () => {
 			return [fila, columna];
 		},
 		depurarUrl: () => {
-			// Quitar caracteres incompatibles con un 'url'
-			v.urlInputs[v.filaAlta].value = v.urlInputs[v.filaAlta].value.replace(
-				/[^A-Za-záéíóúüñ?=&./\d]/gi,
-				""
-			);
 			// Obtiene el valor actual
 			let valor = v.urlInputs[v.filaAlta].value;
 			// Obtiene ambos índices
@@ -65,7 +61,7 @@ window.addEventListener("load", async () => {
 				indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
 			// Si es YOUTUBE, quitarle el sufijo
-			if (url.startsWith("youtube.com") && url.includes("&"))
+			if (url.startsWith("youtube.com") && url.includes("&t="))
 				url = url.slice(0, url.lastIndexOf("&t="));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
@@ -80,6 +76,7 @@ window.addEventListener("load", async () => {
 			return url;
 		},
 		controlesEnUrl: async (fila) => {
+			console.log(83, fila, v.filaAlta);
 			// Detectar errores y aplicar consecuencias
 			let error = fila == v.filaAlta ? await mensajeDeError(fila, "url") : "";
 			return !error || !error.url;
@@ -105,6 +102,11 @@ window.addEventListener("load", async () => {
 			return !error || !error.castellano;
 		},
 		controlesEnSubtitulosCastellano: async (fila) => {
+			// Si el resultado es conocido --> ponerlo
+			let condicion = v.castellanoInputs[fila].value == "1";
+			if (condicion) v.subtit_castellano[fila].value = "-";
+			console.log(v.subtit_castellano[fila].value);
+			v.subtit_castellano[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
 			let error = await mensajeDeError(fila, "subtit_castellano");
 			// Fin
@@ -202,7 +204,7 @@ window.addEventListener("load", async () => {
 		let autofocus = false;
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
-			if (col == 0 && OK) OK = await fn.controlesEnUrl(fila);
+			if (!col && OK) OK = await fn.controlesEnUrl(fila);
 			if (OK) var proveedor = obtenerProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, proveedor);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, proveedor);
@@ -250,13 +252,14 @@ window.addEventListener("load", async () => {
 		let indice = fila * columnas + columna;
 		// completo o n° parte
 		let [campoAnt, valorAnt] =
-			campo == "completo" || campo == "parte"
+			campo == "subtit_castellano" || campo == "completo" || campo == "parte"
 				? [inputs[indice - 1].name + "=", inputs[indice - 1].value + "&"]
 				: ["", ""];
 		// Obtiene los datos de campo y valor
 		let valor = encodeURIComponent(inputs[indice].value);
 		// Consolidar la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
+		// console.log(condiciones);
 		// Averiguar si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
 		// Guarda el mensaje de error
