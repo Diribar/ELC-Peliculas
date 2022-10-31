@@ -11,8 +11,8 @@ let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
 router.get("/", vista.home);
 
 // Vistas de Opciones
-router.get("/:id", urlAceptadas, vista.opcion);
-router.get("/:id/:id", urlAceptadas, vista.subOpcion);
+router.get("/:opcion", urlAceptadas, vista.opcion);
+router.get("/:opcion/:subOpcion", urlAceptadas, vista.subOpcion);
 // router.post("/:id/:id", soloUsuarios, vista.filtros);
 
 // Fin
