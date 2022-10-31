@@ -1,13 +1,13 @@
 /* Temas generales */
-#cuerpo {position: relative; display: flex; flex-direction: row; flex-grow: 1; align-items: flex-start;}
+#cuerpo {flex-direction: row;}
+
+#cuerpo #zona-de-vitreaux {padding-left: 30px; width: 220px; display: flex; flex-direction: column; justify-content: center;}
 
 /* Contador de Películas */
 #cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}
 #cuerpo #contador-de-peliculas {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}
 #cuerpo #contador-de-peliculas {font-size: 1.1rem; font-weight: bold;}
 
-/* Filtros */
-/* #cuerpo #zona-de-vitreaux {border: red 2px solid;} */
 
 /* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
 #cuerpo #zona-de-pelis {align-items: flex-start; margin-left: 40px; height: 100%;}

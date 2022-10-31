@@ -1,6 +1,6 @@
-#cuerpo {height: 100%; display: flex; flex-direction: row; flex-grow: 1;}
+#cuerpo {flex-direction: row;}
 
-#zona-de-vitreaux {padding-left: 30px; width: 220px; height: 100%; display: flex; flex-direction: column; justify-content: center;}
+#cuerpo #zona-de-vitreaux {padding-left: 30px; width: 220px; display: flex; flex-direction: column; justify-content: center;}
 
 /* Zona de Bienvenida */
 #cuerpo #zona-de-bienvenida {display: flex; flex-direction: row; flex-grow: 1; align-self: center; justify-content: center;}
