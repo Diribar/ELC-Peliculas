@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	resumen: async (RCLV, cantProdsEnBD) => {
 		// Variable fecha
-		let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
+		let diaDelAno = await BD_genericas.obtienePorId("dias_del_ano", RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
 		let mes = mesesAbrev[diaDelAno.mes_id - 1];
 		let fecha = dia + "/" + mes;
@@ -59,7 +59,7 @@ module.exports = {
 				let avatar = n.avatar.includes("/")
 					? n.avatar
 					: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
-				return {...n, entidad, avatar, prodNombre: comp.obtenerEntidadNombre(entidad)};
+				return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsYaEnBD.push(...aux);
 		});
@@ -84,7 +84,7 @@ module.exports = {
 		// Averigua si el RCLV tiene algún "proceso de canonización"
 		if (RCLV.proceso_id) {
 			// Obtiene los procesos de canonización
-			let proceso = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+			let proceso = await BD_genericas.obtieneTodos("procesos_canonizacion", "orden").then((n) =>
 				n.find((m) => m.id == RCLV.proceso_id)
 			);
 			// Asigna el nombre del proceso
@@ -127,7 +127,7 @@ module.exports = {
 		} else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
 			let id = req.query.id;
-			let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
+			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualizar_registro(entidad, id, DE) // Actualizar el registro original

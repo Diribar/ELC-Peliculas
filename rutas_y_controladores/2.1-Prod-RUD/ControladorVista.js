@@ -19,12 +19,12 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene el avatar y la versión más completa posible del producto
 		let avatar = comp.nombreAvatar(prodOrig, prodEdic);
 		let prodComb = {...prodOrig, ...prodEdic, avatar, id: prodID};
 		// 5. Configura el título de la vista
-		let prodNombre = comp.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -54,8 +54,8 @@ module.exports = {
 			camposDD1 = camposDD.filter((n) => n.antesDePais);
 			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombre != "produccion");
 			camposDD3 = camposDD.filter((n) => n.nombre == "produccion");
-			BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
+			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
+			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
@@ -117,7 +117,7 @@ module.exports = {
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
-			prodComb.capitulos = await BD_especificas.obtenerCapitulos(
+			prodComb.capitulos = await BD_especificas.obtieneCapitulos(
 				prodComb.coleccion_id,
 				prodComb.temporada
 			);
@@ -157,7 +157,7 @@ module.exports = {
 		// Obtiene el userID
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// Obtiene el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar_archivo = req.file ? req.file.filename : "";
 		// Unir 'Edición' y 'Original'

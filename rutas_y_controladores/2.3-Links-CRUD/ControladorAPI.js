@@ -14,8 +14,8 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtenerProvs: async (req, res) => {
-		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
+	obtieneProvs: async (req, res) => {
+		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
 		return res.json(provs);
 	},
 	guardar: async (req, res) => {
@@ -25,9 +25,9 @@ module.exports = {
 		// Completa la info
 		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
-		datos.prov_id = await obtenerProveedorID(datos.url);
+		datos.prov_id = await obtieneProveedorID(datos.url);
 		// Obtiene el link
-		let link_original = await BD_genericas.obtenerPorCamposConInclude(
+		let link_original = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
@@ -55,7 +55,7 @@ module.exports = {
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
 			// Obtiene el link
-			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, ["status_registro"]);
+			link = await BD_genericas.obtienePorCamposConInclude("links", {url: url}, ["status_registro"]);
 			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
@@ -88,7 +88,7 @@ module.exports = {
 		// Completar la info
 		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		// Obtiene el link
-		let link = await BD_genericas.obtenerPorCamposConInclude(
+		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
@@ -118,7 +118,7 @@ module.exports = {
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let inactivo_id = status_registro.find((n) => n.inactivo).id;
 		// Obtiene el link
-		let link = await BD_genericas.obtenerPorCamposConInclude(
+		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
@@ -159,9 +159,9 @@ module.exports = {
 	},
 };
 
-let obtenerProveedorID = async (url) => {
+let obtieneProveedorID = async (url) => {
 	// Obtiene el proveedor
-	let proveedores = await BD_genericas.obtenerTodos("links_provs", "nombre");
+	let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
 	// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 	let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
 	// Si no se reconoce el proveedor, se asume el 'desconocido'

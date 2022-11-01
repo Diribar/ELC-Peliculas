@@ -67,7 +67,7 @@ module.exports = {
 				datos.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datos.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// elc_id de la colección
-				datos.en_colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+				datos.en_colec_id = await BD_especificas.obtieneELC_id("colecciones", {
 					TMDB_id: datos.en_colec_TMDB_id,
 				});
 				datos.prodNombre = "Capítulo";
@@ -123,7 +123,7 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+			datos.colec_id = await BD_especificas.obtieneELC_id("colecciones", {
 				TMDB_id: datos.colec_TMDB_id,
 			});
 			if (datos.colec_id) return datos;
@@ -218,7 +218,7 @@ module.exports = {
 		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
-			let existe = await BD_especificas.obtenerELC_id("capitulos", {TMDB_id: capituloTMDB_Id});
+			let existe = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: capituloTMDB_Id});
 			if (!existe) {
 				// Preparar datos del capítulo
 				let datosCap = {
@@ -386,15 +386,15 @@ module.exports = {
 		// Obtiene los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = comp.obtenerEntidadNombre(entidad);
-		let FA_id = this.obtenerFA_id(direccion);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let FA_id = this.obtieneFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			let paisNombreToId = async (pais_nombre) => {
 				// Función para convertir 'string de nombre' en  'string de ID'
 				let resultado = [];
 				if (pais_nombre.length) {
-					let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+					let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 					pais_nombreArray = pais_nombre.split(", ");
 					// Convertir 'array de nombres' en 'string de ID"
 					for (let pais_nombre of pais_nombreArray) {
@@ -463,8 +463,8 @@ module.exports = {
 		return resultado;
 	},
 	// ControllerVista (copiarFA_Guardar)
-	// ControllerAPI (obtenerFA_id)
-	obtenerFA_id: (url) => {
+	// ControllerAPI (obtieneFA_id)
+	obtieneFA_id: (url) => {
 		// Output para FE y BE
 		let aux = url.indexOf("www.filmaffinity.com/");
 		url = url.slice(aux + 21);

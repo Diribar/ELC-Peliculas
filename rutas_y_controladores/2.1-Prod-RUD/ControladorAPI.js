@@ -8,13 +8,13 @@ const validar = require("./FN-Validar");
 // *********** Controlador ***********
 module.exports = {
 	// Detalle
-	obtenerCalificaciones: async (req, res) => {
+	obtieneCalificaciones: async (req, res) => {
 		let {entidad, id: prodID, detalle} = req.query;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
 		// Datos generales
-		datos = await BD_genericas.obtenerPorId(entidad, prodID).then((n) =>
+		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) =>
 			n.fe_valores != null &&
 			n.entretiene != null &&
 			n.calidad_tecnica != null &&
@@ -29,7 +29,7 @@ module.exports = {
 		// Datos particulares
 		if (detalle) {
 			let producto_id = comp.obtieneEntidad_id(entidad);
-			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
+			datos = await BD_genericas.obtienePorCampos("cal_registros", {
 				usuario_id: userID,
 				[producto_id]: prodID,
 			}).then((n) =>
@@ -54,11 +54,11 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtenerVersionesDelProducto: async (req, res) => {
+	obtieneVersionesDelProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
@@ -69,7 +69,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
 		if (condicion && prodEdic) BD_genericas.eliminarPorId("prods_edicion", prodEdic.id);

@@ -6,14 +6,14 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// Links - Controlador Vista
-	obtenerLinksActualizados: async (entidad, prodID, userID) => {
+	obtieneLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
 		let producto_id = comp.obtieneEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude(
 			"links",
 			{[producto_id]: prodID},
 			includes
@@ -38,14 +38,14 @@ module.exports = {
 		let datos = {};
 		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
 		// Obtiene el producto con include a links
-		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
+		let producto = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, [
 			"links_gratuitos_cargados",
 			"links_gratuitos_en_la_web",
 			"links",
 			"status_registro",
 		]);
 		// Obtiene los links gratuitos de películas del producto
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
 			"status_registro",
 			"tipo",
 		])
@@ -56,7 +56,7 @@ module.exports = {
 		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_creado) : [];
 		if (linksActivos.length || linksTalVez.length) {
 			// Obtiene los ID de si, no y TalVez
-			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si_no_parcial = await BD_genericas.obtieneTodos("si_no_parcial", "id");
 			let si = si_no_parcial.find((n) => n.si).id;
 			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 			let no = si_no_parcial.find((n) => n.no).id;

@@ -30,9 +30,9 @@ router.get("/api/PC-cant-prod", API.cantProductos);
 router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
 router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
 router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
-router.get("/api/FA-obtener-fa-id", API.obtenerFA_id);
-router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
-router.get("/api/obtener-subcategorias", API.obtenerSubcategorias);
+router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
+router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
+router.get("/api/obtiene-subcategorias", API.obtieneSubcategorias);
 router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 
 // VISTAS
