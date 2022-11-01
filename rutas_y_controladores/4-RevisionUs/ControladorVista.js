@@ -150,7 +150,7 @@ module.exports = {
 
 		// Actualiza el usuario
 		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: comp.ahora()};
-		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
+		await BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
 		if (durac_penalidad)
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
@@ -182,7 +182,7 @@ let validarContenidoIF = (usuario, avatar) => {
 };
 let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 	// Limpia en 'usuarios' el campo que corresponda
-	BD_genericas.actualizarPorId("usuarios", usuario.id, {[campo]: null});
+	BD_genericas.actualizaPorId("usuarios", usuario.id, {[campo]: null});
 	// Alimenta la tabla 'edics_rech'
 	let datos = {
 		entidad: "usuarios",

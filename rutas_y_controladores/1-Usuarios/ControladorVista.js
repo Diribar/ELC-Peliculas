@@ -335,7 +335,7 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
 		let hoyAhora = comp.ahora();
-		procesos.actualizarElContadorDeLogins(usuario, hoyAhora);
+		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
@@ -379,7 +379,7 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, {
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
 		});

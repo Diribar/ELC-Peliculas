@@ -13,18 +13,18 @@ module.exports = {
 		// Genera la info a actualizar
 		novedades = {...novedades, status_registro_id: statusNuevo.id};
 		// Actualiza la info
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, novedades);
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
 		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
 		// Fin
 		return usuario;
 	},
 	// ControladorVista: loginGuardar
-	actualizarElContadorDeLogins: (usuario, hoyAhora) => {
+	actualizaElContadorDeLogins: (usuario, hoyAhora) => {
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
 		if (hoyAhora != hoyUsuario) {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
 		return;
 	},

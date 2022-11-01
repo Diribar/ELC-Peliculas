@@ -69,7 +69,7 @@ module.exports = {
 			// Acciones para LINKS GRATUITOS CARGADOS
 			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
 			// Actualizar la BD
-			BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
+			BD_genericas.actualizaPorId(prodEntidad, prodID, datos);
 		}
 		return;
 	},

@@ -38,7 +38,7 @@ module.exports = {
 		datos = {[campo]: prodEdic[campo]};
 		if (edicAprob) prodOrig = await procesos.actualizaOriginal(prodOrig, prodEdic, datos, userID);
 		// Actualizaciones en el USUARIO
-		await procesos.accionesEnUsuario(req, prodOrig, prodEdic);
+		await procesos.accionesComplementarias(req, prodOrig, prodEdic);
 		// Limpia la edición y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
@@ -94,7 +94,7 @@ module.exports = {
 				datos.motivo_id = motivo_id;
 			}
 		}
-		await BD_genericas.actualizarPorId("links", link.id, datos);
+		await BD_genericas.actualizaPorId("links", link.id, datos);
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = motivo ? motivo.duracion : 0;
 		datos = {
@@ -134,7 +134,7 @@ module.exports = {
 		let linkOrig = {id: linkID};
 		if (edicAprob) linkOrig = await procesos.actualizaOriginal(linkOrig, linkEdic, campos, userID);
 		// Actualizaciones en el USUARIO
-		await procesos.accionesEnUsuario(req, linkOrig, linkEdic);
+		await procesos.accionesComplementarias(req, linkOrig, linkEdic);
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
