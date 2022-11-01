@@ -153,7 +153,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
 		if (durac_penalidad)
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
 
 		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");

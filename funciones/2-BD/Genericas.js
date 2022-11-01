@@ -54,7 +54,7 @@ module.exports = {
 	eliminarPorId: (entidad, id) => {
 		return db[entidad].destroy({where: {id: id}});
 	},
-	aumentarElValorDeUnCampo: (entidad, id, campo, aumento) => {
+	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {
 		return db[entidad].increment(campo, {by: aumento, where: {id: id}});
 	},
 	contarCasos: (entidad, objeto) => {

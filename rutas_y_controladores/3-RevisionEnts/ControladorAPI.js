@@ -75,7 +75,7 @@ module.exports = {
 		motivo_id = !creado || !creadoAprob ? (creado ? motivo_id : link.motivo_id) : null;
 		// USUARIO - Actualizaciones
 		let campo = "link_" + (decision ? "aprob" : "rech");
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
 		if (!inactivar && !creadoAprob) {
 			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
