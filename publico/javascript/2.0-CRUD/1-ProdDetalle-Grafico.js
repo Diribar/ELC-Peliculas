@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 
 	// Obtiene las calificaciones
-	let ruta = "/producto/api/detalle/obtener-calificaciones/";
+	let ruta = "/producto/api/detalle/obtiene-calificaciones/";
 	let calificaciones = await fetch(
 		ruta + "?entidad=" + entidad + "&id=" + prodID + "&detalle=" + detalle
 	).then((n) => n.json());

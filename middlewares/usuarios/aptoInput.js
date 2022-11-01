@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.session.usuario.email);
+	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
 	let usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;

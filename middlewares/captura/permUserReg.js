@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	let includes = ["status_registro", "capturado_por"];
 	if (entidad != "usuarios") includes.push("ediciones");
 	if (entidad == "capitulos") includes.push("coleccion");
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
+	const registro = await BD_genericas.obtienePorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
 	const horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, creado_en));
@@ -111,7 +111,7 @@ module.exports = async (req, res, next) => {
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidadCodigo = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtenerEntidadNombre(pc_entidadCodigo);
+			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidadCodigo);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
@@ -206,7 +206,7 @@ module.exports = async (req, res, next) => {
 		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
 		// Obtiene el usuario con los includes
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, asociaciones);
 		// Rutina por cada asociación
 		let i = 0;
 		for (let asociacion of asociaciones) {

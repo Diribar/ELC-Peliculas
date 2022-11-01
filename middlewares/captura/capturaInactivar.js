@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
 	if (req.session.usuario) {
 
 		// Obtiene el registro de la entidad
-		let registro = await BD_genericas.obtenerPorId(entidad, id);
+		let registro = await BD_genericas.obtienePorId(entidad, id);
 		
 		// Verificar que tenga una captura activa del usuario
 		if (

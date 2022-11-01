@@ -6,7 +6,7 @@ const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
 	// Varios
-	obtenerELC_id: (entidad, objeto) => {
+	obtieneELC_id: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
 	},
 	validarRepetidos: (campos, datos) => {
@@ -82,7 +82,7 @@ module.exports = {
 	},
 
 	// CRUD
-	obtenerCapitulos: (coleccion_id, temporada) => {
+	obtieneCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
 				where: {coleccion_id: coleccion_id, temporada: temporada},
@@ -124,7 +124,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtenerRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
+	TC_obtieneRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
 		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 		return db[entidad]
@@ -154,7 +154,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	TC_obtenerEdicsAjenas: (entidad, userID, includes) => {
+	TC_obtieneEdicsAjenas: (entidad, userID, includes) => {
 		return db[entidad]
 			.findAll({
 				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creada por otro usuario
@@ -162,7 +162,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	TC_obtenerLinks_y_Edics: async () => {
+	TC_obtieneLinks_y_Edics: async () => {
 		// Variables
 		let gr_inestables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let include = ["pelicula", "coleccion", "capitulo"];
@@ -177,7 +177,7 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtenerEdicionAjena: async (entidad, entidad_id, entID, userID) => {
+	obtieneEdicionAjena: async (entidad, entidad_id, entID, userID) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
@@ -194,12 +194,12 @@ module.exports = {
 
 	// USUARIOS ---------------------------------------------------------
 	// Controladora/Usuario/Login
-	obtenerUsuarioPorID: (id) => {
+	obtieneUsuarioPorID: (id) => {
 		return db.usuarios
 			.findByPk(id, {include: ["rol_usuario", "status_registro"]})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
-	obtenerUsuarioDistintoIdMasFiltros: (userID, filtros) => {
+	obtieneUsuarioDistintoIdMasFiltros: (userID, filtros) => {
 		return db.usuarios
 			.findAll({
 				where: {
@@ -212,7 +212,7 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()));
 	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
-	obtenerUsuarioPorMail: (email) => {
+	obtieneUsuarioPorMail: (email) => {
 		return db.usuarios
 			.findOne({
 				where: {email: email},
@@ -221,7 +221,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON() : ""));
 	},
 	// Middleware/Usuario/autorizadoFA
-	obtenerAutorizadoFA: (id) => {
+	obtieneAutorizadoFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 };

@@ -175,11 +175,11 @@ module.exports = {
 			let registrosRCLV = {};
 			// Rutina por entidadRCLV
 			await entidadesRCLV.forEach(async (entidadRCLV) => {
-				let aprobados = await BD_genericas.obtenerTodosConInclude(
+				let aprobados = await BD_genericas.obtieneTodosConInclude(
 					entidadRCLV,
 					"status_registro"
 				).then((n) => n.filter((n) => n.status_registro.aprobado));
-				let creados = await BD_genericas.obtenerTodosConInclude(entidadRCLV, "status_registro").then(
+				let creados = await BD_genericas.obtieneTodosConInclude(entidadRCLV, "status_registro").then(
 					(n) => n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
 				);
 				let registros = [...creados, ...aprobados];
@@ -195,7 +195,7 @@ module.exports = {
 			{
 				titulo: "Existe una versión en castellano",
 				nombre: "en_castellano_id",
-				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
 				mensajePeli: [
 					"SI - cuando es el idioma de toda la película, o está subtitulada.",
 					"PARCIAL - cuando lo anterior se cumple parcialmente.",
@@ -213,7 +213,7 @@ module.exports = {
 			{
 				titulo: "Es a Color",
 				nombre: "en_color_id",
-				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
 				mensajePeli: ["SI - es a color.", "NO - es en blanco y negro."],
 				mensajeColec: ["En caso de que algunos capítulos sean a color y otros no, elegí PARCIAL"],
 				angosto: true,
@@ -221,7 +221,7 @@ module.exports = {
 			{
 				titulo: "Público sugerido",
 				nombre: "publico_sugerido_id",
-				valores: userID ? await BD_genericas.obtenerTodos("publicos_sugeridos", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("publicos_sugeridos", "orden") : [],
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
@@ -233,7 +233,7 @@ module.exports = {
 			{
 				titulo: "Categoría",
 				nombre: "categoria_id",
-				valores: userID ? await BD_genericas.obtenerTodos("categorias", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("categorias", "orden") : [],
 				mensajes: [
 					"Centradas en la Fe Católica: significa que el rol de la Fe Católica es protagónico.",
 					"Valores Presentes en la Cultura: los buenos valores deben ser evidentes.",
@@ -243,7 +243,7 @@ module.exports = {
 			{
 				titulo: "Sub-categoría",
 				nombre: "subcategoria_id",
-				valores: userID ? await BD_genericas.obtenerTodos("subcategorias", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("subcategorias", "orden") : [],
 				mensajes: [
 					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: ""},
 					{texto: "Hagiografía - el protagonista debe ser un santo o beato", categ: "CFC"},
@@ -288,7 +288,7 @@ module.exports = {
 			{
 				titulo: "Inspira fe y/o valores",
 				nombre: "fe_valores_id",
-				valores: userID ? await BD_genericas.obtenerTodos("fe_valores", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("fe_valores", "orden") : [],
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				angosto: true,
 				grupo: "calificala",
@@ -296,7 +296,7 @@ module.exports = {
 			{
 				titulo: "Entretiene",
 				nombre: "entretiene_id",
-				valores: userID ? await BD_genericas.obtenerTodos("entretiene", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("entretiene", "orden") : [],
 				mensajes: ["¿Se disfruta el rato viéndola?"],
 				angosto: true,
 				grupo: "calificala",
@@ -304,7 +304,7 @@ module.exports = {
 			{
 				titulo: "Calidad sonora y visual",
 				nombre: "calidad_tecnica_id",
-				valores: userID ? await BD_genericas.obtenerTodos("calidad_tecnica", "orden") : [],
+				valores: userID ? await BD_genericas.obtieneTodos("calidad_tecnica", "orden") : [],
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				angosto: true,
 				grupo: "calificala",
