@@ -77,35 +77,6 @@ module.exports = {
 		// Fin
 		return [edicion, quedanCampos];
 	},
-	accionesSiNoQuedanCampos: async function (prodOrig, prodEdic) {
-		// Variables
-		let statusAprob = false;
-		let ahora = comp.ahora();
-		// 1. Elimina el registro de la edición
-		await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
-		// 2. Averigua si tiene errores
-		let entidadOrig = this.obtieneEntidadDesdeBelongs(prodEdic);
-		let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-		// 2. Acciones si el original no tiene errores y está en status 'gr_creado'
-		if (!errores.hay && prodOrig.status_registro.gr_creado) {
-			// Genera la información a actualizar en el registro original
-			let datos = {
-				alta_terminada_en: funcionAhora(),
-				lead_time_creacion: this.obtieneLeadTime(prodOrig.creado_en, ahora),
-				status_registro_id: await BD_especificas.obtieneELC_id("status_registro", {aprobado: 1}),
-			};
-			// Cambia el status del producto e inactiva la captura
-			await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
-			// Si es una colección, le cambia el status también a los capítulos
-			if (entidadOrig == "colecciones") {
-				datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora}; // Amplía los datos
-				BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos); // Actualiza el status de los capitulos
-			}
-			// Cambia el valor de la variable que se informará
-			statusAprob = true;
-		}
-		return statusAprob;
-	},
 
 	// ABM de registros
 	crear_registro: async (entidad, datos, userID) => {
@@ -114,8 +85,8 @@ module.exports = {
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
-	actualizar_registro: async (entidad, id, datos) => {
-		await BD_genericas.actualizarPorId(entidad, id, datos);
+	actualiza_registro: async (entidad, id, datos) => {
+		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
@@ -132,7 +103,7 @@ module.exports = {
 			status_registro_id: inactivarID,
 		};
 		// Actualiza el registro 'original' en la BD
-		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
+		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
 	},
 	guardar_edicion: async function (entidadOrig, entidadEdic, original, datosEdicion, userID) {
 		// Variables
@@ -155,7 +126,7 @@ module.exports = {
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtienePorCampos(entidadEdic, objeto);
-		if (registroEdic) await BD_genericas.eliminarPorId(entidadEdic, registroEdic.id);
+		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
 		// Completar la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agregar la nueva edición
@@ -210,7 +181,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadDesdeBelongs: (edicion) => {
+	obtieneEntidadDesdeEdicion: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
 			: edicion.coleccion_id
