@@ -165,8 +165,6 @@ CREATE TABLE usuarios (
 	
 	prods_aprob SMALLINT DEFAULT 0,
 	prods_rech SMALLINT DEFAULT 0,
-	rclvs_aprob SMALLINT DEFAULT 0,
-	rclvs_rech SMALLINT DEFAULT 0,
 	links_aprob SMALLINT DEFAULT 0,
 	links_rech SMALLINT DEFAULT 0,
 	edics_aprob SMALLINT DEFAULT 0,
@@ -1251,7 +1249,7 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	status_final_id TINYINT UNSIGNED NOT NULL,
 
 	aprobado BOOLEAN NOT NULL,
-	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
+	duracion DECIMAL(4,1) UNSIGNED NULL,
 
 	comunicado_en DATETIME NULL,
 

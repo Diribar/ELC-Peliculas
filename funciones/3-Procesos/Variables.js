@@ -3,6 +3,60 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
+	opcionesInicio: [
+		{
+			href: "/consultas/listado/sugeridas",
+			src: "/imagenes/8-Inicio/Recomendame.jpg",
+			p: "Quiero que me recomienden una película o colección",
+		},
+		{
+			href: "/consultas/listado/incorporacion",
+			src: "/imagenes/8-Inicio/Filtro.jpg",
+			p: "Quiero elegir una película o colección, con filtros personalizados",
+		},
+		{
+			href: "/consultas/cfc",
+			src: "/imagenes/8-Inicio/Cruz.jpg",
+			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
+		},
+		{
+			href: "/consultas/vpc",
+			src: "/imagenes/8-Inicio/Valores.jpg",
+			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
+		},
+	],
+
+	// Entorno Consulta de Productos
+	menuOpciones: [
+		{
+			nombre: "Todas las Películas",
+			url: "listado",
+			titulo: "Listado",
+			vista: "CN1-Listado",
+			comentario: "Todas las películas de nuestra Base de Datos",
+		},
+		{
+			nombre: "Un paseo por CFC",
+			url: "cfc",
+			titulo: "CFC",
+			vista: "CN2-CFC",
+			comentario: "Películas Centradas en la Fe Católica (CFC)",
+		},
+		{
+			nombre: "Un paseo por VPC",
+			url: "vpc",
+			titulo: "VPC",
+			vista: "CN3-VPC",
+			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+		},
+	],
+	menuSubOpcionesListado: [
+		{nombre: "Sugeridas para el momento del año", url: "sugeridas"},
+		{nombre: "Por mejor calificación", url: "calificacion"},
+		{nombre: "Por año de estreno más reciente", url: "estreno"},
+		{nombre: "Por incorporación más reciente", url: "incorporacion"},
+	],
+
 	// Entorno Agregar Productos
 	camposDD: [
 		{
@@ -390,44 +444,6 @@ module.exports = {
 			{nombre: "parte"},
 		],
 	},
-
-	// Entorno Mostrar Productos
-	menuOpciones: [
-		{
-			nombre: "Sugeridas para el momento del año",
-			url: "sugeridas",
-			titulo: "Sugeridas",
-			vista: "1-Listado",
-			comentario: "Las películas más afines con la época del año",
-		},
-		{
-			nombre: "Todas las Películas",
-			url: "listado",
-			titulo: "Listado",
-			vista: "1-Listado",
-			comentario: "Todas las películas de nuestra Base de Datos",
-		},
-		{
-			nombre: "Un paseo por CFC",
-			url: "cfc",
-			titulo: "CFC",
-			vista: "2-CFC",
-			comentario: "Películas Centradas en la Fe Católica (CFC)",
-		},
-		{
-			nombre: "Un paseo por VPC",
-			url: "vpc",
-			titulo: "VPC",
-			vista: "3-VPC",
-			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
-		},
-	],
-	subMenuOpciones: [
-		{nombre: "Por mejor calificación", url: "calificacion"},
-		{nombre: "Por año de estreno más reciente", url: "estreno"},
-		{nombre: "Por incorporación más reciente", url: "incorporacion"},
-		{nombre: "Por orden de visita más reciente", url: "visita"},
-	],
 
 	// Vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
