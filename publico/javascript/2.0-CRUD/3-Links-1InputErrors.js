@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let rutaObtieneProvs = "/links/api/obtener-provs-links";
+	let rutaObtieneProvs = "/links/api/obtiene-provs-links";
 	let inputs = document.querySelectorAll("tbody .inputError .input");
 	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
 	let columnas = camposInput.length;
@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
-		obtenerFilaColumna: (e) => {
+		obtieneFilaColumna: (e) => {
 			// Obtiene campo
 			let campo = e.target.name;
 			// Obtiene la columna y fila del input
@@ -203,7 +203,7 @@ window.addEventListener("load", async () => {
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
 			if (!col && OK) OK = await fn.controlesEnUrl(fila);
-			if (OK) var proveedor = obtenerProveedor(fila);
+			if (OK) var proveedor = obtieneProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, proveedor);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, proveedor);
 			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
@@ -224,7 +224,7 @@ window.addEventListener("load", async () => {
 		// Poner el foco en el input a resolver
 		if (focoEnColumna) inputs[focoEnColumna].focus();
 	};
-	let obtenerProveedor = (fila) => {
+	let obtieneProveedor = (fila) => {
 		// Obtiene el url
 		let url = v.urlInputs[fila].value;
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
@@ -276,7 +276,7 @@ window.addEventListener("load", async () => {
 	// Event Listeners
 	v.form.addEventListener("input", async (e) => {
 		// Obtiene la fila y columna
-		let [fila, columna] = fn.obtenerFilaColumna(e);
+		let [fila, columna] = fn.obtieneFilaColumna(e);
 		// Si hubo un error (fila=filas), interrumpir
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo

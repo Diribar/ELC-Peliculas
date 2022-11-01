@@ -14,13 +14,13 @@ module.exports = {
 		const datos = req.query;
 		// 2. Variables
 		let entidad = req.query.entidad;
-		let meses = await BD_genericas.obtenerTodos("meses", "id");
+		let meses = await BD_genericas.obtieneTodos("meses", "id");
 		let dataEntry = req.session[entidad]
 			? req.session[entidad]
 			: req.cookies[entidad]
 			? req.cookies[entidad]
 			: {};
-		let nombre = comp.obtenerEntidadNombre(entidad);
+		let nombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
 			(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
 		let tituloCuerpo =
@@ -31,11 +31,11 @@ module.exports = {
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
+			var procesos_canonizacion = await BD_genericas.obtieneTodos("procesos_canonizacion", "orden");
 			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
-			var roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
+			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			var apariciones_marianas = await BD_genericas.obtenerTodos("hechos", "nombre");
+			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
 		}
 		// 4. Pasos exclusivos para edición
@@ -44,13 +44,13 @@ module.exports = {
 			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
 			includes.push("status_registro");
 			// Pisa el data entry de session
-			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+			dataEntry = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
+				let dia_del_ano = await BD_genericas.obtieneTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
 				);
 				dataEntry.dia = dia_del_ano.dia;
@@ -110,12 +110,12 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
-		let entidadNombre = comp.obtenerEntidadNombre(entidad);
+		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		// Obtiene RCLV con produtos
 		let entProductos = ["peliculas", "colecciones", "capitulos"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
-		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
+		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
 		let prodsYaEnBD = procesos.prodsYaEnBD(entProductos, RCLV);
 		let cantProdsEnBD = prodsYaEnBD.length;
@@ -133,7 +133,7 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
-			Entidad: comp.obtenerEntidadNombre(entidad),
+			Entidad: comp.obtieneEntidadNombre(entidad),
 		});
 	},
 };

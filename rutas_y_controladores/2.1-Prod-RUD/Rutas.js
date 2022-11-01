@@ -23,10 +23,10 @@ const todos = [soloUsuarios, aptoInput, entidad, id, permUserReg, capturaActivar
 //************************ Rutas ****************************
 // Rutas de APIs
 // Detalle
-router.get("/api/detalle/obtener-calificaciones", API.obtenerCalificaciones);
+router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
 // Edición
 router.get("/api/edicion/validar", API.validarEdicion);
-router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
+router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesDelProducto);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
 router.get("/api/edicion/eliminar", API.prod_EliminarEdic);
 

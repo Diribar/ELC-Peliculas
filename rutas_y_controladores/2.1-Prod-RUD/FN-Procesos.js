@@ -5,7 +5,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// Producto
-	obtenerVersionesDelProducto: async (entidad, prodID, userID) => {
+	obtieneVersionesDelProducto: async (entidad, prodID, userID) => {
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -22,7 +22,7 @@ module.exports = {
 		if (entidad == "capitulos") includesOriginal.push("coleccion");
 		else if (entidad == "colecciones") includesOriginal.push("capitulos");
 		// Obtiene el producto ORIGINAL
-		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, [
 			...includes,
 			...includesOriginal,
 		]);
@@ -34,7 +34,7 @@ module.exports = {
 			prodOrig = comp.quitarCamposSinContenido(prodOrig);
 			// Obtiene los datos EDITADOS del producto
 			prodEdic = userID
-				? await BD_genericas.obtenerPorCamposConInclude(
+				? await BD_genericas.obtienePorCamposConInclude(
 						"prods_edicion",
 						{[producto_id]: prodID, editado_por_id: userID},
 						includes

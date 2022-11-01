@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
 
 	// Formulas
-	let obtenerDataEntry = (fila) => {
+	let obtieneDataEntry = (fila) => {
 		let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 		for (let columna = 0; columna < columnas; columna++) {
 			let indice = fila * columnas + columna;
@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
 			// Obtiene los datos 
-			let objeto = obtenerDataEntry(fila);
+			let objeto = obtieneDataEntry(fila);
 			// Submit
 			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
 			window.location.reload();
