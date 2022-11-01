@@ -45,13 +45,13 @@ module.exports = {
 	agregarRegistro: (entidad, datos) => {
 		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
-	actualizarPorId: (entidad, id, datos) => {
+	actualizaPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
-	actualizarTodosPorCampos: (entidad, objeto, datos) => {
+	actualizaTodosPorCampos: (entidad, objeto, datos) => {
 		return db[entidad].update(datos, {where: objeto});
 	},
-	eliminarPorId: (entidad, id) => {
+	eliminaPorId: (entidad, id) => {
 		return db[entidad].destroy({where: {id: id}});
 	},
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {

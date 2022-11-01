@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 			registro.captura_activa
 		) {
 			// En caso afirmativo, inactivar la captura
-			await BD_genericas.actualizarPorId(entidad, id, {captura_activa: false});
+			await BD_genericas.actualizaPorId(entidad, id, {captura_activa: false});
 		}
 	}
 	// Fin

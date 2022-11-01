@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
 			datos.mostrar_cartel_respons = true;
 		}
 		// Actualiza el registro
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
 		// Actualizar la variable usuario
 		usuario = {...usuario, ...datos};
 	};
