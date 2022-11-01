@@ -15,7 +15,7 @@ module.exports = {
 			let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			campos = [...camposDD, ...camposDP].map((n) => n.nombre);
 		}
-		// Averiguar si hay errores de validación DD y DP
+		// Averigua si hay errores de validación DD y DP
 		let erroresDD = await validarProd.datosDuros(campos, datos);
 		let erroresDP = await validarProd.datosPers(campos, datos);
 		// Terminar

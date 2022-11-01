@@ -51,7 +51,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		let link;
-		// Averiguar si no existe el 'url'
+		// Averigua si no existe el 'url'
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
 			// Obtiene el link

@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
-		// Averiguar si hay un error
+		// Averigua si hay un error
 		let campo = inputs[i].name;
 		let valor = encodeURIComponent(inputs[i].value);
 		let mensaje = errores[campo];

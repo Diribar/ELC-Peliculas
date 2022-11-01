@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 	// Guardar - Hecho
 	botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", async () => {
-			// Averiguar si está inactivo --> return
+			// Averigua si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
 			// Obtiene los datos 
@@ -49,7 +49,7 @@ window.addEventListener("load", async () => {
 	});
 	botonesRecuperar.forEach((botonRecuperar, fila) => {
 		botonRecuperar.addEventListener("click", async () => {
-			// Averiguar si está inactivo --> return
+			// Averigua si está inactivo --> return
 			if (botonRecuperar.classList.contains("inactivo")) return;
 			botonRecuperar.classList.add("inactivo");
 			// Obtiene los datos del link
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 	});
 	botonesDeshacer.forEach((botonDeshacer, fila) => {
 		botonDeshacer.addEventListener("click", async () => {
-			// Averiguar si está inactivo --> return
+			// Averigua si está inactivo --> return
 			if (botonDeshacer.classList.contains("inactivo")) return;
 			botonDeshacer.classList.add("inactivo");
 			// Obtiene los datos del link

@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 			let objeto = "entidad=" + entidad + "&id=" + prodID;
 			for (let input of inputs)
 				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
-			// Averiguar los errores
+			// Averigua los errores
 			let errores = await fetch(rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
 			campos.forEach((campo, i) => {

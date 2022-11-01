@@ -74,7 +74,7 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtiene más información del producto
 		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
-		// 2. Averiguar si es una película y pertenece a una colección
+		// 2. Averigua si es una película y pertenece a una colección
 		let errores = await validar.averiguarSiEsColeccion(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
 		if (errores.mensaje == "agregarCapitulos") {
@@ -160,7 +160,7 @@ module.exports = {
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 3. Averiguar si hay errores de validación
+		// 3. Averigua si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposDD_errores = camposDD.map((n) => n.nombre);
 		let avatar = datosDuros.avatar_url;
@@ -266,7 +266,7 @@ module.exports = {
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 5. Averiguar si hay errores de validación
+		// 5. Averigua si hay errores de validación
 		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombre));
 		let errores = await validar.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
@@ -440,7 +440,7 @@ module.exports = {
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
-		// 2. Averiguar si hay errores de validación
+		// 2. Averigua si hay errores de validación
 		//let errores = await validar.desambiguar(infoTMDBparaDD);
 		// 3. Si hay errores, redireccionar al Form
 		// 4. Generar la session para la siguiente instancia
@@ -483,9 +483,9 @@ module.exports = {
 		let copiarFA = {...aux, ...req.body};
 		req.session.copiarFA = copiarFA;
 		res.cookie("copiarFA", copiarFA, {maxAge: unDia});
-		// 2.1. Averiguar si hay errores de validación
+		// 2.1. Averigua si hay errores de validación
 		let errores = await validar.copiarFA(copiarFA);
-		// 2.2. Averiguar si el FA_id ya está en la BD
+		// 2.2. Averigua si el FA_id ya está en la BD
 		FA_id = await procesos.obtieneFA_id(req.body.direccion);
 		if (!errores.direccion) {
 			let elc_id = await BD_especificas.obtieneELC_id(copiarFA.entidad, {FA_id: FA_id});

@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Averiguar el 'paso'
+	// Averigua el 'paso'
 	let url = window.location.pathname;
 	let paso = url.slice(url.lastIndexOf("/") + 1);
 	paso = {
@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 			return "/producto/agregar/api/PC-cant-prod/?palabrasClave=" + palabrasClave;
 		};
 		var mostrarResultados = async (lectura) => {
-			// Averiguar cantidad de coincidencias
+			// Averigua cantidad de coincidencias
 			let prodsNuevos = lectura.resultados.filter((n) => !n.YaEnBD).length;
 			let cantResultados = lectura.cantResultados;
 			let hayMas = lectura.hayMas;
@@ -419,7 +419,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// ADD EVENT LISTENERS *********************************
-	// Averiguar si hubieron cambios
+	// Averigua si hubieron cambios
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;

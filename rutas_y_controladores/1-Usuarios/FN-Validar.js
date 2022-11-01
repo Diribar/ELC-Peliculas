@@ -96,7 +96,7 @@ module.exports = {
 		return errores;
 	},
 	documentoBE: async function (datos) {
-		// Averiguar los errores
+		// Averigua los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
@@ -137,7 +137,7 @@ module.exports = {
 	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
-		// Averiguar los errores
+		// Averigua los errores
 		let errores = await this.login(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {

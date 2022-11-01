@@ -56,7 +56,7 @@ module.exports = {
 		const st_inactivo = status_registro.find((n) => n.inactivo).id;
 		const ahora = comp.ahora();
 		let datos;
-		// Averiguar si no existe el 'url'
+		// Averigua si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
 		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro"]);

@@ -26,7 +26,7 @@ module.exports = {
 		let diferencia = hasta - desde;
 		if (diferencia < 0) diferencia = 0;
 		let horasDif = diferencia / unaHora;
-		// Averiguar la cantidad de horas por fines de semana
+		// Averigua la cantidad de horas por fines de semana
 		let semanas = parseInt(horasDif / (7 * 24));
 		let horasFDS_por_semanas = semanas * 2 * 24;
 		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
@@ -148,7 +148,7 @@ module.exports = {
 				: "";
 		// Quitar los coincidencias con el original
 		[edicion, quedanCampos] = this.pulirEdicion(original, edicion, familia);
-		// Averiguar si hay algún campo con novedad
+		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtiene el campo 'entidad_id'
 		let entidad_id = this.obtieneEntidad_id(entidadOrig);

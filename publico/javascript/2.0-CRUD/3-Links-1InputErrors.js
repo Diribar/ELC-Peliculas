@@ -257,7 +257,7 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(inputs[indice].value);
 		// Consolidar la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
-		// Averiguar si hay algún error
+		// Averigua si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
 		// Guarda el mensaje de error
 		let mensaje = error[campo];

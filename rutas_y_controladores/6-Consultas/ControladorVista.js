@@ -11,7 +11,7 @@ module.exports = {
 	},
 
 	opcion: async (req, res) => {
-		// Averiguar la opción elegida
+		// Averigua la opción elegida
 		let opcion = menuOpciones.find((n) => req.params.opcion ==  n.url);
 		// Va a la vista
 		res.render("CMP-0Estructura", {
@@ -24,9 +24,9 @@ module.exports = {
 	},
 
 	subOpcion: async (req, res) => {
-		// Averiguar la opción elegida
+		// Averigua la opción elegida
 		let opcion = menuOpciones.find((n) => req.params.opcion ==  n.url);
-		// Averiguar la sub-opción elegida
+		// Averigua la sub-opción elegida
 		let subOpcion = menusSubOpciones[opcion.url].find((n) => req.params.subOpcion == n.url);
 		// Va a la vista
 		res.render("CMP-0Estructura", {
