@@ -20,7 +20,7 @@ module.exports = {
 		};
 		// Obtiene el usuario
 		// let includes = [];
-		let usuarios = await BD_especificas.obtenerUsuarioDistintoIdMasFiltros(userID, campos);
+		let usuarios = await BD_especificas.obtieneUsuarioDistintoIdMasFiltros(userID, campos);
 		usuarios = this.formatoUsuarios(usuarios, "fecha_revisores");
 		// Fin
 		return usuarios;
