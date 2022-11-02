@@ -346,7 +346,7 @@ module.exports = {
 		let quedanCampos, statusAprobFinal;
 
 		// Funciones
-		let archivosSiAprob = async () => {
+		let archivosSiAprob = () => {
 			// Variables
 			// Si el 'avatar original' es un archivo, lo elimina
 			if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
@@ -355,7 +355,7 @@ module.exports = {
 			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
 		};
 		let archivosSiRech = () => {
-			// Elimina el 'avatar edicion'
+			// Elimina el archivo de edicion
 			comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
 		};
 		// Acciones con los archivos de 'avatar'
@@ -397,11 +397,8 @@ module.exports = {
 
 		// 2. Averigua si quedan campos por procesar
 		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic);
-		console.log(399, Object.keys(edicion).length, quedanCampos);
-		// console.log(401, edicion);
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-			console.log(403);
 			// 3. Elimina el registro de la edición
 			await BD_genericas.eliminaPorId("prod_edicion", prodEdic.id);
 
@@ -438,7 +435,6 @@ module.exports = {
 			statusAprob = await actualizaStatusRegistroOriginalSiCorresponde();
 		} else edicion = {...datosEdicion, ...edicion, [campo]: null};
 		// Fin
-		console.log(439, Object.keys(edicion).length, quedanCampos);
 		return [quedanCampos, edicion, statusAprob];
 	},
 	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
@@ -732,8 +728,6 @@ module.exports = {
 		const {entidad, id, campo} = req.query;
 		const userID = req.session.usuario.id;
 		const titulo = variables.camposRevisar.productos.find((n) => n.nombre == campo).titulo;
-		console.log(734, campo);
-		console.log(736, variables.camposRevisar.productos.length);
 		let datos = {
 			entidad,
 			entidad_id: id,
@@ -762,29 +756,19 @@ module.exports = {
 			let fn_valoresAprobRech = () => {
 				let obtieneElValorDeUnCampo = (producto, campo) => {
 					// Variables
-					let camposConVinculo = [
-						{campo: "en_castellano_id", vinculo: "en_castellano"},
-						{campo: "en_color_id", vinculo: "en_color"},
-						{campo: "idioma_original_id", vinculo: "idioma_original"},
-						{campo: "categoria_id", vinculo: "categoria"},
-						{campo: "subcategoria_id", vinculo: "subcategoria"},
-						{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
-						{campo: "personaje_id", vinculo: "personaje"},
-						{campo: "hecho_id", vinculo: "hecho"},
-						{campo: "valor_id", vinculo: "valor"},
-					];
-					let campos = camposConVinculo.map((n) => n.campo);
+					let camposConVinculo = [...variables.camposRevisar.productos];
+					camposConVinculo.filter((n) => n.relac_include);
+					let campos = camposConVinculo.map((n) => n.nombre);
 					let indice = campos.indexOf(campo);
-					let vinculo = indice >= 0 ? camposConVinculo[indice].vinculo : "";
+					let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";
 					let respuesta;
 					// Resultado
-					if (indice < 0) respuesta = producto[campo];
-					else if (producto[vinculo])
-						respuesta =
-							campo == "en_castellano_id" || campo == "en_color_id"
-								? producto[vinculo].productos
-								: producto[vinculo].nombre;
-					else respuesta = null;
+					if (indice >= 0)
+						respuesta = producto[vinculo].productos
+							? producto[vinculo].productos
+							: producto[vinculo].nombre;
+					else respuesta = producto[campo];
+
 					// Fin
 					if (respuesta === null) respuesta = "-";
 					return respuesta;
