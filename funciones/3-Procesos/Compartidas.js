@@ -73,17 +73,13 @@ module.exports = {
 		let edicion = {...prodEdic};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
-		console.log(76, Object.keys(edicion).length);
 		edicion = quitarLosCamposQueNoSeComparan(edicion);
-		console.log(78, Object.keys(edicion).length);
 		// console.log(79, edicion);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
-		console.log(82, Object.keys(edicion).length);
 		// console.log(83, edicion);
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
-		console.log(84, quedanCampos);
 		// Fin
 		return [edicion, quedanCampos];
 	},
