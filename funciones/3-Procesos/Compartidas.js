@@ -15,21 +15,23 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	obtieneLeadTime: (desde, hasta) => {
-		// Corregir domingo
-		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
-		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
+	obtieneLeadTime: (desdeOrig, hastaOrig) => {
+		// Variables
+		let desdeFinal, hastaFinal;
 		// Corregir sábado
-		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
-		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
+		if (desdeOrig.getDay() == 6) desdeFinal = (parseInt(desdeOrig / unDia) + 2) * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = (parseInt(desdeOrig / unDia) + 1) * unDia;
+		// Corregir domingo
+		if (hastaOrig.getDay() == 6) hastaFinal = (parseInt(hastaOrig / unDia) - 0) * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = (parseInt(hastaOrig / unDia) - 1) * unDia;
 		// Calcular la cantidad de horas
-		let diferencia = hasta - desde;
+		let diferencia = hastaFinal - desdeFinal;
 		if (diferencia < 0) diferencia = 0;
 		let horasDif = diferencia / unaHora;
 		// Averigua la cantidad de horas por fines de semana
 		let semanas = parseInt(horasDif / (7 * 24));
 		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
+		let horasFDS_en_semana = desdeOrig.getDay() >= hastaOrig.getDay() ? 2 * 24 : 0;
 		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
 		// Resultado
 		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
@@ -39,26 +41,26 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	pulirEdicion: function (original, edicion, familia) {
+	pulirEdicion: function (original, prodEdic) {
 		// Funciones
-		let quitarLosCamposQueNoSeComparan = (edicion, familia) => {
-			// Obtiene los campos a comparar
+		let quitarLosCamposQueNoSeComparan = (edicion) => {
+			// Variables
+			let familia = this.obtieneFamiliaEnPlural(edicion.entidad);
 			let campos = [];
+			// Obtiene los campos a comparar
 			variables.camposRevisar[familia].forEach((campo) => {
 				campos.push(campo.nombre);
 				if (campo.relac_include) campos.push(campo.relac_include);
 			});
-
 			// Quitar de edicion los campos que no se comparan
 			for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
-
 			// Fin
 			return edicion;
 		};
 		let quitarLasCoincidenciasConOriginal = (original, edicion) => {
-			// Eliminar campo si:
-			// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
-			// - edición es estrictamente igual al original
+			// Eliminar campo si se cumple alguno de estos:
+			// - Edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+			// - Edición es estrictamente igual al original
 			for (let campo in edicion)
 				if (
 					(edicion[campo] && edicion[campo] == original[campo]) ||
@@ -67,13 +69,21 @@ module.exports = {
 					delete edicion[campo];
 			return edicion;
 		};
+		// Variables
+		let edicion = {...prodEdic};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
-		edicion = quitarLosCamposQueNoSeComparan(edicion, familia);
+		console.log(76, Object.keys(edicion).length);
+		edicion = quitarLosCamposQueNoSeComparan(edicion);
+		console.log(78, Object.keys(edicion).length);
+		// console.log(79, edicion);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
+		console.log(82, Object.keys(edicion).length);
+		// console.log(83, edicion);
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
+		console.log(84, quedanCampos);
 		// Fin
 		return [edicion, quedanCampos];
 	},
@@ -105,20 +115,12 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async function (entidadOrig, entidadEdic, original, datosEdicion, userID) {
+	guardarEdicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Variables
-		let edicion = {...datosEdicion};
 		let quedanCampos;
-		let familia =
-			entidadEdic == "prods_edicion"
-				? "productos"
-				: entidadEdic == "rclvs_edicion"
-				? "RCLVs"
-				: entidadEdic == "links_edicion"
-				? "links"
-				: "";
+		edicion = {...edicion, entidad: entidadEdic};
 		// Quitar los coincidencias con el original
-		[edicion, quedanCampos] = this.pulirEdicion(original, edicion, familia);
+		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
 		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtiene el campo 'entidad_id'
@@ -145,6 +147,22 @@ module.exports = {
 			? "links"
 			: "";
 	},
+	obtieneFamiliaEnPlural: (entidad) => {
+		return entidad == "peliculas" ||
+			entidad == "colecciones" ||
+			entidad == "capitulos" ||
+			entidad == "prods_edicion"
+			? "productos"
+			: entidad == "personajes" ||
+			  entidad == "hechos" ||
+			  entidad == "valores" ||
+			  entidad == "rclvs_edicion"
+			? "RCLVs"
+			: entidad == "links" || entidad == "links_edicion"
+			? "links"
+			: "";
+	},
+
 	obtieneEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
