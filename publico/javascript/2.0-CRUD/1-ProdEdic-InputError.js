@@ -313,8 +313,8 @@ window.addEventListener("load", async () => {
 	// Startup
 	DE.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
 	DE.actualizaBotones(); // ActualizaBotones
-	// DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
-	// DE.accionesPorCambioDeVersion(); // Acciones varias
+	DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
+	DE.accionesPorCambioDeVersion(); // Acciones varias
 });
 
 // Estas funciones deben estar afuera, para estar disponibles para las variables
