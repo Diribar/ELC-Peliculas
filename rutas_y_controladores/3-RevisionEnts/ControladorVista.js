@@ -172,8 +172,8 @@ module.exports = {
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatar, ingresos, reemplazos, bloqueDer;
 		// Obtiene los includes
-		let includesEdic = ["en_castellano", "en_color", "idioma_original", "categoria", "subcategoria"];
-		includesEdic.push("publico_sugerido", "personaje", "hecho", "valor");
+		let includesEdic = variables.camposRevisar.productos.filter((n) => n.relac_include);
+		includesEdic=includesEdic.map((n) => n.relac_include);
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -219,7 +219,6 @@ module.exports = {
 			// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
 			if (!quedanCampos)
 				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-			console.log(221, Object.keys(prodEdic).length, quedanCampos);
 			if (!quedanCampos) {
 				// Si no quedan campos de 'edicion' por procesar --> lo avisa
 				let informacion = procesos.cartelNoQuedanCampos;
