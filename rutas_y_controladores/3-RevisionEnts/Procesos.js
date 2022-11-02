@@ -324,7 +324,7 @@ module.exports = {
 	infoProdEdicion: (entidad, prodID) => {
 		// Generar la info del error
 		let informacion = {
-			mensajes: ["No encontramos ninguna edición ajena para datosRevision"],
+			mensajes: ["No encontramos ninguna edición ajena para revisar"],
 			iconos: [
 				{
 					nombre: "fa-spell-check ",
