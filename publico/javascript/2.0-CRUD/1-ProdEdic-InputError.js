@@ -199,12 +199,7 @@ window.addEventListener("load", async () => {
 			};
 			let averiguaSiLaEdicionTieneNovedades = () => {
 				for (let campo of v.campos)
-					if (version.edicN[campo] != version.edicG[campo]) {
-						// console.log(campo);
-						// console.log(version.edicN[campo]);
-						// console.log(version.edicG[campo]);
-						return "";
-					}
+					if (version.edicN[campo] != version.edicG[campo]) return "";
 				return "Iguales";
 			};
 			// 2. Averigua si hay errores
