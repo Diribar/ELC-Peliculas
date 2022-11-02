@@ -131,7 +131,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualiza_registro(entidad, id, DE) // Actualizar el registro original
-				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+				: await comp.guardarEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;

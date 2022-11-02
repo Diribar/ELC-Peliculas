@@ -112,10 +112,10 @@ module.exports = {
 			alta_analizada_en: ahora,
 		};
 		// Actualiza el status en el registro original
-		await BD_genericas.actualizarPorId(entidad, id, datosEntidad);
+		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
 		// Actualiza el status en los registros de los capítulos
 		if (entidad == "colecciones")
-			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
+			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
 		// Agrega el registro en el historial_cambios_de_status
 		let producto = await BD_genericas.obtienePorId(entidad, id);
 		let creador_ID = producto.creado_por_id;
@@ -154,7 +154,7 @@ module.exports = {
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let quedanCampos;
+		let quedanCampos, prodOrig, ruta;
 		// Obtiene la edición a analizar
 		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
 		// Si no existe una edición => inactiva y regresa al Tablero de Control
@@ -164,19 +164,19 @@ module.exports = {
 		}
 		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
 		if (prodEdic.id != edicID) {
-			let ruta = req.baseUrl + req.path;
+			ruta = req.baseUrl + req.path;
 			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
 			return res.redirect(ruta);
 		}
-		// Obtiene la edición con sus includes
+		// Obtiene los includes
 		let includesEdic = ["en_castellano", "en_color", "idioma_original", "categoria", "subcategoria"];
 		includesEdic.push("publico_sugerido", "personaje", "hecho", "valor");
-		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
-		// Obtiene la versión original
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
+		// Obtiene las versiones original y de edición con sus includes
+		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
+		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
 		// 1. Actualiza el registro de edición y obtiene su versión mínima
 		// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
 		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
@@ -198,7 +198,9 @@ module.exports = {
 			if (reemplazarAvatarAutomatico) {
 				prodOrig.avatar = prodEdic.avatar_archivo;
 				req.query.aprob = "true";
-				return res.send("Son iguales");
+				await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
+				return res.send("todo OK, revisalo Diego")
+				return res.redirect(ruta);
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -333,7 +335,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
-		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombre);
+		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {

@@ -340,6 +340,7 @@ module.exports = {
 	// Entorno Revisiones
 	camposRevisar: {
 		productos: [
+			{titulo: "Avatar", nombre: "avatar"},
 			{titulo: "Avatar", nombre: "avatar_url"},
 			{titulo: "Avatar (archivo)", nombre: "avatar_archivo"},
 			{titulo: "Título original", nombre: "nombre_original", input: true},
@@ -436,12 +437,13 @@ module.exports = {
 			{nombre: "ap_mar", titulo: "", hechos: true},
 		],
 		links: [
-			{nombre: "calidad"},
-			{nombre: "castellano"},
-			{nombre: "gratuito"},
-			{nombre: "tipo_id"},
-			{nombre: "completo"},
-			{nombre: "parte"},
+			{nombre: "calidad", titulo: "Calidad"},
+			{nombre: "castellano", titulo: "En castellano"},
+			{nombre: "subtit_castellano", titulo: "Subtítulos"},
+			{nombre: "gratuito", titulo: "Gratuito"},
+			{nombre: "tipo_id", titulo: "Tipo"},
+			{nombre: "completo", titulo: "Completo"},
+			{nombre: "parte", titulo: "Parte"},
 		],
 	},
 

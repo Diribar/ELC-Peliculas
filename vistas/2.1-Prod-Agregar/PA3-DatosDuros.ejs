@@ -80,7 +80,7 @@
 				<!-- Rutina para todos los casos -->
 				<input name="avatar_url" id="inputImagen" type="file" accept="image/*" class="ocultar input">
 				<!-- Errores/OK -->
-				<%- include("CMP-Errores") %>
+				<%- include("CMP-Errores", {campo: "avatar"}) %>
 			<% } %>
 		</div>	
 	</section>
