@@ -9,7 +9,7 @@ const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prod_Form: async (req, res) => {
+	prodEdicForm_Detalle: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		const tema = "prod_rud";
@@ -150,7 +150,7 @@ module.exports = {
 			omitirFooter: codigo == "edicion",
 		});
 	},
-	prod_GuardarEdic: async (req, res) => {
+	prodEdicGuardar: async (req, res) => {
 		// Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;

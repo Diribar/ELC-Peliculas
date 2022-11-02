@@ -24,7 +24,10 @@ module.exports = {
 		let producto_id = comp.obtieneEntidad_id(entidad);
 		let datos = ["prods_edicion", {[producto_id]: prodID, editado_por_id: userID}, includesEdic];
 		if (userID) prodEdic = await BD_genericas.obtienePorCamposConInclude(...datos);
-		if (prodEdic) prodEdic = comp.quitarCamposSinContenido(prodEdic);
+		if (prodEdic) {
+			prodEdic.avatar = prodEdic.avatar_archivo;
+			prodEdic = comp.quitarCamposSinContenido(prodEdic);
+		}
 		// Fin
 		return [prodOrig, prodEdic];
 	},
