@@ -115,7 +115,7 @@ module.exports = {
 	},
 	TC_obtieneProdsConLink: async (ahora, userID) => {
 		// Obtiene todos los productos aprobados, con algún link ajeno en status no estable
-		// Obtiene los links 'a datosRevision'
+		// Obtiene los links 'a revisar'
 		let links = await BD_especificas.TC_obtieneLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
