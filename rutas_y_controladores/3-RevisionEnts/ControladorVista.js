@@ -215,10 +215,11 @@ module.exports = {
 			}
 		}
 		if (!codigo.includes("avatar")) {
-			// 1. Actualiza el registro de edición y obtiene su versión mínima
-			// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
-			if (!quedanCampos)
+			if (!quedanCampos) {
+				// 1. Actualiza el registro de edición y obtiene su versión mínima
+				// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
 				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
+			}
 			if (!quedanCampos) {
 				// Si no quedan campos de 'edicion' por procesar --> lo avisa
 				let informacion = procesos.cartelNoQuedanCampos;
