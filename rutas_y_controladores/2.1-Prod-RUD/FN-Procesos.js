@@ -7,17 +7,7 @@ module.exports = {
 	// Producto
 	obtieneVersionesDelProducto: async (entidad, prodID, userID) => {
 		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-		];
+		let includes = comp.includes("productos");
 		let includesOriginal = ["creado_por", "status_registro"];
 		if (entidad == "capitulos") includesOriginal.push("coleccion");
 		else if (entidad == "colecciones") includesOriginal.push("capitulos");
