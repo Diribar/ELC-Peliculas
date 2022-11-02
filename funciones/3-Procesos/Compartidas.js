@@ -41,7 +41,7 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	pulirEdicion: function (original, prodEdic) {
+	pulirEdicion: function (original, edicion) {
 		// Funciones
 		let quitarLosCamposQueNoSeComparan = (edicion) => {
 			// Variables
@@ -70,7 +70,7 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
-		let edicion = {...prodEdic};
+		let edicion = {...edicion};
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
 		edicion = quitarLosCamposQueNoSeComparan(edicion);
