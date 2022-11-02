@@ -367,7 +367,7 @@ module.exports = {
 		// 1. Aumenta el campo aprob/rech en el registro del usuario
 		// 2. Agrega un registro en la tabla de 'aprob/rech'
 		// 3. Si corresponde, penaliza al usuario
-		await this.accionesComplementarias(req, prodOrig, prodEdic);
+		await this.edic_AccionesAdic(req, prodOrig, prodEdic);
 
 		// Limpia la edición y cambia el status del producto si corresponde
 		[quedanCampos, prodEdic, statusAprobFinal] = await this.prodEdic_feedback(prodOrig, prodEdic);
@@ -717,7 +717,7 @@ module.exports = {
 		// Fin
 		return original;
 	},
-	accionesComplementarias: async (req, original, edicion) => {
+	edic_AccionesAdic: async (req, original, edicion) => {
 		// 1. Aumenta el campo aprob/rech en el registro del usuario
 		// 2. Agrega un registro en la tabla de 'aprob/rech'
 		// 3. Si corresponde, penaliza al usuario
@@ -754,9 +754,10 @@ module.exports = {
 			}
 			// Amplía la información con los valores aprob/rech de edición
 			let fn_valoresAprobRech = () => {
-				let obtieneElValorDeUnCampo = (producto, campo) => {
+				let obtieneElValorDeUnCampo = (registro, campo) => {
 					// Variables
-					let camposConVinculo = [...variables.camposRevisar.productos];
+					let familia = comp.obtieneFamiliaEnPlural(entidad);
+					let camposConVinculo = [...variables.camposRevisar[familia]];
 					camposConVinculo.filter((n) => n.relac_include);
 					let campos = camposConVinculo.map((n) => n.nombre);
 					let indice = campos.indexOf(campo);
@@ -764,10 +765,10 @@ module.exports = {
 					let respuesta;
 					// Resultado
 					if (indice >= 0)
-						respuesta = producto[vinculo].productos
-							? producto[vinculo].productos
-							: producto[vinculo].nombre;
-					else respuesta = producto[campo];
+						respuesta = registro[vinculo].productos
+							? registro[vinculo].productos
+							: registro[vinculo].nombre;
+					else respuesta = registro[campo];
 
 					// Fin
 					if (respuesta === null) respuesta = "-";

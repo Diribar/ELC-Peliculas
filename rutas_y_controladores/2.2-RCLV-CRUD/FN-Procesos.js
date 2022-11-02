@@ -84,7 +84,7 @@ module.exports = {
 		// Averigua si el RCLV tiene algún "proceso de canonización"
 		if (RCLV.proceso_id) {
 			// Obtiene los procesos de canonización
-			let proceso = await BD_genericas.obtieneTodos("procesos_canonizacion", "orden").then((n) =>
+			let proceso = await BD_genericas.obtieneTodos("procs_canoniz", "orden").then((n) =>
 				n.find((m) => m.id == RCLV.proceso_id)
 			);
 			// Asigna el nombre del proceso
