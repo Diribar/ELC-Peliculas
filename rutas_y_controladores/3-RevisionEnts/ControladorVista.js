@@ -154,20 +154,23 @@ module.exports = {
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let quedanCampos, prodOrig, ruta;
+		let quedanCampos, prodOrig;
 		// Obtiene la edición a analizar
 		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
 		// Si no existe una edición => inactiva y regresa al Tablero de Control
 		if (!prodEdic) {
-			let informacion = await procesos.infoProdEdicion(entidad, id, producto_id, userID);
+			let informacion = procesos.infoProdEdicion(entidad, id);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
 		if (prodEdic.id != edicID) {
-			ruta = req.baseUrl + req.path;
+			let ruta = req.baseUrl + req.path;
 			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
 			return res.redirect(ruta);
 		}
+		// Declaración de más variables
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		let avatar, ingresos, reemplazos, bloqueDer;
 		// Obtiene los includes
 		let includesEdic = ["en_castellano", "en_color", "idioma_original", "categoria", "subcategoria"];
 		includesEdic.push("publico_sugerido", "personaje", "hecho", "valor");
@@ -177,30 +180,23 @@ module.exports = {
 		// Obtiene las versiones original y de edición con sus includes
 		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
 		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
-		// 1. Actualiza el registro de edición y obtiene su versión mínima
-		// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
-		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) {
-			// Si no quedan campos de 'edicion' por procesar --> lo avisa
-			let informacion = procesos.cartelNoQuedanCampos;
-			return res.render("CMP-0Estructura", {informacion});
-		}
-		// Acciones si se superan las verificaciones -------------------------------
-		// Declaración de más variables
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let avatar, ingresos, reemplazos, bloqueDer;
 		// Acciones dependiendo de si está presente el avatar
-		if (prodEdic.avatar_url) {
-			let reemplazarAvatarAutomatico =
+		if (prodEdic.avatar_url || prodEdic.avatar_archivo) {
+			// Averigua si se reemplaza automáticamente
+			let reemplAvatarAutomaticam =
 				prodEdic.avatar_archivo && // Que exista 'avatar_archivo'
-				prodOrig.avatar == prodEdic.avatar_url && // Mismo campo original.avatar' y edicion.avatar_url
-				prodOrig.status_registro.creado_aprob; // Que el producto esté en status creadoAprob
-			if (reemplazarAvatarAutomatico) {
-				prodOrig.avatar = prodEdic.avatar_archivo;
+				prodOrig.avatar == prodEdic.avatar_url; // Mismo campo 'original.avatar' y 'edicion.avatar_url'
+			// Adecua los campos 'avatar' en la variable y el registro
+			let datos = {avatar_url: null, avatar_archivo: null};
+			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
+			prodEdic = {avatar: prodEdic.avatar_archivo, ...prodEdic, ...datos};
+			// Acciones si se reemplaza en forma automática
+			if (reemplAvatarAutomaticam) {
 				req.query.aprob = "true";
-				await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
-				return res.send("todo OK, revisalo Diego")
-				return res.redirect(ruta);
+				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
+				[quedanCampos, prodEdic] = await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
+				if (!quedanCampos) return res.redirect(req.url);
+				delete prodEdic.avatar;
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -219,12 +215,21 @@ module.exports = {
 			}
 		}
 		if (!codigo.includes("avatar")) {
+			// 1. Actualiza el registro de edición y obtiene su versión mínima
+			// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
+			if (!quedanCampos)
+				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
+			console.log(221, Object.keys(prodEdic).length, quedanCampos);
+			if (!quedanCampos) {
+				// Si no quedan campos de 'edicion' por procesar --> lo avisa
+				let informacion = procesos.cartelNoQuedanCampos;
+				return res.render("CMP-0Estructura", {informacion});
+			}
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
 			// Obtiene el avatar
-			avatar = prodOrig.avatar;
+			if (!avatar) avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
-			if (!avatar) avatar = "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
