@@ -70,7 +70,7 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
-		let edicion = {...edicion};
+		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien		
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
 		edicion = quitarLosCamposQueNoSeComparan(edicion);
