@@ -1,175 +1,165 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// VARIABLES -----------------------------------------------------------------------
-	// Pointer del producto
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
-	// Datos del formulario
-	let form = document.querySelector("form");
-	let inputs = document.querySelectorAll(".inputError .input");
-	let campos = Array.from(inputs).map((n) => n.name);
-	// OK/Errores
-	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
-	let rutaValidar = "/producto/api/edicion/validar/?";
-	// Variables de país
-	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
-	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
-	let paisesSelect = document.querySelector("#paises_id select");
-	let paisesListado = Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
-		return {id: n.value, nombre: n.innerHTML};
-	});
-	// Categoría y subcategoría
-	let categoria = document.querySelector("select[name='categoria_id']");
-	let subcategoria = document.querySelector("select[name='subcategoria_id']");
-	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
-	// Varios
-	let avatarVisible = document.querySelector(".inputError #avatarVisible");
-	let avatarNuevo = document.querySelector(".inputError #avatarNuevo");
-	let iconosAyuda = document.querySelectorAll("main .ayudaClick");
-
-	// VERSIONES DE DATOS -------------------------------------------------------------
-	// Variables
-	let versiones = ["edicN", "edicG", "orig"];
-	let versionActual = "edicN";
-	let versionInput = versionActual;
-	let versionAnt; // Se usa más adelante, no se debe borrar
-	let datos = {};
-	let flechasDiferencia = document.querySelectorAll(".inputError .fa-arrow-right-long");
-	let rutaVersiones = "/producto/api/edicion/obtiene-original-y-edicion/";
-	rutaVersiones += "?entidad=" + entidad + "&id=" + prodID;
-	let producto_id =
-		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
-	// Obtiene versiones ORIGINAL, EDICION GUARDADA, y EDICION NUEVA
-	[datos.orig, datos.edicG] = await fetch(rutaVersiones).then((n) => n.json());
-	datos.orig.avatar = avatarAgregarLaRutaAlNombre(datos.orig.avatar, "original");
-	datos.edicG = {...datos.orig, ...datos.edicG};
-	datos.edicG.avatar = avatarAgregarLaRutaAlNombre(datos.edicG.avatar, "edicion", datos.orig.avatar);
-	datos.edicN = {...datos.edicG};
-	datos.edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
-	let orig_PendAprobar = datos.orig.status_registro.gr_creado;
-	let edicG_existe = !!datos.edicG[producto_id];
-	// Botones
-	let botonesActivarVersion = document.querySelectorAll("#cuerpo #comandos .activar");
-	let botonesDescartar = document.querySelectorAll("#cuerpo #comandos .descartar");
-	let botonGuardar = document.querySelector("#cuerpo #comandos .guardar");
-	let botones = {
-		edicN: document.querySelectorAll("#cuerpo #comandos .edicN"),
-		edicG: document.querySelectorAll("#cuerpo #comandos .edicG"),
+	let v = {
+		// Pointer del producto
+		entidad: new URL(window.location.href).searchParams.get("entidad"),
+		prodID: new URL(window.location.href).searchParams.get("id"),
+		// Datos del formulario
+		form: document.querySelector("form"),
+		inputs: document.querySelectorAll(".inputError .input"),
+		// OK/Errores
+		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+		rutaValidar: "/producto/api/edicion/validar/?",
+		// Variables de país
+		paisesID: document.querySelector("#paises_id input[name='paises_id']"), // Lugar donde almacenar los ID
+		paisesMostrar: document.querySelector("#paises_id #mostrarPaises"), // Lugar donde mostrar los nombres
+		paisesSelect: document.querySelector("#paises_id select"),
+		paisesListado: Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
+			return {id: n.value, nombre: n.innerHTML};
+		}),
+		// Categoría y subcategoría
+		categoria: document.querySelector("select[name='categoria_id']"),
+		subcategoria: document.querySelector("select[name='subcategoria_id']"),
+		subcategoriaOpciones: document.querySelectorAll("select[name='subcategoria_id'] option"),
+		// Varios
+		avatarVisible: document.querySelector(".inputError #avatarVisible"),
+		avatarNuevo: document.querySelector(".inputError #avatarNuevo"),
+		iconosAyuda: document.querySelectorAll("main .ayudaClick"),
+		// Versiones de datos
+		versiones: ["edicN", "edicG", "orig"],
+		versionActual: "edicN",
+		estamosEnEdicNueva: true,
+		versionAnt: null, // Se usa más adelante, no se debe borrar
+		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
+		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
+		// Botones
+		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
+		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
+		botonGuardar: document.querySelector("#cuerpo #comandos .guardar"),
+		botones: {
+			edicN: document.querySelectorAll("#cuerpo #comandos .edicN"),
+			edicG: document.querySelectorAll("#cuerpo #comandos .edicG"),
+		},
+		links: document.querySelectorAll(".inputError i.linkRCLV"),
 	};
+	v.campos = Array.from(v.inputs).map((n) => n.name);
+	v.versionInput = v.versionActual;
+	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
+	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
+	let version = await versiones(v.rutaVersiones);
 
 	// Funciones Data-Entry
 	let DE = {
 		obtieneLosValoresEdicN: () => {
 			// Actualizar los valores
-			campos.forEach((campo, i) => {
-				if (campo != "avatar") datos.edicN[campo] = inputs[i].value;
+			v.campos.forEach((campo, i) => {
+				if (campo != "avatar") version.edicN[campo] = v.inputs[i].value;
 			});
 			// Fin
 			return;
 		},
 		accionesPorCambioDeVersion: function () {
-			// Declaración de funciones
-			let rutinasPorCampo = () => {
+			// Reemplaza los valores e impide/permite que el usuario haga cambios según la versión
+			(() => {
 				// Rutina para cada campo
-				campos.forEach((campo, i) => {
+				v.campos.forEach((campo, i) => {
 					// Reemplaza los valores
-					if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
-					// Impide/permite que el usuario haga cambios en los datos de la versión
-					inputs[i].disabled = !estamosEnEdicNueva;
+					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
+					// Impide/permite que el usuario haga cambios según la versión
+					v.inputs[i].disabled = !v.estamosEnEdicNueva;
 					if (campo == "paises_id") {
-						paisesMostrar.disabled = !estamosEnEdicNueva;
-						paisesSelect.disabled = !estamosEnEdicNueva;
+						v.paisesMostrar.disabled = !v.estamosEnEdicNueva;
+						v.paisesSelect.disabled = !v.estamosEnEdicNueva;
 					}
 				});
 				// Fin
 				return;
-			};
-			let actualizaIconosRCLV = () => {
-				let links = document.querySelectorAll(".inputError i.linkRCLV");
-				for (let link of links)
-					estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
-				return;
-			};
-			let actualizaIconosAyuda = () => {
-				for (let iconoAyuda of iconosAyuda)
-					estamosEnEdicNueva
+			})();
+			return
+			// Actualiza la subcategoría
+			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
+			// Actualiza los nombres de país
+			this.actualizaPaisesNombre();
+			// Activa/desactiva el mouse para el avatar
+			AV.actualizaMouse;
+			// Reemplaza el avatar visible
+			AV.actualizaVisible([v.versionActual].avatar, v.avatarVisible);
+			// Señala las diferencias con la versión original
+			this.senalaLasDiferencias();
+			// Muestra/oculta los íconos para RCLV y de ayuda
+			(() => {
+				for (let link of v.links)
+					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+				for (let iconoAyuda of v.iconosAyuda)
+					v.estamosEnEdicNueva
 						? iconoAyuda.classList.remove("inactivo")
 						: iconoAyuda.classList.add("inactivo");
 				return;
-			};
-			// Variables
-			let estamosEnEdicNueva = versionActual == "edicN";
-			// Funciones
-			rutinasPorCampo();
-			if (estamosEnEdicNueva) this.actualizaOpcionesSubcat(); // Actualiza subcategoría
-			this.actualizaPaisesNombre(); // Actualiza los nombres de país
-			AV.actualizaMouse; // Activa/desactiva el mouse para el avatar
-			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible); // Reemplaza el avatar visible
-			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
-			actualizaIconosRCLV(); // Muestra/oculta los íconos para RCLV
-			actualizaIconosAyuda(); // Muestra/oculta los íconos de ayuda
-			this.muestraLosErrores(); // Muestra los errores
+			})();
+			// Muestra los errores
+			this.muestraLosErrores();
 			// Fin
 			return;
 		},
 		senalaLasDiferencias: () => {
 			// Marcar dónde están las diferencias con la versión original
-			campos.forEach((campo, i) => {
-				versionActual != "orig" &&
-				datos[versionActual][campo] != datos.orig[campo] &&
-				(datos[versionActual][campo] || datos.orig[campo])
-					? flechasDiferencia[i].classList.remove("ocultar")
-					: flechasDiferencia[i].classList.add("ocultar");
+			v.campos.forEach((campo, i) => {
+				v.versionActual != "orig" &&
+				version[v.versionActual][campo] != version.orig[campo] &&
+				(version[v.versionActual][campo] || version.orig[campo])
+					? v.flechasDiferencia[i].classList.remove("ocultar")
+					: v.flechasDiferencia[i].classList.add("ocultar");
+				console.log(version[v.versionActual][campo] , version.orig[campo]);
 			});
 		},
 		muestraLosErrores: async () => {
 			// Preparar la información
-			let objeto = "entidad=" + entidad + "&id=" + prodID;
-			for (let input of inputs)
+			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
+			for (let input of v.inputs)
 				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 			// Averigua los errores
-			let errores = await fetch(rutaValidar + objeto).then((n) => n.json());
+			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
-			campos.forEach((campo, i) => {
+			v.campos.forEach((campo, indice) => {
 				// Guarda el mensaje de error
 				let mensaje = errores[campo];
 				// Reemplaza
-				let indice = campos.indexOf(campo);
-				mensajesError[indice].innerHTML = mensaje;
+				v.mensajesError[indice].innerHTML = mensaje;
 				// Acciones en función de si hay o no mensajes de error
 				errores[campo]
-					? iconosError[indice].classList.add("error")
-					: iconosError[indice].classList.remove("error");
+					? v.iconosError[indice].classList.add("error")
+					: v.iconosError[indice].classList.remove("error");
 				errores[campo]
-					? iconosError[indice].classList.remove("ocultar")
-					: iconosError[indice].classList.add("ocultar");
+					? v.iconosError[indice].classList.remove("ocultar")
+					: v.iconosError[indice].classList.add("ocultar");
 			});
 			return;
 		},
 		actualizaOpcionesSubcat: () => {
-			let categ = categoria.value;
-			subcategoriaOpciones.forEach((opcion) => {
+			let categ = v.categoria.value;
+			v.subcategoriaOpciones.forEach((opcion) => {
 				if (opcion.className.includes(categ)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
 			});
 		},
 		actualizaPaisesID: () => {
 			// Variables
-			let paisID = paisesSelect.value;
+			let paisID = v.paisesSelect.value;
 			// Verificar si figura en paisesID
 			if (paisID == "borrar") {
-				paisesSelect.value = "";
-				paisesMostrar.value = "";
-				paisesID.value = "";
+				v.paisesSelect.value = "";
+				v.paisesMostrar.value = "";
+				v.paisesID.value = "";
 				return;
 			}
-			let agregar = !paisesID.value.includes(paisID);
-			let aux = paisesID.value.split(" ");
+			let agregar = !v.paisesID.value.includes(paisID);
+			let aux = v.paisesID.value.split(" ");
 			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
 			if (agregar) aux.push(paisID); // Agrega el país
 			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
-			paisesID.value = aux.join(" "); // Actualiza el input
+			v.paisesID.value = aux.join(" "); // Actualiza el input
 			// Fin
 			return;
 		},
@@ -177,48 +167,54 @@ window.addEventListener("load", async () => {
 			// Actualiza los países a mostrar
 			let paisesNombre = [];
 			// Convertir 'IDs' en 'nombres'
-			if (paisesID.value) {
-				let paises_idArray = paisesID.value.split(" ");
+			if (v.paisesID.value) {
+				let paises_idArray = v.paisesID.value.split(" ");
 				paises_idArray.forEach((pais_id) => {
-					let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
+					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
 					if (paisNombre) paisesNombre.push(paisNombre);
 				});
 			}
 			// Convertir array en string
-			paisesMostrar.value = paisesNombre.join(", ");
+			v.paisesMostrar.value = paisesNombre.join(", ");
 			// Fin
 			return;
 		},
 		actualizaBotones: () => {
 			// Acciones sobre la edición guardada
-			if (edicG_existe) {
+			if (version.edicG_existe) {
 				// Versión
-				botonesActivarVersion[1].classList.remove("inactivoVersion");
+				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
 				// Descartar
-				if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
+				if (!v.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
 			}
 			// Acciones sobre la edición nueva
 			// 1. Funciones
-			let actualizaBotonSubmit = () => {
+			let detectaSiHayErrores = () => {
 				// Detectar la cantidad de 'errores' ocultos
-				let hayErrores = Array.from(iconosError)
+				let hayErrores = Array.from(v.iconosError)
 					.map((n) => n.className)
 					.some((n) => n.includes("error"));
 				// Fin
 				return hayErrores;
 			};
-			let averiguaSiLasEdicionesSonIguales = () => {
-				for (let campo of campos) if (datos.edicN[campo] != datos.edicG[campo]) return "";
+			let averiguaSiLaEdicionTieneNovedades = () => {
+				for (let campo of v.campos)
+					if (version.edicN[campo] != version.edicG[campo]) {
+						// console.log(campo);
+						// console.log(version.edicN[campo]);
+						// console.log(version.edicG[campo]);
+						return "";
+					}
 				return "Iguales";
 			};
 			// 2. Averigua si hay errores
-			let hayErrores = actualizaBotonSubmit();
+			let hayErrores = detectaSiHayErrores();
 			// 3. Averigua si es igual a la edicion
-			let sonIguales = averiguaSiLasEdicionesSonIguales();
+			let sonIguales = averiguaSiLaEdicionTieneNovedades();
 			// Si se cumple alguna de las anteriores -> inactiva
 			// Else -> activa
-			if (hayErrores || sonIguales) botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
-			else botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
+			if (hayErrores || sonIguales) v.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
+			else v.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
 			// Fin
 			return;
 		},
@@ -243,14 +239,14 @@ window.addEventListener("load", async () => {
 			// Le decimos que cuando esté listo ejecute el código interno
 			reader.onload = () => {
 				let avatar = reader.result;
-				this.actualizaVisible(avatar, avatarVisible);
-				this.actualizaVisible(avatar, avatarNuevo);
+				this.actualizaVisible(avatar, v.avatarVisible);
+				this.actualizaVisible(avatar, v.avatarNuevo);
 			};
 		},
 		actualizaMouse: () => {
-			estamosEnEdicNueva
-				? avatarVisible.classList.add("pointer")
-				: avatarVisible.classList.remove("pointer");
+			v.estamosEnEdicNueva
+				? v.avatarVisible.classList.add("pointer")
+				: v.avatarVisible.classList.remove("pointer");
 			// Fin
 			return;
 		},
@@ -258,59 +254,58 @@ window.addEventListener("load", async () => {
 
 	// ADD EVENT LISTENERS --------------------------------------------------
 	// Botones
-	botonesActivarVersion.forEach((boton, indice) => {
+	v.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Interrumpe si las versiones son iguales
-			if (versionActual == versiones[indice]) return;
+			if (v.versionActual == v.versiones[indice]) return;
 			// Interrumpe si el botón está inactivo
 			if (boton.className.includes("inactivoVersion")) return;
 			// Cambia la versión
-			versionAnt = versionActual;
-			versionActual = versiones[indice];
+			v.versionAnt = v.versionActual;
+			v.versionActual = v.versiones[indice];
 			// Cambia los valores
 			DE.accionesPorCambioDeVersion();
 			// Cambia el boton activo
-			botonesActivarVersion.forEach((revisar, i) => {
+			v.botonesActivarVersion.forEach((revisar, i) => {
 				if (i != indice) revisar.classList.remove("activo");
 				else revisar.classList.add("activo");
 			});
 		});
 	});
-	botonesDescartar.forEach((boton, indice) => {
+	v.botonesDescartar.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Si está inactivo aborta la operación
 			if (boton.className.includes("inactivo")) {
 				return;
 			}
 			// Acciones si es la edición nueva
-			else if (versiones[indice] == "edicN") {
-				datos.edicN = {...datos.orig, ...datos.edicG};
+			else if (v.versiones[indice] == "edicN") {
+				version.edicN = {...version.orig, ...version.edicG};
 			}
 			// Acciones si es la edición guardada
-			else if (versiones[indice] == "edicG") {
-				fetch("/producto/edicion/eliminar/?entidad=" + entidad + "&id=" + prodID);
-				datos.edicG = {...datos.orig};
-				datos.edicN = {...datos.orig};
+			else if (v.versiones[indice] == "edicG") {
+				fetch("/producto/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				version.edicG = {...version.orig};
+				version.edicN = {...version.orig};
 			}
 			// Inactiva los botones de la versión
-			botones[versionActual].forEach((boton) => boton.classList.add("inactivoVersion"));
+			v.botones[v.versionActual].forEach((boton) => boton.classList.add("inactivoVersion"));
 			// Si se descartó la versión actual, recarga los valores
-			if (versiones[indice] == versionActual) DE.accionesPorCambioDeVersion();
+			if (v.versiones[indice] == v.versionActual) DE.accionesPorCambioDeVersion();
 		});
 	});
-	botonGuardar.addEventListener("click", () => {
+	v.botonGuardar.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (botonGuardar.className.includes("inactivo")) e.preventDefault();
+		if (v.botonGuardar.className.includes("inactivo")) e.preventDefault();
 	});
-
 	// Revisar campos en forma INDIVIDUAL
-	form.addEventListener("input", async (e) => {
+	v.form.addEventListener("input", async (e) => {
 		// Acciones si hubieron novedades dentro de EdicN
-		if (versionInput == "edicN") {
+		if (v.versionInput == "edicN") {
 			if (e.target == "categoria_id") DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
-			if (e.target == "categoria_id") subcategoria.value = ""; // Limpia la subcategoría
+			if (e.target == "categoria_id") v.subcategoria.value = ""; // Limpia la subcategoría
 			// Varios
-			if (e.target == paisesSelect) {
+			if (e.target == v.paisesSelect) {
 				DE.actualizaPaisesID();
 				DE.actualizaPaisesNombre();
 			}
@@ -318,17 +313,20 @@ window.addEventListener("load", async () => {
 			DE.senalaLasDiferencias();
 			DE.muestraLosErrores();
 			DE.actualizaBotones();
-		} else versionInput = versionActual;
+		} else v.versionInput = v.versionActual;
 	});
 
 	// Startup
 	DE.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
 	DE.actualizaBotones(); // ActualizaBotones
-	DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
-	DE.accionesPorCambioDeVersion(); // Acciones varias
+	// DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
+	// DE.accionesPorCambioDeVersion(); // Acciones varias
 });
-let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
-	return imagenActual
+
+// Estas funciones deben estar afuera, para estar disponibles para las variables
+let agregaRutaAlAvatar = (imagenActual, status, imagenBackup) => {
+	// Si existe una imagen actual, descarta la imagen de backup
+	let imagen = imagenActual
 		? (imagenActual.startsWith("http")
 				? ""
 				: status == "original"
@@ -337,4 +335,23 @@ let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 		: imagenBackup
 		? imagenBackup
 		: "/imagenes/8-Agregar/IM.jpg";
+	// Fin
+	return imagen;
+};
+let versiones = async (rutaVersiones) => {
+	// Obtiene las versiones original y de edición
+	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
+	// Obtiene el avatar original con su ruta
+	orig.avatar = agregaRutaAlAvatar(orig.avatar, "original");
+	// Procesa la versión de edición guardada
+	let edicG_existe = !!edicG;
+	edicG = {...orig, ...edicG};
+	if (edicG_existe) edicG.avatar = agregaRutaAlAvatar(edicG.avatar_archivo, "edicion", orig.avatar);
+	// Obtiene la versión de edición nueva
+	let edicN = {...orig, ...edicG};
+	edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
+	// Averigua si el original está pendiente de ser aprobado
+	let origPendAprobar = orig.status_registro.gr_creado;
+	// Fin
+	return {orig, edicG, edicN, edicG_existe, origPendAprobar};
 };
