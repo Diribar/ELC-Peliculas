@@ -165,7 +165,6 @@ module.exports = {
 			? "links"
 			: "";
 	},
-
 	obtieneEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
@@ -386,6 +385,14 @@ module.exports = {
 			writer.on("finish", () => resolve(console.log("Imagen guardada")));
 			writer.on("error", (error) => reject(error));
 		});
+	},
+	avatarOrigEdic: (prodOrig, prodEdic) => {
+		let aux1 = prodOrig.avatar.startsWith("http");
+		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
+		let orig = prodOrig.avatar ? aux2 : "/imagenes/8-Agregar/IM.jpg";
+		let edic= prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig
+		// Fin
+		return {orig, edic};
 	},
 	nombreAvatar: (prodOrig, prodEdic) => {
 		return prodEdic.avatar

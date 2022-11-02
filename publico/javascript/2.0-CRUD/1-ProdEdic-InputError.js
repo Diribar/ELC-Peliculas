@@ -30,6 +30,7 @@ window.addEventListener("load", async () => {
 		// Versiones de datos
 		versiones: ["edicN", "edicG", "orig"],
 		versionActual: "edicN",
+		versionInput: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
@@ -45,7 +46,6 @@ window.addEventListener("load", async () => {
 		links: document.querySelectorAll(".inputError i.linkRCLV"),
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
-	v.versionInput = v.versionActual;
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
 	let version = await versiones(v.rutaVersiones);
@@ -293,19 +293,25 @@ window.addEventListener("load", async () => {
 	// Revisar campos en forma INDIVIDUAL
 	v.form.addEventListener("input", async (e) => {
 		// Acciones si hubieron novedades dentro de EdicN
-		if (v.versionInput == "edicN") {
-			if (e.target == "categoria_id") DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
-			if (e.target == "categoria_id") v.subcategoria.value = ""; // Limpia la subcategoría
-			// Varios
+		if (v.versionActual == v.versionInput) {
+			// Acciones si se cambió la categoría
+			if (e.target == "categoria_id") {
+				DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
+				v.subcategoria.value = ""; // Limpia la subcategoría
+			}
+			// Acciones si se cambió el país
 			if (e.target == v.paisesSelect) {
 				DE.actualizaPaisesID();
 				DE.actualizaPaisesNombre();
 			}
+			// Acciones si se cambió el avatar
+			
+			// Varios
 			DE.obtieneLosValoresEdicN();
 			DE.senalaLasDiferencias();
 			DE.muestraLosErrores();
 			DE.actualizaBotones();
-		} else v.versionInput = v.versionActual;
+		}
 	});
 
 	// Startup

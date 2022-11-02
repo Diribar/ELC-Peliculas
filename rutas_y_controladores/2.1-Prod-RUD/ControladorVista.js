@@ -14,15 +14,15 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = req.path.slice(1, -1);
-		// 2. Obtiene los datos identificatorios del producto
+		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let avatar
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
-		// 4. Obtiene el avatar y la versión más completa posible del producto
-		let avatar = comp.nombreAvatar(prodOrig, prodEdic);
-		let prodComb = {...prodOrig, ...prodEdic, avatar, id: prodID};
+		// 4. Obtiene la versión más completa posible del producto
+		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
@@ -57,7 +57,8 @@ module.exports = {
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
-		} else {
+			avatar = comp.avatarOrigEdic(prodOrig, prodEdic);
+		} else if (codigo=="detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
 				? {id: 1, nombre: "Pend. Aprobac."}
@@ -113,7 +114,7 @@ module.exports = {
 				valor: statusResumido.nombre,
 				id: statusResumido.id,
 			});
-			// Variables de 'Edición'
+			avatar = comp.nombreAvatar(prodOrig, prodEdic);
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
