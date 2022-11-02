@@ -48,12 +48,12 @@ window.addEventListener("load", async () => {
 		);
 	};
 	let funcionTimer = () => {
-		let actualizarTimer = setInterval(() => {
+		let actualizaTimer = setInterval(() => {
 			minutosDispon--;
 			if (minutosDispon < 0) minutosDispon = 0;
 			timer.innerHTML = minutosDispon + " min.";
 			if (minutosDispon == 0) {
-				clearInterval(actualizarTimer);
+				clearInterval(actualizaTimer);
 				return funcionCartel();
 			} else formatoTimer(minutosDispon);
 		}, unMinuto);

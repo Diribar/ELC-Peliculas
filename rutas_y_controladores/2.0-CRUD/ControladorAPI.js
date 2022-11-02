@@ -22,7 +22,7 @@ module.exports = {
 		let {id} = req.query;
 		// Obtiene la coleccion_id, la temporada y el capítulo
 		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtienePorId("capitulos", id);
-		// Averiguar los datos del capítulo anterior **********************
+		// Averigua los datos del capítulo anterior **********************
 		// Obtiene los datos del capítulo anterior (temporada y capítulo)
 		let tempAnt = temporada;
 		let capAnt = 0;
@@ -38,7 +38,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n));
 		}
-		// Averiguar los datos del capítulo posterior ********************
+		// Averigua los datos del capítulo posterior ********************
 		// Obtiene datos de la colección y el capítulo
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtiene el último número de capítulo de la temporada actual

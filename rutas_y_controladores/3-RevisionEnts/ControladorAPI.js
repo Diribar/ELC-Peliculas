@@ -38,7 +38,7 @@ module.exports = {
 		datos = {[campo]: prodEdic[campo]};
 		if (edicAprob) prodOrig = await procesos.actualizaOriginal(prodOrig, prodEdic, datos, userID);
 		// Actualizaciones en el USUARIO
-		await procesos.accionesEnUsuario(req, prodOrig, prodEdic);
+		await procesos.accionesComplementarias(req, prodOrig, prodEdic);
 		// Limpia la edición y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
@@ -56,7 +56,7 @@ module.exports = {
 		const st_inactivo = status_registro.find((n) => n.inactivo).id;
 		const ahora = comp.ahora();
 		let datos;
-		// Averiguar si no existe el 'url'
+		// Averigua si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
 		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro"]);
@@ -75,7 +75,7 @@ module.exports = {
 		motivo_id = !creado || !creadoAprob ? (creado ? motivo_id : link.motivo_id) : null;
 		// USUARIO - Actualizaciones
 		let campo = "link_" + (decision ? "aprob" : "rech");
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
 		if (!inactivar && !creadoAprob) {
 			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
@@ -94,7 +94,7 @@ module.exports = {
 				datos.motivo_id = motivo_id;
 			}
 		}
-		await BD_genericas.actualizarPorId("links", link.id, datos);
+		await BD_genericas.actualizaPorId("links", link.id, datos);
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = motivo ? motivo.duracion : 0;
 		datos = {
@@ -134,7 +134,7 @@ module.exports = {
 		let linkOrig = {id: linkID};
 		if (edicAprob) linkOrig = await procesos.actualizaOriginal(linkOrig, linkEdic, campos, userID);
 		// Actualizaciones en el USUARIO
-		await procesos.accionesEnUsuario(req, linkOrig, linkEdic);
+		await procesos.accionesComplementarias(req, linkOrig, linkEdic);
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos

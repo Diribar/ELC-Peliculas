@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
 		if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
 			datos.capturado_en = ahora;
 		// CAPTURA DEL REGISTRO
-		await BD_genericas.actualizarPorId(entidad, prodID, datos);
+		await BD_genericas.actualizaPorId(entidad, prodID, datos);
 	}
 
 	// Continuar

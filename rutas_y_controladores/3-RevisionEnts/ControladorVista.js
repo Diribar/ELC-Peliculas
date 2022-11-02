@@ -137,7 +137,7 @@ module.exports = {
 		}
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datosHistorial);
 		// Asienta la aprob/rech en el registro del usuario
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
 		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
 		// Fin
@@ -197,7 +197,7 @@ module.exports = {
 				prodOrig.status_registro.creado_aprob; // Que el producto esté en status creadoAprob
 			if (reemplazarAvatarAutomatico) {
 				prodOrig.avatar = prodEdic.avatar_archivo;
-				req.query.aprob = "true"
+				req.query.aprob = "true";
 				return res.send("Son iguales");
 			} else {
 				// Variables

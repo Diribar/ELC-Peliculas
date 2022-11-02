@@ -162,7 +162,7 @@ module.exports = {
 		let avatar_archivo = req.file ? req.file.filename : "";
 		// Unir 'Edición' y 'Original'
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let errores = await validar.consolidado("", {...prodComb, entidad});
 		if (errores.hay) {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);

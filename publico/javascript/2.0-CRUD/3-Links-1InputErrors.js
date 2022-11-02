@@ -158,7 +158,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return !error || !error.parte;
 		},
-		actualizarFormato: (fila, columna) => {
+		actualizaFormato: (fila, columna) => {
 			// Barrer el formato de izquierda a derecha
 			let indice;
 			for (let col = columna; col < columnas - 1; col++) {
@@ -218,7 +218,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Actualizar el formato
-		fn.actualizarFormato(fila, columna);
+		fn.actualizaFormato(fila, columna);
 		// Submit
 		fn.activarInactivarbotonGuardar(fila);
 		// Poner el foco en el input a resolver
@@ -257,7 +257,7 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(inputs[indice].value);
 		// Consolidar la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
-		// Averiguar si hay algún error
+		// Averigua si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
 		// Guarda el mensaje de error
 		let mensaje = error[campo];

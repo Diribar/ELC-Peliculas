@@ -512,7 +512,7 @@ let consolidarValores = (datos, cantCapitulos) => {
 	for (let dato of datos) {
 		campo[dato] ? campo[dato]++ : (campo[dato] = 1);
 	}
-	// Averiguar cuántas veces se repite el método más frecuente
+	// Averigua cuántas veces se repite el método más frecuente
 	let valores = Object.keys(campo);
 	let repeticiones = Object.values(campo);
 	let frecMaxima = Math.max(...repeticiones);

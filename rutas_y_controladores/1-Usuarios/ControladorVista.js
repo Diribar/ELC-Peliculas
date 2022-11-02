@@ -136,13 +136,13 @@ module.exports = {
 	editablesGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let datos = {...req.body};
 		if (req.file) {
 			datos.tamano = req.file.size;
 			datos.avatar = req.file.filename;
 		}
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let errores = await validar.editables(datos);
 		if (errores.hay) {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
@@ -225,7 +225,7 @@ module.exports = {
 		};
 		if (req.file) datos.tamano = req.file.size;
 		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/5-DocsRevisar/";
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let errores = await validar.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
@@ -318,7 +318,7 @@ module.exports = {
 		});
 	},
 	loginGuardar: async (req, res) => {
-		// 1. Averiguar si hay errores de data-entry
+		// 1. Averigua si hay errores de data-entry
 		let {errores, usuario} = await validar.mailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -335,7 +335,7 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
 		let hoyAhora = comp.ahora();
-		procesos.actualizarElContadorDeLogins(usuario, hoyAhora);
+		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
@@ -379,7 +379,7 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, {
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
 		});

@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
-		// Averiguar si está todo oculto
+		// Averigua si está todo oculto
 		let todoOculto = ingrsOculto && reempsOculto;
 		// 1. Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
@@ -47,7 +47,7 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let verificarBloques = (filas, bloque) => {
-		// Averiguar el status
+		// Averigua el status
 		let ocultarBloque = Array.from(filas)
 			.map((n) => n.className)
 			.every((n) => n.includes("ocultar"));

@@ -37,7 +37,7 @@ module.exports = {
 		let mensaje = !link_original
 			? await comp.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await comp.actualizar_registro("links", link_original.id, link_edicion) // Actualizar el link_original
+			? await comp.actualiza_registro("links", link_original.id, link_edicion) // Actualizar el link_original
 			: await comp.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
@@ -51,7 +51,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		let link;
-		// Averiguar si no existe el 'url'
+		// Averigua si no existe el 'url'
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
 			// Obtiene el link
@@ -61,7 +61,7 @@ module.exports = {
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
-				await BD_genericas.eliminarPorId("links", link.id);
+				await BD_genericas.eliminaPorId("links", link.id);
 				procesos.prodCampoLG(prodEntidad, prodID);
 			}
 			// El link existe y no tiene status 'aprobado'
@@ -100,7 +100,7 @@ module.exports = {
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			await BD_genericas.actualizarPorId("links", link.id, {
+			await BD_genericas.actualizaPorId("links", link.id, {
 				status_registro_id: recuperar_id,
 				sugerido_por_id: userID,
 			});
@@ -138,12 +138,12 @@ module.exports = {
 		if (!respuesta.mensaje) {
 			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
 			if (link.status_registro.inactivar)
-				await BD_genericas.actualizarPorId("links", link.id, {
+				await BD_genericas.actualizaPorId("links", link.id, {
 					...objeto,
 					status_registro_id: aprobado_id,
 				});
 			if (link.status_registro.recuperar)
-				await BD_genericas.actualizarPorId("links", link.id, {
+				await BD_genericas.actualizaPorId("links", link.id, {
 					...objeto,
 					status_registro_id: inactivo_id,
 				});

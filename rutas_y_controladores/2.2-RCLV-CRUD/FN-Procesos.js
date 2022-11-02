@@ -130,13 +130,13 @@ module.exports = {
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualizar_registro(entidad, id, DE) // Actualizar el registro original
+				? await comp.actualiza_registro(entidad, id, DE) // Actualizar el registro original
 				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualizar_registro(entidad, id, DE); // Actualizar el registro original
+			await comp.actualiza_registro(entidad, id, DE); // Actualizar el registro original
 		}
 		// Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];
