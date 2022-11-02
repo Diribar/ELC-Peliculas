@@ -77,15 +77,14 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			})();
-			return;
 			// Actualiza la subcategoría
 			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
 			// Actualiza los nombres de país
 			this.actualizaPaisesNombre();
 			// Activa/desactiva el mouse para el avatar
-			AV.actualizaMouse;
+			AV.actualizaMouse();
 			// Reemplaza el avatar visible
-			AV.actualizaVisible([v.versionActual].avatar, v.avatarVisible);
+			AV.actualizaVisible(version[v.versionActual].avatar, v.avatarVisible);
 			// Señala las diferencias con la versión original
 			this.senalaLasDiferencias();
 			// Muestra/oculta los íconos para RCLV y de ayuda
@@ -111,7 +110,6 @@ window.addEventListener("load", async () => {
 				(version[v.versionActual][campo] || version.orig[campo])
 					? v.flechasDiferencia[i].classList.remove("ocultar")
 					: v.flechasDiferencia[i].classList.add("ocultar");
-				console.log(version[v.versionActual][campo], version.orig[campo]);
 			});
 		},
 		muestraLosErrores: async () => {
