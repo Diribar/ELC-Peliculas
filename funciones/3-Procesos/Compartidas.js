@@ -74,10 +74,8 @@ module.exports = {
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
 		edicion = quitarLosCamposQueNoSeComparan(edicion);
-		// console.log(79, edicion);
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
-		// console.log(83, edicion);
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Fin
