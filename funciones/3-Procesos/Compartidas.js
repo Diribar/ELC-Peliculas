@@ -15,7 +15,7 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	obtenerLeadTime: (desde, hasta) => {
+	obtieneLeadTime: (desde, hasta) => {
 		// Corregir domingo
 		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
 		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
@@ -91,8 +91,8 @@ module.exports = {
 			// Genera la información a actualizar en el registro original
 			let datos = {
 				alta_terminada_en: funcionAhora(),
-				lead_time_creacion: this.obtenerLeadTime(prodOrig.creado_en, ahora),
-				status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
+				lead_time_creacion: this.obtieneLeadTime(prodOrig.creado_en, ahora),
+				status_registro_id: await BD_especificas.obtieneELC_id("status_registro", {aprobado: 1}),
 			};
 			// Cambia el status del producto e inactiva la captura
 			await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
@@ -121,7 +121,7 @@ module.exports = {
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
 		// Obtiene el status_id de 'inactivar'
-		let inactivarID = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
+		let inactivarID = await BD_genericas.obtienePorCampos("status_registro", {inactivar: true}).then(
 			(n) => n.id
 		);
 		// Preparar los datos
@@ -154,7 +154,7 @@ module.exports = {
 		let entidad_id = this.obtieneEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
-		let registroEdic = await BD_genericas.obtenerPorCampos(entidadEdic, objeto);
+		let registroEdic = await BD_genericas.obtienePorCampos(entidadEdic, objeto);
 		if (registroEdic) await BD_genericas.eliminarPorId(entidadEdic, registroEdic.id);
 		// Completar la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
@@ -165,7 +165,7 @@ module.exports = {
 	},
 
 	// Conversiones
-	obtenerFamiliaEnSingular: (entidad) => {
+	obtieneFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
@@ -174,7 +174,7 @@ module.exports = {
 			? "links"
 			: "";
 	},
-	obtenerEntidadNombre: (entidad) => {
+	obtieneEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -231,7 +231,7 @@ module.exports = {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
 		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			let paises_idArray = paises_id.split(" ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
@@ -473,13 +473,13 @@ module.exports = {
 	cartelRepetido: function (datos) {
 		return (
 			"Este/a <a href='/" +
-			this.obtenerFamiliaEnSingular(datos.entidad) +
+			this.obtieneFamiliaEnSingular(datos.entidad) +
 			"/detalle/?entidad=" +
 			datos.entidad +
 			"&id=" +
 			datos.id +
 			"' target='_blank'><u><strong>" +
-			this.obtenerEntidadNombre(datos.entidad).toLowerCase() +
+			this.obtieneEntidadNombre(datos.entidad).toLowerCase() +
 			"</strong></u></a> ya se encuentra en nuestra base de datos"
 		);
 	},
@@ -520,7 +520,7 @@ module.exports = {
 	usuario_Ficha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
 		// Variables
 		let unAno = unDia * 365;
 		let enviar = {apodo: ["Apodo", usuario.apodo]};
@@ -540,7 +540,7 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
-	obtenerProdsDeLinks: function (links, ahora, userID) {
+	obtieneProdsDeLinks: function (links, ahora, userID) {
 		// Variables
 		let peliculas = [];
 		let colecciones = [];
@@ -599,7 +599,7 @@ module.exports = {
 		DE.nombre = datos.nombre;
 		// Día del año
 		if (!datos.desconocida)
-			DE.dia_del_ano_id = await BD_genericas.obtenerTodos("dias_del_ano", "id")
+			DE.dia_del_ano_id = await BD_genericas.obtieneTodos("dias_del_ano", "id")
 				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 				.then((n) => n.id);
 		// Año

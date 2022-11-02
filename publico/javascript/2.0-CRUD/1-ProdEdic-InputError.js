@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 	let versionAnt; // Se usa más adelante, no se debe borrar
 	let datos = {};
 	let flechasDiferencia = document.querySelectorAll(".inputError .fa-arrow-right-long");
-	let rutaVersiones = "/producto/api/edicion/obtener-original-y-edicion/";
+	let rutaVersiones = "/producto/api/edicion/obtiene-original-y-edicion/";
 	rutaVersiones += "?entidad=" + entidad + "&id=" + prodID;
 	let producto_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";

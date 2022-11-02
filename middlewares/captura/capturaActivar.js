@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		: "";
 	const prodID = req.query.id;
 	const userID = req.session.usuario.id;
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+	const registro = await BD_genericas.obtienePorIdConInclude(entidad, prodID, "status_registro");
 	const urlBase = req.baseUrl;
 	// Variables - De tiempo
 	let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario de captura

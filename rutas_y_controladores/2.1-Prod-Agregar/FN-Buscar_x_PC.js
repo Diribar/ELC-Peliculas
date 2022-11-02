@@ -195,13 +195,13 @@ let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
 		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
-		let YaEnBD = await BD_especificas.obtenerELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
+		let YaEnBD = await BD_especificas.obtieneELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
 		if (entidad == "peliculas" && !YaEnBD) {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
-			YaEnBD = await BD_especificas.obtenerELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
+			YaEnBD = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
 			if (YaEnBD) {
-				let capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
-				let coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
+				let capitulo = await BD_genericas.obtienePorId("capitulos", YaEnBD);
+				let coleccion = await BD_genericas.obtienePorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
 				datos.resultados[i].prodNombre =
 					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';

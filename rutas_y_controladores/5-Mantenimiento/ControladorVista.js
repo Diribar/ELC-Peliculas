@@ -7,11 +7,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 
 module.exports = {
-	TC_obtenerProdsSinLink: async (ahora, userID) => {
+	TC_obtieneProdsSinLink: async (ahora, userID) => {
 		// Obtiene todos los productos aprobados, sin ningún link
 		return [];
 		// Obtiene los links 'a revisar'
-		let links = await BD_especificas.TC_obtenerLinks_y_Edics();
+		let links = await BD_especificas.TC_obtieneLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtiene los links ajenos
@@ -24,7 +24,7 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtiene los productos
-		let productos = linksAjenos.length ? comp.obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = linksAjenos.length ? comp.obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},

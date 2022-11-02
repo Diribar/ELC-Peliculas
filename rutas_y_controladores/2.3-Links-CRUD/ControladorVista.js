@@ -18,7 +18,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesosProd.obtenerVersionesDelProducto(
+		let [prodOrig, prodEdic] = await procesosProd.obtieneVersionesDelProducto(
 			prodEntidad,
 			prodID,
 			userID
@@ -28,12 +28,12 @@ module.exports = {
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
 		// Obtiene información de BD
-		let links = await procesos.obtenerLinksActualizados(prodEntidad, prodID, userID);
-		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
-		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		let links = await procesos.obtieneLinksActualizados(prodEntidad, prodID, userID);
+		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
+		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = comp.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = comp.obtieneEntidadNombre(prodEntidad);
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene datos para la vista
 		if (prodEntidad == "capitulos") {
@@ -43,9 +43,9 @@ module.exports = {
 					: prodOrig.coleccion_id;
 			let temporada =
 				prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
-			producto.capitulos = await BD_especificas.obtenerCapitulos(coleccion_id, temporada);
+			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
+		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {

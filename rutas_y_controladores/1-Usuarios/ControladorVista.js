@@ -45,7 +45,7 @@ module.exports = {
 				: false;
 		// Generar la info para la vista 'olvido de contraseña'
 		if (errores.documento) {
-			let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			var hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 			var hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		}
@@ -66,7 +66,7 @@ module.exports = {
 		let email = req.body.email;
 		let errores = await validar.altaMail(email);
 		// Si no hay errores, verificar si ya existe en la BD
-		if (!errores.hay && (await BD_especificas.obtenerELC_id("usuarios", {email})))
+		if (!errores.hay && (await BD_especificas.obtieneELC_id("usuarios", {email})))
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
@@ -107,12 +107,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
 		// Variables
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		// Roles de Iglesia
-		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", {usuario: true});
+		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
@@ -185,8 +185,8 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
 		// Variables
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
+		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
+		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
 		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");

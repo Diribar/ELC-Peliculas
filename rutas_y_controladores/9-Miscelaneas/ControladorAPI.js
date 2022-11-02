@@ -38,7 +38,7 @@ module.exports = {
 		// Variables
 		let {entidad, id} = req.query;
 		// Obtiene el registro
-		let registro = await BD_genericas.obtenerPorId(entidad, id);
+		let registro = await BD_genericas.obtienePorId(entidad, id);
 		let datos = {
 			creado_en: registro.creado_en,
 			creado_por_id: registro.creado_por_id,

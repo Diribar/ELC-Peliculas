@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let rutaObtieneProvs = "/links/api/obtener-provs-links";
+	let rutaObtieneProvs = "/links/api/obtiene-provs-links";
 	let inputs = document.querySelectorAll("tbody .inputError .input");
 	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
 	let columnas = camposInput.length;
@@ -24,6 +24,7 @@ window.addEventListener("load", async () => {
 		urlInputs: document.querySelectorAll(".inputError input[name='url'"),
 		calidadInputs: document.querySelectorAll(".calidad .inputError .input"),
 		castellanoInputs: document.querySelectorAll(".castellano .inputError .input"),
+		subtit_castellano: document.querySelectorAll(".subtit_castellano .inputError .input"),
 		gratuitoInputs: document.querySelectorAll(".gratuito .inputError .input"),
 		tipoInputs: document.querySelectorAll(".tipo .inputError .input"),
 		completoInputs: document.querySelectorAll(".completo .inputError .input"),
@@ -41,7 +42,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
-		obtenerFilaColumna: (e) => {
+		obtieneFilaColumna: (e) => {
 			// Obtiene campo
 			let campo = e.target.name;
 			// Obtiene la columna y fila del input
@@ -51,11 +52,6 @@ window.addEventListener("load", async () => {
 			return [fila, columna];
 		},
 		depurarUrl: () => {
-			// Quitar caracteres incompatibles con un 'url'
-			v.urlInputs[v.filaAlta].value = v.urlInputs[v.filaAlta].value.replace(
-				/[^A-Za-záéíóúüñ?=&./\d]/gi,
-				""
-			);
 			// Obtiene el valor actual
 			let valor = v.urlInputs[v.filaAlta].value;
 			// Obtiene ambos índices
@@ -65,7 +61,7 @@ window.addEventListener("load", async () => {
 				indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
 			// Si es YOUTUBE, quitarle el sufijo
-			if (url.startsWith("youtube.com") && url.includes("&"))
+			if (url.startsWith("youtube.com") && url.includes("&t="))
 				url = url.slice(0, url.lastIndexOf("&t="));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
@@ -105,6 +101,10 @@ window.addEventListener("load", async () => {
 			return !error || !error.castellano;
 		},
 		controlesEnSubtitulosCastellano: async (fila) => {
+			// Si el resultado es conocido --> ponerlo
+			let condicion = v.castellanoInputs[fila].value == "1";
+			if (condicion) v.subtit_castellano[fila].value = "-";
+			v.subtit_castellano[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
 			let error = await mensajeDeError(fila, "subtit_castellano");
 			// Fin
@@ -202,8 +202,8 @@ window.addEventListener("load", async () => {
 		let autofocus = false;
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
-			if (col == 0 && OK) OK = await fn.controlesEnUrl(fila);
-			if (OK) var proveedor = obtenerProveedor(fila);
+			if (!col && OK) OK = await fn.controlesEnUrl(fila);
+			if (OK) var proveedor = obtieneProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, proveedor);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, proveedor);
 			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
@@ -224,7 +224,7 @@ window.addEventListener("load", async () => {
 		// Poner el foco en el input a resolver
 		if (focoEnColumna) inputs[focoEnColumna].focus();
 	};
-	let obtenerProveedor = (fila) => {
+	let obtieneProveedor = (fila) => {
 		// Obtiene el url
 		let url = v.urlInputs[fila].value;
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
@@ -250,7 +250,7 @@ window.addEventListener("load", async () => {
 		let indice = fila * columnas + columna;
 		// completo o n° parte
 		let [campoAnt, valorAnt] =
-			campo == "completo" || campo == "parte"
+			campo == "subtit_castellano" || campo == "completo" || campo == "parte"
 				? [inputs[indice - 1].name + "=", inputs[indice - 1].value + "&"]
 				: ["", ""];
 		// Obtiene los datos de campo y valor
@@ -276,7 +276,7 @@ window.addEventListener("load", async () => {
 	// Event Listeners
 	v.form.addEventListener("input", async (e) => {
 		// Obtiene la fila y columna
-		let [fila, columna] = fn.obtenerFilaColumna(e);
+		let [fila, columna] = fn.obtieneFilaColumna(e);
 		// Si hubo un error (fila=filas), interrumpir
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo

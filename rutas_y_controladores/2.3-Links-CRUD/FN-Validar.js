@@ -1,6 +1,8 @@
 "use strict";
 // Definir variables
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -31,30 +33,27 @@ module.exports = {
 		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? comp.inputVacio : "";
 		// castellano
 		if (campos.includes("castellano")) {
-			errores.castellano =
-				datos.castellano == ""
-					? comp.inputVacio
-					: datos.castellano != "0" && datos.castellano != "1"
-					? "Valor inválido"
-					: "";
+			errores.castellano = !datos.castellano
+				? comp.inputVacio
+				: datos.castellano != "0" && datos.castellano != "1"
+				? "Valor inválido"
+				: "";
 		}
 		// subtitulos castellano
-		if (campos.includes("subtit_castellano")) {
-			errores.subtit_castellano =
-				datos.subtit_castellano == ""
-					? comp.inputVacio
-					: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
-					? "Valor inválido"
-					: "";
+		if (campos.includes("subtit_castellano" && datos.castellano != "1")) {
+			errores.subtit_castellano = !datos.subtit_castellano
+				? comp.inputVacio
+				: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
+				? "Valor inválido"
+				: "";
 		}
 		// gratuito
 		if (campos.includes("gratuito")) {
-			errores.gratuito =
-				datos.gratuito == ""
-					? comp.inputVacio
-					: datos.gratuito != "0" && datos.gratuito != "1"
-					? "Valor inválido"
-					: "";
+			errores.gratuito = !datos.gratuito
+				? comp.inputVacio
+				: datos.gratuito != "0" && datos.gratuito != "1"
+				? "Valor inválido"
+				: "";
 		}
 		// tipo_id
 		if (campos.includes("tipo_id")) {
@@ -89,7 +88,7 @@ let validarLinkRepetidos = async (datos) => {
 	// Obtiene casos
 	let id = await BD_especificas.validarRepetidos(["url"], datos);
 	if (id) {
-		let link = await BD_genericas.obtenerPorId("links", id);
+		let link = await BD_genericas.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneEntidadDesdeBelongs(link);
 		let entidadId = comp.obtieneEntidad_id(prodEntidad);
 		let prodId = link[entidadId];
@@ -97,5 +96,5 @@ let validarLinkRepetidos = async (datos) => {
 		respuesta = comp.cartelRepetido(datos);
 	}
 	// Fin
-	return mensaje;
+	return respuesta;
 };

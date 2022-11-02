@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = funciones.obtieneEntidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
 				mensajes: ["La entidad ingresada no es válida"],

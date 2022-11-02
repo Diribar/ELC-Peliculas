@@ -103,7 +103,7 @@ module.exports = {
 			// 1. Verifica que el documento no exista ya en la Base de Datos
 			let docum_numero = datos.docum_numero;
 			let docum_pais_id = datos.docum_pais_id;
-			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {docum_numero, docum_pais_id});
+			let averiguar = await BD_genericas.obtienePorCampos("usuarios", {docum_numero, docum_pais_id});
 			if (averiguar && averiguar.id != datos.id) errores.credenciales = true;
 
 			// 2. Verifica el docum_avatar
@@ -142,7 +142,7 @@ module.exports = {
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// Si no hay error => averigua el usuario
-			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
+			usuario = await BD_especificas.obtieneUsuarioPorMail(datos.email);
 			// Si existe el usuario => averigua si la contraseña es válida
 			if (usuario) {
 				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
@@ -158,7 +158,7 @@ module.exports = {
 	olvidoContrBE: async (datos) => {
 		// Variables
 		let errores = {};
-		let usuario = await BD_genericas.obtenerPorCamposConInclude(
+		let usuario = await BD_genericas.obtienePorCamposConInclude(
 			"usuarios",
 			{email: datos.email},
 			"status_registro"

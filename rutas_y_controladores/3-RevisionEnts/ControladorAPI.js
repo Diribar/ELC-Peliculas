@@ -25,7 +25,7 @@ module.exports = {
 			"hecho",
 			"valor",
 		];
-		let prodEdic = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
+		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includes);
 		// Verificación: averigua si existe la edición y el campo a analizar
 		let condicion1 = campo == "avatar" && prodEdic && !prodEdic.avatar_archivo;
 		let condicion2 = campo != "avatar" && prodEdic && !prodEdic[campo];
@@ -59,7 +59,7 @@ module.exports = {
 		// Averiguar si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let link = await BD_genericas.obtenerPorCamposConInclude("links", {url}, ["status_registro"]);
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro"]);
 		// El link no existe en la BD
 		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y no tiene status 'creado' o 'provisorio'
@@ -78,7 +78,7 @@ module.exports = {
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
 		if (!inactivar && !creadoAprob) {
-			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
+			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
 			procesos.usuario_Penalizar(sugerido_por_id, motivo);
 		}
 		// LINK - Pasa a status aprobado/rechazado -
@@ -123,7 +123,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		let datos;
 		// Obtiene el registro editado
-		let linkEdic = await BD_genericas.obtenerPorId("links_edicion", edicID);
+		let linkEdic = await BD_genericas.obtienePorId("links_edicion", edicID);
 		// Verificación: averigua si existe la edición y el campo a analizar
 		let condicion = linkEdic && !linkEdic[campo];
 		if (!linkEdic || condicion) return res.json({mensaje: "false", reload: true});

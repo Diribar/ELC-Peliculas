@@ -106,7 +106,7 @@ window.addEventListener("load", async () => {
 		var categoriaSelect = document.querySelector("select[name='categoria_id']");
 		var subcategoriaSelect = document.querySelector("select[name='subcategoria_id']");
 		var subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
-		var subcategorias = await fetch("/producto/agregar/api/obtener-subcategorias").then((n) => n.json());
+		var subcategorias = await fetch("/producto/agregar/api/obtiene-subcategorias").then((n) => n.json());
 		var subcategoria;
 		// Datos RCLV
 		var inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");

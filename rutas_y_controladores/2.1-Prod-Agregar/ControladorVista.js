@@ -126,8 +126,8 @@ module.exports = {
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
-		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
-		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
+		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
+		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		//return res.send(BD_paises)
@@ -168,7 +168,7 @@ module.exports = {
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			let fuente_id = datosDuros.fuente + "_id";
-			let elc_id = await BD_especificas.obtenerELC_id(datosDuros.entidad, {
+			let elc_id = await BD_especificas.obtieneELC_id(datosDuros.entidad, {
 				[fuente_id]: datosDuros[fuente_id],
 			});
 			if (elc_id) {
@@ -315,9 +315,9 @@ module.exports = {
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Obtiene la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_genericas.obtenerPorCampos("fe_valores", {id: confirma.fe_valores_id}).then((n) => n.valor),
-			BD_genericas.obtenerPorCampos("entretiene", {id: confirma.entretiene_id}).then((n) => n.valor),
-			BD_genericas.obtenerPorCampos("calidad_tecnica", {id: confirma.calidad_tecnica_id}).then(
+			BD_genericas.obtienePorCampos("fe_valores", {id: confirma.fe_valores_id}).then((n) => n.valor),
+			BD_genericas.obtienePorCampos("entretiene", {id: confirma.entretiene_id}).then((n) => n.valor),
+			BD_genericas.obtienePorCampos("calidad_tecnica", {id: confirma.calidad_tecnica_id}).then(
 				(n) => n.valor
 			),
 		]);
@@ -365,7 +365,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		// 4. Obtiene los demás datos del producto
-		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
+		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) {
 			let informacion = {
@@ -384,7 +384,7 @@ module.exports = {
 		if (!registroProd.status_registro.gr_creado)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
 		// 5. Obtiene el producto
-		let prodNombre = comp.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
@@ -436,7 +436,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			prodNombre: comp.obtenerEntidadNombre(req.body.entidad),
+			prodNombre: comp.obtieneEntidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -458,7 +458,7 @@ module.exports = {
 		procesos.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.prodNombre = comp.obtenerEntidadNombre(req.body.entidad);
+			req.body.prodNombre = comp.obtieneEntidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -486,9 +486,9 @@ module.exports = {
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validar.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
-		FA_id = await procesos.obtenerFA_id(req.body.direccion);
+		FA_id = await procesos.obtieneFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, {FA_id: FA_id});
+			let elc_id = await BD_especificas.obtieneELC_id(copiarFA.entidad, {FA_id: FA_id});
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
