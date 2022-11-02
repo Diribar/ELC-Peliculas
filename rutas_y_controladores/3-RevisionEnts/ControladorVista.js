@@ -112,10 +112,10 @@ module.exports = {
 			alta_analizada_en: ahora,
 		};
 		// Actualiza el status en el registro original
-		await BD_genericas.actualizarPorId(entidad, id, datosEntidad);
+		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
 		// Actualiza el status en los registros de los capítulos
 		if (entidad == "colecciones")
-			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
+			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
 		// Agrega el registro en el historial_cambios_de_status
 		let producto = await BD_genericas.obtienePorId(entidad, id);
 		let creador_ID = producto.creado_por_id;
@@ -154,12 +154,12 @@ module.exports = {
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let quedanCampos;
+		let quedanCampos, prodOrig;
 		// Obtiene la edición a analizar
 		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
 		// Si no existe una edición => inactiva y regresa al Tablero de Control
 		if (!prodEdic) {
-			let informacion = await procesos.infoProdEdicion(entidad, id, producto_id, userID);
+			let informacion = procesos.infoProdEdicion(entidad, id);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
@@ -168,37 +168,35 @@ module.exports = {
 			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
 			return res.redirect(ruta);
 		}
-		// Obtiene la edición con sus includes
-		let includesEdic = ["en_castellano", "en_color", "idioma_original", "categoria", "subcategoria"];
-		includesEdic.push("publico_sugerido", "personaje", "hecho", "valor");
-		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
-		// Obtiene la versión original
-		let includesOrig = [...includesEdic, "status_registro"];
-		if (entidad == "capitulos") includesOrig.push("coleccion");
-		if (entidad == "colecciones") includesOrig.push("capitulos");
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
-		// 1. Actualiza el registro de edición y obtiene su versión mínima
-		// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
-		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		if (!quedanCampos) {
-			// Si no quedan campos de 'edicion' por procesar --> lo avisa
-			let informacion = procesos.cartelNoQuedanCampos;
-			return res.render("CMP-0Estructura", {informacion});
-		}
-		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatar, ingresos, reemplazos, bloqueDer;
+		// Obtiene los includes
+		let includesEdic = variables.camposRevisar.productos.filter((n) => n.relac_include);
+		includesEdic = includesEdic.map((n) => n.relac_include);
+		let includesOrig = [...includesEdic, "status_registro"];
+		if (entidad == "capitulos") includesOrig.push("coleccion");
+		if (entidad == "colecciones") includesOrig.push("capitulos");
+		// Obtiene las versiones original y de edición con sus includes
+		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
+		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
 		// Acciones dependiendo de si está presente el avatar
-		if (prodEdic.avatar_url) {
-			let reemplazarAvatarAutomatico =
+		if (prodEdic.avatar_url || prodEdic.avatar_archivo) {
+			// Averigua si se reemplaza automáticamente
+			let reemplAvatarAutomaticam =
 				prodEdic.avatar_archivo && // Que exista 'avatar_archivo'
-				prodOrig.avatar == prodEdic.avatar_url && // Mismo campo original.avatar' y edicion.avatar_url
-				prodOrig.status_registro.creado_aprob; // Que el producto esté en status creadoAprob
-			if (reemplazarAvatarAutomatico) {
-				prodOrig.avatar = prodEdic.avatar_archivo;
+				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
+			// Adecua los campos 'avatar' en la variable y el registro
+			let datos = {avatar_url: null, avatar_archivo: null};
+			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
+			prodEdic = {avatar: prodEdic.avatar_archivo, ...prodEdic, ...datos};
+			// Acciones si se reemplaza en forma automática
+			if (reemplAvatarAutomaticam) {
 				req.query.aprob = "true";
-				return res.send("Son iguales");
+				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
+				[quedanCampos, prodEdic] = await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
+				if (!quedanCampos) return res.redirect(req.url);
+				delete prodEdic.avatar;
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -217,12 +215,21 @@ module.exports = {
 			}
 		}
 		if (!codigo.includes("avatar")) {
+			if (!quedanCampos) {
+				// 1. Actualiza el registro de edición y obtiene su versión mínima
+				// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
+				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
+			}
+			if (!quedanCampos) {
+				// Si no quedan campos de 'edicion' por procesar --> lo avisa
+				let informacion = procesos.cartelNoQuedanCampos;
+				return res.render("CMP-0Estructura", {informacion});
+			}
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
 			// Obtiene el avatar
-			avatar = prodOrig.avatar;
+			if (!avatar) avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
-			if (!avatar) avatar = "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
@@ -333,7 +340,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
-		let camposARevisar = variables.camposRevisarLinks.map((n) => n.nombre);
+		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {

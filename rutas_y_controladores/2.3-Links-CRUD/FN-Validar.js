@@ -89,7 +89,7 @@ let validarLinkRepetidos = async (datos) => {
 	let id = await BD_especificas.validarRepetidos(["url"], datos);
 	if (id) {
 		let link = await BD_genericas.obtienePorId("links", id);
-		let prodEntidad = comp.obtieneEntidadDesdeBelongs(link);
+		let prodEntidad = comp.obtieneEntidadDesdeEdicion(link);
 		let entidadId = comp.obtieneEntidad_id(prodEntidad);
 		let prodId = link[entidadId];
 		datos = {entidad: prodEntidad, id: prodId};

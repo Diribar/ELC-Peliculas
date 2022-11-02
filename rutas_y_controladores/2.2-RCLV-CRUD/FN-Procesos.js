@@ -84,7 +84,7 @@ module.exports = {
 		// Averigua si el RCLV tiene algún "proceso de canonización"
 		if (RCLV.proceso_id) {
 			// Obtiene los procesos de canonización
-			let proceso = await BD_genericas.obtieneTodos("procesos_canonizacion", "orden").then((n) =>
+			let proceso = await BD_genericas.obtieneTodos("procs_canoniz", "orden").then((n) =>
 				n.find((m) => m.id == RCLV.proceso_id)
 			);
 			// Asigna el nombre del proceso
@@ -131,7 +131,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualiza_registro(entidad, id, DE) // Actualizar el registro original
-				: await comp.guardar_edicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+				: await comp.guardarEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;

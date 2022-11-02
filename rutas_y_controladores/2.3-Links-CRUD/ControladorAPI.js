@@ -38,7 +38,7 @@ module.exports = {
 			? await comp.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
 			? await comp.actualiza_registro("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await comp.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
+			: await comp.guardarEdicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},

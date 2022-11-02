@@ -31,8 +31,8 @@ module.exports = {
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procesos_canonizacion = await BD_genericas.obtieneTodos("procesos_canonizacion", "orden");
-			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
+			var procs_canoniz = await BD_genericas.obtieneTodos("procs_canoniz", "orden");
+			procs_canoniz = procs_canoniz.filter((m) => m.id.length == 3);
 			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
 			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
@@ -70,7 +70,7 @@ module.exports = {
 			DE: !!Object.keys(dataEntry).length,
 			meses,
 			roles_iglesia,
-			procesos_canonizacion,
+			procs_canoniz,
 			apariciones_marianas,
 			rutaSalir,
 		});

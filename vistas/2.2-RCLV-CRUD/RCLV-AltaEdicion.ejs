@@ -266,7 +266,7 @@
 						<!-- Status del proceso de canonización -->
 						<select name="proceso_id" class="ocultar RCLI cfc">
 								<option value="" selected class="ocultar">Elejí una opción</option>
-								<% for (let proceso of procesos_canonizacion) { %>
+								<% for (let proceso of procs_canoniz) { %>
 									<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
 								<% } %> 
 						</select>

@@ -177,7 +177,7 @@ module.exports = {
 			}
 			// Actualiza la edición
 			let edicion = {...req.body, avatar_archivo};
-			await comp.guardar_edicion(entidad, "prods_edicion", prodOrig, edicion, userID);
+			await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, edicion, userID);
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

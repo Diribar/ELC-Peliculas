@@ -185,7 +185,7 @@
 						<label>Status del proceso:</label>
 						<select name="proceso_id">
 							<option value="" <% if (RCLV_original.proceso_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
-							<% for (let proceso of procesos_canonizacion) { %>
+							<% for (let proceso of procs_canoniz) { %>
 								<option value="<%= proceso.id %>" <% if (proceso.id == RCLV_original.proceso_id) { %> selected <% } %>><%= proceso.nombre %></option>
 							<% } %> 
 						</select>

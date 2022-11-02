@@ -378,7 +378,7 @@ VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 
 CREATE TABLE rclv_proc_canoniz (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_proc_canoniz (id, orden, nombre)
