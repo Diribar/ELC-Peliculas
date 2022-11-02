@@ -173,7 +173,7 @@ module.exports = {
 		let avatar, ingresos, reemplazos, bloqueDer;
 		// Obtiene los includes
 		let includesEdic = variables.camposRevisar.productos.filter((n) => n.relac_include);
-		includesEdic=includesEdic.map((n) => n.relac_include);
+		includesEdic = includesEdic.map((n) => n.relac_include);
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -185,7 +185,7 @@ module.exports = {
 			// Averigua si se reemplaza automáticamente
 			let reemplAvatarAutomaticam =
 				prodEdic.avatar_archivo && // Que exista 'avatar_archivo'
-				prodOrig.avatar == prodEdic.avatar_url; // Mismo campo 'original.avatar' y 'edicion.avatar_url'
+				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
 			// Adecua los campos 'avatar' en la variable y el registro
 			let datos = {avatar_url: null, avatar_archivo: null};
 			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
