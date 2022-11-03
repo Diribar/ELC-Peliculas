@@ -2,6 +2,7 @@
 // Requires
 const path = require("path");
 const multer = require("multer");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 // Variables
 const storage = multer.diskStorage({
@@ -14,6 +15,9 @@ const storage = multer.diskStorage({
 		cb(null, Date.now() + path.extname(file.originalname));
 	},
 });
+
+// Crea la carpeta 'provisorio' si no existe
+comp.garantizaLaCarpetaProvisorio()
 
 // Guardar la imagen
 module.exports = multer({storage});

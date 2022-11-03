@@ -338,6 +338,14 @@ module.exports = {
 	averiguaSiExisteUnArchivo: (archivo) => {
 		return archivo && fs.existsSync(archivo);
 	},
+	garantizaLaCarpetaProvisorio: function () {
+		// Averiguar si existe la carpeta
+		if (!this.averiguaSiExisteUnArchivo("./publico/imagenes/9-Provisorio"))
+			// Si no existe, la crea
+			fs.mkdirSync("./publico/imagenes/9-Provisorio");
+		// Fin
+		return;
+	},
 	mueveUnArchivoImagen: function (nombre, origen, destino) {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";

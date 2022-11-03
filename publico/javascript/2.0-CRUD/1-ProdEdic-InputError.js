@@ -271,7 +271,7 @@ window.addEventListener("load", async () => {
 			if (v.versiones[indice] == v.versionActual) DE.accionesPorCambioDeVersion();
 		});
 	});
-	v.botonGuardar.addEventListener("click", () => {
+	v.botonGuardar.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
 		if (v.botonGuardar.className.includes("inactivo")) e.preventDefault();
 	});
