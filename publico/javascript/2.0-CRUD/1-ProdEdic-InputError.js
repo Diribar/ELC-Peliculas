@@ -23,16 +23,13 @@ window.addEventListener("load", async () => {
 		categoria: document.querySelector("select[name='categoria_id']"),
 		subcategoria: document.querySelector("select[name='subcategoria_id']"),
 		subcategoriaOpciones: document.querySelectorAll("select[name='subcategoria_id'] option"),
-		// Varios
-		avatarVisible: document.querySelector(".inputError #avatarVisible"),
-		avatarNuevo: document.querySelector(".inputError #avatarNuevo"),
-		iconosAyuda: document.querySelectorAll("main .ayudaClick"),
 		// Versiones de datos
 		versiones: ["edicN", "edicG", "orig"],
 		versionActual: "edicN",
 		versionInput: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
+		imgsAvatar: document.querySelectorAll(".inputError .imgAvatar"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
 		// Botones
@@ -43,7 +40,9 @@ window.addEventListener("load", async () => {
 			edicN: document.querySelectorAll("#cuerpo #comandos .edicN"),
 			edicG: document.querySelectorAll("#cuerpo #comandos .edicG"),
 		},
-		links: document.querySelectorAll(".inputError i.linkRCLV"),
+		// Varios
+		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
+		iconosAyuda: document.querySelectorAll("main .ayudaClick"),
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
@@ -65,8 +64,15 @@ window.addEventListener("load", async () => {
 			(() => {
 				// Rutina para cada campo
 				v.campos.forEach((campo, i) => {
-					// Reemplaza los valores
+					// Reemplaza los valores que no sean el avatar
 					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
+					// Reemplaza el avatar visible
+					else
+						v.imgsAvatar.forEach((imgAvatar, indice) => {
+							v.versiones[indice] == v.versionActual
+								? imgAvatar.classList.remove("ocultar")
+								: imgAvatar.classList.add("ocultar");
+						});
 					// Impide/permite que el usuario haga cambios según la versión
 					v.inputs[i].disabled = !v.estamosEnEdicNueva;
 					if (campo == "paises_id") {
@@ -81,15 +87,11 @@ window.addEventListener("load", async () => {
 			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
 			// Actualiza los nombres de país
 			this.actualizaPaisesNombre();
-			// Activa/desactiva el mouse para el avatar
-			AV.actualizaMouse();
-			// Reemplaza el avatar visible
-			AV.actualizaVisible(version[v.versionActual].avatar, v.avatarVisible);
 			// Señala las diferencias con la versión original
 			this.senalaLasDiferencias();
 			// Muestra/oculta los íconos para RCLV y de ayuda
 			(() => {
-				for (let link of v.links)
+				for (let link of v.linksRCLV)
 					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
 				for (let iconoAyuda of v.iconosAyuda)
 					v.estamosEnEdicNueva
@@ -111,6 +113,7 @@ window.addEventListener("load", async () => {
 					? v.flechasDiferencia[i].classList.remove("ocultar")
 					: v.flechasDiferencia[i].classList.add("ocultar");
 			});
+			console.log(version.edicN.avatar, version.orig.avatar);
 		},
 		muestraLosErrores: async () => {
 			// Preparar la información
@@ -210,37 +213,20 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-	};
-	// Funciones Avatar
-	let AV = {
-		actualizaVisible: (avatar, preview) => {
-			// Crear elementos
-			let image = document.createElement("img");
-			preview.innerHTML = "";
-			image.src = avatar;
-			// Cambiar el avatar visible
-			preview.append(image);
-			// Fin
-			return;
-		},
-		nuevoIngreso: async function (e) {
+		nuevoAvatar: async function (e) {
 			// Creamos el objeto de la clase FileReader
 			let reader = new FileReader();
 			// Leemos el archivo subido y se lo pasamos a nuestro fileReader
 			reader.readAsDataURL(e.target.files[0]);
 			// Le decimos que cuando esté listo ejecute el código interno
 			reader.onload = () => {
-				let avatar = reader.result;
-				this.actualizaVisible(avatar, v.avatarVisible);
-				this.actualizaVisible(avatar, v.avatarNuevo);
+				let imagen = reader.result;
+				//console.log(imagen);
+				// Cambiar el 'src' del avatar
+				v.imgsAvatar[0].src = imagen;
 			};
-		},
-		actualizaMouse: () => {
-			v.estamosEnEdicNueva
-				? v.avatarVisible.classList.add("pointer")
-				: v.avatarVisible.classList.remove("pointer");
-			// Fin
-			return;
+			// Actualiza el valor de 'edicN.avatar'
+			version.edicN.avatar = e.target.files[0].name;
 		},
 	};
 
@@ -292,26 +278,28 @@ window.addEventListener("load", async () => {
 	});
 	// Revisar campos en forma INDIVIDUAL
 	v.form.addEventListener("input", async (e) => {
-		// Acciones si hubieron novedades dentro de EdicN
-		if (v.versionActual == v.versionInput) {
-			// Acciones si se cambió la categoría
-			if (e.target == "categoria_id") {
-				DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
-				v.subcategoria.value = ""; // Limpia la subcategoría
-			}
-			// Acciones si se cambió el país
-			if (e.target == v.paisesSelect) {
-				DE.actualizaPaisesID();
-				DE.actualizaPaisesNombre();
-			}
-			// Acciones si se cambió el avatar
-			
-			// Varios
-			DE.obtieneLosValoresEdicN();
-			DE.senalaLasDiferencias();
-			DE.muestraLosErrores();
-			DE.actualizaBotones();
+		// Si la versión actual no es la esperada para 'inputs', interrumpe
+		if (v.versionActual != v.versionInput) return;
+
+		// Acciones si se cambió la categoría
+		if (e.target.name == "categoria_id") {
+			console.log(299);
+			DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			v.subcategoria.value = ""; // Limpia la subcategoría
 		}
+		// Acciones si se cambió el país
+		if (e.target == v.paisesSelect) {
+			DE.actualizaPaisesID();
+			DE.actualizaPaisesNombre();
+		}
+		// Acciones si se cambió el avatar
+		if (e.target.name == "avatar") DE.nuevoAvatar(e);
+
+		// Varios
+		DE.obtieneLosValoresEdicN();
+		DE.senalaLasDiferencias();
+		DE.muestraLosErrores();
+		DE.actualizaBotones();
 	});
 
 	// Startup
@@ -322,32 +310,15 @@ window.addEventListener("load", async () => {
 });
 
 // Estas funciones deben estar afuera, para estar disponibles para las variables
-let agregaRutaAlAvatar = (imagenActual, status, imagenBackup) => {
-	// Si existe una imagen actual, descarta la imagen de backup
-	let imagen = imagenActual
-		? (imagenActual.startsWith("http")
-				? ""
-				: status == "original"
-				? "/imagenes/3-Productos/"
-				: "/imagenes/4-ProdsRevisar/") + imagenActual
-		: imagenBackup
-		? imagenBackup
-		: "/imagenes/8-Agregar/IM.jpg";
-	// Fin
-	return imagen;
-};
 let versiones = async (rutaVersiones) => {
 	// Obtiene las versiones original y de edición
 	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
 	// Obtiene el avatar original con su ruta
-	orig.avatar = agregaRutaAlAvatar(orig.avatar, "original");
 	// Procesa la versión de edición guardada
 	let edicG_existe = !!edicG;
 	edicG = {...orig, ...edicG};
-	if (edicG_existe) edicG.avatar = agregaRutaAlAvatar(edicG.avatar_archivo, "edicion", orig.avatar);
 	// Obtiene la versión de edición nueva
 	let edicN = {...orig, ...edicG};
-	edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
 	// Averigua si el original está pendiente de ser aprobado
 	let origPendAprobar = orig.status_registro.gr_creado;
 	// Fin
