@@ -390,7 +390,7 @@ module.exports = {
 		let aux1 = prodOrig.avatar.startsWith("http");
 		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
 		let orig = prodOrig.avatar ? aux2 : "/imagenes/8-Agregar/IM.jpg";
-		let edic= prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig
+		let edic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig;
 		// Fin
 		return {orig, edic};
 	},
