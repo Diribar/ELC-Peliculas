@@ -113,7 +113,6 @@ window.addEventListener("load", async () => {
 					? v.flechasDiferencia[i].classList.remove("ocultar")
 					: v.flechasDiferencia[i].classList.add("ocultar");
 			});
-			console.log(version.edicN.avatar, version.orig.avatar);
 		},
 		muestraLosErrores: async () => {
 			// Preparar la información
