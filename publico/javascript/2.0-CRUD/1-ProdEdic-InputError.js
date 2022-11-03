@@ -8,6 +8,7 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputs: document.querySelectorAll(".inputError .input"),
+		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -59,7 +60,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeVersion: function () {
+		accionesPorCambioDeVersion: async function () {
 			// Reemplaza los valores e impide/permite que el usuario haga cambios según la versión
 			(() => {
 				// Rutina para cada campo
@@ -100,7 +101,7 @@ window.addEventListener("load", async () => {
 				return;
 			})();
 			// Muestra los errores
-			this.muestraLosErrores();
+			await this.muestraLosErrores();
 			// Fin
 			return;
 		},
@@ -118,7 +119,8 @@ window.addEventListener("load", async () => {
 			// Preparar la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
 			for (let input of v.inputs)
-				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
+				if (input.name != "avatar" || v.inputAvatarEdicN.value)
+					objeto += "&" + input.name + "=" + input.value;
 			// Averigua los errores
 			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
@@ -135,7 +137,7 @@ window.addEventListener("load", async () => {
 					? v.iconosError[indice].classList.remove("ocultar")
 					: v.iconosError[indice].classList.add("ocultar");
 			});
-			return;
+			return errores;
 		},
 		actualizaOpcionesSubcat: () => {
 			let categ = v.categoria.value;
@@ -220,7 +222,6 @@ window.addEventListener("load", async () => {
 			// Le decimos que cuando esté listo ejecute el código interno
 			reader.onload = () => {
 				let imagen = reader.result;
-				//console.log(imagen);
 				// Cambiar el 'src' del avatar
 				v.imgsAvatar[0].src = imagen;
 			};
@@ -282,7 +283,6 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió la categoría
 		if (e.target.name == "categoria_id") {
-			console.log(299);
 			DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
 			v.subcategoria.value = ""; // Limpia la subcategoría
 		}
@@ -291,13 +291,13 @@ window.addEventListener("load", async () => {
 			DE.actualizaPaisesID();
 			DE.actualizaPaisesNombre();
 		}
-		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar") DE.nuevoAvatar(e);
 
 		// Varios
 		DE.obtieneLosValoresEdicN();
 		DE.senalaLasDiferencias();
-		DE.muestraLosErrores();
+		let errores = await DE.muestraLosErrores();
+		// Acciones si se cambió el avatar
+		if (e.target.name == "avatar" && !errores.avatar) DE.nuevoAvatar(e);
 		DE.actualizaBotones();
 	});
 

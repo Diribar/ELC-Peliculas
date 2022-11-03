@@ -160,6 +160,7 @@ module.exports = {
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
+			req.body.avatar = req.file.originalname;
 			req.body.avatar_url = req.file.originalname;
 			req.body.avatar_archivo = req.file.filename;
 		}
@@ -177,7 +178,10 @@ module.exports = {
 					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
 			}
 			// Si hay errores, entonces borra el archivo
-			else comp.borraUnArchivo(req.file.destination, req.file.filename);
+			else {
+				comp.borraUnArchivo(req.file.destination, req.file.filename);
+				return res.send(errores)
+			}
 		}
 		// Actualiza la edición
 		if (!errores.hay) await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);

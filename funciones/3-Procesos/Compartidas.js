@@ -2,7 +2,6 @@
 // Definir variables
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
@@ -375,7 +374,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	revisarImagen: (tipo, tamano) => {
+	revisaLaImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
 		return !tipo.startsWith("image/")
 			? "Necesitamos un archivo de imagen"
@@ -443,36 +442,35 @@ module.exports = {
 		},
 		completo: (dato) => {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato);
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 		sinopsis: (dato) => {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato);
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 	},
-	avatar: (datos) => {
+	avatar: (nombre) => {
 		// Función
 		let extension = (nombre) => {
 			if (!nombre) return "";
 			let ext = path.extname(nombre);
-			if (ext) ext = ext.slice(1).toUpperCase();
-			return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+			if (ext) ext = ext.toUpperCase();
+			return !ext || ![".JPG", ".PNG", ".JPEG"].includes(ext)
 				? "Usaste un archivo con la extensión '" +
-						ext +
+						ext.slice(1) +
 						"'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
 		// Variables
-		let dato = datos.avatar;
 		let respuesta = "";
 		// Validaciones
-		if (dato) {
-			if (!respuesta) respuesta = extension(dato);
-			if (!respuesta && datos.tamano && datos.tamano > 1100000)
-				respuesta =
-					"El archivo es de " +
-					parseInt(datos.tamano / 10000) / 100 +
-					" MB. Necesitamos que no supere 1 MB";
+		if (nombre) {
+			if (!respuesta) respuesta = extension(nombre);
+			// if (!respuesta && datos.tamano && datos.tamano > 1100000)
+			// 	respuesta =
+			// 		"El archivo es de " +
+			// 		parseInt(datos.tamano / 10000) / 100 +
+			// 		" MB. Necesitamos que no supere 1 MB";
 		}
 		// Fin
 		return respuesta;
