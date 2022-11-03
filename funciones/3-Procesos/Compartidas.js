@@ -454,10 +454,11 @@ module.exports = {
 		let extension = (nombre) => {
 			if (!nombre) return "";
 			let ext = path.extname(nombre);
-			if (ext) ext = ext.toUpperCase();
-			return !ext || ![".JPG", ".PNG", ".JPEG"].includes(ext)
+			return !ext 
+				? "El archivo debe tener alguna extensión"
+				: ![".jpg", ".png", ".jpeg"].includes(ext)
 				? "Usaste un archivo con la extensión '" +
-						ext.slice(1) +
+						ext.slice(1).toUpperCase() +
 						"'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
