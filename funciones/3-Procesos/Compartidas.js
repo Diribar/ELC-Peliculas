@@ -39,6 +39,16 @@ module.exports = {
 		// Fin
 		return leadTime;
 	},
+	includes: (familia) => {
+		// Obtiene todos los campos
+		let campos = [...variables.camposRevisar[familia]];
+		// Deja solamente los campos con vínculo
+		let camposConVinculo = campos.filter((n) => n.relac_include);
+		// Obtiene los vínculos
+		let includes = camposConVinculo.map((n) => n.relac_include);
+		// Fin
+		return includes;
+	},
 
 	// Temas de Edición
 	pulirEdicion: function (original, edicion) {
@@ -70,7 +80,7 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
-		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien		
+		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarCamposSinContenido(edicion);
 		edicion = quitarLosCamposQueNoSeComparan(edicion);

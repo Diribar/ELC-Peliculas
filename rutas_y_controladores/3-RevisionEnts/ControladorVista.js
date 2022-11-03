@@ -172,8 +172,7 @@ module.exports = {
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatar, ingresos, reemplazos, bloqueDer;
 		// Obtiene los includes
-		let includesEdic = variables.camposRevisar.productos.filter((n) => n.relac_include);
-		includesEdic = includesEdic.map((n) => n.relac_include);
+		let includesEdic = comp.includes("productos");
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -219,11 +218,11 @@ module.exports = {
 				// 1. Actualiza el registro de edición y obtiene su versión mínima
 				// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
 				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-			}
-			if (!quedanCampos) {
-				// Si no quedan campos de 'edicion' por procesar --> lo avisa
-				let informacion = procesos.cartelNoQuedanCampos;
-				return res.render("CMP-0Estructura", {informacion});
+				if (!quedanCampos) {
+					// Si no quedan campos de 'edicion' por procesar --> lo avisa
+					let informacion = procesos.cartelNoQuedanCampos;
+					return res.render("CMP-0Estructura", {informacion});
+				}
 			}
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
@@ -234,6 +233,7 @@ module.exports = {
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 		}
+		return res.send(codigo);
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;

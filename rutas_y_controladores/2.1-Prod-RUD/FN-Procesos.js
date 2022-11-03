@@ -6,43 +6,26 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = {
 	// Producto
 	obtieneVersionesDelProducto: async (entidad, prodID, userID) => {
-		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-		];
-		let includesOriginal = ["creado_por", "status_registro"];
-		if (entidad == "capitulos") includesOriginal.push("coleccion");
-		else if (entidad == "colecciones") includesOriginal.push("capitulos");
+		// Variables
+		let includesEdic = comp.includes("productos");
+		let includesOrig = ["creado_por", "status_registro"];
+		if (entidad == "capitulos") includesOrig.push("coleccion");
+		if (entidad == "colecciones") includesOrig.push("capitulos");
+		let prodEdic = "";
+
 		// Obtiene el producto ORIGINAL
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, [
-			...includes,
-			...includesOriginal,
+			...includesEdic,
+			...includesOrig,
 		]);
+		prodOrig = comp.quitarCamposSinContenido(prodOrig);
+
 		// Obtiene el producto EDITADO
-		let prodEdic = "";
 		let producto_id = comp.obtieneEntidad_id(entidad);
-		if (prodOrig) {
-			// Quitarle los campos 'null'
-			prodOrig = comp.quitarCamposSinContenido(prodOrig);
-			// Obtiene los datos EDITADOS del producto
-			prodEdic = userID
-				? await BD_genericas.obtienePorCamposConInclude(
-						"prods_edicion",
-						{[producto_id]: prodID, editado_por_id: userID},
-						includes
-				  )
-				: {};
-			// Quitarle los campos 'null'
-			if (prodEdic) prodEdic = comp.quitarCamposSinContenido(prodEdic);
-		}
+		let datos = ["prods_edicion", {[producto_id]: prodID, editado_por_id: userID}, includesEdic];
+		if (userID) prodEdic = await BD_genericas.obtienePorCamposConInclude(...datos);
+		if (prodEdic) prodEdic = comp.quitarCamposSinContenido(prodEdic);
+		// Fin
 		return [prodOrig, prodEdic];
 	},
 };

@@ -22,6 +22,8 @@ require("dotenv").config(); // Para usar el archivo '.env'
 		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
 		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
 	};
+	// Fin
+	return
 })();
 
 const path = require("path");
