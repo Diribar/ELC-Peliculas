@@ -128,8 +128,7 @@ window.addEventListener("load", async () => {
 		inputs.forEach((input, i) => {
 			if (i) datosUrl += "&";
 			if (paso.DD && input.name == "avatar") return;
-			datosUrl += input.name + "=";
-			datosUrl += encodeURIComponent(input.value);
+			datosUrl += input.name + "=" + encodeURIComponent(input.value);
 		});
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);

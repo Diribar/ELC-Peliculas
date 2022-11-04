@@ -32,7 +32,7 @@ module.exports = {
 		if (campos.includes("rol_iglesia_id"))
 			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		if (campos.includes("avatar")) {
-			errores.avatar = comp.avatar(datos);
+			errores.avatar = comp.avatar(datos.avatar, datos.tamano);
 		}
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -90,13 +90,14 @@ module.exports = {
 		if (campos.includes("docum_pais_id"))
 			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("docum_avatar")) errores.docum_avatar = comp.avatar(datos.docum_avatar);
+		if (campos.includes("docum_avatar"))
+			errores.docum_avatar = comp.avatar(datos.docum_avatar, datos.tamano);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 	documentoBE: async function (datos) {
-		// Averigua los errores
+		// Averiguar los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
@@ -137,7 +138,7 @@ module.exports = {
 	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
-		// Averigua los errores
+		// Averiguar los errores
 		let errores = await this.login(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {

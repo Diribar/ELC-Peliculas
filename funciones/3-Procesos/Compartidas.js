@@ -449,17 +449,17 @@ module.exports = {
 			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 	},
-	avatar: (nombre) => {
+	avatar: (nombre, tamano) => {
 		// Función
 		let extension = (nombre) => {
 			if (!nombre) return "";
 			let ext = path.extname(nombre);
-			return !ext 
+			return !ext
 				? "El archivo debe tener alguna extensión"
 				: ![".jpg", ".png", ".jpeg"].includes(ext)
 				? "Usaste un archivo con la extensión '" +
-						ext.slice(1).toUpperCase() +
-						"'. Las extensiones válidas son JPG, JPEG y PNG"
+				  ext.slice(1).toUpperCase() +
+				  "'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
 		// Variables
@@ -467,11 +467,11 @@ module.exports = {
 		// Validaciones
 		if (nombre) {
 			if (!respuesta) respuesta = extension(nombre);
-			// if (!respuesta && datos.tamano && datos.tamano > 1100000)
-			// 	respuesta =
-			// 		"El archivo es de " +
-			// 		parseInt(datos.tamano / 10000) / 100 +
-			// 		" MB. Necesitamos que no supere 1 MB";
+			if (!respuesta && tamano && tamano > 1100000)
+				respuesta =
+					"El archivo es de " +
+					parseInt(tamano / 10000) / 100 +
+					" MB. Necesitamos que no supere 1 MB";
 		}
 		// Fin
 		return respuesta;

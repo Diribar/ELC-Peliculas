@@ -9,6 +9,7 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("form"),
 		inputs: document.querySelectorAll(".inputError .input"),
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
+		imgAvatarEdicN: document.querySelector("#imagenDerecha.inputError #avatarEdicN"),
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -47,6 +48,7 @@ window.addEventListener("load", async () => {
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
+	v.avatarAnt = v.inputAvatarEdicN.value;
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
 	let version = await versiones(v.rutaVersiones);
 
@@ -116,11 +118,14 @@ window.addEventListener("load", async () => {
 			});
 		},
 		muestraLosErrores: async () => {
-			// Preparar la información
+			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
-			for (let input of v.inputs)
+			for (let input of v.inputs) {
 				if (input.name != "avatar" || v.inputAvatarEdicN.value)
 					objeto += "&" + input.name + "=" + input.value;
+				if (input.name == "avatar" && v.inputAvatarEdicN.value)
+					objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
+			}
 			// Averigua los errores
 			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
@@ -297,7 +302,11 @@ window.addEventListener("load", async () => {
 		DE.senalaLasDiferencias();
 		let errores = await DE.muestraLosErrores();
 		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar" && !errores.avatar) DE.nuevoAvatar(e);
+		if (e.target.name == "avatar" && !errores.avatar && v.inputAvatarEdicN.value != v.avatarAnt) {
+			v.avatarAnt = v.inputAvatarEdicN.value;
+			if (v.inputAvatarEdicN.value) DE.nuevoAvatar(e);
+			else v.imgAvatarEdicN.src = "/imagenes/0-Base/sinAfiche.jpg";
+		}
 		DE.actualizaBotones();
 	});
 
