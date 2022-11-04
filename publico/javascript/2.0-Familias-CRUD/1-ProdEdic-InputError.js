@@ -10,6 +10,7 @@ window.addEventListener("load", async () => {
 		inputs: document.querySelectorAll(".inputError .input"),
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		imgAvatarEdicN: document.querySelector("#imagenDerecha.inputError #avatarEdicN"),
+		imgAvatarEdicN_inicial: imgAvatarEdicN.src,
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -305,7 +306,7 @@ window.addEventListener("load", async () => {
 		if (e.target.name == "avatar" && !errores.avatar && v.inputAvatarEdicN.value != v.avatarAnt) {
 			v.avatarAnt = v.inputAvatarEdicN.value;
 			if (v.inputAvatarEdicN.value) DE.nuevoAvatar(e);
-			else v.imgAvatarEdicN.src = "/imagenes/0-Base/sinAfiche.jpg";
+			else v.imgAvatarEdicN.src = v.imgAvatarEdicN_inicial;
 		}
 		DE.actualizaBotones();
 	});
