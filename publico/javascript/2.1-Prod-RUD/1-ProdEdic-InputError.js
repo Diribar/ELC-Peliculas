@@ -229,7 +229,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		nuevoAvatar: (e) => {
+		nuevoAvatar: () => {
 			// 1. Si no se cambió el archivo o no es la versión a editar, no hace nada
 			if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
 	
@@ -242,7 +242,7 @@ window.addEventListener("load", async () => {
 	
 			// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
 			let reader = new FileReader();
-			reader.readAsDataURL(e.target.files[0]);
+			reader.readAsDataURL(v.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
 				var image = new Image();
 				image.src = reader.result;
@@ -342,7 +342,7 @@ window.addEventListener("load", async () => {
 		FN.obtieneLosValoresEdicN();
 		FN.senalaLasDiferencias();
 		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar") FN.nuevoAvatar(e);
+		if (e.target == v.inputAvatarEdicN) FN.nuevoAvatar();
 		else {
 			await FN.averiguaMuestraLosErrores();
 			FN.actualizaBotones();
