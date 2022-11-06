@@ -63,7 +63,7 @@ window.addEventListener("load", async () => {
 			v.campos.forEach((campo, i) => {
 				if (campo != "avatar") version.edicN[campo] = v.inputs[i].value;
 				else
-					version.edicN[campo] = v.inputAvatarEdicN.files[0]
+					version.edicN.avatar = v.inputAvatarEdicN.files[0]
 						? v.inputAvatarEdicN.files[0].name
 						: version.edicG.avatar;
 			});
