@@ -229,51 +229,51 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-	};
-	let nuevoAvatar = (e) => {
-		// 1. Si no se cambió el archivoo no es laversión a editar, no hace nada
-		if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
-
-		// 2. Si se omitió ingresar un archivo o hay un error de avatar que no es 'no es imagen'...
-		// ... vuelve a la imagen original
-		if (!v.inputAvatarEdicN.value && error.avatar && error.avatar != v.leyendaNoEsImagen) {
-			v.imgsAvatar[0].src = v.avatarInicial;
-			return;
-		}
-
-		// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
-		let reader = new FileReader();
-		reader.readAsDataURL(e.target.files[0]);
-		reader.onload = () => {
-			var image = new Image();
-			image.src = reader.result;
-			// Acciones si es realmente una imagen
-			image.onload = async () => {
-				// Actualiza el avatar
-				v.imgsAvatar[0].src = reader.result;
-				// Actualiza lo que será el avatar anterior
-				v.avatarAnt = v.inputAvatarEdicN.value;
-				// Actualiza los errores
-				v.esImagen = true;
-				await FN.averiguaMuestraLosErrores();
-				FN.actualizaBotones();
-				// Fin
+		nuevoAvatar: (e) => {
+			// 1. Si no se cambió el archivoo no es laversión a editar, no hace nada
+			if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
+	
+			// 2. Si se omitió ingresar un archivo o hay un error de avatar que no es 'no es imagen'...
+			// ... vuelve a la imagen original
+			if (!v.inputAvatarEdicN.value && error.avatar && error.avatar != v.leyendaNoEsImagen) {
+				v.imgsAvatar[0].src = v.avatarInicial;
 				return;
+			}
+	
+			// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
+			let reader = new FileReader();
+			reader.readAsDataURL(e.target.files[0]);
+			reader.onload = () => {
+				var image = new Image();
+				image.src = reader.result;
+				// Acciones si es realmente una imagen
+				image.onload = async () => {
+					// Actualiza el avatar
+					v.imgsAvatar[0].src = reader.result;
+					// Actualiza lo que será el avatar anterior
+					v.avatarAnt = v.inputAvatarEdicN.value;
+					// Actualiza los errores
+					v.esImagen = true;
+					await FN.averiguaMuestraLosErrores();
+					FN.actualizaBotones();
+					// Fin
+					return;
+				};
+				// Acciones si no es una imagen
+				image.onerror = () => {
+					// Limpia el avatar
+					v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
+					// Limpia el input
+					v.inputAvatarEdicN.value = "";
+					// Actualiza los errores
+					v.esImagen = false;
+					FN.averiguaMuestraLosErrores();
+					FN.actualizaBotones();
+					// Fin
+					return;
+				};
 			};
-			// Acciones si no es una imagen
-			image.onerror = () => {
-				// Limpia el avatar
-				v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
-				// Limpia el input
-				v.inputAvatarEdicN.value = "";
-				// Actualiza los errores
-				v.esImagen = false;
-				FN.averiguaMuestraLosErrores();
-				FN.actualizaBotones();
-				// Fin
-				return;
-			};
-		};
+		},
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -342,7 +342,7 @@ window.addEventListener("load", async () => {
 		FN.obtieneLosValoresEdicN();
 		FN.senalaLasDiferencias();
 		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar") nuevoAvatar(e);
+		if (e.target.name == "avatar") FN.nuevoAvatar(e);
 		else {
 			await FN.averiguaMuestraLosErrores();
 			FN.actualizaBotones();
