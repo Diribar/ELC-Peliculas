@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 					: v.flechasDiferencia[i].classList.add("ocultar");
 			});
 		},
-		muestraLosErrores: async () => {
+		muestraLosErrores: async (e) => {
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
 			for (let input of v.inputs) {
@@ -132,8 +132,11 @@ window.addEventListener("load", async () => {
 			}
 			// Averigua los errores
 			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
+			console.log(!errores.avatar , !!v.inputAvatarEdicN.value);
 			if (!errores.avatar && v.inputAvatarEdicN.value) {
-				// errores = {...errores, ...v.revisaSiEsUnaImagen(avatarSrc(e))};
+				let src=await avatarSrc(e)
+				console.dir(src);
+				errores = {...errores, ...revisaSiEsUnaImagen(src)};
 			}
 			// Agrega el error de si el archivo de imagen no es realmente una imagen
 			// if ()
@@ -249,15 +252,6 @@ window.addEventListener("load", async () => {
 			// // Actualiza la variable 'avatarAnt'
 			// v.avatarAnt = v.inputAvatarEdicN.value;
 		},
-		avatarSrc: (e) => {
-			// Creamos el objeto de la clase FileReader
-			let reader = new FileReader();
-			// Leemos el archivo subido y se lo pasamos a nuestro fileReader
-			reader.readAsDataURL(e.target.files[0]);
-			reader.onload = () => {
-				return reader.result;
-			};
-		},
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -325,7 +319,7 @@ window.addEventListener("load", async () => {
 		// Varios
 		DE.obtieneLosValoresEdicN();
 		DE.senalaLasDiferencias();
-		let errores = await DE.muestraLosErrores();
+		let errores = await DE.muestraLosErrores(e);
 		// Acciones si se cambió el avatar
 		if (e.target.name == "avatar") DE.muestraNuevoAvatar(e, errores);
 		DE.actualizaBotones();
@@ -354,18 +348,30 @@ let versiones = async (rutaVersiones) => {
 	return {orig, edicG, edicN, edicG_existe, origPendAprobar};
 };
 let revisaSiEsUnaImagen = (src) => {
+	// Variables
+	let errores;
 	// Crea una entidad 'imagen'
 	var image = new Image();
 	// Genera el cambio en image
-	image.src = src;
+	console.log(src);
+	// image.src = src;
 	// Verifica si realmente es una imagen
-	let errores = {};
-	image.onerror = () => {
-		errores = {hay: true, avatar: "El archivo no es una imagen"};
-	};
-	// image.onload = () => (errores.hay = false);
+	// image.onerror = () => {
+	// 	console.log(123);
+	// 	errores = {hay: true, avatar: "El archivo no es una imagen"};
+	// };
 	// image.onerror = () => (errores = {hay: true, avatar: "El archivo no es una imagen"});
 	// Fin
 	console.log(errores);
 	return errores;
+};
+let avatarSrc =async (e) => {
+	// Creamos el objeto de la clase FileReader
+	let reader = new FileReader();
+	// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+	reader.readAsDataURL(e.target.files[0]);
+	reader.onload = () => {
+		console.dir(reader.result);
+		return reader.result;
+	};
 };
