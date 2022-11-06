@@ -59,56 +59,14 @@ window.addEventListener("load", async () => {
 	// Funciones Data-Entry
 	let FN = {
 		obtieneLosValoresEdicN: () => {
-			// Actualizar los valores
+			// Actualiza los valores
 			v.campos.forEach((campo, i) => {
 				if (campo != "avatar") version.edicN[campo] = v.inputs[i].value;
+				else
+					version.edicN[campo] = v.inputAvatarEdicN.files[0]
+						? v.inputAvatarEdicN.files[0].name
+						: version.edicG.avatar;
 			});
-			// Fin
-			return;
-		},
-		accionesPorCambioDeVersion: async function () {
-			// Reemplaza los valores e impide/permite que el usuario haga cambios según la versión
-			(() => {
-				// Rutina para cada campo
-				v.estamosEnEdicNueva = v.versionActual == "edicN";
-				v.campos.forEach((campo, i) => {
-					// Reemplaza los valores que no sean el avatar
-					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
-					// Oculta y muestra los avatar que correspondan
-					else
-						v.imgsAvatar.forEach((imgAvatar, indice) => {
-							v.versiones[indice] == v.versionActual
-								? imgAvatar.classList.remove("ocultar")
-								: imgAvatar.classList.add("ocultar");
-						});
-					// Impide/permite que el usuario haga cambios según la versión
-					v.inputs[i].disabled = !v.estamosEnEdicNueva;
-					if (campo == "paises_id") {
-						v.paisesMostrar.disabled = !v.estamosEnEdicNueva;
-						v.paisesSelect.disabled = !v.estamosEnEdicNueva;
-					}
-				});
-				// Fin
-				return;
-			})();
-			// Actualiza la subcategoría
-			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
-			// Actualiza los nombres de país
-			this.actualizaPaisesNombre();
-			// Señala las diferencias con la versión original
-			this.senalaLasDiferencias();
-			// Muestra/oculta los íconos para RCLV y de ayuda
-			(() => {
-				for (let link of v.linksRCLV)
-					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
-				for (let iconoAyuda of v.iconosAyuda)
-					v.estamosEnEdicNueva
-						? iconoAyuda.classList.remove("inactivo")
-						: iconoAyuda.classList.add("inactivo");
-				return;
-			})();
-			// Muestra los errores
-			await this.revisaAvatar();
 			// Fin
 			return;
 		},
@@ -136,8 +94,9 @@ window.addEventListener("load", async () => {
 			// Averigua los errores
 			errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
+			console.log(v.versionActual, v.esImagen);
 			v.campos.forEach((campo, indice) => {
-				if (campo == "avatar" && !v.esImagen) {
+				if (campo == "avatar" && v.versionActual == "edicN" && !v.esImagen) {
 					errores.avatar = v.leyendaNoEsImagen;
 					errores.hay = true;
 				}
@@ -154,6 +113,91 @@ window.addEventListener("load", async () => {
 					: v.iconosError[indice].classList.add("ocultar");
 			});
 			return errores;
+		},
+		actualizaBotones: () => {
+			// Acciones sobre la edición guardada
+			if (version.edicG_existe) {
+				// Versión
+				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
+				// Descartar
+				if (!v.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
+			}
+			// Acciones sobre la edición nueva
+			// 1. Funciones
+			let detectaSiHayErrores = () => {
+				// Detectar la cantidad de 'errores' ocultos
+				let hayErrores = Array.from(v.iconosError)
+					.map((n) => n.className)
+					.some((n) => n.includes("error"));
+				// Fin
+				return hayErrores;
+			};
+			let averiguaSiLaEdicionTieneNovedades = () => {
+				for (let campo of v.campos) if (version.edicN[campo] != version.edicG[campo]) return "";
+				return "Iguales";
+			};
+			// 2. Averigua si hay errores
+			let hayErrores = detectaSiHayErrores();
+			// 3. Averigua si es igual a la edicion
+			let sonIguales = averiguaSiLaEdicionTieneNovedades();
+			// Si se cumple alguna de las anteriores -> inactiva
+			// Else -> activa
+			if (hayErrores || sonIguales) v.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
+			else v.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
+			// Fin
+			return;
+		},
+		actualizaVarios: async function () {
+			this.obtieneLosValoresEdicN();
+			this.senalaLasDiferencias();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotones();
+		},
+		accionesPorCambioDeVersion: async function () {
+			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
+			(() => {
+				// Rutina para cada campo
+				v.estamosEnEdicNueva = v.versionActual == "edicN";
+				v.campos.forEach((campo, i) => {
+					// Reemplaza los valores que no sean el avatar
+					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
+					// Oculta y muestra los avatar que correspondan
+					else
+						v.imgsAvatar.forEach((imgAvatar, indice) => {
+							v.versiones[indice] == v.versionActual
+								? imgAvatar.classList.remove("ocultar")
+								: imgAvatar.classList.add("ocultar");
+						});
+					// Impide/permite que el usuario haga cambios según la versión
+					v.inputs[i].disabled = !v.estamosEnEdicNueva;
+					if (campo == "paises_id") {
+						v.paisesMostrar.disabled = !v.estamosEnEdicNueva;
+						v.paisesSelect.disabled = !v.estamosEnEdicNueva;
+					}
+				});
+				// Fin
+				return;
+			})();
+			// Actualiza la subcategoría
+			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
+			// Actualiza los nombres de país
+			this.actualizaPaisesNombre();
+			// Muestra/oculta los íconos para RCLV y de ayuda
+			(() => {
+				for (let link of v.linksRCLV)
+					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+				for (let iconoAyuda of v.iconosAyuda)
+					v.estamosEnEdicNueva
+						? iconoAyuda.classList.remove("inactivo")
+						: iconoAyuda.classList.add("inactivo");
+				return;
+			})();
+			// Señala las diferencias con la versión original
+			this.senalaLasDiferencias();
+			// Muestra los errores
+			await this.averiguaMuestraLosErrores();
+			// Fin
+			return;
 		},
 		actualizaOpcionesSubcat: () => {
 			let categ = v.categoria.value;
@@ -197,49 +241,8 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		actualizaBotones: () => {
-			// Acciones sobre la edición guardada
-			if (version.edicG_existe) {
-				// Versión
-				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
-				// Descartar
-				if (!v.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
-			}
-			// Acciones sobre la edición nueva
-			// 1. Funciones
-			let detectaSiHayErrores = () => {
-				// Detectar la cantidad de 'errores' ocultos
-				let hayErrores = Array.from(v.iconosError)
-					.map((n) => n.className)
-					.some((n) => n.includes("error"));
-				// Fin
-				return hayErrores;
-			};
-			let averiguaSiLaEdicionTieneNovedades = () => {
-				for (let campo of v.campos) if (version.edicN[campo] != version.edicG[campo]) return "";
-				return "Iguales";
-			};
-			// 2. Averigua si hay errores
-			let hayErrores = detectaSiHayErrores();
-			// 3. Averigua si es igual a la edicion
-			let sonIguales = averiguaSiLaEdicionTieneNovedades();
-			// Si se cumple alguna de las anteriores -> inactiva
-			// Else -> activa
-			if (hayErrores || sonIguales) v.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
-			else v.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
-			// Fin
-			return;
-		},
-		revisaAvatar: async () => {
-			// 1. Si es la versión a editar y no se cambió el archivo => no hace nada
-			if (
-				v.versionAnt == v.versionActual &&
-				v.versionActual == "edicN" &&
-				v.inputAvatarEdicN.value == v.avatarAnt
-			)
-				return;
-
-			// 2. Si se omitió ingresar un archivo, vuelve a la imagen original
+		revisaAvatarNuevo: () => {
+			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
 			if (!v.inputAvatarEdicN.value) {
 				// Actualiza el avatar
 				v.imgsAvatar[0].src = v.avatarInicial;
@@ -247,12 +250,11 @@ window.addEventListener("load", async () => {
 				v.avatarAnt = "";
 				// Actualiza los errores
 				v.esImagen = true;
-				await FN.averiguaMuestraLosErrores();
-				FN.actualizaBotones();
+				FN.actualizaVarios();
 				// Fin
 				return;
 			}
-			// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
+			// 2. De lo contrario, actualiza los errores y el avatar
 			let reader = new FileReader();
 			reader.readAsDataURL(v.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
@@ -264,10 +266,12 @@ window.addEventListener("load", async () => {
 					v.imgsAvatar[0].src = reader.result;
 					// Actualiza lo que será el avatar anterior
 					v.avatarAnt = v.inputAvatarEdicN.value;
+					// Actualiza la variable 'avatar' en la versión
+					if (v.versionActual == "edicN" && v.inputAvatarEdicN.value)
+						version.edicN.avatar = v.inputAvatarEdicN.files[0].name;
 					// Actualiza los errores
 					v.esImagen = true;
-					await FN.averiguaMuestraLosErrores();
-					FN.actualizaBotones();
+					FN.actualizaVarios();
 					// Fin
 					return;
 				};
@@ -277,10 +281,12 @@ window.addEventListener("load", async () => {
 					v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
 					// Limpia el input
 					v.inputAvatarEdicN.value = "";
+					// Actualiza la variable 'avatar' en la versión
+					if (v.versionActual == "edicN" && v.inputAvatarEdicN.value)
+						version.edicN.avatar = v.inputAvatarEdicN.value;
 					// Actualiza los errores
 					v.esImagen = false;
-					FN.averiguaMuestraLosErrores();
-					FN.actualizaBotones();
+					FN.actualizaVarios();
 					// Fin
 					return;
 				};
@@ -352,15 +358,9 @@ window.addEventListener("load", async () => {
 			FN.actualizaPaisesNombre();
 		}
 
-		// Varios
-		FN.obtieneLosValoresEdicN();
-		FN.senalaLasDiferencias();
 		// Acciones si se cambió el avatar
-		if (e.target == v.inputAvatarEdicN) FN.revisaAvatar();
-		else {
-			await FN.averiguaMuestraLosErrores();
-			FN.actualizaBotones();
-		}
+		if (e.target == v.inputAvatarEdicN) FN.revisaAvatarNuevo();
+		else FN.actualizaVarios();
 	});
 
 	// Startup
