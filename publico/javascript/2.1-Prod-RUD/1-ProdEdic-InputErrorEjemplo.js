@@ -8,6 +8,9 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputs: document.querySelectorAll(".inputError .input"),
+		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
+		imgAvatarEdicN: document.querySelector("#imagenDerecha.inputError #avatarEdicN"),
+		imgAvatarEdicN_inicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -29,13 +32,9 @@ window.addEventListener("load", async () => {
 		versionInput: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
+		imgsAvatar: document.querySelectorAll(".inputError .imgAvatar"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
-		// Temas de avatar
-		imgsAvatar: document.querySelectorAll("#imagenDerecha.inputError .imgAvatar"),
-		imgAvatarEdicN: document.querySelector("#imagenDerecha.inputError #avatarEdicN"),
-		avatarInicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
-		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
 		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
@@ -121,19 +120,18 @@ window.addEventListener("load", async () => {
 			});
 		},
 		muestraLosErrores: async () => {
+			// Filtros para interrumpir
+			// if (v.versionActual=="orig"||version.edicG_existe)return
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
 			for (let input of v.inputs) {
 				if (input.name != "avatar" || v.inputAvatarEdicN.value)
 					objeto += "&" + input.name + "=" + input.value;
-				if (input.name == "avatar" && v.inputAvatarEdicN.value) {
+				if (input.name == "avatar" && v.inputAvatarEdicN.value)
 					objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
-				}
 			}
 			// Averigua los errores
 			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
-			// Agrega el error de si el archivo de imagen no es realmente una imagen
-			// if ()
 			// Actualiza los errores
 			v.campos.forEach((campo, indice) => {
 				// Guarda el mensaje de error
@@ -225,37 +223,25 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		mostrarNuevoAvatar: async (e, errores) => {
-			// Si no se cambió la imagen, no hace nada
-			if (v.inputAvatarEdicN.value == v.avatarAnt) return;
-			// Si se omitió ingresar un archivo, vuelve a la imagen original
-			if (!v.inputAvatarEdicN.value) {
-				v.imgsAvatar[0].src = v.avatarInicial;
-				return;
-			}
-			// Si el archivo no es válido, muestra una imagen genérica
-			if (errores.avatar) {
-				v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
-				console.log(v.inputAvatarEdicN.value);
-				inputAvatarEdicN.value = "";
-				console.log(v.inputAvatarEdicN.value);
-				return;
-			}
-			console.log("Todo OK");
+		nuevoAvatar: async (e) => {
+			// Creamos el objeto de la clase FileReader
+			let reader = new FileReader();
+			// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+			reader.readAsDataURL(e.target.files[0]);
+			// Le decimos que cuando esté listo ejecute el código interno
+			reader.onload = () => {
+				var image = new Image();
+				image.src = reader.result;
+				image.onload = () => {
+					console.log("Sí es imagen");
+				};
+				image.onerror = () => {
+					console.log("No es imagen");
+				};
 
-			// // Actualiza la variable 'avatarAnt'
-			// v.avatarAnt = v.inputAvatarEdicN.value;
-
-			// // Creamos el objeto de la clase FileReader
-			// let reader = new FileReader();
-			// // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-			// reader.readAsDataURL(e.target.files[0]);
-			// reader.onload = () => {
-			// 	let errores = revisaSiEsUnaImagen(reader.result);
-			// 	// Actualiza el "src" de la imagen de la edición nueva
-			// 	if (errores.hay) {
-			// 	} else v.imgsAvatar[0].src = reader.result;
-			// };
+				// Actualiza el "src" de la imagen de la edición nueva
+				v.imgsAvatar[0].src = reader.result;
+			};
 		},
 	};
 
@@ -326,7 +312,11 @@ window.addEventListener("load", async () => {
 		DE.senalaLasDiferencias();
 		let errores = await DE.muestraLosErrores();
 		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar") DE.mostrarNuevoAvatar(e, errores);
+		if (e.target.name == "avatar" && !errores.avatar && v.inputAvatarEdicN.value != v.avatarAnt) {
+			v.avatarAnt = v.inputAvatarEdicN.value;
+			if (v.inputAvatarEdicN.value) DE.nuevoAvatar(e);
+			else v.imgAvatarEdicN.src = v.imgAvatarEdicN_inicial;
+		}
 		DE.actualizaBotones();
 	});
 
@@ -351,23 +341,4 @@ let versiones = async (rutaVersiones) => {
 	let origPendAprobar = orig.status_registro.gr_creado;
 	// Fin
 	return {orig, edicG, edicN, edicG_existe, origPendAprobar};
-};
-let revisaSiEsUnaImagen = (src) => {
-	// Crea una entidad 'imagen'
-	var image = new Image();
-	// Genera el cambio en image
-	image.src = src;
-	// Verifica si realmente es una imagen
-	let errores = {};
-	image.onload = () => {
-		errores.hay = false;
-	};
-	image.onerror = () => {
-		errores = {hay: true, avatar: "El archivo no es una imagen"};
-	};
-	// image.onload = () => (errores.hay = false);
-	// image.onerror = () => (errores = {hay: true, avatar: "El archivo no es una imagen"});
-	// Fin
-	console.log(errores);
-	return errores;
 };
