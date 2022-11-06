@@ -265,8 +265,8 @@ window.addEventListener("load", async () => {
 					v.imgsAvatar[0].src = reader.result;
 					// Actualiza lo que será el avatar anterior
 					v.avatarAnt = v.inputAvatarEdicN.value;
-					// Actualiza la variable 'avatar' en la versión
-					if (v.versionActual == "edicN" && v.inputAvatarEdicN.value)
+					// Actualiza la variable 'avatar' en la versión 'edicN'
+					if (v.inputAvatarEdicN.value)
 						version.edicN.avatar = v.inputAvatarEdicN.files[0].name;
 					// Actualiza los errores
 					v.esImagen = true;
