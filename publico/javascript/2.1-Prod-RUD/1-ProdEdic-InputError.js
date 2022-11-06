@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		accionesPorCambioDeVersion: function () {
+		accionesPorCambioDeVersion: async function () {
 			// Reemplaza los valores e impide/permite que el usuario haga cambios según la versión
 			(() => {
 				// Rutina para cada campo
@@ -107,7 +107,7 @@ window.addEventListener("load", async () => {
 				return;
 			})();
 			// Muestra los errores
-			this.averiguaMuestraLosErrores();
+			await this.averiguaMuestraLosErrores();
 			// Fin
 			return;
 		},
