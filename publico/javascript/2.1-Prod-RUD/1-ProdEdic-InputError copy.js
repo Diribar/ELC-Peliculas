@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 					: v.flechasDiferencia[i].classList.add("ocultar");
 			});
 		},
-		muestraLosErrores: async () => {
+		muestraLosErrores: async (e) => {
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
 			for (let input of v.inputs) {
@@ -133,7 +133,7 @@ window.addEventListener("load", async () => {
 			// Averigua los errores
 			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			if (!errores.avatar && v.inputAvatarEdicN.value) {
-				// errores = {...errores, ...v.revisaSiEsUnaImagen(avatarSrc(e))};
+				errores = {...errores, ...revisaSiEsUnaImagen(avatarSrc(e))};
 			}
 			// Agrega el error de si el archivo de imagen no es realmente una imagen
 			// if ()
@@ -249,15 +249,6 @@ window.addEventListener("load", async () => {
 			// // Actualiza la variable 'avatarAnt'
 			// v.avatarAnt = v.inputAvatarEdicN.value;
 		},
-		avatarSrc: (e) => {
-			// Creamos el objeto de la clase FileReader
-			let reader = new FileReader();
-			// Leemos el archivo subido y se lo pasamos a nuestro fileReader
-			reader.readAsDataURL(e.target.files[0]);
-			reader.onload = () => {
-				return reader.result;
-			};
-		},
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -325,7 +316,7 @@ window.addEventListener("load", async () => {
 		// Varios
 		DE.obtieneLosValoresEdicN();
 		DE.senalaLasDiferencias();
-		let errores = await DE.muestraLosErrores();
+		let errores = await DE.muestraLosErrores(e);
 		// Acciones si se cambió el avatar
 		if (e.target.name == "avatar") DE.muestraNuevoAvatar(e, errores);
 		DE.actualizaBotones();
@@ -368,4 +359,13 @@ let revisaSiEsUnaImagen = (src) => {
 	// Fin
 	console.log(errores);
 	return errores;
+};
+let avatarSrc = (e) => {
+	// Creamos el objeto de la clase FileReader
+	let reader = new FileReader();
+	// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+	reader.readAsDataURL(e.target.files[0]);
+	reader.onload = () => {
+		return reader.result;
+	};
 };
