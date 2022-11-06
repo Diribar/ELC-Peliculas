@@ -38,6 +38,7 @@ window.addEventListener("load", async () => {
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		esImagen: true,
 		leyendaNoEsImagen: "El archivo no es una imagen",
+		avatarAnt: "",
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
 		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
@@ -52,7 +53,6 @@ window.addEventListener("load", async () => {
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
-	v.avatarAnt = v.inputAvatarEdicN.value;
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
 	let version = await versiones(v.rutaVersiones);
 
@@ -70,6 +70,7 @@ window.addEventListener("load", async () => {
 			// Reemplaza los valores e impide/permite que el usuario haga cambios según la versión
 			(() => {
 				// Rutina para cada campo
+				v.estamosEnEdicNueva = v.versionActual == "edicN";
 				v.campos.forEach((campo, i) => {
 					// Reemplaza los valores que no sean el avatar
 					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
@@ -107,7 +108,7 @@ window.addEventListener("load", async () => {
 				return;
 			})();
 			// Muestra los errores
-			await this.averiguaMuestraLosErrores();
+			await this.revisaAvatar();
 			// Fin
 			return;
 		},
@@ -229,17 +230,28 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		nuevoAvatar: () => {
-			// 1. Si no se cambió el archivo o no es la versión a editar, no hace nada
-			if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
-	
-			// 2. Si se omitió ingresar un archivo o hay un error de avatar que no es 'no es imagen'...
-			// ... vuelve a la imagen original
-			if (!v.inputAvatarEdicN.value && error.avatar && error.avatar != v.leyendaNoEsImagen) {
+		revisaAvatar: async () => {
+			// 1. Si es la versión a editar y no se cambió el archivo => no hace nada
+			if (
+				v.versionAnt == v.versionActual &&
+				v.versionActual == "edicN" &&
+				v.inputAvatarEdicN.value == v.avatarAnt
+			)
+				return;
+
+			// 2. Si se omitió ingresar un archivo, vuelve a la imagen original
+			if (!v.inputAvatarEdicN.value) {
+				// Actualiza el avatar
 				v.imgsAvatar[0].src = v.avatarInicial;
+				// Actualiza lo que será el avatar anterior
+				v.avatarAnt = "";
+				// Actualiza los errores
+				v.esImagen = true;
+				await FN.averiguaMuestraLosErrores();
+				FN.actualizaBotones();
+				// Fin
 				return;
 			}
-	
 			// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
 			let reader = new FileReader();
 			reader.readAsDataURL(v.inputAvatarEdicN.files[0]);
@@ -285,7 +297,7 @@ window.addEventListener("load", async () => {
 			// Interrumpe si el botón está inactivo
 			if (boton.className.includes("inactivoVersion")) return;
 			// Cambia la versión
-			v.versionAnt = v.versionActual;
+			let aux = v.versionActual;
 			v.versionActual = v.versiones[indice];
 			// Cambia los valores
 			FN.accionesPorCambioDeVersion();
@@ -294,6 +306,8 @@ window.addEventListener("load", async () => {
 				if (i != indice) revisar.classList.remove("activo");
 				else revisar.classList.add("activo");
 			});
+			// Cambiar la versión anterior
+			v.versionAnt = aux;
 		});
 	});
 	v.botonesDescartar.forEach((boton, indice) => {
@@ -342,7 +356,7 @@ window.addEventListener("load", async () => {
 		FN.obtieneLosValoresEdicN();
 		FN.senalaLasDiferencias();
 		// Acciones si se cambió el avatar
-		if (e.target == v.inputAvatarEdicN) FN.nuevoAvatar();
+		if (e.target == v.inputAvatarEdicN) FN.revisaAvatar();
 		else {
 			await FN.averiguaMuestraLosErrores();
 			FN.actualizaBotones();
