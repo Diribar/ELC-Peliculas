@@ -94,7 +94,6 @@ window.addEventListener("load", async () => {
 			// Averigua los errores
 			errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
-			console.log(v.versionActual, v.esImagen);
 			v.campos.forEach((campo, indice) => {
 				if (campo == "avatar" && v.versionActual == "edicN" && !v.esImagen) {
 					errores.avatar = v.leyendaNoEsImagen;
