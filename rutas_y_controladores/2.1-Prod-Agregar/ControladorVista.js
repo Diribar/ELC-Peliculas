@@ -198,7 +198,7 @@ module.exports = {
 				comp.descargar(datosDuros.avatar_url, rutaYnombre);
 			}
 			// Revisar errores nuevamente
-			errores.avatar = comp.revisarImagen(tipo, tamano);
+			errores.avatar = comp.revisaLaImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
 		// 6. Si hay errores de validación, redireccionar

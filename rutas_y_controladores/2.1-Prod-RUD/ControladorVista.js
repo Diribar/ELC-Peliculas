@@ -9,20 +9,20 @@ const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prod_Form: async (req, res) => {
+	prodEdicForm_Detalle: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = req.path.slice(1, -1);
-		// 2. Obtiene los datos identificatorios del producto
+		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let avatar;
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
-		// 4. Obtiene el avatar y la versión más completa posible del producto
-		let avatar = comp.nombreAvatar(prodOrig, prodEdic);
-		let prodComb = {...prodOrig, ...prodEdic, avatar, id: prodID};
+		// 4. Obtiene la versión más completa posible del producto
+		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
@@ -57,7 +57,8 @@ module.exports = {
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
-		} else {
+			avatar = comp.avatarOrigEdic(prodOrig, prodEdic);
+		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
 				? {id: 1, nombre: "Pend. Aprobac."}
@@ -113,7 +114,7 @@ module.exports = {
 				valor: statusResumido.nombre,
 				id: statusResumido.id,
 			});
-			// Variables de 'Edición'
+			avatar = comp.nombreAvatar(prodOrig, prodEdic);
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -150,35 +151,41 @@ module.exports = {
 			omitirFooter: codigo == "edicion",
 		});
 	},
-	prod_GuardarEdic: async (req, res) => {
-		// Obtiene los datos identificatorios del producto
+	prodEdicGuardar: async (req, res) => {
+		// Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		// Obtiene el userID
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
-		// Obtiene el 'avatar' --> prioridades: data-entry, edición, original
-		let avatar_archivo = req.file ? req.file.filename : "";
+		// Adecuaciones para el avatar
+		if (req.file) {
+			req.body.avatar = req.file.originalname;
+			req.body.avatar_url = req.file.originalname;
+			req.body.avatar_archivo = req.file.filename;
+		}
 		// Unir 'Edición' y 'Original'
-		let prodComb = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
+		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
 		// Averigua si hay errores de validación
 		let errores = await validar.consolidado("", {...prodComb, entidad});
-		if (errores.hay) {
-			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
-		} else {
-			// Actualizar los archivos avatar
-			if (avatar_archivo) {
-				// Mover el archivo actual a su ubicación para ser revisado
+		if (req.file) {
+			// Actualiza los archivos avatar
+			if (!errores.hay) {
+				// Mueve el archivo actual a su ubicación para ser revisado
 				comp.mueveUnArchivoImagen(prodComb.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
-				// Eliminar el anterior archivo de imagen
-				if (prodEdic.avatar)
-					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
+				// Elimina el anterior archivo de imagen
+				if (prodEdic.avatar_archivo)
+					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
 			}
-			// Actualiza la edición
-			let edicion = {...req.body, avatar_archivo};
-			await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, edicion, userID);
+			// Si hay errores, entonces borra el archivo
+			else {
+				comp.borraUnArchivo(req.file.destination, req.file.filename);
+				return res.send(errores)
+			}
 		}
+		// Actualiza la edición
+		if (!errores.hay) await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
 	calificala: (req, res) => {

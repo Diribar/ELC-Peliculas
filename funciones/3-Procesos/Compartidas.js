@@ -2,7 +2,6 @@
 // Definir variables
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
@@ -165,7 +164,6 @@ module.exports = {
 			? "links"
 			: "";
 	},
-
 	obtieneEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
@@ -339,6 +337,14 @@ module.exports = {
 	averiguaSiExisteUnArchivo: (archivo) => {
 		return archivo && fs.existsSync(archivo);
 	},
+	garantizaLaCarpetaProvisorio: function () {
+		// Averiguar si existe la carpeta
+		if (!this.averiguaSiExisteUnArchivo("./publico/imagenes/9-Provisorio"))
+			// Si no existe, la crea
+			fs.mkdirSync("./publico/imagenes/9-Provisorio");
+		// Fin
+		return;
+	},
 	mueveUnArchivoImagen: function (nombre, origen, destino) {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";
@@ -368,7 +374,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	revisarImagen: (tipo, tamano) => {
+	revisaLaImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
 		return !tipo.startsWith("image/")
 			? "Necesitamos un archivo de imagen"
@@ -386,6 +392,14 @@ module.exports = {
 			writer.on("finish", () => resolve(console.log("Imagen guardada")));
 			writer.on("error", (error) => reject(error));
 		});
+	},
+	avatarOrigEdic: (prodOrig, prodEdic) => {
+		let aux1 = prodOrig.avatar.startsWith("http");
+		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
+		let orig = prodOrig.avatar ? aux2 : "/imagenes/8-Agregar/IM.jpg";
+		let edic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig;
+		// Fin
+		return {orig, edic};
 	},
 	nombreAvatar: (prodOrig, prodEdic) => {
 		return prodEdic.avatar
@@ -428,36 +442,36 @@ module.exports = {
 		},
 		completo: (dato) => {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato);
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 		sinopsis: (dato) => {
 			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato);
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 	},
-	avatar: (datos) => {
+	avatar: (nombre) => {
 		// Función
 		let extension = (nombre) => {
 			if (!nombre) return "";
 			let ext = path.extname(nombre);
-			if (ext) ext = ext.slice(1).toUpperCase();
-			return !ext || ![".jpg", ".png", ".jpeg"].includes(ext)
+			return !ext 
+				? "El archivo debe tener alguna extensión"
+				: ![".jpg", ".png", ".jpeg"].includes(ext)
 				? "Usaste un archivo con la extensión '" +
-						ext +
+						ext.slice(1).toUpperCase() +
 						"'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
 		// Variables
-		let dato = datos.avatar;
 		let respuesta = "";
 		// Validaciones
-		if (dato) {
-			if (!respuesta) respuesta = extension(dato);
-			if (!respuesta && datos.tamano && datos.tamano > 1100000)
-				respuesta =
-					"El archivo es de " +
-					parseInt(datos.tamano / 10000) / 100 +
-					" MB. Necesitamos que no supere 1 MB";
+		if (nombre) {
+			if (!respuesta) respuesta = extension(nombre);
+			// if (!respuesta && datos.tamano && datos.tamano > 1100000)
+			// 	respuesta =
+			// 		"El archivo es de " +
+			// 		parseInt(datos.tamano / 10000) / 100 +
+			// 		" MB. Necesitamos que no supere 1 MB";
 		}
 		// Fin
 		return respuesta;

@@ -1,6 +1,5 @@
 "use strict";
 // Requires
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
