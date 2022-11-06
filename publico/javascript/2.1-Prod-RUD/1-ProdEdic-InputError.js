@@ -230,7 +230,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		nuevoAvatar: (e) => {
-			// 1. Si no se cambió el archivoo no es laversión a editar, no hace nada
+			// 1. Si no se cambió el archivo o no es la versión a editar, no hace nada
 			if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
 	
 			// 2. Si se omitió ingresar un archivo o hay un error de avatar que no es 'no es imagen'...
