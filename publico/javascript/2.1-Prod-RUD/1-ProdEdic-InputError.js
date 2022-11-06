@@ -266,8 +266,7 @@ window.addEventListener("load", async () => {
 					// Actualiza lo que será el avatar anterior
 					v.avatarAnt = v.inputAvatarEdicN.value;
 					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (v.inputAvatarEdicN.value)
-						version.edicN.avatar = v.inputAvatarEdicN.files[0].name;
+					if (v.inputAvatarEdicN.value) version.edicN.avatar = v.inputAvatarEdicN.files[0].name;
 					// Actualiza los errores
 					v.esImagen = true;
 					FN.actualizaVarios();
@@ -280,9 +279,8 @@ window.addEventListener("load", async () => {
 					v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
 					// Limpia el input
 					v.inputAvatarEdicN.value = "";
-					// Actualiza la variable 'avatar' en la versión
-					if (v.versionActual == "edicN" && v.inputAvatarEdicN.value)
-						version.edicN.avatar = v.inputAvatarEdicN.value;
+					// Actualiza la variable 'avatar' en la versión 'edicN'
+					if (v.inputAvatarEdicN.value) version.edicN.avatar = "";
 					// Actualiza los errores
 					v.esImagen = false;
 					FN.actualizaVarios();
