@@ -34,7 +34,6 @@ window.addEventListener("load", async () => {
 		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
 		// Temas de avatar
 		imgsAvatar: document.querySelectorAll("#imagenDerecha.inputError .imgAvatar"),
-		imgAvatarEdicN: document.querySelector("#imagenDerecha.inputError #avatarEdicN"),
 		avatarInicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		esImagen: true,
