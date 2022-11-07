@@ -45,6 +45,7 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 #tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%);}
 #tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%);}
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
+.errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
 /* Mensajes */
 .resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold; text-align: center;}

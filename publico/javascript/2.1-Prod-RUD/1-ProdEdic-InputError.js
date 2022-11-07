@@ -49,7 +49,8 @@ window.addEventListener("load", async () => {
 		},
 		// Varios
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
-		iconosAyuda: document.querySelectorAll("main .ayudaClick"),
+		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
+		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
@@ -155,11 +156,15 @@ window.addEventListener("load", async () => {
 		accionesPorCambioDeVersion: async function () {
 			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
 			(() => {
-				// Rutina para cada campo
+				// Variables
 				v.estamosEnEdicNueva = v.versionActual == "edicN";
+				// Rutina para cada campo
 				v.campos.forEach((campo, i) => {
 					// Reemplaza los valores que no sean el avatar
-					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
+					if (campo != "avatar")
+						v.inputs[i].value = version[v.versionActual][campo]
+							? version[v.versionActual][campo]
+							: "";
 					// Oculta y muestra los avatar que correspondan
 					else
 						v.imgsAvatar.forEach((imgAvatar, indice) => {
@@ -181,14 +186,22 @@ window.addEventListener("load", async () => {
 			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
 			// Actualiza los nombres de país
 			this.actualizaPaisesNombre();
-			// Muestra/oculta los íconos para RCLV y de ayuda
+			// Muestra/oculta los íconos de RCLV, ayuda y error
 			(() => {
+				// Muestra/oculta los íconos de RCLV
 				for (let link of v.linksRCLV)
 					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+				// Muestra/oculta los íconos de ayuda
 				for (let iconoAyuda of v.iconosAyuda)
 					v.estamosEnEdicNueva
 						? iconoAyuda.classList.remove("inactivo")
 						: iconoAyuda.classList.add("inactivo");
+				// Muestra/oculta los íconos de error
+				for (let iconoError of v.iconosError)
+					v.estamosEnEdicNueva
+						? iconoError.classList.remove("inactivo")
+						: iconoError.classList.add("inactivo");
+				// Fin
 				return;
 			})();
 			// Señala las diferencias con la versión original
