@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
@@ -14,8 +14,8 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtenerProvs: async (req, res) => {
-		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
+	obtieneProvs: async (req, res) => {
+		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
 		return res.json(provs);
 	},
 	guardar: async (req, res) => {
@@ -23,11 +23,11 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		// Completa la info
-		let producto_id = compartidas.obtenerEntidad_id(datos.prodEntidad);
+		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
-		datos.prov_id = await obtenerProveedorID(datos.url);
+		datos.prov_id = await obtieneProveedorID(datos.url);
 		// Obtiene el link
-		let link_original = await BD_genericas.obtenerPorCamposConInclude(
+		let link_original = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
@@ -35,10 +35,10 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		let link_edicion = datos;
 		let mensaje = !link_original
-			? await compartidas.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
+			? await comp.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await compartidas.actualizar_registro("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await compartidas.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
+			? await comp.actualiza_registro("links", link_original.id, link_edicion) // Actualizar el link_original
+			: await comp.guardarEdicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -51,17 +51,17 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		let link;
-		// Averiguar si no existe el 'url'
+		// Averigua si no existe el 'url'
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
-			// Obtener el link
-			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, ["status_registro"]);
+			// Obtiene el link
+			link = await BD_genericas.obtienePorCamposConInclude("links", {url: url}, ["status_registro"]);
 			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
-				await BD_genericas.eliminarPorId("links", link.id);
+				await BD_genericas.eliminaPorId("links", link.id);
 				procesos.prodCampoLG(prodEntidad, prodID);
 			}
 			// El link existe y no tiene status 'aprobado'
@@ -73,7 +73,7 @@ module.exports = {
 				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
-				await compartidas.inactivar_registro("links", link.id, userID, motivo_id);
+				await comp.inactivar_registro("links", link.id, userID, motivo_id);
 				procesos.prodCampoLG(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
@@ -87,20 +87,20 @@ module.exports = {
 		let respuesta = {};
 		// Completar la info
 		let recuperar_id = status_registro.find((n) => n.recuperar).id;
-		// Obtener el link
-		let link = await BD_genericas.obtenerPorCamposConInclude(
+		// Obtiene el link
+		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
 		);
-		// Obtener el mensaje de la tarea realizada
+		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
 			: link.status_registro.recuperar // El link ya estaba en status recuperar
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			await BD_genericas.actualizarPorId("links", link.id, {
+			await BD_genericas.actualizaPorId("links", link.id, {
 				status_registro_id: recuperar_id,
 				sugerido_por_id: userID,
 			});
@@ -117,13 +117,13 @@ module.exports = {
 		// Completar la info
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let inactivo_id = status_registro.find((n) => n.inactivo).id;
-		// Obtener el link
-		let link = await BD_genericas.obtenerPorCamposConInclude(
+		// Obtiene el link
+		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
 		);
-		// Obtener el mensaje de la tarea realizada
+		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
 			: link.status_registro.creado
@@ -138,12 +138,12 @@ module.exports = {
 		if (!respuesta.mensaje) {
 			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
 			if (link.status_registro.inactivar)
-				await BD_genericas.actualizarPorId("links", link.id, {
+				await BD_genericas.actualizaPorId("links", link.id, {
 					...objeto,
 					status_registro_id: aprobado_id,
 				});
 			if (link.status_registro.recuperar)
-				await BD_genericas.actualizarPorId("links", link.id, {
+				await BD_genericas.actualizaPorId("links", link.id, {
 					...objeto,
 					status_registro_id: inactivo_id,
 				});
@@ -159,9 +159,9 @@ module.exports = {
 	},
 };
 
-let obtenerProveedorID = async (url) => {
-	// Obtener el proveedor
-	let proveedores = await BD_genericas.obtenerTodos("links_provs", "nombre");
+let obtieneProveedorID = async (url) => {
+	// Obtiene el proveedor
+	let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
 	// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 	let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
 	// Si no se reconoce el proveedor, se asume el 'desconocido'

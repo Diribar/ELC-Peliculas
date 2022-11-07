@@ -1,0 +1,15 @@
+/* Cuerpo */
+#cuerpo {flex-direction: row;}
+#cuerpo #datosLargos {width: 78%;}
+#cuerpo #datosBreves {width: 22%;}
+
+/* Datos */
+#datosLargos {display: flex; flex-direction: column; flex-grow: 1;}
+#datosLargos #datos {display: flex; flex-direction: column; justify-content: space-around; padding: 0 40px; flex-grow: 1;}
+#datosLargos #datos #contenido .datosAdicionales {margin-top: 10px;}
+#datosLargos #datos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
+#datosLargos #datos #contenido #sinopsis nav {font-size: 1.1rem;}
+
+/* Datos Breves */
+#datosBreves {max-height: 88%;}
+#datosBreves .infoDesplazam {max-height: 500px;}

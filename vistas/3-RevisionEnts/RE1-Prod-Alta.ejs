@@ -11,14 +11,14 @@
 		</i>
 	</div>
 </div>
-<div id="datos">
+<form action="<%= url %> " method="POST" id="datos">
 	<section id="datosLargos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("RE0-2Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis" class="inputError">
-				<nav><%= prodOrig.sinopsis %></nav>
+			<div id="sinopsis" class="desplazam">
+				<nav class="infoDesplazam"><%= prodOrig.sinopsis %></nav>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -38,7 +38,7 @@
 			<% } %>
 		</div>
 		<!-- Comandos -->
-		<div id="comandos">
+		<div id="comandos" class="inactivo">
 			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
@@ -46,15 +46,17 @@
 		</div>
 		<!-- Botones -->
 		<div id="flechas">
-			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
-				<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self" tabindex="1">
+				<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
 			</a>
-			<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
-			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
+			<button type="submit" autofocus tabindex="2">
+				<i class="fa-solid fa-circle-check" title="Aprobarlo"></i>
+			</button>
+			<i class="fa-solid fa-circle-xmark" tabindex="3" title="Rechazarlo"></i>
 		</div>
 		<div id="motivosRechazo" class="ocultar">
 			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
-			<select>
+			<select name="motivo_id">
 				<option value="" selected class="ocultar">Elegí una opción</option>	
 				<% for (motivo of motivosRechazo) { %>
 					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
@@ -62,22 +64,24 @@
 			</select>
 			<div id="comandosRechazar">
 				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-				<i class="fa-solid fa-circle-right" title="Continuar"></i>
+				<button type="submit" formaction="<%= url %>&rechazado=true" class="inactivo">
+					<i class="fa-solid fa-circle-right" title="Continuar"></i>
+				</button>
 			</div>
 		</div>
 	</section>
 	<section id="datosBreves">
-		<p class="titulo">Datos del Producto</p>
+		<h3>Datos del Producto</h3>
 		<div id="texto">
 			<% for (campo of bloqueDer[0]) { %>
 				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
 			<% } %>
-			<p class="titulo">Datos del Usuario</p>
+			<h3>Datos del Usuario</h3>
 			<% for (campo in bloqueDer[1]) { %>
 				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
 		<% } %> 
 		</div>
 	</section>
-</div>
+</form>

@@ -51,36 +51,36 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Primeros campos -->
-			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
+			<% for (let registro of camposDD1) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombre}) %><% } %>
 			<!-- País -->
 			<%- include("PA3-DD2-Pais") %>
 			<!-- Idioma original -->
 			<%- include("PA3-DD3-Idioma", {idioma_id: dataEntry.idioma_original_id}) %>
 			<!-- Siguientes campos -->
-			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombreDelCampo}) %><% } %>
+			<% for (let registro of camposDD2) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombre}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("PA3-DD4-Sinopsis") %>
 		</div>
 		<!--Segunda columna-->
 		<div id="segundaColumna" class="inputError">
 			<!-- Si existe una imagen y viene desde TMDB -->
-			<% if (dataEntry.avatar && dataEntry.fuente == "TMDB") { %>
-				<img src="<%= dataEntry.avatar %>" alt="afiche">
+			<% if (dataEntry.avatar_url && dataEntry.fuente == "TMDB") { %>
+				<img src="<%= dataEntry.avatar_url %>" alt="afiche">
 			<% } else { %>
 				<label for="inputImagen" id="preview"></label>
 				<!-- Si existe una imagen que no viene de TMDB -->
-				<% if (dataEntry.avatar && dataEntry.fuente != "TMDB") { %>
+				<% if (dataEntry.avatar_url && dataEntry.fuente != "TMDB") { %>
 					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
-					<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
+					<p id="url" class="ocultar"><%= dataEntry.avatar_url %></p>
 				<% } %>
 				<!-- Si no existe una imagen -->
-				<% if (!dataEntry.avatar) { %>
+				<% if (!dataEntry.avatar_url) { %>
 					<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
 				<% } %>
 				<!-- Rutina para todos los casos -->
-				<input name="avatar" id="inputImagen" type="file" accept="image/*" class="ocultar input">
+				<input name="avatar_url" id="inputImagen" type="file" accept="image/*" class="ocultar input">
 				<!-- Errores/OK -->
-				<%- include("CMP-Errores") %>
+				<%- include("CMP-Errores", {campo: "avatar"}) %>
 			<% } %>
 		</div>	
 	</section>

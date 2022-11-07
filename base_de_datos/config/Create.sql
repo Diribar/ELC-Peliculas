@@ -146,6 +146,7 @@ CREATE TABLE usuarios (
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
+	mostrar_cartel_respons BOOLEAN DEFAULT 1,
 	autorizado_fa BOOLEAN DEFAULT 0,
 	docum_numero VARCHAR(15) NULL,
 	docum_pais_id VARCHAR(2) NULL,
@@ -164,8 +165,6 @@ CREATE TABLE usuarios (
 	
 	prods_aprob SMALLINT DEFAULT 0,
 	prods_rech SMALLINT DEFAULT 0,
-	rclvs_aprob SMALLINT DEFAULT 0,
-	rclvs_rech SMALLINT DEFAULT 0,
 	links_aprob SMALLINT DEFAULT 0,
 	links_rech SMALLINT DEFAULT 0,
 	edics_aprob SMALLINT DEFAULT 0,
@@ -225,6 +224,7 @@ CREATE TABLE aux_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
 	gr_creado BOOLEAN DEFAULT 0,
+	gr_aprobado BOOLEAN DEFAULT 0,
 	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_pasivos BOOLEAN DEFAULT 0,
@@ -238,8 +238,8 @@ CREATE TABLE aux_status_registro (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_creado) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_creado) VALUES (2, 2, 'Alta-aprobada',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_creado, gr_aprobado) VALUES (2, 2, 'Alta-aprobada',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
@@ -378,7 +378,7 @@ VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 
 CREATE TABLE rclv_proc_canoniz (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_proc_canoniz (id, orden, nombre)
@@ -559,6 +559,7 @@ CREATE TABLE rclv_2hechos (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
+	hasta SMALLINT NULL,
 	perenne BOOLEAN DEFAULT 0,
 	
 	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
@@ -615,8 +616,8 @@ VALUES
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
+(16, 1, 1,  42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 134, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
@@ -690,6 +691,7 @@ CREATE TABLE rclv_4edicion (
 	nombre VARCHAR(30) NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
+	hasta SMALLINT NULL,
 	ap_mar BOOLEAN NULL,
 
 	/* Campos para PERSONAJES */
@@ -706,7 +708,7 @@ CREATE TABLE rclv_4edicion (
 	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true/false */
 
 	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
+	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
@@ -1247,7 +1249,7 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	status_final_id TINYINT UNSIGNED NOT NULL,
 
 	aprobado BOOLEAN NOT NULL,
-	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
+	duracion DECIMAL(4,1) UNSIGNED NULL,
 
 	comunicado_en DATETIME NULL,
 

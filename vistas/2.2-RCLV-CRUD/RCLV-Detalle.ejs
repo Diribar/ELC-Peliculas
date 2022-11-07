@@ -28,23 +28,28 @@
 		<div id="cuadroDeResultados">
 			<i class="fa-solid fa-caret-left mover inactivo"></i>
 			<ul id="listado">
-				<%- include('RCLV-DT1-ProdsYaEnBD', {prodsYaEnBD}) %>
-				<%- include('PA2-DS2-IngrManual') %>
-				<%- include('RCLV-DT2-ProdsNuevos', { prodsNuevos }) %>
+				<% if (prodsYaEnBD.length) { %><%- include('RCLV-DT1-ProdsYaEnBD', {prodsYaEnBD}) %>
+				<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
 			</ul>
 			<i class="fa-solid fa-caret-right mover inactivo"></i>
 		</div>
 		<!-- Flechas -->
 		<div id="flechas">
-			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			<a href="/rclv/edicion/?origen=DT_RCLV&entidad=<%= entidad %>&id=<%= RCLV_id %>" target="_self">
+				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			</a>
 		</div>
 	</div>
 	<div id="datosBreves">
-		<!-- Título -->
-		<div><p><strong><u style="font-size: 1.1rem;">Ficha Técnica</u></strong></p></div>
-		<!-- Texto -->
+		<h3>Datos del <%= Entidad %></h3>
 		<div id="texto">
-			<% for (campo of bloqueDerecha) { %>
+			<% for (campo of bloqueDerecha.resumenRCLV) { %>
+				<p><strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span></p>
+			<% } %>
+		</div>
+		<h3>Datos del Registro</h3>
+		<div id="texto">
+			<% for (campo of bloqueDerecha.resumenRegistro) { %>
 				<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>

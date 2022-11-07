@@ -1,20 +1,20 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
 	// Detalle
-	obtenerCalificaciones: async (req, res) => {
+	obtieneCalificaciones: async (req, res) => {
 		let {entidad, id: prodID, detalle} = req.query;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
 		// Datos generales
-		datos = await BD_genericas.obtenerPorId(entidad, prodID).then((n) =>
+		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) =>
 			n.fe_valores != null &&
 			n.entretiene != null &&
 			n.calidad_tecnica != null &&
@@ -28,8 +28,8 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let producto_id = compartidas.obtenerEntidad_id(entidad);
-			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
+			let producto_id = comp.obtieneEntidad_id(entidad);
+			datos = await BD_genericas.obtienePorCampos("cal_registros", {
 				usuario_id: userID,
 				[producto_id]: prodID,
 			}).then((n) =>
@@ -54,25 +54,25 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtenerVersionesDelProducto: async (req, res) => {
+	obtieneVersionesDelProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
 	prod_EliminarEdic: async (req, res) => {
-		// Obtener los datos identificatorios del producto
+		// Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 
-		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
-		if (condicion && prodEdic) BD_genericas.eliminarPorId("prods_edicion", prodEdic.id);
+		if (condicion && prodEdic) BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
 		// Terminar
 		return res.json();
 	},

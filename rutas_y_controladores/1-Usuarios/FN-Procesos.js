@@ -2,7 +2,7 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -13,18 +13,18 @@ module.exports = {
 		// Genera la info a actualizar
 		novedades = {...novedades, status_registro_id: statusNuevo.id};
 		// Actualiza la info
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, novedades);
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
 		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
 		// Fin
 		return usuario;
 	},
 	// ControladorVista: loginGuardar
-	actualizarElContadorDeLogins: (usuario, hoyAhora) => {
+	actualizaElContadorDeLogins: (usuario, hoyAhora) => {
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
 		if (hoyAhora != hoyUsuario) {
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
 		return;
 	},
@@ -36,9 +36,9 @@ module.exports = {
 		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
+		comp.enviarMail(asunto, email, comentario).catch(console.error);
 		// Obtiene el horario de envío de mail
-		let ahora = compartidas.ahora().setSeconds(0); // Descarta los segundos en el horario
+		let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario
 		// Genera el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		// Fin

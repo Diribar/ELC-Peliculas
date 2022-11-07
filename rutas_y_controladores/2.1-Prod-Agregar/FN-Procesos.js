@@ -4,7 +4,7 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -52,7 +52,7 @@ module.exports = {
 	DS_infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("movie", datos.TMDB_id),
 			creditsTMDB("movie", datos.TMDB_id),
@@ -67,7 +67,7 @@ module.exports = {
 				datos.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datos.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// elc_id de la colección
-				datos.en_colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+				datos.en_colec_id = await BD_especificas.obtieneELC_id("colecciones", {
 					TMDB_id: datos.en_colec_TMDB_id,
 				});
 				datos.prodNombre = "Capítulo";
@@ -111,19 +111,19 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return compartidas.convertirLetrasAlCastellano(datos);
+		return comp.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
-		// Obtener la API
+		// Obtiene la API
 		let datosAPI = await detailsTMDB("movie", TMDB_id);
 		// Datos de la colección a la que pertenece, si corresponde
 		let datos = {};
 		if (datosAPI.belongs_to_collection != null) {
-			// Obtener datos de la colección
+			// Obtiene datos de la colección
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+			datos.colec_id = await BD_especificas.obtieneELC_id("colecciones", {
 				TMDB_id: datos.colec_TMDB_id,
 			});
 			if (datos.colec_id) return datos;
@@ -143,7 +143,7 @@ module.exports = {
 			TMDB_entidad: "collection",
 			cant_temporadas: 1,
 		};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
 		// Procesar la información
 		if (Object.keys(datosAPI).length) {
@@ -167,7 +167,7 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return compartidas.convertirLetrasAlCastellano(datos);
+		return comp.convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Definir variables
@@ -176,7 +176,7 @@ module.exports = {
 		let exportar = {};
 		// Rutina por cada capítulo
 		for (let capTMDB_id of datos.capitulosTMDB_id) {
-			// Obtener las API
+			// Obtiene las API
 			let datosAPI = await Promise.all([
 				detailsTMDB("movie", capTMDB_id),
 				creditsTMDB("movie", capTMDB_id),
@@ -192,8 +192,7 @@ module.exports = {
 				produccion += limpiarValores(datosAPI.production_companies) + ", ";
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				direccion +=
-					limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+				direccion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
 				guion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
 				musica += limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
@@ -214,18 +213,16 @@ module.exports = {
 	// ControllerVista (confirma)
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
-		let numCapitulo = 0;
-		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
-			numCapitulo++;
+		datosCol.capitulosTMDB_id.forEach(async (capituloTMDB_id, indice) => {
 			// Si el capítulo no existe, agregarlo
-			let existe = await BD_especificas.obtenerELC_id("capitulos", {TMDB_id: capituloTMDB_Id});
+			let existe = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: capituloTMDB_id});
 			if (!existe) {
 				// Preparar datos del capítulo
 				let datosCap = {
 					coleccion_id: datosCol.id,
 					fuente: "TMDB",
 					temporada: 1,
-					capitulo: numCapitulo,
+					capitulo: indice + 1,
 					creado_por_id: 2,
 				};
 				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
@@ -234,18 +231,18 @@ module.exports = {
 				datosCap.subcategoria_id = datosCol.subcategoria_id;
 				datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 				// Guardar los datos del capítulo
-				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
+				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_id})
 					.then((n) => (n = {...n, ...datosCap}))
 					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
 			}
-		}
+		});
 		return;
 	},
 	// ControllerVista (confirma)
 	agregarCapitulosNuevos: async function (coleccion_id, TMDB_id) {
-		// Obtener el API actualizada de la colección
+		// Obtiene el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
-		// Obtener el ID de los capitulos
+		// Obtiene el ID de los capitulos
 		let capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
 		// Agregar los capítulos que correspondan
 		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
@@ -263,7 +260,7 @@ module.exports = {
 			fuente: "TMDB",
 			TMDB_entidad: "tv",
 		};
-		// Obtener las API
+		// Obtiene las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("tv", datos.TMDB_id),
 			creditsTMDB("tv", datos.TMDB_id),
@@ -313,7 +310,7 @@ module.exports = {
 			datos.cant_temporadas = datosAPI.seasons.length;
 		}
 		// Fin
-		return compartidas.convertirLetrasAlCastellano(datos);
+		return comp.convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -373,7 +370,7 @@ module.exports = {
 			// Loop de CAPITULOS ********************************************
 			for (let episode of datosTemp.episodes) {
 				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
-				// Obtener las API
+				// Obtiene las API
 				await BD_genericas.agregarRegistro(datosCap.entidad, datosCap);
 			}
 		}
@@ -383,13 +380,28 @@ module.exports = {
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)
 	infoFAparaDD: async function (dato) {
-		// Obtener los campos del formulario
+		// Obtiene los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
-		let FA_id = this.obtenerFA_id(direccion);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let FA_id = this.obtieneFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
+			let paisNombreToId = async (pais_nombre) => {
+				// Función para convertir 'string de nombre' en  'string de ID'
+				let resultado = [];
+				if (pais_nombre.length) {
+					let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
+					pais_nombreArray = pais_nombre.split(", ");
+					// Convertir 'array de nombres' en 'string de ID"
+					for (let pais_nombre of pais_nombreArray) {
+						let aux = BD_paises.find((n) => n.nombre == pais_nombre);
+						aux ? resultado.push(aux.id) : "";
+					}
+				}
+				resultado = resultado.length ? resultado.join(" ") : "";
+				return resultado;
+			};
 			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
@@ -404,7 +416,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return compartidas.convertirLetrasAlCastellano(datos);
+		return comp.convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
@@ -448,8 +460,8 @@ module.exports = {
 		return resultado;
 	},
 	// ControllerVista (copiarFA_Guardar)
-	// ControllerAPI (obtenerFA_id)
-	obtenerFA_id: (url) => {
+	// ControllerAPI (obtieneFA_id)
+	obtieneFA_id: (url) => {
 		// Output para FE y BE
 		let aux = url.indexOf("www.filmaffinity.com/");
 		url = url.slice(aux + 21);
@@ -459,10 +471,9 @@ module.exports = {
 		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
-
 	// ConfirmarGuardar
 	guardar_cal_registros: (confirma, registro) => {
-		let producto_id = compartidas.obtenerEntidad_id(confirma.entidad);
+		let producto_id = comp.obtieneEntidad_id(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
 			usuario_id: registro.creado_por_id,
@@ -498,7 +509,7 @@ let consolidarValores = (datos, cantCapitulos) => {
 	for (let dato of datos) {
 		campo[dato] ? campo[dato]++ : (campo[dato] = 1);
 	}
-	// Averiguar cuántas veces se repite el método más frecuente
+	// Averigua cuántas veces se repite el método más frecuente
 	let valores = Object.keys(campo);
 	let repeticiones = Object.values(campo);
 	let frecMaxima = Math.max(...repeticiones);
@@ -530,7 +541,7 @@ let limpiarValores = (datos) => {
 	let valores = [];
 	// Procesar si hay información
 	if (datos.length) {
-		// Obtener el nombre y descartar lo demás
+		// Obtiene el nombre y descartar lo demás
 		datos = datos.map((n) => n.name);
 		// Quitar duplicados
 		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
@@ -553,19 +564,4 @@ let funcionCast = (dato) => {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
 	return actuacion;
-};
-let paisNombreToId = async (pais_nombre) => {
-	// Función para convertir 'string de nombre' en  'string de ID'
-	let resultado = [];
-	if (pais_nombre.length) {
-		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		pais_nombreArray = pais_nombre.split(", ");
-		// Convertir 'array de nombres' en 'string de ID"
-		for (let pais_nombre of pais_nombreArray) {
-			let aux = BD_paises.find((n) => n.nombre == pais_nombre);
-			aux ? resultado.push(aux.id) : "";
-		}
-	}
-	resultado = resultado.length ? resultado.join(" ") : "";
-	return resultado;
 };

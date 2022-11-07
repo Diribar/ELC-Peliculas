@@ -10,25 +10,27 @@ const variables = require("./Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Temas de Entidades
-	todos_quitarCamposSinContenido: (objeto) => {
+	quitarCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	todos_obtenerLeadTime: (desde, hasta) => {
-		// Corregir domingo
-		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
-		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
+	obtieneLeadTime: (desdeOrig, hastaOrig) => {
+		// Variables
+		let desdeFinal, hastaFinal;
 		// Corregir sábado
-		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
-		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
+		if (desdeOrig.getDay() == 6) desdeFinal = (parseInt(desdeOrig / unDia) + 2) * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = (parseInt(desdeOrig / unDia) + 1) * unDia;
+		// Corregir domingo
+		if (hastaOrig.getDay() == 6) hastaFinal = (parseInt(hastaOrig / unDia) - 0) * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = (parseInt(hastaOrig / unDia) - 1) * unDia;
 		// Calcular la cantidad de horas
-		let diferencia = hasta - desde;
+		let diferencia = hastaFinal - desdeFinal;
 		if (diferencia < 0) diferencia = 0;
 		let horasDif = diferencia / unaHora;
-		// Averiguar la cantidad de horas por fines de semana
+		// Averigua la cantidad de horas por fines de semana
 		let semanas = parseInt(horasDif / (7 * 24));
 		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
+		let horasFDS_en_semana = desdeOrig.getDay() >= hastaOrig.getDay() ? 2 * 24 : 0;
 		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
 		// Resultado
 		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
@@ -36,45 +38,58 @@ module.exports = {
 		// Fin
 		return leadTime;
 	},
+	includes: (familia) => {
+		// Obtiene todos los campos
+		let campos = [...variables.camposRevisar[familia]];
+		// Deja solamente los campos con vínculo
+		let camposConVinculo = campos.filter((n) => n.relac_include);
+		// Obtiene los vínculos
+		let includes = camposConVinculo.map((n) => n.relac_include);
+		// Fin
+		return includes;
+	},
 
 	// Temas de Edición
-	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
-		// Obtener los campos a comparar
-		let campos = [];
-		variables["camposRevisar" + ent]().forEach((campo) => {
-			campos.push(campo.nombreDelCampo);
-			if (campo.relac_include) campos.push(campo.relac_include);
-		});
-
-		// Quitar de edicion los campos que no se comparan
-		for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
-
-		// Fin
-		return edicion;
-	},
-	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		// Eliminar campo si:
-		// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
-		// - edición es estrictamente igual al original
-		for (let campo in edicion)
-			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
-				delete edicion[campo];
-		return edicion;
-	},
-	quedanCampos: (datos) => {
-		// Averiguar si queda algún campo
-		return !!Object.keys(datos).length;
-	},
 	pulirEdicion: function (original, edicion) {
+		// Funciones
+		let quitarLosCamposQueNoSeComparan = (edicion) => {
+			// Variables
+			let familia = this.obtieneFamiliaEnPlural(edicion.entidad);
+			let campos = [];
+			// Obtiene los campos a comparar
+			variables.camposRevisar[familia].forEach((campo) => {
+				campos.push(campo.nombre);
+				if (campo.relac_include) campos.push(campo.relac_include);
+			});
+			// Quitar de edicion los campos que no se comparan
+			for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+			// Fin
+			return edicion;
+		};
+		let quitarLasCoincidenciasConOriginal = (original, edicion) => {
+			// Eliminar campo si se cumple alguno de estos:
+			// - Edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+			// - Edición es estrictamente igual al original
+			for (let campo in edicion)
+				if (
+					(edicion[campo] && edicion[campo] == original[campo]) ||
+					edicion[campo] === original[campo]
+				)
+					delete edicion[campo];
+			return edicion;
+		};
+		// Variables
+		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien
 		// Pulir la información a tener en cuenta
-		edicion = this.todos_quitarCamposSinContenido(edicion);
-		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
-		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
-		let quedanCampos = this.quedanCampos(edicion);
+		edicion = this.quitarCamposSinContenido(edicion);
+		edicion = quitarLosCamposQueNoSeComparan(edicion);
+		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
+		// Averigua si queda algún campo
+		let quedanCampos = !!Object.keys(edicion).length;
 		// Fin
 		return [edicion, quedanCampos];
 	},
+
 	// ABM de registros
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
@@ -82,14 +97,14 @@ module.exports = {
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
-	actualizar_registro: async (entidad, id, datos) => {
-		await BD_genericas.actualizarPorId(entidad, id, datos);
+	actualiza_registro: async (entidad, id, datos) => {
+		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
-		// Obtener el status_id de 'inactivar'
-		let inactivarID = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
+		// Obtiene el status_id de 'inactivar'
+		let inactivarID = await BD_genericas.obtienePorCampos("status_registro", {inactivar: true}).then(
 			(n) => n.id
 		);
 		// Preparar los datos
@@ -100,21 +115,22 @@ module.exports = {
 			status_registro_id: inactivarID,
 		};
 		// Actualiza el registro 'original' en la BD
-		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
+		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
+	guardarEdicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Variables
 		let quedanCampos;
+		edicion = {...edicion, entidad: entidadEdic};
 		// Quitar los coincidencias con el original
 		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
-		// Averiguar si hay algún campo con novedad
+		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
-		// Obtener el campo 'entidad_id'
-		let entidad_id = this.obtenerEntidad_id(entidadOrig);
+		// Obtiene el campo 'entidad_id'
+		let entidad_id = this.obtieneEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
-		let registroEdic = await BD_genericas.obtenerPorCampos(entidadEdic, objeto);
-		if (registroEdic) await BD_genericas.eliminarPorId(entidadEdic, registroEdic.id);
+		let registroEdic = await BD_genericas.obtienePorCampos(entidadEdic, objeto);
+		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
 		// Completar la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agregar la nueva edición
@@ -123,17 +139,32 @@ module.exports = {
 		return "Edición guardada";
 	},
 
-	// Conversión de nombres
-	obtenerFamiliaEnSingular: (entidad) => {
+	// Conversiones
+	obtieneFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
 			: entidad == "links"
-			? "link"
+			? "links"
 			: "";
 	},
-	obtenerEntidadNombre: (entidad) => {
+	obtieneFamiliaEnPlural: (entidad) => {
+		return entidad == "peliculas" ||
+			entidad == "colecciones" ||
+			entidad == "capitulos" ||
+			entidad == "prods_edicion"
+			? "productos"
+			: entidad == "personajes" ||
+			  entidad == "hechos" ||
+			  entidad == "valores" ||
+			  entidad == "rclvs_edicion"
+			? "RCLVs"
+			: entidad == "links" || entidad == "links_edicion"
+			? "links"
+			: "";
+	},
+	obtieneEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -141,9 +172,9 @@ module.exports = {
 			: entidad == "capitulos"
 			? "Capítulo"
 			: entidad.includes("personaje")
-			? "Personaje Histórico"
+			? "Personaje"
 			: entidad.includes("hecho")
-			? "Hecho Histórico"
+			? "Hecho"
 			: entidad.includes("valor")
 			? "Valor"
 			: entidad == "links"
@@ -152,7 +183,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtenerEntidad_id: (entidad) => {
+	obtieneEntidad_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -169,143 +200,28 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadOrigDesdeEdicion: (entidad) => {
-		return entidad.pelicula_id
+	obtieneEntidadDesdeEdicion: (edicion) => {
+		return edicion.pelicula_id
 			? "peliculas"
-			: entidad.coleccion_id
+			: edicion.coleccion_id
 			? "colecciones"
-			: entidad.capitulo_id
+			: edicion.capitulo_id
 			? "capitulos"
-			: entidad.personaje_id
+			: edicion.personaje_id
 			? "personajes"
-			: entidad.hecho_id
+			: edicion.hecho_id
 			? "hechos"
-			: entidad.valor_id
+			: edicion.valor_id
 			? "valores"
-			: entidad.link_id
+			: edicion.link_id
 			? "links"
 			: "";
-	},
-
-	// Fecha y Hora
-	ahora: () => {
-		return funcionAhora();
-	},
-	nuevoHorario: (delay, horario) => {
-		return nuevoHorario(delay, horario);
-	},
-	fechaTexto: (fecha) => {
-		fecha = new Date(fecha);
-		let dia = fecha.getDate();
-		let mes = meses[fecha.getMonth()];
-		let ano = fecha.getFullYear().toString().slice(-2);
-		fecha = dia + "/" + mes + "/" + ano;
-		return fecha;
-	},
-	fechaHorarioTexto: (horario) => {
-		horario = horario ? new Date(horario) : funcionAhora();
-		return (
-			horario.getDate() +
-			"/" +
-			meses[horario.getMonth()] +
-			" a las " +
-			horario.getHours() +
-			":" +
-			String(horario.getMinutes()).padStart(2, "0") +
-			"hs"
-		);
-	},
-
-	// Gestión de archivos
-	averiguaSiExisteUnArchivo: (archivo) => {
-		return archivo && fs.existsSync(archivo);
-	},
-	mueveUnArchivoImagen: function (nombre, origen, destino) {
-		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-		let carpetaDestino = "./publico/imagenes/" + destino + "/";
-		let archivoDestino = carpetaDestino + nombre;
-		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
-			console.log("No se encuentra el archivo " + archivoOrigen);
-		else
-			fs.rename(archivoOrigen, archivoDestino, (error) => {
-				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-				else throw error;
-			});
-	},
-	borraUnArchivo: function (ruta, archivo) {
-		// Arma el nombre del archivo
-		let rutaArchivo = path.join(ruta, archivo);
-
-		// Se fija si encuentra el archivo
-		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
-			// Borra el archivo
-			fs.unlinkSync(rutaArchivo);
-			// Avisa que lo borra
-			console.log("Archivo '" + archivo + "' borrado");
-		}
-		// Mensaje si no lo encuentra
-		else console.log("Archivo " + archivo + " no encontrado");
-		// Fin
-		return;
-	},
-	revisarImagen: (tipo, tamano) => {
-		let tamanoMaximo = 2;
-		return tipo.slice(0, 6) != "image/"
-			? "Necesitamos un archivo de imagen"
-			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
-			: "";
-	},
-	descargar: async (url, rutaYnombre) => {
-		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
-		let writer = fs.createWriteStream(rutaYnombre);
-		let response = await axios({method: "GET", url: url, responseType: "stream"});
-		response.data.pipe(writer);
-		return new Promise((resolve, reject) => {
-			writer.on("finish", () => resolve(console.log("Imagen guardada")));
-			writer.on("error", (error) => reject(error));
-		});
-	},
-
-	// Varios
-	nombreAvatar: (prodOrig, prodEdic) => {
-		return prodEdic.avatar
-			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
-			: prodOrig.avatar
-			? !prodOrig.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOrig.avatar
-				: prodOrig.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
-	},
-	enviarMail: async (asunto, mail, comentario) => {
-		// create reusable transporter object using the default SMTP transport
-		let transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true, // true for 465, false for other ports
-			auth: {
-				user: process.env.direccMail, // dirección de gmail
-				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
-			},
-		});
-		let datos = {
-			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
-			to: mail,
-			subject: asunto, // Subject line
-			text: comentario, // plain text body
-			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
-		};
-		await transporter.sendMail(datos);
-		// datos.to = "diegoiribarren2015@gmail.com";
-		// await transporter.sendMail(datos);
 	},
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
 		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			let paises_idArray = paises_id.split(" ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
@@ -387,8 +303,343 @@ module.exports = {
 		}
 		return resultado;
 	},
+
+	// Fecha y Hora
+	ahora: () => {
+		return funcionAhora();
+	},
+	nuevoHorario: (delay, horario) => {
+		return nuevoHorario(delay, horario);
+	},
+	fechaTexto: (fecha) => {
+		fecha = new Date(fecha);
+		let dia = fecha.getDate();
+		let mes = mesesAbrev[fecha.getMonth()];
+		let ano = fecha.getFullYear().toString().slice(-2);
+		fecha = dia + "/" + mes + "/" + ano;
+		return fecha;
+	},
+	fechaHorarioTexto: (horario) => {
+		horario = horario ? new Date(horario) : funcionAhora();
+		return (
+			horario.getDate() +
+			"/" +
+			mesesAbrev[horario.getMonth()] +
+			" a las " +
+			horario.getHours() +
+			":" +
+			String(horario.getMinutes()).padStart(2, "0") +
+			"hs"
+		);
+	},
+
+	// Gestión de archivos
+	averiguaSiExisteUnArchivo: (archivo) => {
+		return archivo && fs.existsSync(archivo);
+	},
+	garantizaLaCarpetaProvisorio: function () {
+		// Averigua si existe la carpeta
+		if (!this.averiguaSiExisteUnArchivo("./publico/imagenes/9-Provisorio"))
+			// Si no existe, la crea
+			fs.mkdirSync("./publico/imagenes/9-Provisorio");
+		// Fin
+		return;
+	},
+	mueveUnArchivoImagen: function (nombre, origen, destino) {
+		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
+		let carpetaDestino = "./publico/imagenes/" + destino + "/";
+		let archivoDestino = carpetaDestino + nombre;
+		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
+			console.log("No se encuentra el archivo " + archivoOrigen);
+		else
+			fs.rename(archivoOrigen, archivoDestino, (error) => {
+				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+				else throw error;
+			});
+	},
+	borraUnArchivo: function (ruta, archivo) {
+		// Arma el nombre del archivo
+		let rutaArchivo = path.join(ruta, archivo);
+
+		// Se fija si encuentra el archivo
+		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
+			// Borra el archivo
+			fs.unlinkSync(rutaArchivo);
+			// Avisa que lo borra
+			console.log("Archivo '" + archivo + "' borrado");
+		}
+		// Mensaje si no lo encuentra
+		else console.log("Archivo " + archivo + " no encontrado");
+		// Fin
+		return;
+	},
+	revisaLaImagen: (tipo, tamano) => {
+		let tamanoMaximo = 2;
+		return !tipo.startsWith("image/")
+			? "Necesitamos un archivo de imagen"
+			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
+			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
+			: "";
+	},
+	descargar: async (url, rutaYnombre) => {
+		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+		let writer = fs.createWriteStream(rutaYnombre);
+		let response = await axios({method: "GET", url: url, responseType: "stream"});
+		response.data.pipe(writer);
+		return new Promise((resolve, reject) => {
+			writer.on("finish", () => resolve(console.log("Imagen guardada")));
+			writer.on("error", (error) => reject(error));
+		});
+	},
+	avatarOrigEdic: (prodOrig, prodEdic) => {
+		let aux1 = prodOrig.avatar.startsWith("http");
+		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
+		let orig = prodOrig.avatar ? aux2 : "/imagenes/8-Agregar/IM.jpg";
+		let edic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig;
+		// Fin
+		return {orig, edic};
+	},
+	nombreAvatar: (prodOrig, prodEdic) => {
+		return prodEdic.avatar
+			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
+			: prodOrig.avatar
+			? prodOrig.avatar.startsWith("http")
+				? prodOrig.avatar
+				: "/imagenes/3-Productos/" + prodOrig.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+	},
+
+	// Validaciones
+	inputVacio: "Necesitamos que completes este campo",
+	selectVacio: "Necesitamos que elijas un valor",
+	longitud: (dato, corto, largo) => {
+		return dato.length < corto
+			? "El contenido debe ser más largo"
+			: dato.length > largo
+			? "El contenido debe ser más corto"
+			: "";
+	},
+	castellano: {
+		basico: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.']+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+		sinopsis: (dato) => {
+			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\r\n\-]+$/i;
+			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		},
+	},
+	inicial: {
+		basico: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		},
+		completo: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		},
+		sinopsis: (dato) => {
+			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		},
+	},
+	avatar: (nombre, tamano) => {
+		// Función
+		let extension = (nombre) => {
+			if (!nombre) return "";
+			let ext = path.extname(nombre);
+			return !ext
+				? "El archivo debe tener alguna extensión"
+				: ![".jpg", ".png", ".jpeg"].includes(ext)
+				? "Usaste un archivo con la extensión '" +
+				  ext.slice(1).toUpperCase() +
+				  "'. Las extensiones válidas son JPG, JPEG y PNG"
+				: "";
+		};
+		// Variables
+		let respuesta = "";
+		// Validaciones
+		if (nombre) {
+			if (!respuesta) respuesta = extension(nombre);
+			if (!respuesta && tamano && tamano > 1100000)
+				respuesta =
+					"El archivo es de " +
+					parseInt(tamano / 10000) / 100 +
+					" MB. Necesitamos que no supere 1 MB";
+		}
+		// Fin
+		return respuesta;
+	},
+	cartelRepetido: function (datos) {
+		return (
+			"Este/a <a href='/" +
+			this.obtieneFamiliaEnSingular(datos.entidad) +
+			"/detalle/?entidad=" +
+			datos.entidad +
+			"&id=" +
+			datos.id +
+			"' target='_blank'><u><strong>" +
+			this.obtieneEntidadNombre(datos.entidad).toLowerCase() +
+			"</strong></u></a> ya se encuentra en nuestra base de datos"
+		);
+	},
+
+	// Varios
+	enviarMail: async (asunto, mail, comentario) => {
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport({
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true, // true for 465, false for other ports
+			auth: {
+				user: process.env.direccMail, // dirección de gmail
+				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
+			},
+		});
+		let datos = {
+			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
+			to: mail,
+			subject: asunto, // Subject line
+			text: comentario, // plain text body
+			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+		};
+		await transporter.sendMail(datos);
+		// datos.to = "diegoiribarren2015@gmail.com";
+		// await transporter.sendMail(datos);
+	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
+	},
+	eliminarRepetidos: (prods) => {
+		let IDs = [];
+		for (let i = prods.length - 1; i >= 0; i--)
+			if (!IDs.includes(prods[i].id)) IDs.push(prods[i].id);
+			else prods.splice(i, 1);
+		return prods;
+	},
+	usuario_Ficha: async (userID, ahora) => {
+		// Obtiene los datos del usuario
+		let includes = "rol_iglesia";
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
+		// Variables
+		let unAno = unDia * 365;
+		let enviar = {apodo: ["Apodo", usuario.apodo]};
+		// Edad
+		if (usuario.fecha_nacimiento) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+			enviar.edad = ["Edad", edad];
+		}
+		// Antigüedad
+		let antiguedad =
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
+				.toFixed(1)
+				.replace(".", ",") + " años";
+		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		// Fin
+		return enviar;
+	},
+	obtieneProdsDeLinks: function (links, ahora, userID) {
+		// Variables
+		let peliculas = [];
+		let colecciones = [];
+		let capitulos = [];
+		// Abrir los productos por entidad
+		links.forEach((link) => {
+			if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
+			if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
+			if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
+		});
+		// Eliminar repetidos
+		if (peliculas.length) peliculas = this.eliminarRepetidos(peliculas);
+		if (colecciones.length) colecciones = this.eliminarRepetidos(colecciones);
+		if (capitulos.length) capitulos = this.eliminarRepetidos(capitulos);
+		// Consolidar
+		let productos = [...peliculas, ...colecciones, ...capitulos];
+		// Depurar los productos que no cumplen ciertas condiciones
+		let limpiezaProds = (productos, ahora, userID) => {
+			// Variables
+			// Declarar las variables
+			const aprobado_id = status_registro.find((n) => n.aprobado).id;
+			const haceUnaHora = nuevoHorario(-1, ahora);
+			const haceDosHoras = nuevoHorario(-2, ahora);
+			// Dejar solamente los productos aprobados
+			productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+			// Dejar solamente los productos creados hace más de una hora
+			productos = productos.filter((n) => n.creado_en < haceUnaHora);
+			// Dejar solamente los productos que no tengan problemas de captura
+			productos = productos.filter(
+				(n) =>
+					// Que no esté capturado
+					!n.capturado_en ||
+					// Que esté capturado hace más de dos horas
+					n.capturado_en < haceDosHoras ||
+					// Que la captura haya sido por otro usuario y hace más de una hora
+					(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+					// Que la captura haya sido por otro usuario y esté inactiva
+					(n.capturado_por_id != userID && !n.captura_activa) ||
+					// Que esté capturado por este usuario hace menos de una hora
+					(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+			);
+			return productos;
+		};
+		productos = limpiezaProds(productos, ahora, userID);
+		// Fin
+		return productos;
+	},
+	procesarRCLV: async (datos) => {
+		// Variables
+		let DE = {};
+		// Estandarizar los campos como 'null'
+		variables.camposRCLV[datos.entidad].forEach((campo) => {
+			DE[campo] = null;
+		});
+		// Nombre
+		DE.nombre = datos.nombre;
+		// Día del año
+		if (!datos.desconocida)
+			DE.dia_del_ano_id = await BD_genericas.obtieneTodos("dias_del_ano", "id")
+				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
+				.then((n) => n.id);
+		// Año
+		if (datos.entidad != "valores") DE.ano = datos.ano;
+		// Datos para personajes
+		if (datos.entidad == "personajes") {
+			// Datos sencillos
+			DE.apodo = datos.apodo;
+			DE.sexo_id = datos.sexo_id;
+			DE.categoria_id = datos.categoria_id;
+			if (datos.categoria_id == "CFC") {
+				// subcategoria_id
+				let santo_beato =
+					datos.enProcCan == "1" &&
+					(datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT"));
+				DE.subcategoria_id =
+					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : "HIG";
+				// Otros
+				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
+				if (datos.ap_mar == "1") DE.ap_mar_id = datos.ap_mar_id;
+				DE.rol_iglesia_id = datos.rol_iglesia_id;
+			}
+		}
+		if (datos.entidad == "hechos") {
+			DE.hasta = datos.hasta;
+			DE.solo_cfc = datos.solo_cfc;
+			if (datos.solo_cfc == "1") {
+				DE.jss = datos.ano > 33 || datos.hasta < 0 ? 0 : 1;
+				DE.cnt = datos.ano > 100 || datos.hasta < 0 ? 0 : 1;
+				DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0;
+				DE.ap_mar = datos.ap_mar;
+			}
+		}
+		return DE;
 	},
 };
 

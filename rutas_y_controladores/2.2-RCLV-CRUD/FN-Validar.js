@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -56,7 +56,7 @@ module.exports = {
 	},
 	ano: (datos) => {
 		let respuesta;
-		if (!datos.ano) respuesta = cartelVacio.ano;
+		if (!datos.ano) respuesta = comp.inputVacio;
 		else {
 			let ano = parseInt(datos.ano);
 			respuesta =
@@ -127,10 +127,6 @@ module.exports = {
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if (!datos.exclusivo)
-			respuesta = "Necesitamos saber si ocurrió solamente durante la vida de los Apóstoles";
 		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
@@ -141,30 +137,10 @@ module.exports = {
 
 // Variables
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
-const cartelVacio = {
-	nombre: "Necesitamos que completes el nombre",
-	apodo: "Necesitamos que completes el apodo",
-	ano: "Necesitamos que completes el año",
-};
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 // Funciones
-let longitud = (datos, campo, corto, largo) => {
-	return datos[campo].length < corto
-		? "El " + campo + " debe ser más largo"
-		: datos[campo].length > largo
-		? "El " + campo + " debe ser más corto"
-		: "";
-};
-let inicialMayuscula = (valor, campo) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-	return !formato.test(valor, campo) ? "La primera letra del " + campo + " debe ser en mayúscula" : "";
-};
-let castellano = (valor, campo) => {
-	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-\d]+$/;
-	return !formato.test(valor) ? "Sólo se admiten letras del abecedario castellano (" + campo + ")" : "";
-};
 let prefijo = (valor, campo) => {
 	return valor.startsWith("San ") ||
 		valor.startsWith("Santa ") ||
@@ -172,48 +148,29 @@ let prefijo = (valor, campo) => {
 		valor.startsWith("Beato ") ||
 		valor.startsWith("Beata ") ||
 		valor.startsWith("Ven. ") ||
-		valor.startsWith("Venerable ") ||
-		valor.startsWith("Madre ") ||
-		valor.startsWith("Hna. ") ||
-		valor.startsWith("Hermana ") ||
-		valor.startsWith("Padre ") ||
-		valor.startsWith("Don ") ||
-		valor.startsWith("Doña ") ||
-		valor.startsWith("Papa ")
+		valor.startsWith("Venerable ") 
 		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
 		: "";
 };
-let cartelRepetido = (datos) => {
-	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
-	return (
-		"Este " +
-		"<a href='/RCLV/detalle/?entidad=" +
-		datos.entidad +
-		"&id=" +
-		datos.id +
-		"' target='_blank'><u><strong>" +
-		prodNombre.toLowerCase() +
-		"</strong></u></a>" +
-		" ya se encuentra en nuestra base de datos"
-	);
-};
 let nombreExpress = (datos, campo) => {
 	// Variables
-	let valor = datos[campo];
-	if (!valor) return "";
-	// Mensaje
-	let respuesta = inicialMayuscula(valor, campo);
-	if (!respuesta) respuesta = castellano(valor, campo);
-	if (!respuesta && campo == "nombre") respuesta = prefijo(valor, campo);
+	let dato = datos[campo];
+	let respuesta=""
+	// Validaciones
+	if (dato) {
+		if (!respuesta) respuesta = comp.castellano.completo(dato);
+		if (!respuesta) respuesta = comp.inicial.basico(dato);
+		if (!respuesta && campo == "nombre") respuesta = prefijo(dato, campo);
+	}
 	return respuesta;
 };
 let nombreCompleto = async function (datos, campo) {
 	let respuesta;
-	if (!datos[campo]) respuesta = cartelVacio[campo];
-	if (!respuesta) respuesta = longitud(datos, campo, 4, 30);
+	if (!datos[campo]) respuesta = comp.inputVacio;
+	if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
 	if (!respuesta) {
-		let repetido = await BD_especificas.validarRepetidos([campo], datos);
-		if (repetido) respuesta = cartelRepetido({entidad: datos.entidad, id: repetido});
+		let id = await BD_especificas.validarRepetidos([campo], datos);
+		if (id) respuesta = comp.cartelRepetido({...datos, id});
 	}
 	return respuesta;
 };

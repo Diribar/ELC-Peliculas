@@ -1,10 +1,11 @@
 /* Formato general del cartel */
 #cartel {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12;}
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
-#cartel , #cartel * {color:var(--gris-claro)}
+#cartel {color: var(--gris-claro)}
 #cartel {background-color: var(--rojo-oscuro);}
 #cartel.gris {background-color: var(--gris-oscuro);}
 #cartel.verde {background-color: var(--verde-oscuro);}
+#cartel.azul {background-color: var(--azul-oscuro);}
 
 /* Alineación interna */
 #cartel {display: flex; flex-direction: column; align-items: center; width: max-content; max-width: 600px;}
@@ -20,4 +21,7 @@
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 #cartel #flechasCartel * {border-radius: 50%;}
-#cartel #flechasCartel a i {color: white; font-size: 2rem; cursor: pointer;}
+#cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
+#cartel .fa-house, #cartel .fa-thumbs-up, #cartel .fa-spell-check, #cartel .fa-circle-info {color: var(--backIcono); border: solid 2px var(--backIcono); background-color: var(--azul-oscuro);}
+#cartel .fa-circle-left {color: var(--gris-oscuro);}
+#cartel .fa-circle-right {color: var(--verde-oscuro);}

@@ -3,7 +3,7 @@
 const fs = require("fs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
@@ -34,7 +34,7 @@ module.exports = {
 				: codigo == "olvido-contrasena"
 				? "Olvido de Contraseña"
 				: "";
-		// Obtener el e-mail de session
+		// Obtiene el e-mail de session
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
 		let errores =
@@ -45,7 +45,7 @@ module.exports = {
 				: false;
 		// Generar la info para la vista 'olvido de contraseña'
 		if (errores.documento) {
-			let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			var hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 			var hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		}
@@ -66,7 +66,7 @@ module.exports = {
 		let email = req.body.email;
 		let errores = await validar.altaMail(email);
 		// Si no hay errores, verificar si ya existe en la BD
-		if (!errores.hay && (await BD_especificas.obtenerELC_id("usuarios", {email})))
+		if (!errores.hay && (await BD_especificas.obtieneELC_id("usuarios", {email})))
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
@@ -107,12 +107,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
 		// Variables
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		// Roles de Iglesia
-		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", {usuario: true});
+		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
@@ -136,30 +136,30 @@ module.exports = {
 	editablesGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let datos = {...req.body};
 		if (req.file) {
 			datos.tamano = req.file.size;
 			datos.avatar = req.file.filename;
 		}
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let errores = await validar.editables(datos);
 		if (errores.hay) {
-			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
-			if (usuario.avatar) compartidas.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
+			if (usuario.avatar) comp.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario("editables", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
@@ -185,8 +185,8 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
 		// Variables
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
+		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
+		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
 		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
@@ -225,11 +225,11 @@ module.exports = {
 		};
 		if (req.file) datos.tamano = req.file.size;
 		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/5-DocsRevisar/";
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let errores = await validar.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
-			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/documento");
@@ -237,16 +237,16 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar/", usuario.docum_avatar);
+				comp.borraUnArchivo("./publico/imagenes/5-DocsRevisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
-		req.body.fecha_revisores = compartidas.ahora();
+		req.body.fecha_revisores = comp.ahora();
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
@@ -318,7 +318,7 @@ module.exports = {
 		});
 	},
 	loginGuardar: async (req, res) => {
-		// 1. Averiguar si hay errores de data-entry
+		// 1. Averigua si hay errores de data-entry
 		let {errores, usuario} = await validar.mailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -334,8 +334,8 @@ module.exports = {
 		// 7. Guarda el mail en cookie
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
-		let hoyAhora = compartidas.ahora();
-		procesos.actualizarElContadorDeLogins(usuario, hoyAhora);
+		let hoyAhora = comp.ahora();
+		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
@@ -379,7 +379,7 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, {
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
 		});

@@ -23,18 +23,18 @@ const todos = [soloUsuarios, aptoInput, entidad, id, permUserReg, capturaActivar
 //************************ Rutas ****************************
 // Rutas de APIs
 // Detalle
-router.get("/api/detalle/obtener-calificaciones", API.obtenerCalificaciones);
+router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
 // Edición
 router.get("/api/edicion/validar", API.validarEdicion);
-router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
+router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesDelProducto);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
 router.get("/api/edicion/eliminar", API.prod_EliminarEdic);
 
 // Rutas de vistas
 // Producto
-router.get("/detalle", entidad, id, capturaInactivar, vista.prod_Form);
-router.get("/edicion", ...todos, vista.prod_Form);
-router.post("/edicion", ...todos, multer.single("avatar"), vista.prod_GuardarEdic);
+router.get("/detalle", entidad, id, capturaInactivar, vista.prodEdicForm_Detalle);
+router.get("/edicion", ...todos, vista.prodEdicForm_Detalle);
+router.post("/edicion", ...todos, multer.single("avatar"), vista.prodEdicGuardar);
 // Pendiente
 router.get("/calificala", ...todos, vista.calificala);
 

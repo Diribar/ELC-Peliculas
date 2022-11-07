@@ -1,10 +1,9 @@
 "use strict";
 // Definir variables
-const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	altaMail: async (email) => {
@@ -13,74 +12,63 @@ module.exports = {
 		errores.hay = !!errores.email;
 		return errores;
 	},
-
 	editables: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("apodo")) {
-			if (datos.apodo) var largoApodo = longitud(datos.apodo, 2, 30);
-			errores.apodo = !datos.apodo
-				? cartelCampoVacio
-				: castellano(datos.apodo)
-				? cartelCastellano
-				: mayuscula(datos.apodo)
-				? cartelMayuscula
-				: largoApodo
-				? largoApodo
-				: "";
+			let dato = datos.apodo;
+			let respuesta = "";
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.apodo = respuesta;
 		}
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
 		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		if (campos.includes("avatar")) {
-			if (datos.avatar) var extAvatar = extension(datos.avatar);
-			errores.avatar = !datos.avatar
-				? ""
-				: extAvatar
-				? "Usaste un archivo con la extensión " +
-				  extAvatar.slice(1).toUpperCase() +
-				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
-				: datos.tamano > 1100000
-				? "El archivo es de " +
-				  parseInt(datos.tamano / 10000) / 100 +
-				  " MB. Necesitamos que no supere 1 MB"
-				: "";
+			errores.avatar = comp.avatar(datos.avatar, datos.tamano);
 		}
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	documentoFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
 		// Validaciones
 		if (campos.includes("nombre")) {
-			if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
-			errores.nombre = !datos.nombre
-				? cartelCampoVacio
-				: castellano(datos.nombre)
-				? cartelCastellano
-				: mayuscula(datos.nombre)
-				? cartelMayuscula
-				: largoPerenne
-				? largoPerenne
-				: "";
+			// Variables
+			let respuesta = "";
+			let dato = datos.nombre;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.nombre = respuesta;
 		}
-		if (campos.includes("apellido"))
-			errores.apellido = !datos.apellido
-				? cartelCampoVacio
-				: castellano(datos.apellido)
-				? cartelCastellano
-				: mayuscula(datos.apellido)
-				? cartelMayuscula
-				: largoPerenne
-				? largoPerenne
-				: "";
-		if (campos.includes("sexo_id"))
-			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
+		if (campos.includes("apellido")) {
+			// Variables
+			let respuesta = "";
+			let dato = datos.apellido;
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta) comp.longitud(dato, 2, 30);
+			} else respuesta = comp.inputVacio;
+			// Fin
+			errores.apellido = respuesta;
+		}
+		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
 		if (campos.includes("fecha_nacimiento"))
 			errores.fecha_nacimiento = !datos.fecha_nacimiento
 				? "Necesitamos que ingreses la fecha"
@@ -89,42 +77,34 @@ module.exports = {
 				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
-			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
-			errores.docum_numero = !datos.docum_numero ? cartelCampoVacio : largoNumero ? largoNumero : "";
+			// Variables
+			let dato = datos.docum_numero;
+			let respuesta = "";
+			// Validaciones
+			if (dato) respuesta = comp.longitud(dato, 4, 15);
+			else respuesta = comp.inputVacio;
+			// Fin
+			errores.docum_numero = respuesta;
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
-			errores.docum_pais_id = !datos.docum_pais_id ? cartelElejiUnValor : "";
+			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("docum_avatar")) {
-			// Variables
-			if (datos.docum_avatar) var extAvatar = extension(datos.docum_avatar);
-			if (datos.docum_avatar)
-				var tamano = datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
-			// Validaciones
-			errores.docum_avatar = !datos.docum_avatar
-				? ""
-				: extAvatar
-				? "Usaste un archivo con la extensión " +
-				  extAvatar.slice(1).toUpperCase() +
-				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
-				: tamano > 1.1
-				? "El archivo es de " + tamano + " MB. Necesitamos que no supere 1 MB"
-				: "";
-		}
+		if (campos.includes("docum_avatar"))
+			errores.docum_avatar = comp.avatar(datos.docum_avatar, datos.tamano);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 	documentoBE: async function (datos) {
-		// Averiguar los errores
+		// Averigua los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Verifica que el documento no exista ya en la Base de Datos
 			let docum_numero = datos.docum_numero;
 			let docum_pais_id = datos.docum_pais_id;
-			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {docum_numero, docum_pais_id});
+			let averiguar = await BD_genericas.obtienePorCampos("usuarios", {docum_numero, docum_pais_id});
 			if (averiguar && averiguar.id != datos.id) errores.credenciales = true;
 
 			// 2. Verifica el docum_avatar
@@ -133,7 +113,7 @@ module.exports = {
 				!datos.docum_avatar
 					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 					: // Que exista el archivo
-					!compartidas.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
+					!comp.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
 					? "El archivo de imagen no existe"
 					: "";
 
@@ -143,7 +123,6 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	login: (datos) => {
 		// Variables
 		let {email, contrasena} = datos;
@@ -156,16 +135,15 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-
 	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
-		// Averiguar los errores
+		// Averigua los errores
 		let errores = await this.login(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// Si no hay error => averigua el usuario
-			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
+			usuario = await BD_especificas.obtieneUsuarioPorMail(datos.email);
 			// Si existe el usuario => averigua si la contraseña es válida
 			if (usuario) {
 				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
@@ -178,11 +156,10 @@ module.exports = {
 		// Fin
 		return {errores, usuario};
 	},
-
 	olvidoContrBE: async (datos) => {
 		// Variables
 		let errores = {};
-		let usuario = await BD_genericas.obtenerPorCamposConInclude(
+		let usuario = await BD_genericas.obtienePorCamposConInclude(
 			"usuarios",
 			{email: datos.email},
 			"status_registro"
@@ -191,7 +168,7 @@ module.exports = {
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
 			// Verifica si la dirección de mail fue validada
-			let fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
+			let fechaHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
 			if (!usuario.status_registro.mail_validado) {
 				errores = {
 					email:
@@ -200,8 +177,8 @@ module.exports = {
 				};
 			} else {
 				// Verifica si ya se envió un mail en el día
-				let ahora = compartidas.fechaTexto(compartidas.ahora());
-				let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
+				let ahora = comp.fechaTexto(comp.ahora());
+				let fecha = comp.fechaTexto(usuario.fecha_contrasena);
 				if (ahora == fecha)
 					errores = {
 						email:
@@ -213,12 +190,12 @@ module.exports = {
 				else if (usuario.status_registro.ident_a_validar) {
 					// Verifica los posibles errores
 					errores.docum_numero = !datos.docum_numero
-						? cartelCampoVacio
+						? comp.inputVacio
 						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
 					errores.docum_pais_id = !datos.docum_pais_id
-						? cartelElejiUnValor
+						? comp.selectVacio
 						: datos.docum_pais_id != usuario.docum_pais_id
 						? "El país no coincide con el de nuestra Base de Datos"
 						: "";
@@ -232,52 +209,22 @@ module.exports = {
 	},
 };
 
+// Variables y Funciones
 let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
-let cartelCampoVacio = "Necesitamos que completes este campo";
-let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
-let cartelMayuscula = "La primera letra debe ser en mayúscula";
-let cartelElejiUnValor = "Necesitamos que elijas un valor";
-
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
 };
-
 let largoContrasena = (dato) => {
 	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
 };
-
-let longitud = (dato, corto, largo) => {
-	return dato && dato.length < corto
-		? "El nombre debe ser más largo"
-		: dato && dato.length > largo
-		? "El nombre debe ser más corto"
-		: "";
-};
-
-let castellano = (dato) => {
-	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
-	return !formato.test(dato);
-};
-
-let mayuscula = (dato) => {
-	let formato = /^[A-Z]/;
-	return !formato.test(dato);
-};
-
-let extension = (nombre) => {
-	if (!nombre) return false;
-	let ext = path.extname(nombre);
-	return ![".jpg", ".png", ".jpeg"].includes(ext) ? ext : false;
-};
-
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);
-	let max = compartidas.ahora();
-	let min = compartidas.ahora();
+	let max = comp.ahora();
+	let min = comp.ahora();
 	max.setFullYear(max.getFullYear() - 5);
 	min.setFullYear(min.getFullYear() - 100);
 	return fecha > max || fecha < min ? true : false;

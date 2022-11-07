@@ -19,7 +19,8 @@ header section .grupos .iconoComb .adentro {position: absolute; top: 48%; left: 
 header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-oscuro); z-index: 1;}
 
 /* Formato del Título */
-header #tituloHeader {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
+header #tituloHeader {position: absolute; left: 50%; transform: translateX(-50%);}
+header #tituloHeader * {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem;}
 
 /* Íconos de usuario */
 header #icono-usuario {border-radius: 50%; overflow: hidden; }

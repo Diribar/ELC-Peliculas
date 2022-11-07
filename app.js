@@ -1,7 +1,7 @@
 // VARIABLES GLOBALES -------------------------------------------------
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
-global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
@@ -9,9 +9,21 @@ require("dotenv").config(); // Para usar el archivo '.env'
 // Se requiere el acceso a la BD, por eso el 'dotenv' va antes
 (async () => {
 	const BD_genericas = require("./funciones/2-BD/Genericas");
-	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
-	global.status_registro_us = await BD_genericas.obtenerTodos("status_registro_us", "orden");
-	global.roles_us = await BD_genericas.obtenerTodos("roles_usuarios", "orden");
+	global.status_registro = await BD_genericas.obtieneTodos("status_registro", "orden");
+	global.status_registro_us = await BD_genericas.obtieneTodos("status_registro_us", "orden");
+	global.roles_us = await BD_genericas.obtieneTodos("roles_usuarios", "orden");
+	// Menus de consultas
+	const variables = require("./funciones/3-Procesos/Variables");
+	global.menuOpciones = variables.menuOpciones;
+	let subOpcionesListado = variables.menuSubOpcionesListado;
+	let subOpcionesCFC_VPC = await BD_genericas.obtieneTodos("subcategorias", "orden");
+	global.menusSubOpciones = {
+		listado: subOpcionesListado,
+		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
+		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
+	};
+	// Fin
+	return
 })();
 
 const path = require("path");
@@ -66,13 +78,14 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/6-Productos"),
+	path.resolve(__dirname, "./vistas/6-Consultas"),
+	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
 // ************************* Rutas ********************************
 // CRUD
-const rutaCRUD = require("./rutas_y_controladores/2.0-CRUD/Rutas");
+const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
 const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
 const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
 const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
@@ -95,11 +108,11 @@ app.use("/consultas", rutaConsultas);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
-const variables = require("./funciones/3-Procesos/Variables");
 app.use((req, res) => {
+	const variables = require("./funciones/3-Procesos/Variables");
 	let informacion = {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
+		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 	};
 	res.status(404).render("CMP-0Estructura", {informacion});
 });

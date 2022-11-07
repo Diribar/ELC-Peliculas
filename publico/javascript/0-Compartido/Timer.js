@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	let timer = document.querySelector("#timer");
 	// Temas de horario y fechas
 	let unMinuto = 60 * 1000;
-	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+	let mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Horario Inicial
 	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) =>
 		n.json()
@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 		return (
 			horario.getDate() +
 			"/" +
-			meses[horario.getMonth()] +
+			mesesAbrev[horario.getMonth()] +
 			" " +
 			horario.getHours() +
 			":" +
@@ -48,12 +48,12 @@ window.addEventListener("load", async () => {
 		);
 	};
 	let funcionTimer = () => {
-		let actualizarTimer = setInterval(() => {
+		let actualizaTimer = setInterval(() => {
 			minutosDispon--;
 			if (minutosDispon < 0) minutosDispon = 0;
 			timer.innerHTML = minutosDispon + " min.";
 			if (minutosDispon == 0) {
-				clearInterval(actualizarTimer);
+				clearInterval(actualizaTimer);
 				return funcionCartel();
 			} else formatoTimer(minutosDispon);
 		}, unMinuto);
@@ -64,8 +64,6 @@ window.addEventListener("load", async () => {
 		let cartel = document.querySelector("#cartel");
 		let mensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
-		// Formatos
-		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		// Mensajes
 		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));

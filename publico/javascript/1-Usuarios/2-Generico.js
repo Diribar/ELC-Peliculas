@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 		let valor = encodeURIComponent(inputs[i].value);
 		// Particularidad para 'avatar'
 		if (campo.includes("avatar") && e) valor += "&tamano=" + e.target.files[0].size;
-		// Averiguar los errores
+		// Averigua los errores
 		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
 		return [errores, campo];

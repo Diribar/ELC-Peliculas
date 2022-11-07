@@ -50,7 +50,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "ap_mar_id"});
-		entidad.belongsTo(n.procesos_canonizacion, {as: "proc_canoniz",	foreignKey: "proceso_id",});
+		entidad.belongsTo(n.procs_canoniz, {as: "proc_canoniz",	foreignKey: "proceso_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
@@ -67,10 +67,10 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_id"});
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "personaje_id"});
 
-		entidad.hasMany(n.prods_edicion, {as: "ediciones_producto", foreignKey: "personaje_id"});
-
 		entidad.hasMany(n.historial_cambios_de_status, {as: "historial", foreignKey: "personaje_id"});
 		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "personaje_id"});
+
+		entidad.hasMany(n.prods_edicion, {as: "prods_edic", foreignKey: "personaje_id"});
 	};
 	return entidad;
 };

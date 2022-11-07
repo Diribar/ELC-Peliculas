@@ -2,7 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesosProd = require("../2.1-Prod-RUD/FN-Procesos");
 const procesos = require("./FN-Procesos");
 
@@ -13,29 +13,29 @@ module.exports = {
 		// Tema y Código
 		const tema = "links_crud";
 		const codigo = "abm";
-		// Obtener los datos identificatorios del producto y del usuario
+		// Obtiene los datos identificatorios del producto y del usuario
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesosProd.obtenerVersionesDelProducto(
+		// Obtiene los datos ORIGINALES y EDITADOS del producto
+		let [prodOrig, prodEdic] = await procesosProd.obtieneVersionesDelProducto(
 			prodEntidad,
 			prodID,
 			userID
 		);
-		// Obtener el avatar
-		let avatar = compartidas.nombreAvatar(prodOrig,prodEdic)
+		// Obtiene el avatar
+		let avatar = comp.nombreAvatar(prodOrig,prodEdic)
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
-		// Obtener información de BD
-		let links = await procesos.obtenerLinksActualizados(prodEntidad, prodID, userID);
-		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
-		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		// Obtiene información de BD
+		let links = await procesos.obtieneLinksActualizados(prodEntidad, prodID, userID);
+		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
+		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = comp.obtieneEntidadNombre(prodEntidad);
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtener datos para la vista
+		// Obtiene datos para la vista
 		if (prodEntidad == "capitulos") {
 			let coleccion_id =
 				prodEdic && prodEdic.coleccion_id
@@ -43,9 +43,9 @@ module.exports = {
 					: prodOrig.coleccion_id;
 			let temporada =
 				prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
-			producto.capitulos = await BD_especificas.obtenerCapitulos(coleccion_id, temporada);
+			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
+		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {

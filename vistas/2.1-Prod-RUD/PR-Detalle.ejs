@@ -4,9 +4,8 @@
 		<!-- Ayuda -->
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick despl_click">
-				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="none">
 					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.</li>
-					<li>Si el contenido de los recuadros se ve parcial, podés deslizarlo con la ruedita del mouse dentro del recuadro.</li>
 				</ul>
 			</i>
 		</div>
@@ -18,6 +17,14 @@
 			<!-- Sinopsis -->
 			<div id="sinopsis" class="desplazam">
 				<nav class="infoDesplazam"><%= producto.sinopsis %></nav>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
+							<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+						</ul>
+					</i>
+				</div>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
@@ -29,7 +36,7 @@
 			<% } %>
 		</div>
 		<!-- Comandos -->
-		<div id="comandos">
+		<div id="comandos" class="inactivo">
 			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
@@ -42,22 +49,21 @@
 		<%- include("CR-Flechas") %>
 	</div>
 </section>
-<section id="datosBreves" class="desplazam">
+<section id="datosBreves" class="desplazam aparece">
 	<div class="infoDesplazam">
 		<!-- Calificaciones -->
-		<div>
-			<p><strong>Calificaciones</strong></p>
-			<p id="calificacionesResultados"></p>
-		</div>
+		<h3>Calificaciones</h3>
+		<p id="calificacionesResultados"></p>
 		<div id="calificacionesGrafico"></div>
 		<!-- Texto -->
+		<h3>Datos Adicionales</h3>
 		<div id="texto">
 			<% for (bloque of bloquesDerecha) { %>
 				<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
 					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 					<% if (bloque.RCLV_entidad) { %>
 						<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
-						<a href="/rclv/detalle/?<%= datosRCLV %>">
+						<a href="/rclv/detalle/?<%= datosRCLV %>" target="_blank">
 							<i class="fa-solid fa-circle-info"></i>
 						</a>
 					<% } %>

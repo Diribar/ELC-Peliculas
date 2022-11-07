@@ -3,7 +3,7 @@
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
-	// Obtener la entidad
+	// Obtiene la entidad
 	let entidad = req.query.entidad;
 	// Verificar los datos
 	let informacion;
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = funciones.obtieneEntidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
 				mensajes: ["La entidad ingresada no es válida"],

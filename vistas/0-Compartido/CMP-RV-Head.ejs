@@ -1,49 +1,7 @@
-<!-- Uso compartido -->
-<link rel="stylesheet" href="/formatos/0-Compartido/Main/RV-Revision.css">
-<% if (tema == "revisionEnts") { %>
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/0-Revision.css">
-<% } else if (tema == "revisionUs") { %>
-	<link rel="stylesheet" href="/formatos/4-RevisionUs/0-Revision.css">
-<% } %>
 <!-- Específicos para el tablero -->
 <% if (codigo == "tableroControl") { %>
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/RV-TableroControl.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
 <% } else { %>
 	<!-- General para vistas distintas al tablero -->
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Cartel.css">
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/0-MotivosRechazar.css">
-	<script src="/javascript/0-Compartido/Timer.js"></script>
-	<!-- Específicos para Prod-Altas -->
-	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/1-Prod-Alta.css">
-		<script src="/javascript/3-RevisionEnts/1-Prod1_Alta.js"></script>
-	<!-- Específicos para Prod-Edicion -->
-	<% } else if (codigo == "producto/edicion") { %>
-		<% if (vista.includes("Avatar")) { %>
-			<link rel="stylesheet" href="/formatos/3-RevisionEnts/1-Prod-EdicAvatar.css">
-			<script src="/javascript/3-RevisionEnts/1-Prod2_Avatar.js"></script>
-		<% } else { %>
-			<link rel="stylesheet" href="/formatos/3-RevisionEnts/1-Prod-EdicDemas.css">
-			<script src="/javascript/3-RevisionEnts/1-Prod3_Edicion.js"></script>
-		<% } %>
-	<!-- Específicos para RCLV-Altas -->
-	<% } else if (codigo == "rclv/alta") { %>
-		<link rel="stylesheet" href="/formatos/2.0-CRUD/RCLV-AltaEdicion.css">
-		<script src="/javascript/2.0-CRUD/2-RCLV.js"></script>
-	<!-- Específicos para Links -->
-	<% } else if (codigo == "links") { %>
-		<!-- Uso compartido -->
-		<link rel="stylesheet" href="/formatos/0-Compartido/Main/Links.css">
-		<script src="/javascript/0-Compartido/LK-PeliTrailer.js"></script>
-		<script src="/javascript/0-Compartido/LK-ActivosInactivos.js"></script>
-		<script src="/javascript/0-Compartido/LK-Eliminar.js"></script>
-		<!-- Específico -->
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/3-Links.css">
-		<script src="/javascript/3-RevisionEnts/3-Links1-Altas.js"></script>
-		<script src="/javascript/3-RevisionEnts/3-Links2-Ediciones.js"></script>
-	<% } else if (codigo == "validarIdentidad") { %>
-		<link rel="stylesheet" href="/formatos/4-RevisionUs/1-ValidarIdentidad.css">
-		<script src="/javascript/4-RevisionUs/1-ValidarIdentidad.js"></script>
-	<% } %>
-	
 <% } %>

@@ -22,7 +22,7 @@ const todos = [soloUsuarios, aptoInput, entidad, id, permUserReg, capturaActivar
 // Rutas de APIs
 // Links
 router.get("/api/validar", API.validar);
-router.get("/api/obtener-provs-links", API.obtenerProvs);
+router.get("/api/obtiene-provs-links", API.obtieneProvs);
 router.get("/api/guardar", API.guardar);
 router.get("/api/eliminar", API.eliminar);
 router.get("/api/recuperar", API.recuperar);

@@ -1,4 +1,4 @@
-<% if (codigo == "edicion") { %>
+<% if (codigo != "agregar") { %>
 	<%- include('CMP-TimerContador') %>
 	<%- include('CMP-Cartel') %>
 <% } %>
@@ -13,7 +13,7 @@
 		</i>
 	</div>
 </div>
-<form method="POST" id="dataEntry">
+<form method="POST" id="dataEntry" class="aparece">
 	<!-- Encabezado -->
 	<section id="datos" class="OK">
 		<!--Primera columna-->
@@ -24,18 +24,16 @@
 				<div class="flex-row">
 					<div class="margenBottomTitulo inputError" style="z-index: 5;">
 						<!-- Título -->
-						<h3>Nombre y Apodo</h3>
+						<h3>Nombres</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick despl_click">
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<% if (entidad == "personajes") { %>
-										<li>Sin prefijo (San, Santa, Madre, Don, Papa).</li>
-										<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-										<li>Primero el nombre, después el apellido.</li>
+										<li>Nombre Alternativo: se usa cuando la persona es conocida con dos nombres distintos (ej: Juan Pablo II / Karol Wojtyla).</li>
 									<% } %>
-									<li>La primera letra en mayúscula, sin puntos ni comas</li>
-									<li>Sólo se aceptan letras del alfabeto castellano</li>
+									<li>La primera letra debe ser en mayúscula.</li>
+									<li>Sólo se aceptan letras del alfabeto castellano.</li>
 								</ul>
 							</i>
 						</div>
@@ -46,12 +44,12 @@
 				<div id="valoresNombre" class="flex-col space-between">
 					<!-- Nombre -->
 					<div class="flexRowAlign space-between altoFila">
-						<label>Nombre:</label>
+						<label><%- entidad=="personas" ? 'Más conocido' : 'Nombre' %>:</label>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
 					<% if (entidad == "personajes") { %>
 						<div class="flexRowAlign space-between altoFila">
-							<label>Apodo:</label>
+							<label>Alternativo:</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
 						</div>
 					<% } %>
@@ -70,7 +68,7 @@
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<p>Usamos la fecha en que se lo recuerda.</p>
 									<% if (entidad == "personajes") { %>
-										<li>Para los santos o beatos, es la fecha en el santoral (Novus Ordo).</li>
+										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
 										<li>Para los demás, suele ser la fecha de su muerte.</li>
 									<% } %>
 								</ul>
@@ -92,8 +90,8 @@
 								</option>
 							<% } %>
 						</select>
-						<a id="wiki" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
-						<a id="santopedia" target="blank" class="ocultar" tabindex="-1"><img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia"></a>
+						<a id="wiki" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
+						<a id="santopedia" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Santopedia.jpg" title="Consultar en Santopedia"></a>
 					</div>
 					<!-- Días -->
 					<div class="flexRowAlign altoFila">
@@ -112,7 +110,7 @@
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
-						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (codigo == "edicion" && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
+						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
 						<label for="desconocida">Sin fecha representativa</label>
 					</div>
 				</div>
@@ -157,7 +155,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {campo:"ano", display: true}) %>
+						<%- include("CMP-Errores", {campo:"ano", display: true}) %>
 					</div>
 				</div>
 			<% } %>
@@ -230,11 +228,11 @@
 						<div id="sexo_id" class="flexRowAlign ocultar cfc">
 							<label class="izquierda">Sexo:</label>
 							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.varon) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
 								<label for="V">Varón</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.mujer) { %>checked<% } %> class="RCLI">
+								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
 								<label for="M">Mujer</label>
 							</div>
 						</div>						
@@ -268,8 +266,8 @@
 						<!-- Status del proceso de canonización -->
 						<select name="proceso_id" class="ocultar RCLI cfc">
 								<option value="" selected class="ocultar">Elejí una opción</option>
-								<% for (let proceso of procesos_canonizacion) { %>
-									<option value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+								<% for (let proceso of procs_canoniz) { %>
+									<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
 								<% } %> 
 						</select>
 					</div>
@@ -347,7 +345,9 @@
 	<% } %>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<i id="salir" class="fa-solid fa-circle-left" title="Salir"></i>
+		<a href="<%= rutaSalir %>">
+			<i id="salir" class="fa-solid fa-circle-left" title="Salir"></i>
+		</a>
 		<i id="submit" class="fa-solid fa-circle-check inactivo" title="Guardar"></i>
 	</section>
 </form>

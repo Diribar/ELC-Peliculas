@@ -1,0 +1,85 @@
+/* Temas generales */
+main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
+main form #cuerpo .inputError {display: flex; flex-direction: row;}
+
+/* Zona del formulario */
+main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
+main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
+
+/* Imagen */
+form #imagenDerecha label {line-height: 0;}
+/* Imagen - Íconos */
+form #imagenDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
+form #imagenDerecha .ayuda,
+form #imagenDerecha .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
+form #imagenDerecha .errores {z-index: 4;}
+
+/* Imagen - AyudaMostrar */
+form #imagenDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
+
+/* Imagen - MensajeError */
+form #imagenDerecha.inputError .errores .mensajeError {right: auto; top: auto;}
+form #imagenDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
+form #imagenDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
+form #imagenDerecha.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
+
+/* Partes del formulario */
+#datos {display: flex; flex-direction: row; justify-content: space-between;}
+#datos #primeraColumna {width: 42%;}
+#datos #segundaColumna {width: 45%;}
+#datos #primeraColumna .label-input .inputError .input {width: 200px;}
+#datos #primeraColumna .label-input .inputError .input.angosto {width: 70px}
+#datos #primeraColumna .label-input .inputError .input.numero {width: 70px; text-align: right;}
+#datos #segundaColumna .label-input .inputError .input {width: 240px;}
+
+/* Partes específicas del formulario */
+#datos .label-input .inputError .input,
+#datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .label-input .inputError {margin-left: 5px;}
+#datos .label-input .inputError .ayuda {right: -5px;}
+
+#datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
+#datos h3:first-child {margin-top: 0;}
+#datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
+#datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
+#datos .label-input .inputError .input {align-self: center;}
+#datos .label-input .inputError input {padding: 0px 5px;}
+#datos .label-input .inputError select {padding: 0;}
+#datos .label-input .inputError .input:disabled, 
+#datos .label-input#paises_id input#mostrarPaises:disabled,
+#datos .label-input#paises_id select:disabled {background-color: var(--amarillo-claro); opacity: 1; color: inherit;}
+
+/* País */
+#datos #paises_id {align-items: center;}
+#datos #paises_id .inputError {width: 200px;}
+#datos #paises_id .inputError input#mostrarPaises,
+#datos #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+#datos #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
+#datos #paises_id .inputError select {width: 100%; padding: 0;}
+
+/* RCLV */
+#datos .label-input .inputError .linkRCLV {width: 15px;}
+#datos .label-input .inputError #alta.linkRCLV {right: -40px;}
+#datos .label-input .inputError #edicion.linkRCLV {right: -60px;}
+
+/* Sinopsis */
+#datos .label-input#sinopsis .inputError {width: 100%; margin-left: 0;} 
+#datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
+#datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
+
+.linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#edicion.linkRCLV {font-size: 1.15rem;}
+
+/* Mensajes de aviso de cambio de data-entry */
+.inputError .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); top: 50%;}
+.inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
+form #imagenDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
+
+/* Comandos - Particularidades */
+#comandos i.fa-slash {transform: rotate(85deg); cursor: default; padding: 5px 0px; border: none;}
+#comandos i {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
+#comandos i.activar.activo {border-color: var(--amarillo-oscuro);}
+#comandos {padding: 0;}

@@ -1,13 +1,12 @@
-<section id="imagen" class="inputError">
-	<!-- Imagen que se ve en la vista -->
-	<label for="inputImagen" id="avatarVisible">
-		<img src="<%= avatar %>" class="pointer">
+<section id="imagenDerecha" class="inputError">
+	<!-- Input de avatar nuevo -->
+	<label for="inputImagen">
+		<img id="avatarEdicN" src="<%= avatar.edic %>" class="pointer imgAvatar edicN">
 	</label>
-	<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
-	<!-- Almacenaje de la imagen nueva -->
-	<label id="avatarNuevo" class="ocultar">
-		<img src="<%= avatar %>" class="ocultar">
-	</label>
+	<input name="avatar" id="inputImagen" type="file" accept="image/*" class="input ocultar">
+	<!-- Demás avatars -->
+	<img id="avatarEdicG" src="<%= avatar.edic %>" class="ocultar imgAvatar edicG">
+	<img id="avatarOrig" src="<%= avatar.orig %>" class="ocultar imgAvatar orig">
 	<!-- Ayuda -->
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick despl_click">

@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
+		hasta: {type: dt.INTEGER},
 		ap_mar: {type: dt.BOOLEAN},
 
 		// Campos para PERSONAJES
@@ -32,9 +33,9 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.personajes, {as: "personajes", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.hechos, {as: "hechos", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.valores, {as: "valores", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 

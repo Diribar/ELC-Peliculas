@@ -3,141 +3,206 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
+	opcionesInicio: [
+		{
+			href: "/consultas/listado/sugeridas",
+			src: "/imagenes/8-Inicio/Recomendame.jpg",
+			p: "Quiero que me recomienden una película o colección",
+		},
+		{
+			href: "/consultas/listado/incorporacion",
+			src: "/imagenes/8-Inicio/Filtro.jpg",
+			p: "Quiero elegir una película o colección, con filtros personalizados",
+		},
+		{
+			href: "/consultas/cfc",
+			src: "/imagenes/8-Inicio/Cruz.jpg",
+			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
+		},
+		{
+			href: "/consultas/vpc",
+			src: "/imagenes/8-Inicio/Valores.jpg",
+			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
+		},
+	],
+
+	// Entorno Consulta de Productos
+	menuOpciones: [
+		{
+			nombre: "Todas las Películas",
+			url: "listado",
+			titulo: "Listado",
+			vista: "CN1-Listado",
+			comentario: "Todas las películas de nuestra Base de Datos",
+		},
+		{
+			nombre: "Un paseo por CFC",
+			url: "cfc",
+			titulo: "CFC",
+			vista: "CN2-CFC",
+			comentario: "Películas Centradas en la Fe Católica (CFC)",
+		},
+		{
+			nombre: "Un paseo por VPC",
+			url: "vpc",
+			titulo: "VPC",
+			vista: "CN3-VPC",
+			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+		},
+	],
+	menuSubOpcionesListado: [
+		{nombre: "Sugeridas para el momento del año", url: "sugeridas"},
+		{nombre: "Por mejor calificación", url: "calificacion"},
+		{nombre: "Por año de estreno más reciente", url: "estreno"},
+		{nombre: "Por incorporación más reciente", url: "incorporacion"},
+	],
+
 	// Entorno Agregar Productos
-	camposDD: () => {
-		return [
-			{
-				titulo: "Título original",
-				nombreDelCampo: "nombre_original",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				antesDePais: true,
-			},
-			{
-				titulo: "Título en castellano",
-				nombreDelCampo: "nombre_castellano",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				antesDePais: true,
-			},
-			{
-				titulo: "Año de estreno",
-				nombreDelCampo: "ano_estreno",
-				numero: true,
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				antesDePais: true,
-			},
-			{
-				titulo: "Año de finalización",
-				nombreDelCampo: "ano_fin",
-				numero: true,
-				peliculas: false,
-				colecciones: true,
-				capitulos: false,
-				antesDePais: true,
-			},
-			{
-				titulo: "Duración (minutos)",
-				nombreDelCampo: "duracion",
-				numero: true,
-				peliculas: true,
-				colecciones: false,
-				capitulos: true,
-				antesDePais: true,
-			},
-			{
-				nombreDelCampo: "paises_id",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				omitirRutinaVista: true,
-			},
-			{
-				nombreDelCampo: "idioma_original_id",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				omitirRutinaVista: true,
-			},
-			{
-				titulo: "Dirección",
-				nombreDelCampo: "direccion",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-			},
-			{
-				titulo: "Guión",
-				nombreDelCampo: "guion",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-			},
-			{
-				titulo: "Música",
-				nombreDelCampo: "musica",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-			},
-			{
-				titulo: "Actuación",
-				nombreDelCampo: "actuacion",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-			},
-			{
-				titulo: "Producción",
-				nombreDelCampo: "produccion",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-			},
-			{
-				nombreDelCampo: "sinopsis",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				omitirRutinaVista: true,
-			},
-			{
-				nombreDelCampo: "avatar",
-				peliculas: true,
-				colecciones: true,
-				capitulos: true,
-				omitirRutinaVista: true,
-			},
-		];
-	},
+	camposDD: [
+		{
+			titulo: "Título original",
+			nombre: "nombre_original",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			antesDePais: true,
+		},
+		{
+			titulo: "Título en castellano",
+			nombre: "nombre_castellano",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			antesDePais: true,
+		},
+		{
+			titulo: "Año de estreno",
+			nombre: "ano_estreno",
+			numero: true,
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			antesDePais: true,
+		},
+		{
+			titulo: "Año de finalización",
+			nombre: "ano_fin",
+			numero: true,
+			peliculas: false,
+			colecciones: true,
+			capitulos: false,
+			antesDePais: true,
+		},
+		{
+			titulo: "Duración (minutos)",
+			nombre: "duracion",
+			numero: true,
+			peliculas: true,
+			colecciones: false,
+			capitulos: true,
+			antesDePais: true,
+		},
+		{
+			nombre: "paises_id",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			omitirRutinaVista: true,
+		},
+		{
+			nombre: "idioma_original_id",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			omitirRutinaVista: true,
+		},
+		{
+			titulo: "Dirección",
+			nombre: "direccion",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+		},
+		{
+			titulo: "Guión",
+			nombre: "guion",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+		},
+		{
+			titulo: "Música",
+			nombre: "musica",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+		},
+		{
+			titulo: "Actuación",
+			nombre: "actuacion",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+		},
+		{
+			titulo: "Producción",
+			nombre: "produccion",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+		},
+		{
+			nombre: "sinopsis",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			omitirRutinaVista: true,
+		},
+		{
+			nombre: "avatar",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			omitirRutinaVista: true,
+		},
+		{
+			nombre: "avatar_url",
+			peliculas: true,
+			colecciones: true,
+			capitulos: true,
+			omitirRutinaVista: true,
+		},
+	],
 	camposDP: async (userID) => {
-		// Variables
-		let camposRCLV = ["personajes", "hechos", "valores"];
-		let registrosRCLV = {};
-		// Obtener los registros en status 'aprobado' y 'creado' (del usuario)
-		if (userID)
-			camposRCLV.forEach(async (campo) => {
-				let aux = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>
-					n.filter(
-						(n) =>
-							n.status_registro.aprobado ||
-							(n.status_registro.creado && n.creado_por_id == userID)
-					)
+		// Funcion
+		let funcionRegistrosRCLV = async (userID) => {
+			// Obtiene los registros RCLV en status 'aprobado' y 'creado' (del usuario)
+			// Variables
+			let entidadesRCLV = ["personajes", "hechos", "valores"];
+			let registrosRCLV = {};
+			// Rutina por entidadRCLV
+			await entidadesRCLV.forEach(async (entidadRCLV) => {
+				let aprobados = await BD_genericas.obtieneTodosConInclude(
+					entidadRCLV,
+					"status_registro"
+				).then((n) => n.filter((n) => n.status_registro.aprobado));
+				let creados = await BD_genericas.obtieneTodosConInclude(entidadRCLV, "status_registro").then(
+					(n) => n.filter((n) => n.status_registro.creado && n.creado_por_id == userID)
 				);
-				if (!Array.isArray(aux)) console.log(131, campo, aux);
-				aux.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
-				registrosRCLV[campo] = aux;
-				if (!Array.isArray(aux)) console.log(134, campo, aux);
+				let registros = [...creados, ...aprobados];
+				registros.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+				registrosRCLV[entidadRCLV] = registros;
 			});
+			// Fin
+			return registrosRCLV;
+		};
+		// Variables
+		const registrosRCLV = await funcionRegistrosRCLV(userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",
-				nombreDelCampo: "en_castellano_id",
-				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
+				nombre: "en_castellano_id",
+				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
 				mensajePeli: [
 					"SI - cuando es el idioma de toda la película, o está subtitulada.",
 					"PARCIAL - cuando lo anterior se cumple parcialmente.",
@@ -154,16 +219,16 @@ module.exports = {
 			},
 			{
 				titulo: "Es a Color",
-				nombreDelCampo: "en_color_id",
-				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : [],
+				nombre: "en_color_id",
+				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
 				mensajePeli: ["SI - es a color.", "NO - es en blanco y negro."],
 				mensajeColec: ["En caso de que algunos capítulos sean a color y otros no, elegí PARCIAL"],
 				angosto: true,
 			},
 			{
 				titulo: "Público sugerido",
-				nombreDelCampo: "publico_sugerido_id",
-				valores: userID ? await BD_genericas.obtenerTodos("publicos_sugeridos", "orden") : [],
+				nombre: "publico_sugerido_id",
+				valores: userID ? await BD_genericas.obtieneTodos("publicos_sugeridos", "orden") : [],
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
@@ -174,18 +239,18 @@ module.exports = {
 			},
 			{
 				titulo: "Categoría",
-				nombreDelCampo: "categoria_id",
-				valores: userID ? await BD_genericas.obtenerTodos("categorias", "orden") : [],
+				nombre: "categoria_id",
+				valores: userID ? await BD_genericas.obtieneTodos("categorias", "orden") : [],
 				mensajes: [
-					"CENTRADAS EN LA FE CATÓLICA - significa que el rol de la Fe Católica es protagónico.",
-					"VALORES PRESENTES EN LA CULTURA - los buenos valores deben ser evidentes.",
+					"Centradas en la Fe Católica: significa que el rol de la Fe Católica es protagónico.",
+					"Valores Presentes en la Cultura: los buenos valores deben ser evidentes.",
 					"Si la fe es cristiana pero no católica, se pone como Valores Presentes en la Cultura.",
 				],
 			},
 			{
 				titulo: "Sub-categoría",
-				nombreDelCampo: "subcategoria_id",
-				valores: userID ? await BD_genericas.obtenerTodos("subcategorias", "orden") : [],
+				nombre: "subcategoria_id",
+				valores: userID ? await BD_genericas.obtieneTodos("subcategorias", "orden") : [],
 				mensajes: [
 					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: ""},
 					{texto: "Hagiografía - el protagonista debe ser un santo o beato", categ: "CFC"},
@@ -197,7 +262,7 @@ module.exports = {
 			},
 			{
 				titulo: "Personaje histórico",
-				nombreDelCampo: "personaje_id",
+				nombre: "personaje_id",
 				valores: userID ? registrosRCLV.personajes : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual (salvo excepciones), haciendo click en los íconos de al lado.",
@@ -208,7 +273,7 @@ module.exports = {
 			},
 			{
 				titulo: "Hecho histórico",
-				nombreDelCampo: "hecho_id",
+				nombre: "hecho_id",
 				valores: userID ? registrosRCLV.hechos : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
@@ -219,7 +284,7 @@ module.exports = {
 			},
 			{
 				titulo: "Valor principal",
-				nombreDelCampo: "valor_id",
+				nombre: "valor_id",
 				valores: userID ? registrosRCLV.valores : [],
 				mensajes: [
 					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
@@ -229,24 +294,24 @@ module.exports = {
 			},
 			{
 				titulo: "Inspira fe y/o valores",
-				nombreDelCampo: "fe_valores_id",
-				valores: userID ? await BD_genericas.obtenerTodos("fe_valores", "orden") : [],
+				nombre: "fe_valores_id",
+				valores: userID ? await BD_genericas.obtieneTodos("fe_valores", "orden") : [],
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				angosto: true,
 				grupo: "calificala",
 			},
 			{
 				titulo: "Entretiene",
-				nombreDelCampo: "entretiene_id",
-				valores: userID ? await BD_genericas.obtenerTodos("entretiene", "orden") : [],
+				nombre: "entretiene_id",
+				valores: userID ? await BD_genericas.obtieneTodos("entretiene", "orden") : [],
 				mensajes: ["¿Se disfruta el rato viéndola?"],
 				angosto: true,
 				grupo: "calificala",
 			},
 			{
 				titulo: "Calidad sonora y visual",
-				nombreDelCampo: "calidad_tecnica_id",
-				valores: userID ? await BD_genericas.obtenerTodos("calidad_tecnica", "orden") : [],
+				nombre: "calidad_tecnica_id",
+				valores: userID ? await BD_genericas.obtieneTodos("calidad_tecnica", "orden") : [],
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				angosto: true,
 				grupo: "calificala",
@@ -255,102 +320,87 @@ module.exports = {
 	},
 
 	// Entorno RCLV
-	camposRCLV: () => {
-		return {
-			personajes: [
-				"nombre",
-				"apodo",
-				"dia_del_ano_id",
-				"ano",
-				"categoria_id",
-				"subcategoria_id",
-				"ap_mar_id",
-				"proceso_id",
-				"rol_iglesia_id",
-			],
-			hechos: [
-				"nombre",
-				"dia_del_ano_id",
-				"ano",
-				"hasta",
-				"solo_cfc",
-				"jss",
-				"cnt",
-				"exclusivo",
-				"ap_mar",
-			],
-			valores: ["nombre", "dia_del_ano_id"],
-		};
+	camposRCLV: {
+		personajes: [
+			"nombre",
+			"apodo",
+			"dia_del_ano_id",
+			"ano",
+			"categoria_id",
+			"subcategoria_id",
+			"ap_mar_id",
+			"proceso_id",
+			"rol_iglesia_id",
+		],
+		hechos: ["nombre", "dia_del_ano_id", "ano", "hasta", "solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"],
+		valores: ["nombre", "dia_del_ano_id"],
 	},
 
 	// Entorno RUD - Links
-	provsQueNoRespetanCopyright: () => {
-		return [
-			{nombre: "Gloria TV", url: "gloria.tv"},
-			{nombre: "Cuevana", url: "cuevana"},
-			{nombre: "Google Drive", url: "drive.google.com/"},
-		];
-	},
-	provsListaNegra: () => {
-		return ["youporn", "pornhub"];
-	},
+	provsQueNoRespetanCopyright: [
+		{nombre: "Gloria TV", url: "gloria.tv"},
+		{nombre: "Cuevana", url: "cuevana"},
+		{nombre: "Google Drive", url: "drive.google.com/"},
+	],
+	provsListaNegra: ["youporn", "pornhub"],
 
 	// Entorno Revisiones
-	camposRevisarProd: () => {
-		return [
-			{titulo: "Avatar", nombreDelCampo: "avatar"},
-			{titulo: "Avatar (archivo)", nombreDelCampo: "avatar_archivo"},
-			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
-			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
-			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},
-			{titulo: "Año de finalización", nombreDelCampo: "ano_fin", angosto: true, input: true},
-			{titulo: "Duración", nombreDelCampo: "duracion", angosto: true, input: true},
-			{titulo: "País/es", nombreDelCampo: "paises_id"},
+	camposRevisar: {
+		productos: [
+			{titulo: "Avatar", nombre: "avatar"},
+			{titulo: "Avatar", nombre: "avatar_url"},
+			{titulo: "Avatar (archivo)", nombre: "avatar_archivo"},
+			{titulo: "Título original", nombre: "nombre_original", input: true},
+			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true},
+			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true},
+			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true},
+			{titulo: "Duración", nombre: "duracion", angosto: true, input: true},
+			{titulo: "País/es", nombre: "paises_id"},
 			{
 				titulo: "Idioma Original",
-				nombreDelCampo: "idioma_original_id",
-				relac_include: "idioma_original.nombre",
+				nombre: "idioma_original_id",
+				relac_include: "idioma_original",
 				campo_include: "nombre",
 			},
-			{titulo: "Dirección", nombreDelCampo: "direccion", input: true},
-			{titulo: "Guión", nombreDelCampo: "guion", input: true},
-			{titulo: "Música", nombreDelCampo: "musica", input: true},
-			{titulo: "Actuación", nombreDelCampo: "actuacion", input: true},
-			{titulo: "Producción", nombreDelCampo: "produccion", input: true},
-			{titulo: "Sinopsis", nombreDelCampo: "sinopsis", input: true},
+			{titulo: "Dirección", nombre: "direccion", input: true},
+			{titulo: "Guión", nombre: "guion", input: true},
+			{titulo: "Música", nombre: "musica", input: true},
+			{titulo: "Actuación", nombre: "actuacion", input: true},
+			{titulo: "Producción", nombre: "produccion", input: true},
+			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
 			{
 				titulo: "Versión en castellano",
-				nombreDelCampo: "en_castellano_id",
+				nombre: "en_castellano_id",
 				relac_include: "en_castellano",
 				campo_include: "productos",
 			},
 			{
 				titulo: "Es a Color",
-				nombreDelCampo: "en_color_id",
+				nombre: "en_color_id",
 				relac_include: "en_color",
 				campo_include: "productos",
 			},
 			{
 				titulo: "Categoría",
-				nombreDelCampo: "categoria_id",
+				nombre: "categoria_id",
 				relac_include: "categoria",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Sub-categoría",
-				nombreDelCampo: "subcategoria_id",
+				nombre: "subcategoria_id",
 				relac_include: "subcategoria",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Público sugerido",
-				nombreDelCampo: "publico_sugerido_id",
+				nombre: "publico_sugerido_id",
 				relac_include: "publico_sugerido",
 				campo_include: "nombre",
 			},
 			{
 				titulo: "Personaje histórico",
-				nombreDelCampo: "personaje_id",
+				nombre: "personaje_id",
 				relac_include: "personaje",
 				campo_include: "nombre",
 				rclv: true,
@@ -358,7 +408,7 @@ module.exports = {
 			},
 			{
 				titulo: "Hecho histórico",
-				nombreDelCampo: "hecho_id",
+				nombre: "hecho_id",
 				relac_include: "hecho",
 				campo_include: "nombre",
 				rclv: true,
@@ -366,71 +416,82 @@ module.exports = {
 			},
 			{
 				titulo: "Valor principal",
-				nombreDelCampo: "valor_id",
+				nombre: "valor_id",
 				relac_include: "valor",
 				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
-		];
-	},
-	camposRevisarLinks: () => {
-		return [
-			{nombreDelCampo: "calidad"},
-			{nombreDelCampo: "castellano"},
-			{nombreDelCampo: "gratuito"},
-			{nombreDelCampo: "tipo_id"},
-			{nombreDelCampo: "completo"},
-			{nombreDelCampo: "parte"},
-		];
-	},
-
-	// Entorno Mostrar Productos
-	menuOpciones: () => {
-		return [
+		],
+		RCLVs: [
+			// Personajes
+			{nombre: "nombre", titulo: "Nombre Más Conocido", personajes: true, hechos: true, valores: true},
+			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{
-				nombre: "Sugeridas para el momento del año",
-				url: "sugeridas",
-				titulo: "Sugeridas",
-				vista: "1-Listado",
-				comentario: "Las películas más afines con la época del año",
+				nombre: "sexo_id",
+				titulo: "Sexo",
+				personajes: true,
+				relac_include: "sexo",
+				campo_include: "nombre",
+			},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
+			{nombre: "ano", titulo: "Año Desde", personajes: true, hechos: true},
+			{nombre: "hasta", titulo: "Año Hasta", personajes: true, hechos: true},
+			{
+				nombre: "categoria_id",
+				titulo: "Categoría",
+				personajes: true,
+				relac_include: "categoria",
+				campo_include: "nombre",
 			},
 			{
-				nombre: "Todas las Películas",
-				url: "listado",
-				titulo: "Listado",
-				vista: "1-Listado",
-				comentario: "Todas las películas de nuestra Base de Datos",
+				nombre: "subcategoria_id",
+				titulo: "",
+				personajes: true,
+				relac_include: "subcategoria",
+				campo_include: "nombre",
 			},
 			{
-				nombre: "Un paseo por CFC",
-				url: "cfc",
-				titulo: "CFC",
-				vista: "2-CFC",
-				comentario: "Películas Centradas en la Fe Católica (CFC)",
+				nombre: "ap_mar_id",
+				titulo: "Aparición Mariana",
+				personajes: true,
+				relac_include: "ap_mar",
+				campo_include: "nombre",
 			},
 			{
-				nombre: "Un paseo por VPC",
-				url: "vpc",
-				titulo: "VPC",
-				vista: "3-VPC",
-				comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+				nombre: "proceso_id",
+				titulo: "Proceso de Canonizac.",
+				personajes: true,
+				relac_include: "proc_canoniz",
+				campo_include: "nombre",
 			},
-		];
-	},
-	subMenuOpciones: () => {
-		return [
-			{nombre: "Por mejor calificación", url: "calificacion"},
-			{nombre: "Por año de estreno más reciente", url: "estreno"},
-			{nombre: "Por incorporación más reciente", url: "incorporacion"},
-			{nombre: "Por orden de visita más reciente", url: "visita"},
-		];
+			{
+				nombre: "rol_iglesia_id",
+				titulo: "Rol en la Iglesia",
+				personajes: true,
+				relac_include: "rol_iglesia",
+				campo_include: "nombre",
+			},
+			// Hechos
+			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
+			{nombre: "jss", titulo: "", hechos: true},
+			{nombre: "cnt", titulo: "", hechos: true},
+			{nombre: "exclusivo", titulo: "", hechos: true},
+			{nombre: "ap_mar", titulo: "", hechos: true},
+		],
+		links: [
+			{nombre: "calidad", titulo: "Calidad"},
+			{nombre: "castellano", titulo: "En castellano"},
+			{nombre: "subtit_castellano", titulo: "Subtítulos"},
+			{nombre: "gratuito", titulo: "Gratuito"},
+			{nombre: "tipo_id", titulo: "Tipo"},
+			{nombre: "completo", titulo: "Completo"},
+			{nombre: "parte", titulo: "Parte"},
+		],
 	},
 
 	// Vistas
-	vistaInicio: () => {
-		return {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"};
-	},
+	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
 	vistaAnterior: (urlAnterior) => {
 		return {
 			nombre: "fa-circle-left",
@@ -464,12 +525,10 @@ module.exports = {
 			  }
 			: {};
 	},
-	vistaTablero: () => {
-		return {
-			nombre: "fa-spell-check",
-			link: "/revision/tablero-de-control",
-			titulo: "Ir al 'Tablero de Control' de Revisiones",
-		};
+	vistaTablero: {
+		nombre: "fa-spell-check",
+		link: "/revision/tablero-de-control",
+		titulo: "Ir al 'Tablero de Control' de Revisiones",
 	},
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};

@@ -2,9 +2,9 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
+const procesos = require("./Procesos");
 // const validar = require("./FN-Validar");
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let usuarios = {};
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.validarIdentidades = await procesos.tablero_validarIdentidades(userID);
+		usuarios.validarIdentidades = await procesos.TC_validarIdentidades(userID);
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("CMP-0Estructura", {
@@ -33,7 +33,7 @@ module.exports = {
 		const codigo = "validarIdentidad";
 		// Temas del usuario
 		let userID = req.query.id;
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, [
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, [
 			"sexo",
 			"rol_usuario",
 			"status_registro",
@@ -43,8 +43,8 @@ module.exports = {
 		if (validarContenidoIF(usuario, docum_avatar))
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
-		let pais = await BD_genericas.obtenerPorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
-		let fecha_nacimiento = compartidas.fechaTexto(usuario.fecha_nacimiento);
+		let pais = await BD_genericas.obtienePorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
+		let fecha_nacimiento = comp.fechaTexto(usuario.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
@@ -53,7 +53,7 @@ module.exports = {
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
-		let motivos_rech = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
+		let motivos_rech = await BD_genericas.obtieneTodos("us_motivos_rech", "orden");
 		let motivos_docum = motivos_rech.filter((n) => n.mostrar_para_docum);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
@@ -92,10 +92,10 @@ module.exports = {
 		if (redireccionar) return res.redirect(req.originalUrl);
 
 		// Variables de usuarios
-		let usuario = await BD_genericas.obtenerPorId("usuarios", datos.id);
+		let usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 		let revID = req.session.usuario.id;
 		// Variables de motivos
-		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
+		let motivos = await BD_genericas.obtieneTodos("us_motivos_rech", "orden");
 		let durac_penalidad = 0;
 		// Variables de 'status de registro'
 		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado).id;
@@ -125,7 +125,7 @@ module.exports = {
 				}
 		} else {
 			// Elimina el archivo 'avatar'
-			compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar", usuario.docum_avatar);
+			comp.borraUnArchivo("./publico/imagenes/5-DocsRevisar", usuario.docum_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			rutinasIdentGuardar("docum_avatar", usuario, revID, motivo);
@@ -137,7 +137,7 @@ module.exports = {
 			// Actualiza el status del usuario
 			status_registro_id = st_ident_validada_ID;
 			// Mueve la imagen del documento a su carpeta definitiva
-			compartidas.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
+			comp.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
 		}
 		// Le asigna al usuario el rol que le corresponda ('Consultas' o 'permInput')
 		let rol_usuario_id =
@@ -149,11 +149,11 @@ module.exports = {
 				  roles_us.find((n) => !n.perm_inputs).id;
 
 		// Actualiza el usuario
-		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: compartidas.ahora()};
-		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
+		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: comp.ahora()};
+		await BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
 		if (durac_penalidad)
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
 
 		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
@@ -174,7 +174,7 @@ let validarContenidoIF = (usuario, avatar) => {
 		!usuario.status_registro.ident_a_validar ||
 		usuario.status_registro.ident_validada ||
 		!avatar ||
-		!compartidas.averiguaSiExisteUnArchivo(avatar)
+		!comp.averiguaSiExisteUnArchivo(avatar)
 	)
 		redireccionar = true;
 	// Fin
@@ -182,7 +182,7 @@ let validarContenidoIF = (usuario, avatar) => {
 };
 let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 	// Limpia en 'usuarios' el campo que corresponda
-	BD_genericas.actualizarPorId("usuarios", usuario.id, {[campo]: null});
+	BD_genericas.actualizaPorId("usuarios", usuario.id, {[campo]: null});
 	// Alimenta la tabla 'edics_rech'
 	let datos = {
 		entidad: "usuarios",
@@ -198,7 +198,7 @@ let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 		input_por_id: usuario.id,
 		input_en: usuario.fecha_revisores,
 		evaluado_por_id: revID,
-		evaluado_en: compartidas.ahora(),
+		evaluado_en: comp.ahora(),
 	};
 	BD_genericas.agregarRegistro("edics_rech", datos);
 

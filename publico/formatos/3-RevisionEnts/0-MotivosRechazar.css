@@ -4,4 +4,5 @@
 #motivosRechazo {width: 300px; text-align: center;}
 #motivosRechazo select {margin-top: 20px; margin-bottom: 20px; border-radius: 10px; padding: 0 5px;}
 #motivosRechazo #comandosRechazar {display: flex; flex-direction: row; justify-content: space-evenly;}
+#motivosRechazo #comandosRechazar button {border: none; border-radius: 50%;}
 #motivosRechazo #comandosRechazar i {color: var(--gris-oscuro); font-size: 1.5rem;}

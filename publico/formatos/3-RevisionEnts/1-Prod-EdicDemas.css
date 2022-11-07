@@ -42,8 +42,4 @@
 #datosBreves #texto p#status4 span {background-color: var(--rojo-oscuro); color: snow;}
 
 /* Comandos - Particularidades */
-#cuerpo #comandos {background-color: var(--azul-oscuro);}
-#cuerpo #comandos i {margin: 0 15px;}
-#cuerpo #flechas i {font-size: 2rem; transition: 300ms;}
-#cuerpo #flechas i:hover {transform: scale(1.3);}
-#cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);}
+#cuerpo #flechas i {font-size: 2rem;}

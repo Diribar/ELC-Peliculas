@@ -1,0 +1,18 @@
+<!-- Vitreaux -->
+<div id="zona-de-vitreaux">
+	<img alt="Vitreaux" src="/imagenes/0-Base/Vitraux.jpg" title="Vitreaux">
+</div>
+
+<!-- Zona de Bienvenida -->
+<div id="zona-de-bienvenida">
+	<div class="flex-row">
+		<% for (let opcion of opciones) { %>
+			<a href="<%= opcion.href %>">
+				<button>
+					<img src="<%= opcion.src %> ">
+					<p><%= opcion.p %> </p>
+				</button>
+			</a>
+		<% } %>
+	</div>
+</div>

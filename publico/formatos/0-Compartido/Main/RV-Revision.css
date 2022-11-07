@@ -1,9 +1,0 @@
-/* Cuerpo */
-#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
-#cuerpo {position: relative;}
-
-/* Imagen */
-#imagenDerecha {background-color: var(--gris-intermedio);}
-
-/* Comandos y Flechas */
-#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto;}

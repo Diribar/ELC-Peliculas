@@ -9,23 +9,22 @@ const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prod_Form: async (req, res) => {
+	prodEdicForm_Detalle: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		const tema = "prod_rud";
-		let url = req.url.slice(1);
-		const codigo = url.slice(0, url.lastIndexOf("/"));
-		// 2. Obtiene los datos identificatorios del producto
+		const codigo = req.path.slice(1, -1);
+		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let avatar;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
-		// 4. Obtiene el avatar y la versión más completa posible del producto
-		let avatar = comp.nombreAvatar(prodOrig, prodEdic);
-		let prodComb = {...prodOrig, ...prodEdic, avatar, id: prodID};
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
+		// 4. Obtiene la versión más completa posible del producto
+		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
-		let prodNombre = comp.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -51,17 +50,15 @@ module.exports = {
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicion};
 			// Variables de 'Edición'
-			let camposDD = variables
-				.camposDD()
-				.filter((n) => n[entidad])
-				.filter((n) => !n.omitirRutinaVista);
+			let camposDD = variables.camposDD.filter((n) => n[entidad]).filter((n) => !n.omitirRutinaVista);
 			camposDD1 = camposDD.filter((n) => n.antesDePais);
-			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
-			camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
-			BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
+			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombre != "produccion");
+			camposDD3 = camposDD.filter((n) => n.nombre == "produccion");
+			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
+			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
-		} else {
+			avatar = comp.avatarOrigEdic(prodOrig, prodEdic);
+		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
 				? {id: 1, nombre: "Pend. Aprobac."}
@@ -117,11 +114,11 @@ module.exports = {
 				valor: statusResumido.nombre,
 				id: statusResumido.id,
 			});
-			// Variables de 'Edición'
+			avatar = comp.nombreAvatar(prodOrig, prodEdic);
 		}
-		// Obtener datos para la vista
+		// Obtiene datos para la vista
 		if (entidad == "capitulos")
-			prodComb.capitulos = await BD_especificas.obtenerCapitulos(
+			prodComb.capitulos = await BD_especificas.obtieneCapitulos(
 				prodComb.coleccion_id,
 				prodComb.temporada
 			);
@@ -135,7 +132,7 @@ module.exports = {
 			prodID,
 			producto: prodComb,
 			avatar,
-			title: prodComb.nombre_castellano,
+			tituloAvatar: prodComb.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
 			camposDD1,
@@ -154,35 +151,41 @@ module.exports = {
 			omitirFooter: codigo == "edicion",
 		});
 	},
-	prod_GuardarEdic: async (req, res) => {
-		// Obtener los datos identificatorios del producto
+	prodEdicGuardar: async (req, res) => {
+		// Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		// Obtener el userID
 		let userID = req.session.usuario.id;
-		// Obtener el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
-		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
-		let avatar_archivo = req.file ? req.file.filename : "";
-		// Unir 'Edición' y 'Original'
-		let prodComb = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
-		// Averiguar si hay errores de validación
-		let errores = await validar.consolidado("", {...prodComb, entidad});
-		if (errores.hay) {
-			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
-		} else {
-			// Actualizar los archivos avatar
-			if (avatar_archivo) {
-				// Mover el archivo actual a su ubicación para ser revisado
-				comp.mueveUnArchivoImagen(prodComb.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
-				// Eliminar el anterior archivo de imagen
-				if (prodEdic.avatar)
-					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
-			}
-			// Actualiza la edición
-			let edicion = {...req.body, avatar_archivo};
-			await comp.guardar_edicion(entidad, "prods_edicion", prodOrig, edicion, userID);
+		// Obtiene el producto 'Original' y 'Editado'
+		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
+		// Adecuaciones para el avatar
+		if (req.file) {
+			req.body.avatar = req.file.originalname;
+			req.body.avatar_url = req.file.originalname;
+			req.body.avatar_archivo = req.file.filename;
 		}
+		// Unir 'Edición' y 'Original'
+		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
+		// Averigua si hay errores de validación
+		let errores = await validar.consolidado("", {...prodComb, entidad});
+		if (req.file) {
+			// Actualiza los archivos avatar
+			if (!errores.hay) {
+				// Mueve el archivo actual a su ubicación para ser revisado
+				comp.mueveUnArchivoImagen(prodComb.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
+				// Elimina el anterior archivo de imagen
+				if (prodEdic.avatar_archivo)
+					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
+			}
+			// Si hay errores, entonces borra el archivo
+			else {
+				comp.borraUnArchivo(req.file.destination, req.file.filename);
+				return res.send(errores)
+			}
+		}
+		// Actualiza la edición
+		if (!errores.hay) await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
 	calificala: (req, res) => {

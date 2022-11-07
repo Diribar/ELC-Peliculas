@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
-		// Averiguar si hay un error
+		// Averigua si hay un error
 		let campo = inputs[i].name;
 		let valor = encodeURIComponent(inputs[i].value);
 		let mensaje = errores[campo];
@@ -51,16 +51,16 @@ window.addEventListener("load", async () => {
 	// Revisar si el FA_id ya está en la BD
 	let verificarRepetido_FA_id = async () => {
 		let direccion = document.querySelector(".input[name='direccion']").value;
-		let FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
+		let FA_id = await fetch(pre + "FA-obtiene-fa-id/?direccion=" + direccion).then((n) => n.json());
 		let url = "entidad=" + entidad;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
-		let elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+		let elc_id = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
 		if (!elc_id && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
 			url += "&campo=FA_id";
 			url += "&valor=" + FA_id;
-			elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+			elc_id = await fetch(pre + "FA-obtiene-elc-id/?" + url).then((n) => n.json());
 		}
 		// Definir el mensaje
 		return elc_id

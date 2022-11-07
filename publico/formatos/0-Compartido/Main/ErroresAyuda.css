@@ -5,12 +5,13 @@
 /* Formato común entre Ayuda y Errores */
 #cuerpo .ayuda, .inputError .errores {right: -5px; line-height: 1rem; font-size: 1rem;}
 #cuerpo .ayuda, .inputError .errores {position: absolute; top: 50%; transform: translate(100%,-50%);}
+#datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Coordinación entre Ayuda y Errores */
 #primeraColumna {z-index: 1;}
 .inputError .ayuda {z-index: 2;}
 .inputError .errores {z-index: 3}
-.ayuda .ayudaMostrar {z-index: 4;}
+.ayuda .ayudaMostrar, .ayudaMostrar {z-index: 4;}
 .errores .mensajeError {z-index: 5;}
 
 /* Estándares para donde se hace 'click' y desplegables */
@@ -28,9 +29,9 @@
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
 .ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
-.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 320px; width: max-content;}
+.ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 350px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMostrar::before, .mensajeError::before {left: -2px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
+.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
 
 /* Desplegables Ayuda - Temas generales */
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
@@ -44,6 +45,7 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 #tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%);}
 #tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%);}
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
+.errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
 /* Mensajes */
 .resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold; text-align: center;}

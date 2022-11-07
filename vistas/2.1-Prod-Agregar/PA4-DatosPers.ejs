@@ -31,20 +31,6 @@
 				<!--Público sugerido-->
 				<%- include("PA4-DP1-Select", {campo: "publico_sugerido_id", nombre: "nombre"}) %>
 			</div>
-			<!-- Relación con la vida -->
-			<div id="bloqueRCLV" class="flex-col">
-				<h3>Relación con la vida</h3>
-				<!--Categoría-->
-				<%- include("PA4-DP1-Select", {campo: "categoria_id", nombre: "nombre"}) %>
-				<!--Sub-categoría-->
-				<%- include("PA4-DP2-Subcat", {campo: "subcategoria_id", nombre: "nombre"}) %>
-				<!--Personaje histórico-->
-				<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
-				<!--Hecho histórico-->
-				<%- include("PA4-DP3-RCLV", {campo: "hecho_id"}) %>
-				<!--Valor-->
-				<%- include("PA4-DP3-RCLV", {campo: "valor_id"}) %>
-			</div>
 			<!-- Tu calificación -->
 			<div class="flex-col">
 				<h3>Tu calificación</h3>
@@ -57,8 +43,21 @@
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
-		<div id="imagenPeli">
-			<img src="<%= dataEntry.mostrarAvatar %>" alt="afiche">
+		<div id="segundaColumna">
+			<!-- Relación con la vida -->
+			<h3 style="margin-top: 0;">Categorización</h3>
+			<!--Categoría-->
+			<%- include("PA4-DP1-Select", {campo: "categoria_id", nombre: "nombre"}) %>
+			<!--Sub-categoría-->
+			<%- include("PA4-DP2-Subcat", {campo: "subcategoria_id", nombre: "nombre"}) %>
+			<!-- Relación con la vida -->
+			<h3 class="invisible">Relación con la vida</h3>
+			<!--Personaje histórico-->
+			<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
+			<!--Hecho histórico-->
+			<%- include("PA4-DP3-RCLV", {campo: "hecho_id"}) %>
+			<!--Valor-->
+			<%- include("PA4-DP3-RCLV", {campo: "valor_id"}) %>
 		</div>
 	</section>
 	<!-- Flechas y Botón -->

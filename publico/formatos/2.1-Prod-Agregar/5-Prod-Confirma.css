@@ -1,9 +1,5 @@
-/* General */
-#dataEntry {max-width: 80%; position: relative}
-
 /* Título */
 #dataEntry #tituloSecundario {margin-bottom: 10px;}
-#dataEntry #running {position: absolute; right: 30px; max-width: 150px; max-height: 80px}
 
 /* Texto */
 #dataEntry #datos {padding-left: 20px;}
@@ -15,11 +11,9 @@
 #dataEntry #datos #liConAyuda .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
 
 /* Datos del producto */
-#dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: row; width: 85%; align-self: center;}
-#dataEntry img#afiche {max-height: 180px; border-radius: 10px; margin-right: 15px;}
-#dataEntry #referenciasProd {display: flex; flex-direction: column; justify-content: center; max-width: 450px;}
-#dataEntry #referenciasProd p {margin: 3px;}
+#dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: column; max-width: 400px; align-self: center;}
+#dataEntry #datosProd p {margin: 3px;}
 
-#dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row;}
+#dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row; }
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
-#dataEntry #flechas button i {margin: 0;}
+#dataEntry #flechas #llegada {height: 40px; margin: 0;}
