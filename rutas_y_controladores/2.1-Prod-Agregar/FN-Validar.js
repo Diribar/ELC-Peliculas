@@ -16,7 +16,6 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	// ControllerAPI (validarDesambiguar)
 	averiguarSiEsColeccion: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
@@ -41,7 +40,6 @@ module.exports = {
 		// Enviar el feedback
 		return errores;
 	},
-
 	// ControllerAPI (validarCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};
@@ -76,7 +74,6 @@ module.exports = {
 		errores.campos = Object.keys(cantDatosObtenidos).length;
 		return errores;
 	},
-
 	// ControllerAPI (validarDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
@@ -114,7 +111,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.longitud(dato, campo.corto, campo.largo);
 					if (!respuesta) respuesta = comp.castellano[idioma](dato);
 					if (!respuesta) respuesta = comp.inicial[idioma](dato);
-				} else respuesta =comp.inputVacio;
+				} else respuesta = comp.inputVacio;
 				// Fin
 				errores[nombre] = respuesta;
 			}
@@ -158,7 +155,7 @@ module.exports = {
 			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) {
-			let errorAvatar = comp.avatar(datos.avatar);
+			let errorAvatar = comp.avatar(datos.avatar, datos.tamano);
 			errores.avatar = !datos.avatar
 				? "Necesitamos que agregues una imagen"
 				: errorAvatar
@@ -203,7 +200,6 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	// ControllerAPI (validarDatosPers)
 	datosPers: async (campos, datos) => {
 		// Definir variables

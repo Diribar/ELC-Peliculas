@@ -85,7 +85,7 @@ app.set("views", [
 
 // ************************* Rutas ********************************
 // CRUD
-const rutaCRUD = require("./rutas_y_controladores/2.0-CRUD/Rutas");
+const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
 const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
 const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
 const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");

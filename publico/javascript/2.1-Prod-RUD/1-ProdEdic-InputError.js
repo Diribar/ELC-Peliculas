@@ -1,6 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// VARIABLES -----------------------------------------------------------------------
+	let errores;
 	let v = {
 		// Pointer del producto
 		entidad: new URL(window.location.href).searchParams.get("entidad"),
@@ -8,7 +9,6 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputs: document.querySelectorAll(".inputError .input"),
-		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -30,9 +30,14 @@ window.addEventListener("load", async () => {
 		versionInput: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
-		imgsAvatar: document.querySelectorAll(".inputError .imgAvatar"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
+		// Temas de avatar
+		imgsAvatar: document.querySelectorAll("#imagenDerecha.inputError .imgAvatar"),
+		avatarInicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
+		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
+		esImagen: true,
+		leyendaNoEsImagen: "El archivo no es una imagen",
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
 		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
@@ -47,11 +52,12 @@ window.addEventListener("load", async () => {
 	};
 	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
+	v.avatarAnt = v.inputAvatarEdicN.value;
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
 	let version = await versiones(v.rutaVersiones);
 
 	// Funciones Data-Entry
-	let DE = {
+	let FN = {
 		obtieneLosValoresEdicN: () => {
 			// Actualizar los valores
 			v.campos.forEach((campo, i) => {
@@ -67,7 +73,7 @@ window.addEventListener("load", async () => {
 				v.campos.forEach((campo, i) => {
 					// Reemplaza los valores que no sean el avatar
 					if (campo != "avatar") v.inputs[i].value = version[v.versionActual][campo];
-					// Reemplaza el avatar visible
+					// Oculta y muestra los avatar que correspondan
 					else
 						v.imgsAvatar.forEach((imgAvatar, indice) => {
 							v.versiones[indice] == v.versionActual
@@ -101,30 +107,39 @@ window.addEventListener("load", async () => {
 				return;
 			})();
 			// Muestra los errores
-			await this.muestraLosErrores();
+			await this.averiguaMuestraLosErrores();
 			// Fin
 			return;
 		},
 		senalaLasDiferencias: () => {
 			// Marcar dónde están las diferencias con la versión original
+			let referencia = v.versionActual == "edicN" ? "edicG" : "orig";
 			v.campos.forEach((campo, i) => {
 				v.versionActual != "orig" &&
-				version[v.versionActual][campo] != version.orig[campo] &&
-				(version[v.versionActual][campo] || version.orig[campo])
+				version[v.versionActual][campo] != version[referencia][campo] &&
+				(version[v.versionActual][campo] || version[referencia][campo])
 					? v.flechasDiferencia[i].classList.remove("ocultar")
 					: v.flechasDiferencia[i].classList.add("ocultar");
 			});
 		},
-		muestraLosErrores: async () => {
-			// Preparar la información
+		averiguaMuestraLosErrores: async () => {
+			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
-			for (let input of v.inputs)
+			for (let input of v.inputs) {
 				if (input.name != "avatar" || v.inputAvatarEdicN.value)
 					objeto += "&" + input.name + "=" + input.value;
+				if (input.name == "avatar" && v.inputAvatarEdicN.value) {
+					objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
+				}
+			}
 			// Averigua los errores
-			let errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
+			errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
 			v.campos.forEach((campo, indice) => {
+				if (campo == "avatar" && !v.esImagen) {
+					errores.avatar = v.leyendaNoEsImagen;
+					errores.hay = true;
+				}
 				// Guarda el mensaje de error
 				let mensaje = errores[campo];
 				// Reemplaza
@@ -214,19 +229,50 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		nuevoAvatar: async function (e) {
-			// Creamos el objeto de la clase FileReader
+		nuevoAvatar: (e) => {
+			// 1. Si no se cambió el archivo o no es la versión a editar, no hace nada
+			if (v.inputAvatarEdicN.value == v.avatarAnt || v.versionActual != "edicN") return;
+	
+			// 2. Si se omitió ingresar un archivo o hay un error de avatar que no es 'no es imagen'...
+			// ... vuelve a la imagen original
+			if (!v.inputAvatarEdicN.value && error.avatar && error.avatar != v.leyendaNoEsImagen) {
+				v.imgsAvatar[0].src = v.avatarInicial;
+				return;
+			}
+	
+			// 3. Si pasa los filtros anteriores, actualiza los errores y el avatar
 			let reader = new FileReader();
-			// Leemos el archivo subido y se lo pasamos a nuestro fileReader
 			reader.readAsDataURL(e.target.files[0]);
-			// Le decimos que cuando esté listo ejecute el código interno
 			reader.onload = () => {
-				let imagen = reader.result;
-				// Cambiar el 'src' del avatar
-				v.imgsAvatar[0].src = imagen;
+				var image = new Image();
+				image.src = reader.result;
+				// Acciones si es realmente una imagen
+				image.onload = async () => {
+					// Actualiza el avatar
+					v.imgsAvatar[0].src = reader.result;
+					// Actualiza lo que será el avatar anterior
+					v.avatarAnt = v.inputAvatarEdicN.value;
+					// Actualiza los errores
+					v.esImagen = true;
+					await FN.averiguaMuestraLosErrores();
+					FN.actualizaBotones();
+					// Fin
+					return;
+				};
+				// Acciones si no es una imagen
+				image.onerror = () => {
+					// Limpia el avatar
+					v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
+					// Limpia el input
+					v.inputAvatarEdicN.value = "";
+					// Actualiza los errores
+					v.esImagen = false;
+					FN.averiguaMuestraLosErrores();
+					FN.actualizaBotones();
+					// Fin
+					return;
+				};
 			};
-			// Actualiza el valor de 'edicN.avatar'
-			version.edicN.avatar = e.target.files[0].name;
 		},
 	};
 
@@ -242,7 +288,7 @@ window.addEventListener("load", async () => {
 			v.versionAnt = v.versionActual;
 			v.versionActual = v.versiones[indice];
 			// Cambia los valores
-			DE.accionesPorCambioDeVersion();
+			FN.accionesPorCambioDeVersion();
 			// Cambia el boton activo
 			v.botonesActivarVersion.forEach((revisar, i) => {
 				if (i != indice) revisar.classList.remove("activo");
@@ -269,7 +315,7 @@ window.addEventListener("load", async () => {
 			// Inactiva los botones de la versión
 			v.botones[v.versionActual].forEach((boton) => boton.classList.add("inactivoVersion"));
 			// Si se descartó la versión actual, recarga los valores
-			if (v.versiones[indice] == v.versionActual) DE.accionesPorCambioDeVersion();
+			if (v.versiones[indice] == v.versionActual) FN.accionesPorCambioDeVersion();
 		});
 	});
 	v.botonGuardar.addEventListener("click", (e) => {
@@ -283,29 +329,31 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió la categoría
 		if (e.target.name == "categoria_id") {
-			DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			FN.actualizaOpcionesSubcat(); // Actualiza subcategoría
 			v.subcategoria.value = ""; // Limpia la subcategoría
 		}
 		// Acciones si se cambió el país
 		if (e.target == v.paisesSelect) {
-			DE.actualizaPaisesID();
-			DE.actualizaPaisesNombre();
+			FN.actualizaPaisesID();
+			FN.actualizaPaisesNombre();
 		}
 
 		// Varios
-		DE.obtieneLosValoresEdicN();
-		DE.senalaLasDiferencias();
-		let errores = await DE.muestraLosErrores();
+		FN.obtieneLosValoresEdicN();
+		FN.senalaLasDiferencias();
 		// Acciones si se cambió el avatar
-		if (e.target.name == "avatar" && !errores.avatar) DE.nuevoAvatar(e);
-		DE.actualizaBotones();
+		if (e.target.name == "avatar") FN.nuevoAvatar(e);
+		else {
+			await FN.averiguaMuestraLosErrores();
+			FN.actualizaBotones();
+		}
 	});
 
 	// Startup
-	DE.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
-	DE.actualizaBotones(); // ActualizaBotones
-	DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
-	DE.accionesPorCambioDeVersion(); // Acciones varias
+	FN.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
+	FN.actualizaBotones(); // ActualizaBotones
+	FN.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
+	FN.accionesPorCambioDeVersion(); // Acciones varias
 });
 
 // Estas funciones deben estar afuera, para estar disponibles para las variables
