@@ -6,6 +6,8 @@ main form #cuerpo .inputError {display: flex; flex-direction: row;}
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
 main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
+/* Imagen */
+form #imagenDerecha label {line-height: 0;}
 /* Imagen - Íconos */
 form #imagenDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
 form #imagenDerecha .ayuda,

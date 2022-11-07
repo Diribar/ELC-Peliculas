@@ -192,8 +192,7 @@ module.exports = {
 				produccion += limpiarValores(datosAPI.production_companies) + ", ";
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				direccion +=
-					limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+				direccion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
 				guion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
 				musica += limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
@@ -214,18 +213,16 @@ module.exports = {
 	// ControllerVista (confirma)
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
-		let numCapitulo = 0;
-		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
-			numCapitulo++;
+		datosCol.capitulosTMDB_id.forEach(async (capituloTMDB_id, indice) => {
 			// Si el capítulo no existe, agregarlo
-			let existe = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: capituloTMDB_Id});
+			let existe = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: capituloTMDB_id});
 			if (!existe) {
 				// Preparar datos del capítulo
 				let datosCap = {
 					coleccion_id: datosCol.id,
 					fuente: "TMDB",
 					temporada: 1,
-					capitulo: numCapitulo,
+					capitulo: indice + 1,
 					creado_por_id: 2,
 				};
 				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
@@ -234,11 +231,11 @@ module.exports = {
 				datosCap.subcategoria_id = datosCol.subcategoria_id;
 				datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 				// Guardar los datos del capítulo
-				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
+				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_id})
 					.then((n) => (n = {...n, ...datosCap}))
 					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
 			}
-		}
+		});
 		return;
 	},
 	// ControllerVista (confirma)
@@ -404,7 +401,7 @@ module.exports = {
 				}
 				resultado = resultado.length ? resultado.join(" ") : "";
 				return resultado;
-			};			
+			};
 			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}

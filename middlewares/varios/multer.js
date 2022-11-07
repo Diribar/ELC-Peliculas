@@ -6,18 +6,12 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 
 // Variables
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "./publico/imagenes/9-Provisorio");
-	},
-	filename: (req, file, cb) => {
-		// ext = path.extname(file.originalname);
-		// nombre = path.basename(file.originalname, ext);
-		cb(null, Date.now() + path.extname(file.originalname));
-	},
+	destination: (req, file, cb) => cb(null, "./publico/imagenes/9-Provisorio"),
+	filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 
 // Crea la carpeta 'provisorio' si no existe
-comp.garantizaLaCarpetaProvisorio()
+comp.garantizaLaCarpetaProvisorio();
 
 // Guardar la imagen
 module.exports = multer({storage});
