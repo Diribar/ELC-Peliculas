@@ -27,7 +27,6 @@ window.addEventListener("load", async () => {
 		// Versiones de datos
 		versiones: ["edicN", "edicG", "orig"],
 		versionActual: "edicN",
-		versionInput: "edicN",
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
@@ -38,7 +37,6 @@ window.addEventListener("load", async () => {
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		esImagen: true,
 		leyendaNoEsImagen: "El archivo no es una imagen",
-		avatarAnt: "",
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
 		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
@@ -253,16 +251,15 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		revisaAvatarNuevo: () => {
+		revisaAvatarNuevo: function () {
 			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
 			if (!v.inputAvatarEdicN.value) {
 				// Actualiza el avatar
 				v.imgsAvatar[0].src = v.avatarInicial;
 				// Actualiza lo que será el avatar anterior
-				v.avatarAnt = "";
 				// Actualiza los errores
 				v.esImagen = true;
-				FN.actualizaVarios();
+				this.actualizaVarios();
 				// Fin
 				return;
 			}
@@ -276,8 +273,6 @@ window.addEventListener("load", async () => {
 				image.onload = async () => {
 					// Actualiza la imagen del avatar en la vista
 					v.imgsAvatar[0].src = reader.result;
-					// Actualiza lo que será el avatar anterior
-					v.avatarAnt = v.inputAvatarEdicN.value;
 					// Actualiza la variable 'avatar' en la versión 'edicN'
 					if (v.inputAvatarEdicN.value) version.edicN.avatar = v.inputAvatarEdicN.files[0].name;
 					// Actualiza los errores
@@ -355,7 +350,7 @@ window.addEventListener("load", async () => {
 	// Revisar campos en forma INDIVIDUAL
 	v.form.addEventListener("input", async (e) => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
-		if (v.versionActual != v.versionInput) return;
+		if (v.versionActual != v.versiones[0]) return;
 
 		// Acciones si se cambió la categoría
 		if (e.target.name == "categoria_id") {
