@@ -112,7 +112,7 @@ module.exports = {
 		// Tareas
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
-			let id = await comp.crear_registro(entidad, DE, userID);
+			let id = await comp.creaRegistro(entidad, DE, userID);
 			// Agregar el RCLV a DP/ED
 			let entidad_id = comp.obtieneEntidad_id(entidad);
 			if (origen == "DP") {
@@ -130,13 +130,13 @@ module.exports = {
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualiza_registro(entidad, id, DE) // Actualizar el registro original
-				: await comp.guardarEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+				? await comp.actualizaRegistro(entidad, id, DE) // Actualizar el registro original
+				: await comp.guardaEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualiza_registro(entidad, id, DE); // Actualizar el registro original
+			await comp.actualizaRegistro(entidad, id, DE); // Actualizar el registro original
 		}
 		// Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];

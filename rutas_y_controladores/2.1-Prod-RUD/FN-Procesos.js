@@ -18,7 +18,7 @@ module.exports = {
 			...includesEdic,
 			...includesOrig,
 		]);
-		prodOrig = comp.quitarCamposSinContenido(prodOrig);
+		prodOrig = comp.quitaCamposSinContenido(prodOrig);
 
 		// Obtiene el producto EDITADO
 		let producto_id = comp.obtieneEntidad_id(entidad);
@@ -26,7 +26,7 @@ module.exports = {
 		if (userID) prodEdic = await BD_genericas.obtienePorCamposConInclude(...datos);
 		if (prodEdic) {
 			prodEdic.avatar = prodEdic.avatar_archivo;
-			prodEdic = comp.quitarCamposSinContenido(prodEdic);
+			prodEdic = comp.quitaCamposSinContenido(prodEdic);
 		}
 		// Fin
 		return [prodOrig, prodEdic];

@@ -35,10 +35,10 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		let link_edicion = datos;
 		let mensaje = !link_original
-			? await comp.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
+			? await comp.creaRegistro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await comp.actualiza_registro("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await comp.guardarEdicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
+			? await comp.actualizaRegistro("links", link_original.id, link_edicion) // Actualizar el link_original
+			: await comp.guardaEdicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -73,7 +73,7 @@ module.exports = {
 				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
-				await comp.inactivar_registro("links", link.id, userID, motivo_id);
+				await comp.inactivaRegistro("links", link.id, userID, motivo_id);
 				procesos.prodCampoLG(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}

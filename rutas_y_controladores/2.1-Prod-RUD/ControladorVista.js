@@ -164,7 +164,7 @@ module.exports = {
 			req.body.avatar_url = req.file.originalname;
 			req.body.avatar_archivo = req.file.filename;
 		}
-		// Unir 'Edición' y 'Original'
+		// Une 'Edición' y 'Original'
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
 		// Averigua si hay errores de validación
 		let errores = await validar.consolidado("", {...prodComb, entidad});
@@ -184,7 +184,7 @@ module.exports = {
 			}
 		}
 		// Actualiza la edición
-		if (!errores.hay) await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+		if (!errores.hay) await comp.guardaEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

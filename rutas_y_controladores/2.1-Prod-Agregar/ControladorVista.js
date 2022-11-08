@@ -336,7 +336,7 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		comp.guardarEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
+		comp.guardaEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
