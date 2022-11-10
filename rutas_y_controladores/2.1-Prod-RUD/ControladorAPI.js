@@ -72,12 +72,11 @@ module.exports = {
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
-		console.log(75, condicion, !!prodEdic);
 
 		if (condicion && prodEdic) {
-			// if (prodEdic.avatar_archivo)
-			// 	comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
-			// BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
+			if (prodEdic.avatar_archivo)
+				comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
+			BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
 		}
 		// Terminar
 		return res.json();
