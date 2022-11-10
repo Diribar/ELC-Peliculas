@@ -7,6 +7,7 @@ input#inputImagen {display:none}
 /* Imagen */
 #cuerpo form #divImagen {width: 200px;align-items: center;}
 #preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
+.ocultarOK_imagen {display: none;}
 
 /* Credenciales inválidas*/
 #cuerpo form #credencialesInvalidas {border-radius: 7px; margin: 15px auto 0px; font-style: italic; max-width: fit-content;}

@@ -26,5 +26,5 @@
 /* Flechas */
 #cuerpo #flechas {margin: 15px auto 5px; justify-content: space-around; max-width: min-content;}
 #cuerpo #flechas * {border-radius: 50%;}
-#cuerpo #flechas .icono {font-size: 1.75rem; border: solid 2px var(--amarillo-claro); background-color: var(--gris-claro);}
+#cuerpo #flechas .icono {font-size: 1.75rem; background-color: var(--gris-claro);}
 #cuerpo #flechas button.inactivo {cursor: default;}

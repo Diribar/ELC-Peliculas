@@ -18,6 +18,7 @@ window.addEventListener("load", () => {
 	let inputs = document.querySelectorAll("form .inputError .input");
 	// OK/Errores
 	let iconosOK = document.querySelectorAll("form .inputError .fa-circle-check");
+	let ocultarOK_imagen = document.querySelector("form .inputError .fa-circle-check.ocultarOK_imagen");
 	let iconosError = document.querySelectorAll("form .inputError .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll("form .inputError .mensajeError");
 	let credencialesInvalidas = document.querySelector("#credencialesInvalidas");
@@ -86,6 +87,8 @@ window.addEventListener("load", () => {
 			if (!inputAvatar.value) {
 				// Actualiza el avatar
 				imgAvatar.src = imgInicial;
+				// Oculta el iconoOK
+				if (ocultarOK_imagen) ocultarOK_imagen.classList.add("ocultarOK_imagen");
 				// Actualiza los errores
 				esImagen = true;
 				this.actualizaVarios(indice);
@@ -102,6 +105,8 @@ window.addEventListener("load", () => {
 				image.onload = () => {
 					// Actualiza la imagen del avatar en la vista
 					imgAvatar.src = reader.result;
+					// Muestra el iconoOK
+					if (ocultarOK_imagen) ocultarOK_imagen.classList.remove("ocultarOK_imagen");
 					// Actualiza los errores
 					esImagen = true;
 					FN.actualizaVarios(indice);
