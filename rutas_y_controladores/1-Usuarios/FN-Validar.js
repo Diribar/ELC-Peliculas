@@ -31,10 +31,9 @@ module.exports = {
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
 		if (campos.includes("rol_iglesia_id"))
 			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
-		if (campos.includes("avatar")) {
-			errores.avatar = comp.avatar(datos);
-		}
+		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
 		errores.hay = Object.values(errores).some((n) => !!n);
+		// Fin
 		return errores;
 	},
 	documentoFE: (datos) => {
@@ -90,15 +89,7 @@ module.exports = {
 		if (campos.includes("docum_pais_id"))
 			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar")) {
-			let errorAvatar = comp.avatar(datos);
-			errores.avatar =
-				!datos.avatar && datos.esImagen == "SI"
-					? "Necesitamos que agregues una imagen"
-					: errorAvatar
-					? errorAvatar
-					: "";
-		}
+		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;

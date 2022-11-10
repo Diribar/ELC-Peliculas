@@ -28,7 +28,7 @@ router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
 router.get("/api/edicion/validar", API.validarEdicion);
 router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesDelProducto);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
-router.get("/api/edicion/eliminar", API.prod_EliminarEdic);
+router.get("/api/edicion/eliminar", API.prod_EliminarEdicG);
 
 // Rutas de vistas
 // Producto

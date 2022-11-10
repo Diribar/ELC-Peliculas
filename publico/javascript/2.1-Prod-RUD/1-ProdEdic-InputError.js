@@ -87,7 +87,7 @@ window.addEventListener("load", async () => {
 			if (v.versionActual == "edicN" && (v.inputAvatarEdicN.value || !v.esImagen)) {
 				objeto += "&avatar=" + v.inputAvatarEdicN.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				objeto += "&tamano=" + (v.inputAvatarEdicN.value ? v.inputAvatarEdicN.files[0].size : 0);
+				if (v.inputAvatarEdicN.value) objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
 			}
 
 			// Averigua los errores
@@ -110,10 +110,12 @@ window.addEventListener("load", async () => {
 		actualizaBotones: () => {
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
-				// Versión
 				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
-				// Descartar
 				if (!v.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
+				else v.botonesDescartar[1].classList.add("inactivoVersion");
+			} else {
+				v.botonesActivarVersion[1].classList.add("inactivoVersion");
+				v.botonesDescartar[1].classList.add("inactivoVersion");
 			}
 			// Acciones sobre la edición nueva
 			// 1. Funciones
@@ -319,23 +321,28 @@ window.addEventListener("load", async () => {
 	v.botonesDescartar.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Si está inactivo aborta la operación
-			if (boton.className.includes("inactivo")) {
-				return;
-			}
+			if (boton.className.includes("inactivo")) return;
 			// Acciones si es la edición nueva
-			else if (v.versiones[indice] == "edicN") {
-				version.edicN = {...version.orig, ...version.edicG};
-			}
+			else if (v.versiones[indice] == "edicN") version.edicN = {...version.orig, ...version.edicG};
 			// Acciones si es la edición guardada
 			else if (v.versiones[indice] == "edicG") {
-				fetch("/producto/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				// Elimina los datos de edicG en la BD
+				fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				// Actualiza los datos de edicG con los originales
 				version.edicG = {...version.orig};
-				version.edicN = {...version.orig};
+				// Actualiza el avatar de edicG
+				v.imgsAvatar[1].src = v.imgsAvatar[2].src;
+				// Si corresponde, actualiza el avatar de edicN
+				if (!v.inputAvatarEdicN.value && v.esImagen) {
+					version.edicN.avatar = version.orig.avatar;
+					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
+				}
+				// Avisa que ya no existe la edicG
+				version.edicG_existe = false;
 			}
-			// Inactiva los botones de la versión
-			v.botones[v.versionActual].forEach((boton) => boton.classList.add("inactivoVersion"));
-			// Si se descartó la versión actual, recarga los valores
-			if (v.versiones[indice] == v.versionActual) FN.accionesPorCambioDeVersion();
+			// Tareas finales
+			FN.accionesPorCambioDeVersion();
+			FN.actualizaBotones();
 		});
 	});
 	v.botonGuardar.addEventListener("click", (e) => {
@@ -374,7 +381,6 @@ window.addEventListener("load", async () => {
 let versiones = async (rutaVersiones) => {
 	// Obtiene las versiones original y de edición
 	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
-	// Obtiene el avatar original con su ruta
 	// Procesa la versión de edición guardada
 	let edicG_existe = !!edicG;
 	edicG = {...orig, ...edicG};
