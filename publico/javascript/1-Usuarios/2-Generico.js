@@ -20,10 +20,11 @@ window.addEventListener("load", () => {
 	let iconosOK = document.querySelectorAll("form .inputError .fa-circle-check");
 	let iconosError = document.querySelectorAll("form .inputError .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll("form .inputError .mensajeError");
+	let credencialesInvalidas = document.querySelector("#credencialesInvalidas");
 	// Temas de avatar
 	let imgAvatar = document.querySelector("form .inputError label img");
 	let inputAvatar = document.querySelector("form .inputError input[name='avatar']");
-	let imgInicial = imgAvatar.src;
+	const imgInicial = imgAvatar ? imgAvatar.src : "";
 	let esImagen = true;
 	// Varias
 	let ruta_api = "/usuarios/api/validar-" + tareas[tarea] + "/?";
@@ -40,7 +41,11 @@ window.addEventListener("load", () => {
 				if (inputAvatar.value) valor += "&tamano=" + inputAvatar.files[0].size;
 			}
 			// Averigua los errores
-			let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
+			let errores =
+				// Corre la rutina, siempre que no sea una avatar opcional vacío
+				tarea != "datos-editables" || campo != "avatar" || inputs[indice].value || !esImagen
+					? await fetch(ruta_api + campo + "=" + valor).then((n) => n.json())
+					: "";
 			// Fin
 			return errores;
 		},
@@ -94,7 +99,7 @@ window.addEventListener("load", () => {
 				var image = new Image();
 				image.src = reader.result;
 				// Acciones si es realmente una imagen
-				image.onload = async () => {
+				image.onload = () => {
 					// Actualiza la imagen del avatar en la vista
 					imgAvatar.src = reader.result;
 					// Actualiza los errores
@@ -129,12 +134,12 @@ window.addEventListener("load", () => {
 				tarea == "login" ||
 				(tarea == "documento" &&
 					(campo == "docum_numero" || campo == "docum_pais_id") &&
-					document.querySelector("#credencialesInvalidas"))
+					credencialesInvalidas)
 			)
-				document.querySelector("#credencialesInvalidas").classList.add("ocultar");
+				credencialesInvalidas.classList.add("ocultar");
 
 			// Acciones si se cambió el avatar
-			if (campo == "avatar") await FN.revisaAvatarNuevo(indice);
+			if (campo == "avatar") FN.revisaAvatarNuevo(indice);
 			else await FN.actualizaVarios(indice);
 		});
 	});
