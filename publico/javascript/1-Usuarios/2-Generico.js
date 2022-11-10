@@ -27,7 +27,8 @@ window.addEventListener("load", () => {
 		let campo = inputs[i].name;
 		let valor = encodeURIComponent(inputs[i].value);
 		// Particularidad para 'avatar'
-		if (campo.includes("avatar") && e) valor += "&tamano=" + e.target.files[0].size;
+		if (campo.includes("avatar") && e && e.target && e.target.files)
+			valor += "&tamano=" + e.target.files[0].size;
 		// Averigua los errores
 		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
@@ -64,11 +65,11 @@ window.addEventListener("load", () => {
 	};
 
 	// EVENT LISTENERS ---------------------------------------
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async (e) => {
+	inputs.forEach((input, i) => {
+		input.addEventListener("input", async (e) => {
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (tarea == "login") document.querySelector(".resultadoInvalido").classList.add("ocultar");
-			let campo = inputs[i].name;
+			let campo = input.name;
 			if (
 				tarea == "documento" &&
 				(campo == "docum_numero" || campo == "docum_pais_id") &&
@@ -83,7 +84,7 @@ window.addEventListener("load", () => {
 			// Activa/Desactiva el botón 'Guardar'
 			botonGuardar();
 		});
-	}
+	});
 
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {

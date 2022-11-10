@@ -248,8 +248,8 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
-			avatar: datosPers.avatar_url,
-			tituloAvatar: datosPers.nombre_castellano,
+			imgDerPers: datosPers.avatar_url,
+			tituloImgDerPers: datosPers.nombre_castellano,
 		});
 	},
 	datosPersGuardar: async (req, res) => {
@@ -305,8 +305,8 @@ module.exports = {
 			dataEntry: confirma,
 			direccion,
 			actuacion,
-			avatar: confirma.avatar_url,
-			tituloAvatar: confirma.nombre_castellano,
+			imgDerPers: confirma.avatar_url,
+			tituloImgDerPers: confirma.nombre_castellano,
 		});
 	},
 	confirmaGuardar: async (req, res) => {
@@ -336,7 +336,7 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		comp.guardarEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
+		comp.guardaEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
@@ -401,8 +401,8 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
-			avatar: comp.nombreAvatar(registroProd, {}),
-			tituloAvatar: registroProd.nombre_castellano,
+			imgDerPers: comp.nombreAvatar(registroProd, {}),
+			tituloImgDerPers: registroProd.nombre_castellano,
 		});
 	},
 	responsabilidad: (req, res) => {

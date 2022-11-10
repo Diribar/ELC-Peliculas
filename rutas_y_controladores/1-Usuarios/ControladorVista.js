@@ -193,8 +193,7 @@ module.exports = {
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
-		dataEntry.docum_avatar = usuario.docum_avatar;
-		let docum_avatar = usuario.docum_avatar
+		let avatar = usuario.docum_avatar
 			? "/imagenes/5-DocsRevisar/" + usuario.docum_avatar
 			: "/imagenes/0-Base/AvatarGenericoDocum.jpg";
 		// Crear la carpeta si no existe
@@ -209,7 +208,7 @@ module.exports = {
 			errores,
 			hablaHispana,
 			hablaNoHispana,
-			docum_avatar,
+			avatar,
 			urlSalir: req.session.urlSinLogin,
 			sexos,
 		});

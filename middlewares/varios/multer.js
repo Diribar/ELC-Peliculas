@@ -13,5 +13,5 @@ const storage = multer.diskStorage({
 // Crea la carpeta 'provisorio' si no existe
 comp.garantizaLaCarpetaProvisorio();
 
-// Guardar la imagen
+// Guarda la imagen
 module.exports = multer({storage});

@@ -18,7 +18,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
-		let avatar;
+		let imgDerPers;
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene la versión más completa posible del producto
@@ -57,7 +57,7 @@ module.exports = {
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
-			avatar = comp.avatarOrigEdic(prodOrig, prodEdic);
+			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
@@ -114,7 +114,7 @@ module.exports = {
 				valor: statusResumido.nombre,
 				id: statusResumido.id,
 			});
-			avatar = comp.nombreAvatar(prodOrig, prodEdic);
+			imgDerPers = comp.nombreAvatar(prodOrig, prodEdic);
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -131,8 +131,8 @@ module.exports = {
 			entidad,
 			prodID,
 			producto: prodComb,
-			avatar,
-			tituloAvatar: prodComb.nombre_castellano,
+			imgDerPers,
+			tituloImgDerPers: prodComb.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
 			camposDD1,
@@ -164,7 +164,7 @@ module.exports = {
 			req.body.avatar_url = req.file.originalname;
 			req.body.avatar_archivo = req.file.filename;
 		}
-		// Unir 'Edición' y 'Original'
+		// Une 'Edición' y 'Original'
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
 		// Averigua si hay errores de validación
 		let errores = await validar.consolidado("", {...prodComb, entidad});
@@ -184,7 +184,7 @@ module.exports = {
 			}
 		}
 		// Actualiza la edición
-		if (!errores.hay) await comp.guardarEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+		if (!errores.hay) await comp.guardaEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

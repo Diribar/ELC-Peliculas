@@ -10,7 +10,7 @@ const variables = require("./Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Temas de Entidades
-	quitarCamposSinContenido: (objeto) => {
+	quitaCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
@@ -50,9 +50,9 @@ module.exports = {
 	},
 
 	// Temas de Edición
-	pulirEdicion: function (original, edicion) {
+	puleEdicion: function (original, edicion) {
 		// Funciones
-		let quitarLosCamposQueNoSeComparan = (edicion) => {
+		let quitaCamposQueNoSeComparan = (edicion) => {
 			// Variables
 			let familia = this.obtieneFamiliaEnPlural(edicion.entidad);
 			let campos = [];
@@ -66,7 +66,7 @@ module.exports = {
 			// Fin
 			return edicion;
 		};
-		let quitarLasCoincidenciasConOriginal = (original, edicion) => {
+		let quitaCoincidenciasConOriginal = (original, edicion) => {
 			// Eliminar campo si se cumple alguno de estos:
 			// - Edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
 			// - Edición es estrictamente igual al original
@@ -81,9 +81,9 @@ module.exports = {
 		// Variables
 		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien
 		// Pulir la información a tener en cuenta
-		edicion = this.quitarCamposSinContenido(edicion);
-		edicion = quitarLosCamposQueNoSeComparan(edicion);
-		edicion = quitarLasCoincidenciasConOriginal(original, edicion);
+		edicion = this.quitaCamposSinContenido(edicion);
+		edicion = quitaCamposQueNoSeComparan(edicion);
+		edicion = quitaCoincidenciasConOriginal(original, edicion);
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Fin
@@ -91,18 +91,18 @@ module.exports = {
 	},
 
 	// ABM de registros
-	crear_registro: async (entidad, datos, userID) => {
+	creaRegistro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
-	actualiza_registro: async (entidad, id, datos) => {
+	actualizaRegistro: async (entidad, id, datos) => {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
-	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
+	inactivaRegistro: async (entidad, entidad_id, userID, motivo_id) => {
 		// Obtiene el status_id de 'inactivar'
 		let inactivarID = await BD_genericas.obtienePorCampos("status_registro", {inactivar: true}).then(
 			(n) => n.id
@@ -117,23 +117,22 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
 	},
-	guardarEdicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
+	guardaEdicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Variables
-		let quedanCampos;
 		edicion = {...edicion, entidad: entidadEdic};
-		// Quitar los coincidencias con el original
-		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
-		// Averigua si hay algún campo con novedad
-		if (!quedanCampos) return "Edición sin novedades respecto al original";
-		// Obtiene el campo 'entidad_id'
+		// Si existe una edición de ese original y de ese usuario --> lo elimina
 		let entidad_id = this.obtieneEntidad_id(entidadOrig);
-		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtienePorCampos(entidadEdic, objeto);
 		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
-		// Completar la información
+		// Quita las coincidencias con el original
+		let quedanCampos;
+		[edicion, quedanCampos] = this.puleEdicion(original, edicion);
+		// Averigua si hay algún campo con novedad
+		if (!quedanCampos) return "Edición sin novedades respecto al original";
+		// Completa la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
-		// Agregar la nueva edición
+		// Agrega la nueva edición
 		await BD_genericas.agregarRegistro(entidadEdic, edicion);
 		// Fin
 		return "Edición guardada";

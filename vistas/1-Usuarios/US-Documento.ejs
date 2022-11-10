@@ -117,10 +117,10 @@
 				<label>Imagen del documento</label>
 				<div class="inputError flex-col" id="divImagen">
 					<label for="inputImagen" id="preview">
-						<img src="<%= docum_avatar %>">
+						<img src="<%= avatar %>">
 					</label>
-					<input name="docum_avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar" value="<%= dataEntry ? dataEntry.docum_avatar : "" %>">
-					<%- include("CMP-Errores", {campo: "docum_avatar", display: true}) %>
+					<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
+					<%- include("CMP-Errores", {campo: "avatar", display: true}) %>
 				</div>
 			</div>
 		</div>

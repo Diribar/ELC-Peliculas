@@ -21,7 +21,7 @@
 #cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Íconos y Mensajes de Error */
-#cuerpo .inputError .mensajeError {left: 20px;}
+/* #cuerpo .inputError .mensajeError {left: 20px;} */
 
 /* Flechas */
 #cuerpo #flechas {margin: 15px auto 5px; justify-content: space-around; max-width: min-content;}

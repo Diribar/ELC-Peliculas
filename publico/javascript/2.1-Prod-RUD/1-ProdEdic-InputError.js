@@ -274,7 +274,7 @@ window.addEventListener("load", async () => {
 				image.src = reader.result;
 				// Acciones si es realmente una imagen
 				image.onload = async () => {
-					// Actualiza el avatar
+					// Actualiza la imagen del avatar en la vista
 					v.imgsAvatar[0].src = reader.result;
 					// Actualiza lo que será el avatar anterior
 					v.avatarAnt = v.inputAvatarEdicN.value;

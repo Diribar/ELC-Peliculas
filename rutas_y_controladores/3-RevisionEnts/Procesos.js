@@ -396,7 +396,7 @@ module.exports = {
 		if (campo) await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {[campo]: null});
 
 		// 2. Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = comp.pulirEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic);
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
 			// 3. Elimina el registro de la edición
@@ -651,7 +651,7 @@ module.exports = {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
 			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[quedanCampos, linkEdic] = await comp.pulirEdicion(linkOrig, linkEdic);
+			[quedanCampos, linkEdic] = await comp.puleEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizaPorId("links_edicion", edicID, {
