@@ -329,7 +329,7 @@ window.addEventListener("load", async () => {
 				fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
 				version.edicG = {...version.orig};
 				v.imgsAvatar[1].src = v.imgsAvatar[2].src;
-				if (!v.inputAvatarEdicN.value) {
+				if (!v.inputAvatarEdicN.value && v.esImagen) {
 					version.edicN.avatar = version.orig.avatar;
 					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
 				}
