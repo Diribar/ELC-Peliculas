@@ -152,7 +152,7 @@ module.exports = {
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
-			if (usuario.avatar) comp.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
+			if (usuario.avatar) comp.borraUnArchivo(req.file.destination, usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
