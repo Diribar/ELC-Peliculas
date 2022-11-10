@@ -42,7 +42,7 @@
 	</section>
 	<!--Rol en la iglesia-->
 	<section class="label-input flex-row">
-		<label for="rol_iglesia_id">Rol en la iglesia</label>
+		<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
 		<div class="inputError">
 			<select name="rol_iglesia_id" class="input">
 				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>class="ocultar">Elejí un rol en la Iglesia</option>
@@ -62,9 +62,12 @@
 			</label>
 			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
-			</i>
+			<div class="errores">
+				<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
+					<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
+				</i>
+				<i class="fa-solid fa-circle-check ocultar ocultarOK_imagen"></i>
+			</div>
 		</div>
 	</section>
 	<!--Flechas-->
