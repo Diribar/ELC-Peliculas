@@ -24,7 +24,7 @@ module.exports = {
 			userID
 		);
 		// Obtiene el avatar
-		let avatar = comp.nombreAvatar(prodOrig,prodEdic)
+		let imgDerPers = comp.nombreAvatar(prodOrig,prodEdic)
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
 		// Obtiene información de BD
@@ -66,7 +66,7 @@ module.exports = {
 			producto,
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
-			avatar,
+			imgDerPers,
 			title: producto.nombre_castellano,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,

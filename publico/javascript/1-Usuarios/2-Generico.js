@@ -25,20 +25,19 @@ window.addEventListener("load", () => {
 	let inputAvatar = document.querySelector("form .inputError input[name='avatar']");
 	let imgInicial = imgAvatar.src;
 	let esImagen = true;
-	let leyendaNoEsImagen= "El archivo no es una imagen"
 	// Varias
 	let ruta_api = "/usuarios/api/validar-" + tareas[tarea] + "/?";
 
 	// FUNCIONES --------------------------------------------------------------
 	let FN = {
-		averiguaLosErrores: async (i) => {
+		averiguaLosErrores: async (indice) => {
 			// Variables
-			let campo = inputs[i].name;
-			let valor = encodeURIComponent(inputs[i].value);
+			let campo = inputs[indice].name;
+			let valor = encodeURIComponent(inputs[indice].value);
 			// Particularidad para 'avatar'
 			if (campo.includes("avatar")) {
-				if (inputAvatar.value)valor += "&tamano=" + inputAvatar.files[0].size;
-
+				valor += "&esImagen=" + (esImagen ? "SI" : "NO");
+				if (inputAvatar.value) valor += "&tamano=" + inputAvatar.files[0].size;
 			}
 			// Averigua los errores
 			let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
@@ -47,24 +46,17 @@ window.addEventListener("load", () => {
 		},
 		muestraLosErrores: (error, indice) => {
 			// Variables
-			let campo = inputs[i].name;
-			// Guarda el mensaje de error
+			let campo = inputs[indice].name;
 			let mensaje = error[campo];
 			// Reemplaza el mensaje, con particularidad para 'avatar'
-			mensaje =
-				campo != "docum_avatar" || mensaje || inputs[indice].value
-					? mensaje
-					: mensajesError[indice].innerHTML;
 			mensajesError[indice].innerHTML = mensaje;
-
 			// Acciones en función de si hay o no mensajes de error
 			mensaje
 				? iconosError[indice].classList.remove("ocultar")
 				: iconosError[indice].classList.add("ocultar");
-			if (indice < iconosOK.length)
-				!mensaje
-					? iconosOK[indice].classList.remove("ocultar")
-					: iconosOK[indice].classList.add("ocultar");
+			mensaje
+				? iconosOK[indice].classList.add("ocultar")
+				: iconosOK[indice].classList.remove("ocultar");
 		},
 		actualizaBotonGuardar: () => {
 			let OK = Array.from(iconosOK)
@@ -76,23 +68,22 @@ window.addEventListener("load", () => {
 				.every((n) => n.includes("ocultar"));
 			OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 		},
-		actualizaVarios: async function (i) {
+		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
-			let errores = await this.averiguaLosErrores(i);
+			let errores = await this.averiguaLosErrores(indice);
 			// Comunica los aciertos y errores
-			this.muestraLosErrores(errores, i);
+			this.muestraLosErrores(errores, indice);
 			// Activa/Desactiva el botón 'Guardar'
 			this.actualizaBotonGuardar();
 		},
-		revisaAvatarNuevo:function (i) {
+		revisaAvatarNuevo: function (indice) {
 			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
-			console.dir(inputAvatar);
 			if (!inputAvatar.value) {
 				// Actualiza el avatar
 				imgAvatar.src = imgInicial;
 				// Actualiza los errores
 				esImagen = true;
-				this.actualizaVarios(i);
+				this.actualizaVarios(indice);
 				// Fin
 				return;
 			}
@@ -108,7 +99,7 @@ window.addEventListener("load", () => {
 					imgAvatar.src = reader.result;
 					// Actualiza los errores
 					esImagen = true;
-					FN.actualizaVarios(i);
+					FN.actualizaVarios(indice);
 					// Fin
 					return;
 				};
@@ -119,8 +110,8 @@ window.addEventListener("load", () => {
 					// Limpia el input
 					inputAvatar.value = "";
 					// Actualiza los errores
-					v.esImagen = false;
-					FN.actualizaVarios(i);
+					esImagen = false;
+					FN.actualizaVarios(indice);
 					// Fin
 					return;
 				};
@@ -129,7 +120,7 @@ window.addEventListener("load", () => {
 	};
 
 	// EVENT LISTENERS ---------------------------------------
-	inputs.forEach((input, i) => {
+	inputs.forEach((input, indice) => {
 		input.addEventListener("input", async () => {
 			// Variables
 			let campo = input.name;
@@ -143,17 +134,17 @@ window.addEventListener("load", () => {
 				document.querySelector("#credencialesInvalidas").classList.add("ocultar");
 
 			// Acciones si se cambió el avatar
-			if (campo == "avatar") await FN.revisaAvatarNuevo(i);
-			else await FN.actualizaVarios(i);
+			if (campo == "avatar") await FN.revisaAvatarNuevo(indice);
+			else await FN.actualizaVarios(indice);
 		});
 	});
 
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
-			for (let i = 0; i < inputs.length; i++) {
-				let errores = await FN.averiguaLosErrores(i);
-				FN.muestraLosErrores(errores, i);
+			for (let indice = 0; indice < inputs.length; indice++) {
+				let errores = await FN.averiguaLosErrores(indice);
+				FN.muestraLosErrores(errores, indice);
 			}
 			FN.actualizaBotonGuardar();
 		}

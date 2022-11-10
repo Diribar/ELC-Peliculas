@@ -14,4 +14,19 @@ const storage = multer.diskStorage({
 comp.garantizaLaCarpetaProvisorio();
 
 // Guarda la imagen
-module.exports = multer({storage});
+module.exports = multer({
+	storage,
+	// fileFilter: (req, file, cb) => {
+	// 	const acceptableExtensions = [".png", ".jpg", "jpeg"];
+	// 	if (!acceptableExtensions.includes(path.extname(file.originalname))) {
+	// 		return cb(new Error("..."));
+	// 	}
+
+	// 	// added this
+	// 	const fileSize = parseInt(req.headers["content-length"]);
+	// 	console.log(fileSize);
+	// 	if (fileSize > 1000) {
+	// 		return cb(new Error("Error de tamaño"));
+	// 	}
+	// },
+});

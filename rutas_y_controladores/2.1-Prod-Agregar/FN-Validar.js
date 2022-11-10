@@ -155,12 +155,13 @@ module.exports = {
 			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) {
-			let errorAvatar = comp.avatar(datos.avatar, datos.tamano);
-			errores.avatar = !datos.avatar
-				? "Necesitamos que agregues una imagen"
-				: errorAvatar
-				? errorAvatar
-				: "";
+			let errorAvatar = comp.avatar(datos);
+			errores.avatar =
+				!datos.avatar && datos.esImagen == "SI"
+					? "Necesitamos que agregues una imagen"
+					: errorAvatar
+					? errorAvatar
+					: "";
 		}
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
