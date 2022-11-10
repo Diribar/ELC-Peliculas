@@ -722,6 +722,53 @@ module.exports = {
 		// 2. Agrega un registro en la tabla de 'aprob/rech'
 		// 3. Si corresponde, penaliza al usuario
 
+		// Fórmulas
+		let agregaRegistroEnTablaEdicAprobRech = async () => {
+			// Si fue rechazado, amplía aún más la información
+			if (!edicAprob) {
+				let {motivo_id} = req.query;
+				let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
+				motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
+				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+			}
+			let valoresAprobRech = fn_valoresAprobRech();
+			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
+			datos = {...datos, ...valoresAprobRech};
+			BD_genericas.agregarRegistro(decision, datos);
+			// Fin
+			return [datos.duracion, motivo];
+		};
+		let fn_valoresAprobRech = () => {
+			// Amplía la información con los valores aprob/rech de edición
+			let valorOrig = obtieneElValorDeUnCampo(original, campo);
+			let valorEdic = obtieneElValorDeUnCampo(edicion, campo);
+			// Obtiene los valores 'aprobado' y 'rechazado'
+			let valor_aprob = edicAprob ? valorEdic : valorOrig;
+			let valor_rech = !edicAprob ? valorEdic : valorOrig;
+			// Fin
+			return {valor_aprob, valor_rech};
+		};
+		let obtieneElValorDeUnCampo = (registro, campo) => {
+			// Variables
+			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let camposConVinculo = [...variables.camposRevisar[familia]];
+			camposConVinculo.filter((n) => n.relac_include);
+			let campos = camposConVinculo.map((n) => n.nombre);
+			let indice = campos.indexOf(campo);
+			let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";
+			let respuesta;
+			// Resultado
+			if (indice >= 0)
+				respuesta = registro[vinculo].productos
+					? registro[vinculo].productos
+					: registro[vinculo].nombre;
+			else respuesta = registro[campo];
+
+			// Fin
+			if (respuesta === null) respuesta = "-";
+			return respuesta;
+		};
+
 		// Variables
 		const edicAprob = req.query.aprob == "true";
 		const decision = edicAprob ? "edics_aprob" : "edics_rech";
@@ -743,52 +790,6 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 		// 2. Agrega un registro en la tabla de 'aprob/rech'
-		let agregaRegistroEnTablaEdicAprobRech = async () => {
-			// Variables
-			// Si fue rechazado, amplía aún más la información
-			if (!edicAprob) {
-				let {motivo_id} = req.query;
-				let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
-				motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-			}
-			// Amplía la información con los valores aprob/rech de edición
-			let fn_valoresAprobRech = () => {
-				let obtieneElValorDeUnCampo = (registro, campo) => {
-					// Variables
-					let familia = comp.obtieneFamiliaEnPlural(entidad);
-					let camposConVinculo = [...variables.camposRevisar[familia]];
-					camposConVinculo.filter((n) => n.relac_include);
-					let campos = camposConVinculo.map((n) => n.nombre);
-					let indice = campos.indexOf(campo);
-					let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";
-					let respuesta;
-					// Resultado
-					if (indice >= 0)
-						respuesta = registro[vinculo].productos
-							? registro[vinculo].productos
-							: registro[vinculo].nombre;
-					else respuesta = registro[campo];
-
-					// Fin
-					if (respuesta === null) respuesta = "-";
-					return respuesta;
-				};
-				let valorOrig = obtieneElValorDeUnCampo(original, campo);
-				let valorEdic = obtieneElValorDeUnCampo(edicion, campo);
-				// Obtiene los valores 'aprobado' y 'rechazado'
-				let valor_aprob = edicAprob ? valorEdic : valorOrig;
-				let valor_rech = !edicAprob ? valorEdic : valorOrig;
-				// Fin
-				return {valor_aprob, valor_rech};
-			};
-			let valoresAprobRech = fn_valoresAprobRech();
-			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
-			datos = {...datos, ...valoresAprobRech};
-			BD_genericas.agregarRegistro(decision, datos);
-			// Fin
-			return [datos.duracion, motivo];
-		};
 		[duracion, motivo] = await agregaRegistroEnTablaEdicAprobRech();
 		// 3. Si corresponde, penaliza al usuario
 		if (duracion) this.usuario_aumentaPenalizacAcum(edicion.editado_por_id, motivo);
