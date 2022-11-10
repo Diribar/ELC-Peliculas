@@ -450,11 +450,16 @@ module.exports = {
 	},
 	avatar: (datos) => {
 		// Variables
-		let {nombre, tamano, esImagen} = datos;
-		// Función
-		let extension = () => {
-			if (!nombre) return "";
-			let ext = path.extname(nombre).toLocaleLowerCase();
+		let {avatar, tamano, esImagen} = datos;
+		// Funciones
+		let FN_nombre = () => {
+			return !avatar && esImagen == "SI"
+				? "Necesitamos que agregues una imagen"
+				: "";
+		};
+		let FN_extension = () => {
+			if (!avatar) return "";
+			let ext = path.extname(avatar).toLocaleLowerCase();
 			return !ext
 				? "El archivo debe tener alguna extensión"
 				: ![".jpg", ".png", ".jpeg"].includes(ext)
@@ -463,20 +468,21 @@ module.exports = {
 				  "'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
-		let funcionTamano = () => {
+		let FN_tamano = () => {
 			return tamano && tamano > 1100000
 				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 				: "";
 		};
-		let funcionEsImagen = () => {
+		let FN_esImagen = () => {
 			return esImagen == "NO" ? "El archivo no es una imagen" : "";
 		};
 		// Variables
 		let respuesta = "";
 		// Validaciones
-		if (!respuesta) respuesta = extension();
-		if (!respuesta) respuesta = funcionTamano();
-		if (!respuesta) respuesta = funcionEsImagen();
+		if (!respuesta) respuesta = FN_nombre();
+		if (!respuesta) respuesta = FN_extension();
+		if (!respuesta) respuesta = FN_tamano();
+		if (!respuesta) respuesta = FN_esImagen();
 		// Fin
 		return respuesta;
 	},

@@ -87,7 +87,7 @@ window.addEventListener("load", async () => {
 			if (v.versionActual == "edicN" && (v.inputAvatarEdicN.value || !v.esImagen)) {
 				objeto += "&avatar=" + v.inputAvatarEdicN.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				objeto += "&tamano=" + (v.inputAvatarEdicN.value ? v.inputAvatarEdicN.files[0].size : 0);
+				if (v.inputAvatarEdicN.value) objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
 			}
 
 			// Averigua los errores

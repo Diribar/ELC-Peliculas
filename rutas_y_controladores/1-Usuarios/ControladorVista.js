@@ -113,6 +113,7 @@ module.exports = {
 		let errores = req.session.errores ? req.session.errores : false;
 		// Roles de Iglesia
 		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
+		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 2);
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
