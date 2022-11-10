@@ -8,4 +8,4 @@ input#inputImagen {display:none}
 #preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
 
 /* Credenciales inválidas*/
-#cuerpo form .resultadoInvalido {border-radius: 7px; margin: 15px auto 0px; font-style: italic; max-width: fit-content;}
+#cuerpo form .credencialesInvalidas {border-radius: 7px; margin: 15px auto 0px; font-style: italic; max-width: fit-content;}
