@@ -9,3 +9,4 @@ a {text-decoration: none; color: inherit;}
 i, a, em, strong, u {font-size: inherit;}
 p, li {line-height: 1.2rem;}
 span {font-size: inherit;}
+label {line-height: 1;}

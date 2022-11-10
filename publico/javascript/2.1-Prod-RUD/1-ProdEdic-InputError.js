@@ -36,7 +36,6 @@ window.addEventListener("load", async () => {
 		avatarInicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		esImagen: true,
-		leyendaNoEsImagen: "El archivo no es una imagen",
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo #comandos .activar"),
 		botonesDescartar: document.querySelectorAll("#cuerpo #comandos .descartar"),
@@ -83,24 +82,20 @@ window.addEventListener("load", async () => {
 		averiguaMuestraLosErrores: async () => {
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
-			for (let input of v.inputs) {
-				if (input.name != "avatar" || v.inputAvatarEdicN.value)
-					objeto += "&" + input.name + "=" + input.value;
-				if (input.name == "avatar" && v.inputAvatarEdicN.value) {
-					objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
-				}
+			for (let input of v.inputs)
+				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
+			if (v.inputAvatarEdicN.value && v.versionActual == "edicN") {
+				objeto += "&avatar=" + v.inputAvatarEdicN.value;
+				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
+				objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
 			}
+
 			// Averigua los errores
 			errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
 			// Actualiza los errores
 			v.campos.forEach((campo, indice) => {
-				if (campo == "avatar" && v.versionActual == "edicN" && !v.esImagen) {
-					errores.avatar = v.leyendaNoEsImagen;
-					errores.hay = true;
-				}
-				// Guarda el mensaje de error
+				// Variables
 				let mensaje = errores[campo];
-				// Reemplaza
 				v.mensajesError[indice].innerHTML = mensaje;
 				// Acciones en función de si hay o no mensajes de error
 				errores[campo]

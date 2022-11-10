@@ -448,11 +448,13 @@ module.exports = {
 			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
 		},
 	},
-	avatar: (nombre, tamano) => {
+	avatar: (datos) => {
+		// Variables
+		let {nombre, tamano, esImagen} = datos;
 		// Función
-		let extension = (nombre) => {
+		let extension = () => {
 			if (!nombre) return "";
-			let ext = path.extname(nombre);
+			let ext = path.extname(nombre).toLocaleLowerCase();
 			return !ext
 				? "El archivo debe tener alguna extensión"
 				: ![".jpg", ".png", ".jpeg"].includes(ext)
@@ -461,17 +463,20 @@ module.exports = {
 				  "'. Las extensiones válidas son JPG, JPEG y PNG"
 				: "";
 		};
+		let funcionTamano = () => {
+			return tamano && tamano > 1100000
+				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
+				: "";
+		};
+		let funcionEsImagen = () => {
+			return esImagen == "NO" ? "El archivo no es una imagen" : "";
+		};
 		// Variables
 		let respuesta = "";
 		// Validaciones
-		if (nombre) {
-			if (!respuesta) respuesta = extension(nombre);
-			if (!respuesta && tamano && tamano > 1100000)
-				respuesta =
-					"El archivo es de " +
-					parseInt(tamano / 10000) / 100 +
-					" MB. Necesitamos que no supere 1 MB";
-		}
+		if (!respuesta) respuesta = extension();
+		if (!respuesta) respuesta = funcionTamano();
+		if (!respuesta) respuesta = funcionEsImagen();
 		// Fin
 		return respuesta;
 	},
