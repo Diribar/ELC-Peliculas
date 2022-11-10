@@ -160,9 +160,10 @@ module.exports = {
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
-			req.body.avatar = req.file.originalname;
+			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
 			req.body.avatar_archivo = req.file.filename;
+			req.body.tamano = req.file.size;
 		}
 		// Une 'Edición' y 'Original'
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
@@ -179,8 +180,8 @@ module.exports = {
 			}
 			// Si hay errores, entonces borra el archivo
 			else {
-				comp.borraUnArchivo(req.file.destination, req.file.filename);
-				return res.send(errores)
+				comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", req.file.filename);
+				return res.send(errores);
 			}
 		}
 		// Actualiza la edición
