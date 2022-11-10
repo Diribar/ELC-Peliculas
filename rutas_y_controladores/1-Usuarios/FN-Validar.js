@@ -92,7 +92,6 @@ module.exports = {
 		// Revisar 'avatar'
 		if (campos.includes("avatar")) {
 			let errorAvatar = comp.avatar(datos);
-			console.log(datos.esImagen);
 			errores.avatar =
 				!datos.avatar && datos.esImagen == "SI"
 					? "Necesitamos que agregues una imagen"

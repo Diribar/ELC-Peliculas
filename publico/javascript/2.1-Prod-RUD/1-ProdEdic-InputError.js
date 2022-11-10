@@ -84,10 +84,10 @@ window.addEventListener("load", async () => {
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
 			for (let input of v.inputs)
 				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
-			if (v.inputAvatarEdicN.value && v.versionActual == "edicN") {
+			if (v.versionActual == "edicN" && (v.inputAvatarEdicN.value || !v.esImagen)) {
 				objeto += "&avatar=" + v.inputAvatarEdicN.value;
 				objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
-				objeto += "&tamano=" + v.inputAvatarEdicN.files[0].size;
+				objeto += "&tamano=" + (v.inputAvatarEdicN.value ? v.inputAvatarEdicN.files[0].size : 0);
 			}
 
 			// Averigua los errores

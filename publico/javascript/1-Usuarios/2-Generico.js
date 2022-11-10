@@ -134,7 +134,6 @@ window.addEventListener("load", () => {
 				document.querySelector("#credencialesInvalidas").classList.add("ocultar");
 
 			// Acciones si se cambió el avatar
-			console.log(campo);
 			if (campo == "avatar") await FN.revisaAvatarNuevo(indice);
 			else await FN.actualizaVarios(indice);
 		});
