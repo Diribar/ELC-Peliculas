@@ -330,8 +330,8 @@ window.addEventListener("load", async () => {
 				version.edicG = {...version.orig};
 				v.imgsAvatar[1].src = v.imgsAvatar[2].src;
 				if (!v.inputAvatarEdicN.value) {
-					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
 					version.edicN.avatar = version.orig.avatar;
+					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
 				}
 			}
 			// Tareas finales
