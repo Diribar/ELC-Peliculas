@@ -335,7 +335,6 @@ window.addEventListener("load", async () => {
 				}
 			}
 			// Tareas finales
-
 			FN.accionesPorCambioDeVersion();
 			version.edicG_existe = false;
 			FN.actualizaBotones();
