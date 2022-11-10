@@ -326,17 +326,22 @@ window.addEventListener("load", async () => {
 			else if (v.versiones[indice] == "edicN") version.edicN = {...version.orig, ...version.edicG};
 			// Acciones si es la edición guardada
 			else if (v.versiones[indice] == "edicG") {
+				// Elimina los datos de edicG en la BD
 				fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+				// Actualiza los datos de edicG con los originales
 				version.edicG = {...version.orig};
+				// Actualiza el avatar de edicG
 				v.imgsAvatar[1].src = v.imgsAvatar[2].src;
+				// Si corresponde, actualiza el avatar de edicN
 				if (!v.inputAvatarEdicN.value && v.esImagen) {
 					version.edicN.avatar = version.orig.avatar;
 					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
 				}
+				// Avisa que ya no existe la edicG
+				version.edicG_existe = false;
 			}
 			// Tareas finales
 			FN.accionesPorCambioDeVersion();
-			version.edicG_existe = false;
 			FN.actualizaBotones();
 		});
 	});
