@@ -758,12 +758,11 @@ module.exports = {
 			let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";
 			let respuesta;
 			// Resultado
-			if (indice >= 0) {
-				console.log(762, vinculo);
+			if (indice >= 0)
 				respuesta = registro[vinculo].productos
 					? registro[vinculo].productos
 					: registro[vinculo].nombre;
-			} else respuesta = registro[campo];
+			else respuesta = registro[campo];
 
 			// Fin
 			if (respuesta === null) respuesta = "-";
