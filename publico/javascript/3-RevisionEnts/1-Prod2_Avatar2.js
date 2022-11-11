@@ -4,10 +4,12 @@ window.addEventListener("load", () => {
 	let beneficios = {
 		titulo: document.querySelectorAll("#medio #titulo")[0],
 		ul: document.querySelectorAll("#medio #beneficios"),
+		ningunoLeyenda: "a criterio del Revisor",
 	};
 	let perjuicios = {
 		titulo: document.querySelectorAll("#medio #titulo")[1],
 		ul: document.querySelectorAll("#medio #perjuicios"),
+		ningunoLeyenda: "ninguno",
 	};
 
 	// Variables de Imagen Nueva
@@ -69,11 +71,7 @@ window.addEventListener("load", () => {
 			// Agregar párrafo
 			let p = document.createElement("p");
 			p.innerText = (
-				!beneficios[infos + "Leyenda"] && !perjuicios[infos + "Leyenda"]
-					? infos
-					: bloque == "beneficios"
-					? beneficios[infos + "Leyenda"]
-					: perjuicios[infos + "Leyenda"]
+				bloque == "beneficios" ? beneficios[infos + "Leyenda"] : perjuicios[infos + "Leyenda"]
 			).toLowerCase();
 			bloque == "beneficios" ? beneficios.titulo.appendChild(p) : perjuicios.titulo.appendChild(p);
 		} else {
