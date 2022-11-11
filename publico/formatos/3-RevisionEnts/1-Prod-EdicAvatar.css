@@ -25,12 +25,12 @@
 #centro #medio #info {padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
 #centro #medio #info {background-color: var(--gris-claro); border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #centro #medio #info h2 {text-align: center; margin-top: 10px;}
-#centro #medio #info #titulo {margin-top: 10px; display: flex; flex-direction: row; align-items: center;}
+#centro #medio #info #titulo {margin-top: 10px; display: flex; flex-direction: row; align-items: center; line-height: 1;}
 #centro #medio #info #titulo * {font-size: 1.2rem;}
 #centro #medio #info #titulo .fa-solid {font-size: 1.5rem;}
 #centro #medio #info #titulo .fa-solid:hover {transform: scale(1.2);}
 #centro #medio #info #titulo h3 {margin: 0 5px;}
-#centro #medio #info #titulo {line-height: 1;}
+#centro #medio #info #titulo h3::first-letter {text-transform:capitalize;}
 #centro #medio #info ul {list-style-position: inside;}
 #centro #medio #info ul li {margin-left: 25px;}
 
