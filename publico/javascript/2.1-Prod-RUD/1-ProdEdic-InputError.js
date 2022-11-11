@@ -264,7 +264,7 @@ window.addEventListener("load", async () => {
 			let reader = new FileReader();
 			reader.readAsDataURL(v.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
-				var image = new Image();
+				let image = new Image();
 				image.src = reader.result;
 				// Acciones si es realmente una imagen
 				image.onload = async () => {

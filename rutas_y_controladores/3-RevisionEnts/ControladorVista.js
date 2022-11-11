@@ -255,6 +255,7 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			cartel: true,
 			omitirImagenDerecha: codigo.includes("avatar"),
+			omitirFooter: codigo.includes("avatar"),
 		});
 	},
 	// RCLVs

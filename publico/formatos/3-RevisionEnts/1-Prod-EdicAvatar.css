@@ -1,30 +1,33 @@
+/* General */
 #cuerpoFooter {display: flex; flex-direction: column-reverse;}
-#cuerpoFooter #cuerpo {background-color: transparent;}
+#cuerpoFooter #cuerpo {background-color: transparent; flex-direction: row; justify-content: space-between;}
 
-/* Sección información */
-#cuerpo #informacion {display: flex; flex-direction: row; flex-grow: 1; position: relative;}
-#cuerpo #informacion {align-self: flex-start; justify-content: center; width: 100%;}
+/* Secciones de Imagen */
+#cuerpo .imagenes {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo .imagenes img {max-width: 30vw; max-height: 91vh;}
 
-/* Sección ficha técnica */
-#fichaTecnica {position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
-#fichaTecnica {padding: 25px; max-width: 30vw; }
-#fichaTecnica div {background-color: var(--gris-claro);border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#fichaTecnica div {padding: 15px 20px; border-radius: 20px;}
-#fichaTecnica div p {line-height: 1.5;}
+/* Sección central */
+#cuerpo #centro {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; align-items: center;}
+#cuerpo #centro #arriba, #cuerpo #centro #abajo {align-self: stretch;}
 
-/* Partes específicas de las imágenes */
-#informacion #imgSugerida {width: 40vw;}
-#informacion #imgSugerida h2 {background-color: var(--verde-oscuro);}
-#informacion #imgActual {width: 20vw; position: absolute; right: 0; top: 0; height: 50%;}
-#informacion #imgActual h2 {background-color: var(--rojo-oscuro);}
+/* Sección central - Arriba */
+#cuerpo #centro #arriba {display: flex; flex-direction: column;}
+#centro #arriba #tituloPrincipal {text-align: center; align-self: stretch;}
+#centro #arriba #tituloPrincipal #titulo {border-left-color: var(--bordeTitulo); border-bottom-right-radius: 0;}
+#centro #arriba #tituloPrincipal .ayuda {transform: translate(0, -50%); right: 10px;}
+#centro #arriba #fichaTecnica {margin: 40px auto 0; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
+#centro #arriba #fichaTecnica {background-color: var(--gris-claro); border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #arriba #fichaTecnica p {line-height: 1.5;}
+#cuerpo #arriba #timer {position: static; margin-left: auto;}
 
-/* Partes comunes de las imágenes */
-#informacion .tituloMasImagen {display: flex; flex-direction: column;}
-#informacion .tituloMasImagen h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 10px; align-self: center; color: var(--celeste-claro);}
-#informacion .tituloMasImagen .contenedorImagen {position: relative; height: 100%; width: 100%;}
-#informacion .tituloMasImagen .contenedorImagen img {position: absolute; transform: translateX(-50%); left: 50%;}
-#informacion .tituloMasImagen .contenedorImagen img {border-radius: 10px; max-height: 100%; max-width: 100%;}
+/* Sección central - Medio */
+#centro #medio #pregunta {margin: 0 auto; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
+#centro #medio #pregunta {background-color: var(--gris-claro); border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio #pregunta {text-align: center;}
+
+
+#cuerpo #medio #flechas {width: fit-content;}
 
 /* Flechas */
-#flechas {margin-top: 15px; margin-bottom: 15px;}
+#flechas {margin-top: 10px; margin-bottom: 5px;}
 #flechas i {font-size: 2rem;}

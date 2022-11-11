@@ -8,5 +8,7 @@
 	<!-- Imagen Diaria -->
 	<% if (!rutaImagen) {rutaImagen = '/imagenes/0-Base/ImgDerDiaria.jpg'; tituloImagen=locals.tituloImgDerDiaria} %>
 	<!-- Mostrar la Imagen -->
-	<section id="imagenDerecha"><img src="<%= rutaImagen %>" title="<%= tituloImagen %>"></section>
+	<section id="imagenDerecha">
+		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
+	</section>
 <% } %>
