@@ -1,5 +1,6 @@
 "use strict";
 window.addEventListener("load", () => {
+	// Variables de bloque
 	let beneficios = {
 		titulo: document.querySelectorAll("#medio #titulo")[0],
 		ul: document.querySelectorAll("#medio #beneficios"),
