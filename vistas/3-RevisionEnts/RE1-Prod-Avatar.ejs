@@ -19,23 +19,37 @@
 		<%- include('CMP-TimerContador') %>
 		<div id="fichaTecnica" class="aparece">
 			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
-			<p>Año de estreno: <strong><%= prodOrig.ano_estreno %></strong></p>
-			<p>Dirección: <strong><%= prodOrig.direccion %></strong></p>	
+			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
+			<p>Dirección: <%= prodOrig.direccion %></p>
 		</div>
 	</div>
 	<div id="medio">
-		<div id="pregunta">
-			<p>¿Recomendás que la imagen de la <strong><u>izquierda</u></strong><br>reemplace a la actual, que está a la derecha?</p>
-			<div id="flechas">
-				<!-- Liberar y salir -->
-				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
-					<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
-				</a>
-				<!-- Aceptar -->
+		<div id="info">
+			<h2 >¿Es mejor la imagen de la <u>izquierda</u>?</h2>
+			<!-- Aceptar -->
+			<div id="titulo">
 				<i class="fa-solid fa-circle-check" title="Aceptar"></i>
-				<!-- Rechazar -->
-				<i class="fa-solid fa-circle-xmark" title="Rechazar"></i>
+				<h3>Beneficios:</h3>
 			</div>
+			<ul id="beneficios">
+				<li id="ratio">Mejor relación de alto y ancho.</li>
+				<li id="resolucion">Mejor resolución.</li>
+			</ul>
+			<!-- Rechazar -->
+			<div id="titulo">
+				<i class="fa-solid fa-circle-xmark" title="Rechazar"></i>
+				<h3>Perjuicios: </h3>
+			</div>
+			<ul id="perjuicios">
+				<li id="ratio">Peor relación de alto y ancho.</li>
+				<li id="resolucion">Peor resolución.</li>
+			</ul>
+		</div>
+		<div id="flechas">
+			<!-- Liberar y salir -->
+			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
+				<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+			</a>
 		</div>
 	</div>
 	<div id="abajo">
