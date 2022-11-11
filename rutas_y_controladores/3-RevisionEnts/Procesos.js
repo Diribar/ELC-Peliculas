@@ -751,8 +751,8 @@ module.exports = {
 		let obtieneElValorDeUnCampo = (registro, campo) => {
 			// Variables
 			let familia = comp.obtieneFamiliaEnPlural(entidad);
-			let camposConVinculo = [...variables.camposRevisar[familia]];
-			camposConVinculo.filter((n) => n.relac_include);
+			let camposConVinculo = [...variables.camposRevisar[familia]]; // Hay que desconectarse del original
+			camposConVinculo = camposConVinculo.filter((n) => n.relac_include);
 			let campos = camposConVinculo.map((n) => n.nombre);
 			let indice = campos.indexOf(campo);
 			let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";

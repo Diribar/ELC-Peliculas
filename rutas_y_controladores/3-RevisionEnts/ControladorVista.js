@@ -53,9 +53,9 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtiene avatar original
-		let avatar = prodOrig.avatar;
-		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + avatar
+		let imgDerPers = prodOrig.avatar;
+		imgDerPers = imgDerPers
+			? (!imgDerPers.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + imgDerPers
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
@@ -77,7 +77,7 @@ module.exports = {
 			entidad,
 			id,
 			prodOrig,
-			avatar,
+			imgDerPers,
 			bloqueIzq,
 			bloqueDer,
 			motivosRechazo,
@@ -183,11 +183,10 @@ module.exports = {
 		if (prodEdic.avatar_url || prodEdic.avatar_archivo) {
 			// Averigua si se reemplaza automáticamente
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar_archivo && // Que exista 'avatar_archivo'
+				prodEdic.avatar_archivo && // Que exista el valor 'avatar_archivo'
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
 			// Adecua los campos 'avatar' en la variable y el registro
 			let datos = {avatar_url: null, avatar_archivo: null};
-			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
 			prodEdic = {avatar: prodEdic.avatar_archivo, ...prodEdic, ...datos};
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
@@ -196,6 +195,7 @@ module.exports = {
 				[quedanCampos, prodEdic] = await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
 				if (!quedanCampos) return res.redirect(req.url);
 				delete prodEdic.avatar;
+				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -208,7 +208,7 @@ module.exports = {
 									: "/imagenes/3-Productos/"
 								: "") + prodOrig.avatar
 						: "/imagenes/8-Agregar/IM.jpg",
-					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar_archivo,
+					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,
 				};
 				motivos = motivos.filter((m) => m.avatar);
 			}
@@ -233,7 +233,6 @@ module.exports = {
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 		}
-		return res.send(codigo);
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -256,6 +255,7 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			cartel: true,
 			omitirImagenDerecha: codigo.includes("avatar"),
+			omitirFooter: codigo.includes("avatar"),
 		});
 	},
 	// RCLVs

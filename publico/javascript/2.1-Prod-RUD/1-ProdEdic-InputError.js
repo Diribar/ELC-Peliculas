@@ -111,7 +111,7 @@ window.addEventListener("load", async () => {
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
 				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
-				if (!v.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
+				if (!version.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
 				else v.botonesDescartar[1].classList.add("inactivoVersion");
 			} else {
 				v.botonesActivarVersion[1].classList.add("inactivoVersion");
@@ -264,7 +264,7 @@ window.addEventListener("load", async () => {
 			let reader = new FileReader();
 			reader.readAsDataURL(v.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
-				var image = new Image();
+				let image = new Image();
 				image.src = reader.result;
 				// Acciones si es realmente una imagen
 				image.onload = async () => {
