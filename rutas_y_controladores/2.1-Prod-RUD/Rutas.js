@@ -32,9 +32,9 @@ router.get("/api/edicion/eliminar", API.prod_EliminarEdicG);
 
 // Rutas de vistas
 // Producto
-router.get("/detalle", entidad, id, capturaInactivar, vista.prodEdicForm_Detalle);
-router.get("/edicion", ...todos, vista.prodEdicForm_Detalle);
-router.post("/edicion", ...todos, multer.single("avatar"), vista.prodEdicGuardar);
+router.get("/detalle", entidad, id, capturaInactivar, vista.prodDetEdic_Form);
+router.get("/edicion", ...todos, vista.prodDetEdic_Form);
+router.post("/edicion", ...todos, multer.single("avatar"), vista.prodEdic_Guardar);
 // Pendiente
 router.get("/calificala", ...todos, vista.calificala);
 

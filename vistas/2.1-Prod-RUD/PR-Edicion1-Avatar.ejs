@@ -19,4 +19,12 @@
 	<%- include("CMP-Errores") %>
 	<!-- Aviso de cambio en el data-entry -->
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
+	<!-- Links a sitios externos para buscar imágenes alternativas -->
+	<nav class="agregados">
+		<% for (let registro of avatarLinksExternos) { %>
+			<a href="<%= registro.href %>" target="_blank">
+				<img src="<%= registro.src %>" alt="<%= registro.alt %>">
+			</a>
+		<% } %>
+	</nav>
 </section>
