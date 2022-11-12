@@ -1,8 +1,11 @@
 #motivosRechazo {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 11;}
-#motivosRechazo {background-color: var(--amarillo-oscuro); padding: 20px; border-radius: 20px;}
+#motivosRechazo {background-color: var(--rojo-oscuro); padding: 20px; border-radius: 20px;}
 #motivosRechazo {border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
 #motivosRechazo {width: 300px; text-align: center;}
+#motivosRechazo p {color: snow; font-size: 1.2rem;}
 #motivosRechazo select {margin-top: 20px; margin-bottom: 20px; border-radius: 10px; padding: 0 5px;}
 #motivosRechazo #comandosRechazar {display: flex; flex-direction: row; justify-content: space-evenly;}
 #motivosRechazo #comandosRechazar button {border: none; border-radius: 50%;}
-#motivosRechazo #comandosRechazar i {color: var(--gris-oscuro); font-size: 1.5rem;}
+#motivosRechazo #comandosRechazar i {font-size: 2rem;}
+#motivosRechazo #comandosRechazar i.fa-circle-left {color: var(--azul-oscuro);}
+#motivosRechazo #comandosRechazar i.fa-circle-right {color: var(--rojo-oscuro);}

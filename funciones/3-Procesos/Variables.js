@@ -489,6 +489,30 @@ module.exports = {
 			{nombre: "parte", titulo: "Parte"},
 		],
 	},
+	avatarLinksExternos: (nombre) => {
+		return [
+			{
+				href: "//themoviedb.org/search?query=" + nombre,
+				src: "/imagenes/0-Logos/BD-TMDB.jpg",
+				alt: "TMDB",
+			},
+			{
+				href: "//filmaffinity.com/es/search.php?stext=" + nombre,
+				src: "/imagenes/0-Logos/BD-FA.jpg",
+				alt: "FA",
+			},
+			{
+				href: "//imdb.com/find?q=" + nombre,
+				src: "/imagenes/0-Logos/BD-IMDB.jpg",
+				alt: "IMDB",
+			},
+			{
+				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
+				src: "/imagenes/0-Logos/BD-Google.jpg",
+				alt: "Google",
+			},
+		];
+	},
 
 	// Vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
