@@ -26,6 +26,12 @@ form #imagenDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; tra
 form #imagenDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
 form #imagenDerecha.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
 
+/* Imagen - Links a sitios externos */
+form #imagenDerecha.inputError .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
+form #imagenDerecha.inputError .agregados {background-color: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
+form #imagenDerecha.inputError .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
+form #imagenDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
+
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
 #datos #primeraColumna {width: 42%;}
