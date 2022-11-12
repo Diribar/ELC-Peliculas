@@ -1,8 +1,8 @@
 "use strict";
 // ************ Requires *************
+const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./Procesos");
 
 // *********** Controlador ***********
@@ -45,6 +45,21 @@ module.exports = {
 		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
+	},
+	prodGuardaAvatar: async (req, res) => {
+		// Variables
+		let url = req.query.url;
+		let resultado = "Error";
+		// Descargar
+		if (url) {
+			// Variables
+			let archivoNombre = Date.now() + path.extname(url);
+			let rutaYnombre = "./publico/imagenes/3-Productos/" + archivoNombre;
+			// Descargar
+			await comp.descargar(url, rutaYnombre);
+			resultadoOK = "OK";
+		}
+		return res.json(resultado);
 	},
 	// Links
 	linkAlta: async (req, res) => {
