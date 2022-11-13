@@ -53,9 +53,16 @@ module.exports = {
 		let rutaYnombre = "./publico/imagenes/3-Productos/" + avatar;
 		// Realiza y obtiene el resultado de la descarga
 		let resultado = await comp.descarga(url, rutaYnombre);
-		// Actualiza el campo avatar en el registro original
-		// if (resultado=="OK") BD_genericas.actualizaPorId(entidad,id,{avatar})
-		return res.json(resultado);
+		// Acciones si el resultado es OK
+		if (resultado=="OK") {
+			// Actualiza el campo avatar en el registro original
+			// BD_genericas.actualizaPorId(entidad,id,{avatar})
+			// Actualiza la ruta para enviar al Front-End
+			rutaYnombre=rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"))
+			console.log(rutaYnombre);
+		}
+		// Fin
+		return res.json([resultado, rutaYnombre]);
 	},
 	// Links
 	linkAlta: async (req, res) => {

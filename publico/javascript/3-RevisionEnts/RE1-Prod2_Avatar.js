@@ -24,7 +24,7 @@ window.addEventListener("load", () => {
 
 	// Otros
 	let urlConvertirEnArchivo = document.querySelector("#derecha .agregados");
-	let urlAvatar = document.querySelector("#derecha img").src;
+	let avatarActual = document.querySelector("#derecha img");
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
@@ -64,12 +64,13 @@ window.addEventListener("load", () => {
 		else urlConvertirEnArchivo.classList.add("inactivo");
 
 		// Convierte el url en archivo
-		let url = encodeURIComponent(urlAvatar);
-		let resultado = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
-		console.log(resultado);
+		let url = encodeURIComponent(avatarActual.src);
+		let [resultado, rutaYnombre] = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
 
 		// Oculta el botón si se concretó la descarga, de lo contrario activa el botón
-		if (resultado == "OK") urlConvertirEnArchivo.classList.add("ocultar");
-		else urlConvertirEnArchivo.classList.remove("inactivo");
+		if (resultado == "OK") {
+			urlConvertirEnArchivo.classList.add("ocultar");
+			avatarActual.src = rutaYnombre;
+		} else urlConvertirEnArchivo.classList.remove("inactivo");
 	});
 });
