@@ -10,5 +10,14 @@
 .aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .25s; animation-timing-function: linear; animation-fill-mode: forwards;}
 
 /* Scale */
+#flechas i, #flechas img, #flechas a, #flechas button,
+#comandos i, #comandos button, #comandosRechazar i,
 #cuerpo a i, .scale {transition: 300ms; cursor: pointer;}
-#cuerpo a i:hover, .scale:hover {transform: scale(1.3);}
+
+#flechas i:hover, #flechas img:hover, #flechas button:hover, 
+#comandos i:hover, #comandos button:hover, 
+#comandosRechazar i:hover, #cuerpo a i:hover, .scale:hover {transform: scale(1.3);}
+
+#flechas button i:hover, #comandos button i:hover {transform: none;}
+/* #flechas a i:hover, #comandos a i:hover {transform: none;} */
+
