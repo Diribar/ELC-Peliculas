@@ -54,11 +54,11 @@ module.exports = {
 		// Realiza y obtiene el resultado de la descarga
 		let resultado = await comp.descarga(url, rutaYnombre);
 		// Acciones si el resultado es OK
-		if (resultado=="OK") {
+		if (resultado == "OK") {
 			// Actualiza el campo avatar en el registro original
-			// BD_genericas.actualizaPorId(entidad,id,{avatar})
+			BD_genericas.actualizaPorId(entidad, id, {avatar});
 			// Actualiza la ruta para enviar al Front-End
-			rutaYnombre=rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"))
+			rutaYnombre = rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"));
 			console.log(rutaYnombre);
 		}
 		// Fin
