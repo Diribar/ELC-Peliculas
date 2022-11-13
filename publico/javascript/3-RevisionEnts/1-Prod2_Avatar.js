@@ -6,8 +6,8 @@ window.addEventListener("load", () => {
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
 	// Opciones
-	let aprobar = document.querySelector("#flechas .fa-circle-check");
-	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
+	let aprobar = document.querySelector("#centro .fa-circle-check");
+	let mostrarMenuMotivos = document.querySelector("#centro .fa-circle-xmark");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
 

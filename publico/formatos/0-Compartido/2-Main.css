@@ -54,10 +54,11 @@ main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-we
 #comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
 #comandos i, #comandos button,
 #flechas i, #flechas img, #flechas a, #flechas button {margin: 0 15px; border-radius: 50%;}
-#comandos i, #flechas i, #flechas img, #flechas a, #flechas button {transition: 250ms; cursor: pointer;}
-#comandos i:hover, #flechas i:hover, #flechas img:hover,
-#comandos button:hover, #flechas button:hover,
-#comandos a:hover, #flechas a:hover {transform: scale(1.2);}
+#flechas i , #flechas img, #flechas a, #flechas button,
+#comandos i, #comandosRechazar i {transition: 250ms; cursor: pointer;}
+#flechas i:hover, #flechas img:hover, #flechas button:hover, #flechas a:hover, 
+#comandos i:hover, #comandos button:hover, #comandos a:hover, 
+#comandosRechazar i:hover {transform: scale(1.2);}
 #comandos button i:hover, #flechas button i:hover {transform: none;}
 #comandos a i:hover, #flechas a i:hover {transform: none;}
 

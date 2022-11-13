@@ -154,7 +154,7 @@ module.exports = {
 		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = comp.obtieneEntidad_id(entidad);
-		let quedanCampos, prodOrig;
+		let quedanCampos, prodOrig, avatarExterno, avatarLinksExternos;
 		// Obtiene la edición a analizar
 		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
 		// Si no existe una edición => inactiva y regresa al Tablero de Control
@@ -199,7 +199,6 @@ module.exports = {
 			} else {
 				// Variables
 				codigo += "/avatar";
-				// Ruta y nombre del archivo 'avatar'
 				avatar = {
 					original: prodOrig.avatar
 						? (!prodOrig.avatar.startsWith("http")
@@ -211,6 +210,8 @@ module.exports = {
 					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,
 				};
 				motivos = motivos.filter((m) => m.avatar);
+				avatarExterno = !avatar.original.includes("/imagenes/");
+				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
 		}
 		if (!codigo.includes("avatar")) {
@@ -253,6 +254,8 @@ module.exports = {
 			id,
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
+			avatarExterno,
+			avatarLinksExternos,
 			cartel: true,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),

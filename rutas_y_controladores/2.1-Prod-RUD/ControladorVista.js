@@ -9,7 +9,7 @@ const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prodEdicForm_Detalle: async (req, res) => {
+	prodDetEdic_Form: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		const tema = "prod_rud";
@@ -18,7 +18,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
-		let imgDerPers;
+		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene la versión más completa posible del producto
@@ -58,6 +58,7 @@ module.exports = {
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
+			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
@@ -146,12 +147,13 @@ module.exports = {
 			prodNombre,
 			cartel: codigo == "edicion",
 			dataEntry: {},
-			campo: "",
+			// campo: "",
+			avatarLinksExternos,
 			omitirImagenDerecha: codigo == "edicion",
 			omitirFooter: codigo == "edicion",
 		});
 	},
-	prodEdicGuardar: async (req, res) => {
+	prodEdic_Guardar: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
