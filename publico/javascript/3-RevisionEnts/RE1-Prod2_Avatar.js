@@ -15,18 +15,23 @@ window.addEventListener("load", () => {
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
 	let motivosRechazo = document.querySelector("#motivosRechazo");
 	let motivoRechazo = document.querySelector("#motivosRechazo select");
+
 	// Rutas
 	let rutaEvaluar = "/revision/api/producto-edicion/?entidad=";
 	rutaEvaluar += entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar";
+	let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
+	rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
+
+	// Otros
+	let urlConvertirEnArchivo = document.querySelector("#derecha .agregados");
+	let urlAvatar = document.querySelector("#derecha img").src;
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
 		if (aprobar.className.includes("inactivo")) return;
-		aprobar.style.transform = "scale(1)";
-		aprobar.style.cursor = "wait";
 		aprobar.classList.add("inactivo");
 		await fetch(rutaEvaluar + "&aprob=true").then((n) => n.json());
-		window.location.reload()
+		window.location.reload();
 	});
 
 	// Menú mostrarMenuMotivos para inactivar
@@ -45,11 +50,26 @@ window.addEventListener("load", () => {
 	rechazar.addEventListener("click", async () => {
 		let motivo = motivoRechazo.value;
 		if (motivo && !rechazar.className.includes("inactivo")) {
-			rechazar.style.transform = "scale(1)";
 			rechazar.classList.add("inactivo");
-			motivosRechazo.style.cursor = "wait";
 			await fetch(rutaEvaluar + "&aprob=false&motivo_id=" + motivo);
-			window.location.reload()
+			window.location.reload();
 		}
+	});
+
+	// Convertir el avatar de 'url' a 'archivo'
+	urlConvertirEnArchivo.addEventListener("click", async () => {
+		// Detiene el proceso si el botón está inactivo, de lo contrario inactiva el botón
+		console.log(urlConvertirEnArchivo.className.includes("inactivo"));
+		if (urlConvertirEnArchivo.className.includes("inactivo")) return;
+		else urlConvertirEnArchivo.classList.add("inactivo");
+
+		// Convierte el url en archivo
+		let url = encodeURIComponent(urlAvatar);
+		let resultado = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
+		console.log(resultado);
+
+		// Oculta el botón si se concretó la descarga, de lo contrario activa el botón
+		if (resultado == "OK") urlConvertirEnArchivo.classList.add("ocultar");
+		else urlConvertirEnArchivo.classList.remove("inactivo");
 	});
 });

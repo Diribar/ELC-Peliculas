@@ -1,5 +1,6 @@
 <!-- Flechas -->
-<script src="/javascript/2.0-Familias-CRUD/Includes/0-RUD-Flechas.js"></script>
+<link rel="stylesheet" href="/formatos/0-Compartido/Main/ComandosFlechas.css">
+
 <!-- Colecciones y Capítulos -->
 <% if (entidad != "peliculas") { %><script src="/javascript/2.0-Familias-CRUD/Includes/0-RUD-AlternarColCap.js"></script><% } %>
 <!-- Capítulos -->
@@ -8,6 +9,7 @@
 <!-- Detalle para Producto -->
 <% if (codigo == "detalle") { %>
 	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR1-Prod-1Detalle.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="/javascript/2.1-Prod-RUD/1-ProdDetalle-Grafico.js"></script>
 <% } %>

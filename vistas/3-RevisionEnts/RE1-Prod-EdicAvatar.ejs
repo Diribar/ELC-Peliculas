@@ -4,7 +4,7 @@
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
-				<img src="<%= registro.src %>" alt="<%= registro.alt %>">
+				<img src="<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
 		<% } %>
 	</nav>
@@ -35,13 +35,13 @@
 			<h2 >¿Es mejor la imagen de la <u>izquierda</u>?</h2>
 			<!-- Aceptar -->
 			<div id="titulo">
-				<i class="fa-solid fa-circle-check" title="Aceptar"></i>
+				<i class="fa-solid fa-circle-check scale" title="Aceptar"></i>
 			</div>
 			<ul id="beneficios">
 			</ul>
 			<!-- Rechazar -->
 			<div id="titulo">
-				<i class="fa-solid fa-circle-xmark<% if (avatarExterno) { %> inactivo<% } %>" title="Rechazar"></i>
+				<i class="fa-solid fa-circle-xmark scale<% if (avatarExterno) { %> inactivo<% } %>" title="Rechazar"></i>
 			</div>
 			<ul id="perjuicios">
 			</ul>
@@ -78,6 +78,6 @@
 	<!-- Imagen actual -->
 	<img class="aparece" src="<%= avatar.original %>" title="Imagen actual">
 	<% if (avatarExterno) { %>
-		<button type="button" class="agregados">Descargar en nuestro sitio web</button>
+		<button type="button" class="agregados scale">Descargalo en nuestro sitio web</button>
 	<% } %>
 </div>

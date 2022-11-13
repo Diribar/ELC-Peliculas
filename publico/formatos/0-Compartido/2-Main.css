@@ -1,87 +1,18 @@
-/* Main */
+/* General */
 main {height: 91vh;}
-
-/* Headings */
-main h1 {font-size: 1.25rem;}
-main h2 {font-size: 1.20rem;}
-main h3 {font-size: 1.10rem;}
-
-main .fa-solid {line-height: normal;}
+main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 
 /* Imagen Derecha */
-/* main #imagenDerecha {width: 30vw; height: 100%; position: relative;} */
-/* main #imagenDerecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;} */
 main #imagenDerecha {display: flex; flex-direction: column; justify-content: center;}
 main #imagenDerecha {background-color: var(--gris-claro);}
 main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
 
-/* Cuerpo y Footer */
-main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
+/* Cuerpo */
+main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
-main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
+
+/* Footer */
 main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpoFooter footer {display: flex; flex-direction: row; justify-content: space-around;}
 main #cuerpoFooter footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
-
-/* Desplazamiento - Desplazar el contenido*/
-.desplazam {position: relative; box-shadow: 0px 0px 10px rgb(100 100 100);}
-.desplazam .infoDesplazam {overflow-y: scroll;}
-/* Desplazamiento - Ocultar la 'side-bar' */
-.desplazam .infoDesplazam::-webkit-scrollbar {display: none; /* Safari and Chrome */}
-.desplazam .infoDesplazam {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
-
-/* Datos breves */
-#datosBreves {display: flex; flex-direction: column; justify-content: center}
-#datosBreves {border: var(--gris-oscuro) 3px solid; margin: auto 15px;}
-#datosBreves {padding: 20px; border-radius: 15px; background-color: snow;}
-#datosBreves h3 {background-color: var(--gris-oscuro); color: snow;}
-#datosBreves h3 {padding: 3px; border-radius: 10px; text-align: center;}
-#datosBreves h3:nth-child(n+2) {margin-top: 20px;}
-#datosBreves p {margin-top: 10px;}
-#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #texto p#status1 span {background-color: var(--azul-oscuro); color: snow;}
-#datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
-#datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
-
-/* Íconos de Error */
-.fa-circle-check, .fa-circle-xmark, .fa-circle-left, .fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
-.fa-circle-check {color: var(--verde-oscuro);}
-.fa-circle-xmark {color: var(--rojo-oscuro);}
-
-/* Comandos y Flechas */
-#comandos, #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
-#comandos i, #comandos button,
-#flechas i, #flechas img, #flechas a, #flechas button {margin: 0 15px; border-radius: 50%;}
-#flechas i , #flechas img, #flechas a, #flechas button,
-#comandos i, #comandosRechazar i {transition: 250ms; cursor: pointer;}
-#flechas i:hover, #flechas img:hover, #flechas button:hover, #flechas a:hover, 
-#comandos i:hover, #comandos button:hover, #comandos a:hover, 
-#comandosRechazar i:hover {transform: scale(1.2);}
-#comandos button i:hover, #flechas button i:hover {transform: none;}
-#comandos a i:hover, #flechas a i:hover {transform: none;}
-
-#comandos .pack, #flechas .pack {margin: 0 20px;}
-#comandos button i,
-#flechas a i, #flechas button i {margin: 0;}
-#flechas button {border: none;}
-
-/* Comandos */
-#comandos {background-color: var(--backComandos);}
-#comandos i {color: white; }
-#comandos .pack {display: flex; flex-direction: row; align-items: center;}
-
-/* Flechas */
-#flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
-#flechas .fa-circle-left, #flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
-#flechas .pack i {margin: 0;}
-
-/* Varios */
-.inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}
-#cuerpo .inactivo, #cuerpo .inactivo *, #cuerpo .inactivoErrores, #cuerpo .inactivoErrores *,
-#cuerpo .inactivoVersion, #cuerpo .inactivoVersion * {cursor: not-allowed;}
-
-/* Aparece */
-@keyframes aparece {0% {opacity: 0} 100% {opacity: 1}}
-.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .25s; animation-timing-function: linear; animation-fill-mode: forwards;}

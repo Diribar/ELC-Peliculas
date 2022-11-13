@@ -195,7 +195,7 @@ module.exports = {
 				avatar_archivo = Date.now() + path.extname(datosDuros.avatar_url);
 				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar_archivo;
 				// Descargar
-				comp.descargar(datosDuros.avatar_url, rutaYnombre);
+				comp.descarga(datosDuros.avatar_url, rutaYnombre);
 			}
 			// Revisar errores nuevamente
 			errores.avatar = comp.revisaLaImagen(tipo, tamano);

@@ -7,11 +7,9 @@ header section {margin: 0 15px;}
 /* Formato de íconos */
 header section .grupos {margin: 0 15px; position: relative;}
 header section .grupos.margenDerecho {margin-right: 40px;}
-header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; transform: none;}
+header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
 header #icono-usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
-header section .grupos .scale {transition: 300ms;}
-header section .grupos .scale:hover {transform: scale(1.3);}
 
 /* Ícono de agregar producto */
 header section .grupos .iconoComb {position: relative;}

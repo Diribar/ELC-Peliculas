@@ -1,8 +1,13 @@
-/* GENERAL */
+/* Títulos */
+h1 {font-size: 1.25rem;}
+h2 {font-size: 1.20rem;}
+h3 {font-size: 1.10rem;}
+
+/* Formularios */
 select, option, a, button[type="submit"] {cursor: pointer;}
 select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
-/* Formato para elementos */
+/* Varios */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 i {font-style: normal;}
 a {text-decoration: none; color: inherit;}
