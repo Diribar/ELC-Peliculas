@@ -9,8 +9,6 @@ select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Íconos */
 main .fa-solid {line-height: normal;}
-a i {transition: 300ms; cursor: pointer;}
-a i:hover {transform: scale(1.3);}
 
 /* Varios */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
