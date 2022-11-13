@@ -11,6 +11,7 @@
 .wrap {flex-wrap: wrap;}
 
 /* Íconos clave */
+.fa-solid {line-height: normal;}
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left, 
 .fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}

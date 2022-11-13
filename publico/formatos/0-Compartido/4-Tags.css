@@ -7,9 +7,6 @@ h3 {font-size: 1.10rem;}
 select, option, a, button[type="submit"] {cursor: pointer;}
 select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
-/* Íconos */
-main .fa-solid {line-height: normal;}
-
 /* Varios */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 i {font-style: normal;}
