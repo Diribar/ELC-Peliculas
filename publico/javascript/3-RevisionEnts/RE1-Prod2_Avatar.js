@@ -29,8 +29,6 @@ window.addEventListener("load", () => {
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
 		if (aprobar.className.includes("inactivo")) return;
-		aprobar.style.transform = "scale(1)";
-		aprobar.style.cursor = "wait";
 		aprobar.classList.add("inactivo");
 		await fetch(rutaEvaluar + "&aprob=true").then((n) => n.json());
 		window.location.reload();
@@ -52,9 +50,7 @@ window.addEventListener("load", () => {
 	rechazar.addEventListener("click", async () => {
 		let motivo = motivoRechazo.value;
 		if (motivo && !rechazar.className.includes("inactivo")) {
-			rechazar.style.transform = "scale(1)";
 			rechazar.classList.add("inactivo");
-			motivosRechazo.style.cursor = "wait";
 			await fetch(rutaEvaluar + "&aprob=false&motivo_id=" + motivo);
 			window.location.reload();
 		}
