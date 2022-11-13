@@ -9,8 +9,11 @@
 #cuerpo .imagenes .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
 #cuerpo .imagenes .agregados {background-color: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
 #cuerpo .imagenes .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
-/* Sección de Imagen izquierda */
+/* Secciones de Imagen - Izquierda */
 #cuerpo .imagenes .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
+/* Secciones de Imagen - Derecha */
+#cuerpo .imagenes .agregados.scale:hover {transform: translateX(-50%) scale(1.3);}
+#cuerpo .imagenes .agregados.inactivo {cursor: wait;}
 
 /* Sección central */
 #cuerpo #centro {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; align-items: center;}
@@ -31,8 +34,7 @@
 #centro #medio #info h2 {text-align: center; margin-top: 10px;}
 #centro #medio #info #titulo {margin-top: 10px; display: flex; flex-direction: row; align-items: center; line-height: 1;}
 #centro #medio #info #titulo * {font-size: 1.2rem;}
-#centro #medio #info #titulo .fa-solid {font-size: 1.5rem; transition: 250ms;}
-#centro #medio #info #titulo .fa-solid:hover {transform: scale(1.2);}
+#centro #medio #info #titulo .fa-solid {font-size: 1.5rem;}
 #centro #medio #info #titulo h3 {margin: 0 5px;}
 #centro #medio #info #titulo h3::first-letter {text-transform:capitalize;}
 #centro #medio #info ul {list-style-position: inside;}

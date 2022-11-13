@@ -381,16 +381,27 @@ module.exports = {
 			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
 			: "";
 	},
-	descargar: async (url, rutaYnombre) => {
+	descarga: async (url, rutaYnombre) => {
+		// Carpeta donde descargar
 		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+		// Realiza la descarga
 		let writer = fs.createWriteStream(rutaYnombre);
-		let response = await axios({method: "GET", url: url, responseType: "stream"});
+		let response = await axios({method: "GET", url, responseType: "stream"});
 		response.data.pipe(writer);
-		return new Promise((resolve, reject) => {
-			writer.on("finish", () => resolve(console.log("Imagen guardada")));
-			writer.on("error", (error) => reject(error));
+		// Obtiene el resultado de la descarga
+		let resultado = await new Promise((resolve, reject) => {
+			writer.on("finish", () => {
+				console.log("Imagen guardada");
+				resolve("OK");
+			});
+			writer.on("error", (error) => {
+				console.log(error);
+				reject(error)
+			});
 		});
+		// Fin
+		return resultado;
 	},
 	avatarOrigEdic: (prodOrig, prodEdic) => {
 		let aux1 = prodOrig.avatar.startsWith("http");
@@ -453,9 +464,7 @@ module.exports = {
 		let {avatar, tamano, esImagen} = datos;
 		// Funciones
 		let FN_nombre = () => {
-			return !avatar && esImagen == "SI"
-				? "Necesitamos que agregues una imagen"
-				: "";
+			return !avatar && esImagen == "SI" ? "Necesitamos que agregues una imagen" : "";
 		};
 		let FN_extension = () => {
 			if (!avatar) return "";

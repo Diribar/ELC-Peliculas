@@ -48,16 +48,18 @@ module.exports = {
 	},
 	prodGuardaAvatar: async (req, res) => {
 		// Variables
-		let url = req.query.url;
-		let resultado = "Error";
+		let {entidad, id, url} = req.query;
+		console.log(entidad, id, url);
+		let resultado;
 		// Descargar
 		if (url) {
 			// Variables
-			let archivoNombre = Date.now() + path.extname(url);
-			let rutaYnombre = "./publico/imagenes/3-Productos/" + archivoNombre;
-			// Descargar
-			await comp.descargar(url, rutaYnombre);
-			resultadoOK = "OK";
+			let avatar = Date.now() + path.extname(url);
+			let rutaYnombre = "./publico/imagenes/3-Productos/" + avatar;
+			// Realiza la descarga
+			resultado = await comp.descarga(url, rutaYnombre);
+			// Actualiza el campo avatar en el registro original
+			// BD_genericas.actualizaPorId(entidad,id,{avatar})
 		}
 		return res.json(resultado);
 	},

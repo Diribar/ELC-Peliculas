@@ -20,3 +20,5 @@
 .bloqueado {background-color: var(--celeste-oscuro);}
 .inactivo {opacity: .5; border-color: transparent;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}
+.scale {transition: 300ms; cursor: pointer;}
+.scale:hover {transform: scale(1.3);}
