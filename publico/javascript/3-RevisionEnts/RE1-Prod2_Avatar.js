@@ -59,7 +59,6 @@ window.addEventListener("load", () => {
 	// Convertir el avatar de 'url' a 'archivo'
 	urlConvertirEnArchivo.addEventListener("click", async () => {
 		// Detiene el proceso si el botón está inactivo, de lo contrario inactiva el botón
-		console.log(urlConvertirEnArchivo.className.includes("inactivo"));
 		if (urlConvertirEnArchivo.className.includes("inactivo")) return;
 		else urlConvertirEnArchivo.classList.add("inactivo");
 
