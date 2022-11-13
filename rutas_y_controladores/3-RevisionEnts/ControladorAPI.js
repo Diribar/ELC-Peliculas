@@ -59,7 +59,6 @@ module.exports = {
 			BD_genericas.actualizaPorId(entidad, id, {avatar});
 			// Actualiza la ruta para enviar al Front-End
 			rutaYnombre = rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"));
-			console.log(rutaYnombre);
 		}
 		// Fin
 		return res.json([resultado, rutaYnombre]);
