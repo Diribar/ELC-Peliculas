@@ -199,6 +199,40 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
+	obtieneEntidad: (entidad) => {
+		return entidad.pelicula_id
+			? "peliculas"
+			: entidad.coleccion_id
+			? "colecciones"
+			: entidad.capitulo_id
+			? "capitulos"
+			: entidad.personaje_id
+			? "personajes"
+			: entidad.hecho_id
+			? "hechos"
+			: entidad.valor_id
+			? "valores"
+			: entidad.link_id
+			? "links"
+			: "";
+	},
+	obtieneEntidadSingular: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula"
+			: entidad == "colecciones"
+			? "coleccion"
+			: entidad == "capitulos"
+			? "capitulo"
+			: entidad == "personajes"
+			? "personaje"
+			: entidad == "hechos"
+			? "hecho"
+			: entidad == "valores"
+			? "valor"
+			: entidad == "links"
+			? "link"
+			: "";
+	},
 	obtieneEntidadDesdeEdicion: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
@@ -397,7 +431,7 @@ module.exports = {
 			});
 			writer.on("error", (error) => {
 				console.log(error);
-				reject(error)
+				reject(error);
 			});
 		});
 		// Fin
@@ -535,12 +569,34 @@ module.exports = {
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
-	eliminarRepetidos: (prods) => {
-		let IDs = [];
-		for (let i = prods.length - 1; i >= 0; i--)
-			if (!IDs.includes(prods[i].id)) IDs.push(prods[i].id);
-			else prods.splice(i, 1);
-		return prods;
+	eliminaRepetidos: (prods) => {
+		// Variables
+		let resultado = [];
+		// Agrega los productos con edición más antigua
+		for (let prod of prods)
+			if (!resultado.filter((n) => n.id == prod.id && n.entidad == prod.entidad).length)
+				resultado.push(prod);
+		// Fin
+		return resultado;
+	},
+	sinProblemasDeCaptura: (familia, userID, ahora) => {
+		// Variables
+		const haceUnaHora = nuevoHorario(-1, ahora);
+		const haceDosHoras = nuevoHorario(-2, ahora);
+		// Fin
+		return familia.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturado_en ||
+				// Que esté capturado hace más de dos horas
+				n.capturado_en < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturado_por_id != userID && !n.captura_activa) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+		);
 	},
 	usuario_Ficha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
@@ -566,50 +622,25 @@ module.exports = {
 		return enviar;
 	},
 	obtieneProdsDeLinks: function (links, ahora, userID) {
-		// Variables
-		let peliculas = [];
-		let colecciones = [];
-		let capitulos = [];
-		// Abrir los productos por entidad
-		links.forEach((link) => {
-			if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
-			if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
-			if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
+		// 1. Variables
+		const aprobado_id = status_registro.find((n) => n.aprobado).id;
+		let productos = [];
+		// 3. Obtiene los productos
+		links.map((n) => {
+			let entidad = comp.obtieneEntidad(n);
+			let asociacion = comp.obtieneEntidadSingular(entidad);
+			productos.push({
+				...n[asociacion],
+				entidad,
+			});
 		});
-		// Eliminar repetidos
-		if (peliculas.length) peliculas = this.eliminarRepetidos(peliculas);
-		if (colecciones.length) colecciones = this.eliminarRepetidos(colecciones);
-		if (capitulos.length) capitulos = this.eliminarRepetidos(capitulos);
-		// Consolidar
-		let productos = [...peliculas, ...colecciones, ...capitulos];
-		// Depurar los productos que no cumplen ciertas condiciones
-		let limpiezaProds = (productos, ahora, userID) => {
-			// Variables
-			// Declarar las variables
-			const aprobado_id = status_registro.find((n) => n.aprobado).id;
-			const haceUnaHora = nuevoHorario(-1, ahora);
-			const haceDosHoras = nuevoHorario(-2, ahora);
-			// Dejar solamente los productos aprobados
-			productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-			// Dejar solamente los productos creados hace más de una hora
-			productos = productos.filter((n) => n.creado_en < haceUnaHora);
-			// Dejar solamente los productos que no tengan problemas de captura
-			productos = productos.filter(
-				(n) =>
-					// Que no esté capturado
-					!n.capturado_en ||
-					// Que esté capturado hace más de dos horas
-					n.capturado_en < haceDosHoras ||
-					// Que la captura haya sido por otro usuario y hace más de una hora
-					(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
-					// Que la captura haya sido por otro usuario y esté inactiva
-					(n.capturado_por_id != userID && !n.captura_activa) ||
-					// Que esté capturado por este usuario hace menos de una hora
-					(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
-			);
-			return productos;
-		};
-		productos = limpiezaProds(productos, ahora, userID);
+		// 4.A. Elimina repetidos
+		productos = this.eliminaRepetidos(productos);
+		// 4.B. Deja solamente los productos aprobados
+		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+		// 5. Deja solamente los sin problemas de captura
+		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+
 		// Fin
 		return productos;
 	},

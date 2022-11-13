@@ -144,41 +144,19 @@ module.exports = {
 		return res.redirect(urlEdicion);
 	},
 	prodEdicForm: async (req, res) => {
-		//return res.send("hola")
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion";
-		// 2. Constantes
-		const entidad = req.query.entidad;
-		const id = req.query.id;
-		const edicID = req.query.edicion_id;
-		const userID = req.session.usuario.id;
-		const producto_id = comp.obtieneEntidad_id(entidad);
-		let quedanCampos, prodOrig, avatarExterno, avatarLinksExternos;
-		// Obtiene la edición a analizar
-		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
-		// Si no existe una edición => inactiva y regresa al Tablero de Control
-		if (!prodEdic) {
-			let informacion = procesos.infoProdEdicion(entidad, id);
-			return res.render("CMP-0Estructura", {informacion});
-		}
-		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
-		if (prodEdic.id != edicID) {
-			let ruta = req.baseUrl + req.path;
-			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
-			return res.redirect(ruta);
-		}
-		// Declaración de más variables
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		// Proceso inicial
+		let {informacion, redirect, prodEdic, prodOrig} = await procesos.prodEdic_intro(req);
+		// Desvíos
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+		if (redirect) return res.redirect(redirect);
+		// Variables
+		let quedanCampos, avatarExterno, avatarLinksExternos;
 		let avatar, ingresos, reemplazos, bloqueDer;
-		// Obtiene los includes
-		let includesEdic = comp.includes("productos");
-		let includesOrig = [...includesEdic, "status_registro"];
-		if (entidad == "capitulos") includesOrig.push("coleccion");
-		if (entidad == "colecciones") includesOrig.push("capitulos");
-		// Obtiene las versiones original y de edición con sus includes
-		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
-		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+
 		// Acciones dependiendo de si está presente el avatar
 		if (prodEdic.avatar_url || prodEdic.avatar_archivo) {
 			// Averigua si se reemplaza automáticamente

@@ -34,23 +34,15 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	TC_obtieneProdsConEdicAjena: async (ahora, userID) => {
-		// Obtiene los productos que tengan alguna edición que cumpla con:
-		// - Ediciones ajenas
-		// - Sin RCLV no aprobados
-		// Y además los productos sean aptos p/captura y en status c/creadoAprob o aprobados,
-
-		// Variables
-		const haceUnaHora = comp.nuevoHorario(-1, ahora);
-		const creado_id = status_registro.find((n) => n.creado).id;
-		const creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
+	TC_obtieneProdsConEdicAjena: async function (ahora, userID) {
+		// 1. Variables
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
-		const gr_aprobado = [creado_aprob_id, aprobado_id];
+		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
-		// Obtiene todas las ediciones ajenas
+		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
-		// Eliminar las edicionesProd con RCLV no aprobado
+		// 3.A. Elimina las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
 				if (
@@ -59,57 +51,27 @@ module.exports = {
 					(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
 				)
 					ediciones.splice(i, 1);
-		// Obtiene los productos
+		// 3.B. Obtiene los productos originales
 		if (ediciones.length) {
-			// Variables
-			let peliculas = [];
-			let colecciones = [];
-			let capitulos = [];
-			// Obtiene los productos
 			ediciones.map((n) => {
-				if (n.pelicula_id)
-					peliculas.push({
-						...n.pelicula,
-						entidad: "peliculas",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
-				else if (n.coleccion_id)
-					colecciones.push({
-						...n.coleccion,
-						entidad: "colecciones",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
-				else if (n.capitulo_id)
-					capitulos.push({
-						...n.capitulo,
-						entidad: "capitulos",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
+				let entidad = comp.obtieneEntidad(n);
+				let asociacion = comp.obtieneEntidadSingular(entidad);
+				productos.push({
+					...n[asociacion],
+					entidad,
+					editado_en: n.editado_en,
+					edicion_id: n.id,
+				});
 			});
-			// Eliminar los repetidos
-			if (peliculas.length) peliculas = comp.eliminarRepetidos(peliculas);
-			if (colecciones.length) colecciones = comp.eliminarRepetidos(colecciones);
-			if (capitulos.length) capitulos = comp.eliminarRepetidos(capitulos);
-			// Consolidar los productos
-			productos = [...peliculas, ...colecciones, ...capitulos];
-			// Dejar solamente los productos de gr_aprobado
-			// productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
-			productos = productos.filter((n) => n.status_registro_id != creado_id);
-			// Dejar solamente los productos que no tengan problemas de captura
-			if (productos.length)
-				productos = productos.filter(
-					(n) =>
-						!n.capturado_en ||
-						n.capturado_en < haceUnaHora ||
-						!n.captura_activa ||
-						n.capturado_por_id == userID
-				);
-			// Ordenar por fecha de edición
-			if (productos.length) productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
 		}
+		// 4.A Elimina los repetidos
+		productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+		productos = comp.eliminaRepetidos(productos);
+		// 4.B. Deja solamente los productos en status creado_aprob y creado
+		if (productos.length) productos = productos.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
+		// 5. Deja solamente los sin problemas de captura
+		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+
 		// Fin
 		return productos;
 	},
@@ -149,65 +111,36 @@ module.exports = {
 		return {PA};
 	},
 	TC_obtieneRCLVsConEdicAjena: async (ahora, userID) => {
-		// Obtiene los RCLVs que tengan alguna edición ajena
-
-		// Variables
-		const haceUnaHora = comp.nuevoHorario(-1, ahora);
+		// 1. Variables
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let includes = ["personaje", "hecho", "valor"];
 		let RCLVs = [];
-		// Obtiene todas las ediciones ajenas
+		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", userID, includes);
-		// Obtiene los RCLVs
+		// 3. Obtiene los RCLVs originales y deja solamente los RCLVs aprobados
 		if (ediciones.length) {
-			// Variables
-			let personajes = [];
-			let hechos = [];
-			let valores = [];
 			// Obtiene los RCLVs originales
 			ediciones.map((n) => {
-				if (n.personaje_id)
-					personajes.push({
-						...n.personaje,
-						entidad: "personajes",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
-				else if (n.hecho_id)
-					hechos.push({
-						...n.hecho,
-						entidad: "hechos",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
-				else if (n.valor_id)
-					valores.push({
-						...n.valor,
-						entidad: "valores",
-						editado_en: n.editado_en,
-						edicion_id: n.id,
-					});
+				let entidad = comp.obtieneEntidad(n);
+				let asociacion = comp.obtieneEntidadSingular(entidad);
+				RCLVs.push({
+					...n[asociacion],
+					entidad,
+					editado_en: n.editado_en,
+					edicion_id: n.id,
+				});
 			});
-			// Elimina los RCLVs repetidos
-			if (personajes.length) personajes = comp.eliminarRepetidos(personajes);
-			if (hechos.length) hechos = comp.eliminarRepetidos(hechos);
-			if (valores.length) valores = comp.eliminarRepetidos(valores);
-			// Consolida los RCLVs
-			RCLVs = [...personajes, ...hechos, ...valores];
 			// Deja solamente los RCLVs aprobados
 			RCLVs = RCLVs.filter((n) => n.status_registro_id == aprobado_id);
-			// Deja solamente los RCLVs que no tengan problemas de captura
-			if (RCLVs.length)
-				RCLVs = RCLVs.filter(
-					(n) =>
-						!n.capturado_en ||
-						n.capturado_en < haceUnaHora ||
-						!n.captura_activa ||
-						n.capturado_por_id == userID
-				);
-			// Ordena por fecha de edición
-			if (RCLVs.length) RCLVs.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
 		}
+		// 4. Elimina los repetidos
+		if (RCLVs.length) {
+			RCLVs.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+			RCLVs = comp.eliminaRepetidos(RCLVs);
+		}
+		// 5. Deja solamente los sin problemas de captura
+		if (RCLVs.length) RCLVs = this.sinProblemasDeCaptura(RCLVs, userID, ahora);
+
 		// Fin
 		return RCLVs;
 	},
@@ -321,7 +254,7 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// Producto Edición
-	infoProdEdicion: (entidad, prodID) => {
+	prodEdic_info: (entidad, prodID) => {
 		// Generar la info del error
 		let informacion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],
@@ -334,6 +267,33 @@ module.exports = {
 			],
 		};
 		return informacion;
+	},
+	prodEdic_intro: async (req) => {
+		// Constantes
+		const entidad = req.query.entidad;
+		const id = req.query.id;
+		const edicID = req.query.edicion_id;
+		const userID = req.session.usuario.id;
+		const producto_id = comp.obtieneEntidad_id(entidad);
+		let prodOrig;
+		// Obtiene los includes
+		let includesEdic = comp.includes("productos");
+		let includesOrig = [...includesEdic, "status_registro"];
+		if (entidad == "capitulos") includesOrig.push("coleccion");
+		if (entidad == "colecciones") includesOrig.push("capitulos");
+		// Obtiene la edición a analizar
+		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
+		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
+		// Si no existe una edición => inactiva y regresa al Tablero de Control
+		if (!prodEdic) return {informacion: procesos.prodEdic_info(entidad, id)};
+		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
+		if (prodEdic.id != edicID) {
+			let ruta = req.baseUrl + req.path;
+			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
+			return {redirect: ruta};
+		}
+		// Obtiene las versiones original y de edición con sus includes
+		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
 	},
 	prodEdic_AprobRechAvatar: async function (req, prodOrig, prodEdic) {
 		// Variables
@@ -376,7 +336,6 @@ module.exports = {
 		// Fin
 		return [quedanCampos, prodEdic];
 	},
-
 	prodEdic_feedback: async (prodOrig, prodEdic, campo) => {
 		// 1. Actualiza el registro de edición
 		// 2. Averigua si quedan campos por procesar

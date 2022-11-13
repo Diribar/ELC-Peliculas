@@ -155,9 +155,17 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
 	TC_obtieneEdicsAjenas: (entidad, userID, includes) => {
+		const haceUnaHora = funciones.nuevoHorario(-1);
+		// Obtiene las ediciones que cumplan ciertas condiciones
 		return db[entidad]
 			.findAll({
-				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creada por otro usuario
+				where: {
+					// Que esté creada por otro usuario
+					editado_por_id: {[Op.ne]: userID}, 
+					// Que esté editado desde hace más de 1 hora
+					editado_en: {[Op.lt]: haceUnaHora},
+
+				}, 
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
@@ -187,6 +195,8 @@ module.exports = {
 					[entidad_id]: entID,
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
+					// Que esté editado desde hace más de 1 hora
+					editado_en: {[Op.lt]: haceUnaHora},
 				},
 			})
 			.then((n) => (n ? n.toJSON() : ""));
