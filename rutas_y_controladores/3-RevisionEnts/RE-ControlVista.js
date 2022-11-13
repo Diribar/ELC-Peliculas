@@ -4,9 +4,9 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./Procesos");
-const procesosCRUD = require("../2.2-RCLV-CRUD/FN-Procesos");
-const validarCRUD = require("../2.2-RCLV-CRUD/FN-Validar");
+const procesos = require("./RE-Procesos");
+const procesosCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Procesos");
+const validarCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
 
 module.exports = {
 	// Uso general

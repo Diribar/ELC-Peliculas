@@ -2,8 +2,8 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const procesos = require("./RCLV-FN-Procesos");
+const validar = require("./RCLV-FN-Validar");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {

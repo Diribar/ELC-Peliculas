@@ -3,7 +3,7 @@
 const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesos = require("./Procesos");
+const procesos = require("./RE-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
