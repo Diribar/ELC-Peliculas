@@ -10,6 +10,14 @@
 .justify-center {justify-content: center;}
 .wrap {flex-wrap: wrap;}
 
+/* Íconos clave */
+.fa-circle-check, .fa-circle-xmark, .fa-circle-left, 
+.fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-check {color: var(--verde-oscuro);}
+.fa-circle-xmark {color: var(--rojo-oscuro);}
+.inactivo, .inactivo *, .inactivoErrores, .inactivoErrores *, .inactivoVersion, 
+.inactivoVersion * {opacity: .5; border-color: transparent; cursor: not-allowed;}
+
 /* Otras */
 .absolute {position: absolute}
 .relative {position: relative;}
@@ -20,5 +28,3 @@
 .bloqueado {background-color: var(--celeste-oscuro);}
 .inactivo {opacity: .5; border-color: transparent;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}
-.scale {transition: 300ms; cursor: pointer;}
-.scale:hover {transform: scale(1.3);}
