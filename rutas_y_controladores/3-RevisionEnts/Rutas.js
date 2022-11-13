@@ -20,6 +20,7 @@ const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 // APIs -------------------------------------------------
 // Producto
 router.get("/api/producto-edicion", ...algunos, API.prodEdic);
+router.get("/api/producto-guarda-avatar", ...algunos, API.prodGuardaAvatar);
 // Links
 router.get("/api/link-alta", ...algunos, API.linkAlta);
 router.get("/api/link-edicion", ...algunos, API.linkEdic);

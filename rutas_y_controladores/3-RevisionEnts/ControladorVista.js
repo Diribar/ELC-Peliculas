@@ -236,7 +236,7 @@ module.exports = {
 		}
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
