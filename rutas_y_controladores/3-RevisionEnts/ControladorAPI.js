@@ -49,7 +49,6 @@ module.exports = {
 	prodGuardaAvatar: async (req, res) => {
 		// Variables
 		let {entidad, id, url} = req.query;
-		console.log(entidad, id, url);
 		let resultado;
 		// Descargar
 		if (url) {
