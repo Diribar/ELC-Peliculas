@@ -61,14 +61,16 @@ module.exports = {
 					entidad,
 					editado_en: n.editado_en,
 					edicion_id: n.id,
+					fechaRef: "editado_en",
 				});
 			});
 		}
 		// 4.A Elimina los repetidos
 		productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
 		productos = comp.eliminaRepetidos(productos);
-		// 4.B. Deja solamente los productos en status creado_aprob y creado
-		if (productos.length) productos = productos.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
+		// 4.B. Deja solamente los productos en status creado_aprob y aprobado
+		if (productos.length)
+			productos = productos.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
 		// 5. Deja solamente los sin problemas de captura
 		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
 
@@ -189,6 +191,7 @@ module.exports = {
 					nombre,
 					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
+					fechaRef: n.fechaRef,
 				};
 				if (rubro == "ED") datos.edicion_id = n.edicion_id;
 				return datos;
@@ -805,13 +808,17 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, fechaRef, autor_id
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades)
 		resultados.push(...(await BD_especificas.TC_obtieneRegs(entidad, ...campos)));
-	// Eliminar los propuestos hace menos de una hora, o por el Revisor
+	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
 			if (resultados[i][fechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
 				resultados.splice(i, 1);
-	// Ordenar los resultados
+	// Agrega el campo 'fecha-ref'
+	resultados.map((n) => {
+		return {...n, fechaRef};
+	});
+	// Ordena los resultados
 	if (resultados.length) resultados.sort((a, b) => new Date(a[fechaRef]) - new Date(b[fechaRef]));
 	// Fin
 	return resultados;
