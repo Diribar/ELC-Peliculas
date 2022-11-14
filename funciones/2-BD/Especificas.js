@@ -173,10 +173,9 @@ module.exports = {
 		// Variables
 		let gr_inestables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let include = ["pelicula", "coleccion", "capitulo"];
-		let includeOrig=[...include, "status_registro"]
 		// Obtiene los links en status 'a revisar'
 		let originales = db.links
-			.findAll({where: {status_registro_id: gr_inestables}, include: includeOrig})
+			.findAll({where: {status_registro_id: gr_inestables}, include: [...include, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtiene todas las ediciones
 		let ediciones = db.links_edicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));

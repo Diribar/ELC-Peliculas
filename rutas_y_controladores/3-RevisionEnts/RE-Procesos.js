@@ -62,13 +62,13 @@ module.exports = {
 					entidad,
 					editado_en: n.editado_en,
 					edicion_id: n.id,
-					campoFechaRef,
-					fechaRef: comp.fechaTexto(n[campoFechaRef]),
+					fechaRef: n[campoFechaRef],
+					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 				});
 			});
 		}
 		// 4.A Elimina los repetidos
-		productos.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
+		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos en status creado_aprob y aprobado
 		if (productos.length)
@@ -115,12 +115,12 @@ module.exports = {
 			productos.push({
 				...n[asociacion],
 				entidad,
-				campoFechaRef,
-				fechaRef: comp.fechaTexto(n[campoFechaRef]),
+				fechaRef: n[campoFechaRef],
+				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 			});
 		});
 		// 4.A. Elimina repetidos
-		productos.sort((a, b) => new Date(a[a.campoFechaRef]) - new Date(b[b.campoFechaRef]));
+		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos aprobados
 		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
@@ -164,17 +164,16 @@ module.exports = {
 					entidad,
 					editado_en: n.editado_en,
 					edicion_id: n.id,
-					campoFechaRef,
-					fechaRef: comp.fechaTexto(n[campoFechaRef]),
+					fechaRef: n[campoFechaRef],
+					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 				});
-				console.log(172,n[campoFechaRef]);
 			});
 			// Deja solamente los RCLVs aprobados
 			RCLVs = RCLVs.filter((n) => n.status_registro_id == aprobado_id);
 		}
 		// 4. Elimina los repetidos
 		if (RCLVs.length) {
-			RCLVs.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
+			RCLVs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 			RCLVs = comp.eliminaRepetidos(RCLVs);
 		}
 		// 5. Deja solamente los sin problemas de captura
@@ -205,8 +204,7 @@ module.exports = {
 					nombre,
 					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					campoFechaRef: n.campoFechaRef,
-					fechaRef: n.fechaRef,
+					fechaRefTexto: n.fechaRefTexto,
 				};
 				if (rubro == "ED") datos.edicion_id = n.edicion_id;
 				return datos;
@@ -833,12 +831,12 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	resultados = resultados.map((n) => {
 		return {
 			...n,
-			campoFechaRef,
-			fechaRef: comp.fechaTexto(n[campoFechaRef]),
+			fechaRef: n[campoFechaRef],
+			fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 		};
 	});
 	// Ordena los resultados
-	if (resultados.length) resultados.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
+	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// Fin
 	return resultados;
 };

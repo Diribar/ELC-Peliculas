@@ -352,6 +352,13 @@ module.exports = {
 		fecha = dia + "/" + mes + "/" + ano;
 		return fecha;
 	},
+	fechaTextoCorta: (fecha) => {
+		fecha = new Date(fecha);
+		let dia = fecha.getDate();
+		let mes = mesesAbrev[fecha.getMonth()];
+		fecha = dia + "/" + mes;
+		return fecha;
+	},
 	fechaHorarioTexto: (horario) => {
 		horario = horario ? new Date(horario) : funcionAhora();
 		return (
