@@ -579,25 +579,6 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	sinProblemasDeCaptura: (familia, userID, ahora) => {
-		// Variables
-		const haceUnaHora = nuevoHorario(-1, ahora);
-		const haceDosHoras = nuevoHorario(-2, ahora);
-		// Fin
-		return familia.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturado_en ||
-				// Que esté capturado hace más de dos horas
-				n.capturado_en < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturado_por_id != userID && !n.captura_activa) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
-		);
-	},
 	usuario_Ficha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
@@ -620,29 +601,6 @@ module.exports = {
 		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
 		// Fin
 		return enviar;
-	},
-	obtieneProdsDeLinks: function (links, ahora, userID) {
-		// 1. Variables
-		const aprobado_id = status_registro.find((n) => n.aprobado).id;
-		let productos = [];
-		// 3. Obtiene los productos
-		links.map((n) => {
-			let entidad = comp.obtieneEntidad(n);
-			let asociacion = comp.obtieneEntidadSingular(entidad);
-			productos.push({
-				...n[asociacion],
-				entidad,
-			});
-		});
-		// 4.A. Elimina repetidos
-		productos = this.eliminaRepetidos(productos);
-		// 4.B. Deja solamente los productos aprobados
-		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-		// 5. Deja solamente los sin problemas de captura
-		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
-
-		// Fin
-		return productos;
 	},
 	procesarRCLV: async (datos) => {
 		// Variables

@@ -75,7 +75,7 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	TC_obtieneProdsConLink: async (ahora, userID) => {
+	TC_obtieneProdsConLink: async function (ahora, userID) {
 		// Obtiene todos los productos aprobados, con algún link ajeno en status no estable
 		// Obtiene los links 'a revisar'
 		let links = await BD_especificas.TC_obtieneLinks_y_Edics();
@@ -91,7 +91,30 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtiene los productos
-		let productos = linksAjenos.length ? comp.obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = linksAjenos.length ? this.obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
+		// Fin
+		return productos;
+	},
+	obtieneProdsDeLinks: function (links, ahora, userID) {
+		// 1. Variables
+		const aprobado_id = status_registro.find((n) => n.aprobado).id;
+		let productos = [];
+		// 3. Obtiene los productos
+		links.map((n) => {
+			let entidad = comp.obtieneEntidad(n);
+			let asociacion = comp.obtieneEntidadSingular(entidad);
+			productos.push({
+				...n[asociacion],
+				entidad,
+			});
+		});
+		// 4.A. Elimina repetidos
+		productos = comp.eliminaRepetidos(productos);
+		// 4.B. Deja solamente los productos aprobados
+		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+		// 5. Deja solamente los sin problemas de captura
+		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+
 		// Fin
 		return productos;
 	},
@@ -195,6 +218,25 @@ module.exports = {
 
 		// Fin
 		return RCLVs;
+	},
+	sinProblemasDeCaptura: (familia, userID, ahora) => {
+		// Variables
+		const haceUnaHora = comp.nuevoHorario(-1, ahora);
+		const haceDosHoras = comp.nuevoHorario(-2, ahora);
+		// Fin
+		return familia.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturado_en ||
+				// Que esté capturado hace más de dos horas
+				n.capturado_en < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturado_por_id != userID && !n.captura_activa) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+		);
 	},
 
 	// Productos Alta
