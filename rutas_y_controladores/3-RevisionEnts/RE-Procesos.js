@@ -36,6 +36,7 @@ module.exports = {
 	},
 	TC_obtieneProdsConEdicAjena: async function (ahora, userID) {
 		// 1. Variables
+		const campoFechaRef = "editado_en";
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
@@ -61,12 +62,13 @@ module.exports = {
 					entidad,
 					editado_en: n.editado_en,
 					edicion_id: n.id,
-					fechaRef: "editado_en",
+					campoFechaRef,
+					fechaRef: comp.fechaTexto(n[campoFechaRef]),
 				});
 			});
 		}
 		// 4.A Elimina los repetidos
-		productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+		productos.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos en status creado_aprob y aprobado
 		if (productos.length)
@@ -105,12 +107,20 @@ module.exports = {
 		links.map((n) => {
 			let entidad = comp.obtieneEntidad(n);
 			let asociacion = comp.obtieneEntidadSingular(entidad);
+			let campoFechaRef = !n.status_registro_id
+				? "editado_en"
+				: n.status_registro.creado
+				? "creado_en"
+				: "sugerido_en";
 			productos.push({
 				...n[asociacion],
 				entidad,
+				campoFechaRef,
+				fechaRef: comp.fechaTexto(n[campoFechaRef]),
 			});
 		});
 		// 4.A. Elimina repetidos
+		productos.sort((a, b) => new Date(a[a.campoFechaRef]) - new Date(b[b.campoFechaRef]));
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos aprobados
 		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
@@ -137,6 +147,7 @@ module.exports = {
 	},
 	TC_obtieneRCLVsConEdicAjena: async (ahora, userID) => {
 		// 1. Variables
+		const campoFechaRef = "editado_en";
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let includes = ["personaje", "hecho", "valor"];
 		let RCLVs = [];
@@ -153,14 +164,17 @@ module.exports = {
 					entidad,
 					editado_en: n.editado_en,
 					edicion_id: n.id,
+					campoFechaRef,
+					fechaRef: comp.fechaTexto(n[campoFechaRef]),
 				});
+				console.log(172,n[campoFechaRef]);
 			});
 			// Deja solamente los RCLVs aprobados
 			RCLVs = RCLVs.filter((n) => n.status_registro_id == aprobado_id);
 		}
 		// 4. Elimina los repetidos
 		if (RCLVs.length) {
-			RCLVs.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+			RCLVs.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
 			RCLVs = comp.eliminaRepetidos(RCLVs);
 		}
 		// 5. Deja solamente los sin problemas de captura
@@ -191,6 +205,7 @@ module.exports = {
 					nombre,
 					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
+					campoFechaRef: n.campoFechaRef,
 					fechaRef: n.fechaRef,
 				};
 				if (rubro == "ED") datos.edicion_id = n.edicion_id;
@@ -801,9 +816,9 @@ module.exports = {
 		return;
 	},
 };
-let TC_obtieneRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
+let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, includes) => {
 	// Variables
-	let campos = [ahora, status, userID, includes, fechaRef, autor_id];
+	let campos = [ahora, status, userID, includes, campoFechaRef, autor_id];
 	let resultados = [];
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades)
@@ -812,14 +827,18 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, fechaRef, autor_id
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][fechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
+			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
 				resultados.splice(i, 1);
 	// Agrega el campo 'fecha-ref'
-	resultados.map((n) => {
-		return {...n, fechaRef};
+	resultados = resultados.map((n) => {
+		return {
+			...n,
+			campoFechaRef,
+			fechaRef: comp.fechaTexto(n[campoFechaRef]),
+		};
 	});
 	// Ordena los resultados
-	if (resultados.length) resultados.sort((a, b) => new Date(a[fechaRef]) - new Date(b[fechaRef]));
+	if (resultados.length) resultados.sort((a, b) => new Date(a[campoFechaRef]) - new Date(b[campoFechaRef]));
 	// Fin
 	return resultados;
 };

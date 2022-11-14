@@ -72,7 +72,7 @@ module.exports = {
 						id: m.id,
 						ano: m.ano_estreno,
 						nombre: m[dato.campos[0]],
-						entidad:dato.entidad,
+						entidad: dato.entidad,
 						familia: dato.familia,
 					};
 				})
@@ -161,11 +161,10 @@ module.exports = {
 			.findAll({
 				where: {
 					// Que esté creada por otro usuario
-					editado_por_id: {[Op.ne]: userID}, 
+					editado_por_id: {[Op.ne]: userID},
 					// Que esté editado desde hace más de 1 hora
 					editado_en: {[Op.lt]: haceUnaHora},
-
-				}, 
+				},
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
@@ -174,9 +173,10 @@ module.exports = {
 		// Variables
 		let gr_inestables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let include = ["pelicula", "coleccion", "capitulo"];
+		let includeOrig=[...include, "status_registro"]
 		// Obtiene los links en status 'a revisar'
 		let originales = db.links
-			.findAll({where: {status_registro_id: gr_inestables}, include})
+			.findAll({where: {status_registro_id: gr_inestables}, include: includeOrig})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtiene todas las ediciones
 		let ediciones = db.links_edicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
