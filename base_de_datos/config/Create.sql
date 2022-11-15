@@ -251,11 +251,10 @@ CREATE TABLE edics_aprob (
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
 	valor_aprob VARCHAR(50) NULL,
-	
-	input_por_id INT UNSIGNED NOT NULL,
-	input_en DATETIME NULL,
-	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NOT NULL,
+	edic_analizada_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	comunicado_en DATETIME NULL,
 
@@ -343,11 +342,11 @@ CREATE TABLE edics_rech (
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
-	
-	input_por_id INT UNSIGNED NOT NULL,
-	input_en DATETIME NULL,
-	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME NULL,
+
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NOT NULL,
+	edic_analizada_en DATETIME NULL,
 
 	comunicado_en DATETIME NULL,
 
