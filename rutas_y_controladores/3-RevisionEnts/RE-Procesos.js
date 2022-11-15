@@ -466,7 +466,7 @@ module.exports = {
 			editado_por_id: prodEdic.editado_por_id,
 			editado_en: prodEdic.editado_en,
 		};
-		let motivo;
+		let motivo, statusAprobFinal;
 
 		// Genera la información a actualizar
 		let datos = {
