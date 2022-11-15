@@ -341,7 +341,7 @@ module.exports = {
 		// Obtiene las ediciones del producto
 		let prodEdics = await BD_especificas.edicForm_EdicsAjenas(
 			"prods_edicion",
-			{producto_id, prodID, userID},
+			{entidad_id: producto_id, entID: prodID, userID},
 			comp.includes("productos")
 		);
 		// Si no existe ninguna edición => informa el error
@@ -582,8 +582,8 @@ module.exports = {
 		} else edicion = {...datosEdicion, ...edicion, [campo]: null};
 
 		// Actualiza RCLV si corresponde
-		if (!statusAprobInicial&& statusAprobFinal)
-		this.RCLV_prodsAprob(prodOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal)
+		if (!statusAprobInicial && statusAprobFinal)
+			this.RCLV_prodsAprob(prodOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
 		return [edicion, quedanCampos, statusAprobFinal];
 	},

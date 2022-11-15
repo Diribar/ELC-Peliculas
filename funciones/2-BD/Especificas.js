@@ -186,13 +186,13 @@ module.exports = {
 	// Revisar - producto/edicion y rclv/edicion
 	edicForm_EdicsAjenas: async (entidad, condiciones, include) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
-		const {producto_id, prodID, userID} = condiciones;
+		const {entidad_id, entID, userID} = condiciones;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
 			.findAll({
 				where: {
 					// Que pertenezca al producto que nos interesa
-					[producto_id]: prodID,
+					[entidad_id]: entID,
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 					// Que esté editado desde hace más de 1 hora
