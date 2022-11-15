@@ -351,11 +351,10 @@ module.exports = {
 		// Borra los campos auxiliares de avatar en la variable de edicion
 		if (prodEdic.avatar_archivo) prodEdic.avatar = prodEdic.avatar_archivo;
 		delete prodEdic.avatar_archivo;
-		delete prodEdic.avatar_url;
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
-	prodEdic_actualizaAvatar: async (req, prodOrig, prodEdic) => {
+	prodEdic_actualizEspecifAvatar: async (req, prodOrig, prodEdic) => {
 		// Variables
 		const edicAprob = req.query.aprob == "true";
 		const avatarOrig = prodOrig.avatar;
@@ -363,18 +362,18 @@ module.exports = {
 
 		// Gestión de archivos
 		if (edicAprob) {
+			// Mueve el archivo de edicion a la carpeta definitiva
+			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
 			// Si el 'avatar original' es un archivo, lo elimina
 			if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
 				comp.borraUnArchivo("./publico/imagenes/3-Productos/", avatarOrig);
-			// Mueve el 'avatar editado' a la carpeta definitiva
-			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
 		}
 		// Elimina el archivo de edicion
 		else comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
 
 		// Borra los campos auxiliares de avatar en el registro de edicion
-		let datos = {avatar_url: null, avatar_archivo: null};
-		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
+		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});
+
 		// Fin
 		return;
 	},
