@@ -7,10 +7,10 @@ module.exports = (sequelize, dt) => {
 		titulo: {type: dt.STRING(21)},
 		valor_aprob: {type: dt.STRING(50)},
 
-		input_por_id: {type: dt.INTEGER},
-		input_en: {type: dt.DATE},
-		evaluado_por_id: {type: dt.INTEGER},
-		evaluado_en: {type: dt.DATE},
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
+		edic_analizada_por_id: {type: dt.INTEGER},
+		edic_analizada_en: {type: dt.DATE},
 
 		comunicado_en: {type: dt.DATE},
 	};
