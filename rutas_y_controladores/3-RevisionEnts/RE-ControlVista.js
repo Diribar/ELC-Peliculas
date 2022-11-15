@@ -169,11 +169,10 @@ module.exports = {
 
 		// Acciones si está presente el avatar
 		if (prodEdic.avatar && prodEdic.avatar_url) {
-			// Averigua si se reemplaza automáticamente
+			// Acciones iniciales
 			let reemplAvatarAutomaticam =
 				prodEdic.avatar && // Que exista el valor 'avatar'
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
-			// Borra los campos auxiliares de avatar en la variable de edicion
 			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
