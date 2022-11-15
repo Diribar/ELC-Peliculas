@@ -160,7 +160,7 @@ module.exports = {
 		return db[entidad]
 			.findAll({
 				where: {
-					// Que esté creada por otro usuario
+					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 					// Que esté editado desde hace más de 1 hora
 					editado_en: {[Op.lt]: haceUnaHora},
@@ -184,21 +184,23 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicionAjena: async (entidad, entidad_id, entID, userID) => {
+	EdicForm_EdicsAjenas: async (entidad, condiciones, include) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
+		const {producto_id, prodID, userID} = condiciones;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
-			.findOne({
+			.findAll({
 				where: {
 					// Que pertenezca al producto que nos interesa
-					[entidad_id]: entID,
+					[producto_id]: prodID,
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 					// Que esté editado desde hace más de 1 hora
 					editado_en: {[Op.lt]: haceUnaHora},
 				},
+				include,
 			})
-			.then((n) => (n ? n.toJSON() : ""));
+			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
 
 	// USUARIOS ---------------------------------------------------------
