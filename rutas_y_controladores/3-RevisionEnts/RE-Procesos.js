@@ -310,7 +310,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	prodAltaGuardar_informacion:  (req, producto) => {
+	prodAltaGuardar_informacion: (req, producto) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
@@ -352,7 +352,10 @@ module.exports = {
 			],
 		};
 		let mensajeSinEsaEdicion = {
-			mensajes: ["No encontramos la edición prevista"],
+			mensajes: [
+				"No encontramos esa edición.",
+				"Te sugerimos que regreses al tablero y lo vuelvas a intentar",
+			],
 			iconos: [
 				{
 					nombre: "fa-spell-check ",
@@ -531,8 +534,8 @@ module.exports = {
 					return respuesta;
 				};
 				// Amplía la información con los valores aprob/rech de edición
-				let valorOrig = obtieneElValorDeUnCampo(original, campo);
-				let valorEdic = obtieneElValorDeUnCampo(edicion, campo);
+				let valorOrig = obtieneElValorDeUnCampo(prodOrig, campo);
+				let valorEdic = obtieneElValorDeUnCampo(prodEdic, campo);
 				// Obtiene los valores 'aprobado' y 'rechazado'
 				let valor_aprob = edicAprob ? valorEdic : valorOrig;
 				let valor_rech = !edicAprob ? valorEdic : valorOrig;

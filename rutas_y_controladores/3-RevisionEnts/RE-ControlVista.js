@@ -143,7 +143,6 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "producto/edicion";
-		return res.send({tema,codigo})
 		// Validaciones y obtiene prodEdic
 		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
 
@@ -152,7 +151,6 @@ module.exports = {
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
-		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatarExterno, avatarLinksExternos, avatar;
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
@@ -167,16 +165,16 @@ module.exports = {
 		if (prodEdic.avatar && prodEdic.avatar_url) {
 			// Acciones iniciales
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar && // Que exista el valor 'avatar'
-				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
+				prodEdic.avatar && // Que exista el archivo 'avatar'
+				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
 				// Variables
 				req.query.aprob = "true";
-				// Avatar: impacto en los archivos, en el registro de edicion y en avatar
+				// Avatar: impacto en los archivos, en los registros original y de edicion
 				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				avatar = prodEdic.avatar;
+				prodOrig.avatar = prodEdic.avatar;
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
 				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 					req,
@@ -210,19 +208,21 @@ module.exports = {
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, prodEdic);
 			// Obtiene el avatar
-			if (!avatar) avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
+			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 		}
-
+		// Variables para la vista
+		const prodNombre = comp.obtieneEntidadNombre(entidad);
+		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre,
+			titulo,
 			prodOrig,
 			prodEdic,
 			prodNombre,
@@ -231,7 +231,7 @@ module.exports = {
 			avatar,
 			motivos,
 			entidad,
-			id,
+			id:prodID,
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
 			avatarExterno,
