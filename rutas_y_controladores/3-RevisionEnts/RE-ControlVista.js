@@ -180,10 +180,13 @@ module.exports = {
 				req.query.aprob = "true";
 				// Avatar: impacto en los archivos, en el registro de edicion y en avatar
 				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				avatar = prodEdic.avatar[
-					// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
-					(prodEdic, quedanCampos, statusAprob)
-				] = await procesos.prodEdicGuardar_Gral(req, prodOrig, prodEdic);
+				avatar = prodEdic.avatar;
+				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
+				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
+					req,
+					prodOrig,
+					prodEdic
+				);
 				// Fin, si no quedan campos
 				if (!quedanCampos) {
 					informacion = procesar.cartelNoQuedanCampos;
