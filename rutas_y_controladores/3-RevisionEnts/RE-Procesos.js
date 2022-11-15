@@ -60,7 +60,6 @@ module.exports = {
 				productos.push({
 					...n[asociacion],
 					entidad,
-					editado_en: n.editado_en,
 					edicion_id: n.id,
 					fechaRef: n[campoFechaRef],
 					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
@@ -312,9 +311,13 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// Producto Edición
-	prodEdic_info: (entidad, prodID) => {
-		// Generar la info del error
-		let informacion = {
+	prodEdic_validacInicial: async (req) => {
+		// Variables
+		const {entidad, id: prodID, edicion_id: edicID} = req.query;
+		const userID = req.session.usuario.id;
+		const producto_id = comp.obtieneEntidad_id(entidad);
+		// Mensajes
+		let mensajeSinEdicion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],
 			iconos: [
 				{
@@ -324,75 +327,49 @@ module.exports = {
 				},
 			],
 		};
-		return informacion;
+		let mensajeSinCampo = {
+			mensajes: ["No encontramos la edición prevista"],
+			iconos: [
+				{
+					nombre: "fa-spell-check ",
+					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
+					titulo: "Regresar al Tablero de Control",
+				},
+			],
+		};
+		// Obtiene las ediciones del producto
+		let prodEdics = await BD_especificas.EdicForm_EdicsAjenas(
+			"prods_edicion",
+			{producto_id, prodID, userID},
+			comp.includes("productos")
+		);
+		// Si no existe ninguna edición => informa el error
+		if (!prodEdics.length) return {informacion: mensajeSinEdicion};
+		// Si no existe la edicID => informa el error
+		let prodEdic = prodEdics.find((n) => n.id == edicID);
+		if (!prodEdic) return {informacion: mensajeSinCampo};
+		// Fin - Envía la edición
+		return {prodEdic};
 	},
-	prodEdic_intro: async (req) => {
-		// Constantes
-		const entidad = req.query.entidad;
-		const id = req.query.id;
-		const edicID = req.query.edicion_id;
-		const userID = req.session.usuario.id;
-		const producto_id = comp.obtieneEntidad_id(entidad);
-		let prodOrig;
-		// Obtiene los includes
-		let includesEdic = comp.includes("productos");
-		let includesOrig = [...includesEdic, "status_registro"];
-		if (entidad == "capitulos") includesOrig.push("coleccion");
-		if (entidad == "colecciones") includesOrig.push("capitulos");
-		// Obtiene la edición a analizar
-		let prodEdic = await BD_especificas.obtieneEdicionAjena("prods_edicion", producto_id, id, userID);
-		prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
-		// Si no existe una edición => inactiva y regresa al Tablero de Control
-		if (!prodEdic) return {informacion: procesos.prodEdic_info(entidad, id)};
-		// Si la edición es distinta a la del url => recarga la vista con el ID de la nueva edición
-		if (prodEdic.id != edicID) {
-			let ruta = req.baseUrl + req.path;
-			ruta += "?entidad=" + entidad + "&id=" + id + "&edicion_id=" + prodEdic.id;
-			return {redirect: ruta};
-		}
-		// Obtiene las versiones original y de edición con sus includes
-		prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
-	},
-	prodEdic_AprobRechAvatar: async function (req, prodOrig, prodEdic) {
+	prodEdic_actualizaAvatar: async (req, prodOrig, prodEdic) => {
 		// Variables
 		const edicAprob = req.query.aprob == "true";
-		const userID = req.session.usuario.id;
-		const statusAprobOrig = prodOrig.status_registro.aprobado;
 		const avatarOrig = prodOrig.avatar;
 		const avatarEdic = prodEdic.avatar;
-		req.query.campo = "avatar";
-		let quedanCampos, statusAprobFinal;
 
-		// Funciones
-		let archivosSiAprob = () => {
-			// Variables
+		// Gestión de archivos
+		if (edicAprob) {
 			// Si el 'avatar original' es un archivo, lo elimina
 			if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
 				comp.borraUnArchivo("./publico/imagenes/3-Productos/", avatarOrig);
 			// Mueve el 'avatar editado' a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
-		};
-		let archivosSiRech = () => {
-			// Elimina el archivo de edicion
-			comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
-		};
-		// Acciones con los archivos de 'avatar'
-		edicAprob ? archivosSiAprob() : archivosSiRech();
-		// Si se aprobó, actualiza el registro 'original' con el nuevo nombre del avatar
-		if (edicAprob) await this.actualizaOriginal(prodOrig, prodEdic, {avatar: avatarEdic}, userID);
+		}
+		// Elimina el archivo de edicion
+		else comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
 
-		// Acciones complementarias
-		// 1. Aumenta el campo aprob/rech en el registro del usuario
-		// 2. Agrega un registro en la tabla de 'aprob/rech'
-		// 3. Si corresponde, penaliza al usuario
-		await this.edic_AccionesAdic(req, prodOrig, prodEdic);
-
-		// Limpia la edición y cambia el status del producto si corresponde
-		[quedanCampos, prodEdic, statusAprobFinal] = await this.prodEdic_feedback(prodOrig, prodEdic);
-		// Revisa si corresponde y eventualmente actualiza, el campo 'prods_aprob' en los registros RCLV
-		this.RCLV_productosAprob(prodOrig, "avatar", edicAprob, statusAprobOrig, statusAprobFinal);
 		// Fin
-		return [quedanCampos, prodEdic];
+		return;
 	},
 	prodEdic_feedback: async (prodOrig, prodEdic, campo) => {
 		// 1. Actualiza el registro de edición
@@ -730,7 +707,6 @@ module.exports = {
 		};
 		// Actualiza el registro ORIGINAL ***********************************************
 		await BD_genericas.actualizaPorId(entidad, original.id, datos);
-		original = {...original, ...datos};
 		// Fin
 		return original;
 	},
