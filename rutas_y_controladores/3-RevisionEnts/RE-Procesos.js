@@ -311,7 +311,7 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// Producto Edición
-	prodEdic_validacInicial: async (req) => {
+	prodEdic_obtieneProdEdic: async (req) => {
 		// Variables
 		const {entidad, id: prodID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
@@ -348,6 +348,10 @@ module.exports = {
 		// Si no existe la edicID => informa el error
 		let prodEdic = prodEdics.find((n) => n.id == edicID);
 		if (!prodEdic) return {informacion: mensajeSinCampo};
+		// Borra los campos auxiliares de avatar en la variable de edicion
+		if (prodEdic.avatar_archivo) prodEdic.avatar = prodEdic.avatar_archivo;
+		delete prodEdic.avatar_archivo;
+		delete prodEdic.avatar_url;
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
@@ -368,6 +372,9 @@ module.exports = {
 		// Elimina el archivo de edicion
 		else comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
 
+		// Borra los campos auxiliares de avatar en el registro de edicion
+		let datos = {avatar_url: null, avatar_archivo: null};
+		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
 		// Fin
 		return;
 	},
