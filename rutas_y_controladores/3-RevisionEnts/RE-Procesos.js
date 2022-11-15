@@ -311,7 +311,7 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// Producto Edición
-	prodEdic_obtieneProdEdic: async (req) => {
+	prodEdicForm_obtieneProdEdic: async (req) => {
 		// Variables
 		const {entidad, id: prodID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
@@ -327,7 +327,7 @@ module.exports = {
 				},
 			],
 		};
-		let mensajeSinCampo = {
+		let mensajeSinEsaEdicion = {
 			mensajes: ["No encontramos la edición prevista"],
 			iconos: [
 				{
@@ -347,14 +347,14 @@ module.exports = {
 		if (!prodEdics.length) return {informacion: mensajeSinEdicion};
 		// Si no existe la edicID => informa el error
 		let prodEdic = prodEdics.find((n) => n.id == edicID);
-		if (!prodEdic) return {informacion: mensajeSinCampo};
+		if (!prodEdic) return {informacion: mensajeSinEsaEdicion};
 		// Borra los campos auxiliares de avatar en la variable de edicion
 		if (prodEdic.avatar_archivo) prodEdic.avatar = prodEdic.avatar_archivo;
 		delete prodEdic.avatar_archivo;
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
-	prodEdic_actualizEspecifAvatar: async (req, prodOrig, prodEdic) => {
+	prodEdicGuardar_especifAvatar: async (req, prodOrig, prodEdic) => {
 		// Variables
 		const edicAprob = req.query.aprob == "true";
 		const avatarOrig = prodOrig.avatar;
@@ -437,7 +437,7 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
-	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
+	prodEdicForm_ingrReempl: (prodOrig, prodEdic) => {
 		let campos = [...variables.camposRevisar.productos];
 
 		for (let i = campos.length - 1; i >= 0; i--) {
