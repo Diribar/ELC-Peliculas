@@ -146,7 +146,7 @@ module.exports = {
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		let codigo = "producto/edicion";
+		const codigo = "producto/edicion";
 
 		// Validaciones y obtiene prodEdic
 		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
@@ -156,8 +156,8 @@ module.exports = {
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
+		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let avatarExterno, avatarLinksExternos, avatar;
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
 
