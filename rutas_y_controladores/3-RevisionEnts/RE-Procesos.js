@@ -552,7 +552,7 @@ module.exports = {
 			// Elimina el registro de la edición
 			await BD_genericas.eliminaPorId("prod_edicion", prodEdic.id);
 
-			// 4. Actualiza el status del registro original si corresponde
+			// Si corresponde, actualiza el status del registro original (y eventualmente capítulos), y lo informa
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
