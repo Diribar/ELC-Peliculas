@@ -339,7 +339,7 @@ module.exports = {
 			],
 		};
 		// Obtiene las ediciones del producto
-		let prodEdics = await BD_especificas.EdicForm_EdicsAjenas(
+		let prodEdics = await BD_especificas.edicForm_EdicsAjenas(
 			"prods_edicion",
 			{producto_id, prodID, userID},
 			comp.includes("productos")

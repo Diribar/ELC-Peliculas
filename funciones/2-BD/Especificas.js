@@ -184,7 +184,7 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	EdicForm_EdicsAjenas: async (entidad, condiciones, include) => {
+	edicForm_EdicsAjenas: async (entidad, condiciones, include) => {
 		const haceUnaHora = funciones.nuevoHorario(-1);
 		const {producto_id, prodID, userID} = condiciones;
 		// Obtiene un registro que cumpla ciertas condiciones
