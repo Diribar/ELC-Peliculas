@@ -147,33 +147,50 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion";
-		// Proceso inicial
-		let {informacion, redirect, prodEdic, prodOrig} = await procesos.prodEdic_intro(req);
-		// Desvíos
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-		if (redirect) return res.redirect(redirect);
-		// Variables
-		let quedanCampos, avatarExterno, avatarLinksExternos;
-		let avatar, ingresos, reemplazos, bloqueDer;
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 
-		// Acciones dependiendo de si está presente el avatar
-		if (prodEdic.avatar_url || prodEdic.avatar_archivo) {
+		// Validaciones y obtiene prodEdic
+		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
+
+		// Si no pasa los filtros => informa el error
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Variables
+		const {entidad, id: prodID} = req.query;
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let avatarExterno, avatarLinksExternos, avatar;
+		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
+
+		// Obtiene la versión original con includes
+		let includesOrig = [...comp.includes("productos"), "status_registro"];
+		if (entidad == "capitulos") includesOrig.push("coleccion");
+		if (entidad == "colecciones") includesOrig.push("capitulos");
+		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+
+		// Acciones si está presente el avatar
+		if (prodEdic.avatar && prodEdic.avatar_url) {
 			// Averigua si se reemplaza automáticamente
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar_archivo && // Que exista el valor 'avatar_archivo'
+				prodEdic.avatar && // Que exista el valor 'avatar'
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
-			// Adecua los campos 'avatar' en la variable y el registro
-			let datos = {avatar_url: null, avatar_archivo: null};
-			prodEdic = {avatar: prodEdic.avatar_archivo, ...prodEdic, ...datos};
+			// Borra los campos auxiliares de avatar en la variable de edicion
+			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
 				req.query.aprob = "true";
+				// Impactos en: los archivos de avatar, y en el campo avatar_url del registro
+				await procesos.prodEdicGuardar_especifAvatar(req, prodOrig, prodEdic);
 				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
-				[quedanCampos, prodEdic] = await procesos.prodEdic_AprobRechAvatar(req, prodOrig, prodEdic);
-				if (!quedanCampos) return res.redirect(req.url);
-				delete prodEdic.avatar;
-				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, datos);
+				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar(
+					req,
+					prodOrig,
+					prodEdic
+				);
+				// Fin, si no quedan campos
+				if (!quedanCampos) {
+					informacion = procesar.cartelNoQuedanCampos;
+					return res.render("CMP-0Estructura", {informacion});
+				}
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -192,19 +209,11 @@ module.exports = {
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
 		}
-		if (!codigo.includes("avatar")) {
-			if (!quedanCampos) {
-				// 1. Actualiza el registro de edición y obtiene su versión mínima
-				// 2. Averigua si quedan campos por procesar. En caso que no, elimina la edicion y actualiza el status del registro original
-				[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-				if (!quedanCampos) {
-					// Si no quedan campos de 'edicion' por procesar --> lo avisa
-					let informacion = procesos.cartelNoQuedanCampos;
-					return res.render("CMP-0Estructura", {informacion});
-				}
-			}
+
+		// Acciones si no está presente el avatar
+		if (!codigo.includes("/avatar")) {
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
+			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, prodEdic);
 			// Obtiene el avatar
 			if (!avatar) avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
@@ -212,15 +221,13 @@ module.exports = {
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 		}
-		// 5. Configura el título de la vista
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		let titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo,
+			titulo: "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre,
 			prodOrig,
 			prodEdic,
 			prodNombre,
