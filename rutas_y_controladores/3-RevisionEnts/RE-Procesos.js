@@ -372,9 +372,6 @@ module.exports = {
 		// Si no existe la edicID => informa el error
 		let prodEdic = prodEdics.find((n) => n.id == edicID);
 		if (!prodEdic) return {informacion: mensajeSinEsaEdicion};
-		// Borra los campos auxiliares de avatar en la variable de edicion
-		if (prodEdic.avatar_archivo) prodEdic.avatar = prodEdic.avatar_archivo;
-		delete prodEdic.avatar_archivo;
 		// Fin - Envía la edición
 		return {prodEdic};
 	},

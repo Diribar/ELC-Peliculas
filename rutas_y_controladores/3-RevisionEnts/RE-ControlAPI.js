@@ -17,7 +17,6 @@ module.exports = {
 		// Si no existe la edición, interrumpe el flujo
 		if (!prodEdic) return res.json({OK:false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
-		prodEdic.avatar = prodEdic.avatar_archivo;
 		if (!prodEdic[campo]) return res.json({OK:false, mensaje: "El campo ya se había procesado"});
 		// Obtiene la versión original con includes
 		let includesOrig = [...includesEdic, "status_registro"];

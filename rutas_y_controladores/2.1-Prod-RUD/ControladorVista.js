@@ -164,7 +164,7 @@ module.exports = {
 		if (req.file) {
 			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
-			req.body.avatar_archivo = req.file.filename;
+			req.body.avatar = req.file.filename;
 			req.body.tamano = req.file.size;
 		}
 		// Une 'Edición' y 'Original'
@@ -175,10 +175,10 @@ module.exports = {
 			// Actualiza los archivos avatar
 			if (!errores.hay) {
 				// Mueve el archivo actual a su ubicación para ser revisado
-				comp.mueveUnArchivoImagen(prodComb.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
+				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "4-ProdsRevisar");
 				// Elimina el anterior archivo de imagen
-				if (prodEdic.avatar_archivo)
-					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar_archivo);
+				if (prodEdic.avatar)
+					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
 			}
 			// Si hay errores, entonces borra el archivo
 			else {

@@ -102,8 +102,8 @@ module.exports = {
 		const codigo = "datosDuros";
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
-		if (aux && aux.avatar_archivo)
-			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
+		if (aux && aux.avatar)
+			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -178,22 +178,21 @@ module.exports = {
 			}
 		}
 		// 5. Si no hay errores de imagen, revisar el archivo de imagen
-		let avatar_archivo;
 		if (!errores.avatar) {
 			let tipo, tamano, rutaYnombre;
 			if (req.file) {
 				// En caso de archivo por multer
 				tipo = req.file.mimetype;
 				tamano = req.file.size;
-				avatar_archivo = req.file.filename;
+				avatar = req.file.filename;
 				rutaYnombre = req.file.path;
 			} else {
 				// En caso de archivo sin multer
 				let datos = await requestPromise.head(datosDuros.avatar_url);
 				tipo = datos["content-type"];
 				tamano = datos["content-length"];
-				avatar_archivo = Date.now() + path.extname(datosDuros.avatar_url);
-				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar_archivo;
+				avatar = Date.now() + path.extname(datosDuros.avatar_url);
+				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar;
 				// Descargar
 				comp.descarga(datosDuros.avatar_url, rutaYnombre);
 			}
@@ -204,7 +203,7 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
+			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar);
 			// Guardar los errores en 'session' porque pueden ser muy específicos
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -215,7 +214,7 @@ module.exports = {
 		// 9. Genera la session para la siguiente instancia
 		req.session.datosPers = {
 			...req.session.datosDuros,
-			avatar_archivo,
+			avatar,
 			avatar_url,
 		};
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
@@ -346,7 +345,7 @@ module.exports = {
 		// 6. Guarda las calificaciones
 		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		comp.mueveUnArchivoImagen(confirma.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
+		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "4-ProdsRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
