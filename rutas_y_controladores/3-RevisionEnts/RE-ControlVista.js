@@ -188,10 +188,8 @@ module.exports = {
 					prodEdic
 				);
 				// Fin, si no quedan campos
-				if (!quedanCampos) {
-					informacion = procesar.cartelNoQuedanCampos;
-					return res.render("CMP-0Estructura", {informacion});
-				}
+				if (!quedanCampos)
+					return res.render("CMP-0Estructura", {informacion: procesar.cartelNoQuedanCampos});
 			} else {
 				// Variables
 				codigo += "/avatar";
