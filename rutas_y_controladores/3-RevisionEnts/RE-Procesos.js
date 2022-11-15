@@ -555,7 +555,7 @@ module.exports = {
 			// 4. Actualiza el status del registro original si corresponde
 			statusAprobFinal = await (async () => {
 				// Variables
-				let statusAprobFinal;
+				let statusAprob;
 				// Averigua si tiene errores
 				let errores = await validar.consolidado(null, {...prodOrig, entidad});
 				// Acciones si el original no tiene errores y está en status 'gr_creado'
@@ -581,9 +581,9 @@ module.exports = {
 						BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos);
 					}
 					// Cambia el valor de la variable que se informará
-					statusAprobFinal = true;
+					statusAprob = true;
 				}
-				return statusAprobFinal;
+				return statusAprob;
 			})();
 		} else edicion = {...datosEdicion, ...edicion};
 
