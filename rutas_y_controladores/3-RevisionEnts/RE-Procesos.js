@@ -255,7 +255,7 @@ module.exports = {
 	},
 
 	// Productos Alta
-	prodAlta_ficha: async (prodOrig, paises) => {
+	prodAltaForm_ficha: async (prodOrig, paises) => {
 		// Funciones
 		let usuario_CalidadAltas = async (userID) => {
 			// 1. Obtiene los datos del usuario
@@ -310,7 +310,30 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-
+	prodAltaGuardar_informacion:  (req, producto) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		let informacion;
+		// Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+		}
+		// El producto no está en status 'creado' => Vuelve al tablero
+		if (!producto.status_registro.creado) {
+			const vistaInactivar = variables.vistaInactivar(req);
+			informacion = {
+				mensajes: ["El producto ya fue procesado anteriormente"],
+				iconos: [vistaInactivar],
+			};
+		}
+		// Fin
+		return informacion;
+	},
 	// Prod/RCLV-Edición Form
 	prodEdicForm_obtieneProdEdic: async (req) => {
 		// Variables

@@ -63,7 +63,7 @@ module.exports = {
 		// 7. Obtiene los países
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -91,33 +91,28 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
-		const urlRedirect = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		// En caso de error, redirije
-		if (rechazado && !motivo_id) return res.redirect(urlRedirect);
-		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
+		// En caso de error, lo muestra
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
 		// Variables
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-		// Obtiene el nuevo status_id
-		let creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
-		let inactivoID = status_registro.find((n) => n.inactivo).id;
-		let status_registro_id = rechazado ? inactivoID : creadoAprobID;
-		// Genera la info
-		let datosEntidad = {
-			status_registro_id,
-			alta_analizada_por_id: userID,
-			alta_analizada_en: ahora,
-		};
-		// Actualiza el status en el registro original
+		const creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
+		const inactivoID = status_registro.find((n) => n.inactivo).id;
+		const status_registro_id = rechazado ? inactivoID : creadoAprobID;
+		let datosEntidad = {status_registro_id, alta_analizada_por_id: userID, alta_analizada_en: ahora};
+
+		// Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
+		producto = {...producto, ...datosEntidad};
 		// Actualiza el status en los registros de los capítulos
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
+
 		// Agrega el registro en el historial_cambios_de_status
-		let producto = await BD_genericas.obtienePorId(entidad, id);
 		let creador_ID = producto.creado_por_id;
 		let datosHistorial = {
 			entidad_id: id,
@@ -136,18 +131,19 @@ module.exports = {
 			datosHistorial.duracion = Number(motivo.duracion);
 		}
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datosHistorial);
-		// Asienta la aprob/rech en el registro del usuario
+		// Aumenta el valor de prod_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
 		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
 		// Fin
+		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(urlEdicion);
 	},
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "producto/edicion";
-
+		return res.send({tema,codigo})
 		// Validaciones y obtiene prodEdic
 		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
 
