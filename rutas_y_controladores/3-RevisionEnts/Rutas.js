@@ -2,9 +2,9 @@
 // Requires **************************************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControladorAPI");
-const vista = require("./ControladorVista");
-const vistaAltaRCLV = require("../2.2-RCLV-CRUD/ControladorVista");
+const API = require("./RE-ControlAPI");
+const vista = require("./RE-ControlVista");
+const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
