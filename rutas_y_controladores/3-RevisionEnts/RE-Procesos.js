@@ -549,10 +549,11 @@ module.exports = {
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-			// Elimina el registro de la edición
+			// 1. Elimina el registro de la edición
 			await BD_genericas.eliminaPorId("prod_edicion", prodEdic.id);
 
-			// Si corresponde, actualiza el status del registro original (y eventualmente capítulos), y lo informa
+			// 2. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
+			// 3. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
