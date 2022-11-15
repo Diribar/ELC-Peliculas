@@ -177,9 +177,11 @@ module.exports = {
 			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
+				// Variables
 				req.query.aprob = "true";
-				// Impactos en: los archivos de avatar, y en el campo avatar_url del registro
+				// Avatar: impacto en los archivos, en el registro de edicion y en prodOrig
 				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
+				avatar=prodEdic.avatar
 				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
 				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 					req,

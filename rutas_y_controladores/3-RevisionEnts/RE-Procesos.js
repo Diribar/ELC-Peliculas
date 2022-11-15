@@ -461,7 +461,13 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const statusAprobInicial = prodOrig.status_registro.aprobado;
-		let motivo, statusAprob;
+		const datosEdicion = {
+			id: prodEdic.id,
+			editado_por_id: prodEdic.editado_por_id,
+			editado_en: prodEdic.editado_en,
+		};
+		let motivo;
+
 		// Genera la información a actualizar
 		let datos = {
 			[campo]: prodEdic[campo],
@@ -579,7 +585,7 @@ module.exports = {
 				}
 				return statusAprobFinal;
 			})();
-		} else edicion = {...datosEdicion, ...edicion, [campo]: null};
+		} else edicion = {...datosEdicion, ...edicion};
 
 		// Actualiza RCLV si corresponde
 		if (!statusAprobInicial && statusAprobFinal)
