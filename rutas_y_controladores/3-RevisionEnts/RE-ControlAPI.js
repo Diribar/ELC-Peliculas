@@ -23,9 +23,9 @@ module.exports = {
 		let includesOrig = [...includesEdic, "status_registro"];
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
 		// Acciones si el campo es avatar
-		if (campo == "avatar") procesos.prodEdicGuardar_especifAvatar(req, prodOrig, prodEdic);
+		if (campo == "avatar") procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 		// Tareas adicionales
-		[prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar(req, prodOrig, prodEdic);
+		[prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar_Gral(req, prodOrig, prodEdic);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
 	},

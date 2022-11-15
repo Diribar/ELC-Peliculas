@@ -179,9 +179,9 @@ module.exports = {
 			if (reemplAvatarAutomaticam) {
 				req.query.aprob = "true";
 				// Impactos en: los archivos de avatar, y en el campo avatar_url del registro
-				await procesos.prodEdicGuardar_especifAvatar(req, prodOrig, prodEdic);
+				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: producto.avatar, prod_edicion.avatar, usuarios.edic_aprob/rech, edic_aprob/rech
-				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar(
+				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 					req,
 					prodOrig,
 					prodEdic
@@ -284,7 +284,7 @@ module.exports = {
 		// Guarda los cambios
 		await procesosCRUD.guardarCambios(req, res, dataEntry);
 		// Consecuencias de las diferencias
-		procesos.RCLV_BD_AprobRech(entidad, original, userID);
+		procesos.RCLV_AltaGuardar(entidad, original, userID);
 		// 9. Redirecciona a la siguiente instancia
 		return res.redirect("/revision/tablero-de-control");
 	},
