@@ -583,7 +583,7 @@ module.exports = {
 
 		// Actualiza RCLV si corresponde
 		if (!statusAprobInicial&& statusAprobFinal)
-		RCLV_prodsAprob(prodOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal)
+		this.RCLV_prodsAprob(prodOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal)
 		// Fin
 		return [edicion, quedanCampos, statusAprobFinal];
 	},
