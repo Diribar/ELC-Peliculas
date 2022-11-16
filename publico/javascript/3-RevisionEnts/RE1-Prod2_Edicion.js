@@ -128,7 +128,8 @@ window.addEventListener("load", () => {
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
-			// let resultado = await fetch(ruta).then((n) => n.json());
+			let resultado = await fetch(ruta).then((n) => n.json());
+			console.log(resultado);
 			// Consecuencias
 			//consecuencias(resultado);
 			// window.location.reload();
