@@ -14,7 +14,7 @@ module.exports = {
 		// Obtiene el registro editado
 		let includesEdic = comp.includes("productos");
 		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
-		let quedanCampos
+		let quedanCampos, statusAprob;
 		// Si no existe la edición, interrumpe el flujo
 		if (!prodEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
@@ -25,7 +25,7 @@ module.exports = {
 
 		// Acciones si el campo es avatar
 		if (campo == "avatar") prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-		
+
 		// Tareas adicionales
 		[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 			req,
