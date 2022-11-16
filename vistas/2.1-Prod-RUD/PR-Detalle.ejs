@@ -36,17 +36,19 @@
 			<% } %>
 		</div>
 		<!-- Comandos -->
-		<div id="comandos" class="inactivo">
-			<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
-			<% if (entidad != "colecciones") { %>
-				<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
-			<% } %>
-			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
-			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
-			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
-		</div>
 		<!-- Botones -->
-		<%- include("CR-Flechas") %>
+		<div class="flex-row">
+			<%- include("CR-Flechas") %>
+			<div id="flechas" class="inactivo">
+				<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
+				<% if (entidad != "colecciones") { %>
+					<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
+				<% } %>
+				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+				<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+				<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+			</div>
+		</div>
 	</div>
 </section>
 <section id="datosBreves" class="desplazam aparece">

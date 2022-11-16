@@ -16,8 +16,10 @@
 .fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
-.inactivo, .inactivo *, .inactivoErrores, .inactivoErrores *, .inactivoVersion, 
-.inactivoVersion * {opacity: .5; border-color: transparent; cursor: not-allowed;}
+#cuerpo .inactivo, #cuerpo .inactivo *, 
+#cuerpo .inactivoErrores, #cuerpo .inactivoErrores *, 
+#cuerpo .inactivoVersion, #cuerpo .inactivoVersion * {opacity: .5; cursor: not-allowed;}
+#cuerpo .inactivo *, #cuerpo .inactivoErrores *, #cuerpo .inactivoVersion * {border-color: transparent;}
 
 /* Otras */
 .absolute {position: absolute}
@@ -27,5 +29,4 @@
 .ocultar, .inactivo_ocultar, .ocultarTipo {display: none}
 .invisible {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
-.inactivo {opacity: .5; border-color: transparent;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}

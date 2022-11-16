@@ -70,6 +70,7 @@ window.addEventListener("load", () => {
 		if (resultado == "OK") {
 			urlConvertirEnArchivo.classList.add("ocultar");
 			avatarActual.src = rutaYnombre;
+			mostrarMenuMotivos.classList.remove("inactivo")
 		} else urlConvertirEnArchivo.classList.remove("inactivo");
 	});
 });
