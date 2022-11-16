@@ -255,7 +255,7 @@ module.exports = {
 	},
 
 	// Productos Alta
-	prodAlta_ficha: async (prodOrig, paises) => {
+	prodAltaForm_ficha: async (prodOrig, paises) => {
 		// Funciones
 		let usuario_CalidadAltas = async (userID) => {
 			// 1. Obtiene los datos del usuario
@@ -310,7 +310,30 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-
+	prodAltaGuardar_informacion: (req, producto) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		let informacion;
+		// Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+		}
+		// El producto no está en status 'creado' => Vuelve al tablero
+		if (!producto.status_registro.creado) {
+			const vistaInactivar = variables.vistaInactivar(req);
+			informacion = {
+				mensajes: ["El producto ya fue procesado anteriormente"],
+				iconos: [vistaInactivar],
+			};
+		}
+		// Fin
+		return informacion;
+	},
 	// Prod/RCLV-Edición Form
 	prodEdicForm_obtieneProdEdic: async (req) => {
 		// Variables
@@ -329,7 +352,10 @@ module.exports = {
 			],
 		};
 		let mensajeSinEsaEdicion = {
-			mensajes: ["No encontramos la edición prevista"],
+			mensajes: [
+				"No encontramos esa edición.",
+				"Te sugerimos que regreses al tablero y lo vuelvas a intentar",
+			],
 			iconos: [
 				{
 					nombre: "fa-spell-check ",
@@ -349,37 +375,39 @@ module.exports = {
 		// Si no existe la edicID => informa el error
 		let prodEdic = prodEdics.find((n) => n.id == edicID);
 		if (!prodEdic) return {informacion: mensajeSinEsaEdicion};
-		// Borra los campos auxiliares de avatar en la variable de edicion
-		if (prodEdic.avatar_archivo) prodEdic.avatar = prodEdic.avatar_archivo;
-		delete prodEdic.avatar_archivo;
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
-	prodEdicForm_ingrReempl: (prodOrig, prodEdic) => {
+	prodEdicForm_ingrReempl: (prodOrig, edicion) => {
+		// Obtiene todos los campos a revisar
 		let campos = [...variables.camposRevisar.productos];
+		let resultado = [];
 
-		for (let i = campos.length - 1; i >= 0; i--) {
-			let campoNombre = campos[i].nombre;
-			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
-			if (!Object.keys(prodEdic).includes(campoNombre)) campos.splice(i, 1);
-			else {
-				// Variables
-				let include = campos[i].relac_include;
-				let campo = campos[i].campo_include;
-				let valido = !campos[i].rclv || prodOrig[campoNombre] != 1;
-				// Valores originales
-				if (valido)
-					campos[i].mostrarOrig =
-						include && prodOrig[include] ? prodOrig[include][campo] : prodOrig[campoNombre];
-				// Valores editados
-				campos[i].valorEdic = prodEdic[campoNombre];
-				campos[i].mostrarEdic =
-					include && prodEdic[include] ? prodEdic[include][campo] : prodEdic[campoNombre];
-			}
+		// Deja solamente los campos presentes en edicion
+		for (let nombre in edicion) {
+			// Obtiene el campo con varios datos
+			let campo = campos.find((n) => n.nombre == nombre);
+			// Si el campo no existe en los campos a revisar, saltea la rutina
+			if (!campo) continue;
+			// Obtiene las variables de include
+			let relac_include = campo.relac_include;
+			let campo_include = campo.campo_include;
+			// Criterio para determinar qué valores originales mostrar
+			campo.mostrarOrig =
+				relac_include && prodOrig[relac_include] // El producto original tiene un valor 'include'
+					? prodOrig[relac_include][campo_include] // Muestra el valor 'include'
+					: prodOrig[nombre]; // Muestra el valor 'simple'
+			// Criterio para determinar qué valores editados mostrar
+			campo.mostrarEdic =
+				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
+					? edicion[relac_include][campo_include] // Muestra el valor 'include'
+					: edicion[nombre]; // Muestra el valor 'simple'
+			// Consolidar los resultados
+			resultado.push(campo);
 		}
-		// Separar los resultados entre ingresos y reemplazos
-		let ingresos = campos.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-		let reemplazos = campos.filter((n) => n.mostrarOrig);
+		// Separa los resultados entre ingresos y reemplazos
+		let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+		let reemplazos = resultado.filter((n) => n.mostrarOrig);
 		// Fin
 		return [ingresos, reemplazos];
 	},
@@ -457,7 +485,7 @@ module.exports = {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const edicAprob = aprob == "true";
-		const decision = "edics_" + edicAprob ? "aprob" : "rech";
+		const decision = "edics_" + (edicAprob ? "aprob" : "rech");
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const statusAprobInicial = prodOrig.status_registro.aprobado;
@@ -511,8 +539,8 @@ module.exports = {
 					return respuesta;
 				};
 				// Amplía la información con los valores aprob/rech de edición
-				let valorOrig = obtieneElValorDeUnCampo(original, campo);
-				let valorEdic = obtieneElValorDeUnCampo(edicion, campo);
+				let valorOrig = obtieneElValorDeUnCampo(prodOrig, campo);
+				let valorEdic = obtieneElValorDeUnCampo(prodEdic, campo);
 				// Obtiene los valores 'aprobado' y 'rechazado'
 				let valor_aprob = edicAprob ? valorEdic : valorOrig;
 				let valor_rech = !edicAprob ? valorEdic : valorOrig;
@@ -529,10 +557,10 @@ module.exports = {
 		})();
 
 		// Aumenta el campo aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", prodEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(edicion.editado_por_id, datos.motivo);
+		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, datos.motivo);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
 		if (edicAprob) {
@@ -545,13 +573,10 @@ module.exports = {
 		delete prodEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-			// 1. Elimina el registro de la edición
-			await BD_genericas.eliminaPorId("prod_edicion", prodEdic.id);
-
 			// 2. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 3. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
@@ -595,7 +620,10 @@ module.exports = {
 		return [edicion, quedanCampos, statusAprobFinal];
 	},
 	cartelNoQuedanCampos: {
-		mensajes: ["Se terminó de procesar esta edición"],
+		mensajes: [
+			"Se terminó de procesar esta edición.",
+			"Podés volver al tablero de control",
+		],
 		iconos: [
 			{
 				nombre: "fa-spell-check",

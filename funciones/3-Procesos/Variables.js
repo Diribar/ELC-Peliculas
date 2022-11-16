@@ -348,8 +348,6 @@ module.exports = {
 	camposRevisar: {
 		productos: [
 			{titulo: "Avatar", nombre: "avatar"},
-			{titulo: "Avatar", nombre: "avatar_url"},
-			{titulo: "Avatar (archivo)", nombre: "avatar_archivo"},
 			{titulo: "Título original", nombre: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true},
 			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true},

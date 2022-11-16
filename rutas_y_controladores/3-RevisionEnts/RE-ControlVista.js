@@ -1,7 +1,6 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
@@ -25,7 +24,7 @@ module.exports = {
 		// RCLV
 		let RCLVs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		RCLVs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
-		// Procesar los campos
+		// Procesa los campos
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
@@ -63,7 +62,7 @@ module.exports = {
 		// 7. Obtiene los países
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -91,33 +90,28 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
-		const urlRedirect = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		// En caso de error, redirije
-		if (rechazado && !motivo_id) return res.redirect(urlRedirect);
-		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
+		// En caso de error, lo muestra
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
 		// Variables
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-		// Obtiene el nuevo status_id
-		let creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
-		let inactivoID = status_registro.find((n) => n.inactivo).id;
-		let status_registro_id = rechazado ? inactivoID : creadoAprobID;
-		// Genera la info
-		let datosEntidad = {
-			status_registro_id,
-			alta_analizada_por_id: userID,
-			alta_analizada_en: ahora,
-		};
-		// Actualiza el status en el registro original
+		const creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
+		const inactivoID = status_registro.find((n) => n.inactivo).id;
+		const status_registro_id = rechazado ? inactivoID : creadoAprobID;
+		let datosEntidad = {status_registro_id, alta_analizada_por_id: userID, alta_analizada_en: ahora};
+
+		// Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
+		producto = {...producto, ...datosEntidad};
 		// Actualiza el status en los registros de los capítulos
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
+
 		// Agrega el registro en el historial_cambios_de_status
-		let producto = await BD_genericas.obtienePorId(entidad, id);
 		let creador_ID = producto.creado_por_id;
 		let datosHistorial = {
 			entidad_id: id,
@@ -136,18 +130,18 @@ module.exports = {
 			datosHistorial.duracion = Number(motivo.duracion);
 		}
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datosHistorial);
-		// Asienta la aprob/rech en el registro del usuario
+		// Aumenta el valor de prod_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
 		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
 		// Fin
+		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(urlEdicion);
 	},
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		const codigo = "producto/edicion";
-
+		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
 		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
 
@@ -156,9 +150,8 @@ module.exports = {
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
-		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let avatarExterno, avatarLinksExternos, avatar;
+		let avatarExterno, avatarLinksExternos, avatar, edicion, imgDerPers;
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
 
 		// Obtiene la versión original con includes
@@ -171,16 +164,17 @@ module.exports = {
 		if (prodEdic.avatar && prodEdic.avatar_url) {
 			// Acciones iniciales
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar && // Que exista el valor 'avatar'
-				prodOrig.avatar == prodEdic.avatar_url; // Mismo valor para los campos 'original.avatar' y 'edicion.avatar_url'
+				prodEdic.avatar && // Que exista el archivo 'avatar'
+				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
 			if (reemplAvatarAutomaticam) {
 				// Variables
 				req.query.aprob = "true";
-				// Avatar: impacto en los archivos, en el registro de edicion y en avatar
+				req.query.campo = "avatar";
+				// Avatar: impacto en los archivos, en los registros original y de edicion
 				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				avatar = prodEdic.avatar;
+				prodOrig.avatar = prodEdic.avatar;
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
 				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 					req,
@@ -189,7 +183,7 @@ module.exports = {
 				);
 				// Fin, si no quedan campos
 				if (!quedanCampos)
-					return res.render("CMP-0Estructura", {informacion: procesar.cartelNoQuedanCampos});
+					return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -211,22 +205,29 @@ module.exports = {
 
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
+			let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
+			// Fin, si no quedan campos
+			if (!quedanCampos)
+				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, prodEdic);
+			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
-			if (!avatar) avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
+			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
+			imgDerPers = avatar;
 		}
-
+		// Variables para la vista
+		const prodNombre = comp.obtieneEntidadNombre(entidad);
+		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre,
+			titulo,
 			prodOrig,
 			prodEdic,
 			prodNombre,
@@ -235,12 +236,13 @@ module.exports = {
 			avatar,
 			motivos,
 			entidad,
-			id,
+			id: prodID,
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
 			avatarExterno,
 			avatarLinksExternos,
 			cartel: true,
+			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
 		});

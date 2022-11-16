@@ -1057,7 +1057,7 @@ CREATE TABLE prod_4edicion (
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(900) NULL,
 	avatar_url VARCHAR(100) NULL,
-	avatar_archivo VARCHAR(18) NULL,
+	avatar VARCHAR(18) NULL,
 	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
