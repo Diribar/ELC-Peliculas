@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let rechazar = document.querySelectorAll(".contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
-	let taparElFondo = document.querySelector("#tapar-el-fondo");
+	let tapaElFondo = document.querySelector("#tapar-el-fondo");
 
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector(".contenido #ingrs");
@@ -58,7 +58,6 @@ window.addEventListener("load", () => {
 	};
 	let cartelFin = (statusAprob) => {
 		// Partes del cartel
-		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
 		let error = document.querySelector("#error");
 		let mensajes = document.querySelector("ul#mensajes");
@@ -98,7 +97,7 @@ window.addEventListener("load", () => {
 		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
-		taparElFondo.classList.remove("ocultar");
+		tapaElFondo.classList.remove("ocultar");
 		cartel.classList.remove("ocultar");
 
 		// Fin
@@ -124,16 +123,14 @@ window.addEventListener("load", () => {
 		// Aprobar el nuevo valor
 		aprobar[indice].addEventListener("click", async () => {
 			// Stopper
-			if (aprobar[indice].className.includes("inactivo")) return;
-			// Inactiva el ícono
-			aprobar[indice].classList.add("inactivo");
+			if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
 			// Ocultar la fila
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
-			let resultado = await fetch(ruta).then((n) => n.json());
+			// let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			consecuencias(resultado);
+			//consecuencias(resultado);
 			// window.location.reload();
 		});
 
@@ -141,7 +138,7 @@ window.addEventListener("load", () => {
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
 		if (indiceMotivo >= 0) {
 			mostrarCartelMotivos[indiceMotivo].addEventListener("click", () => {
-				if (campo == "avatar") taparElFondo.classList.remove("ocultar");
+				if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
 				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 		}
@@ -150,7 +147,7 @@ window.addEventListener("load", () => {
 		if (campo == "avatar")
 			cancelar.addEventListener("click", () => {
 				cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
-				taparElFondo.classList.add("ocultar");
+				tapaElFondo.classList.add("ocultar");
 			});
 
 		// Rechazar el nuevo valor
@@ -158,18 +155,17 @@ window.addEventListener("load", () => {
 			// Variables
 			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
 			// Stopper
-			if (!motivo || rechazar[indice].className.includes("inactivo")) return;
-			// Inactiva el ícono
-			rechazar[indice].classList.add("inactivo");
+			if (!motivo) return;
+			if (campo == "avatar") cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
 			// Oculta la fila
 			if (filas.length) filas[indice].classList.add("ocultar");
-			// Si el campo es avatar y la imagen actual es un 'url', lo agrega a la ruta
-			if (campo == "avatar" && avatarActual.src.startsWith("http")) convertirUrlEnArchivo();
+			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
+			// if (campo == "avatar" && avatarActual.src.startsWith("http")) convertirUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
-			let resultado = await fetch(ruta).then((n) => n.json());
+			// let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			consecuencias(resultado);
+			//consecuencias(resultado);
 			// window.location.reload();
 		});
 	}

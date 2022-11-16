@@ -39,8 +39,7 @@
 #centro #medio #info #titulo h3::first-letter {text-transform:capitalize;}
 #centro #medio #info ul {list-style-position: inside;}
 #centro #medio #info ul li {margin-left: 25px;}
-
-/* Flechas */
+/* Sección central - Flechas */
 #flechas {width: fit-content;}
 #flechas {margin-top: 25px; margin-bottom: 5px;}
 #flechas i {font-size: 2rem;}

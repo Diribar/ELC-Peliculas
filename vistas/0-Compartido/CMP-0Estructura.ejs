@@ -22,7 +22,7 @@
 		<section id="cuerpoFooter">
 			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
-				<%- include('CMP-Cartel', {mostrar: locals.cartel}) %>
+				<%- include('CMP-Cartel', {mostrar: locals.mostrarCartel}) %>
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
 				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
 				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>

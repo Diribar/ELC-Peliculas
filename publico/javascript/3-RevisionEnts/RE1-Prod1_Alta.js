@@ -5,8 +5,8 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
-	let motivoRechazo = document.querySelector("#motivosRechazo select");
+	let menuMotivosBorrar = document.querySelector("#cartelMotivosRechazo");
+	let motivoRechazo = document.querySelector("#cartelMotivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let inactivar = document.querySelector("#comandosRechazar button");
 
