@@ -1,76 +1,117 @@
 "use strict";
 window.addEventListener("load", () => {
-	// Variables
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
-	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
+	// Variables de bloque
+	let beneficios = {
+		titulo: document.querySelectorAll("#medio #titulo")[0],
+		ul: document.querySelectorAll("#medio #beneficios"),
+		ningunoLeyenda: "a criterio del Revisor",
+	};
+	let perjuicios = {
+		titulo: document.querySelectorAll("#medio #titulo")[1],
+		ul: document.querySelectorAll("#medio #perjuicios"),
+		ningunoLeyenda: "ninguno",
+	};
 
-	// Opciones
-	let aprobar = document.querySelector("#centro .fa-circle-check");
-	let mostrarMenuMotivos = document.querySelector("#centro .fa-circle-xmark");
-	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
+	// Variables de Imagen Nueva
+	let imagenNuevaDOM = document.querySelector("#izquierda img");
+	let imagenNueva = {
+		dom: imagenNuevaDOM,
+		ancho: imagenNuevaDOM.naturalWidth,
+		alto: imagenNuevaDOM.naturalHeight,
+	};
+	imagenNueva.ratio = imagenNueva.alto / imagenNueva.ancho;
+	imagenNueva.ratioAdecuado = imagenNueva.ratio >= 1.42 && imagenNueva.ratio <= 2;
 
-	// Motivos para borrar
-	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let motivosRechazo = document.querySelector("#motivosRechazo");
-	let motivoRechazo = document.querySelector("#motivosRechazo select");
+	// Variables de Imagen Actual
+	let imagenActualDOM = document.querySelector("#derecha img");
+	let imagenActual = {
+		dom: imagenActualDOM,
+		ancho: imagenActualDOM.naturalWidth,
+		alto: imagenActualDOM.naturalHeight,
+	};
+	imagenActual.ratio = imagenActual.alto / imagenActual.ancho;
+	imagenActual.ratioAdecuado = imagenActual.ratio >= 1.42 && imagenActual.ratio <= 2;
 
-	// Rutas
-	let rutaEvaluar = "/revision/api/producto-edicion/?entidad=";
-	rutaEvaluar += entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar";
-	let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
-	rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
+	// Comparaciones de ratio
+	beneficios = {
+		...beneficios,
+		ratioResultado:
+			!imagenActual.ratioAdecuado &&
+			(imagenNueva.ratioAdecuado || (imagenNueva.ratio > imagenActual.ratio && imagenNueva.ratio <= 2)),
+		ratioLeyenda: "Mejor relación de alto y ancho",
+	};
+	perjuicios = {
+		...perjuicios,
+		ratioResultado:
+			!imagenNueva.ratioAdecuado &&
+			(imagenActual.ratioAdecuado ||
+				(imagenActual.ratio > imagenNueva.ratio && imagenActual.ratio <= 2)),
+		ratioLeyenda: "Peor relación de alto y ancho",
+	};
 
-	// Otros
-	let urlConvertirEnArchivo = document.querySelector("#derecha .agregados");
-	let avatarActual = document.querySelector("#derecha img");
+	// Comparaciones de calidad
+	beneficios = {
+		...beneficios,
+		calidadResultado: (imagenActual.alto < 700) & (imagenNueva.alto > imagenActual.alto),
+		calidadLeyenda: "Mejor resolución",
+	};
+	perjuicios = {
+		...perjuicios,
+		calidadResultado: (imagenNueva.alto < 700) & (imagenActual.alto > imagenNueva.alto),
+		calidadLeyenda: "Peor resolución",
+	};
 
-	// Aprobar el nuevo avatar
-	aprobar.addEventListener("click", async () => {
-		if (aprobar.className.includes("inactivo")) return;
-		aprobar.classList.add("inactivo");
-		await fetch(rutaEvaluar + "&aprob=true").then((n) => n.json());
-		window.location.reload();
-	});
-
-	// Menú mostrarMenuMotivos para inactivar
-	mostrarMenuMotivos.addEventListener("click", () => {
-		taparElFondo.classList.remove("ocultar");
-		motivosRechazo.classList.remove("ocultar");
-	});
-
-	// Cancelar menú motivos para borrar
-	cancelar.addEventListener("click", () => {
-		motivosRechazo.classList.add("ocultar");
-		taparElFondo.classList.add("ocultar");
-	});
-
-	// Rechazar el nuevo avatar
-	rechazar.addEventListener("click", async () => {
-		let motivo = motivoRechazo.value;
-		if (motivo && !rechazar.className.includes("inactivo")) {
-			rechazar.classList.add("inactivo");
-			await fetch(rutaEvaluar + "&aprob=false&motivo_id=" + motivo);
-			window.location.reload();
+	// Funciones
+	let feedback = (bloque, infos) => {
+		if (typeof infos == "string") {
+			// Agregar titulo
+			let h3 = document.createElement("h3");
+			h3.innerText = bloque.slice(0, -1) + ":";
+			bloque == "beneficios" ? beneficios.titulo.appendChild(h3) : perjuicios.titulo.appendChild(h3);
+			// Agregar párrafo
+			let p = document.createElement("p");
+			p.innerText = (
+				bloque == "beneficios" ? beneficios[infos + "Leyenda"] : perjuicios[infos + "Leyenda"]
+			).toLowerCase();
+			bloque == "beneficios" ? beneficios.titulo.appendChild(p) : perjuicios.titulo.appendChild(p);
+		} else {
+			// Agregar titulo
+			let h3 = document.createElement("h3");
+			h3.innerText = bloque + ":";
+			bloque == "beneficios" ? beneficios.titulo.appendChild(h3) : perjuicios.titulo.appendChild(h3);
+			for (let info of infos) {
+				let li = document.createElement("li");
+				li.innerText = [bloque][info + "Leyenda"];
+				bloque == "beneficios" ? beneficios.ul.appendChild(li) : perjuicios.ul.appendChild(li);
+			}
 		}
-	});
+		// Fin
+		return;
+	};
 
-	// Convertir el avatar de 'url' a 'archivo'
-	urlConvertirEnArchivo.addEventListener("click", async () => {
-		// Detiene el proceso si el botón está inactivo, de lo contrario inactiva el botón
-		if (urlConvertirEnArchivo.className.includes("inactivo")) return;
-		else urlConvertirEnArchivo.classList.add("inactivo");
+	// Beneficios
+	!beneficios.ratioResultado && !beneficios.calidadResultado
+		? feedback("beneficios", "ninguno")
+		: !beneficios.ratioResultado
+		? feedback("beneficios", "calidad")
+		: !beneficios.calidadResultado
+		? feedback("beneficios", "ratio")
+		: feedback("beneficios", ["ratio", "calidad"]);
 
-		// Convierte el url en archivo
-		let url = encodeURIComponent(avatarActual.src);
-		let [resultado, rutaYnombre] = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
+	// Perjuicios
+	!perjuicios.ratioResultado && !perjuicios.calidadResultado
+		? feedback("perjuicios", "ninguno")
+		: !perjuicios.ratioResultado
+		? feedback("perjuicios", "calidad")
+		: !perjuicios.calidadResultado
+		? feedback("perjuicios", "ratio")
+		: feedback("perjuicios", ["ratio", "calidad"]);
 
-		// Oculta el botón si se concretó la descarga, de lo contrario activa el botón
-		if (resultado == "OK") {
-			urlConvertirEnArchivo.classList.add("ocultar");
-			avatarActual.src = rutaYnombre;
-			mostrarMenuMotivos.classList.remove("inactivo")
-		} else urlConvertirEnArchivo.classList.remove("inactivo");
-	});
+	// if (!peorRatio.resultado) document.querySelector("#perjuicios #ratio").classList.add("ocultar");
+	// if (!peorCalidad.resultado) document.querySelector("#perjuicios #resolucion").classList.add("ocultar");
+	// if (!peorRatio.resultado && !peorCalidad.resultado) {
+	// 	const para = document.createElement("p");
+	// 	para.innerText = "ninguno";
+	// 	perjuicios.appendChild(para);
+	// }
 });
