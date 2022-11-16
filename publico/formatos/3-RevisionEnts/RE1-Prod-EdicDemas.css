@@ -5,28 +5,28 @@
 #datosLargos {margin: 20px 0 5px; padding: 40px 40px 20px;}
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
 #datosLargos h1 {font-size: 1.5rem;}
-#datosLargos #contenido {height: 300px; overflow-y: auto; background-color: var(--gris-intermedio); padding: 0 5px;}
-#datosLargos #contenido h2 {margin-top: 15px;}
-#datosLargos #contenido #ingrs {margin-top: 5px;}
-#datosLargos #contenido p {line-height: 1;}
-#datosLargos #contenido .campoTitulo {font-size: 1.1rem; font-weight: bold;}
-#datosLargos #contenido #reemps .infoMostrar .orig, 
-#datosLargos #contenido #reemps .infoMostrar .edic {padding: 2px 4px; border-radius: 5px;}
+#datosLargos .contenido {height: 300px; overflow-y: auto; background-color: var(--gris-intermedio); padding: 0 5px;}
+#datosLargos .contenido h2 {margin-top: 15px;}
+#datosLargos .contenido #ingrs {margin-top: 5px;}
+#datosLargos .contenido p {line-height: 1;}
+#datosLargos .contenido .campoTitulo {font-size: 1.1rem; font-weight: bold;}
+#datosLargos .contenido #reemps .infoMostrar .orig, 
+#datosLargos .contenido #reemps .infoMostrar .edic {padding: 2px 4px; border-radius: 5px;}
 /* Ocultar la 'side-bar' */
-#datosLargos #contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
-#datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
+#datosLargos .contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
+#datosLargos .contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 #datosLargos .fa-trash-can {color: var(--rojo-oscuro);}
 
 /* Datos Largos - Ingresos */
-#datosLargos #contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
-#datosLargos #contenido #ingrs tr .campoTitulo {width: 150px;}
-#datosLargos #contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
-#datosLargos #contenido #ingrs tr .motivos select {background-color: inherit;}
+#datosLargos .contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
+#datosLargos .contenido #ingrs tr .campoTitulo {width: 150px;}
+#datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
+#datosLargos .contenido #ingrs tr #cartelMotivosRechazo select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */
-#datosLargos #contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
-#datosLargos #contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
-#datosLargos #contenido #reemps .infoMostrar.ocultar {display: block;}
+#datosLargos .contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
+#datosLargos .contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
+#datosLargos .contenido #reemps .infoMostrar.ocultar {display: block;}
 
 /* Datos Breves */
 #datosBreves {display: flex; flex-direction: column; justify-content: center; width: max-content; }
