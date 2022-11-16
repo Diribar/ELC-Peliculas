@@ -10,39 +10,25 @@ module.exports = {
 	// Productos
 	prodEdic: async (req, res) => {
 		// Variables
-		const {entidad, id, edicion_id: edicID, campo} = req.query;
-		const edicAprob = req.query.aprob == "true";
-		const userID = req.session.usuario.id;
+		const {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		// Obtiene el registro editado
-		let includes = [
-			"en_castellano",
-			"en_color",
-			"idioma_original",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-		];
-		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includes);
-		// Verificación: averigua si existe la edición y el campo a analizar
-		let condicion1 = campo == "avatar" && prodEdic && !prodEdic.avatar_archivo;
-		let condicion2 = campo != "avatar" && prodEdic && !prodEdic[campo];
-		if (!prodEdic || condicion1 || condicion2) return res.json("false");
-		// Obtiene el producto original
-		let prodOrig, statusOrigAprob;
-		let datos = [entidad, id, includes, edicAprob, prodEdic, campo];
-		[prodOrig, prodEdic, statusOrigAprob] = await procesos.obtieneProdOrig(...datos);
-		// Si la edición fue aprobada, actualiza el registro 'original' *******************
-		datos = {[campo]: prodEdic[campo]};
-		if (edicAprob) prodOrig = await procesos.actualizaOriginal(prodOrig, prodEdic, datos, userID);
-		// Actualizaciones en el USUARIO
-		await procesos.edic_AccionesAdic(req, prodOrig, prodEdic);
-		// Limpia la edición y cambia el status del producto si corresponde
-		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
-		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob);
+		let includesEdic = comp.includes("productos");
+		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
+		// Si no existe la edición, interrumpe el flujo
+		if (!prodEdic) return res.json({OK:false, mensaje: "No se encuentra la edición"});
+		// Si no existe el campo a analizar, interrumpe el flujo
+		prodEdic.avatar = prodEdic.avatar_archivo;
+		if (!prodEdic[campo]) return res.json({OK:false, mensaje: "El campo ya se había procesado"});
+		// Obtiene la versión original con includes
+		let includesOrig = [...includesEdic, "status_registro"];
+		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
+		// Acciones si el campo es avatar
+		if (campo == "avatar") {
+			delete prodEdic.avatar_url
+			procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
+		}
+		// Tareas adicionales
+		[prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar_Gral(req, prodOrig, prodEdic);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
 	},

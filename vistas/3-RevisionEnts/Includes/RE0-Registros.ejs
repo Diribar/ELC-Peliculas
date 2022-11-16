@@ -4,7 +4,7 @@
 		<% for (let reg of regs) { %>
 			<p>
 				<a href="/<%= url %>/?entidad=<%= reg.entidad %>&id=<%= reg.id + (reg.edicion_id ? ('&edicion_id=' + reg.edicion_id) : '') %>">
-					<%= reg.abrev %> - <%= reg.nombre %>
+					<%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %>
 				</a>
 			</p>
 		<% } %>	

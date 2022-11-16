@@ -11,10 +11,10 @@ module.exports = (sequelize, dt) => {
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.DECIMAL},
 
-		input_por_id: {type: dt.INTEGER},
-		input_en: {type: dt.DATE},
-		evaluado_por_id: {type: dt.INTEGER},
-		evaluado_en: {type: dt.DATE},
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
+		edic_analizada_por_id: {type: dt.INTEGER},
+		edic_analizada_en: {type: dt.DATE},
 
 		comunicado_en: {type: dt.DATE},
 	};

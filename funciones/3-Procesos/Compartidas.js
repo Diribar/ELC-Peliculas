@@ -79,7 +79,7 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
-		edicion = {...edicion}; // Ojo acá, es una prueba aver si sale bien
+		edicion = {...edicion}; // Ojo acá, es una prueba a ver si sale bien
 		// Pulir la información a tener en cuenta
 		edicion = this.quitaCamposSinContenido(edicion);
 		edicion = quitaCamposQueNoSeComparan(edicion);
@@ -352,6 +352,13 @@ module.exports = {
 		fecha = dia + "/" + mes + "/" + ano;
 		return fecha;
 	},
+	fechaTextoCorta: (fecha) => {
+		fecha = new Date(fecha);
+		let dia = fecha.getDate();
+		let mes = mesesAbrev[fecha.getMonth()];
+		fecha = dia + "/" + mes;
+		return fecha;
+	},
 	fechaHorarioTexto: (horario) => {
 		horario = horario ? new Date(horario) : funcionAhora();
 		return (
@@ -543,6 +550,41 @@ module.exports = {
 		);
 	},
 
+	// Usuarios
+	usuario_aumentaPenalizacAcum: (userID, motivo) => {
+		// Variables
+		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		// Se le baja el rol a 'Consultas', si el motivo lo amerita
+		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_usuario_id});
+		// Aumenta la penalización acumulada
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", motivo.duracion);
+		// Fin
+		return;
+	},
+	usuario_Ficha: async (userID, ahora) => {
+		// Obtiene los datos del usuario
+		let includes = "rol_iglesia";
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
+		// Variables
+		let unAno = unDia * 365;
+		let enviar = {apodo: ["Apodo", usuario.apodo]};
+		// Edad
+		if (usuario.fecha_nacimiento) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+			enviar.edad = ["Edad", edad];
+		}
+		// Antigüedad
+		let antiguedad =
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
+				.toFixed(1)
+				.replace(".", ",") + " años";
+		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		// Fin
+		return enviar;
+	},
+
 	// Varios
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
@@ -578,29 +620,6 @@ module.exports = {
 				resultado.push(prod);
 		// Fin
 		return resultado;
-	},
-	usuario_Ficha: async (userID, ahora) => {
-		// Obtiene los datos del usuario
-		let includes = "rol_iglesia";
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
-		// Variables
-		let unAno = unDia * 365;
-		let enviar = {apodo: ["Apodo", usuario.apodo]};
-		// Edad
-		if (usuario.fecha_nacimiento) {
-			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
-			enviar.edad = ["Edad", edad];
-		}
-		// Antigüedad
-		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
-				.toFixed(1)
-				.replace(".", ",") + " años";
-		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-		// Rol en la iglesia
-		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-		// Fin
-		return enviar;
 	},
 	procesarRCLV: async (datos) => {
 		// Variables
