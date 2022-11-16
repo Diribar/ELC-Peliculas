@@ -189,9 +189,7 @@ module.exports = {
 				avatar = {
 					original: prodOrig.avatar
 						? (!prodOrig.avatar.startsWith("http")
-								? prodOrig.status_registro.gr_creado
-									? "/imagenes/4-ProdsRevisar/"
-									: "/imagenes/3-Productos/"
+								? "/imagenes/3-Productos/"
 								: "") + prodOrig.avatar
 						: "/imagenes/8-Agregar/IM.jpg",
 					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,

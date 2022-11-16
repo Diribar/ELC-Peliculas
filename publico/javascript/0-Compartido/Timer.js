@@ -62,13 +62,13 @@ window.addEventListener("load", async () => {
 		// Partes del cartel
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
-		let mensajes = document.querySelector("#cartel #mensajes");
+		let cartelMensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
 		// Mensajes
 		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
 		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
-		let arrayMensajes = datos.capturado_en
+		let mensajes = datos.capturado_en
 			? [
 					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
 					"Quedó a disposición de los demás " + tipoUsuario + ".",
@@ -78,8 +78,8 @@ window.addEventListener("load", async () => {
 					"Se cumplió el plazo de 1 hora desde que se creó el registro.",
 					"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 			  ];
-		mensajes.innerHTML = "";
-		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+		cartelMensajes.innerHTML = "";
+		for (let mensaje of mensajes) cartelMensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
 		let icono = codigo.startsWith("/revision/usuarios")

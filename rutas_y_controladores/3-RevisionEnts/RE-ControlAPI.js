@@ -33,7 +33,7 @@ module.exports = {
 			prodEdic
 		);
 		// Fin
-		return res.json([quedanCampos, statusAprob]);
+		return res.json({OK: true, quedanCampos, statusAprob});
 	},
 	prodGuardaAvatar: async (req, res) => {
 		// Variables
@@ -46,7 +46,7 @@ module.exports = {
 		if (resultado == "OK") {
 			// Actualiza el campo avatar en el registro original
 			BD_genericas.actualizaPorId(entidad, id, {avatar});
-			// Actualiza la ruta para enviar al Front-End
+			// Actualiza la ruta para actualizar el 'src' en la vista
 			rutaYnombre = rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"));
 		}
 		// Fin

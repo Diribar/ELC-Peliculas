@@ -120,6 +120,7 @@ window.addEventListener("load", () => {
 		});
 
 		// Menú inactivar
+		// Los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
 		if (i >= sinMotivo) {
 			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
 				menuMotivos[i - sinMotivo].classList.remove("ocultar");

@@ -1,6 +1,6 @@
 <div id="izquierda" class="imagenes">
 	<!-- Imagen sugerida -->
-	<img class="aparece" src="<%= avatar.edicion %>" title="Imagen propuesta">
+	<img src="<%= avatar.edicion %>" title="Imagen propuesta">
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<%- include('CMP-TimerContador') %>
-		<div id="fichaTecnica" class="aparece">
+		<div id="fichaTecnica">
 			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
 			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
 			<p>Dirección: <%= prodOrig.direccion %></p>
@@ -76,7 +76,7 @@
 </div>
 <div id="derecha" class="imagenes">
 	<!-- Imagen actual -->
-	<img class="aparece" src="<%= avatar.original %>" title="Imagen actual">
+	<img src="<%= avatar.original %>" title="Imagen actual">
 	<% if (avatarExterno) { %>
 		<button type="button" class="agregados scale">Descargalo en nuestro sitio web</button>
 	<% } %>
