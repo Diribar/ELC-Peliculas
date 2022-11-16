@@ -12,7 +12,7 @@
 <div class="campoValor ocultar"><%= campo.valorEdic %></div>
 
 <!-- Motivo -->
-<div class="motivos ocultar">
+<div id="cartelMotivosRechazo" class="ocultar">
 	<i class="fa-solid fa-trash-can rechazar" tabindex="-1" title='Rechazar'></i>
 	<select name="motivo_id">
 		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>

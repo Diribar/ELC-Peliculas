@@ -9,7 +9,8 @@
 		<% } %>
 	</nav>
 </div>
-<div id="centro">
+<div id="centro" class="contenido">
+	<div class="campoNombre ocultar">avatar</div>
 	<div id="arriba">
 		<div id="tituloPrincipal">
 			<h1 id="titulo"><%= titulo %></h1>
@@ -41,7 +42,7 @@
 			</ul>
 			<!-- Rechazar -->
 			<div id="titulo">
-				<i class="fa-solid fa-circle-xmark scale<% if (avatarExterno) { %> inactivo<% } %>" title="Rechazar"></i>
+				<i class="fa-solid fa-circle-xmark mostrarMotivos scale<% if (avatarExterno) { %> inactivo<% } %>" title="Rechazar"></i>
 			</div>
 			<ul id="perjuicios">
 			</ul>
@@ -60,7 +61,7 @@
 		<%- include('CMP-3Footer', {mostrar: true}) %>
 	</div>
 	<!-- Position absolute -->
-	<div id="motivosRechazo" class="ocultar">
+	<div id="cartelMotivosRechazo" class="ocultar">
 		<p>Por favor explicanos por qué sugerís rechazarla</p>
 		<select>
 			<option value="" selected class="ocultar">Elegí una opción</option>	
@@ -70,7 +71,7 @@
 		</select>
 		<div id="comandosRechazar">
 			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-			<i class="fa-solid fa-circle-right" title="Continuar"></i>
+			<i class="fa-solid fa-trash-can rechazar" title="Rechazar"></i>
 		</div>
 	</div>
 </div>
