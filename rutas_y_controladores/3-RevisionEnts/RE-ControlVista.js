@@ -142,7 +142,7 @@ module.exports = {
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		const codigo = "producto/edicion";
+		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
 		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
 

@@ -548,7 +548,6 @@ module.exports = {
 			let datosAdicionales = {entidad, entidad_id: prodOrig.id, campo, titulo};
 			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
 			datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
-			console.log(decision,datos);
 			BD_genericas.agregarRegistro(decision, datos);
 		})();
 
@@ -569,7 +568,7 @@ module.exports = {
 		delete prodEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic);
+		let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
