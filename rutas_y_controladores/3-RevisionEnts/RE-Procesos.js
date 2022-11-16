@@ -466,7 +466,7 @@ module.exports = {
 
 		// Gestión de archivos
 		if (edicAprob) {
-			// Mueve el archivo de edicion a la carpeta definitiva
+			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
 			// Si el 'avatar original' es un archivo, lo elimina
 			if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
@@ -475,11 +475,12 @@ module.exports = {
 		// Elimina el archivo de edicion
 		else comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
 
-		// Borra los campos auxiliares de avatar en el registro de edicion
+		// Borra el campo 'avatar_url' en el registro de edicion y la variable
 		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});
+		delete prodEdic.avatar_url;
 
 		// Fin
-		return;
+		return prodEdic;
 	},
 	prodEdicGuardar_Gral: async (req, prodOrig, prodEdic) => {
 		// Variables
@@ -577,8 +578,8 @@ module.exports = {
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-			// 2. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
-			// 3. Informa si el status pasó a aprobado
+			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
+			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
@@ -617,13 +618,10 @@ module.exports = {
 		if (!statusAprobInicial && statusAprobFinal)
 			this.RCLV_prodsAprob(prodOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
-		return [edicion, quedanCampos, statusAprobFinal];
+		return [prodOrig, edicion, quedanCampos, statusAprobFinal];
 	},
 	cartelNoQuedanCampos: {
-		mensajes: [
-			"Se terminó de procesar esta edición.",
-			"Podés volver al tablero de control",
-		],
+		mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 		iconos: [
 			{
 				nombre: "fa-spell-check",

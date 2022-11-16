@@ -172,11 +172,10 @@ module.exports = {
 				// Variables
 				req.query.aprob = "true";
 				req.query.campo = "avatar";
-				// Avatar: impacto en los archivos, en los registros original y de edicion
-				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				prodOrig.avatar = prodEdic.avatar;
+				// Avatar: impacto en los archivos, y en el registro de edicion
+				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				[prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 					req,
 					prodOrig,
 					prodEdic
