@@ -378,31 +378,36 @@ module.exports = {
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
-	prodEdicForm_ingrReempl: (prodOrig, prodEdic) => {
+	prodEdicForm_ingrReempl: (prodOrig, edicion) => {
+		// Obtiene todos los campos a revisar
 		let campos = [...variables.camposRevisar.productos];
+		let resultado = [];
 
-		for (let i = campos.length - 1; i >= 0; i--) {
-			let campoNombre = campos[i].nombre;
-			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
-			if (!Object.keys(prodEdic).includes(campoNombre)) campos.splice(i, 1);
-			else {
-				// Variables
-				let include = campos[i].relac_include;
-				let campo = campos[i].campo_include;
-				let valido = !campos[i].rclv || prodOrig[campoNombre] != 1;
-				// Valores originales
-				if (valido)
-					campos[i].mostrarOrig =
-						include && prodOrig[include] ? prodOrig[include][campo] : prodOrig[campoNombre];
-				// Valores editados
-				campos[i].valorEdic = prodEdic[campoNombre];
-				campos[i].mostrarEdic =
-					include && prodEdic[include] ? prodEdic[include][campo] : prodEdic[campoNombre];
-			}
+		// Deja solamente los campos presentes en edicion
+		for (let nombre in edicion) {
+			// Obtiene el campo con varios datos
+			let campo = campos.find((n) => n.nombre == nombre);
+			// Si el campo no existe en los campos a revisar, saltea la rutina
+			if (!campo) continue;
+			// Obtiene las variables de include
+			let relac_include = campo.relac_include;
+			let campo_include = campo.campo_include;
+			// Criterio para determinar qué valores originales mostrar
+			campo.mostrarOrig =
+				relac_include && prodOrig[relac_include] // El producto original tiene un valor 'include'
+					? prodOrig[relac_include][campo_include] // Muestra el valor 'include'
+					: prodOrig[nombre]; // Muestra el valor 'simple'
+			// Criterio para determinar qué valores editados mostrar
+			campo.mostrarEdic =
+				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
+					? edicion[relac_include][campo_include] // Muestra el valor 'include'
+					: edicion[nombre]; // Muestra el valor 'simple'
+			// Consolidar los resultados
+			resultado.push(campo);
 		}
-		// Separar los resultados entre ingresos y reemplazos
-		let ingresos = campos.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-		let reemplazos = campos.filter((n) => n.mostrarOrig);
+		// Separa los resultados entre ingresos y reemplazos
+		let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+		let reemplazos = resultado.filter((n) => n.mostrarOrig);
 		// Fin
 		return [ingresos, reemplazos];
 	},
@@ -572,9 +577,6 @@ module.exports = {
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-			// 1. Elimina el registro de la edición
-			await BD_genericas.eliminaPorId("prod_edicion", prodEdic.id);
-
 			// 2. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 3. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
@@ -618,7 +620,10 @@ module.exports = {
 		return [edicion, quedanCampos, statusAprobFinal];
 	},
 	cartelNoQuedanCampos: {
-		mensajes: ["Se terminó de procesar esta edición"],
+		mensajes: [
+			"Se terminó de procesar esta edición.",
+			"Podés volver al tablero de control",
+		],
 		iconos: [
 			{
 				nombre: "fa-spell-check",

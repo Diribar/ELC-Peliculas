@@ -1,7 +1,6 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
@@ -25,7 +24,7 @@ module.exports = {
 		// RCLV
 		let RCLVs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		RCLVs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
-		// Procesar los campos
+		// Procesa los campos
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
@@ -152,7 +151,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: prodID} = req.query;
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let avatarExterno, avatarLinksExternos, avatar;
+		let avatarExterno, avatarLinksExternos, avatar, edicion, imgDerPers;
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
 
 		// Obtiene la versión original con includes
@@ -184,7 +183,7 @@ module.exports = {
 				);
 				// Fin, si no quedan campos
 				if (!quedanCampos)
-					return res.render("CMP-0Estructura", {informacion: procesar.cartelNoQuedanCampos});
+					return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			} else {
 				// Variables
 				codigo += "/avatar";
@@ -206,14 +205,19 @@ module.exports = {
 
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
+			let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
+			// Fin, si no quedan campos
+			if (!quedanCampos)
+				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, prodEdic);
+			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
 			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
+			imgDerPers = avatar;
 		}
 		// Variables para la vista
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
@@ -232,12 +236,13 @@ module.exports = {
 			avatar,
 			motivos,
 			entidad,
-			id:prodID,
+			id: prodID,
 			bloqueDer,
 			title: prodOrig.nombre_castellano,
 			avatarExterno,
 			avatarLinksExternos,
 			cartel: true,
+			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
 		});

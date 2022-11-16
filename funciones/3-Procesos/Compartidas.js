@@ -78,6 +78,7 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
+		let edicID = edicion.id;
 		edicion = {...edicion}; // Ojo acá, es una prueba a ver si sale bien
 		// Pulir la información a tener en cuenta
 		edicion = this.quitaCamposSinContenido(edicion);
@@ -85,6 +86,9 @@ module.exports = {
 		edicion = quitaCoincidenciasConOriginal(original, edicion);
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
+		// Si no quedan campos, elimina el registro de la edición
+		if (!quedanCampos) BD_genericas.eliminaPorId("prod_edicion", edicID);
+
 		// Fin
 		return [edicion, quedanCampos];
 	},
