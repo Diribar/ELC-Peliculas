@@ -480,7 +480,7 @@ module.exports = {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const edicAprob = aprob == "true";
-		const decision = "edics_" + edicAprob ? "aprob" : "rech";
+		const decision = "edics_" + (edicAprob ? "aprob" : "rech");
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const statusAprobInicial = prodOrig.status_registro.aprobado;
@@ -548,14 +548,15 @@ module.exports = {
 			let datosAdicionales = {entidad, entidad_id: prodOrig.id, campo, titulo};
 			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
 			datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
+			console.log(decision,datos);
 			BD_genericas.agregarRegistro(decision, datos);
 		})();
 
 		// Aumenta el campo aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", prodEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(edicion.editado_por_id, datos.motivo);
+		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, datos.motivo);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
 		if (edicAprob) {

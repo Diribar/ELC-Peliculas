@@ -172,6 +172,7 @@ module.exports = {
 			if (reemplAvatarAutomaticam) {
 				// Variables
 				req.query.aprob = "true";
+				req.query.campo = "avatar";
 				// Avatar: impacto en los archivos, en los registros original y de edicion
 				await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				prodOrig.avatar = prodEdic.avatar;
