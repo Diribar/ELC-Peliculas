@@ -6,30 +6,29 @@ window.addEventListener("load", () => {
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
 	// Opciones
-	let aprobar = document.querySelectorAll("#contenido .fa-circle-check");
-	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos");
+	let aprobar = document.querySelectorAll(".contenido .fa-circle-check");
+	let mostrarMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
 
 	// Motivos para borrar
-	let rechazar = document.querySelectorAll("#contenido .rechazar");
-	let menuMotivos = document.querySelectorAll("#contenido .motivos");
-	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
+	let rechazar = document.querySelectorAll(".contenido .rechazar");
+	let cartelMotivosRechazo = document.querySelectorAll(".contenido #cartelMotivosRechazo");
+	let motivoRechazos = document.querySelectorAll(".contenido #cartelMotivosRechazo select");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
 
 	// Bloque Ingresos
-	let bloqueIngrs = document.querySelector("#contenido #ingrs");
-	let filasIngrs = document.querySelectorAll("#contenido #ingrs .fila");
+	let bloqueIngrs = document.querySelector(".contenido #ingrs");
+	let filasIngrs = document.querySelectorAll(".contenido #ingrs .fila");
 
 	// Bloque Reemplazos
-	let bloqueReemps = document.querySelector("#contenido #reemps");
-	let filasReemps = document.querySelectorAll("#contenido #reemps .fila");
+	let bloqueReemps = document.querySelector(".contenido #reemps");
+	let filasReemps = document.querySelectorAll(".contenido #reemps .fila");
 
 	// Otras variables
 	let casos = aprobar.length == rechazar.length ? aprobar.length : 0;
-	let filas = document.querySelectorAll("#contenido .fila");
-	let campoNombres = Array.from(document.querySelectorAll("#contenido .campoNombre")).map(
-		(n) => n.innerHTML
-	);
-	let ruta =
+	let filas = document.querySelectorAll(".contenido .fila");
+	let campoNombres = document.querySelectorAll(".contenido .campoNombre");
+	campoNombres = Array.from(campoNombres).map((n) => n.innerHTML);
+	let rutaEdicion =
 		"/revision/api/producto-edicion/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// FUNCIONES ----------------------------------------------------------------
@@ -106,36 +105,36 @@ window.addEventListener("load", () => {
 	};
 
 	// LISTENERS --------------------------------------------------------------------
-	for (let i = 0; i < casos; i++) {
+	for (let indice = 0; indice < casos; indice++) {
+		// Variables
+		let indiceMotivo = indice - sinMotivo;
 		// Aprobar el nuevo valor
-		aprobar[i].addEventListener("click", async () => {
+		aprobar[indice].addEventListener("click", async () => {
 			// Ocultar la fila
-			filas[i].classList.add("ocultar");
+			if (filas.length) filas[indice].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let [quedanCampos, statusAprob] = await fetch(
-				ruta + "&aprob=true&campo=" + campoNombres[i]
-			).then((n) => n.json());
+			let ruta = rutaEdicion + "&aprob=true&campo=" + campoNombres[indice];
+			let [quedanCampos, statusAprob] = await fetch(ruta).then((n) => n.json());
 			// Revisar el status
 			consecuencias(quedanCampos, statusAprob);
 		});
 
 		// Menú inactivar
-		// Los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
-		if (i >= sinMotivo) {
-			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
-				menuMotivos[i - sinMotivo].classList.remove("ocultar");
+		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
+		if (indiceMotivo >= 0) {
+			mostrarMotivos[indiceMotivo].addEventListener("click", () => {
+				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 		}
 
 		// Rechazar el nuevo valor
-		rechazar[i].addEventListener("click", async () => {
-			let motivo = i >= sinMotivo ? motivoRechazos[i - sinMotivo].value : "";
+		rechazar[indice].addEventListener("click", async () => {
+			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
 			// Ocultar la fila
-			filas[i].classList.add("ocultar");
+			if (filas.length) filas[indice].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let [quedanCampos, statusAprob] = await fetch(
-				ruta + "&campo=" + campoNombres[i] + "&motivo_id=" + motivo
-			).then((n) => n.json());
+			let ruta = rutaEdicion + "&campo=" + campoNombres[indice] + "&motivo_id=" + motivo
+			let [quedanCampos, statusAprob] = await fetch(ruta).then((n) => n.json());
 			// Revisar el status
 			consecuencias(quedanCampos, statusAprob);
 		});
