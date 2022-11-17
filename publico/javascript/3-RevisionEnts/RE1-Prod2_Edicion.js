@@ -16,6 +16,9 @@ window.addEventListener("load", () => {
 	let rechazar = document.querySelectorAll(".contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
 	let tapaElFondo = document.querySelector("#tapar-el-fondo");
+	let motivoGenerico = document.querySelector("#motivoGenerico");
+	let motivoGenerico_id;
+	if (motivoGenerico) motivoGenerico_id = motivoGenerico.innerHTML;
 
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector(".contenido #ingrs");
@@ -196,16 +199,16 @@ window.addEventListener("load", () => {
 		// Rechaza el nuevo valor
 		rechazar[indice].addEventListener("click", async () => {
 			// Variables
-			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
+			let motivo_id = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : motivoGenerico_id;
 			// Stopper
-			if (!motivo) return;
+			if (!motivo_id) return;
 			if (campo == "avatar") cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
 			// Oculta la fila
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
 			if (campo == "avatar" && avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
-			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
+			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
 			consecuencias(resultado, campo);
