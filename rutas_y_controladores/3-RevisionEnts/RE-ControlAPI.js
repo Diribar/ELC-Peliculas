@@ -15,21 +15,25 @@ module.exports = {
 		let includesEdic = comp.includes("productos");
 		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
 		// Si no existe la edición, interrumpe el flujo
-		if (!prodEdic) return res.json({OK:false, mensaje: "No se encuentra la edición"});
+		if (!prodEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
-		if (!prodEdic[campo]) return res.json({OK:false, mensaje: "El campo ya se había procesado"});
+		if (!prodEdic[campo]) return res.json({OK: false, mensaje: "El campo ya se había procesado"});
 		// Obtiene la versión original con includes
 		let includesOrig = [...includesEdic, "status_registro"];
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
 		// Acciones si el campo es avatar
 		if (campo == "avatar") {
-			delete prodEdic.avatar_url
+			delete prodEdic.avatar_url;
 			procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 		}
 		// Tareas adicionales
-		[prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar_Gral(req, prodOrig, prodEdic);
+		[prodOrig, prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar_Gral(
+			req,
+			prodOrig,
+			prodEdic
+		);
 		// Fin
-		return res.json([quedanCampos, statusAprob]);
+		return res.json({OK: true, quedanCampos, statusAprob});
 	},
 	prodGuardaAvatar: async (req, res) => {
 		// Variables
@@ -42,7 +46,7 @@ module.exports = {
 		if (resultado == "OK") {
 			// Actualiza el campo avatar en el registro original
 			BD_genericas.actualizaPorId(entidad, id, {avatar});
-			// Actualiza la ruta para enviar al Front-End
+			// Actualiza la ruta para actualizar el 'src' en la vista
 			rutaYnombre = rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"));
 		}
 		// Fin
