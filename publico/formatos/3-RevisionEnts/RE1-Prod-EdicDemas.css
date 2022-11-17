@@ -27,6 +27,8 @@
 #datosLargos .contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
 #datosLargos .contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
 #datosLargos .contenido #reemps .infoMostrar.ocultar {display: block;}
+#datosLargos .contenido #reemps #cartelMotivosRechazo {position: static; transform: none; padding: 0; width: fit-content; background-color: transparent}
+#datosLargos .contenido #reemps #cartelMotivosRechazo select {margin: 0;}
 
 /* Datos Breves */
 #datosBreves {display: flex; flex-direction: column; justify-content: center; width: max-content; }
