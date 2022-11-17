@@ -18,7 +18,7 @@
 			<div>
 				<h2>Respecto a la imagen</h2>
 				<select name="motivo_docum_id" id="motivo_docum" autofocus>
-					<option value="" selected class="ocultar">Elegí una opción</option>
+					<option value="" selected>Elegí una opción</option>
 					<option value="0">Corresponde a un documento nacional</option>
 					<% for (motivo of motivos_docum) { %>
 						<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>

@@ -66,7 +66,7 @@
 					<div class="flexRowAlign">
 						<label style="width: 40px;">Mes:</label>
 						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!RCLV_original.mes_id) { %>selected<% } %>>Elegí</option>
+							<option value="" <% if (!RCLV_original.mes_id) { %>selected<% } %>>Elegí</option>
 							<% for (let mes of meses) { %>
 								<option value="<%= mes.id %>" <% if (mes.id == mes_id) { %>selected<% } %>>
 									<%= mes.nombre %>
@@ -84,7 +84,7 @@
 					<div class="flexRowAlign">
 						<label style="width: 40px;">Día:</label>
 						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!RCLV_original.dia) { %>selected<% } %>>Elegí</option>
+							<option value="" <% if (!RCLV_original.dia) { %>selected<% } %>>Elegí</option>
 							<% for (let dia = 1; dia < 32; dia++) { %>
 								<option value="<%= dia %>" 
 									<% if (dia > 29) { %>class="ocultar"<% } %>
@@ -184,7 +184,7 @@
 					<div class="flexRowAlign">
 						<label>Status del proceso:</label>
 						<select name="proceso_id">
-							<option value="" <% if (RCLV_original.proceso_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
+							<option value="" <% if (RCLV_original.proceso_id=="") { %> selected <% } %>>Elejí</option>
 							<% for (let proceso of procs_canoniz) { %>
 								<option value="<%= proceso.id %>" <% if (proceso.id == RCLV_original.proceso_id) { %> selected <% } %>><%= proceso.nombre %></option>
 							<% } %> 
@@ -194,7 +194,7 @@
 					<div class="flexRowAlign">
 						<label>Rol en la Iglesia:</label>
 						<select name="rol_iglesia_id">
-							<option value="" <% if (RCLV_original.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
+							<option value="" <% if (RCLV_original.rol_iglesia_id=="") { %> selected <% } %>>Elejí una opción</option>
 							<% for (let rol_iglesia of roles_iglesia) { %>
 								<option value="<%= rol_iglesia.id %>" <% if (RCLV_original.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 							<% } %> 

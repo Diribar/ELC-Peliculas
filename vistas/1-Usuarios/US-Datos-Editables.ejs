@@ -14,7 +14,7 @@
 		<label for="pais">País de residencia</label>
 		<div class="inputError">
 			<select name="pais_id" class="input">
-				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
+				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>>Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
 						<option value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
@@ -45,7 +45,7 @@
 		<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
 		<div class="inputError">
 			<select name="rol_iglesia_id" class="input">
-				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>class="ocultar">Elejí un rol en la Iglesia</option>
+				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>>Elejí un rol en la Iglesia</option>
 				<% for (let rol_iglesia of roles_iglesia) { %>
 					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %>

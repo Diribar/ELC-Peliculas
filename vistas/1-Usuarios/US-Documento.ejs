@@ -40,7 +40,7 @@
 				<div class="inputError">
 					<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 					<select name="sexo_id" class="input">
-						<option value="" <% if (sexo_id=="") { %>selected<% } %> class="ocultar">Elegí una opción</option>
+						<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
 						<% for (let sexo of sexos) { %>
 							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 						<% } %> 
@@ -73,7 +73,7 @@
 				<label for="docum_pais_id">Expedido en qué país</label>
 				<div class="inputError">
 					<select id="docum_pais_id" name="docum_pais_id" class="input">
-						<option value="" <% if (dataEntry.docum_pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
+						<option value="" <% if (dataEntry.docum_pais_id=="") {%>selected <%}%>>Elejí un país</option>
 						<optgroup label="América (habla hispana)">
 							<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
 								<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>

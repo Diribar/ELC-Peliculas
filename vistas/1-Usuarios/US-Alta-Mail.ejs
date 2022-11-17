@@ -29,7 +29,7 @@
 			</label>
 			<div class="inputError">
 				<select id="docum_pais_id" name="docum_pais_id" class="input">
-					<option value="" <% if (!dataEntry.docum_pais_id) {%>selected <%}%>class="ocultar">Elejí un país</option>
+					<option value="" <% if (!dataEntry.docum_pais_id) {%>selected <%}%>>Elejí un país</option>
 					<optgroup label="América (habla hispana)">
 						<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
 							<option value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
