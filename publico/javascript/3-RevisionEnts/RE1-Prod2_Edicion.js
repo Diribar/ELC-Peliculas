@@ -71,36 +71,43 @@ window.addEventListener("load", () => {
 		};
 		let mensajeAvatar = () => {
 			// Mensajes
-			let arrayMensajes = ["Gracias por responder sobre la imagen"];
+			let arrayMensajes = [
+				"Gracias por responder sobre la imagen",
+				"A continuación te pedimos que valides otros campos",
+			];
 			// Flechas
 			let icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				link: location.href,
 			};
 			// Fin
-			return arrayMensajes, icono;
+			return {arrayMensajes, icono};
 		};
 		let mensajeFin = () => {
 			// Mensajes
-			let arrayMensajes = ["Gracias por completar la revisión."];
+			let arrayMensajes = ["Se completó la revisión", "Muchas gracias"];
 			// Flechas
 			let icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
 			};
 			// Fin
-			return arrayMensajes, icono;
+			return {arrayMensajes, icono};
 		};
-		let cartel = (arrayMensajes, icono) => {
+		let cartel = (datos) => {
+			// Variables
+			let {arrayMensajes, icono} = datos;
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");
 			let error = document.querySelector("#error");
+			let gracias = document.querySelector("#gracias");
 			let mensajes = document.querySelector("ul#mensajes");
 			let flechas = document.querySelector("#cartel #flechasCartel");
 
 			// Formatos
 			cartel.style.backgroundColor = "var(--verde-oscuro)";
 			error.classList.add("ocultar");
+			gracias.classList.remove("ocultar");
 
 			// Cambia el contenido del mensaje y las flechas
 			mensajes.innerHTML = "";
@@ -117,18 +124,18 @@ window.addEventListener("load", () => {
 		};
 
 		// Interrumpe si los resultados fueron insatisfactorios
-		if (!resultados.OK) return;
+		if (!resultado.OK) return;
 		// Verifica si debe ocultar algún bloque
 		if (bloqueIngrs || bloqueReemps) ocultaBloques();
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
-		// Si está todo procesado y quedan campos, 
+		// Si está todo procesado y quedan campos,
 		if (todoProcesado == resultado.quedanCampos) {
 			// Publica el cartel de avatar
 			if (campo == "avatar") cartel(mensajeAvatar());
 			// Recarga la vista
 			else location.reload();
-		} 
+		}
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado) cartel(mensajeFin());
 		// Fin
