@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 	let avatarActual = document.querySelector("#derecha img");
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuencias = (resultado) => {
+	let consecuencias = (resultado, campo) => {
 		// Fórmulas
 		let ocultaBloques = () => {
 			// Fórmulas
@@ -62,14 +62,36 @@ window.addEventListener("load", () => {
 			// Fin
 			return;
 		};
-		FN_todoProcesado = () => {
+		let FN_todoProcesado = () => {
 			// Averigua cada bloque
 			let bloqueIngrsOculto = !bloqueIngrs || bloqueIngrs.className.includes("ocultar");
 			let bloqueReempsOculto = !bloqueReemps || bloqueReemps.className.includes("ocultar");
 			// Averigua si está todo oculto
 			return bloqueIngrsOculto && bloqueReempsOculto;
 		};
-		let cartelFin = () => {
+		let mensajeAvatar = () => {
+			// Mensajes
+			let arrayMensajes = ["Gracias por responder sobre la imagen"];
+			// Flechas
+			let icono = {
+				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				link: location.href,
+			};
+			// Fin
+			return arrayMensajes, icono;
+		};
+		let mensajeFin = () => {
+			// Mensajes
+			let arrayMensajes = ["Gracias por completar la revisión."];
+			// Flechas
+			let icono = {
+				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+			};
+			// Fin
+			return arrayMensajes, icono;
+		};
+		let cartel = (arrayMensajes, icono) => {
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");
 			let error = document.querySelector("#error");
@@ -80,17 +102,9 @@ window.addEventListener("load", () => {
 			cartel.style.backgroundColor = "var(--verde-oscuro)";
 			error.classList.add("ocultar");
 
-			// Mensajes
-			let arrayMensajes = ["Gracias por completar la revisión."];
-			// Cambia el contenido del mensaje
+			// Cambia el contenido del mensaje y las flechas
 			mensajes.innerHTML = "";
 			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-
-			// Flechas
-			let icono = {
-				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
-			};
 			flechas.innerHTML = "";
 			flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
@@ -102,14 +116,21 @@ window.addEventListener("load", () => {
 			return;
 		};
 
+		// Interrumpe si los resultados fueron insatisfactorios
+		if (!resultados.OK) return;
 		// Verifica si debe ocultar algún bloque
 		if (bloqueIngrs || bloqueReemps) ocultaBloques();
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
-		// Si está todo procesado y quedan campos, recarga la vista
-		if (todoProcesado == resultado.quedanCampos) location.reload();
-		// Si está todo procesado, publica el cartel
-		if (todoProcesado) cartelFin();
+		// Si está todo procesado y quedan campos, 
+		if (todoProcesado == resultado.quedanCampos) {
+			// Publica el cartl de avatar
+			if (campo == "avatar") cartel(mensajeAvatar());
+			// Recarga la vista
+			else location.reload();
+		} 
+		// Si está todo procesado, publica el cartel de fin
+		else if (todoProcesado) cartel(mensajeFin());
 		// Fin
 		return;
 	};
@@ -140,10 +161,8 @@ window.addEventListener("load", () => {
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
-			console.log(resultado);
 			// Consecuencias
-			consecuencias(resultado);
-			// window.location.reload();
+			consecuencias(resultado, campo);
 		});
 
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
@@ -182,8 +201,7 @@ window.addEventListener("load", () => {
 			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
 			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			consecuencias(resultado);
-			// window.location.reload();
+			consecuencias(resultado, campo);
 		});
 	}
 });
