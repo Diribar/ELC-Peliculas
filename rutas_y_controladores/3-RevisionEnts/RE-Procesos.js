@@ -482,7 +482,7 @@ module.exports = {
 		// Fin
 		return prodEdic;
 	},
-	prodEdicGuardar_Gral: async (req, prodOrig, prodEdic) => {
+	prodEdicGuardar_Gral: async function(req, prodOrig, prodEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const edicAprob = aprob == "true";
@@ -599,7 +599,7 @@ module.exports = {
 					// Cambia el status del producto e inactiva la captura
 					await BD_genericas.actualizaPorId(entidad, prodOrig.id, datosCambioStatus);
 					// Si es una colección, le cambia el status también a los capítulos
-					if (entidadOrig == "colecciones") {
+					if (entidad == "colecciones") {
 						// Amplía los datos
 						datosCambioStatus = {
 							...datosCambioStatus,

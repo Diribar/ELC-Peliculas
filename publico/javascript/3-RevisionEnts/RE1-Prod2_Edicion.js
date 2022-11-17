@@ -37,6 +37,7 @@ window.addEventListener("load", () => {
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuencias = (resultado, campo) => {
+		console.log(resultado, campo);
 		// Fórmulas
 		let ocultaBloques = () => {
 			// Fórmulas
@@ -129,7 +130,8 @@ window.addEventListener("load", () => {
 		// Interrumpe si los resultados fueron insatisfactorios
 		if (!resultado.OK) return;
 		// Verifica si debe ocultar algún bloque
-		if (bloqueIngrs || bloqueReemps) ocultaBloques();
+		if (!!bloqueIngrs || !!bloqueReemps) ocultaBloques();
+		console.log(!!bloqueIngrs,!!bloqueReemps);
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos,
