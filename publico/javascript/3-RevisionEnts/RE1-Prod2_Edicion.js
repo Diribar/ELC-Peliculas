@@ -33,73 +33,83 @@ window.addEventListener("load", () => {
 	let avatarActual = document.querySelector("#derecha img");
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuencias = (quedanCampos, statusAprob) => {
-		// Verificar si ocultar algún bloque
-		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
-		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
-		// Averigua si está todo oculto
-		let todoOculto = ingrsOculto && reempsOculto;
-		// 1. Si hay inconsistencias, recargar la página
-		if (todoOculto == quedanCampos) window.location.reload();
-		// 2. Acciones si no quedan más campos en la edición
-		if (!quedanCampos) cartelFin(statusAprob);
-		// Fin
-		return;
-	};
-	let verificarBloques = (filas, bloque) => {
-		// Averigua el status
-		let ocultarBloque = Array.from(filas)
-			.map((n) => n.className)
-			.every((n) => n.includes("ocultar"));
-		// Ocultar el bloque si corresponde
-		if (ocultarBloque) bloque.classList.add("ocultar");
-		// Fin
-		return ocultarBloque;
-	};
-	let cartelFin = (statusAprob) => {
-		// Partes del cartel
-		let cartel = document.querySelector("#cartel");
-		let error = document.querySelector("#error");
-		let mensajes = document.querySelector("ul#mensajes");
-		let flechas = document.querySelector("#cartel #flechasCartel");
+	let consecuencias = (resultado) => {
+		// Fórmulas
+		let ocultaBloques = () => {
+			// Fórmulas
+			let todasLasFilasOcultas = (filas) => {
+				let todasLasFilasOcultas = Array.from(filas)
+					.map((n) => n.className)
+					.every((n) => n.includes("ocultar"));
+				// Fin
+				return todasLasFilasOcultas;
+			};
+			// Oculta bloque de Ingresos
+			if (
+				filasIngrs.length &&
+				!bloqueIngrs.className.includes("ocultar") &&
+				todasLasFilasOcultas(filasIngrs)
+			)
+				bloqueIngrs.classList.add("ocultar");
+			// Oculta bloque de Reemplazos
 
-		// Formatos
-		cartel.style.backgroundColor = "var(--verde-oscuro)";
-		error.classList.add("ocultar");
-
-		// Mensajes
-		let arrayMensajes = ["Gracias por completar la revisión."];
-		// Si el status se cambió a 'aprobado', comunicarlo
-		if (statusAprob) {
-			// Texto en función de la entidad
-			let producto =
-				entidad == "peliculas"
-					? " la película"
-					: entidad == "colecciones"
-					? " la colección"
-					: "l capítulo";
-			let texto = "El status de" + producto + " fue cambiado a <strong>aprobado</strong>.";
-			arrayMensajes.push(texto);
-			// Texto sobre los capítulos
-			if (entidad == "colecciones")
-				arrayMensajes.push("Los capítulos también fueron cambiados a ese estado.");
-		}
-		// Cambiar el contenido del mensaje
-		mensajes.innerHTML = "";
-		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-
-		// Flechas
-		let icono = {
-			HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+			if (
+				filasReemps.length &&
+				!bloqueReemps.className.includes("ocultar") &&
+				todasLasFilasOcultas(filasReemps)
+			)
+				bloqueReemps.classList.add("ocultar");
+			// Fin
+			return;
 		};
-		flechas.innerHTML = "";
-		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
+		FN_todoProcesado = () => {
+			// Averigua cada bloque
+			let bloqueIngrsOculto = !bloqueIngrs || bloqueIngrs.className.includes("ocultar");
+			let bloqueReempsOculto = !bloqueReemps || bloqueReemps.className.includes("ocultar");
+			// Averigua si está todo oculto
+			return bloqueIngrsOculto && bloqueReempsOculto;
+		};
+		let cartelFin = () => {
+			// Partes del cartel
+			let cartel = document.querySelector("#cartel");
+			let error = document.querySelector("#error");
+			let mensajes = document.querySelector("ul#mensajes");
+			let flechas = document.querySelector("#cartel #flechasCartel");
 
-		// Mostrar el cartel
-		tapaElFondo.classList.remove("ocultar");
-		cartel.classList.remove("ocultar");
+			// Formatos
+			cartel.style.backgroundColor = "var(--verde-oscuro)";
+			error.classList.add("ocultar");
 
+			// Mensajes
+			let arrayMensajes = ["Gracias por completar la revisión."];
+			// Cambia el contenido del mensaje
+			mensajes.innerHTML = "";
+			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+
+			// Flechas
+			let icono = {
+				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+			};
+			flechas.innerHTML = "";
+			flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
+
+			// Mostrar el cartel
+			tapaElFondo.classList.remove("ocultar");
+			cartel.classList.remove("ocultar");
+
+			// Fin
+			return;
+		};
+
+		// Verifica si debe ocultar algún bloque
+		if (bloqueIngrs || bloqueReemps) ocultaBloques();
+		// Averigua si está todo procesado
+		let todoProcesado = FN_todoProcesado();
+		// Si está todo procesado y quedan campos, recarga la vista
+		if (todoProcesado == resultado.quedanCampos) location.reload();
+		// Si está todo procesado, publica el cartel
+		if (todoProcesado) cartelFin();
 		// Fin
 		return;
 	};
@@ -132,7 +142,7 @@ window.addEventListener("load", () => {
 			let resultado = await fetch(ruta).then((n) => n.json());
 			console.log(resultado);
 			// Consecuencias
-			//consecuencias(resultado);
+			consecuencias(resultado);
 			// window.location.reload();
 		});
 
@@ -144,10 +154,10 @@ window.addEventListener("load", () => {
 				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 			// Activa la opción para rechazar
-			motivoRechazos[indiceMotivo].addEventListener("change",()=>{
-				if (motivoRechazos[indiceMotivo].value) rechazar[indice].classList.remove("inactivo")
-				else rechazar[indice].classList.add("inactivo")
-			})
+			motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (motivoRechazos[indiceMotivo].value) rechazar[indice].classList.remove("inactivo");
+				else rechazar[indice].classList.add("inactivo");
+			});
 		}
 
 		// Cancelar menú motivos para borrar
@@ -172,7 +182,7 @@ window.addEventListener("load", () => {
 			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
 			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			//consecuencias(resultado);
+			consecuencias(resultado);
 			// window.location.reload();
 		});
 	}
