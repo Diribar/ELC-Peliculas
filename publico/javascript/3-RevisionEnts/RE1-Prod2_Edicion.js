@@ -170,7 +170,7 @@ window.addEventListener("load", () => {
 			if (campo == "avatar" && avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
-			// let resultado = await fetch(ruta).then((n) => n.json());
+			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
 			//consecuencias(resultado);
 			// window.location.reload();
