@@ -82,7 +82,7 @@ module.exports = {
 			motivosRechazo,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
-			cartel: true,
+			mostrarCartel: true,
 			url,
 		});
 	},
@@ -238,10 +238,10 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			avatarExterno,
 			avatarLinksExternos,
-			cartel: true,
 			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
+			mostrarCartel: true,
 		});
 	},
 	// RCLVs
@@ -346,7 +346,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
-			cartel: true,
+			mostrarCartel: true,
 		});
 	},
 };

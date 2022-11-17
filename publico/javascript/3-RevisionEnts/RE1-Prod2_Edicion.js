@@ -4,33 +4,33 @@ window.addEventListener("load", () => {
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
-
-	// Opciones
-	let aprobar = document.querySelectorAll("#contenido .fa-circle-check");
-	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos");
+	let aprobar = document.querySelectorAll(".contenido .fa-circle-check");
+	let rutaEdicion = "/revision/api/producto-edicion/?entidad=";
+	rutaEdicion += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// Motivos para borrar
-	let rechazar = document.querySelectorAll("#contenido .rechazar");
-	let menuMotivos = document.querySelectorAll("#contenido .motivos");
-	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
+	let mostrarCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
+	let cartelMotivosRechazo = document.querySelectorAll(".contenido #cartelMotivosRechazo");
+	let motivoRechazos = document.querySelectorAll(".contenido #cartelMotivosRechazo select");
+	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
+	let rechazar = document.querySelectorAll(".contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
+	let tapaElFondo = document.querySelector("#tapar-el-fondo");
 
 	// Bloque Ingresos
-	let bloqueIngrs = document.querySelector("#contenido #ingrs");
-	let filasIngrs = document.querySelectorAll("#contenido #ingrs .fila");
+	let bloqueIngrs = document.querySelector(".contenido #ingrs");
+	let filasIngrs = document.querySelectorAll(".contenido #ingrs .fila");
 
 	// Bloque Reemplazos
-	let bloqueReemps = document.querySelector("#contenido #reemps");
-	let filasReemps = document.querySelectorAll("#contenido #reemps .fila");
+	let bloqueReemps = document.querySelector(".contenido #reemps");
+	let filasReemps = document.querySelectorAll(".contenido #reemps .fila");
 
 	// Otras variables
 	let casos = aprobar.length == rechazar.length ? aprobar.length : 0;
-	let filas = document.querySelectorAll("#contenido .fila");
-	let campoNombres = Array.from(document.querySelectorAll("#contenido .campoNombre")).map(
-		(n) => n.innerHTML
-	);
-	let ruta =
-		"/revision/api/producto-edicion/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
+	let filas = document.querySelectorAll(".contenido .fila");
+	let campoNombres = document.querySelectorAll(".contenido .campoNombre");
+	campoNombres = Array.from(campoNombres).map((n) => n.innerHTML);
+	let avatarActual = document.querySelector("#derecha img");
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuencias = (quedanCampos, statusAprob) => {
@@ -58,7 +58,6 @@ window.addEventListener("load", () => {
 	};
 	let cartelFin = (statusAprob) => {
 		// Partes del cartel
-		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
 		let error = document.querySelector("#error");
 		let mensajes = document.querySelector("ul#mensajes");
@@ -98,46 +97,76 @@ window.addEventListener("load", () => {
 		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
-		taparElFondo.classList.remove("ocultar");
+		tapaElFondo.classList.remove("ocultar");
 		cartel.classList.remove("ocultar");
 
 		// Fin
 		return;
 	};
+	let convertirUrlEnArchivo = async () => {
+		// Obtiene la ruta
+		let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
+		rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
+		// Obtiene el url
+		let url = encodeURIComponent(avatarActual.src);
+		// Gestiona la descarga y obtiene el resultado
+		let [resultado, rutaYnombre] = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
+		// Cambia el 'src' de la imagen
+		if (resultado == "OK") avatarActual.src = rutaYnombre;
+	};
 
 	// LISTENERS --------------------------------------------------------------------
-	for (let i = 0; i < casos; i++) {
+	for (let indice = 0; indice < casos; indice++) {
+		// Variables
+		let indiceMotivo = indice - sinMotivo;
+		let campo = campoNombres[indice];
 		// Aprobar el nuevo valor
-		aprobar[i].addEventListener("click", async () => {
+		aprobar[indice].addEventListener("click", async () => {
+			// Stopper
+			if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
 			// Ocultar la fila
-			filas[i].classList.add("ocultar");
-			// Actualizar el campo del producto
-			let [quedanCampos, statusAprob] = await fetch(
-				ruta + "&aprob=true&campo=" + campoNombres[i]
-			).then((n) => n.json());
-			// Revisar el status
-			consecuencias(quedanCampos, statusAprob);
+			if (filas.length) filas[indice].classList.add("ocultar");
+			// Actualiza el valor original y obtiene el resultado
+			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
+			// let resultado = await fetch(ruta).then((n) => n.json());
+			// Consecuencias
+			//consecuencias(resultado);
+			// window.location.reload();
 		});
 
 		// Menú inactivar
-		// Los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
-		if (i >= sinMotivo) {
-			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
-				menuMotivos[i - sinMotivo].classList.remove("ocultar");
+		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
+		if (indiceMotivo >= 0) {
+			mostrarCartelMotivos[indiceMotivo].addEventListener("click", () => {
+				if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
+				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 		}
 
+		// Cancelar menú motivos para borrar
+		if (campo == "avatar")
+			cancelar.addEventListener("click", () => {
+				cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
+				tapaElFondo.classList.add("ocultar");
+			});
+
 		// Rechazar el nuevo valor
-		rechazar[i].addEventListener("click", async () => {
-			let motivo = i >= sinMotivo ? motivoRechazos[i - sinMotivo].value : "";
-			// Ocultar la fila
-			filas[i].classList.add("ocultar");
-			// Actualizar el campo del producto
-			let [quedanCampos, statusAprob] = await fetch(
-				ruta + "&campo=" + campoNombres[i] + "&motivo_id=" + motivo
-			).then((n) => n.json());
-			// Revisar el status
-			consecuencias(quedanCampos, statusAprob);
+		rechazar[indice].addEventListener("click", async () => {
+			// Variables
+			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
+			// Stopper
+			if (!motivo) return;
+			if (campo == "avatar") cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
+			// Oculta la fila
+			if (filas.length) filas[indice].classList.add("ocultar");
+			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
+			// if (campo == "avatar" && avatarActual.src.startsWith("http")) convertirUrlEnArchivo();
+			// Descarta el valor editado y obtiene el resultado
+			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
+			// let resultado = await fetch(ruta).then((n) => n.json());
+			// Consecuencias
+			//consecuencias(resultado);
+			// window.location.reload();
 		});
 	}
 });

@@ -68,7 +68,7 @@ module.exports = {
 			campos,
 			userID,
 			motivos_docum,
-			cartel: true,
+			mostrarCartel: true,
 		});
 	},
 	validarIdentidadGuardar: async (req, res) => {
