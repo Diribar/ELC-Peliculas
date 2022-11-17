@@ -161,7 +161,7 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si está presente el avatar
-		if (prodEdic.avatar && prodEdic.avatar_url) {
+		if (prodEdic.avatar) {
 			// Acciones iniciales
 			let reemplAvatarAutomaticam =
 				prodEdic.avatar && // Que exista el archivo 'avatar'
