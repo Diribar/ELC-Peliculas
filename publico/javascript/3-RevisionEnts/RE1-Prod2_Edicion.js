@@ -124,7 +124,7 @@ window.addEventListener("load", () => {
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos, 
 		if (todoProcesado == resultado.quedanCampos) {
-			// Publica el cartl de avatar
+			// Publica el cartel de avatar
 			if (campo == "avatar") cartel(mensajeAvatar());
 			// Recarga la vista
 			else location.reload();
