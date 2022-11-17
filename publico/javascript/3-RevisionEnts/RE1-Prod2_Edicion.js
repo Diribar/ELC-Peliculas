@@ -77,7 +77,7 @@ window.addEventListener("load", () => {
 			];
 			// Flechas
 			let icono = {
-				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				HTML: '<i class="fa-solid fa-circle-right" title="Continuar"></i>',
 				link: location.href,
 			};
 			// Fin

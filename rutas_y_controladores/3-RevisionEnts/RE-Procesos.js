@@ -530,9 +530,11 @@ module.exports = {
 					let respuesta;
 					// Resultado
 					if (indice >= 0)
-						respuesta = registro[vinculo].productos
+						respuesta = registro[vinculo]
 							? registro[vinculo].productos
-							: registro[vinculo].nombre;
+								? registro[vinculo].productos
+								: registro[vinculo].nombre
+							: "-";
 					else respuesta = registro[campo];
 
 					// Fin
