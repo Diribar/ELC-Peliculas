@@ -16,3 +16,4 @@ p, li {line-height: 1.2rem;}
 span {font-size: inherit;}
 label {line-height: 1;}
 select option[value=''] {display: none;}
+select:invalid {font-style: italic;}

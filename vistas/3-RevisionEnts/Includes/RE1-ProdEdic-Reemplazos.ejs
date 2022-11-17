@@ -14,7 +14,7 @@
 <!-- Motivo -->
 <div id="cartelMotivosRechazo" class="ocultar">
 	<i class="fa-solid fa-trash-can rechazar" tabindex="-1" title='Rechazar'></i>
-	<select name="motivo_id">
+	<select name="motivo_id" required>
 		<option value="">Elejí una opción</option>
 		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
 		<% for (motivo of motivos) { %>
