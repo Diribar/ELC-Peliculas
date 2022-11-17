@@ -250,12 +250,12 @@ CREATE TABLE edics_aprob (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_aprob VARCHAR(50) NULL,
+	valor_aprob VARCHAR(100) NULL,
+
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME NULL,
 	edic_analizada_por_id INT UNSIGNED NOT NULL,
 	edic_analizada_en DATETIME DEFAULT UTC_TIMESTAMP,
-
 	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
@@ -337,8 +337,8 @@ CREATE TABLE edics_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rech VARCHAR(50) NULL,
-	valor_aprob VARCHAR(50) NULL,
+	valor_rech VARCHAR(100) NULL,
+	valor_aprob VARCHAR(100) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
@@ -1056,8 +1056,8 @@ CREATE TABLE prod_4edicion (
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(900) NULL,
-	avatar_url VARCHAR(100) NULL,
 	avatar VARCHAR(18) NULL,
+	avatar_url VARCHAR(100) NULL,
 	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,

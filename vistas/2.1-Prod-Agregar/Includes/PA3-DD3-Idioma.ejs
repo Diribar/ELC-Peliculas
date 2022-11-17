@@ -3,7 +3,7 @@
 	<label>Idioma original</label>
 	<div class="inputError">
 		<select name="idioma_original_id" autofocus class="input<% if (inputOK) { %> despl_click<% } %>" <% if (inputOK) { %>disabled<% } %>>
-			<option value="" <% if (idioma_id=="") { %>selected<% } %> class="ocultar">Elejí un idioma</option>
+			<option value="" <% if (idioma_id=="") { %>selected<% } %>>Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
 					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>

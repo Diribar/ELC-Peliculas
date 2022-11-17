@@ -8,26 +8,26 @@ const procesos = require("./RE-Procesos");
 // *********** Controlador ***********
 module.exports = {
 	// Productos
-	prodEdic: async (req, res) => {
+	prodEdic_AprobRech: async (req, res) => {
 		// Variables
 		const {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		// Obtiene el registro editado
 		let includesEdic = comp.includes("productos");
 		let prodEdic = await BD_genericas.obtienePorIdConInclude("prods_edicion", edicID, includesEdic);
+		let quedanCampos, statusAprob;
 		// Si no existe la edición, interrumpe el flujo
 		if (!prodEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
 		if (!prodEdic[campo]) return res.json({OK: false, mensaje: "El campo ya se había procesado"});
 		// Obtiene la versión original con includes
 		let includesOrig = [...includesEdic, "status_registro"];
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includesOrig);
+		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+
 		// Acciones si el campo es avatar
-		if (campo == "avatar") {
-			delete prodEdic.avatar_url;
-			procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-		}
+		if (campo == "avatar") prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
+
 		// Tareas adicionales
-		[prodOrig, prodEdic, quedanCampos, statusAprob] = procesos.prodEdicGuardar_Gral(
+		[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
 			req,
 			prodOrig,
 			prodEdic
@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
-	prodGuardaAvatar: async (req, res) => {
+	prodEdic_ConvierteUrlEnArchivo: async (req, res) => {
 		// Variables
 		let {entidad, id, url} = req.query;
 		let avatar = Date.now() + path.extname(url);

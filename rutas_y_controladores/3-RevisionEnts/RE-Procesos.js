@@ -530,9 +530,11 @@ module.exports = {
 					let respuesta;
 					// Resultado
 					if (indice >= 0)
-						respuesta = registro[vinculo].productos
+						respuesta = registro[vinculo]
 							? registro[vinculo].productos
-							: registro[vinculo].nombre;
+								? registro[vinculo].productos
+								: registro[vinculo].nombre
+							: "-";
 					else respuesta = registro[campo];
 
 					// Fin
@@ -561,7 +563,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", prodEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, datos.motivo);
+		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, motivo);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
 		if (edicAprob) {

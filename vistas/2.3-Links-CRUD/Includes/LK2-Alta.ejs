@@ -16,7 +16,7 @@
 	<td class="ancho_calidad calidad desperdicio campo">
 		<div class="inputError">
 			<select name="calidad" class="input ocultar">
-				<option value="" class="ocultar" selected>Elejí</option>
+				<option value="" selected>Elejí</option>
 				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>"><%= calidad %></option>
 				<% } %>
@@ -29,7 +29,7 @@
 	<td class="ancho_castellano castellano desperdicio campo">
 		<div class="inputError">
 			<select name="castellano" class="input ocultar">
-				<option value="" class="ocultar" selected>?</option>
+				<option value="" selected>?</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
 			</select>
@@ -40,7 +40,7 @@
 	<td class="ancho_subtitulo subtit_castellano desperdicio campo">
 		<div class="inputError">
 			<select name="subtit_castellano" class="input ocultar">
-				<option value="" class="ocultar" selected>?</option>
+				<option value="" selected>?</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
 				<option value="-" class="ocultar">-</option>
@@ -52,7 +52,7 @@
 	<td class="ancho_gratuito gratuito desperdicio campo">
 		<div class="inputError">
 			<select name="gratuito" class="input ocultar">
-				<option value="" class="ocultar"selected>?</option>
+				<option value="" selected>?</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
 			</select>
@@ -63,7 +63,7 @@
 	<td class="ancho_tipo tipo desperdicio campo">
 		<div class="inputError">
 			<select name="tipo_id" class="input ocultar">
-				<option value="" class="ocultar">Elejí</option>
+				<option value="">Elejí</option>
 				<option value="<%= links_tipos[0].id %>" <%- entidad == "colecciones" ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
 					<option value="<%= links_tipos[1].id %>"><%= links_tipos[1].nombre %></option>
@@ -76,7 +76,7 @@
 	<td class="ancho_completo completo desperdicio campo">
 		<div class="inputError">
 			<select name="completo" class="input ocultar">
-				<option value="" class="ocultar" selected>Elejí</option>
+				<option value="" selected>Elejí</option>
 				<option value="1">SI</option>
 				<option value="0">NO</option>
 			</select>

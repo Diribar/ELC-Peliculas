@@ -83,7 +83,7 @@
 					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Mes:</label>
 						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
+							<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
 							<% for (let mes of meses) { %>
 								<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
 									<%= mes.nombre %>
@@ -97,7 +97,7 @@
 					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Día:</label>
 						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
+							<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
 							<% for (let dia = 1; dia < 32; dia++) { %>
 								<option value="<%= dia %>" 
 									<% if (dia > 29) { %>class="ocultar"<% } %>
@@ -240,7 +240,7 @@
 						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
 							<select name="rol_iglesia_id" class="RCLI">
-								<option value="" selected class="ocultar">Elejí una opción</option>
+								<option value="" selected>Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
 									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected<% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 								<% } %> 
@@ -265,7 +265,7 @@
 						</div>
 						<!-- Status del proceso de canonización -->
 						<select name="proceso_id" class="ocultar RCLI cfc">
-								<option value="" selected class="ocultar">Elejí una opción</option>
+								<option value="" selected>Elejí una opción</option>
 								<% for (let proceso of procs_canoniz) { %>
 									<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
 								<% } %> 
@@ -301,7 +301,7 @@
 							</div>
 						</div>
 						<select name="ap_mar_id" id="ap_mar_id" class="ocultar RCLI cfc">
-							<option value="" selected class="ocultar">Elejí una opción</option>
+							<option value="" selected>Elejí una opción</option>
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
 							<% }) %> 

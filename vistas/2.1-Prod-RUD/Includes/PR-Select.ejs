@@ -4,7 +4,7 @@
 	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
-			<option value="" class="ocultar" <% if (!producto[nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
+			<option value="" <% if (!producto[nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>

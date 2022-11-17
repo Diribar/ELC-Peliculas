@@ -64,21 +64,18 @@
 	<div id="cartelMotivosRechazo" class="ocultar">
 		<p>Por favor explicanos por qué sugerís rechazarla</p>
 		<select>
-			<option value="" selected class="ocultar">Elegí una opción</option>	
+			<option value="" selected>Elegí una opción</option>	
 			<% for (motivo of motivos) { %>
 				<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 			<% } %>
 		</select>
 		<div id="comandosRechazar">
 			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-			<i class="fa-solid fa-circle-right rechazar" title="Rechazar"></i>
+			<i class="fa-solid fa-circle-right rechazar inactivo" title="Rechazar"></i>
 		</div>
 	</div>
 </div>
 <div id="derecha" class="imagenes">
 	<!-- Imagen actual -->
 	<img src="<%= avatar.original %>" title="Imagen actual">
-	<% if (avatarExterno) { %>
-		<button type="button" class="agregados scale">Descargalo en nuestro sitio web</button>
-	<% } %>
 </div>

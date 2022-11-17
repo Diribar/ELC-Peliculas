@@ -5,17 +5,20 @@ window.addEventListener("load", () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 	let aprobar = document.querySelectorAll(".contenido .fa-circle-check");
-	let rutaEdicion = "/revision/api/producto-edicion/?entidad=";
+	let rutaEdicion = "/revision/api/producto-edicion-aprob-rech/?entidad=";
 	rutaEdicion += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// Motivos para borrar
-	let mostrarCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
+	let muestraCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
 	let cartelMotivosRechazo = document.querySelectorAll(".contenido #cartelMotivosRechazo");
 	let motivoRechazos = document.querySelectorAll(".contenido #cartelMotivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let rechazar = document.querySelectorAll(".contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
 	let tapaElFondo = document.querySelector("#tapar-el-fondo");
+	let motivoGenerico = document.querySelector("#motivoGenerico");
+	let motivoGenerico_id;
+	if (motivoGenerico) motivoGenerico_id = motivoGenerico.innerHTML;
 
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector(".contenido #ingrs");
@@ -33,77 +36,115 @@ window.addEventListener("load", () => {
 	let avatarActual = document.querySelector("#derecha img");
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuencias = (quedanCampos, statusAprob) => {
-		// Verificar si ocultar algún bloque
-		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
-		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
-		// Averigua si está todo oculto
-		let todoOculto = ingrsOculto && reempsOculto;
-		// 1. Si hay inconsistencias, recargar la página
-		if (todoOculto == quedanCampos) window.location.reload();
-		// 2. Acciones si no quedan más campos en la edición
-		if (!quedanCampos) cartelFin(statusAprob);
-		// Fin
-		return;
-	};
-	let verificarBloques = (filas, bloque) => {
-		// Averigua el status
-		let ocultarBloque = Array.from(filas)
-			.map((n) => n.className)
-			.every((n) => n.includes("ocultar"));
-		// Ocultar el bloque si corresponde
-		if (ocultarBloque) bloque.classList.add("ocultar");
-		// Fin
-		return ocultarBloque;
-	};
-	let cartelFin = (statusAprob) => {
-		// Partes del cartel
-		let cartel = document.querySelector("#cartel");
-		let error = document.querySelector("#error");
-		let mensajes = document.querySelector("ul#mensajes");
-		let flechas = document.querySelector("#cartel #flechasCartel");
+	let consecuencias = (resultado, campo) => {
+		// Fórmulas
+		let ocultaBloques = () => {
+			// Fórmulas
+			let todasLasFilasOcultas = (filas) => {
+				let todasLasFilasOcultas = Array.from(filas)
+					.map((n) => n.className)
+					.every((n) => n.includes("ocultar"));
+				// Fin
+				return todasLasFilasOcultas;
+			};
+			// Oculta bloque de Ingresos
+			if (
+				filasIngrs.length &&
+				!bloqueIngrs.className.includes("ocultar") &&
+				todasLasFilasOcultas(filasIngrs)
+			)
+				bloqueIngrs.classList.add("ocultar");
+			// Oculta bloque de Reemplazos
 
-		// Formatos
-		cartel.style.backgroundColor = "var(--verde-oscuro)";
-		error.classList.add("ocultar");
-
-		// Mensajes
-		let arrayMensajes = ["Gracias por completar la revisión."];
-		// Si el status se cambió a 'aprobado', comunicarlo
-		if (statusAprob) {
-			// Texto en función de la entidad
-			let producto =
-				entidad == "peliculas"
-					? " la película"
-					: entidad == "colecciones"
-					? " la colección"
-					: "l capítulo";
-			let texto = "El status de" + producto + " fue cambiado a <strong>aprobado</strong>.";
-			arrayMensajes.push(texto);
-			// Texto sobre los capítulos
-			if (entidad == "colecciones")
-				arrayMensajes.push("Los capítulos también fueron cambiados a ese estado.");
-		}
-		// Cambiar el contenido del mensaje
-		mensajes.innerHTML = "";
-		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-
-		// Flechas
-		let icono = {
-			HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+			if (
+				filasReemps.length &&
+				!bloqueReemps.className.includes("ocultar") &&
+				todasLasFilasOcultas(filasReemps)
+			)
+				bloqueReemps.classList.add("ocultar");
+			// Fin
+			return;
 		};
-		flechas.innerHTML = "";
-		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
+		let FN_todoProcesado = () => {
+			// Averigua cada bloque
+			let bloqueIngrsOculto = !bloqueIngrs || bloqueIngrs.className.includes("ocultar");
+			let bloqueReempsOculto = !bloqueReemps || bloqueReemps.className.includes("ocultar");
+			// Averigua si está todo oculto
+			return bloqueIngrsOculto && bloqueReempsOculto;
+		};
+		let mensajeAvatar = () => {
+			// Mensajes
+			let arrayMensajes = [
+				"Gracias por responder sobre la imagen",
+				"A continuación te pedimos que valides otros campos",
+			];
+			// Flechas
+			let icono = {
+				HTML: '<i class="fa-solid fa-circle-right" title="Continuar"></i>',
+				link: location.href,
+			};
+			// Fin
+			return {arrayMensajes, icono};
+		};
+		let mensajeFin = () => {
+			// Mensajes
+			let arrayMensajes = ["Se completó la revisión", "Muchas gracias"];
+			// Flechas
+			let icono = {
+				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+			};
+			// Fin
+			return {arrayMensajes, icono};
+		};
+		let cartel = (datos) => {
+			// Variables
+			let {arrayMensajes, icono} = datos;
+			// Partes del cartel
+			let cartel = document.querySelector("#cartel");
+			let error = document.querySelector("#error");
+			let gracias = document.querySelector("#gracias");
+			let mensajes = document.querySelector("ul#mensajes");
+			let flechas = document.querySelector("#cartel #flechasCartel");
 
-		// Mostrar el cartel
-		tapaElFondo.classList.remove("ocultar");
-		cartel.classList.remove("ocultar");
+			// Formatos
+			cartel.style.backgroundColor = "var(--verde-oscuro)";
+			error.classList.add("ocultar");
+			gracias.classList.remove("ocultar");
 
+			// Cambia el contenido del mensaje y las flechas
+			mensajes.innerHTML = "";
+			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+			flechas.innerHTML = "";
+			flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
+
+			// Mostrar el cartel
+			tapaElFondo.classList.remove("ocultar");
+			cartel.classList.remove("ocultar");
+
+			// Fin
+			return;
+		};
+
+		// Interrumpe si los resultados fueron insatisfactorios
+		if (!resultado.OK) return;
+		// Verifica si debe ocultar algún bloque
+		if (bloqueIngrs || bloqueReemps) ocultaBloques();
+		// Averigua si está todo procesado
+		let todoProcesado = FN_todoProcesado();
+		// Si está todo procesado y quedan campos,
+		if (todoProcesado == resultado.quedanCampos) {
+			// Publica el cartel de avatar
+			if (campo == "avatar") cartel(mensajeAvatar());
+			// Recarga la vista
+			else location.reload();
+		}
+		// Si está todo procesado, publica el cartel de fin
+		else if (todoProcesado) cartel(mensajeFin());
 		// Fin
 		return;
 	};
-	let convertirUrlEnArchivo = async () => {
+	let convierteUrlEnArchivo = async () => {
 		// Obtiene la ruta
 		let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
 		rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
@@ -120,6 +161,7 @@ window.addEventListener("load", () => {
 		// Variables
 		let indiceMotivo = indice - sinMotivo;
 		let campo = campoNombres[indice];
+
 		// Aprobar el nuevo valor
 		aprobar[indice].addEventListener("click", async () => {
 			// Stopper
@@ -128,18 +170,22 @@ window.addEventListener("load", () => {
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
-			// let resultado = await fetch(ruta).then((n) => n.json());
+			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			//consecuencias(resultado);
-			// window.location.reload();
+			consecuencias(resultado, campo);
 		});
 
-		// Menú inactivar
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
 		if (indiceMotivo >= 0) {
-			mostrarCartelMotivos[indiceMotivo].addEventListener("click", () => {
+			// Muestra cartel de motivos
+			muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
 				if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
 				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
+			});
+			// Activa la opción para rechazar
+			motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (motivoRechazos[indiceMotivo].value) rechazar[indice].classList.remove("inactivo");
+				else rechazar[indice].classList.add("inactivo");
 			});
 		}
 
@@ -150,23 +196,22 @@ window.addEventListener("load", () => {
 				tapaElFondo.classList.add("ocultar");
 			});
 
-		// Rechazar el nuevo valor
+		// Rechaza el nuevo valor
 		rechazar[indice].addEventListener("click", async () => {
 			// Variables
-			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
+			let motivo_id = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : motivoGenerico_id;
 			// Stopper
-			if (!motivo) return;
+			if (!motivo_id) return;
 			if (campo == "avatar") cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
 			// Oculta la fila
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
-			// if (campo == "avatar" && avatarActual.src.startsWith("http")) convertirUrlEnArchivo();
+			if (campo == "avatar" && avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
-			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
-			// let resultado = await fetch(ruta).then((n) => n.json());
+			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
+			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
-			//consecuencias(resultado);
-			// window.location.reload();
+			consecuencias(resultado, campo);
 		});
 	}
 });
