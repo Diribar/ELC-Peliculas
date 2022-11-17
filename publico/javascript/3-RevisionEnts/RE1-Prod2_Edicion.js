@@ -130,7 +130,6 @@ window.addEventListener("load", () => {
 		if (!resultado.OK) return;
 		// Verifica si debe ocultar algún bloque
 		if (!!bloqueIngrs || !!bloqueReemps) ocultaBloques();
-		console.log(!!bloqueIngrs,!!bloqueReemps);
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos,
