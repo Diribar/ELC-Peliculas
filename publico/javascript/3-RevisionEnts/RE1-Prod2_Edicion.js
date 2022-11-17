@@ -37,7 +37,6 @@ window.addEventListener("load", () => {
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuencias = (resultado, campo) => {
-		console.log(resultado, campo);
 		// Fórmulas
 		let ocultaBloques = () => {
 			// Fórmulas
