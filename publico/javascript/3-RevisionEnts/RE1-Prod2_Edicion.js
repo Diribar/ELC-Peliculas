@@ -92,7 +92,7 @@ window.addEventListener("load", () => {
 			// Flechas
 			let icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
 			};
 			// Fin
 			return {arrayMensajes, icono};

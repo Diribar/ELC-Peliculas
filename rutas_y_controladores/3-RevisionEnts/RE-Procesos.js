@@ -438,7 +438,7 @@ module.exports = {
 		// Bloque derecho
 		let bloque1 = [];
 		let fecha;
-		// Bloque 1
+		// Bloque 1 ---------------------------------------------
 		if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
 		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
@@ -448,11 +448,19 @@ module.exports = {
 		// Obtiene la fecha de edicion
 		fecha = comp.fechaTexto(prodEdic.editado_en);
 		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-		// 5. Obtiene los datos del usuario
+		// Obtiene el status del producto
+		let statusResumido = prodOrig.status_registro.gr_creado
+			? {id: 1, valor: "Pend. Aprobac."}
+			: prodOrig.status_registro.aprobado
+			? {id: 2, valor: "Aprobado"}
+			: {id: 3, valor: "Inactivado"};
+		bloque1.push({titulo: "Status", ...statusResumido});
+		// Bloque 2 ---------------------------------------------
+		// Obtiene los datos del usuario
 		let fichaDelUsuario = await comp.usuario_Ficha(prodEdic.editado_por_id, ahora);
-		// 6. Obtiene la calidad de las altas
+		// Obtiene la calidad de las altas
 		let calidadEdic = await usuario_CalidadEdic(prodEdic.editado_por_id);
-		// Bloque derecho consolidado
+		// Bloque consolidado -----------------------------------
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
@@ -482,7 +490,7 @@ module.exports = {
 		// Fin
 		return prodEdic;
 	},
-	prodEdicGuardar_Gral: async function(req, prodOrig, prodEdic) {
+	prodEdicGuardar_Gral: async function (req, prodOrig, prodEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const edicAprob = aprob == "true";
