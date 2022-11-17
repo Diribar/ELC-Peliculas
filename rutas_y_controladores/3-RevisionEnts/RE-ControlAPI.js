@@ -8,7 +8,7 @@ const procesos = require("./RE-Procesos");
 // *********** Controlador ***********
 module.exports = {
 	// Productos
-	prodEdic: async (req, res) => {
+	prodEdic_AprobRech: async (req, res) => {
 		// Variables
 		const {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		// Obtiene el registro editado
@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
-	prodGuardaAvatar: async (req, res) => {
+	prodEdic_ConvierteUrlEnArchivo: async (req, res) => {
 		// Variables
 		let {entidad, id, url} = req.query;
 		let avatar = Date.now() + path.extname(url);

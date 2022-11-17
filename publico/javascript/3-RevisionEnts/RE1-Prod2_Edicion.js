@@ -5,11 +5,11 @@ window.addEventListener("load", () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 	let aprobar = document.querySelectorAll(".contenido .fa-circle-check");
-	let rutaEdicion = "/revision/api/producto-edicion/?entidad=";
+	let rutaEdicion = "/revision/api/producto-edicion-aprob-rech/?entidad=";
 	rutaEdicion += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// Motivos para borrar
-	let mostrarCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
+	let muestraCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
 	let cartelMotivosRechazo = document.querySelectorAll(".contenido #cartelMotivosRechazo");
 	let motivoRechazos = document.querySelectorAll(".contenido #cartelMotivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
@@ -103,7 +103,7 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	};
-	let convertirUrlEnArchivo = async () => {
+	let convierteUrlEnArchivo = async () => {
 		// Obtiene la ruta
 		let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
 		rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
@@ -120,6 +120,7 @@ window.addEventListener("load", () => {
 		// Variables
 		let indiceMotivo = indice - sinMotivo;
 		let campo = campoNombres[indice];
+
 		// Aprobar el nuevo valor
 		aprobar[indice].addEventListener("click", async () => {
 			// Stopper
@@ -135,13 +136,18 @@ window.addEventListener("load", () => {
 			// window.location.reload();
 		});
 
-		// Menú inactivar
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
 		if (indiceMotivo >= 0) {
-			mostrarCartelMotivos[indiceMotivo].addEventListener("click", () => {
+			// Muestra cartel de motivos
+			muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
 				if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
 				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
+			// Activa la opción para rechazar
+			motivoRechazos[indiceMotivo].addEventListener("change",()=>{
+				if (motivoRechazos[indiceMotivo].value) rechazar[indice].classList.remove("inactivo")
+				else rechazar[indice].classList.add("inactivo")
+			})
 		}
 
 		// Cancelar menú motivos para borrar
@@ -151,7 +157,7 @@ window.addEventListener("load", () => {
 				tapaElFondo.classList.add("ocultar");
 			});
 
-		// Rechazar el nuevo valor
+		// Rechaza el nuevo valor
 		rechazar[indice].addEventListener("click", async () => {
 			// Variables
 			let motivo = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : "";
@@ -161,7 +167,7 @@ window.addEventListener("load", () => {
 			// Oculta la fila
 			if (filas.length) filas[indice].classList.add("ocultar");
 			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
-			// if (campo == "avatar" && avatarActual.src.startsWith("http")) convertirUrlEnArchivo();
+			if (campo == "avatar" && avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo;
 			// let resultado = await fetch(ruta).then((n) => n.json());
