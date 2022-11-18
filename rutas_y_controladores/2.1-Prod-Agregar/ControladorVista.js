@@ -69,6 +69,7 @@ module.exports = {
 			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
 			omitirImagenDerecha: true,
+			mostrarCartel: true,
 		});
 	},
 	desambiguarGuardar: async (req, res) => {
@@ -76,24 +77,24 @@ module.exports = {
 		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
 		// 2. Averigua si es una película y pertenece a una colección
 		let errores = await validar.averiguarSiEsColeccion(infoTMDBparaDD);
-		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
+		// 2.A. Si es una película de una colección que ya existe en la BD, actualiza los capítulos y recarga la vista
 		if (errores.mensaje == "agregarCapitulos") {
 			await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
 			return res.redirect("/producto/agregar/desambiguar");
 		}
-		// 4. Si es una película de una colección que no existe en la BD, cambiar la película por la colección
+		// 2.B. Si es una película de una colección que no existe en la BD, cambia la película por la colección
 		if (errores.mensaje == "agregarColeccion")
 			infoTMDBparaDD = await procesos.DS_infoTMDBparaDD_collection({
 				TMDB_id: errores.colec_TMDB_id,
 			});
-		// 5. Guardar los datos originales en una cookie
+		// 3. Guardar los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
-		// 6. Generar la session para la siguiente instancia
+		// 4. Generar la session para la siguiente instancia
 		req.session.datosDuros = {...infoTMDBparaDD};
 		delete req.session.datosDuros.avatar;
 		req.session.datosDuros.avatar_url = infoTMDBparaDD.avatar;
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
-		// 6. Redireccionar a la siguiente instancia
+		// 5. Redireccionar a la siguiente instancia
 		res.redirect("/producto/agregar/datos-duros");
 	},
 	datosDurosForm: async (req, res) => {
@@ -105,7 +106,7 @@ module.exports = {
 		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
-		// 3. Si se perdió la info anterior, volver a esa instancia
+		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
 		// 4. Variables
@@ -146,7 +147,7 @@ module.exports = {
 	},
 	datosDurosGuardar: async (req, res) => {
 		console.log(149, new Date());
-		// 1. Si se perdió la info anterior, volver a esa instancia
+		// 1. Si se perdió la info anterior, vuelve a esa instancia
 		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		let origen =
 			req.session.desambiguar || req.cookies.desambiguar
@@ -165,19 +166,7 @@ module.exports = {
 		let camposDD_errores = camposDD.map((n) => n.nombre);
 		let avatar = datosDuros.avatar_url;
 		let errores = await validar.datosDuros(camposDD_errores, {...datosDuros, avatar});
-		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
-		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			let fuente_id = datosDuros.fuente + "_id";
-			let elc_id = await BD_especificas.obtieneELC_id(datosDuros.entidad, {
-				[fuente_id]: datosDuros[fuente_id],
-			});
-			if (elc_id) {
-				errores.nombre_original = "El código interno ya se encuentra en nuestra base de datos";
-				errores.elc_id = elc_id;
-				errores.hay = true;
-			}
-		}
-		// 5. Si no hay errores de imagen, revisar el archivo de imagen
+		// 5. Si no hay errores de imagen, revisa el archivo de imagen
 		if (!errores.avatar) {
 			let tipo, tamano, rutaYnombre;
 			if (req.file) {
@@ -198,7 +187,7 @@ module.exports = {
 				// Descargar
 				comp.descarga(datosDuros.avatar_url, rutaYnombre);
 			}
-			// Revisar errores nuevamente
+			// Revisa errores nuevamente
 			errores.avatar = comp.revisaLaImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
