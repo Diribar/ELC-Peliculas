@@ -62,10 +62,10 @@ module.exports = {
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
-				? {id: 1, nombre: "Pend. Aprobac."}
+				? {id: 1, valor: "Pend. Aprobac."}
 				: prodComb.status_registro.aprobado
-				? {id: 2, nombre: "Aprobado"}
-				: {id: 3, nombre: "Inactivado"};
+				? {id: 2, valor: "Aprobado"}
+				: {id: 3, valor: "Inactivado"};
 			let bloque1 = [
 				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
 				{
@@ -110,11 +110,7 @@ module.exports = {
 			if (entidad == "colecciones")
 				bloquesDerecha.push({titulo: "Año de fin", valor: prodComb.ano_fin});
 			else bloquesDerecha.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
-			bloquesDerecha.push({
-				titulo: "Status",
-				valor: statusResumido.nombre,
-				id: statusResumido.id,
-			});
+			bloquesDerecha.push({titulo: "Status", ...statusResumido});
 			imgDerPers = comp.nombreAvatar(prodOrig, prodEdic);
 		}
 		// Obtiene datos para la vista

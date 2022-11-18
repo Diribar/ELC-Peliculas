@@ -259,8 +259,8 @@ CREATE TABLE edics_aprob (
 	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* RECHAZO DE ALTAS */;
 CREATE TABLE altas_motivos_rech (
@@ -310,9 +310,9 @@ CREATE TABLE edic_motivos_rech (
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
-	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	info_erronea BOOLEAN DEFAULT 0,
 	generico BOOLEAN DEFAULT 0,
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
@@ -352,8 +352,8 @@ CREATE TABLE edics_rech (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES edic_motivos_rech(id),
-	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* TABLAS AUXILIARES PARA RCLV */;

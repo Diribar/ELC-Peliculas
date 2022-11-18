@@ -65,17 +65,19 @@
 		</div>
 	</div>
 	<div id="datosBreves">
-		<p class="titulo">Datos del Producto</p>
+		<h3 class="titulo">Datos del Producto</h3>
 		<div id="texto">
 			<% for (campo of bloqueDer[0]) { %>
-				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
+				<p class="<%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '"') : '"' %>">
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
 			<% } %>
-			<p class="titulo">Datos del Usuario</p>
+		</div>
+		<h3 class="titulo">Datos del Usuario</h3>
+		<div id="texto">
 			<% for (campo in bloqueDer[1]) { %>
-				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
-		<% } %> 
+				<p><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+			<% } %>
 		</div>
 	</div>
 </section>

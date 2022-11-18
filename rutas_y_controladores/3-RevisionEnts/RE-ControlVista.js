@@ -152,7 +152,7 @@ module.exports = {
 		const {entidad, id: prodID} = req.query;
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatarExterno, avatarLinksExternos, avatar, edicion, imgDerPers;
-		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob;
+		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob, infoErronea_id;
 
 		// Obtiene la versión original con includes
 		let includesOrig = [...comp.includes("productos"), "status_registro"];
@@ -188,9 +188,8 @@ module.exports = {
 				codigo += "/avatar";
 				avatar = {
 					original: prodOrig.avatar
-						? (!prodOrig.avatar.startsWith("http")
-								? "/imagenes/3-Productos/"
-								: "") + prodOrig.avatar
+						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") +
+						  prodOrig.avatar
 						: "/imagenes/8-Agregar/IM.jpg",
 					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,
 				};
@@ -213,6 +212,7 @@ module.exports = {
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
+			infoErronea_id = motivos.find((n) => n.info_erronea).id;
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 			imgDerPers = avatar;
 		}
@@ -232,6 +232,7 @@ module.exports = {
 			reemplazos,
 			avatar,
 			motivos,
+			infoErronea_id,
 			entidad,
 			id: prodID,
 			bloqueDer,

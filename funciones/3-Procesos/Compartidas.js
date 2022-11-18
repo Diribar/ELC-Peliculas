@@ -66,15 +66,18 @@ module.exports = {
 			return edicion;
 		};
 		let quitaCoincidenciasConOriginal = (original, edicion) => {
-			// Eliminar campo si se cumple alguno de estos:
-			// - Edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
-			// - Edición es estrictamente igual al original
-			for (let campo in edicion)
+			for (let campo in edicion) {
+				// Eliminar campo si se cumple alguno de estos:
 				if (
-					(edicion[campo] && edicion[campo] == original[campo]) ||
-					edicion[campo] === original[campo]
+					(edicion[campo] && edicion[campo] == original[campo]) || // - Edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+					edicion[campo] === original[campo] || // - Edición es estrictamente igual al original
+					(edicion[campo] &&
+						edicion[campo].id &&
+						original[campo] &&
+						edicion[campo].id == original[campo].id) // El objeto vinculado tiene el mismo ID
 				)
 					delete edicion[campo];
+			}
 			return edicion;
 		};
 		// Variables
@@ -87,7 +90,7 @@ module.exports = {
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan campos, elimina el registro de la edición
-		if (!quedanCampos) BD_genericas.eliminaPorId("prod_edicion", edicID);
+		if (!quedanCampos) BD_genericas.eliminaPorId("prods_edicion", edicID);
 
 		// Fin
 		return [edicion, quedanCampos];
@@ -428,6 +431,7 @@ module.exports = {
 	descarga: async (url, rutaYnombre) => {
 		// Carpeta donde descargar
 		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+		let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 		// Realiza la descarga
 		let writer = fs.createWriteStream(rutaYnombre);
@@ -436,7 +440,7 @@ module.exports = {
 		// Obtiene el resultado de la descarga
 		let resultado = await new Promise((resolve, reject) => {
 			writer.on("finish", () => {
-				console.log("Imagen guardada");
+				console.log("Imagen '" + nombre + "' guardada");
 				resolve("OK");
 			});
 			writer.on("error", (error) => {

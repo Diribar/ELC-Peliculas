@@ -27,19 +27,8 @@
 #datosLargos .contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
 #datosLargos .contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
 #datosLargos .contenido #reemps .infoMostrar.ocultar {display: block;}
-
-/* Datos Breves */
-#datosBreves {display: flex; flex-direction: column; justify-content: center; width: max-content; }
-#datosBreves .titulo {width:160px; padding: 3px 10px; font-size: 1.1rem;}
-#datosBreves .titulo {font-weight: bold; background-color: var(--gris-oscuro); color: snow; border-radius: 10px; text-align: center;}
-#datosBreves #texto {margin-right: 15px;}
-#datosBreves .datosProducto, #datosBreves #texto .datosUsuario {margin-top: 10px;}
-#datosBreves #texto .titulo {margin-top: 20px;}
-#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
-#datosBreves #texto p#status1 span {background-color: var(--gris-oscuro); color: snow;}
-#datosBreves #texto p#status2 span {background-color: var(--naranja-oscuro); color: snow;}
-#datosBreves #texto p#status3 span {background-color: var(--verde-oscuro); color: snow;}
-#datosBreves #texto p#status4 span {background-color: var(--rojo-oscuro); color: snow;}
+#datosLargos .contenido #reemps #cartelMotivosRechazo {position: static; transform: none; padding: 0; width: fit-content; background-color: transparent}
+#datosLargos .contenido #reemps #cartelMotivosRechazo select {margin: 0;}
 
 /* Comandos - Particularidades */
 #cuerpo #flechas i {font-size: 2rem;}

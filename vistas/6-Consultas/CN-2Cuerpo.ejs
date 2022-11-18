@@ -19,7 +19,7 @@
 		<!-- Sub-Opciones -->
 		<% if (locals.opcion) { %>
 			<select id = "menuSubopciones">
-			<% if (!locals.subOpcion) { %><option style="font-style: italic" class="ocultar" selected>Elegí una opción</option><% } %>
+			<% if (!locals.subOpcion) { %><option value="" selected>Elegí una opción</option><% } %>
 			<% for (let menuSubOpcion of menuSubOpciones) { %>
 				<option value="/consultas/<%= opcion.url + "/" + menuSubOpcion.url %>" <% if (locals.subOpcion && menuSubOpcion.url == subOpcion.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
 			<% } %>

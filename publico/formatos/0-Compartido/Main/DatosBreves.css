@@ -5,7 +5,8 @@
 #datosBreves h3 {background-color: var(--gris-oscuro); color: snow;}
 #datosBreves h3 {padding: 3px; border-radius: 10px; text-align: center;}
 #datosBreves h3:nth-child(n+2) {margin-top: 20px;}
-#datosBreves p {margin-top: 10px;}
+#datosBreves #texto {margin: 0 5px;}
+#datosBreves #texto p {margin-top: 10px;}
 #datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
 #datosBreves #texto p#status1 span {background-color: var(--azul-oscuro); color: snow;}
 #datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
