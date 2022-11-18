@@ -351,24 +351,6 @@ module.exports = {
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
 		);
-		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
-		let indice = parseInt(Math.random() * muchasGracias.length);
-		if (indice == muchasGracias.length) indice--;
-		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
-		return res.render("CMP-0Estructura", {
-			tema: "prod_agregar",
-			codigo: "terminaste",
-			titulo: "Agregar - Terminaste",
-			entidad: confirma.entidad,
-			id: registro.id,
-			dataEntry: registro,
-			prodNombre: comp.obtieneEntidadNombre(confirma.entidad),
-			imagenMuchasGracias,
-			ruta: "/producto/",
-			imgDerPers: comp.nombreAvatar(registro, {}),
-			tituloImgDerPers: registro.nombre_castellano,
-		});
 	},
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
