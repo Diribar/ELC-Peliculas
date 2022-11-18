@@ -16,10 +16,10 @@
 .fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
-#cuerpo .inactivo, #cuerpo .inactivo *, 
-#cuerpo .inactivoErrores, #cuerpo .inactivoErrores *, 
-#cuerpo .inactivoVersion, #cuerpo .inactivoVersion * {opacity: .5; cursor: not-allowed;}
-#cuerpo .inactivo *, #cuerpo .inactivoErrores *, #cuerpo .inactivoVersion * {border-color: transparent;}
+body .inactivo, body .inactivo *, 
+body .inactivoErrores, body .inactivoErrores *, 
+body .inactivoVersion, body .inactivoVersion * {opacity: .5; cursor: not-allowed;}
+body .inactivo *, body .inactivoErrores *, body .inactivoVersion * {border-color: transparent;}
 
 /* Otras */
 .absolute {position: absolute}

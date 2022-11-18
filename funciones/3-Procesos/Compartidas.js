@@ -431,6 +431,7 @@ module.exports = {
 	descarga: async (url, rutaYnombre) => {
 		// Carpeta donde descargar
 		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+		let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 		// Realiza la descarga
 		let writer = fs.createWriteStream(rutaYnombre);
@@ -439,7 +440,7 @@ module.exports = {
 		// Obtiene el resultado de la descarga
 		let resultado = await new Promise((resolve, reject) => {
 			writer.on("finish", () => {
-				console.log("Imagen guardada");
+				console.log("Imagen '" + nombre + "' guardada");
 				resolve("OK");
 			});
 			writer.on("error", (error) => {
