@@ -133,7 +133,8 @@ module.exports = {
 		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
 		// Quita las coincidencias con el original
 		let quedanCampos;
-		[edicion, quedanCampos] = this.puleEdicion(original, edicion);
+		let familia = this.obtieneFamiliaEnPlural(entidadEdic);
+		[edicion, quedanCampos] = this.puleEdicion(original, edicion, familia);
 		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Completa la información

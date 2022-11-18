@@ -7,14 +7,14 @@
 #cuerpo .ayuda, .inputError .errores {position: absolute; top: 50%; transform: translate(100%,-50%);}
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
-/* Coordinación entre Ayuda y Errores */
+/* Z-Index: coordinación entre Ayuda y Errores */
 #primeraColumna {z-index: 1;}
 .inputError .ayuda {z-index: 2;}
 .inputError .errores {z-index: 3}
 .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 4;}
 .errores .mensajeError {z-index: 5;}
 
-/* Estándares para donde se hace 'click' y desplegables */
+/* Bordes */
 .ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, 
 .fa-circle-left, .fa-circle-right, .link {border-radius: 50%;}
 .fa-circle-left, .fa-circle-right, .fa-circle-check, .fa-circle-xmark, .fa-circle-question
@@ -28,10 +28,10 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
+.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
 .ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
 .ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 350px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
 
 /* Desplegables Ayuda - Temas generales */
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
@@ -49,13 +49,12 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 
 /* Mensajes */
 .resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold; text-align: center;}
-.resultadoExitoso {background-color: var(--verde-oscuro);}
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-
 .link {text-align: center; font-weight: bold; line-height: 1; padding: 1px; }
 
 /* Colores */
+.resultadoExitoso {background-color: var(--verde-oscuro);}
+.resultadoInvalido {background-color: var(--rojo-oscuro);}
+.resultadoEnEspera {background-color: var(--gris-oscuro);}
 .ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
 .ayudaMostrar, .ayudaMostrar * {background-color: var(--backAyuda); color: var(--colorAyuda);}
 .ayudaMostrar {border-color: var(--bordeAyuda);}
