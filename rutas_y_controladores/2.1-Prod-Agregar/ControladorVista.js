@@ -350,7 +350,7 @@ module.exports = {
 		// 10. Crea la cookie para 'Terminaste'
 		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
 		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
-		// 10. Redireccionar
+		// 11. Redireccionar
 		return res.redirect("/producto/agregar/terminaste");
 	},
 	terminasteForm: async (req, res) => {
