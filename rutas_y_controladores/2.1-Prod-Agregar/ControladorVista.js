@@ -347,18 +347,21 @@ module.exports = {
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
+		// 10. Crea la cookie para 'Terminaste'
+		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
+		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
 		// 10. Redireccionar
-		return res.redirect(
-			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
-		);
+		return res.redirect("/producto/agregar/terminaste");
 	},
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
-		// 2. Obtiene los datos clave del producto
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		// 2. Si se perdió la info, redirije a 'palabras clave'
+		let prodTerminaste = req.cookies.prodTerminaste;
+		if (!prodTerminaste) return res.redirect("/producto/agregar/palabras-clave");
+		// 3. Obtiene los datos clave del producto
+		let {entidad, id} = prodTerminaste;
 		// 4. Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO

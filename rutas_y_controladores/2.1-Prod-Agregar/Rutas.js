@@ -53,7 +53,7 @@ router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", ...algunos, entidad, id, vista.terminasteForm);
+router.get("/terminaste", ...algunos, vista.terminasteForm);
 // Miscelaneas
 router.get("/responsabilidad", soloUsuarios, vista.responsabilidad);
 
