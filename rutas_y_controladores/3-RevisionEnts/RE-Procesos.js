@@ -372,9 +372,12 @@ module.exports = {
 		);
 		// Si no existe ninguna edición => informa el error
 		if (!prodEdics.length) return {informacion: mensajeSinEdicion};
-		// Si no existe la edicID => informa el error
-		let prodEdic = prodEdics.find((n) => n.id == edicID);
+		// Obtiene la prodEdic
+		let prodEdic = edicID ? prodEdics.find((n) => n.id == edicID) : prodEdics[0];
+		// Si no existe la prodEdic => informa el error
 		if (!prodEdic) return {informacion: mensajeSinEsaEdicion};
+		// Si no existe el edicID, lo asigna
+		if (!edicID) return {edicID: prodEdic.id};
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
@@ -571,6 +574,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", prodEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
+		console.log(578,datos.duracion,motivo);
 		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, motivo);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'

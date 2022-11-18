@@ -329,10 +329,14 @@ module.exports = {
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElUsuario("mail_validado", usuario);
+		// Borra todas las cookies
+		if (req.cookies && req.cookies.emailUnMes != req.body.email)
+			for (let prop in req.cookies) res.clearCookie(prop);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
-		// 7. Guarda el mail en cookie
+		// 7. Guarda el mail en cookies
 		res.cookie("email", req.body.email, {maxAge: unDia});
+		res.cookie("emailUnMes", req.body.email, {maxAge: unMes});
 		// 8. Notificar al contador de logins
 		let hoyAhora = comp.ahora();
 		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
@@ -360,8 +364,10 @@ module.exports = {
 	},
 	logout: (req, res) => {
 		let url = req.session.urlSinUsuario;
+		// Borra el session y un cookie
 		req.session.destroy();
 		res.clearCookie("email");
+		// Fin
 		return res.redirect(url);
 	},
 	olvidoContrGuardar: async (req, res) => {

@@ -102,8 +102,7 @@ module.exports = {
 		const codigo = "datosDuros";
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
-		if (aux && aux.avatar)
-			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
+		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -146,6 +145,7 @@ module.exports = {
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
+		console.log(149, new Date());
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		let origen =
@@ -187,8 +187,10 @@ module.exports = {
 				avatar = req.file.filename;
 				rutaYnombre = req.file.path;
 			} else {
+				console.log(191, new Date());
 				// En caso de archivo sin multer
 				let datos = await requestPromise.head(datosDuros.avatar_url);
+				console.log(194, new Date());
 				tipo = datos["content-type"];
 				tamano = datos["content-length"];
 				avatar = Date.now() + path.extname(datosDuros.avatar_url);
@@ -226,6 +228,7 @@ module.exports = {
 			res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		}
 		// 11. Redireccionar a la siguiente instancia
+		console.log(231, new Date());
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 	datosPersForm: async (req, res) => {
@@ -314,19 +317,12 @@ module.exports = {
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Obtiene la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_genericas.obtienePorCampos("fe_valores", {id: confirma.fe_valores_id}).then((n) => n.valor),
-			BD_genericas.obtienePorCampos("entretiene", {id: confirma.entretiene_id}).then((n) => n.valor),
-			BD_genericas.obtienePorCampos("calidad_tecnica", {id: confirma.calidad_tecnica_id}).then(
-				(n) => n.valor
-			),
+			BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
+			BD_genericas.obtienePorId("entretiene", confirma.entretiene_id).then((n) => n.valor),
+			BD_genericas.obtienePorId("calidad_tecnica", confirma.calidad_tecnica_id).then((n) => n.valor),
 		]);
 		let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-		let calificaciones = {
-			fe_valores,
-			entretiene,
-			calidad_tecnica,
-			calificacion,
-		};
+		let calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
 		// 3. Guardar los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
@@ -351,18 +347,21 @@ module.exports = {
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
-		// 10. Redireccionar
-		return res.redirect(
-			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
-		);
+		// 10. Crea la cookie para 'Terminaste'
+		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
+		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
+		// 11. Redireccionar
+		return res.redirect("/producto/agregar/terminaste");
 	},
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
-		// 2. Obtiene los datos clave del producto
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		// 2. Si se perdió la info, redirije a 'palabras clave'
+		let prodTerminaste = req.cookies.prodTerminaste;
+		if (!prodTerminaste) return res.redirect("/producto/agregar/palabras-clave");
+		// 3. Obtiene los datos clave del producto
+		let {entidad, id} = prodTerminaste;
 		// 4. Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO

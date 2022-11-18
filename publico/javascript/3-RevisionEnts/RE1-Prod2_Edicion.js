@@ -50,14 +50,15 @@ window.addEventListener("load", () => {
 			// Oculta bloque de Ingresos
 			if (
 				filasIngrs.length &&
+				bloqueIngrs &&
 				!bloqueIngrs.className.includes("ocultar") &&
 				todasLasFilasOcultas(filasIngrs)
 			)
 				bloqueIngrs.classList.add("ocultar");
 			// Oculta bloque de Reemplazos
-
 			if (
 				filasReemps.length &&
+				bloqueReemps &&
 				!bloqueReemps.className.includes("ocultar") &&
 				todasLasFilasOcultas(filasReemps)
 			)
@@ -136,8 +137,8 @@ window.addEventListener("load", () => {
 		if (todoProcesado == resultado.quedanCampos) {
 			// Publica el cartel de avatar
 			if (campo == "avatar") cartel(mensajeAvatar());
-			// Recarga la vista
-			else location.reload();
+			// Mensaje de error
+			else console.log(todoProcesado , resultado.quedanCampos);
 		}
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado) cartel(mensajeFin());
@@ -171,6 +172,7 @@ window.addEventListener("load", () => {
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
+			console.log(resultado);
 			// Consecuencias
 			consecuencias(resultado, campo);
 		});

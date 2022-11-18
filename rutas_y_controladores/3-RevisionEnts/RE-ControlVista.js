@@ -134,8 +134,11 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
 		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
+		// Obtiene el edicID
+		let {edicID} = await procesos.prodEdicForm_obtieneProdEdic(req);
+		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+		if (edicID) urlEdicion += "&edicion_id=" + edicID;
 		// Fin
-		const urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 		return res.redirect(urlEdicion);
 	},
 	prodEdicForm: async (req, res) => {
