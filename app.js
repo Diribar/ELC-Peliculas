@@ -1,6 +1,7 @@
 // VARIABLES GLOBALES -------------------------------------------------
-global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
+global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
+global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
