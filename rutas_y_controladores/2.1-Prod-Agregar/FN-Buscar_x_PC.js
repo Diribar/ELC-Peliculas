@@ -9,7 +9,43 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
-	search: async (palabrasClave, mostrar) => {
+	searchIndividual: async (palabrasClave, mostrar,entidadTMDB) => {
+		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
+		let lectura = [];
+		let datos = {resultados: []};
+		let page = 1;
+		while (true) {
+			// Rutina por entidad
+				if (page == 1 || page <= datos.cantPaginasAPI[TMDB_entidad]) {
+					lectura = await searchTMDB(palabrasClave, TMDB_entidad, page)
+						.then((n) => infoQueQueda(n))
+						.then((n) => estandarizarNombres(n, TMDB_entidad))
+						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
+						.then((n) => eliminarIncompletos(n));
+					// if (TMDB_entidad == "collection" && lectura.resultados.length && mostrar)
+					// 	lectura.resultados = await agregaAnoEstreno(lectura.resultados);
+					datos = unificarResultados(lectura, TMDB_entidad, datos, page);
+				}
+			
+			// Terminacion
+			//datos = eliminarDuplicados(datos);
+			datos = await averiguaSiYaEnBD(datos);
+			datos.hayMas = hayMas(datos, page, entidadesTMDB);
+			if (datos.resultados.length >= 20 || !datos.hayMas) break;
+			else page++;
+		}
+		if (mostrar) datos = ordenarDatos(datos);
+		datos = {
+			palabrasClave: palabrasClave,
+			hayMas: datos.hayMas,
+			cantResultados: datos.resultados.length,
+			cantPaginasAPI: datos.cantPaginasAPI,
+			cantPaginasUsadas: datos.cantPaginasUsadas,
+			resultados: datos.resultados,
+		};
+		return datos;
+	},
+	searchConsolidado: async (palabrasClave, mostrar) => {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
@@ -29,12 +65,15 @@ module.exports = {
 				}
 			}
 			// Terminacion
-			datos = eliminarDuplicados(datos);
-			datos = await averiguaSiYaEnBD(datos);
 			datos.hayMas = hayMas(datos, page, entidadesTMDB);
 			if (datos.resultados.length >= 20 || !datos.hayMas) break;
 			else page++;
 		}
+		// Elimina los registros duplicados
+		datos = eliminarDuplicados(datos);
+		// Averigua si ya lo tenemos en nuestra base de datos
+		datos = await averiguaSiYaEnBD(datos);
+		// Ordena los datos
 		if (mostrar) datos = ordenarDatos(datos);
 		datos = {
 			palabrasClave: palabrasClave,
@@ -195,12 +234,12 @@ let averiguaSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
 		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
-		let YaEnBD = await BD_especificas.obtieneELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
-		if (entidad == "peliculas" && !YaEnBD) {
+		let yaEnBD_id = await BD_especificas.obtieneELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
+		if (entidad == "peliculas" && !yaEnBD_id) {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
-			YaEnBD = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
-			if (YaEnBD) {
-				let capitulo = await BD_genericas.obtienePorId("capitulos", YaEnBD);
+			yaEnBD_id = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
+			if (yaEnBD_id) {
+				let capitulo = await BD_genericas.obtienePorId("capitulos", yaEnBD_id);
 				let coleccion = await BD_genericas.obtienePorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
 				datos.resultados[i].prodNombre =
@@ -209,7 +248,7 @@ let averiguaSiYaEnBD = async (datos) => {
 		}
 		datos.resultados[i] = {
 			...datos.resultados[i],
-			YaEnBD,
+			yaEnBD_id,
 		};
 	}
 	return datos;

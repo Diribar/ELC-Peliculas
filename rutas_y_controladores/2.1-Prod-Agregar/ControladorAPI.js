@@ -11,7 +11,7 @@ module.exports = {
 	cantProductos: async (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene la cantidad de productos encontrados que coinciden con las palabras clave
-		let lectura = await buscar_x_PC.search(palabrasClave, false);
+		let lectura = await buscar_x_PC.searchConsolidado(palabrasClave, false);
 		return res.json(lectura);
 	},
 	validaPalabrasClave: (req, res) => {
@@ -27,7 +27,7 @@ module.exports = {
 		// Obtiene los productos
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
-			: await buscar_x_PC.search(palabrasClave, true);
+			: await buscar_x_PC.searchIndividual(palabrasClave, true);
 		let [prodsNuevos, prodsYaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;

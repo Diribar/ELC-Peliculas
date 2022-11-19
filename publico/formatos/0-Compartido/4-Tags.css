@@ -9,11 +9,10 @@ select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Varios */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
-i {font-style: normal;}
 a {text-decoration: none;}
-optgroup, button, select, option, input, a, em, strong, u {font-size: inherit; color: inherit;}
+select, option, optgroup, input, button, a, i, span
+em, strong, u {font-size: inherit; color: inherit; line-height: inherit;}
 p, li {line-height: 1.2rem;}
-span {font-size: inherit;}
 label {line-height: 1;}
 select option[value=''] {display: none;}
 select:invalid {font-style: italic;}

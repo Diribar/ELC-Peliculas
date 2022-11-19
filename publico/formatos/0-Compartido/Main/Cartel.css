@@ -18,8 +18,8 @@
 #cartel #titulo, #cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
 #cartel #mensajes {margin: 0 20px 40px; text-align: center;}
 #cartel #mensajes li {text-align: left;}
-#cartel #mensajes li .fa-minus {margin-right: 5px; color: inherit; font-size: 1rem;}
-#cartel #mensajes span {font-weight: bold; font-style: italic; color: inherit; font-size: inherit; line-height: inherit;}
+#cartel #mensajes li i {margin-right: 10px; font-size: 1rem;}
+#cartel #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}

@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 		};
 		var mostrarResultados = async (lectura) => {
 			// Averigua cantidad de coincidencias
-			let prodsNuevos = lectura.resultados.filter((n) => !n.YaEnBD).length;
+			let prodsNuevos = lectura.resultados.filter((n) => !n.yaEnBD_id).length;
 			let cantResultados = lectura.cantResultados;
 			let hayMas = lectura.hayMas;
 			// Determinar oracion y formato

@@ -28,8 +28,8 @@ module.exports = {
 	},
 	// ControllerVista (desambiguarForm)
 	DS_prepararMensaje: (desambiguar) => {
-		let prodsNuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
-		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+		let prodsNuevos = desambiguar.resultados.filter((n) => !n.yaEnBD_id);
+		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.yaEnBD_id);
 		let coincidencias = desambiguar.resultados.length;
 		let nuevos = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
