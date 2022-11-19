@@ -8,14 +8,16 @@
 #cartel.azul {background-color: var(--azul-oscuro);}
 
 /* Alineación interna */
-#cartel {display: flex; flex-direction: column; align-items: center; width: max-content; max-width: 600px;}
+#cartel {display: flex; flex-direction: column; align-items: center;}
+#cartel {width: max-content; min-width: 250px; max-width: 600px;}
 #cartel.ocultar {display: none;}
 
 /* Partes internas */
-#cartel #error {font-size: 4rem; color: var(--amarillo-oscuro);}
-#cartel #mensajes {margin: 40px 20px; text-align: center;}
+#cartel .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
+#cartel #titulo, #cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
+#cartel #mensajes {margin: 0 20px 40px; text-align: center;}
 #cartel #mensajes li {text-align: left;}
-#cartel #mensajes, #cartel #mensajes li, #cartel #mensajes li * {font-size: 1.2rem; line-height: 1.5;}
+#cartel #mensajes li .fa-minus {margin-right: 5px; color: inherit; font-size: 1rem;}
 #cartel #mensajes span {font-weight: bold; font-style: italic; color: inherit; font-size: inherit; line-height: inherit;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */

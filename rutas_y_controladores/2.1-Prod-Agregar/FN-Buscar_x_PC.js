@@ -13,7 +13,7 @@ module.exports = {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
-		let entidadesTMDB = ["movie", "tv", "collection"];
+		let entidadesTMDB = ["movie", "collection", "tv"];
 		let page = 1;
 		while (true) {
 			for (let TMDB_entidad of entidadesTMDB) {
