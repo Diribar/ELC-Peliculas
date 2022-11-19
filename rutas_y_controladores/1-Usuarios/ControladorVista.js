@@ -244,7 +244,7 @@ module.exports = {
 		// Prepara la información a actualizar
 		req.body.fecha_revisores = comp.ahora();
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario("ident_a_valida", usuario, req.body);
+		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
 		// Redirecciona
@@ -253,7 +253,7 @@ module.exports = {
 	documentoRecibido: (req, res) => {
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
-		if (!usuario.status_registro.ident_a_valida) return res.redirect("/usuarios/redireccionar");
+		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");
 		// Variables
 		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
