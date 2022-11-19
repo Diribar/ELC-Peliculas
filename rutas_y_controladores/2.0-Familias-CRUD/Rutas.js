@@ -10,7 +10,7 @@ const API = require("./ControladorAPI");
 router.get("/obtiene-col-cap", API.obtieneColCap);
 router.get("/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/obtiene-cap-id", API.obtieneCapID);
-router.get("/averiguar-capitulos", API.obtieneCapitulos);
+router.get("/averigua-capitulos", API.obtieneCapitulos);
 
 // Fin
 module.exports = router;

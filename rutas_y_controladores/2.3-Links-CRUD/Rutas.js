@@ -21,7 +21,7 @@ const todos = [soloUsuarios, aptoInput, entidad, id, permUserReg, capturaActivar
 //************************ Rutas ****************************
 // Rutas de APIs
 // Links
-router.get("/api/validar", API.validar);
+router.get("/api/valida", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
 router.get("/api/guardar", API.guardar);
 router.get("/api/eliminar", API.eliminar);

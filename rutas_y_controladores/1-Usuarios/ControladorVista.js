@@ -6,7 +6,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const valida = require("./FN-Validar");
 
 module.exports = {
 	redireccionar: async (req, res) => {
@@ -64,7 +64,7 @@ module.exports = {
 	altaMailGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let email = req.body.email;
-		let errores = await validar.altaMail(email);
+		let errores = await valida.altaMail(email);
 		// Si no hay errores, verificar si ya existe en la BD
 		if (!errores.hay && (await BD_especificas.obtieneELC_id("usuarios", {email})))
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
@@ -144,7 +144,7 @@ module.exports = {
 			datos.avatar = req.file.filename;
 		}
 		// Averigua si hay errores de validación
-		let errores = await validar.editables(datos);
+		let errores = await valida.editables(datos);
 		if (errores.hay) {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
@@ -226,7 +226,7 @@ module.exports = {
 		if (req.file) datos.tamano = req.file.size;
 		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/5-DocsRevisar/";
 		// Averigua si hay errores de validación
-		let errores = await validar.documentoBE(datos);
+		let errores = await valida.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
@@ -301,7 +301,7 @@ module.exports = {
 		delete req.session.email;
 		delete req.session.contrasena;
 		// 3. Variables para la vista
-		let {errores} = dataEntry ? await validar.mailContrasena_y_ObtieneUsuario(dataEntry) : {errores: ""};
+		let {errores} = dataEntry ? await valida.mailContrasena_y_ObtieneUsuario(dataEntry) : {errores: ""};
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
@@ -319,7 +319,7 @@ module.exports = {
 	},
 	loginGuardar: async (req, res) => {
 		// 1. Averigua si hay errores de data-entry
-		let {errores, usuario} = await validar.mailContrasena_y_ObtieneUsuario(req.body);
+		let {errores, usuario} = await valida.mailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.email = req.body.email;
@@ -373,10 +373,10 @@ module.exports = {
 	olvidoContrGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let dataEntry = req.body;
-		let errores = await validar.altaMail(dataEntry.email);
+		let errores = await valida.altaMail(dataEntry.email);
 		let usuario;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(dataEntry);
+		if (!errores.hay) [errores, usuario] = await valida.olvidoContrBE(dataEntry);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;

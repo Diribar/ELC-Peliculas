@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 		var invisibles = document.querySelectorAll(".invisible");
 	}
 	// Ruta
-	let rutaValidar = "/producto/agregar/api/validar/" + paso.paso + "/?";
+	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
 
 	// FUNCIONES *******************************************
 	let statusInicial = async (mostrarIconoError) => {

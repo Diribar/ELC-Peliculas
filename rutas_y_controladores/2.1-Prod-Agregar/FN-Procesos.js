@@ -113,7 +113,7 @@ module.exports = {
 		}
 		return comp.convertirLetrasAlCastellano(datos);
 	},
-	averiguarColeccion: async (TMDB_id) => {
+	averiguaColeccion: async (TMDB_id) => {
 		// Obtiene la API
 		let datosAPI = await detailsTMDB("movie", TMDB_id);
 		// Datos de la colección a la que pertenece, si corresponde

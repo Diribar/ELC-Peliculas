@@ -30,7 +30,7 @@ module.exports = {
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
-			datos = await averiguarSiYaEnBD(datos);
+			datos = await averiguaSiYaEnBD(datos);
 			datos.hayMas = hayMas(datos, page, entidadesTMDB);
 			if (datos.resultados.length >= 20 || !datos.hayMas) break;
 			else page++;
@@ -191,7 +191,7 @@ let eliminarDuplicados = (datos) => {
 	// Fin
 	return datos;
 };
-let averiguarSiYaEnBD = async (datos) => {
+let averiguaSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
 		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";

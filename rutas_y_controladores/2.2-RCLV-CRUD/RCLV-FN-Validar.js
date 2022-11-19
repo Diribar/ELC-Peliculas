@@ -169,7 +169,7 @@ let nombreCompleto = async function (datos, campo) {
 	if (!datos[campo]) respuesta = comp.inputVacio;
 	if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
 	if (!respuesta) {
-		let id = await BD_especificas.validarRepetidos([campo], datos);
+		let id = await BD_especificas.validaRepetidos([campo], datos);
 		if (id) respuesta = comp.cartelRepetido({...datos, id});
 	}
 	return respuesta;

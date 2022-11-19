@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector("#flechas #submit"),
 		// Rutas
-		rutaValidacion: "/rclv/api/validar-sector/?funcion=",
+		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
 		rutaOtrosCasos: "/rclv/api/otros-casos/",
 		// Links a otros sitios
 		linksClick: document.querySelectorAll("#dataEntry #valoresFecha .links"),
@@ -90,7 +90,7 @@ window.addEventListener("load", async () => {
 	}
 
 	// Funciones
-	let validar = {
+	let valida = {
 		nombre: async () => {
 			// Verifica errores en el sector 'nombre', campo 'nombre'
 			let params = "&nombre=" + v.nombre.value;
@@ -407,14 +407,14 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (v.nombre.value && (!v.apodo || v.apodo.value)) await validar.nombreApodo();
+		if (v.nombre.value && (!v.apodo || v.apodo.value)) await valida.nombreApodo();
 		if (v.mes_id.value) diasDelMes(v.mes_id, v.dia);
 		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-			await validar.fechas();
-			validar.repetido();
+			await valida.fechas();
+			valida.repetido();
 		}
-		if (v.entidad == "personajes" && v.ano.value) await validar.ano();
-		if (v.entidad == "hechos" && v.ano.value && v.hasta.value) await validar.desdeHasta();
+		if (v.entidad == "personajes" && v.ano.value) await valida.ano();
+		if (v.entidad == "hechos" && v.ano.value && v.hasta.value) await valida.desdeHasta();
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
@@ -465,7 +465,7 @@ window.addEventListener("load", async () => {
 			// Quita los caracteres que exceden el largo permitido
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
-			await validar[campo]();
+			await valida[campo]();
 			feedback(OK, errores);
 		}
 		if (campo == "ano" || campo == "hasta") {
@@ -474,7 +474,7 @@ window.addEventListener("load", async () => {
 			// Impide guiones en el medio
 			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
 			// Revisa los errores y los publica si existen
-			// await validar[campo]();
+			// await valida[campo]();
 			// feedback(OK, errores, true);
 		}
 	});
@@ -482,14 +482,14 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value && (!v.apodo || v.apodo.value))
-			await validar.nombreApodo();
+			await valida.nombreApodo();
 		if (campo == "mes_id") diasDelMes();
-		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await validar.fechas();
-		if (campo == "desconocida") await validar.fechas();
-		if (campo == "repetido") validar.repetido();
-		if (v.entidad == "personajes" && campo == "ano") await validar.ano();
+		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await valida.fechas();
+		if (campo == "desconocida") await valida.fechas();
+		if (campo == "repetido") valida.repetido();
+		if (v.entidad == "personajes" && campo == "ano") await valida.ano();
 		if (v.entidad == "hechos" && (campo == "ano" || campo == "hasta") && v.ano.value && v.hasta.value)
-			await validar.desdeHasta();
+			await valida.desdeHasta();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") funcionSexo();
 		if (!v.valores && v.camposRCLI().includes(campo)) await mostrarRCLI[v.entidad](false);
@@ -498,11 +498,11 @@ window.addEventListener("load", async () => {
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		if (v.botonSubmit.classList.contains("inactivo")) {
-			await validar.nombreApodo();
-			await validar.fechas();
-			validar.repetido();
-			if (v.personajes) await validar.ano();
-			if (v.hechos) await validar.desdeHasta();
+			await valida.nombreApodo();
+			await valida.fechas();
+			valida.repetido();
+			if (v.personajes) await valida.ano();
+			if (v.hechos) await valida.desdeHasta();
 			if (!v.valores) await mostrarRCLI[v.entidad](true);
 			// Fin
 			feedback(OK, errores);

@@ -3,14 +3,14 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const valida = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
 	// Links
-	validar: async (req, res) => {
+	valida: async (req, res) => {
 		// Averigua los errores solamente para esos campos
-		let errores = await validar.links(req.query);
+		let errores = await valida.links(req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},

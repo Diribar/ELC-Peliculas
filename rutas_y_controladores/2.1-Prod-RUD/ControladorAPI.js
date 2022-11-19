@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const valida = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -46,11 +46,11 @@ module.exports = {
 	},
 
 	// Edición del Producto
-	validarEdicion: async (req, res) => {
+	validaEdicion: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validar.consolidado(campos, req.query);
+		let errores = await valida.consolidado(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},

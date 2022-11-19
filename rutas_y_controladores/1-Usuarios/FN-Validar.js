@@ -102,8 +102,8 @@ module.exports = {
 			// 1. Verifica que el documento no exista ya en la Base de Datos
 			let docum_numero = datos.docum_numero;
 			let docum_pais_id = datos.docum_pais_id;
-			let averiguar = await BD_genericas.obtienePorCampos("usuarios", {docum_numero, docum_pais_id});
-			if (averiguar && averiguar.id != datos.id) errores.credenciales = true;
+			let averigua = await BD_genericas.obtienePorCampos("usuarios", {docum_numero, docum_pais_id});
+			if (averigua && averigua.id != datos.id) errores.credenciales = true;
 
 			// 2. Verifica el docum_avatar
 			errores.docum_avatar =

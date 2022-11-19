@@ -5,7 +5,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procesosCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Procesos");
-const validarCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
+const validaCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
 
 module.exports = {
 	// Uso general
@@ -257,7 +257,7 @@ module.exports = {
 		let creado_id = status_registro.find((n) => n.creado).id;
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		// 2. Averigua si hay errores de validación y toma acciones
-		let errores = await validarCRUD.consolidado(datos);
+		let errores = await validaCRUD.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});

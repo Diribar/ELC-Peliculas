@@ -1,26 +1,26 @@
 "use strict";
 // Definir variables
-const validarUsuarios = require("./FN-Validar");
+const validaUsuarios = require("./FN-Validar");
 
 module.exports = {
-	validarMail: async (req, res) => {
-		let errores = await validarUsuarios.altaMail(req.query.email);
+	validaMail: async (req, res) => {
+		let errores = await validaUsuarios.altaMail(req.query.email);
 		return res.json(errores);
 	},
-	validarPerennes: async (req, res) => {
-		let errores = await validarUsuarios.perennes(req.query);
+	validaPerennes: async (req, res) => {
+		let errores = await validaUsuarios.perennes(req.query);
 		return res.json(errores);
 	},
-	validarEditables: async (req, res) => {
-		let errores = await validarUsuarios.editables(req.query);
+	validaEditables: async (req, res) => {
+		let errores = await validaUsuarios.editables(req.query);
 		return res.json(errores);
 	},
-	validarDocumento: async (req, res) => {
-		let errores = await validarUsuarios.documentoFE(req.query);
+	validaDocumento: async (req, res) => {
+		let errores = await validaUsuarios.documentoFE(req.query);
 		return res.json(errores);
 	},
-	validarLogin: async (req, res) => {
-		let errores = validarUsuarios.login(req.query);
+	validaLogin: async (req, res) => {
+		let errores = validaUsuarios.login(req.query);
 		return res.json(errores);
 	},
 };
