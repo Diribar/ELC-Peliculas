@@ -14,7 +14,7 @@ module.exports = {
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
 		let status_usuario = req.session.usuario.status_registro;
-		status_usuario.mail_a_valida
+		status_usuario.mail_a_validar
 			? res.redirect("/usuarios/login")
 			: status_usuario.mail_validado
 			? res.redirect("/usuarios/datos-editables")
@@ -81,7 +81,7 @@ module.exports = {
 			contrasena,
 			fecha_contrasena: ahora,
 			email,
-			status_registro_id: status_registro_us.find((n) => n.mail_a_valida).id,
+			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
