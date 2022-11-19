@@ -431,7 +431,7 @@ window.addEventListener("load", async () => {
 			// Borrar las clases anteriores
 			resultado.classList.remove(...resultado.classList);
 			resultado.classList.add("sinResultado");
-			// Prepara el datosUrl con los datos a valida
+			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor;
 		}
 		if (paso.DD) {
