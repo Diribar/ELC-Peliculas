@@ -67,7 +67,7 @@
 #datos table .inputError input[type=number] {-moz-appearance: textfield;}
 
 /* Ayuda particular */
-#cuerpo .ayudaMostrar {right: 20px; transform: translate(0%, -50%)}
+#cuerpo .ayudaMostrar {right: 20px; translate: 0% -50%}
 
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}

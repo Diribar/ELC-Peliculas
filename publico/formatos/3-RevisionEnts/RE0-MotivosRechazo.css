@@ -1,4 +1,4 @@
-#cartelMotivosRechazo {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 11;}
+#cartelMotivosRechazo {position: absolute; top: 50%; left: 50%; translate: -50% -50%; z-index: 11;}
 #cartelMotivosRechazo {background-color: var(--rojo-oscuro); padding: 20px; border-radius: 20px;}
 #cartelMotivosRechazo {border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
 #cartelMotivosRechazo {width: 300px; text-align: center;}

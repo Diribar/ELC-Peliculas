@@ -21,7 +21,7 @@
 #centro #arriba {display: flex; flex-direction: column;}
 #centro #arriba #tituloPrincipal {text-align: center; align-self: stretch;}
 #centro #arriba #tituloPrincipal #titulo {border-left-color: var(--bordeTitulo); border-bottom-right-radius: 0;}
-#centro #arriba #tituloPrincipal .ayuda {transform: translate(0, -50%); right: 10px;}
+#centro #arriba #tituloPrincipal .ayuda {translate: 0 -50%; right: 10px;}
 #centro #arriba #timer {position: static; margin-left: auto;}
 #centro #arriba #fichaTecnica {margin: 20px auto 0; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
 #centro #arriba #fichaTecnica {background-color: var(--verde-claro); border: var(--verde-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}

@@ -6,8 +6,10 @@
 .desplazam .infoDesplazam {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 
 /* Aparece */
-@keyframes aparece {0% {opacity: 0} 100% {opacity: 1}}
-.aparece {opacity: 0; animation-name: aparece; animation-delay: .5s; animation-duration: .25s; animation-timing-function: linear; animation-fill-mode: forwards;}
+@keyframes aparece 		 {0% {opacity: 0} 100% {opacity: 1}}
+@keyframes aumentaRapido {0% {scale: 0}   100% {scale: 1}}
+.aparece {opacity: 0; animation-name: aparece;       animation-duration: .3s; animation-timing-function: ease-in-out; animation-fill-mode: forwards;}
+.aumenta {scale: 0;   animation-name: aumentaRapido; animation-duration: .5s; animation-timing-function: ease-in-out; animation-fill-mode: forwards; }
 
 /* Scale */
 #flechas i, #flechas img, #flechas a, #flechas button,
@@ -16,8 +18,6 @@
 
 #flechas i:hover, #flechas img:hover, #flechas button:hover, 
 #comandos i:hover, #comandos button:hover, 
-#comandosRechazar i:hover, #cuerpo a i:hover, .scale:hover {transform: scale(1.3);}
+#comandosRechazar i:hover, #cuerpo a i:hover, .scale:hover {scale: 1.3;}
 
-#flechas button i:hover, #comandos button i:hover {transform: none;}
-/* #flechas a i:hover, #comandos a i:hover {transform: none;} */
-
+#flechas button i:hover, #comandos button i:hover {scale: 1;}
