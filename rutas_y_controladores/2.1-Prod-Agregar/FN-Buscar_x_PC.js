@@ -197,7 +197,7 @@ let averiguaSiYaEnBD = async (datos) => {
 		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
 		let YaEnBD = await BD_especificas.obtieneELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
 		if (entidad == "peliculas" && !YaEnBD) {
-			// Debe averigualo, porque el 'search' no avisa si pertenece a una colección
+			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
 			YaEnBD = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: datos.resultados[i].TMDB_id});
 			if (YaEnBD) {
 				let capitulo = await BD_genericas.obtienePorId("capitulos", YaEnBD);
