@@ -5,7 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const valida = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -166,7 +166,7 @@ module.exports = {
 		// Une 'Edición' y 'Original'
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
 		// Averigua si hay errores de validación
-		let errores = await validar.consolidado("", {...prodComb, entidad});
+		let errores = await valida.consolidado("", {...prodComb, entidad});
 		if (req.file) {
 			// Actualiza los archivos avatar
 			if (!errores.hay) {

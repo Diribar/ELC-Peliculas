@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./RCLV-FN-Procesos");
-const validar = require("./RCLV-FN-Validar");
+const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
@@ -82,7 +82,7 @@ module.exports = {
 		let datos = {...req.body, ...req.query};
 		// return res.send(datos)
 		// 2. Averigua si hay errores de validación y toma acciones
-		let errores = await validar.consolidado(datos);
+		let errores = await valida.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});

@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const validar = require("./RCLV-FN-Validar");
+const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	buscarOtrosCasos: async (req, res) => {
@@ -13,8 +13,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	validar: async (req, res) => {
-		let mensaje = await validar[req.query.funcion](req.query);
+	valida: async (req, res) => {
+		let mensaje = await valida[req.query.funcion](req.query);
 		return res.json(mensaje);
 	},
 };

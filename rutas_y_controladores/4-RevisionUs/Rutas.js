@@ -19,8 +19,8 @@ const todos = [...algunos, entidadID, permUserReg, capturaActivar];
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...algunos, vista.tableroControl);
-router.get("/validar-identidad", ...todos, vista.validarIdentidadForm);
-router.post("/validar-identidad", ...todos, vista.validarIdentidadGuardar);
+router.get("/valida-identidad", ...todos, vista.validaIdentidadForm);
+router.post("/valida-identidad", ...todos, vista.validaIdentidadGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;

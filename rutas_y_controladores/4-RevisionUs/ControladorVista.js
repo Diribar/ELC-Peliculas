@@ -5,7 +5,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./Procesos");
-// const validar = require("./FN-Validar");
+// const valida = require("./FN-Validar");
 
 module.exports = {
 	// Revisión
@@ -16,7 +16,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let usuarios = {};
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.validarIdentidades = await procesos.TC_validarIdentidades(userID);
+		usuarios.validaIdentidades = await procesos.TC_validaIdentidades(userID);
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("CMP-0Estructura", {
@@ -27,10 +27,10 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	validarIdentidadForm: async (req, res) => {
+	validaIdentidadForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionUs";
-		const codigo = "validarIdentidad";
+		const codigo = "validaIdentidad";
 		// Temas del usuario
 		let userID = req.query.id;
 		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, [
@@ -40,7 +40,7 @@ module.exports = {
 		]);
 		// Redireccionar si no existe el usuario o el avatar
 		let docum_avatar = usuario ? "./publico/imagenes/5-DocsRevisar/" + usuario.docum_avatar : false;
-		if (validarContenidoIF(usuario, docum_avatar))
+		if (validaContenidoIF(usuario, docum_avatar))
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = await BD_genericas.obtienePorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
@@ -71,7 +71,7 @@ module.exports = {
 			mostrarCartel: true,
 		});
 	},
-	validarIdentidadGuardar: async (req, res) => {
+	validaIdentidadGuardar: async (req, res) => {
 		// return res.send(req.body)
 		// Toma los datos del formulario
 		let datos = {...req.query, ...req.body};
@@ -160,7 +160,7 @@ module.exports = {
 	},
 };
 
-let validarContenidoIF = (usuario, avatar) => {
+let validaContenidoIF = (usuario, avatar) => {
 	// Variables
 	let redireccionar;
 	let campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];

@@ -12,11 +12,11 @@ const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
 // Rutas de APIs
-router.get("/api/validar-login", API.validarLogin);
-router.get("/api/validar-mail", API.validarMail);
-router.get("/api/validar-perennes", API.validarPerennes);
-router.get("/api/validar-editables", API.validarEditables);
-router.get("/api/validar-documento", API.validarDocumento);
+router.get("/api/valida-login", API.validaLogin);
+router.get("/api/valida-mail", API.validaMail);
+router.get("/api/valida-perennes", API.validaPerennes);
+router.get("/api/valida-editables", API.validaEditables);
+router.get("/api/valida-documento", API.validaDocumento);
 
 // Rutas de Altas
 router.get("/redireccionar", vista.redireccionar);

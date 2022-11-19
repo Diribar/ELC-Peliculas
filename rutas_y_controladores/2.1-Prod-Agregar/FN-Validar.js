@@ -6,7 +6,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./FN-Procesos");
 
 module.exports = {
-	// ControllerAPI (validarPalabrasClave)
+	// ControllerAPI (validaPalabrasClave)
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
@@ -16,8 +16,8 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validarDesambiguar)
-	averiguarSiEsColeccion: (dato) => {
+	// ControllerAPI (validaDesambiguar)
+	averiguaSiEsColeccion: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
 		// Variables
 		let errores = {hay: false};
@@ -40,7 +40,7 @@ module.exports = {
 		// Enviar el feedback
 		return errores;
 	},
-	// ControllerAPI (validarCopiarFA)
+	// ControllerAPI (validaCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};
 		// Dirección
@@ -74,7 +74,7 @@ module.exports = {
 		errores.campos = Object.keys(cantDatosObtenidos).length;
 		return errores;
 	},
-	// ControllerAPI (validarDatosDuros_input)
+	// ControllerAPI (validaDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
 		// Definir variables
@@ -175,7 +175,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		) {
-			let id = await BD_especificas.validarRepetidos(["nombre_original", "ano_estreno"], datos);
+			let id = await BD_especificas.validaRepetidos(["nombre_original", "ano_estreno"], datos);
 			if (id) errores.nombre_original = comp.cartelRepetido({...datos, id});
 		}
 		// Nombre Castellano y Año de Estreno
@@ -186,7 +186,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		) {
-			let id = await BD_especificas.validarRepetidos(["nombre_castellano", "ano_estreno"], datos);
+			let id = await BD_especificas.validaRepetidos(["nombre_castellano", "ano_estreno"], datos);
 			if (id) errores.nombre_castellano = comp.cartelRepetido({...datos, id});
 		}
 
@@ -194,7 +194,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validarDatosPers)
+	// ControllerAPI (validaDatosPers)
 	datosPers: async (campos, datos) => {
 		// Definir variables
 		let errores = {};

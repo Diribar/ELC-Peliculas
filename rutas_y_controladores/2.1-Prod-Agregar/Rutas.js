@@ -21,15 +21,16 @@ const multer = require("../../middlewares/varios/multer");
 //************************ Rutas ****************************
 // APIs
 // Validar
-router.get("/api/validar/palabras-clave", API.validarPalabrasClave);
-router.get("/api/validar/copiar-fa", API.validarCopiarFA);
-router.get("/api/validar/datos-duros", API.validarDatosDuros);
-router.get("/api/validar/datos-personalizados", API.validarDatosPers);
+router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
+router.get("/api/desambiguar-form", API.desambiguarForm);
+router.get("/api/valida/datos-duros", API.validaDatosDuros);
+router.get("/api/valida/datos-personalizados", API.validaDatosPers);
+router.get("/api/valida/copiar-fa", API.validaCopiarFA);
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
-router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
-router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
-router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
+router.get("/api/DS-averigua-coleccion", API.averiguaColeccion);
+router.get("/api/TP-averigua-colecciones", API.averiguaColecciones);
+router.get("/api/TP-averigua-cant-temporadas", API.averiguaCantTemporadas);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
 router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/obtiene-subcategorias", API.obtieneSubcategorias);

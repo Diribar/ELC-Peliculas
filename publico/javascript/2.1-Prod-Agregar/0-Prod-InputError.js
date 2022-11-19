@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 		var invisibles = document.querySelectorAll(".invisible");
 	}
 	// Ruta
-	let rutaValidar = "/producto/agregar/api/validar/" + paso.paso + "/?";
+	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
 
 	// FUNCIONES *******************************************
 	let statusInicial = async (mostrarIconoError) => {
@@ -431,7 +431,7 @@ window.addEventListener("load", async () => {
 			// Borrar las clases anteriores
 			resultado.classList.remove(...resultado.classList);
 			resultado.classList.add("sinResultado");
-			// Prepara el datosUrl con los datos a validar
+			// Prepara el datosUrl con los datos a valida
 			var datosUrl = campo + "=" + valor;
 		}
 		if (paso.DD) {

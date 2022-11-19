@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 		// Obtiene la temporada
 		let tempNum = temporada.value.slice(10);
 		// Obtiene los capítulos de la temporada
-		let ruta = "/crud/api/averiguar-capitulos/";
+		let ruta = "/crud/api/averigua-capitulos/";
 		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then(
 			(n) => n.json()
 		);

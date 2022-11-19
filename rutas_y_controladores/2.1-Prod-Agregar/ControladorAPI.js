@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const buscar_x_PC = require("./FN-Buscar_x_PC");
 const procesos = require("./FN-Procesos");
-const validar = require("./FN-Validar");
+const valida = require("./FN-Validar");
 
 module.exports = {
 	// Vista (palabrasClave)
@@ -14,20 +14,34 @@ module.exports = {
 		let lectura = await buscar_x_PC.search(palabrasClave, false);
 		return res.json(lectura);
 	},
-	validarPalabrasClave: (req, res) => {
+	validaPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
-		let errores = validar.palabrasClave(palabrasClave);
+		let errores = valida.palabrasClave(palabrasClave);
 		return res.json(errores);
 	},
 
 	// Vista (desambiguar)
-	averiguarColeccion: async (req, res) => {
-		let datos = await procesos.averiguarColeccion(req.query.TMDB_id);
+	desambiguarForm: async (req, res) => {
+		// Variables
+		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+		// Obtiene los productos
+		let desambiguar = req.session.desambiguar
+			? req.session.desambiguar
+			: await buscar_x_PC.search(palabrasClave, true);
+		let [prodsNuevos, prodsYaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
+		// Conserva la información en session para no tener que procesarla de nuevo
+		req.session.desambiguar = desambiguar;
+		// Fin
+		return res.json([prodsNuevos, prodsYaEnBD, mensaje]);
+	},
+
+	averiguaColeccion: async (req, res) => {
+		let datos = await procesos.averiguaColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
 
 	// Vista (tipoProducto)
-	averiguarColecciones: async (req, res) => {
+	averiguaColecciones: async (req, res) => {
 		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano").then((n) =>
 			n.map((m) => {
 				return {
@@ -38,7 +52,7 @@ module.exports = {
 		);
 		return res.json(datos);
 	},
-	averiguarCantTemporadas: async (req, res) => {
+	averiguaCantTemporadas: async (req, res) => {
 		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then(
 			(n) => n.cant_temporadas
 		);
@@ -46,8 +60,8 @@ module.exports = {
 	},
 
 	// Vista (copiarFA)
-	validarCopiarFA: (req, res) => {
-		let errores = validar.copiarFA(req.query);
+	validaCopiarFA: (req, res) => {
+		let errores = valida.copiarFA(req.query);
 		return res.json(errores);
 	},
 	obtieneFA_id: (req, res) => {
@@ -61,11 +75,11 @@ module.exports = {
 	},
 
 	// Vista (datosDuros)
-	validarDatosDuros: async (req, res) => {
+	validaDatosDuros: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validar.datosDuros(campos, req.query);
+		let errores = await valida.datosDuros(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},
@@ -75,10 +89,10 @@ module.exports = {
 		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
 		return res.json(subcategorias);
 	},
-	validarDatosPers: async (req, res) => {
+	validaDatosPers: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		let errores = await validar.datosPers(campos, req.query);
+		let errores = await valida.datosPers(campos, req.query);
 		return res.json(errores);
 	},
 	guardarDatosPers: (req, res) => {
@@ -88,6 +102,6 @@ module.exports = {
 		};
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: unDia});
-		return res.json()
+		return res.json();
 	},
 };

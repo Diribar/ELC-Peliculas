@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Revisa todos los inputs y devuelve los errores
-	let validarDataEntry = () => {
+	let validaDataEntry = () => {
 		let url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			if (i > 0) url += "&";
@@ -104,12 +104,12 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/producto/agregar/api/validar-copiar-fa/" + url).then((n) => n.json());
+		return fetch("/producto/agregar/api/valida-copiar-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial
 	if (statusInicial) {
-		let errores = await validarDataEntry();
+		let errores = await validaDataEntry();
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			let errores = await validarDataEntry();
+			let errores = await validaDataEntry();
 			accionesSiHayErrores(i, errores);
 		});
 	}
@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
-			let errores = await validarDataEntry();
+			let errores = await validaDataEntry();
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}

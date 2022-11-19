@@ -6,7 +6,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	// ControllerAPI (validarLinks)
+	// ControllerAPI (validaLinks)
 	links: async (datos) => {
 		let campos = Object.keys(datos);
 		let errores = {};
@@ -25,7 +25,7 @@ module.exports = {
 				? "Los videos de ese portal son ajenos a nuestro perfil"
 				: "";
 			if (!errores.url) {
-				let repetido = await validarLinkRepetidos(datos);
+				let repetido = await validaLinkRepetidos(datos);
 				if (repetido) errores.url = repetido;
 			}
 		}
@@ -81,12 +81,12 @@ module.exports = {
 };
 
 // Funciones **************************
-let validarLinkRepetidos = async (datos) => {
+let validaLinkRepetidos = async (datos) => {
 	// Variables
 	datos = {...datos, entidad: "links"};
 	let respuesta = "";
 	// Obtiene casos
-	let id = await BD_especificas.validarRepetidos(["url"], datos);
+	let id = await BD_especificas.validaRepetidos(["url"], datos);
 	if (id) {
 		let link = await BD_genericas.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneEntidadDesdeEdicion(link);

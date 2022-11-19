@@ -9,7 +9,7 @@ module.exports = {
 	obtieneELC_id: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
 	},
-	validarRepetidos: (campos, datos) => {
+	validaRepetidos: (campos, datos) => {
 		// El mismo valor para los campos
 		let objeto = {};
 		for (let campo of campos) objeto[campo] = datos[campo];

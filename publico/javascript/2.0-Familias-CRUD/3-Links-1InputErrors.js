@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 		// Rutas
-		rutaValidar: "/links/api/validar/?",
+		rutaValidar: "/links/api/valida/?",
 	};
 
 	// FUNCIONES ---------------------------------------------------------------

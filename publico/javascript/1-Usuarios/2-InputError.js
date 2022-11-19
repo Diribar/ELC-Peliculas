@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 	const imgInicial = imgAvatar ? imgAvatar.src : "";
 	let esImagen = true;
 	// Varias
-	let ruta_api = "/usuarios/api/validar-" + tareas[tarea] + "/?";
+	let ruta_api = "/usuarios/api/valida-" + tareas[tarea] + "/?";
 
 	// FUNCIONES --------------------------------------------------------------
 	let FN = {
