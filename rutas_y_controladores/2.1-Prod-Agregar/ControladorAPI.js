@@ -8,6 +8,11 @@ const valida = require("./FN-Validar");
 
 module.exports = {
 	// Vista (palabrasClave)
+	validaPalabrasClave: (req, res) => {
+		let palabrasClave = req.query.palabrasClave;
+		let errores = valida.palabrasClave(palabrasClave);
+		return res.json(errores);
+	},
 	cantProductos: async (req, res) => {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
@@ -22,11 +27,6 @@ module.exports = {
 		// Fin
 		return res.json({cantProds, cantProdsNuevos, hayMas});
 	},
-	validaPalabrasClave: (req, res) => {
-		let palabrasClave = req.query.palabrasClave;
-		let errores = valida.palabrasClave(palabrasClave);
-		return res.json(errores);
-	},
 
 	// Vista (desambiguar)
 	desambiguarForm0: async (req, res) => {
@@ -37,15 +37,7 @@ module.exports = {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene los productos
-		let resultado =  await buscar_x_PC.search(palabrasClave);
-		// Fin
-		return res.json(resultado);
-	},
-	desambiguarForm2: async (req, res) => {
-		// Variables
-		let resultado = JSON.parse(req.query.resultado);
-		// Procesa los resultado
-		resultado = await buscar_x_PC.depuraDatos(resultado, true);
+		let resultado = await buscar_x_PC.search(palabrasClave, true);
 		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
 		resultado = procesos.DS_procesoFinal(resultado);
 		// Conserva la información en session para no tener que procesarla de nuevo

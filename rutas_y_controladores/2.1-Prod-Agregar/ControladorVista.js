@@ -52,22 +52,22 @@ module.exports = {
 		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
-		// 4. Prepara los datos
-		let desambiguar = req.session.desambiguar
-			? req.session.desambiguar
-			: await buscar_x_PC.search(palabrasClave, true);
-		let {prodsNuevos, prodsYaEnBD, mensaje} = procesos.DS_procesoFinal(desambiguar);
+		// // 4. Prepara los datos
+		// let desambiguar = req.session.desambiguar
+		// 	? req.session.desambiguar
+		// 	: await buscar_x_PC.search(palabrasClave, true);
+		// let {prodsNuevos, prodsYaEnBD, mensaje} = procesos.DS_procesoFinal(desambiguar);
 		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar = desambiguar;
+		// req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
-			mensaje,
+			// mensaje,
 			palabrasClave,
-			prodsNuevos,
-			prodsYaEnBD,
+			// prodsNuevos,
+			// prodsYaEnBD,
 			omitirImagenDerecha: true,
 			mostrarCartel: true,
 		});
