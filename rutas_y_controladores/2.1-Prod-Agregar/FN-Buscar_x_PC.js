@@ -122,13 +122,9 @@ let estandarizaNombres = (dato, TMDB_entidad) => {
 	};
 };
 let eliminaSiPCinexistente = (dato, palabrasClave) => {
-	// Conserva solamente los registros que tienen la palabra clave
-	// Convierte las palabras clave en un array
-	let palabras = palabrasClave.split(" ");
 	// Descarta los productos que no tienen ninguna palabra clave
-	let productos = [];
-	for (let prod of dato.productos) {
-		// Si encuentra una palabra en ciertos campos, conserva el registro
+	let palabras = palabrasClave.split(" ");
+	let productos = dato.productos.map((prod) => {
 		if (prod)
 			for (let palabra of palabras)
 				if (
@@ -136,8 +132,10 @@ let eliminaSiPCinexistente = (dato, palabrasClave) => {
 					comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
 					comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
 				)
-					productos.push(prod);
-	}
+					return prod;
+		// Fin
+		return;
+	});
 	// Fin
 	return {
 		productos,
