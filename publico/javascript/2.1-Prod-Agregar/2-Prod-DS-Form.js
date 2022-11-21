@@ -14,57 +14,55 @@ window.addEventListener("load", async () => {
 	// Otras
 	let ruta = "producto/agregar/api/desambiguar-form";
 
-	// Armar el cartel
-	let armadoDelCartel = (titulo, contenido) => {
-		console.log("hola");
-		// Ícono inicial
+	// Configuración inicial
+	(() => {
+		// Quita los dots del 'li'
+		cartelUl.style.listStyleType = "none";
+		// Cambia el color de fondo
+		cartel.classList.add("azul");
+		// Cambia el ícono de encabezado
 		cartelError.classList.add("ocultar");
 		cartelTrabajando.classList.remove("ocultar");
-		// Titulo
-		cartelTitulo.innerHTML = titulo;
-		// Contenido
-		for (let cont of contenido) {
-			// Crear el 'li'
-			let li = document.createElement("li");
-			li.style.marginLeft = "20px";
-			li.innerHTML = cont;
-			cartelUl.appendChild(li);
-		}
-	};
+		// cartelUl.style.marginLeft = "0";
+	})();
 
-	// Start-up
-	cartel.classList.add("azul");
-	cartel.classList.add("aparec");
-	cartelUl.style.listStyleType = "none";
-	cartelUl.style.marginLeft = "0";
+	// Muestra el cartel
+	(() => {
+		// Función de armado del cartel
+		let armadoDelCartel = (titulo, contenido) => {
+			// Titulo
+			cartelTitulo.innerHTML = titulo;
+			// Contenido
+			for (let cont of contenido) {
+				// Crea el 'li'
+				let li = document.createElement("li");
+				let i;
+				// Crea el círculo y lo agrega
+				i = document.createElement("i");
+				i.classList.add("fa-regular", "fa-circle");
+				li.appendChild(i);
+				// Crea el check y lo agrega
+				i = document.createElement("i");
+				i.classList.add("fa-solid", "fa-check", "ocultar");
+				li.appendChild(i);
+				// Agrega el texto
+				li.innerHTML += cont;
+				cartelUl.appendChild(li);
+			}
+		};
+		let titulo = "En proceso:";
+		let contenido = ["Buscando productos", "Tareas finales"];
+		armadoDelCartel(titulo, contenido);
+		// Hace visible el cartel
+		fondo.classList.remove("ocultar");
+		cartel.classList.add("aumenta");
+		cartel.classList.remove("ocultar");
+	})();
 
-	// Cartel buscando productos
-	let titulo = "Buscando productos";
-	let contenido = ["Películas", "Colecciones", "Series de TV"];
-	cartel.classList.remove("ocultar");
-	armadoDelCartel(titulo, contenido);
-	fondo.classList.remove("ocultar");
-	cartel.classList.remove("ocultar");
-	let lis = document.querySelectorAll("#cartel #mensajes li");
-	// Crea la barra
-	let barra = document.createElement("i");
-	barra.classList.add("fa-solid");
-	barra.classList.add("fa-minus");
-	// Rutina por entidadTMDB
-	let entidadesTMDB = [
-		"movie",//, "collection", "tv"
-	];
-	entidadesTMDB.forEach((entidad, indice) => {
-		// Crea un li con la barra
-		let li = document.createElement("li");
-		li.classList.add("rotar");
-		li.appendChild(barra);
-		// Reemplaza el li que está en acción
-		li.innerHTML += lis[indice].innerHTML;
-		lis[indice].classList.add("oculta");
-		cartelUl.appendChild(li);
-		let angulo = 0;
-		let vuelta = 0;
-		console.log("fin");
-	});
+	// Busca los productos
+	let productos = await fetch("/producto/agregar/api/obtiene-subcategorias").then((n) => n.json());
+
+	// entidadesTMDB.forEach(async(entidad, indice) => {
+	// 	lectura = await searchTMDB(palabrasClave, TMDB_entidad, page)
+	// });
 });

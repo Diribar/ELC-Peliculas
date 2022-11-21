@@ -9,9 +9,13 @@ const valida = require("./FN-Validar");
 module.exports = {
 	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {
+		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene la cantidad de productos encontrados que coinciden con las palabras clave
-		let lectura = await buscar_x_PC.searchConsolidado(palabrasClave, false);
+		let lectura;
+		lectura = await buscar_x_PC.search(palabrasClave);
+		lectura = await buscar_x_PC.depuraDatos(lectura, false);
+		// Fin
 		return res.json(lectura);
 	},
 	validaPalabrasClave: (req, res) => {
@@ -21,13 +25,24 @@ module.exports = {
 	},
 
 	// Vista (desambiguar)
-	desambiguarForm: async (req, res) => {
+	desambiguarForm1: async (req, res) => {
 		// Variables
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		// Obtiene los productos
-		let desambiguar = req.session.desambiguar
+		let lectura = req.session.desambiguar
 			? req.session.desambiguar
-			: await buscar_x_PC.searchIndividual(palabrasClave, true);
+			: await buscar_x_PC.search(palabrasClave);
+		// Fin
+		return res.json(lectura);
+	},
+	desambiguarForm2: async (req, res) => {
+		// Variables
+		let lectura = req.query;
+		// Obtiene los productos
+		if (req.session.desambiguar) desambiguar = req.session.desambiguar;
+		else {
+			lectura = await buscar_x_PC.search(palabrasClave);
+		}
 		let [prodsNuevos, prodsYaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;

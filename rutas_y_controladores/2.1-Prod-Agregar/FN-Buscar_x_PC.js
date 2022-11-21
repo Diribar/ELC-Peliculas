@@ -9,7 +9,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
-	searchConsolidado: async (palabrasClave, mostrar) => {
+	search: async (palabrasClave) => {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
@@ -33,20 +33,28 @@ module.exports = {
 			if (datos.resultados.length >= 20 || !datos.hayMas) break;
 			else page++;
 		}
+		return datos;
+	},
+	depuraDatos: async (datos, mostrar) => {
 		// Elimina los registros duplicados
 		datos = eliminarDuplicados(datos);
-		// Averigua si ya lo tenemos en nuestra base de datos
+		// Averigua si ya los tenemos en nuestra base de datos
 		datos = await averiguaSiYaEnBD(datos);
-		// Ordena los datos
-		if (mostrar) datos = ordenarDatos(datos);
-		datos = {
-			palabrasClave: palabrasClave,
-			hayMas: datos.hayMas,
-			cantResultados: datos.resultados.length,
-			cantPaginasAPI: datos.cantPaginasAPI,
-			cantPaginasUsadas: datos.cantPaginasUsadas,
-			resultados: datos.resultados,
-		};
+		// Acciones si son datos para mostrar
+		if (mostrar) {
+			// Ordena los datos
+			datos = ordenaDatos(datos);
+			// Reduce los datos a los imprescindibles
+			datos = {
+				palabrasClave: palabrasClave,
+				hayMas: datos.hayMas,
+				cantResultados: datos.resultados.length,
+				cantPaginasAPI: datos.cantPaginasAPI,
+				cantPaginasUsadas: datos.cantPaginasUsadas,
+				resultados: datos.resultados,
+			};
+		}
+		// Fin
 		return datos;
 	},
 };
@@ -196,7 +204,7 @@ let eliminarDuplicados = (datos) => {
 };
 let averiguaSiYaEnBD = async (datos) => {
 	// Rutina por producto
-	for (let i = 0; i < datos.resultados.length; i++) {		
+	for (let i = 0; i < datos.resultados.length; i++) {
 		// Obtiene la entidad
 		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
 		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
@@ -228,7 +236,7 @@ let hayMas = (datos, page, entidadesTMDB) => {
 		page < datos.cantPaginasAPI[entidadesTMDB[2]]
 	);
 };
-let ordenarDatos = (datos) => {
+let ordenaDatos = (datos) => {
 	if (datos.resultados.length > 1) {
 		// Ordenar desde la más reciente hacia la más antigua
 		datos.resultados.sort((a, b) =>
