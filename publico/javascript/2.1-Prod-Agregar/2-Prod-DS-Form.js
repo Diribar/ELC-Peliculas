@@ -4,6 +4,10 @@ window.addEventListener("load", async () => {
 	let lis_fa_circle, lis_fa_check;
 	let ruta = "/producto/agregar/api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
+	// DOM
+	let ingrManual_DOM = document.querySelector("#ingrManual");
+	let prodsNuevos_DOM = document.querySelector("#prodsNuevos").cloneNode(true);
+	let prodsYaEnBD_DOM = document.querySelector("#prodsYaEnBD").cloneNode(true);
 
 	// En caso que no haya un resultado...
 	if (!resultado) {
@@ -79,13 +83,12 @@ window.addEventListener("load", async () => {
 	// Agrega los productos
 	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
 	let listado = document.querySelector("#listado");
-	let ingrManual = document.querySelector("#ingrManual");
 
 	// Productos nuevos
 	if (prodsNuevos.length)
 		prodsNuevos.forEach((prod) => {
 			// Crea el elemento 'li'
-			let li = document.querySelector("#prodsNuevos").cloneNode(true);
+			let li = prodsNuevos_DOM.cloneNode(true);
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
 			li.children[0][1].value = prod.TMDB_id;
@@ -101,16 +104,15 @@ window.addEventListener("load", async () => {
 			li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
-
 			// Agregar el form
-			listado.insertBefore(li, ingrManual);
+			listado.insertBefore(li, ingrManual_DOM);
 		});
 
 	// Productos ya en BD
 	if (prodsYaEnBD.length)
 		prodsYaEnBD.forEach((prod) => {
 			// Crea el elemento 'li'
-			let li = document.querySelector("#prodsYaEnBD").cloneNode(true);
+			let li = prodsYaEnBD_DOM.cloneNode(true);
 			// Información a enviar al BE
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
@@ -121,7 +123,8 @@ window.addEventListener("load", async () => {
 			// Información a mostrar
 			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombre_original;
 			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
-			li.children[0].children[0].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
+			li.children[0].children[0].children[1].children[3].innerHTML =
+				prod.ano_estreno + " - " + prod.prodNombre;
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 
@@ -132,7 +135,10 @@ window.addEventListener("load", async () => {
 	// Terminaciones
 	// Agrega el mensaje
 	document.querySelector("#mensaje").innerHTML = mensaje;
+	
 	// Hace foco en el primer resultado
+	prodsNuevos_DOM.remove()
+	prodsYaEnBD_DOM.remove()
 	document.querySelector("#listado li button").focus();
 
 	// Desaparece el cartel
