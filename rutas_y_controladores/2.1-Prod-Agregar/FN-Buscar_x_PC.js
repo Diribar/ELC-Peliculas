@@ -33,15 +33,15 @@ module.exports = {
 			if (datos.productos.length >= 20 || !datos.hayMas) break;
 			else page++;
 		}
-		return datos;
-	},
-	depuraDatos: async (datos, mostrar) => {
 		// Elimina los registros duplicados
 		datos = eliminaDuplicados(datos);
-		// Averigua si ya los tenemos en nuestra base de datos
+		// Averigua qué registros tenemos en nuestra base de datos
 		datos = await averiguaSiYaEnBD(datos);
 		// Ordena los datos
-		if (mostrar) datos = ordenaDatos(datos);
+		if (mostrar) {
+			datos = ordenaDatos(datos);
+			datos=reduceInfo(datos)
+		}
 		// Fin
 		return datos;
 	},
