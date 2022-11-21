@@ -13,7 +13,7 @@
 .aparece {animation-name: aparece;       animation-duration: .5s;}
 .desaparece {animation-name: desaparece; animation-duration: .5s;}
 .aumenta {animation-name: aumenta;       animation-duration: .5s;}
-.disminuye {animation-name: disminuye;   animation-duration: .9s;}
+.disminuye {animation-name: disminuye;   animation-duration: .5s;}
 .aparece, .desaparece, .aumenta, .disminuye {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */

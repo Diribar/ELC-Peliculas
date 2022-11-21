@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let lis_fa_circle, lis_fa_check
+	let lis_fa_circle, lis_fa_check;
 	let ruta = "/producto/agregar/api/desambiguar-form0";
-	let resultado //= await fetch(ruta).then((n) => (n ? n.json() : ""));
+	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
 
 	// En caso que no haya un resultado...
 	if (!resultado) {
@@ -78,13 +78,48 @@ window.addEventListener("load", async () => {
 	}
 	// {prodsNuevos, prodsYaEnBD, mensaje}
 	// Despliega los productos en la vista
+	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
+	// Agrega los productos
+	let listado = document.querySelector("#listado");
+	let IM = document.querySelector("#IM");
+	if (prodsNuevos) {
+		prodsNuevos.forEach((prod) => {
+			let li = document.querySelector("#prodsNuevos");
 
-	// Fin
+			// Información a enviar al BE
+			li.children[0][0].value = prod.TMDB_entidad;
+			li.children[0][1].value = prod.TMDB_id;
+			li.children[0][2].value = prod.nombre_original;
+			li.children[0][3].value = prod.idioma_original_id;
+
+			// Imagen
+			li.children[0][4].children[0].src = "https://image.tmdb.org/t/p/original" + prod.avatar;
+			li.children[0][4].children[0].alt = prod.nombre_original;
+			li.children[0][4].children[0].title = prod.nombre_original;
+
+			// Información a mostrar
+			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombre_original;
+			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
+			li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
+			// Agregar el form
+			li.classList.remove("ocultar");
+			listado.appendChild(li);
+			listado.insertBefore(li,IM);
+		});
+	}
+
+	// Terminaciones
+	// Agrega el mensaje
+	document.querySelector("#mensaje").innerHTML=mensaje
+	// Hace foco en el primer resultado
+	document.querySelector("#listado li button").focus();
+
+	// Desaparece el cartel
 	if (lis_fa_circle) {
 		// Actualiza los íconos
 		lis_fa_circle[1].classList.add("ocultar");
 		lis_fa_check[1].classList.remove("ocultar");
-	
+
 		// Oculta el cartel
 		fondo.classList.add("ocultar");
 		cartel.classList.remove("aumenta");
