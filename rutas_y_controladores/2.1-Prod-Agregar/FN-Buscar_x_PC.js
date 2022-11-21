@@ -122,22 +122,23 @@ let estandarizaNombres = (dato, TMDB_entidad) => {
 	};
 };
 let eliminaSiPCinexistente = (dato, palabrasClave) => {
+	// Conserva solamente losregistros quetienen la palabra clave
+	// Convierte las palabras clave en un array
 	let palabras = palabrasClave.split(" ");
-	let productos = dato.productos.map((m) => {
-		// ?
-		if (typeof m == "undefined" || m == null) return;
+	// Descarta los productos que no tienen ninguna palabra clave
+	let productos = [];
+	for (let prod of dato.productos) {
+		if (typeof m == "undefined" || m == null) continue;
 		// Si encuentra una palabra en ciertos campos, conserva el registro
-		for (let palabra of palabras) {
+		for (let palabra of palabras)
 			if (
-				comp.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
-				comp.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
-				comp.convertirLetrasAlIngles(m.comentario).includes(palabra)
+				comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
+				comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
+				comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
 			)
-				return m;
-		}
-		// Si no encuentra ninguna palabra clave, descarta el registro
-		return;
-	});
+				productos.push(prod);
+	}
+
 	// Fin
 	return {
 		productos,
