@@ -9,7 +9,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
-	search: async (palabrasClave) => {
+	search: async (palabrasClave, mostrar) => {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {productos: []};
@@ -40,7 +40,7 @@ module.exports = {
 		// Ordena los datos
 		if (mostrar) {
 			datos = ordenaDatos(datos);
-			datos=reduceInfo(datos)
+			datos = reduceInfo(datos);
 		}
 		// Fin
 		return datos;

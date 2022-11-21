@@ -14,7 +14,6 @@ module.exports = {
 		// Obtiene la cantidad de productos encontrados que coinciden con las palabras clave
 		let resultado;
 		resultado = await buscar_x_PC.search(palabrasClave);
-		resultado = await buscar_x_PC.depuraDatos(resultado);
 		// Prepara la respuesta
 		let cantProds = resultado.productos.length;
 		let cantProdsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id).length;
