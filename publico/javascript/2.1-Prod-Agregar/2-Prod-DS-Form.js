@@ -73,8 +73,8 @@ window.addEventListener("load", async () => {
 		lis_fa_check[0].classList.remove("ocultar");
 
 		// Pule la información
-		ruta = "/producto/agregar/api/desambiguar-form2/?resultado=";
-		resultado = await fetch(ruta + JSON.stringify(resultado)).then((n) => n.json());
+		// ruta = "/producto/agregar/api/desambiguar-form2/?resultado=";
+		// resultado = await fetch(ruta + JSON.stringify(resultado)).then((n) => n.json());
 	}
 	// {prodsNuevos, prodsYaEnBD, mensaje}
 	// Despliega los productos en la vista
@@ -84,7 +84,7 @@ window.addEventListener("load", async () => {
 	let IM = document.querySelector("#IM");
 	if (prodsNuevos) {
 		prodsNuevos.forEach((prod) => {
-			let li = document.querySelector("#prodsNuevos");
+			let li = document.querySelector("#prodsNuevos").cloneNode(true)
 
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
