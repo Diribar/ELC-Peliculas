@@ -28,9 +28,9 @@ module.exports = {
 	},
 	// ControllerVista (desambiguarForm)
 	DS_procesoFinal: (desambiguar) => {
-		let prodsNuevos = desambiguar.resultados.filter((n) => !n.yaEnBD_id);
-		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.yaEnBD_id);
-		let coincidencias = desambiguar.resultados.length;
+		let prodsNuevos = desambiguar.productos.filter((n) => !n.yaEnBD_id);
+		let prodsYaEnBD = desambiguar.productos.filter((n) => n.yaEnBD_id);
+		let coincidencias = desambiguar.productos.length;
 		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
 		let mensaje =
