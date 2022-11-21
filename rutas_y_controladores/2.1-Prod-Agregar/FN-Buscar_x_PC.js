@@ -128,16 +128,15 @@ let eliminaSiPCinexistente = (dato, palabrasClave) => {
 	// Descarta los productos que no tienen ninguna palabra clave
 	let productos = [];
 	for (let prod of dato.productos) {
-		if (typeof m == "undefined" || m == null) continue;
 		// Si encuentra una palabra en ciertos campos, conserva el registro
-		for (let palabra of palabras)
-			if (
-				prod &&
-				(comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
+		if (prod)
+			for (let palabra of palabras)
+				if (
+					comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
 					comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
-					comp.convertirLetrasAlIngles(prod.comentario).includes(palabra))
-			)
-				productos.push(prod);
+					comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
+				)
+					productos.push(prod);
 	}
 	// Fin
 	return {
