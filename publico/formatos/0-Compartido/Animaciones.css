@@ -9,7 +9,7 @@
 @keyframes aparece    {0% {opacity: 0} 100% {opacity: 1}}
 @keyframes desaparece {0% {opacity: 1} 100% {opacity: 0}}
 @keyframes aumenta    {0% {scale: 0}   100% {scale: 1}}
-@keyframes disminuye    {0% {scale: 1}   100% {scale: 0}}
+@keyframes disminuye  {0% {scale: 1}   100% {scale: 0}}
 .aparece {opacity: 0;    animation-name: aparece;    animation-duration: .5s;}
 .desaparece {opacity: 1; animation-name: desaparece; animation-duration: .5s;}
 .aumenta {scale: 0;      animation-name: aumenta;    animation-duration: .5s;}
