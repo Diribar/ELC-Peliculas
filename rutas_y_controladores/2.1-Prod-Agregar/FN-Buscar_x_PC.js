@@ -139,7 +139,6 @@ let eliminaSiPCinexistente = (dato, palabrasClave) => {
 			)
 				productos.push(prod);
 	}
-
 	// Fin
 	return {
 		productos,
