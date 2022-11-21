@@ -27,22 +27,22 @@ module.exports = {
 		}
 	},
 	// ControllerVista (desambiguarForm)
-	DS_prepararMensaje: (desambiguar) => {
+	DS_procesoFinal: (desambiguar) => {
 		let prodsNuevos = desambiguar.resultados.filter((n) => !n.yaEnBD_id);
 		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.yaEnBD_id);
 		let coincidencias = desambiguar.resultados.length;
-		let nuevos = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
+		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
 		let mensaje =
 			"Encontramos " +
 			(coincidencias == 1
-				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+				? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
 				: (hayMas ? "muchas" : coincidencias) +
 				  " coincidencias" +
 				  (hayMas ? ". Te mostramos " + coincidencias : "") +
-				  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
+				  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
 			" está" +
-			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
+			(cantN > 1 && cantN < coincidencias ? "n" : "") +
 			" en nuestra BD.";
 		return [prodsNuevos, prodsYaEnBD, mensaje];
 	},
