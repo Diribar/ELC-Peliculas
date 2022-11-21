@@ -1,7 +1,7 @@
 #cuerpo {background-color: transparent;}
 /* Datos */
 #cuerpo #datos {display: flex; flex-direction: row; align-items: center; justify-content: space-around;}
-#cuerpo #datos {position: absolute; transform: translate(-50%, -50%); top: 50%; left: 50%; width: 100%;}
+#cuerpo #datos {position: absolute; translate: -50% -50%; top: 50%; left: 50%; width: 100%;}
 #cuerpo #datosLargos {max-width: 83%;border: 1px solid red;}
 #cuerpo #datosBreves {max-width: 17%;}
 

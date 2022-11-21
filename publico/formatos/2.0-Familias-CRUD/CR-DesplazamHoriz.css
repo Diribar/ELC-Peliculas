@@ -4,8 +4,8 @@
 #cuadroDeResultados #listado li form {position: relative;}
 /* Íconos para mover */
 #cuadroDeResultados .mover {position: absolute; font-size: 1.75rem; cursor: pointer; top: 50%;}
-#cuadroDeResultados .mover.fa-caret-left {transform: translate(-100%, -50%); left: 0;}
-#cuadroDeResultados .mover.fa-caret-right {transform: translate(100%, -50%); right: 0;}
+#cuadroDeResultados .mover.fa-caret-left {translate: -100% -50%; left: 0;}
+#cuadroDeResultados .mover.fa-caret-right {translate: 100% -50%; right: 0;}
 /* Botones para productos */
 #listado button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
 #listado button {border: none; text-align: left; width: 290px;}

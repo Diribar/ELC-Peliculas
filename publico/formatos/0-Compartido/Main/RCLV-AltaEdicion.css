@@ -17,8 +17,8 @@
 #dataEntry .flexRowAlign input[type='checkbox'] {margin-right: 5px;}
 #dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
 #dataEntry .flexRowAlign .derecha {margin-left: 15px;}
-#dataEntry .inputError .errores {left: -5px; transform: translate(-100%, -50%); right: auto;}
-#dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {transform: scale(.8);}
+#dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
+#dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {scale: .8;}
 #dataEntry input[type="radio"] {margin-right: 3px;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}

@@ -4,7 +4,7 @@
 
 /* Formato común entre Ayuda y Errores */
 #cuerpo .ayuda, .inputError .errores {right: -5px; line-height: 1rem; font-size: 1rem; z-index: 1;}
-#cuerpo .ayuda, .inputError .errores {position: absolute; top: 50%; transform: translate(100%,-50%);}
+#cuerpo .ayuda, .inputError .errores {position: absolute; top: 50%; translate: 100% -50%;}
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Z-Index: coordinación entre Ayuda y Errores */
@@ -28,8 +28,8 @@
 
 /* Desplegables - Temas comunes */
 .ayudaMostrar, .mensajeError, .ayudaMostrar::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; transform: translate(-100%, -50%); content: ""; border-style: solid;}
-.ayudaMostrar, .mensajeError {right: -7px; top: 50%; transform: translate(100%, -50%); }
+.ayudaMostrar::before, .mensajeError::before {left: 0px; border-width: 5px; top: 50%; translate: -100% -50%; content: ""; border-style: solid;}
+.ayudaMostrar, .mensajeError {right: -7px; top: 50%; translate: 100% -50%; }
 .ayudaMostrar, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: 350px; width: max-content;}
 .ayudaMostrar, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 

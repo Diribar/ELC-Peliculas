@@ -11,19 +11,19 @@ form #imagenDerecha label {line-height: 0;}
 /* Imagen - Íconos */
 form #imagenDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
 form #imagenDerecha .ayuda,
-form #imagenDerecha .errores {left: 50%; transform: translate(-50%,-50%); right: auto;}
+form #imagenDerecha .errores {left: 50%; translate: -50% -50%; right: auto;}
 form #imagenDerecha .errores {z-index: 4;}
 
 /* Imagen - AyudaMostrar */
 form #imagenDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
-form #imagenDerecha.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; transform: translate(-50%, 100%);}
-form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; transform: translate(-50%, -100%);}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; translate: -50% 100%;}
+form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; translate: -50% -100%;}
 form #imagenDerecha.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
 
 /* Imagen - MensajeError */
 form #imagenDerecha.inputError .errores .mensajeError {right: auto; top: auto;}
-form #imagenDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; transform: translate(-50%, -100%);}
-form #imagenDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; transform: translate(-50%, 100%);}
+form #imagenDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; translate: -50% -100%;}
+form #imagenDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; translate: -50% 100%;}
 form #imagenDerecha.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
 
 /* Imagen - Links a sitios externos */
@@ -80,12 +80,12 @@ form #imagenDerecha.inputError .agregados img {max-width: 25px; max-height: 25px
 #edicion.linkRCLV {font-size: 1.15rem;}
 
 /* Mensajes de aviso de cambio de data-entry */
-.inputError .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); top: 50%;}
+.inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
 .inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
 form #imagenDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
-#comandos i.fa-slash {transform: rotate(85deg); cursor: default; padding: 5px 0px; border: none;}
+#comandos i.fa-slash {rotate: 85deg; cursor: default; padding: 5px 0px; border: none;}
 #comandos i {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
 #comandos i.activar.activo {border-color: var(--amarillo-oscuro);}
 #comandos {padding: 0;}
