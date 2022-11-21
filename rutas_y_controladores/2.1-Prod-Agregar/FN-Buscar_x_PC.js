@@ -238,3 +238,8 @@ let ordenaDatos = (datos) => {
 	}
 	return datos;
 };
+let reduceInfo=(datos)=>{
+	return {
+		
+	}
+}
