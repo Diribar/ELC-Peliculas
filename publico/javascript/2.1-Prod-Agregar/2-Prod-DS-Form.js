@@ -82,10 +82,10 @@ window.addEventListener("load", async () => {
 	console.log(prodsNuevos);
 	// Agrega los productos
 	let listado = document.querySelector("#listado");
-	let IM = document.querySelector("#IM");
+	let ingrManual = document.querySelector("#ingrManual");
 	if (prodsNuevos) {
 		prodsNuevos.forEach((prod) => {
-			let li = document.querySelector("#prodsNuevos").cloneNode(true)
+			let li = document.querySelector("#prodsNuevos").cloneNode(true);
 
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
@@ -105,13 +105,13 @@ window.addEventListener("load", async () => {
 			// Agregar el form
 			li.classList.remove("ocultar");
 			listado.appendChild(li);
-			listado.insertBefore(li,IM);
+			listado.insertBefore(li, ingrManual);
 		});
 	}
 
 	// Terminaciones
 	// Agrega el mensaje
-	document.querySelector("#mensaje").innerHTML=mensaje
+	document.querySelector("#mensaje").innerHTML = mensaje;
 	// Hace foco en el primer resultado
 	document.querySelector("#listado li button").focus();
 

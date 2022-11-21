@@ -46,13 +46,12 @@ module.exports = {
 			cantPaginasUsadas: datos.cantPaginasUsadas,
 		};
 		// Fin
-		return datos
+		return datos;
 	},
 	ordenaLosProductos: async (resultado) => {
-		
-		// if (TMDB_entidad == "collection" && lectura.productos.length && mostrar)
-		// 	lectura.productos = await agregaAnoEstreno(lectura.productos);
-		
+		// Le agrega el año de estreno a las colecciones
+		resultado = await agregaAnoEstreno(resultado);
+
 		// Ordena los productos
 		resultado = ordenaLosProductos(resultado);
 
@@ -162,7 +161,7 @@ let eliminaSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	//
 	let productos = [];
-	for (let prod of dato.productos) {
+	dato.productos.forEach((prod) => {
 		if (prod)
 			for (let palabra of palabras)
 				if (
@@ -173,7 +172,7 @@ let eliminaSiPCinexistente = (dato, palabrasClave) => {
 					productos.push(prod);
 					break;
 				}
-	}
+	});
 	// Fin
 	return {
 		productos,
@@ -265,19 +264,23 @@ let averiguaSiYaEnBD = async (datos) => {
 	}
 	return datos;
 };
-let agregaAnoEstreno = async (dato) => {
-	for (let i = 0; i < dato.length; i++) {
-		// Obtiene todas las fechas de ano_estreno
-		let TMDB_id = dato[i].TMDB_id;
-		let detalles = await detailsTMDB("collection", TMDB_id)
-			.then((n) => n.parts)
-			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
-		// Obtiene el ano_estreno
-		let ano = detalles.reduce((a, b) => (a < b ? a : b));
-		dato[i].ano_estreno = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
-		dato[i].capitulos = detalles.length;
-	}
-	return dato;
+let agregaAnoEstreno = async (datos) => {
+	// Rutina
+	for (let prod of datos.productos)
+		if (prod.TMDB_entidad == "collection") {
+			// Obtiene todas las fechas de ano_estreno
+			let TMDB_id = prod.TMDB_id;
+			let detalles = await detailsTMDB("collection", TMDB_id)
+				.then((n) => n.parts)
+				.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
+			// Obtiene el ano_estreno
+			let ano = detalles.reduce((a, b) => (a < b ? a : b));
+			prod.ano_estreno = prod.desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
+			prod.capitulos = detalles.length;
+		}
+
+	// Fin
+	return datos;
 };
 let ordenaLosProductos = (datos) => {
 	if (datos.productos.length > 1) {
