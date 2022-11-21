@@ -49,7 +49,7 @@ module.exports = {
 		const codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "desambiguar");
-		// 3. Si se perdió la info anterior, volver a esa instancia
+		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 5. Render del formulario

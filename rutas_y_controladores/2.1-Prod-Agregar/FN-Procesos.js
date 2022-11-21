@@ -28,11 +28,13 @@ module.exports = {
 	},
 	// ControllerVista (desambiguarForm)
 	DS_procesoFinal: (desambiguar) => {
+		// Variables
 		let prodsNuevos = desambiguar.productos.filter((n) => !n.yaEnBD_id);
 		let prodsYaEnBD = desambiguar.productos.filter((n) => n.yaEnBD_id);
 		let coincidencias = desambiguar.productos.length;
 		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
+		// Obtiene el mensaje
 		let mensaje =
 			"Encontramos " +
 			(coincidencias == 1
@@ -44,7 +46,8 @@ module.exports = {
 			" está" +
 			(cantN > 1 && cantN < coincidencias ? "n" : "") +
 			" en nuestra BD.";
-		return [prodsNuevos, prodsYaEnBD, mensaje];
+		// Fin
+		return {prodsNuevos, prodsYaEnBD, mensaje};
 	},
 
 	// MOVIES *****************************
