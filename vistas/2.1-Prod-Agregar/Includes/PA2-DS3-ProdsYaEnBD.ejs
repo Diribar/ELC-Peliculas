@@ -1,3 +1,4 @@
+<% for (let prodYaEnBD of prodsYaEnBD) { %>
 	<li>
 		<a href="/producto/detalle/?entidad=<%= prodYaEnBD.entidad %>&id=<%= prodYaEnBD.yaEnBD_id %>">
 			<!-- Info a mostrar -->
@@ -12,3 +13,4 @@
 			</button>
 		</a>
 	</li>
+<% } %>
