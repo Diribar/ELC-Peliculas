@@ -18,7 +18,8 @@
 #cartel #titulo, #cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
 #cartel #mensajes {margin: 0 20px 40px; text-align: center;}
 #cartel #mensajes li {text-align: left;}
-#cartel #mensajes li i {margin-right: 10px; font-size: 1rem;}
+#cartel #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
+#cartel #mensajes li i.fa-circle {border: solid 1px transparent;}
 #cartel #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
@@ -28,3 +29,6 @@
 #cartel .fa-house, #cartel .fa-thumbs-up, #cartel .fa-spell-check, #cartel .fa-circle-info {color: var(--backIcono); border: solid 2px var(--backIcono); background-color: var(--azul-oscuro);}
 #cartel .fa-circle-left {color: var(--gris-oscuro);}
 #cartel .fa-circle-right {color: var(--verde-oscuro);}
+
+main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
+main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
