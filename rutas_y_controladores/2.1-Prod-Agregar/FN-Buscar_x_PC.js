@@ -38,10 +38,18 @@ module.exports = {
 		// Averigua qué registros tenemos en nuestra base de datos
 		datos = await averiguaSiYaEnBD(datos);
 		// Ordena los datos
-		if (mostrar) {
-			datos = ordenaDatos(datos);
-			datos = reduceInfo(datos);
-		}
+		if (mostrar) datos = ordenaDatos(datos);
+		// Reduce la información
+		datos = {
+			// Necesarios
+			productos: datos.productos,
+			hayMas: datos.hayMas,
+			// Adicionales
+			palabrasClave,
+			cantPaginasAPI: datos.cantPaginasAPI,
+			cantPaginasUsadas: datos.cantPaginasUsadas,
+		};
+
 		// Fin
 		return datos;
 	},
@@ -238,8 +246,3 @@ let ordenaDatos = (datos) => {
 	}
 	return datos;
 };
-let reduceInfo=(datos)=>{
-	return {
-		
-	}
-}
