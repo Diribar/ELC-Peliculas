@@ -37,9 +37,19 @@ module.exports = {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene los productos
-		let resultado = await buscar_x_PC.search(palabrasClave, true);
+		let resultado = await buscar_x_PC.search(palabrasClave);
+		// Conserva la información en session
+		req.session.desambiguar1 = resultado;
+		// Fin
+		return res.json();
+	},
+	desambiguarForm2: async (req, res) => {
+		// Variables
+		let resultado = req.session.desambiguar1
+		// Ordena los productos
+		resultado = await buscar_x_PC.ordenaLosProductos(resultado);
 		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
-		resultado = procesos.DS_procesoFinal(resultado);
+		resultado = buscar_x_PC.DS_procesoFinal(resultado);
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = resultado;
 		// Fin

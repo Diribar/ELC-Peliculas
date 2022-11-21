@@ -55,7 +55,7 @@ module.exports = {
 		// // 4. Prepara los datos
 		// let desambiguar = req.session.desambiguar
 		// 	? req.session.desambiguar
-		// 	: await buscar_x_PC.search(palabrasClave, true);
+		// 	: await buscar_x_PC.search(palabrasClave);
 		// let {prodsNuevos, prodsYaEnBD, mensaje} = procesos.DS_procesoFinal(desambiguar);
 		// Conserva la información en session para no tener que procesarla de nuevo
 		// req.session.desambiguar = desambiguar;

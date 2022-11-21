@@ -68,17 +68,18 @@ window.addEventListener("load", async () => {
 
 		// Busca los productos
 		ruta = "/producto/agregar/api/desambiguar-form1/?palabrasClave=";
-		resultado = await fetch(ruta + palabrasClave).then((n) => n.json());
+		await fetch(ruta + palabrasClave);
 		lis_fa_circle[0].classList.add("ocultar");
 		lis_fa_check[0].classList.remove("ocultar");
 
 		// Pule la información
-		// ruta = "/producto/agregar/api/desambiguar-form2/?resultado=";
-		// resultado = await fetch(ruta + JSON.stringify(resultado)).then((n) => n.json());
+		ruta = "/producto/agregar/api/desambiguar-form2/";
+		resultado = await fetch(ruta).then((n) => n.json());
 	}
 	// {prodsNuevos, prodsYaEnBD, mensaje}
 	// Despliega los productos en la vista
 	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
+	console.log(prodsNuevos);
 	// Agrega los productos
 	let listado = document.querySelector("#listado");
 	let IM = document.querySelector("#IM");
