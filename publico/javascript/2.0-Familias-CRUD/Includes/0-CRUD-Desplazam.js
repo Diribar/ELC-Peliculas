@@ -1,5 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
+
+
+	let funcion=()=>{
+	console.log("exito");
+
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");
 	let derecha = document.querySelector(".fa-caret-right");
@@ -92,4 +97,9 @@ window.addEventListener("load", async () => {
 
 	// Statup
 	ocultaIconosMovim()
+
+	}
+
+	setTimeout(funcion, 5000)
+
 });

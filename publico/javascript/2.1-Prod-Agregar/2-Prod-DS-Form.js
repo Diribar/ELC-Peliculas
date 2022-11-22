@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
 	// DOM
 	let ingrManual_DOM = document.querySelector("#ingrManual");
-	let prodsNuevos_DOM = document.querySelector("#prodsNuevos").cloneNode(true);
-	let prodsYaEnBD_DOM = document.querySelector("#prodsYaEnBD").cloneNode(true);
+	let prodsNuevos_DOM = document.querySelector("#prodsNuevos");
+	let prodsYaEnBD_DOM = document.querySelector("#prodsYaEnBD");
 
 	// En caso que no haya un resultado...
 	if (!resultado) {
@@ -155,6 +155,4 @@ window.addEventListener("load", async () => {
 		cartel.classList.add("disminuye");
 	}
 
-	// Fin
-	return;
 });
