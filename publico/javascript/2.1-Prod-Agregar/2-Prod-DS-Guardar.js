@@ -1,45 +1,62 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Definir las variables
-	let forms = document.querySelectorAll("#resultadosDesamb form");
-	let colecciones = document.querySelectorAll("#resultadosDesamb form #coleccion");
-	let colec_nombre = document.querySelectorAll("#resultadosDesamb form #coleccion #colec_nombre");
-	let mensaje = document.querySelectorAll("#resultadosDesamb form .fa-circle-xmark");
-	let ruta = "/producto/agregar/api/DS-averigua-coleccion/?TMDB_id=";
+	let funcion = async () => {
+		console.log("2-Guardar");
+		// Definir las variables
+		let forms = document.querySelectorAll("#prodsNuevos form");
+		let ruta,errores
 
-	// Rutina para detectar si pertenece a una pelicula
-	for (let i = 0; i < forms.length; i++) {
-		forms[i].addEventListener("submit", async (e) => {
-			e.preventDefault();
-			let destino = e.currentTarget;
+		// Rutina para detectar si pertenece a una pelicula
+		for (let i = 0; i < forms.length; i++) {
+			forms[i].addEventListener("submit", async (e) => {
+				// Frena el POST
+				e.preventDefault();
+				// Obtiene los datos
+				let datos = {
+					TMDB_entidad: e.target[0].value,
+					TMDB_id: e.target[1].value,
+					nombre_original: e.target[2].value,
+					idioma_original_id: e.target[3].value,
+				};
 
-			// Descartar las entidades que no sean películas
-			if (forms[i].children[0].value != "movie") {
-				destino.submit()
-				return
-			}
+				// 1. Obtiene más información del producto
+				ruta = "api/desambiguar-guardar1/?datos=" + JSON.stringify(datos);
+				let infoTMDB = await fetch(ruta).then((n) => n.json());
+				console.log(infoTMDB);
 
-			// Obtiene los datos necesarios para saber si la película pertenece a una colección
-			let tmdb_id = forms[i].children[1].value;
-			let datos = await fetch(ruta + tmdb_id).then((n) => n.json());
+				// 2. Averigua si pertenece a una colección y toma acciones
+				ruta = "api/desambiguar-guardar2/?datos=" + JSON.stringify(infoTMDB);
+				errores = await fetch(ruta).then((n) => n.json());
+				console.log(errores);
+				if (errores.mensaje) {
+					// 2.A. Si pertenece a una colección de la BD, la agrega y avisa
+					if (errores.mensaje == "agregarCapitulos") {
+						ruta = "api/desambiguar-guardar3/?datos=" + JSON.stringify(errores);
+						let {coleccion, capitulo} = await fetch(ruta).then((n) => n.json());
+						// Cartel con la novedad
+						return console.log("agregarCapitulos");
+					}
+					// 2.B. Si pertenece a una colección que no existe en la BD, avisa
+					else if (errores.mensaje == "agregarColeccion") {
+						ruta = "api/desambiguar-guardar4/?datos=" + JSON.stringify(errores);
+						let coleccion = await fetch(ruta).then((n) => n.json());
+						// Cartel con la novedad
+						return console.log("agregarColeccion");
+					}
+				}
 
-			// Descartar las que no pertenecen a una colección, y las que pertenecen a una colección que ya está en BD
-			if (!Object.keys(datos).length || datos.colec_id) {
-				destino.submit()
-				return
-			};
+				// 3. Descarga la imagen
+				ruta = "api/desambiguar-guardar5/?datos=" + JSON.stringify(infoTMDB);
+				errores = await fetch(ruta).then((n) => n.json());
+				console.log(errores);
 
-			// ****************************************************************************************
-			// Sólo quedan para trabajar las películas que pertenecen a una colección que no está en BD
+				// 4. Redirige al paso siguiente
+				if (errores.hay) location.href="datos-duros"
+				else location.href="datos-personalizados"
 
-			// Cambiar los valores del form por los de la colección
-			forms[i].children[0].value = "collection";
-			forms[i].children[1].value = datos.colec_TMDB_id;
+			});
+		}
+	};
 
-			// Avisar la situación en el form
-			mensaje[i].classList.remove("ocultar");
-			colec_nombre[i].innerHTML = datos.colec_nombre;
-			colecciones[i].classList.remove("ocultar");
-		});
-	}
+	setTimeout(await funcion, 6000);
 });

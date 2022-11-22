@@ -184,14 +184,15 @@ let dejaSoloCamposVitales = (dato) => {
 		return {
 			TMDB_entidad: n.TMDB_entidad,
 			TMDB_id: n.TMDB_id,
+			nombre_original: n.nombre_original,
+			nombre_castellano: n.nombre_castellano,
+			idioma_original_id: n.idioma_original_id,
 			ano_estreno: n.ano_estreno,
 			avatar: n.avatar,
 			desempate1: n.desempate1,
 			desempate2: n.desempate2,
 			desempate3: n.desempate3,
 			entidad: n.entidad,
-			nombre_castellano: n.nombre_castellano,
-			nombre_original: n.nombre_original,
 			prodNombre: n.prodNombre,
 			yaEnBD_id: n.yaEnBD_id,
 		};

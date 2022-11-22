@@ -1,4 +1,6 @@
 "use strict";
+//import { hello } from '/javascript/2.1-Prod-Agregar/2-Prod-DS-Guardar.js';
+
 window.addEventListener("load", async () => {
 	// Variables
 	let lis_fa_circle, lis_fa_check;
@@ -153,6 +155,7 @@ window.addEventListener("load", async () => {
 		fondo.classList.add("ocultar");
 		cartel.classList.remove("aumenta");
 		cartel.classList.add("disminuye");
-	}
+	};
 
+	// Fin
 });
