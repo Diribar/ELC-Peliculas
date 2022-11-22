@@ -9,7 +9,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
-	search: async (palabrasClave, mostrar) => {
+	search: async (palabrasClave) => {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {productos: []};
@@ -22,9 +22,7 @@ module.exports = {
 						.then((n) => infoQueQueda(n))
 						.then((n) => estandarizaNombres(n, TMDB_entidad))
 						.then((n) => eliminaSiPCinexistente(n, palabrasClave))
-						.then((n) => eliminaIncompletos(n));
-					// if (TMDB_entidad == "collection" && lectura.productos.length && mostrar)
-					// 	lectura.productos = await agregaAnoEstreno(lectura.productos);
+						.then((n) => dejaSoloCamposVitales(n));
 					datos = unificaResultados(lectura, TMDB_entidad, datos, page);
 				}
 			}
@@ -35,10 +33,8 @@ module.exports = {
 		}
 		// Elimina los registros duplicados
 		datos = eliminaDuplicados(datos);
-		// Averigua qué registros tenemos en nuestra base de datos
+		// Averigua qué registros ya tenemos en nuestra base de datos
 		datos = await averiguaSiYaEnBD(datos);
-		// Ordena los datos
-		if (mostrar) datos = ordenaDatos(datos);
 		// Reduce la información
 		datos = {
 			// Necesarios
@@ -49,9 +45,41 @@ module.exports = {
 			cantPaginasAPI: datos.cantPaginasAPI,
 			cantPaginasUsadas: datos.cantPaginasUsadas,
 		};
+		// Fin
+		return datos
+	},
+	ordenaLosProductos: async (resultado) => {
+		
+		// if (TMDB_entidad == "collection" && lectura.productos.length && mostrar)
+		// 	lectura.productos = await agregaAnoEstreno(lectura.productos);
+		
+		// Ordena los productos
+		resultado = ordenaLosProductos(resultado);
 
 		// Fin
-		return datos;
+		return resultado;
+	},
+	DS_procesoFinal: (resultado) => {
+		// Variables
+		let prodsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id);
+		let prodsYaEnBD = resultado.productos.filter((n) => n.yaEnBD_id);
+		let coincidencias = resultado.productos.length;
+		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
+		let hayMas = resultado.hayMas;
+		// Obtiene el mensaje
+		let mensaje =
+			"Encontramos " +
+			(coincidencias == 1
+				? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
+				: (hayMas ? "muchas" : coincidencias) +
+				  " coincidencias" +
+				  (hayMas ? ". Te mostramos " + coincidencias : "") +
+				  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
+			" está" +
+			(cantN > 1 && cantN < coincidencias ? "n" : "") +
+			" en nuestra BD.";
+		// Fin
+		return {prodsNuevos, prodsYaEnBD, mensaje};
 	},
 };
 
@@ -132,42 +160,44 @@ let estandarizaNombres = (dato, TMDB_entidad) => {
 let eliminaSiPCinexistente = (dato, palabrasClave) => {
 	// Descarta los productos que no tienen ninguna palabra clave
 	let palabras = palabrasClave.split(" ");
-	let productos = dato.productos.map((prod) => {
+	//
+	let productos = [];
+	for (let prod of dato.productos) {
 		if (prod)
 			for (let palabra of palabras)
 				if (
 					comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
 					comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
 					comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
-				)
-					return prod;
-		// Fin
-		return;
-	});
+				) {
+					productos.push(prod);
+					break;
+				}
+	}
 	// Fin
 	return {
 		productos,
 		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
-let eliminaIncompletos = (dato) => {
-	for (let indice = dato.productos.length - 1; indice >= 0; indice--) {
-		if (dato.productos[indice] == null) dato.productos.splice(indice, 1);
-	}
-	return dato;
-};
-let agregaAnoEstreno = async (dato) => {
-	for (let i = 0; i < dato.length; i++) {
-		// Obtiene todas las fechas de ano_estreno
-		let TMDB_id = dato[i].TMDB_id;
-		let detalles = await detailsTMDB("collection", TMDB_id)
-			.then((n) => n.parts)
-			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
-		// Obtiene el ano_estreno
-		let ano = detalles.reduce((a, b) => (a < b ? a : b));
-		dato[i].ano_estreno = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
-		dato[i].capitulos = detalles.length;
-	}
+let dejaSoloCamposVitales = (dato) => {
+	dato.productos = dato.productos.map((n) => {
+		return {
+			TMDB_entidad: n.TMDB_entidad,
+			TMDB_id: n.TMDB_id,
+			ano_estreno: n.ano_estreno,
+			avatar: n.avatar,
+			desempate1: n.desempate1,
+			desempate2: n.desempate2,
+			desempate3: n.desempate3,
+			entidad: n.entidad,
+			nombre_castellano: n.nombre_castellano,
+			nombre_original: n.nombre_original,
+			prodNombre: n.prodNombre,
+			yaEnBD_id: n.yaEnBD_id,
+		};
+	});
+	// Fin
 	return dato;
 };
 let unificaResultados = (lectura, TMDB_entidad, datos, page) => {
@@ -184,6 +214,13 @@ let unificaResultados = (lectura, TMDB_entidad, datos, page) => {
 		[TMDB_entidad]: Math.min(page, datos.cantPaginasAPI[TMDB_entidad]),
 	};
 	return datos;
+};
+let hayMas = (datos, page, entidadesTMDB) => {
+	return (
+		page < datos.cantPaginasAPI[entidadesTMDB[0]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[1]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[2]]
+	);
 };
 let eliminaDuplicados = (datos) => {
 	for (let indice = datos.productos.length - 1; indice >= 0; indice--) {
@@ -228,14 +265,21 @@ let averiguaSiYaEnBD = async (datos) => {
 	}
 	return datos;
 };
-let hayMas = (datos, page, entidadesTMDB) => {
-	return (
-		page < datos.cantPaginasAPI[entidadesTMDB[0]] ||
-		page < datos.cantPaginasAPI[entidadesTMDB[1]] ||
-		page < datos.cantPaginasAPI[entidadesTMDB[2]]
-	);
+let agregaAnoEstreno = async (dato) => {
+	for (let i = 0; i < dato.length; i++) {
+		// Obtiene todas las fechas de ano_estreno
+		let TMDB_id = dato[i].TMDB_id;
+		let detalles = await detailsTMDB("collection", TMDB_id)
+			.then((n) => n.parts)
+			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
+		// Obtiene el ano_estreno
+		let ano = detalles.reduce((a, b) => (a < b ? a : b));
+		dato[i].ano_estreno = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
+		dato[i].capitulos = detalles.length;
+	}
+	return dato;
 };
-let ordenaDatos = (datos) => {
+let ordenaLosProductos = (datos) => {
 	if (datos.productos.length > 1) {
 		// Ordenar desde la más reciente hacia la más antigua
 		datos.productos.sort((a, b) =>

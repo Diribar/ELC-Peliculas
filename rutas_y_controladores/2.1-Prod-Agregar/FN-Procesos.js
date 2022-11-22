@@ -26,30 +26,7 @@ module.exports = {
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
 	},
-	// ControllerVista (desambiguarForm)
-	DS_procesoFinal: (desambiguar) => {
-		// Variables
-		let prodsNuevos = desambiguar.productos.filter((n) => !n.yaEnBD_id);
-		let prodsYaEnBD = desambiguar.productos.filter((n) => n.yaEnBD_id);
-		let coincidencias = desambiguar.productos.length;
-		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
-		let hayMas = desambiguar.hayMas;
-		// Obtiene el mensaje
-		let mensaje =
-			"Encontramos " +
-			(coincidencias == 1
-				? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
-				: (hayMas ? "muchas" : coincidencias) +
-				  " coincidencias" +
-				  (hayMas ? ". Te mostramos " + coincidencias : "") +
-				  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
-			" está" +
-			(cantN > 1 && cantN < coincidencias ? "n" : "") +
-			" en nuestra BD.";
-		// Fin
-		return {prodsNuevos, prodsYaEnBD, mensaje};
-	},
-
+	
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
 	DS_infoTMDBparaDD_movie: async (datos) => {
