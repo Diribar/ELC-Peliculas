@@ -27,24 +27,27 @@ module.exports = {
 		}
 	},
 	// ControllerVista (desambiguarForm)
-	DS_prepararMensaje: (desambiguar) => {
-		let prodsNuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
-		let prodsYaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
-		let coincidencias = desambiguar.resultados.length;
-		let nuevos = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
+	DS_procesoFinal: (desambiguar) => {
+		// Variables
+		let prodsNuevos = desambiguar.productos.filter((n) => !n.yaEnBD_id);
+		let prodsYaEnBD = desambiguar.productos.filter((n) => n.yaEnBD_id);
+		let coincidencias = desambiguar.productos.length;
+		let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
 		let hayMas = desambiguar.hayMas;
+		// Obtiene el mensaje
 		let mensaje =
 			"Encontramos " +
 			(coincidencias == 1
-				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+				? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
 				: (hayMas ? "muchas" : coincidencias) +
 				  " coincidencias" +
 				  (hayMas ? ". Te mostramos " + coincidencias : "") +
-				  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
+				  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
 			" está" +
-			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
+			(cantN > 1 && cantN < coincidencias ? "n" : "") +
 			" en nuestra BD.";
-		return [prodsNuevos, prodsYaEnBD, mensaje];
+		// Fin
+		return {prodsNuevos, prodsYaEnBD, mensaje};
 	},
 
 	// MOVIES *****************************

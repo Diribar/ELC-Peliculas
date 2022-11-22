@@ -22,7 +22,9 @@ const multer = require("../../middlewares/varios/multer");
 // APIs
 // Validar
 router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
-router.get("/api/desambiguar-form", API.desambiguarForm);
+router.get("/api/desambiguar-form0", API.desambiguarForm0);
+router.get("/api/desambiguar-form1", API.desambiguarForm1);
+router.get("/api/desambiguar-form2", API.desambiguarForm2);
 router.get("/api/valida/datos-duros", API.validaDatosDuros);
 router.get("/api/valida/datos-personalizados", API.validaDatosPers);
 router.get("/api/valida/copiar-fa", API.validaCopiarFA);

@@ -1,5 +1,3 @@
-const JSONTransport = require("nodemailer/lib/json-transport");
-
 module.exports = (sequelize, dt) => {
 	const alias = "hechos";
 	const columns = {

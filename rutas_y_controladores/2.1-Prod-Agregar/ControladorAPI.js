@@ -9,10 +9,18 @@ const valida = require("./FN-Validar");
 module.exports = {
 	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {
+		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene la cantidad de productos encontrados que coinciden con las palabras clave
-		let lectura = await buscar_x_PC.search(palabrasClave, false);
-		return res.json(lectura);
+		let resultado;
+		resultado = await buscar_x_PC.search(palabrasClave);
+		// Prepara la respuesta
+		let cantProds = resultado.productos.length;
+		let cantProdsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id).length;
+		let hayMas = resultado.hayMas;
+
+		// Fin
+		return res.json({cantProds, cantProdsNuevos, hayMas});
 	},
 	validaPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
@@ -21,18 +29,29 @@ module.exports = {
 	},
 
 	// Vista (desambiguar)
-	desambiguarForm: async (req, res) => {
+	desambiguarForm0: async (req, res) => {
+		let respuesta = req.session.desambiguar ? req.session.desambiguar : "";
+		return res.json(respuesta);
+	},
+	desambiguarForm1: async (req, res) => {
 		// Variables
-		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+		let palabrasClave = req.query.palabrasClave;
 		// Obtiene los productos
-		let desambiguar = req.session.desambiguar
-			? req.session.desambiguar
-			: await buscar_x_PC.search(palabrasClave, true);
-		let [prodsNuevos, prodsYaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
-		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar = desambiguar;
+		let resultado =  await buscar_x_PC.search(palabrasClave);
 		// Fin
-		return res.json([prodsNuevos, prodsYaEnBD, mensaje]);
+		return res.json(resultado);
+	},
+	desambiguarForm2: async (req, res) => {
+		// Variables
+		let resultado = JSON.parse(req.query.resultado);
+		// Procesa los resultado
+		resultado = await buscar_x_PC.depuraDatos(resultado, true);
+		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
+		resultado = procesos.DS_procesoFinal(resultado);
+		// Conserva la información en session para no tener que procesarla de nuevo
+		req.session.desambiguar = resultado;
+		// Fin
+		return res.json(resultado);
 	},
 
 	averiguaColeccion: async (req, res) => {

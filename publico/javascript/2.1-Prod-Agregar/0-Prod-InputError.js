@@ -30,37 +30,34 @@ window.addEventListener("load", async () => {
 			// Obtiene el link
 			return "/producto/agregar/api/PC-cant-prod/?palabrasClave=" + palabrasClave;
 		};
-		var mostrarResultados = async (lectura) => {
-			// Averigua cantidad de coincidencias
-			let prodsNuevos = lectura.resultados.filter((n) => !n.YaEnBD).length;
-			let cantResultados = lectura.cantResultados;
-			let hayMas = lectura.hayMas;
+		var mostrarResultados = async (resultados) => {
+			// Variables
+			let {cantProds, cantProdsNuevos, hayMas} = resultados;
 			// Determinar oracion y formato
-			let formatoVigente;
-			let oracion;
+			let formatoVigente, oracion;
 			// Resultado exitoso
-			if (cantResultados > 0 && !hayMas) {
+			if (cantProds > 0 && !hayMas) {
 				oracion =
 					"Encontramos " +
-					(cantResultados == 1
-						? "1 sola coincidencia, que " + (prodsNuevos ? "no" : "ya")
-						: cantResultados +
+					(cantProds == 1
+						? "1 sola coincidencia, que " + (cantProdsNuevos ? "no" : "ya")
+						: cantProds +
 						  " coincidencias, " +
-						  (prodsNuevos == cantResultados
+						  (cantProdsNuevos == cantProds
 								? "y ninguna"
-								: prodsNuevos
-								? prodsNuevos + " no"
+								: cantProdsNuevos
+								? cantProdsNuevos + " no"
 								: "y todas")) +
 					" está" +
-					(prodsNuevos > 1 && prodsNuevos != cantResultados ? "n" : "") +
+					(cantProdsNuevos > 1 && cantProdsNuevos != cantProds ? "n" : "") +
 					" en nuestra BD";
 				formatoVigente = "resultadoExitoso";
 			} else {
 				// Resultados inválidos
 				formatoVigente = "resultadoInvalido";
 				oracion = hayMas
-					? "Hay demasiadas coincidencias (+" + cantResultados + "), intentá ser más específico"
-					: cantResultados == 0
+					? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
+					: cantProds == 0
 					? "No encontramos coincidencias con estas palabras"
 					: oracion;
 			}
@@ -171,8 +168,8 @@ window.addEventListener("load", async () => {
 				if (!submit.classList.contains("inactivo")) {
 					submit.classList.add("inactivo");
 					let ruta = rutaObtieneCantProds(inputs[0].value);
-					let cantProds = await fetch(ruta).then((n) => n.json());
-					mostrarResultados(cantProds);
+					let resultados = await fetch(ruta).then((n) => n.json());
+					mostrarResultados(resultados);
 					submit.classList.remove("inactivo");
 					avanzar();
 				} else statusInicial(true);

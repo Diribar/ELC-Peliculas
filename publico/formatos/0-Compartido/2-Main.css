@@ -9,8 +9,6 @@ main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo */
 main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
-main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
-main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
 /* Footer */
 main #cuerpoFooter footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
