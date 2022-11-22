@@ -9,12 +9,12 @@
 /* Botones para productos */
 #listado button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
 #listado button {border: none; text-align: left; width: 290px;}
-#listado button#prodNuevo {background-color: var(--verde-intermedio);}
-#listado button#prodNuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
-#listado button#ingrManual {background-color: var(--rojo-claro);}
-#listado button#ingrManual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#listado button#prodYaEnBD {background-color: var(--celeste-oscuro);}
-#listado button#prodYaEnBD:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
+#listado #prodsNuevos button {background-color: var(--verde-intermedio);}
+#listado #prodsNuevos button:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#listado #ingrManual button {background-color: var(--rojo-claro);}
+#listado #ingrManual button:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#listado #prodsYaEnBD button {background-color: var(--celeste-oscuro);}
+#listado #prodsYaEnBD button:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */
 #listado button .imagenChica, #listado button #texto {height: 100%;}

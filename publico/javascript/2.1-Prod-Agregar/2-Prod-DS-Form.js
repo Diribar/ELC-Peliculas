@@ -4,6 +4,10 @@ window.addEventListener("load", async () => {
 	let lis_fa_circle, lis_fa_check;
 	let ruta = "/producto/agregar/api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
+	// DOM
+	let ingrManual_DOM = document.querySelector("#ingrManual");
+	let prodsNuevos_DOM = document.querySelector("#prodsNuevos");
+	let prodsYaEnBD_DOM = document.querySelector("#prodsYaEnBD");
 
 	// En caso que no haya un resultado...
 	if (!resultado) {
@@ -76,42 +80,66 @@ window.addEventListener("load", async () => {
 		ruta = "/producto/agregar/api/desambiguar-form2/";
 		resultado = await fetch(ruta).then((n) => n.json());
 	}
-	// {prodsNuevos, prodsYaEnBD, mensaje}
-	// Despliega los productos en la vista
-	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
-	console.log(prodsNuevos);
 	// Agrega los productos
+	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
 	let listado = document.querySelector("#listado");
-	let IM = document.querySelector("#IM");
-	if (prodsNuevos) {
-		prodsNuevos.forEach((prod) => {
-			let li = document.querySelector("#prodsNuevos").cloneNode(true)
 
+	// Productos nuevos
+	if (prodsNuevos.length)
+		prodsNuevos.forEach((prod) => {
+			// Crea el elemento 'li'
+			let li = prodsNuevos_DOM.cloneNode(true);
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
 			li.children[0][1].value = prod.TMDB_id;
 			li.children[0][2].value = prod.nombre_original;
 			li.children[0][3].value = prod.idioma_original_id;
-
 			// Imagen
 			li.children[0][4].children[0].src = "https://image.tmdb.org/t/p/original" + prod.avatar;
 			li.children[0][4].children[0].alt = prod.nombre_original;
 			li.children[0][4].children[0].title = prod.nombre_original;
-
 			// Información a mostrar
 			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombre_original;
 			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
 			li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
-			// Agregar el form
+			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
-			listado.appendChild(li);
-			listado.insertBefore(li,IM);
+			// Agregar el form
+			listado.insertBefore(li, ingrManual_DOM);
 		});
-	}
+
+	// Productos ya en BD
+	if (prodsYaEnBD.length)
+		prodsYaEnBD.forEach((prod) => {
+			// Crea el elemento 'li'
+			let li = prodsYaEnBD_DOM.cloneNode(true);
+			// Información a enviar al BE
+			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
+
+			// Imagen
+			li.children[0].children[0].children[0].src = "https://image.tmdb.org/t/p/original" + prod.avatar;
+			li.children[0].children[0].children[0].alt = prod.nombre_original;
+			li.children[0].children[0].children[0].title = prod.nombre_original;
+			// Información a mostrar
+			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombre_original;
+			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
+			li.children[0].children[0].children[1].children[3].innerHTML =
+				prod.ano_estreno + " - " + prod.prodNombre;
+			// Quitar la clase 'ocultar'
+			li.classList.remove("ocultar");
+
+			// Agregar el form
+			listado.append(li);
+		});
 
 	// Terminaciones
 	// Agrega el mensaje
-	document.querySelector("#mensaje").innerHTML=mensaje
+	document.querySelector("#mensaje").innerHTML = mensaje;
+
+	// Elimina los modelos que ya no se necesitan
+	prodsNuevos_DOM.remove()
+	prodsYaEnBD_DOM.remove()
+
 	// Hace foco en el primer resultado
 	document.querySelector("#listado li button").focus();
 
@@ -126,4 +154,5 @@ window.addEventListener("load", async () => {
 		cartel.classList.remove("aumenta");
 		cartel.classList.add("disminuye");
 	}
+
 });
