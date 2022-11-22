@@ -15,7 +15,8 @@
 
 /* Partes internas */
 #cartel .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
-#cartel #titulo, #cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
+#cartel #titulo {margin-bottom: 15px; font-size: 1.5rem;}
+#cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
 #cartel #mensajes {margin: 0 20px 40px; text-align: center;}
 #cartel #mensajes li {text-align: left;}
 #cartel #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
