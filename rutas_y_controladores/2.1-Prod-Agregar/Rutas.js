@@ -51,7 +51,6 @@ router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
-router.post("/desambiguar", ...algunos, vista.desambiguarGuardar);
 router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
 router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
 router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);

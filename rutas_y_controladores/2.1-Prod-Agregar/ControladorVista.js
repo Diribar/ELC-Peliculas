@@ -64,7 +64,6 @@ module.exports = {
 			mostrarCartel: true,
 		});
 	},
-	desambiguarGuardar: async (req, res) => {},
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
