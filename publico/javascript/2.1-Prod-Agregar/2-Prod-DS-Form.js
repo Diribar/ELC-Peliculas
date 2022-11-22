@@ -135,10 +135,12 @@ window.addEventListener("load", async () => {
 	// Terminaciones
 	// Agrega el mensaje
 	document.querySelector("#mensaje").innerHTML = mensaje;
-	
-	// Hace foco en el primer resultado
+
+	// Elimina los modelos que ya no se necesitan
 	prodsNuevos_DOM.remove()
 	prodsYaEnBD_DOM.remove()
+
+	// Hace foco en el primer resultado
 	document.querySelector("#listado li button").focus();
 
 	// Desaparece el cartel
