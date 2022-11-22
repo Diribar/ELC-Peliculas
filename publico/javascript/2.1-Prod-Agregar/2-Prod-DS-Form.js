@@ -195,7 +195,6 @@ window.addEventListener("load", async () => {
 			datos = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[0].classList.add("ocultar");
 			lis_fa_check[0].classList.remove("ocultar");
-			console.log(datos);
 
 			// 2. Averigua si pertenece a una colección y toma acciones
 			if (movie) {
@@ -203,7 +202,6 @@ window.addEventListener("load", async () => {
 				errores = await fetch(ruta).then((n) => n.json());
 				lis_fa_circle[1].classList.add("ocultar");
 				lis_fa_check[1].classList.remove("ocultar");
-				console.log(errores);
 				if (errores.mensaje) {
 					// 2.A. Si pertenece a una colección de la BD, la agrega y avisa
 					if (errores.mensaje == "agregarCapitulos") {
@@ -227,14 +225,12 @@ window.addEventListener("load", async () => {
 			datos = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[1 + movie].classList.add("ocultar");
 			lis_fa_check[1 + movie].classList.remove("ocultar");
-			console.log(datos);
 
 			// 4. Revisa la información disponible, para determinar los próximos pasos
 			ruta = "api/desambiguar-guardar6/?datos=" + JSON.stringify(datos);
 			errores = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[2 + movie].classList.add("ocultar");
 			lis_fa_check[2 + movie].classList.remove("ocultar");
-			console.log(errores);
 
 			// Desaparece el cartel
 			fondo.classList.add("ocultar");
