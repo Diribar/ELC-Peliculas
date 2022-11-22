@@ -64,8 +64,7 @@ module.exports = {
 			mostrarCartel: true,
 		});
 	},
-	desambiguarGuardar: async (req, res) => {
-	},
+	desambiguarGuardar: async (req, res) => {},
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
@@ -90,13 +89,16 @@ module.exports = {
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await valida.datosDuros(camposDD_errores, datosDuros);
-		// 6. Preparar variables para la vista
+		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
-		// 7. Render del formulario
-		//return res.send(BD_paises)
+		// Avatar
+		let imgDerPers = datosDuros.avatar
+			? "/imagenes/9-Provisorio/" + datosDuros.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -109,7 +111,7 @@ module.exports = {
 			idiomas,
 			origen,
 			errores,
-			imgDerPers: datosDuros.avatar_url,
+			imgDerPers,
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
