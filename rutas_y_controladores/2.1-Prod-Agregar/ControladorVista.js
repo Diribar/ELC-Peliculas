@@ -43,15 +43,18 @@ module.exports = {
 		return res.redirect("desambiguar");
 	},
 	desambiguarForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "desambiguar";
-		// 2. Elimina session y cookie posteriores, si existen
+		// Borrar archivo de imagen si existe
+		let aux = req.cookies.datosDuros;
+		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
+		// Elimina session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "desambiguar");
-		// 3. Si se perdió la info anterior, vuelve a esa instancia
+		// Si se perdió la info anterior, vuelve a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("palabras-clave");
-		// 4. Render del formulario
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -67,10 +70,7 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "datosDuros";
-		// Borrar archivo de imagen si existe
-		let aux = req.cookies.datosPers;
-		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
-		// 2. Eliminar session y cookie posteriores, si existen
+		// 2. Elimina session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
