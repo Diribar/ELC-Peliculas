@@ -123,7 +123,7 @@ module.exports = {
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect(origen);
-		// Si se guardó un archivo de imagen, lo reemplaza
+		// Actualiza datosDuros con la info ingresada
 		if (req.file) {
 			datosDuros.avatar = req.file.filename;
 			datosDuros.tamano = req.file.size;
