@@ -21,8 +21,8 @@ module.exports = {
 						// Procesos por lote de productos
 						.then((n) => eliminaRegistrosConInfoIncompleta(n, TMDB_entidad))
 						.then((n) => estandarizaNombres(n, TMDB_entidad))
-						.then((n) => eliminaRegistroSiPalClaNoExiste(n, palabrasClave))
-						.then((n) => revisaReemplazaPeliPorColeccion(n));
+						.then((n) => eliminaRegistroSiPalClaNoExiste(n, palabrasClave));
+					// Acumula los lotes
 					acumulador = acumulaResultados(lote, TMDB_entidad, acumulador, page);
 				}
 			}
@@ -42,6 +42,13 @@ module.exports = {
 		// Fin
 		return resultados;
 	},
+
+	revisaReemplazaPeliPorColeccion:async(resultados)=>{
+		// Revisa y reemplaza las películas por su colección
+		lote = await revisaReemplazaPeliPorColeccion(resultados);
+		return resultados
+	},
+
 	organizaLaInformacion: async (resultados) => {
 		// Le agrega el año de estreno y fin a las colecciones
 		resultados = await completaDatosColecciones(resultados);
@@ -106,7 +113,6 @@ let estandarizaNombres = (lote, TMDB_entidad) => {
 			TMDB_id: prod.id,
 			nombre_original,
 			nombre_castellano,
-			idioma_original_id: prod.original_language,
 			ano_estreno,
 			ano_fin,
 			avatar: prod.poster_path,
@@ -144,14 +150,41 @@ let eliminaRegistroSiPalClaNoExiste = (lote, palabrasClave) => {
 	lote.productos = productos;
 	return lote;
 };
-let revisaReemplazaPeliPorColeccion = (lote) => {
-	// Rutina para todos los productos
+let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
+	// Variables
+	let productos = [];
+	// Rutina para el lote de productos
 	for (let prod of lote.productos) {
-		// Acciones si es una película
-		if ((prod.entidad = "peliculas")) {
+		// Si la entidad no es una película, sigue al siguiente producto
+		if (prod.entidad != "peliculas") {
+			productos.push(prod);
+			continue;
 		}
+
+		// Acciones si es una película -------------------------
+		// Obtiene los datos de la película
+		let pelicula = await detailsTMDB("movie", prod.TMDB_id);
+		// Si la película no pertenece a una colección, sigue al siguiente producto
+		if (!pelicula.belongs_to_collection) {
+			productos.push(prod);
+			continue;
+		}
+
+		// Acciones si es una película de colección -----------
+		// Datos de la colección a la que pertenece
+		let coleccion = {
+			TMDB_entidad: "collection",
+			TMDB_id: pelicula.belongs_to_collection.id,
+			nombre_castellano: pelicula.belongs_to_collection.name,
+			avatar: pelicula.belongs_to_collection.poster_path,
+			prodNombre: "Colección",
+			entidad: "colecciones",
+		};
+		productos.push(coleccion);
 	}
+
 	// Fin
+	lote.productos = productos;
 	return lote;
 };
 let acumulaResultados = (lote, TMDB_entidad, acumulador, page) => {
@@ -189,12 +222,8 @@ let eliminaDuplicados = (resultados) => {
 					(n.desempate1 == registro.desempate1 || n.desempate2 == registro.desempate2) &&
 					n.ano_estreno == registro.ano_estreno
 			).length;
-		// Averigua duplicados de Collections
-		if (registro.TMDB_entidad == "collection")
-			coincidencias = resultados.productos.filter((n) => n.TMDB_id == registro.TMDB_id).length;
 		// Elimina duplicados
 		if (coincidencias && coincidencias > 1) {
-			console.log(resultados.productos[indice]);
 			resultados.productos.splice(indice, 1);
 		}
 	}

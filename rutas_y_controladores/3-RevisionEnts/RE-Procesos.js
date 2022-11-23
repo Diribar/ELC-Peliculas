@@ -574,7 +574,6 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", prodEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		console.log(578,datos.duracion,motivo);
 		if (datos.duracion) comp.usuario_aumentaPenalizacAcum(prodEdic.editado_por_id, motivo);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
