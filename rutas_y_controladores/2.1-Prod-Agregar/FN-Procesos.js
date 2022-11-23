@@ -8,7 +8,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// USO COMPARTIDO *********************
-	borrarSessionCookies: (req, res, paso) => {
+	borraSessionCookies: (req, res, paso) => {
 		let pasos = [
 			"borrarTodo",
 			"palabrasClave",
@@ -26,10 +26,10 @@ module.exports = {
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
 	},
-	
+
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
-	DS_infoTMDBparaDD_movie: async (datos) => {
+	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
 		// Obtiene las API
@@ -102,18 +102,19 @@ module.exports = {
 			// Obtiene datos de la colección
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
+			datos.colec_avatar =
+				"https://image.tmdb.org/t/p/original" + datosAPI.belongs_to_collection.poster_path;
 			// elc_id de la colección
-			datos.colec_id = await BD_especificas.obtieneELC_id("colecciones", {
+			datos.colec_ELC_id = await BD_especificas.obtieneELC_id("colecciones", {
 				TMDB_id: datos.colec_TMDB_id,
 			});
-			if (datos.colec_id) return datos;
 		}
 		return datos;
 	},
 
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)
-	DS_infoTMDBparaDD_collection: async function (datos) {
+	DS_collection: async function (datos) {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
@@ -165,33 +166,33 @@ module.exports = {
 			});
 			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
 			// Paises_id
-			if (datosAPI.production_countries.length > 0)
+			if (datosAPI.production_countries.length)
 				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
-			if (datosAPI.production_companies.length > 0)
+			if (datosAPI.production_companies.length)
 				produccion += limpiarValores(datosAPI.production_companies) + ", ";
 			// Crew
-			if (datosAPI.crew.length > 0) {
+			if (datosAPI.crew.length) {
 				direccion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
 				guion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
 				musica += limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) actuacion += funcionCast(datosAPI.cast) + ", ";
+			if (datosAPI.cast.length) actuacion += funcionCast(datosAPI.cast) + ", ";
 		}
 		// Procesar los resultados
 		let cantCapitulos = datos.capitulosTMDB_id.length;
-		if (paises_id) exportar.paises_id = consolidarValores(paises_id, cantCapitulos).replace(/,/g, "");
-		if (produccion) exportar.produccion = consolidarValores(produccion, cantCapitulos);
-		if (direccion) exportar.direccion = consolidarValores(direccion, cantCapitulos);
-		if (guion) exportar.guion = consolidarValores(guion, cantCapitulos);
-		if (musica) exportar.musica = consolidarValores(musica, cantCapitulos);
-		if (actuacion) exportar.actuacion = consolidarValores(actuacion, cantCapitulos);
+		if (paises_id) exportar.paises_id = consolidaValores(paises_id, cantCapitulos).replace(/,/g, "");
+		if (produccion) exportar.produccion = consolidaValores(produccion, cantCapitulos);
+		if (direccion) exportar.direccion = consolidaValores(direccion, cantCapitulos);
+		if (guion) exportar.guion = consolidaValores(guion, cantCapitulos);
+		if (musica) exportar.musica = consolidaValores(musica, cantCapitulos);
+		if (actuacion) exportar.actuacion = consolidaValores(actuacion, cantCapitulos);
 		// Fin
 		return exportar;
 	},
 	// ControllerVista (confirma)
-	agregarCapitulosDeCollection: async function (datosCol) {
+	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		datosCol.capitulosTMDB_id.forEach(async (capituloTMDB_id, indice) => {
 			// Si el capítulo no existe, agregarlo
@@ -211,7 +212,7 @@ module.exports = {
 				datosCap.subcategoria_id = datosCol.subcategoria_id;
 				datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 				// Guardar los datos del capítulo
-				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_id})
+				await this.DS_movie({TMDB_id: capituloTMDB_id})
 					.then((n) => (n = {...n, ...datosCap}))
 					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
 			}
@@ -219,19 +220,19 @@ module.exports = {
 		return;
 	},
 	// ControllerVista (confirma)
-	agregarCapitulosNuevos: async function (coleccion_id, TMDB_id) {
+	agregaCapitulosNuevos: async function (coleccion_id, TMDB_id) {
 		// Obtiene el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
 		// Obtiene el ID de los capitulos
 		let capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
-		// Agregar los capítulos que correspondan
-		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
+		// Agrega los capítulos que correspondan
+		await this.agregaCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
 		return;
 	},
 
 	// TV *********************************
 	// ControllerVista (desambiguarGuardar)
-	DS_infoTMDBparaDD_tv: async (datos) => {
+	DS_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
@@ -477,7 +478,7 @@ let funcionParentesis = (dato) => {
 	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
-let consolidarValores = (datos, cantCapitulos) => {
+let consolidaValores = (datos, cantCapitulos) => {
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
 	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);

@@ -16,30 +16,6 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validaDesambiguar)
-	averiguaSiEsColeccion: (dato) => {
-		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
-		// Variables
-		let errores = {hay: false};
-		// Si es una película y está en una colección
-		if (dato.TMDB_entidad == "movie" && dato.en_coleccion) {
-			errores = {
-				colec_TMDB_id: dato.en_colec_TMDB_id,
-				hay: true,
-			};
-			// Si la colección no está en nuestra BD
-			if (!dato.en_colec_id) errores.mensaje = "agregarColeccion";
-			else {
-				errores = {
-					...errores,
-					mensaje: "agregarCapitulos",
-					en_colec_id: dato.en_colec_id,
-				};
-			}
-		}
-		// Enviar el feedback
-		return errores;
-	},
 	// ControllerAPI (validaCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};

@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 		}
 	}
 	if (informacion) {
-		procesos.borrarSessionCookies(req, res, "borrarTodo");
+		procesos.borraSessionCookies(req, res, "borrarTodo");
 		return res.render("CMP-0Estructura", {informacion});
 	}
 	next();

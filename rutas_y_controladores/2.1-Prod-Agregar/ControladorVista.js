@@ -22,7 +22,7 @@ module.exports = {
 			? req.session.palabrasClave
 			: req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "palabrasClave");
+		procesos.borraSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -39,7 +39,7 @@ module.exports = {
 		// 2. Si hay errores de validación, redireccionar
 		let errores = await valida.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) return res.redirect("palabras-clave");
-		// 3. Redireccionar a la siguiente instancia
+		// 3. Redirecciona a la siguiente instancia
 		return res.redirect("desambiguar");
 	},
 	desambiguarForm: async (req, res) => {
@@ -50,7 +50,7 @@ module.exports = {
 		let aux = req.cookies.datosDuros;
 		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
 		// Elimina session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "desambiguar");
+		procesos.borraSessionCookies(req, res, "desambiguar");
 		// Si se perdió la info anterior, vuelve a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("palabras-clave");
@@ -69,7 +69,7 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "datosDuros";
 		// 2. Elimina session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "datosDuros");
+		procesos.borraSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		let origen =
@@ -114,77 +114,44 @@ module.exports = {
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
-		console.log(149, new Date());
-		// 1. Si se perdió la info anterior, vuelve a esa instancia
-		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		// Si se perdió la info anterior, vuelve a esa instancia
+		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		let origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
 				: req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
-		if (!aux) return res.redirect(origen);
-		// 2. Guardar el data entry en session y cookie
-		let datosDuros = {...aux, ...req.body};
-		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		// 3. Averigua si hay errores de validación
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
-		let camposDD_errores = camposDD.map((n) => n.nombre);
-		let avatar = datosDuros.avatar_url;
-		let errores = await valida.datosDuros(camposDD_errores, {...datosDuros, avatar});
-		// 5. Si no hay errores de imagen, revisa el archivo de imagen
-		if (!errores.avatar) {
-			let tipo, tamano, rutaYnombre;
-			if (req.file) {
-				// En caso de archivo por multer
-				tipo = req.file.mimetype;
-				tamano = req.file.size;
-				avatar = req.file.filename;
-				rutaYnombre = req.file.path;
-			} else {
-				console.log(191, new Date());
-				// En caso de archivo sin multer
-				let datos = await requestPromise.head(datosDuros.avatar_url);
-				console.log(194, new Date());
-				tipo = datos["content-type"];
-				tamano = datos["content-length"];
-				avatar = Date.now() + path.extname(datosDuros.avatar_url);
-				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar;
-				// Descargar
-				comp.descarga(datosDuros.avatar_url, rutaYnombre);
-			}
-			// Revisa errores nuevamente
-			errores.avatar = comp.revisaLaImagen(tipo, tamano);
-			if (errores.avatar) errores.hay = true;
+		if (!datosDuros) return res.redirect(origen);
+		// Si se guardó un archivo de imagen, lo reemplaza
+		if (req.file) {
+			datosDuros.avatar = req.file.filename;
+			datosDuros.tamano = req.file.size;
 		}
-		// 6. Si hay errores de validación, redireccionar
+		datosDuros = {...datosDuros, ...req.body};
+		// Averigua si hay errores de validación
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
+		let camposRevisar = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposRevisar, datosDuros);
+		// Si hay errores de validación, redirecciona
 		if (errores.hay) {
-			// Si se había grabado una archivo de imagen, borrarlo
-			comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar);
-			// Guardar los errores en 'session' porque pueden ser muy específicos
+			// Guarda los errores en 'session' porque pueden ser muy específicos
 			req.session.erroresDD = errores;
-			// Redireccionar
+			// Redirecciona
 			return res.redirect("datos-duros");
 		}
-		// Crea el campo 'avatar_url'
-		let avatar_url = datosDuros.avatar_url.startsWith("http") ? datosDuros.avatar_url : "";
-		// 9. Genera la session para la siguiente instancia
-		req.session.datosPers = {
-			...req.session.datosDuros,
-			avatar,
-			avatar_url,
-		};
-		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
-		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
+		// Guardar el data entry en session y cookie
+		req.session.datosDuros = datosDuros;
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+		req.session.datosPers = datosDuros
+		res.cookie("datosPers", datosDuros, {maxAge: unDia});
 		if (datosDuros.fuente == "IM") {
 			let cookie = req.cookies.datosOriginales;
 			cookie.nombre_original = datosDuros.nombre_original;
 			cookie.nombre_castellano = datosDuros.nombre_castellano;
 			res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		}
-		// 11. Redireccionar a la siguiente instancia
-		console.log(231, new Date());
+		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-personalizados");
 	},
 	datosPersForm: async (req, res) => {
@@ -193,7 +160,7 @@ module.exports = {
 		const codigo = "datosPers";
 		let userID = req.session.usuario.id;
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "datosPers");
+		procesos.borraSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, vuelve a esa instancia
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("datos-duros");
@@ -206,7 +173,7 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
-			imgDerPers: datosPers.avatar_url,
+			imgDerPers: "/imagenes/9-Provisorio/" + datosPers.avatar,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
 	},
@@ -234,7 +201,7 @@ module.exports = {
 		req.session.confirma = req.session.datosPers;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 8. Redireccionar a la siguiente instancia
+		// 8. Redirecciona a la siguiente instancia
 		return res.redirect("confirma");
 	},
 	confirmaForm: (req, res) => {
@@ -263,7 +230,7 @@ module.exports = {
 			dataEntry: confirma,
 			direccion,
 			actuacion,
-			imgDerPers: confirma.avatar_url,
+			imgDerPers: "/imagenes/9-Provisorio/" + confirma.avatar,
 			tituloImgDerPers: confirma.nombre_castellano,
 		});
 	},
@@ -291,7 +258,7 @@ module.exports = {
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
-				? procesos.agregarCapitulosDeCollection({...confirma, ...registro})
+				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
 				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
@@ -299,14 +266,14 @@ module.exports = {
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
 		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "4-ProdsRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
-		procesos.borrarSessionCookies(req, res, "borrarTodo");
+		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
 		// 10. Crea la cookie para 'Terminaste'
 		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
 		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
-		// 11. Redireccionar
+		// 11. Redirecciona
 		return res.redirect("terminaste");
 	},
 	terminasteForm: async (req, res) => {
@@ -372,7 +339,7 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "tipoProducto");
+		procesos.borraSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 5. Render del formulario
@@ -401,7 +368,7 @@ module.exports = {
 		req.session.datosDuros = tipoProd;
 		res.cookie("datosDuros", tipoProd, {maxAge: unDia});
 		res.cookie("datosOriginales", tipoProd, {maxAge: unDia});
-		// 6. Redireccionar a la siguiente instancia
+		// 6. Redirecciona a la siguiente instancia
 		res.redirect("datos-duros");
 	},
 	copiarFA_Form: async (req, res) => {
@@ -409,7 +376,7 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesos.borrarSessionCookies(req, res, "copiarFA");
+		procesos.borraSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
 			req.body.prodNombre = comp.obtieneEntidadNombre(req.body.entidad);
@@ -458,7 +425,7 @@ module.exports = {
 		let cookie = req.cookies.datosOriginales;
 		cookie.FA_id = req.session.datosDuros.FA_id;
 		res.cookie("datosOriginales", cookie, {maxAge: unDia});
-		// 4. Redireccionar a la siguiente instancia
+		// 4. Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
 	},
 };

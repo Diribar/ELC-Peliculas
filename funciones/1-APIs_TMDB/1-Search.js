@@ -23,7 +23,7 @@ module.exports = async (palabrasClave, TMDB_entidad, page) => {
 		"&include_adult=false";
 	// BUSCAR LA INFO
 	let resultado = await fetch(url).then((n) => n.json());
-	if (resultado.hasOwnProperty('success') && resultado.success == false) {
+	if (resultado.hasOwnProperty('success') && !resultado.success) {
 		console.log("searchTMDB_fetch", url, resultado);
 		resultado = {
 			page: 1,
