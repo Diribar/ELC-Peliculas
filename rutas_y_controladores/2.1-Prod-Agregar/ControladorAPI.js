@@ -1,10 +1,13 @@
 "use strict";
 // Definir variables
+const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const buscar_x_PC = require("./FN-Buscar_x_PC");
 const procesos = require("./FN-Procesos");
 const valida = require("./FN-Validar");
+const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// Vista (palabrasClave)
@@ -29,11 +32,11 @@ module.exports = {
 	},
 
 	// Vista (desambiguar)
-	desambiguarForm0: async (req, res) => {
+	desambForm0: async (req, res) => {
 		let respuesta = req.session.desambiguar ? req.session.desambiguar : "";
 		return res.json(respuesta);
 	},
-	desambiguarForm1: async (req, res) => {
+	desambForm1: async (req, res) => {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
 		// Obtiene los productos
@@ -43,9 +46,9 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
-	desambiguarForm2: async (req, res) => {
+	desambForm2: async (req, res) => {
 		// Variables
-		let resultado = req.session.desambiguar1
+		let resultado = req.session.desambiguar1;
 		// Ordena los productos
 		resultado = await buscar_x_PC.ordenaLosProductos(resultado);
 		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
@@ -54,6 +57,66 @@ module.exports = {
 		req.session.desambiguar = resultado;
 		// Fin
 		return res.json(resultado);
+	},
+	desambGuardar1: async (req, res) => {
+		let datos = JSON.parse(req.query.datos);
+		// Obtiene más información del producto
+		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + datos.TMDB_entidad](datos);
+		// Fin
+		return res.json(infoTMDBparaDD);
+	},
+	desambGuardar2: async (req, res) => {
+		let datos = JSON.parse(req.query.datos);
+		// Averigua si es una película y pertenece a una colección
+		let errores = await valida.averiguaSiEsColeccion(datos);
+		// Fin
+		return res.json(errores);
+	},
+	desambGuardar3: async (req, res) => {
+		let errores = JSON.parse(req.query.datos);
+		// Si pertenece a una colección de la BD, la agrega y avisa
+		let productos = await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
+		// Fin
+		return res.json(productos);
+	},
+	desambGuardar4: async (req, res) => {
+		let errores = JSON.parse(req.query.datos);
+		// Si pertenece a una colección que no existe en la BD, avisa
+		let coleccion = await procesos.DS_infoTMDBparaDD_collection({TMDB_id: errores.colec_TMDB_id});
+		// Fin
+		return res.json(coleccion);
+	},
+	desambGuardar5: async (req, res) => {
+		let datosDuros = JSON.parse(req.query.datos);
+		// Guarda los datos originales en una cookie
+		res.cookie("datosOriginales", datosDuros, {maxAge: unDia});
+		// Asigna el avatar_url
+		if (datosDuros.avatar) datosDuros.avatar_url = datosDuros.avatar;
+		else delete datosDuros.avatar;
+		// Averigua si hay errores en Datos Duros
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
+		let camposDD_nombres = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposDD_nombres, datosDuros);
+		// Descarga el avatar
+		if (!errores.hay) {
+			// let datos = await requestPromise.head(datosDuros.avatar_url);
+			// let tipo = datos["content-type"];
+			// let tamano = datos["content-length"];
+			datosDuros.avatar = Date.now() + path.extname(datosDuros.avatar_url);
+			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datosDuros.avatar;
+			// Descarga
+			comp.descarga(datosDuros.avatar_url, rutaYnombre);
+		}
+		// Genera la session y cookie para DatosDuros
+		req.session.datosDuros = {...datosDuros};
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+		// Genera la session y cookie para datosPers
+		if (!errores.hay) {
+			req.session.datosPers = {...datosDuros};
+			res.cookie("datosPers", datosDuros, {maxAge: unDia});
+		}
+		// Fin
+		return res.json(errores);
 	},
 
 	averiguaColeccion: async (req, res) => {

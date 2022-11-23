@@ -22,12 +22,20 @@ const multer = require("../../middlewares/varios/multer");
 // APIs
 // Validar
 router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
-router.get("/api/desambiguar-form0", API.desambiguarForm0);
-router.get("/api/desambiguar-form1", API.desambiguarForm1);
-router.get("/api/desambiguar-form2", API.desambiguarForm2);
 router.get("/api/valida/datos-duros", API.validaDatosDuros);
 router.get("/api/valida/datos-personalizados", API.validaDatosPers);
 router.get("/api/valida/copiar-fa", API.validaCopiarFA);
+// Desambiguar - Form
+router.get("/api/desambiguar-form0", API.desambForm0);
+router.get("/api/desambiguar-form1", API.desambForm1);
+router.get("/api/desambiguar-form2", API.desambForm2);
+// Desambiguar - Guardar
+router.get("/api/desambiguar-guardar1", API.desambGuardar1);
+router.get("/api/desambiguar-guardar2", API.desambGuardar2);
+router.get("/api/desambiguar-guardar3", API.desambGuardar3);
+router.get("/api/desambiguar-guardar4", API.desambGuardar4);
+router.get("/api/desambiguar-guardar5", API.desambGuardar5);
+
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
 router.get("/api/DS-averigua-coleccion", API.averiguaColeccion);
