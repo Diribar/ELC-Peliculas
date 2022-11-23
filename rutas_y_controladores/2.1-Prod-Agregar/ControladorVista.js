@@ -32,7 +32,7 @@ module.exports = {
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {
-		// 1. Guardar el data entry en session y cookie
+		// 1. Guarda el data entry en session y cookie
 		let palabrasClave = req.body.palabrasClave;
 		req.session.palabrasClave = palabrasClave;
 		res.cookie("palabrasClave", palabrasClave, {maxAge: unDia});
@@ -139,8 +139,8 @@ module.exports = {
 			req.session.erroresDD = errores;
 			// Redirecciona
 			return res.redirect("datos-duros");
-		}
-		// Guardar el data entry en session y cookie
+		} else delete req.session.erroresDD
+		// Guarda el data entry en session y cookie
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 		req.session.datosPers = datosDuros
@@ -246,14 +246,14 @@ module.exports = {
 		]);
 		let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		let calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
-		// 3. Guardar los datos de 'Original'
+		// 3. Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
 			...calificaciones,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
-		// 4. Guardar los datos de 'Edición'
+		// 4. Guarda los datos de 'Edición'
 		comp.guardaEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
@@ -353,7 +353,7 @@ module.exports = {
 	},
 	tipoProd_Guardar: async (req, res) => {
 		// 1. Preparar los datos a guardar
-		// 1. Guardar el data entry en session y cookie
+		// 1. Guarda el data entry en session y cookie
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
@@ -400,7 +400,7 @@ module.exports = {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
 		if (!aux) return res.redirect("tipo-producto");
-		// 1. Guardar el data entry en session y cookie
+		// 1. Guarda el data entry en session y cookie
 		let copiarFA = {...aux, ...req.body};
 		req.session.copiarFA = copiarFA;
 		res.cookie("copiarFA", copiarFA, {maxAge: unDia});
