@@ -93,24 +93,6 @@ module.exports = {
 		}
 		return comp.convertirLetrasAlCastellano(datos);
 	},
-	averiguaColeccion: async (TMDB_id) => {
-		// Obtiene la API
-		let datosAPI = await detailsTMDB("movie", TMDB_id);
-		// Datos de la colección a la que pertenece, si corresponde
-		let datos = {};
-		if (datosAPI.belongs_to_collection != null) {
-			// Obtiene datos de la colección
-			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
-			datos.colec_nombre = datosAPI.belongs_to_collection.name;
-			datos.colec_avatar =
-				"https://image.tmdb.org/t/p/original" + datosAPI.belongs_to_collection.poster_path;
-			// elc_id de la colección
-			datos.colec_ELC_id = await BD_especificas.obtieneELC_id("colecciones", {
-				TMDB_id: datos.colec_TMDB_id,
-			});
-		}
-		return datos;
-	},
 
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)

@@ -130,11 +130,6 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	averiguaColeccion: async (req, res) => {
-		let datos = await procesos.averiguaColeccion(req.query.TMDB_id);
-		return res.json(datos);
-	},
-
 	// Vista (tipoProducto)
 	averiguaColecciones: async (req, res) => {
 		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano").then((n) =>

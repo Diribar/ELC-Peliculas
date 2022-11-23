@@ -177,17 +177,13 @@ window.addEventListener("load", async () => {
 				nombre_original: e.target[2].value,
 				idioma_original_id: e.target[3].value,
 			};
-			let movie = datos.TMDB_entidad == "movie" ? 1 : 0;
-			// 0. Muestra el cartel
+			// Muestra el cartel
 			let titulo = "Estamos procesando la información...";
 			let contenido = [
 				"Obteniendo más información del producto",
 				"Descargando la imagen",
 				"Revisando la información disponible",
 			];
-			// Si es una película, agrega un paso más
-			if (movie) contenido.splice(1, 0, "Averiguando si pertenece a una colección");
-			// Armado del cartel
 			armadoDelCartel(titulo, contenido);
 
 			// 1. Obtiene más información del producto
@@ -196,41 +192,17 @@ window.addEventListener("load", async () => {
 			lis_fa_circle[0].classList.add("ocultar");
 			lis_fa_check[0].classList.remove("ocultar");
 
-			// 2. Averigua si pertenece a una colección y toma acciones
-			if (movie) {
-				ruta = "api/desambiguar-guardar2/?datos=" + JSON.stringify(datos);
-				errores = await fetch(ruta).then((n) => n.json());
-				lis_fa_circle[1].classList.add("ocultar");
-				lis_fa_check[1].classList.remove("ocultar");
-				if (errores.mensaje) {
-					// 2.A. Si pertenece a una colección de la BD, la agrega y avisa
-					if (errores.mensaje == "agregarCapitulos") {
-						ruta = "api/desambiguar-guardar3/?datos=" + JSON.stringify(errores);
-						let {coleccion, capitulo} = await fetch(ruta).then((n) => n.json());
-						// Cartel con la novedad
-						return console.log("agregarCapitulos");
-					}
-					// 2.B. Si pertenece a una colección que no existe en la BD, avisa
-					else if (errores.mensaje == "agregarColeccion") {
-						ruta = "api/desambiguar-guardar4/?datos=" + JSON.stringify(errores);
-						let coleccion = await fetch(ruta).then((n) => n.json());
-						// Cartel con la novedad
-						return console.log("agregarColeccion");
-					}
-				}
-			}
-
-			// 3. Descarga la imagen
+			// 2. Descarga la imagen
 			ruta = "api/desambiguar-guardar5/?datos=" + JSON.stringify(datos);
 			datos = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[1 + movie].classList.add("ocultar");
-			lis_fa_check[1 + movie].classList.remove("ocultar");
+			lis_fa_circle[1].classList.add("ocultar");
+			lis_fa_check[1].classList.remove("ocultar");
 
-			// 4. Revisa la información disponible, para determinar los próximos pasos
+			// 3. Revisa la información disponible, para determinar los próximos pasos
 			ruta = "api/desambiguar-guardar6/?datos=" + JSON.stringify(datos);
 			errores = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[2 + movie].classList.add("ocultar");
-			lis_fa_check[2 + movie].classList.remove("ocultar");
+			lis_fa_circle[2].classList.add("ocultar");
+			lis_fa_check[2].classList.remove("ocultar");
 
 			// Desaparece el cartel
 			fondo.classList.add("ocultar");

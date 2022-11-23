@@ -39,7 +39,6 @@ router.get("/api/desambiguar-guardar6", API.desambGuardar6);
 
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
-router.get("/api/DS-averigua-coleccion", API.averiguaColeccion);
 router.get("/api/TP-averigua-colecciones", API.averiguaColecciones);
 router.get("/api/TP-averigua-cant-temporadas", API.averiguaCantTemporadas);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
