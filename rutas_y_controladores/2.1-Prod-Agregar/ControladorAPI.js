@@ -61,7 +61,7 @@ module.exports = {
 	desambGuardar1: async (req, res) => {
 		let datos = JSON.parse(req.query.datos);
 		// Obtiene más información del producto
-		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + datos.TMDB_entidad](datos);
+		let infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
 		// Fin
 		return res.json(infoTMDBparaDD);
 	},
@@ -75,14 +75,14 @@ module.exports = {
 	desambGuardar3: async (req, res) => {
 		let errores = JSON.parse(req.query.datos);
 		// Si pertenece a una colección de la BD, la agrega y avisa
-		let productos = await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
+		let productos = await procesos.agregaCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
 		// Fin
 		return res.json(productos);
 	},
 	desambGuardar4: async (req, res) => {
 		let errores = JSON.parse(req.query.datos);
 		// Si pertenece a una colección que no existe en la BD, avisa
-		let coleccion = await procesos.DS_infoTMDBparaDD_collection({TMDB_id: errores.colec_TMDB_id});
+		let coleccion = await procesos.DS_collection({TMDB_id: errores.colec_TMDB_id});
 		// Fin
 		return res.json(coleccion);
 	},

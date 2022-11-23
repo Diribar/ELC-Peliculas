@@ -27,7 +27,7 @@ module.exports = async (TMDB_entidad, TMDB_id) => {
 		"&language=es-ES";
 	// BUSCAR LA INFO
 	let resultado = await fetch(url).then((n) => n.json());
-	if (resultado.hasOwnProperty("success") && resultado.success == false) {
+	if (resultado.hasOwnProperty("success") && !resultado.success) {
 		console.log("creditsTMDB_fetch", url, resultado);
 		resultado = {
 			page: 1,

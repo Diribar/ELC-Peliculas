@@ -421,14 +421,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	revisaLaImagen: (tipo, tamano) => {
-		let tamanoMaximo = 2;
-		return !tipo.startsWith("image/")
-			? "Necesitamos un archivo de imagen"
-			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
-			: "";
-	},
 	descarga: async (url, rutaYnombre) => {
 		// Carpeta donde descargar
 		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
