@@ -35,6 +35,7 @@ router.get("/api/desambiguar-guardar2", API.desambGuardar2);
 router.get("/api/desambiguar-guardar3", API.desambGuardar3);
 router.get("/api/desambiguar-guardar4", API.desambGuardar4);
 router.get("/api/desambiguar-guardar5", API.desambGuardar5);
+router.get("/api/desambiguar-guardar6", API.desambGuardar6);
 
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
@@ -50,7 +51,6 @@ router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
-router.post("/desambiguar", ...algunos, vista.desambiguarGuardar);
 router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
 router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
 router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);

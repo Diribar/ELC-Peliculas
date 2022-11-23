@@ -9,14 +9,14 @@
 #dataEntry #titulos #links nav a.logos img {width: 100%; height: 100%; position: absolute; object-fit: contain; border-radius: 8px;}
 
 /* Cuerpo del formulario */
-#dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #datos #primeraColumna {margin-right: 50px; display: flex; flex-direction: column;}
+#dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
+#dataEntry #datos {margin-top: 10px;}
+#dataEntry #datos #primeraColumna {display: flex; flex-direction: column;}
 #dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 4px;}
+#dataEntry button {color: white; background-color: var(--gris-oscuro); padding: 5px 15px; border-radius: 10px; max-width: 85%;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
-#dataEntry label {margin-top: 3px; margin-right: 25px; font-weight: bold;}
-#dataEntry label {margin-top: 3px; font-weight: bold;}
 #dataEntry .inputError input.input, #dataEntry .inputError select[name="idioma_original_id"], #dataEntry .inputError textarea {align-self: center; width: 200px;}
 #dataEntry .inputError input.input, #dataEntry .inputError textarea {padding: 0px 5px;}
 #dataEntry .inputError input.input.angosto {width: 90px;}
@@ -42,6 +42,7 @@
 #dataEntry #segundaColumna {width: 200px; height: 100%; position: relative;}
 #dataEntry #segundaColumna, #dataEntry #segundaColumna label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
 #dataEntry #segundaColumna label {height: 100%; width: 100%; position: absolute;}
+#dataEntry #segundaColumna label {top: 50%; left: 50%; translate: -50% -50%;}
 #dataEntry #segundaColumna img {position: absolute; height: 100%; width: 100%; object-fit: contain; border-radius: 15px;}
 
 /* Flechas */

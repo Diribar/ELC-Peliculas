@@ -87,26 +87,37 @@ module.exports = {
 		return res.json(coleccion);
 	},
 	desambGuardar5: async (req, res) => {
+		// Variables
 		let datosDuros = JSON.parse(req.query.datos);
-		// Guarda los datos originales en una cookie
-		res.cookie("datosOriginales", datosDuros, {maxAge: unDia});
-		// Asigna el avatar_url
-		if (datosDuros.avatar) datosDuros.avatar_url = datosDuros.avatar;
-		else delete datosDuros.avatar;
-		// Averigua si hay errores en Datos Duros
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
-		let camposDD_nombres = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombres, datosDuros);
-		// Descarga el avatar
-		if (!errores.hay) {
+		// Acciones si el campo 'avatar' tiene un valor
+		if (datosDuros.avatar) {
+			// Variables
+			datosDuros.avatar_url = datosDuros.avatar;
+			datosDuros.avatar = Date.now() + path.extname(datosDuros.avatar_url);
+			// Descarga el avatar
 			// let datos = await requestPromise.head(datosDuros.avatar_url);
 			// let tipo = datos["content-type"];
 			// let tamano = datos["content-length"];
-			datosDuros.avatar = Date.now() + path.extname(datosDuros.avatar_url);
 			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datosDuros.avatar;
-			// Descarga
-			comp.descarga(datosDuros.avatar_url, rutaYnombre);
+			await comp.descarga(datosDuros.avatar_url, rutaYnombre);
 		}
+		// Elimina el campo avatar
+		else delete datosDuros.avatar;
+		// Fin
+		return res.json(datosDuros);
+	},
+	desambGuardar6: async (req, res) => {
+		let datosDuros = JSON.parse(req.query.datos);
+		// Guarda los datos originales en una cookie
+		let datosOriginales = {...datosDuros};
+		if (datosOriginales.avatar_url) datosOriginales.avatar = datosOriginales.avatar_url;
+		else delete datosOriginales.avatar;
+		delete datosOriginales.avatar_url;
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		// Averigua si falta completar algún campo de Datos Duros
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
+		let camposDD_nombres = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposDD_nombres, datosDuros);
 		// Genera la session y cookie para DatosDuros
 		req.session.datosDuros = {...datosDuros};
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});

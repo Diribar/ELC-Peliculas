@@ -25,24 +25,20 @@
 				<!-- TMDB -->
 				<% if (dataEntry.fuente!="TMDB") { %>
 					<% tmdb = dataEntry.nombre_original ? "search?language=es&query=" + dataEntry.nombre_original : "" %>
-					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-TMDB.jpg" alt="TMDB"></a>
+					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-TMDB.jpg" title="The Movie Database"></a>
 				<% } %>
 				<!-- FA -->
 				<% if (dataEntry.fuente!="FA") { %>
 					<% fa = dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
-					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Logos/BD-FA.jpg" alt="FA"></a>
+					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Logos/BD-FA.jpg" title="Film Affinity"></a>
 				<% } %>
 				<!-- IMDB -->
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "") %>
-				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-IMDB.jpg" alt="IMDB"></a>
-				<% if (dataEntry.fuente!="IM") { %>
-					<!-- Wikipedia -->
-					<a class="logos" href="//es.wikipedia.org/wiki/<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Wiki.jpg" alt="Wikipedia"></a>
-					<!-- Google -->
-					<a class="logos" href="//google.com/search?q=<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Google.jpg" alt="Google"></a>
-					
-				<% } %>
-
+				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-IMDB.jpg" title="Internet Movie Database"></a>
+				<!-- Wikipedia -->
+				<a class="logos" href="//es.wikipedia.org/wiki/<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Wikipedia"></a>
+				<!-- Google -->
+				<a class="logos" href="//google.com/search?q=<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Google.jpg" title="Google"></a>
 			</nav>
 		</div>
 	</section>
@@ -63,25 +59,14 @@
 		</div>
 		<!--Segunda columna-->
 		<div id="segundaColumna" class="inputError">
-			<!-- Si existe una imagen y viene desde TMDB -->
-			<% if (dataEntry.avatar_url && dataEntry.fuente == "TMDB") { %>
-				<img src="<%= dataEntry.avatar_url %>" alt="afiche">
-			<% } else { %>
-				<label for="inputImagen" id="preview"></label>
-				<!-- Si existe una imagen que no viene de TMDB -->
-				<% if (dataEntry.avatar_url && dataEntry.fuente != "TMDB") { %>
-					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
-					<p id="url" class="ocultar"><%= dataEntry.avatar_url %></p>
-				<% } %>
-				<!-- Si no existe una imagen -->
-				<% if (!dataEntry.avatar_url) { %>
-					<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
-				<% } %>
-				<!-- Rutina para todos los casos -->
-				<input name="avatar_url" id="inputImagen" type="file" accept="image/*" class="ocultar input">
-				<!-- Errores/OK -->
-				<%- include("CMP-Errores", {campo: "avatar"}) %>
-			<% } %>
+			<button type="button" class="pointer">
+				<%- dataEntry.avatar ? "Si querés, podés cambiar la imagen" : "Necesitamos que elijas una imagen" %>
+				<br>
+				(puede ser una URL)
+			</button>
+			<label for="inputImagen" id="preview"></label>
+			<input name="avatar_url" id="inputImagen" type="file" accept="image/*" class="ocultar input">
+			<%- include("CMP-Errores", {campo: "avatar"}) %>
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->
