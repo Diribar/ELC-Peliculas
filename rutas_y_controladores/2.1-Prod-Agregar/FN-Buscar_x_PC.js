@@ -135,17 +135,31 @@ module.exports = {
 					);
 				}
 			});
-			// Acumula los lotes
+			// Espera a que las promesas se cumplan
 			lotes = await Promise.all(lotes);
-			acumulador = acumulaResultados(lotes, acumulador, pagina);
+			// Acumula los lotes
+			(() => {
+				// Unifica cantPaginasAPI
+				if (pagina == 1)
+					for (let lote of lotes)
+						acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
 
-			// Para que no haya más, se tiene que haber superado el máximo en las 3 entidades
-			acumulador.hayMas = (() => {
-				return (
+				// Unifica productos
+				for (let lote of lotes) {
+					acumulador.productos.push(...lote.productos);
+					acumulador.cantPaginasUsadas[lote.TMDB_entidad] = Math.min(
+						pagina,
+						acumulador.cantPaginasAPI[lote.TMDB_entidad]
+					);
+				}
+			})();
+			// Averigua si hay más productos para 'Search'
+			(() => {
+				// Para que no haya más, se tiene que haber superado el máximo en las 3 entidades
+				acumulador.hayMas =
 					pagina < acumulador.cantPaginasAPI[entidadesTMDB[0]] ||
 					pagina < acumulador.cantPaginasAPI[entidadesTMDB[1]] ||
-					pagina < acumulador.cantPaginasAPI[entidadesTMDB[2]]
-				);
+					pagina < acumulador.cantPaginasAPI[entidadesTMDB[2]];
 			})();
 
 			// Se fija si no hay que buscar más
@@ -175,10 +189,46 @@ module.exports = {
 		return resultados;
 	},
 
-	revisaReemplazaPeliPorColeccion: async (resultados) => {
+	reemplazoDePeliPorColeccion: async (resultados) => {
 		let valorI = new Date();
 		// Revisa y reemplaza las películas por su colección
-		resultados = await revisaReemplazaPeliPorColeccion(resultados);
+		await (async () => {
+			// Variables
+			let productos = [];
+			// Rutina para el lote de productos
+			for (let prod of resultados.productos) {
+				// Si la entidad no es una película, sigue al siguiente producto
+				if (prod.entidad != "peliculas") {
+					productos.push(prod);
+					continue;
+				}
+
+				// Acciones si es una película -------------------------
+				// Obtiene los datos de la película
+				let pelicula = await detailsTMDB("movie", prod.TMDB_id);
+				// Si la película no pertenece a una colección, sigue al siguiente producto
+				if (!pelicula.belongs_to_collection) {
+					productos.push(prod);
+					continue;
+				}
+
+				// Acciones si es una película de colección -----------
+				// Datos de la colección a la que pertenece
+				let coleccion = {
+					TMDB_entidad: "collection",
+					TMDB_id: pelicula.belongs_to_collection.id,
+					nombre_castellano: pelicula.belongs_to_collection.name,
+					avatar: pelicula.belongs_to_collection.poster_path,
+					prodNombre: "Colección",
+					entidad: "colecciones",
+				};
+				productos.push(coleccion);
+			}
+
+			// Fin
+			resultados.productos = productos;
+		})();
+
 		// Fin
 		let valorF = new Date();
 		console.log(valorF - valorI);
@@ -197,26 +247,7 @@ module.exports = {
 	},
 };
 
-// Proceso por lote de productos
-let acumulaResultados = (lotes, acumulador, pagina) => {
-	// Unifica cantPaginasAPI
-	if (pagina == 1)
-		for (let lote of lotes) acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
-
-	// Unifica productos
-	for (let lote of lotes) {
-		acumulador.productos.push(...lote.productos);
-		acumulador.cantPaginasUsadas[lote.TMDB_entidad] = Math.min(
-			pagina,
-			acumulador.cantPaginasAPI[lote.TMDB_entidad]
-		);
-	}
-
-	// Fin
-	return acumulador;
-};
-// Procesos por página
-// Procesos por única vez
+// Averigua qué registros ya tenemos en nuestra base de datos
 let averiguaSiYaEnBD = async (resultados) => {
 	// Variables
 	let productos = [];
@@ -245,43 +276,6 @@ let averiguaSiYaEnBD = async (resultados) => {
 
 	// Fin
 	return resultados;
-};
-let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
-	// Variables
-	let productos = [];
-	// Rutina para el lote de productos
-	for (let prod of lote.productos) {
-		// Si la entidad no es una película, sigue al siguiente producto
-		if (prod.entidad != "peliculas") {
-			productos.push(prod);
-			continue;
-		}
-
-		// Acciones si es una película -------------------------
-		// Obtiene los datos de la película
-		let pelicula = await detailsTMDB("movie", prod.TMDB_id);
-		// Si la película no pertenece a una colección, sigue al siguiente producto
-		if (!pelicula.belongs_to_collection) {
-			productos.push(prod);
-			continue;
-		}
-
-		// Acciones si es una película de colección -----------
-		// Datos de la colección a la que pertenece
-		let coleccion = {
-			TMDB_entidad: "collection",
-			TMDB_id: pelicula.belongs_to_collection.id,
-			nombre_castellano: pelicula.belongs_to_collection.name,
-			avatar: pelicula.belongs_to_collection.poster_path,
-			prodNombre: "Colección",
-			entidad: "colecciones",
-		};
-		productos.push(coleccion);
-	}
-
-	// Fin
-	lote.productos = productos;
-	return lote;
 };
 // Organiza la informacion
 let completaDatosColecciones = async (resultados) => {
