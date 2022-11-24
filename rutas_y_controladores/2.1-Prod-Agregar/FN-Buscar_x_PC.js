@@ -121,16 +121,15 @@ module.exports = {
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let entidadesTMDB = ["collection", "tv", "movie"];
 		let acumulador = {productos: [], cantPaginasAPI: {}, cantPaginasUsadas: {}};
-		let page = 0;
-		let valorI = new Date();
+		let pagina = 0;
 		// Rutina
 		while (true) {
-			page++;
+			pagina++;
 			let lotes = [];
 			entidadesTMDB.forEach((TMDB_entidad) => {
-				if (page == 1 || page <= acumulador.cantPaginasAPI[TMDB_entidad]) {
+				if (pagina == 1 || pagina <= acumulador.cantPaginasAPI[TMDB_entidad]) {
 					lotes.push(
-						searchTMDB(palabrasClave, TMDB_entidad, page)
+						searchTMDB(palabrasClave, TMDB_entidad, pagina)
 							// Procesos por lote de productos
 							.then((n) => funcionesSearchIniciales(n, TMDB_entidad, palabrasClave))
 					);
@@ -138,21 +137,38 @@ module.exports = {
 			});
 			// Acumula los lotes
 			lotes = await Promise.all(lotes);
-			acumulador = acumulaResultados(lotes, acumulador, page);
+			acumulador = acumulaResultados(lotes, acumulador, pagina);
 
-			// Procesos por página
 			// Para que no haya más, se tiene que haber superado el máximo en las 3 entidades
-			acumulador.hayMas = hayMas(acumulador, page, entidadesTMDB);
+			acumulador.hayMas = (() => {
+				return (
+					pagina < acumulador.cantPaginasAPI[entidadesTMDB[0]] ||
+					pagina < acumulador.cantPaginasAPI[entidadesTMDB[1]] ||
+					pagina < acumulador.cantPaginasAPI[entidadesTMDB[2]]
+				);
+			})();
+
+			// Se fija si no hay que buscar más
 			if (acumulador.productos.length >= 20 || !acumulador.hayMas) break;
 		}
-		let valorF = new Date();
-		console.log(valorF - valorI);
 		// Procesos por única vez
 		let resultados = acumulador;
 		// Elimina los registros duplicados
-		resultados = eliminaDuplicados(resultados);
-		// Averigua qué registros ya tenemos en nuestra base de datos
-		resultados = await averiguaSiYaEnBD(resultados);
+		(() => {
+			for (let indice = resultados.productos.length - 1; indice >= 0; indice--) {
+				let registro = resultados.productos[indice];
+				let coincidencias;
+				// Averigua duplicados de TV (principalmente con 'movie')
+				if (registro.TMDB_entidad == "tv")
+					coincidencias = resultados.productos.filter(
+						(n) =>
+							(n.desempate1 == registro.desempate1 || n.desempate2 == registro.desempate2) &&
+							n.ano_estreno == registro.ano_estreno
+					).length;
+				// Elimina duplicados
+				if (coincidencias && coincidencias > 1) resultados.productos.splice(indice, 1);
+			}
+		})();
 		// Agrega el método de palabrasClave
 		resultados.palabrasClave = palabrasClave;
 		// Fin
@@ -160,8 +176,12 @@ module.exports = {
 	},
 
 	revisaReemplazaPeliPorColeccion: async (resultados) => {
+		let valorI = new Date();
 		// Revisa y reemplaza las películas por su colección
-		lote = await revisaReemplazaPeliPorColeccion(resultados);
+		resultados = await revisaReemplazaPeliPorColeccion(resultados);
+		// Fin
+		let valorF = new Date();
+		console.log(valorF - valorI);
 		return resultados;
 	},
 
@@ -178,6 +198,54 @@ module.exports = {
 };
 
 // Proceso por lote de productos
+let acumulaResultados = (lotes, acumulador, pagina) => {
+	// Unifica cantPaginasAPI
+	if (pagina == 1)
+		for (let lote of lotes) acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
+
+	// Unifica productos
+	for (let lote of lotes) {
+		acumulador.productos.push(...lote.productos);
+		acumulador.cantPaginasUsadas[lote.TMDB_entidad] = Math.min(
+			pagina,
+			acumulador.cantPaginasAPI[lote.TMDB_entidad]
+		);
+	}
+
+	// Fin
+	return acumulador;
+};
+// Procesos por página
+// Procesos por única vez
+let averiguaSiYaEnBD = async (resultados) => {
+	// Variables
+	let productos = [];
+	// Obtiene los registros de la BD
+	for (let prod of resultados.productos) {
+		// Obtiene la entidad
+		let TMDB_entidad = prod.TMDB_entidad;
+		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
+		// Obtiene el TMDB_id
+		let TMDB_id = prod.TMDB_id;
+		// Busca entre las películas o colecciones
+		let include = prod.entidad == "colecciones" ? "capitulos" : "";
+		productos.push(BD_genericas.obtienePorCamposConInclude(entidad, {TMDB_id}, include));
+	}
+	// Agrega info de la BD
+	productos = await Promise.all(productos);
+	resultados.productos.forEach((prod, indice) => {
+		// Obtiene el producto de nuestra BD
+		let producto = productos[indice];
+		// Le asigna valores de nuestra BD
+		if (producto) {
+			prod.yaEnBD_id = producto.id;
+			if (prod.entidad == "colecciones") prod.capitulos = producto.capitulos.length;
+		}
+	});
+
+	// Fin
+	return resultados;
+};
 let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
 	// Variables
 	let productos = [];
@@ -214,75 +282,6 @@ let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
 	// Fin
 	lote.productos = productos;
 	return lote;
-};
-let acumulaResultados = (lotes, acumulador, pagina) => {
-	// Unifica cantPaginasAPI
-	if (pagina == 1)
-		for (let lote of lotes) acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
-
-	// Unifica productos
-	for (let lote of lotes) {
-		acumulador.productos.push(...lote.productos);
-		acumulador.cantPaginasUsadas[lote.TMDB_entidad] = Math.min(
-			pagina,
-			acumulador.cantPaginasAPI[lote.TMDB_entidad]
-		);
-	}
-
-	// Fin
-	return acumulador;
-};
-// Procesos por página
-let hayMas = (acumulador, page, entidadesTMDB) => {
-	return (
-		page < acumulador.cantPaginasAPI[entidadesTMDB[0]] ||
-		page < acumulador.cantPaginasAPI[entidadesTMDB[1]] ||
-		page < acumulador.cantPaginasAPI[entidadesTMDB[2]]
-	);
-};
-// Procesos por única vez
-let eliminaDuplicados = (resultados) => {
-	for (let indice = resultados.productos.length - 1; indice >= 0; indice--) {
-		let registro = resultados.productos[indice];
-		let coincidencias;
-		// Averigua duplicados de TV (principalmente con 'movie')
-		if (registro.TMDB_entidad == "tv")
-			coincidencias = resultados.productos.filter(
-				(n) =>
-					(n.desempate1 == registro.desempate1 || n.desempate2 == registro.desempate2) &&
-					n.ano_estreno == registro.ano_estreno
-			).length;
-		// Elimina duplicados
-		if (coincidencias && coincidencias > 1) {
-			resultados.productos.splice(indice, 1);
-		}
-	}
-	// Fin
-	return resultados;
-};
-let averiguaSiYaEnBD = async (resultados) => {
-	// Rutina por producto
-	for (let i = 0; i < resultados.productos.length; i++) {
-		// Obtiene la entidad
-		let TMDB_entidad = resultados.productos[i].TMDB_entidad;
-		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
-		// Obtiene el TMDB_id
-		let TMDB_id = resultados.productos[i].TMDB_id;
-		// Busca entre las películas o colecciones
-		let include = resultados.productos[i].entidad == "colecciones" ? "capitulos" : "";
-		let producto = await BD_genericas.obtienePorCamposConInclude(entidad, {TMDB_id}, include);
-		// Agrega info
-		if (producto) {
-			resultados.productos[i].yaEnBD_id = producto.id;
-			if (resultados.productos[i].entidad == "colecciones") {
-				resultados.productos[i].ano_estreno = producto.ano_estreno;
-				resultados.productos[i].ano_fin = producto.ano_fin;
-				resultados.productos[i].capitulos = producto.capitulos.length;
-			}
-		}
-	}
-	// Fin
-	return resultados;
 };
 // Organiza la informacion
 let completaDatosColecciones = async (resultados) => {
