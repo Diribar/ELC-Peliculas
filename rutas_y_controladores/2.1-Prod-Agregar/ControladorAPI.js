@@ -19,9 +19,11 @@ module.exports = {
 	cantProductos: async (req, res) => {
 		// Variables
 		let palabrasClave = req.query.palabrasClave;
-		// Obtiene la cantidad de productos encontrados que coinciden con las palabras clave
 		let resultado;
+		// Obtiene los productos
 		resultado = await buscar_x_PC.search(palabrasClave);
+		// Revisa si debe reemplazar una película por su colección
+		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
 		// Prepara la respuesta
 		let cantProds = resultado.productos.length;
 		let cantProdsNuevos = resultado.productos.filter((n) => !n.yaEnBD_id).length;
@@ -51,7 +53,7 @@ module.exports = {
 		let resultado = req.session.desambiguar1;
 		// Revisa si debe reemplazar una película por su colección
 		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
-		// Conserva la información en session para no tener que procesarla de nuevo
+		// Conserva la información en session
 		req.session.desambiguar2 = resultado;
 		// Fin
 		return res.json(resultado);
