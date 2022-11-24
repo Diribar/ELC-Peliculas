@@ -49,10 +49,8 @@ module.exports = {
 	desambForm2: async (req, res) => {
 		// Variables
 		let resultado = req.session.desambiguar1;
-		// Ordena los productos
-		resultado = await buscar_x_PC.ordenaLosProductos(resultado);
-		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
-		resultado = buscar_x_PC.DS_procesoFinal(resultado);
+		// Organiza la información
+		resultado = await buscar_x_PC.organizaLaInformacion(resultado);
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = resultado;
 		// Fin
@@ -128,11 +126,6 @@ module.exports = {
 		}
 		// Fin
 		return res.json(errores);
-	},
-
-	averiguaColeccion: async (req, res) => {
-		let datos = await procesos.averiguaColeccion(req.query.TMDB_id);
-		return res.json(datos);
 	},
 
 	// Vista (tipoProducto)
