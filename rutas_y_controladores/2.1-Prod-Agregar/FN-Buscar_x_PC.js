@@ -194,39 +194,27 @@ module.exports = {
 		// Revisa y reemplaza las películas por su colección
 		await (async () => {
 			// Variables
-			let productos = [];
+			let colecciones = [];
 			// Rutina para el lote de productos
-			for (let prod of resultados.productos) {
-				// Si la entidad no es una película, sigue al siguiente producto
-				if (prod.entidad != "peliculas") {
-					productos.push(prod);
-					continue;
-				}
-
-				// Acciones si es una película -------------------------
-				// Obtiene los datos de la película
-				let pelicula = await detailsTMDB("movie", prod.TMDB_id);
-				// Si la película no pertenece a una colección, sigue al siguiente producto
-				if (!pelicula.belongs_to_collection) {
-					productos.push(prod);
-					continue;
-				}
-
-				// Acciones si es una película de colección -----------
-				// Datos de la colección a la que pertenece
-				let coleccion = {
+			for (let prod of resultados.productos)
+				colecciones.push(prod.entidad == "peliculas" ? detailsTMDB("movie", prod.TMDB_id) : "");
+			// Obtiene las promesas
+			colecciones = await Promise.all(colecciones);
+			// Reemplaza películas por colecciones
+			resultados.productos.forEach((prod, indice) => {
+				let coleccion = colecciones[indice];
+				// Si no hay nada que cambiar, interrumpe
+				if (!coleccion || !coleccion.belongs_to_collection) return;
+				// Si es una película de colección, cambia sus datos por los de la colección
+				prod = {
 					TMDB_entidad: "collection",
-					TMDB_id: pelicula.belongs_to_collection.id,
-					nombre_castellano: pelicula.belongs_to_collection.name,
-					avatar: pelicula.belongs_to_collection.poster_path,
+					TMDB_id: coleccion.belongs_to_collection.id,
+					nombre_castellano: coleccion.belongs_to_collection.name,
+					avatar: coleccion.belongs_to_collection.poster_path,
 					prodNombre: "Colección",
 					entidad: "colecciones",
 				};
-				productos.push(coleccion);
-			}
-
-			// Fin
-			resultados.productos = productos;
+			});
 		})();
 
 		// Fin
