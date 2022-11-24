@@ -22,7 +22,11 @@ module.exports = {
 					if ((TMDB_entidad == "collection" && poster) || (poster && lanzam)) productos.push(prod);
 				}
 				// Fin
-				lote = {productos, cantPaginasAPI: Math.min(lote.total_pages, lote.total_results)};
+				lote = {
+					productos,
+					TMDB_entidad,
+					cantPaginasAPI: Math.min(lote.total_pages, lote.total_results),
+				};
 			})();
 			// Estandariza nombres
 			(() => {
@@ -111,32 +115,38 @@ module.exports = {
 				lote.productos = productos;
 			};
 			// Fin
-			return lote
+			return lote;
 		};
 		// Variables
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
-		let acumulador = {productos: []};
 		let entidadesTMDB = ["collection", "tv", "movie"];
+		let acumulador = {productos: [], cantPaginasAPI: {}, cantPaginasUsadas: {}};
 		let page = 0;
-		let valorI=new Date()
+		let valorI = new Date();
+		// Rutina
 		while (true) {
 			page++;
-			for (let TMDB_entidad of entidadesTMDB) {
+			let lotes = [];
+			entidadesTMDB.forEach((TMDB_entidad) => {
 				if (page == 1 || page <= acumulador.cantPaginasAPI[TMDB_entidad]) {
-					let lote = await searchTMDB(palabrasClave, TMDB_entidad, page)
-						// Procesos por lote de productos
-						.then((n) => funcionesSearchIniciales(n, TMDB_entidad, palabrasClave));
-					// Acumula los lotes
-					acumulador = acumulaResultados(lote, TMDB_entidad, acumulador, page);
+					lotes.push(
+						searchTMDB(palabrasClave, TMDB_entidad, page)
+							// Procesos por lote de productos
+							.then((n) => funcionesSearchIniciales(n, TMDB_entidad, palabrasClave))
+					);
 				}
-			}
+			});
+			// Acumula los lotes
+			lotes = await Promise.all(lotes);
+			acumulador = acumulaResultados(lotes, acumulador, page);
+
 			// Procesos por página
 			// Para que no haya más, se tiene que haber superado el máximo en las 3 entidades
 			acumulador.hayMas = hayMas(acumulador, page, entidadesTMDB);
 			if (acumulador.productos.length >= 20 || !acumulador.hayMas) break;
 		}
-		let valorF=new Date()
-		console.log(valorF-valorI);
+		let valorF = new Date();
+		console.log(valorF - valorI);
 		// Procesos por única vez
 		let resultados = acumulador;
 		// Elimina los registros duplicados
@@ -205,19 +215,21 @@ let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
 	lote.productos = productos;
 	return lote;
 };
-let acumulaResultados = (lote, TMDB_entidad, acumulador, page) => {
-	if (page == 1) {
-		acumulador.cantPaginasAPI = {
-			...acumulador.cantPaginasAPI,
-			[TMDB_entidad]: lote.cantPaginasAPI,
-		};
-	}
+let acumulaResultados = (lotes, acumulador, pagina) => {
+	// Unifica cantPaginasAPI
+	if (pagina == 1)
+		for (let lote of lotes) acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
+
 	// Unifica productos
-	acumulador.productos.push(...lote.productos);
-	acumulador.cantPaginasUsadas = {
-		...acumulador.cantPaginasUsadas,
-		[TMDB_entidad]: Math.min(page, acumulador.cantPaginasAPI[TMDB_entidad]),
-	};
+	for (let lote of lotes) {
+		acumulador.productos.push(...lote.productos);
+		acumulador.cantPaginasUsadas[lote.TMDB_entidad] = Math.min(
+			pagina,
+			acumulador.cantPaginasAPI[lote.TMDB_entidad]
+		);
+	}
+
+	// Fin
 	return acumulador;
 };
 // Procesos por página
