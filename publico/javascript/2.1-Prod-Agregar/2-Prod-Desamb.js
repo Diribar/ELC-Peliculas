@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	let cartelUl = document.querySelector("#cartel ul");
 	let cartelError = document.querySelector("#cartel #error");
 	let cartelTrabajando = document.querySelector("#cartel #trabajando");
-	let lis_fa_circle, lis_fa_check;
+	let lis_fa_circle;
 
 	// Cartel - configuración
 	(() => {
@@ -46,17 +46,12 @@ window.addEventListener("load", async () => {
 			i = document.createElement("i");
 			i.classList.add("fa-regular", "fa-circle");
 			li.appendChild(i);
-			// Crea el check y lo agrega
-			i = document.createElement("i");
-			i.classList.add("fa-solid", "fa-circle-check", "ocultar");
-			li.appendChild(i);
 			// Agrega el texto
 			li.innerHTML += cont;
 			cartelUl.appendChild(li);
 		}
 		// DOM - íconos
 		lis_fa_circle = document.querySelectorAll("#cartel li i.fa-circle");
-		lis_fa_check = document.querySelectorAll("#cartel li i.fa-circle-check");
 		// Hace visible el cartel
 		fondo.classList.remove("ocultar");
 		cartel.classList.remove("ocultar");
@@ -75,24 +70,24 @@ window.addEventListener("load", async () => {
 		let contenido = [
 			"Buscando productos",
 			"Reemplazando películas por su colección",
-			"Completando la información"
+			"Completando la información",
 		];
 		armadoDelCartel(titulo, contenido);
 
 		// Busca los productos
-		lis_fa_circle[0].classList.replace("fa-regular","fa-solid");
+		lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
 		ruta = "api/desambiguar-form1/?palabrasClave=";
 		await fetch(ruta + palabrasClave);
-		lis_fa_circle[0].classList.replace("fa-circle","fa-circle-check");
+		lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 		// Reemplaza las películas por su colección
-		lis_fa_circle[1].classList.replace("fa-regular","fa-solid");
+		lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
 		ruta = "api/desambiguar-form2/";
 		await fetch(ruta);
-		lis_fa_circle[1].classList.replace("fa-circle","fa-circle-check");
+		lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 		// Pule la información
-		lis_fa_circle[2].classList.replace("fa-regular","fa-solid");
+		lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
 		ruta = "api/desambiguar-form3/";
 		resultado = await fetch(ruta).then((n) => n.json());
 	}
@@ -116,7 +111,21 @@ window.addEventListener("load", async () => {
 			// Información a mostrar
 			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombre_original;
 			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
-			li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
+			// Completa los años
+			if (prod.entidad == "colecciones") {
+				li.children[0][4].children[1].children[3].innerHTML = prod.prodNombre;
+				let br = document.createElement("br");
+				li.children[0][4].children[1].children[3].append(br);
+				let ano =
+					prod.ano_fin > prod.ano_estreno
+						? "(" + prod.ano_fin + "-" + prod.ano_estreno + ")"
+						: "(" + prod.ano_estreno + ")";
+				li.children[0][4].children[1].children[3].innerHTML += ano;
+			} else {
+				let ano = " (" + prod.ano_estreno + ")";
+				li.children[0][4].children[1].children[3].innerHTML = prod.prodNombre + ano;
+			}
+
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 			// Agrega el form
@@ -161,7 +170,7 @@ window.addEventListener("load", async () => {
 	// Desaparece el cartel
 	if (lis_fa_circle) {
 		// Actualiza los íconos
-		lis_fa_circle[2].classList.replace("fa-circle","fa-circle-check");
+		lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
 
 		// Oculta el cartel
 		fondo.classList.add("ocultar");
@@ -197,22 +206,22 @@ window.addEventListener("load", async () => {
 			armadoDelCartel(titulo, contenido);
 
 			// 1. Obtiene más información del producto
+			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
 			ruta = "api/desambiguar-guardar1/?datos=" + JSON.stringify(datos);
 			datos = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[0].classList.add("ocultar");
-			lis_fa_check[0].classList.remove("ocultar");
+			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 			// 2. Descarga la imagen
+			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
 			ruta = "api/desambiguar-guardar5/?datos=" + JSON.stringify(datos);
 			datos = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[1].classList.add("ocultar");
-			lis_fa_check[1].classList.remove("ocultar");
+			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 			// 3. Revisa la información disponible, para determinar los próximos pasos
+			lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
 			ruta = "api/desambiguar-guardar6/?datos=" + JSON.stringify(datos);
 			errores = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[2].classList.add("ocultar");
-			lis_fa_check[2].classList.remove("ocultar");
+			lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
 
 			// Desaparece el cartel
 			fondo.classList.add("ocultar");

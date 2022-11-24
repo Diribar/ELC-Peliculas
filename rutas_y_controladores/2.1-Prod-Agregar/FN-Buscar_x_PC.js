@@ -33,14 +33,8 @@ module.exports = {
 				let productos = [];
 				for (let prod of lote.productos) {
 					// Variables
-					let prodNombre,
-						entidad,
-						nombre_original,
-						nombre_castellano,
-						ano_estreno,
-						ano_fin,
-						desempate3;
-					ano_estreno = ano_fin = desempate3 = "";
+					let prodNombre, entidad, nombre_original, nombre_castellano, ano_estreno, ano_fin;
+					ano_estreno = ano_fin = "";
 					// Colecciones
 					if (TMDB_entidad == "collection") {
 						prodNombre = "Colección";
@@ -62,7 +56,7 @@ module.exports = {
 						entidad = "peliculas";
 						nombre_original = prod.original_title;
 						nombre_castellano = prod.title;
-						ano_estreno = ano_fin = desempate3 = parseInt(prod.release_date.slice(0, 4));
+						ano_estreno = ano_fin = parseInt(prod.release_date.slice(0, 4));
 					}
 					// Define el título sin "distractores", para encontrar duplicados
 					let desempate1 = comp
@@ -87,7 +81,6 @@ module.exports = {
 						comentario: prod.overview,
 						desempate1,
 						desempate2,
-						desempate3,
 					});
 				}
 				// Fin
@@ -245,7 +238,7 @@ module.exports = {
 				if (prod) {
 					resultados.productos[indice].yaEnBD_id = prod.id;
 					if (resultados.productos[indice].entidad == "colecciones")
-						resultados.productos[indice].capitulos = prod.capitulos.length;
+						resultados.productos[indice].capitulosELC = prod.capitulos.length;
 				}
 			});
 		})();
@@ -255,12 +248,92 @@ module.exports = {
 
 	organizaLaInformacion: async (resultados) => {
 		let valorI = new Date();
-		// Le agrega el año de estreno y fin a las colecciones
-		resultados = await completaDatosColecciones(resultados);
+		// Le agrega el año de estreno, fin y capítulos a las colecciones
+		await (async () => {
+			// Variables
+			let colecciones = [];
+			// Obtiene las colecciones que se necesitan
+			resultados.productos.forEach((prod) => {
+				colecciones.push(
+					prod.TMDB_entidad != "movie" ? detailsTMDB(prod.TMDB_entidad, prod.TMDB_id) : ""
+				);
+			});
+			colecciones = await Promise.all(colecciones);
+			// Completa los campos
+			colecciones.forEach((coleccion, indice) => {
+				// Interrumpe si no es una colección
+				if (!coleccion) return;
+				// Acciones si es una collección
+				if (coleccion.parts) {
+					// Variables para colecciones
+					let anos_estreno = coleccion.parts.map((m) => (m.release_date ? m.release_date : "-"));
+					let ano_estreno = anos_estreno.reduce((a, b) => (a < b ? a : b));
+					let ano_fin = anos_estreno.reduce((a, b) => (a > b && a != "-" ? a : b));
+					// Agrega información
+					resultados.productos[indice] = {
+						...resultados.productos[indice],
+						ano_estreno: ano_estreno != "-" ? parseInt(ano_estreno.slice(0, 4)) : "-",
+						ano_fin: ano_fin != "-" ? parseInt(ano_fin.slice(0, 4)) : "-",
+						capitulos: anos_estreno.length,
+					};
+				}
+				// Acciones si es una serie de TV
+				else {
+					// Obtiene los capítulos
+					let capitulos = coleccion.seasons
+						.filter((n) => n.season_number)
+						.map((n) => n.episode_count)
+						.reduce((a, b) => a + b, 0);
+					// Agrega información
+					resultados.productos[indice] = {
+						...resultados.productos[indice],
+						ano_fin: coleccion.last_air_date
+							? parseInt(coleccion.last_air_date.slice(0, 4))
+							: "-",
+						capitulos,
+					};
+				}
+			});
+		})();
+
 		// Ordena los productos
-		resultados = ordenaLosProductos(resultados);
+		(() => {
+			if (resultados.productos.length > 1) {
+				// Criterio secundario: primero colecciones, luego películas
+				resultados.productos.sort((a, b) =>
+					a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0
+				);
+				// Criterio principal: primero la más reciente
+				resultados.productos.sort((a, b) =>
+					a.ano_fin > b.ano_fin ? -1 : a.ano_fin < b.ano_fin ? 1 : 0
+				);
+			}
+		})();
+
 		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
-		resultados = formatoFrontEnd(resultados);
+		(() => {
+			// Variables
+			let prodsNuevos = resultados.productos.filter((n) => !n.yaEnBD_id);
+			let prodsYaEnBD = resultados.productos.filter((n) => n.yaEnBD_id);
+			let coincidencias = resultados.productos.length;
+			let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
+			let hayMas = resultados.hayMas;
+			// Obtiene el mensaje
+			let mensaje =
+				"Encontramos " +
+				(coincidencias == 1
+					? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
+					: (hayMas ? "muchas" : coincidencias) +
+					  " coincidencias" +
+					  (hayMas ? ". Te mostramos " + coincidencias : "") +
+					  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
+				" está" +
+				(cantN > 1 && cantN < coincidencias ? "n" : "") +
+				" en nuestra BD.";
+			// Fin
+			resultados = {prodsNuevos, prodsYaEnBD, mensaje};
+		})();
+
 		// Fin
 		let valorF = new Date();
 		console.log(valorF - valorI);
@@ -269,58 +342,4 @@ module.exports = {
 };
 
 // Organiza la informacion
-let completaDatosColecciones = async (resultados) => {
-	// Rutina
-	for (let prod of resultados.productos)
-		if (prod.TMDB_entidad == "collection") {
-			// Obtiene todas las fechas de ano_estreno
-			let TMDB_id = prod.TMDB_id;
-			let detalles = await detailsTMDB("collection", TMDB_id)
-				.then((n) => n.parts)
-				.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
-			// Obtiene el ano_estreno y fin
-			let ano_estreno = detalles.reduce((a, b) => (a < b ? a : b));
-			let ano_fin = detalles.reduce((a, b) => (a > b && a != "-" ? a : b));
-			// Aporta las novedades a resultados
-			prod.ano_estreno = prod.desempate3 = ano_estreno != "-" ? parseInt(ano_estreno.slice(0, 4)) : "-";
-			prod.ano_fin = ano_fin != "-" ? parseInt(ano_fin.slice(0, 4)) : "-";
-			prod.capitulos = detalles.length;
-		}
-	// Fin
-	return resultados;
-};
-let ordenaLosProductos = (resultados) => {
-	if (resultados.productos.length > 1) {
-		// Criterio secundario: primero colecciones, luego películas
-		resultados.productos.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
-		// Criterio principal: primero la más reciente
-		resultados.productos.sort((a, b) =>
-			a.desempate3 > b.desempate3 ? -1 : a.desempate3 < b.desempate3 ? 1 : 0
-		);
-	}
-	// Fin
-	return resultados;
-};
-let formatoFrontEnd = (resultados) => {
-	// Variables
-	let prodsNuevos = resultados.productos.filter((n) => !n.yaEnBD_id);
-	let prodsYaEnBD = resultados.productos.filter((n) => n.yaEnBD_id);
-	let coincidencias = resultados.productos.length;
-	let cantN = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
-	let hayMas = resultados.hayMas;
-	// Obtiene el mensaje
-	let mensaje =
-		"Encontramos " +
-		(coincidencias == 1
-			? "una sola coincidencia, que " + (cantN == 1 ? "no" : "ya")
-			: (hayMas ? "muchas" : coincidencias) +
-			  " coincidencias" +
-			  (hayMas ? ". Te mostramos " + coincidencias : "") +
-			  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
-		" está" +
-		(cantN > 1 && cantN < coincidencias ? "n" : "") +
-		" en nuestra BD.";
-	// Fin
-	return {prodsNuevos, prodsYaEnBD, mensaje};
-};
 let actualizaCapitulos = () => {};
