@@ -29,6 +29,7 @@ router.get("/api/valida/copiar-fa", API.validaCopiarFA);
 router.get("/api/desambiguar-form0", API.desambForm0);
 router.get("/api/desambiguar-form1", API.desambForm1);
 router.get("/api/desambiguar-form2", API.desambForm2);
+router.get("/api/desambiguar-form3", API.desambForm3);
 // Desambiguar - Guardar
 router.get("/api/desambiguar-guardar1", API.desambGuardar1);
 router.get("/api/desambiguar-guardar2", API.desambGuardar2);

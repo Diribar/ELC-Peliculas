@@ -201,12 +201,11 @@ module.exports = {
 			// Obtiene las promesas
 			colecciones = await Promise.all(colecciones);
 			// Reemplaza películas por colecciones
-			resultados.productos.forEach((prod, indice) => {
-				let coleccion = colecciones[indice];
+			colecciones.forEach((coleccion, indice) => {
 				// Si no hay nada que cambiar, interrumpe
 				if (!coleccion || !coleccion.belongs_to_collection) return;
 				// Si es una película de colección, cambia sus datos por los de la colección
-				prod = {
+				resultados.productos[indice] = {
 					TMDB_entidad: "collection",
 					TMDB_id: coleccion.belongs_to_collection.id,
 					nombre_castellano: coleccion.belongs_to_collection.name,
