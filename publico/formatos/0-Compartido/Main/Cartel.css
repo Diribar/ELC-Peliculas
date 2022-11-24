@@ -21,6 +21,7 @@
 #cartel #mensajes li {text-align: left;}
 #cartel #mensajes li i {margin-right: 10px; font-size: 1rem; line-height: normal;}
 #cartel #mensajes li i.fa-circle {border: solid 1px transparent;}
+#cartel #mensajes li i.fa-solid.fa-circle {color: var(--amarillo-oscuro);}
 #cartel #mensajes span {font-weight: bold; font-style: italic;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
@@ -31,5 +32,6 @@
 #cartel .fa-circle-left {color: var(--gris-oscuro);}
 #cartel .fa-circle-right {color: var(--verde-oscuro);}
 
+/* Tapar el fondo */
 main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}

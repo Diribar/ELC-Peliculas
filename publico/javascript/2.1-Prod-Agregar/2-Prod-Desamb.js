@@ -72,17 +72,28 @@ window.addEventListener("load", async () => {
 
 		// Muestra el cartel
 		let titulo = "En proceso...";
-		let contenido = ["Buscando productos", "Tareas finales"];
+		let contenido = [
+			"Buscando productos",
+			"Reemplazando películas por su colección",
+			"Completando la información"
+		];
 		armadoDelCartel(titulo, contenido);
 
 		// Busca los productos
-		ruta = "/producto/agregar/api/desambiguar-form1/?palabrasClave=";
+		lis_fa_circle[0].classList.replace("fa-regular","fa-solid");
+		ruta = "api/desambiguar-form1/?palabrasClave=";
 		await fetch(ruta + palabrasClave);
-		lis_fa_circle[0].classList.add("ocultar");
-		lis_fa_check[0].classList.remove("ocultar");
+		lis_fa_circle[0].classList.replace("fa-circle","fa-circle-check");
+
+		// Reemplaza las películas por su colección
+		lis_fa_circle[1].classList.replace("fa-regular","fa-solid");
+		ruta = "api/desambiguar-form2/";
+		await fetch(ruta);
+		lis_fa_circle[1].classList.replace("fa-circle","fa-circle-check");
 
 		// Pule la información
-		ruta = "/producto/agregar/api/desambiguar-form2/";
+		lis_fa_circle[2].classList.replace("fa-regular","fa-solid");
+		ruta = "api/desambiguar-form3/";
 		resultado = await fetch(ruta).then((n) => n.json());
 	}
 	// Agrega los productos
@@ -150,8 +161,7 @@ window.addEventListener("load", async () => {
 	// Desaparece el cartel
 	if (lis_fa_circle) {
 		// Actualiza los íconos
-		lis_fa_circle[1].classList.add("ocultar");
-		lis_fa_check[1].classList.remove("ocultar");
+		lis_fa_circle[2].classList.replace("fa-circle","fa-circle-check");
 
 		// Oculta el cartel
 		fondo.classList.add("ocultar");
