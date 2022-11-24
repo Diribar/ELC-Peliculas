@@ -33,10 +33,6 @@ router.get("/api/desambiguar-form3", API.desambForm3);
 // Desambiguar - Guardar
 router.get("/api/desambiguar-guardar1", API.desambGuardar1);
 router.get("/api/desambiguar-guardar2", API.desambGuardar2);
-router.get("/api/desambiguar-guardar3", API.desambGuardar3);
-router.get("/api/desambiguar-guardar4", API.desambGuardar4);
-router.get("/api/desambiguar-guardar5", API.desambGuardar5);
-router.get("/api/desambiguar-guardar6", API.desambGuardar6);
 
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);

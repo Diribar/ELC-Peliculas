@@ -200,7 +200,6 @@ window.addEventListener("load", async () => {
 			let titulo = "Estamos procesando la información...";
 			let contenido = [
 				"Obteniendo más información del producto",
-				"Descargando la imagen",
 				"Revisando la información disponible",
 			];
 			armadoDelCartel(titulo, contenido);
@@ -211,17 +210,11 @@ window.addEventListener("load", async () => {
 			datos = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
-			// 2. Descarga la imagen
+			// 2. Revisa la información disponible, para determinar los próximos pasos
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar5/?datos=" + JSON.stringify(datos);
-			datos = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
-
-			// 3. Revisa la información disponible, para determinar los próximos pasos
-			lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar6/?datos=" + JSON.stringify(datos);
+			ruta = "api/desambiguar-guardar2/?datos=" + JSON.stringify(datos);
 			errores = await fetch(ruta).then((n) => n.json());
-			lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
+			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 			// Desaparece el cartel
 			fondo.classList.add("ocultar");
