@@ -9,19 +9,123 @@ module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave) => {
+		// Funciones
+		let funcionesSearchIniciales = (lote, TMDB_entidad, palabrasClave) => {
+			// Descarta registros con información incompleta
+			(() => {
+				let productos = [];
+				for (let prod of lote.results) {
+					let poster = prod.poster_path;
+					let lanzam =
+						(prod.first_air_date && prod.first_air_date > "1900") ||
+						(prod.release_date && prod.release_date > "1900");
+					if ((TMDB_entidad == "collection" && poster) || (poster && lanzam)) productos.push(prod);
+				}
+				// Fin
+				lote = {productos, cantPaginasAPI: Math.min(lote.total_pages, lote.total_results)};
+			})();
+			// Estandariza nombres
+			(() => {
+				let productos = [];
+				for (let prod of lote.productos) {
+					// Variables
+					let prodNombre,
+						entidad,
+						nombre_original,
+						nombre_castellano,
+						ano_estreno,
+						ano_fin,
+						desempate3;
+					ano_estreno = ano_fin = desempate3 = "";
+					// Colecciones
+					if (TMDB_entidad == "collection") {
+						prodNombre = "Colección";
+						entidad = "colecciones";
+						nombre_original = prod.original_name;
+						nombre_castellano = prod.name;
+					}
+					// TV
+					else if (TMDB_entidad == "tv") {
+						prodNombre = "Colección";
+						entidad = "colecciones";
+						nombre_original = prod.original_name;
+						nombre_castellano = prod.name;
+						ano_estreno = parseInt(prod.first_air_date.slice(0, 4));
+					}
+					// Películas
+					else if (TMDB_entidad == "movie") {
+						prodNombre = "Película";
+						entidad = "peliculas";
+						nombre_original = prod.original_title;
+						nombre_castellano = prod.title;
+						ano_estreno = ano_fin = desempate3 = parseInt(prod.release_date.slice(0, 4));
+					}
+					// Define el título sin "distractores", para encontrar duplicados
+					let desempate1 = comp
+						.convertirLetrasAlIngles(nombre_original)
+						.replace(/ /g, "")
+						.replace(/'/g, "");
+					let desempate2 = comp
+						.convertirLetrasAlIngles(nombre_castellano)
+						.replace(/ /g, "")
+						.replace(/'/g, "");
+					// Deja sólo algunos campos
+					productos.push({
+						TMDB_entidad,
+						TMDB_id: prod.id,
+						nombre_original,
+						nombre_castellano,
+						ano_estreno,
+						ano_fin,
+						avatar: prod.poster_path,
+						prodNombre,
+						entidad,
+						comentario: prod.overview,
+						desempate1,
+						desempate2,
+						desempate3,
+					});
+				}
+				// Fin
+				lote.productos = productos;
+			})();
+			// Descarta los productos que no tienen ninguna palabra clave
+			() => {
+				let palabras = palabrasClave.split(" ");
+				//
+				let productos = [];
+				lote.productos.forEach((prod) => {
+					if (prod)
+						for (let palabra of palabras)
+							if (
+								comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
+								comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
+								comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
+							) {
+								delete prod.comentario;
+								productos.push(prod);
+								break;
+							}
+				});
+				// Fin
+				lote.productos = productos;
+			};
+			// Fin
+			return lote
+		};
+		// Variables
 		palabrasClave = comp.convertirLetrasAlIngles(palabrasClave);
 		let acumulador = {productos: []};
 		let entidadesTMDB = ["collection", "tv", "movie"];
 		let page = 0;
+		let valorI=new Date()
 		while (true) {
 			page++;
 			for (let TMDB_entidad of entidadesTMDB) {
 				if (page == 1 || page <= acumulador.cantPaginasAPI[TMDB_entidad]) {
 					let lote = await searchTMDB(palabrasClave, TMDB_entidad, page)
 						// Procesos por lote de productos
-						.then((n) => eliminaRegistrosConInfoIncompleta(n, TMDB_entidad))
-						.then((n) => estandarizaNombres(n, TMDB_entidad))
-						.then((n) => eliminaRegistroSiPalClaNoExiste(n, palabrasClave));
+						.then((n) => funcionesSearchIniciales(n, TMDB_entidad, palabrasClave));
 					// Acumula los lotes
 					acumulador = acumulaResultados(lote, TMDB_entidad, acumulador, page);
 				}
@@ -31,6 +135,8 @@ module.exports = {
 			acumulador.hayMas = hayMas(acumulador, page, entidadesTMDB);
 			if (acumulador.productos.length >= 20 || !acumulador.hayMas) break;
 		}
+		let valorF=new Date()
+		console.log(valorF-valorI);
 		// Procesos por única vez
 		let resultados = acumulador;
 		// Elimina los registros duplicados
@@ -43,10 +149,10 @@ module.exports = {
 		return resultados;
 	},
 
-	revisaReemplazaPeliPorColeccion:async(resultados)=>{
+	revisaReemplazaPeliPorColeccion: async (resultados) => {
 		// Revisa y reemplaza las películas por su colección
 		lote = await revisaReemplazaPeliPorColeccion(resultados);
-		return resultados
+		return resultados;
 	},
 
 	organizaLaInformacion: async (resultados) => {
@@ -62,94 +168,6 @@ module.exports = {
 };
 
 // Proceso por lote de productos
-let eliminaRegistrosConInfoIncompleta = (lote, TMDB_entidad) => {
-	// Descarta registros con información incompleta
-	let productos = [];
-	for (let prod of lote.results) {
-		let poster = prod.poster_path;
-		let lanzam =
-			(prod.first_air_date && prod.first_air_date > "1900") ||
-			(prod.release_date && prod.release_date > "1900");
-		if ((TMDB_entidad == "collection" && poster) || (poster && lanzam)) productos.push(prod);
-	}
-	// Fin
-	return {productos, cantPaginasAPI: Math.min(lote.total_pages, lote.total_results)};
-};
-let estandarizaNombres = (lote, TMDB_entidad) => {
-	let productos = [];
-	for (let prod of lote.productos) {
-		// Variables
-		let prodNombre, entidad, nombre_original, nombre_castellano, ano_estreno, ano_fin, desempate3;
-		ano_estreno = ano_fin = desempate3 = "";
-		// Colecciones
-		if (TMDB_entidad == "collection") {
-			prodNombre = "Colección";
-			entidad = "colecciones";
-			nombre_original = prod.original_name;
-			nombre_castellano = prod.name;
-		}
-		// TV
-		else if (TMDB_entidad == "tv") {
-			prodNombre = "Colección";
-			entidad = "colecciones";
-			nombre_original = prod.original_name;
-			nombre_castellano = prod.name;
-			ano_estreno = parseInt(prod.first_air_date.slice(0, 4));
-		}
-		// Películas
-		else if (TMDB_entidad == "movie") {
-			prodNombre = "Película";
-			entidad = "peliculas";
-			nombre_original = prod.original_title;
-			nombre_castellano = prod.title;
-			ano_estreno = ano_fin = desempate3 = parseInt(prod.release_date.slice(0, 4));
-		}
-		// Define el título sin "distractores", para encontrar duplicados
-		let desempate1 = comp.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		let desempate2 = comp.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
-		// Deja sólo algunos campos
-		productos.push({
-			TMDB_entidad,
-			TMDB_id: prod.id,
-			nombre_original,
-			nombre_castellano,
-			ano_estreno,
-			ano_fin,
-			avatar: prod.poster_path,
-			prodNombre,
-			entidad,
-			comentario: prod.overview,
-			desempate1,
-			desempate2,
-			desempate3,
-		});
-	}
-	// Fin
-	lote.productos = productos;
-	return lote;
-};
-let eliminaRegistroSiPalClaNoExiste = (lote, palabrasClave) => {
-	// Descarta los productos que no tienen ninguna palabra clave
-	let palabras = palabrasClave.split(" ");
-	//
-	let productos = [];
-	lote.productos.forEach((prod) => {
-		if (prod)
-			for (let palabra of palabras)
-				if (
-					comp.convertirLetrasAlIngles(prod.nombre_original).includes(palabra) ||
-					comp.convertirLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
-					comp.convertirLetrasAlIngles(prod.comentario).includes(palabra)
-				) {
-					delete prod.comentario;
-					productos.push(prod);
-					break;
-				}
-	});
-	// Fin
-	lote.productos = productos;
-	return lote;
-};
 let revisaReemplazaPeliPorColeccion = async (lote, acumulador) => {
 	// Variables
 	let productos = [];
