@@ -167,12 +167,11 @@ module.exports = {
 		}
 		// Procesos por única vez
 		let resultados = acumulador;
-		// Elimina los registros duplicados
+		// Elimina los registros duplicados de TV
 		(() => {
 			for (let indice = resultados.productos.length - 1; indice >= 0; indice--) {
 				let registro = resultados.productos[indice];
 				let coincidencias;
-				// Averigua duplicados de TV (principalmente con 'movie')
 				if (registro.TMDB_entidad == "tv")
 					coincidencias = resultados.productos.filter(
 						(n) =>
@@ -190,52 +189,72 @@ module.exports = {
 	},
 
 	reemplazoDePeliPorColeccion: async (resultados) => {
-		let valorI = new Date();
 		// Revisa y reemplaza las películas por su colección
 		await (async () => {
 			// Variables
-			let productos = [];
+			let colecciones = [];
 			// Rutina para el lote de productos
-			for (let prod of resultados.productos) {
-				// Si la entidad no es una película, sigue al siguiente producto
-				if (prod.entidad != "peliculas") {
-					productos.push(prod);
-					continue;
-				}
-
-				// Acciones si es una película -------------------------
-				// Obtiene los datos de la película
-				let pelicula = await detailsTMDB("movie", prod.TMDB_id);
-				// Si la película no pertenece a una colección, sigue al siguiente producto
-				if (!pelicula.belongs_to_collection) {
-					productos.push(prod);
-					continue;
-				}
-
-				// Acciones si es una película de colección -----------
-				// Datos de la colección a la que pertenece
-				let coleccion = {
+			for (let prod of resultados.productos)
+				colecciones.push(prod.entidad == "peliculas" ? detailsTMDB("movie", prod.TMDB_id) : "");
+			// Obtiene las promesas
+			colecciones = await Promise.all(colecciones);
+			// Reemplaza películas por colecciones
+			colecciones.forEach((coleccion, indice) => {
+				// Si no hay nada que cambiar, interrumpe
+				if (!coleccion || !coleccion.belongs_to_collection) return;
+				// Si es una película de colección, cambia sus datos por los de la colección
+				resultados.productos[indice] = {
 					TMDB_entidad: "collection",
-					TMDB_id: pelicula.belongs_to_collection.id,
-					nombre_castellano: pelicula.belongs_to_collection.name,
-					avatar: pelicula.belongs_to_collection.poster_path,
+					TMDB_id: coleccion.belongs_to_collection.id,
+					nombre_castellano: coleccion.belongs_to_collection.name,
+					avatar: coleccion.belongs_to_collection.poster_path,
 					prodNombre: "Colección",
 					entidad: "colecciones",
 				};
-				productos.push(coleccion);
-			}
-
+			});
+		})();
+		// Elimina los registros duplicados
+		(() => {
+			// Variables
+			let productos = [];
+			resultados.productos.forEach((prod, indice) => {
+				if (!productos.find((n) => n.TMDB_entidad == prod.TMDB_entidad && n.TMDB_id == prod.TMDB_id))
+					productos.push(prod);
+			});
 			// Fin
 			resultados.productos = productos;
 		})();
-
+		// Averigua qué registros ya tenemos en nuestra base de datos
+		await (async () => {
+			// Variables
+			let productos = [];
+			// Obtiene los registros de la BD
+			for (let prod of resultados.productos) {
+				// Obtiene datos
+				let TMDB_entidad = prod.TMDB_entidad;
+				let TMDB_id = prod.TMDB_id;
+				let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
+				// Busca entre las películas o colecciones
+				let include = prod.entidad == "colecciones" ? "capitulos" : "";
+				productos.push(BD_genericas.obtienePorCamposConInclude(entidad, {TMDB_id}, include));
+			}
+			// Agrega info de la BD
+			productos = await Promise.all(productos);
+			productos.forEach((prod, indice) => {
+				// Le asigna valores de nuestra BD
+				if (prod) {
+					resultados.productos[indice].yaEnBD_id = prod.id;
+					if (resultados.productos[indice].entidad == "colecciones")
+						resultados.productos[indice].capitulos = prod.capitulos.length;
+				}
+			});
+		})();
 		// Fin
-		let valorF = new Date();
-		console.log(valorF - valorI);
 		return resultados;
 	},
 
 	organizaLaInformacion: async (resultados) => {
+		let valorI = new Date();
 		// Le agrega el año de estreno y fin a las colecciones
 		resultados = await completaDatosColecciones(resultados);
 		// Ordena los productos
@@ -243,40 +262,12 @@ module.exports = {
 		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
 		resultados = formatoFrontEnd(resultados);
 		// Fin
+		let valorF = new Date();
+		console.log(valorF - valorI);
 		return resultados;
 	},
 };
 
-// Averigua qué registros ya tenemos en nuestra base de datos
-let averiguaSiYaEnBD = async (resultados) => {
-	// Variables
-	let productos = [];
-	// Obtiene los registros de la BD
-	for (let prod of resultados.productos) {
-		// Obtiene la entidad
-		let TMDB_entidad = prod.TMDB_entidad;
-		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
-		// Obtiene el TMDB_id
-		let TMDB_id = prod.TMDB_id;
-		// Busca entre las películas o colecciones
-		let include = prod.entidad == "colecciones" ? "capitulos" : "";
-		productos.push(BD_genericas.obtienePorCamposConInclude(entidad, {TMDB_id}, include));
-	}
-	// Agrega info de la BD
-	productos = await Promise.all(productos);
-	resultados.productos.forEach((prod, indice) => {
-		// Obtiene el producto de nuestra BD
-		let producto = productos[indice];
-		// Le asigna valores de nuestra BD
-		if (producto) {
-			prod.yaEnBD_id = producto.id;
-			if (prod.entidad == "colecciones") prod.capitulos = producto.capitulos.length;
-		}
-	});
-
-	// Fin
-	return resultados;
-};
 // Organiza la informacion
 let completaDatosColecciones = async (resultados) => {
 	// Rutina
