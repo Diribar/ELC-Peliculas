@@ -442,7 +442,6 @@ module.exports = {
 			});
 		});
 		// Fin
-		console.log(resultado);
 		return resultado;
 	},
 	avatarOrigEdic: (prodOrig, prodEdic) => {
