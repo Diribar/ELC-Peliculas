@@ -228,4 +228,7 @@ window.addEventListener("load", async () => {
 			else location.href = "datos-personalizados";
 		});
 	});
+
+	// Desplazamiento original
+	desplazamHoriz()
 });
