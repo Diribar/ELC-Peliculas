@@ -512,7 +512,6 @@ module.exports = {
 			return !avatar ? "Necesitamos que agregues una imagen" : "";
 		};
 		let FN_extension = () => {
-			if (!avatar) return "";
 			let ext = path.extname(avatar).toLocaleLowerCase();
 			return !ext
 				? "El archivo debe tener alguna extensión"
