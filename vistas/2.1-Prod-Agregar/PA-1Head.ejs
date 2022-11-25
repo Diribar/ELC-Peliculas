@@ -9,8 +9,8 @@
 <!-- Uso particular formato -->
 <% if (codigo == "palabrasClave") { %><link rel="stylesheet" href="/formatos/2.1-Prod-Agregar/1-Prod-PalabrasClave.css">
 <% } else if (codigo == "desambiguar") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR-DesplazamHoriz.css">
 	<link rel="stylesheet" href="/formatos/2.1-Prod-Agregar/2-Prod-DesambTMDB.css">
+	<!-- <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR-DesplazamHoriz.css"> -->
 <% } else if (codigo == "tipoProducto") { %><link rel="stylesheet" href="/formatos/2.1-Prod-Agregar/2-Prod-TP-Cabecera.css">
 <% } else if (codigo == "copiarFA") { %><link rel="stylesheet" href="/formatos/2.1-Prod-Agregar/2-Prod-TP-FA.css">
 <% } else if (codigo == "datosDuros") { %><link rel="stylesheet" href="/formatos/2.1-Prod-Agregar/3-Prod-DatosDuros.css">
@@ -23,7 +23,8 @@
 <!-- Uso particular scripts -->
 <% if (codigo == "desambiguar") { %>
 	<script src="/javascript/2.1-Prod-Agregar/2-Prod-Desamb.js"></script>
-	<script src="/javascript/2.0-Familias-CRUD/Includes/0-CRUD-Desplazam.js"></script>
+	<script src="/javascript/2.0-Familias-CRUD/Includes/0-FN-DesplHoriz.js"></script>
+	<script src="/javascript/2.0-Familias-CRUD/Includes/0-CRUD-DesplHoriz.js"></script>
 <% } else if (codigo == "datosDuros" && !dataEntry.avatar_url) { %><script src="/javascript/0-Compartido/MostrarImagen.js"></script>
 <% } else if (codigo == "datosPers") { %><script src="/javascript/2.1-Prod-Agregar/4-Prod-DP-vista_RCLV.js"></script>
 <% } else if (codigo == "tipoProducto") { %><script src="/javascript/2.1-Prod-Agregar/2-Prod-TP-Cabecera.js"></script>

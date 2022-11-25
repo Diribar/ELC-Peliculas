@@ -49,7 +49,7 @@ router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...todos, vista.datosDurosForm);
-router.post("/datos-duros", ...todos, multer.single("avatar_url"), vista.datosDurosGuardar);
+router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
 router.get("/datos-personalizados", ...todos, vista.datosPersForm);
 router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
