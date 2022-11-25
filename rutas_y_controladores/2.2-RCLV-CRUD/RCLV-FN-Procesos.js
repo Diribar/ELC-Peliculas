@@ -58,7 +58,7 @@ module.exports = {
 			let aux = RCLV[entidad].map((n) => {
 				let avatar = n.avatar.includes("/")
 					? n.avatar
-					: "/imagenes/" + (!n.avatar ? "8-Agregar/IM.jpg" : "3-Productos/" + n.avatar);
+					: "/imagenes/" + (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
 				return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsYaEnBD.push(...aux);

@@ -567,7 +567,7 @@ module.exports = {
 			let datosAdicionales = {entidad, entidad_id: prodOrig.id, campo, titulo};
 			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
 			datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
-			BD_genericas.agregarRegistro(decision, datos);
+			BD_genericas.agregaRegistro(decision, datos);
 		})();
 
 		// Aumenta el campo aprob/rech en el registro del usuario
@@ -708,7 +708,7 @@ module.exports = {
 				datos.duracion = motivo.duracion;
 			} else entidadAprobRech = "edics_aprob";
 			// Guarda los registros
-			await BD_genericas.agregarRegistro(entidadAprobRech, datos);
+			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
 		}
 		// Fin
 		return;

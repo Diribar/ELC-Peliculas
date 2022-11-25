@@ -165,13 +165,13 @@ module.exports = {
 			capitulos: true,
 			omitirRutinaVista: true,
 		},
-		{
-			nombre: "avatar_url",
-			peliculas: true,
-			colecciones: true,
-			capitulos: true,
-			omitirRutinaVista: true,
-		},
+		// {
+		// 	nombre: "avatar_url",
+		// 	peliculas: true,
+		// 	colecciones: true,
+		// 	capitulos: true,
+		// 	omitirRutinaVista: true,
+		// },
 	],
 	camposDP: async (userID) => {
 		// Funcion
@@ -348,7 +348,7 @@ module.exports = {
 	camposRevisar: {
 		productos: [
 			{titulo: "Avatar", nombre: "avatar"},
-			{titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod/RCLV'
+			// {titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod/RCLV'
 			{titulo: "Título original", nombre: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true},
 			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true},

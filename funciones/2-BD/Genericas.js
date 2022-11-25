@@ -42,7 +42,7 @@ module.exports = {
 	},
 
 	// Otras
-	agregarRegistro: (entidad, datos) => {
+	agregaRegistro: (entidad, datos) => {
 		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
 	actualizaPorId: (entidad, id, datos) => {

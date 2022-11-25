@@ -47,11 +47,6 @@ router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
-router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
-router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
-router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
-router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...todos, vista.datosDurosForm);
 router.post("/datos-duros", ...todos, multer.single("avatar_url"), vista.datosDurosGuardar);
@@ -63,6 +58,12 @@ router.post("/confirma", ...todos, vista.confirmaGuardar);
 router.get("/terminaste", ...algunos, vista.terminasteForm);
 // Miscelaneas
 router.get("/responsabilidad", soloUsuarios, vista.responsabilidad);
+// Ingreso Manual
+router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
+router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
+router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
+router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
+router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 
 // Fin
 module.exports = router;

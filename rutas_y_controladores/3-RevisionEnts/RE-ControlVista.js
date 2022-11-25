@@ -55,7 +55,7 @@ module.exports = {
 		let imgDerPers = prodOrig.avatar;
 		imgDerPers = imgDerPers
 			? (!imgDerPers.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + imgDerPers
-			: "/imagenes/8-Agregar/IM.jpg";
+			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -129,7 +129,7 @@ module.exports = {
 			datosHistorial.motivo_id = motivo.id;
 			datosHistorial.duracion = Number(motivo.duracion);
 		}
-		BD_genericas.agregarRegistro("historial_cambios_de_status", datosHistorial);
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
 		// Aumenta el valor de prod_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
@@ -193,7 +193,7 @@ module.exports = {
 					original: prodOrig.avatar
 						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") +
 						  prodOrig.avatar
-						: "/imagenes/8-Agregar/IM.jpg",
+						: "/imagenes/0-Base/AvatarGenericoProd.jpg",
 					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,
 				};
 				motivos = motivos.filter((m) => m.avatar);
@@ -211,7 +211,7 @@ module.exports = {
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
-			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/8-Agregar/IM.jpg";
+			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/AvatarGenericoProd.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
@@ -320,7 +320,7 @@ module.exports = {
 		let avatar = producto.avatar;
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
 		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")

@@ -336,7 +336,6 @@ module.exports = {
 
 		// Fin
 		let valorF = new Date();
-		console.log(valorF - valorI);
 		return resultados;
 	},
 };

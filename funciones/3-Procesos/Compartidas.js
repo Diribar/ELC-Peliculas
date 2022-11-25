@@ -99,7 +99,7 @@ module.exports = {
 	// ABM de registros
 	creaRegistro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
-		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
+		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
@@ -140,7 +140,7 @@ module.exports = {
 		// Completa la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agrega la nueva edición
-		await BD_genericas.agregarRegistro(entidadEdic, edicion);
+		await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		// Fin
 		return "Edición guardada";
 	},
@@ -442,12 +442,13 @@ module.exports = {
 			});
 		});
 		// Fin
+		console.log(resultado);
 		return resultado;
 	},
 	avatarOrigEdic: (prodOrig, prodEdic) => {
 		let aux1 = prodOrig.avatar.startsWith("http");
 		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
-		let orig = prodOrig.avatar ? aux2 : "/imagenes/8-Agregar/IM.jpg";
+		let orig = prodOrig.avatar ? aux2 : "/imagenes/0-Base/AvatarGenericoProd.jpg";
 		let edic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig;
 		// Fin
 		return {orig, edic};
@@ -459,7 +460,7 @@ module.exports = {
 			? prodOrig.avatar.startsWith("http")
 				? prodOrig.avatar
 				: "/imagenes/3-Productos/" + prodOrig.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
 	},
 
 	// Validaciones
@@ -502,10 +503,14 @@ module.exports = {
 	},
 	avatar: (datos) => {
 		// Variables
-		let {avatar, tamano, esImagen} = datos;
+		let {avatar, avatar_url, tamano, esImagen} = datos;
+		if (!avatar) avatar = avatar_url;
 		// Funciones
+		let FN_esImagen = () => {
+			return esImagen == "NO" ? "El archivo no es una imagen" : "";
+		};
 		let FN_nombre = () => {
-			return !avatar && esImagen == "SI" ? "Necesitamos que agregues una imagen" : "";
+			return !avatar ? "Necesitamos que agregues una imagen" : "";
 		};
 		let FN_extension = () => {
 			if (!avatar) return "";
@@ -523,16 +528,13 @@ module.exports = {
 				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 				: "";
 		};
-		let FN_esImagen = () => {
-			return esImagen == "NO" ? "El archivo no es una imagen" : "";
-		};
 		// Variables
 		let respuesta = "";
 		// Validaciones
+		if (!respuesta) respuesta = FN_esImagen();
 		if (!respuesta) respuesta = FN_nombre();
 		if (!respuesta) respuesta = FN_extension();
 		if (!respuesta) respuesta = FN_tamano();
-		if (!respuesta) respuesta = FN_esImagen();
 		// Fin
 		return respuesta;
 	},

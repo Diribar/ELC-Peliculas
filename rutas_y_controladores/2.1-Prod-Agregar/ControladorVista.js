@@ -46,9 +46,6 @@ module.exports = {
 		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "desambiguar";
-		// Borrar archivo de imagen si existe
-		let aux = req.cookies.datosDuros;
-		if (aux && aux.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar);
 		// Elimina session y cookie posteriores, si existen
 		procesos.borraSessionCookies(req, res, "desambiguar");
 		// Si se perdió la info anterior, vuelve a esa instancia
@@ -93,10 +90,12 @@ module.exports = {
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
-		// Avatar
+		// Imagen derecha
 		let imgDerPers = datosDuros.avatar
 			? "/imagenes/9-Provisorio/" + datosDuros.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+			: datosDuros.avatar_url
+			? datosDuros.avatar_url
+			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -139,11 +138,11 @@ module.exports = {
 			req.session.erroresDD = errores;
 			// Redirecciona
 			return res.redirect("datos-duros");
-		} else delete req.session.erroresDD
+		} else delete req.session.erroresDD;
 		// Guarda el data entry en session y cookie
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		req.session.datosPers = datosDuros
+		req.session.datosPers = datosDuros;
 		res.cookie("datosPers", datosDuros, {maxAge: unDia});
 		if (datosDuros.fuente == "IM") {
 			let cookie = req.cookies.datosOriginales;
@@ -166,6 +165,10 @@ module.exports = {
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP(userID);
+		// Imagen derecha
+		let imgDerPers = datosPers.avatar
+			? "/imagenes/9-Provisorio/" + datosPers.avatar
+			: datosPers.avatar_url;
 		// 6. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -173,7 +176,7 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
-			imgDerPers: "/imagenes/9-Provisorio/" + datosPers.avatar,
+			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
 	},
@@ -222,6 +225,8 @@ module.exports = {
 		let actuacion = confirma.actuacion.slice(0, maximo);
 		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
 		actuacion = actuacion.slice(0, indice);
+		// Imagen derecha
+		let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -230,7 +235,7 @@ module.exports = {
 			dataEntry: confirma,
 			direccion,
 			actuacion,
-			imgDerPers: "/imagenes/9-Provisorio/" + confirma.avatar,
+			imgDerPers,
 			tituloImgDerPers: confirma.nombre_castellano,
 		});
 	},
@@ -238,6 +243,13 @@ module.exports = {
 		// 1. Si se perdió la info, volver a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("datos-personalizados");
+		// Descarga la imagen del url
+		let descargaOK;
+		if (!confirma.avatar) {
+			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + confirma.avatar;
+			descargaOK = comp.descarga(confirma.avatar_url, rutaYnombre);
+		}
 		// 2. Obtiene la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
 			BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
@@ -252,7 +264,7 @@ module.exports = {
 			...calificaciones,
 			creado_por_id: req.session.usuario.id,
 		};
-		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
+		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// 4. Guarda los datos de 'Edición'
 		comp.guardaEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
@@ -262,9 +274,7 @@ module.exports = {
 				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
-		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
-		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "4-ProdsRevisar");
+		procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
@@ -273,6 +283,9 @@ module.exports = {
 		// 10. Crea la cookie para 'Terminaste'
 		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
 		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
+		// 7. Mueve el avatar de 'provisorio' a 'revisar'
+		Promise.all([descargaOK]);
+		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "4-ProdsRevisar");
 		// 11. Redirecciona
 		return res.redirect("terminaste");
 	},

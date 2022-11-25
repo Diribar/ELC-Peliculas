@@ -4,7 +4,7 @@ h2 {font-size: 1.20rem;}
 h3 {font-size: 1.10rem;}
 
 /* Formularios */
-select, option, a, button[type="submit"] {cursor: pointer;}
+select, option, a, button[type="submit"], label img {cursor: pointer;}
 select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Varios */

@@ -79,10 +79,10 @@ module.exports = {
 		let datosDuros = JSON.parse(req.query.datos);
 		// Guarda los datos originales en una cookie
 		let datosOriginales = {...datosDuros};
-		if (datosOriginales.avatar_url) datosOriginales.avatar = datosOriginales.avatar_url;
-		else delete datosOriginales.avatar;
-		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		// Para datosDuros, dar de alta el avatar_url y de baja el avatar
+		datosDuros.avatar_url = datosDuros.avatar;
+		delete datosDuros.avatar;
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposDD_nombres = camposDD.map((n) => n.nombre);
