@@ -33,7 +33,13 @@ module.exports = {
 				let productos = [];
 				for (let prod of lote.productos) {
 					// Variables
-					let prodNombre, entidad, nombre_original, nombre_castellano, ano_estreno, ano_fin;
+					let prodNombre,
+						entidad,
+						nombre_original,
+						nombre_castellano,
+						idioma_original_id,
+						ano_estreno,
+						ano_fin;
 					ano_estreno = ano_fin = "";
 					// Colecciones
 					if (TMDB_entidad == "collection") {
@@ -41,6 +47,7 @@ module.exports = {
 						entidad = "colecciones";
 						nombre_original = prod.original_name;
 						nombre_castellano = prod.name;
+						idioma_original_id = prod.original_language;
 					}
 					// TV
 					else if (TMDB_entidad == "tv") {
@@ -48,6 +55,7 @@ module.exports = {
 						entidad = "colecciones";
 						nombre_original = prod.original_name;
 						nombre_castellano = prod.name;
+						idioma_original_id = prod.original_language;
 						ano_estreno = parseInt(prod.first_air_date.slice(0, 4));
 					}
 					// Películas
@@ -56,6 +64,7 @@ module.exports = {
 						entidad = "peliculas";
 						nombre_original = prod.original_title;
 						nombre_castellano = prod.title;
+						idioma_original_id = prod.original_language;
 						ano_estreno = ano_fin = parseInt(prod.release_date.slice(0, 4));
 					}
 					// Define el título sin "distractores", para encontrar duplicados
@@ -75,6 +84,7 @@ module.exports = {
 						nombre_castellano,
 						ano_estreno,
 						ano_fin,
+						idioma_original_id,
 						avatar: prod.poster_path,
 						prodNombre,
 						entidad,
@@ -195,11 +205,16 @@ module.exports = {
 			colecciones.forEach((coleccion, indice) => {
 				// Si no hay nada que cambiar, interrumpe
 				if (!coleccion || !coleccion.belongs_to_collection) return;
+				// Idioma original
+				let idioma_original_id = resultados.productos[indice].idioma_original_id;
+				idioma_original_id = idioma_original_id ? idioma_original_id : "";
 				// Si es una película de colección, cambia sus datos por los de la colección
 				resultados.productos[indice] = {
 					TMDB_entidad: "collection",
 					TMDB_id: coleccion.belongs_to_collection.id,
+					nombre_original: "",
 					nombre_castellano: coleccion.belongs_to_collection.name,
+					idioma_original_id,
 					avatar: coleccion.belongs_to_collection.poster_path,
 					prodNombre: "Colección",
 					entidad: "colecciones",

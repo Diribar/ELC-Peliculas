@@ -1,9 +1,11 @@
-#dataEntry {height: 450px; width: 683px;}
+#dataEntry {width: 683px;}
 
 /* Encabezado del formulario */
 #dataEntry #titulos {display: flex; justify-content: space-between;}
 #dataEntry #titulos h1 {margin-top: 0;}
-#dataEntry #titulos #links {display: flex; flex-direction: column; align-items: center;}
+#dataEntry #titulos #links, 
+#dataEntry #segundaColumna {display: flex; flex-direction: column; align-items: center; width: 200px;}
+
 #dataEntry #titulos #links nav {display: flex; flex-direction: row; justify-content: space-around; width: 100%;}
 #dataEntry #titulos #links nav a.logos {width: 30px; height: 30px; position: relative; }
 #dataEntry #titulos #links nav a.logos img {width: 100%; height: 100%; position: absolute; object-fit: contain; border-radius: 8px;}
@@ -12,7 +14,9 @@
 #dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
 #dataEntry #datos {margin-top: 10px;}
 #dataEntry #datos #primeraColumna {display: flex; flex-direction: column;}
-#dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 4px;}
+#dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#dataEntry .label-input, #dataEntry #paises_id {margin-top: 2px; margin-bottom: 2px;}
+
 #dataEntry button {color: white; background-color: var(--gris-oscuro); padding: 5px 15px; border-radius: 10px; max-width: 85%;}
 
 /* Partes específicas del formulario */
@@ -31,7 +35,7 @@
 #dataEntry .inputError #numero[type=number] {-moz-appearance: textfield;}
 
 /* País */
-#dataEntry #paises_id {align-items: center;}
+#dataEntry #paises_id {height: 19px;}
 #dataEntry #paises_id .inputError {width: 200px;}
 #dataEntry #paises_id .inputError input,
 #dataEntry #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
@@ -39,8 +43,7 @@
 #dataEntry #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* Imagen de la película */
-#dataEntry #segundaColumna {width: 200px; height: 100%; position: relative;}
-#dataEntry #segundaColumna {display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#dataEntry #segundaColumna {height: 100%; justify-content: center;}
 #dataEntry #segundaColumna img {height: 100%; width: 100%; object-fit: contain; border-radius: 15px;}
 
 /* Flechas */

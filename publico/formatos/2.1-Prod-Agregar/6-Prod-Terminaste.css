@@ -11,7 +11,7 @@
 #dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
 #dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
 #dataEntry #datos #partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
-#dataEntry #datos #partesAutomatico span {color: var(--verde-claro);}
+#dataEntry #datos #partesAutomatico span {color: var(--gris-claro);}
 
 /* Flechas */
 #dataEntry #flechas {margin: 30px auto 0; padding: 7px 15px; border-radius: 15px; display: flex; flex-direction: row; width: auto;}
