@@ -626,7 +626,7 @@ module.exports = {
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
-		let mailEnviado = transporter.sendMail(datos).catch(console.error);
+		let mailEnviado = transporter.sendMail(datos).catch(() => {});
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
