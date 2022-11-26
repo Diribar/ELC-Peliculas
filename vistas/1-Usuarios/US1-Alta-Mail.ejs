@@ -59,16 +59,16 @@
 	<!--Flechas-->
 	<section id="flechas">
 		<!-- Salir -->
-		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
+		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
 		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
+		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check" title="Aceptar"></i></button>
 		<!-- Olvido de contraseña -->
 		<% if (codigo == "alta-mail") { %>
-			<a href="/usuarios/olvido-contrasena" tabindex="-1"><i class="fa-solid fa-circle-xmark icono" title="Olvidé mi contraseña"></i></a>
+			<a href="/usuarios/olvido-contrasena" tabindex="-1"><i class="fa-solid fa-circle-xmark" title="Olvidé mi contraseña"></i></a>
 		<% } %>
 		<!-- Alta de mail -->
 		<% if (codigo == "olvido-contrasena") { %>
-			<a href="/usuarios/alta-mail" tabindex="-1"><i class="fa-solid fa-user-plus icono" title="Registro de mail"></i></a>
+			<a href="/usuarios/alta-mail" tabindex="-1"><i class="fa-solid fa-user-plus" title="Registro de mail"></i></a>
 		<% } %>
 	</section>
 </form>

@@ -5,12 +5,3 @@
 
 /* Credenciales inválidas*/
 #cuerpo form #credencialesInvalidas {border-radius: 7px; margin: 5px auto 0px; font-style: italic;}
-
-/* Íconos especiales */
-#flechas .fa-key {color: var(--rojo-oscuro);}
-
-#cuerpo form #flechas a, #cuerpo form #flechas button {overflow: hidden; border: 2px solid; margin: 0 15px;}
-#cuerpo form #flechas a {border-color: var(--azul-oscuro)}
-#cuerpo form #flechas a.rojo {border-color: var(--rojo-oscuro)}
-#cuerpo form #flechas button {border-color: var(--verde-oscuro)}
-#cuerpo form #flechas i {margin: 0;}

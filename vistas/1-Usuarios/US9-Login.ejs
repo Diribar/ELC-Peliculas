@@ -28,15 +28,21 @@
 	<div class="flex-col">
 		<p id="credencialesInvalidas" class="<%- !errores || !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
 	</div>
-	<!--Flechas-->
-	<div id="flechas">
-		<!-- Salir -->
-		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
-		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactivo' : '' %>" autofocus><i class="fa-solid fa-circle-check icono" title="Login"></i></button>
-		<!-- Olvido de contraseña -->
-		<a href="/usuarios/olvido-contrasena" tabindex="-1" class="rojo"><i class="fa-solid fa-key icono" title="Olvidé mi contraseña"></i></a>
-		<!-- Nuevo usuario -->
-		<a href="/usuarios/alta-mail" tabindex="-1"><i class="fa-solid fa-user-plus icono" title="Registrarse"></i></a>
+	<div class="flex-row">
+		<!--Flechas-->
+		<div id="flechas">
+			<!-- Salir -->
+			<a href="<%= urlSalir %>" tabindex="-1">
+				<i class="fa-solid fa-circle-left" title="Salir"></i>
+			</a>
+			<!-- Submit -->
+			<button type="submit" class="<%- errores ? 'inactivo' : '' %>" autofocus><i class="fa-solid fa-circle-check" title="Login"></i></button>
+		</div>
+		<div id="flechas" class="alternativo">
+			<!-- Olvido de contraseña -->
+			<a href="/usuarios/olvido-contrasena" tabindex="-1" class="rojo"><i class="fa-solid fa-key" title="Olvidé mi contraseña"></i></a>
+			<!-- Nuevo usuario -->
+			<a href="/usuarios/alta-mail" tabindex="-1"><i class="fa-solid fa-user-plus" title="Registrarse"></i></a>
+		</div>
 	</div>
 </form>

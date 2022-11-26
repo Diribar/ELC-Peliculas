@@ -9,7 +9,7 @@ header section .grupos {margin: 0 15px; position: relative;}
 header section .grupos.margenDerecho {margin-right: 40px;}
 header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
-header #icono-usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
+header #icono_usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
 
 /* Ícono de agregar producto */
 header section .grupos .iconoComb {position: relative;}
@@ -21,7 +21,7 @@ header #tituloHeader {position: absolute; left: 50%; transform: translateX(-50%)
 header #tituloHeader * {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem;}
 
 /* Íconos de usuario */
-header #icono-usuario {border-radius: 50%; overflow: hidden; }
-header #icono-usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
-header #icono-usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
-header #icono-usuario #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
+header #icono_usuario {border-radius: 50%; overflow: hidden; }
+header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+header #icono_usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
+header #icono_usuario #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
