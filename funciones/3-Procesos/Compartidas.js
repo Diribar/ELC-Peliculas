@@ -595,7 +595,7 @@ module.exports = {
 			.catch(async () => {
 				return {
 					OK: false,
-					info: {
+					informacion: {
 						mensajes: ["No hay conexión a internet"],
 						iconos: [
 							{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"},
@@ -626,17 +626,34 @@ module.exports = {
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
-		let mailEnviado = transporter.sendMail(datos).catch(() => {});
+		let mailEnviado = transporter
+			.sendMail(datos)
+			.then(() => {
+				return {OK: true};
+			})
+			.catch(() => {
+				return {
+					OK: false,
+					informacion: {
+						mensajes: ["No se envió el e-mail"],
+						iconos: [variables.vistaAnterior(req.session.urlAnterior)],
+					},
+				};
+			});
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
 
-		// [hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado])
-		console.log(651, await mailEnviado);
+		// Espera a recibir el feedback
+		[hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado]);
+		let resultado = !hayConexionInternet.OK
+			? hayConexionInternet
+			: !mailEnviado.OK
+			? mailEnviado
+			: {OK: true};
 
 		// Fin
-		if (!hayConexionInternet.OK) return hayConexionInternet;
-		else return {OK: true};
+		return resultado;
 	},
 
 	// Varias
