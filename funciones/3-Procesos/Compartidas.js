@@ -597,7 +597,6 @@ module.exports = {
 				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
 			},
 		});
-		console.log(transporter);
 		let datos = {
 			from: '"Emprendimiento a bautizar" <' + process.env.direccMail + ">",
 			to: mail,
@@ -605,7 +604,12 @@ module.exports = {
 			text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
-		await transporter.sendMail(datos);
+		let FN_error = (mensajeError, mensajeOK) => {
+			if (mensajeError) console.log(mensajeError);
+			else console.log("Email sent: " + mensajeOK.response);
+		};
+		
+		await transporter.sendMail(datos, FN_error);
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
 	},
