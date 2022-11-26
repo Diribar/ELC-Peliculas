@@ -17,7 +17,7 @@ module.exports = {
 		status_usuario.mail_a_validar
 			? res.redirect("/usuarios/login")
 			: status_usuario.mail_validado
-			? res.redirect("/usuarios/datos-editables")
+			? res.redirect("/usuarios/editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
 			: res.redirect("/");
