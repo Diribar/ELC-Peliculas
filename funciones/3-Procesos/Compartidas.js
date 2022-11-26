@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-var internetAvailable = require("internet-available");
+const internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
 const fs = require("fs");
@@ -587,18 +587,27 @@ module.exports = {
 	},
 
 	// Internet
-	conectividadInternet: async () => {
-		let conectividad = await internetAvailable()
+	conectividadInternet: async (req) => {
+		return await internetAvailable()
 			.then(async () => {
-				return true;
+				return {OK: true};
 			})
 			.catch(async () => {
-				return false;
+				return {
+					OK: false,
+					info: {
+						mensajes: ["No hay conexión a internet"],
+						iconos: [
+							{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"},
+						],
+					},
+				};
 			});
-		console.log(36, conectividad);
-		return conectividad;
 	},
-	enviarMail: async (asunto, mail, comentario) => {
+	enviarMail: async function (asunto, mail, comentario, req) {
+		// Verifica la conexión a internet
+		let hayConexionInternet = this.conectividadInternet(req);
+
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
@@ -616,9 +625,18 @@ module.exports = {
 			text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
+		// Envío del mail
+		let mailEnviado = transporter.sendMail(datos).catch(console.error);
 
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
+
+		// [hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado])
+		console.log(651, await mailEnviado);
+
+		// Fin
+		if (!hayConexionInternet.OK) return hayConexionInternet;
+		else return {OK: true};
 	},
 
 	// Varias

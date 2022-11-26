@@ -513,8 +513,11 @@ module.exports = {
 		];
 	},
 
-	// Vistas
+	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
+	vistaActual: (req) => {
+		return {nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"};
+	},
 	vistaAnterior: (urlAnterior) => {
 		return {
 			nombre: "fa-circle-left",
@@ -556,4 +559,5 @@ module.exports = {
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
 	},
+
 };
