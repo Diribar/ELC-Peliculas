@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+var internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
 const fs = require("fs");
@@ -585,7 +586,18 @@ module.exports = {
 		return enviar;
 	},
 
-	// Varios
+	// Internet
+	conectividadInternet: async () => {
+		let conectividad = await internetAvailable()
+			.then(async () => {
+				return true;
+			})
+			.catch(async () => {
+				return false;
+			});
+		console.log(36, conectividad);
+		return conectividad;
+	},
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -604,15 +616,12 @@ module.exports = {
 			text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
-		let FN_error = (mensajeError, mensajeOK) => {
-			if (mensajeError) console.log(mensajeError);
-			else console.log("Email sent: " + mensajeOK.response);
-		};
-		
-		await transporter.sendMail(datos, FN_error);
+
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
 	},
+
+	// Varias
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
