@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 	if (
 		!usuario ||
 		usuario.status_registro.mail_a_validar ||
-		(usuario.status_registro.mail_validado && !url.startsWith("/usuarios/datos-editables"))
+		(usuario.status_registro.mail_validado && !url.startsWith("/usuarios/editables"))
 	)
 		return res.redirect("/usuarios/redireccionar");
 

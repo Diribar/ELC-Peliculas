@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	};
 	// Averigua si hay un error de opción
 	if (!informacion) {
-		var opcion = menuOpciones.find((n) => n.url == req.params.codigo);
+		var opcion = variables.menuOpciones.find((n) => n.url == req.params.opcion);
 		if (!opcion) informacion = respuesta;
 	}
 	// Averigua la subopción
