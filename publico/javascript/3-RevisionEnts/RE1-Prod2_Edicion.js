@@ -172,7 +172,6 @@ window.addEventListener("load", () => {
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
-			console.log(resultado);
 			// Consecuencias
 			consecuencias(resultado, campo);
 		});

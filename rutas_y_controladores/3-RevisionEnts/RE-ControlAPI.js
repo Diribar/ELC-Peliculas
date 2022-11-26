@@ -115,7 +115,7 @@ module.exports = {
 			motivo_id,
 			duracion,
 		};
-		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
 		if (creadoAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista

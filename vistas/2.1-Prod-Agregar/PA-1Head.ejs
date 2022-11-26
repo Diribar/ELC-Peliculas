@@ -22,13 +22,10 @@
 
 <!-- Uso particular scripts -->
 <% if (codigo == "desambiguar") { %>
+	<script src="/javascript/2.0-Familias-CRUD/Includes/0-FN-DesplHoriz.js"></script>
 	<script src="/javascript/2.1-Prod-Agregar/2-Prod-Desamb.js"></script>
-	<script src="/javascript/2.0-Familias-CRUD/Includes/0-CRUD-Desplazam.js"></script>
+<% } else if (codigo == "datosDuros" && !dataEntry.avatar_url) { %><script src="/javascript/0-Compartido/MostrarImagen.js"></script>
+<% } else if (codigo == "datosPers") { %><script src="/javascript/2.1-Prod-Agregar/4-Prod-DP-vista_RCLV.js"></script>
 <% } else if (codigo == "tipoProducto") { %><script src="/javascript/2.1-Prod-Agregar/2-Prod-TP-Cabecera.js"></script>
 <% } else if (codigo == "copiarFA") { %><script src="/javascript/2.1-Prod-Agregar/2-Prod-TP-FA.js"></script>
-<% } else if (codigo == "datosDuros" && dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
-	<script src="/javascript/0-Compartido/MostrarImagen.js"></script>
-	<script src="/javascript/2.1-Prod-Agregar/3-Prod-DD-Imagen.js"></script>
-<% } else if (codigo == "datosPers") { %>
-	<script src="/javascript/2.1-Prod-Agregar/4-Prod-DP-vista_RCLV.js"></script>
 <% } %>

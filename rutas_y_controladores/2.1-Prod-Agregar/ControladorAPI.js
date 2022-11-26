@@ -76,54 +76,13 @@ module.exports = {
 		return res.json(infoTMDBparaDD);
 	},
 	desambGuardar2: async (req, res) => {
-		let datos = JSON.parse(req.query.datos);
-		// Averigua si es una película y pertenece a una colección
-		let errores = await valida.averiguaSiEsColeccion(datos);
-		// Fin
-		return res.json(errores);
-	},
-	desambGuardar3: async (req, res) => {
-		let errores = JSON.parse(req.query.datos);
-		// Si pertenece a una colección de la BD, la agrega y avisa
-		let productos = await procesos.agregaCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
-		// Fin
-		return res.json(productos);
-	},
-	desambGuardar4: async (req, res) => {
-		let errores = JSON.parse(req.query.datos);
-		// Si pertenece a una colección que no existe en la BD, avisa
-		let coleccion = await procesos.DS_collection({TMDB_id: errores.colec_TMDB_id});
-		// Fin
-		return res.json(coleccion);
-	},
-	desambGuardar5: async (req, res) => {
-		// Variables
-		let datosDuros = JSON.parse(req.query.datos);
-		// Acciones si el campo 'avatar' tiene un valor
-		if (datosDuros.avatar) {
-			// Variables
-			datosDuros.avatar_url = datosDuros.avatar;
-			datosDuros.avatar = Date.now() + path.extname(datosDuros.avatar_url);
-			// Descarga el avatar
-			// let datos = await requestPromise.head(datosDuros.avatar_url);
-			// let tipo = datos["content-type"];
-			// let tamano = datos["content-length"];
-			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datosDuros.avatar;
-			await comp.descarga(datosDuros.avatar_url, rutaYnombre);
-		}
-		// Elimina el campo avatar
-		else delete datosDuros.avatar;
-		// Fin
-		return res.json(datosDuros);
-	},
-	desambGuardar6: async (req, res) => {
 		let datosDuros = JSON.parse(req.query.datos);
 		// Guarda los datos originales en una cookie
 		let datosOriginales = {...datosDuros};
-		if (datosOriginales.avatar_url) datosOriginales.avatar = datosOriginales.avatar_url;
-		else delete datosOriginales.avatar;
-		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		// Para datosDuros, dar de alta el avatar_url y de baja el avatar
+		datosDuros.avatar_url = datosDuros.avatar;
+		delete datosDuros.avatar;
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposDD_nombres = camposDD.map((n) => n.nombre);

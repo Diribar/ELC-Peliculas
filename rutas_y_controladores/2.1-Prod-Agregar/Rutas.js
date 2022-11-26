@@ -33,10 +33,6 @@ router.get("/api/desambiguar-form3", API.desambForm3);
 // Desambiguar - Guardar
 router.get("/api/desambiguar-guardar1", API.desambGuardar1);
 router.get("/api/desambiguar-guardar2", API.desambGuardar2);
-router.get("/api/desambiguar-guardar3", API.desambGuardar3);
-router.get("/api/desambiguar-guardar4", API.desambGuardar4);
-router.get("/api/desambiguar-guardar5", API.desambGuardar5);
-router.get("/api/desambiguar-guardar6", API.desambGuardar6);
 
 // Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
@@ -51,14 +47,9 @@ router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
-router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
-router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
-router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
-router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...todos, vista.datosDurosForm);
-router.post("/datos-duros", ...todos, multer.single("avatar_url"), vista.datosDurosGuardar);
+router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
 router.get("/datos-personalizados", ...todos, vista.datosPersForm);
 router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
@@ -67,6 +58,12 @@ router.post("/confirma", ...todos, vista.confirmaGuardar);
 router.get("/terminaste", ...algunos, vista.terminasteForm);
 // Miscelaneas
 router.get("/responsabilidad", soloUsuarios, vista.responsabilidad);
+// Ingreso Manual
+router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
+router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
+router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
+router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
+router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 
 // Fin
 module.exports = router;

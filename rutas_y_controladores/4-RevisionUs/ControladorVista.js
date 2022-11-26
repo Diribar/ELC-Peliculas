@@ -200,7 +200,7 @@ let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 		evaluado_por_id: revID,
 		evaluado_en: comp.ahora(),
 	};
-	BD_genericas.agregarRegistro("edics_rech", datos);
+	BD_genericas.agregaRegistro("edics_rech", datos);
 
 	// Fin
 	return;

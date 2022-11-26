@@ -196,7 +196,7 @@ module.exports = {
 				// Guardar los datos del capítulo
 				await this.DS_movie({TMDB_id: capituloTMDB_id})
 					.then((n) => (n = {...n, ...datosCap}))
-					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
+					.then((n) => BD_genericas.agregaRegistro("capitulos", n));
 			}
 		});
 		return;
@@ -334,7 +334,7 @@ module.exports = {
 			for (let episode of datosTemp.episodes) {
 				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				// Obtiene las API
-				await BD_genericas.agregarRegistro(datosCap.entidad, datosCap);
+				await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 			}
 		}
 		return;
@@ -435,7 +435,7 @@ module.exports = {
 		return FA_id;
 	},
 	// ConfirmarGuardar
-	guardar_cal_registros: (confirma, registro) => {
+	guarda_cal_registros: (confirma, registro) => {
 		let producto_id = comp.obtieneEntidad_id(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
@@ -446,7 +446,7 @@ module.exports = {
 			calidad_tecnica: confirma.calidad_tecnica,
 			resultado: confirma.calificacion,
 		};
-		BD_genericas.agregarRegistro(datos.entidad, datos);
+		BD_genericas.agregaRegistro(datos.entidad, datos);
 	},
 };
 
