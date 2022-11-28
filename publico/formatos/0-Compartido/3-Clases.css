@@ -33,4 +33,5 @@ header .inactivoVersion, header .inactivoVersion * {opacity: .5; cursor: not-all
 
 .invisible {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
-.rojo {color: var(--rojo-oscuro); font-weight: bold;}
+.rojo {color: var(--rojo-oscuro);}
+.negrita {font-weight: bold;}

@@ -14,5 +14,8 @@ select, option, optgroup, input, button, a, i, span
 em, strong, u {font-size: inherit; color: inherit; line-height: inherit;}
 p, li {line-height: 1.2rem;}
 label {line-height: 1;}
+
+/* Formularios */
 select option[value=''] {display: none;}
-select:invalid {font-style: italic;}
+::placeholder, select:invalid {font-style: italic;}
+select option {font-style: normal;}

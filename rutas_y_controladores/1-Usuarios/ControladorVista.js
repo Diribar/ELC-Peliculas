@@ -160,7 +160,8 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario("editables", usuario, req.body);
+		await procesos.actualizaElUsuario("editables", usuario, req.body);
+		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
@@ -171,8 +172,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		let informacion = {
 			mensajes: [
-				"Estimado/a " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-				"Bienvenido/a a la familia de usuarios de ELC",
+				"Estimad" +
+					usuario.sexo.letra_final +
+					" " +
+					usuario.apodo +
+					", completaste el alta satisfactoriamente.",
+				"Bienvenid" + usuario.sexo.letra_final + " a la familia de usuarios de nuestro sitio.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
 			titulo: "Bienvenido/a a la familia ELC",
@@ -189,7 +194,6 @@ module.exports = {
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
 		// Variables
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
