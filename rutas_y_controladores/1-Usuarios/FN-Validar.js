@@ -89,7 +89,7 @@ module.exports = {
 		if (campos.includes("docum_pais_id"))
 			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
+		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.avatar(datos);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
