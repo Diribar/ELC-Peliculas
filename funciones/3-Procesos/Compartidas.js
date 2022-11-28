@@ -597,8 +597,9 @@ module.exports = {
 				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
 			},
 		});
+		console.log(transporter);
 		let datos = {
-			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
+			from: '"Emprendimiento a bautizar" <' + process.env.direccMail + ">",
 			to: mail,
 			subject: asunto, // Subject line
 			text: comentario, // plain text body

@@ -252,6 +252,7 @@ module.exports = {
 				// Le asigna valores de nuestra BD
 				if (prod) {
 					resultados.productos[indice].yaEnBD_id = prod.id;
+					resultados.productos[indice].avatar = prod.avatar;
 					if (resultados.productos[indice].entidad == "colecciones")
 						resultados.productos[indice].capitulosELC = prod.capitulos.length;
 				}

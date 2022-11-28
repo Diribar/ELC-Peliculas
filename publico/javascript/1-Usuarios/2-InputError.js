@@ -5,8 +5,7 @@ window.addEventListener("load", () => {
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
 	let tareas = {
 		login: "login",
-		"datos-perennes": "perennes",
-		"datos-editables": "editables",
+		editables: "editables",
 		documento: "documento",
 	};
 	if (!tareas[tarea]) return;
@@ -44,7 +43,7 @@ window.addEventListener("load", () => {
 			// Averigua los errores
 			let errores =
 				// Corre la rutina, siempre que no sea una avatar opcional vacío
-				tarea != "datos-editables" || campo != "avatar" || inputs[indice].value || !esImagen
+				tarea != "editables" || campo != "avatar" || inputs[indice].value || !esImagen
 					? await fetch(ruta_api + campo + "=" + valor).then((n) => n.json())
 					: "";
 			// Fin

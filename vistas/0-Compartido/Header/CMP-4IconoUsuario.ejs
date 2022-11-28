@@ -1,4 +1,4 @@
-<div id="icono-usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
+<div id="icono_usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar) { %>
 			<div id="imagenUsuario">
@@ -13,7 +13,7 @@
 		<% } %>
 	<% } else { %>
 		<a href="/usuarios/login">
-			<i class="fa-solid fa-circle-question iconoHeader" title="Login/Registrarse"></i>
+			<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
 		</a>
 	<% } %>
 </div>

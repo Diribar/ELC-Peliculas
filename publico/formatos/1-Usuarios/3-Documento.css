@@ -9,6 +9,3 @@
 #cuerpo form #columna1 .input {width: 150px}
 #cuerpo form #columna2 {margin-left: 40px;}
 #cuerpo form #columna2 .ayudaClick {color: var(--rojo-oscuro);}
-#cuerpo form #columna2 #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}
-#cuerpo form #columna2 #credencialesInvalidas.ocultar {display: none;}
-#cuerpo form #columna2 #credencialesInvalidas p {margin: 0; margin-top: 15px;}

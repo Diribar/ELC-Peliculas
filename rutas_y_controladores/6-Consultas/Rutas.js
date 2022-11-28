@@ -13,7 +13,6 @@ router.get("/", vista.home);
 // Vistas de Opciones
 router.get("/:opcion", urlAceptadas, vista.opcion);
 router.get("/:opcion/:subOpcion", urlAceptadas, vista.subOpcion);
-// router.post("/:id/:id", soloUsuarios, vista.filtros);
 
 // Fin
 module.exports = router;

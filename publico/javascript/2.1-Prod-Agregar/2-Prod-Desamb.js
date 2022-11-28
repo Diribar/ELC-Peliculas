@@ -123,6 +123,7 @@ window.addEventListener("load", async () => {
 						? "(" + prod.ano_fin + "-" + prod.ano_estreno + ")"
 						: "(" + prod.ano_estreno + ")";
 				li.children[0][4].children[1].children[3].innerHTML += ano;
+				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
 			} else {
 				let ano = " (" + prod.ano_estreno + ")";
 				li.children[0][4].children[1].children[3].innerHTML = prod.prodNombre + ano;
@@ -145,7 +146,10 @@ window.addEventListener("load", async () => {
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
 			// Imagen
-			li.children[0].children[0].children[0].src = "https://image.tmdb.org/t/p/original" + prod.avatar;
+			let avatar = prod.avatar.startsWith("http")
+				? prod.avatar
+				: "/imagenes/3-Productos/" + prod.avatar;
+			li.children[0].children[0].children[0].src = avatar;
 			li.children[0].children[0].children[0].alt = prod.nombre_original;
 			li.children[0].children[0].children[0].title = prod.nombre_original;
 			// Información a mostrar
@@ -230,5 +234,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Desplazamiento original
-	desplazamHoriz()
+	desplazamHoriz();
 });

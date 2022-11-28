@@ -14,6 +14,6 @@
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px;}
-#cuerpo #dataEntry #flechas .icono {border: solid 2px var(--gris-claro);}
-#cuerpo #dataEntry #flechas .icono.fa-circle-left {color: var(--azul-oscuro)}
-#cuerpo #dataEntry #flechas .icono.fa-circle-right {color: var(--verde-oscuro);}
+#cuerpo #dataEntry #flechas i {border: solid 2px var(--gris-claro);}
+#cuerpo #dataEntry #flechas i.fa-circle-left {color: var(--azul-oscuro)}
+#cuerpo #dataEntry #flechas i.fa-circle-right {color: var(--verde-oscuro);}

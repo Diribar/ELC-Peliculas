@@ -34,6 +34,7 @@ module.exports = {
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
 		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
+		console.log(contrasena);
 		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		comp.enviarMail(asunto, email, comentario).catch(console.error);

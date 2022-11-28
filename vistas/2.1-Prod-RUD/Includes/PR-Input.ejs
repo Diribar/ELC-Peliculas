@@ -5,6 +5,7 @@
 		<input type="text" name="<%= campo.nombre %>" value="<%= producto[campo.nombre] %>" autofocus autocomplete="off" 
 			class="input <% if (campo.numero) { %>numero<% } %>"
 			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
+			placeholder="Ingresá el texto"
 		>
 		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
