@@ -10,10 +10,10 @@ window.addEventListener("load", () => {
 	// Fórmulas
 	let mostrarPasivos = () => {
 		filasConStatusInActivo.forEach((fila) => {
-			fila.classList.remove("inactivo_ocultar");
+			fila.classList.remove("ocultaInactivo");
 		});
 		filasConStatusActivo.forEach((fila) => {
-			fila.classList.add("inactivo_ocultar");
+			fila.classList.add("ocultaInactivo");
 		});
 		botonInactivo.classList.remove("traslucido");
 		botonActivo.classList.add("traslucido");
@@ -30,10 +30,10 @@ window.addEventListener("load", () => {
 			return
 		}
 		filasConStatusActivo.forEach((fila) => {
-			fila.classList.remove("inactivo_ocultar");
+			fila.classList.remove("ocultaInactivo");
 		});
 		filasConStatusInActivo.forEach((fila) => {
-			fila.classList.add("inactivo_ocultar");
+			fila.classList.add("ocultaInactivo");
 		});
 		botonActivo.classList.remove("traslucido");
 		botonInactivo.classList.add("traslucido");

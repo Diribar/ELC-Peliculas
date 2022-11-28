@@ -17,29 +17,29 @@ window.addEventListener("load", () => {
 				let filaDatos = Array.from(filaExistente.classList).find((n) => n.startsWith("fila"));
 				if (filaExistente.classList.contains(valor) || valor == "TD") {
 					// Mostrar filas de Datos
-					filasExistentes[fila].classList.remove("ocultarTipo");
+					filasExistentes[fila].classList.remove("ocultaTipo");
 					// Mostrar filas de Edición - CRUD
-					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.remove("ocultarTipo");
+					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.remove("ocultaTipo");
 					// Mostrar filas de Edición - Revisión
 					if (filasEdicionesRevisar.length)
 						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
 							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
 								n.startsWith("fila")
 							);
-							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.remove("ocultarTipo");
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.remove("ocultaTipo");
 						});
 				} else {
 					// Ocultar filas de Datos
-					filasExistentes[fila].classList.add("ocultarTipo");
+					filasExistentes[fila].classList.add("ocultaTipo");
 					// Ocultar filas de Edición - CRUD
-					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.add("ocultarTipo");
+					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.add("ocultaTipo");
 					// Ocultar filas de Edición - Revisión
 					if (filasEdicionesRevisar.length)
 						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
 							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
 								n.startsWith("fila")
 							);
-							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.add("ocultarTipo");
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.add("ocultaTipo");
 						});
 				}
 			});

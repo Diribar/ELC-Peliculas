@@ -111,14 +111,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
 		// Variables
+		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
+		sexos = sexos.filter((m) => m.letra_final);
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
-		// Roles de Iglesia
-		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
-		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 2);
-		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 		let avatar = usuario.avatar
@@ -131,9 +129,9 @@ module.exports = {
 			titulo: "Datos Editables",
 			dataEntry,
 			errores,
+			sexos,
 			hablaHispana,
 			hablaNoHispana,
-			roles_iglesia,
 			avatar,
 			urlSalir: req.session.urlSinLogin,
 		});
@@ -191,13 +189,17 @@ module.exports = {
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
 		// Variables
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
 		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+		// Roles de Iglesia
+		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
+		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 3 && n.id.slice(-1) == usuario.sexo_id);
+		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
+		// Avatar
 		let avatar = usuario.docum_avatar
 			? "/imagenes/5-DocsRevisar/" + usuario.docum_avatar
 			: "/imagenes/0-Base/AvatarGenericoDocum.jpg";
@@ -213,9 +215,9 @@ module.exports = {
 			errores,
 			hablaHispana,
 			hablaNoHispana,
+			roles_iglesia,
 			avatar,
 			urlSalir: req.session.urlSinLogin,
-			sexos,
 		});
 	},
 	documentoGuardar: async (req, res) => {

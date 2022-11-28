@@ -5,10 +5,24 @@
 	<section class="label-input flex-row">
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="inputError">
-			<input type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>">
+			<input type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>" autofocus>
 			<%- include("CMP-Errores", {campo: "apodo", display: true}) %>
 		</div>
 	</section>
+	<!--Sexo-->
+	<div class="label-input flex-row">
+		<label for="sexo_id">Sexo</label>
+		<div class="inputError">
+			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
+			<select name="sexo_id" class="input">
+				<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
+				<% for (let sexo of sexos) { %>
+					<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
+				<% } %> 
+			</select>
+			<%- include("CMP-Errores", {campo: "sexo_id", display: true}) %> 
+		</div>
+	</div>
 	<!--Pais de residencia-->
 	<section class="label-input flex-row">
 		<label for="pais">País de residencia</label>
@@ -53,7 +67,7 @@
 				<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
 					<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 				</i>
-				<i class="fa-solid fa-circle-check ocultar ocultarOK_imagen"></i>
+				<i class="fa-solid fa-circle-check ocultaOK_imagen"></i>
 			</div>
 		</div>
 	</section>

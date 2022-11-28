@@ -419,7 +419,14 @@ window.addEventListener("load", async () => {
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
+		// Primera letra en mayúscula
+		if (e.target.localName == "input" && e.target.type == "text") {
+			let aux = e.target.value;
+			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+		}
+		// Asigna el valor
 		let valor = encodeURIComponent(e.target.value);
+		// Particularidades por paso
 		if (paso.PC) {
 			// Cambiar submit por '?'
 			verificar();
@@ -468,6 +475,11 @@ window.addEventListener("load", async () => {
 			let adicSubcategoria = subcategoriaSelect.value ? DP.adicSubcat(campo) : "";
 			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor + adicSubcategoria;
+		}
+		// Primera letra en mayúscula
+		if (input.localName == "input" && input.type == "text") {
+			let aux = input.value;
+			input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 		}
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
