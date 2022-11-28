@@ -77,8 +77,10 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Envía un mail con la contraseña
 		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
 		if (!feedbackEnvioMail.OK)
 			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+		// Agrega el usuario
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,

@@ -10,11 +10,6 @@ module.exports = {
 			p: "Quiero que me recomienden una película o colección",
 		},
 		{
-			href: "/consultas/listado/incorporacion",
-			src: "/imagenes/8-Inicio/Filtro.jpg",
-			p: "Quiero elegir una película o colección, con filtros personalizados",
-		},
-		{
 			href: "/consultas/cfc",
 			src: "/imagenes/8-Inicio/Cruz.jpg",
 			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",

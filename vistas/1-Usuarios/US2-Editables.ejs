@@ -5,7 +5,7 @@
 	<section class="label-input flex-row">
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="inputError">
-			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
+			<input type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>">
 			<%- include("CMP-Errores", {campo: "apodo", display: true}) %>
 		</div>
 	</section>
@@ -38,19 +38,6 @@
 				</optgroup>
 			</select>
 			<%- include("CMP-Errores", {campo: "pais_id", display: true}) %>
-		</div>
-	</section>
-	<!--Rol en la iglesia-->
-	<section class="label-input flex-row">
-		<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
-		<div class="inputError">
-			<select name="rol_iglesia_id" class="input">
-				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>>Elejí un rol en la Iglesia</option>
-				<% for (let rol_iglesia of roles_iglesia) { %>
-					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
-				<% } %>
-			</select>
-			<%- include("CMP-Errores", {campo: "rol_iglesia_id", display: true}) %>
 		</div>
 	</section>
 	<!--Imagen de perfil-->
