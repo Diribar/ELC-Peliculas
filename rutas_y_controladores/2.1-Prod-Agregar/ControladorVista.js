@@ -75,7 +75,7 @@ module.exports = {
 				: datosDuros.fuente == "FA"
 				? "copiar-fa"
 				: datosDuros.fuente == "IM"
-				? "tipo-producto"
+				? "ingreso-manual"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect(origen);
 		// 4. Variables
@@ -118,7 +118,7 @@ module.exports = {
 		let origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
-				: req.session.copiarFA || req.cookies.copiarFA
+				: req.session.FA || req.cookies.FA
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect(origen);
@@ -350,9 +350,9 @@ module.exports = {
 	tipoProd_Form: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
-		const codigo = "tipoProducto";
+		const codigo = "IM";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesos.borraSessionCookies(req, res, "tipoProducto");
+		procesos.borraSessionCookies(req, res, "IM");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 5. Render del formulario
@@ -387,42 +387,42 @@ module.exports = {
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
-		const codigo = "copiarFA";
+		const codigo = "FA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesos.borraSessionCookies(req, res, "copiarFA");
+		procesos.borraSessionCookies(req, res, "FA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
 			req.body.prodNombre = comp.obtieneEntidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
-			req.session.copiarFA = req.body;
-			res.cookie("copiarFA", req.body, {maxAge: unDia});
+			req.session.FA = req.body;
+			res.cookie("FA", req.body, {maxAge: unDia});
 			res.cookie("datosOriginales", req.body, {maxAge: unDia});
 		}
 		// 4. Si se perdió la info anterior, volver a esa instancia
-		let copiarFA = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
-		if (!copiarFA) return res.redirect("tipo-producto");
+		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
+		if (!FA) return res.redirect("ingreso-manual");
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Copiar FA",
-			dataEntry: copiarFA,
+			dataEntry: FA,
 		});
 	},
 	copiarFA_Guardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		let aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
-		if (!aux) return res.redirect("tipo-producto");
+		let aux = req.session.FA ? req.session.FA : req.cookies.FA;
+		if (!aux) return res.redirect("ingreso-manual");
 		// 1. Guarda el data entry en session y cookie
-		let copiarFA = {...aux, ...req.body};
-		req.session.copiarFA = copiarFA;
-		res.cookie("copiarFA", copiarFA, {maxAge: unDia});
+		let FA = {...aux, ...req.body};
+		req.session.FA = FA;
+		res.cookie("FA", FA, {maxAge: unDia});
 		// 2.1. Averigua si hay errores de validación
-		let errores = await valida.copiarFA(copiarFA);
+		let errores = await valida.FA(FA);
 		// 2.2. Averigua si el FA_id ya está en la BD
 		FA_id = await procesos.obtieneFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			let elc_id = await BD_especificas.obtieneELC_id(copiarFA.entidad, {FA_id: FA_id});
+			let elc_id = await BD_especificas.obtieneELC_id(FA.entidad, {FA_id: FA_id});
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -432,7 +432,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("copiar-fa");
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
-		req.session.datosDuros = await procesos.infoFAparaDD(copiarFA);
+		req.session.datosDuros = await procesos.infoFAparaDD(FA);
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
 		// 4. Completar la cookie datosOriginales con el FA_id
 		let cookie = req.cookies.datosOriginales;

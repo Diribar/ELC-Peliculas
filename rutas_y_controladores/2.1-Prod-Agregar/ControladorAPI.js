@@ -99,7 +99,7 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	// Vista (tipoProducto)
+	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
 		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano").then((n) =>
 			n.map((m) => {
@@ -118,9 +118,9 @@ module.exports = {
 		return res.json(datos);
 	},
 
-	// Vista (copiarFA)
+	// Vista (FA)
 	validaCopiarFA: (req, res) => {
-		let errores = valida.copiarFA(req.query);
+		let errores = valida.FA(req.query);
 		return res.json(errores);
 	},
 	obtieneFA_id: (req, res) => {

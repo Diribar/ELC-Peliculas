@@ -13,9 +13,9 @@ module.exports = {
 			"borrarTodo",
 			"palabrasClave",
 			"desambiguar",
-			"tipoProducto",
+			"IM",
 			"datosOriginales",
-			"copiarFA",
+			"FA",
 			"datosDuros",
 			"datosPers",
 			"confirma",
@@ -381,7 +381,7 @@ module.exports = {
 		// Fin
 		return comp.convertirLetrasAlCastellano(datos);
 	},
-	// Función validar (copiarFA)
+	// Función validar (FA)
 	// This (infoFAparaDD)
 	contenidoFA: (contenido) => {
 		// Output para FE y BE
