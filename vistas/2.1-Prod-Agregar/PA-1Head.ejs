@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/ComandosFlechas.css">
 
 <% if (codigo == "palabrasClave" || codigo == "datosDuros"|| codigo == "datosPers") { %>
-	<script src="/javascript/2.1-Prod-Agregar/0-Prod-InputError.js"></script>
+	<script src="/javascript/2.1-Prod-Agregar/PA0-InputError.js"></script>
 <% } %>
 
 <!-- Uso particular formato -->
@@ -23,9 +23,9 @@
 <!-- Uso particular scripts -->
 <% if (codigo == "desambiguar") { %>
 	<script src="/javascript/2.0-Familias-CRUD/Includes/0-FN-DesplHoriz.js"></script>
-	<script src="/javascript/2.1-Prod-Agregar/2-Prod-1Desamb.js"></script>
+	<script src="/javascript/2.1-Prod-Agregar/PA2-DesambTMDB.js"></script>
 <% } else if (codigo == "datosDuros" && !dataEntry.avatar_url) { %><script src="/javascript/0-Compartido/MostrarImagen.js"></script>
-<% } else if (codigo == "datosPers") { %><script src="/javascript/2.1-Prod-Agregar/4-Prod-DP-vista_RCLV.js"></script>
-<% } else if (codigo == "tipoProducto") { %><script src="/javascript/2.1-Prod-Agregar/2-Prod-2IM.js"></script>
-<% } else if (codigo == "copiarFA") { %><script src="/javascript/2.1-Prod-Agregar/2-Prod-3FA.js"></script>
+<% } else if (codigo == "datosPers") { %><script src="/javascript/2.1-Prod-Agregar/PA4-DatosPers.js"></script>
+<% } else if (codigo == "tipoProducto") { %><script src="/javascript/2.1-Prod-Agregar/PA8-IngrManual.js"></script>
+<% } else if (codigo == "copiarFA") { %><script src="/javascript/2.1-Prod-Agregar/PA9-FA.js"></script>
 <% } %>
