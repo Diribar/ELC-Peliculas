@@ -53,7 +53,7 @@ module.exports = {
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
-		let motivos_rech = await BD_genericas.obtieneTodos("us_motivos_rech", "orden");
+		let motivos_rech = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let motivos_docum = motivos_rech.filter((n) => n.mostrar_para_docum);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
@@ -94,7 +94,7 @@ module.exports = {
 		let usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 		let revID = req.session.usuario.id;
 		// Variables de motivos
-		let motivos = await BD_genericas.obtieneTodos("us_motivos_rech", "orden");
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let durac_penalidad = 0;
 		// Variables de 'status de registro'
 		let st_editables_ID = status_registro_us.find((n) => n.editables).id;
@@ -106,7 +106,7 @@ module.exports = {
 		// Acciones en función de lo que haya respondido sobre la imagen del documento
 		if (datos.motivo_docum_id == "0") {
 			// Motivo genérico
-			let motivo = motivos.find((n) => !n.mostrar_para_docum);
+			let motivo = motivos.find((n) => n.info_erronea);
 			// Rutinas para los demás campos --> lleva al status 'editables'
 			let campos;
 			campos = ["docum_pais_id", "docum_numero"];
@@ -114,14 +114,14 @@ module.exports = {
 				if (datos[campo] == "NO") {
 					procesos.usuarioEdicRech(campo, usuario, revID, motivo);
 					status_registro_id = st_editables_ID;
-					durac_penalidad += motivo.duracion;
+					durac_penalidad += Number(motivo.duracion);
 				}
 			campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
 					procesos.usuarioEdicRech(campo, usuario, revID, motivo);
 					status_registro_id = st_editables_ID;
-					durac_penalidad += motivo.duracion;
+					durac_penalidad += Number(motivo.duracion);
 				}
 		} else {
 			// Rutinas para el campo

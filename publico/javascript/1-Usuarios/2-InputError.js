@@ -39,7 +39,10 @@ window.addEventListener("load", () => {
 			// Averigua los errores
 			let errores =
 				// Corre la rutina, siempre que no sea una avatar opcional vacío
-				tarea != "editables" || campo != "avatar" || inputs[indice].value || !esImagen
+				campo != "avatar" ||
+				inputs[indice].value ||
+				!esImagen ||
+				(tarea == "documento" && imgAvatar.src.includes("imagenes/0-Base"))
 					? await fetch(ruta_api + campo + "=" + valor).then((n) => n.json())
 					: "";
 			// Fin
@@ -123,6 +126,15 @@ window.addEventListener("load", () => {
 				};
 			};
 		},
+		startUp: async function () {
+			// Averigua y muestra los errores
+			for (let indice = 0; indice < inputs.length; indice++) {
+				let errores = await this.averiguaLosErrores(indice);
+				this.muestraLosErrores(errores, indice);
+			}
+			// Botón guardar
+			this.actualizaBotonGuardar();
+		},
 	};
 
 	// EVENT LISTENERS ---------------------------------------
@@ -155,11 +167,10 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
-			for (let indice = 0; indice < inputs.length; indice++) {
-				let errores = await FN.averiguaLosErrores(indice);
-				FN.muestraLosErrores(errores, indice);
-			}
-			FN.actualizaBotonGuardar();
+			FN.startUp();
 		}
 	});
+
+	// Start-up
+	if (tarea == "documento") FN.startUp();
 });
