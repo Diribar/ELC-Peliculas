@@ -53,12 +53,13 @@ router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", ...algunos, vista.terminasteForm);
 // Miscelaneas
+router.get("/terminaste", ...algunos, vista.terminasteForm);
 router.get("/responsabilidad", soloUsuariosCompl, vista.responsabilidad);
 // Ingreso Manual
-router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.tipoProd_Form);
-router.post("/ingreso-manual", ...algunos, vista.tipoProd_Guardar);
+router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.IM_Form);
+router.post("/ingreso-manual", ...algunos, vista.IM_Guardar);
+// Ingreso FA
 router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
 router.get("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
 router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Guardar);

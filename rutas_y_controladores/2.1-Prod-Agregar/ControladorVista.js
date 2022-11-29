@@ -347,40 +347,40 @@ module.exports = {
 			urlSalir: req.session.urlSinPermInput,
 		});
 	},
-	tipoProd_Form: async (req, res) => {
+	IM_Form: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "IM";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borraSessionCookies(req, res, "IM");
 		// 3. Data Entry propio
-		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
+		let IM = req.session.IM ? req.session.IM : req.cookies.IM;
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Tipo de Producto",
-			dataEntry: tipoProd,
+			dataEntry: IM,
 			autorizado_fa: req.session.usuario.autorizado_fa,
 		});
 	},
-	tipoProd_Guardar: async (req, res) => {
+	IM_Guardar: async (req, res) => {
 		// 1. Preparar los datos a guardar
 		// 1. Guarda el data entry en session y cookie
-		let tipoProd = {
+		let IM = {
 			...req.body,
 			fuente: "IM",
 			prodNombre: comp.obtieneEntidadNombre(req.body.entidad),
 		};
-		req.session.tipoProd = tipoProd;
-		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
+		req.session.IM = IM;
+		res.cookie("IM", IM, {maxAge: unDia});
 		// 2. Averigua si hay errores de validación
 		//let errores = await valida.desambiguar(infoTMDBparaDD);
 		// 3. Si hay errores, redireccionar al Form
 		// 4. Generar la session para la siguiente instancia
-		req.session.datosDuros = tipoProd;
-		res.cookie("datosDuros", tipoProd, {maxAge: unDia});
-		res.cookie("datosOriginales", tipoProd, {maxAge: unDia});
+		req.session.datosDuros = IM;
+		res.cookie("datosDuros", IM, {maxAge: unDia});
+		res.cookie("datosOriginales", IM, {maxAge: unDia});
 		// 6. Redirecciona a la siguiente instancia
 		res.redirect("datos-duros");
 	},
