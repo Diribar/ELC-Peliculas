@@ -6,13 +6,13 @@ const router = express.Router();
 const vista = require("./ControladorVista");
 
 // Middlewares ***********************************************
-const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
 const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
 const soloRevisorUs = require("../../middlewares/usuarios/solo4-revisor-us");
 const entidadID = require("../../middlewares/producto/entidadID");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const algunos = [soloUsuarios, soloAptoInput, soloRevisorUs];
+const algunos = [soloUsuariosCompl, soloAptoInput, soloRevisorUs];
 const todos = [...algunos, entidadID, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------

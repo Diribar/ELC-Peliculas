@@ -7,7 +7,7 @@ const vista = require("./RCLV-ControlVista");
 
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
-const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
 const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");
@@ -17,7 +17,7 @@ const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
-const todosAgregar = [soloUsuarios, soloAptoInput, entidad];
+const todosAgregar = [soloUsuariosCompl, soloAptoInput, entidad];
 const todos = [...todosAgregar, id, permUserReg, capturaActivar];
 
 // Rutas *******************************************
