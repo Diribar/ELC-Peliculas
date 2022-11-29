@@ -95,7 +95,7 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + datosDuros.avatar
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
-			: "/imagenes/0-Base/sinAfiche.jpg";
+			: "/imagenes/0-Base/Avatar_sinAvatar.jpg";
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,

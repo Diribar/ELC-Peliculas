@@ -281,7 +281,7 @@ window.addEventListener("load", async () => {
 				// Acciones si no es una imagen
 				image.onerror = () => {
 					// Limpia el avatar
-					v.imgsAvatar[0].src = "/imagenes/0-Base/sinAfiche.jpg";
+					v.imgsAvatar[0].src = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
 					// Limpia el input
 					v.inputAvatarEdicN.value = "";
 					// Actualiza la variable 'avatar' en la versión 'edicN'
