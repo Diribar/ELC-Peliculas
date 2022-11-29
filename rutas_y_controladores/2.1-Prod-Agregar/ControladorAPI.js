@@ -99,19 +99,51 @@ module.exports = {
 		return res.json(errores);
 	},
 
+	// Vista (datosDuros)
+	validaDatosDuros: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		// Averigua los errores solamente para esos campos
+		let errores = await valida.datosDuros(campos, req.query);
+		// Devuelve el resultado
+		return res.json(errores);
+	},
+
+	// Vista (datosPers)
+	obtieneSubcategs: async (req, res) => {
+		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
+		return res.json(subcategorias);
+	},
+	validaDatosPers: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		let errores = await valida.datosPers(campos, req.query);
+		return res.json(errores);
+	},
+	guardaDatosPers: (req, res) => {
+		let datosPers = {
+			...(req.session.datosPers ? req.session.datosPers : req.cookies.datosPers),
+			...req.query,
+		};
+		req.session.datosPers = datosPers;
+		res.cookie("datosPers", datosPers, {maxAge: unDia});
+		return res.json();
+	},
+
 	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
-		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano").then((n) =>
-			n.map((m) => {
-				return {
-					id: m.id,
-					nombre_castellano: m.nombre_castellano,
-				};
-			})
-		);
+		// Obtiene todas las colecciones
+		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano");
+		// Deja solamente las que no son de TMDB
+		datos = datos.filter((n) => !n.TMDB_id);
+		// Deja solamente los campos 'id' y 'nombre_castellano'
+		datos = datos.map((m) => {
+			return {id: m.id, nombre_castellano: m.nombre_castellano};
+		});
+		// Fin
 		return res.json(datos);
 	},
-	averiguaCantTemporadas: async (req, res) => {
+	averiguaCantTemps: async (req, res) => {
 		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then(
 			(n) => n.cant_temporadas
 		);
@@ -131,36 +163,5 @@ module.exports = {
 		let {entidad, campo, valor} = req.query;
 		let elc_id = await BD_especificas.obtieneELC_id(entidad, {[campo]: valor});
 		return res.json(elc_id);
-	},
-
-	// Vista (datosDuros)
-	validaDatosDuros: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
-		// Averigua los errores solamente para esos campos
-		let errores = await valida.datosDuros(campos, req.query);
-		// Devuelve el resultado
-		return res.json(errores);
-	},
-
-	// Vista (datosPers)
-	obtieneSubcategorias: async (req, res) => {
-		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
-		return res.json(subcategorias);
-	},
-	validaDatosPers: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
-		let errores = await valida.datosPers(campos, req.query);
-		return res.json(errores);
-	},
-	guardarDatosPers: (req, res) => {
-		let datosPers = {
-			...(req.session.datosPers ? req.session.datosPers : req.cookies.datosPers),
-			...req.query,
-		};
-		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {maxAge: unDia});
-		return res.json();
 	},
 };

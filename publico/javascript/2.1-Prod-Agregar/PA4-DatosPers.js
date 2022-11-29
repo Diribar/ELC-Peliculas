@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let linksAlta = document.querySelectorAll(".inputError .linkRCLV.alta");
 	let linksEdicion = document.querySelectorAll(".inputError .linkRCLV.edicion");
 	let inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
-	let rutaGuardarDatosPers = "/producto/agregar/api/guardar-datos-pers/";
+	let rutaGuardarDatosPers = "/producto/agregar/api/DP-guarda-datos-pers/";
 
 	// FUNCIONES
 	// Función para guardar los valores del formulario

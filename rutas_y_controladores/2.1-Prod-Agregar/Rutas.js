@@ -33,13 +33,13 @@ router.get("/api/desambiguar-guardar1", API.desambGuardar1);
 router.get("/api/desambiguar-guardar2", API.desambGuardar2);
 
 // Varias
-router.get("/api/PC-cant-prod", API.cantProductos);
-router.get("/api/TP-averigua-colecciones", API.averiguaColecciones);
-router.get("/api/TP-averigua-cant-temporadas", API.averiguaCantTemporadas);
+router.get("/api/PC-cant-prods", API.cantProductos);
+router.get("/api/IM-colecciones", API.averiguaColecciones);
+router.get("/api/IM-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
 router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
-router.get("/api/obtiene-subcategorias", API.obtieneSubcategorias);
-router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
+router.get("/api/DP-obtiene-subcategs", API.obtieneSubcategs);
+router.get("/api/DP-guarda-datos-pers/", API.guardaDatosPers);
 
 // VISTAS
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
