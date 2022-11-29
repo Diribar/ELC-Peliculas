@@ -57,9 +57,9 @@ router.get("/terminaste", ...algunos, vista.terminasteForm);
 // Miscelaneas
 router.get("/responsabilidad", soloUsuariosCompl, vista.responsabilidad);
 // Ingreso Manual
-router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto", ...algunos, vista.tipoProd_Guardar);
-router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
+router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.tipoProd_Form);
+router.post("/ingreso-manual", ...algunos, vista.tipoProd_Guardar);
+router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
 router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
 router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 

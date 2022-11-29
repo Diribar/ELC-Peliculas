@@ -17,7 +17,7 @@ module.exports = {
 		return errores;
 	},
 	// ControllerAPI (validaCopiarFA)
-	copiarFA: (datos) => {
+	FA: (datos) => {
 		let errores = {};
 		// Dirección
 		let url = datos.direccion;
