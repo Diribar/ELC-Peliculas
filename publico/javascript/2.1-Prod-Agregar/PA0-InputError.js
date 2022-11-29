@@ -124,7 +124,6 @@ window.addEventListener("load", async () => {
 	let statusInicial = async (mostrarIconoError) => {
 		//Buscar todos los valores
 		let datosUrl = "";
-		console.log(inputs);
 		inputs.forEach((input, i) => {
 			// Caracter de unión para i>0
 			if (i) datosUrl += "&";
@@ -139,8 +138,6 @@ window.addEventListener("load", async () => {
 	};
 	let muestraLosErrores = async (datosUrl, mostrarIconoError) => {
 		let errores = await fetch(rutaValidar + datosUrl).then((n) => n.json());
-		console.log(campos);
-		console.log(rutaValidar + datosUrl);
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				mensajesError[indice].innerHTML = errores[campo];
@@ -164,11 +161,6 @@ window.addEventListener("load", async () => {
 		let hayErrores = Array.from(iconosError)
 			.map((n) => n.className)
 			.some((n) => n.includes("error"));
-		console.log(
-			Array.from(iconosError)
-				.map((n) => n.className)
-				.filter((n) => n.includes("error")).length
-		);
 		// Consecuencias
 		hayErrores ? submit.classList.add("inactivo") : submit.classList.remove("inactivo");
 	};
