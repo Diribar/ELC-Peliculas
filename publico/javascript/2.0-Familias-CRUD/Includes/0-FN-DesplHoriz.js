@@ -1,7 +1,5 @@
 "use strict";
 let desplazamHoriz = () => {
-	console.log("3-Desplazam.");
-
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");
 	let derecha = document.querySelector(".fa-caret-right");

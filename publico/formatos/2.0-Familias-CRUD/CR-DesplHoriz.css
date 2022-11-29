@@ -1,5 +1,5 @@
 /* Cuadro de Resultados */
-#cuadroDeResultados #listado {overflow-x: auto; display: flex; flex-direction: row;}
+#cuadroDeResultados #listado {overflow-x: auto; display: flex; flex-direction: row; scroll-behavior: smooth;}
 #cuadroDeResultados #listado li {list-style-type: none}
 #cuadroDeResultados #listado li form {position: relative;}
 /* Íconos para mover */
