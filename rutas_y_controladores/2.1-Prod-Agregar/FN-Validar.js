@@ -16,40 +16,6 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validaCopiarFA)
-	FA: (datos) => {
-		let errores = {};
-		// Dirección
-		let url = datos.direccion;
-		errores.direccion = !url
-			? comp.inputVacio
-			: !url.includes("www.filmaffinity.com/") ||
-			  !(
-					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
-					url.indexOf("/film") + 5 < url.indexOf(".html")
-			  )
-			? "No parece ser una dirección de Film Affinity"
-			: "";
-		// Avatar
-		errores.avatar = !datos.avatar
-			? "Necesitamos que agregues una imagen"
-			: !datos.avatar.includes("pics.filmaffinity.com/")
-			? "No parece ser una imagen de FilmAffinity"
-			: !datos.avatar.includes("large.jpg")
-			? "Necesitamos que consigas el link de la imagen grande"
-			: "";
-		// Contenido
-		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
-		errores.contenido = !datos.contenido
-			? comp.inputVacio
-			: !Object.keys(cantDatosObtenidos).length
-			? "No se obtuvo ningún dato"
-			: "";
-		// Final
-		errores.hay = Object.values(errores).some((n) => !!n);
-		errores.campos = Object.keys(cantDatosObtenidos).length;
-		return errores;
-	},
 	// ControllerAPI (validaDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
@@ -131,6 +97,8 @@ module.exports = {
 			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
+		console.log(100,campos.includes("avatar"));
+		console.log(101,campos);
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
@@ -211,6 +179,47 @@ module.exports = {
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores;
+	},
+	// ControllerAPI (validaIngresoFA)
+	IM: (datos) => {
+		let errores = {};
+		// Final
+		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores;
+	},
+	// ControllerAPI (validaIngresoFA)
+	FA: (datos) => {
+		let errores = {};
+		// Dirección
+		let url = datos.direccion;
+		errores.direccion = !url
+			? comp.inputVacio
+			: !url.includes("www.filmaffinity.com/") ||
+			  !(
+					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
+					url.indexOf("/film") + 5 < url.indexOf(".html")
+			  )
+			? "No parece ser una dirección de Film Affinity"
+			: "";
+		// Avatar
+		errores.avatar = !datos.avatar
+			? "Necesitamos que agregues una imagen"
+			: !datos.avatar.includes("pics.filmaffinity.com/")
+			? "No parece ser una imagen de FilmAffinity"
+			: !datos.avatar.includes("large.jpg")
+			? "Necesitamos que consigas el link de la imagen grande"
+			: "";
+		// Contenido
+		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
+		errores.contenido = !datos.contenido
+			? comp.inputVacio
+			: !Object.keys(cantDatosObtenidos).length
+			? "No se obtuvo ningún dato"
+			: "";
+		// Final
+		errores.hay = Object.values(errores).some((n) => !!n);
+		errores.campos = Object.keys(cantDatosObtenidos).length;
 		return errores;
 	},
 };

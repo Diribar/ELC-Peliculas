@@ -81,15 +81,15 @@ module.exports = {
 		// 4. Variables
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		// 5. Obtiene los errores
-		let camposDD_errores = camposDD.map((n) => n.nombre);
+		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
-			: await valida.datosDuros(camposDD_errores, datosDuros);
+			: await valida.datosDuros(camposDD_nombre, datosDuros);
 		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
-		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
+		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Imagen derecha
 		let imgDerPers = datosDuros.avatar
 			? "/imagenes/9-Provisorio/" + datosDuros.avatar
@@ -102,8 +102,8 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Datos Duros",
 			dataEntry: datosDuros,
-			camposDD1: camposDD_vista.filter((n) => n.antesDePais),
-			camposDD2: camposDD_vista.filter((n) => !n.antesDePais),
+			camposInput1: camposInput.filter((n) => n.antesDePais),
+			camposInput2: camposInput.filter((n) => !n.antesDePais),
 			paises,
 			BD_paises,
 			idiomas,
@@ -335,7 +335,7 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
-			imgDerPers: comp.nombreAvatar(registroProd, {}),
+			imgDerPers: "/imagenes/4-ProdsRevisar/" + registroProd.avatar,
 			tituloImgDerPers: registroProd.nombre_castellano,
 		});
 	},
