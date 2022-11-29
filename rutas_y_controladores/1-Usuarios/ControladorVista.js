@@ -77,8 +77,10 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Envía un mail con la contraseña
 		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
 		if (!feedbackEnvioMail.OK)
 			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+		// Agrega el usuario
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,
@@ -109,14 +111,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
 		// Variables
+		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
+		sexos = sexos.filter((m) => m.letra_final);
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
-		// Roles de Iglesia
-		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
-		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 2);
-		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 		let avatar = usuario.avatar
@@ -129,9 +129,9 @@ module.exports = {
 			titulo: "Datos Editables",
 			dataEntry,
 			errores,
+			sexos,
 			hablaHispana,
 			hablaNoHispana,
-			roles_iglesia,
 			avatar,
 			urlSalir: req.session.urlSinLogin,
 		});
@@ -160,7 +160,8 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario("editables", usuario, req.body);
+		await procesos.actualizaElUsuario("editables", usuario, req.body);
+		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
@@ -171,8 +172,12 @@ module.exports = {
 		let usuario = req.session.usuario;
 		let informacion = {
 			mensajes: [
-				"Estimado/a " + usuario.apodo + ", completaste el alta satisfactoriamente.",
-				"Bienvenido/a a la familia de usuarios de ELC",
+				"Estimad" +
+					usuario.sexo.letra_final +
+					" " +
+					usuario.apodo +
+					", completaste el alta satisfactoriamente.",
+				"Bienvenid" + usuario.sexo.letra_final + " a la familia de usuarios de nuestro sitio.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
 			titulo: "Bienvenido/a a la familia ELC",
@@ -181,7 +186,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
 	},
-	documentoForm: async (req, res) => {
+	validarForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";
 		// Redireccionar si corresponde
@@ -189,13 +194,16 @@ module.exports = {
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
 		// Variables
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
-		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
+		// Roles de Iglesia
+		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
+		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 3 && n.id.slice(-1) == usuario.sexo_id);
+		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
+		// Avatar
 		let avatar = usuario.docum_avatar
 			? "/imagenes/5-DocsRevisar/" + usuario.docum_avatar
 			: "/imagenes/0-Base/AvatarGenericoDocum.jpg";
@@ -211,12 +219,12 @@ module.exports = {
 			errores,
 			hablaHispana,
 			hablaNoHispana,
+			roles_iglesia,
 			avatar,
 			urlSalir: req.session.urlSinLogin,
-			sexos,
 		});
 	},
-	documentoGuardar: async (req, res) => {
+	validarGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
 		// Obtiene los datos
@@ -252,7 +260,7 @@ module.exports = {
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
-	documentoRecibido: (req, res) => {
+	validado: (req, res) => {
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");

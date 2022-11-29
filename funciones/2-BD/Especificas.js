@@ -226,7 +226,7 @@ module.exports = {
 	obtieneUsuarioPorMail: (email) => {
 		return db.usuarios
 			.findOne({
-				where: {email: email},
+				where: {email},
 				include: ["rol_usuario", "rol_iglesia", "status_registro", "sexo"],
 			})
 			.then((n) => (n ? n.toJSON() : ""));

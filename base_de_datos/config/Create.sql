@@ -59,7 +59,9 @@ VALUES
 ('AP' , 11, 'Apóstata'   , 0, 1, 1, 1),
 ('APV', 12, 'Apóstata'   , 0, 1, 1, 0),
 ('APM', 13, 'Apóstata'   , 0, 1, 0, 1),
-('NN' , 14, 'Ninguno'    , 1, 0, 1, 1)
+('NN' , 14, 'Ninguno'    , 1, 0, 1, 1),
+('NNV' , 15, 'Ninguno'   , 1, 0, 1, 0),
+('NNM' , 16, 'Ninguno'   , 1, 0, 0, 1)
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -111,25 +113,6 @@ INSERT INTO us_status_registro (id, orden, nombre, mail_validado) VALUES (2, 2, 
 INSERT INTO us_status_registro (id, orden, nombre, editables) VALUES (3, 3, 'Editables', 1);
 INSERT INTO us_status_registro (id, orden, nombre, ident_a_validar) VALUES (4, 4, 'Identidad a validar', 1);
 INSERT INTO us_status_registro (id, orden, nombre, ident_validada) VALUES (5, 5, 'Identidad validada', 1);
-
-CREATE TABLE us_motivos_rech (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	descripcion VARCHAR(42) NOT NULL,
-	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
-	bloqueo_perm_inputs BOOLEAN NULL,
-	mostrar_para_docum BOOLEAN NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_motivos_rech (id, orden, bloqueo_perm_inputs, duracion, mostrar_para_docum, descripcion)
-VALUES
-(11, 1, NULL, 0.5, 1, 'Es ilegible o está truncada'),
-(12, 2,    0,  30, 1, 'No es un documento nacional'),
-(13, 3,    0,  90, 1, 'No es un documento'),
-(14, 4,    0, 180, 1, 'No es un documento y además es ofensiva'),
-(15, 5, NULL, 0.5, 0, 'Valor distinto al del documento')
-;
-
 
 /* USUARIOS */;
 CREATE TABLE usuarios (
@@ -305,17 +288,19 @@ CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(40) NOT NULL,
-	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
-	avatar BOOLEAN DEFAULT 0,
+	avatar_prod BOOLEAN DEFAULT 0,
+	avatar_rclv BOOLEAN DEFAULT 0,
+	avatar_us BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
 	info_erronea BOOLEAN DEFAULT 0,
-	generico BOOLEAN DEFAULT 0,
+	version_actual BOOLEAN DEFAULT 0,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
+	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar_prod, prod, rclv, links, version_actual)
 VALUES (1, 1, 0.2, 'Es mejor la versión actual', 1, 1, 1, 1, 1);
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, prod, rclv, links, info_erronea)
 VALUES
@@ -323,12 +308,13 @@ VALUES
 (12, 12, 0.2, 'Información errónea', 1, 1, 1, 1),
 (13, 13, 10, 'Spam', 1, 0, 0, 0)
 ;
-INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar_prod, avatar_rclv, avatar_us)
 VALUES
-(21, 21, 10, 'La imagen no corresponde al producto', 1),
-(22, 22, 0.1, 'Imagen de poca nitidez', 1),
-(23, 23, 10, 'No es un archivo de imagen válido', 1)
+(21, 21, 0.1, 'Imagen de poca nitidez', 1, 1 ,1),
+(22, 22,  10, 'Imagen ajena a lo esperado (amigable)', 1, 1, 1),
+(23, 23,  90, 'Imagen ajena a lo esperado (intencional)', 1, 1, 1)
 ;
+UPDATE edic_motivos_rech SET bloqueo_perm_inputs=1 WHERE id=23;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
 CREATE TABLE edics_rech (
@@ -344,9 +330,9 @@ CREATE TABLE edics_rech (
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 
 	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NULL,
+	editado_en DATETIME NOT NULL,
 	edic_analizada_por_id INT UNSIGNED NOT NULL,
-	edic_analizada_en DATETIME NULL,
+	edic_analizada_en DATETIME NOT NULL,
 
 	comunicado_en DATETIME NULL,
 

@@ -5,14 +5,22 @@
 
 <!-- Zona de Bienvenida -->
 <div id="zona-de-bienvenida">
-	<div class="flex-row">
-		<% for (let opcion of opciones) { %>
-			<a href="<%= opcion.href %>">
-				<button class="scale">
-					<img src="<%= opcion.src %> ">
-					<p><%= opcion.p %> </p>
-				</button>
-			</a>
-		<% } %>
+	<div class="flex-col">
+		<a href="<%= opciones[0].href %>">
+			<button class="scale">
+				<img src="<%= opciones[0].src %> ">
+				<p><%= opciones[0].p %> </p>
+			</button>
+		</a>
+		<div class="flex-row">
+			<% for (let i=1; i<opciones.length; i++) { %>
+				<a href="<%= opciones[i].href %>">
+					<button class="scale">
+						<img src="<%= opciones[i].src %> ">
+						<p><%= opciones[i].p %> </p>
+					</button>
+				</a>
+			<% } %>
+		</div>
 	</div>
 </div>

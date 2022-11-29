@@ -419,7 +419,14 @@ window.addEventListener("load", async () => {
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
+		// Primera letra en mayúscula
+		if (e.target.localName == "input" && e.target.type == "text") {
+			let aux = e.target.value;
+			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+		}
+		// Asigna el valor
 		let valor = encodeURIComponent(e.target.value);
+		// Particularidades por paso
 		if (paso.PC) {
 			// Cambiar submit por '?'
 			verificar();

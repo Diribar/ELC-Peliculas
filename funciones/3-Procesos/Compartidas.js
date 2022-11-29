@@ -502,9 +502,10 @@ module.exports = {
 		},
 	},
 	avatar: (datos) => {
+		// console.log(datos);
 		// Variables
-		let {avatar, avatar_url, tamano, esImagen} = datos;
-		if (!avatar) avatar = avatar_url;
+		let {avatar, avatar_url, docum_avatar, tamano, esImagen} = datos;
+		avatar = avatar ? avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
 		// Funciones
 		let FN_esImagen = () => {
 			return esImagen == "NO" ? "El archivo no es una imagen" : "";

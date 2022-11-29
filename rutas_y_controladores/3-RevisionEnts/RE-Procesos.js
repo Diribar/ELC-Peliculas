@@ -675,7 +675,7 @@ module.exports = {
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 		// Obtiene los motivos posibles
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech");
-		let motivoGenerico = motivos.find((n) => n.generico);
+		let versionActual = motivos.find((n) => n.version_actual);
 		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
 		// Rutina para comparar los campos
 		for (let campoComparar of camposComparar) {
@@ -702,7 +702,7 @@ module.exports = {
 				datos.valor_rech = valor_rech;
 				motivo =
 					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo"
-						? motivoGenerico
+						? versionActual
 						: motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;

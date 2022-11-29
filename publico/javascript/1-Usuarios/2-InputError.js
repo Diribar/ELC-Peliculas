@@ -3,11 +3,7 @@ window.addEventListener("load", () => {
 	// Tareas
 	let tarea = window.location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
-	let tareas = {
-		login: "login",
-		editables: "editables",
-		documento: "documento",
-	};
+	let tareas = {login: "login", editables: "editables", documento: "documento"};
 	if (!tareas[tarea]) return;
 
 	// VARIABLES GENERALES -----------------------------------------------------------------------
@@ -17,7 +13,7 @@ window.addEventListener("load", () => {
 	let inputs = document.querySelectorAll("form .inputError .input");
 	// OK/Errores
 	let iconosOK = document.querySelectorAll("form .inputError .fa-circle-check");
-	let ocultarOK_imagen = document.querySelector("form .inputError .fa-circle-check.ocultarOK_imagen");
+	let ocultaOK_imagen = document.querySelector("form .inputError .fa-circle-check.ocultaOK_imagen");
 	let iconosError = document.querySelectorAll("form .inputError .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll("form .inputError .mensajeError");
 	let credencialesInvalidas = document.querySelector("#credencialesInvalidas");
@@ -43,7 +39,10 @@ window.addEventListener("load", () => {
 			// Averigua los errores
 			let errores =
 				// Corre la rutina, siempre que no sea una avatar opcional vacío
-				tarea != "editables" || campo != "avatar" || inputs[indice].value || !esImagen
+				campo != "avatar" ||
+				inputs[indice].value ||
+				!esImagen ||
+				(tarea == "documento" && imgAvatar.src.includes("imagenes/0-Base"))
 					? await fetch(ruta_api + campo + "=" + valor).then((n) => n.json())
 					: "";
 			// Fin
@@ -71,6 +70,7 @@ window.addEventListener("load", () => {
 			let error = Array.from(iconosError)
 				.map((n) => n.className)
 				.every((n) => n.includes("ocultar"));
+			// Fin
 			OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 		},
 		actualizaVarios: async function (indice) {
@@ -87,7 +87,7 @@ window.addEventListener("load", () => {
 				// Actualiza el avatar
 				imgAvatar.src = imgInicial;
 				// Oculta el iconoOK
-				if (ocultarOK_imagen) ocultarOK_imagen.classList.add("ocultarOK_imagen");
+				if (ocultaOK_imagen) ocultaOK_imagen.classList.add("ocultaOK_imagen");
 				// Actualiza los errores
 				esImagen = true;
 				this.actualizaVarios(indice);
@@ -105,7 +105,7 @@ window.addEventListener("load", () => {
 					// Actualiza la imagen del avatar en la vista
 					imgAvatar.src = reader.result;
 					// Muestra el iconoOK
-					if (ocultarOK_imagen) ocultarOK_imagen.classList.remove("ocultarOK_imagen");
+					if (ocultaOK_imagen) ocultaOK_imagen.classList.remove("ocultaOK_imagen");
 					// Actualiza los errores
 					esImagen = true;
 					FN.actualizaVarios(indice);
@@ -126,6 +126,15 @@ window.addEventListener("load", () => {
 				};
 			};
 		},
+		startUp: async function () {
+			// Averigua y muestra los errores
+			for (let indice = 0; indice < inputs.length; indice++) {
+				let errores = await this.averiguaLosErrores(indice);
+				this.muestraLosErrores(errores, indice);
+			}
+			// Botón guardar
+			this.actualizaBotonGuardar();
+		},
 	};
 
 	// EVENT LISTENERS ---------------------------------------
@@ -142,8 +151,15 @@ window.addEventListener("load", () => {
 			)
 				credencialesInvalidas.classList.add("ocultar");
 
+			// Primera letra en mayúscula
+			if (tarea != "login" && input.localName == "input" && input.type == "text") {
+				let aux = input.value;
+				input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+			}
+
 			// Acciones si se cambió el avatar
 			if (campo == "avatar") FN.revisaAvatarNuevo(indice);
+			// Acciones para los demás campos
 			else await FN.actualizaVarios(indice);
 		});
 	});
@@ -151,11 +167,10 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
-			for (let indice = 0; indice < inputs.length; indice++) {
-				let errores = await FN.averiguaLosErrores(indice);
-				FN.muestraLosErrores(errores, indice);
-			}
-			FN.actualizaBotonGuardar();
+			FN.startUp();
 		}
 	});
+
+	// Start-up
+	if (tarea == "documento") FN.startUp();
 });

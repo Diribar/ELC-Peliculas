@@ -28,9 +28,8 @@ module.exports = {
 			// Fin
 			errores.apodo = respuesta;
 		}
+		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
-		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
 		errores.hay = Object.values(errores).some((n) => !!n);
 		// Fin
@@ -67,13 +66,14 @@ module.exports = {
 			// Fin
 			errores.apellido = respuesta;
 		}
-		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
 		if (campos.includes("fecha_nacimiento"))
 			errores.fecha_nacimiento = !datos.fecha_nacimiento
 				? "Necesitamos que ingreses la fecha"
 				: fechaRazonable(datos.fecha_nacimiento)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
+		if (campos.includes("rol_iglesia_id"))
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			// Variables
@@ -89,7 +89,7 @@ module.exports = {
 		if (campos.includes("docum_pais_id"))
 			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
+		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.avatar(datos);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;

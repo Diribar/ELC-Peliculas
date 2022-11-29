@@ -10,7 +10,6 @@
 #subCuerpo #datos #feedback {display: flex; flex-direction: column; padding: 0 20px;}
 #subCuerpo #datos #feedback h2 {font-size: 1.5rem; text-decoration: underline;margin-bottom: 5px;}
 #subCuerpo #datos #feedback select {margin-bottom: 15px;}
-#subCuerpo #datos #feedback select option {font-style: italic;}
 #subCuerpo #datos #feedback #texto {display: flex; flex-direction: column;}
 #subCuerpo #datos #feedback #texto .campos {margin: 5px 0; margin-left: 52px; position: relative;}
 #subCuerpo #datos #feedback #texto .campos p {font-size: 1.2rem;}

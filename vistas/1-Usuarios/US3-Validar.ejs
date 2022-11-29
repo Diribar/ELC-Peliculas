@@ -34,18 +34,18 @@
 					<%- include("CMP-Errores", {campo: "apellido", display: true}) %> 
 				</div>
 			</div>
-			<!--Sexo-->
+			<!--Rol en la iglesia-->
 			<div class="label-input flex-col">
-				<label for="sexo_id">Sexo</label>
+				<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
 				<div class="inputError">
-					<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
-					<select name="sexo_id" class="input">
-						<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
-						<% for (let sexo of sexos) { %>
-							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
+					<% rol_iglesia_id = dataEntry ? dataEntry.rol_iglesia_id : "" %>
+					<select name="rol_iglesia_id" class="input" required>
+						<option value="" <% if (!rol_iglesia_id) { %>selected<% } %>>Elejí una opción</option>
+						<% for (let rol_iglesia of roles_iglesia) { %>
+							<option value="<%= rol_iglesia.id %>" <% if (rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>><%= rol_iglesia.nombre %></option>
 						<% } %> 
 					</select>
-					<%- include("CMP-Errores", {campo: "sexo_id", display: true}) %> 
+					<%- include("CMP-Errores", {campo: "rol_iglesia_id", display: true}) %>
 				</div>
 			</div>
 			<!--Fecha de Nacimiento-->
@@ -72,7 +72,7 @@
 			<div class="label-input flex-col">
 				<label for="docum_pais_id">Expedido en qué país</label>
 				<div class="inputError">
-					<select id="docum_pais_id" name="docum_pais_id" class="input">
+					<select id="docum_pais_id" name="docum_pais_id" class="input" required>
 						<option value="" <% if (dataEntry.docum_pais_id=="") {%>selected <%}%>>Elejí un país</option>
 						<optgroup label="América (habla hispana)">
 							<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
@@ -118,7 +118,16 @@
 						<img src="<%= avatar %>">
 					</label>
 					<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
-					<%- include("CMP-Errores", {campo: "avatar", display: true}) %>
+					<!-- Errores -->
+					<div class="errores">
+						<i 
+							class="fa-solid fa-circle-xmark<%- !errores.avatar ? ' ocultar' : '' %>"
+							<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
+						>
+							<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
+						</i>
+						<i class="fa-solid fa-circle-check<%- (errores.avatar || avatar.includes("imagenes/0-Base")) ? ' ocultar' : '' %>"></i>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -7,4 +7,3 @@ input#inputImagen {display:none}
 /* Imagen */
 #cuerpo form #divImagen {width: 200px;align-items: center;}
 #preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
-.ocultarOK_imagen {display: none;}

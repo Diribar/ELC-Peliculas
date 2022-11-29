@@ -16,9 +16,9 @@ window.addEventListener("load", () => {
 	let rechazar = document.querySelectorAll(".contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
 	let tapaElFondo = document.querySelector("#tapar-el-fondo");
-	let motivoGenerico = document.querySelector("#motivoGenerico");
+	let versionActual = document.querySelector("#versionActual");
 	let motivoGenerico_id;
-	if (motivoGenerico) motivoGenerico_id = motivoGenerico.innerHTML;
+	if (versionActual) motivoGenerico_id = versionActual.innerHTML;
 
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector(".contenido #ingrs");

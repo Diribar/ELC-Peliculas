@@ -8,13 +8,13 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
 // Rutas de APIs
 router.get("/api/valida-login", API.validaLogin);
 router.get("/api/valida-mail", API.validaMail);
-router.get("/api/valida-perennes", API.validaPerennes);
 router.get("/api/valida-editables", API.validaEditables);
 router.get("/api/valida-documento", API.validaDocumento);
 
@@ -24,15 +24,15 @@ router.get("/alta-mail", soloVisitas, vista.altaMailForm);
 router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
 router.get("/editables", soloUsuarios, vista.editablesForm);
 router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
-router.get("/bienvenido", soloUsuarios, vista.bienvenido);
-// router.get("/responsabilidad", soloUsuarios, vista.responsab);
-router.get("/documento", soloUsuarios, vista.documentoForm);
-router.post("/documento", soloUsuarios, multer.single("docum_avatar"), vista.documentoGuardar);
-router.get("/documento-recibido", soloUsuarios, vista.documentoRecibido);
+router.get("/bienvenido", soloUsuariosCompl, vista.bienvenido);
+// router.get("/responsabilidad", soloUsuariosCompl, vista.responsab);
+router.get("/documento", soloUsuariosCompl, vista.validarForm);
+router.post("/documento", soloUsuariosCompl, multer.single("avatar"), vista.validarGuardar);
+router.get("/documento-recibido", soloUsuariosCompl, vista.validado);
 
 // Rutas RUD
-router.get("/edicion", soloUsuarios, vista.edicionForm);
-router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
+router.get("/edicion", soloUsuariosCompl, vista.edicionForm);
+router.put("/edicion", soloUsuariosCompl, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
 
 // Login
 router.get("/login", soloVisitas, vista.loginForm);

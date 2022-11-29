@@ -1,13 +1,14 @@
 <div id="tapar-el-fondo"></div>
 <div id="dataEntry" class="flex-col">
+	<h2>Recordatorio:</h2>
 	<p id="subtitulo">Estimad<%= usuario.sexo.letra_final %> <u><%= usuario.nombre %></u>:</p>
 	<p>El contenido de nuestra base de datos es algo <strong><u>diferencial</u></strong> de nuestro sitio.</p>
 	<p>Al ingresar productos, por favor tené en cuenta que:</p>
 	<ol>
-		<li class="ol">Cumpla siempre con alguna de estas características, o ambas:
+		<li class="ol">Cumpla siempre con <u>alguna</u> de estas características, o ambas:
 			<ul>
 				<li>Que esté relacionada con la Fe Católica</li>
-				<li>Que tenga valores que contribuyan a construir una sociedad mejor.</li>
+				<li>Que tenga valores que contribuyan a construir una sociedad mejor, independientemente de su religión.</li>
 			</ul>
 		</li>
 		<li class="ol">Se espera de vos que conozcas la película, y puedas opinar sobre ella. Por favor sé lo más preciso que puedas con la información que introduzcas.</li>
@@ -15,8 +16,12 @@
 	<p style="text-align: center;">¡Gracias!</p>
 	<div id="flechas">
 		<!-- Salir -->
-		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left" title="Salir"></i></a>
+		<a href="<%= urlSalir %>" tabindex="-1">
+			<i class="fa-solid fa-circle-left" title="Salir"></i>
+		</a>
 		<!-- Submit -->
-		<a href="/producto/agregar/palabras-clave" autofocus><i class="fa-solid fa-circle-right" title="Avanzar"></i></a>
+		<a href="/producto/agregar/palabras-clave" autofocus>
+			<i class="fa-solid fa-circle-right" title="Avanzar"></i>
+		</a>
 	</div>
 </div>

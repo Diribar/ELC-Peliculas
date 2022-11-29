@@ -7,10 +7,6 @@ module.exports = {
 		let errores = await validaUsuarios.altaMail(req.query.email);
 		return res.json(errores);
 	},
-	validaPerennes: async (req, res) => {
-		let errores = await validaUsuarios.perennes(req.query);
-		return res.json(errores);
-	},
 	validaEditables: async (req, res) => {
 		let errores = await validaUsuarios.editables(req.query);
 		return res.json(errores);
