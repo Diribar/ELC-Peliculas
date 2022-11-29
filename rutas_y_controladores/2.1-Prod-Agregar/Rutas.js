@@ -7,11 +7,11 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const aptoInput = require("../../middlewares/usuarios/aptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
 const prodYaEnBD = require("../../middlewares/producto/prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 const cartelRespons = require("../../middlewares/usuarios/cartelRespons");
-const algunos = [soloUsuarios, aptoInput];
+const algunos = [soloUsuarios, soloAptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
 const entidad = require("../../middlewares/producto/entidadNombre");

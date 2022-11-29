@@ -186,7 +186,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
 	},
-	documentoForm: async (req, res) => {
+	validarForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";
 		// Redireccionar si corresponde
@@ -224,7 +224,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	documentoGuardar: async (req, res) => {
+	validarGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
 		// Obtiene los datos
@@ -260,7 +260,7 @@ module.exports = {
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
-	documentoRecibido: (req, res) => {
+	validado: (req, res) => {
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");

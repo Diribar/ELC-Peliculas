@@ -79,10 +79,10 @@ module.exports = {
 			motivo_id: motivo.id,
 			duracion: motivo.duracion,
 
-			input_por_id: usuario.id,
-			input_en: usuario.fecha_revisores,
-			evaluado_por_id: revID,
-			evaluado_en: comp.ahora(),
+			editado_por_id: usuario.id,
+			editado_en: usuario.fecha_revisores,
+			edic_analizada_por_id: revID,
+			edic_analizada_en: comp.ahora(),
 		};
 		BD_genericas.agregaRegistro("edics_rech", datos);
 

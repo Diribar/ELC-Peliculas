@@ -8,13 +8,13 @@ const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const aptoInput = require("../../middlewares/usuarios/aptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
 const soloRevisorEnts = require("../../middlewares/usuarios/solo3-revisor-ents");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const entidadID = require("../../middlewares/producto/entidadID");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const algunos = [soloUsuarios, aptoInput, soloRevisorEnts];
+const algunos = [soloUsuarios, soloAptoInput, soloRevisorEnts];
 const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------

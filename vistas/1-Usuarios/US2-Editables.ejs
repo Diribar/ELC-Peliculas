@@ -14,7 +14,7 @@
 		<label for="sexo_id">Sexo</label>
 		<div class="inputError">
 			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
-			<select name="sexo_id" class="input">
+			<select name="sexo_id" class="input" required>
 				<option value="" <% if (sexo_id=="") { %>selected<% } %>>Elegí una opción</option>
 				<% for (let sexo of sexos) { %>
 					<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
@@ -27,7 +27,7 @@
 	<section class="label-input flex-row">
 		<label for="pais">País de residencia</label>
 		<div class="inputError">
-			<select name="pais_id" class="input">
+			<select name="pais_id" class="input" required>
 				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>>Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
