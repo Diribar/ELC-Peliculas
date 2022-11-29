@@ -314,6 +314,7 @@ VALUES
 (22, 22,  10, 'Imagen ajena a lo esperado (amigable)', 1, 1, 1),
 (23, 23,  90, 'Imagen ajena a lo esperado (intencional)', 1, 1, 1)
 ;
+UPDATE edic_motivos_rech SET bloqueo_perm_inputs=1 WHERE id=23;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
 CREATE TABLE edics_rech (
@@ -322,8 +323,8 @@ CREATE TABLE edics_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rech VARCHAR(100) NOT NULL,
-	valor_aprob VARCHAR(100) NOT NULL,
+	valor_rech VARCHAR(100) NULL,
+	valor_aprob VARCHAR(100) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
