@@ -73,7 +73,7 @@ module.exports = {
 			datosDuros.fuente == "TMDB"
 				? "desambiguar"
 				: datosDuros.fuente == "FA"
-				? "copiar-fa"
+				? "ingreso-fa"
 				: datosDuros.fuente == "IM"
 				? "ingreso-manual"
 				: "palabras-clave";
@@ -119,7 +119,7 @@ module.exports = {
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
 				: req.session.FA || req.cookies.FA
-				? "copiar-fa"
+				? "ingreso-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect(origen);
 		// Actualiza datosDuros con la info ingresada
@@ -430,7 +430,7 @@ module.exports = {
 			}
 		}
 		// 2.3. Si hay errores de validación, redireccionar
-		if (errores.hay) return res.redirect("copiar-fa");
+		if (errores.hay) return res.redirect("ingreso-fa");
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
 		req.session.datosDuros = await procesos.infoFAparaDD(FA);
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});

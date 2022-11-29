@@ -22,7 +22,7 @@ const multer = require("../../middlewares/varios/multer");
 router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
 router.get("/api/valida/datos-duros", API.validaDatosDuros);
 router.get("/api/valida/datos-personalizados", API.validaDatosPers);
-router.get("/api/valida/copiar-fa", API.validaCopiarFA);
+router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
 // Desambiguar - Form
 router.get("/api/desambiguar-form0", API.desambForm0);
 router.get("/api/desambiguar-form1", API.desambForm1);
@@ -60,8 +60,8 @@ router.get("/responsabilidad", soloUsuariosCompl, vista.responsabilidad);
 router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.tipoProd_Form);
 router.post("/ingreso-manual", ...algunos, vista.tipoProd_Guardar);
 router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
-router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
-router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
+router.get("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
+router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Guardar);
 
 // Fin
 module.exports = router;
