@@ -44,7 +44,7 @@
 
 /* Imagen de la película */
 #dataEntry #segundaColumna {height: 100%; justify-content: center;}
-#dataEntry #segundaColumna img {height: 100%; width: 100%; object-fit: contain; border-radius: 15px;}
+#dataEntry #segundaColumna img {height: 100%; width: 100%; object-fit: contain; border-radius: 30px;}
 
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}

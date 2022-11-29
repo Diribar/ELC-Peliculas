@@ -3,12 +3,12 @@
 	<label>País/es de origen</label>
 	<div class="inputError">
 		<!-- Lugar donde almacenar los ID -->
-		<input name="paises_id" type="text" <% if (inputOK) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input">
+		<input name="paises_id" type="text" <% if (inputOK) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input" tabindex="-1">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (inputOK) { %>disabled class="despl_click"<% } %> placeholder="Elegí un país">
+		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (inputOK) { %>disabled class="despl_click"<% } %> placeholder="Elegí un país" tabindex="-1">
 		<!-- Opciones de países -->
 		<% if (!inputOK) { %>
-			<select autofocus>
+			<select tabindex="-1">
 				<option value="borrar">Borrar todo/s</option>
 				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 				<% for (let continente of continentes) { %>

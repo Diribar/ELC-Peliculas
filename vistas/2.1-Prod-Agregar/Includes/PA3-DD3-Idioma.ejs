@@ -2,7 +2,7 @@
 	<% let inputOK = idioma_id && !errores.idioma_original_id %>
 	<label>Idioma original</label>
 	<div class="inputError">
-		<select name="idioma_original_id" autofocus class="input<% if (inputOK) { %> despl_click<% } %>" <% if (inputOK) { %>disabled<% } %>>
+		<select name="idioma_original_id" autofocus class="input<% if (inputOK) { %> despl_click<% } %>" <% if (inputOK) { %>disabled<% } %> required>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %>>Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
