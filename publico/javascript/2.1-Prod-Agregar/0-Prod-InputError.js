@@ -476,11 +476,6 @@ window.addEventListener("load", async () => {
 			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor + adicSubcategoria;
 		}
-		// Primera letra en mayúscula
-		if (input.localName == "input" && input.type == "text") {
-			let aux = input.value;
-			input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
-		}
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
