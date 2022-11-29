@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+const internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
 const fs = require("fs");
@@ -585,8 +586,28 @@ module.exports = {
 		return enviar;
 	},
 
-	// Varios
-	enviarMail: async (asunto, mail, comentario) => {
+	// Internet
+	conectividadInternet: async (req) => {
+		return await internetAvailable()
+			.then(async () => {
+				return {OK: true};
+			})
+			.catch(async () => {
+				return {
+					OK: false,
+					informacion: {
+						mensajes: ["No hay conexión a internet"],
+						iconos: [
+							{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"},
+						],
+					},
+				};
+			});
+	},
+	enviarMail: async function (asunto, mail, comentario, req) {
+		// Verifica la conexión a internet
+		let hayConexionInternet = this.conectividadInternet(req);
+
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
 			host: "smtp.gmail.com",
@@ -597,7 +618,6 @@ module.exports = {
 				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
 			},
 		});
-		console.log(transporter);
 		let datos = {
 			from: '"Emprendimiento a bautizar" <' + process.env.direccMail + ">",
 			to: mail,
@@ -605,10 +625,38 @@ module.exports = {
 			text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
-		await transporter.sendMail(datos);
+		// Envío del mail
+		let mailEnviado = transporter
+			.sendMail(datos)
+			.then(() => {
+				return {OK: true};
+			})
+			.catch(() => {
+				return {
+					OK: false,
+					informacion: {
+						mensajes: ["No se envió el e-mail"],
+						iconos: [variables.vistaAnterior(req.session.urlAnterior)],
+					},
+				};
+			});
+
 		// datos.to = "diegoiribarren2015@gmail.com";
 		// await transporter.sendMail(datos);
+
+		// Espera a recibir el feedback
+		[hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado]);
+		let resultado = !hayConexionInternet.OK
+			? hayConexionInternet
+			: !mailEnviado.OK
+			? mailEnviado
+			: {OK: true};
+
+		// Fin
+		return resultado;
 	},
+
+	// Varias
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
