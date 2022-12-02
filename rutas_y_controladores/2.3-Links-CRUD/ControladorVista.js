@@ -24,7 +24,8 @@ module.exports = {
 			userID
 		);
 		// Obtiene el avatar
-		let imgDerPers = comp.nombreAvatar(prodOrig,prodEdic)
+		let imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
+		imgDerPers = imgDerPers.edic;
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
 		// Obtiene información de BD
@@ -38,11 +39,8 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (prodEntidad == "capitulos") {
 			let coleccion_id =
-				prodEdic && prodEdic.coleccion_id
-					? prodEdic.coleccion_id
-					: prodOrig.coleccion_id;
-			let temporada =
-				prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
+				prodEdic && prodEdic.coleccion_id ? prodEdic.coleccion_id : prodOrig.coleccion_id;
+			let temporada = prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
 		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")

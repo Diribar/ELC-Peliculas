@@ -1,5 +1,6 @@
 /* Entidades */
 main #familias {display: flex; flex-direction: row; justify-content: space-around; padding: 40px 0px 20px 0px;}
+
 main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 main #familias .bloques .datos {position: relative; min-width: 270px;}

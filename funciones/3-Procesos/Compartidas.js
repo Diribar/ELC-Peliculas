@@ -466,15 +466,6 @@ module.exports = {
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
-	nombreAvatar: (prodOrig, prodEdic) => {
-		return prodEdic.avatar
-			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
-			: prodOrig.avatar
-			? prodOrig.avatar.startsWith("http")
-				? prodOrig.avatar
-				: "/imagenes/3-Productos/" + prodOrig.avatar
-			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
-	},
 
 	// Validaciones
 	inputVacio: "Necesitamos que completes este campo",
