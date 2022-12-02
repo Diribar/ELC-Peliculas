@@ -6,5 +6,5 @@
 #dataEntry #datos select {padding: 0px 2px;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}
-#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry .flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}
+#dataEntry .flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}

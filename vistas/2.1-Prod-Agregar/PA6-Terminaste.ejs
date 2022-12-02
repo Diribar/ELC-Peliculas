@@ -38,7 +38,7 @@
 		</ul>
 	</div>
 	<!-- Botones -->
-	<div id="flechas">
+	<div class="flechas">
 		<% if (dataEntry.fuente != "TMDB" && entidad != "peliculas") { %>
 			<a href="<%= ruta %>agregar/ingreso-manual/?entidad=capitulos&id=<%= entidad == "colecciones" ? id : dataEntry.coleccion_id %>" autofocus>
 				<i class="fa-solid fa-layer-group" title="Agregar un capítulo en forma manual"></i>

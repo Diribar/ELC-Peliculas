@@ -27,6 +27,6 @@
 /* #subCuerpo #datos #motivo_rech_docum {} */
 
 /* Flechas */
-#subCuerpo #flechas button {border: none;}
+#subCuerpo .flechas button {border: none;}
 
 .bordeRojo {border: red 1px solid;}

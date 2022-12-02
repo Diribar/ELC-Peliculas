@@ -24,7 +24,7 @@
 /* #cuerpo .inputError .mensajeError {left: 20px;} */
 
 /* Flechas */
-#cuerpo #flechas {margin: 15px auto 5px;}
+#cuerpo .flechas {margin: 15px auto 5px;}
 
 /* Credenciales inválidas*/
 #cuerpo form #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}

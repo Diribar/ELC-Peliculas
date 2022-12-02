@@ -85,7 +85,7 @@ form #imagenDerecha.inputError .agregados img {max-width: 25px; max-height: 25px
 form #imagenDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
-#flechas i.fa-slash {rotate: 85deg; cursor: default; padding: 5px 0px; border: none;}
-/* #flechas i {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;} */
-#flechas i.activar.activo {border-color: var(--amarillo-oscuro);}
-/* #flechas {padding: 0;} */
+.flechas i.fa-slash {rotate: 85deg; cursor: default; padding: 5px 0px; border: none;}
+/* .flechas i {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;} */
+.flechas i.activar.activo {border-color: var(--amarillo-oscuro);}
+/* .flechas {padding: 0;} */

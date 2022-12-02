@@ -47,6 +47,6 @@
 #dataEntry #segundaColumna img {height: 100%; width: 100%; object-fit: contain; border-radius: 30px;}
 
 /* Flechas */
-#dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}
-#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry .flechas {margin-top: 20px; display: flex; flex-direction: row;}
+#dataEntry .flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 

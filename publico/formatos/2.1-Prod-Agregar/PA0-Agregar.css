@@ -20,9 +20,9 @@
 #dataEntry #resultado {font-style: normal; border-radius: 10px;}
 
 /* Flechas */
-#dataEntry #flechas {justify-content: space-around; margin: auto;}
-#dataEntry #flechas i {font-size: 2rem;}
-/* #dataEntry #flechas a i {color: var(--gris-oscuro);} */
+#dataEntry .flechas {justify-content: space-around; margin: auto;}
+#dataEntry .flechas i {font-size: 2rem;}
+/* #dataEntry .flechas a i {color: var(--gris-oscuro);} */
 #dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 
 /* Submit button */

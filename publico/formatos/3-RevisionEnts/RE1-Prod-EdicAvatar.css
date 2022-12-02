@@ -39,6 +39,6 @@
 #centro #medio #info ul {list-style-position: inside;}
 #centro #medio #info ul li {margin-left: 25px;}
 /* Sección central - Flechas */
-#flechas {width: fit-content;}
-#flechas {margin-top: 25px; margin-bottom: 5px;}
-#flechas i {font-size: 2rem;}
+.flechas {width: fit-content;}
+.flechas {margin-top: 25px; margin-bottom: 5px;}
+.flechas i {font-size: 2rem;}

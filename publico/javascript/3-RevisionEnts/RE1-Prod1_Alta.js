@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Flechas
-	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
+	let mostrarMenuMotivos = document.querySelector(".flechas .fa-circle-xmark");
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");

@@ -13,7 +13,7 @@
 #dataEntry ul li {font-style: italic;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 20px;}
-#cuerpo #dataEntry #flechas i {border: solid 2px var(--gris-claro);}
-#cuerpo #dataEntry #flechas i.fa-circle-left {color: var(--azul-oscuro)}
-#cuerpo #dataEntry #flechas i.fa-circle-right {color: var(--verde-oscuro);}
+#dataEntry .flechas {margin-top: 20px;}
+#cuerpo #dataEntry .flechas i {border: solid 2px var(--gris-claro);}
+#cuerpo #dataEntry .flechas i.fa-circle-left {color: var(--azul-oscuro)}
+#cuerpo #dataEntry .flechas i.fa-circle-right {color: var(--verde-oscuro);}
