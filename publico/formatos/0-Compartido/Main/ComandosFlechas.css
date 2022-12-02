@@ -3,7 +3,7 @@
 #comandos, #flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
 #comandos i, #flechas i {font-size: 1.75rem; background-color: var(--gris-claro); border: none;}
 #flechas i, #flechas img, #flechas a, #flechas button,
-#comandos i, #comandos button, #comandosRechazar i {margin: 0 15px; border-radius: 50%;}
+#comandos i, #comandos button, #comandosRechazar i {margin: 0 15px; border-radius: 50%; cursor: pointer;}
 #comandos .pack, #flechas .pack {margin: 0 20px;}
 #comandos button i, #flechas a i, #flechas button i {margin: 0;}
 

@@ -61,6 +61,7 @@ module.exports = {
 			colecciones: true,
 			capitulos: true,
 			antesDePais: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Título en castellano",
@@ -69,6 +70,7 @@ module.exports = {
 			colecciones: true,
 			capitulos: true,
 			antesDePais: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Año de estreno",
@@ -78,6 +80,7 @@ module.exports = {
 			colecciones: true,
 			capitulos: true,
 			antesDePais: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Año de finalización",
@@ -87,6 +90,7 @@ module.exports = {
 			colecciones: true,
 			capitulos: false,
 			antesDePais: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Duración (minutos)",
@@ -96,20 +100,19 @@ module.exports = {
 			colecciones: false,
 			capitulos: true,
 			antesDePais: true,
+			campoInput: true,
 		},
 		{
 			nombre: "paises_id",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
-			omitirRutinaVista: true,
 		},
 		{
 			nombre: "idioma_original_id",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
-			omitirRutinaVista: true,
 		},
 		{
 			titulo: "Dirección",
@@ -117,6 +120,7 @@ module.exports = {
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Guión",
@@ -124,6 +128,7 @@ module.exports = {
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Música",
@@ -131,6 +136,7 @@ module.exports = {
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Actuación",
@@ -138,6 +144,7 @@ module.exports = {
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
+			campoInput: true,
 		},
 		{
 			titulo: "Producción",
@@ -145,28 +152,20 @@ module.exports = {
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
+			campoInput: true,
 		},
 		{
 			nombre: "sinopsis",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
-			omitirRutinaVista: true,
 		},
 		{
 			nombre: "avatar",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
-			omitirRutinaVista: true,
 		},
-		// {
-		// 	nombre: "avatar_url",
-		// 	peliculas: true,
-		// 	colecciones: true,
-		// 	capitulos: true,
-		// 	omitirRutinaVista: true,
-		// },
 	],
 	camposDP: async (userID) => {
 		// Funcion
@@ -554,5 +553,4 @@ module.exports = {
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
 	},
-
 };

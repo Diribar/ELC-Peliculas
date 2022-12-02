@@ -34,7 +34,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
-		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
+		let camposInput1, camposInput2, camposInput3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let verificarReq = (dato) => {
@@ -50,10 +50,10 @@ module.exports = {
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicion};
 			// Variables de 'Edición'
-			let camposDD = variables.camposDD.filter((n) => n[entidad]).filter((n) => !n.omitirRutinaVista);
-			camposDD1 = camposDD.filter((n) => n.antesDePais);
-			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombre != "produccion");
-			camposDD3 = camposDD.filter((n) => n.nombre == "produccion");
+			let camposInput = variables.camposDD.filter((n) => n[entidad]).filter((n) => n.campoInput);
+			camposInput1 = camposInput.filter((n) => n.antesDePais);
+			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
+			camposInput3 = camposInput.filter((n) => n.nombre == "produccion");
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
@@ -132,9 +132,9 @@ module.exports = {
 			tituloImgDerPers: prodComb.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
-			camposDD1,
-			camposDD2,
-			camposDD3,
+			camposInput1,
+			camposInput2,
+			camposInput3,
 			BD_paises,
 			BD_idiomas,
 			camposDP,

@@ -94,6 +94,8 @@ window.addEventListener("load", async () => {
 				return {id: n.value, nombre: n.innerHTML};
 			});
 		}
+		// Imagen derecha
+		var sinAvatar = document.querySelector("#imagenDerecha img").src.includes("imagenes/0-Base");
 	}
 	if (paso.DP) {
 		// Ayuda Sub-categoría
@@ -123,8 +125,9 @@ window.addEventListener("load", async () => {
 		//Buscar todos los valores
 		let datosUrl = "";
 		inputs.forEach((input, i) => {
+			// Caracter de unión para i>0
 			if (i) datosUrl += "&";
-			if (paso.DD && input.name == "avatar") return;
+			if (paso.DD && input.name == "avatar" && !sinAvatar) return;
 			datosUrl += input.name + "=" + encodeURIComponent(input.value);
 		});
 		// Consecuencias de las validaciones de errores
@@ -419,8 +422,8 @@ window.addEventListener("load", async () => {
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
-		// Primera letra en mayúscula
-		if (e.target.localName == "input" && e.target.type == "text") {
+		// Primera letra en mayúscula (sólo para Datos Duros)
+		if (paso.DD && e.target.localName == "input" && e.target.type == "text") {
 			let aux = e.target.value;
 			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 		}
@@ -481,8 +484,8 @@ window.addEventListener("load", async () => {
 		// Actualiza botón Submit
 		actualizaBotonSubmit();
 	});
-	form.addEventListener("change", async (e) => {
-		if (paso.DP) {
+	if (paso.DP) {
+		form.addEventListener("change", async (e) => {
 			// Obtiene el valor para 'campo'
 			let campo = e.target.name;
 			let datos;
@@ -498,8 +501,8 @@ window.addEventListener("load", async () => {
 				datos = {campo1: "ano_estreno", campo2: "ano_fin"};
 				DD.dosCampos(datos, campo);
 			}
-		}
-	});
+		});
+	}
 	// Submit
 	form.addEventListener("submit", async (e) => {
 		submitForm(e);

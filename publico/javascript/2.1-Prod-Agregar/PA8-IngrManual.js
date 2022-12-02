@@ -98,7 +98,8 @@ window.addEventListener("load", async () => {
 		(entidad.value != "capitulos" ||
 			(entidad.value == "capitulos" && coleccion_id.value && temporada.value && capitulo.value))
 	)
-		for (let i = 0; i < submit.length; i++) submit[i].classList.remove("inactivo");
+		for (let submit of submits) submit.classList.remove("inactivo");
+
 });
 
 let muestraOcultaCampos = (campo) => {

@@ -19,7 +19,7 @@
 /* Scale */
 #flechas i, #flechas img, #flechas a, #flechas button,
 #comandos i, #comandos button, #comandosRechazar i,
-#cuerpo a i, .scale {transition: 300ms; cursor: pointer;}
+#cuerpo a i, .scale {transition: 300ms;}
 
 #flechas i:hover, #flechas img:hover, #flechas button:hover, #flechas a:hover,
 #comandos i:hover, #comandos button:hover, 

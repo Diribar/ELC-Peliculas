@@ -107,7 +107,7 @@ window.addEventListener("load", async () => {
 			// Imagen
 			li.children[0][4].children[0].src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: "/imagenes/0-Base/AvatarGenericoProd.jpg";
+				: "/imagenes/0-Base/Avatar_sinAvatar.jpg";
 			li.children[0][4].children[0].alt = prod.nombre_original;
 			li.children[0][4].children[0].title = prod.nombre_original;
 			// Información a mostrar

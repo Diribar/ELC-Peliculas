@@ -445,13 +445,26 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	avatarOrigEdic: (prodOrig, prodEdic) => {
-		let aux1 = prodOrig.avatar.startsWith("http");
-		let aux2 = aux1 ? prodOrig.avatar : "/imagenes/3-Productos/" + prodOrig.avatar;
-		let orig = prodOrig.avatar ? aux2 : "/imagenes/0-Base/AvatarGenericoProd.jpg";
-		let edic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : orig;
+	avatarOrigEdic: function (prodOrig, prodEdic) {
+		// Variables
+		let avatarOrig, avatarEdic;
+
+		// Si no existe avatarOrig
+		if (!prodOrig.avatar) avatarOrig = "./publico/imagenes/0-Base/Avatar_sinAvatar.jpg";
+		// Si es un url
+		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
+		// Si el avatar está 'aprobado'
+		else if (this.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + prodOrig.avatar))
+			avatarOrig = "/imagenes/3-Productos/" + prodOrig.avatar;
+		// Si el avatar está 'a revisar'
+		else if (this.averiguaSiExisteUnArchivo("./publico/imagenes/4-ProdsRevisar/" + prodOrig.avatar))
+			avatarOrig = "/imagenes/4-ProdsRevisar/" + prodOrig.avatar;
+
+		// avatarEdic
+		avatarEdic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : avatarOrig;
+
 		// Fin
-		return {orig, edic};
+		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	nombreAvatar: (prodOrig, prodEdic) => {
 		return prodEdic.avatar

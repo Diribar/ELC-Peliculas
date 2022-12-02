@@ -6,7 +6,7 @@
 	<div id="primeraColumna">
 		<h3>Datos generales</h3>
 		<!-- Primeros campos -->
-		<% for (let campo of camposDD1) { %><%- include("PR-Input", {campo}) %><% } %>
+		<% for (let campo of camposInput1) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- País -->
 		<%- include("PR-Pais") %>
 		<!-- Idioma original -->
@@ -16,7 +16,7 @@
 		<!--Es a Color-->
 		<%- include("PR-Select", {nombreDelCampo: "en_color_id", campoDato: "productos"}) %>
 		<!-- Producción -->
-		<% for (let campo of camposDD3) { %><%- include("PR-Input", {campo}) %><% } %>
+		<% for (let campo of camposInput3) { %><%- include("PR-Input", {campo}) %><% } %>
 		<h3>Datos Subjetivos</h3>
 		<!--Categoría-->
 		<%- include("PR-Select", {nombreDelCampo: "categoria_id", campoDato: "nombre"}) %>
@@ -28,7 +28,7 @@
 	<div id="segundaColumna">
 		<!-- Cast/Crew -->
 		<h3>Personas</h3>
-		<% for (let campo of camposDD2) { %><%- include("PR-Input", {campo}) %><% } %>
+		<% for (let campo of camposInput2) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- Relación con la vida -->
 		<h3>Relación con la vida</h3>
 		<!--Personaje histórico-->
