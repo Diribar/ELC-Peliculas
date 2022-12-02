@@ -72,7 +72,8 @@
 					</i>
 				</div>
 			</div>
-			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.CL, url: "links"}) %>
+			<% let rl = "revision/links" %>
+			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.CL, url: rl}) %>
 		</div>
 	</div>
 </section>

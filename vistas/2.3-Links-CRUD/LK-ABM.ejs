@@ -46,18 +46,19 @@
 			</table>
 		</form>
 	</div>
-	<!-- Comandos -->
-	<div id="comandos">
-		<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
-			<a 
-				href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
-				target="_blank"
-				tabindex="-1"
-			>
-				<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
-			</a>
-		<% } %>
-	</div>
 	<!-- Flechas -->
-	<%- include("CR-Flechas") %>
+	<div class="flex-row">
+		<%- include("CR-Flechas") %>
+		<div id="flechas" class="img">
+			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
+				<a 
+					href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+					target="_blank"
+					tabindex="-1"
+				>
+					<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
+				</a>
+			<% } %>
+		</div>
+	</div>
 </section>

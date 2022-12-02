@@ -42,8 +42,8 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 
 /* Desplegables - Temas particulares */
 #tituloPrincipal .ayudaMostrar, #tituloSecundario .ayudaMostrar {max-width: 350px;}
-#tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%);}
-#tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%);}
+#tituloPrincipal .ayudaMostrar {top: -7px; transform: translateX(100%); translate: none;}
+#tituloPrincipal .ayudaMostrar::before {top: 7px; transform: translateX(-100%); translate: none;}
 .errores .fa-circle-xmark:hover .mensajeError {display: inline;}
 .errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
