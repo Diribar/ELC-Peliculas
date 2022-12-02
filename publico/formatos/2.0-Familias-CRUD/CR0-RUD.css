@@ -1,5 +1,5 @@
 /* Cuerpo */
-#cuerpo {background-color: var(--gris-claro); flex-direction: column;}
+#cuerpo {background-color: var(--gris-claro);}
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}

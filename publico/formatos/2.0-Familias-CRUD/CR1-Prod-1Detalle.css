@@ -11,5 +11,4 @@
 #datosLargos #datos #contenido #sinopsis nav {font-size: 1.1rem;}
 
 /* Datos Breves */
-#datosBreves {max-height: 88%;}
-#datosBreves .infoDesplazam {max-height: 500px;}
+#datosBreves .infoDesplazam {max-height: 65vh;}

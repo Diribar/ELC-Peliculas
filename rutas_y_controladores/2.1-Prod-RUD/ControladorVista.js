@@ -111,7 +111,8 @@ module.exports = {
 				bloquesDerecha.push({titulo: "Año de fin", valor: prodComb.ano_fin});
 			else bloquesDerecha.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
 			bloquesDerecha.push({titulo: "Status", ...statusResumido});
-			imgDerPers = comp.nombreAvatar(prodOrig, prodEdic);
+			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
+			imgDerPers = imgDerPers.edic
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
