@@ -19,9 +19,5 @@
 #dataEntry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
 #dataEntry #resultado {font-style: normal; border-radius: 10px;}
 
-/* Flechas */
-#dataEntry .flechas {justify-content: space-around; margin: auto;}
-#dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
-
 /* Submit button */
 #dataEntry button em {color: inherit; background-color: inherit;}
