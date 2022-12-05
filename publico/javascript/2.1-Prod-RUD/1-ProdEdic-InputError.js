@@ -224,7 +224,7 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			let agregar = !v.paisesID.value.includes(paisID);
-			let aux = v.paisesID.value.split(" ");
+			let aux = v.paisesID.value.length ? v.paisesID.value.split(" ") : [];
 			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
 			if (agregar) aux.push(paisID); // Agrega el país
 			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
@@ -363,6 +363,11 @@ window.addEventListener("load", async () => {
 		if (e.target == v.paisesSelect) {
 			FN.actualizaPaisesID();
 			FN.actualizaPaisesNombre();
+		}
+		// Primera letra en mayúscula
+		if (e.target.localName == "input" && e.target.type == "text") {
+			let aux = e.target.value;
+			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 		}
 
 		// Acciones si se cambió el avatar
