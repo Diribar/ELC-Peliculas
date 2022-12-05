@@ -1,0 +1,8 @@
+/* Bloques - Registros */
+.bloques .registros {padding: 0 10px;}
+.bloques .registros h3 {margin:10px 0 2px;}
+
+/* Scroll */
+#primeraColumna .registros {max-height: 60vh; overflow-y: auto;}
+#segundaColumna #rclv .registros {max-height: 30vh; overflow-y: auto;}
+#segundaColumna #links .registros {max-height: 30vh; overflow-y: auto;}

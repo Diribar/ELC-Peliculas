@@ -16,7 +16,7 @@
 	<!-- Productos -->
 	<div id="primeraColumna">
 		<div class="bloques">
-			<div class="datos tituloSecundario">
+			<div class="tituloSecundario">
 				<h2>PRODUCTOS</h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
@@ -40,8 +40,8 @@
 	</div>
 	<div id="segundaColumna">
 		<!-- RCLV -->
-		<div class="bloques">
-			<div class="datos tituloSecundario">
+		<div class="bloques" id="rclv">
+			<div class="tituloSecundario">
 				<h2>RCLV</h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
@@ -62,8 +62,8 @@
 			</div>
 		</div>
 		<!-- Links -->
-		<div class="bloques">
-			<div class="datos tituloSecundario">
+		<div class="bloques" id="links">
+			<div class="tituloSecundario">
 				<h2>LINKS</h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
@@ -78,7 +78,7 @@
 			</div>
 			<div class="registros">
 				<% let rl = "revision/links" %>
-				<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.CL, url: rl}) %>
+				<%- include("RE0-Registros", {titulo: "", regs: productos.CL, url: rl}) %>
 			</div>
 		</div>
 	</div>
