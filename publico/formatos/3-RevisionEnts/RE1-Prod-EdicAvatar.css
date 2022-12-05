@@ -11,8 +11,6 @@
 #cuerpo .imagenes .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
 /* Secciones de Imagen - Izquierda */
 #cuerpo .imagenes .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
-/* Secciones de Imagen - Derecha */
-#cuerpo .imagenes .agregados.scale:hover {transform: translateX(-50%) scale(1.3);}
 
 /* Sección central */
 #cuerpo #centro {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; align-items: center;}

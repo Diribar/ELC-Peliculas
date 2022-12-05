@@ -97,8 +97,6 @@ module.exports = {
 			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
-		console.log(100,campos.includes("avatar"));
-		console.log(101,campos);
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin

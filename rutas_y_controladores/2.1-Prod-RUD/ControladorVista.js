@@ -56,9 +56,18 @@ module.exports = {
 			camposInput3 = camposInput.filter((n) => n.nombre == "produccion");
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
-			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
+			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
+			// Código a borrar
+			if (
+				!camposDP.find((n) => n.nombre == "personaje_id").valores ||
+				!camposDP.find((n) => n.nombre == "hecho_id").valores ||
+				!camposDP.find((n) => n.nombre == "valor_id").valores
+			) {
+				console.log(65,camposDP)
+				return res.send(camposDP.filter(n=>n.grupo=="RCLV"));
+			}
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			let statusResumido = prodComb.status_registro.gr_creado
@@ -112,7 +121,7 @@ module.exports = {
 			else bloquesDerecha.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
 			bloquesDerecha.push({titulo: "Status", ...statusResumido});
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
-			imgDerPers = imgDerPers.edic
+			imgDerPers = imgDerPers.edic;
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")

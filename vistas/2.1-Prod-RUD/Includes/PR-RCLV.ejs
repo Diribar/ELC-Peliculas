@@ -1,4 +1,6 @@
 <% let campo = camposDP.find(n => n.nombre == nombreDelCampo) %>
+<% if (!campo.valores) console.log(2, nombreDelCampo) %> 
+
 <section class="label-input RCLV">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
