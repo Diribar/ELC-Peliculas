@@ -371,10 +371,10 @@ window.addEventListener("load", async () => {
 	});
 
 	// Startup
-	FN.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
-	FN.actualizaBotones(); // ActualizaBotones
-	FN.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
-	FN.accionesPorCambioDeVersion(); // Acciones varias
+	FN.obtieneLosValoresEdicN();
+	FN.actualizaOpcionesSubcat();
+	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores
+	FN.actualizaBotones();
 });
 
 // Estas funciones deben estar afuera, para estar disponibles para las variables

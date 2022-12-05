@@ -1,5 +1,14 @@
-<link rel="stylesheet" href="/formatos/0-Compartido/Main/Revision.css">
-<%- include("CMP-RV-Head", {codigo}) %>
+<!-- General -->
+<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-Revision.css">
+
+<!-- Específicos para el tablero -->
+<% if (codigo == "tableroControl") { %>
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
+<% } else { %>
+	<!-- General para vistas distintas al tablero -->
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-MotivosRechazo.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+<% } %>
 
 <!-- Específicos para Prod-Altas -->
 <% if (codigo == "producto/alta") { %>

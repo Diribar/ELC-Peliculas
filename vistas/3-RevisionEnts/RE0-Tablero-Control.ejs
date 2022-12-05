@@ -28,12 +28,14 @@
 					</i>
 				</div>
 			</div>
-			<% let rp = "revision/producto/" %>
-			<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
-			<%- include("RE0-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
-			<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
-			<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
-			<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
+			<div class="registros">
+				<% let rp = "revision/producto/" %>
+				<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
+				<%- include("RE0-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
+			</div>
 		</div>
 	</div>
 	<div id="segundaColumna">
@@ -53,9 +55,11 @@
 					</i>
 				</div>
 			</div>
-			<% let rr = "revision/rclv/" %>
-			<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: RCLVs.ED, url: rr + "edicion"}) %>
-			<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: rr + "alta"}) %>
+			<div class="registros">
+				<% let rr = "revision/rclv/" %>
+				<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: RCLVs.ED, url: rr + "edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: rr + "alta"}) %>
+			</div>
 		</div>
 		<!-- Links -->
 		<div class="bloques">
@@ -72,8 +76,10 @@
 					</i>
 				</div>
 			</div>
-			<% let rl = "revision/links" %>
-			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.CL, url: rl}) %>
+			<div class="registros">
+				<% let rl = "revision/links" %>
+				<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.CL, url: rl}) %>
+			</div>
 		</div>
 	</div>
 </section>

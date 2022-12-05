@@ -1,8 +1,17 @@
-<link rel="stylesheet" href="/formatos/0-Compartido/Main/Revision.css">
-<%- include("CMP-RV-Head", {codigo}) %>
-<% if (codigo != "tableroControl") { %>
-	<% if (codigo == "validaIdentidad") { %>
-		<link rel="stylesheet" href="/formatos/4-RevisionUs/1-ValidarIdentidad.css">
-		<script src="/javascript/4-RevisionUs/1-ValidarIdentidad.js"></script>
-	<% } %>
+<!-- General -->
+<link rel="stylesheet" href="/formatos/4-RevisionUs/RU0-Revision.css">
+
+<!-- Específicos para el tablero -->
+<% if (codigo == "tableroControl") { %>
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
+<% } else { %>
+	<!-- General para vistas distintas al tablero -->
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-MotivosRechazo.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+<% } %>
+
+<!-- Específicos para Valida Identidad -->
+<% if (codigo == "validaIdentidad") { %>
+	<link rel="stylesheet" href="/formatos/4-RevisionUs/1-ValidarIdentidad.css">
+	<script src="/javascript/4-RevisionUs/1-ValidarIdentidad.js"></script>
 <% } %>
