@@ -175,6 +175,7 @@ module.exports = {
 			// Acciones iniciales
 			let reemplAvatarAutomaticam =
 				prodEdic.avatar && // Que exista el archivo 'avatar'
+				prodOrig.avatar && // Que exista un avatar en original
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			delete prodEdic.avatar_url;
 			// Acciones si se reemplaza en forma automática
