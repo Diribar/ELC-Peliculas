@@ -187,7 +187,7 @@ module.exports = {
 		const anchoMax = 40;
 		const rubros = Object.keys(productos);
 
-		// Reconvertir los elementos
+		// Reconvierte los elementos
 		for (let rubro of rubros)
 			productos[rubro] = productos[rubro].map((n) => {
 				let nombre =
@@ -217,7 +217,7 @@ module.exports = {
 		let anchoMax = 30;
 		const rubros = Object.keys(RCLVs);
 
-		// Reconvertir los elementos
+		// Reconvierte los elementos
 		for (let rubro of rubros)
 			RCLVs[rubro] = RCLVs[rubro].map((n) => {
 				let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;

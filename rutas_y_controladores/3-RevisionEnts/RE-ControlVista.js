@@ -50,6 +50,13 @@ module.exports = {
 		if (entidad == "colecciones") includes.push("capitulos");
 		// Detecta si el registro no está en status creado
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		if (prodOrig.fuente == "IM") {
+			let entidad_id = comp.obtieneEntidad_id(entidad);
+			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[entidad_id]: id});
+			prodEdic = comp.quitaCamposSinContenido(prodEdic);
+			prodOrig = {...prodOrig, ...prodEdic, id};
+			// return res.send([entidad_id, prodOrig, prodEdic]);
+		}
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtiene avatar original
 		let imgDerPers = prodOrig.avatar;

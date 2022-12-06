@@ -273,7 +273,7 @@ module.exports = {
 		// Fin
 		return paisesNombre.join(", ");
 	},
-	convertirLetrasAlIngles: (resultado) => {
+	convierteLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()
 			.replace(/-/g, " ")
@@ -286,7 +286,7 @@ module.exports = {
 			.replace(/:¿![.][?]/g, "")
 			.replace(/ +/g, " ");
 	},
-	convertirLetrasAlCastellano: (resultado) => {
+	convierteLetrasAlCastellano: (resultado) => {
 		let campos = Object.keys(resultado);
 		let valores = Object.values(resultado);
 		for (let i = 0; i < campos.length; i++) {

@@ -91,7 +91,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return comp.convertirLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(datos);
 	},
 
 	// COLLECTIONS ************************
@@ -130,7 +130,7 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return comp.convertirLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Definir variables
@@ -273,7 +273,7 @@ module.exports = {
 			datos.cant_temporadas = datosAPI.seasons.length;
 		}
 		// Fin
-		return comp.convertirLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -379,7 +379,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return comp.convertirLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(datos);
 	},
 	// Función validar (FA)
 	// This (infoFAparaDD)
