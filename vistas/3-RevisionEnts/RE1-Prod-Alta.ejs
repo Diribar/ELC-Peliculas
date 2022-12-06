@@ -37,6 +37,7 @@
 				</div>				
 			<% } %>
 		</div>
+		<!-- Flechas -->
 		<div class="flex-row">
 			<div class="flechas">
 				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self" tabindex="1">
@@ -54,8 +55,7 @@
 				<% } %>
 			</div>
 		</div>
-		<!-- Comandos -->
-		<!-- Botones -->
+		<!-- Rechazo -->
 		<div id="cartelMotivosRechazo" class="ocultar">
 			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
 			<select name="motivo_id">
@@ -72,18 +72,46 @@
 			</div>
 		</div>
 	</section>
-	<section id="datosBreves">
-		<h3>Datos del Producto</h3>
-		<div id="texto">
-			<% for (campo of bloqueDer[0]) { %>
-				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
-					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
-				</p>
-			<% } %>
-			<h3>Datos del Usuario</h3>
-			<% for (campo in bloqueDer[1]) { %>
-				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
-		<% } %> 
+	<section id="segundaCol">
+		<!-- Links a otras páginas de consulta -->
+		<div id="links">
+			<p>Si necesitás consultar algún dato</p>
+			<nav class="flex-row">
+				<!-- TMDB -->
+				<% if (prodOrig.fuente != "TMDB") { %>
+					<% tmdb = prodOrig.nombre_original ? "search?language=es&query=" + prodOrig.nombre_original : "" %>
+					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-TMDB.jpg" title="The Movie Database"></a>
+				<% } %>
+				<!-- FA -->
+				<% if (prodOrig.fuente!="FA") { %>
+					<% fa = prodOrig.nombre_original ? "search.php?stext=" + prodOrig.nombre_original : "" %>
+					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Logos/BD-FA.jpg" title="Film Affinity"></a>
+				<% } %>
+				<!-- IMDB -->
+				<% imdb = prodOrig.IMDB_id ? "title/"+prodOrig.IMDB_id+"/technical" : (prodOrig.nombre_original ? "find?q="+prodOrig.nombre_original : "") %>
+				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-IMDB.jpg" title="Internet Movie Database"></a>
+				<!-- Wikipedia -->
+				<% wiki = prodOrig.nombre_castellano ? prodOrig.nombre_castellano.toLowerCase() : "" %>
+				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Wikipedia"></a>
+				<!-- Google -->
+				<% google = prodOrig.nombre_castellano ? "search?q="+prodOrig.nombre_castellano.toLowerCase() : "" %>
+				<a class="logos" href="//google.com/<%= google %>" target="_blank"><img src="/imagenes/0-Logos/BD-Google.jpg" title="Google"></a>
+			</nav>
+		</div>
+		<!-- Datos Breves -->
+		<div id="datosBreves">
+			<h3>Datos del Producto</h3>
+			<div id="texto">
+				<% for (campo of bloqueDer[0]) { %>
+					<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
+						<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+					</p>
+				<% } %>
+				<h3>Datos del Usuario</h3>
+				<% for (campo in bloqueDer[1]) { %>
+					<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+				<% } %> 
+			</div>
 		</div>
 	</section>
 </form>
