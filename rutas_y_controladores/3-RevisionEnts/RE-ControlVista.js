@@ -209,7 +209,6 @@ module.exports = {
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
 		}
-
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
 			let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
@@ -217,7 +216,7 @@ module.exports = {
 			if (!quedanCampos)
 				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
+			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
 			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/AvatarGenericoProd.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
@@ -231,7 +230,7 @@ module.exports = {
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
-		//return res.send([ingresos, reemplazos]);
+		// return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,

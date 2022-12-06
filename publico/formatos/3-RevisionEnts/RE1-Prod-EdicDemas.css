@@ -21,7 +21,7 @@
 /* Datos Largos - Ingresos */
 #datosLargos .contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
 #datosLargos .contenido #ingrs tr .campoTitulo {width: 150px;}
-#datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
+#datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
 #datosLargos .contenido #ingrs tr #cartelMotivosRechazo select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */

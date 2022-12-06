@@ -381,7 +381,7 @@ module.exports = {
 		// Fin - Envía la edición
 		return {prodEdic};
 	},
-	prodEdicForm_ingrReempl: (prodOrig, edicion) => {
+	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
 		// Obtiene todos los campos a revisar
 		let campos = [...variables.camposRevisar.productos];
 		let resultado = [];
@@ -407,6 +407,19 @@ module.exports = {
 					: edicion[nombre]; // Muestra el valor 'simple'
 			// Consolidar los resultados
 			resultado.push(campo);
+		}
+		// Paises
+		let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
+		if (indicePais >= 0) {
+			let mostrarOrig, mostrarEdic, paises_id;
+			// Países original
+			paises_id = resultado[indicePais].mostrarOrig;
+			mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
+			// Países edición
+			paises_id = resultado[indicePais].mostrarEdic;
+			mostrarEdic = await comp.paises_idToNombre(paises_id);
+			// Fin
+			resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
 		}
 		// Separa los resultados entre ingresos y reemplazos
 		let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
