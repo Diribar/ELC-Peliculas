@@ -62,7 +62,7 @@ module.exports = {
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
-			bloquesDerecha = procesos.bloquesDerecha(entidad,prodComb);
+			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
 			imgDerPers = imgDerPers.edic;
 		}
