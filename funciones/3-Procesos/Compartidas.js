@@ -438,7 +438,7 @@ module.exports = {
 				resolve("OK");
 			});
 			writer.on("error", (error) => {
-				console.log(error);
+				console.log(441, error);
 				reject("Error");
 			});
 		});

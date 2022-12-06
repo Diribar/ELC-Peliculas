@@ -181,8 +181,11 @@ module.exports = {
 							(n.desempate1 == registro.desempate1 || n.desempate2 == registro.desempate2) &&
 							n.ano_estreno == registro.ano_estreno
 					).length;
-				// Elimina duplicados
-				if (coincidencias && coincidencias > 1) resultados.productos.splice(indice, 1);
+				// Procesa duplicados
+				if (coincidencias && coincidencias > 1) {
+					resultados.productos[indice].duplicado = true;
+					// resultados.productos.splice(indice, 1);
+				}
 			}
 		})();
 		// Agrega el método de palabrasClave
@@ -263,12 +266,11 @@ module.exports = {
 	},
 
 	organizaLaInformacion: async (resultados) => {
-		let valorI = new Date();
-		// Le agrega el año de estreno, fin y capítulos a las colecciones
+		// Le agrega el año de estreno, fin y capítulos a las colecciones y series de tv
 		await (async () => {
 			// Variables
 			let colecciones = [];
-			// Obtiene las colecciones que se necesitan
+			// Obtiene las colecciones/series que se necesitan
 			resultados.productos.forEach((prod) => {
 				colecciones.push(
 					prod.TMDB_entidad != "movie" ? detailsTMDB(prod.TMDB_entidad, prod.TMDB_id) : ""
@@ -351,7 +353,6 @@ module.exports = {
 		})();
 
 		// Fin
-		let valorF = new Date();
 		return resultados;
 	},
 };

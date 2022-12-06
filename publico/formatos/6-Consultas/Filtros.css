@@ -22,6 +22,5 @@
 /* Final */
 #filtro-inf #final {justify-content: space-around; align-items: center;}
 #filtro-inf #final button {border: none;}
-#filtro-inf #final .fa-solid {scale: 1.5;}
 #filtro-inf #final .fa-floppy-disk {color:blue; border-style: none;}
 #filtro-inf #final .fa-circle-right {color:green;}

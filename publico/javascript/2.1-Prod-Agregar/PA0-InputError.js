@@ -423,7 +423,10 @@ window.addEventListener("load", async () => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		// Primera letra en mayúscula (sólo para Datos Duros)
-		if (paso.DD && e.target.localName == "input" && e.target.type == "text") {
+		if (
+			paso.DD &&
+			((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea")
+		) {
 			let aux = e.target.value;
 			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 		}

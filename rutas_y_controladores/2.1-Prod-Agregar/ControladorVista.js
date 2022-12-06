@@ -146,8 +146,14 @@ module.exports = {
 			// Redirecciona
 			return res.redirect("datos-duros");
 		} else delete req.session.erroresDD;
+		// Guarda el data entry en session y cookie de Datos Originales
+		if (datosDuros.fuente == "IM") {
+			let IM = req.session.IM ? req.session.IM : req.cookies.IM;
+			let {nombre_castellano, ano_estreno} = datosDuros;
+			IM = {...IM, nombre_castellano, ano_estreno};
+			res.cookie("datosOriginales", IM, {maxAge: unDia});
+		}
 		// Guarda el data entry en session y cookie de Datos Personales
-		if (datosDuros.fuente == "IM") res.cookie("datosOriginales", datosDuros, {maxAge: unDia});
 		req.session.datosPers = datosDuros;
 		res.cookie("datosPers", datosDuros, {maxAge: unDia});
 		// Redirecciona a la siguiente instancia
@@ -355,6 +361,12 @@ module.exports = {
 		procesos.borraSessionCookies(req, res, "IM");
 		// 3. Data Entry propio
 		let IM = req.session.IM ? req.session.IM : req.cookies.IM;
+		// 4. Datos para la vista
+		let entidades = [
+			{codigo: "peliculas", nombre: "Películas"},
+			{codigo: "colecciones", nombre: "Colecciones"},
+			{codigo: "capitulos", nombre: "Capítulo de una colección"},
+		];
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -362,6 +374,7 @@ module.exports = {
 			titulo: "Agregar - Tipo de Producto",
 			dataEntry: IM,
 			autorizado_fa: req.session.usuario.autorizado_fa,
+			entidades,
 		});
 	},
 	IM_Guardar: async (req, res) => {

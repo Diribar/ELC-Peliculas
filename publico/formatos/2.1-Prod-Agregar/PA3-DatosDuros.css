@@ -16,8 +16,7 @@
 #dataEntry #datos #primeraColumna {display: flex; flex-direction: column;}
 #dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #dataEntry .label-input, #dataEntry #paises_id {margin-top: 2px; margin-bottom: 2px;}
-
-#dataEntry button {color: white; background-color: var(--gris-oscuro); padding: 5px 15px; border-radius: 10px; max-width: 85%;}
+#dataEntry .label-input label {margin-right: 10px;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
