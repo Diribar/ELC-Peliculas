@@ -450,7 +450,7 @@ module.exports = {
 		let avatarOrig, avatarEdic;
 
 		// Si no existe avatarOrig
-		if (!prodOrig.avatar) avatarOrig = "./publico/imagenes/0-Base/Avatar_sinAvatar.jpg";
+		if (!prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
 		// Si es un url
 		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
 		// Si el avatar está 'aprobado'

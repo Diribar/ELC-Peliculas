@@ -480,7 +480,7 @@ module.exports = {
 			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
+			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
 				comp.borraUnArchivo("./publico/imagenes/3-Productos/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
