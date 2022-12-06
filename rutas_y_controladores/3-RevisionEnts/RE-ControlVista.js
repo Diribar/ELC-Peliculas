@@ -50,6 +50,7 @@ module.exports = {
 		if (entidad == "colecciones") includes.push("capitulos");
 		// Detecta si el registro no está en status creado
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		// Le agrega datos de la edición cuando no proviene de TMDB
 		if (prodOrig.fuente != "TMDB") {
 			let entidad_id = comp.obtieneEntidad_id(entidad);
 			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[entidad_id]: id});
