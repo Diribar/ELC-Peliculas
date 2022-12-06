@@ -49,7 +49,7 @@
 	<!-- Flechas -->
 	<div class="flex-row">
 		<%- include("CR-Flechas") %>
-		<div id="flechas" class="img">
+		<div class="flechas img">
 			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
 				<a 
 					href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 

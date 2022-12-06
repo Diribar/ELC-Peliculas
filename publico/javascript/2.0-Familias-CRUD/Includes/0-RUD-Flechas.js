@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 
 	// Acción si se elige 'detalle'
 	if (vista != "/producto/detalle/") {
-		let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
+		let detalle = document.querySelector("#cuerpo .flechas .fa-circle-info");
 		detalle.addEventListener("click", () => {
 			if (!detalle.classList.contains("inactivo")) {
 				// Va a la vista 'detalle'
@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 
 	// Acción si se elige 'edicion'
 	if (vista != "/producto/edicion/") {
-		let edicion = document.querySelector("#cuerpo #flechas .fa-pen");
+		let edicion = document.querySelector("#cuerpo .flechas .fa-pen");
 		edicion.addEventListener("click", () => {
 			if (!edicion.classList.contains("inactivo")) {
 				// Va a la vista 'edicion'
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 
 	// Acción si se elige 'links'
 	if (vista != "/links/abm/") {
-		let links = document.querySelector("#cuerpo #flechas .fa-link");
+		let links = document.querySelector("#cuerpo .flechas .fa-link");
 		links.addEventListener("click", () => {
 			if (!links.classList.contains("inactivo")) {
 				// Va a la vista 'links'

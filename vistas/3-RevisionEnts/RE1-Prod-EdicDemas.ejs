@@ -48,7 +48,7 @@
 		</div>
 		<!-- Botones -->
 		<div class="flex-row">
-			<div id="flechas">
+			<div class="flechas">
 				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
 					<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 				</a>
@@ -56,7 +56,7 @@
 					<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
 				</a>
 			</div>
-			<div id="flechas">
+			<div class="flechas">
 				<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
 				<% if (entidad != "colecciones") { %>
 					<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>

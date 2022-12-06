@@ -37,12 +37,12 @@ window.addEventListener("load", async () => {
 		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
 		esImagen: true,
 		// Botones
-		botonesActivarVersion: document.querySelectorAll("#cuerpo #flechas .activar"),
-		botonesDescartar: document.querySelectorAll("#cuerpo #flechas .descartar"),
-		botonGuardar: document.querySelector("#cuerpo #flechas .guardar"),
+		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activar"),
+		botonesDescartar: document.querySelectorAll("#cuerpo .flechas .descartar"),
+		botonGuardar: document.querySelector("#cuerpo .flechas .guardar"),
 		botones: {
-			edicN: document.querySelectorAll("#cuerpo #flechas .edicN"),
-			edicG: document.querySelectorAll("#cuerpo #flechas .edicG"),
+			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
+			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
 		},
 		// Varios
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),

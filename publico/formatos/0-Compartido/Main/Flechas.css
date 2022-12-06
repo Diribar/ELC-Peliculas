@@ -1,0 +1,11 @@
+/* Flechas */
+.flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+.flechas {margin: 0 auto; padding: 5px 0px; border-radius: 18px;}
+.flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+.flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background-color: transparent; border: none;}
+.flechas i {color: white; }
+.flechas a i, .flechas button i {margin: 0;}
+.flechas .pack {margin: 0 20px; display: flex; flex-direction: row; align-items: center;}
+.flechas .pack i {margin: 0;}
+
+.flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}

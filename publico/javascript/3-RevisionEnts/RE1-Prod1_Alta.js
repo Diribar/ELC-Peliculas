@@ -1,14 +1,14 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Flechas
-	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
+	let mostrarMenuMotivos = document.querySelector(".flechas .fa-circle-xmark");
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
 	let menuMotivosBorrar = document.querySelector("#cartelMotivosRechazo");
 	let motivoRechazo = document.querySelector("#cartelMotivosRechazo select");
-	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let inactivar = document.querySelector("#comandosRechazar button");
+	let cancelar = document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left");
+	let inactivar = document.querySelector("#cartelMotivosRechazo .flechas button");
 
 	// Muestra el menú "motivos para borrar"
 	mostrarMenuMotivos.addEventListener("click", () => {

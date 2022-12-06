@@ -75,6 +75,6 @@
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 
 /* Comandos - Particularidades */
-#cuerpo #flechas.img {padding-left: 5px; padding-right: 5px;}
-#cuerpo #flechas.img a {display: flex; flex-direction: row; margin: 0;}
-#cuerpo #flechas a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}
+#cuerpo .flechas.img {padding-left: 5px; padding-right: 5px;}
+#cuerpo .flechas.img a {display: flex; flex-direction: row; margin: 0;}
+#cuerpo .flechas a img {max-width: 70px; max-height: 24px; border-radius: 20px; margin: 0 10px;}

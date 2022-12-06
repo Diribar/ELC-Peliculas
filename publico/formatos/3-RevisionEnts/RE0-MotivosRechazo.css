@@ -4,8 +4,8 @@
 #cartelMotivosRechazo {width: 300px; text-align: center;}
 #cartelMotivosRechazo p {color: snow; font-size: 1.2rem;}
 #cartelMotivosRechazo select {margin-top: 20px; margin-bottom: 20px; border-radius: 10px; padding: 0 5px;}
-#cartelMotivosRechazo #comandosRechazar {display: flex; flex-direction: row; justify-content: space-evenly;}
-#cartelMotivosRechazo #comandosRechazar button {border: none; border-radius: 50%;}
-#cartelMotivosRechazo #comandosRechazar i {font-size: 2rem;}
-#cartelMotivosRechazo #comandosRechazar i.fa-circle-left {color: var(--azul-oscuro);}
-#cartelMotivosRechazo #comandosRechazar i.rechazar {color: var(--rojo-oscuro);}
+#cartelMotivosRechazo .flechas {display: flex; flex-direction: row; justify-content: space-evenly;}
+#cartelMotivosRechazo .flechas button {border: none; border-radius: 50%;}
+#cartelMotivosRechazo .flechas i {font-size: 2rem;}
+#cartelMotivosRechazo .flechas i.fa-circle-left {color: var(--azul-oscuro);}
+#cartelMotivosRechazo .flechas i.rechazar {color: var(--rojo-oscuro);}

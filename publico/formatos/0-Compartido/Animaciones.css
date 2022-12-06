@@ -17,12 +17,10 @@
 .aparece, .desaparece, .aumenta, .disminuye {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
-#flechas i, #flechas img, #flechas a, #flechas button,
-#comandos i, #comandos button, #comandosRechazar i,
+.flechas i, .flechas img, .flechas a, .flechas button,
 #cuerpo a i, .scale {transition: 300ms;}
 
-#flechas i:hover, #flechas img:hover, #flechas button:hover, #flechas a:hover,
-#comandos i:hover, #comandos button:hover, 
-#comandosRechazar i:hover, #cuerpo a i:hover, .scale:hover {scale: 1.3;}
+.flechas i:hover, .flechas img:hover, .flechas button:hover, .flechas a:hover,
+#cuerpo a i:hover, .scale:hover {scale: 1.3;}
 
-#flechas button i:hover, #flechas a i:hover, #comandos button i:hover, #comandos a i:hover {scale: 1;}
+.flechas button i:hover, .flechas a i:hover {scale: 1;}
