@@ -5,7 +5,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
 
-module.exports = { 
+module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Tema y Código
