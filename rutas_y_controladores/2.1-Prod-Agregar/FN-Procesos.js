@@ -81,12 +81,12 @@ module.exports = {
 				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = limpiarValores(datosAPI.production_companies);
+				datos.produccion = limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				datos.direccion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				datos.guion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				datos.musica = limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				datos.direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
@@ -124,21 +124,21 @@ module.exports = {
 			if (datosAPI.poster_path)
 				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
-			datos.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
+			datos.capitulosID_TMDB = datosAPI.parts.map((n) => n.id);
 		}
 		// Datos de los capítulos para completar la colección
-		let otrosDatos = await this.completarColeccion(datos);
+		let otrosDatos = await this.completaColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-	completarColeccion: async (datos) => {
+	completaColeccion: async (datos) => {
 		// Definir variables
 		let paises_id, produccion, direccion, guion, musica, actuacion;
 		paises_id = produccion = direccion = guion = musica = actuacion = "";
 		let exportar = {};
 		// Rutina por cada capítulo
-		for (let capTMDB_id of datos.capitulosTMDB_id) {
+		for (let capTMDB_id of datos.capitulosID_TMDB) {
 			// Obtiene las API
 			let datosAPI = await Promise.all([
 				detailsTMDB("movie", capTMDB_id),
@@ -152,18 +152,18 @@ module.exports = {
 				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length)
-				produccion += limpiarValores(datosAPI.production_companies) + ", ";
+				produccion += limpiaValores(datosAPI.production_companies) + ", ";
 			// Crew
 			if (datosAPI.crew.length) {
-				direccion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
-				guion += limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
-				musica += limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
+				direccion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+				guion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
+				musica += limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
 			// Cast
 			if (datosAPI.cast.length) actuacion += funcionCast(datosAPI.cast) + ", ";
 		}
 		// Procesar los resultados
-		let cantCapitulos = datos.capitulosTMDB_id.length;
+		let cantCapitulos = datos.capitulosID_TMDB.length;
 		if (paises_id) exportar.paises_id = consolidaValores(paises_id, cantCapitulos).replace(/,/g, "");
 		if (produccion) exportar.produccion = consolidaValores(produccion, cantCapitulos);
 		if (direccion) exportar.direccion = consolidaValores(direccion, cantCapitulos);
@@ -176,39 +176,33 @@ module.exports = {
 	// ControllerVista (confirma)
 	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
-		datosCol.capitulosTMDB_id.forEach(async (capituloTMDB_id, indice) => {
-			// Si el capítulo no existe, agregarlo
-			let existe = await BD_especificas.obtieneELC_id("capitulos", {TMDB_id: capituloTMDB_id});
-			if (!existe) {
-				// Preparar datos del capítulo
-				let datosCap = {
-					coleccion_id: datosCol.id,
-					fuente: "TMDB",
-					temporada: 1,
-					capitulo: indice + 1,
-					creado_por_id: 2,
-				};
-				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
-				if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
-				datosCap.categoria_id = datosCol.categoria_id;
-				datosCap.subcategoria_id = datosCol.subcategoria_id;
-				datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
-				// Guardar los datos del capítulo
-				await this.DS_movie({TMDB_id: capituloTMDB_id})
-					.then((n) => (n = {...n, ...datosCap}))
-					.then((n) => BD_genericas.agregaRegistro("capitulos", n));
-			}
+		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
+			await this.agregaCapitulosDeCollection(datosCol, capituloID_TMDB, indice);
 		});
+		// Fin
 		return;
 	},
-	// ControllerVista (confirma)
-	agregaCapitulosNuevos: async function (coleccion_id, TMDB_id) {
-		// Obtiene el API actualizada de la colección
-		let datosAPI = await detailsTMDB("collection", TMDB_id);
-		// Obtiene el ID de los capitulos
-		let capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
-		// Agrega los capítulos que correspondan
-		await this.agregaCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
+	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
+		// Preparar datos del capítulo
+		let datosCap = {
+			coleccion_id: datosCol.id,
+			fuente: "TMDB",
+			temporada: 1,
+			capitulo: indice + 1,
+			creado_por_id: 2,
+		};
+		if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
+		if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
+		datosCap.categoria_id = datosCol.categoria_id;
+		datosCap.subcategoria_id = datosCol.subcategoria_id;
+		datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
+		// Guardar los datos del capítulo
+		// console.log(200,capituloID_TMDB,datosCap);
+		await this.DS_movie({TMDB_id: capituloID_TMDB})
+			.then((n) => (n = {...n, ...datosCap}))
+			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
+
+		// Fin
 		return;
 	},
 
@@ -258,12 +252,12 @@ module.exports = {
 			if (datosAPI.created_by.length > 0)
 				datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datos.produccion = limpiarValores(datosAPI.production_companies);
+				datos.produccion = limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				datos.direccion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				datos.guion = limpiarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				datos.musica = limpiarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				datos.direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
@@ -302,9 +296,9 @@ module.exports = {
 		if (datosCap.name) datos.nombre_castellano = datosCap.name;
 		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
 		if (datosCap.crew.length > 0) {
-			datos.direccion = limpiarValores(datosCap.crew.filter((n) => n.department == "Directing"));
-			datos.guion = limpiarValores(datosCap.crew.filter((n) => n.department == "Writing"));
-			datos.musica = limpiarValores(datosCap.crew.filter((n) => n.department == "Sound"));
+			datos.direccion = limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
+			datos.guion = limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
+			datos.musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 		}
 		let actuacion = [];
 		if (datosTemp.cast.length) actuacion.push(...datosTemp.cast);
@@ -320,23 +314,28 @@ module.exports = {
 		return datos;
 	},
 	// ControllerVista (confirma)
-	agregarCapitulosDeTV: async function (datosCol) {
-		// Loop de TEMPORADAS ***********************************************
-		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
-			// Datos de UNA TEMPORADA
-			let datosTemp = await Promise.all([
-				detailsTMDB(temporada, datosCol.TMDB_id),
-				creditsTMDB(temporada, datosCol.TMDB_id),
-			]).then(([a, b]) => {
-				return {...a, ...b};
-			});
-			// Loop de CAPITULOS ********************************************
-			for (let episode of datosTemp.episodes) {
-				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
-				// Obtiene las API
-				await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
-			}
+	agregaCapitulosDeTV: async function (datosCol) {
+		// Loop de TEMPORADAS
+		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
+			this.agregaCapituloDeTV(datosCol, temporada);
+		// Fin
+		return;
+	},
+	agregaCapituloDeTV: async function (datosCol, temporada) {
+		// Datos de UNA TEMPORADA
+		let datosTemp = await Promise.all([
+			detailsTMDB(temporada, datosCol.TMDB_id),
+			creditsTMDB(temporada, datosCol.TMDB_id),
+		]).then(([a, b]) => {
+			return {...a, ...b};
+		});
+		// Loop de CAPITULOS ********************************************
+		for (let episode of datosTemp.episodes) {
+			let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
+			// Obtiene las API
+			await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 		}
+		// Fin
 		return;
 	},
 
@@ -498,7 +497,7 @@ let consolidaValores = (datos, cantCapitulos) => {
 	resultado = resultado.join(", ");
 	return resultado;
 };
-let limpiarValores = (datos) => {
+let limpiaValores = (datos) => {
 	// Variables
 	let largo = 100;
 	let valores = [];

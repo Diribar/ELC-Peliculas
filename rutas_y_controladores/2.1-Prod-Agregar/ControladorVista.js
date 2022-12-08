@@ -2,7 +2,6 @@
 // Definir variables
 const fs = require("fs");
 const path = require("path");
-const requestPromise = require("request-promise");
 // Definir funciones
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
@@ -277,7 +276,7 @@ module.exports = {
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
-				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
+				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
 		procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
