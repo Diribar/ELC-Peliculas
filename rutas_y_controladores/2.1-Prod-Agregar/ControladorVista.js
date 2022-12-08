@@ -2,7 +2,6 @@
 // Definir variables
 const fs = require("fs");
 const path = require("path");
-const requestPromise = require("request-promise");
 // Definir funciones
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
