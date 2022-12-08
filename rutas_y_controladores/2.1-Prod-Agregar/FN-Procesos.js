@@ -314,7 +314,7 @@ module.exports = {
 		return datos;
 	},
 	// ControllerVista (confirma)
-	agregarCapitulosDeTV: async function (datosCol) {
+	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS ***********************************************
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
 			// Datos de UNA TEMPORADA

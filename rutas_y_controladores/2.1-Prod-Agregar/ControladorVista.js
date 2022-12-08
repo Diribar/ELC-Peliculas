@@ -276,7 +276,7 @@ module.exports = {
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
-				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
+				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
 		procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
