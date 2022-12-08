@@ -2,10 +2,11 @@
 #datos {display: flex; flex-direction: row; flex-grow: 1;}
 
 /* Datos Largos */
-#datosLargos {margin: 20px 0 5px; padding: 40px 40px 20px;}
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
+#datosLargos {padding: 0 40px;}
 #datosLargos h1 {font-size: 1.5rem;}
-#datosLargos .contenido {height: 300px; overflow-y: auto; background-color: var(--gris-intermedio); padding: 0 5px;}
+#datosLargos .contenido {max-height: 50vh; min-height: 35vh; overflow-y: auto; background-color: var(--verde-claro);}
+#datosLargos .contenido {padding: 0 5px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
 #datosLargos .contenido h2 {margin-top: 15px; font-variant: small-caps}
 #datosLargos .contenido #ingrs {margin-top: 5px;}
 #datosLargos .contenido p {line-height: 1;}
@@ -20,7 +21,7 @@
 /* Datos Largos - Ingresos */
 #datosLargos .contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
 #datosLargos .contenido #ingrs tr .campoTitulo {width: 150px;}
-#datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
+#datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
 #datosLargos .contenido #ingrs tr #cartelMotivosRechazo select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */

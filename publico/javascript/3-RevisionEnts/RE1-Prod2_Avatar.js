@@ -3,14 +3,15 @@ window.addEventListener("load", () => {
 	// Variables de bloque
 	let beneficios = {
 		titulo: document.querySelectorAll("#medio #titulo")[0],
-		ul: document.querySelectorAll("#medio #beneficios"),
+		ul: document.querySelector("#medio #beneficios"),
 		ningunoLeyenda: "a criterio del Revisor",
 	};
 	let perjuicios = {
 		titulo: document.querySelectorAll("#medio #titulo")[1],
-		ul: document.querySelectorAll("#medio #perjuicios"),
+		ul: document.querySelector("#medio #perjuicios"),
 		ningunoLeyenda: "ninguno",
 	};
+	let ratioResultado;
 
 	// Variables de Imagen Nueva
 	let imagenNuevaDOM = document.querySelector("#izquierda img");
@@ -33,21 +34,14 @@ window.addEventListener("load", () => {
 	imagenActual.ratioAdecuado = imagenActual.ratio >= 1.42 && imagenActual.ratio <= 2;
 
 	// Comparaciones de ratio
-	beneficios = {
-		...beneficios,
-		ratioResultado:
-			!imagenActual.ratioAdecuado &&
-			(imagenNueva.ratioAdecuado || (imagenNueva.ratio > imagenActual.ratio && imagenNueva.ratio <= 2)),
-		ratioLeyenda: "Mejor relación de alto y ancho",
-	};
-	perjuicios = {
-		...perjuicios,
-		ratioResultado:
-			!imagenNueva.ratioAdecuado &&
-			(imagenActual.ratioAdecuado ||
-				(imagenActual.ratio > imagenNueva.ratio && imagenActual.ratio <= 2)),
-		ratioLeyenda: "Peor relación de alto y ancho",
-	};
+	ratioResultado =
+		!imagenActual.ratioAdecuado &&
+		(imagenNueva.ratioAdecuado || (imagenNueva.ratio > imagenActual.ratio && imagenNueva.ratio <= 2));
+	beneficios = {...beneficios, ratioResultado, ratioLeyenda: "Mejor relación de alto y ancho"};
+	ratioResultado =
+		!imagenNueva.ratioAdecuado &&
+		(imagenActual.ratioAdecuado || (imagenActual.ratio > imagenNueva.ratio && imagenActual.ratio <= 2));
+	perjuicios = {...perjuicios, ratioResultado, ratioLeyenda: "Peor relación de alto y ancho"};
 
 	// Comparaciones de calidad
 	beneficios = {
@@ -63,25 +57,30 @@ window.addEventListener("load", () => {
 
 	// Funciones
 	let feedback = (bloque, infos) => {
+		// Crea el elemento título
+		let h3 = document.createElement("h3");
+		// Si es un sólo caso
 		if (typeof infos == "string") {
-			// Agregar titulo
-			let h3 = document.createElement("h3");
+			// Agrega el título
 			h3.innerText = bloque.slice(0, -1) + ":";
 			bloque == "beneficios" ? beneficios.titulo.appendChild(h3) : perjuicios.titulo.appendChild(h3);
-			// Agregar párrafo
+			// Agrega un párrafo
 			let p = document.createElement("p");
 			p.innerText = (
 				bloque == "beneficios" ? beneficios[infos + "Leyenda"] : perjuicios[infos + "Leyenda"]
 			).toLowerCase();
 			bloque == "beneficios" ? beneficios.titulo.appendChild(p) : perjuicios.titulo.appendChild(p);
-		} else {
-			// Agregar titulo
-			let h3 = document.createElement("h3");
+		}
+		// Si son varios casos
+		else {
+			// Agrega el título
 			h3.innerText = bloque + ":";
 			bloque == "beneficios" ? beneficios.titulo.appendChild(h3) : perjuicios.titulo.appendChild(h3);
+			// Rutina
 			for (let info of infos) {
 				let li = document.createElement("li");
-				li.innerText = [bloque][info + "Leyenda"];
+				li.innerText =
+					bloque == "beneficios" ? beneficios[info + "Leyenda"] : perjuicios[info + "Leyenda"];
 				bloque == "beneficios" ? beneficios.ul.appendChild(li) : perjuicios.ul.appendChild(li);
 			}
 		}
@@ -106,12 +105,4 @@ window.addEventListener("load", () => {
 		: !perjuicios.calidadResultado
 		? feedback("perjuicios", "ratio")
 		: feedback("perjuicios", ["ratio", "calidad"]);
-
-	// if (!peorRatio.resultado) document.querySelector("#perjuicios #ratio").classList.add("ocultar");
-	// if (!peorCalidad.resultado) document.querySelector("#perjuicios #resolucion").classList.add("ocultar");
-	// if (!peorRatio.resultado && !peorCalidad.resultado) {
-	// 	const para = document.createElement("p");
-	// 	para.innerText = "ninguno";
-	// 	perjuicios.appendChild(para);
-	// }
 });

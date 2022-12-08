@@ -59,67 +59,10 @@ module.exports = {
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
-			// Código a borrar
-			if (
-				!camposDP.find((n) => n.nombre == "personaje_id").valores ||
-				!camposDP.find((n) => n.nombre == "hecho_id").valores ||
-				!camposDP.find((n) => n.nombre == "valor_id").valores
-			) {
-				console.log(65,camposDP)
-				return res.send(camposDP.filter(n=>n.grupo=="RCLV"));
-			}
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
-			let statusResumido = prodComb.status_registro.gr_creado
-				? {id: 1, valor: "Pend. Aprobac."}
-				: prodComb.status_registro.aprobado
-				? {id: 2, valor: "Aprobado"}
-				: {id: 3, valor: "Inactivado"};
-			let bloque1 = [
-				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
-				{
-					titulo: "Idioma original",
-					valor: prodComb.idioma_original ? prodComb.idioma_original.nombre : "Sin datos",
-				},
-				{
-					titulo: "En castellano",
-					valor: prodComb.en_castellano ? prodComb.en_castellano.productos : "Sin datos",
-				},
-				{
-					titulo: "Es a color",
-					valor: prodComb.en_color ? prodComb.en_color.productos : "Sin datos",
-				},
-			];
-			let bloque2 = [
-				{titulo: "Dirección", valor: prodComb.direccion ? prodComb.direccion : "Sin datos"},
-				{titulo: "Guión", valor: prodComb.guion ? prodComb.guion : "Sin datos"},
-				{titulo: "Música", valor: prodComb.musica ? prodComb.musica : "Sin datos"},
-				{
-					titulo: "Producción",
-					valor: prodComb.produccion ? prodComb.produccion : "Sin datos",
-				},
-			];
-			let bloque3 = [
-				{titulo: "Actuación", valor: prodComb.actuacion ? prodComb.actuacion : "Sin datos"},
-			];
-			bloquesIzquierda = [bloque1, bloque2, bloque3];
-			bloquesDerecha = [
-				{titulo: "Público Sugerido", valor: comp.valorNombre(prodComb.publico_sugerido, "Sin datos")},
-				{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
-				{titulo: "Sub-categoría", valor: comp.valorNombre(prodComb.subcategoria, "Sin datos")},
-			];
-			let RCLVs = (campo, titulo, RCLV_entidad, rel) => {
-				let datos = {titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id};
-				if (prodComb[campo] != 1) bloquesDerecha.push(datos);
-			};
-			RCLVs("personaje_id", "Personaje Histórico", "personajes", "personaje");
-			RCLVs("hecho_id", "Hecho Histórico", "hechos", "hecho");
-			RCLVs("valor_id", "Valor", "valores", "valor");
-			bloquesDerecha.push({titulo: "Año de estreno", valor: prodComb.ano_estreno});
-			if (entidad == "colecciones")
-				bloquesDerecha.push({titulo: "Año de fin", valor: prodComb.ano_fin});
-			else bloquesDerecha.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
-			bloquesDerecha.push({titulo: "Status", ...statusResumido});
+			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
+			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
 			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
 			imgDerPers = imgDerPers.edic;
 		}
@@ -153,7 +96,6 @@ module.exports = {
 			prodNombre,
 			cartel: codigo == "edicion",
 			dataEntry: {},
-			// campo: "",
 			avatarLinksExternos,
 			omitirImagenDerecha: codigo == "edicion",
 			omitirFooter: codigo == "edicion",

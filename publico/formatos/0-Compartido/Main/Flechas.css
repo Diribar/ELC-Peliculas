@@ -9,3 +9,5 @@
 .flechas .pack i {margin: 0;}
 
 .flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
+
+.flechas button, .flechas a {display: flex; flex-direction: row; align-items: center;}
