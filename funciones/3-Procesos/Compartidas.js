@@ -61,6 +61,12 @@ module.exports = {
 				campos.push(campo.nombre);
 				if (campo.relac_include) campos.push(campo.relac_include);
 			});
+			// Quita la duración de las colecciones
+			if (edicion.coleccion_id) {
+				let indice = campos.indexOf("duracion");
+				campos.splice(indice, 1);
+			}
+			console.log(69,edicion.coleccion_id,campos);
 			// Quitar de edicion los campos que no se comparan
 			for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
 			// Fin

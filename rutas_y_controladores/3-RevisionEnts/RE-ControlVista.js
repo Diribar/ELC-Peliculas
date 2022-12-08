@@ -18,6 +18,7 @@ module.exports = {
 		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
+		// return res.send(productos)
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);

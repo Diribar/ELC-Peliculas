@@ -202,7 +202,7 @@ module.exports = {
 			.then((n) => (n = {...n, ...datosCap}))
 			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
 
-			// Fin
+		// Fin
 		return;
 	},
 
@@ -315,22 +315,27 @@ module.exports = {
 	},
 	// ControllerVista (confirma)
 	agregaCapitulosDeTV: async function (datosCol) {
-		// Loop de TEMPORADAS ***********************************************
-		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
-			// Datos de UNA TEMPORADA
-			let datosTemp = await Promise.all([
-				detailsTMDB(temporada, datosCol.TMDB_id),
-				creditsTMDB(temporada, datosCol.TMDB_id),
-			]).then(([a, b]) => {
-				return {...a, ...b};
-			});
-			// Loop de CAPITULOS ********************************************
-			for (let episode of datosTemp.episodes) {
-				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
-				// Obtiene las API
-				await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
-			}
+		// Loop de TEMPORADAS
+		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
+			this.agregaCapituloDeTV(datosCol, temporada);
+		// Fin
+		return;
+	},
+	agregaCapituloDeTV: async function (datosCol, temporada) {
+		// Datos de UNA TEMPORADA
+		let datosTemp = await Promise.all([
+			detailsTMDB(temporada, datosCol.TMDB_id),
+			creditsTMDB(temporada, datosCol.TMDB_id),
+		]).then(([a, b]) => {
+			return {...a, ...b};
+		});
+		// Loop de CAPITULOS ********************************************
+		for (let episode of datosTemp.episodes) {
+			let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
+			// Obtiene las API
+			await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 		}
+		// Fin
 		return;
 	},
 
