@@ -66,7 +66,6 @@ module.exports = {
 				let indice = campos.indexOf("duracion");
 				campos.splice(indice, 1);
 			}
-			console.log(69,edicion.coleccion_id,campos);
 			// Quitar de edicion los campos que no se comparan
 			for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
 			// Fin
