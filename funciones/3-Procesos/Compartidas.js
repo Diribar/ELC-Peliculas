@@ -719,7 +719,7 @@ module.exports = {
 				DE.ap_mar = datos.ap_mar;
 				if ((datos.ano || datos.ano == 0) && (datos.hasta || datos.hasta == 0)) {
 					DE.jss = datos.ano <= 33 && datos.hasta >= 0 ? 1 : 0; // Empezó o terminó durante la vida de Cristo
-					DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0; // Empezó y terminó durante la vida de Cristo
+					DE.exclusivo = datos.ano >= 0 && datos.hasta <= 30 ? 1 : 0; // Empezó y terminó durante la vida de Cristo
 				} else {
 
 				}
