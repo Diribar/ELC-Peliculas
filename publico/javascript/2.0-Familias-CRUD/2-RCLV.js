@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 		dia: document.querySelector("#dataEntry select[name='dia']"),
 		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
-		camposRCLI: () => {
+		camposRCLI: (() => {
 			// Obtiene todos los campos RCLI
 			let campos = document.querySelectorAll("#dataEntry #preguntas .RCLI");
 			campos = Array.from(campos).map((n) => n.name);
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 			for (let i = campos.length - 1; i > 0; i--)
 				if (i > campos.indexOf(campos[i])) campos.splice(i, 1);
 			return campos;
-		},
+		})(),
 	};
 	v = {
 		...v,
@@ -460,6 +460,9 @@ window.addEventListener("load", async () => {
 	v.dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		if (campo == "nombre" || campo == "apodo") {
+			// Primera letra en mayúscula
+			let aux = e.target.value;
+			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
 			// Quita los caracteres no deseados
 			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
 			// Quita los caracteres que exceden el largo permitido
@@ -492,7 +495,7 @@ window.addEventListener("load", async () => {
 			await valida.desdeHasta();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") funcionSexo();
-		if (!v.valores && v.camposRCLI().includes(campo)) await mostrarRCLI[v.entidad](false);
+		if (!v.valores && v.camposRCLI.includes(campo)) await mostrarRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});

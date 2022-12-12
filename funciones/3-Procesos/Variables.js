@@ -330,7 +330,7 @@ module.exports = {
 			"proceso_id",
 			"rol_iglesia_id",
 		],
-		hechos: ["nombre", "dia_del_ano_id", "ano", "hasta", "solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"],
+		hechos: ["nombre", "dia_del_ano_id", "ano", "hasta", "solo_cfc", "jss", "exclusivo", "ap_mar"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
 

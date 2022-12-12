@@ -21,7 +21,6 @@ module.exports = (sequelize, dt) => {
 		// Campos para HECHOS
 		solo_cfc: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
-		cnt: {type: dt.BOOLEAN},
 		exclusivo: {type: dt.BOOLEAN},
 
 		editado_por_id: {type: dt.INTEGER},

@@ -9,7 +9,6 @@ module.exports = (sequelize, dt) => {
 
 		solo_cfc: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
-		cnt: {type: dt.BOOLEAN},
 		exclusivo: {type: dt.BOOLEAN},
 		ap_mar: {type: dt.BOOLEAN},
 		

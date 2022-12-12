@@ -1,4 +1,4 @@
-#cuerpo {background-color: transparent;}
+#cuerpo {background-color: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}

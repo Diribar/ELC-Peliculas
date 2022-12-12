@@ -683,10 +683,8 @@ module.exports = {
 	procesarRCLV: async (datos) => {
 		// Variables
 		let DE = {};
-		// Estandarizar los campos como 'null'
-		variables.camposRCLV[datos.entidad].forEach((campo) => {
-			DE[campo] = null;
-		});
+		// Estandarizar los campos como 'null
+		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
 		// Nombre
 		DE.nombre = datos.nombre;
 		// Día del año
@@ -695,7 +693,7 @@ module.exports = {
 				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 				.then((n) => n.id);
 		// Año
-		if (datos.entidad != "valores") DE.ano = datos.ano;
+		if (datos.entidad != "valores" && datos.ano) DE.ano = datos.ano;
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
 			// Datos sencillos
@@ -707,8 +705,7 @@ module.exports = {
 				let santo_beato =
 					datos.enProcCan == "1" &&
 					(datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT"));
-				DE.subcategoria_id =
-					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : "HIG";
+				DE.subcategoria_id = datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : "HIG";
 				// Otros
 				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
 				if (datos.ap_mar == "1") DE.ap_mar_id = datos.ap_mar_id;
@@ -716,13 +713,16 @@ module.exports = {
 			}
 		}
 		if (datos.entidad == "hechos") {
-			DE.hasta = datos.hasta;
+			if (datos.hasta) DE.hasta = datos.hasta;
 			DE.solo_cfc = datos.solo_cfc;
 			if (datos.solo_cfc == "1") {
-				DE.jss = datos.ano > 33 || datos.hasta < 0 ? 0 : 1;
-				DE.cnt = datos.ano > 100 || datos.hasta < 0 ? 0 : 1;
-				DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0;
 				DE.ap_mar = datos.ap_mar;
+				if ((datos.ano || datos.ano == 0) && (datos.hasta || datos.hasta == 0)) {
+					DE.jss = datos.ano <= 33 && datos.hasta >= 0 ? 1 : 0; // Empezó o terminó durante la vida de Cristo
+					DE.exclusivo = datos.ano >= 0 && datos.hasta <= 100 ? 1 : 0; // Empezó y terminó durante la vida de Cristo
+				} else {
+
+				}
 			}
 		}
 		return DE;

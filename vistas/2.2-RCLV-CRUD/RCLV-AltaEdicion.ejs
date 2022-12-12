@@ -32,7 +32,6 @@
 									<% if (entidad == "personajes") { %>
 										<li>Nombre Alternativo: se usa cuando la persona es conocida con dos nombres distintos (ej: Juan Pablo II / Karol Wojtyla).</li>
 									<% } %>
-									<li>La primera letra debe ser en mayúscula.</li>
 									<li>Sólo se aceptan letras del alfabeto castellano.</li>
 								</ul>
 							</i>
@@ -139,7 +138,7 @@
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
 			<% if (entidad == "personajes") { %>
-				<!-- Año de nacimiento u ocurrencia -->
+				<!-- Año de nacimiento -->
 				<div class="borderTop flex-row">
 					<div class="flex-row align-center inputError" style="z-index: 2;">
 						<!-- Título -->
@@ -265,15 +264,15 @@
 						</div>
 						<!-- Status del proceso de canonización -->
 						<select name="proceso_id" class="ocultar RCLI cfc">
-								<option value="" selected>Elejí una opción</option>
-								<% for (let proceso of procs_canoniz) { %>
-									<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
-								<% } %> 
+							<option value="" selected>Elejí una opción</option>
+							<% for (let proceso of procs_canoniz) { %>
+								<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+							<% } %> 
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
-						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
+						<label class="izquierda">¿Es contemporáneo de Jesús, y lo conoció?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
