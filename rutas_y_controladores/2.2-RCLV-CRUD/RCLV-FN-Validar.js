@@ -78,8 +78,8 @@ module.exports = {
 		else if (datos.enProcCan == "1" && !datos.proceso_id)
 			respuesta = "Necesitamos saber el status del Proceso de Canonización";
 		else if (!datos.cnt) respuesta = "Necesitamos saber si fue contemporáneo";
-		else if (!datos.ap_mar) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
-		else if (datos.ap_mar == "1" && !datos.ap_mar_id)
+		else if (!datos.ama) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
+		else if (datos.ama == "1" && !datos.ap_mar_id)
 			respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
 		else respuesta = "";
 
@@ -95,7 +95,7 @@ module.exports = {
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
+		else if (!datos.ama) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
 		// Fin

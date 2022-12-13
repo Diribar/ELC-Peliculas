@@ -257,11 +257,11 @@
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+									<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
 									<label for="ap_marSI">SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&(dataEntry.ap_mar==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
+									<input id="ap_marNO" type="radio" name="ama" value="0" <% if (DE&&(dataEntry.ama==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
 									<label for="ap_marNO">NO</label>
 								</div>
 							</div>
@@ -295,11 +295,11 @@
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
+								<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">
 								<label for="ap_marSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+								<input id="ap_marNO" type="radio" name="ama" value="0" <% if (DE&&dataEntry.ama==0) { %>checked<% } %> class="RCLI">
 								<label for="ap_marNO">NO</label>
 							</div>
 						</div>

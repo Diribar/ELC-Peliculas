@@ -89,7 +89,7 @@ module.exports = {
 			);
 			// Asigna el nombre del proceso
 			procCanoniz = proceso.nombre + " ";
-			// Verificación si el nombre del proceso es "Santo"
+			// Verificación si el nombre del proceso es "Santo" (varón)
 			if (RCLV.proceso_id == "STV") {
 				// Nombres que llevan el prefijo "Santo"
 				let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];

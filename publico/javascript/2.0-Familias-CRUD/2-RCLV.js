@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 			"enProcCan",
 			"proceso_id",
 			"cnt",
-			"ap_mar",
+			"ama",
 			"ap_mar_id",
 		];
 		// Inputs
@@ -70,7 +70,7 @@ window.addEventListener("load", async () => {
 		v.enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		v.proceso_id = document.querySelector("select[name='proceso_id']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
-		v.ap_mar = document.querySelectorAll("input[name='ap_mar']");
+		v.ama = document.querySelectorAll("input[name='ama']");
 		v.ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		// Para ocultar
 		v.santosanta = document.querySelector("#dataEntry #santosanta");
@@ -80,11 +80,10 @@ window.addEventListener("load", async () => {
 	// Valores para hechos
 	if (v.hechos) {
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
-		v.hasta = document.querySelector("#dataEntry input[name='hasta']");
-		v.campos = ["solo_cfc", "ap_mar"];
+		v.campos = ["solo_cfc", "ama"];
 		// Inputs
 		v.solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
-		v.ap_mar = document.querySelectorAll("input[name='ap_mar']");
+		v.ama = document.querySelectorAll("input[name='ama']");
 		// Para ocultar
 		v.sectorApMar = document.querySelector("#preguntas #sectorApMar");
 	}
@@ -168,12 +167,12 @@ window.addEventListener("load", async () => {
 				}
 				// Aparición Mariana
 				if (v.ano.value < 33) {
-					v.ap_mar[1].checked = true;
-					v.ap_mar[1].disabled = false;
-					v.ap_mar[0].disabled = true;
+					v.ama[1].checked = true;
+					v.ama[1].disabled = false;
+					v.ama[0].disabled = true;
 					v.sectorAp_mar.classList.add("ocultarPorAno");
 				} else {
-					v.ap_mar[0].disabled = false;
+					v.ama[0].disabled = false;
 					v.sectorAp_mar.classList.remove("ocultarPorAno");
 				}
 				await mostrarRCLI[v.entidad](false);
@@ -299,8 +298,8 @@ window.addEventListener("load", async () => {
 					this.ocultar(indice + 1);
 					break;
 				}
-				// Particularidades para enProcCan y ap_mar
-				if ((campo == "enProcCan" || campo == "ap_mar") && inputs[campo] == "0") {
+				// Particularidades para enProcCan y ama
+				if ((campo == "enProcCan" || campo == "ama") && inputs[campo] == "0") {
 					// Oculta el siguiente campo
 					v.cfc[indice + 1].classList.add("ocultar");
 					// Muestra el campo subsiguiente

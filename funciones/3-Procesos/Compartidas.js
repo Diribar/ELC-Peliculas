@@ -697,33 +697,24 @@ module.exports = {
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
 			// Datos sencillos
-			DE.apodo = datos.apodo;
+			if (datos.apodo) DE.apodo = datos.apodo;
 			DE.sexo_id = datos.sexo_id;
 			DE.categoria_id = datos.categoria_id;
+			// RCLI
 			if (datos.categoria_id == "CFC") {
-				// subcategoria_id
-				let santo_beato =
-					datos.enProcCan == "1" &&
-					(datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT"));
-				DE.subcategoria_id = datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : "HIG";
-				// Otros
-				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
-				if (datos.ap_mar == "1") DE.ap_mar_id = datos.ap_mar_id;
+				// Datos sencillos
 				DE.rol_iglesia_id = datos.rol_iglesia_id;
+				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
+				if (datos.ama == "1") DE.ap_mar_id = datos.ap_mar_id;
+				// subcategoria_id
+				let santoBeato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
+				if (datos.cnt == "1") DE.subcategoria_id = "CNT";
+				else if (datos.enProcCan == "1" && santoBeato) DE.subcategoria_id = "HAG";
 			}
 		}
 		if (datos.entidad == "hechos") {
-			if (datos.hasta) DE.hasta = datos.hasta;
-			DE.solo_cfc = datos.solo_cfc;
-			if (datos.solo_cfc == "1") {
-				DE.ap_mar = datos.ap_mar;
-				if ((datos.ano || datos.ano == 0) && (datos.hasta || datos.hasta == 0)) {
-					DE.jss = datos.ano <= 33 && datos.hasta >= 0 ? 1 : 0; // Empezó o terminó durante la vida de Cristo
-					DE.exclusivo = datos.ano >= 0 && datos.hasta <= 33 ? 1 : 0; // Empezó y terminó durante la vida de Cristo
-				} else {
-
-				}
-			}
+			let {solo_cfc, jss, cnt, ncn, ama} = datos;
+			DE = {...DE, solo_cfc, jss, cnt, ncn, ama};
 		}
 		return DE;
 	},

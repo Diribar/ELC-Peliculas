@@ -36,7 +36,7 @@ module.exports = {
 			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
 			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
-			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
+			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
 		}
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {

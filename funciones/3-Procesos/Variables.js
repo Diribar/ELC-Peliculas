@@ -330,7 +330,7 @@ module.exports = {
 			"proceso_id",
 			"rol_iglesia_id",
 		],
-		hechos: ["nombre", "dia_del_ano_id", "ano", "hasta", "solo_cfc", "jss", "exclusivo", "ap_mar"],
+		hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "ncn", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
 
@@ -473,8 +473,8 @@ module.exports = {
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "jss", titulo: "", hechos: true},
 			{nombre: "cnt", titulo: "", hechos: true},
-			{nombre: "exclusivo", titulo: "", hechos: true},
-			{nombre: "ap_mar", titulo: "", hechos: true},
+			{nombre: "ncn", titulo: "", hechos: true},
+			{nombre: "ama", titulo: "", hechos: true},
 		],
 		links: [
 			{nombre: "calidad", titulo: "Calidad"},
