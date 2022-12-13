@@ -411,16 +411,16 @@ CREATE TABLE prod_categ2_sub (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, pers_codigo, hechos_codigo, nombre, url)
 VALUES 
-('MUS', 1, 1, 1,  null,  null, null, null, 'Musicales', 'musicales'),
-('NOV', 2, 1, 1,  null,  null, null, null, 'Novelas', 'novelas'), 
-('DOC', 3, 1, 1,  null,  null, null, null, 'Documentales', 'documentales'), 
-('JSS', 4, 1, 0, 'JSS', 'jss', null,   33, 'Jesús', 'jesus'), 
-('CNT', 5, 1, 0, 'CNT', 'cnt',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
-('AMA', 6, 1, 0, 'AMA', 'ama',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
-('HAG', 7, 1, 0, 'HAG', 'ncn', null, null, 'Hagiografías', 'hagiografias'), 
-('HIG', 8, 1, 0,  null,  null, null, null, 'Historias de la Iglesia', 'historias'), 
-('BIO', 7, 0, 1,  null,  null, null, null, 'Biografías', 'bios'), 
-('HIS', 8, 0, 1,  null,  null, null, null, 'Historias', 'historias') 
+('MUS', 1, 1, 1,  null,  null, 'Musicales', 'musicales'),
+('NOV', 2, 1, 1,  null,  null, 'Novelas', 'novelas'), 
+('DOC', 3, 1, 1,  null,  null, 'Documentales', 'documentales'), 
+('JSS', 4, 1, 0, 'JSS', 'jss', 'Jesús', 'jesus'), 
+('CNT', 5, 1, 0, 'CNT', 'cnt', 'Contemporáneos de Jesús', 'contemporaneos'), 
+('AMA', 6, 1, 0, 'AMA', 'ama', 'Apariciones Marianas', 'ap_marianas'), 
+('HAG', 7, 1, 0, 'HAG', 'ncn', 'Hagiografías', 'hagiografias'), 
+('HIG', 8, 1, 0,  null,  null, 'Historias de la Iglesia', 'historias'), 
+('BIO', 7, 0, 1,  null,  null, 'Biografías', 'bios'), 
+('HIS', 8, 0, 1,  null,  null, 'Historias', 'historias') 
 ;
 UPDATE prod_categ2_sub SET rclv_necesario='personaje' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
 UPDATE prod_categ2_sub SET rclv_necesario='hecho' WHERE id='AMA' OR id='HIS';
@@ -463,8 +463,8 @@ CREATE TABLE rclv_1personajes (
 	ano SMALLINT NULL,
 	perenne BOOLEAN DEFAULT 0,
 
-	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
-	subcategoria_id VARCHAR(3) NULL,  /* Jesús, Contemp, Hagio => ID de la sub-categoría */
+	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
+	subcategoria_id VARCHAR(3) NULL,   /* Jesús, Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
@@ -669,23 +669,25 @@ CREATE TABLE rclv_4edicion (
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 
-	nombre VARCHAR(30) NOT NULL UNIQUE,
+	nombre VARCHAR(30) NULL,
 	apodo VARCHAR(30) NULL,
 	sexo_id VARCHAR(1) NULL,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
 
-	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
-	subcategoria_id VARCHAR(3) NULL,  /* Jesús, Contemp, Hagio => ID de la sub-categoría */
+	/* Personajes */
+	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
+	subcategoria_id VARCHAR(3) NULL,   /* Jesús, Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
-	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
-	jss BOOLEAN DEFAULT 0, /* Jesús */
-	cnt BOOLEAN DEFAULT 0, /* Contemporáneo */
-	ncn BOOLEAN DEFAULT 0, /* No contemporáneo */
-	ama BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
+	/* Hechos */
+	solo_cfc BOOLEAN NULL, /* ¿A mostrar solamente en CFC? */
+	jss BOOLEAN NULL, /* Jesús */
+	cnt BOOLEAN NULL, /* Contemporáneo */
+	ncn BOOLEAN NULL, /* No contemporáneo */
+	ama BOOLEAN NULL, /* true sólo para Aparición Mariana */
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
