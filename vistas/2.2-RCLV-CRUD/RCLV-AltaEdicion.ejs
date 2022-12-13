@@ -20,35 +20,41 @@
 		<div id="primeraCol">
 			<!-- Nombre -->
 			<div class="flex-col">
-				<!-- Título, Ayuda y Error/OK -->
-				<div class="flex-row">
-					<div class="margenBottomTitulo inputError" style="z-index: 5;">
-						<!-- Título -->
-						<h3>Nombres</h3>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-									<% if (entidad == "personajes") { %>
-										<li>Nombre Alternativo: se usa cuando la persona es conocida con dos nombres distintos (ej: Juan Pablo II / Karol Wojtyla).</li>
-									<% } %>
-									<li>Sólo se aceptan letras del alfabeto castellano.</li>
-								</ul>
-							</i>
+				<% if (entidad == "personajes") { %>
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo inputError" style="z-index: 5;">
+							<!-- Título -->
+							<h3>Nombres</h3>
+							<!-- Ayuda -->
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick despl_click">
+									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+										<p>Para las personas que no cambiaron su nombre:</p>
+										<li><strong>Formal</strong>: usamos su nombre de civil (ej: Juan Bosco).</li>
+										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos (ej: Don Bosco), o se deja vacío.</li>
+										<p style="margin-top: 5px;">Para las personas que cambiaron su nombre:</p>
+										<li><strong>Formal</strong>: usamos el nuevo nombre por el que se hicieron llamar (ej: Juan Pablo II o Teresa de Calcuta).</li>
+										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos, sea el original (ej: Karol Wojtyla) o un alternativo del nuevo nombre (ej: Madre Teresa).</li>
+									</ul>
+								</i>
+							</div>
+							<%- include("CMP-errores", {campo:"nombre", display: true}) %>
 						</div>
-						<%- include("CMP-errores", {campo:"nombre", display: true}) %>
 					</div>
-				</div>
+				<% } %>
 				<!-- Valores -->
 				<div id="valoresNombre" class="flex-col space-between">
 					<!-- Nombre -->
-					<div class="flexRowAlign space-between altoFila">
-						<label><%- entidad=="personas" ? 'Más conocido' : 'Nombre' %>:</label>
+					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'space-between altoFila' %>">
+						<% if (entidad == "personajes") { %><label>Formal</label>
+						<% } else { %><h3>Nombre</h3><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+						<% if (entidad != "personajes") { %><%- include("CMP-errores", {campo:"nombre", display: true}) %><% } %>
 					</div>
 					<% if (entidad == "personajes") { %>
 						<div class="flexRowAlign space-between altoFila">
-							<label>Alternativo:</label>
+							<label>Alternativo</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
 						</div>
 					<% } %>
@@ -80,7 +86,7 @@
 				<div id="valoresFecha" class="flex-col space-between">
 					<!-- Meses -->
 					<div class="flexRowAlign altoFila">
-						<label style="width: 35px;">Mes:</label>
+						<label style="width: 35px;">Mes</label>
 						<select name="mes_id" class="input">
 							<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
 							<% for (let mes of meses) { %>
@@ -94,7 +100,7 @@
 					</div>
 					<!-- Días -->
 					<div class="flexRowAlign altoFila">
-						<label style="width: 35px;">Día:</label>
+						<label style="width: 35px;">Día</label>
 						<select name="dia" class="input">
 							<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
 							<% for (let dia = 1; dia < 32; dia++) { %>
@@ -140,7 +146,7 @@
 			<!-- Año de nacimiento/ocurrencia -->
 			<% if (entidad != "valores") { %>
 				<div class="borderTop flex-row">
-					<div class="flex-row align-center inputError" style="z-index: 2;">
+					<div class="flexRowAlign inputError" style="z-index: 2;">
 						<!-- Título -->
 						<h3>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
@@ -192,7 +198,7 @@
 					<div class="flexRowAlign altoFila space-between">
 						<!-- Sexo -->
 						<div id="sexo_id" class="flexRowAlign ocultar cfc">
-							<label class="izquierda">Sexo:</label>
+							<label class="izquierda">Sexo</label>
 							<div class="flexRowAlign">
 								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
 								<label for="V">Varón</label>
@@ -204,7 +210,7 @@
 						</div>						
 						<!-- Rol en la Iglesia -->
 						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
-							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
+							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia</label>
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected>Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
