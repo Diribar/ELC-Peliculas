@@ -547,7 +547,7 @@ CREATE TABLE rclv_2hechos (
 	jss BOOLEAN DEFAULT 0, /* Jesús */
 	cnt BOOLEAN DEFAULT 0, /* Contemporáneo */
 	ncn BOOLEAN DEFAULT 0, /* No contemporáneo */
-	ama BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
+	ama BOOLEAN DEFAULT 0, /* Aparición Mariana */
 
 	prods_aprob BOOLEAN DEFAULT 0,
 
@@ -670,12 +670,12 @@ CREATE TABLE rclv_4edicion (
 	valor_id SMALLINT UNSIGNED NULL,
 
 	nombre VARCHAR(30) NULL,
-	apodo VARCHAR(30) NULL,
-	sexo_id VARCHAR(1) NULL,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
 
 	/* Personajes */
+	apodo VARCHAR(30) NULL,
+	sexo_id VARCHAR(1) NULL,
 	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
 	subcategoria_id VARCHAR(3) NULL,   /* Jesús, Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
@@ -687,7 +687,7 @@ CREATE TABLE rclv_4edicion (
 	jss BOOLEAN NULL, /* Jesús */
 	cnt BOOLEAN NULL, /* Contemporáneo */
 	ncn BOOLEAN NULL, /* No contemporáneo */
-	ama BOOLEAN NULL, /* true sólo para Aparición Mariana */
+	ama BOOLEAN NULL, /* Aparición Mariana */
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
