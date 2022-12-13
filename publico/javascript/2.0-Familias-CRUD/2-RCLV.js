@@ -48,11 +48,16 @@ window.addEventListener("load", async () => {
 	if (!v.valores) {
 		v.cfc = document.querySelectorAll("#preguntas .cfc");
 		v.preguntas = document.querySelector("#dataEntry #preguntas");
+		v.ano = document.querySelector("#dataEntry input[name='ano']");
+		v.ama = document.querySelectorAll("input[name='ama']");
+		v.cnt = document.querySelectorAll("input[name='cnt']");
+		// Para ocultar
+		v.sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
+		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 	}
 	// Valores para personajes
 	if (v.personajes) {
 		v.apodo = document.querySelector("#dataEntry input[name='apodo']");
-		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.campos = [
 			"categoria_id",
 			"sexo_id",
@@ -69,23 +74,15 @@ window.addEventListener("load", async () => {
 		v.rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 		v.enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		v.proceso_id = document.querySelector("select[name='proceso_id']");
-		v.cnt = document.querySelectorAll("input[name='cnt']");
-		v.ama = document.querySelectorAll("input[name='ama']");
 		v.ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		// Para ocultar
 		v.santosanta = document.querySelector("#dataEntry #santosanta");
-		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
-		v.sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 	}
 	// Valores para hechos
 	if (v.hechos) {
-		v.ano = document.querySelector("#dataEntry input[name='ano']");
-		v.campos = ["solo_cfc", "ama"];
+		v.campos = ["solo_cfc", "jss", "cnt", "ncn", "ama"];
 		// Inputs
 		v.solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
-		v.ama = document.querySelectorAll("input[name='ama']");
-		// Para ocultar
-		v.sectorApMar = document.querySelector("#preguntas #sectorApMar");
 	}
 
 	// Funciones
@@ -476,13 +473,12 @@ window.addEventListener("load", async () => {
 			if (!v.valores) {
 				await valida.ano();
 				await mostrarRCLI[v.entidad](true);
-			}			
+			}
 			// Fin
 			feedback(OK, errores);
-		} 
+		}
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
-		
 	});
 
 	// Status inicial
