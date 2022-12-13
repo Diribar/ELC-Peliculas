@@ -24,7 +24,7 @@
 		</select>
 		<form id="tabla" class=""> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<!-- Activo/Inactivo -->
-			<div id="tags" class="flex-row">
+			<div id="tags" class="flexRow">
 				<div id="activo">Activos</div>
 				<div id="inactivo" class="traslucido">Pasivos</div>
 			</div>
@@ -47,7 +47,7 @@
 		</form>
 	</div>
 	<!-- Flechas -->
-	<div class="flex-row">
+	<div class="flexRow">
 		<%- include("CR-Flechas") %>
 		<div class="flechas img">
 			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>

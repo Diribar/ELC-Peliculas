@@ -4,7 +4,7 @@
 	<!-- Datos -->
 	<section id="datos">
 		<% for (variable of variables) { %>
-			<div class="label-input flex-row">
+			<div class="label-input flexRow">
 				<label for="<%= variable.name %>"><%= variable.titulo %></label>
 				<div class="inputError">
 					<!-- Input -->
@@ -25,10 +25,10 @@
 		<% } %>
 	</section>
 	<!--Credenciales Inválidas-->
-	<div class="flex-col">
+	<div class="flexCol">
 		<p id="credencialesInvalidas" class="<%- !errores || !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
 	</div>
-	<div class="flex-row">
+	<div class="flexRow">
 		<!--Flechas-->
 		<div class="flechas">
 			<!-- Salir -->

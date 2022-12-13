@@ -38,7 +38,7 @@
 			<% } %>
 		</div>
 		<!-- Flechas -->
-		<div class="flex-row">
+		<div class="flexRow">
 			<div class="flechas">
 				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self" tabindex="1">
 					<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
@@ -76,7 +76,7 @@
 		<!-- Links a otras páginas de consulta -->
 		<div id="links">
 			<p>Si necesitás consultar algún dato</p>
-			<nav class="flex-row">
+			<nav class="flexRow">
 				<!-- TMDB -->
 				<% if (prodOrig.fuente != "TMDB") { %>
 					<% tmdb = prodOrig.nombre_original ? "search?language=es&query=" + prodOrig.nombre_original : "" %>
