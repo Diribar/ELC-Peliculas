@@ -402,27 +402,25 @@ CREATE TABLE prod_categ2_sub (
 	cfc BOOLEAN NULL,
 	vpc BOOLEAN NULL,
 	rclv_necesario VARCHAR(10) NULL, /* Jesús, Contemp., Hagio, Bio --> PER */ /* Ap.Mar., Historias --> HECH*/
-	pers_excluyente BOOLEAN DEFAULT 0, /* Jesús, Contemp., Hagio --> true */
-	hechos_codigo VARCHAR(3) NULL, /* Jesús:JSS, Contemp:CNT, Hagio:EXC, Ap.Mar.:AM, Historias:EXC */
-	desde TINYINT NULL, /* Aparición Mariana:33 */
-	hasta TINYINT NULL, /* Jesús:33, Contemp.:100 */
+	pers_codigo VARCHAR(3) NULL, /* Jesús:JSS, Contemp:CNT, Hagio:HAG, Ap.Mar.:AMA */
+	hechos_codigo VARCHAR(3) NULL, /* Jesús:JSS, Contemp:CNT, Hagio:HAG, Ap.Mar.:AMA */
 
 	url VARCHAR(20) NOT NULL, /* sólo el de la subcategoría */
 	PRIMARY KEY (id)
 	/* FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id) */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, pers_excluyente, hechos_codigo, desde, hasta, nombre, url)
+INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, pers_codigo, hechos_codigo, nombre, url)
 VALUES 
-('MUS', 1, 1, 1, 0,  null, null, null, 'Musicales', 'musicales'),
-('NOV', 2, 1, 1, 0,  null, null, null, 'Novelas', 'novelas'), 
-('DOC', 3, 1, 1, 0,  null, null, null, 'Documentales', 'documentales'), 
-('JSS', 4, 1, 0, 1, 'JSS', null,   33, 'Jesús', 'jesus'), 
-('CNT', 5, 1, 0, 1, 'CNT',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
-('AMA', 6, 1, 0, 0, 'AMA',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
-('HAG', 7, 1, 0, 1, 'EXC', null, null, 'Hagiografías', 'hagiografias'), 
-('HIG', 8, 1, 0, 0, 'EXC', null, null, 'Historias de la Iglesia', 'historias'), 
-('BIO', 7, 0, 1, 0,  null, null, null, 'Biografías', 'bios'), 
-('HIS', 8, 0, 1, 0,  null, null, null, 'Historias', 'historias') 
+('MUS', 1, 1, 1,  null,  null, null, null, 'Musicales', 'musicales'),
+('NOV', 2, 1, 1,  null,  null, null, null, 'Novelas', 'novelas'), 
+('DOC', 3, 1, 1,  null,  null, null, null, 'Documentales', 'documentales'), 
+('JSS', 4, 1, 0, 'JSS', 'jss', null,   33, 'Jesús', 'jesus'), 
+('CNT', 5, 1, 0, 'CNT', 'cnt',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
+('AMA', 6, 1, 0, 'AMA', 'ama',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
+('HAG', 7, 1, 0, 'HAG', 'ncn', null, null, 'Hagiografías', 'hagiografias'), 
+('HIG', 8, 1, 0,  null,  null, null, null, 'Historias de la Iglesia', 'historias'), 
+('BIO', 7, 0, 1,  null,  null, null, null, 'Biografías', 'bios'), 
+('HIS', 8, 0, 1,  null,  null, null, null, 'Historias', 'historias') 
 ;
 UPDATE prod_categ2_sub SET rclv_necesario='personaje' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
 UPDATE prod_categ2_sub SET rclv_necesario='hecho' WHERE id='AMA' OR id='HIS';
@@ -466,9 +464,8 @@ CREATE TABLE rclv_1personajes (
 	perenne BOOLEAN DEFAULT 0,
 
 	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
-	subcategoria_id VARCHAR(3) NULL,  /* Jesús,Contemp, Hagio => ID de la sub-categoría */
+	subcategoria_id VARCHAR(3) NULL,  /* Jesús, Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
-
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
@@ -529,7 +526,7 @@ VALUES
 (24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, 'V', '2022-03-16 23:25:20', 'Juan Pablo II', 'Juan Pablo II'),
 (25, 107, 1844, 'CFC', 'HAG', 'STM', 'REM', 2, 3, 'M', '2022-03-16 23:25:20', 'Bernadette Soubirous', 'Bernadette'),
 (26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, 3, 'V', '2022-03-16 23:25:20', 'Martín Lutero', 'Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'ST' ,  'LC', 2, 3, 'M', '2022-03-16 23:25:20', 'Pastorcitos de Fátima', 'Pastorcitos de Fátima')
+(27,  51, 1844, 'CFC', 'HAG', 'ST' , 'LCM', 2, 3, 'M', '2022-03-16 23:25:20', 'Pastorcitos de Fátima', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
@@ -544,14 +541,13 @@ CREATE TABLE rclv_2hechos (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
-	hasta SMALLINT NULL,
 	perenne BOOLEAN DEFAULT 0,
 	
 	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
-	jss BOOLEAN DEFAULT 0, /* Jesús: true */
-	cnt BOOLEAN DEFAULT 0, /* Jesús y Contemp: true */
-	exclusivo BOOLEAN DEFAULT 0, /* Jesús y Contemp: true o false, según corresponda  */
-	ap_mar BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
+	jss BOOLEAN DEFAULT 0, /* Jesús */
+	cnt BOOLEAN DEFAULT 0, /* Contemporáneo */
+	ncn BOOLEAN DEFAULT 0, /* No contemporáneo */
+	ama BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
 
 	prods_aprob BOOLEAN DEFAULT 0,
 
@@ -589,25 +585,25 @@ CREATE TABLE rclv_2hechos (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, creado_en, nombre)
-VALUES (1, 1, 1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
-INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, creado_por_id, status_registro_id, creado_en, nombre)
+VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
+INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(11, 1, 1, 1, 1, 359,  0,  0, 2, 3, '2022-03-16 23:25:20', 'Navidad'),
-(12, 1, 1, 1, 1, 100, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Semana Santa'),
-(13, 1, 1, 1, 1, 105, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
-(14, 1, 1, 1, 1, 107, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
-(15, 1, 0, 1, 1, 150, 33, 33, 2, 3, '2022-03-16 23:25:20', 'Pentecostés')
+(11, 1, 1, 1, 359,  0, 2, 3, '2022-03-16 23:25:20', 'Navidad'),
+(12, 1, 1, 1, 100, 33, 2, 3, '2022-03-16 23:25:20', 'Semana Santa'),
+(13, 1, 1, 1, 105, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
+(14, 1, 1, 1, 107, 33, 2, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
+(15, 1, 0, 1, 150, 33, 2, 3, '2022-03-16 23:25:20', 'Pentecostés')
 ;
-INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, solo_cfc, ncn, ama, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1,  42, 1858, 1858, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 134, 1917, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
+(16, 1, 1, 1,  42, 1858 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 1, 134, 1917, 2, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, hasta, creado_por_id, status_registro_id, creado_en, nombre)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ncn, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(21, 210, 1914, 1918, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
-(22, 245, 1939, 1945, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
+(21, 210, 1, 1914, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
+(22, 245, 1, 1939, 2, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
 ;
 UPDATE rclv_2hechos SET perenne = true;
 ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
@@ -673,24 +669,23 @@ CREATE TABLE rclv_4edicion (
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 
-	nombre VARCHAR(30) NULL UNIQUE,
+	nombre VARCHAR(30) NOT NULL UNIQUE,
+	apodo VARCHAR(30) NULL,
+	sexo_id VARCHAR(1) NULL,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
-	hasta SMALLINT NULL,
-	ap_mar BOOLEAN NULL,
 
-	/* Campos para PERSONAJES */
-	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
-	subcategoria_id VARCHAR(3) NULL,   /* Jesús,Contemp, Hagio => ID de la sub-categoría */
-	ap_mar_id SMALLINT UNSIGNED NULL,  /* Para Aparición Mariana, va el ID de la aparición */
+	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
+	subcategoria_id VARCHAR(3) NULL,  /* Jesús, Contemp, Hagio => ID de la sub-categoría */
+	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
-	/* Campos para HECHOS */
-	solo_cfc BOOLEAN NULL, /* ¿A mostrar solamente en CFC? => true/false */
-	jss BOOLEAN NULL, /* Jesús: true */
-	cnt BOOLEAN NULL, /* Jesús y Contemp: true */
-	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true/false */
+	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
+	jss BOOLEAN DEFAULT 0, /* Jesús */
+	cnt BOOLEAN DEFAULT 0, /* Contemporáneo */
+	ncn BOOLEAN DEFAULT 0, /* No contemporáneo */
+	ama BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,

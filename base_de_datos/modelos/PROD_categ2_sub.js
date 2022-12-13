@@ -7,10 +7,8 @@ module.exports = (sequelize, dt) => {
 		cfc: {type: dt.BOOLEAN},
 		vpc: {type: dt.BOOLEAN},
 		rclv_necesario: {type: dt.STRING(10)},
-		pers_excluyente: {type: dt.BOOLEAN},
+		pers_codigo: {type: dt.STRING(3)},
 		hechos_codigo: {type: dt.STRING(3)},
-		desde: {type: dt.INTEGER},
-		hasta: {type: dt.INTEGER},
 		
 		url: {type: dt.STRING(20)},
 	};
