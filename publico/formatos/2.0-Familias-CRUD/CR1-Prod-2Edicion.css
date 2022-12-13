@@ -68,17 +68,16 @@ form #imagenDerecha.inputError .agregados img {max-width: 25px; max-height: 25px
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* RCLV */
-#datos .label-input .inputError .linkRCLV {width: 15px;}
+#datos .label-input .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#datos .label-input .inputError .linkRCLV {width: 15px; cursor: pointer;}
 #datos .label-input .inputError #alta.linkRCLV {right: -40px;}
-#datos .label-input .inputError #edicion.linkRCLV {right: -60px;}
+#datos .label-input .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
 
 /* Sinopsis */
 #datos .label-input#sinopsis .inputError {width: 100%; margin-left: 0;} 
 #datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
-.linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-#edicion.linkRCLV {font-size: 1.15rem;}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
