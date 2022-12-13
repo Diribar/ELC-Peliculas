@@ -283,6 +283,8 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		actualizaOpsRCLV: () => {
+			// Variables
+			let clave;
 			// Borra los iconosOK_RCLV y los iconosError_RCLV
 			for (let icono of iconosOK_RCLV) icono.classList.add("ocultar");
 			for (let icono of iconosError_RCLV) icono.classList.add("ocultar");
@@ -290,67 +292,64 @@ window.addEventListener("load", async () => {
 			// Opciones si la subcategoría tiene valor
 			if (subcategoriaSelect.value) {
 				// Actualiza las opciones de RCLV
-				let categID = categoriaSelect.value;
+				let categoriaValor = categoriaSelect.value;
 				subcategoria = subcategorias.find((n) => n.id == subcategoriaSelect.value);
-				// Acciones si es una aparición mariana
-				if (subcategoria.hechos_codigo == "AMA") {
+
+				// Acciones si la subcategoría es una aparición mariana
+				if (subcategoria.pers_codigo == "AMA") {
+					// Deja solamente los personajes con 'AMA'
 					opcionesPersonaje.forEach((opcion) => {
-						opcion.classList.contains("AM")
+						opcion.classList.contains("AMA")
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});
+					// Deja solamente la aparición mariana del vidente, o todas las 'AMA'
+					clave = inputsRCLV[0].value != "1" ? "AM" + inputsRCLV[0].value : "A";
 					opcionesHecho.forEach((opcion) => {
-						opcion.classList.contains(
-							"AM" + (inputsRCLV[0].value != "1" ? inputsRCLV[0].value : "")
-						)
+						opcion.classList.contains(clave)
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});
-				} else {
-					// Acciones para el PERSONAJE
-					// Acciones si es una subcategoría selectiva
-					if (subcategoria.pers_excluyente)
+				}
+
+				// Acciones si no es una aparición mariana
+				else {
+					// Acciones para el PERSONAJE - restringido por subcategoría
+					if (subcategoria.pers_codigo) {
+						// Deja solamente las opciones de esa subcategoría
 						opcionesPersonaje.forEach((opcion) => {
 							opcion.classList.contains(subcategoria.id)
 								? opcion.classList.remove("ocultar")
 								: opcion.classList.add("ocultar");
 						});
-					// Acciones para los demás casos
-					else
+					}
+					// Acciones para el PERSONAJE - restringido por categoría
+					else {
+						// Deja solamente las opciones de esa categoría
 						opcionesPersonaje.forEach((opcion) => {
-							opcion.classList.contains(categID)
+							opcion.classList.contains(categoriaValor)
 								? opcion.classList.remove("ocultar")
 								: opcion.classList.add("ocultar");
 						});
-					// Acciones para el HECHO
-					// Acciones si es Jesús
-					if (subcategoria.hechos_codigo == "JSS")
+					}
+					// Acciones para el HECHO - restringido por subcategoría
+					clave = subcategoria.hechos_codigo;
+					if (clave) {
+						// Deja solamente las opciones de esa subcategoría
 						opcionesHecho.forEach((opcion) => {
-							opcion.classList.contains("JSS")
+							opcion.classList.contains(clave)
 								? opcion.classList.remove("ocultar")
 								: opcion.classList.add("ocultar");
 						});
-					// Acciones si es Contemporáneos de Jesús
-					else if (subcategoria.hechos_codigo == "CNT")
+					}
+					// Acciones para el HECHO - restringido por categoría
+					else {
 						opcionesHecho.forEach((opcion) => {
-							opcion.classList.contains("CNT")
+							opcion.classList.contains(categoriaValor)
 								? opcion.classList.remove("ocultar")
 								: opcion.classList.add("ocultar");
 						});
-					// Acciones si es no Exclusivo
-					else if (subcategoria.hechos_codigo == "EXC")
-						opcionesHecho.forEach((opcion) => {
-							!opcion.classList.contains("EXC")
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
-					// Acciones para los demás casos
-					else
-						opcionesHecho.forEach((opcion) => {
-							opcion.classList.contains(categID)
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
+					}
 				}
 				// Muestra los campos RCLV
 				for (let invisible of invisibles) invisible.classList.remove("invisible");
