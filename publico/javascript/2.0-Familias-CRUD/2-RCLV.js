@@ -183,31 +183,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		desdeHasta: async () => {
-			// Verifica errores en el sector 'desdeHasta'
-			let params = "&entidad=" + v.entidad + "&ano=" + v.ano.value + "&hasta=" + v.hasta.value;
-			errores.desdeHasta = await fetch(v.rutaValidacion + "desdeHasta" + params).then((n) => n.json());
-			// Consolidar la info
-			OK.desdeHasta = !errores.desdeHasta;
-			// Impacto en RCLV
-			if (OK.desdeHasta) {
-				// Aparición Mariana
-				if (v.ano.value > 33) {
-					v.ap_mar[0].disabled = false;
-					v.sectorApMar.classList.remove("ocultarPorAno");
-				} else {
-					v.ap_mar[1].checked = true;
-					v.ap_mar[1].disabled = false;
-					v.ap_mar[0].disabled = true;
-					v.sectorApMar.classList.add("ocultarPorAno");
-				}
-				// Mostrar RCLI
-				await mostrarRCLI[v.entidad](false);
-				v.preguntas.classList.remove("ocultar");
-			} else v.preguntas.classList.add("ocultar");
-			// Fin
-			return;
-		},
 	};
 	let diasDelMes = () => {
 		// Aplicar cambios en los días 30 y 31
@@ -413,19 +388,15 @@ window.addEventListener("load", async () => {
 			await valida.fechas();
 			valida.repetido();
 		}
-		if (v.entidad == "personajes" && v.ano.value) await valida.ano();
-		if (v.entidad == "hechos" && v.ano.value && v.hasta.value) await valida.desdeHasta();
+		if (v.entidad != "valores" && v.ano.value) await valida.ano();
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
-		if (v.personajes) sectores.push("ano");
-		if (v.hechos) sectores.push("desdeHasta");
-		if (!v.valores) sectores.push("RCLI");
+		if (!v.valores) sectores.push("ano", "RCLI");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
-			//OK[sector] && ((sector != "nombre" && sector != "desdeHasta") || !ocultarOK)
 			OK[sector] && !ocultarOK
 				? v.iconoOK[i].classList.remove("ocultar")
 				: v.iconoOK[i].classList.add("ocultar");
@@ -490,9 +461,7 @@ window.addEventListener("load", async () => {
 		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await valida.fechas();
 		if (campo == "desconocida") await valida.fechas();
 		if (campo == "repetido") valida.repetido();
-		if (v.entidad == "personajes" && campo == "ano") await valida.ano();
-		if (v.entidad == "hechos" && (campo == "ano" || campo == "hasta") && v.ano.value && v.hasta.value)
-			await valida.desdeHasta();
+		if (v.entidad != "valores" && campo == "ano") await valida.ano();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") funcionSexo();
 		if (!v.valores && v.camposRCLI.includes(campo)) await mostrarRCLI[v.entidad](false);
@@ -500,19 +469,21 @@ window.addEventListener("load", async () => {
 		feedback(OK, errores);
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
+		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {
 			await valida.nombreApodo();
 			await valida.fechas();
 			valida.repetido();
-			if (v.personajes) await valida.ano();
-			if (v.hechos) await valida.desdeHasta();
-			if (!v.valores) await mostrarRCLI[v.entidad](true);
+			if (!v.valores) {
+				await valida.ano();
+				await mostrarRCLI[v.entidad](true);
+			}			
 			// Fin
 			feedback(OK, errores);
-		} else {
-			// Grabar cambios e ir a la vista de origen
-			v.dataEntry.submit();
-		}
+		} 
+		// Si el botón está activo, función 'submit'
+		else v.dataEntry.submit();
+		
 	});
 
 	// Status inicial
