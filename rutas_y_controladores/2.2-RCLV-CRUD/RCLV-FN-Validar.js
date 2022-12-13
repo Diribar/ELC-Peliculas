@@ -11,16 +11,10 @@ module.exports = {
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
-		// Campos exclusivos de 'personajes'
-		if (datos.entidad == "personajes") {
-			errores.ano = this.ano(datos);
-			errores.RCLI = this.RCLI_personaje(datos);
-		}
-		// Campos exclusivos de 'hechos'
-		if (datos.entidad == "hechos") {
-			errores.desdeHasta = this.desdeHasta(datos);
-			errores.RCLI = this.RCLI_hecho(datos);
-		}
+		// Campos exclusivos
+		if (datos.entidad != "valores") errores.ano = this.ano(datos);
+		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
+		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
 		// Completar con 'hay errores'
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -55,9 +49,8 @@ module.exports = {
 		return respuesta;
 	},
 	ano: (datos) => {
-		let respuesta;
-		if (!datos.ano) respuesta = comp.inputVacio;
-		else {
+		let respuesta = "";
+		if (datos.ano) {
 			let ano = parseInt(datos.ano);
 			respuesta =
 				typeof ano != "number"
@@ -68,33 +61,8 @@ module.exports = {
 					? "El año debe ser mayor"
 					: "";
 		}
-		return respuesta;
-	},
-	desdeHasta: function (variable) {
-		// Variables
-		let datos = {...variable};
-		let mensaje;
-		datos.desde = datos.ano;
-		// Revisar 'desde'
-		if (!mensaje) {
-			datos.ano = datos.desde;
-			mensaje = this.ano(datos);
-			if (mensaje) mensaje += " (año 'desde')";
-		}
-		// Revisar 'hasta'
-		if (!mensaje) {
-			datos.ano = datos.hasta;
-			mensaje = this.ano(datos);
-			if (mensaje) mensaje += " (año 'hasta')";
-		}
-		// Revisar 'combinados'
-		if (!mensaje) {
-			let desde = parseInt(datos.desde);
-			let hasta = parseInt(datos.hasta);
-			if (desde > hasta) mensaje = "El año 'desde' no debe superar al año 'hasta'";
-		}
 		// Fin
-		return mensaje;
+		return respuesta;
 	},
 	RCLI_personaje: (datos) => {
 		let respuesta;
@@ -148,14 +116,14 @@ let prefijo = (valor, campo) => {
 		valor.startsWith("Beato ") ||
 		valor.startsWith("Beata ") ||
 		valor.startsWith("Ven. ") ||
-		valor.startsWith("Venerable ") 
+		valor.startsWith("Venerable ")
 		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
 		: "";
 };
 let nombreExpress = (datos, campo) => {
 	// Variables
 	let dato = datos[campo];
-	let respuesta=""
+	let respuesta = "";
 	// Validaciones
 	if (dato) {
 		if (!respuesta) respuesta = comp.castellano.completo(dato);
