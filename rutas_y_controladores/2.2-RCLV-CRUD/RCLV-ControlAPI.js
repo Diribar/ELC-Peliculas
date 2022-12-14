@@ -15,7 +15,6 @@ module.exports = {
 	},
 	valida: async (req, res) => {
 		let mensaje = await valida[req.query.funcion](req.query);
-		// console.log(18, req.query, mensaje);
 		return res.json(mensaje);
 	},
 };

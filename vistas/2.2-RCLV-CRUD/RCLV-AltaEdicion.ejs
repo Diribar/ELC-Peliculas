@@ -47,7 +47,7 @@
 				<!-- Valores -->
 				<div id="valoresNombre" class="flexCol spaceBetween">
 					<!-- Nombre -->
-					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 5;">
+					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
 						<% if (entidad == "personajes") { %><label>Formal</label>
 						<% } else { %><h3>Nombre</h3><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
@@ -314,7 +314,7 @@
 					</div>
 					<!-- Ocurrió durante la vida de Jesús -->
 					<div>
-						
+
 					</div>
 				</div>
 			<% } %>

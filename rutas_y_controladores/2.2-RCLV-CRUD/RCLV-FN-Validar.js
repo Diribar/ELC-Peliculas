@@ -7,7 +7,7 @@ module.exports = {
 	consolidado: async function (datos) {
 		// Campos que siempre están
 		let errores = {
-			nombre: await this.nombreApodo(datos),
+			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
@@ -19,11 +19,65 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	nombreApodo: async function (datos) {
-		let mensaje = "";
+	nombre: async function (datos) {
+		// Funciones
+		let mientrasEscribe = (campo) => {
+			let prefijo = () => {
+				return nombre.startsWith("San ") ||
+					nombre.startsWith("Santa ") ||
+					nombre.startsWith("Santo ") ||
+					nombre.startsWith("Beato ") ||
+					nombre.startsWith("Beata ") ||
+					nombre.startsWith("Ven. ") ||
+					nombre.startsWith("Venerable ")
+					? "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
+					: "";
+			};
+			// Variables
+			let respuesta = "";
+			let dato = datos[campo];
+			// Validaciones
+			if (dato) {
+				if (!respuesta) respuesta = comp.castellano.completo(dato);
+				if (!respuesta) respuesta = comp.inicial.basico(dato);
+				if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo();
+			}
+			// Fin
+			if (respuesta && campo != "nombre") respuesta += " (nombre alternativo)";
+			return respuesta;
+		};
+		let alTerminar = async (campo) => {
+			// Variables
+			let respuesta = "";
+			let dato = datos[campo];
+			// Validaciones
+			if (!dato && campo == "nombre") respuesta = comp.inputVacio;
+			if (dato) {
+				if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
+				// Nombre repetido
+				if (!respuesta) {
+					let id = await BD_especificas.validaRepetidos([campo], datos);
+					if (id) respuesta = comp.cartelRepetido({...datos, id});
+				}
+			}
+			// Fin
+			return respuesta;
+		};
+
+		// Variables
+		let {entidad, nombre} = datos;
+		// Variable 'campos'
+		let campos = Object.keys(datos);
+		for (let i = campos.length - 1; i >= 0; i--)
+			if (!["nombre", "apodo"].includes(campos[i])) campos.splice(i, 1);
+
 		// Validaciones
-		if (!mensaje) mensaje = await nombre(datos, "nombre");
-		if (!mensaje && datos.entidad == "personajes") mensaje = await nombre(datos, "apodo");
+		let mensaje = "";
+		for (let campo of campos) {
+			if (!mensaje) mensaje = mientrasEscribe(campo);
+			if (!mensaje && entidad) mensaje = await alTerminar(campo);
+		}
+
 		// Fin
 		return mensaje;
 	},
@@ -57,7 +111,6 @@ module.exports = {
 		return respuesta;
 	},
 	RCLI_personaje: (datos) => {
-		console.log(60,datos);
 		let respuesta;
 		if (false) {
 		}
@@ -100,37 +153,3 @@ module.exports = {
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-
-// Funciones
-let nombre = async function (datos, campo) {
-	// Funciones
-	let prefijo = (valor, campo) => {
-		return valor.startsWith("San ") ||
-			valor.startsWith("Santa ") ||
-			valor.startsWith("Santo ") ||
-			valor.startsWith("Beato ") ||
-			valor.startsWith("Beata ") ||
-			valor.startsWith("Ven. ") ||
-			valor.startsWith("Venerable ")
-			? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
-			: "";
-	};
-	// Variables
-	let respuesta = "";
-	let dato = datos[campo];
-	// Validaciones
-	if (!dato && campo == "nombre") respuesta = comp.inputVacio;
-	if (dato) {
-		if (!respuesta) respuesta = comp.castellano.completo(dato);
-		if (!respuesta) respuesta = comp.inicial.basico(dato);
-		if (!respuesta && campo == "nombre") respuesta = prefijo(dato, campo);
-		if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
-		if (!respuesta) {
-			let id = await BD_especificas.validaRepetidos([campo], datos);
-			if (id) respuesta = comp.cartelRepetido({...datos, id});
-		}
-	}
-	// Fin
-	if (respuesta && campo != "nombre") respuesta += " (nombre alternativo)";
-	return respuesta;
-};

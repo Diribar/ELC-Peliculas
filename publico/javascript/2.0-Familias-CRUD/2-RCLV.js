@@ -86,13 +86,29 @@ window.addEventListener("load", async () => {
 	}
 
 	// Funciones
-	let valida = {
+	let validaciones = {
+		nombre: async () => {
+			// Verifica errores en el sector 'nombre', campo 'nombre'
+			let params = "&nombre=" + v.nombre.value;
+			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+			if (errores.nombre) OK.nombre = false;
+			// Fin
+			return;
+		},
+		apodo: async () => {
+			// Verifica errores en el sector 'nombre', campo 'apodo'
+			let params = "&apodo=" + v.apodo.value;
+			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+			if (errores.nombre) OK.nombre = false;
+			// Fin
+			return;
+		},
 		nombreApodo: async () => {
 			// Verifica errores en el sector 'nombre'
 			let params = "&nombre=" + v.nombre.value + "&entidad=" + v.entidad;
 			if (v.personajes) params += "&apodo=" + v.apodo.value;
 			if (v.id) params += "&id=" + v.id;
-			errores.nombre = await fetch(v.rutaValidacion + "nombreApodo" + params).then((n) => n.json());
+			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 			// Consolidar la info
 			OK.nombre = !errores.nombre;
 			// Fin
@@ -106,23 +122,22 @@ window.addEventListener("load", async () => {
 				errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
 				OK.fecha = !errores.fecha;
 			} else {
-				// OK y Errores
+				// Errores y OK
 				errores.fecha = "";
-				errores.repetidos = "";
 				OK.fecha = true;
-				OK.repetidos = true;
-				// Limpia los valores de campos relacionados
-				v.mes_id.value = "";
-				v.dia.value = "";
-				v.posiblesRepetidos.innerHTML = "";
 			}
 			// Fin
 			return;
 		},
 		repetido: () => {
+			// Variables
 			let casos = document.querySelectorAll("#posiblesRepetidos li input");
-			errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+			let cartelDuplicado =
+				"Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+			// Errores y OK
+			errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 			OK.repetidos = !errores.repetidos;
+			// Fin
 			return;
 		},
 		ano: async () => {
@@ -158,41 +173,7 @@ window.addEventListener("load", async () => {
 			} else dia31.classList.remove("ocultar");
 		}
 	};
-	let obtieneLosCasosConEsaFecha = async () => {
-		// Buscar otros casos en esa fecha
-		// Obtiene los casos
-		let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
-		if (v.id) params += "&id=" + v.id;
-		let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
-		// Si no hay, mensaje de "no hay casos"
-		if (!casos.length) {
-			v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
-			v.posiblesRepetidos.classList.add("sinCasos");
-			return "";
-		} else {
-			// Si hay, mostrarlos
-			v.posiblesRepetidos.innerHTML = "";
-			v.posiblesRepetidos.classList.remove("sinCasos");
-			for (let caso of casos) {
-				// Crear el input
-				let input = document.createElement("input");
-				input.type = "checkbox";
-				input.name = "repetido";
-				input.checked = true;
-				// Crear la label
-				let texto = document.createTextNode(caso);
-				let label = document.createElement("label");
-				label.appendChild(texto);
-				// Crear el 'li'
-				let li = document.createElement("li");
-				li.appendChild(input);
-				li.appendChild(label);
-				v.posiblesRepetidos.appendChild(li);
-			}
-			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-		}
-	};
-	let mostrarRCLI = {
+	let muestraRCLI = {
 		personajes: async function (mostrarErrores) {
 			// Variables
 			let params = "&entidad=" + v.entidad;
@@ -291,14 +272,14 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (v.nombre.value) await valida.nombreApodo(); // Valida el nombre
+		if (v.nombre.value) await validaciones.nombreApodo(); // Valida el nombre
 		if (v.mes_id.value) muestraLosDiasDelMes(v.mes_id, v.dia); // Personaliza los días del mes
 		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-			await valida.fechas(); // Valida las fechas
-			valida.repetido(); // Valida los duplicados
+			await validaciones.fechas(); // Valida las fechas
+			validaciones.repetido(); // Valida los duplicados
 		}
-		if (v.entidad != "valores" && v.ano.value) await valida.ano(); // Valida el año
-		if (v.entidad != "valores") await mostrarRCLI[v.entidad](true); // Muestra el RCLI
+		if (v.entidad != "valores" && v.ano.value) await validaciones.ano(); // Valida el año
+		if (v.entidad != "valores") await muestraRCLI[v.entidad](true); // Muestra el RCLI
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
@@ -349,7 +330,7 @@ window.addEventListener("load", async () => {
 			// Quita los caracteres que exceden el largo permitido
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
-			await valida[campo]();
+			await validaciones[campo]();
 			feedback(OK, errores);
 		}
 		if (campo == "ano") {
@@ -379,7 +360,11 @@ window.addEventListener("load", async () => {
 						: n.classList.remove("ocultar")
 				);
 				// 2. Preserva la opción elegida, cambiándole el sexo
-				if (v.proceso_id.value && v.proceso_id.value.length != 2 && v.proceso_id.value[2] != sexoValor)
+				if (
+					v.proceso_id.value &&
+					v.proceso_id.value.length != 2 &&
+					v.proceso_id.value[2] != sexoValor
+				)
 					v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
 				// 3. Actualiza el sexo de la pregunta
 				let letraActual = sexoValor == "V" ? "anto" : "anta";
@@ -401,30 +386,85 @@ window.addEventListener("load", async () => {
 			}
 			return;
 		};
+		let limpiezaDeFechaRepetidos = () => {
+			// Limpia los valores de mes, día y repetidos
+			v.mes_id.value = "";
+			v.dia.value = "";
+			v.posiblesRepetidos.innerHTML = "";
+			// Fin
+			return;
+		};
+		let muestraPosiblesDuplicados = async () => {
+			// Obtiene los casos con esa fecha
+			// 1. Obtiene los parámetros
+			let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
+			if (v.id) params += "&id=" + v.id;
+			// 2. Busca otros casos con esa fecha
+			let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
+
+			// Si no hay otros casos, mensaje de "No hay otros casos"
+			if (!casos.length) {
+				v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
+				v.posiblesRepetidos.classList.add("sinCasos");
+			}
+
+			// Si hay otros casos, los muestra
+			else {
+				v.posiblesRepetidos.innerHTML = "";
+				v.posiblesRepetidos.classList.remove("sinCasos");
+				for (let caso of casos) {
+					// Crear el input
+					let input = document.createElement("input");
+					input.type = "checkbox";
+					input.name = "repetido";
+					input.checked = true;
+					// Crear la label
+					let texto = document.createTextNode(caso);
+					let label = document.createElement("label");
+					label.appendChild(texto);
+					// Crear el 'li'
+					let li = document.createElement("li");
+					li.appendChild(input);
+					li.appendChild(label);
+					v.posiblesRepetidos.appendChild(li);
+				}
+			}
+
+			// Fin
+			return;
+		};
 		// Variables
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await valida.nombreApodo();
+		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await validaciones.nombreApodo();
 		if (campo == "mes_id") muestraLosDiasDelMes();
-		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await valida.fechas();
-		if (campo == "desconocida") await valida.fechas();
-		if (campo == "repetido") valida.repetido();
-		if (v.entidad != "valores" && campo == "ano") await valida.ano();
+		if (campo == "desconocida" && v.desconocida.checked) {
+			limpiezaDeFechaRepetidos();
+			await validaciones.fechas();
+			validaciones.repetido();
+		}
+		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+			await validaciones.fechas();
+			if (OK.fecha) await muestraPosiblesDuplicados();
+			validaciones.repetido();
+		}
+		if (campo == "repetido") validaciones.repetido();
+		if (v.entidad != "valores" && campo == "ano") await validaciones.ano();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") consecsDeNovsEnElSexoElegido();
-		if (!v.valores && v.camposRCLI.includes(campo)) await mostrarRCLI[v.entidad](false);
+		if (!v.valores && v.camposRCLI.includes(campo)) await muestraRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {
-			await valida.nombreApodo();
-			await valida.fechas();
-			valida.repetido();
+			await validaciones.nombreApodo();
+			await validaciones.fechas();
+			validaciones.repetido();
 			if (!v.valores) {
-				await valida.ano();
-				await mostrarRCLI[v.entidad](true);
+				await validaciones.ano();
+				await muestraRCLI[v.entidad](true);
 			}
 			// Fin
 			feedback(OK, errores);
@@ -437,5 +477,3 @@ window.addEventListener("load", async () => {
 	await startUp();
 	feedback(OK, errores);
 });
-
-let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
