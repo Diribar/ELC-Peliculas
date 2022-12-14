@@ -19,20 +19,14 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	nombre: (datos) => {
-		return nombreExpress(datos, "nombre");
-	},
-	apodo: (datos) => {
-		return nombreExpress(datos, "apodo");
-	},
 	nombreApodo: async function (datos) {
-		let mensaje;
-		if (!mensaje) mensaje = this.nombre(datos);
+		let mensaje = "";
+		// Validaciones
+		if (!mensaje) mensaje = nombreExpress(datos, "nombre");
 		if (!mensaje) mensaje = await nombreCompleto(datos, "nombre");
-		if (datos.entidad == "personajes") {
-			if (!mensaje) mensaje = this.apodo(datos);
-			if (!mensaje) mensaje = await nombreCompleto(datos, "apodo");
-		}
+		if (!mensaje && datos.entidad == "personajes") mensaje = nombreExpress(datos, "apodo");
+		if (!mensaje && datos.entidad == "personajes") mensaje = await nombreCompleto(datos, "apodo");
+		// Fin
 		return mensaje;
 	},
 	fecha: (datos) => {
