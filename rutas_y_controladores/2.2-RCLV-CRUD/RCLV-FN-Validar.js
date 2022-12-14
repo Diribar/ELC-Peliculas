@@ -133,12 +133,17 @@ let nombreExpress = (datos, campo) => {
 	return respuesta;
 };
 let nombreCompleto = async function (datos, campo) {
-	let respuesta;
-	if (!datos[campo]) respuesta = comp.inputVacio;
-	if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
-	if (!respuesta) {
-		let id = await BD_especificas.validaRepetidos([campo], datos);
-		if (id) respuesta = comp.cartelRepetido({...datos, id});
+	let respuesta = "";
+	if (!datos[campo] && campo == "nombre") respuesta = comp.inputVacio;
+	if (datos[campo]) {
+		if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
+		if (!respuesta) {
+			let id = await BD_especificas.validaRepetidos([campo], datos);
+			if (id) respuesta = comp.cartelRepetido({...datos, id});
+		}
 	}
+	if (respuesta && campo == "apodo") respuesta += " (nombre alternativo)";
+	// Fin
+
 	return respuesta;
 };
