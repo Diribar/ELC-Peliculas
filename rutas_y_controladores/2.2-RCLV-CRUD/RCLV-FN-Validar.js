@@ -22,10 +22,8 @@ module.exports = {
 	nombreApodo: async function (datos) {
 		let mensaje = "";
 		// Validaciones
-		if (!mensaje) mensaje = nombreExpress(datos, "nombre");
-		if (!mensaje) mensaje = await nombreCompleto(datos, "nombre");
-		if (!mensaje && datos.entidad == "personajes") mensaje = nombreExpress(datos, "apodo");
-		if (!mensaje && datos.entidad == "personajes") mensaje = await nombreCompleto(datos, "apodo");
+		if (!mensaje) mensaje = await nombre(datos, "nombre");
+		if (!mensaje && datos.entidad == "personajes") mensaje = await nombre(datos, "apodo");
 		// Fin
 		return mensaje;
 	},
@@ -103,41 +101,35 @@ const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 // Funciones
-let prefijo = (valor, campo) => {
-	return valor.startsWith("San ") ||
-		valor.startsWith("Santa ") ||
-		valor.startsWith("Santo ") ||
-		valor.startsWith("Beato ") ||
-		valor.startsWith("Beata ") ||
-		valor.startsWith("Ven. ") ||
-		valor.startsWith("Venerable ")
-		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
-		: "";
-};
-let nombreExpress = (datos, campo) => {
+let nombre = async function (datos, campo) {
+	// Funciones
+	let prefijo = (valor, campo) => {
+		return valor.startsWith("San ") ||
+			valor.startsWith("Santa ") ||
+			valor.startsWith("Santo ") ||
+			valor.startsWith("Beato ") ||
+			valor.startsWith("Beata ") ||
+			valor.startsWith("Ven. ") ||
+			valor.startsWith("Venerable ")
+			? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
+			: "";
+	};
 	// Variables
-	let dato = datos[campo];
 	let respuesta = "";
+	let dato = datos[campo];
 	// Validaciones
+	if (!dato && campo == "nombre") respuesta = comp.inputVacio;
 	if (dato) {
 		if (!respuesta) respuesta = comp.castellano.completo(dato);
 		if (!respuesta) respuesta = comp.inicial.basico(dato);
 		if (!respuesta && campo == "nombre") respuesta = prefijo(dato, campo);
-	}
-	return respuesta;
-};
-let nombreCompleto = async function (datos, campo) {
-	let respuesta = "";
-	if (!datos[campo] && campo == "nombre") respuesta = comp.inputVacio;
-	if (datos[campo]) {
-		if (!respuesta) respuesta = comp.longitud(datos[campo], 4, 30);
+		if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
 		if (!respuesta) {
 			let id = await BD_especificas.validaRepetidos([campo], datos);
 			if (id) respuesta = comp.cartelRepetido({...datos, id});
 		}
 	}
-	if (respuesta && campo == "apodo") respuesta += " (nombre alternativo)";
 	// Fin
-
+	if (respuesta && campo != "nombre") respuesta += " (nombre alternativo)";
 	return respuesta;
 };
