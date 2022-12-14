@@ -19,10 +19,10 @@
 		<!--Primera columna-->
 		<div id="primeraCol">
 			<!-- Nombre -->
-			<div class="flex-col">
+			<div class="flexCol">
 				<% if (entidad == "personajes") { %>
 					<!-- Título, Ayuda y Error/OK -->
-					<div class="flex-row">
+					<div class="flexRow">
 						<div class="margenBottomTitulo inputError" style="z-index: 5;">
 							<!-- Título -->
 							<h3>Nombres</h3>
@@ -44,16 +44,16 @@
 					</div>
 				<% } %>
 				<!-- Valores -->
-				<div id="valoresNombre" class="flex-col space-between">
+				<div id="valoresNombre" class="flexCol spaceBetween">
 					<!-- Nombre -->
-					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'space-between altoFila' %>">
+					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>">
 						<% if (entidad == "personajes") { %><label>Formal</label>
 						<% } else { %><h3>Nombre</h3><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 						<% if (entidad != "personajes") { %><%- include("CMP-errores", {campo:"nombre", display: true}) %><% } %>
 					</div>
 					<% if (entidad == "personajes") { %>
-						<div class="flexRowAlign space-between altoFila">
+						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
 						</div>
@@ -61,9 +61,9 @@
 				</div>
 			</div>
 			<!-- Fecha Representativa -->
-			<div class="borderTop flex-col">
+			<div class="borderTop flexCol">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flex-row">
+				<div class="flexRow">
 					<div class="margenBottomTitulo inputError" style="z-index: 4;">
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
@@ -83,7 +83,7 @@
 					</div>
 				</div>
 				<!-- Valores -->
-				<div id="valoresFecha" class="flex-col space-between">
+				<div id="valoresFecha" class="flexCol spaceBetween">
 					<!-- Meses -->
 					<div class="flexRowAlign altoFila">
 						<label style="width: 35px;">Mes</label>
@@ -126,7 +126,7 @@
 			<!-- Repetidos -->
 			<div id="repetidos">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flex-row">
+				<div class="flexRow">
 					<div class="margenBottomTitulo inputError" style="z-index: 3;">
 						<!-- Título -->
 						<h3>Nombres con esa fecha</h3>
@@ -145,7 +145,7 @@
 			</div>
 			<!-- Año de nacimiento/ocurrencia -->
 			<% if (entidad != "valores") { %>
-				<div class="borderTop flex-row">
+				<div class="borderTop flexRow">
 					<div class="flexRowAlign inputError" style="z-index: 2;">
 						<!-- Título -->
 						<h3>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
@@ -173,7 +173,7 @@
 		<!-- Preguntas de contexto -->
 		<section id="preguntas" class="borderTop OK ocultar">
 			<!-- Título y Error/OK -->
-			<div class="flex-row margenBottomTitulo inputError">
+			<div class="flexRow margenBottomTitulo inputError">
 				<!-- Título -->
 				<h3 class="">Preguntas de contexto</h3>
 				<%- include("CMP-errores", {campo:"RCLI", display: true}) %>
@@ -195,7 +195,7 @@
 						</div>
 					</div>
 					<!-- Sexo y Rol en la Iglesia -->
-					<div class="flexRowAlign altoFila space-between">
+					<div class="flexRowAlign altoFila spaceBetween">
 						<!-- Sexo -->
 						<div id="sexo_id" class="flexRowAlign ocultar cfc">
 							<label class="izquierda">Sexo</label>
@@ -220,7 +220,7 @@
 						</div>
 					</div>
 					<!-- ¿En proceso de canonización? y status -->
-					<div class="flexRowAlign altoFila space-between ocultar cfc">
+					<div class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
 							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
@@ -258,7 +258,7 @@
 						</div>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign altoFila space-between ocultar cfc">
+					<div id="sectorApMar" class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<div class="flexRowAlign">
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">

@@ -2,9 +2,9 @@
 	<li>
 		<a href="/producto/detalle/?entidad=<%= prodYaEnBD.entidad %>&id=<%= prodYaEnBD.id %>">
 			<!-- Info a mostrar -->
-			<button type="text" class="flex-row pointer" id= "prodYaEnBD" autofocus>
+			<button type="text" class="flexRow pointer" id= "prodYaEnBD" autofocus>
 				<img class="imagenChica" src="<%= prodYaEnBD.avatar %>" alt="<%= prodYaEnBD.nombre_original %>" title="<%= prodYaEnBD.nombre_original %>">
-				<div id="infoPeli" class="flex-col">
+				<div id="infoPeli" class="flexCol">
 					<p><strong><%= prodYaEnBD.nombre_original %></strong></p>
 					<p class="interlineadoChico"><em><%= prodYaEnBD.nombre_castellano %></em></p>	
 					<br>

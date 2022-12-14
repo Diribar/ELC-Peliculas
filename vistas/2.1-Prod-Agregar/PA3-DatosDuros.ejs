@@ -3,7 +3,7 @@
 		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
 	</h1>
 </div>
-<form method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
+<form method="POST" enctype = "multipart/form-data" id="dataEntry" class="flexCol" >
 	<section id="titulos">
 		<!-- Título y Ayuda -->
 		<div id="tituloSecundario">
@@ -19,9 +19,9 @@
 			</div>
 		</div>
 		<!-- Links a otras páginas de consulta -->
-		<div class="flex-col" id="links">
+		<div class="flexCol" id="links">
 			<p>Si necesitás consultar algún dato</p>
-			<nav class="flex-row">
+			<nav class="flexRow">
 				<!-- TMDB -->
 				<% if (dataEntry.fuente != "TMDB") { %>
 					<% tmdb = dataEntry.nombre_original ? "search?language=es&query=" + dataEntry.nombre_original : "" %>

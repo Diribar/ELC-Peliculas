@@ -2,7 +2,7 @@
 <form method="POST" enctype="multipart/form-data">
 	<h1><%= titulo %></h1>
 	<!--Apodo-->
-	<section class="label-input flex-row">
+	<section class="label-input flexRow">
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="inputError">
 			<input type="text" class="input" name="apodo" placeholder="Nombre o apodo" value="<%= dataEntry ? dataEntry.apodo : "" %>" autofocus>
@@ -10,7 +10,7 @@
 		</div>
 	</section>
 	<!--Sexo-->
-	<div class="label-input flex-row">
+	<div class="label-input flexRow">
 		<label for="sexo_id">Sexo</label>
 		<div class="inputError">
 			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 	<!--Pais de residencia-->
-	<section class="label-input flex-row">
+	<section class="label-input flexRow">
 		<label for="pais">País de residencia</label>
 		<div class="inputError">
 			<select name="pais_id" class="input" required>
@@ -55,9 +55,9 @@
 		</div>
 	</section>
 	<!--Imagen de perfil-->
-	<section class="label-input flex-row">
+	<section class="label-input flexRow">
 		<label>Imagen personal <br>(opcional)</label>
-		<div class="inputError flex-col" id="divImagen">
+		<div class="inputError flexCol" id="divImagen">
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>">
 			</label>

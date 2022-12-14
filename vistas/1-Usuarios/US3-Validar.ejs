@@ -13,11 +13,11 @@
 		</div>
 	</div>
 	<!-- Datos -->
-	<section class="flex-row">
+	<section class="flexRow">
 		<!-- Varios -->
 		<div id="columna1">
 			<!--Nombre-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="nombre">Nombre</label>
 				<div class="inputError">
 					<% nombre = dataEntry ? dataEntry.nombre : "" %>
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<!--Apellido-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="apellido">Apellido</label>
 				<div class="inputError">
 					<% apellido = dataEntry ? dataEntry.apellido : "" %>
@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<!--Rol en la iglesia-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
 				<div class="inputError">
 					<% rol_iglesia_id = dataEntry ? dataEntry.rol_iglesia_id : "" %>
@@ -49,7 +49,7 @@
 				</div>
 			</div>
 			<!--Fecha de Nacimiento-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="fecha_nacimiento">Fecha de Nacimiento</label>
 				<div class="inputError">
 					<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
@@ -61,7 +61,7 @@
 		<!-- Documento -->
 		<div id="columna2">
 			<!--Número de Documento-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="docum_numero">Número de Documento</label>
 				<div class="inputError">
 					<input type="text" id="docum_numero" class="input" name="docum_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.docum_numero : "" %>">
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<!--Expedido en qué país-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label for="docum_pais_id">Expedido en qué país</label>
 				<div class="inputError">
 					<select id="docum_pais_id" name="docum_pais_id" class="input" required>
@@ -111,9 +111,9 @@
 				</div>
 			<% } %>
 			<!--Imagen del documento-->
-			<div class="label-input flex-col">
+			<div class="label-input flexCol">
 				<label>Imagen del documento</label>
-				<div class="inputError flex-col" id="divImagen">
+				<div class="inputError flexCol" id="divImagen">
 					<label for="inputImagen" id="preview">
 						<img src="<%= avatar %>">
 					</label>

@@ -1,14 +1,9 @@
 /* Flexbox */
-.align-center {align-items: center;}
-.flex-col {display: flex; flex-direction: column;}
-.flex-row {display: flex; flex-direction: row;}
-.flex-row-reverse {display: flex; flex-direction: row-reverse;}
+.flexCol {display: flex; flex-direction: column;}
+.flexRow {display: flex; flex-direction: row;}
+.flexRowReverse {display: flex; flex-direction: row-reverse;}
 .grow {flex-grow: 1;}
-.space-between {justify-content: space-between;}
-.space-evenly {justify-content: space-evenly;}
-.space-around {justify-content: space-around;}
-.justify-center {justify-content: center;}
-.wrap {flex-wrap: wrap;}
+.spaceBetween {justify-content: space-between;}
 
 /* Íconos clave */
 .fa-solid {line-height: normal;}

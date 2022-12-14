@@ -12,13 +12,13 @@
 	</div>
 </section>
 <section id="zonaDeGrow">
-	<div id="dataEntry" class="flex-col">
+	<div id="dataEntry" class="flexCol">
 		<!-- Datos -->
-		<div id="datos" class="flex-row OK">
+		<div id="datos" class="flexRow OK">
 			<!--Primera columna-->
 			<div id="primeraCol">
 				<!-- Nombre: Título, Ayuda y Error/OK -->
-				<div class="flex-row">
+				<div class="flexRow">
 					<div class="margenBottomTitulo tituloSecundario">
 						<!-- Título -->
 						<h3>Nombre</h3>
@@ -42,7 +42,7 @@
 				<!-- Nombre: Input -->
 				<input type="text" name="nombre" class="input" value="<%= RCLV_original.nombre %>" autofocus autocomplete="off">
 				<!-- Fecha Representativa: Título, Ayuda y Error/OK -->
-				<div class="borderTop flex-row">
+				<div class="borderTop flexRow">
 					<div class="margenBottomTitulo tituloSecundario">
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
@@ -61,7 +61,7 @@
 					</div>
 				</div>
 				<!-- Fecha Representativa: Valores -->
-				<div id="valoresFecha" class="flex-col space-between">
+				<div id="valoresFecha" class="flexCol spaceBetween">
 					<!-- Meses -->
 					<div class="flexRowAlign">
 						<label style="width: 40px;">Mes:</label>
@@ -96,7 +96,7 @@
 						</select>
 					</div>
 					<!-- Fecha desconocida -->
-					<div class="flex-row align-center">
+					<div class="flexRowAlign">
 						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
 							<% if (!RCLV_original.dia_del_ano_id) { %>checked<% } %>
 							tabindex="-1"
@@ -106,8 +106,8 @@
 				</div>
 				<!-- Año de nacimiento u ocurrencia -->
 				<% if (entidad != "valores") { %>
-					<div class="borderTop flex-row">
-						<div class="margenBottomTitulo tituloSecundario flex-row align-center">
+					<div class="borderTop flexRow">
+						<div class="margenBottomTitulo tituloSecundario flexRowAlign">
 							<!-- Título -->
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= RCLV_original.ano %>" autofocus autocomplete="off">
@@ -140,9 +140,9 @@
 		</div>
 		<!-- Relación con la Iglesia (sólo para personajes históricos) -->
 		<% if (entidad == "personajes") { %>
-			<div id="RCLI" class="borderTop flex-row space-between OK">
+			<div id="RCLI" class="borderTop flexRow spaceBetween OK">
 				<!-- Primera columna -->
-				<div class="flex-col">
+				<div class="flexCol">
 					<!-- En proceso de canonización: Título y Error/OK -->
 					<div class="margenBottomTitulo relative">
 						<!-- Título -->
@@ -152,7 +152,7 @@
 					</div>
 					<!-- ¿En proceso de canonización? -->
 					<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
-					<div id="opcionesIglesia" class="flex-row">
+					<div id="opcionesIglesia" class="flexRow">
 						<div class="flexRowAlign">
 							<input type="radio" name="enProcCan" value="1" <% if (RCLV_original.proceso_id) { %>checked<% } %>>
 							<label>SI</label>
@@ -164,11 +164,11 @@
 					</div>
 				</div>
 				<!-- Sectores ocultos salvo que esté en proceso de canonización -->
-				<div id="ocultarEnProcCan" class="invisible flex-col space-between">
+				<div id="ocultarEnProcCan" class="invisible flexCol spaceBetween">
 					<!-- Sexo -->
-					<div id="sexo_id" class="flex-row oculta">
+					<div id="sexo_id" class="flexRow oculta">
 						<h4>Sexo:</h4>
-						<div class="flex-row">
+						<div class="flexRow">
 							<% let rol_iglesia_id = RCLV_original.rol_iglesia_id ? RCLV_original.rol_iglesia_id.slice(-1) : "" %>
 							<div class="flexRowAlign">
 								<input type="radio" name="sexo_id" value="V" <% if (rol_iglesia_id=="V") { %>checked<% } %>>
