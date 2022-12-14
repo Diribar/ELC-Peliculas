@@ -13,10 +13,13 @@
 #dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
 #dataEntry .label-input .inputError input {padding: 0px 5px;}
 #dataEntry .label-input .inputError select {padding: 0;}
-#dataEntry .label-input .inputError .linkRCLV {width: 15px; position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
+#cuerpo .inputError .ayudaMostrar {max-width: 400px;}
+
+/* Links RCLV */
+#dataEntry .label-input .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
+#dataEntry .label-input .inputError .linkRCLV {width: 15px; cursor: pointer;}
 #dataEntry .label-input .inputError .linkRCLV.alta {right: -40px; font-size: 1rem;}
 #dataEntry .label-input .inputError .linkRCLV.edicion {right: -60px; font-size: 1.15rem;}
-#cuerpo .inputError .ayudaMostrar {max-width: 400px;}
 
 /* Anchos específicos de inputs */
 #dataEntry .label-input .inputError select.angosto {width: 70px}	
