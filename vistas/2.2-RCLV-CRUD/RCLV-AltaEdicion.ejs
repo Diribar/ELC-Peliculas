@@ -30,12 +30,13 @@
 							<div class="ayuda">
 								<i class="fa-solid fa-circle-question ayudaClick despl_click">
 									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-										<p>Para las personas que no cambiaron su nombre:</p>
-										<li><strong>Formal</strong>: usamos su nombre de civil (ej: Juan Bosco).</li>
-										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos (ej: Don Bosco), o se deja vacío.</li>
-										<p style="margin-top: 5px;">Para las personas que cambiaron su nombre:</p>
+										<p>Para las personas que cambiaron su nombre:</p>
 										<li><strong>Formal</strong>: usamos el nuevo nombre por el que se hicieron llamar (ej: Juan Pablo II o Teresa de Calcuta).</li>
 										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos, sea el original (ej: Karol Wojtyla) o un alternativo del nuevo nombre (ej: Madre Teresa).</li>
+										<p>Para las personas que <em>no</em> cambiaron su nombre:</p>
+										<li><strong>Formal</strong>: usamos su nombre de civil (ej: Juan Bosco).</li>
+										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos (ej: Don Bosco), o se deja vacío.</li>
+										<p>El Nombre es <em>obligatorio</em>, el Alternativo es <em>opcional.</em></p>
 									</ul>
 								</i>
 							</div>
@@ -46,7 +47,7 @@
 				<!-- Valores -->
 				<div id="valoresNombre" class="flexCol spaceBetween">
 					<!-- Nombre -->
-					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>">
+					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 5;">
 						<% if (entidad == "personajes") { %><label>Formal</label>
 						<% } else { %><h3>Nombre</h3><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">

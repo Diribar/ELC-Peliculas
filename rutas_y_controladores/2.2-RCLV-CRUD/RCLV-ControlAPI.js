@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
-	buscarOtrosCasos: async (req, res) => {
+	registrosConEsaFecha: async (req, res) => {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
 		let dia_del_ano_id = await BD_genericas.obtienePorCampos("dias_del_ano", objeto).then((n) => n.id);
@@ -15,6 +15,7 @@ module.exports = {
 	},
 	valida: async (req, res) => {
 		let mensaje = await valida[req.query.funcion](req.query);
+		// console.log(18, req.query, mensaje);
 		return res.json(mensaje);
 	},
 };

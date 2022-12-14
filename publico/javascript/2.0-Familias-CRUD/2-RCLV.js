@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 		botonSubmit: document.querySelector(".flechas #submit"),
 		// Rutas
 		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
-		rutaOtrosCasos: "/rclv/api/otros-casos/",
+		rutaRegistrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 		// Links a otros sitios
 		linksClick: document.querySelectorAll("#dataEntry #valoresFecha .links"),
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
@@ -123,7 +123,7 @@ window.addEventListener("load", async () => {
 				OK.fecha = !errores.fecha;
 				// Agregar los registros que tengan esa fecha
 				if (OK.fecha) {
-					errores.repetidos = await registrosConEsaFecha(v.mes_id.value, v.dia.value);
+					errores.repetidos = await rutaRegistrosConEsaFecha(v.mes_id.value, v.dia.value);
 					OK.repetidos = !errores.repetidos;
 				} else OK.repetidos = false;
 			} else {
@@ -205,7 +205,7 @@ window.addEventListener("load", async () => {
 		// Obtiene los casos
 		let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
 		if (v.id) params += "&id=" + v.id;
-		let casos = await fetch(v.rutaOtrosCasos + params).then((n) => n.json());
+		let casos = await fetch(v.registrosConEsaFecha + params).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
 			v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
