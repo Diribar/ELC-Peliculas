@@ -87,22 +87,6 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let valida = {
-		nombre: async () => {
-			// Verifica errores en el sector 'nombre', campo 'nombre'
-			let params = "&nombre=" + v.nombre.value;
-			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-			if (errores.nombre) OK.nombre = false;
-			// Fin
-			return;
-		},
-		apodo: async () => {
-			// Verifica errores en el sector 'nombre', campo 'apodo'
-			let params = "&apodo=" + v.apodo.value;
-			errores.nombre = await fetch(v.rutaValidacion + "apodo" + params).then((n) => n.json());
-			if (errores.nombre) OK.nombre = false;
-			// Fin
-			return;
-		},
 		nombreApodo: async () => {
 			// Verifica errores en el sector 'nombre'
 			let params = "&nombre=" + v.nombre.value + "&entidad=" + v.entidad;
@@ -123,7 +107,7 @@ window.addEventListener("load", async () => {
 				OK.fecha = !errores.fecha;
 				// Agregar los registros que tengan esa fecha
 				if (OK.fecha) {
-					errores.repetidos = await rutaRegistrosConEsaFecha(v.mes_id.value, v.dia.value);
+					errores.repetidos = await registrosConEsaFecha(v.mes_id.value, v.dia.value);
 					OK.repetidos = !errores.repetidos;
 				} else OK.repetidos = false;
 			} else {
@@ -234,7 +218,7 @@ window.addEventListener("load", async () => {
 			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 		}
 	};
-	let funcionSexo = () => {
+	let consecuenciasSexo = () => {
 		// Definir variables
 		let sexoElegido = v.sexo_id[0].checked
 			? v.sexo_id[0].value
@@ -362,7 +346,7 @@ window.addEventListener("load", async () => {
 		obtieneValores: (params, campo) => {
 			// Obtiene el inputElegido
 			let input = v[campo];
-			let inputElegido =
+			let valor =
 				v[campo][0].localName == "input"
 					? input[0].checked
 						? input[0].value
@@ -372,9 +356,9 @@ window.addEventListener("load", async () => {
 					: v[campo][0].localName == "option"
 					? input.value
 					: "";
-			params += "&" + campo + "=" + inputElegido;
+			params += "&" + campo + "=" + valor;
 			// Fin
-			return [params, inputElegido];
+			return [params, valor];
 		},
 	};
 	let startUp = async () => {
@@ -423,13 +407,13 @@ window.addEventListener("load", async () => {
 			: v.botonSubmit.classList.add("inactivo");
 	};
 
-	// Add Event Listeners - compatible RCLV x 3
+	// Correcciones mientras se escribe
 	v.dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		if (campo == "nombre" || campo == "apodo") {
 			// Primera letra en mayúscula
-			let aux = e.target.value;
-			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+			let valor = v[campo].value;
+			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			// Quita los caracteres no deseados
 			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
 			// Quita los caracteres que exceden el largo permitido
@@ -438,28 +422,25 @@ window.addEventListener("load", async () => {
 			await valida[campo]();
 			feedback(OK, errores);
 		}
-		if (campo == "ano" || campo == "hasta") {
+		if (campo == "ano") {
 			// Sólo números
 			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
 			// Impide guiones en el medio
 			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
-			// Revisa los errores y los publica si existen
-			// await valida[campo]();
-			// feedback(OK, errores, true);
 		}
 	});
+	// Acciones cuando se  confirma el input
 	v.dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if ((campo == "nombre" || campo == "apodo") && v.nombre.value && (!v.apodo || v.apodo.value))
-			await valida.nombreApodo();
+		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await valida.nombreApodo();
 		if (campo == "mes_id") diasDelMes();
 		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await valida.fechas();
 		if (campo == "desconocida") await valida.fechas();
 		if (campo == "repetido") valida.repetido();
 		if (v.entidad != "valores" && campo == "ano") await valida.ano();
 		// Campos RCLI
-		if (v.personajes && campo == "sexo_id") funcionSexo();
+		if (v.personajes && campo == "sexo_id") consecuenciasSexo();
 		if (!v.valores && v.camposRCLI.includes(campo)) await mostrarRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
