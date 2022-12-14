@@ -101,15 +101,10 @@ window.addEventListener("load", async () => {
 		fechas: async () => {
 			// Si se conoce la fecha...
 			if (!v.desconocida.checked) {
-				// Se averigua si hay un error con la fecha
+				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 				errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
 				OK.fecha = !errores.fecha;
-				// Agregar los registros que tengan esa fecha
-				if (OK.fecha) {
-					errores.repetidos = await registrosConEsaFecha(v.mes_id.value, v.dia.value);
-					OK.repetidos = !errores.repetidos;
-				} else OK.repetidos = false;
 			} else {
 				// OK y Errores
 				errores.fecha = "";
@@ -121,6 +116,7 @@ window.addEventListener("load", async () => {
 				v.dia.value = "";
 				v.posiblesRepetidos.innerHTML = "";
 			}
+			// Fin
 			return;
 		},
 		repetido: () => {
@@ -130,66 +126,44 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		ano: async () => {
+			// Variables
+			let ano = v.ano.value;
 			// Se averigua si hay un error con el año
-			let params = "&ano=" + v.ano.value;
+			let params = "&ano=" + ano;
 			errores.ano = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
 			OK.ano = !errores.ano;
-			//
-			if (OK.ano) {
-				// Contemporáneo de Jesús
-				if (v.ano.value < -50 || v.ano.value > 100) {
-					v.cnt[1].checked = true;
-					v.cnt[1].disabled = false;
-					v.cnt[0].disabled = true;
-					v.sector_cnt.classList.add("ocultarPorAno");
-				} else {
-					v.cnt[0].disabled = false;
-					v.sector_cnt.classList.remove("ocultarPorAno");
-				}
-				// Aparición Mariana
-				if (v.ano.value < 33) {
-					v.ama[1].checked = true;
-					v.ama[1].disabled = false;
-					v.ama[0].disabled = true;
-					v.sectorAp_mar.classList.add("ocultarPorAno");
-				} else {
-					v.ama[0].disabled = false;
-					v.sectorAp_mar.classList.remove("ocultarPorAno");
-				}
-				await mostrarRCLI[v.entidad](false);
-				v.preguntas.classList.remove("ocultar");
-			} else v.preguntas.classList.add("ocultar");
 
 			// Fin
 			return;
 		},
 	};
-	let diasDelMes = () => {
+	let muestraLosDiasDelMes = () => {
 		// Aplicar cambios en los días 30 y 31
 		// Variables
 		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
 		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+		let mes = v.mes_id.value;
 
 		// Revisar para febrero
-		if (v.mes_id.value == 2) {
+		if (mes == 2) {
 			dia30.classList.add("ocultar");
 			dia31.classList.add("ocultar");
-			if (v.dia.value > 29) dia.value = "";
+			if (v.dia.value > 29) v.dia.value = "";
 		} else {
 			// Revisar para los demás meses de 30 días
 			dia30.classList.remove("ocultar");
-			if (v.mes_id.value == 4 || v.mes_id.value == 6 || v.mes_id.value == 9 || v.mes_id.value == 11) {
+			if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
 				dia31.classList.add("ocultar");
-				if (v.dia.value > 30) dia.value = "";
+				if (v.dia.value > 30) v.dia.value = "";
 			} else dia31.classList.remove("ocultar");
 		}
 	};
-	let registrosConEsaFecha = async () => {
+	let obtieneLosCasosConEsaFecha = async () => {
 		// Buscar otros casos en esa fecha
 		// Obtiene los casos
 		let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
 		if (v.id) params += "&id=" + v.id;
-		let casos = await fetch(v.registrosConEsaFecha + params).then((n) => n.json());
+		let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
 			v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
@@ -217,51 +191,6 @@ window.addEventListener("load", async () => {
 			}
 			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 		}
-	};
-	let consecuenciasSexo = () => {
-		// Definir variables
-		let sexoElegido = v.sexo_id[0].checked
-			? v.sexo_id[0].value
-			: v.sexo_id[1].checked
-			? v.sexo_id[1].value
-			: "";
-		if (sexoElegido) {
-			// Actualizar el sexo de la leyenda 'Santo o en proceso de canonización'
-			let letraActual = sexoElegido == "V" ? "o" : "a";
-			let letraAnterior = sexoElegido == "V" ? "a" : "o";
-			if (v.santosanta.innerHTML.includes("ant" + letraAnterior))
-				v.santosanta.innerHTML = v.santosanta.innerHTML.replace(
-					"ant" + letraAnterior,
-					"ant" + letraActual
-				);
-			// Dejar solamente las opciones alineadas con el sexo
-			let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
-			opciones_proc.forEach((n) =>
-				n.value.length < 2 || n.value[2] != sexoElegido
-					? n.classList.add("ocultar")
-					: n.classList.remove("ocultar")
-			);
-			let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-			opciones_rol.forEach((n) =>
-				n.value.length < 2 || n.value[2] != sexoElegido
-					? n.classList.add("ocultar")
-					: n.classList.remove("ocultar")
-			);
-			// Cambiar la opción anterior por el nuevo sexo_id
-			// Proceso de canonización
-			if (v.proceso_id.value && v.proceso_id.value.length != 2 && v.proceso_id.value[2] != sexoElegido)
-				v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoElegido;
-			// Rol en la Iglesia
-			if (
-				v.rol_iglesia_id.value &&
-				v.rol_iglesia_id.value.length != 2 &&
-				v.rol_iglesia_id.value[2] != sexoElegido
-			) {
-				v.rol_iglesia_id.value = v.rol_iglesia_id.value.slice(0, 2) + sexoElegido;
-				if (v.rol_iglesia_id.value == "") v.rol_iglesia_id.value = "";
-			}
-		}
-		return;
 	};
 	let mostrarRCLI = {
 		personajes: async function (mostrarErrores) {
@@ -362,13 +291,14 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (v.nombre.value && (!v.apodo || v.apodo.value)) await valida.nombreApodo();
-		if (v.mes_id.value) diasDelMes(v.mes_id, v.dia);
+		if (v.nombre.value) await valida.nombreApodo(); // Valida el nombre
+		if (v.mes_id.value) muestraLosDiasDelMes(v.mes_id, v.dia); // Personaliza los días del mes
 		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-			await valida.fechas();
-			valida.repetido();
+			await valida.fechas(); // Valida las fechas
+			valida.repetido(); // Valida los duplicados
 		}
-		if (v.entidad != "valores" && v.ano.value) await valida.ano();
+		if (v.entidad != "valores" && v.ano.value) await valida.ano(); // Valida el año
+		if (v.entidad != "valores") await mostrarRCLI[v.entidad](true); // Muestra el RCLI
 	};
 	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
@@ -431,16 +361,57 @@ window.addEventListener("load", async () => {
 	});
 	// Acciones cuando se  confirma el input
 	v.dataEntry.addEventListener("change", async (e) => {
+		// Funciones
+		let consecsDeNovsEnElSexoElegido = () => {
+			// Definir variables
+			let sexoValor = v.sexo_id[0].checked
+				? v.sexo_id[0].value
+				: v.sexo_id[1].checked
+				? v.sexo_id[1].value
+				: "";
+			if (sexoValor) {
+				// Proceso de canonización
+				// 1. Actualiza las opciones
+				let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
+				opciones_proc.forEach((n) =>
+					n.value.length < 2 || n.value[2] != sexoValor
+						? n.classList.add("ocultar")
+						: n.classList.remove("ocultar")
+				);
+				// 2. Preserva la opción elegida, cambiándole el sexo
+				if (v.proceso_id.value && v.proceso_id.value.length != 2 && v.proceso_id.value[2] != sexoValor)
+					v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
+				// 3. Actualiza el sexo de la pregunta
+				let letraActual = sexoValor == "V" ? "anto" : "anta";
+				let letraAnterior = sexoValor == "V" ? "anta" : "anto";
+				if (v.santosanta.innerHTML.includes(letraAnterior))
+					v.santosanta.innerHTML = v.santosanta.innerHTML.replace(letraAnterior, letraActual);
+				// Rol en la Iglesia
+				// 1. Actualiza las opciones
+				let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+				opciones_rol.forEach((n) =>
+					n.value.length < 2 || n.value[2] != sexoValor
+						? n.classList.add("ocultar")
+						: n.classList.remove("ocultar")
+				);
+				// 2. Preserva la opción elegida, cambiándole el sexo
+				let rol_iglesia = v.rol_iglesia_id.value;
+				if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
+					v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
+			}
+			return;
+		};
+		// Variables
 		let campo = e.target.name;
 		// Campos para todos los RCLV
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await valida.nombreApodo();
-		if (campo == "mes_id") diasDelMes();
+		if (campo == "mes_id") muestraLosDiasDelMes();
 		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) await valida.fechas();
 		if (campo == "desconocida") await valida.fechas();
 		if (campo == "repetido") valida.repetido();
 		if (v.entidad != "valores" && campo == "ano") await valida.ano();
 		// Campos RCLI
-		if (v.personajes && campo == "sexo_id") consecuenciasSexo();
+		if (v.personajes && campo == "sexo_id") consecsDeNovsEnElSexoElegido();
 		if (!v.valores && v.camposRCLI.includes(campo)) await mostrarRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);

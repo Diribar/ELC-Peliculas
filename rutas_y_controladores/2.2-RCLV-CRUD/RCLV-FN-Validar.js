@@ -57,6 +57,7 @@ module.exports = {
 		return respuesta;
 	},
 	RCLI_personaje: (datos) => {
+		console.log(60,datos);
 		let respuesta;
 		if (false) {
 		}
