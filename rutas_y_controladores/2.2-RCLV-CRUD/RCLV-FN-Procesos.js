@@ -89,7 +89,7 @@ module.exports = {
 			);
 			// Asigna el nombre del proceso
 			procCanoniz = proceso.nombre + " ";
-			// Verificación si el nombre del proceso es "Santo"
+			// Verificación si el nombre del proceso es "Santo" (varón)
 			if (RCLV.proceso_id == "STV") {
 				// Nombres que llevan el prefijo "Santo"
 				let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
@@ -130,7 +130,7 @@ module.exports = {
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualizaRegistro(entidad, id, DE) // Actualizar el registro original
+				? await comp.actualizaRegistro(entidad, id, DE) // Actualiza el registro original
 				: await comp.guardaEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original

@@ -32,7 +32,6 @@
 									<% if (entidad == "personajes") { %>
 										<li>Nombre Alternativo: se usa cuando la persona es conocida con dos nombres distintos (ej: Juan Pablo II / Karol Wojtyla).</li>
 									<% } %>
-									<li>La primera letra debe ser en mayúscula.</li>
 									<li>Sólo se aceptan letras del alfabeto castellano.</li>
 								</ul>
 							</i>
@@ -138,12 +137,12 @@
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
-			<% if (entidad == "personajes") { %>
-				<!-- Año de nacimiento u ocurrencia -->
+			<!-- Año de nacimiento/ocurrencia -->
+			<% if (entidad != "valores") { %>
 				<div class="borderTop flex-row">
 					<div class="flex-row align-center inputError" style="z-index: 2;">
 						<!-- Título -->
-						<h3>Año de Nacimiento</h3>
+						<h3>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 						<!-- Ayuda -->
 						<div class="ayuda">
@@ -151,7 +150,10 @@
 								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<li>Nos ayuda a ubicarlo cronológicamente.</li>
 									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-									<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+									<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
+									<% if (entidad=="hechos") { %>
+										<li>Si el hecho ocurrió durante más de un año, por favor poné el año de comienzo.</li>
+									<% } %>
 								</ul>
 							</i>
 						</div>
@@ -159,46 +161,10 @@
 					</div>
 				</div>
 			<% } %>
-			<% if (entidad == "hechos") { %>
-				<!-- Años -->
-				<div class="borderTop flex-row">
-					<div id="anosHechos" style="z-index: 2;">
-						<!-- Título, Ayuda y Error/OK -->
-						<div class="flex-row">
-							<div class="margenBottomTitulo inputError" style="z-index: 5;">
-								<!-- Título -->
-								<h3>Años</h3>
-								<!-- Ayuda -->
-								<div class="ayuda">
-									<i class="fa-solid fa-circle-question ayudaClick despl_click">
-										<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-											<li>Nos ayuda a ubicarlo cronológicamente.</li>
-											<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-											<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
-										</ul>
-									</i>
-								</div>
-								<%- include("CMP-errores", {campo:"desdeHasta", display: true}) %>
-							</div>
-						</div>
-						<!-- Valores -->
-						<div id="valoresAno" class="flex-row space-between">
-							<div class="flexRowAlign altoFila">
-								<label for="ano">Desde:</label>
-								<input id="ano" type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autocomplete="off">
-							</div>
-							<div class="flexRowAlign altoFila">
-								<label for="hasta">Hasta:</label>
-								<input id="hasta" type="text" name="hasta" class="input angosto" value="<%= dataEntry.hasta %>" autocomplete="off">
-							</div>
-						</div>
-					</div>
-				</div>
-			<% } %>
 		</div>
 	</section>
 	<% if (entidad != "valores") { %>
-		<!-- Preguntas de RCLV -->
+		<!-- Preguntas de contexto -->
 		<section id="preguntas" class="borderTop OK ocultar">
 			<!-- Título y Error/OK -->
 			<div class="flex-row margenBottomTitulo inputError">
@@ -265,15 +231,15 @@
 						</div>
 						<!-- Status del proceso de canonización -->
 						<select name="proceso_id" class="ocultar RCLI cfc">
-								<option value="" selected>Elejí una opción</option>
-								<% for (let proceso of procs_canoniz) { %>
-									<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
-								<% } %> 
+							<option value="" selected>Elejí una opción</option>
+							<% for (let proceso of procs_canoniz) { %>
+								<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+							<% } %> 
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
-						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
+						<label class="izquierda">¿Es contemporáneo de Jesús?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
@@ -291,11 +257,11 @@
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+									<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
 									<label for="ap_marSI">SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&(dataEntry.ap_mar==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
+									<input id="ap_marNO" type="radio" name="ama" value="0" <% if (DE&&(dataEntry.ama==0 || !dataEntry.ap_mar_id)) { %>checked<% } %> class="RCLI">
 									<label for="ap_marNO">NO</label>
 								</div>
 							</div>
@@ -329,11 +295,11 @@
 					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input id="ap_marSI" type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
+								<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">
 								<label for="ap_marSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input id="ap_marNO" type="radio" name="ap_mar" value="0" <% if (DE&&dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+								<input id="ap_marNO" type="radio" name="ama" value="0" <% if (DE&&dataEntry.ama==0) { %>checked<% } %> class="RCLI">
 								<label for="ap_marNO">NO</label>
 							</div>
 						</div>

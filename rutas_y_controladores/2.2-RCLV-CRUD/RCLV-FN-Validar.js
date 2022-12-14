@@ -11,16 +11,10 @@ module.exports = {
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
-		// Campos exclusivos de 'personajes'
-		if (datos.entidad == "personajes") {
-			errores.ano = this.ano(datos);
-			errores.RCLI = this.RCLI_personaje(datos);
-		}
-		// Campos exclusivos de 'hechos'
-		if (datos.entidad == "hechos") {
-			errores.desdeHasta = this.desdeHasta(datos);
-			errores.RCLI = this.RCLI_hecho(datos);
-		}
+		// Campos exclusivos
+		if (datos.entidad != "valores") errores.ano = this.ano(datos);
+		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
+		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
 		// Completar con 'hay errores'
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -55,9 +49,8 @@ module.exports = {
 		return respuesta;
 	},
 	ano: (datos) => {
-		let respuesta;
-		if (!datos.ano) respuesta = comp.inputVacio;
-		else {
+		let respuesta = "";
+		if (datos.ano) {
 			let ano = parseInt(datos.ano);
 			respuesta =
 				typeof ano != "number"
@@ -68,33 +61,8 @@ module.exports = {
 					? "El año debe ser mayor"
 					: "";
 		}
-		return respuesta;
-	},
-	desdeHasta: function (variable) {
-		// Variables
-		let datos = {...variable};
-		let mensaje;
-		datos.desde = datos.ano;
-		// Revisar 'desde'
-		if (!mensaje) {
-			datos.ano = datos.desde;
-			mensaje = this.ano(datos);
-			if (mensaje) mensaje += " (año 'desde')";
-		}
-		// Revisar 'hasta'
-		if (!mensaje) {
-			datos.ano = datos.hasta;
-			mensaje = this.ano(datos);
-			if (mensaje) mensaje += " (año 'hasta')";
-		}
-		// Revisar 'combinados'
-		if (!mensaje) {
-			let desde = parseInt(datos.desde);
-			let hasta = parseInt(datos.hasta);
-			if (desde > hasta) mensaje = "El año 'desde' no debe superar al año 'hasta'";
-		}
 		// Fin
-		return mensaje;
+		return respuesta;
 	},
 	RCLI_personaje: (datos) => {
 		let respuesta;
@@ -110,8 +78,8 @@ module.exports = {
 		else if (datos.enProcCan == "1" && !datos.proceso_id)
 			respuesta = "Necesitamos saber el status del Proceso de Canonización";
 		else if (!datos.cnt) respuesta = "Necesitamos saber si fue contemporáneo";
-		else if (!datos.ap_mar) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
-		else if (datos.ap_mar == "1" && !datos.ap_mar_id)
+		else if (!datos.ama) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
+		else if (datos.ama == "1" && !datos.ap_mar_id)
 			respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
 		else respuesta = "";
 
@@ -127,7 +95,7 @@ module.exports = {
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
-		else if (!datos.ap_mar) respuesta = "Necesitamos saber si es una aparición mariana";
+		else if (!datos.ama) respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
 		// Fin
@@ -148,14 +116,14 @@ let prefijo = (valor, campo) => {
 		valor.startsWith("Beato ") ||
 		valor.startsWith("Beata ") ||
 		valor.startsWith("Ven. ") ||
-		valor.startsWith("Venerable ") 
+		valor.startsWith("Venerable ")
 		? "El " + campo + " no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
 		: "";
 };
 let nombreExpress = (datos, campo) => {
 	// Variables
 	let dato = datos[campo];
-	let respuesta=""
+	let respuesta = "";
 	// Validaciones
 	if (dato) {
 		if (!respuesta) respuesta = comp.castellano.completo(dato);

@@ -5,23 +5,24 @@
 		<!-- Input -->
 		<select name="<%= campo %>" class="input RCLV" autofocus>
 			<option value="1">Ninguno</option>
+			<!-- "valor" es cada Personaje, Hecho, Valor -->
 			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
 					class="RCLV
 						<% // Datos para PERSONAJES %>
 						<% if (campo == "personaje_id") { %>
 							<% if (valor.categoria_id) { %><%= valor.categoria_id %><% } %>
-							<% if (valor.ap_mar_id) { %><%= 'AM AM'+valor.ap_mar_id %><% } %>
 							<% if (valor.subcategoria_id) { %><%= valor.subcategoria_id %><% } %>
+							<% if (valor.ap_mar_id) { %><%= 'AMA AM'+valor.ap_mar_id %><% } %>
 						<% } %>
 						<% // Datos para HECHOS %>
 						<% if (campo == "hecho_id") { %>
 							CFC
 							<% if (!valor.solo_cfc) { %><%= 'VPC' %><% } %>
-							<% if (valor.jss) { %><%= 'JSS' %><% } %>
-							<% if (valor.cnt) { %><%= 'CNT' %><% } %>
-							<% if (valor.exclusivo) { %><%= 'EXC' %><% } %>
-							<% if (valor.ap_mar) { %><%= 'AM' %><% } %>
+							<% if (valor.jss) { %><%= 'jss' %><% } %>
+							<% if (valor.cnt) { %><%= 'cnt' %><% } %>
+							<% if (valor.ncn) { %><%= 'ncn' %><% } %>
+							<% if (valor.ama) { %><%= 'AMA' %><% } %>
 						<% } %>
 					"
 					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 

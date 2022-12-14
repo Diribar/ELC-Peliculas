@@ -4,14 +4,13 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
-		hasta: {type: dt.INTEGER},
 		perenne: {type: dt.BOOLEAN},
 
 		solo_cfc: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
-		exclusivo: {type: dt.BOOLEAN},
-		ap_mar: {type: dt.BOOLEAN},
+		ncn: {type: dt.BOOLEAN},
+		ama: {type: dt.BOOLEAN},
 		
 		prods_aprob: {type: dt.BOOLEAN},
 
