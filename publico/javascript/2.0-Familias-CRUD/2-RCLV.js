@@ -445,8 +445,10 @@ window.addEventListener("load", async () => {
 		}
 		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
 			await validaciones.fechas();
-			if (OK.fecha) await muestraPosiblesDuplicados();
-			validaciones.repetido();
+			if (OK.fecha) {
+				await muestraPosiblesDuplicados();
+				validaciones.repetido();
+			}
 		}
 		if (campo == "repetido") validaciones.repetido();
 		if (v.entidad != "valores" && campo == "ano") await validaciones.ano();
