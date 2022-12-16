@@ -98,7 +98,7 @@
 							</select>
 						</div>
 						<!-- Días -->
-						<div class="flexRowAlign altoFila separarDiv">
+						<div id="dia" class="flexRowAlign altoFila separarDiv">
 							<select name="dia" class="input">
 								<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
 								<% for (let dia = 1; dia < 32; dia++) { %>
@@ -111,6 +111,8 @@
 								<% } %>
 							</select>
 						</div>
+						<a id="wiki" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
+						<a id="santopedia" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Santopedia.jpg" title="Consultar en Santopedia"></a>
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
@@ -157,18 +159,16 @@
 				<div id="personaje">
 					<!-- Año de Nacimiento y Sexo -->
 					<div class="flexRowAlign spaceBetween">
-						<!-- Año de Nacimiento -->
-						<div class="flexRowAlign inputError">
-							<label>Año de Nacimiento</label>
-							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
-							<!-- Ayuda -->
-							<div class="ayuda">
-								<i class="fa-solid fa-circle-question ayudaClick despl_click">
-									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
-									</ul>
-								</i>
+						<!-- Sexo -->
+						<div id="sexo_id" class="flexRowAlign cfc">
+							<label class="izquierda">Sexo</label>
+							<div class="flexRowAlign">
+								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
+								<label for="V">Varón</label>
+							</div>
+							<div class="flexRowAlign" style="margin-left: 10px;">
+								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
+								<label for="M">Mujer</label>
 							</div>
 						</div>
 						<!-- CFC/VPC -->
@@ -188,16 +188,18 @@
 					</div>
 					<!--  -->
 					<div class="flexRowAlign spaceBetween">
-						<!-- Sexo -->
-						<div id="sexo_id" class="flexRowAlign cfc">
-							<label class="izquierda">Sexo</label>
-							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
-								<label for="V">Varón</label>
-							</div>
-							<div class="flexRowAlign" style="margin-left: 10px;">
-								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
-								<label for="M">Mujer</label>
+						<!-- Año de Nacimiento -->
+						<div class="flexRowAlign inputError">
+							<label>Año de Nacimiento</label>
+							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<!-- Ayuda -->
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick despl_click">
+									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
+									</ul>
+								</i>
 							</div>
 						</div>
 						<!-- Rol en la Iglesia -->
