@@ -197,7 +197,6 @@ module.exports = {
 		datosCap.subcategoria_id = datosCol.subcategoria_id;
 		datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 		// Guardar los datos del capítulo
-		// console.log(200,capituloID_TMDB,datosCap);
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			.then((n) => (n = {...n, ...datosCap}))
 			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
