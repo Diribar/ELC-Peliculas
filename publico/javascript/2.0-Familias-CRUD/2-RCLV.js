@@ -376,6 +376,8 @@ window.addEventListener("load", async () => {
 					let rol_iglesia = v.rol_iglesia_id.value;
 					if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
 						v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
+					// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
+					if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = ""
 				}
 				return;
 			},
@@ -485,7 +487,7 @@ window.addEventListener("load", async () => {
 				if (OK.RCLI) procesos.RCLI.novedadesAno();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			// if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
+			if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
 			// 4.3. Revisa los errores en RCLI
 			// await validacs.RCLI[v.entidad](false);
 			// 4.4. Oculta y muestra los campos que correspondan
