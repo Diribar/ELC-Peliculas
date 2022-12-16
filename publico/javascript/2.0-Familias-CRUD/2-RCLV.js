@@ -49,8 +49,6 @@ window.addEventListener("load", async () => {
 		v.cfc = document.querySelectorAll("#preguntas .cfc");
 		v.preguntas = document.querySelector("#dataEntry #preguntas");
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
-		v.anoIconoOK = document.querySelector("#dataEntry #ano .fa-circle-check");
-		v.anoInput = document.querySelector("#dataEntry #ano .input");
 		v.ama = document.querySelectorAll("input[name='ama']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
@@ -61,8 +59,9 @@ window.addEventListener("load", async () => {
 	if (v.personajes) {
 		v.apodo = document.querySelector("#dataEntry input[name='apodo']");
 		v.campos = [
-			"categoria_id",
+			"ano",
 			"sexo_id",
+			"categoria_id",
 			"rol_iglesia_id",
 			"enProcCan",
 			"proceso_id",
@@ -89,32 +88,34 @@ window.addEventListener("load", async () => {
 
 	// Funciones
 	let validaciones = {
-		nombre: async () => {
-			// Verifica errores en el sector 'nombre', campo 'nombre'
-			let params = "&nombre=" + v.nombre.value;
-			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-			if (errores.nombre) OK.nombre = false;
-			// Fin
-			return;
-		},
-		apodo: async () => {
-			// Verifica errores en el sector 'nombre', campo 'apodo'
-			let params = "&apodo=" + v.apodo.value;
-			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-			if (errores.nombre) OK.nombre = false;
-			// Fin
-			return;
-		},
-		nombreApodo: async () => {
-			// Verifica errores en el sector 'nombre'
-			let params = "&nombre=" + v.nombre.value + "&entidad=" + v.entidad;
-			if (v.personajes) params += "&apodo=" + v.apodo.value;
-			if (v.id) params += "&id=" + v.id;
-			errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-			// Consolidar la info
-			OK.nombre = !errores.nombre;
-			// Fin
-			return;
+		nombre: {
+			nombre: async () => {
+				// Verifica errores en el sector 'nombre', campo 'nombre'
+				let params = "&nombre=" + v.nombre.value;
+				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				if (errores.nombre) OK.nombre = false;
+				// Fin
+				return;
+			},
+			apodo: async () => {
+				// Verifica errores en el sector 'nombre', campo 'apodo'
+				let params = "&apodo=" + v.apodo.value;
+				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				if (errores.nombre) OK.nombre = false;
+				// Fin
+				return;
+			},
+			nombreApodo: async () => {
+				// Verifica errores en el sector 'nombre'
+				let params = "&nombre=" + v.nombre.value + "&entidad=" + v.entidad;
+				if (v.personajes) params += "&apodo=" + v.apodo.value;
+				if (v.id) params += "&id=" + v.id;
+				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				// Consolidar la info
+				OK.nombre = !errores.nombre;
+				// Fin
+				return;
+			},
 		},
 		fechas: async () => {
 			// Si se conoce la fecha...
@@ -142,218 +143,102 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		ano: async () => {
-			// Variables
-			let ano = v.ano.value;
-			// Se averigua si hay un error con el año
-			let params = "&ano=" + ano;
-			errores.ano = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
-			OK.ano = !errores.ano;
+		RCLI:{
+			personajes: async function (mostrarErrores) {
+				// Variables
+				let params = "&entidad=" + v.entidad;
+				let inputs = {};
+				// Rutina
+				for (let indice = 0; indice < v.campos.length; indice++) {
+					// Obtiene el campo
+					let campo = v.campos[indice];
+					// Obtiene el valor del campo
+					[params, inputs[campo]] = this.obtieneValores(params, campo);
+					// Particularidad para 'sexo_id'
+					if (campo == "sexo_id" && inputs.categoria_id != "CFC") {
+						this.ocultar(indice + 1);
+						break;
+					}
+					// Particularidades para enProcCan y ama
+					if ((campo == "enProcCan" || campo == "ama") && inputs[campo] == "0") {
+						// Oculta el siguiente campo
+						v.cfc[indice + 1].classList.add("ocultar");
+						// Muestra el campo subsiguiente
+						if (indice + 2 < v.campos.length) v.cfc[indice + 2].classList.remove("ocultar");
+						// Saltea el campo subsiguiente
+						indice++;
+						// Fin
+						continue;
+					}
+					// Particularidad para el último campo
+					if (indice == v.campos.length - 1) break;
+					// Caso genérico
+					if (inputs[campo]) v.cfc[indice + 1].classList.remove("ocultar");
+					else {
+						this.ocultar(indice + 1);
+						break;
+					}
+				}
+				// OK y Errores
+				errores.RCLI = await fetch(v.rutaValidacion + "RCLI_personaje" + params).then((n) => n.json());
+				OK.RCLI = !errores.RCLI;
+				if (!mostrarErrores) errores.RCLI = "";
+	
+				// Fin
+				return;
+			},
 
-			// Fin
-			return;
-		},
-	};
-	let muestraLosDiasDelMes = () => {
-		// Aplicar cambios en los días 30 y 31
-		// Variables
-		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
-		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
-		let mes = v.mes_id.value;
-
-		// Revisar para febrero
-		if (mes == 2) {
-			dia30.classList.add("ocultar");
-			dia31.classList.add("ocultar");
-			if (v.dia.value > 29) v.dia.value = "";
-		} else {
-			// Revisar para los demás meses de 30 días
-			dia30.classList.remove("ocultar");
-			if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
-				dia31.classList.add("ocultar");
-				if (v.dia.value > 30) v.dia.value = "";
-			} else dia31.classList.remove("ocultar");
 		}
 	};
-	let muestraRCLI = {
-		personajes: async function (mostrarErrores) {
-			// Variables
-			let params = "&entidad=" + v.entidad;
-			let inputs = {};
-			// Rutina
-			for (let indice = 0; indice < v.campos.length; indice++) {
-				// Obtiene el campo
-				let campo = v.campos[indice];
-				// Obtiene el valor del campo
-				[params, inputs[campo]] = this.obtieneValores(params, campo);
-				// Particularidad para 'sexo_id'
-				if (campo == "sexo_id" && inputs.categoria_id != "CFC") {
-					this.ocultar(indice + 1);
-					break;
-				}
-				// Particularidades para enProcCan y ama
-				if ((campo == "enProcCan" || campo == "ama") && inputs[campo] == "0") {
-					// Oculta el siguiente campo
-					v.cfc[indice + 1].classList.add("ocultar");
-					// Muestra el campo subsiguiente
-					if (indice + 2 < v.campos.length) v.cfc[indice + 2].classList.remove("ocultar");
-					// Saltea el campo subsiguiente
-					indice++;
-					// Fin
-					continue;
-				}
-				// Particularidad para el último campo
-				if (indice == v.campos.length - 1) break;
-				// Caso genérico
-				if (inputs[campo]) v.cfc[indice + 1].classList.remove("ocultar");
-				else {
-					this.ocultar(indice + 1);
-					break;
-				}
-			}
-			// OK y Errores
-			errores.RCLI = await fetch(v.rutaValidacion + "RCLI_personaje" + params).then((n) => n.json());
-			OK.RCLI = !errores.RCLI;
-			if (!mostrarErrores) errores.RCLI = "";
-
-			// Fin
-			return;
-		},
-		hechos: async function (mostrarErrores) {
-			// Variables
-			let params = "&entidad=" + v.entidad;
-			let inputs = {};
-			// Rutina
-			for (let indice = 0; indice < v.campos.length; indice++) {
-				// Obtiene el campo
-				let campo = v.campos[indice];
-				// Obtiene el valor del campo
-				[params, inputs[campo]] = this.obtieneValores(params, campo);
-				// Particularidad para 'solo_cfc'
-				if (campo == "solo_cfc" && inputs[campo] != "1") {
-					this.ocultar(indice + 1);
-					break;
-				}
-				// Particularidad para el último campo
-				if (indice == v.campos.length - 1) break;
-				// Caso genérico
-				if (inputs[campo]) v.cfc[indice + 1].classList.remove("ocultar");
-				else {
-					this.ocultar(indice + 1);
-					break;
-				}
-			}
-			// OK y Errores
-			errores.RCLI = await fetch(v.rutaValidacion + "RCLI_hecho" + params).then((n) => n.json());
-			OK.RCLI = !errores.RCLI;
-			if (!mostrarErrores) errores.RCLI = "";
-
-			// Fin
-			return;
-		},
-		ocultar: (indice) => {
-			for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
-			return;
-		},
+	let auxiliaresRCLI={
 		obtieneValores: (params, campo) => {
 			// Obtiene el inputElegido
 			let input = v[campo];
+			console.log(typeof input);
 			let valor =
-				v[campo][0].localName == "input"
+				input[0].localName == "input"
 					? input[0].checked
 						? input[0].value
 						: input[1].checked
 						? input[1].value
 						: ""
-					: v[campo][0].localName == "option"
+					: input[0].localName == "option"
 					? input.value
 					: "";
 			params += "&" + campo + "=" + valor;
 			// Fin
 			return [params, valor];
 		},
-	};
-	let startUp = async () => {
-		if (v.nombre.value) await validaciones.nombreApodo(); // Valida el nombre
-		if (v.mes_id.value) muestraLosDiasDelMes(v.mes_id, v.dia); // Personaliza los días del mes
-		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-			await validaciones.fechas(); // Valida las fechas
-			validaciones.repetido(); // Valida los duplicados
-		}
-		if (v.entidad != "valores" && v.ano.value) await validaciones.ano(); // Valida el año
-		if (v.entidad != "valores") await muestraRCLI[v.entidad](true); // Muestra el RCLI
-	};
-	let feedback = (OK, errores, ocultarOK) => {
-		// Definir las variables
-		let sectores = ["nombre", "fecha", "repetidos"];
-		if (!v.valores) sectores.push("ano", "RCLI");
-		// OKfecha
-		v.anoInput.value
-			? v.anoIconoOK.classList.remove("ocultarOKano")
-			: v.anoIconoOK.classList.add("ocultarOKano");
-		// Rutina
-		sectores.forEach((sector, i) => {
-			// Ícono de OK
-			OK[sector] && !ocultarOK
-				? v.iconoOK[i].classList.remove("ocultar")
-				: v.iconoOK[i].classList.add("ocultar");
-			// Íconos de error
-			errores[sector]
-				? v.iconoError[i].classList.remove("ocultar")
-				: v.iconoError[i].classList.add("ocultar");
-			// Mensaje de error
-			v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
-		});
-		// Mostrar logo de Wiki y Santopedia
-		if (OK.nombre)
-			v.linksClick.forEach((link, i) => {
-				link.href = v.linksUrl[i] + v.nombre.value;
-				link.classList.remove("ocultar");
-			});
-		else for (let link of v.linksClick) link.classList.add("ocultar");
-		// Conclusiones
-		let resultado = Object.values(OK);
-		let resultadoTrue = resultado.length
-			? resultado.reduce((a, b) => {
-					return !!a && !!b;
-			  })
-			: false;
-		// Alterar el botón submit
-		resultadoTrue && resultado.length == sectores.length
-			? v.botonSubmit.classList.remove("inactivo")
-			: v.botonSubmit.classList.add("inactivo");
-	};
-
-	// Correcciones mientras se escribe
-	v.dataEntry.addEventListener("input", async (e) => {
-		let campo = e.target.name;
-		if (campo == "nombre" || campo == "apodo") {
-			// Primera letra en mayúscula
-			let valor = v[campo].value;
-			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			// Quita los caracteres no deseados
-			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
-			// Quita los caracteres que exceden el largo permitido
-			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
-			// Revisa los errores y los publica si existen
-			await validaciones[campo]();
-			feedback(OK, errores);
-		}
-		if (campo == "ano") {
-			// Sólo números
-			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
-			// Impide guiones en el medio
-			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
-			// OKfecha
-			v.anoInput.value
-				? v.anoIconoOK.classList.remove("ocultarOKano")
-				: v.anoIconoOK.classList.add("ocultarOKano");
-		}
-	});
-	// Acciones cuando se  confirma el input
-	v.dataEntry.addEventListener("change", async (e) => {
-		// Funciones
-		let consecsDeNovsEnElSexoElegido = () => {
+		novedadesAno: async () => {
+			// Consecuencias si no hay errores y el año tiene valor
+			if (OK.ano && ano) {
+				// Contemporáneo de Jesús
+				if (ano < -50 || ano > 100) {
+					v.cnt[1].checked = true;
+					v.cnt[1].disabled = false;
+					v.cnt[0].disabled = true;
+					v.sector_cnt.classList.add("ocultarPorAno");
+				} else {
+					v.cnt[0].disabled = false;
+					v.sector_cnt.classList.remove("ocultarPorAno");
+				}
+				// Aparición Mariana
+				if (ano < 33) {
+					v.ama[1].checked = true;
+					v.ama[1].disabled = false;
+					v.ama[0].disabled = true;
+					v.sectorAp_mar.classList.add("ocultarPorAno");
+				} else {
+					v.ama[0].disabled = false;
+					v.sectorAp_mar.classList.remove("ocultarPorAno");
+				}
+				await mostrarRCLI[v.entidad](false);
+				v.preguntas.classList.remove("ocultar");
+			}
+			// Fin
+			return;
+		},
+		novedadesSexo: () => {
 			// Definir variables
 			let sexoValor = v.sexo_id[0].checked
 				? v.sexo_id[0].value
@@ -395,7 +280,103 @@ window.addEventListener("load", async () => {
 					v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
 			}
 			return;
-		};
+		},
+	}
+	let muestraLosDiasDelMes = () => {
+		// Aplicar cambios en los días 30 y 31
+		// Variables
+		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
+		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+		let mes = v.mes_id.value;
+
+		// Revisar para febrero
+		if (mes == 2) {
+			dia30.classList.add("ocultar");
+			dia31.classList.add("ocultar");
+			if (v.dia.value > 29) v.dia.value = "";
+		} else {
+			// Revisar para los demás meses de 30 días
+			dia30.classList.remove("ocultar");
+			if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+				dia31.classList.add("ocultar");
+				if (v.dia.value > 30) v.dia.value = "";
+			} else dia31.classList.remove("ocultar");
+		}
+	};
+	let startUp = async () => {
+		if (v.nombre.value) await validaciones.nombreApodo(); // Valida el nombre
+		if (v.mes_id.value) muestraLosDiasDelMes(v.mes_id, v.dia); // Personaliza los días del mes
+		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
+			await validaciones.fechas(); // Valida las fechas
+			validaciones.repetido(); // Valida los duplicados
+		}
+		if (v.entidad != "valores" && v.ano.value) await validaciones.ano(); // Valida el año
+		if (v.entidad != "valores") await muestraRCLI[v.entidad](true); // Muestra el RCLI
+	};
+	let feedback = (OK, errores, ocultarOK) => {
+		// Definir las variables
+		let sectores = ["nombre", "fecha", "repetidos"];
+		if (!v.valores) sectores.push("RCLI");
+		// Rutina
+		sectores.forEach((sector, i) => {
+			// Ícono de OK
+			OK[sector] && !ocultarOK
+				? v.iconoOK[i].classList.remove("ocultar")
+				: v.iconoOK[i].classList.add("ocultar");
+			// Íconos de error
+			errores[sector]
+				? v.iconoError[i].classList.remove("ocultar")
+				: v.iconoError[i].classList.add("ocultar");
+			// Mensaje de error
+			v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
+		});
+		// Mostrar logo de Wiki y Santopedia
+		if (OK.nombre)
+			v.linksClick.forEach((link, i) => {
+				link.href = v.linksUrl[i] + v.nombre.value;
+				link.classList.remove("ocultar");
+			});
+		else for (let link of v.linksClick) link.classList.add("ocultar");
+		// Conclusiones
+		let resultado = Object.values(OK);
+		let resultadoTrue = resultado.length
+			? resultado.reduce((a, b) => {
+					return !!a && !!b;
+			  })
+			: false;
+		// Alterar el botón submit
+		resultadoTrue && resultado.length == sectores.length
+			? v.botonSubmit.classList.remove("inactivo")
+			: v.botonSubmit.classList.add("inactivo");
+	};
+
+	// Correcciones mientras se escribe
+	v.dataEntry.addEventListener("input", async (e) => {
+		let campo = e.target.name;
+		// Acciones si se cambia el nombre o apodo
+		if (campo == "nombre" || campo == "apodo") {
+			// Primera letra en mayúscula
+			let valor = v[campo].value;
+			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			// Quita los caracteres no deseados
+			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
+			// Quita los caracteres que exceden el largo permitido
+			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
+			// Revisa los errores y los publica si existen
+			await validaciones[campo]();
+			feedback(OK, errores);
+		}
+		// Acciones si se cambia el año
+		if (campo == "ano") {
+			// Sólo números
+			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
+			// Impide guiones en el medio
+			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
+		}
+	});
+	// Acciones cuando se  confirma el input
+	v.dataEntry.addEventListener("change", async (e) => {
+		// Funciones
 		let limpiezaDeFechaRepetidos = () => {
 			// Limpia los valores de mes, día y repetidos
 			v.mes_id.value = "";
@@ -445,29 +426,31 @@ window.addEventListener("load", async () => {
 		};
 		// Variables
 		let campo = e.target.name;
-		// Acciones si se cambia el nombre
+		// 1. Acciones si se cambia el nombre o apodo
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await validaciones.nombreApodo();
-		// Acciones si se cambia la fecha
-		if (campo == "mes_id") muestraLosDiasDelMes();
-		if (campo == "desconocida" && v.desconocida.checked) {
-			limpiezaDeFechaRepetidos();
-			await validaciones.fechas();
-			validaciones.repetido();
-		}
-		if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
-			await validaciones.fechas();
-			if (OK.fecha) {
-				await muestraPosiblesDuplicados();
+		// 2. Acciones si se cambia la fecha
+		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
+			if (campo == "mes_id") muestraLosDiasDelMes();
+			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+				await validaciones.fechas();
+				if (OK.fecha) {
+					await muestraPosiblesDuplicados();
+					validaciones.repetido();
+				}
+			}
+			if (campo == "desconocida" && v.desconocida.checked) {
+				limpiezaDeFechaRepetidos();
+				await validaciones.fechas();
 				validaciones.repetido();
 			}
 		}
-		// Acciones si se cambia repetido
+		// 3. Acciones si se cambia repetido
 		if (campo == "repetido") validaciones.repetido();
-		// Acciones si se cambia el año
-		if (campo == "ano") await validaciones.ano();
-		// Campos RCLI
-		if (v.personajes && campo == "sexo_id") consecsDeNovsEnElSexoElegido();
-		if (!v.valores && v.camposRCLI.includes(campo)) await muestraRCLI[v.entidad](false);
+		// 4. Acciones si se cambia el año
+		if (campo == "ano") consecsDeNovsEnAno();
+		// Acciones si se cambia el sexo
+		if (campo == "sexo_id") consecsDeNovsEnElSexoElegido();
+		// if (!v.valores && v.camposRCLI.includes(campo)) await muestraRCLI[v.entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
@@ -489,6 +472,6 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await startUp();
+	// await startUp();
 	feedback(OK, errores);
 });

@@ -7,7 +7,7 @@
 
 /* Temas generales de dataEntry */
 #dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #primeraCol {margin-right: 70px; width: 193px;}
+#dataEntry #primeraCol {margin-right: 50px; width: 193px;}
 #dataEntry #segundaCol {display: flex; flex-direction: column; width: 206px;}
 #dataEntry h4 {line-height: 1; font-weight: normal;}
 #dataEntry .altoFila {height: 25px;}
@@ -32,12 +32,11 @@
 #dataEntry #datos #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
 #dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
-#dataEntry #datos .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
+#dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 #dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
 #dataEntry #segundaCol #anosHechos {display: flex; flex-direction: column; width: 100%;}
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
-#dataEntry #preguntas #sexo_id div {margin-right: 12px;}
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarPorAno, 
 #dataEntry #preguntas .ocultarPorRCLI, .ocultarOKano {display: none;}
 

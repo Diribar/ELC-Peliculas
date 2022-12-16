@@ -12,7 +12,6 @@ module.exports = {
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
 		// Campos exclusivos
-		if (datos.entidad != "valores") errores.ano = this.ano(datos);
 		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
 		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
 		// Completar con 'hay errores'
@@ -112,14 +111,13 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	RCLI_personaje: (datos) => {
-		let respuesta;
-		if (false) {
-		}
+	RCLI_personaje: function (datos) {
+		let respuesta = this.ano(datos);
+		if (respuesta) return respuesta;
 		// Respuesta
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
-		else if (datos.categoria_id == "VPC") respuesta = "";
+		else if (!respuesta && datos.categoria_id == "VPC") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
 		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";

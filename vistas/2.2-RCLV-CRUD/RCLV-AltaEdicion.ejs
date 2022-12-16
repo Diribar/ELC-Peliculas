@@ -144,35 +144,11 @@
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
-			<!-- Año de nacimiento/ocurrencia -->
-			<% if (entidad != "valores") { %>
-				<div class="borderTop flexRow">
-					<div class="flexRowAlign inputError" style="z-index: 2;" id="ano">
-						<!-- Título -->
-						<h3>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-									<li>Nos ayuda a ubicarlo cronológicamente.</li>
-									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-									<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
-									<% if (entidad=="hechos") { %>
-										<li>Si el hecho ocurrió durante más de un año, por favor poné el año de comienzo.</li>
-									<% } %>
-								</ul>
-							</i>
-						</div>
-						<%- include("CMP-Errores", {campo:"ano", display: true}) %>
-					</div>
-				</div>
-			<% } %>
 		</div>
 	</section>
 	<% if (entidad != "valores") { %>
 		<!-- Preguntas de Contexto -->
-		<section id="preguntas" class="borderTop OK ocultar">
+		<section id="preguntas" class="borderTop OK">
 			<!-- Título y Error/OK -->
 			<div class="flexRow margenBottomTitulo inputError">
 				<!-- Título -->
@@ -180,10 +156,39 @@
 				<%- include("CMP-errores", {campo:"RCLI", display: true}) %>
 			</div>
 			<% if (entidad == "personajes") { %>
-				<div id="personajes">
+				<div id="personaje">
+					<!-- Año de Nacimiento y Sexo -->
+					<div class="flexRowAlign spaceBetween">
+						<div class="flexRowAlign inputError">
+							<!-- Título -->
+							<label>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></label>
+							<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<!-- Ayuda -->
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick despl_click">
+									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
+									</ul>
+								</i>
+							</div>
+						</div>
+						<!-- Sexo -->
+						<div id="sexo_id" class="flexRowAlign cfc">
+							<label class="izquierda">Sexo</label>
+							<div class="flexRowAlign">
+								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
+								<label for="V">Varón</label>
+							</div>
+							<div class="flexRowAlign" style="margin-left: 10px;">
+								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
+								<label for="M">Mujer</label>
+							</div>
+						</div>
+					</div>
 					<!-- CFC/VPC -->
 					<div class="flexRowAlign altoFila cfc">
-						<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
+						<label class="izquierda">¿Miembro de la Iglesia Católica o relacionado con ella?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="catSI" type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
@@ -197,18 +202,6 @@
 					</div>
 					<!-- Sexo y Rol en la Iglesia -->
 					<div class="flexRowAlign altoFila spaceBetween">
-						<!-- Sexo -->
-						<div id="sexo_id" class="flexRowAlign ocultar cfc">
-							<label class="izquierda">Sexo</label>
-							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
-								<label for="V">Varón</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
-								<label for="M">Mujer</label>
-							</div>
-						</div>						
 						<!-- Rol en la Iglesia -->
 						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia</label>
@@ -284,6 +277,25 @@
 			<% } %>
 			<% if (entidad == "hechos") { %>
 				<div id="hechos">
+					<!-- Año de ocurrencia -->
+					<div class="flexRowAlign inputError">
+						<!-- Título -->
+						<label>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></label>
+						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+									<li>Nos ayuda a ubicarlo cronológicamente.</li>
+									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+									<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
+									<% if (entidad=="hechos") { %>
+										<li>Si el hecho ocurrió durante más de un año, por favor poné el año de comienzo.</li>
+									<% } %>
+								</ul>
+							</i>
+						</div>
+					</div>
 					<!-- Sólo CFC -->
 					<div class="flexRowAlign altoFila cfc">
 						<div class="flexRowAlign siNo">
