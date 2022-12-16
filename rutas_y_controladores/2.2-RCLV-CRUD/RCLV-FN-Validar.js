@@ -103,7 +103,7 @@ module.exports = {
 				typeof ano != "number"
 					? "No es un número válido"
 					: ano > new Date().getFullYear()
-					? "El año no debe superar el año actual"
+					? "El año no debe superar al actual"
 					: ano < -32768
 					? "El año debe ser mayor"
 					: "";

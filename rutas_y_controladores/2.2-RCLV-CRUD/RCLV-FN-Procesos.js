@@ -58,7 +58,8 @@ module.exports = {
 			let aux = RCLV[entidad].map((n) => {
 				let avatar = n.avatar.includes("/")
 					? n.avatar
-					: "/imagenes/" + (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
+					: "/imagenes/" +
+					  (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
 				return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsYaEnBD.push(...aux);
@@ -175,5 +176,24 @@ module.exports = {
 		}
 		// Fin
 		return rutaSalir;
+	},
+	ano: {
+		personajes: (datos) => {
+			// Variables
+			let {ano} = datos;
+			let cnt = {},
+				ama = {};
+			// Contemporáneos de Jesús
+			cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+			if (cnt.certeza) cnt.dato = ano <= 33; // Si además el año es menor o igual a 33, el resultado es true
+
+			// Aparición Mariana
+			ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+			if (ama.certeza) ama.dato = false;
+
+			// Fin
+			return {cnt, ama};
+		},
+		hechos: () => {},
 	},
 };
