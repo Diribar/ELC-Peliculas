@@ -379,45 +379,50 @@ window.addEventListener("load", async () => {
 			},
 		},
 	};
-	let startUp = async () => {
-		// Valida el nombre
-		if (v.nombre.value) await validacs.nombre.nombreApodo();
-		// Personaliza los días del mes
-		if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
-		if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-			// Valida las fechas
-			await validacs.fechas();
-			// Valida los duplicados
-			validacs.repetido();
-		}
-		// Valida el año
-		if (v.entidad != "valores" && v.ano.value) await validacs.RCLI.ano();
-		// Muestra el RCLI
-		if (v.entidad != "valores") await muestraRCLI[v.entidad](true);
-	};
-	let feedback = (OK, errores, ocultarOK) => {
-		// Definir las variables
-		let sectores = ["nombre", "fecha", "repetidos"];
-		if (!v.valores) sectores.push("RCLI");
-		// Muestra los íconos de Error y OK
-		sectores.forEach((sector, i) => {
-			// Íconos de OK
-			OK[sector] && !ocultarOK
-				? v.iconoOK[i].classList.remove("ocultar")
-				: v.iconoOK[i].classList.add("ocultar");
-			// Íconos de error
-			errores[sector]
-				? v.iconoError[i].classList.remove("ocultar")
-				: v.iconoError[i].classList.add("ocultar");
-			// Mensaje de error
-			v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
-		});
-		// Botón submit
-		let resultado = Object.values(OK);
-		let resultadoTrue = resultado.length ? resultado.every(true) : false;
-		resultadoTrue && resultado.length == sectores.length
-			? v.botonSubmit.classList.remove("inactivo")
-			: v.botonSubmit.classList.add("inactivo");
+	let feedback = {
+		startUp: async () => {
+			// Valida el nombre
+			if (v.nombre.value) await validacs.nombre.nombreApodo();
+			// Personaliza los días del mes
+			if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
+			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
+				// Valida las fechas
+				await validacs.fechas();
+				// Valida los duplicados
+				validacs.repetido();
+			}
+			// Valida el año
+			if (v.entidad != "valores" && v.ano.value) await validacs.RCLI.ano();
+			// Muestra el RCLI
+			if (v.entidad != "valores") await muestraRCLI[v.entidad](true);
+		},
+		muestraErrorOK: (OK, errores, ocultarOK) => {
+			// Definir las variables
+			let sectores = ["nombre", "fecha", "repetidos"];
+			if (!v.valores) sectores.push("RCLI");
+			// Muestra los íconos de Error y OK
+			sectores.forEach((sector, i) => {
+				// Íconos de OK
+				OK[sector] && !ocultarOK
+					? v.iconoOK[i].classList.remove("ocultar")
+					: v.iconoOK[i].classList.add("ocultar");
+				// Íconos de error
+				errores[sector]
+					? v.iconoError[i].classList.remove("ocultar")
+					: v.iconoError[i].classList.add("ocultar");
+				// Mensaje de error
+				v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
+			});
+		},
+		botonSubmit: () => {
+			// Botón submit
+			let resultado = Object.values(OK);
+			console.log(resultado);
+			let resultadoTrue = resultado.length ? resultado.every(true) : false;
+			resultadoTrue && resultado.length == sectores.length
+				? v.botonSubmit.classList.remove("inactivo")
+				: v.botonSubmit.classList.add("inactivo");
+		},
 	};
 
 	// Correcciones mientras se escribe
@@ -434,7 +439,7 @@ window.addEventListener("load", async () => {
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
-			feedback(OK, errores);
+			feedback.muestraErrorOK(OK, errores);
 		}
 		// Acciones si se cambia el año
 		if (campo == "ano") {
@@ -487,7 +492,7 @@ window.addEventListener("load", async () => {
 			// await muestraRCLI[v.entidad](false);
 		}
 		// Final de la rutina
-		feedback(OK, errores);
+		feedback.muestraErrorOK(OK, errores);
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
@@ -500,13 +505,14 @@ window.addEventListener("load", async () => {
 				// await muestraRCLI[v.entidad](true);
 			}
 			// Fin
-			feedback(OK, errores);
+			feedback.muestraErrorOK(OK, errores);
 		}
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
 	});
 
 	// Status inicial
-	// await startUp();
-	feedback(OK, errores);
+	// await feedback.startUp();
+	feedback.muestraErrorOK(OK, errores);
+	feedback.botonSubmit()
 });
