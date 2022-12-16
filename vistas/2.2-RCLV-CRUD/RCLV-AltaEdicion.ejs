@@ -85,34 +85,32 @@
 				</div>
 				<!-- Valores -->
 				<div id="valoresFecha" class="flexCol spaceBetween">
-					<!-- Meses -->
-					<div class="flexRowAlign altoFila">
-						<label style="width: 35px;">Mes</label>
-						<select name="mes_id" class="input">
-							<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
-							<% for (let mes of meses) { %>
-								<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
-									<%= mes.nombre %>
-								</option>
-							<% } %>
-						</select>
-						<a id="wiki" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
-						<a id="santopedia" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Santopedia.jpg" title="Consultar en Santopedia"></a>
-					</div>
-					<!-- Días -->
-					<div class="flexRowAlign altoFila">
-						<label style="width: 35px;">Día</label>
-						<select name="dia" class="input">
-							<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
-							<% for (let dia = 1; dia < 32; dia++) { %>
-								<option value="<%= dia %>" 
-									<% if (dia > 29) { %>class="ocultar"<% } %>
-									<% if (dataEntry.dia == dia) { %>selected<% } %>
-								>
-									<%= dia %>
-								</option>
-							<% } %>
-						</select>
+					<div class="flexRowAlign">
+						<!-- Meses -->
+						<div class="flexRowAlign altoFila">
+							<select name="mes_id" class="input">
+								<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
+								<% for (let mes of meses) { %>
+									<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+										<%= mes.nombre %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Días -->
+						<div class="flexRowAlign altoFila separarDiv">
+							<select name="dia" class="input">
+								<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
+								<% for (let dia = 1; dia < 32; dia++) { %>
+									<option value="<%= dia %>" 
+										<% if (dia > 29) { %>class="ocultar"<% } %>
+										<% if (dataEntry.dia == dia) { %>selected<% } %>
+									>
+										<%= dia %>
+									</option>
+								<% } %>
+							</select>
+						</div>
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
@@ -159,8 +157,8 @@
 				<div id="personaje">
 					<!-- Año de Nacimiento y Sexo -->
 					<div class="flexRowAlign spaceBetween">
+						<!-- Año de Nacimiento -->
 						<div class="flexRowAlign inputError">
-							<!-- Título -->
 							<label>Año de Nacimiento</label>
 							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
@@ -173,6 +171,23 @@
 								</i>
 							</div>
 						</div>
+						<!-- CFC/VPC -->
+						<div class="flexRowAlign altoFila cfc">
+							<label class="izquierda">¿Miembro de la Iglesia Católica?</label>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input id="catSI" type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
+									<label for="catSI">SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input id="catNO" type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
+									<label for="catNO">NO</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--  -->
+					<div class="flexRowAlign spaceBetween">
 						<!-- Sexo -->
 						<div id="sexo_id" class="flexRowAlign cfc">
 							<label class="izquierda">Sexo</label>
@@ -185,25 +200,8 @@
 								<label for="M">Mujer</label>
 							</div>
 						</div>
-					</div>
-					<!-- CFC/VPC -->
-					<div class="flexRowAlign altoFila cfc">
-						<label class="izquierda">¿Miembro de la Iglesia Católica o relacionado con ella?</label>
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input id="catSI" type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
-								<label for="catSI">SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input id="catNO" type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
-								<label for="catNO">NO</label>
-							</div>
-						</div>
-					</div>
-					<!-- Sexo y Rol en la Iglesia -->
-					<div class="flexRowAlign altoFila spaceBetween">
 						<!-- Rol en la Iglesia -->
-						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
+						<div id="sectorRol_iglesia" class="flexRowAlign oculta cfc">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia</label>
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected>Elejí una opción</option>
@@ -214,7 +212,7 @@
 						</div>
 					</div>
 					<!-- ¿En proceso de canonización? y status -->
-					<div class="flexRowAlign altoFila spaceBetween ocultar cfc">
+					<div class="flexRowAlign altoFila spaceBetween oculta cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
 							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
@@ -230,7 +228,7 @@
 							</div>
 						</div>
 						<!-- Status del proceso de canonización -->
-						<select name="proceso_id" class="ocultar RCLI cfc">
+						<select name="proceso_id" class="oculta RCLI cfc">
 							<option value="" selected>Elejí una opción</option>
 							<% for (let proceso of procs_canoniz) { %>
 								<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
@@ -238,7 +236,7 @@
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
-					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
+					<div id="sector_cnt" class="flexRowAlign altoFila oculta cfc">
 						<label class="izquierda">¿Es contemporáneo de Jesús?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
@@ -252,7 +250,7 @@
 						</div>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign altoFila spaceBetween ocultar cfc">
+					<div id="sector_ama" class="flexRowAlign altoFila spaceBetween oculta cfc">
 						<div class="flexRowAlign">
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
@@ -266,7 +264,7 @@
 								</div>
 							</div>
 						</div>
-						<select name="ap_mar_id" id="ap_mar_id" class="ocultar RCLI cfc">
+						<select name="ap_mar_id" id="ap_mar_id" class="oculta RCLI cfc">
 							<option value="" selected>Elejí una opción</option>
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
@@ -311,7 +309,7 @@
 						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
+					<div id="sector_ama" class="flexRowAlign altoFila ocultar cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">

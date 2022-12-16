@@ -53,9 +53,10 @@ window.addEventListener("load", async () => {
 		v.ama = document.querySelectorAll("input[name='ama']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
-		v.sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
+		v.sector_ama = document.querySelector("#preguntas #sector_ama");
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sectores.push("RCLI");
+		v.rutaConsecuenciasAno = "/rclv/api/consecuencias-de-ano/?entidad=";
 	}
 	// Valores para personajes
 	if (v.personajes) {
@@ -154,7 +155,6 @@ window.addEventListener("load", async () => {
 				let params = "&ano=" + ano;
 				errores.RCLI = await fetch(v.rutaValidacion + "ano" + params).then((n) => n.json());
 				OK.RCLI = !errores.RCLI;
-
 				// Fin
 				return;
 			},
@@ -309,31 +309,30 @@ window.addEventListener("load", async () => {
 				return [params, valor];
 			},
 			novedadesAno: async () => {
-				// Consecuencias si no hay errores y el año tiene valor
-				if (OK.ano && ano) {
-					// Contemporáneo de Jesús
-					if (ano < -50 || ano > 100) {
-						v.cnt[1].checked = true;
-						v.cnt[1].disabled = false;
-						v.cnt[0].disabled = true;
-						v.sector_cnt.classList.add("ocultarPorAno");
-					} else {
-						v.cnt[0].disabled = false;
-						v.sector_cnt.classList.remove("ocultarPorAno");
-					}
-					// Aparición Mariana
-					if (ano < 33) {
-						v.ama[1].checked = true;
-						v.ama[1].disabled = false;
-						v.ama[0].disabled = true;
-						v.sectorAp_mar.classList.add("ocultarPorAno");
-					} else {
-						v.ama[0].disabled = false;
-						v.sectorAp_mar.classList.remove("ocultarPorAno");
-					}
-					await mostrarRCLI[v.entidad](false);
-					v.preguntas.classList.remove("ocultar");
-				}
+				// Variable
+				let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+				// Consecuencias si el año tiene valor
+
+				let ruta = v.rutaConsecuenciasAno + v.entidad + "&ano=" + ano;
+				let {cnt, ama} = await fetch(ruta).then((n) => n.json());
+				// console.log(resultados, ano, ruta);
+
+				// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
+				if (cnt.certeza) {
+					// Oculta el sector
+					v.sector_cnt.classList.add("ocultarPorAno");
+					// Completa el dato de cnt
+					cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
+				} else v.sector_cnt.classList.remove("ocultarPorAno");
+
+				// Aparición Mariana - Situaciones en las que se oculta el sector
+				if (ama.certeza && !ama.dato) {
+					// Oculta el sector
+					v.sector_ama.classList.add("ocultarPorAno");
+					// Completa el dato de ama
+					v.ama[1].checked = true;
+				} else v.sector_ama.classList.remove("ocultarPorAno");
+
 				// Fin
 				return;
 			},
@@ -441,7 +440,7 @@ window.addEventListener("load", async () => {
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
-			feedback.muestraErrorOK(0,true);
+			feedback.muestraErrorOK(0, true);
 		}
 		// Acciones si se cambia el año
 		if (campo == "ano") {
@@ -483,13 +482,12 @@ window.addEventListener("load", async () => {
 			// 4.1. Acciones si se cambia el año
 			if (campo == "ano") {
 				await validacs.RCLI.ano();
-				console.log(OK.RCLI);
 				if (OK.RCLI) procesos.RCLI.novedadesAno();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
+			// if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
 			// 4.3. Revisa los errores en RCLI
-			await validacs.RCLI[v.entidad](false);
+			// await validacs.RCLI[v.entidad](false);
 			// 4.4. Oculta y muestra los campos que correspondan
 			// await muestraRCLI[v.entidad](false);
 		}
@@ -497,22 +495,22 @@ window.addEventListener("load", async () => {
 		feedback.muestraErroresOK();
 		feedback.botonSubmit();
 	});
-	v.botonSubmit.addEventListener("click", async (e) => {
-		// Acciones si el botón está inactivo
-		if (v.botonSubmit.classList.contains("inactivo")) {
-			await validacs.nombre.nombreApodo();
-			await validacs.fechas();
-			validacs.repetido();
-			if (!v.valores) {
-				await validacs.RCLI[v.entidad]();
-				// await muestraRCLI[v.entidad](true);
-			}
-			// Fin
-			feedback.muestraErroresOK();
-		}
-		// Si el botón está activo, función 'submit'
-		else v.dataEntry.submit();
-	});
+	// v.botonSubmit.addEventListener("click", async (e) => {
+	// 	// Acciones si el botón está inactivo
+	// 	if (v.botonSubmit.classList.contains("inactivo")) {
+	// 		await validacs.nombre.nombreApodo();
+	// 		await validacs.fechas();
+	// 		validacs.repetido();
+	// 		if (!v.valores) {
+	// 			await validacs.RCLI[v.entidad]();
+	// 			// await muestraRCLI[v.entidad](true);
+	// 		}
+	// 		// Fin
+	// 		feedback.muestraErroresOK();
+	// 	}
+	// 	// Si el botón está activo, función 'submit'
+	// 	else v.dataEntry.submit();
+	// });
 
 	// Status inicial
 	// await feedback.startUp();

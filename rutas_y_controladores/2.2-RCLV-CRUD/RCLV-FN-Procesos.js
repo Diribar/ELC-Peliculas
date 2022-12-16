@@ -183,13 +183,16 @@ module.exports = {
 			let {ano} = datos;
 			let cnt = {},
 				ama = {};
-			// Contemporáneos de Jesús
-			cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-			if (cnt.certeza) cnt.dato = ano <= 33; // Si además el año es menor o igual a 33, el resultado es true
 
-			// Aparición Mariana
-			ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-			if (ama.certeza) ama.dato = false;
+			if (ano != "") {
+				// Contemporáneos de Jesús
+				cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (cnt.certeza) cnt.dato = ano <= 33; // Si además el año es menor o igual a 33, el resultado es true
+
+				// Aparición Mariana
+				ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+				if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
+			} else cnt.certeza = ama.certeza = false;
 
 			// Fin
 			return {cnt, ama};
