@@ -1,12 +1,15 @@
-Fede: RRII "para adelante"
+RRII "para adelante"
 	- Determinar sitios amigos y relación con ellos
 	- Determinar fuentes de links que respetan copyright
 	- Imagen institucional a exhibir según la época del año
-Leo: Revisión de Entidades
+
+Experiencia de usuario
 	- Revisión de Entidades 
-Matías: RRII "para atrás"
+
+RRII "para atrás"
 	- ABM de Links
 	- Relación con Distribuidoras de Pelis
-Diego:
+
+Innovación
 	- Revisión de Usuarios
 	- Revisión de Entidades

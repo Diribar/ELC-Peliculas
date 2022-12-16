@@ -49,6 +49,8 @@ window.addEventListener("load", async () => {
 		v.cfc = document.querySelectorAll("#preguntas .cfc");
 		v.preguntas = document.querySelector("#dataEntry #preguntas");
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
+		v.anoIconoOK = document.querySelector("#dataEntry #ano .fa-circle-check");
+		v.anoInput = document.querySelector("#dataEntry #ano .input");
 		v.ama = document.querySelectorAll("input[name='ama']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
@@ -285,6 +287,10 @@ window.addEventListener("load", async () => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
 		if (!v.valores) sectores.push("ano", "RCLI");
+		// OKfecha
+		v.anoInput.value
+			? v.anoIconoOK.classList.remove("ocultarOKano")
+			: v.anoIconoOK.classList.add("ocultarOKano");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
@@ -338,6 +344,10 @@ window.addEventListener("load", async () => {
 			v[campo].value = v[campo].value.replace(/[^-\d]/g, "");
 			// Impide guiones en el medio
 			if (v[campo].value.lastIndexOf("-") > 0) v[campo].value = v[campo].value.replace(/[-]/g, "");
+			// OKfecha
+			v.anoInput.value
+				? v.anoIconoOK.classList.remove("ocultarOKano")
+				: v.anoIconoOK.classList.add("ocultarOKano");
 		}
 	});
 	// Acciones cuando se  confirma el input

@@ -147,7 +147,7 @@
 			<!-- Año de nacimiento/ocurrencia -->
 			<% if (entidad != "valores") { %>
 				<div class="borderTop flexRow">
-					<div class="flexRowAlign inputError" style="z-index: 2;">
+					<div class="flexRowAlign inputError" style="z-index: 2;" id="ano">
 						<!-- Título -->
 						<h3>Año de <%- entidad=="personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">

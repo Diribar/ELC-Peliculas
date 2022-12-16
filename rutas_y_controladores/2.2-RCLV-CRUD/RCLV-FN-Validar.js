@@ -76,6 +76,8 @@ module.exports = {
 		for (let campo of campos) {
 			if (!mensaje) mensaje = mientrasEscribe(campo);
 			if (!mensaje && entidad) mensaje = await alTerminar(campo);
+			if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
+			if (mensaje) break;
 		}
 
 		// Fin
