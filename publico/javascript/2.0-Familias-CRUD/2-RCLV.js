@@ -445,8 +445,9 @@ window.addEventListener("load", async () => {
 		};
 		// Variables
 		let campo = e.target.name;
-		// Campos para todos los RCLV
+		// Acciones si se cambia el nombre
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) await validaciones.nombreApodo();
+		// Acciones si se cambia la fecha
 		if (campo == "mes_id") muestraLosDiasDelMes();
 		if (campo == "desconocida" && v.desconocida.checked) {
 			limpiezaDeFechaRepetidos();
@@ -460,8 +461,10 @@ window.addEventListener("load", async () => {
 				validaciones.repetido();
 			}
 		}
+		// Acciones si se cambia repetido
 		if (campo == "repetido") validaciones.repetido();
-		if (v.entidad != "valores" && campo == "ano") await validaciones.ano();
+		// Acciones si se cambia el año
+		if (campo == "ano") await validaciones.ano();
 		// Campos RCLI
 		if (v.personajes && campo == "sexo_id") consecsDeNovsEnElSexoElegido();
 		if (!v.valores && v.camposRCLI.includes(campo)) await muestraRCLI[v.entidad](false);
