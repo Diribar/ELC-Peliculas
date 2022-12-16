@@ -24,6 +24,7 @@ window.addEventListener("load", async () => {
 		dia: document.querySelector("#dataEntry select[name='dia']"),
 		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
+		sectores: ["nombre", "fecha", "repetidos"],
 		camposRCLI: (() => {
 			// Obtiene todos los campos RCLI
 			let campos = document.querySelectorAll("#dataEntry #preguntas .RCLI");
@@ -54,6 +55,7 @@ window.addEventListener("load", async () => {
 		// Para ocultar
 		v.sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
+		v.sectores.push("RCLI");
 	}
 	// Valores para personajes
 	if (v.personajes) {
@@ -93,6 +95,7 @@ window.addEventListener("load", async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + v.nombre.value;
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				// Si hay errores, cambia el OK a false
 				if (errores.nombre) OK.nombre = false;
 				// Fin
 				return;
@@ -396,30 +399,29 @@ window.addEventListener("load", async () => {
 			// Muestra el RCLI
 			if (v.entidad != "valores") await muestraRCLI[v.entidad](true);
 		},
-		muestraErrorOK: (OK, errores, ocultarOK) => {
-			// Definir las variables
-			let sectores = ["nombre", "fecha", "repetidos"];
-			if (!v.valores) sectores.push("RCLI");
+		muestraErrorOK: (i, ocultarOK) => {
+			// Íconos de OK
+			OK[v.sectores[i]] && !ocultarOK
+				? v.iconoOK[i].classList.remove("ocultar")
+				: v.iconoOK[i].classList.add("ocultar");
+			// Íconos de error
+			errores[v.sectores[i]]
+				? v.iconoError[i].classList.remove("ocultar")
+				: v.iconoError[i].classList.add("ocultar");
+			// Mensaje de error
+			v.mensajeError[i].innerHTML = errores[v.sectores[i]] ? errores[v.sectores[i]] : "";
+		},
+		muestraErroresOK: function () {
 			// Muestra los íconos de Error y OK
-			sectores.forEach((sector, i) => {
-				// Íconos de OK
-				OK[sector] && !ocultarOK
-					? v.iconoOK[i].classList.remove("ocultar")
-					: v.iconoOK[i].classList.add("ocultar");
-				// Íconos de error
-				errores[sector]
-					? v.iconoError[i].classList.remove("ocultar")
-					: v.iconoError[i].classList.add("ocultar");
-				// Mensaje de error
-				v.mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
+			v.sectores.forEach((sector, i) => {
+				this.muestraErrorOK(i);
 			});
 		},
 		botonSubmit: () => {
 			// Botón submit
 			let resultado = Object.values(OK);
-			console.log(resultado);
-			let resultadoTrue = resultado.length ? resultado.every(true) : false;
-			resultadoTrue && resultado.length == sectores.length
+			let resultadoTrue = resultado.length ? resultado.every((n) => n == true) : false;
+			resultadoTrue && resultado.length == v.sectores.length
 				? v.botonSubmit.classList.remove("inactivo")
 				: v.botonSubmit.classList.add("inactivo");
 		},
@@ -439,7 +441,7 @@ window.addEventListener("load", async () => {
 			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
-			feedback.muestraErrorOK(OK, errores);
+			feedback.muestraErrorOK(0,true);
 		}
 		// Acciones si se cambia el año
 		if (campo == "ano") {
@@ -492,7 +494,8 @@ window.addEventListener("load", async () => {
 			// await muestraRCLI[v.entidad](false);
 		}
 		// Final de la rutina
-		feedback.muestraErrorOK(OK, errores);
+		feedback.muestraErroresOK();
+		feedback.botonSubmit();
 	});
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
@@ -505,7 +508,7 @@ window.addEventListener("load", async () => {
 				// await muestraRCLI[v.entidad](true);
 			}
 			// Fin
-			feedback.muestraErrorOK(OK, errores);
+			feedback.muestraErroresOK();
 		}
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
@@ -513,6 +516,6 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	// await feedback.startUp();
-	feedback.muestraErrorOK(OK, errores);
-	feedback.botonSubmit()
+	feedback.muestraErroresOK();
+	feedback.botonSubmit();
 });
