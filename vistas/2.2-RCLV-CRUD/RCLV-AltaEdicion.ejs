@@ -203,7 +203,7 @@
 							</div>
 						</div>
 						<!-- Rol en la Iglesia -->
-						<div id="sectorRol_iglesia" class="flexRowAlign oculta cfc">
+						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia</label>
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected>Elejí una opción</option>
@@ -214,7 +214,7 @@
 						</div>
 					</div>
 					<!-- ¿En proceso de canonización? y status -->
-					<div class="flexRowAlign altoFila spaceBetween oculta cfc">
+					<div class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
 							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
@@ -230,7 +230,7 @@
 							</div>
 						</div>
 						<!-- Status del proceso de canonización -->
-						<select name="proceso_id" class="oculta RCLI cfc">
+						<select name="proceso_id" class="ocultar RCLI cfc">
 							<option value="" selected>Elejí una opción</option>
 							<% for (let proceso of procs_canoniz) { %>
 								<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
@@ -238,7 +238,7 @@
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
-					<div id="sector_cnt" class="flexRowAlign altoFila oculta cfc">
+					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
 						<label class="izquierda">¿Es contemporáneo de Jesús?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
@@ -252,7 +252,7 @@
 						</div>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="sector_ama" class="flexRowAlign altoFila spaceBetween oculta cfc">
+					<div id="sector_ama" class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<div class="flexRowAlign">
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
@@ -266,7 +266,7 @@
 								</div>
 							</div>
 						</div>
-						<select name="ap_mar_id" id="ap_mar_id" class="oculta RCLI cfc">
+						<select name="ap_mar_id" id="ap_mar_id" class="ocultar RCLI cfc">
 							<option value="" selected>Elejí una opción</option>
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>

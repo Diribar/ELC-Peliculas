@@ -344,13 +344,13 @@ window.addEventListener("load", async () => {
 					let valor = this.obtieneValor(campo);
 
 					// Particularidad para 'categoria_id'
-					if (campo == "categoria_id" ) {
-						if (valor != "CFC") {
+					if (campo == "categoria_id") {
+						if (!this.obtieneValor("sexo_id") || valor != "CFC") {
 							this.ocultar(indice + 2);
 							break;
 						} else {
 							v.cfc[indice + 2].classList.remove("ocultar");
-							continue
+							continue;
 						}
 					}
 					// Saltear
@@ -373,9 +373,9 @@ window.addEventListener("load", async () => {
 					// Caso genérico
 					if (valor) v.cfc[indice + 1].classList.remove("ocultar");
 					else {
-						if (saltear) continue
+						if (saltear) continue;
 						this.ocultar(indice + 1);
-						break
+						break;
 					}
 				}
 			},
