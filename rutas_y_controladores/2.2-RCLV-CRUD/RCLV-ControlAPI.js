@@ -1,6 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
@@ -16,5 +17,13 @@ module.exports = {
 	valida: async (req, res) => {
 		let mensaje = await valida[req.query.funcion](req.query);
 		return res.json(mensaje);
+	},
+	consecuenciasAno: (req, res) => {
+		// Variables
+		let {entidad} = req.query;
+		// Obtiene los resultados
+		let resultados = procesos.ano[entidad](req.query);
+		// Fin
+		return res.json(resultados);
 	},
 };
