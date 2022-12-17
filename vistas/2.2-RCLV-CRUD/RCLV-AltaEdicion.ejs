@@ -280,10 +280,10 @@
 			<% if (entidad == "hechos") { %>
 				<div id="hechos">
 					<!-- Año de ocurrencia -->
-					<div class="flexRowAlign spaceBetween">
+					<div class="flexRowAlign spaceBetween cfc">
 						<div class="flexRowAlign inputError">
 							<label>Año de Ocurrencia</label>
-							<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<div class="ayuda">
 								<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -314,7 +314,7 @@
 						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
 					</div>
 					<!-- Hecho JSS -->
-					<div class="flexRowAlign altoFila cfc">
+					<div id="sector_jss" class="flexRowAlign altoFila cfc ocultar">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="jssSI" type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
@@ -325,10 +325,10 @@
 								<label for="jssNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Ocurrió durante la vida de Jesús?</label>
+						<label class="derecha">¿Ocurrió también durante la vida de Jesús?</label>
 					</div>
 					<!-- Hecho CNT -->
-					<div class="flexRowAlign altoFila cfc">
+					<div id="sector_cnt" class="flexRowAlign altoFila cfc ocultar">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
@@ -339,10 +339,10 @@
 								<label for="cntNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Ocurrió durante la vida de los apóstoles?</label>
+						<label class="derecha">¿Ocurrió también durante la vida de los apóstoles?</label>
 					</div>
 					<!-- Hecho No CNT -->
-					<div class="flexRowAlign altoFila cfc">
+					<div id="sector_ncn" class="flexRowAlign altoFila cfc ocultar">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="ncnSI" type="radio" name="ncn" value="1" <% if (dataEntry.ncn==1) { %>checked<% } %> class="RCLI">
@@ -356,7 +356,7 @@
 						<label class="derecha">¿Ocurrió también fuera de la vida de los Apóstoles?</label>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="sector_ama" class="flexRowAlign altoFila ocultar cfc">
+					<div id="sector_ama" class="flexRowAlign altoFila cfc ocultar">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="amaSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">
