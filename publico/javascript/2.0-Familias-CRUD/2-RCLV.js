@@ -258,7 +258,6 @@ window.addEventListener("load", async () => {
 			obtieneValor: (campo) => {
 				// Obtiene el inputElegido
 				let input = v[campo];
-				// console.log(input[1]);
 				let valor =
 					input[0] && input[0].localName == "input"
 						? input[0].checked
