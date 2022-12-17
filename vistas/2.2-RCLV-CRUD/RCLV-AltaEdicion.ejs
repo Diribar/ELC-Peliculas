@@ -112,7 +112,9 @@
 							</select>
 						</div>
 						<a id="wiki" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia"></a>
-						<a id="santopedia" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Santopedia.jpg" title="Consultar en Santopedia"></a>
+						<% if (entidad == "personajes") { %>
+							<a id="santopedia" target="blank" class="links ocultar" tabindex="-1"><img src="/imagenes/0-Logos/BD-Santopedia.jpg" title="Consultar en Santopedia"></a>
+						<% } %>
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
@@ -278,22 +280,23 @@
 			<% if (entidad == "hechos") { %>
 				<div id="hechos">
 					<!-- Año de ocurrencia -->
-					<div class="flexRowAlign inputError">
-						<!-- Título -->
-						<label>Año de Ocurrencia</label>
-						<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-									<li>Nos ayuda a ubicarlo cronológicamente.</li>
-									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-									<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
-									<% if (entidad=="hechos") { %>
-										<li>Si el hecho ocurrió durante más de un año, por favor poné el año de comienzo.</li>
-									<% } %>
-								</ul>
-							</i>
+					<div class="flexRowAlign spaceBetween">
+						<div class="flexRowAlign inputError">
+							<label>Año de Ocurrencia</label>
+							<input type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<!-- Ayuda -->
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick despl_click">
+									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+										<li>Nos ayuda a ubicarlo cronológicamente.</li>
+										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
+										<% if (entidad=="hechos") { %>
+											<li>Si el hecho ocurrió durante más de un año, por favor poné el año de comienzo.</li>
+										<% } %>
+									</ul>
+								</i>
+							</div>
 						</div>
 					</div>
 					<!-- Sólo CFC -->
@@ -310,23 +313,61 @@
 						</div>
 						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
 					</div>
+					<!-- Hecho JSS -->
+					<div class="flexRowAlign altoFila cfc">
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign">
+								<input id="jssSI" type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
+								<label for="jssSI">SI</label>
+							</div>
+							<div class="flexRowAlign">
+								<input id="jssNO" type="radio" name="jss" value="0" <% if (DE&&dataEntry.jss==0) { %>checked<% } %> class="RCLI">
+								<label for="jssNO">NO</label>
+							</div>
+						</div>
+						<label class="derecha">¿Ocurrió durante la vida de Jesús?</label>
+					</div>
+					<!-- Hecho CNT -->
+					<div class="flexRowAlign altoFila cfc">
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign">
+								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
+								<label for="cntSI">SI</label>
+							</div>
+							<div class="flexRowAlign">
+								<input id="cntNO" type="radio" name="cnt" value="0" <% if (DE&&dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
+								<label for="cntNO">NO</label>
+							</div>
+						</div>
+						<label class="derecha">¿Ocurrió durante la vida de los apóstoles?</label>
+					</div>
+					<!-- Hecho No CNT -->
+					<div class="flexRowAlign altoFila cfc">
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign">
+								<input id="ncnSI" type="radio" name="ncn" value="1" <% if (dataEntry.ncn==1) { %>checked<% } %> class="RCLI">
+								<label for="ncnSI">SI</label>
+							</div>
+							<div class="flexRowAlign">
+								<input id="ncnNO" type="radio" name="ncn" value="0" <% if (DE&&dataEntry.ncn==0) { %>checked<% } %> class="RCLI">
+								<label for="ncnNO">NO</label>
+							</div>
+						</div>
+						<label class="derecha">¿Ocurrió también fuera de la vida de los Apóstoles?</label>
+					</div>
 					<!-- Aparición Mariana -->
 					<div id="sector_ama" class="flexRowAlign altoFila ocultar cfc">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">
-								<label for="ap_marSI">SI</label>
+								<input id="amaSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1) { %>checked<% } %> class="RCLI">
+								<label for="amaSI">SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input id="ap_marNO" type="radio" name="ama" value="0" <% if (DE&&dataEntry.ama==0) { %>checked<% } %> class="RCLI">
-								<label for="ap_marNO">NO</label>
+								<input id="amaNO" type="radio" name="ama" value="0" <% if (DE&&dataEntry.ama==0) { %>checked<% } %> class="RCLI">
+								<label for="amaNO">NO</label>
 							</div>
 						</div>
 						<label class="derecha">¿Es una aparición mariana?</label>
-					</div>
-					<!-- Ocurrió durante la vida de Jesús -->
-					<div>
-
 					</div>
 				</div>
 			<% } %>

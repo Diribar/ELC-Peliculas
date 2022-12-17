@@ -133,16 +133,14 @@ module.exports = {
 		return respuesta;
 	},
 	hechos: (datos) => {
-		let respuesta;
-		if (false) {
-		}
+		let respuesta=""
+		if (false) return ""
 		// Respuestas
 		else if (!datos.solo_cfc)
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.ama) respuesta = "Necesitamos saber si es una aparición mariana";
-		else respuesta = "";
 
 		// Fin
 		return respuesta;

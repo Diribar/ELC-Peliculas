@@ -144,7 +144,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			consolidado: async (mostrarErrores) => {
+			consolidado: async (muestraErrores) => {
 				// Variables
 				let params = "&entidad=" + v.entidad;
 				// Obtiene el valor de cada campo
@@ -154,7 +154,7 @@ window.addEventListener("load", async () => {
 				errores.RCLI = await fetch(v.rutaValidacion + v.entidad + params).then((n) => n.json());
 				OK.RCLI = !errores.RCLI;
 				// Oculta los errores
-				if (!mostrarErrores) errores.RCLI = "";
+				if (!muestraErrores) errores.RCLI = "";
 
 				// Fin
 				return;
@@ -387,6 +387,7 @@ window.addEventListener("load", async () => {
 			if (v.nombre.value) await validacs.nombre.nombreApodo();
 			// Personaliza los días del mes
 			if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
+			// Valida los días
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
 				// Valida las fechas
 				await validacs.fechas();
@@ -394,9 +395,10 @@ window.addEventListener("load", async () => {
 				validacs.repetido();
 			}
 			// Valida el año
-			if (v.entidad != "valores" && v.ano.value) await validacs.RCLI.ano();
+			if (v.entidad != "valores") await validacs.RCLI.consolidado();
 			// Muestra el RCLI
-			if (v.entidad != "valores") await muestraRCLI[v.entidad](true);
+			console.log(v.entidad);
+			if (v.entidad != "valores") await procesos.RCLI["muestraOculta_" + v.entidad]();
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -502,8 +504,8 @@ window.addEventListener("load", async () => {
 			await validacs.fechas();
 			validacs.repetido();
 			if (!v.valores) {
-				await validacs.RCLI.consolidado();
-				// await muestraRCLI[v.entidad](true);
+				await validacs.RCLI.consolidado(true);
+				await procesos.RCLI["muestraOculta_" + v.entidad]();
 			}
 			// Fin
 			feedback.muestraErroresOK();
@@ -513,7 +515,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	// await feedback.startUp();
+	await feedback.startUp();
 	feedback.muestraErroresOK();
 	feedback.botonSubmit();
 });
