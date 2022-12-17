@@ -361,9 +361,7 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				jss: async () => {
-
-				},
+				jss: async () => {},
 				cnt: async () => {},
 			},
 			muestraOculta: {

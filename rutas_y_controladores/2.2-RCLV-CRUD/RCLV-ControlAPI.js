@@ -22,7 +22,7 @@ module.exports = {
 		// Variables
 		let {entidad} = req.query;
 		// Obtiene los resultados
-		let resultados = procesos.ano[entidad](req.query);
+		let resultados = procesos[entidad].ano(req.query);
 		// Fin
 		return res.json(resultados);
 	},

@@ -177,8 +177,8 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	ano: {
-		personajes: (datos) => {
+	personajes: {
+		ano: (datos) => {
 			// Variables
 			let {ano} = datos;
 			let cnt = {},
@@ -199,7 +199,9 @@ module.exports = {
 			// Fin
 			return {cnt, ama};
 		},
-		hechos: (datos) => {
+	},
+	hechos: {
+		ano: (datos) => {
 			// Variables
 			let {ano} = datos;
 			let jss = {},
