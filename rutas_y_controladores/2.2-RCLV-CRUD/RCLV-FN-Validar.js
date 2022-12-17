@@ -111,12 +111,12 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	RCLI_personaje: function (datos) {
+	personajes: function (datos) {
 		let respuesta = this.ano(datos);
 		if (respuesta) return respuesta;
 		// Respuesta
-		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
+		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (datos.categoria_id == "VPC") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
@@ -132,7 +132,7 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	RCLI_hecho: (datos) => {
+	hechos: (datos) => {
 		let respuesta;
 		if (false) {
 		}
