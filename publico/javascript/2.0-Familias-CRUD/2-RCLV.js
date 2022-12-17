@@ -255,17 +255,6 @@ window.addEventListener("load", async () => {
 			},
 		},
 		RCLI: {
-			obtieneValor: (campo) => {
-				// Obtiene el inputElegido
-				let input = v[campo];
-				return input[0] && input[0].localName == "input"
-					? input[0].checked
-						? input[0].value
-						: input[1].checked
-						? input[1].value
-						: ""
-					: input.value;
-			},
 			novs_personajes: {
 				ano: async () => {
 					// Variable
@@ -385,15 +374,6 @@ window.addEventListener("load", async () => {
 				obtieneValor: (campo) => {
 					// Obtiene el inputElegido
 					let input = v[campo];
-					// console.log(input[1]);
-					let valor =
-						input[0] && input[0].localName == "input"
-							? input[0].checked
-								? input[0].value
-								: input[1].checked
-								? input[1].value
-								: ""
-							: input.value;
 					return input[0] && input[0].localName == "input"
 						? input[0].checked
 							? input[0].value
