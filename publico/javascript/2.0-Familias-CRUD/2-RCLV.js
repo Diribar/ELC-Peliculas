@@ -275,15 +275,14 @@ window.addEventListener("load", async () => {
 						: ""
 					: input.value;
 			},
-			novedadesAno: {
-				personajes: async () => {
+			novs_personajes: {
+				ano: async () => {
 					// Variable
 					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
 
 					// Lectura de 'procesos'
 					let ruta = v.rutaConsecuenciasAno + "personajes&ano=" + ano;
 					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
-					// console.log(resultados, ano, ruta);
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
@@ -304,7 +303,57 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				hechos: async () => {
+				sexo: () => {
+					// Definir variables
+					let sexoValor = v.sexo_id[0].checked
+						? v.sexo_id[0].value
+						: v.sexo_id[1].checked
+						? v.sexo_id[1].value
+						: "";
+					if (sexoValor) {
+						// Proceso de canonización
+						// 1. Actualiza las opciones
+						let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
+						opciones_proc.forEach((n) =>
+							n.value.length < 2 || n.value[2] != sexoValor
+								? n.classList.add("ocultar")
+								: n.classList.remove("ocultar")
+						);
+						// 2. Preserva la opción elegida, cambiándole el sexo
+						if (
+							v.proceso_id.value &&
+							v.proceso_id.value.length != 2 &&
+							v.proceso_id.value[2] != sexoValor
+						)
+							v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
+						// 3. Actualiza el sexo de la pregunta
+						let letraActual = sexoValor == "V" ? "anto" : "anta";
+						let letraAnterior = sexoValor == "V" ? "anta" : "anto";
+						if (v.santosanta.innerHTML.includes(letraAnterior))
+							v.santosanta.innerHTML = v.santosanta.innerHTML.replace(
+								letraAnterior,
+								letraActual
+							);
+						// Rol en la Iglesia
+						// 1. Actualiza las opciones
+						let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+						opciones_rol.forEach((n) =>
+							n.value.length < 2 || n.value[2] != sexoValor
+								? n.classList.add("ocultar")
+								: n.classList.remove("ocultar")
+						);
+						// 2. Preserva la opción elegida, cambiándole el sexo
+						let rol_iglesia = v.rol_iglesia_id.value;
+						if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
+							v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
+						// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
+						if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
+					}
+					return;
+				},
+			},
+			novs_hechos: {
+				ano: async () => {
 					// Función
 					let mostrarOcultar = (datos, campo) => {
 						// Situaciones en las que se oculta el sector
@@ -332,51 +381,10 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-			},
-			novedadesSexo: () => {
-				// Definir variables
-				let sexoValor = v.sexo_id[0].checked
-					? v.sexo_id[0].value
-					: v.sexo_id[1].checked
-					? v.sexo_id[1].value
-					: "";
-				if (sexoValor) {
-					// Proceso de canonización
-					// 1. Actualiza las opciones
-					let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
-					opciones_proc.forEach((n) =>
-						n.value.length < 2 || n.value[2] != sexoValor
-							? n.classList.add("ocultar")
-							: n.classList.remove("ocultar")
-					);
-					// 2. Preserva la opción elegida, cambiándole el sexo
-					if (
-						v.proceso_id.value &&
-						v.proceso_id.value.length != 2 &&
-						v.proceso_id.value[2] != sexoValor
-					)
-						v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
-					// 3. Actualiza el sexo de la pregunta
-					let letraActual = sexoValor == "V" ? "anto" : "anta";
-					let letraAnterior = sexoValor == "V" ? "anta" : "anto";
-					if (v.santosanta.innerHTML.includes(letraAnterior))
-						v.santosanta.innerHTML = v.santosanta.innerHTML.replace(letraAnterior, letraActual);
-					// Rol en la Iglesia
-					// 1. Actualiza las opciones
-					let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-					opciones_rol.forEach((n) =>
-						n.value.length < 2 || n.value[2] != sexoValor
-							? n.classList.add("ocultar")
-							: n.classList.remove("ocultar")
-					);
-					// 2. Preserva la opción elegida, cambiándole el sexo
-					let rol_iglesia = v.rol_iglesia_id.value;
-					if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
-						v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
-					// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
-					if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
-				}
-				return;
+				jss: async () => {
+
+				},
+				cnt: async () => {},
 			},
 			muestraOculta: {
 				ocultar: (indice) => {
@@ -402,7 +410,7 @@ window.addEventListener("load", async () => {
 							? input[1].value
 							: ""
 						: input.value;
-				},	
+				},
 				personajes: function () {
 					// Variables
 					let saltear = true;
@@ -580,13 +588,15 @@ window.addEventListener("load", async () => {
 			// 4.1. Acciones si se cambia el año
 			if (campo == "ano") {
 				await validacs.RCLI.ano();
-				if (OK.RCLI) procesos.RCLI.novedadesAno[v.entidad]();
+				if (OK.RCLI) procesos.RCLI["novs_" + v.entidad].ano();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
-			// 4.3. Revisa los errores en RCLI
+			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
+			// 4.3. Acciones si se cambia 'jss'
+
+			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();
-			// 4.4. Muestra y oculta los campos que correspondan
+			// Muestra y oculta los campos que correspondan
 			procesos.RCLI.muestraOculta[v.entidad]();
 		}
 		// Final de la rutina
