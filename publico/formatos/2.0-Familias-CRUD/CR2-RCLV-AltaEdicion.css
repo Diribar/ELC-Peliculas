@@ -45,9 +45,9 @@
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
 #dataEntry #preguntas .ocultaPorAno, 
 #dataEntry #preguntas .ocultaPorRCLI, 
-#dataEntry #preguntas .ocultaPorJSS,
-#dataEntry #preguntas .ocultaPorNoCFC,
-#dataEntry #preguntas .ocultaPorCNT {display: none;}
+#dataEntry #preguntas .ocultaPorJSS, 
+#dataEntry #preguntas .ocultaPorCNT, 
+#dataEntry #preguntas .ocultaPorNoCFC {display: none;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
 #dataEntry #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
