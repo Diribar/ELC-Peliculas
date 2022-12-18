@@ -175,7 +175,6 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
 			: datosPers.avatar_url;
 		// 6. Render del formulario
-		return res.send([camposDP.find(n => n.nombre == "hecho_id"), datosPers]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,

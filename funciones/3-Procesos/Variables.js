@@ -169,7 +169,7 @@ module.exports = {
 	],
 	camposDP: async (userID) => {
 		// Variables
-		const registrosRCLV = await (async (userID) => {
+		const registrosRCLV = await (async () => {
 			// Variables
 			let registros = {};
 			let entidades = ["personajes", "hechos", "valores"];
