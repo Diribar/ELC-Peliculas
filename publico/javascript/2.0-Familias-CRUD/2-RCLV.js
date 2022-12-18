@@ -52,7 +52,7 @@ window.addEventListener("load", async () => {
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
 		v.sectores.push("RCLI");
-		v.rutaConsecuenciasAno = "/rclv/api/consecuencias-de-ano/?entidad=";
+		v.rutaConsecuencias = "/rclv/api/consecuencias/?entidad=";
 	}
 	// Valores para personajes
 	if (v.personajes) {
@@ -158,7 +158,7 @@ window.addEventListener("load", async () => {
 				let params = "&entidad=" + v.entidad;
 				// Obtiene el valor de cada campo
 				for (let campo of v.camposRCLI)
-					params += "&" + campo + "=" + procesos.RCLI.obtieneValor(campo);
+					params += "&" + campo + "=" + procesos.RCLI.muestraOculta.obtieneValor(campo);
 				// OK y Errores
 				errores.RCLI = await fetch(v.rutaValidacion + v.entidad + params).then((n) => n.json());
 				OK.RCLI = !errores.RCLI;
@@ -258,10 +258,10 @@ window.addEventListener("load", async () => {
 			novs_personajes: {
 				ano: async () => {
 					// Variable
-					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+					let dato = v.ano.value;
 
 					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuenciasAno + "personajes&ano=" + ano;
+					let ruta = v.rutaConsecuencias + "personajes&campo=ano&dato=" + dato;
 					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
@@ -284,12 +284,13 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				sexo: () => {
-					// Definir variables
+					// Variables
 					let sexoValor = v.sexo_id[0].checked
 						? v.sexo_id[0].value
 						: v.sexo_id[1].checked
 						? v.sexo_id[1].value
 						: "";
+					// Consecuencias
 					if (sexoValor) {
 						// Proceso de canonización
 						// 1. Actualiza las opciones
@@ -346,10 +347,10 @@ window.addEventListener("load", async () => {
 					};
 
 					// Variable
-					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+					let dato = v.ano.value;
 
 					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuenciasAno + "hechos&ano=" + ano;
+					let ruta = v.rutaConsecuencias + "hechos&campo=ano&dato=" + dato;
 					let {jss, cnt, ncn, ama} = await fetch(ruta).then((n) => n.json());
 
 					// Mostrar u ocultar sectores
@@ -362,9 +363,68 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				jss: async () => {
+					// Variable
+					let dato = v.jss[0].checked
+						? v.jss[0].value
+						: v.jss[1].checked
+						? v.jss[1].value
+						: "";
 
+					// Lectura de 'procesos'
+					let ruta = v.rutaConsecuencias + "hechos&campo=jss&dato=" + dato;
+					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
+
+					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
+					if (cnt.certeza) {
+						// Oculta el sector
+						v.sector_cnt.classList.add("ocultaPorJSS");
+						// Completa el dato de cnt
+						cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
+					} else v.sector_cnt.classList.remove("ocultaPorJSS");
+
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (ama.certeza) {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultaPorJSS");
+						// Completa el dato de ama
+						ama.dato ? (v.ama[0].checked = true) : (v.ama[1].checked = true);
+					} else v.sector_ama.classList.remove("ocultaPorJSS");
+
+					// Fin
+					return;
 				},
-				cnt: async () => {},
+				cnt: async () => {
+					// Variable
+					let dato = v.cnt[0].checked
+						? v.cnt[0].value
+						: v.cnt[1].checked
+						? v.cnt[1].value
+						: "";
+
+					// Lectura de 'procesos'
+					let ruta = v.rutaConsecuencias + "hechos&campo=cnt&dato=" + dato;
+					let {ncn, ama} = await fetch(ruta).then((n) => n.json());
+					console.log(ncn,ama);
+
+					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
+					if (ncn.certeza) {
+						// Oculta el sector
+						v.sector_ncn.classList.add("ocultaPorCNT");
+						// Completa el dato de cnt
+						ncn.dato ? (v.ncn[0].checked = true) : (v.ncn[1].checked = true);
+					} else v.sector_cnt.classList.remove("ocultaPorCNT");
+
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (ama.certeza) {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultaPorCNT");
+						// Completa el dato de ama
+						ama.dato ? (v.ama[0].checked = true) : (v.ama[1].checked = true);
+					} else v.sector_ama.classList.remove("ocultaPorCNT");
+
+					// Fin
+					return;
+				},
 			},
 			muestraOculta: {
 				ocultar: (indice) => {
@@ -564,7 +624,9 @@ window.addEventListener("load", async () => {
 			// 4.2. Acciones si se cambia el sexo
 			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
 			// 4.3. Acciones si se cambia 'jss'
-
+			if (campo == "jss") procesos.RCLI.novs_hechos.jss();
+			// 4.4. Acciones si se cambia 'cnt'
+			if (campo == "cnt") procesos.RCLI.novs_hechos.cnt();
 			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();
 			// Muestra y oculta los campos que correspondan
