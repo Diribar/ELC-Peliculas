@@ -43,7 +43,7 @@ module.exports = {
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellano.completo(dato);
 				if (!respuesta) respuesta = comp.inicial.basico(dato);
-				if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo(dato);
+				if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo();
 			}
 			// Fin
 			if (respuesta && campo != "nombre") respuesta += " (nombre alternativo)";
