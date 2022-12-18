@@ -252,5 +252,27 @@ module.exports = {
 			// Fin
 			return {cnt, ama};
 		},
+		cnt: (datos) => {
+			// Variables
+			let {dato} = datos;
+			let ncn = {},
+				ama = {};
+
+			// Resultados
+			if (dato == "0") {
+				// Contemporáneos de Jesús
+				ncn.certeza = true; // Si 'cnt' es false, hay certeza de que 'ncn' es true
+				ncn.dato = true; // Si 'cnt' es false, 'ncn' es true
+			} else ncn.certeza = false;
+
+			if (dato == "1") {
+				// Aparición Mariana
+				ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
+				ama.dato = false; // Si 'cnt' es true, 'ama' es false
+			} else ama.certeza = false;
+
+			// Fin
+			return {ncn, ama};
+		},
 	},
 };
