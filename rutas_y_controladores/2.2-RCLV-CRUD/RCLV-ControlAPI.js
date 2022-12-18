@@ -26,4 +26,8 @@ module.exports = {
 		// Fin
 		return res.json(resultados);
 	},
+	prefijos: (req, res) => {
+		let prefijos=procesos.prefijos
+		return res.json(prefijos);
+	},
 };

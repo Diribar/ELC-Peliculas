@@ -275,4 +275,5 @@ module.exports = {
 			return {ncn, ama};
 		},
 	},
+	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor"],
 };

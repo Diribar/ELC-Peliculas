@@ -2,6 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procesos = require("./RCLV-FN-Procesos");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -22,15 +23,19 @@ module.exports = {
 		// Funciones
 		let mientrasEscribe = (campo) => {
 			let prefijo = () => {
-				return nombre.startsWith("San ") ||
-					nombre.startsWith("Santa ") ||
-					nombre.startsWith("Santo ") ||
-					nombre.startsWith("Beato ") ||
-					nombre.startsWith("Beata ") ||
-					nombre.startsWith("Ven. ") ||
-					nombre.startsWith("Venerable ")
-					? "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.)."
-					: "";
+				// Variables
+				let prefijos = procesos.prefijos;
+				let respuesta = "";
+				// Verificación
+				if (campo == "nombre")
+					for (let prefijo of prefijos) {
+						if (nombre.startsWith(prefijo + " "))
+							respuesta =
+								"El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
+						break;
+					}
+					// Fin
+				return respuesta;
 			};
 			// Variables
 			let respuesta = "";
@@ -39,7 +44,7 @@ module.exports = {
 			if (dato) {
 				if (!respuesta) respuesta = comp.castellano.completo(dato);
 				if (!respuesta) respuesta = comp.inicial.basico(dato);
-				if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo();
+				if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo(dato);
 			}
 			// Fin
 			if (respuesta && campo != "nombre") respuesta += " (nombre alternativo)";
@@ -133,8 +138,8 @@ module.exports = {
 		return respuesta;
 	},
 	hechos: (datos) => {
-		let respuesta=""
-		if (false) return ""
+		let respuesta = "";
+		if (false) return "";
 		// Respuestas
 		else if (!datos.solo_cfc)
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";

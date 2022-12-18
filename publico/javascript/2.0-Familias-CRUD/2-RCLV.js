@@ -68,6 +68,7 @@ window.addEventListener("load", async () => {
 		// Sectores a mostrarOcultar
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sector_ama = document.querySelector("#preguntas #sector_ama");
+		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 	}
 	// Valores para hechos
 	if (v.hechos) {
@@ -364,11 +365,7 @@ window.addEventListener("load", async () => {
 				},
 				jss: async () => {
 					// Variable
-					let dato = v.jss[0].checked
-						? v.jss[0].value
-						: v.jss[1].checked
-						? v.jss[1].value
-						: "";
+					let dato = v.jss[0].checked ? v.jss[0].value : v.jss[1].checked ? v.jss[1].value : "";
 
 					// Lectura de 'procesos'
 					let ruta = v.rutaConsecuencias + "hechos&campo=jss&dato=" + dato;
@@ -395,16 +392,12 @@ window.addEventListener("load", async () => {
 				},
 				cnt: async () => {
 					// Variable
-					let dato = v.cnt[0].checked
-						? v.cnt[0].value
-						: v.cnt[1].checked
-						? v.cnt[1].value
-						: "";
+					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
 
 					// Lectura de 'procesos'
 					let ruta = v.rutaConsecuencias + "hechos&campo=cnt&dato=" + dato;
 					let {ncn, ama} = await fetch(ruta).then((n) => n.json());
-					console.log(ncn,ama);
+					console.log(ncn, ama);
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (ncn.certeza) {
@@ -568,13 +561,23 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// Acciones si se cambia el nombre o apodo
 		if (campo == "nombre" || campo == "apodo") {
-			// Primera letra en mayúscula
+			// Variables
 			let valor = v[campo].value;
+			// 1. Primera letra en mayúscula
 			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			// Quita los caracteres no deseados
-			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
-			// Quita los caracteres que exceden el largo permitido
-			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
+			valor = v[campo].value;
+			// 2. Quita los caracteres no deseados
+			v[campo].value = valor.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
+			valor = v[campo].value;
+			// 3. Quita el prefijo 'San'
+			if (campo == "nombre")
+				for (let prefijo of v.prefijos) {
+					if (valor.startsWith(prefijo + " ")) v[campo].value = valor.slice(prefijo.length + 1);
+					valor = v[campo].value;
+					break;
+				}
+			// 4. Quita los caracteres que exceden el largo permitido
+			if (valor.length > 30) v[campo].value = valor.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
 			feedback.muestraErrorOK(0, true);

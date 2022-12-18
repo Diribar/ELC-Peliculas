@@ -3,7 +3,7 @@
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
-#cuerpo #dataEntry {display: flex; flex-direction: column;}
+#cuerpo #dataEntry {display: flex; flex-direction: column; z-index: 4;}
 #cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
