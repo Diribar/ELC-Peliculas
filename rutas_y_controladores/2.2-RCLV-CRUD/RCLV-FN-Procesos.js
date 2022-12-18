@@ -309,10 +309,16 @@ module.exports = {
 			}
 		}
 		if (datos.entidad == "hechos") {
+			// Variables
 			let {solo_cfc, jss, cnt, ncn, ama} = datos;
-			DE = {...DE, solo_cfc, jss, cnt, ncn, ama};
+			// Datos sencillos
+			DE.solo_cfc = solo_cfc;
+			if (solo_cfc == "1") {
+				DE.jss=jss
+				DE.cnt=cnt
+			}
+			DE = {...DE, solo_cfc, jss, cnt, ncn};
 		}
 		return DE;
 	},
-
 };

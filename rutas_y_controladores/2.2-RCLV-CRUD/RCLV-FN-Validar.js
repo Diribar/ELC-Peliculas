@@ -145,12 +145,12 @@ module.exports = {
 		// Respuestas
 		else if (!datos.solo_cfc)
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
-		else if (datos.solo_cfc == "0") respuesta = "";
-		// Respuestas sólo si CFC
 		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
 		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if (!datos.ncn) respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
-		else if (!datos.ama) respuesta = "Necesitamos saber si es una aparición mariana";
+		else if (!datos.ncn)
+			respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
+		else if (datos.solo_cfc == "1" && !datos.ama)
+			respuesta = "Necesitamos saber si es una aparición mariana";
 
 		// Fin
 		return respuesta;

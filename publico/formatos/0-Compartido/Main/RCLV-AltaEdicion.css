@@ -43,9 +43,10 @@
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
-#dataEntry #preguntas .ocultarPorAno, 
-#dataEntry #preguntas .ocultarPorRCLI, 
+#dataEntry #preguntas .ocultaPorAno, 
+#dataEntry #preguntas .ocultaPorRCLI, 
 #dataEntry #preguntas .ocultaPorJSS,
+#dataEntry #preguntas .ocultaPorNoCFC,
 #dataEntry #preguntas .ocultaPorCNT {display: none;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
