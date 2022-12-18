@@ -1,3 +1,4 @@
+/* Cuerpo */
 #cuerpo {background-color: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
@@ -7,34 +8,38 @@
 
 /* Temas generales de dataEntry */
 #dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #primeraCol {margin-right: 50px; width: 193px;}
-#dataEntry #segundaCol {display: flex; flex-direction: column; width: 206px;}
-#dataEntry h4 {line-height: 1; font-weight: normal;}
-#dataEntry .altoFila {height: 25px;}
-#dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
+#dataEntry #datos #primeraCol {margin-right: 50px; width: 210px;}
+#dataEntry #datos #segundaCol {display: flex; flex-direction: column; width: 206px;}
+#dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
+#dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
 
-/* Temas particulares de dataEntry */
+/* Temas de filas */
+#dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
 #dataEntry .flexRowAlign input[type='checkbox'] {margin-right: 5px;}
 #dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
 #dataEntry .flexRowAlign .derecha {margin-left: 15px;}
-#dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
+#dataEntry .altoFila {height: 25px;}
+#dataEntry .margenBottomTitulo {margin-bottom: 5px;}
+#dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
+
+/* Temas particulares de dataEntry */
 #dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {scale: .8;}
 #dataEntry input[type="radio"] {margin-right: 3px;}
-#dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
-#dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
-#dataEntry .margenBottomTitulo {margin-bottom: 5px;}
-/* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-/* #dataEntry input[type='number']::-webkit-outer-spin-button,  */
-/* #dataEntry input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} */
-/* Quitar flechas del input - Firefox */
-/* #dataEntry input[type='number'] {-moz-appearance: textfield;}  */
+#dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
+
+/* Nombres */
 #dataEntry #datos #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
+
+/* Fechas */
+#dataEntry #dia {margin-left: 15px;}
 #dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
-#dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
+
+/* Repetidos */
 #dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
-#dataEntry #segundaCol #anosHechos {display: flex; flex-direction: column; width: 100%;}
+
+/* Preguntas */
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarPorAno, 
