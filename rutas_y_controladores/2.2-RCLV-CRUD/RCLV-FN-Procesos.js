@@ -184,19 +184,51 @@ module.exports = {
 			let cnt = {},
 				ama = {};
 
+			// Resultados
 			if (ano != "") {
+				ano = Number(ano);
 				// Contemporáneos de Jesús
 				cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (cnt.certeza) cnt.dato = ano <= 33; // Si además el año es menor o igual a 33, el resultado es true
+				if (cnt.certeza) cnt.dato = ano <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
 
 				// Aparición Mariana
 				ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-				if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
+				if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
 			} else cnt.certeza = ama.certeza = false;
 
 			// Fin
 			return {cnt, ama};
 		},
-		hechos: () => {},
+		hechos: (datos) => {
+			// Variables
+			let {ano} = datos;
+			let jss = {},
+				cnt = {},
+				ncn = {},
+				ama = {};
+
+			// Resultados
+			if (ano != "") {
+				ano = Number(ano);
+				// Jesús
+				jss.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (jss.certeza) jss.dato = ano <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+				// Contemporáneos de Jesús
+				cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (cnt.certeza) cnt.dato = ano <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+				// También ocurrió fuera de la vida de los apóstoles
+				ncn.certeza = ano < 0 || ano > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
+
+				// Aparición Mariana
+				ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+				if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
+			} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
+
+			// Fin
+			return {jss, cnt, ncn, ama};
+		},
 	},
 };

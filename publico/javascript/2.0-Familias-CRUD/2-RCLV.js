@@ -51,8 +51,6 @@ window.addEventListener("load", async () => {
 		v.ama = document.querySelectorAll("input[name='ama']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
-		v.sector_ama = document.querySelector("#preguntas #sector_ama");
-		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sectores.push("RCLI");
 		v.rutaConsecuenciasAno = "/rclv/api/consecuencias-de-ano/?entidad=";
 	}
@@ -66,13 +64,24 @@ window.addEventListener("load", async () => {
 		v.enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		v.proceso_id = document.querySelector("select[name='proceso_id']");
 		v.ap_mar_id = document.querySelector("select[name='ap_mar_id']");
-		// Para ocultar
 		v.santosanta = document.querySelector("#dataEntry #santosanta");
+		// Sectores a mostrarOcultar
+		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
+		v.sector_ama = document.querySelector("#preguntas #sector_ama");
 	}
 	// Valores para hechos
 	if (v.hechos) {
 		// Inputs
 		v.solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
+		v.jss = document.querySelectorAll("input[name='jss']");
+		v.cnt = document.querySelectorAll("input[name='cnt']");
+		v.ncn = document.querySelectorAll("input[name='ncn']");
+		v.ama = document.querySelectorAll("input[name='ama']");
+		// Sectores
+		v.sector_jss = document.querySelector("#preguntas #sector_jss");
+		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
+		v.sector_ncn = document.querySelector("#preguntas #sector_ncn");
+		v.sector_ama = document.querySelector("#preguntas #sector_ama");
 	}
 
 	// Funciones
@@ -144,7 +153,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			consolidado: async (mostrarErrores) => {
+			consolidado: async (muestraErrores) => {
 				// Variables
 				let params = "&entidad=" + v.entidad;
 				// Obtiene el valor de cada campo
@@ -154,7 +163,7 @@ window.addEventListener("load", async () => {
 				errores.RCLI = await fetch(v.rutaValidacion + v.entidad + params).then((n) => n.json());
 				OK.RCLI = !errores.RCLI;
 				// Oculta los errores
-				if (!mostrarErrores) errores.RCLI = "";
+				if (!muestraErrores) errores.RCLI = "";
 
 				// Fin
 				return;
@@ -246,138 +255,205 @@ window.addEventListener("load", async () => {
 			},
 		},
 		RCLI: {
-			obtieneValor: (campo) => {
-				// Obtiene el inputElegido
-				let input = v[campo];
-				return input[0] && input[0].localName == "input"
-					? input[0].checked
-						? input[0].value
-						: input[1].checked
-						? input[1].value
-						: ""
-					: input.value;
-			},
-			novedadesAno: async () => {
-				// Variable
-				let ano = v.ano.value != "" ? Number(v.ano.value) : "";
-				// Consecuencias si el año tiene valor
+			novs_personajes: {
+				ano: async () => {
+					// Variable
+					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
 
-				let ruta = v.rutaConsecuenciasAno + v.entidad + "&ano=" + ano;
-				let {cnt, ama} = await fetch(ruta).then((n) => n.json());
-				// console.log(resultados, ano, ruta);
+					// Lectura de 'procesos'
+					let ruta = v.rutaConsecuenciasAno + "personajes&ano=" + ano;
+					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
 
-				// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
-				if (cnt.certeza) {
-					// Oculta el sector
-					v.sector_cnt.classList.add("ocultarPorAno");
-					// Completa el dato de cnt
-					cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
-				} else v.sector_cnt.classList.remove("ocultarPorAno");
+					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
+					if (cnt.certeza) {
+						// Oculta el sector
+						v.sector_cnt.classList.add("ocultarPorAno");
+						// Completa el dato de cnt
+						cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
+					} else v.sector_cnt.classList.remove("ocultarPorAno");
 
-				// Aparición Mariana - Situaciones en las que se oculta el sector
-				if (ama.certeza && !ama.dato) {
-					// Oculta el sector
-					v.sector_ama.classList.add("ocultarPorAno");
-					// Completa el dato de ama
-					v.ama[1].checked = true;
-				} else v.sector_ama.classList.remove("ocultarPorAno");
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (ama.certeza && !ama.dato) {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultarPorAno");
+						// Completa el dato de ama
+						v.ama[1].checked = true;
+					} else v.sector_ama.classList.remove("ocultarPorAno");
 
-				// Fin
-				return;
+					// Fin
+					return;
+				},
+				sexo: () => {
+					// Definir variables
+					let sexoValor = v.sexo_id[0].checked
+						? v.sexo_id[0].value
+						: v.sexo_id[1].checked
+						? v.sexo_id[1].value
+						: "";
+					if (sexoValor) {
+						// Proceso de canonización
+						// 1. Actualiza las opciones
+						let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
+						opciones_proc.forEach((n) =>
+							n.value.length < 2 || n.value[2] != sexoValor
+								? n.classList.add("ocultar")
+								: n.classList.remove("ocultar")
+						);
+						// 2. Preserva la opción elegida, cambiándole el sexo
+						if (
+							v.proceso_id.value &&
+							v.proceso_id.value.length != 2 &&
+							v.proceso_id.value[2] != sexoValor
+						)
+							v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
+						// 3. Actualiza el sexo de la pregunta
+						let letraActual = sexoValor == "V" ? "anto" : "anta";
+						let letraAnterior = sexoValor == "V" ? "anta" : "anto";
+						if (v.santosanta.innerHTML.includes(letraAnterior))
+							v.santosanta.innerHTML = v.santosanta.innerHTML.replace(
+								letraAnterior,
+								letraActual
+							);
+						// Rol en la Iglesia
+						// 1. Actualiza las opciones
+						let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+						opciones_rol.forEach((n) =>
+							n.value.length < 2 || n.value[2] != sexoValor
+								? n.classList.add("ocultar")
+								: n.classList.remove("ocultar")
+						);
+						// 2. Preserva la opción elegida, cambiándole el sexo
+						let rol_iglesia = v.rol_iglesia_id.value;
+						if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
+							v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
+						// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
+						if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
+					}
+					return;
+				},
 			},
-			novedadesSexo: () => {
-				// Definir variables
-				let sexoValor = v.sexo_id[0].checked
-					? v.sexo_id[0].value
-					: v.sexo_id[1].checked
-					? v.sexo_id[1].value
-					: "";
-				if (sexoValor) {
-					// Proceso de canonización
-					// 1. Actualiza las opciones
-					let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
-					opciones_proc.forEach((n) =>
-						n.value.length < 2 || n.value[2] != sexoValor
-							? n.classList.add("ocultar")
-							: n.classList.remove("ocultar")
-					);
-					// 2. Preserva la opción elegida, cambiándole el sexo
-					if (
-						v.proceso_id.value &&
-						v.proceso_id.value.length != 2 &&
-						v.proceso_id.value[2] != sexoValor
-					)
-						v.proceso_id.value = v.proceso_id.value.slice(0, 2) + sexoValor;
-					// 3. Actualiza el sexo de la pregunta
-					let letraActual = sexoValor == "V" ? "anto" : "anta";
-					let letraAnterior = sexoValor == "V" ? "anta" : "anto";
-					if (v.santosanta.innerHTML.includes(letraAnterior))
-						v.santosanta.innerHTML = v.santosanta.innerHTML.replace(letraAnterior, letraActual);
-					// Rol en la Iglesia
-					// 1. Actualiza las opciones
-					let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-					opciones_rol.forEach((n) =>
-						n.value.length < 2 || n.value[2] != sexoValor
-							? n.classList.add("ocultar")
-							: n.classList.remove("ocultar")
-					);
-					// 2. Preserva la opción elegida, cambiándole el sexo
-					let rol_iglesia = v.rol_iglesia_id.value;
-					if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
-						v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
-					// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
-					if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
-				}
-				return;
+			novs_hechos: {
+				ano: async () => {
+					// Función
+					let mostrarOcultar = (datos, campo) => {
+						// Situaciones en las que se oculta el sector
+						if (datos.certeza) {
+							// Oculta el sector
+							v["sector_" + campo].classList.add("ocultarPorAno");
+							// Completa el dato
+							datos.dato ? (v[campo][0].checked = true) : (v[campo][1].checked = true);
+						} else v["sector_" + campo].classList.remove("ocultarPorAno");
+					};
+
+					// Variable
+					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+
+					// Lectura de 'procesos'
+					let ruta = v.rutaConsecuenciasAno + "hechos&ano=" + ano;
+					let {jss, cnt, ncn, ama} = await fetch(ruta).then((n) => n.json());
+
+					// Mostrar u ocultar sectores
+					mostrarOcultar(jss, "jss");
+					mostrarOcultar(cnt, "cnt");
+					mostrarOcultar(ncn, "ncn");
+					mostrarOcultar(ama, "ama");
+
+					// Fin
+					return;
+				},
+				jss: async () => {
+
+				},
+				cnt: async () => {},
 			},
-			ocultar: (indice) => {
-				for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
-				return;
-			},
-			muestraOculta_personajes: function () {
-				// Variables
-				let saltear = true;
-				// Revisión por campo
-				for (let indice = 0; indice < v.camposRCLI.length - 1; indice++) {
+			muestraOculta: {
+				ocultar: (indice) => {
+					for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
+					return;
+				},
+				obtieneValor: (campo) => {
+					// Obtiene el inputElegido
+					let input = v[campo];
+					return input[0] && input[0].localName == "input"
+						? input[0].checked
+							? input[0].value
+							: input[1].checked
+							? input[1].value
+							: ""
+						: input.value;
+				},
+				personajes: function () {
 					// Variables
-					let campo = v.camposRCLI[indice];
-					let valor = this.obtieneValor(campo);
+					let saltear = true;
+					// Revisión por campo
+					for (let indice = 0; indice < v.camposRCLI.length - 1; indice++) {
+						// Variables
+						let campo = v.camposRCLI[indice];
+						let valor = this.obtieneValor(campo);
 
-					// Particularidad para 'categoria_id'
-					if (campo == "categoria_id") {
-						if (!this.obtieneValor("sexo_id") || valor != "CFC") {
-							this.ocultar(indice + 2);
-							break;
-						} else {
-							v.cfc[indice + 2].classList.remove("ocultar");
+						// Particularidad para 'categoria_id'
+						if (campo == "categoria_id") {
+							if (!this.obtieneValor("sexo_id") || valor != "CFC") {
+								this.ocultar(indice + 2);
+								break;
+							} else {
+								v.cfc[indice + 2].classList.remove("ocultar");
+								continue;
+							}
+						}
+						// Particularidad para 'ano'
+						if (campo == "ano") continue;
+
+						// Particularidades para enProcCan y ama
+						if ((campo == "enProcCan" || campo == "ama") && valor == "0") {
+							// Oculta el siguiente campo
+							v.cfc[indice + 1].classList.add("ocultar");
+							// Muestra el campo subsiguiente
+							if (indice + 2 < v.camposRCLI.length)
+								v.cfc[indice + 2].classList.remove("ocultar");
+							// Saltea el campo subsiguiente
+							indice++;
+							// Fin
 							continue;
 						}
-					}
-					// Saltear
-					if (campo == "ano") {
-						saltear = false;
-						continue;
-					}
 
-					// Particularidades para enProcCan y ama
-					if ((campo == "enProcCan" || campo == "ama") && valor == "0") {
-						// Oculta el siguiente campo
-						v.cfc[indice + 1].classList.add("ocultar");
-						// Muestra el campo subsiguiente
-						if (indice + 2 < v.camposRCLI.length) v.cfc[indice + 2].classList.remove("ocultar");
-						// Saltea el campo subsiguiente
-						indice++;
-						// Fin
-						continue;
+						// Saltear
+						if (campo == "ano") saltear = false;
+						// Caso genérico
+						if (valor) v.cfc[indice + 1].classList.remove("ocultar");
+						else {
+							if (saltear) continue;
+							this.ocultar(indice + 1);
+							break;
+						}
 					}
-					// Caso genérico
-					if (valor) v.cfc[indice + 1].classList.remove("ocultar");
-					else {
-						if (saltear) continue;
-						this.ocultar(indice + 1);
-						break;
+				},
+				hechos: function () {
+					// Variables
+					let saltear = true;
+					// Revisión por campo
+					for (let indice = 0; indice < v.camposRCLI.length - 1; indice++) {
+						// Variables
+						let campo = v.camposRCLI[indice];
+						let valor = this.obtieneValor(campo);
+
+						// Particularidad para 'solo_cfc'
+						if (campo == "solo_cfc" && valor == "0") {
+							this.ocultar(indice + 1);
+							break;
+						}
+
+						// Saltear
+						if (campo == "solo_cfc") saltear = false;
+						// Caso genérico
+						if (valor) v.cfc[indice + 1].classList.remove("ocultar");
+						else {
+							if (saltear) continue;
+							this.ocultar(indice + 1);
+							break;
+						}
 					}
-				}
+				},
 			},
 		},
 	};
@@ -387,16 +463,17 @@ window.addEventListener("load", async () => {
 			if (v.nombre.value) await validacs.nombre.nombreApodo();
 			// Personaliza los días del mes
 			if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
+			// Valida los días
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
 				// Valida las fechas
 				await validacs.fechas();
 				// Valida los duplicados
 				validacs.repetido();
 			}
-			// Valida el año
-			if (v.entidad != "valores" && v.ano.value) await validacs.RCLI.ano();
+			// Valida RCLI
+			if (v.entidad != "valores") await validacs.RCLI.consolidado();
 			// Muestra el RCLI
-			if (v.entidad != "valores") await muestraRCLI[v.entidad](true);
+			if (v.entidad != "valores") await procesos.RCLI.muestraOculta[v.entidad]();
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -482,14 +559,16 @@ window.addEventListener("load", async () => {
 			// 4.1. Acciones si se cambia el año
 			if (campo == "ano") {
 				await validacs.RCLI.ano();
-				if (OK.RCLI) procesos.RCLI.novedadesAno();
+				if (OK.RCLI) procesos.RCLI["novs_" + v.entidad].ano();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.novedadesSexo();
-			// 4.3. Revisa los errores en RCLI
+			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
+			// 4.3. Acciones si se cambia 'jss'
+
+			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();
-			// 4.4. Muestra y oculta los campos que correspondan
-			procesos.RCLI["muestraOculta_" + v.entidad]();
+			// Muestra y oculta los campos que correspondan
+			procesos.RCLI.muestraOculta[v.entidad]();
 		}
 		// Final de la rutina
 		feedback.muestraErroresOK();
@@ -502,8 +581,8 @@ window.addEventListener("load", async () => {
 			await validacs.fechas();
 			validacs.repetido();
 			if (!v.valores) {
-				await validacs.RCLI.consolidado();
-				// await muestraRCLI[v.entidad](true);
+				await validacs.RCLI.consolidado(true);
+				await procesos.RCLI["muestraOculta_" + v.entidad]();
 			}
 			// Fin
 			feedback.muestraErroresOK();
@@ -513,7 +592,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	// await feedback.startUp();
+	await feedback.startUp();
 	feedback.muestraErroresOK();
 	feedback.botonSubmit();
 });
