@@ -13,8 +13,7 @@ module.exports = {
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
 		// Campos exclusivos
-		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
-		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
+		if (datos.entidad == "personajes") errores.RCLI = this[datos.entidad](datos);
 		// Completar con 'hay errores'
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -34,7 +33,7 @@ module.exports = {
 								"El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 						break;
 					}
-					// Fin
+				// Fin
 				return respuesta;
 			};
 			// Variables
@@ -72,6 +71,7 @@ module.exports = {
 		let {entidad, nombre} = datos;
 		// Variable 'campos'
 		let campos = Object.keys(datos);
+		// Descarta los campos que no sean de nombre
 		for (let i = campos.length - 1; i >= 0; i--)
 			if (!["nombre", "apodo"].includes(campos[i])) campos.splice(i, 1);
 
@@ -83,7 +83,9 @@ module.exports = {
 			if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
 			if (mensaje) break;
 		}
-
+		// Revisa si los nombres son iguales
+		if (!mensaje && datos.nombre && datos.nombre == datos.apodo)
+			mensaje = "El nombre y el apodo deben ser diferentes";
 		// Fin
 		return mensaje;
 	},
@@ -145,6 +147,9 @@ module.exports = {
 			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
+		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
+		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
+		else if (!datos.ncn) respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
 		else if (!datos.ama) respuesta = "Necesitamos saber si es una aparición mariana";
 
 		// Fin

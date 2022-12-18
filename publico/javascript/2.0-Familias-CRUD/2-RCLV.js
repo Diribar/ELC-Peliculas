@@ -642,13 +642,11 @@ window.addEventListener("load", async () => {
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {
+			// Realiza todas las validaciones
 			await validacs.nombre.nombreApodo();
 			await validacs.fechas();
 			validacs.repetido();
-			if (!v.valores) {
-				await validacs.RCLI.consolidado(true);
-				await procesos.RCLI["muestraOculta_" + v.entidad]();
-			}
+			if (!v.valores) await validacs.RCLI.consolidado(true);
 			// Fin
 			feedback.muestraErroresOK();
 		}
