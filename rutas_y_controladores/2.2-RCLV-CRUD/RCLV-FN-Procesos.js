@@ -180,19 +180,19 @@ module.exports = {
 	personajes: {
 		ano: (datos) => {
 			// Variables
-			let {ano} = datos;
+			let {dato} = datos;
 			let cnt = {},
 				ama = {};
 
 			// Resultados
-			if (ano != "") {
-				ano = Number(ano);
+			if (dato != "") {
+				dato = Number(dato);
 				// Contemporáneos de Jesús
-				cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (cnt.certeza) cnt.dato = ano <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+				cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (cnt.certeza) cnt.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
 
 				// Aparición Mariana
-				ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+				ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
 				if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
 			} else cnt.certeza = ama.certeza = false;
 
@@ -203,34 +203,54 @@ module.exports = {
 	hechos: {
 		ano: (datos) => {
 			// Variables
-			let {ano} = datos;
+			let {dato} = datos;
 			let jss = {},
 				cnt = {},
 				ncn = {},
 				ama = {};
 
 			// Resultados
-			if (ano != "") {
-				ano = Number(ano);
+			if (dato != "") {
+				dato = Number(dato);
 				// Jesús
-				jss.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (jss.certeza) jss.dato = ano <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+				jss.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (jss.certeza) jss.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
 
 				// Contemporáneos de Jesús
-				cnt.certeza = ano >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (cnt.certeza) cnt.dato = ano <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
+				cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				if (cnt.certeza) cnt.dato = dato <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
 
 				// También ocurrió fuera de la vida de los apóstoles
-				ncn.certeza = ano < 0 || ano > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+				ncn.certeza = dato < 0 || dato > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
 				if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
 
 				// Aparición Mariana
-				ama.certeza = ano < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+				ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
 				if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
 			} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
 
 			// Fin
 			return {jss, cnt, ncn, ama};
+		},
+		jss: (datos) => {
+			// Variables
+			let {dato} = datos;
+			let cnt = {},
+				ama = {};
+
+			// Resultados
+			if (dato == "1") {
+				// Contemporáneos de Jesús
+				cnt.certeza = true; // Si 'jss' es true, hay certeza de que 'cnt' es true
+				cnt.dato = true; // Si 'jss' es true, 'cnt' es true también
+
+				// Aparición Mariana
+				ama.certeza = true; // Si 'jss' es true, hay certeza de que 'ama' es false
+				ama.dato = false; // Si 'jss' es true, 'ama' es false
+			} else cnt.certeza = ama.certeza = false;
+
+			// Fin
+			return {cnt, ama};
 		},
 	},
 };

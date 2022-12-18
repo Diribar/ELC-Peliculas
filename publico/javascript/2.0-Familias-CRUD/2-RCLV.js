@@ -52,7 +52,7 @@ window.addEventListener("load", async () => {
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
 		v.sectores.push("RCLI");
-		v.rutaConsecuenciasAno = "/rclv/api/consecuencias-de-ano/?entidad=";
+		v.rutaConsecuencias = "/rclv/api/consecuencias/?entidad=";
 	}
 	// Valores para personajes
 	if (v.personajes) {
@@ -258,10 +258,10 @@ window.addEventListener("load", async () => {
 			novs_personajes: {
 				ano: async () => {
 					// Variable
-					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+					let ano = v.ano.value;
 
 					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuenciasAno + "personajes&ano=" + ano;
+					let ruta = v.rutaConsecuencias + "personajes&campo=ano&dato=" + ano;
 					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
@@ -346,10 +346,10 @@ window.addEventListener("load", async () => {
 					};
 
 					// Variable
-					let ano = v.ano.value != "" ? Number(v.ano.value) : "";
+					let ano = v.ano.value;
 
 					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuenciasAno + "hechos&ano=" + ano;
+					let ruta = v.rutaConsecuencias + "hechos&campo=ano&dato=" + ano;
 					let {jss, cnt, ncn, ama} = await fetch(ruta).then((n) => n.json());
 
 					// Mostrar u ocultar sectores
@@ -361,7 +361,34 @@ window.addEventListener("load", async () => {
 					// Fin
 					return;
 				},
-				jss: async () => {},
+				jss: async () => {
+					// Variable
+					let ano = v.ano.value;
+
+					// Lectura de 'procesos'
+					let ruta = v.rutaConsecuencias + "personajes&campo=ano&dato=" + ano;
+					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
+
+					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
+					if (cnt.certeza) {
+						// Oculta el sector
+						v.sector_cnt.classList.add("ocultarPorJSS");
+						// Completa el dato de cnt
+						cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
+					} else v.sector_cnt.classList.remove("ocultarPorJSS");
+
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (ama.certeza && !ama.dato) {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultarPorJSS");
+						// Completa el dato de ama
+						v.ama[1].checked = true;
+					} else v.sector_ama.classList.remove("ocultarPorJSS");
+
+					// Fin
+					return;
+
+				},
 				cnt: async () => {},
 			},
 			muestraOculta: {
@@ -562,6 +589,7 @@ window.addEventListener("load", async () => {
 			// 4.2. Acciones si se cambia el sexo
 			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
 			// 4.3. Acciones si se cambia 'jss'
+			if (campo == "jss") procesos.RCLI.novs_hechos.jss();
 
 			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();

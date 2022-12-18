@@ -21,10 +21,10 @@ const todosAgregar = [soloUsuariosCompl, soloAptoInput, entidad];
 const todos = [...todosAgregar, id, permUserReg, capturaActivar];
 
 // Rutas *******************************************
-// Rutas de APIs
+// Rutas de APIs Agregar/Editar
 router.get("/api/registros-con-esa-fecha", API.registrosConEsaFecha);
 router.get("/api/valida-sector", API.valida);
-router.get("/api/consecuencias-de-ano", API.consecuenciasAno);
+router.get("/api/consecuencias", API.consecuencias);
 
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", ...todosAgregar, vista.altaEdicForm);
