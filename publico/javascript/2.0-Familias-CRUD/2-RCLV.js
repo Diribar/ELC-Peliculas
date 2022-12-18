@@ -256,7 +256,7 @@ window.addEventListener("load", async () => {
 			},
 		},
 		RCLI: {
-			novs_personajes: {
+			personajes: {
 				ano: async () => {
 					// Variable
 					let dato = v.ano.value;
@@ -334,7 +334,7 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
-			novs_hechos: {
+			hechos: {
 				ano: async () => {
 					// Función
 					let muestraOculta = (datos, campo) => {
@@ -605,7 +605,7 @@ window.addEventListener("load", async () => {
 			v[campo].value = valor.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
 			valor = v[campo].value;
 			// 3. Quita el prefijo 'San'
-			if (campo == "nombre")
+			if (campo == "nombre" && v.entidad == "personajes")
 				for (let prefijo of v.prefijos) {
 					if (valor.startsWith(prefijo + " ")) v[campo].value = valor.slice(prefijo.length + 1);
 					valor = v[campo].value;
@@ -632,7 +632,7 @@ window.addEventListener("load", async () => {
 		// 1. Acciones si se cambia el nombre o apodo
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) {
 			await validacs.nombre.nombreApodo();
-			procesos.nombre.logosWikiSantopedia();
+			if (OK.nombre) procesos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia la fecha
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
@@ -657,12 +657,12 @@ window.addEventListener("load", async () => {
 			// 4.1. Acciones si se cambia el año
 			if (campo == "ano") {
 				await validacs.RCLI.ano();
-				if (OK.RCLI) procesos.RCLI["novs_" + v.entidad].ano();
+				if (OK.RCLI) await procesos.RCLI[v.entidad].ano();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
+			if (campo == "sexo_id") procesos.RCLI.personajes.sexo();
 			// 4.3. Acciones si se cambia 'jss', 'cnt', o 'ncn'
-			if (["jss", "cnt", "ncn"].includes(campo)) procesos.RCLI.novs_hechos[campo]();
+			if (["jss", "cnt", "ncn"].includes(campo)) await procesos.RCLI.hechos[campo]();
 			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();
 			// Muestra y oculta los campos que correspondan
@@ -672,6 +672,7 @@ window.addEventListener("load", async () => {
 		feedback.muestraErroresOK();
 		feedback.botonSubmit();
 	});
+	// Botón submit
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {

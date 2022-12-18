@@ -313,11 +313,15 @@ module.exports = {
 			let {solo_cfc, jss, cnt, ncn, ama} = datos;
 			// Datos sencillos
 			DE.solo_cfc = solo_cfc;
-			if (solo_cfc == "1") {
-				DE.jss=jss
-				DE.cnt=cnt
-			}
-			DE = {...DE, solo_cfc, jss, cnt, ncn};
+			DE.jss = jss;
+			// cnt
+			if (DE.jss == "1") DE.cnt = "1";
+			else DE.cnt = cnt;
+			// ncn
+			if (DE.cnt == "0") DE.ncn = "1";
+			else DE.ncn = ncn;
+			// ama
+			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
 		}
 		return DE;
 	},
