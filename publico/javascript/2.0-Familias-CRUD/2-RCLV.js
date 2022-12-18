@@ -428,7 +428,7 @@ window.addEventListener("load", async () => {
 			},
 			muestraOculta: {
 				ocultar: (indice) => {
-					//for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
+					for (let i = indice; i < v.cfc.length; i++) v.cfc[i].classList.add("ocultar");
 					return;
 				},
 				obtieneValor: (campo) => {
