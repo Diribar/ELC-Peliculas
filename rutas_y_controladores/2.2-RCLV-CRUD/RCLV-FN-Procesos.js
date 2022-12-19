@@ -104,7 +104,7 @@ module.exports = {
 		// Fin
 		return procCanoniz;
 	},
-	guardarCambios: async (req, res, DE) => {
+	guardaLosCambios: async (req, res, DE) => {
 		// Variables
 		let entidad = req.query.entidad;
 		let origen = req.query.origen;
@@ -176,104 +176,6 @@ module.exports = {
 		}
 		// Fin
 		return rutaSalir;
-	},
-	personajes: {
-		ano: (datos) => {
-			// Variables
-			let {dato} = datos;
-			let cnt = {},
-				ama = {};
-
-			// Resultados
-			if (dato != "") {
-				dato = Number(dato);
-				// Contemporáneos de Jesús
-				cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (cnt.certeza) cnt.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
-
-				// Aparición Mariana
-				ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-				if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
-			} else cnt.certeza = ama.certeza = false;
-
-			// Fin
-			return {cnt, ama};
-		},
-	},
-	hechos: {
-		ano: (datos) => {
-			// Variables
-			let {dato} = datos;
-			let jss = {},
-				cnt = {},
-				ncn = {},
-				ama = {};
-
-			// Resultados
-			if (dato != "") {
-				dato = Number(dato);
-				// Jesús
-				jss.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (jss.certeza) jss.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
-
-				// Contemporáneos de Jesús
-				cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (cnt.certeza) cnt.dato = dato <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
-
-				// También ocurrió fuera de la vida de los apóstoles
-				ncn.certeza = dato < 0 || dato > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-				if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
-
-				// Aparición Mariana
-				ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-				if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
-			} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
-
-			// Fin
-			return {jss, cnt, ncn, ama};
-		},
-		jss: (datos) => {
-			// Variables
-			let {dato} = datos;
-			let cnt = {},
-				ama = {};
-
-			// Resultados
-			if (dato == "1") {
-				// Contemporáneos de Jesús
-				cnt.certeza = true; // Si 'jss' es true, hay certeza de que 'cnt' es true
-				cnt.dato = true; // Si 'jss' es true, 'cnt' es true también
-
-				// Aparición Mariana
-				ama.certeza = true; // Si 'jss' es true, hay certeza de que 'ama' es false
-				ama.dato = false; // Si 'jss' es true, 'ama' es false
-			} else cnt.certeza = ama.certeza = false;
-
-			// Fin
-			return {cnt, ama};
-		},
-		cnt: (datos) => {
-			// Variables
-			let {dato} = datos;
-			let ncn = {},
-				ama = {};
-
-			// Resultados
-			if (dato == "0") {
-				// Contemporáneos de Jesús
-				ncn.certeza = true; // Si 'cnt' es false, hay certeza de que 'ncn' es true
-				ncn.dato = true; // Si 'cnt' es false, 'ncn' es true
-			} else ncn.certeza = false;
-
-			if (dato == "1") {
-				// Aparición Mariana
-				ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
-				ama.dato = false; // Si 'cnt' es true, 'ama' es false
-			} else ama.certeza = false;
-
-			// Fin
-			return {ncn, ama};
-		},
 	},
 	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor"],
 	procesarRCLV: async (datos) => {

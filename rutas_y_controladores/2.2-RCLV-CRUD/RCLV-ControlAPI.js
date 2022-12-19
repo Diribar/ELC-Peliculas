@@ -18,14 +18,6 @@ module.exports = {
 		let mensaje = await valida[req.query.funcion](req.query);
 		return res.json(mensaje);
 	},
-	consecuencias: (req, res) => {
-		// Variables
-		let {entidad, campo} = req.query;
-		// Obtiene los resultados
-		let resultados = procesos[entidad][campo](req.query);
-		// Fin
-		return res.json(resultados);
-	},
 	prefijos: (req, res) => {
 		let prefijos=procesos.prefijos
 		return res.json(prefijos);

@@ -29,7 +29,7 @@ module.exports = {
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
-		// return res.send([productos,RCLVs]);
+		return res.send([productos,RCLVs]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -293,7 +293,7 @@ module.exports = {
 		};
 		// return res.send(dataEntry);
 		// Guarda los cambios
-		await procesosCRUD.guardarCambios(req, res, dataEntry);
+		await procesosCRUD.guardaLosCambios(req, res, dataEntry);
 		// Consecuencias de las diferencias
 		procesos.RCLV_AltaGuardar(entidad, original, userID);
 		// 9. Redirecciona a la siguiente instancia

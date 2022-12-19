@@ -24,7 +24,6 @@ const todos = [...todosAgregar, id, permUserReg, capturaActivar];
 // Rutas de APIs Agregar/Editar
 router.get("/api/registros-con-esa-fecha", API.registrosConEsaFecha);
 router.get("/api/valida-sector", API.valida);
-router.get("/api/consecuencias", API.consecuencias);
 router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida

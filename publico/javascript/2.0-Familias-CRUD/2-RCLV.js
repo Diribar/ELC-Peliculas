@@ -258,12 +258,30 @@ window.addEventListener("load", async () => {
 		RCLI: {
 			personajes: {
 				ano: async () => {
-					// Variable
-					let dato = v.ano.value;
+					// Función
+					let proceso = (dato) => {
+						// Variables
+						let cnt = {},
+							ama = {};
 
-					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuencias + "personajes&campo=ano&dato=" + dato;
-					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
+						// Resultados
+						if (dato != "") {
+							dato = Number(dato);
+							// Contemporáneos de Jesús
+							cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+							if (cnt.certeza) cnt.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+							// Aparición Mariana
+							ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+							if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
+						} else cnt.certeza = ama.certeza = false;
+
+						// Fin
+						return {cnt, ama};
+					};
+
+					// Variables
+					let {cnt, ama} = proceso(v.ano.value);
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
@@ -336,7 +354,37 @@ window.addEventListener("load", async () => {
 			},
 			hechos: {
 				ano: async () => {
-					// Función
+					// Funciones
+					let proceso = (dato) => {
+						// Variables
+						let jss = {},
+							cnt = {},
+							ncn = {},
+							ama = {};
+
+						// Resultados
+						if (dato != "") {
+							dato = Number(dato);
+							// Jesús
+							jss.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+							if (jss.certeza) jss.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+							// Contemporáneos de Jesús
+							cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+							if (cnt.certeza) cnt.dato = dato <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+							// También ocurrió fuera de la vida de los apóstoles
+							ncn.certeza = dato < 0 || dato > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+							if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
+
+							// Aparición Mariana
+							ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+							if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
+						} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
+
+						// Fin
+						return {jss, cnt, ncn, ama};
+					};
 					let muestraOculta = (datos, campo) => {
 						// Situaciones en las que se oculta el sector
 						if (datos.certeza) {
@@ -351,12 +399,8 @@ window.addEventListener("load", async () => {
 						}
 					};
 
-					// Variable
-					let dato = v.ano.value;
-
-					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuencias + "hechos&campo=ano&dato=" + dato;
-					let {jss, cnt, ncn, ama} = await fetch(ruta).then((n) => n.json());
+					// Variables
+					let {jss, cnt, ncn, ama} = proceso(v.ano.value);
 
 					// Mostrar u ocultar sectores
 					muestraOculta(jss, "jss");
@@ -368,12 +412,30 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				jss: async () => {
-					// Variable
+					// Función
+					let proceso= (dato) => {
+						// Variables
+						let cnt = {},
+							ama = {};
+				
+						// Resultados
+						if (dato == "1") {
+							// Contemporáneos de Jesús
+							cnt.certeza = true; // Si 'jss' es true, hay certeza de que 'cnt' es true
+							cnt.dato = true; // Si 'jss' es true, 'cnt' es true también
+				
+							// Aparición Mariana
+							ama.certeza = true; // Si 'jss' es true, hay certeza de que 'ama' es false
+							ama.dato = false; // Si 'jss' es true, 'ama' es false
+						} else cnt.certeza = ama.certeza = false;
+				
+						// Fin
+						return {cnt, ama};
+					}
+				
+					// Variables
 					let dato = v.jss[0].checked ? v.jss[0].value : v.jss[1].checked ? v.jss[1].value : "";
-
-					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuencias + "hechos&campo=jss&dato=" + dato;
-					let {cnt, ama} = await fetch(ruta).then((n) => n.json());
+					let {cnt, ama} = proceso(dato)
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
@@ -403,12 +465,32 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				cnt: async () => {
+					// Función
+					let proceso= (dato) => {
+						// Variables
+						let ncn = {},
+							ama = {};
+				
+						// Resultados
+						if (dato == "0") {
+							// Contemporáneos de Jesús
+							ncn.certeza = true; // Si 'cnt' es false, hay certeza de que 'ncn' es true
+							ncn.dato = true; // Si 'cnt' es false, 'ncn' es true
+						} else ncn.certeza = false;
+				
+						if (dato == "1") {
+							// Aparición Mariana
+							ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
+							ama.dato = false; // Si 'cnt' es true, 'ama' es false
+						} else ama.certeza = false;
+				
+						// Fin
+						return {ncn, ama};
+					}
+				
 					// Variable
 					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
-
-					// Lectura de 'procesos'
-					let ruta = v.rutaConsecuencias + "hechos&campo=cnt&dato=" + dato;
-					let {ncn, ama} = await fetch(ruta).then((n) => n.json());
+					let {ncn, ama} = proceso(dato)
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (ncn.certeza) {
