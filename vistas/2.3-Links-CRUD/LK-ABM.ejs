@@ -5,10 +5,14 @@
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick despl_click">
 			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-				<li>Por favor intentá incluir por lo menos un link gratuito</li>
-				<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-				<li>Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto</li>
-				<li>Si hay datos en rojo, es porque están editados por otro usuario</li>
+				<% if (tema == "revisionEnts") { %>
+					<li>Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor</li>
+				<% } else { %>
+					<li>Por favor intentá incluir por lo menos un link gratuito</li>
+					<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
+					<li>Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto</li>
+					<li>Si hay datos en rojo, es porque están editados por otro usuario</li>
+				<% } %>
 			</ul>
 		</i>
 	</div>
@@ -16,39 +20,56 @@
 <section id="contenido">
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-		<%- include("CR-Encabezado") %>
+		<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
 		<select id="tipoLink">
-			<option value="1">Trailer</option>
-			<option value="2">Película</option>
+			<option value="TR">Trailer</option>
+			<option value="PL">Película</option>
 			<option value="TD" selected>Todos</option>
 		</select>
-		<form id="tabla" class=""> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
+		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<!-- Activo/Inactivo -->
 			<div id="tags" class="flexRow">
 				<div id="activo">Activos</div>
-				<div id="inactivo" class="traslucido">Pasivos</div>
+				<div id="inactivo" class="traslucido">Inactivos</div>
 			</div>
 			<!-- Tabla -->
 			<table>
 				<!-- Títulos -->
-				<%- include("CMP-LK-TituloTabla") %> 
+				<%- include("LK0-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% links.forEach((link,fila)=> { %>
 						<% let cond = {} %>
-						<%- include("CMP-LK-Condiciones", {link, cond}) %>
-						<%- include("CMP-LK-Datos", {link, cond, fila}) %>
-						<%- include("LK2-Edicion", {fila, link, cond}) %>
+						<%- include("LK0-Condiciones", {link, cond}) %>
+						<%- include("LK1-Datos", {link, cond, fila}) %>
+						<% if (tema=="revisionEnts") { %>
+							<% link.ediciones.forEach((edicion) => { %>
+								<%- cond.creado || cond.aprobado ? include("RE3-LinksEdicion", {link, cond, fila, edicion}) : "" %> 
+							<% }) %>
+						<% } else { %>
+							<%- include("LK2-Edicion", {link, cond, fila}) %>
+						<% } %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
-					<%- include("LK2-Alta", {fila: links.length}) %>
+					<%- tema != "revisionEnts" ? include("LK2-Alta", {fila: links.length}) : "" %>
 				</tbody>
 			</table>
 		</form>
 	</div>
 	<!-- Flechas -->
 	<div class="flexRow">
-		<%- include("CR-Flechas") %>
+		<% if (tema=="revisionEnts") { %>
+			<div class="flechas">
+				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
+					<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+				</a>
+				<a href="/links/abm/?entidad=<%= entidad %>&id=<%= prodOrig.id %>" target="_blank">
+					<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
+				</a>
+			</div>
+		<% } else { %>
+			<%- include("CR-Flechas") %>
+		<% } %>
 		<div class="flechas img">
 			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
 				<a 

@@ -315,9 +315,9 @@ module.exports = {
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = procesos.problemasLinks(prodOrig, req.session.urlAnterior);
+		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_id(entidad);
@@ -326,7 +326,7 @@ module.exports = {
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
-		let avatar = prodOrig.avatar;
+		let avatar = producto.avatar;
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
 			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
@@ -348,7 +348,8 @@ module.exports = {
 			titulo,
 			entidad,
 			id,
-			prodOrig,
+			producto,
+			prodOrig: producto,
 			links,
 			provs,
 			links_tipos: linksTipos,
@@ -358,8 +359,8 @@ module.exports = {
 			mostrar: null,
 			userID,
 			camposARevisar,
-			title: prodOrig.nombre_castellano,
-			imgDerPers: comp.avatarOrigEdic(prodOrig, "").orig,
+			title: producto.nombre_castellano,
+			imgDerPers: comp.avatarOrigEdic(producto, "").orig,
 			mostrarCartel: true,
 		});
 	},
