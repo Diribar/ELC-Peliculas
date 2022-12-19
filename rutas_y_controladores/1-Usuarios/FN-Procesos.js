@@ -6,7 +6,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	// ControladorVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
+	// ControlVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
 	actualizaElUsuario: async (status, usuario, novedades) => {
 		// Obtiene el nuevo status
 		let statusNuevo = status_registro_us.find((n) => n[status]);
@@ -18,7 +18,7 @@ module.exports = {
 		// Fin
 		return usuario;
 	},
-	// ControladorVista: loginGuardar
+	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario, hoyAhora) => {
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
@@ -28,7 +28,7 @@ module.exports = {
 		}
 		return;
 	},
-	// ControladorVista: altaMail y olvidoContr
+	// ControlVista: altaMail y olvidoContr
 	enviaMailConContrasena: async (req) => {
 		// Prepara los datos
 		let asunto = "Contraseña para ELC";
