@@ -52,7 +52,6 @@ window.addEventListener("load", async () => {
 		v.cnt = document.querySelectorAll("input[name='cnt']");
 		// Para ocultar
 		v.sectores.push("RCLI");
-		v.rutaConsecuencias = "/rclv/api/consecuencias/?entidad=";
 	}
 	// Valores para personajes
 	if (v.personajes) {
