@@ -201,7 +201,6 @@ module.exports = {
 					id: n.id,
 					entidad: n.entidad,
 					nombre,
-					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
 					fechaRefTexto: n.fechaRefTexto,
 				};
@@ -226,8 +225,7 @@ module.exports = {
 					entidad: n.entidad,
 					nombre,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					status_registro_id: n.status_registro_id,
-					fecha: n.creado_en,
+					fechaRefTexto: n.fechaRefTexto,
 				};
 			});
 
