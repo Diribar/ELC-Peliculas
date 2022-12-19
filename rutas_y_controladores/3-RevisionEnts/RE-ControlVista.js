@@ -303,7 +303,7 @@ module.exports = {
 	linksForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		const codigo = "links";
+		const codigo = "abmLinks";
 		// Otras variables
 		let includes;
 		let entidad = req.query.entidad;
@@ -359,6 +359,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: prodOrig.nombre_castellano,
+			imgDerPers: comp.avatarOrigEdic(prodOrig, "").orig,
 			mostrarCartel: true,
 		});
 	},

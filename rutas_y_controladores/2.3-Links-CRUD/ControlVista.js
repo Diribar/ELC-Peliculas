@@ -12,7 +12,7 @@ module.exports = {
 		// DETALLE - ABM
 		// Tema y Código
 		const tema = "links_crud";
-		const codigo = "abm";
+		const codigo = "abmLinks";
 		// Obtiene los datos identificatorios del producto y del usuario
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
@@ -64,10 +64,10 @@ module.exports = {
 			producto,
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
-			imgDerPers,
 			title: producto.nombre_castellano,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
+			imgDerPers,
 			mostrarCartel: true,
 		});
 	},

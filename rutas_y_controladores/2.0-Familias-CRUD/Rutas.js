@@ -2,7 +2,7 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControladorAPI");
+const API = require("./ControlAPI");
 
 //************************ Rutas ****************************
 // Rutas de APIs
