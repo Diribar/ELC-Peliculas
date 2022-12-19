@@ -6,7 +6,7 @@
 	inactivo_<%= cond.inactivos %> 
 	<%- cond.inactivos ? 'ocultaInactivo' : '' %> 
 	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
-	fila<%= fila %> 
+	fila<%= fila %>
 	oscuro_<%- cond.rud ? cond.provAjeno : (cond.propio || (cond.creado && !!link.ediciones.length) || cond.estable) %>
 ">
 	<!-- Url -->
