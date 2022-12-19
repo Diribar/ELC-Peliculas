@@ -169,6 +169,20 @@ window.addEventListener("load", async () => {
 				return;
 			},
 		},
+		startUp: async function () {
+			// Valida el nombre
+			if (v.nombre.value) await this.nombre.nombreApodo();
+			// Personaliza los días del mes
+			if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
+			// Valida los días
+			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
+				// Valida las fechas
+				await this.fechas();
+				// Valida los duplicados
+				this.repetido();
+			}
+			if (v.entidad != "valores") await feedback.RCLI({todos: true});
+		},
 	};
 	let procesos = {
 		nombre: {
@@ -256,31 +270,22 @@ window.addEventListener("load", async () => {
 		},
 		RCLI: {
 			personajes: {
-				ano: async () => {
-					// Función
-					let proceso = (dato) => {
-						// Variables
-						let cnt = {},
-							ama = {};
-
-						// Resultados
-						if (dato != "") {
-							dato = Number(dato);
-							// Contemporáneos de Jesús
-							cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-							if (cnt.certeza) cnt.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
-
-							// Aparición Mariana
-							ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-							if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
-						} else cnt.certeza = ama.certeza = false;
-
-						// Fin
-						return {cnt, ama};
-					};
-
+				ano: () => {
 					// Variables
-					let {cnt, ama} = proceso(v.ano.value);
+					let cnt = {},
+						ama = {};
+					let dato = v.ano.value;
+					// Resultados
+					if (dato != "") {
+						dato = Number(dato);
+						// Contemporáneos de Jesús
+						cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+						if (cnt.certeza) cnt.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+
+						// Aparición Mariana
+						ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+						if (ama.certeza) ama.dato = false; // Si hay certeza sobre el resultado, el resultado es false
+					} else cnt.certeza = ama.certeza = false;
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
@@ -352,38 +357,35 @@ window.addEventListener("load", async () => {
 				},
 			},
 			hechos: {
-				ano: async () => {
-					// Funciones
-					let proceso = (dato) => {
-						// Variables
-						let jss = {},
-							cnt = {},
-							ncn = {},
-							ama = {};
+				ano: () => {
+					// Variables
+					let jss = {},
+						cnt = {},
+						ncn = {},
+						ama = {};
+					let dato = v.ano.value;
 
-						// Resultados
-						if (dato != "") {
-							dato = Number(dato);
-							// Jesús
-							jss.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-							if (jss.certeza) jss.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
+					// Resultados
+					if (dato != "") {
+						dato = Number(dato);
+						// Jesús
+						jss.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+						if (jss.certeza) jss.dato = dato <= 33; // Si hay certeza, en función del valor del año, el resultado es true o false
 
-							// Contemporáneos de Jesús
-							cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-							if (cnt.certeza) cnt.dato = dato <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
+						// Contemporáneos de Jesús
+						cnt.certeza = dato >= 0; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+						if (cnt.certeza) cnt.dato = dato <= 100; // Si hay certeza, en función del valor del año, el resultado es true o false
 
-							// También ocurrió fuera de la vida de los apóstoles
-							ncn.certeza = dato < 0 || dato > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
-							if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
+						// También ocurrió fuera de la vida de los apóstoles
+						ncn.certeza = dato < 0 || dato > 100; // Si el año es mayor o igual a cero, hay certeza sobre el resultado
+						if (ncn.certeza) ncn.dato = true; // Si hay certeza sobre el resultado, el resultado es true
 
-							// Aparición Mariana
-							ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
-							if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
-						} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
+						// Aparición Mariana
+						ama.certeza = dato < 1100; // Si el año es menor o igual a 1100, hay certeza sobre el resultado
+						if (ama.certeza) ama.dato = false; // Sabemos que en ese caso el resultado es false
+					} else jss.certeza = cnt.certeza = ncn.certeza = ama.certeza = false;
 
-						// Fin
-						return {jss, cnt, ncn, ama};
-					};
+					// Muestra u oculta sectores
 					let muestraOculta = (datos, campo) => {
 						// Situaciones en las que se oculta el sector
 						if (datos.certeza) {
@@ -397,11 +399,6 @@ window.addEventListener("load", async () => {
 							v[campo][1].checked = false;
 						}
 					};
-
-					// Variables
-					let {jss, cnt, ncn, ama} = proceso(v.ano.value);
-
-					// Mostrar u ocultar sectores
 					muestraOculta(jss, "jss");
 					muestraOculta(cnt, "cnt");
 					muestraOculta(ncn, "ncn");
@@ -411,30 +408,22 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				jss: async () => {
-					// Función
-					let proceso= (dato) => {
-						// Variables
-						let cnt = {},
-							ama = {};
-				
-						// Resultados
-						if (dato == "1") {
-							// Contemporáneos de Jesús
-							cnt.certeza = true; // Si 'jss' es true, hay certeza de que 'cnt' es true
-							cnt.dato = true; // Si 'jss' es true, 'cnt' es true también
-				
-							// Aparición Mariana
-							ama.certeza = true; // Si 'jss' es true, hay certeza de que 'ama' es false
-							ama.dato = false; // Si 'jss' es true, 'ama' es false
-						} else cnt.certeza = ama.certeza = false;
-				
-						// Fin
-						return {cnt, ama};
-					}
-				
 					// Variables
 					let dato = v.jss[0].checked ? v.jss[0].value : v.jss[1].checked ? v.jss[1].value : "";
-					let {cnt, ama} = proceso(dato)
+					// Variables
+					let cnt = {},
+						ama = {};
+
+					// Resultados
+					if (dato == "1") {
+						// Contemporáneos de Jesús
+						cnt.certeza = true; // Si 'jss' es true, hay certeza de que 'cnt' es true
+						cnt.dato = true; // Si 'jss' es true, 'cnt' es true también
+
+						// Aparición Mariana
+						ama.certeza = true; // Si 'jss' es true, hay certeza de que 'ama' es false
+						ama.dato = false; // Si 'jss' es true, 'ama' es false
+					} else cnt.certeza = ama.certeza = false;
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
@@ -464,32 +453,23 @@ window.addEventListener("load", async () => {
 					return;
 				},
 				cnt: async () => {
-					// Función
-					let proceso= (dato) => {
-						// Variables
-						let ncn = {},
-							ama = {};
-				
-						// Resultados
-						if (dato == "0") {
-							// Contemporáneos de Jesús
-							ncn.certeza = true; // Si 'cnt' es false, hay certeza de que 'ncn' es true
-							ncn.dato = true; // Si 'cnt' es false, 'ncn' es true
-						} else ncn.certeza = false;
-				
-						if (dato == "1") {
-							// Aparición Mariana
-							ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
-							ama.dato = false; // Si 'cnt' es true, 'ama' es false
-						} else ama.certeza = false;
-				
-						// Fin
-						return {ncn, ama};
-					}
-				
-					// Variable
+					// Variables
 					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
-					let {ncn, ama} = proceso(dato)
+					let ncn = {},
+						ama = {};
+
+					// Resultados
+					if (dato == "0") {
+						// Contemporáneos de Jesús
+						ncn.certeza = true; // Si 'cnt' es false, hay certeza de que 'ncn' es true
+						ncn.dato = true; // Si 'cnt' es false, 'ncn' es true
+					} else ncn.certeza = false;
+
+					if (dato == "1") {
+						// Aparición Mariana
+						ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
+						ama.dato = false; // Si 'cnt' es true, 'ama' es false
+					} else ama.certeza = false;
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (ncn.certeza) {
@@ -627,22 +607,26 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let feedback = {
-		startUp: async () => {
-			// Valida el nombre
-			if (v.nombre.value) await validacs.nombre.nombreApodo();
-			// Personaliza los días del mes
-			if (v.mes_id.value) procesos.fechas.muestraLosDiasDelMes(v.mes_id, v.dia);
-			// Valida los días
-			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) {
-				// Valida las fechas
-				await validacs.fechas();
-				// Valida los duplicados
-				validacs.repetido();
+		RCLI: async (comunicacion) => {
+			let {campo, todos} = comunicacion;
+			// 1. Acciones si se cambia el año
+			if (campo == "ano" || todos) {
+				await validacs.RCLI.ano();
+				if (OK.RCLI) procesos.RCLI[v.entidad].ano();
 			}
-			// Valida RCLI
-			if (v.entidad != "valores") await validacs.RCLI.consolidado();
-			// Muestra el RCLI
-			if (v.entidad != "valores") await procesos.RCLI.muestraOculta[v.entidad]();
+			// 2. Acciones si se cambia el sexo
+			if (campo == "sexo_id" || todos) procesos.RCLI.personajes.sexo();
+			// 3. Acciones si se cambia 'jss', 'cnt', o 'ncn'
+			if (campo && ["jss", "cnt", "ncn"].includes(campo)) procesos.RCLI.hechos[campo]();
+			else if (todos && v.entidad == "hechos")
+				for (let campo of ["jss", "cnt", "ncn"]) procesos.RCLI.hechos[campo]();
+
+			// Revisa los errores en RCLI
+			await validacs.RCLI.consolidado();
+			// Muestra y oculta los campos que correspondan
+			procesos.RCLI.muestraOculta[v.entidad]();
+			// Fin
+			return;
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -734,21 +718,7 @@ window.addEventListener("load", async () => {
 		// 3. Acciones si se cambia repetido
 		if (campo == "repetido") validacs.repetido();
 		// 4. Acciones si se cambia un campo RCLI
-		if (v.camposRCLI && v.camposRCLI.includes(campo)) {
-			// 4.1. Acciones si se cambia el año
-			if (campo == "ano") {
-				await validacs.RCLI.ano();
-				if (OK.RCLI) await procesos.RCLI[v.entidad].ano();
-			}
-			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.personajes.sexo();
-			// 4.3. Acciones si se cambia 'jss', 'cnt', o 'ncn'
-			if (["jss", "cnt", "ncn"].includes(campo)) await procesos.RCLI.hechos[campo]();
-			// Revisa los errores en RCLI
-			await validacs.RCLI.consolidado();
-			// Muestra y oculta los campos que correspondan
-			procesos.RCLI.muestraOculta[v.entidad]();
-		}
+		if (v.camposRCLI && v.camposRCLI.includes(campo)) feedback.RCLI({campo});
 		// Final de la rutina
 		feedback.muestraErroresOK();
 		feedback.botonSubmit();
@@ -770,7 +740,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await feedback.startUp();
+	await validacs.startUp();
 	feedback.muestraErroresOK();
 	feedback.botonSubmit();
 });
