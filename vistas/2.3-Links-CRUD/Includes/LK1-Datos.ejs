@@ -17,7 +17,7 @@
 		<input name='url' type="text" class="ocultar" value="<%= link.url %>">
 	</td>
 	<!-- Motivo -->
-	<td colspan="6" class="motivo ocultar">
+	<td colspan="7" class="motivo ocultar">
 		<strong>Motivo: </strong>
 		<select name="motivo_id">
 			<option value="" selected>Elejí el motivo</option>
@@ -67,21 +67,25 @@
 		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
 		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- DESHACER -->
-		<!-- Solo para provisorios propios en RUD -->
+		<!-- Solo para RUD y provisorios propios -->
 		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
-		<!-- ELIMINAR -->
-		<!-- Eliminar permanente: Sólo para (RUD en status creado y propio) -->
-		<!-- Inactivar sin necesidad de especificar el motivo: sólo para (Revisión en status provisorio y ajeno) -->
-		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.provAjeno) { %>
+		<!-- ELIMINAR PERMANENTEMENTE -->
+		<!-- Sólo para RUD en status creado y propio -->
+		<% if (cond.rud && cond.creadoPropio) { %>
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
+		<!-- A INACTIVO -->
+		<% } else if (cond.rud&&cond.aprobado || cond.revision&&!cond.aprobado) { %>
+			<!-- Sólo para RUD-aprobado o Revisión-noAprobado -->
+			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } else { %>
-			<!-- Especificar el motivo de Inactivar: Sólo para (RUD y aprobado) o (Revisión en status creado, ajeno y sin edición) -->
-			<!-- No está permitido para (RUD creado y ajeno, para que pueda ser revisado) -->
-			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.creadoPropio||!!link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<!-- Para hacer número -->
+			<i class="ocultar out"></i>
 		<% } %>
-		<!-- Sólo para status provisorio o inactivo -->
-		<i class="fa-solid fa-circle-question ayudaClick<%- !link.status_registro.gr_pasivos ? ' ocultar' : '' %>" tabindex="-1" title="Motivo">
-			<span class="ayudaMostrar ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </span>
-		</i>
+		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
+		<% if (link.motivo) { %>
+			<i class="fa-solid fa-circle-question ayudaClick despl_click" tabindex="-1" title="Motivo">
+				<span class="ayudaMostrar ocultar despl_mostrar"><%= link.motivo.comentario %> </span>
+			</i>
+		<% } %>
 	</td>
 </tr>
