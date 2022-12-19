@@ -67,12 +67,10 @@
 /* Quitar flechas del input - Firefox */
 /* #datos table .inputError input[type=number] {-moz-appearance: textfield;} */
 
-/* Ayuda particular */
-#cuerpo .ayudaMostrar {right: 20px; translate: 0% -50%}
-
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
+#datos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
 
 /* Comandos - Particularidades */
 #cuerpo .flechas.img {padding-left: 5px; padding-right: 5px;}

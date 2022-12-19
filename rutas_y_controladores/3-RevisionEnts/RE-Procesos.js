@@ -144,7 +144,7 @@ module.exports = {
 		// Fin
 		return {PA};
 	},
-	TC_obtieneRCLVsConEdicAjena: async (ahora, userID) => {
+	TC_obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
