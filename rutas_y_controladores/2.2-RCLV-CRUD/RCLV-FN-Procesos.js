@@ -275,4 +275,54 @@ module.exports = {
 			return {ncn, ama};
 		},
 	},
+	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor"],
+	procesarRCLV: async (datos) => {
+		// Variables
+		let DE = {};
+		// Asigna el valor 'null' a todos los campos
+		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
+		// Nombre
+		DE.nombre = datos.nombre;
+		// Día del año
+		if (!datos.desconocida)
+			DE.dia_del_ano_id = await BD_genericas.obtieneTodos("dias_del_ano", "id")
+				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
+				.then((n) => n.id);
+		// Año
+		if (datos.entidad != "valores" && datos.ano) DE.ano = datos.ano;
+		// Datos para personajes
+		if (datos.entidad == "personajes") {
+			// Datos sencillos
+			if (datos.apodo) DE.apodo = datos.apodo;
+			DE.sexo_id = datos.sexo_id;
+			DE.categoria_id = datos.categoria_id;
+			// RCLI
+			if (datos.categoria_id == "CFC") {
+				// Datos sencillos
+				DE.rol_iglesia_id = datos.rol_iglesia_id;
+				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
+				if (datos.ama == "1") DE.ap_mar_id = datos.ap_mar_id;
+				// subcategoria_id
+				let santoBeato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
+				if (datos.cnt == "1") DE.subcategoria_id = "CNT";
+				else if (datos.enProcCan == "1" && santoBeato) DE.subcategoria_id = "HAG";
+			}
+		}
+		if (datos.entidad == "hechos") {
+			// Variables
+			let {solo_cfc, jss, cnt, ncn, ama} = datos;
+			// Datos sencillos
+			DE.solo_cfc = solo_cfc;
+			DE.jss = jss;
+			// cnt
+			if (DE.jss == "1") DE.cnt = "1";
+			else DE.cnt = cnt;
+			// ncn
+			if (DE.cnt == "0") DE.ncn = "1";
+			else DE.ncn = ncn;
+			// ama
+			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
+		}
+		return DE;
+	},
 };

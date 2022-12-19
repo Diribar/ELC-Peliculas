@@ -65,9 +65,10 @@ window.addEventListener("load", async () => {
 		v.proceso_id = document.querySelector("select[name='proceso_id']");
 		v.ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		v.santosanta = document.querySelector("#dataEntry #santosanta");
-		// Sectores a mostrarOcultar
+		// Sectores a muestraOculta
 		v.sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		v.sector_ama = document.querySelector("#preguntas #sector_ama");
+		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 	}
 	// Valores para hechos
 	if (v.hechos) {
@@ -255,7 +256,7 @@ window.addEventListener("load", async () => {
 			},
 		},
 		RCLI: {
-			novs_personajes: {
+			personajes: {
 				ano: async () => {
 					// Variable
 					let dato = v.ano.value;
@@ -267,18 +268,18 @@ window.addEventListener("load", async () => {
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (cnt.certeza) {
 						// Oculta el sector
-						v.sector_cnt.classList.add("ocultarPorAno");
+						v.sector_cnt.classList.add("ocultaPorAno");
 						// Completa el dato de cnt
 						cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
-					} else v.sector_cnt.classList.remove("ocultarPorAno");
+					} else v.sector_cnt.classList.remove("ocultaPorAno");
 
 					// Aparición Mariana - Situaciones en las que se oculta el sector
 					if (ama.certeza && !ama.dato) {
 						// Oculta el sector
-						v.sector_ama.classList.add("ocultarPorAno");
+						v.sector_ama.classList.add("ocultaPorAno");
 						// Completa el dato de ama
 						v.ama[1].checked = true;
-					} else v.sector_ama.classList.remove("ocultarPorAno");
+					} else v.sector_ama.classList.remove("ocultaPorAno");
 
 					// Fin
 					return;
@@ -333,17 +334,21 @@ window.addEventListener("load", async () => {
 					return;
 				},
 			},
-			novs_hechos: {
+			hechos: {
 				ano: async () => {
 					// Función
-					let mostrarOcultar = (datos, campo) => {
+					let muestraOculta = (datos, campo) => {
 						// Situaciones en las que se oculta el sector
 						if (datos.certeza) {
 							// Oculta el sector
-							v["sector_" + campo].classList.add("ocultarPorAno");
+							v["sector_" + campo].classList.add("ocultaPorAno");
 							// Completa el dato
 							datos.dato ? (v[campo][0].checked = true) : (v[campo][1].checked = true);
-						} else v["sector_" + campo].classList.remove("ocultarPorAno");
+						} else {
+							v["sector_" + campo].classList.remove("ocultaPorAno");
+							v[campo][0].checked = false;
+							v[campo][1].checked = false;
+						}
 					};
 
 					// Variable
@@ -354,21 +359,17 @@ window.addEventListener("load", async () => {
 					let {jss, cnt, ncn, ama} = await fetch(ruta).then((n) => n.json());
 
 					// Mostrar u ocultar sectores
-					mostrarOcultar(jss, "jss");
-					mostrarOcultar(cnt, "cnt");
-					mostrarOcultar(ncn, "ncn");
-					mostrarOcultar(ama, "ama");
+					muestraOculta(jss, "jss");
+					muestraOculta(cnt, "cnt");
+					muestraOculta(ncn, "ncn");
+					muestraOculta(ama, "ama");
 
 					// Fin
 					return;
 				},
 				jss: async () => {
 					// Variable
-					let dato = v.jss[0].checked
-						? v.jss[0].value
-						: v.jss[1].checked
-						? v.jss[1].value
-						: "";
+					let dato = v.jss[0].checked ? v.jss[0].value : v.jss[1].checked ? v.jss[1].value : "";
 
 					// Lectura de 'procesos'
 					let ruta = v.rutaConsecuencias + "hechos&campo=jss&dato=" + dato;
@@ -380,7 +381,11 @@ window.addEventListener("load", async () => {
 						v.sector_cnt.classList.add("ocultaPorJSS");
 						// Completa el dato de cnt
 						cnt.dato ? (v.cnt[0].checked = true) : (v.cnt[1].checked = true);
-					} else v.sector_cnt.classList.remove("ocultaPorJSS");
+					} else {
+						v.sector_cnt.classList.remove("ocultaPorJSS");
+						v.cnt[0].checked = false;
+						v.cnt[1].checked = false;
+					}
 
 					// Aparición Mariana - Situaciones en las que se oculta el sector
 					if (ama.certeza) {
@@ -388,23 +393,22 @@ window.addEventListener("load", async () => {
 						v.sector_ama.classList.add("ocultaPorJSS");
 						// Completa el dato de ama
 						ama.dato ? (v.ama[0].checked = true) : (v.ama[1].checked = true);
-					} else v.sector_ama.classList.remove("ocultaPorJSS");
+					} else {
+						v.sector_ama.classList.remove("ocultaPorJSS");
+						v.ama[0].checked = false;
+						v.ama[1].checked = false;
+					}
 
 					// Fin
 					return;
 				},
 				cnt: async () => {
 					// Variable
-					let dato = v.cnt[0].checked
-						? v.cnt[0].value
-						: v.cnt[1].checked
-						? v.cnt[1].value
-						: "";
+					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
 
 					// Lectura de 'procesos'
 					let ruta = v.rutaConsecuencias + "hechos&campo=cnt&dato=" + dato;
 					let {ncn, ama} = await fetch(ruta).then((n) => n.json());
-					console.log(ncn,ama);
 
 					// Contemporáneo de Jesús - Situaciones en las que se oculta el sector
 					if (ncn.certeza) {
@@ -412,7 +416,11 @@ window.addEventListener("load", async () => {
 						v.sector_ncn.classList.add("ocultaPorCNT");
 						// Completa el dato de cnt
 						ncn.dato ? (v.ncn[0].checked = true) : (v.ncn[1].checked = true);
-					} else v.sector_cnt.classList.remove("ocultaPorCNT");
+					} else {
+						v.sector_ncn.classList.remove("ocultaPorCNT");
+						v.ncn[0].checked = false;
+						v.ncn[1].checked = false;
+					}
 
 					// Aparición Mariana - Situaciones en las que se oculta el sector
 					if (ama.certeza) {
@@ -420,10 +428,30 @@ window.addEventListener("load", async () => {
 						v.sector_ama.classList.add("ocultaPorCNT");
 						// Completa el dato de ama
 						ama.dato ? (v.ama[0].checked = true) : (v.ama[1].checked = true);
-					} else v.sector_ama.classList.remove("ocultaPorCNT");
+					} else {
+						v.sector_ama.classList.remove("ocultaPorCNT");
+						v.ama[0].checked = false;
+						v.ama[1].checked = false;
+					}
 
 					// Fin
 					return;
+				},
+				ncn: async () => {
+					// Variable
+					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
+
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (dato == "0") {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultaPorNCN");
+						// Completa el dato de ama
+						v.ama[1].checked = false;
+					} else {
+						v.sector_ama.classList.remove("ocultaPorCNT");
+						v.ama[0].checked = false;
+						v.ama[1].checked = false;
+					}
 				},
 			},
 			muestraOculta: {
@@ -498,9 +526,9 @@ window.addEventListener("load", async () => {
 						let valor = this.obtieneValor(campo);
 
 						// Particularidad para 'solo_cfc'
-						if (campo == "solo_cfc" && valor == "0") {
-							this.ocultar(indice + 1);
-							break;
+						if (campo == "solo_cfc") {
+							if (valor == "0") v.sector_ama.classList.add("ocultaPorNoCFC");
+							else v.sector_ama.classList.remove("ocultaPorNoCFC");
 						}
 
 						// Saltear
@@ -568,13 +596,23 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// Acciones si se cambia el nombre o apodo
 		if (campo == "nombre" || campo == "apodo") {
-			// Primera letra en mayúscula
+			// Variables
 			let valor = v[campo].value;
+			// 1. Primera letra en mayúscula
 			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			// Quita los caracteres no deseados
-			v[campo].value = v[campo].value.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
-			// Quita los caracteres que exceden el largo permitido
-			if (v[campo].value.length > 30) v[campo].value = v[campo].value.slice(0, 30);
+			valor = v[campo].value;
+			// 2. Quita los caracteres no deseados
+			v[campo].value = valor.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
+			valor = v[campo].value;
+			// 3. Quita el prefijo 'San'
+			if (campo == "nombre" && v.entidad == "personajes")
+				for (let prefijo of v.prefijos) {
+					if (valor.startsWith(prefijo + " ")) v[campo].value = valor.slice(prefijo.length + 1);
+					valor = v[campo].value;
+					break;
+				}
+			// 4. Quita los caracteres que exceden el largo permitido
+			if (valor.length > 30) v[campo].value = valor.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
 			feedback.muestraErrorOK(0, true);
@@ -594,7 +632,7 @@ window.addEventListener("load", async () => {
 		// 1. Acciones si se cambia el nombre o apodo
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) {
 			await validacs.nombre.nombreApodo();
-			procesos.nombre.logosWikiSantopedia();
+			if (OK.nombre) procesos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia la fecha
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
@@ -619,14 +657,12 @@ window.addEventListener("load", async () => {
 			// 4.1. Acciones si se cambia el año
 			if (campo == "ano") {
 				await validacs.RCLI.ano();
-				if (OK.RCLI) procesos.RCLI["novs_" + v.entidad].ano();
+				if (OK.RCLI) await procesos.RCLI[v.entidad].ano();
 			}
 			// 4.2. Acciones si se cambia el sexo
-			if (campo == "sexo_id") procesos.RCLI.novs_personajes.sexo();
-			// 4.3. Acciones si se cambia 'jss'
-			if (campo == "jss") procesos.RCLI.novs_hechos.jss();
-			// 4.4. Acciones si se cambia 'cnt'
-			if (campo == "cnt") procesos.RCLI.novs_hechos.cnt();
+			if (campo == "sexo_id") procesos.RCLI.personajes.sexo();
+			// 4.3. Acciones si se cambia 'jss', 'cnt', o 'ncn'
+			if (["jss", "cnt", "ncn"].includes(campo)) await procesos.RCLI.hechos[campo]();
 			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();
 			// Muestra y oculta los campos que correspondan
@@ -636,16 +672,15 @@ window.addEventListener("load", async () => {
 		feedback.muestraErroresOK();
 		feedback.botonSubmit();
 	});
+	// Botón submit
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {
+			// Realiza todas las validaciones
 			await validacs.nombre.nombreApodo();
 			await validacs.fechas();
 			validacs.repetido();
-			if (!v.valores) {
-				await validacs.RCLI.consolidado(true);
-				await procesos.RCLI["muestraOculta_" + v.entidad]();
-			}
+			if (!v.valores) await validacs.RCLI.consolidado(true);
 			// Fin
 			feedback.muestraErroresOK();
 		}

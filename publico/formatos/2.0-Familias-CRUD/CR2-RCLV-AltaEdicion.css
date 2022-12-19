@@ -3,7 +3,7 @@
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
-#cuerpo #dataEntry {display: flex; flex-direction: column;}
+#cuerpo #dataEntry {display: flex; flex-direction: column; z-index: 4;}
 #cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
@@ -43,10 +43,11 @@
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
-#dataEntry #preguntas .ocultarPorAno, 
-#dataEntry #preguntas .ocultarPorRCLI, 
-#dataEntry #preguntas .ocultaPorJSS,
-#dataEntry #preguntas .ocultaPorCNT {display: none;}
+#dataEntry #preguntas .ocultaPorAno, 
+#dataEntry #preguntas .ocultaPorRCLI, 
+#dataEntry #preguntas .ocultaPorJSS, 
+#dataEntry #preguntas .ocultaPorCNT, 
+#dataEntry #preguntas .ocultaPorNoCFC {display: none;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
 #dataEntry #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
