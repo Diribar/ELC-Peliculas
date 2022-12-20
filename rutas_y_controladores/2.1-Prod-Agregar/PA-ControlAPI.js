@@ -1,13 +1,11 @@
 "use strict";
 // Definir variables
-const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const buscar_x_PC = require("./FN-Buscar_x_PC");
-const procesos = require("./FN-Procesos");
-const valida = require("./FN-Validar");
-const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const buscar_x_PC = require("./PA-FN-Buscar_x_PC");
+const procesos = require("./PA-FN-Procesos");
+const valida = require("./PA-FN-Validar");
 
 module.exports = {
 	// Vista (palabrasClave)

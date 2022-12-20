@@ -2,8 +2,8 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const API = require("./PR-ControlAPI");
+const vista = require("./PR-ControlVista");
 
 //************************ Middlewares ******************************
 // Login y Roles de Usuario

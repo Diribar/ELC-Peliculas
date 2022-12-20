@@ -3,8 +3,6 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
-const valida = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero

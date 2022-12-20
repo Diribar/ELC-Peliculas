@@ -3,8 +3,8 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesosProd = require("../2.1-Prod-RUD/FN-Procesos");
-const procesos = require("./FN-Procesos");
+const procesosProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
+const procesos = require("./LK-FN-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
