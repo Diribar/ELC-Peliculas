@@ -315,6 +315,20 @@ window.addEventListener("load", async () => {
 						: "";
 					// Consecuencias
 					if (sexoValor) {
+						// Rol en la Iglesia
+						// 1. Actualiza las opciones
+						let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+						opciones_rol.forEach((n) =>
+							n.value.length < 2 || n.value[2] != sexoValor
+								? n.classList.add("ocultar")
+								: n.classList.remove("ocultar")
+						);
+						// 2. Preserva la opción elegida, cambiándole el sexo
+						let rol_iglesia = v.rol_iglesia_id.value;
+						if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
+							v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
+						// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
+						if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
 						// Proceso de canonización
 						// 1. Actualiza las opciones
 						let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
@@ -338,20 +352,6 @@ window.addEventListener("load", async () => {
 								letraAnterior,
 								letraActual
 							);
-						// Rol en la Iglesia
-						// 1. Actualiza las opciones
-						let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-						opciones_rol.forEach((n) =>
-							n.value.length < 2 || n.value[2] != sexoValor
-								? n.classList.add("ocultar")
-								: n.classList.remove("ocultar")
-						);
-						// 2. Preserva la opción elegida, cambiándole el sexo
-						let rol_iglesia = v.rol_iglesia_id.value;
-						if (rol_iglesia && rol_iglesia.length != 2 && rol_iglesia[2] != sexoValor)
-							v.rol_iglesia_id.value = rol_iglesia.slice(0, 2) + sexoValor;
-						// Si no existe la opción (ej: sacerdote mujer), opción "Elegí un valor"
-						if (!v.rol_iglesia_id.value) v.rol_iglesia_id.value = "";
 					}
 					return;
 				},
@@ -718,7 +718,7 @@ window.addEventListener("load", async () => {
 		// 3. Acciones si se cambia repetido
 		if (campo == "repetido") validacs.repetido();
 		// 4. Acciones si se cambia un campo RCLI
-		if (v.camposRCLI && v.camposRCLI.includes(campo)) feedback.RCLI({campo});
+		if (v.camposRCLI && v.camposRCLI.includes(campo)) await feedback.RCLI({campo});
 		// Final de la rutina
 		feedback.muestraErroresOK();
 		feedback.botonSubmit();

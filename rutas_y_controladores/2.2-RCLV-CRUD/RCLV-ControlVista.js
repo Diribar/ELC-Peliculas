@@ -14,6 +14,8 @@ module.exports = {
 		const datos = req.query;
 		// 2. Variables
 		let entidad = req.query.entidad;
+		let rclvID = req.query.id;
+		let userID = req.session.usuario.id;
 		let meses = await BD_genericas.obtieneTodos("meses", "id");
 		let dataEntry = req.session[entidad]
 			? req.session[entidad]
@@ -31,8 +33,8 @@ module.exports = {
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procs_canoniz = await BD_genericas.obtieneTodos("procs_canoniz", "orden");
-			procs_canoniz = procs_canoniz.filter((m) => m.id.length == 3);
+			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
+			procs_canon = procs_canon.filter((m) => m.id.length == 3);
 			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
 			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
@@ -40,11 +42,16 @@ module.exports = {
 		}
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
-			let id = req.query.id;
-			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
-			includes.push("status_registro");
+			// Obtiene el rclvOrig y rclvEdic
+			let [rclvOrig, rclvEdic] = await comp.obtieneVersionesDelRegistro(
+				entidad,
+				rclvID,
+				userID,
+				"rclvs_edicion",
+				"RCLVs"
+			);
 			// Pisa el data entry de session
-			dataEntry = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
 				res.redirect("/revision/tablero-de-control");
@@ -70,7 +77,7 @@ module.exports = {
 			DE: !!Object.keys(dataEntry).length,
 			meses,
 			roles_iglesia,
-			procs_canoniz,
+			procs_canon,
 			apariciones_marianas,
 			rutaSalir,
 		});
@@ -78,7 +85,7 @@ module.exports = {
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Variables
-		let {entidad, origen, prodEntidad, prodID} = req.query;
+		let {entidad, id: rclvID, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
@@ -99,6 +106,8 @@ module.exports = {
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
+				: origen == "DT_RCLV"
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
 				: "/";
 		return res.redirect(destino);
 	},
@@ -113,7 +122,7 @@ module.exports = {
 		// Obtiene RCLV con produtos
 		let entProductos = ["peliculas", "colecciones", "capitulos"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
-		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
+		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
 		let prodsYaEnBD = procesos.prodsYaEnBD(entProductos, RCLV);

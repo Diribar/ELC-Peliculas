@@ -20,7 +20,13 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await comp.obtieneVersionesDelRegistro(
+			entidad,
+			prodID,
+			userID,
+			"prods_edicion",
+			"productos"
+		);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
@@ -107,7 +113,13 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesos.obtieneVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await comp.obtieneVersionesDelRegistro(
+			entidad,
+			prodID,
+			userID,
+			"prods_edicion",
+			"productos"
+		);
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;

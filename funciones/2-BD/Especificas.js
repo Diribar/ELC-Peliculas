@@ -191,7 +191,7 @@ module.exports = {
 		return db[entidad]
 			.findAll({
 				where: {
-					// Que pertenezca al producto que nos interesa
+					// Que pertenezca a la entidad que nos interesa
 					[entidad_id]: entID,
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},

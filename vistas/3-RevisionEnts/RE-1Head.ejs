@@ -16,11 +16,11 @@
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Alta.css">
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 	<script src="/javascript/3-RevisionEnts/RE1-Prod1_Alta.js"></script>
+
 <!-- Específicos para Prod-Edicion (incluye Avatar) -->
 <% } else if (codigo.startsWith("producto/edicion")) { %>
 	<script src="/javascript/3-RevisionEnts/RE1-Prod2_Edicion.js"></script>
 <% } %>
-
 <!-- Específicos para Prod-Edicion-Avatar -->
 <% if (codigo == "producto/edicion/avatar") { %>
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-EdicAvatar.css">
@@ -30,11 +30,16 @@
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-EdicDemas.css">
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 
-	<!-- Específicos para RCLV-Altas -->
+<!-- Específicos para RCLV-Altas -->
 <% } else if (codigo == "rclv/alta") { %>
 	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR2-RCLV-AltaEdicion.css">
 	<script src="/javascript/2.0-Familias-CRUD/2-RCLV.js"></script>
-
+<!-- Específicos para RCLV-Edición -->
+<% } else if (codigo == "rclvEdicion") { %>
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-EdicDemas.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+	<script src="/javascript/3-RevisionEnts/RE1-Prod2_Edicion.js"></script>
+	
 	<!-- Específicos para Links -->
 <% } else if (codigo == "abmLinks") { %>
 	<!-- Uso compartido -->
