@@ -11,10 +11,10 @@ module.exports = {
 	edic_AprobRech: async (req, res) => {
 		// Variables
 		const {entidad, id: entID, edicion_id: edicID, campo} = req.query;
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const nombreEdic = (familia == "productos" ? "prods" : "rclvs") + "_edicion";
 		// Obtiene el registro editado
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
 		let includesEdic = comp.includes(familia);
-		let nombreEdic = (familia == "productos" ? "prods" : "rclvs") + "_edicion";
 		let regEdic = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includesEdic);
 		let quedanCampos, statusAprob;
 		// Si no existe la edición, interrumpe el flujo
@@ -29,7 +29,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.guardar_edic(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},

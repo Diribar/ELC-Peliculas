@@ -7,8 +7,8 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
-const valida = require("./FN-Validar");
+const procesos = require("./PA-FN-Procesos");
+const valida = require("./PA-FN-Validar");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {

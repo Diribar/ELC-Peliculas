@@ -5,7 +5,7 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesos = require("./FN-Procesos");
+const procesos = require("./PA-FN-Procesos");
 
 module.exports = {
 	// ControllerAPI (cantProductos)

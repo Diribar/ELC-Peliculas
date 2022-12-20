@@ -2,8 +2,8 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const API = require("./PA-ControlAPI");
+const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
 const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");

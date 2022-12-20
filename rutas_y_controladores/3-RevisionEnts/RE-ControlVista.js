@@ -191,7 +191,7 @@ module.exports = {
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.prodEdicGuardar_Gral(
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edic(
 					req,
 					prodOrig,
 					prodEdic
