@@ -37,17 +37,20 @@ window.addEventListener("load", () => {
 					taparMotivo[fila * columnas + columna].classList.add("ocultar");
 				// Mostrar el select
 				motivosFila[fila].classList.remove("ocultar");
+				motivosSelect[fila].focus()
 			} else if (
 				botonOut.classList.contains("fa-trash-can") &&
 				!botonOut.classList.contains("inactivo")
 			) {
 				let motivo_id = motivosSelect[fila].value;
+				console.log(motivo_id);
 				let url = condiciones;
 				url += "&url=" + encodeURIComponent(links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
 				let respuesta = await fetch(ruta + url).then((n) => n.json());
+				console.log(respuesta);
 				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
-				if (respuesta.reload) window.location.reload();
+				// if (respuesta.reload) window.location.reload();
 				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
 			}
 		});

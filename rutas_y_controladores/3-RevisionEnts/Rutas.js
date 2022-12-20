@@ -22,9 +22,9 @@ const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 router.get("/api/edicion-aprob-rech", ...algunos, API.edic_AprobRech);
 router.get("/api/producto-guarda-avatar", ...algunos, API.prodEdic_ConvierteUrlEnArchivo);
 // Links
-router.get("/api/link-alta", ...algunos, API.linkAlta);
+router.get("/api/link-alta", ...algunos, API.linkAltaBaja);
 router.get("/api/link-edicion", ...algunos, API.linkEdic);
-router.get("/api/link-eliminar", ...algunos, API.linkAlta);
+router.get("/api/link-eliminar", ...algunos, API.linkAltaBaja);
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...algunos, vista.tableroControl);

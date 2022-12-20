@@ -71,6 +71,7 @@ table * {font-size: 1.1rem;}
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 #datos tbody tr td.ancho_accion .fa-solid {cursor: pointer;}
+#datos tbody tr td.ancho_accion .fa-solid.inactivo {cursor: default;}
 #datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar {translate: -100% -50%; left: -5px; right: auto;}
 #datos tbody tr td.ancho_accion .ayudaClick .ayudaMostrar:before {left: auto; right: 0; rotate: 180deg; translate: 100% -50%;}
 
