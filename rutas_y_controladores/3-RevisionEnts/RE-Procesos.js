@@ -130,7 +130,7 @@ module.exports = {
 		return productos;
 	},
 	TC_obtieneRCLVs: async (ahora, userID) => {
-		// Obtiene RCLVs en situaciones particulares
+		// Obtiene rclvs en situaciones particulares
 		// Variables
 		let entidades = ["personajes", "hechos", "valores"];
 		let creado_id = status_registro.find((n) => n.creado).id;
@@ -149,16 +149,16 @@ module.exports = {
 		const campoFechaRef = "editado_en";
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let includes = ["personaje", "hecho", "valor"];
-		let RCLVs = [];
+		let rclvs = [];
 		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", userID, includes);
-		// 3. Obtiene los RCLVs originales y deja solamente los RCLVs aprobados
+		// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 		if (ediciones.length) {
-			// Obtiene los RCLVs originales
+			// Obtiene los rclvs originales
 			ediciones.map((n) => {
 				let entidad = comp.obtieneEntidad(n);
 				let asociacion = comp.obtieneEntidadSingular(entidad);
-				RCLVs.push({
+				rclvs.push({
 					...n[asociacion],
 					entidad,
 					editado_en: n.editado_en,
@@ -167,18 +167,18 @@ module.exports = {
 					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 				});
 			});
-			// Deja solamente los RCLVs aprobados
-			RCLVs = RCLVs.filter((n) => n.status_registro_id == aprobado_id);
+			// Deja solamente los rclvs aprobados
+			rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
 		}
 		// 4. Elimina los repetidos
-		if (RCLVs.length) {
-			RCLVs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-			RCLVs = comp.eliminaRepetidos(RCLVs);
+		if (rclvs.length) {
+			rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+			rclvs = comp.eliminaRepetidos(rclvs);
 		}
 		// 5. Deja solamente los sin problemas de captura
-		if (RCLVs.length) RCLVs = this.sinProblemasDeCaptura(RCLVs, userID, ahora);
+		if (rclvs.length) rclvs = this.sinProblemasDeCaptura(rclvs, userID, ahora);
 		// Fin
-		return RCLVs;
+		return rclvs;
 	},
 	TC_prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
@@ -210,14 +210,14 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	TC_RCLV_ProcesarCampos: (RCLVs) => {
+	TC_RCLV_ProcesarCampos: (rclvs) => {
 		// Procesar los registros
 		let anchoMax = 30;
-		const rubros = Object.keys(RCLVs);
+		const rubros = Object.keys(rclvs);
 
 		// Reconvierte los elementos
 		for (let rubro of rubros)
-			RCLVs[rubro] = RCLVs[rubro].map((n) => {
+			rclvs[rubro] = rclvs[rubro].map((n) => {
 				let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
 				let datos = {
 					id: n.id,
@@ -231,7 +231,7 @@ module.exports = {
 			});
 
 		// Fin
-		return RCLVs;
+		return rclvs;
 	},
 	sinProblemasDeCaptura: (familia, userID, ahora) => {
 		// Variables
@@ -285,7 +285,7 @@ module.exports = {
 		};
 		// Genera la variable 'includes'
 		let includes = comp.includes(familia);
-		if (familia == "RCLVs") includes = includes.filter((n) => n.entidad);
+		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 		// Obtiene las ediciones del producto
 		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
 			nombreEdic,
@@ -681,7 +681,7 @@ module.exports = {
 		};
 		// Variables
 		let ahora = comp.ahora();
-		let camposComparar = variables.camposRevisar.RCLVs.filter((n) => n[entidad]);
+		let camposComparar = variables.camposRevisar.rclvs.filter((n) => n[entidad]);
 		// Obtiene RCLV actual
 		let includes = [];
 		if (entidad != "valores") includes.push("dia_del_ano");
@@ -733,7 +733,7 @@ module.exports = {
 		return;
 	},
 	RCLV_prodsAprob: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
-		// Actualiza en RCLVs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
+		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
 		// 1. Se aprobó un cambio y el producto está aprobado
 		// 2. El cambio es un campo RCLV con valor distinto de 1
 		// 3. El registro no estaba aprobado
@@ -758,7 +758,7 @@ module.exports = {
 	// RCLV-Edición Form
 	RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
 		// Obtiene todos los campos a revisar
-		let campos = [...variables.camposRevisar.RCLVs];
+		let campos = [...variables.camposRevisar.rclvs];
 		let resultado = [];
 
 		// Deja solamente los campos presentes en edicion

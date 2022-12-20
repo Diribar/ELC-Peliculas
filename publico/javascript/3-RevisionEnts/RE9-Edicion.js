@@ -1,39 +1,42 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
-	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
-	let aprobar = document.querySelectorAll(".contenido .fa-circle-check");
-	let rutaEdicion = "/revision/api/producto-edicion-aprob-rech/?entidad=";
-	rutaEdicion += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
-
-	// Motivos para borrar
-	let muestraCartelMotivos = document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos");
-	let cartelMotivosRechazo = document.querySelectorAll(".contenido #cartelMotivosRechazo");
-	let motivoRechazos = document.querySelectorAll(".contenido #cartelMotivosRechazo select");
-	let cancelar = document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left");
-	let rechazar = document.querySelectorAll(".contenido .rechazar");
-	let sinMotivo = rechazar.length - motivoRechazos.length;
-	let tapaElFondo = document.querySelector("#tapar-el-fondo");
-	let versionActual = document.querySelector("#versionActual");
-	let motivoGenerico_id;
-	if (versionActual) motivoGenerico_id = versionActual.innerHTML;
-
-	// Bloque Ingresos
-	let bloqueIngrs = document.querySelector(".contenido #ingrs");
-	let filasIngrs = document.querySelectorAll(".contenido #ingrs .fila");
-
-	// Bloque Reemplazos
-	let bloqueReemps = document.querySelector(".contenido #reemps");
-	let filasReemps = document.querySelectorAll(".contenido #reemps .fila");
+	let v = {
+		// Datos del registro
+		entidad: new URL(window.location.href).searchParams.get("entidad"),
+		entID: new URL(window.location.href).searchParams.get("id"),
+		edicID: new URL(window.location.href).searchParams.get("edicion_id"),
+		// Motivos para borrar
+		aprobar: document.querySelectorAll(".contenido .fa-circle-check"),
+		muestraCartelMotivos: document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos"),
+		cartelMotivosRechazo: document.querySelectorAll(".contenido #cartelMotivosRechazo"),
+		motivoRechazos: document.querySelectorAll(".contenido #cartelMotivosRechazo select"),
+		cancelar: document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left"),
+		rechazar: document.querySelectorAll(".contenido .rechazar"),
+		tapaElFondo: document.querySelector("#tapar-el-fondo"),
+		versionActual: document.querySelector("#versionActual"),
+		motivoGenerico_id: "",
+		// Bloque Ingresos
+		bloqueIngrs: document.querySelector(".contenido #ingrs"),
+		filasIngrs: document.querySelectorAll(".contenido #ingrs .fila"),
+		// Bloque Reemplazos
+		bloqueReemps: document.querySelector(".contenido #reemps"),
+		filasReemps: document.querySelectorAll(".contenido #reemps .fila"),
+		// Otras variables
+		filas: document.querySelectorAll(".contenido .fila"),
+		campoNombres: document.querySelectorAll(".contenido .campoNombre"),
+		avatarActual: document.querySelector("#derecha img"),
+		rutaEdicion: "",
+		familia: location.pathname.slice(1),
+		rutaEdicion: "/revision/api/edicion-aprob-rech/?entidad=",
+	};
 
 	// Otras variables
-	let casos = aprobar.length == rechazar.length ? aprobar.length : 0;
-	let filas = document.querySelectorAll(".contenido .fila");
-	let campoNombres = document.querySelectorAll(".contenido .campoNombre");
-	campoNombres = Array.from(campoNombres).map((n) => n.innerHTML);
-	let avatarActual = document.querySelector("#derecha img");
+	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
+	let sinMotivo = v.rechazar.length - v.motivoRechazos.length;
+	if (v.versionActual) v.motivoGenerico_id = v.versionActual.innerHTML;
+	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
+	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuencias = (resultado, campo) => {
@@ -49,27 +52,27 @@ window.addEventListener("load", () => {
 			};
 			// Oculta bloque de Ingresos
 			if (
-				filasIngrs.length &&
-				bloqueIngrs &&
-				!bloqueIngrs.className.includes("ocultar") &&
-				todasLasFilasOcultas(filasIngrs)
+				v.filasIngrs.length &&
+				v.bloqueIngrs &&
+				!v.bloqueIngrs.className.includes("ocultar") &&
+				todasLasFilasOcultas(v.filasIngrs)
 			)
-				bloqueIngrs.classList.add("ocultar");
+				v.bloqueIngrs.classList.add("ocultar");
 			// Oculta bloque de Reemplazos
 			if (
-				filasReemps.length &&
-				bloqueReemps &&
-				!bloqueReemps.className.includes("ocultar") &&
-				todasLasFilasOcultas(filasReemps)
+				v.filasReemps.length &&
+				v.bloqueReemps &&
+				!v.bloqueReemps.className.includes("ocultar") &&
+				todasLasFilasOcultas(v.filasReemps)
 			)
-				bloqueReemps.classList.add("ocultar");
+				v.bloqueReemps.classList.add("ocultar");
 			// Fin
 			return;
 		};
 		let FN_todoProcesado = () => {
 			// Averigua cada bloque
-			let bloqueIngrsOculto = !bloqueIngrs || bloqueIngrs.className.includes("ocultar");
-			let bloqueReempsOculto = !bloqueReemps || bloqueReemps.className.includes("ocultar");
+			let bloqueIngrsOculto = !v.bloqueIngrs || v.bloqueIngrs.className.includes("ocultar");
+			let bloqueReempsOculto = !v.bloqueReemps || v.bloqueReemps.className.includes("ocultar");
 			// Averigua si está todo oculto
 			return bloqueIngrsOculto && bloqueReempsOculto;
 		};
@@ -93,7 +96,7 @@ window.addEventListener("load", () => {
 			// Flechas
 			let icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
+				link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts",
 			};
 			// Fin
 			return {arrayMensajes, icono};
@@ -120,7 +123,7 @@ window.addEventListener("load", () => {
 			flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
 			// Mostrar el cartel
-			tapaElFondo.classList.remove("ocultar");
+			v.tapaElFondo.classList.remove("ocultar");
 			cartel.classList.remove("ocultar");
 
 			// Fin
@@ -130,7 +133,7 @@ window.addEventListener("load", () => {
 		// Interrumpe si los resultados fueron insatisfactorios
 		if (!resultado.OK) return;
 		// Verifica si debe ocultar algún bloque
-		if (bloqueIngrs || bloqueReemps) ocultaBloques();
+		if (v.bloqueIngrs || v.bloqueReemps) ocultaBloques();
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos,
@@ -138,7 +141,7 @@ window.addEventListener("load", () => {
 			// Publica el cartel de avatar
 			if (campo == "avatar") cartel(mensajeAvatar());
 			// Mensaje de error
-			else console.log(todoProcesado , resultado.quedanCampos);
+			else console.log(todoProcesado, resultado.quedanCampos);
 		}
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado) cartel(mensajeFin());
@@ -148,29 +151,29 @@ window.addEventListener("load", () => {
 	let convierteUrlEnArchivo = async () => {
 		// Obtiene la ruta
 		let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
-		rutaConvertirEnArchivo += entidad + "&id=" + prodID + "&url=";
+		rutaConvertirEnArchivo += v.entidad + "&id=" + v.entID + "&url=";
 		// Obtiene el url
-		let url = encodeURIComponent(avatarActual.src);
+		let url = encodeURIComponent(v.avatarActual.src);
 		// Gestiona la descarga y obtiene el resultado
 		let [resultado, rutaYnombre] = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
 		// Cambia el 'src' de la imagen
-		if (resultado == "OK") avatarActual.src = rutaYnombre;
+		if (resultado == "OK") v.avatarActual.src = rutaYnombre;
 	};
 
 	// LISTENERS --------------------------------------------------------------------
 	for (let indice = 0; indice < casos; indice++) {
 		// Variables
 		let indiceMotivo = indice - sinMotivo;
-		let campo = campoNombres[indice];
+		let campo = v.campoNombres[indice];
 
 		// Aprobar el nuevo valor
-		aprobar[indice].addEventListener("click", async () => {
+		v.aprobar[indice].addEventListener("click", async () => {
 			// Stopper
-			if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
+			if (campo == "avatar") v.tapaElFondo.classList.remove("ocultar");
 			// Ocultar la fila
-			if (filas.length) filas[indice].classList.add("ocultar");
+			if (v.filas.length) v.filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
-			let ruta = rutaEdicion + "&aprob=true&campo=" + campo;
+			let ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
 			consecuencias(resultado, campo);
@@ -179,37 +182,37 @@ window.addEventListener("load", () => {
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
-			muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
-				if (campo == "avatar") tapaElFondo.classList.remove("ocultar");
-				cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
+			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
+				if (campo == "avatar") v.tapaElFondo.classList.remove("ocultar");
+				v.cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 			// Activa la opción para rechazar
-			motivoRechazos[indiceMotivo].addEventListener("change", () => {
-				if (motivoRechazos[indiceMotivo].value) rechazar[indice].classList.remove("inactivo");
-				else rechazar[indice].classList.add("inactivo");
+			v.motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (v.motivoRechazos[indiceMotivo].value) v.rechazar[indice].classList.remove("inactivo");
+				else v.rechazar[indice].classList.add("inactivo");
 			});
 		}
 
 		// Cancelar menú motivos para borrar
 		if (campo == "avatar")
-			cancelar.addEventListener("click", () => {
-				cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
-				tapaElFondo.classList.add("ocultar");
+			v.cancelar.addEventListener("click", () => {
+				v.cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
+				v.tapaElFondo.classList.add("ocultar");
 			});
 
 		// Rechaza el nuevo valor
-		rechazar[indice].addEventListener("click", async () => {
+		v.rechazar[indice].addEventListener("click", async () => {
 			// Variables
-			let motivo_id = indiceMotivo >= 0 ? motivoRechazos[indiceMotivo].value : motivoGenerico_id;
+			let motivo_id = indiceMotivo >= 0 ? v.motivoRechazos[indiceMotivo].value : v.motivoGenerico_id;
 			// Stopper
 			if (!motivo_id) return;
-			if (campo == "avatar") cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
+			if (campo == "avatar") v.cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
 			// Oculta la fila
-			if (filas.length) filas[indice].classList.add("ocultar");
+			if (v.filas.length) v.filas[indice].classList.add("ocultar");
 			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
-			if (campo == "avatar" && avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
+			if (campo == "avatar" && v.avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
-			let ruta = rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
+			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			let resultado = await fetch(ruta).then((n) => n.json());
 			// Consecuencias
 			consecuencias(resultado, campo);

@@ -195,7 +195,7 @@ module.exports = {
 			  entidad == "hechos" ||
 			  entidad == "valores" ||
 			  entidad == "rclvs_edicion"
-			? "RCLVs"
+			? "rclvs"
 			: entidad == "links" || entidad == "links_edicion"
 			? "links"
 			: "";

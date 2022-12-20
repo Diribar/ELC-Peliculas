@@ -23,19 +23,19 @@ module.exports = {
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
 		// RCLV
-		let RCLVs = await procesos.TC_obtieneRCLVs(ahora, userID);
-		RCLVs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
+		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
+		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
 		// Procesa los campos
 		productos = procesos.TC_prod_ProcesarCampos(productos);
-		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
+		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
-		// return res.send([productos,RCLVs]);
+		// return res.send([productos,rclvs]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Revisión - Tablero de Entidades",
 			productos,
-			RCLVs,
+			rclvs,
 		});
 	},
 	// Productos
@@ -261,7 +261,7 @@ module.exports = {
 		});
 	},
 
-	// RCLVs
+	// rclvs
 	rclvAltaGuardar: async (req, res) => {
 		// 1. Variables
 		const {entidad, id} = req.query;
@@ -310,7 +310,7 @@ module.exports = {
 		// Validaciones y obtiene rclvEdic
 		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(
 			req,
-			"RCLVs",
+			"rclvs",
 			"rclvs_edicion"
 		);
 		// Si no pasa los filtros => informa el error
@@ -322,11 +322,11 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("RCLVs"), "status_registro"];
+		let includesOrig = [...comp.includes("rclvs"), "status_registro"];
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let [edicion, quedanCampos] = comp.puleEdicion(rclvOrig, rclvEdic, "RCLVs");
+		let [edicion, quedanCampos] = comp.puleEdicion(rclvOrig, rclvEdic, "rclvs");
 		// Fin, si no quedan campos
 		if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos
