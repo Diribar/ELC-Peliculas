@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 		rechazar: document.querySelectorAll(".contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
 		versionActual: document.querySelector("#versionActual"),
-		motivoGenerico_id:"",
+		motivoGenerico_id: "",
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector(".contenido #ingrs"),
 		filasIngrs: document.querySelectorAll(".contenido #ingrs .fila"),
@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let sinMotivo = v.rechazar.length - v.motivoRechazos.length;
-	if (v.versionActual) motivoGenerico_id = v.versionActual.innerHTML;
+	if (v.versionActual) v.motivoGenerico_id = v.versionActual.innerHTML;
 
 	// Otras variables
 	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
