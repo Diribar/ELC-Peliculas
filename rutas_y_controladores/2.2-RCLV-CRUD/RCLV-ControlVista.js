@@ -42,9 +42,6 @@ module.exports = {
 		}
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
-			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
-			includes.push("status_registro");
-
 			// Obtiene el rclvOrig y rclvEdic
 			let [rclvOrig, rclvEdic] = await comp.obtieneVersionesDelRegistro(
 				entidad,
