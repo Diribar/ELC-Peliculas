@@ -13,7 +13,7 @@ module.exports = {
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
 		// Campos exclusivos
-		if (datos.entidad == "personajes") errores.RCLI = this[datos.entidad](datos);
+		if (datos.entidad != "valores") errores.RCLI = this[datos.entidad](datos);
 		// Completar con 'hay errores'
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
