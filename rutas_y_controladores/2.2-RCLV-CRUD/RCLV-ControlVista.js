@@ -48,7 +48,7 @@ module.exports = {
 				rclvID,
 				userID,
 				"rclvs_edicion",
-				"RCLVs",
+				"RCLVs"
 			);
 			// Pisa el data entry de session
 			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
@@ -85,7 +85,7 @@ module.exports = {
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Variables
-		let {entidad, id, origen, prodEntidad, prodID} = req.query;
+		let {entidad, id: rclvID, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
@@ -107,7 +107,7 @@ module.exports = {
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DT_RCLV"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
 				: "/";
 		return res.redirect(destino);
 	},
