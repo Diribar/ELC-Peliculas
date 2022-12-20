@@ -551,7 +551,10 @@ window.addEventListener("load", async () => {
 							}
 						}
 						// Particularidad para 'ano'
-						if (campo == "ano") continue;
+						if (campo == "ano") {
+							saltear = false;
+							continue;
+						}
 
 						// Particularidades para enProcCan y ama
 						if ((campo == "enProcCan" || campo == "ama") && valor == "0") {
@@ -566,8 +569,6 @@ window.addEventListener("load", async () => {
 							continue;
 						}
 
-						// Saltear
-						if (campo == "ano") saltear = false;
 						// Caso genérico
 						if (valor) v.cfc[indice + 1].classList.remove("ocultar");
 						else {
