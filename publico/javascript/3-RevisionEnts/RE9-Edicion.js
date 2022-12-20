@@ -28,21 +28,13 @@ window.addEventListener("load", () => {
 		avatarActual: document.querySelector("#derecha img"),
 		rutaEdicion: "",
 		familia: location.pathname.slice(1),
+		rutaEdicion: "/revision/api/edicion-aprob-rech/?entidad=",
 	};
 
-	// Ruta edición
-	(() => {
-		v.familia = v.familia.slice(v.familia.indexOf("/") + 1);
-		v.familia = v.familia.slice(0, v.familia.indexOf("/"));
-		v.rutaEdicion = "/revision/api/" + v.familia + "-edicion-aprob-rech/?entidad=";
-		v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
-	})();
-
-	// Motivos para borrar
+	// Otras variables
+	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
 	let sinMotivo = v.rechazar.length - v.motivoRechazos.length;
 	if (v.versionActual) v.motivoGenerico_id = v.versionActual.innerHTML;
-
-	// Otras variables
 	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
 	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);
 

@@ -476,7 +476,7 @@ window.addEventListener("load", async () => {
 				if (subcategoriaSelect.value == "AMA" && valor != "1") DP.interaccionesApMar(campo);
 				DP.iconosEdicionRCLVs();
 			}
-			// Para que incluya los datos de la subcategoría y RCLVs, por si se necesitan para validar RCLV
+			// Para que incluya los datos de la subcategoría y rclvs, por si se necesitan para validar RCLV
 			let adicSubcategoria = subcategoriaSelect.value ? DP.adicSubcat(campo) : "";
 			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor + adicSubcategoria;

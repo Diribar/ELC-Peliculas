@@ -41,14 +41,14 @@ module.exports = {
 			{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
 			{titulo: "Sub-categoría", valor: comp.valorNombre(prodComb.subcategoria, "Sin datos")},
 		];
-		// RCLVs
-		let RCLVs = (campo, titulo, RCLV_entidad, rel) => {
+		// rclvs
+		let rclvs = (campo, titulo, RCLV_entidad, rel) => {
 			let datos = {titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id};
 			if (prodComb[campo] != 1) bloques.push(datos);
 		};
-		RCLVs("personaje_id", "Personaje Histórico", "personajes", "personaje");
-		RCLVs("hecho_id", "Hecho Histórico", "hechos", "hecho");
-		RCLVs("valor_id", "Valor", "valores", "valor");
+		rclvs("personaje_id", "Personaje Histórico", "personajes", "personaje");
+		rclvs("hecho_id", "Hecho Histórico", "hechos", "hecho");
+		rclvs("valor_id", "Valor", "valores", "valor");
 		// Otros
 		bloques.push({titulo: "Año de estreno", valor: prodComb.ano_estreno});
 		if (entidad == "colecciones")

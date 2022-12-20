@@ -48,7 +48,7 @@ module.exports = {
 				rclvID,
 				userID,
 				"rclvs_edicion",
-				"RCLVs"
+				"rclvs"
 			);
 			// Pisa el data entry de session
 			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};

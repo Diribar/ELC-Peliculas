@@ -421,7 +421,7 @@ module.exports = {
 				input: true,
 			},
 		],
-		RCLVs: [
+		rclvs: [
 			// Personajes
 			{nombre: "nombre", titulo: "Nombre Formal", personajes: true, hechos: true, valores: true},
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
