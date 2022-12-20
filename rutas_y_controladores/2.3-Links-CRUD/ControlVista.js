@@ -18,10 +18,12 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesosProd.obtieneVersionesDelProducto(
+		let [prodOrig, prodEdic] = await procesosProd.obtieneVersionesDelRegistro(
 			prodEntidad,
 			prodID,
-			userID
+			userID,
+			"prods_edicion",
+			"productos"
 		);
 		// Obtiene el avatar
 		let imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);

@@ -14,6 +14,8 @@ module.exports = {
 		const datos = req.query;
 		// 2. Variables
 		let entidad = req.query.entidad;
+		let rclvID = req.query.id;
+		let userID = req.session.usuario.id;
 		let meses = await BD_genericas.obtieneTodos("meses", "id");
 		let dataEntry = req.session[entidad]
 			? req.session[entidad]
@@ -40,11 +42,19 @@ module.exports = {
 		}
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
-			let id = req.query.id;
 			let includes = entidad == "personajes" ? ["rol_iglesia"] : [];
 			includes.push("status_registro");
+
+			// Obtiene el rclvOrig y rclvEdic
+			let [rclvOrig, rclvEdic] = await comp.obtieneVersionesDelRegistro(
+				entidad,
+				rclvID,
+				userID,
+				"rclvs_edicion",
+				"RCLVs",
+			);
 			// Pisa el data entry de session
-			dataEntry = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
 				res.redirect("/revision/tablero-de-control");
