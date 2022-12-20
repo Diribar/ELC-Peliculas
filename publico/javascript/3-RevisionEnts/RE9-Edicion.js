@@ -95,7 +95,7 @@ window.addEventListener("load", () => {
 			let arrayMensajes = ["Se completó la revisión", "Muchas gracias"];
 			// Flechas
 			let icono = {
-				HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
 				link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts",
 			};
 			// Fin
@@ -120,7 +120,7 @@ window.addEventListener("load", () => {
 			mensajes.innerHTML = "";
 			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 			flechas.innerHTML = "";
-			flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
+			flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
 
 			// Mostrar el cartel
 			v.tapaElFondo.classList.remove("ocultar");

@@ -360,7 +360,8 @@ module.exports = {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const nombreEdic = (familia == "productos" ? "prods" : "rclvs") + "_edicion";
+		const producto = familia == "productos";
+		const nombreEdic = (producto ? "prods" : "rclvs") + "_edicion";
 		const edicAprob = aprob == "true";
 		const decision = "edics_" + (edicAprob ? "aprob" : "rech");
 		const userID = req.session.usuario.id;
@@ -455,16 +456,16 @@ module.exports = {
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
+
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
 				// Averigua si tiene errores
-				let errores =
-					familia == "productos"
-						? await validaProds.consolidado(null, {...regOrig, entidad})
-						: await validaRCLVs.consolidado(null, {...regOrig, entidad});
+				let errores = producto
+					? await validaProds.consolidado(null, {...regOrig, entidad})
+					: await validaRCLVs.consolidado({...regOrig, entidad});
 				// Acciones si el original no tiene errores y está en status 'gr_creado'
 				if (!errores.hay && regOrig.status_registro.gr_creado) {
 					// Genera la información a actualizar en el registro original
@@ -495,7 +496,7 @@ module.exports = {
 		} else edicion = {...datosEdicion, ...edicion};
 
 		// Actualiza RCLV si corresponde
-		if (!statusAprobInicial && statusAprobFinal)
+		if (producto && !statusAprobInicial && statusAprobFinal)
 			this.RCLV_prodsAprob(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
