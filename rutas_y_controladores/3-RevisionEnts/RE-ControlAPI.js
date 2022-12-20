@@ -94,14 +94,14 @@ module.exports = {
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
-			datos.alta_analizada_en = comp.ahora();
-			datos.lead_time_creacion = 1;
+			datos.alta_analizada_en = ahora;
+			datos.lead_time_creacion = comp.obtieneLeadTime(link.creado_en, ahora);
 			if (!prodAprob) datos.motivo_id = motivo_id;
 		}
 		await BD_genericas.actualizaPorId("links", link.id, datos);
 
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
-		let duracion = motivo ? motivo.duracion : 0;
+		let duracion = !prodAprob ? motivo.duracion : 0;
 		datos = {
 			entidad_id: link.id,
 			entidad: "links",
