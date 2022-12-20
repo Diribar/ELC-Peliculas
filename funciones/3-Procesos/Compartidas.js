@@ -87,8 +87,10 @@ module.exports = {
 			return edicion;
 		};
 		// Variables
-		let edicID = edicion.id;
+		const edicID = edicion.id;
 		edicion = {...edicion}; // Ojo acá, es una prueba a ver si sale bien
+		const nombreEdic = (familia == "productos" ? "prods" : "rclvs") + "_edicion";
+
 		// Pulir la información a tener en cuenta
 		edicion = this.quitaCamposSinContenido(edicion);
 		edicion = quitaCamposQueNoSeComparan(edicion);
@@ -96,7 +98,7 @@ module.exports = {
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan campos, elimina el registro de la edición
-		if (!quedanCampos) BD_genericas.eliminaPorId("prods_edicion", edicID);
+		if (!quedanCampos) BD_genericas.eliminaPorId(nombreEdic, edicID);
 
 		// Fin
 		return [edicion, quedanCampos];
