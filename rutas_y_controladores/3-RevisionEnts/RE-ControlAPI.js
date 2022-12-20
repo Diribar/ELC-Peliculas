@@ -115,11 +115,11 @@ module.exports = {
 			aprobado: prodAprob,
 			duracion,
 		};
-		await BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
 
 		// Actualiza el campo 'links_gratuitos' en el producto
 		if (link.gratuito && link.tipo.pelicula) {
-			if (aprobado) procesos.links_gratuitoEnProd(prodEntidad, prodID);
+			if (prodAprob) procesos.links_gratuitoEnProd(prodEntidad, prodID);
 			else procesos.links_averiguaGratuitoEnProd(prodEntidad, prodID);
 		}
 
