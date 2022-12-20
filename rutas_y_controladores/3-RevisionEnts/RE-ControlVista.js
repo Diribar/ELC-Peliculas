@@ -278,9 +278,9 @@ module.exports = {
 		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
-		// Procesa el data-entry
+		// 3. Procesa el data-entry
 		let dataEntry = await procesosCRUD.procesarRCLV(datos);
-		// Genera la información para guardar
+		// 4. Genera la información para guardar
 		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
 		dataEntry = {
@@ -292,18 +292,18 @@ module.exports = {
 			status_registro_id: aprobado_id,
 		};
 		// return res.send(dataEntry);
-		// Guarda los cambios
+		// 5. Guarda los cambios
 		await procesosCRUD.guardaLosCambios(req, res, dataEntry);
-		// Consecuencias de las diferencias
-		procesos.RCLV_AltaGuardar(entidad, original, userID);
-		// 9. Redirecciona a la siguiente instancia
+		// 6. Actualiza la tabla de edics aprob/rech
+		procesos.RCLV_EdicAprobRech(entidad, original, userID);
+		// 7. Redirecciona a la siguiente instancia
 		return res.redirect("/revision/tablero-de-control");
 	},
 	// Links
 	linksForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
-		const codigo = "links";
+		const codigo = "abmLinks";
 		// Otras variables
 		let includes;
 		let entidad = req.query.entidad;
@@ -315,9 +315,9 @@ module.exports = {
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = procesos.problemasLinks(prodOrig, req.session.urlAnterior);
+		let informacion = procesos.problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_id(entidad);
@@ -326,7 +326,7 @@ module.exports = {
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
-		let avatar = prodOrig.avatar;
+		let avatar = producto.avatar;
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
 			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
@@ -348,7 +348,8 @@ module.exports = {
 			titulo,
 			entidad,
 			id,
-			prodOrig,
+			producto,
+			prodOrig: producto,
 			links,
 			provs,
 			links_tipos: linksTipos,
@@ -358,7 +359,8 @@ module.exports = {
 			mostrar: null,
 			userID,
 			camposARevisar,
-			title: prodOrig.nombre_castellano,
+			title: producto.nombre_castellano,
+			imgDerPers: comp.avatarOrigEdic(producto, "").orig,
 			mostrarCartel: true,
 		});
 	},

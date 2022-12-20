@@ -144,7 +144,7 @@ module.exports = {
 		// Fin
 		return {PA};
 	},
-	TC_obtieneRCLVsConEdicAjena: async (ahora, userID) => {
+	TC_obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
 		let aprobado_id = status_registro.find((n) => n.aprobado).id;
@@ -656,7 +656,7 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	RCLV_AltaGuardar: async (entidad, original, userID) => {
+	RCLV_EdicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
@@ -676,18 +676,26 @@ module.exports = {
 		};
 		// Variables
 		let ahora = comp.ahora();
-		let camposComparar = variables.camposRevisar.RCLVs.filter((n) => !!n.titulo).filter(
-			(n) => n[entidad]
-		);
+		let camposComparar = variables.camposRevisar.RCLVs.filter((n) => n[entidad]);
 		// Obtiene RCLV actual
 		let includes = [];
 		if (entidad != "valores") includes.push("dia_del_ano");
 		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 		// Obtiene los motivos posibles
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech");
-		let versionActual = motivos.find((n) => n.version_actual);
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech","orden");
+		let motivoVersionActual = motivos.find((n) => n.version_actual);
 		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+		// Prepara la información
+		let datos = {
+			entidad,
+			entidad_id: original.id,
+			editado_por_id: original.creado_por_id,
+			editado_en: original.creado_en,
+			edic_analizada_por_id: userID,
+			edic_analizada_en: ahora,
+		};
+
 		// Rutina para comparar los campos
 		for (let campoComparar of camposComparar) {
 			// Valor aprobado
@@ -695,25 +703,20 @@ module.exports = {
 			let valor_rech = RCLV_valorVinculo(original, campoComparar.nombre);
 			if (!valor_aprob && !valor_rech) continue;
 			// Genera la información
-			let datos = {
-				entidad,
-				entidad_id: original.id,
+			datos = {
+				...datos,
 				campo: campoComparar.nombre,
 				titulo: campoComparar.titulo,
 				valor_aprob,
-				input_por_id: original.creado_por_id,
-				input_en: original.creado_en,
-				evaluado_por_id: userID,
-				evaluado_en: ahora,
 			};
 			// Obtiene la entidad
 			let entidadAprobRech;
 			if (original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]) {
 				entidadAprobRech = "edics_rech";
 				datos.valor_rech = valor_rech;
-				motivo =
+				let motivo =
 					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo"
-						? versionActual
+						? motivoVersionActual
 						: motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;

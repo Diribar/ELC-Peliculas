@@ -55,17 +55,17 @@ module.exports = {
 	// Links
 	linkAlta: async (req, res) => {
 		// Variables
-		const {prodEntidad, prodID, url, motivo_id} = req.query;
-		const creadoAprob = req.query.aprob == "true";
+		const {prodEntidad, prodID, url} = req.query;
+		const aprobado = req.query.aprob == "true";
 		const userID = req.session.usuario.id;
 		const st_aprobado = status_registro.find((n) => n.aprobado).id;
 		const st_inactivo = status_registro.find((n) => n.inactivo).id;
 		const ahora = comp.ahora();
-		let datos;
-		// Averigua si no existe el 'url'
+		let datos, motivo;
+		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro"]);
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, "status_registro");
 		// El link no existe en la BD
 		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y no tiene status 'creado' o 'provisorio'
@@ -74,27 +74,28 @@ module.exports = {
 		let recuperar = link.status_registro.recuperar;
 		let gr_provisorios = inactivar || recuperar;
 		if (!creado && !gr_provisorios)
-			return res.json({mensaje: "En este status no se puede procesos", reload: true});
-		// Variables
-		let decision = (!inactivar && creadoAprob) || (inactivar && !creadoAprob); // Obtiene si la decisión valida al sugerido
+			return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		// USUARIO - Actualización de link_aprob / link_rech
+		let campo = "link_" + (aprobado ? "aprob" : "rech");
 		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
-		motivo_id = !creado || !creadoAprob ? (creado ? motivo_id : link.motivo_id) : null;
-		// USUARIO - Actualizaciones
-		let campo = "link_" + (decision ? "aprob" : "rech");
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
-		if (!inactivar && !creadoAprob) {
-			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
-			procesos.usuario_Penalizar(sugerido_por_id, motivo);
+		if (!aprobado) {
+			motivo_id = creado ? req.query.motivo_id : gr_provisorios ? link.motivo_id : null;
+			if (creado || recuperar) {
+				motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
+				comp.usuario_aumentaPenalizacAcum(sugerido_por_id, motivo);
+			}
 		}
-		// LINK - Pasa a status aprobado/rechazado -
-		datos = {status_registro_id: creadoAprob ? st_aprobado : st_inactivo};
+		// LINK - Pasa a status aprobado/rechazado
+
+		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
 			datos.alta_analizada_en = comp.ahora();
 			datos.lead_time_creacion = 1;
-			if (!creadoAprob) {
+			if (!aprobado) {
 				datos.sugerido_por_id = userID;
 				datos.sugerido_en = ahora;
 				datos.motivo_id = motivo_id;
@@ -110,14 +111,14 @@ module.exports = {
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: creadoAprob ? st_aprobado : st_inactivo,
-			aprobado: decision,
+			status_final_id: aprobado ? st_aprobado : st_inactivo,
+			aprobado,
 			motivo_id,
 			duracion,
 		};
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (creadoAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
+		if (aprobado) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},

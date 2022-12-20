@@ -423,7 +423,7 @@ module.exports = {
 		],
 		RCLVs: [
 			// Personajes
-			{nombre: "nombre", titulo: "Nombre Más Conocido", personajes: true, hechos: true, valores: true},
+			{nombre: "nombre", titulo: "Nombre Formal", personajes: true, hechos: true, valores: true},
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{
 				nombre: "sexo_id",
@@ -433,8 +433,7 @@ module.exports = {
 				campo_include: "nombre",
 			},
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
-			{nombre: "ano", titulo: "Año Desde", personajes: true, hechos: true},
-			{nombre: "hasta", titulo: "Año Hasta", personajes: true, hechos: true},
+			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			{
 				nombre: "categoria_id",
 				titulo: "Categoría",
@@ -444,7 +443,7 @@ module.exports = {
 			},
 			{
 				nombre: "subcategoria_id",
-				titulo: "",
+				titulo: "Subcategoría",
 				personajes: true,
 				relac_include: "subcategoria",
 				campo_include: "nombre",
@@ -472,10 +471,10 @@ module.exports = {
 			},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
-			{nombre: "jss", titulo: "", hechos: true},
-			{nombre: "cnt", titulo: "", hechos: true},
-			{nombre: "ncn", titulo: "", hechos: true},
-			{nombre: "ama", titulo: "", hechos: true},
+			{nombre: "jss", titulo: "Durante la vida de Jesús", hechos: true},
+			{nombre: "cnt", titulo: "Durante la vida de los Apóstoles", hechos: true},
+			{nombre: "ncn", titulo: "Fuera de la vida de los Apóstoles", hechos: true},
+			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 		],
 		links: [
 			{nombre: "calidad", titulo: "Calidad"},

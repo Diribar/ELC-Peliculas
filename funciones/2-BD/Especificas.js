@@ -204,7 +204,7 @@ module.exports = {
 	},
 
 	// USUARIOS ---------------------------------------------------------
-	// Controladora/Usuario/Login
+	// Controlador/Usuario/Login
 	obtieneUsuarioPorID: (id) => {
 		return db.usuarios
 			.findByPk(id, {include: ["rol_usuario", "status_registro"]})
@@ -222,7 +222,7 @@ module.exports = {
 			})
 			.then((n) => n.map((m) => m.toJSON()));
 	},
-	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
+	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login
 	obtieneUsuarioPorMail: (email) => {
 		return db.usuarios
 			.findOne({

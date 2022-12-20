@@ -455,7 +455,7 @@ module.exports = {
 		let avatarOrig, avatarEdic;
 
 		// Si no existe avatarOrig
-		if (!prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
+		if (!prodOrig || !prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
 		// Si es un url
 		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
 		// Si el avatar está 'aprobado'
@@ -466,7 +466,7 @@ module.exports = {
 			avatarOrig = "/imagenes/4-ProdsRevisar/" + prodOrig.avatar;
 
 		// avatarEdic
-		avatarEdic = prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : avatarOrig;
+		avatarEdic = prodEdic && prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
@@ -564,9 +564,9 @@ module.exports = {
 	// Usuarios
 	usuario_aumentaPenalizacAcum: (userID, motivo) => {
 		// Variables
-		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		let rol_consultasID = roles_us.find((n) => !n.perm_inputs).id;
 		// Se le baja el rol a 'Consultas', si el motivo lo amerita
-		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_usuario_id});
+		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_consultasID});
 		// Aumenta la penalización acumulada
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", motivo.duracion);
 		// Fin
