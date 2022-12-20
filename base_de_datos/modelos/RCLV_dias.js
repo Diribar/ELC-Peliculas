@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		dia: {type: dt.INTEGER},
 		mes_id: {type: dt.INTEGER},
+		nombre: {type: dt.STRING(6)},
 	};
 	const config = {
 		tableName: "rclv_dias",
