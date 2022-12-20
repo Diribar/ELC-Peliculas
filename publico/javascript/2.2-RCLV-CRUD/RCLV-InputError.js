@@ -672,9 +672,11 @@ window.addEventListener("load", async () => {
 			// 3. Quita el prefijo 'San'
 			if (campo == "nombre" && v.entidad == "personajes")
 				for (let prefijo of v.prefijos) {
-					if (valor.startsWith(prefijo + " ")) v[campo].value = valor.slice(prefijo.length + 1);
-					valor = v[campo].value;
-					break;
+					if (valor.startsWith(prefijo + " ")) {
+						v[campo].value = valor.slice(prefijo.length + 1);
+						valor = v[campo].value;
+						break;
+					}
 				}
 			// 4. Quita los caracteres que exceden el largo permitido
 			if (valor.length > 30) v[campo].value = valor.slice(0, 30);

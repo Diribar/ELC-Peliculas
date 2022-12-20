@@ -177,7 +177,7 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor"],
+	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor", "Padre", "Hna"],
 	procesarRCLV: async (datos) => {
 		// Variables
 		let DE = {};

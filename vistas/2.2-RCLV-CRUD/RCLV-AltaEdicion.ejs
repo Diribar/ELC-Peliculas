@@ -163,7 +163,7 @@
 					<div class="flexRowAlign spaceBetween">
 						<!-- Sexo -->
 						<div id="sexo_id" class="flexRowAlign cfc">
-							<label class="izquierda">Sexo</label>
+							<label class="margenDer">Sexo</label>
 							<div class="flexRowAlign">
 								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
 								<label for="V">Varón</label>
@@ -175,7 +175,7 @@
 						</div>
 						<!-- CFC/VPC -->
 						<div class="flexRowAlign altoFila cfc">
-							<label class="izquierda">¿Relacionado con la Iglesia Católica?</label>
+							<label class="margenDer">¿Relacionado con la Iglesia Católica?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
 									<input id="catSI" type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
@@ -206,7 +206,7 @@
 						</div>
 						<!-- Rol en la Iglesia -->
 						<div id="sectorRol_iglesia" class="flexRowAlign ocultar cfc">
-							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia</label>
+							<label for="rol_iglesia_id" class="margenDer">Rol en la Iglesia</label>
 							<select name="rol_iglesia_id" class="RCLI">
 								<option value="" selected>Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
@@ -219,7 +219,7 @@
 					<div class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
-							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
+							<label id="santosanta" class="margenDer">¿Santo o en proceso de canonización?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
 									<input id="enProcCanSI" type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
@@ -241,7 +241,7 @@
 					</div>
 					<!-- Contemporáneo de Jesús -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
-						<label class="izquierda">¿Es contemporáneo de Jesús?</label>
+						<label class="margenDer">¿Es contemporáneo de Jesús?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input id="cntSI" type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
@@ -256,7 +256,7 @@
 					<!-- Aparición Mariana -->
 					<div id="sector_ama" class="flexRowAlign altoFila spaceBetween ocultar cfc">
 						<div class="flexRowAlign">
-							<label class="izquierda">¿Participó en una aparición mariana?</label>
+							<label class="margenDer">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
 									<input id="ap_marSI" type="radio" name="ama" value="1" <% if (dataEntry.ama==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
@@ -311,7 +311,7 @@
 								<label for="solo_cfcNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
+						<label class="margenIzq">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
 					</div>
 					<!-- Hecho JSS -->
 					<div id="sector_jss" class="flexRowAlign altoFila cfc ocultar">
@@ -325,7 +325,7 @@
 								<label for="jssNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Ocurrió durante la vida de Jesús?</label>
+						<label class="margenIzq">¿Ocurrió durante la vida de Jesús?</label>
 					</div>
 					<!-- Hecho CNT -->
 					<div id="sector_cnt" class="flexRowAlign altoFila cfc ocultar">
@@ -339,7 +339,7 @@
 								<label for="cntNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Ocurrió durante la vida de los apóstoles?</label>
+						<label class="margenIzq">¿Ocurrió durante la vida de los apóstoles?</label>
 					</div>
 					<!-- Hecho No CNT -->
 					<div id="sector_ncn" class="flexRowAlign altoFila cfc ocultar">
@@ -353,7 +353,7 @@
 								<label for="ncnNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Ocurrió también fuera de la vida de los Apóstoles?</label>
+						<label class="margenIzq">¿Ocurrió también fuera de la vida de los Apóstoles?</label>
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sector_ama" class="flexRowAlign altoFila cfc ocultar">
@@ -367,7 +367,7 @@
 								<label for="amaNO">NO</label>
 							</div>
 						</div>
-						<label class="derecha">¿Es una aparición mariana?</label>
+						<label class="margenIzq">¿Es una aparición mariana?</label>
 					</div>
 				</div>
 			<% } %>
