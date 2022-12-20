@@ -459,7 +459,7 @@ module.exports = {
 				nombre: "proceso_id",
 				titulo: "Proceso de Canonizac.",
 				personajes: true,
-				relac_include: "proc_canoniz",
+				relac_include: "proc_canon",
 				campo_include: "nombre",
 			},
 			{

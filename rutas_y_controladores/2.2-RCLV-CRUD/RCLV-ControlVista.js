@@ -31,8 +31,8 @@ module.exports = {
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procs_canoniz = await BD_genericas.obtieneTodos("procs_canoniz", "orden");
-			procs_canoniz = procs_canoniz.filter((m) => m.id.length == 3);
+			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
+			procs_canon = procs_canon.filter((m) => m.id.length == 3);
 			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
 			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
@@ -70,7 +70,7 @@ module.exports = {
 			DE: !!Object.keys(dataEntry).length,
 			meses,
 			roles_iglesia,
-			procs_canoniz,
+			procs_canon,
 			apariciones_marianas,
 			rutaSalir,
 		});
@@ -78,7 +78,7 @@ module.exports = {
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Variables
-		let {entidad, origen, prodEntidad, prodID} = req.query;
+		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
@@ -99,6 +99,8 @@ module.exports = {
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
+				: origen == "DT_RCLV"
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
 				: "/";
 		return res.redirect(destino);
 	},
@@ -113,7 +115,7 @@ module.exports = {
 		// Obtiene RCLV con produtos
 		let entProductos = ["peliculas", "colecciones", "capitulos"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
-		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
+		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
 		let prodsYaEnBD = procesos.prodsYaEnBD(entProductos, RCLV);

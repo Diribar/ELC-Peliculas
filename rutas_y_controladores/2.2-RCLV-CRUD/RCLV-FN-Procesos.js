@@ -30,7 +30,7 @@ module.exports = {
 		resumenRCLV.push({titulo: "Día del año", valor: fecha});
 		if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
 			resumenRCLV.push(
-				{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
+				{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canon, "Ninguno")},
 				{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
 				{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
 			);
@@ -85,7 +85,7 @@ module.exports = {
 		// Averigua si el RCLV tiene algún "proceso de canonización"
 		if (RCLV.proceso_id) {
 			// Obtiene los procesos de canonización
-			let proceso = await BD_genericas.obtieneTodos("procs_canoniz", "orden").then((n) =>
+			let proceso = await BD_genericas.obtieneTodos("procs_canon", "orden").then((n) =>
 				n.find((m) => m.id == RCLV.proceso_id)
 			);
 			// Asigna el nombre del proceso

@@ -29,7 +29,7 @@ module.exports = {
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		RCLVs = procesos.TC_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
-		// return res.send([productos, RCLVs]);
+		// return res.send([productos,RCLVs]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -144,7 +144,7 @@ module.exports = {
 		// Penaliza al usuario si corresponde
 		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
 		// Obtiene el edicID
-		let {edicID} = await procesos.prodEdicForm_obtieneProdEdic(req);
+		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
 		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 		if (edicID) urlEdicion += "&edicion_id=" + edicID;
 		// Fin
@@ -155,15 +155,18 @@ module.exports = {
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
-		let {prodEdic, informacion} = await procesos.prodEdicForm_obtieneProdEdic(req);
-
+		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(
+			req,
+			"productos",
+			"prods_edicion"
+		);
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let avatarExterno, avatarLinksExternos, avatar, edicion, imgDerPers;
+		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob, infoErronea_id;
 
 		// Obtiene la versión original con includes
@@ -225,7 +228,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			infoErronea_id = motivos.find((n) => n.info_erronea).id;
-			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
+			bloqueDer = await procesos.form_edicFicha(prodOrig, prodEdic);
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
@@ -257,6 +260,7 @@ module.exports = {
 			mostrarCartel: true,
 		});
 	},
+
 	// RCLVs
 	rclvAltaGuardar: async (req, res) => {
 		// 1. Variables
@@ -275,7 +279,7 @@ module.exports = {
 		// PROBLEMA: El registro no está en status creado
 		let includes = [];
 		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
+		if (entidad == "personajes") includes.push("proc_canon", "rol_iglesia");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
 		// 3. Procesa el data-entry
@@ -295,10 +299,68 @@ module.exports = {
 		// 5. Guarda los cambios
 		await procesosCRUD.guardaLosCambios(req, res, dataEntry);
 		// 6. Actualiza la tabla de edics aprob/rech
-		procesos.RCLV_EdicAprobRech(entidad, original, userID);
+		procesos.RCLV_AltasGuardar_EdicAprobRech(entidad, original, userID);
 		// 7. Redirecciona a la siguiente instancia
 		return res.redirect("/revision/tablero-de-control");
 	},
+	rclvEdicForm: async (req, res) => {
+		// Tema y Código
+		const tema = "revisionEnts";
+		const codigo = "rclvEdicion";
+		// Validaciones y obtiene rclvEdic
+		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(
+			req,
+			"RCLVs",
+			"rclvs_edicion"
+		);
+		// Si no pasa los filtros => informa el error
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Variables
+		const {entidad, id: prodID} = req.query;
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		let ingresos, reemplazos, bloqueDer, infoErronea_id;
+
+		// Obtiene la versión original con includes
+		let includesOrig = [...comp.includes("RCLVs"), "status_registro"];
+		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+
+		// Acciones si no está presente el avatar
+		let [edicion, quedanCampos] = comp.puleEdicion(rclvOrig, rclvEdic, "RCLVs");
+		// Fin, si no quedan campos
+		if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+		// Obtiene los ingresos y reemplazos
+		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
+		// Variables
+		motivos = motivos.filter((m) => m.rclv);
+		infoErronea_id = motivos.find((n) => n.info_erronea).id;
+		bloqueDer = await procesos.form_edicFicha(rclvOrig, rclvEdic);
+		// return res.send([edicion, ingresos, reemplazos]);
+
+		// Variables para la vista
+		const entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const titulo = "Revisión de la Edición del " + entidadNombre;
+		// Va a la vista
+		// return res.send([ingresos, reemplazos]);
+		return res.render("CMP-0Estructura", {
+			tema,
+			codigo,
+			titulo,
+			rclvOrig,
+			rclvEdic,
+			entidadNombre,
+			ingresos,
+			reemplazos,
+			motivos,
+			infoErronea_id,
+			entidad,
+			id: prodID,
+			bloqueDer,
+			title: rclvOrig.nombre_castellano,
+			mostrarCartel: true,
+		});
+	},
+
 	// Links
 	linksForm: async (req, res) => {
 		// 1. Tema y Código
