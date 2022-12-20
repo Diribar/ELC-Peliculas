@@ -456,7 +456,6 @@ module.exports = {
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
-
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
