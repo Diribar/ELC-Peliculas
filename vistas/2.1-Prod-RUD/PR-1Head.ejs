@@ -1,22 +1,22 @@
 <!-- Flechas -->
-<script src="/javascript/2.0-Familias-CRUD/Includes/0-RUD-Flechas.js"></script>
+<script src="/javascript/2.0-Familias-CRUD/FM-Flechas.js"></script>
 
 <!-- Colecciones y Capítulos -->
-<% if (entidad != "peliculas") { %><script src="/javascript/2.0-Familias-CRUD/Includes/0-RUD-AlternarColCap.js"></script><% } %>
+<% if (entidad != "peliculas") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script><% } %>
 <!-- Capítulos -->
-<% if (entidad == "capitulos") { %><script src="/javascript/2.0-Familias-CRUD/Includes/0-RUD-AlternarTempCap.js"></script><% } %>
+<% if (entidad == "capitulos") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script><% } %>
 
 <!-- Detalle para Producto -->
 <% if (codigo == "detalle") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR1-Prod-1Detalle.css">
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-1Detalle.css">
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="/javascript/2.1-Prod-RUD/1-ProdDetalle-Grafico.js"></script>
+	<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Grafico.js"></script>
 <% } %>
 
 <!-- Edición -->
 <% if (codigo == "edicion") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/CR1-Prod-2Edicion.css">
-	<script src="/javascript/2.1-Prod-RUD/1-ProdEdic-InputError.js"></script>
-	<script src="/javascript/2.1-Prod-RUD/1-ProdEdic-vista_RCLV.js"></script>
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-2Edicion.css">
+	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-InputError.js"></script>
+	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-vista_RCLV.js"></script>
 <% } %>

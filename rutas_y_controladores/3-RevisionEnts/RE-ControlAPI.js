@@ -54,7 +54,8 @@ module.exports = {
 	linkAlta: async (req, res) => {
 		// Variables
 		const {prodEntidad, prodID, url} = req.query;
-		const aprobado = req.query.aprob == "true";
+		console.log(req.query);
+		const aprobado = req.query.aprob == "SI";
 		const userID = req.session.usuario.id;
 		const st_aprobado = status_registro.find((n) => n.aprobado).id;
 		const st_inactivo = status_registro.find((n) => n.inactivo).id;
@@ -79,7 +80,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
 		if (!aprobado) {
-			motivo_id = creado ? req.query.motivo_id : gr_provisorios ? link.motivo_id : null;
+			var motivo_id = creado ? req.query.motivo_id : gr_provisorios ? link.motivo_id : null;
 			if (creado || recuperar) {
 				motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
 				comp.usuario_aumentaPenalizacAcum(sugerido_por_id, motivo);
