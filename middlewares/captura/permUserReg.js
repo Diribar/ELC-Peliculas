@@ -197,9 +197,9 @@ module.exports = async (req, res, next) => {
 	let buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia = async () => {
 		// Se revisa solamente en la familia de entidades
 		// Asociaciones
-		let entidades = ["peliculas", "colecciones", "capitulos"].includes(entidad)
-			? ["peliculas", "colecciones", "capitulos"]
-			: ["personajes", "hechos", "valores"];
+		let entidades = variables.productos.includes(entidad)
+			? variables.prods
+			: variables.rclvs;
 		let asociaciones = [];
 		entidades.forEach((entidad) => asociaciones.push("captura_" + entidad));
 		// Variables

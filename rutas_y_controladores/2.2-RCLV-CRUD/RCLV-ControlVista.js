@@ -2,6 +2,7 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
@@ -119,15 +120,16 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
+		let userID = req.session.usuario.id;
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
-		let entidadSingular=comp.obtieneEntidadSingular(entidad)
+		let entidadSingular = comp.obtieneEntidadSingular(entidad);
 		// Obtiene RCLV con produtos
-		let entProductos = ["peliculas", "colecciones", "capitulos","prods_edicion"];
+		let entProductos = [...variables.prods, "prods_edicion"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
-		let prodsYaEnBD = procesos.prodsEnBD(entProductos, RCLV);
+		let prodsYaEnBD = await procesos.prodsEnBD(entProductos, RCLV, userID);
 		let cantProdsEnBD = prodsYaEnBD.length;
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);

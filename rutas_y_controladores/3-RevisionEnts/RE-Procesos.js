@@ -133,7 +133,7 @@ module.exports = {
 	TC_obtieneRCLVs: async (ahora, userID) => {
 		// Obtiene rclvs en situaciones particulares
 		// Variables
-		let entidades = ["personajes", "hechos", "valores"];
+		let entidades = variables.rclvs;
 		let creado_id = status_registro.find((n) => n.creado).id;
 		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
