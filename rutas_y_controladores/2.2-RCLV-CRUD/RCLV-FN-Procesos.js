@@ -50,34 +50,36 @@ module.exports = {
 		// Fin
 		return {resumenRCLV, resumenRegistro};
 	},
-	prodsYaEnBD: (entProductos, RCLV) => {
+	prodsEnBD: (entProductos, RCLV) => {
 		// Variables
-		let prodsYaEnBD = [];
+		let prodsEnBD = [];
 		// Completar la información de cada registro
 		entProductos.forEach((entidad) => {
 			let aux = RCLV[entidad].map((n) => {
-				let avatar = n.avatar.includes("/")
-					? n.avatar
-					: "/imagenes/" +
-					  (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
-				return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
+				if (entidad!="prods_edicion") {
+					let avatar = n.avatar.includes("/")
+						? n.avatar
+						: "/imagenes/" +
+						  (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
+					return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
+				} else null
 			});
-			prodsYaEnBD.push(...aux);
+			prodsEnBD.push(...aux);
 		});
 		// Ordenar por año (decreciente)
-		prodsYaEnBD.sort((a, b) =>
+		prodsEnBD.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
 		);
 		// Separa entre colecciones y resto
-		let colecciones = prodsYaEnBD.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsYaEnBD.filter((n) => n.entidad != "colecciones");
+		let colecciones = prodsEnBD.filter((n) => n.entidad == "colecciones");
+		let noColecciones = prodsEnBD.filter((n) => n.entidad != "colecciones");
 		// Elimina capitulos si las colecciones están presentes
 		let coleccionesId = colecciones.map((n) => n.id);
 		for (let i = noColecciones.length - 1; i >= 0; i--)
 			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
 		// Fin
-		prodsYaEnBD = [...colecciones, ...noColecciones];
-		return prodsYaEnBD;
+		prodsEnBD = [...colecciones, ...noColecciones];
+		return prodsEnBD;
 	},
 	procCanoniz: async (RCLV) => {
 		// Variables
