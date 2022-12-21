@@ -214,23 +214,6 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidad: (entidad) => {
-		return entidad.pelicula_id
-			? "peliculas"
-			: entidad.coleccion_id
-			? "colecciones"
-			: entidad.capitulo_id
-			? "capitulos"
-			: entidad.personaje_id && entidad.personaje_id != 1
-			? "personajes"
-			: entidad.hecho_id && entidad.hecho_id != 1
-			? "hechos"
-			: entidad.valor_id && entidad.valor_id != 1
-			? "valores"
-			: entidad.link_id
-			? "links"
-			: "";
-	},
 	obtieneEntidadSingular: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
@@ -248,22 +231,28 @@ module.exports = {
 			? "link"
 			: "";
 	},
-	obtieneEntidadDesdeEdicion: (edicion) => {
+	obtieneProdDesdeEntidad_id: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
 			: edicion.coleccion_id
 			? "colecciones"
 			: edicion.capitulo_id
 			? "capitulos"
-			: edicion.personaje_id
+			: "";
+	},
+	obtieneRCLVdesdeEntidad_id: (edicion) => {
+		return edicion.personaje_id
 			? "personajes"
 			: edicion.hecho_id
 			? "hechos"
 			: edicion.valor_id
 			? "valores"
-			: edicion.link_id
-			? "links"
 			: "";
+	},
+	obtieneEntidadDesdeEntidad_id: function (edicion) {
+		let producto = this.obtieneProdDesdeEntidad_id(edicion);
+		let RCLV = this.obtieneRCLVdesdeEntidad_id(edicion);
+		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";
 	},
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
