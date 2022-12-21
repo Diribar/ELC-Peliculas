@@ -37,6 +37,7 @@ window.addEventListener("load", () => {
 					taparMotivo[fila * columnas + columna].classList.add("ocultar");
 				// Mostrar el select
 				motivosFila[fila].classList.remove("ocultar");
+				motivosSelect[fila].focus()
 			} else if (
 				botonOut.classList.contains("fa-trash-can") &&
 				!botonOut.classList.contains("inactivo")

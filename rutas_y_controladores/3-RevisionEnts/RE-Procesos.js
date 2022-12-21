@@ -795,8 +795,8 @@ module.exports = {
 		return [ingresos, reemplazos];
 	},
 
-	// Links
-	problemasLinks: (producto, urlAnterior) => {
+	// Links - Vista
+	linksForm_avisoProblemas: (producto, urlAnterior) => {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
@@ -820,6 +820,7 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
+	// Links - API
 	linksEdic_LimpiarEdiciones: async (linkOrig) => {
 		// Limpia las ediciones
 		// 1. Obtiene el link con sus ediciones
@@ -845,17 +846,46 @@ module.exports = {
 		// Fin
 		return;
 	},
-	links_prodCampoLG_OK: async (prodEntidad, prodID, campo) => {
-		if (campo == "gratuito" && prodEntidad.gratuito) {
-			// Obtiene los ID de si, no y TalVez
-			let si_no_parcial = await BD_genericas.obtieneTodos("si_no_parcial", "id");
-			let si = si_no_parcial.find((n) => n.si).id;
-			BD_genericas.actualizaPorId("links", prodID, {
-				links_gratuitos_cargados_id: si,
-				links_gratuitos_en_la_web_id: si,
-			});
-		}
+	links_gratuitoEnProd: async (prodEntidad, prodID) => {
+		// Obtiene el ID de 'si'
+		let si_no_parcial = await BD_genericas.obtieneTodos("si_no_parcial", "id");
+		let si = si_no_parcial.find((n) => n.si).id;
+		// Actualiza el registro de producto
+		await BD_genericas.actualizaPorId(prodEntidad, prodID, {
+			links_gratuitos_cargados_id: si,
+			links_gratuitos_en_la_web_id: si,
+		});
+		// Fin
+		return;
 	},
+	links_averiguaGratuitoEnProd: async (prodEntidad, prodID) => {
+		// Lecturas
+		let si_no_parcial = BD_genericas.obtieneTodos("si_no_parcial", "id");
+		let tipos = BD_genericas.obtieneTodos("links_tipos", "nombre");
+		[si_no_parcial, tipos] = await Promise.all([si_no_parcial, tipos]);
+		// Variables
+		let si = si_no_parcial.find((n) => n.si).id;
+		let no = si_no_parcial.find((n) => n.no).id;
+		let pelicula_id = tipos.find((n) => n.pelicula).id;
+		let aprobado_id = status_registro.find((n) => n.aprobado);
+
+		// Obtiene el registro del producto con el include de links
+		let producto = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, "links");
+		// Averigua si tiene algún link gratuito de película
+		let links = producto.links;
+		let gratuito = links
+			? links.find((n) => n.gratuito && n.tipo_id == pelicula_id && status_registro_id == aprobado_id)
+				? true
+				: false
+			: false;
+		// Actualiza el registro
+		let datos = gratuito
+			? {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si}
+			: {links_gratuitos_cargados_id: no};
+		// Fin
+		return;
+	},
+
 	obtieneCamposLinkEdic: (edicAprob, linkEdicion, campo) => {
 		// Se preparan los datos 'consecuencia' a guardar
 		let datos = {[campo]: edicAprob ? linkEdicion[campo] : null};

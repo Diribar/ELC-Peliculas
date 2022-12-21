@@ -51,73 +51,78 @@ module.exports = {
 		return res.json([resultado, rutaYnombre]);
 	},
 	// Links
-	linkAlta: async (req, res) => {
+	linkAltaBaja: async (req, res) => {
 		// Variables
 		const {prodEntidad, prodID, url} = req.query;
 		console.log(req.query);
-		const aprobado = req.query.aprob == "SI";
+		const prodAprob = req.query.aprob == "SI";
 		const userID = req.session.usuario.id;
-		const st_aprobado = status_registro.find((n) => n.aprobado).id;
-		const st_inactivo = status_registro.find((n) => n.inactivo).id;
+		const aprobado_id = status_registro.find((n) => n.aprobado).id;
+		const inactivo_id = status_registro.find((n) => n.inactivo).id;
 		const ahora = comp.ahora();
-		let datos, motivo;
+		let datos, motivo, motivo_id;
 		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, "status_registro");
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro", "tipo"]);
 		// El link no existe en la BD
 		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y no tiene status 'creado' o 'provisorio'
-		let creado = link.status_registro.creado;
-		let inactivar = link.status_registro.inactivar;
-		let recuperar = link.status_registro.recuperar;
-		let gr_provisorios = inactivar || recuperar;
+		const creado = link.status_registro.creado;
+		const inactivar = link.status_registro.inactivar;
+		const recuperar = link.status_registro.recuperar;
+		const gr_provisorios = inactivar || recuperar;
 		if (!creado && !gr_provisorios)
 			return res.json({mensaje: "En este status no se puede procesar", reload: true});
-		// USUARIO - Actualización de link_aprob / link_rech
-		let campo = "link_" + (aprobado ? "aprob" : "rech");
+
+		// Decisión sobre el sugerido
+		const decisAprob = (prodAprob && (creado || recuperar)) || (!prodAprob && inactivar);
+
+		// USUARIO - Actualización de links_aprob / links_rech
+		let campo = "links_" + (decisAprob ? "aprob" : "rech");
 		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
-		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
-		if (!aprobado) {
-			var motivo_id = creado ? req.query.motivo_id : gr_provisorios ? link.motivo_id : null;
-			if (creado || recuperar) {
-				motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
-				comp.usuario_aumentaPenalizacAcum(sugerido_por_id, motivo);
-			}
+		// USUARIO - Verifica la penalidad cuando se rechaza el link sugerido
+		if (!decisAprob && (creado || recuperar)) {
+			motivo_id = req.query.motivo_id;
+			motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
+			comp.usuario_aumentaPenalizacAcum(sugerido_por_id, motivo);
 		}
-		// LINK - Pasa a status aprobado/rechazado
 
-		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
+		// LINK - Pasa a status aprobado/rechazado
+		datos = {status_registro_id: prodAprob ? aprobado_id : inactivo_id};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
-			datos.alta_analizada_en = comp.ahora();
-			datos.lead_time_creacion = 1;
-			if (!aprobado) {
-				datos.sugerido_por_id = userID;
-				datos.sugerido_en = ahora;
-				datos.motivo_id = motivo_id;
-			}
+			datos.alta_analizada_en = ahora;
+			datos.lead_time_creacion = comp.obtieneLeadTime(link.creado_en, ahora);
+			if (!prodAprob) datos.motivo_id = motivo_id;
 		}
 		await BD_genericas.actualizaPorId("links", link.id, datos);
+
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
-		let duracion = motivo ? motivo.duracion : 0;
+		let duracion = !prodAprob ? motivo.duracion : 0;
 		datos = {
-			link_id: link.id,
+			entidad_id: link.id,
+			entidad: "links",
+			motivo_id,
 			sugerido_por_id,
 			sugerido_en: creado ? link.creado_en : link.sugerido_en,
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: aprobado ? st_aprobado : st_inactivo,
-			aprobado,
-			motivo_id,
+			status_final_id: prodAprob ? aprobado_id : inactivo_id,
+			aprobado: prodAprob,
 			duracion,
 		};
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
-		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (aprobado) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
+
+		// Actualiza el campo 'links_gratuitos' en el producto
+		if (link.gratuito && link.tipo.pelicula) {
+			if (prodAprob) procesos.links_gratuitoEnProd(prodEntidad, prodID);
+			else procesos.links_averiguaGratuitoEnProd(prodEntidad, prodID);
+		}
+
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -144,7 +149,7 @@ module.exports = {
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID, campo);
+		if (edicAprob) procesos.links_gratuitoEnProd(prodEntidad, prodID, campo);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
