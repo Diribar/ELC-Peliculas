@@ -18,13 +18,12 @@
 #dataEntry .altoFila {height: 25px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
-/* #dataEntry input[type="radio"] {margin-right: 3px;} */
+label[for] {cursor: pointer; padding-left: 3px;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 
 /* Temas particulares de dataEntry */
 #dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {scale: .8; cursor: pointer;}
-label[for] {cursor: pointer; padding-left: 3px;}
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
