@@ -6,7 +6,7 @@
 			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
 				<li>Estos registros están pendientes de revisar.</li>
 				<li>Se necesita revisarlos a todos.</li>
-				<li>Las tareas figuran por orden de criticidad.</li>
+				<li>Las tareas figuran por orden de prioridad.</li>
 			</ul>
 		</i>
 	</div>
@@ -16,7 +16,9 @@
 	<!-- Productos -->
 	<div id="primeraColumna">
 		<div class="bloques">
+			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
+				<!-- Título -->
 				<h2>PRODUCTOS</h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
@@ -28,6 +30,7 @@
 					</i>
 				</div>
 			</div>
+			<!-- Registros -->
 			<div class="registros">
 				<% let rp = "revision/producto/" %>
 				<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
@@ -41,24 +44,28 @@
 	<div id="segundaColumna">
 		<!-- RCLV -->
 		<div class="bloques" id="rclv">
+			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
+				<!-- Título -->
 				<h2>RCLV</h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick despl_click">
 						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<p>Los <u>RCLV</u> cumplen alguna de estas condiciones:</p>
-							<li>Las <u>altas</u> a analizar, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
-							<li>Las <u>ediciones</u> a revisar son de algún RCLV aprobado.</li>
-							<li>Los registros a <u>inactivar</u> no tienen asociado ningún producto creado o aprobado.</li>
+							<p>Los RCLV cumplen alguna de estas condiciones:</p>
+							<li>Las <em>altas a analizar</em>, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
+							<li>Las <em>ediciones</em> a revisar son de algún RCLV aprobado.</li>
+							<li>Las <em>altas sin producto</em> no tienen ningún producto asociado.</li>
 						</ul>
 					</i>
 				</div>
 			</div>
+			<!-- Registros -->
 			<div class="registros">
 				<% let rr = "revision/rclv/" %>
 				<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: rclvs.ED, url: rr + "edicion"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: rclvs.PA, url: rr + "alta"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas Sin Producto", regs: rclvs.SP, url: rr + "alta"}) %>
 			</div>
 		</div>
 		<!-- Links -->

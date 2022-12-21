@@ -135,15 +135,25 @@ module.exports = {
 		// Variables
 		let entidades = ["personajes", "hechos", "valores"];
 		let creado_id = status_registro.find((n) => n.creado).id;
-		let campos, regs, includes;
+		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
 		includes = ["peliculas", "colecciones", "capitulos", "prods_edic"];
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
-		let PA = await TC_obtieneRegs(...campos);
-		PA = PA.filter((n) => n.peliculas || n.colecciones || n.capitulos || n.prods_edic);
-
+		let registros = await TC_obtieneRegs(...campos);
+		let PA = registros.filter(
+			(n) => n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_edic.length
+		);
+		let SP = registros.filter(
+			(n) =>
+				!n.peliculas.length &&
+				!n.colecciones.length &&
+				!n.capitulos.length &&
+				!n.prods_edic.length &&
+				n.creado_en < ahora - unDia &&
+				n.creado_en > ahora - unDia * 2
+		);
 		// Fin
-		return {PA};
+		return {PA, SP};
 	},
 	TC_obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 		// 1. Variables
