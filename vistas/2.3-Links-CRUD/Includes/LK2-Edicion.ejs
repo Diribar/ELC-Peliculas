@@ -30,8 +30,8 @@
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.castellano!==null&&n.editado_por_id!=userID) %> 
 			<select name="castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.castellano == "1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.castellano == "0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.castellano ? "selected" : "" %>>SI</option>
+				<option value="0" <%- !link.castellano ? "selected" : "" %>>NO</option>
 			</select>
 			<%- include("CMP-Errores", {z_index: 6, display: true}) %>
 		</div>
@@ -41,8 +41,9 @@
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.subtit_castellano!==null&&n.editado_por_id!=userID) %> 
 			<select name="subtit_castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.subtit_castellano === "1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.subtit_castellano === "0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.subtit_castellano ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.subtit_castellano === false ? "selected" : "" %>>NO</option>
+				<option value="-" <%- link.subtit_castellano === null ? "selected" : "" %> class="ocultar">-</option>
 			</select>
 			<%- include("CMP-Errores", {z_index: 5, display: true}) %>
 		</div>
@@ -52,8 +53,8 @@
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) %> 
 			<select name="gratuito" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.gratuito == "0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.gratuito ? "selected" : "" %>>SI</option>
+				<option value="0" <%- !link.gratuito ? "selected" : "" %>>NO</option>
 			</select>
 			<%- include("CMP-Errores", {z_index: 4, display: true}) %>
 		</div>
@@ -76,8 +77,8 @@
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.completo!==null&&n.editado_por_id!=userID) %> 
 			<select name="completo" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.completo=="1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.completo=="0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.completo ? "selected" : "" %>>SI</option>
+				<option value="0" <%- !link.completo ? "selected" : "" %>>NO</option>
 			</select>
 			<%- include("CMP-Errores", {z_index: 2, display: true}) %>
 		</div>

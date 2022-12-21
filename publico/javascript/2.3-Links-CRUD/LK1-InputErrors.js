@@ -100,7 +100,6 @@ window.addEventListener("load", async () => {
 		controlesEnSubtitulosCastellano: async (fila) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = v.castellanoInputs[fila].value == "1";
-			console.log(condicion,v.castellanoInputs[fila].value);
 			if (condicion) v.subtit_castellano[fila].value = "-";
 			v.subtit_castellano[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias

@@ -368,34 +368,34 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		interaccionesApMar: (campo) => {
+		interaccionesApMar: function (campo) {
 			// Cambia el contenido del Personaje o Hecho
 			// Acciones si se cambia el personaje
-			console.dir(selectPersonaje);
 			if (campo == "personaje_id") {
 				// Obtiene del personaje, el 'id' de la Aparición Mariana
-				let clases = Array.from(opcionesPersonaje).find(
-					(n) => n.value == inputsRCLV[0].value
-				).classList;
-				clases = Array.from(clases);
-				let indiceEnArray = clases.indexOf("AM") + 1;
-				let id = clases[indiceEnArray].slice(2);
+				for (var opcion of opcionesPersonaje) if (opcion.value == inputsRCLV[0].value) break;
+				let clases = opcion.className.split(" ");
+				let indice = clases.indexOf("AMA");
+				clases.splice(indice, 1);
+				let id = clases[indice].slice(2);
 				// Cambia el contenido del Hecho
 				inputsRCLV[1].value = id;
 			}
 			// Acciones si se cambia el hecho
 			if (campo == "hecho_id") {
-				let id = Array.from(opcionesPersonaje).find((n) =>
-					n.classList.contains("AM" + inputsRCLV[1].value)
-				).value;
+				// Muestra los personajes que hayan presenciado la aparición y oculta los demás
+				opcionesPersonaje.forEach((opcion) => {
+					if (opcion.className.includes("AM" + inputsRCLV[1].value))
+						opcion.classList.remove("ocultar");
+					else opcion.classList.add("ocultar");
+				});
 				// Cambia el contenido del Personaje
-				inputsRCLV[0].value = id;
+				this.verificaUnaSolaOpcionRCLV();
 			}
 		},
 		adicSubcat: (campo) => {
 			let adicSubcategoria = "";
-			if (campo != "subcategoria_id")
-				adicSubcategoria += "&subcategoria_id=" + subcatSelect.value;
+			if (campo != "subcategoria_id") adicSubcategoria += "&subcategoria_id=" + subcatSelect.value;
 			if (campo != "personaje_id") adicSubcategoria += "&personaje_id=" + inputsRCLV[0].value;
 			if (campo != "hecho_id") adicSubcategoria += "&hecho_id=" + inputsRCLV[1].value;
 			if (campo != "valor_id") adicSubcategoria += "&valor_id=" + inputsRCLV[2].value;
