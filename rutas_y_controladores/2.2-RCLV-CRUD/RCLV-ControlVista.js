@@ -120,13 +120,14 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
+		let entidadSingular=comp.obtieneEntidadSingular(entidad)
 		// Obtiene RCLV con produtos
-		let entProductos = ["peliculas", "colecciones", "capitulos"];
+		let entProductos = ["peliculas", "colecciones", "capitulos","prods_edicion"];
 		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
-		let prodsYaEnBD = procesos.prodsYaEnBD(entProductos, RCLV);
+		let prodsYaEnBD = procesos.prodsEnBD(entProductos, RCLV);
 		let cantProdsEnBD = prodsYaEnBD.length;
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);
@@ -142,7 +143,8 @@ module.exports = {
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,
-			Entidad: comp.obtieneEntidadNombre(entidad),
+			entidadNombre,
+			entidadSingular,
 		});
 	},
 };
