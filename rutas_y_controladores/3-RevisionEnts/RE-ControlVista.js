@@ -417,7 +417,7 @@ module.exports = {
 			links_tipos: linksTipos,
 			avatar,
 			motivos,
-			calidades: [144, 240, 360, 480, 720, 1080],
+			calidades: variables.calidades,
 			mostrar: null,
 			userID,
 			camposARevisar,
