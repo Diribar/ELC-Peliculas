@@ -52,7 +52,7 @@
 /* Tablas - Columnas específicas */
 #datos table tbody tr td.url img {max-width: 100%; max-height: 20px;}
 #datos table tbody tr td.url .inputError .prov_id {display: none;}
-#datos table tbody tr td.calidad option {text-align: right; }
+#datos table tbody tr td.calidad option {text-align: center; }
 
 /* Formato del desperdicio */
 #datos table .desperdicio {background-color: var(--verde-intermedio);}
