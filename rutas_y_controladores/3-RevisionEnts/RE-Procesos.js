@@ -463,7 +463,7 @@ module.exports = {
 		delete regEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = comp.puleEdicion(regOrig, regEdic, familia);
+		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
@@ -844,7 +844,7 @@ module.exports = {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
 			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[linkEdic, quedanCampos] = await comp.puleEdicion(linkOrig, linkEdic);
+			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizaPorId("links_edicion", edicID, {

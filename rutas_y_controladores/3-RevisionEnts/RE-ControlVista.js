@@ -217,7 +217,7 @@ module.exports = {
 		}
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
-			let [edicion, quedanCampos] = comp.puleEdicion(prodOrig, prodEdic, "productos");
+			let [edicion, quedanCampos] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
 			// Fin, si no quedan campos
 			if (!quedanCampos)
 				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
@@ -327,7 +327,7 @@ module.exports = {
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let [edicion, quedanCampos] = comp.puleEdicion(rclvOrig, rclvEdic, "rclvs");
+		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
 		// Fin, si no quedan campos
 		if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos

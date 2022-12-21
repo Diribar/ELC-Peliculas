@@ -50,7 +50,7 @@ module.exports = {
 		// Fin
 		return [regOrig, regEdic];
 	},
-	puleEdicion: function (original, edicion, familia) {
+	puleEdicion: async function (original, edicion, familia) {
 		// Funciones
 		let quitaCamposQueNoSeComparan = (edicion) => {
 			// Variables
@@ -97,7 +97,7 @@ module.exports = {
 		// Averigua si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan campos, elimina el registro de la edición
-		if (!quedanCampos) BD_genericas.eliminaPorId(nombreEdic, edicID);
+		if (!quedanCampos) await BD_genericas.eliminaPorId(nombreEdic, edicID);
 
 		// Fin
 		return [edicion, quedanCampos];
@@ -113,7 +113,7 @@ module.exports = {
 		// Quita las coincidencias con el original
 		let quedanCampos;
 		let familia = this.obtieneFamiliaEnPlural(entidadEdic);
-		[edicion, quedanCampos] = this.puleEdicion(original, edicion, familia);
+		[edicion, quedanCampos] = await this.puleEdicion(original, edicion, familia);
 		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Completa la información
