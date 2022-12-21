@@ -110,7 +110,7 @@ window.addEventListener("load", async () => {
 		// Datos RCLV
 		var inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
 		var linkPersAlta = document.querySelector(".inputError .linkRCLV.alta");
-		var linksPersEdic = document.querySelectorAll(".inputError .linkRCLV.edicion");
+		var linksRCLVEdic = document.querySelectorAll(".inputError .linkRCLV.edicion");
 		var iconosOK_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-check");
 		var iconosError_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-xmark");
 		var selectPersonaje = document.querySelector("select[name='personaje_id']");
@@ -354,11 +354,11 @@ window.addEventListener("load", async () => {
 			// 1.1. Acciones si el valor es 'Ninguno'
 			inputsRCLV.forEach((inputRCLV, indice) => {
 				inputRCLV.value == "1"
-					? linksPersEdic[indice].classList.add("ocultar")
-					: linksPersEdic[indice].classList.remove("ocultar");
+					? linksRCLVEdic[indice].classList.add("ocultar")
+					: linksRCLVEdic[indice].classList.remove("ocultar");
 			});
 			// 1.2. Acciones si elvalor es 'Jesús'
-			if (inputsRCLV[0].value == "11") linksPersEdic[0].classList.add("ocultar");
+			if (inputsRCLV[0].value == "11") linksRCLVEdic[0].classList.add("ocultar");
 
 			// 2. Acciones para Agregar
 			subcatSelect.value == "JSS"
