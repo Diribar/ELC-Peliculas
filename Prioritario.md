@@ -1,10 +1,4 @@
 Revisión
-- RCLV
-	- Aprobar Altas de RCLV con productos (con edición del revisor)
-	- RCLV sin productos (perenne/inactivar)
-	- RCLV c/edicion
-		- Mismo modelo que para películas
-		- Si se le cambia el nombre, debe seguir refiriéndose a la misma entidad (personaje, hecho, valor)
 - Productos: 
 	- Circuito de revisión para Status Provisorio
 	- Altas, botón de Links con menú desplegable:
