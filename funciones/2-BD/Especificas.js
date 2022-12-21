@@ -205,7 +205,7 @@ module.exports = {
 	obtieneAutorizadoFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
-	// RUD - Usuario habilitado
+	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
 		// Variables
 		const creado_id = status_registro.find((n) => n.creado).id;
