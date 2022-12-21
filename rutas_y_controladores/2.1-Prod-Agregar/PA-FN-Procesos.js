@@ -4,6 +4,7 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
@@ -434,7 +435,7 @@ module.exports = {
 	},
 	// ConfirmarGuardar
 	guarda_cal_registros: (confirma, registro) => {
-		let producto_id = comp.obtieneEntidad_id(confirma.entidad);
+		let producto_id = procsCRUD.obtieneEntidad_id(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
 			usuario_id: registro.creado_por_id,

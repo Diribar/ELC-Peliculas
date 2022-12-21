@@ -4,7 +4,8 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
-const procesosCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Procesos");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-FN-Procesos");
 const validaCRUD = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
 
 module.exports = {
@@ -53,9 +54,9 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// Le agrega datos de la edición cuando no proviene de TMDB
 		if (prodOrig.fuente != "TMDB") {
-			let entidad_id = comp.obtieneEntidad_id(entidad);
+			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
 			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[entidad_id]: id});
-			prodEdic = comp.quitaCamposSinContenido(prodEdic);
+			prodEdic = procsCRUD.quitaCamposSinContenido(prodEdic);
 			prodOrig = {...prodOrig, ...prodEdic, id};
 			// return res.send([entidad_id, prodOrig, prodEdic]);
 		}
@@ -283,7 +284,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
 		// 3. Procesa el data-entry
-		let dataEntry = await procesosCRUD.procesarRCLV(datos);
+		let dataEntry = await procsRCLV.procesarRCLV(datos);
 		// 4. Genera la información para guardar
 		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
@@ -297,7 +298,7 @@ module.exports = {
 		};
 		// return res.send(dataEntry);
 		// 5. Guarda los cambios
-		await procesosCRUD.guardaLosCambios(req, res, dataEntry);
+		await procsRCLV.guardaLosCambios(req, res, dataEntry);
 		// 6. Actualiza la tabla de edics aprob/rech
 		procesos.RCLV_AltasGuardar_EdicAprobRech(entidad, original, userID);
 		// 7. Redirecciona a la siguiente instancia
@@ -382,7 +383,7 @@ module.exports = {
 		let informacion = procesos.linksForm_avisoProblemas(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
-		let entidad_id = comp.obtieneEntidad_id(entidad);
+		let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));

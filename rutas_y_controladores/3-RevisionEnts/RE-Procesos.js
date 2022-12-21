@@ -4,6 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
 const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
 
@@ -269,7 +270,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
-		const entidad_id = comp.obtieneEntidad_id(entidad);
+		const entidad_id = procsCRUD.obtieneEntidad_id(entidad);
 		// Mensajes
 		let mensajeSinEdicion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],

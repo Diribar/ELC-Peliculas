@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
 
@@ -45,7 +45,7 @@ module.exports = {
 		// 4. Pasos exclusivos para edición
 		if (codigo != "agregar") {
 			// Obtiene el rclvOrig y rclvEdic
-			let [rclvOrig, rclvEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
+			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneVersionesDelRegistro(
 				entidad,
 				rclvID,
 				userID,

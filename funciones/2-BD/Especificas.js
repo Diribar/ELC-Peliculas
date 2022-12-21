@@ -2,7 +2,9 @@
 // Definir variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
-const funciones = require("../3-Procesos/Compartidas");
+const comp = require("../3-Procesos/Compartidas");
+const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
+const variables = require("../3-Procesos/Variables");
 
 module.exports = {
 	// Varios
@@ -91,42 +93,10 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 
-	// RUD - Usuario habilitado
-	registrosConStatusARevisar: async (userID, entidades) => {
-		// Variables
-		const creado_id = status_registro.find((n) => n.creado).id;
-		const inactivar_id = status_registro.find((n) => n.inactivar).id;
-		const recuperar_id = status_registro.find((n) => n.recuperar).id;
-		let contarRegistros = 0;
-		// Rutina para contar
-		let condiciones = {
-			[Op.or]: [
-				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: userID}]},
-				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: userID}]},
-				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: userID}]},
-			],
-		};
-		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
-
-		// Fin
-		return contarRegistros;
-	},
-	registrosConEdicion: async (userID) => {
-		// Variables
-		const entidades = ["prods_edicion", "rclvs_edicion", "links_edicion"];
-		let contarRegistros = 0;
-		// Rutina para contar
-		let condicion = {editado_por_id: userID};
-		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});
-
-		// Fin
-		return contarRegistros;
-	},
-
 	// Revisar - Tablero
 	TC_obtieneRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
-		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
-		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
+		const haceUnaHora = comp.nuevoHorario(-1, ahora);
+		const haceDosHoras = comp.nuevoHorario(-2, ahora);
 		return db[entidad]
 			.findAll({
 				where: {
@@ -155,7 +125,7 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
 	TC_obtieneEdicsAjenas: (entidad, userID, includes) => {
-		const haceUnaHora = funciones.nuevoHorario(-1);
+		const haceUnaHora = comp.nuevoHorario(-1);
 		// Obtiene las ediciones que cumplan ciertas condiciones
 		return db[entidad]
 			.findAll({
@@ -185,7 +155,7 @@ module.exports = {
 	},
 	// Revisar - producto/edicion y rclv/edicion
 	edicForm_EdicsAjenas: async (entidad, condiciones, include) => {
-		const haceUnaHora = funciones.nuevoHorario(-1);
+		const haceUnaHora = comp.nuevoHorario(-1);
 		const {entidad_id, entID, userID} = condiciones;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
@@ -234,5 +204,36 @@ module.exports = {
 	// Middleware/Usuario/autorizadoFA
 	obtieneAutorizadoFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
+	},
+	// RUD - Usuario habilitado
+	usuario_regsConStatusARevisar: async (userID, entidades) => {
+		// Variables
+		const creado_id = status_registro.find((n) => n.creado).id;
+		const inactivar_id = status_registro.find((n) => n.inactivar).id;
+		const recuperar_id = status_registro.find((n) => n.recuperar).id;
+		let contarRegistros = 0;
+		// Rutina para contar
+		let condiciones = {
+			[Op.or]: [
+				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: userID}]},
+				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: userID}]},
+				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: userID}]},
+			],
+		};
+		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
+
+		// Fin
+		return contarRegistros;
+	},
+	usuario_regsConEdicion: async (userID) => {
+		// Variables
+		const entidades = ["prods_edicion", "rclvs_edicion", "links_edicion"];
+		let contarRegistros = 0;
+		// Rutina para contar
+		let condicion = {editado_por_id: userID};
+		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});
+
+		// Fin
+		return contarRegistros;
 	},
 };

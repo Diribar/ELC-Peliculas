@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesos = require("./RCLV-FN-Procesos");
+const variables = require("../../funciones/3-Procesos/Variables");
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
 		return res.json(mensaje);
 	},
 	prefijos: (req, res) => {
-		let prefijos=procesos.prefijos
+		let prefijos=variables.prefijos
 		return res.json(prefijos);
 	},
 };

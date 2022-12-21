@@ -4,6 +4,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 
 module.exports = {
 	// ControllerAPI (validaLinks)
@@ -90,7 +91,7 @@ let validaLinkRepetidos = async (datos) => {
 	if (id) {
 		let link = await BD_genericas.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneProdDesdeEntidad_id(link);
-		let entidadId = comp.obtieneEntidad_id(prodEntidad);
+		let entidadId = procsCRUD.obtieneEntidad_id(prodEntidad);
 		let prodId = link[entidadId];
 		datos = {entidad: prodEntidad, id: prodId};
 		respuesta = comp.cartelRepetido(datos);

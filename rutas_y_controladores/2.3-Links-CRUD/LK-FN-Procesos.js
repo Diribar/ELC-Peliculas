@@ -1,15 +1,15 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 
 module.exports = {
 	// Links - Controlador Vista
 	obtieneLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
-		let producto_id = comp.obtieneEntidad_id(entidad);
+		let producto_id = procsCRUD.obtieneEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
@@ -36,7 +36,7 @@ module.exports = {
 	prodCampoLG: async (prodEntidad, prodID) => {
 		// Variables
 		let datos = {};
-		let entidad_id = comp.obtieneEntidad_id(prodEntidad);
+		let entidad_id = procsCRUD.obtieneEntidad_id(prodEntidad);
 		// Obtiene el producto con include a links
 		let producto = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, [
 			"links_gratuitos_cargados",
@@ -85,7 +85,7 @@ module.exports = {
 			return proveedor.id;
 		};		
 		// Datos del producto
-		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
+		let producto_id = procsCRUD.obtieneEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
 		// Datos del proveedor
 		datos.prov_id = await obtieneProveedorID(datos.url);

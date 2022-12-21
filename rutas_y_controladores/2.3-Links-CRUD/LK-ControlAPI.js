@@ -2,6 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
 const valida = require("./LK-FN-Validar");
 
@@ -36,7 +37,7 @@ module.exports = {
 			? await comp.creaRegistro("links", datos, userID) // El link no existe --> se lo debe crear
 			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
 			? await comp.actualizaRegistro("links", link.id, datos) // Actualizar el link
-			: await comp.guardaEdicion("links", "links_edicion", link, datos, userID); // Guardar la edición
+			: await procsCRUD.guardaEdicion("links", "links_edicion", link, datos, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},

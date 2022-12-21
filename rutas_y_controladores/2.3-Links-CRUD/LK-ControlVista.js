@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
 const variables = require("../../funciones/3-Procesos/Variables");
 
@@ -19,7 +19,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
 			prodEntidad,
 			prodID,
 			userID,

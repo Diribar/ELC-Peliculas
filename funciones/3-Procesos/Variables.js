@@ -337,6 +337,20 @@ module.exports = {
 		valores: ["nombre", "dia_del_ano_id"],
 	},
 	rclvs: ["personajes", "hechos", "valores"],
+	prefijos: [
+		"San",
+		"Santo",
+		"Santa",
+		"Beato",
+		"Beata",
+		"Ven",
+		"Venerable",
+		"Don",
+		"Papa",
+		"Sor",
+		"Padre",
+		"Hna",
+	],
 
 	// Links
 	provsQueNoRespetanCopyright: [

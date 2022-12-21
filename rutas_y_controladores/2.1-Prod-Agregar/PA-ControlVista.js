@@ -7,6 +7,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./PA-FN-Procesos");
 const valida = require("./PA-FN-Validar");
 
@@ -271,7 +272,13 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// 4. Guarda los datos de 'Edición'
-		comp.guardaEdicion(confirma.entidad, "prods_edicion", registro, confirma, req.session.usuario.id);
+		await procsCRUD.guardaEdicion(
+			confirma.entidad,
+			"prods_edicion",
+			registro,
+			confirma,
+			req.session.usuario.id
+		);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
