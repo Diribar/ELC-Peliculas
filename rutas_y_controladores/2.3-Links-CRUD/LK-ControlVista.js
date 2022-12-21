@@ -3,8 +3,9 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesosProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
+const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procesosProd.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
 			prodEntidad,
 			prodID,
 			userID,
@@ -67,7 +68,7 @@ module.exports = {
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			title: producto.nombre_castellano,
-			calidades: [144, 240, 360, 480, 720, 1080],
+			calidades: variables.calidades,
 			motivos,
 			imgDerPers,
 			mostrarCartel: true,

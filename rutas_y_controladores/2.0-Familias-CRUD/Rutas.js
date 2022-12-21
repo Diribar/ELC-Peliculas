@@ -2,7 +2,7 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
+const API = require("./FM-ControlAPI");
 
 //************************ Rutas ****************************
 // Rutas de APIs

@@ -29,7 +29,7 @@ module.exports = {
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
-		// return res.send([productos,rclvs]);
+		// return res.send([productos, rclvs]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -417,7 +417,7 @@ module.exports = {
 			links_tipos: linksTipos,
 			avatar,
 			motivos,
-			calidades: [144, 240, 360, 480, 720, 1080],
+			calidades: variables.calidades,
 			mostrar: null,
 			userID,
 			camposARevisar,

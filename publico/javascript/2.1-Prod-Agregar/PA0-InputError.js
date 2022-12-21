@@ -103,16 +103,17 @@ window.addEventListener("load", async () => {
 		var mensajesAyudaSubcat = document.querySelectorAll("#ayudaSubcat ul li");
 		// Categoría y subcategoría
 		var categoriaSelect = document.querySelector("select[name='categoria_id']");
-		var subcategoriaSelect = document.querySelector("select[name='subcategoria_id']");
+		var subcatSelect = document.querySelector("select[name='subcategoria_id']");
 		var subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 		var subcategorias = await fetch("/producto/agregar/api/DP-obtiene-subcategs").then((n) => n.json());
 		var subcategoria;
 		// Datos RCLV
 		var inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
-		var linkAltaJSS = document.querySelector(".inputError .linkRCLV.alta");
-		var linksEdicion = document.querySelectorAll(".inputError .linkRCLV.edicion");
+		var linkPersAlta = document.querySelector(".inputError .linkRCLV.alta");
+		var linksRCLVEdic = document.querySelectorAll(".inputError .linkRCLV.edicion");
 		var iconosOK_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-check");
 		var iconosError_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-xmark");
+		var selectPersonaje = document.querySelector("select[name='personaje_id']");
 		var opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option.RCLV");
 		var opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option.RCLV");
 		var invisibles = document.querySelectorAll(".invisible");
@@ -252,7 +253,7 @@ window.addEventListener("load", async () => {
 						: opcion.classList.add("ocultar");
 				}
 				// La subcategoría puede tener un valor inicial
-				if (!subcategoriaSelect.value) subcategoriaSelect.removeAttribute("disabled");
+				if (!subcatSelect.value) subcatSelect.removeAttribute("disabled");
 				// Habilita y actualiza el ayuda
 				iconoAyudaSubcat.classList.remove("inactivo");
 				// Deja visibles las ayudas correspondientes
@@ -263,8 +264,8 @@ window.addEventListener("load", async () => {
 				});
 			} else {
 				// Borra la sub-categoría y la deja inactivada
-				subcategoriaSelect.setAttribute("disabled", "disabled");
-				subcategoriaSelect.value = "";
+				subcatSelect.setAttribute("disabled", "disabled");
+				subcatSelect.value = "";
 				// Inhabilita el ayuda
 				iconoAyudaSubcat.classList.add("inactivo");
 			}
@@ -289,100 +290,53 @@ window.addEventListener("load", async () => {
 			for (let icono of iconosOK_RCLV) icono.classList.add("ocultar");
 			for (let icono of iconosError_RCLV) icono.classList.add("ocultar");
 
-			// Opciones si la subcategoría tiene valor
-			if (subcategoriaSelect.value) {
+			// Si la subcategoría tiene valor --> restricción en las opciones
+			if (subcatSelect.value) {
 				// Actualiza las opciones de RCLV
 				let categoriaValor = categoriaSelect.value;
-				subcategoria = subcategorias.find((n) => n.id == subcategoriaSelect.value);
+				subcategoria = subcategorias.find((n) => n.id == subcatSelect.value);
 
-				// Acciones si la subcategoría es una aparición mariana
-				if (subcategoria.pers_codigo == "AMA") {
-					// Deja solamente los personajes con 'AMA'
+				// Acciones para el PERSONAJE
+				// 1. Restringido por subcategoría
+				if (subcategoria.pers_codigo)
 					opcionesPersonaje.forEach((opcion) => {
-						opcion.classList.contains("AMA")
+						opcion.classList.contains(subcategoria.id)
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});
-					// Deja solamente la aparición mariana del vidente, o todas las 'AMA'
-					clave = inputsRCLV[0].value != "1" ? "AM" + inputsRCLV[0].value : "A";
+				// 2. Restringido por categoría
+				else
+					opcionesPersonaje.forEach((opcion) => {
+						opcion.classList.contains(categoriaValor)
+							? opcion.classList.remove("ocultar")
+							: opcion.classList.add("ocultar");
+					});
+
+				// Acciones para el HECHO
+				clave = subcategoria.hechos_codigo;
+				// 1. Restringido por subcategoría
+				if (clave)
 					opcionesHecho.forEach((opcion) => {
 						opcion.classList.contains(clave)
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});
-				}
+				// 2. Restringido por categoría
+				else
+					opcionesHecho.forEach((opcion) => {
+						opcion.classList.contains(categoriaValor)
+							? opcion.classList.remove("ocultar")
+							: opcion.classList.add("ocultar");
+					});
 
-				// Acciones si no es una aparición mariana
-				else {
-					// Acciones para el PERSONAJE - restringido por subcategoría
-					if (subcategoria.pers_codigo) {
-						// Deja solamente las opciones de esa subcategoría
-						opcionesPersonaje.forEach((opcion) => {
-							opcion.classList.contains(subcategoria.id)
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
-					}
-					// Acciones para el PERSONAJE - restringido por categoría
-					else {
-						// Deja solamente las opciones de esa categoría
-						opcionesPersonaje.forEach((opcion) => {
-							opcion.classList.contains(categoriaValor)
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
-					}
-					// Acciones para el HECHO - restringido por subcategoría
-					clave = subcategoria.hechos_codigo;
-					if (clave) {
-						// Deja solamente las opciones de esa subcategoría
-						opcionesHecho.forEach((opcion) => {
-							opcion.classList.contains(clave)
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
-					}
-					// Acciones para el HECHO - restringido por categoría
-					else {
-						opcionesHecho.forEach((opcion) => {
-							opcion.classList.contains(categoriaValor)
-								? opcion.classList.remove("ocultar")
-								: opcion.classList.add("ocultar");
-						});
-					}
-				}
 				// Muestra los campos RCLV
 				for (let invisible of invisibles) invisible.classList.remove("invisible");
 			}
-			// Opciones si la subcategoría no tiene valor
-			else {
-				// Oculta los campos RCLV
-				for (let invisible of invisibles) invisible.classList.add("invisible");
-			}
+			// Si la subcategoría no tiene valor --> oculta los campos RCLV
+			else for (let invisible of invisibles) invisible.classList.add("invisible");
+
+			// Fin
 			return;
-		},
-		interaccionesApMar: (campo) => {
-			// Cambia el contenido del Personaje o Hecho
-			// Acciones si se cambia el personaje
-			if (campo == "personaje_id") {
-				// Obtiene del personaje, el 'id' de la Aparición Mariana
-				let clases = Array.from(opcionesPersonaje).find(
-					(n) => n.value == inputsRCLV[0].value
-				).classList;
-				clases = Array.from(clases);
-				let indiceEnArray = clases.indexOf("AM") + 1;
-				let id = clases[indiceEnArray].slice(2);
-				// Cambia el contenido del Hecho
-				inputsRCLV[1].value = id;
-			}
-			// Acciones si se cambia el hecho
-			if (campo == "hecho_id") {
-				let id = Array.from(opcionesPersonaje).find((n) =>
-					n.classList.contains("AM" + inputsRCLV[1].value)
-				).value;
-				// Cambia el contenido del Personaje
-				inputsRCLV[0].value = id;
-			}
 		},
 		verificaUnaSolaOpcionRCLV: () => {
 			// Rutina para los 2 tipos de RCLV
@@ -395,20 +349,53 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		iconosEdicionRCLVs: () => {
-			// Revisar todas las entidades RCLV
-			linksEdicion.forEach((link, i) => {
-				// Se muestra/oculta el ícono de editar el registro
-				// Para los registros de 'Jesús' y Ninguno, permanecen ocultos
-				if (inputsRCLV[i].value && inputsRCLV[i].value != 1 && inputsRCLV[i].value != 11) {
-					link.classList.remove("ocultar");
-				} else link.classList.add("ocultar");
+		particsJesusNinguno: () => {
+			// 1. Acciones para Editar
+			// 1.1. Acciones si el valor es 'Ninguno'
+			inputsRCLV.forEach((inputRCLV, indice) => {
+				inputRCLV.value == "1"
+					? linksRCLVEdic[indice].classList.add("ocultar")
+					: linksRCLVEdic[indice].classList.remove("ocultar");
 			});
+			// 1.2. Acciones si elvalor es 'Jesús'
+			if (inputsRCLV[0].value == "11") linksRCLVEdic[0].classList.add("ocultar");
+
+			// 2. Acciones para Agregar
+			subcatSelect.value == "JSS"
+				? linkPersAlta.classList.add("ocultar")
+				: linkPersAlta.classList.remove("ocultar");
+
+			// Fin
+			return;
+		},
+		interaccionesApMar: function (campo) {
+			// Cambia el contenido del Personaje o Hecho
+			// Acciones si se cambia el personaje
+			if (campo == "personaje_id") {
+				// Obtiene del personaje, el 'id' de la Aparición Mariana
+				for (var opcion of opcionesPersonaje) if (opcion.value == inputsRCLV[0].value) break;
+				let clases = opcion.className.split(" ");
+				let indice = clases.indexOf("AMA");
+				clases.splice(indice, 1);
+				let id = clases[indice].slice(2);
+				// Cambia el contenido del Hecho
+				inputsRCLV[1].value = id;
+			}
+			// Acciones si se cambia el hecho
+			if (campo == "hecho_id") {
+				// Muestra los personajes que hayan presenciado la aparición y oculta los demás
+				opcionesPersonaje.forEach((opcion) => {
+					if (opcion.className.includes("AM" + inputsRCLV[1].value))
+						opcion.classList.remove("ocultar");
+					else opcion.classList.add("ocultar");
+				});
+				// Cambia el contenido del Personaje
+				this.verificaUnaSolaOpcionRCLV();
+			}
 		},
 		adicSubcat: (campo) => {
 			let adicSubcategoria = "";
-			if (campo != "subcategoria_id")
-				adicSubcategoria += "&subcategoria_id=" + subcategoriaSelect.value;
+			if (campo != "subcategoria_id") adicSubcategoria += "&subcategoria_id=" + subcatSelect.value;
 			if (campo != "personaje_id") adicSubcategoria += "&personaje_id=" + inputsRCLV[0].value;
 			if (campo != "hecho_id") adicSubcategoria += "&hecho_id=" + inputsRCLV[1].value;
 			if (campo != "valor_id") adicSubcategoria += "&valor_id=" + inputsRCLV[2].value;
@@ -421,16 +408,8 @@ window.addEventListener("load", async () => {
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
-		// Primera letra en mayúscula (sólo para Datos Duros)
-		if (
-			paso.DD &&
-			((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea")
-		) {
-			let aux = e.target.value;
-			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
-		}
-		// Asigna el valor
 		let valor = encodeURIComponent(e.target.value);
+		let datosUrl;
 		// Particularidades por paso
 		if (paso.PC) {
 			// Cambiar submit por '?'
@@ -441,45 +420,54 @@ window.addEventListener("load", async () => {
 			resultado.classList.remove(...resultado.classList);
 			resultado.classList.add("sinResultado");
 			// Prepara el datosUrl con los datos a validar
-			var datosUrl = campo + "=" + valor;
+			datosUrl = campo + "=" + valor;
 		}
 		if (paso.DD) {
+			// Primera letra en mayúscula (sólo para Datos Duros)
+			if (
+				(e.target.localName == "input" && e.target.type == "text") ||
+				e.target.localName == "textarea"
+			) {
+				valor = e.target.value;
+				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+				valor = encodeURIComponent(e.target.value);
+			}
+
+			// Convierte los ID de los países elegidos, en un texto
 			if (e.target == paisesSelect) {
-				// Convierte los ID de los países elegidos, en un texto
 				DD.actualizaPaises();
 				// Definir los valores para 'campo' y 'valor'
 				campo = paisesID.name;
 				valor = paisesID.value;
 			}
-			var datosUrl = campo + "=" + valor;
+			datosUrl = campo + "=" + valor;
 		}
 		if (paso.DP) {
-			// Si se cambia la categoría --> actualiza subcategoría
+			// Si se cambia la categoría
 			if (campo == "categoria_id") {
-				subcategoriaSelect.value = "";
+				subcatSelect.value = "";
 				DP.actualizaOpsSubcat();
 				DP.limpiaInputsRCLV();
 				DP.actualizaOpsRCLV();
 			}
-			// Si se cambia la subcategoría --> actualiza RCLV
+			// Si se cambia la subcategoría
 			if (campo == "subcategoria_id") {
 				DP.limpiaInputsRCLV();
 				DP.actualizaOpsRCLV();
 				DP.verificaUnaSolaOpcionRCLV();
-				DP.iconosEdicionRCLVs();
-				subcategoriaSelect.value == "JSS"
-					? linkAltaJSS.classList.add("ocultar")
-					: linkAltaJSS.classList.remove("ocultar");
 			}
-			// Verificar interacción para RCLV
-			if (Array.from(e.target.classList).includes("RCLV")) {
-				if (subcategoriaSelect.value == "AMA" && valor != "1") DP.interaccionesApMar(campo);
-				DP.iconosEdicionRCLVs();
-			}
-			// Para que incluya los datos de la subcategoría y rclvs, por si se necesitan para validar RCLV
-			let adicSubcategoria = subcategoriaSelect.value ? DP.adicSubcat(campo) : "";
+
+			// Particularidades si se elije el personaje 'Jesús' o 'Ninguno'
+			if (campo == "subcategoria_id" || e.target.className.includes("RCLV")) DP.particsJesusNinguno();
+
+			// Particularidades si la subcategoría es AMA y se elije un RCLV
+			if (subcatSelect.value == "AMA" && e.target.className.includes("RCLV"))
+				DP.interaccionesApMar(campo);
+
+			// Datos de la subcategoría y rclvs, por si se necesitan para validar RCLV
+			let adicSubcategoria = subcatSelect.value ? DP.adicSubcat(campo) : "";
 			// Prepara el datosUrl con los datos a validar
-			var datosUrl = campo + "=" + valor + adicSubcategoria;
+			datosUrl = campo + "=" + valor + adicSubcategoria;
 		}
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
@@ -520,9 +508,9 @@ window.addEventListener("load", async () => {
 	if (paso.DP) {
 		// Rutinas de categoría / subcategoría
 		DP.actualizaOpsSubcat();
-		if (subcategoriaSelect.value) DP.actualizaOpsRCLV();
+		if (subcatSelect.value) DP.actualizaOpsRCLV();
 		// Activar links RCLV
-		DP.iconosEdicionRCLVs();
+		DP.particsJesusNinguno();
 	}
 	// Errores y boton 'Submit'
 	let mostrarIconoError = paso.DD; // En DD se muestran los errores iniciales siempre;

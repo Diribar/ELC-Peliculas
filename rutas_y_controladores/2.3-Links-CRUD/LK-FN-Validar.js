@@ -40,7 +40,7 @@ module.exports = {
 				: "";
 		}
 		// subtitulos castellano
-		if (campos.includes("subtit_castellano" && datos.castellano != "1")) {
+		if (campos.includes("subtit_castellano") && datos.castellano != "1") {
 			errores.subtit_castellano = !datos.subtit_castellano
 				? comp.inputVacio
 				: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"

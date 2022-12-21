@@ -22,23 +22,21 @@ module.exports = {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
-		// Completa la info
-		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
-		datos[producto_id] = datos.prodID;
-		datos.prov_id = await obtieneProveedorID(datos.url);
+		// Completa y procesa la info
+		datos = await procesos.datosLink(datos);
+
 		// Obtiene el link
-		let link_original = await BD_genericas.obtienePorCamposConInclude(
+		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",
 			{url: datos.url},
 			"status_registro"
 		);
 		// Obtiene el mensaje de la tarea realizada
-		let link_edicion = datos;
-		let mensaje = !link_original
-			? await comp.creaRegistro("links", datos, userID) // El link_original no existe --> se lo debe crear
-			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await comp.actualizaRegistro("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await comp.guardaEdicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar la edición
+		let mensaje = !link
+			? await comp.creaRegistro("links", datos, userID) // El link no existe --> se lo debe crear
+			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
+			? await comp.actualizaRegistro("links", link.id, datos) // Actualizar el link
+			: await comp.guardaEdicion("links", "links_edicion", link, datos, userID); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -159,12 +157,3 @@ module.exports = {
 	},
 };
 
-let obtieneProveedorID = async (url) => {
-	// Obtiene el proveedor
-	let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
-	// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-	let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
-	// Si no se reconoce el proveedor, se asume el 'desconocido'
-	proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
-	return proveedor.id;
-};

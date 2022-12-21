@@ -73,4 +73,27 @@ module.exports = {
 		}
 		return;
 	},
+	datosLink: async (datos) => {
+		// Funcion
+		let obtieneProveedorID = async (url) => {
+			// Obtiene el proveedor
+			let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
+			// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
+			let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+			// Si no se reconoce el proveedor, se asume el 'desconocido'
+			proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
+			return proveedor.id;
+		};		
+		// Datos del producto
+		let producto_id = comp.obtieneEntidad_id(datos.prodEntidad);
+		datos[producto_id] = datos.prodID;
+		// Datos del proveedor
+		datos.prov_id = await obtieneProveedorID(datos.url);
+		// Particularidades
+		if (datos.castellano == "1") datos.subtit_castellano = null;
+		if (datos.tipo_id == "1") datos.completo = 1;
+		if (datos.completo == "1") datos.parte = "-";
+		// Fin
+		return datos
+	},
 };

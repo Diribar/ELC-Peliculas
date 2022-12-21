@@ -2,6 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
@@ -57,7 +58,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await comp.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
 			entidad,
 			prodID,
 			userID,
@@ -74,7 +75,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await comp.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
 			entidad,
 			prodID,
 			userID,

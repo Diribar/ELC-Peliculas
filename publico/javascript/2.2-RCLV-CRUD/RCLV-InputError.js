@@ -551,7 +551,10 @@ window.addEventListener("load", async () => {
 							}
 						}
 						// Particularidad para 'ano'
-						if (campo == "ano") continue;
+						if (campo == "ano") {
+							saltear = false;
+							continue;
+						}
 
 						// Particularidades para enProcCan y ama
 						if ((campo == "enProcCan" || campo == "ama") && valor == "0") {
@@ -566,8 +569,6 @@ window.addEventListener("load", async () => {
 							continue;
 						}
 
-						// Saltear
-						if (campo == "ano") saltear = false;
 						// Caso genérico
 						if (valor) v.cfc[indice + 1].classList.remove("ocultar");
 						else {
@@ -672,9 +673,11 @@ window.addEventListener("load", async () => {
 			// 3. Quita el prefijo 'San'
 			if (campo == "nombre" && v.entidad == "personajes")
 				for (let prefijo of v.prefijos) {
-					if (valor.startsWith(prefijo + " ")) v[campo].value = valor.slice(prefijo.length + 1);
-					valor = v[campo].value;
-					break;
+					if (valor.startsWith(prefijo + " ")) {
+						v[campo].value = valor.slice(prefijo.length + 1);
+						valor = v[campo].value;
+						break;
+					}
 				}
 			// 4. Quita los caracteres que exceden el largo permitido
 			if (valor.length > 30) v[campo].value = valor.slice(0, 30);

@@ -1,8 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "personajes";
 	const columns = {
-		perenne: {type: dt.BOOLEAN},
-
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},

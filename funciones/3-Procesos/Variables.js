@@ -3,6 +3,7 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
+	// Inicio
 	opcionesInicio: [
 		{
 			href: "/consultas/listado/sugeridas",
@@ -21,7 +22,7 @@ module.exports = {
 		},
 	],
 
-	// Entorno Consulta de Productos
+	// Consulta de Productos
 	menuOpciones: [
 		{
 			nombre: "Todas las Películas",
@@ -52,7 +53,7 @@ module.exports = {
 		{nombre: "Por incorporación más reciente", url: "incorporacion"},
 	],
 
-	// Entorno Agregar Productos
+	// Agregar Productos
 	camposDD: [
 		{
 			titulo: "Título original",
@@ -317,7 +318,7 @@ module.exports = {
 		];
 	},
 
-	// Entorno RCLV
+	// RCLV
 	camposRCLV: {
 		personajes: [
 			"nombre",
@@ -335,13 +336,14 @@ module.exports = {
 		valores: ["nombre", "dia_del_ano_id"],
 	},
 
-	// Entorno RUD - Links
+	// Links
 	provsQueNoRespetanCopyright: [
 		{nombre: "Gloria TV", url: "gloria.tv"},
 		{nombre: "Cuevana", url: "cuevana"},
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
 	provsListaNegra: ["youporn", "pornhub"],
+	calidades: [360, 480, 720, 1080],
 
 	// Entorno Revisiones
 	camposRevisar: {
