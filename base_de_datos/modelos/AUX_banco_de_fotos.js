@@ -1,9 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "banco_fotos";
 	const columns = {
-		nombre: {type: dt.STRING(20)},
+		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
-		nombre_archivo: {type: dt.STRING(20)},
+		nombre_archivo: {type: dt.STRING(30)},
 		fecha_movil: {type: dt.BOOLEAN},
 	};
 	const config = {
