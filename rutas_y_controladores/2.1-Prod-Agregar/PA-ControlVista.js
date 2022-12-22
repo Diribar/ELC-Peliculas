@@ -347,7 +347,7 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
-			imgDerPers: "/imagenes/4-ProdsRevisar/" + registroProd.avatar,
+			imgDerPers: procsCRUD.avatarOrigEdic(registroProd).orig,
 			tituloImgDerPers: registroProd.nombre_castellano,
 		});
 	},

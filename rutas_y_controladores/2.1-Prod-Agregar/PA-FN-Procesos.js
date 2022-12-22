@@ -97,7 +97,51 @@ module.exports = {
 
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)
-	DS_collection: async function (datos) {
+	DS_collection: async (datos) => {
+		// Fórmula
+		let completaColeccion = async (datos) => {
+			// Definir variables
+			let paises_id, produccion, direccion, guion, musica, actuacion;
+			paises_id = produccion = direccion = guion = musica = actuacion = "";
+			let exportar = {};
+			// Rutina por cada capítulo
+			for (let capTMDB_id of datos.capitulosID_TMDB) {
+				// Obtiene las API
+				let datosAPI = await Promise.all([
+					detailsTMDB("movie", capTMDB_id),
+					creditsTMDB("movie", capTMDB_id),
+				]).then(([a, b]) => {
+					return {...a, ...b};
+				});
+				// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
+				// Paises_id
+				if (datosAPI.production_countries.length)
+					paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
+				// Producción
+				if (datosAPI.production_companies.length)
+					produccion += limpiaValores(datosAPI.production_companies) + ", ";
+				// Crew
+				if (datosAPI.crew.length) {
+					direccion +=
+						limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
+				}
+				// Cast
+				if (datosAPI.cast.length) actuacion += funcionCast(datosAPI.cast) + ", ";
+			}
+			// Procesar los resultados
+			let cantCapitulos = datos.capitulosID_TMDB.length;
+			if (paises_id) exportar.paises_id = consolidaValores(paises_id, cantCapitulos).replace(/,/g, "");
+			if (produccion) exportar.produccion = consolidaValores(produccion, cantCapitulos);
+			if (direccion) exportar.direccion = consolidaValores(direccion, cantCapitulos);
+			if (guion) exportar.guion = consolidaValores(guion, cantCapitulos);
+			if (musica) exportar.musica = consolidaValores(musica, cantCapitulos);
+			if (actuacion) exportar.actuacion = consolidaValores(actuacion, cantCapitulos);
+			// Fin
+			return exportar;
+		};
+
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
@@ -128,57 +172,16 @@ module.exports = {
 			datos.capitulosID_TMDB = datosAPI.parts.map((n) => n.id);
 		}
 		// Datos de los capítulos para completar la colección
-		let otrosDatos = await this.completaColeccion(datos);
+		let otrosDatos = await completaColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
-	},
-	completaColeccion: async (datos) => {
-		// Definir variables
-		let paises_id, produccion, direccion, guion, musica, actuacion;
-		paises_id = produccion = direccion = guion = musica = actuacion = "";
-		let exportar = {};
-		// Rutina por cada capítulo
-		for (let capTMDB_id of datos.capitulosID_TMDB) {
-			// Obtiene las API
-			let datosAPI = await Promise.all([
-				detailsTMDB("movie", capTMDB_id),
-				creditsTMDB("movie", capTMDB_id),
-			]).then(([a, b]) => {
-				return {...a, ...b};
-			});
-			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
-			// Paises_id
-			if (datosAPI.production_countries.length)
-				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
-			// Producción
-			if (datosAPI.production_companies.length)
-				produccion += limpiaValores(datosAPI.production_companies) + ", ";
-			// Crew
-			if (datosAPI.crew.length) {
-				direccion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
-				guion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
-				musica += limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
-			}
-			// Cast
-			if (datosAPI.cast.length) actuacion += funcionCast(datosAPI.cast) + ", ";
-		}
-		// Procesar los resultados
-		let cantCapitulos = datos.capitulosID_TMDB.length;
-		if (paises_id) exportar.paises_id = consolidaValores(paises_id, cantCapitulos).replace(/,/g, "");
-		if (produccion) exportar.produccion = consolidaValores(produccion, cantCapitulos);
-		if (direccion) exportar.direccion = consolidaValores(direccion, cantCapitulos);
-		if (guion) exportar.guion = consolidaValores(guion, cantCapitulos);
-		if (musica) exportar.musica = consolidaValores(musica, cantCapitulos);
-		if (actuacion) exportar.actuacion = consolidaValores(actuacion, cantCapitulos);
-		// Fin
-		return exportar;
 	},
 	// ControllerVista (confirma)
 	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
-			await this.agregaCapitulosDeCollection(datosCol, capituloID_TMDB, indice);
+			await this.agregaCapituloDeCollection(datosCol, capituloID_TMDB, indice);
 		});
 		// Fin
 		return;

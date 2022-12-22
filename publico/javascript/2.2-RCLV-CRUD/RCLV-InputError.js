@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
 		nombre: {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + v.nombre.value;
+				let params = "&nombre=" + encodeURIComponent(v.nombre.value);
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Si hay errores, cambia el OK a false
 				if (errores.nombre) OK.nombre = false;
@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 			},
 			apodo: async () => {
 				// Verifica errores en el sector 'nombre', campo 'apodo'
-				let params = "&apodo=" + v.apodo.value;
+				let params = "&apodo=" + encodeURIComponent(v.apodo.value);
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				if (errores.nombre) OK.nombre = false;
 				// Fin
@@ -106,8 +106,8 @@ window.addEventListener("load", async () => {
 			},
 			nombreApodo: async () => {
 				// Verifica errores en el sector 'nombre'
-				let params = "&nombre=" + v.nombre.value + "&entidad=" + v.entidad;
-				if (v.personajes) params += "&apodo=" + v.apodo.value;
+				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
+				if (v.personajes) params += "&apodo=" + encodeURIComponent(v.apodo.value);
 				if (v.id) params += "&id=" + v.id;
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Consolidar la info
@@ -668,7 +668,11 @@ window.addEventListener("load", async () => {
 			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			valor = v[campo].value;
 			// 2. Quita los caracteres no deseados
-			v[campo].value = valor.replace(/[^a-záéíóúüñ'\s\d]/gi, "").replace(/ +/g, " ");
+			v[campo].value = valor
+				.replace(/[^a-záéíóúüñ'\s]/gi, "")
+				.replace(/ +/g, " ")
+				.replace(/\t/g, "")
+				.replace(/\r/g, "");
 			valor = v[campo].value;
 			// 3. Quita el prefijo 'San'
 			if (campo == "nombre" && v.entidad == "personajes")

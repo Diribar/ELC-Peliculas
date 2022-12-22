@@ -27,8 +27,7 @@ module.exports = {
 			"productos"
 		);
 		// Obtiene el avatar
-		let imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
-		imgDerPers = imgDerPers.edic;
+		let imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic};
 		// Obtiene información de BD

@@ -197,7 +197,7 @@ module.exports = async (req, res, next) => {
 	let buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia = async () => {
 		// Se revisa solamente en la familia de entidades
 		// Asociaciones
-		let entidades = variables.productos.includes(entidad)
+		let entidades = variables.entidadesProd.includes(entidad)
 			? variables.entidadesProd
 			: variables.entidadesRCLV;
 		let asociaciones = [];

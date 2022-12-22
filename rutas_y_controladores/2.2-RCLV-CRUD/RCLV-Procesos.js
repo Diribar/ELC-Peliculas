@@ -52,32 +52,58 @@ module.exports = {
 		return {resumenRCLV, resumenRegistro};
 	},
 	prodsEnBD: async function (RCLV, userID) {
-		// Variables
-		let prodsEnBD = [];
+		// Función
+		let convierteEdicPropiasDeProdsEnProds= async () => {
+			// Obtiene las ediciones propias
+			let edicionesPropias = [];
+			for (let edicion of RCLV.prods_edicion)
+				if (edicion.editado_por_id == userID) edicionesPropias.push(edicion);
+			if (edicionesPropias.length)
+				edicionesPropias = edicionesPropias.filter((n) => n.editado_por_id == userID);
+			// Configura la variable de productos
+			let productos = {};
+			for (let entidad of variables.entidadesProd) productos[entidad] = [];
+	
+			// Si no hay ediciones propias, termina la función
+			if (!edicionesPropias.length) return productos;
+	
+			// Obtiene los productos de esas ediciones
+			for (let edicion of edicionesPropias) {
+				// Obtiene la entidad y el campo 'entidad_id'
+				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
+				let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+				// Obtiene los registros del producto original y su edición por el usuario
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
+					entidad,
+					edicion[entidad_id],
+					userID,
+					"prods_edicion",
+					"productos"
+				);
+				// Pule la edición y actualiza la variable del registro original
+				[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+				let producto = {...prodOrig, ...prodEdic};
+				// Fin
+				productos[entidad].push(producto);
+			}
+	
+			// Combina los productos originales con los productos de las ediciones
+			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
+			delete RCLV.prods_edicion;
+			// Fin
+			return RCLV;
+		}
 		// Convierte las ediciones en productos
-		if (RCLV.prods_edicion.length) RCLV = await this.convierteEdicPropiasDeProdsEnProds(RCLV, userID);
-		console.log(59, RCLV);
+		if (RCLV.prods_edicion.length) RCLV = await convierteEdicPropiasDeProdsEnProds();
 
 		// Completa la información de cada producto
-		await variables.entidadesProd.forEach(async (entidad) => {
-			let aux = await RCLV[entidad].map(async (registro) => {
-				// Rutina para los productos originales
-				if (entidad != "prods_edicion") {
-					// Averigua la ruta y el nombre del avatar
-					let avatar = registro.avatar.includes("/")
-						? registro.avatar
-						: "/imagenes/" +
-						  (!registro.avatar
-								? "0-Base/AvatarGenericoProd.jpg"
-								: "3-Productos/" + registro.avatar);
-					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
-				} else {
-					entOrig = procsCRUD.obtieneEntidadDesdeEntidad_id(registro);
-					let entidad_id = procsCRUD.obtieneEntidad_id(entOrig);
-					let regID = registro[entidad_id];
-					await procsCRUD.obtieneVersionesDelRegistro(entOrig, regID, userID, edicNombre, familia);
-				}
+		let prodsEnBD = [];
+		variables.entidadesProd.forEach((entidad) => {
+			let aux = RCLV[entidad].map((registro) => {
+				// Averigua la ruta y el nombre del avatar
+				let avatar = procsCRUD.avatarOrigEdic(registro).edic;
+				// Agrega la entidad, el avatar, y el nombre de la entidad
+				return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsEnBD.push(...aux);
 		});
@@ -242,46 +268,5 @@ module.exports = {
 			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
 		}
 		return DE;
-	},
-	// RCLV - Detalle
-	convierteEdicPropiasDeProdsEnProds: async (RCLV, userID) => {
-		// Obtiene las ediciones propias
-		let edicionesPropias = [];
-		for (let edicion of RCLV.prods_edicion)
-			if (edicion.editado_por_id == userID) edicionesPropias.push(edicion);
-		if (edicionesPropias.length)
-			edicionesPropias = edicionesPropias.filter((n) => n.editado_por_id == userID);
-		// Configura la variable de productos
-		let productos = {};
-		for (let entidad of variables.entidadesProd) productos[entidad] = [];
-
-		// Si no hay ediciones propias, termina la función
-		if (!edicionesPropias.length) return productos;
-
-		// Obtiene los productos de esas ediciones
-		for (let edicion of edicionesPropias) {
-			// Obtiene la entidad y el campo 'entidad_id'
-			let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
-			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
-			// Obtiene los registros del producto original y su edición por el usuario
-			let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-				entidad,
-				edicion[entidad_id],
-				userID,
-				"prods_edicion",
-				"productos"
-			);
-			// Pule la edición y actualiza la variable del registro original
-			[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
-			let producto = {...prodOrig, ...prodEdic};
-			// Fin
-			productos[entidad].push(producto);
-		}
-
-		// Combina los productos originales con los productos de las ediciones
-		for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
-		delete RCLV.prods_edicion;
-		// Fin
-		return RCLV;
 	},
 };

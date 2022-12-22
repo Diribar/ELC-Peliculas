@@ -345,27 +345,6 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	avatarOrigEdic: function (prodOrig, prodEdic) {
-		// Variables
-		let avatarOrig, avatarEdic;
-
-		// Si no existe avatarOrig
-		if (!prodOrig || !prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
-		// Si es un url
-		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
-		// Si el avatar está 'aprobado'
-		else if (this.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + prodOrig.avatar))
-			avatarOrig = "/imagenes/3-Productos/" + prodOrig.avatar;
-		// Si el avatar está 'a revisar'
-		else if (this.averiguaSiExisteUnArchivo("./publico/imagenes/4-ProdsRevisar/" + prodOrig.avatar))
-			avatarOrig = "/imagenes/4-ProdsRevisar/" + prodOrig.avatar;
-
-		// avatarEdic
-		avatarEdic = prodEdic && prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : avatarOrig;
-
-		// Fin
-		return {orig: avatarOrig, edic: avatarEdic};
-	},
 
 	// Validaciones
 	inputVacio: "Necesitamos que completes este campo",
@@ -379,7 +358,7 @@ module.exports = {
 	},
 	castellano: {
 		basico: (dato) => {
-			let formato = /^[a-záéíóúüñ ,.']+$/i;
+			let formato = /^[a-záéíóúüñ ,.'\-]+$/i;
 			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 		},
 		completo: (dato) => {
