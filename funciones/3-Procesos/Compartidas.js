@@ -358,7 +358,7 @@ module.exports = {
 	},
 	castellano: {
 		basico: (dato) => {
-			let formato = /^[a-záéíóúüñ ,.']+$/i;
+			let formato = /^[a-záéíóúüñ ,.'\-]+$/i;
 			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 		},
 		completo: (dato) => {
