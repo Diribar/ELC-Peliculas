@@ -40,7 +40,7 @@ module.exports = {
 		const campoFechaRef = "editado_en";
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
-		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
+		let includes = [...variables.prods, ...variables.rclvs];
 		let productos = [];
 		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
@@ -56,7 +56,7 @@ module.exports = {
 		// 3.B. Obtiene los productos originales
 		if (ediciones.length) {
 			ediciones.map((n) => {
-				let entidad = comp.obtieneEntidad(n);
+				let entidad = comp.obtieneProdDesdeEntidad_id(n);
 				let asociacion = comp.obtieneEntidadSingular(entidad);
 				productos.push({
 					...n[asociacion],
@@ -105,7 +105,7 @@ module.exports = {
 		let productos = [];
 		// 3. Obtiene los productos
 		links.map((n) => {
-			let entidad = comp.obtieneEntidad(n);
+			let entidad = comp.obtieneProdDesdeEntidad_id(n);
 			let asociacion = comp.obtieneEntidadSingular(entidad);
 			let campoFechaRef = !n.status_registro_id
 				? "editado_en"
@@ -133,7 +133,7 @@ module.exports = {
 	TC_obtieneRCLVs: async (ahora, userID) => {
 		// Obtiene rclvs en situaciones particulares
 		// Variables
-		let entidades = ["personajes", "hechos", "valores"];
+		let entidades = variables.rclvs;
 		let creado_id = status_registro.find((n) => n.creado).id;
 		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
@@ -167,7 +167,7 @@ module.exports = {
 		if (ediciones.length) {
 			// Obtiene los rclvs originales
 			ediciones.map((n) => {
-				let entidad = comp.obtieneEntidad(n);
+				let entidad = comp.obtieneRCLVdesdeEntidad_id(n);
 				let asociacion = comp.obtieneEntidadSingular(entidad);
 				rclvs.push({
 					...n[asociacion],
@@ -762,8 +762,8 @@ module.exports = {
 			entidades_id.forEach((entidad_id) => {
 				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
 				if (RCLV_id) {
-					let entidad = comp.obtieneEntidadDesdeEdicion({[entidad_id]: true}); // Obtiene el campo a analizar (pelicula_id, etc.) y su valor en el producto
-					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true}); // Actualiza la entidad_RCLV
+					let entidad = comp.obtieneRCLVdesdeEntidad_id({[entidad_id]: true});
+					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
 				}
 			});
 

@@ -120,12 +120,13 @@ module.exports = async (req, res, next) => {
 			let contarRegistros = 0;
 			// Contar registros con status 'a revisar'
 			let entidades;
-			if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
-			else if (rclv) entidades = ["personajes", "hechos", "valores"];
+			if (producto) entidades = variables.prods;
+			else if (rclv) entidades = variables.rclvs;
 			else if (links) entidades = ["links"];
-			if (entidades) contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
+			if (entidades)
+				contarRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
 			// Contar registros de edición
-			else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
+			else if (edicion) contarRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id);
 			// Fin
 			return contarRegistros;
 		};
@@ -173,7 +174,7 @@ module.exports = async (req, res, next) => {
 			const nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
 			// Fin
 			return nivelDeConfianza;
-		};				
+		};
 		// Variables
 		let informacion;
 		// Obtiene datos del url

@@ -168,12 +168,12 @@ module.exports = {
 			capitulos: true,
 		},
 	],
-	camposDP: async (userID) => {
+	camposDP: async function (userID) {
 		// Variables
 		const registrosRCLV = await (async () => {
 			// Variables
 			let registros = {};
-			let entidades = ["personajes", "hechos", "valores"];
+			let entidades = this.rclvs;
 
 			// Obtiene todos los registros RCLV
 			entidades.forEach((entidad) => {
@@ -317,6 +317,7 @@ module.exports = {
 			},
 		];
 	},
+	prods: ["peliculas", "colecciones", "capitulos"],
 
 	// RCLV
 	camposRCLV: {
@@ -335,6 +336,7 @@ module.exports = {
 		hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "ncn", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
+	rclvs: ["personajes", "hechos", "valores"],
 
 	// Links
 	provsQueNoRespetanCopyright: [
