@@ -51,7 +51,7 @@ module.exports = {
 		// Fin
 		return {resumenRCLV, resumenRegistro};
 	},
-	prodsEnBD: async function (entProductos, RCLV, userID) {
+	prodsEnBD: async function (entProds, RCLV, userID) {
 		// Variables
 		let prodsEnBD = [];
 		// Convierte las ediciones en productos
@@ -60,7 +60,7 @@ module.exports = {
 		console.log(58, RCLV);
 
 		// Completa la información de cada producto
-		await entProductos.forEach(async (entidad) => {
+		await entProds.forEach(async (entidad) => {
 			console.log(59, RCLV[entidad]);
 			let aux = await RCLV[entidad].map(async (registro) => {
 				// Rutina para los productos originales
@@ -89,7 +89,7 @@ module.exports = {
 			});
 			prodsEnBD.push(...aux);
 		});
-		console.log(69, entProductos, prodsEnBD);
+		console.log(69, entProds, prodsEnBD);
 		// Ordenar por año (decreciente)
 		prodsEnBD.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0

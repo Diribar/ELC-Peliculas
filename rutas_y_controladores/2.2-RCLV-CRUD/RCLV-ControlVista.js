@@ -124,12 +124,12 @@ module.exports = {
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		let entidadSingular = comp.obtieneEntidadSingular(entidad);
 		// Obtiene RCLV con produtos
-		let entProductos = [...variables.prods, "prods_edicion"];
-		let includes = [...entProductos, "status_registro", "creado_por", "alta_analizada_por"];
+		let entProds = [...variables.prods, "prods_edicion"];
+		let includes = [...entProds, "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
-		let prodsYaEnBD = await procesos.prodsEnBD(entProductos, RCLV, userID);
+		let prodsYaEnBD = await procesos.prodsEnBD(entProds, RCLV, userID);
 		let cantProdsEnBD = prodsYaEnBD.length;
 		// 5. Ir a la vista
 		//return res.send(prodsYaEnBD);
