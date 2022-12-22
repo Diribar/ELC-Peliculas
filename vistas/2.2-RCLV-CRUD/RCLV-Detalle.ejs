@@ -28,7 +28,7 @@
 		<div id="cuadroDeResultados">
 			<i class="fa-solid fa-caret-left mover inactivo"></i>
 			<ul id="listado">
-				<% if (prodsEnBD.length) { %><%- include('RCLV-DT1-ProdsYaEnBD', {prodsEnBD}) %>
+				<% if (prodsEnBD.length) { %><%- include('RCLV-DT1-ProdsEnBD', {prodsEnBD}) %>
 				<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
 			</ul>
 			<i class="fa-solid fa-caret-right mover inactivo"></i>

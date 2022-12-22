@@ -95,7 +95,6 @@ module.exports = {
 		}
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length) RCLV = await convierteEdicPropiasDeProdsEnProds();
-		console.log(59, RCLV);
 
 		// Completa la información de cada producto
 		let prodsEnBD = [];
@@ -108,7 +107,6 @@ module.exports = {
 			});
 			prodsEnBD.push(...aux);
 		});
-		console.log(73,prodsEnBD);
 		// Ordenar por año (decreciente)
 		prodsEnBD.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
