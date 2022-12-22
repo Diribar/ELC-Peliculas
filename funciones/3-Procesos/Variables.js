@@ -7,17 +7,17 @@ module.exports = {
 	opcionesInicio: [
 		{
 			href: "/consultas/listado/sugeridas",
-			src: "/imagenes/8-Inicio/Recomendame.jpg",
+			src: "/imagenes/0-Base/Inicio/Recomendame.jpg",
 			p: "Quiero que me recomienden una película o colección",
 		},
 		{
 			href: "/consultas/cfc",
-			src: "/imagenes/8-Inicio/Cruz.jpg",
+			src: "/imagenes/0-Base/Inicio/Cruz.jpg",
 			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
 		},
 		{
 			href: "/consultas/vpc",
-			src: "/imagenes/8-Inicio/Valores.jpg",
+			src: "/imagenes/0-Base/Inicio/Valores.jpg",
 			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
 		},
 	],
@@ -360,7 +360,7 @@ module.exports = {
 		{nombre: "Cuevana", url: "cuevana"},
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
-	provsListaNegra: ["youporn", "pornhub"],
+	provsListaNegra: ["gloria.tv"],
 	calidades: [360, 480, 720, 1080],
 
 	// Entorno Revisiones
@@ -510,22 +510,22 @@ module.exports = {
 		return [
 			{
 				href: "//themoviedb.org/search?query=" + nombre,
-				src: "/imagenes/0-Logos/BD-TMDB.jpg",
+				src: "/imagenes/0-Base/Logos/BD-TMDB.jpg",
 				alt: "TMDB",
 			},
 			{
 				href: "//filmaffinity.com/es/search.php?stext=" + nombre,
-				src: "/imagenes/0-Logos/BD-FA.jpg",
+				src: "/imagenes/0-Base/Logos/BD-FA.jpg",
 				alt: "FA",
 			},
 			{
 				href: "//imdb.com/find?q=" + nombre,
-				src: "/imagenes/0-Logos/BD-IMDB.jpg",
+				src: "/imagenes/0-Base/Logos/BD-IMDB.jpg",
 				alt: "IMDB",
 			},
 			{
 				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
-				src: "/imagenes/0-Logos/BD-Google.jpg",
+				src: "/imagenes/0-Base/Logos/BD-Google.jpg",
 				alt: "Google",
 			},
 		];

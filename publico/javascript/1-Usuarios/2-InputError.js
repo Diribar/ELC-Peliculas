@@ -115,7 +115,7 @@ window.addEventListener("load", () => {
 				// Acciones si no es una imagen
 				image.onerror = () => {
 					// Limpia el avatar
-					imgAvatar.src = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
+					imgAvatar.src = "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
 					// Limpia el input
 					inputAvatar.value = "";
 					// Actualiza los errores
