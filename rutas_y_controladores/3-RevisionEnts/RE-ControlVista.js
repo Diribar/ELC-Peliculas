@@ -284,7 +284,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
 		// 3. Procesa el data-entry
-		let dataEntry = await procsRCLV.procesarRCLV(datos);
+		let dataEntry = await procsRCLV.procesaLosDatos(datos);
 		// 4. Genera la información para guardar
 		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;

@@ -203,7 +203,7 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	procesarRCLV: async (datos) => {
+	procesaLosDatos: async (datos) => {
 		// Variables
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos

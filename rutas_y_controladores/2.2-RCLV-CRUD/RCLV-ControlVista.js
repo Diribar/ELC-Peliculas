@@ -97,7 +97,7 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// 3. Obtiene el dataEntry
-		let DE = await procesos.procesarRCLV(datos);
+		let DE = await procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
 		await procesos.guardaLosCambios(req, res, DE);
 		// 9. Redirecciona a la siguiente instancia
