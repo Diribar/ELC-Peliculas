@@ -41,7 +41,7 @@ module.exports = {
 		const campoFechaRef = "editado_en";
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
-		let includes = [...variables.prods, ...variables.rclvs];
+		let includes = [...variables.entidadesProd, ...variables.entidadesRCLV];
 		let productos = [];
 		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
@@ -134,7 +134,7 @@ module.exports = {
 	TC_obtieneRCLVs: async (ahora, userID) => {
 		// Obtiene rclvs en situaciones particulares
 		// Variables
-		let entidades = variables.rclvs;
+		let entidades = variables.entidadesRCLV;
 		let creado_id = status_registro.find((n) => n.creado).id;
 		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)

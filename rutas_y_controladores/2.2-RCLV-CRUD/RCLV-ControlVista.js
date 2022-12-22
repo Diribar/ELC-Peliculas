@@ -124,15 +124,20 @@ module.exports = {
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		let entidadSingular = comp.obtieneEntidadSingular(entidad);
 		// Obtiene RCLV con produtos
-		let entProds = [...variables.prods, "prods_edicion"];
-		let includes = [...entProds, "status_registro", "creado_por", "alta_analizada_por"];
+		let includes = [
+			...variables.entidadesProd,
+			"prods_edicion",
+			"status_registro",
+			"creado_por",
+			"alta_analizada_por",
+		];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos
-		let prodsYaEnBD = await procesos.prodsEnBD(entProds, RCLV, userID);
-		let cantProdsEnBD = prodsYaEnBD.length;
+		let prodsEnBD = await procesos.prodsEnBD(RCLV, userID);
+		let cantProdsEnBD = prodsEnBD.length;
 		// 5. Ir a la vista
-		//return res.send(prodsYaEnBD);
+		return res.send(prodsEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -140,7 +145,7 @@ module.exports = {
 			bloqueDerecha: await procesos.resumen({...RCLV, entidad}, cantProdsEnBD),
 			omitirImagenDerecha: true,
 			omitirFooter: false,
-			prodsYaEnBD,
+			prodsEnBD,
 			procCanoniz: await procesos.procCanoniz(RCLV),
 			RCLVnombre: RCLV.nombre,
 			entidad,
