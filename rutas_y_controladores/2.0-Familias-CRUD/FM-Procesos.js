@@ -113,7 +113,7 @@ module.exports = {
 		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
 		// Quita las coincidencias con el original
 		let quedanCampos;
-		let familia = this.obtieneFamiliaEnPlural(entidadEdic);
+		let familia = comp.obtieneFamiliaEnPlural(entidadEdic);
 		[edicion, quedanCampos] = await this.puleEdicion(original, edicion, familia);
 		// Averigua si hay algún campo con novedad
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
@@ -123,5 +123,26 @@ module.exports = {
 		await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		// Fin
 		return "Edición guardada";
+	},
+	avatarOrigEdic: (prodOrig, prodEdic) => {
+		// Variables
+		let avatarOrig, avatarEdic;
+
+		// Si no existe avatarOrig
+		if (!prodOrig || !prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar_sinAvatar.jpg";
+		// Si es un url
+		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
+		// Si el avatar está 'aprobado'
+		else if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + prodOrig.avatar))
+			avatarOrig = "/imagenes/3-Productos/" + prodOrig.avatar;
+		// Si el avatar está 'a revisar'
+		else if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/4-ProdsRevisar/" + prodOrig.avatar))
+			avatarOrig = "/imagenes/4-ProdsRevisar/" + prodOrig.avatar;
+
+		// avatarEdic
+		avatarEdic = prodEdic && prodEdic.avatar ? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar : avatarOrig;
+
+		// Fin
+		return {orig: avatarOrig, edic: avatarEdic};
 	},
 };

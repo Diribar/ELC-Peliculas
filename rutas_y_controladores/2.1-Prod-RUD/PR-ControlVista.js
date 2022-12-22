@@ -63,15 +63,14 @@ module.exports = {
 			camposInput3 = camposInput.filter((n) => n.nombre == "produccion");
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
-			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
+			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
 			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
-			imgDerPers = comp.avatarOrigEdic(prodOrig, prodEdic);
-			imgDerPers = imgDerPers.edic;
+			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")

@@ -423,7 +423,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
-			imgDerPers: comp.avatarOrigEdic(producto, "").orig,
+			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
 			mostrarCartel: true,
 		});
 	},
