@@ -65,7 +65,7 @@
 					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 					<% if (bloque.RCLV_entidad) { %>
 						<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
-						<a href="/rclv/detalle/?<%= datosRCLV %>" target="_blank">
+						<a href="/rclv/detalle/?<%= datosRCLV %>">
 							<i class="fa-solid fa-circle-info"></i>
 						</a>
 					<% } %>

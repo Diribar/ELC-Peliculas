@@ -1087,18 +1087,22 @@ CREATE TABLE prod_4edicion (
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
+	
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
+	
 	FOREIGN KEY (en_castellano_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (en_color_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (idioma_original_id) REFERENCES aux_idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES prod_publicos_sugeridos(id),
+	
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO prod_4edicion (id, coleccion_id, nombre_original, nombre_castellano, musica, editado_por_id, editado_en) VALUES 
