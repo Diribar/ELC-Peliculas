@@ -3,7 +3,6 @@
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./RCLV-FN-Procesos");
 
 module.exports = {
 	consolidado: async function (datos) {
