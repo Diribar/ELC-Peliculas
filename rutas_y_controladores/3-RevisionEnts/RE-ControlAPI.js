@@ -37,7 +37,7 @@ module.exports = {
 		// Variables
 		let {entidad, id, url} = req.query;
 		let avatar = Date.now() + path.extname(url);
-		let rutaYnombre = "./publico/imagenes/3-Productos/" + avatar;
+		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
 		// Realiza y obtiene el resultado de la descarga
 		let resultado = await comp.descarga(url, rutaYnombre);
 		// Acciones si el resultado es OK

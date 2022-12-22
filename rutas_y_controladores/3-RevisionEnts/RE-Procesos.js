@@ -650,13 +650,13 @@ module.exports = {
 		// Gestión de archivos
 		if (edicAprob) {
 			// Mueve el archivo de edición a la carpeta definitiva
-			comp.mueveUnArchivoImagen(avatarEdic, "4-ProdsRevisar", "3-Productos");
+			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/3-Productos/" + avatarOrig))
-				comp.borraUnArchivo("./publico/imagenes/3-Productos/", avatarOrig);
+			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
+				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
-		else comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", avatarEdic);
+		else comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
 
 		// Borra el campo 'avatar_url' en el registro de edicion y la variable
 		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});

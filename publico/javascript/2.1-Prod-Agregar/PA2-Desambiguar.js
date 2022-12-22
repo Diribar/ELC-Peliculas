@@ -107,7 +107,7 @@ window.addEventListener("load", async () => {
 			// Imagen
 			li.children[0][4].children[0].src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: "/imagenes/0-Base/Avatar_sinAvatar.jpg";
+				: "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
 			li.children[0][4].children[0].alt = prod.nombre_original;
 			li.children[0][4].children[0].title = prod.nombre_original;
 			// Información a mostrar
@@ -148,7 +148,7 @@ window.addEventListener("load", async () => {
 			// Imagen
 			let avatar = prod.avatar.startsWith("http")
 				? prod.avatar
-				: "/imagenes/3-Productos/" + prod.avatar;
+				: "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
 			li.children[0].children[0].children[0].alt = prod.nombre_original;
 			li.children[0].children[0].children[0].title = prod.nombre_original;

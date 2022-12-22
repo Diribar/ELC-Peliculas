@@ -95,7 +95,7 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + datosDuros.avatar
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
-			: "/imagenes/0-Base/Avatar_sinAvatar.jpg";
+			: "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -297,7 +297,7 @@ module.exports = {
 		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
 		Promise.all([descargaOK]);
-		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "4-ProdsRevisar");
+		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
 		// 11. Redirecciona
 		return res.redirect("terminaste");
 	},
@@ -332,10 +332,10 @@ module.exports = {
 		// 5. Obtiene el producto
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
+		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
 		if (indice == muchasGracias.length) indice--;
-		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
+		let imagenMuchasGracias = "/imagenes/0-Base/Muchas-gracias/" + muchasGracias[indice];
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,

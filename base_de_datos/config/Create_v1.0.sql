@@ -1349,3 +1349,13 @@ CREATE TABLE int_1registros (
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
 	FOREIGN KEY (int_opciones_id) REFERENCES int_opciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE aux_banco_fotos (
+	id VARCHAR(2) NOT NULL UNIQUE,
+	nombre_rclv VARCHAR(20) NOT NULL,
+	dia_del_ano_id SMALLINT UNSIGNED NOT NULL,
+	nombre_archivo VARCHAR(100) NOT NULL,
+	fecha_movil BOOLEAN DEFAULT 0,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

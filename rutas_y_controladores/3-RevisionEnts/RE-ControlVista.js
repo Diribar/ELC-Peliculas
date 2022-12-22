@@ -64,8 +64,8 @@ module.exports = {
 		// 5. Obtiene avatar original
 		let imgDerPers = prodOrig.avatar;
 		imgDerPers = imgDerPers
-			? (!imgDerPers.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + imgDerPers
-			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
+			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
+			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -205,10 +205,10 @@ module.exports = {
 				codigo += "/avatar";
 				avatar = {
 					original: prodOrig.avatar
-						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") +
+						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") +
 						  prodOrig.avatar
-						: "/imagenes/0-Base/AvatarGenericoProd.jpg",
-					edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar,
+						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
+					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
 				};
 				motivos = motivos.filter((m) => m.avatar);
 				avatarExterno = !avatar.original.includes("/imagenes/");
@@ -224,8 +224,8 @@ module.exports = {
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
-			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/AvatarGenericoProd.jpg";
-			if (!avatar.startsWith("http")) avatar = "/imagenes/3-Productos/" + avatar;
+			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
+			if (!avatar.startsWith("http")) avatar = "/imagenes/2-Avatar-Prods-Final/" + avatar;
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			infoErronea_id = motivos.find((n) => n.info_erronea).id;
@@ -391,8 +391,8 @@ module.exports = {
 		// Información para la vista
 		let avatar = producto.avatar;
 		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
-			: "/imagenes/0-Base/AvatarGenericoProd.jpg";
+			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
+			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")

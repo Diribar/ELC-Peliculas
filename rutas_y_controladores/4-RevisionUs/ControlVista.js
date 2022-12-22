@@ -39,7 +39,7 @@ module.exports = {
 			"status_registro",
 		]);
 		// Redireccionar si no existe el usuario o el avatar
-		let docum_avatar = usuario ? "./publico/imagenes/5-DocsRevisar/" + usuario.docum_avatar : false;
+		let docum_avatar = usuario ? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar : false;
 		if (procesos.validaContenidoIF(usuario, docum_avatar))
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
@@ -63,7 +63,7 @@ module.exports = {
 			titulo: "Validación de Identidad",
 			usuario,
 			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
-			docum_avatar: "/imagenes/5-DocsRevisar/" + usuario.docum_avatar,
+			docum_avatar: "/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar,
 			title: usuario.apodo,
 			campos,
 			userID,
@@ -136,7 +136,7 @@ module.exports = {
 			let rolPermInputs = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
 			objeto.rol_usuario_id = rolPermInputs;
 			// Mueve la imagen del documento a su carpeta definitiva
-			comp.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
+			comp.mueveUnArchivoImagen(usuario.docum_avatar, "3-DNI-Usuarios-Revisar", "3-DNI-Usuarios-Final");
 		}
 		// Actualiza el usuario
 		objeto = {...objeto, status_registro_id};

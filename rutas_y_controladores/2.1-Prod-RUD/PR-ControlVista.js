@@ -135,10 +135,10 @@ module.exports = {
 			// Actualiza los archivos avatar
 			if (!errores.hay) {
 				// Mueve el archivo actual a su ubicación para ser revisado
-				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "4-ProdsRevisar");
+				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
 				// Elimina el anterior archivo de imagen
 				if (prodEdic.avatar)
-					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
+					comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
 			}
 			// Si hay errores, entonces borra el archivo
 			else {
