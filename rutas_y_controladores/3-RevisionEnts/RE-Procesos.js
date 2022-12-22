@@ -4,8 +4,9 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
-const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-FN-Validar");
+const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
 	// Tablero
@@ -40,7 +41,7 @@ module.exports = {
 		const campoFechaRef = "editado_en";
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
-		let includes = [...variables.prods, ...variables.rclvs];
+		let includes = [...variables.entidadesProd, ...variables.entidadesRCLV];
 		let productos = [];
 		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
@@ -133,7 +134,7 @@ module.exports = {
 	TC_obtieneRCLVs: async (ahora, userID) => {
 		// Obtiene rclvs en situaciones particulares
 		// Variables
-		let entidades = variables.rclvs;
+		let entidades = variables.entidadesRCLV;
 		let creado_id = status_registro.find((n) => n.creado).id;
 		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
@@ -269,7 +270,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
-		const entidad_id = comp.obtieneEntidad_id(entidad);
+		const entidad_id = procsCRUD.obtieneEntidad_id(entidad);
 		// Mensajes
 		let mensajeSinEdicion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],
@@ -462,7 +463,7 @@ module.exports = {
 		delete regEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = comp.puleEdicion(regOrig, regEdic, familia);
+		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
 		// Acciones si no quedan campos
 		if (!quedanCampos) {
@@ -843,7 +844,7 @@ module.exports = {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
 			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[linkEdic, quedanCampos] = await comp.puleEdicion(linkOrig, linkEdic);
+			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizaPorId("links_edicion", edicID, {

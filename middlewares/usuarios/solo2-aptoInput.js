@@ -120,8 +120,8 @@ module.exports = async (req, res, next) => {
 			let contarRegistros = 0;
 			// Contar registros con status 'a revisar'
 			let entidades;
-			if (producto) entidades = variables.prods;
-			else if (rclv) entidades = variables.rclvs;
+			if (producto) entidades = variables.entidadesProd;
+			else if (rclv) entidades = variables.entidadesRCLV;
 			else if (links) entidades = ["links"];
 			if (entidades)
 				contarRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);

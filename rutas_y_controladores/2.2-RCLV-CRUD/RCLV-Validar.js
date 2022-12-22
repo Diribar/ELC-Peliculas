@@ -2,7 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procesos = require("./RCLV-FN-Procesos");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -23,7 +23,7 @@ module.exports = {
 		let mientrasEscribe = (campo) => {
 			let prefijo = () => {
 				// Variables
-				let prefijos = procesos.prefijos;
+				let prefijos = variables.prefijos;
 				let respuesta = "";
 				// Verificación
 				if (campo == "nombre")

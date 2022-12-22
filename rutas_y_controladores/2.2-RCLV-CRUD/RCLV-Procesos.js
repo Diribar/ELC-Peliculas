@@ -2,6 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -50,19 +51,33 @@ module.exports = {
 		// Fin
 		return {resumenRCLV, resumenRegistro};
 	},
-	prodsEnBD: (entProductos, RCLV) => {
+	prodsEnBD: async function (RCLV, userID) {
 		// Variables
 		let prodsEnBD = [];
-		// Completar la información de cada registro
-		entProductos.forEach((entidad) => {
-			let aux = RCLV[entidad].map((n) => {
-				if (entidad!="prods_edicion") {
-					let avatar = n.avatar.includes("/")
-						? n.avatar
+		// Convierte las ediciones en productos
+		if (RCLV.prods_edicion.length) RCLV = await this.convierteEdicPropiasDeProdsEnProds(RCLV, userID);
+		console.log(59, RCLV);
+
+		// Completa la información de cada producto
+		await variables.entidadesProd.forEach(async (entidad) => {
+			let aux = await RCLV[entidad].map(async (registro) => {
+				// Rutina para los productos originales
+				if (entidad != "prods_edicion") {
+					// Averigua la ruta y el nombre del avatar
+					let avatar = registro.avatar.includes("/")
+						? registro.avatar
 						: "/imagenes/" +
-						  (!n.avatar ? "0-Base/AvatarGenericoProd.jpg" : "3-Productos/" + n.avatar);
-					return {...n, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
-				} else null
+						  (!registro.avatar
+								? "0-Base/AvatarGenericoProd.jpg"
+								: "3-Productos/" + registro.avatar);
+					// Agrega la entidad, el avatar, y el nombre de la entidad
+					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
+				} else {
+					entOrig = procsCRUD.obtieneEntidadDesdeEntidad_id(registro);
+					let entidad_id = procsCRUD.obtieneEntidad_id(entOrig);
+					let regID = registro[entidad_id];
+					await procsCRUD.obtieneVersionesDelRegistro(entOrig, regID, userID, edicNombre, familia);
+				}
 			});
 			prodsEnBD.push(...aux);
 		});
@@ -117,7 +132,7 @@ module.exports = {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro(entidad, DE, userID);
 			// Agregar el RCLV a DP/ED
-			let entidad_id = comp.obtieneEntidad_id(entidad);
+			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
 			if (origen == "DP") {
 				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
@@ -134,7 +149,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
 				? await comp.actualizaRegistro(entidad, id, DE) // Actualiza el registro original
-				: await comp.guardaEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+				: await procsCRUD.guardaEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
@@ -179,8 +194,7 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	prefijos: ["San", "Santo", "Santa", "Beato", "Beata", "Ven.", "Venerable", "Don", "Papa", "Sor", "Padre", "Hna"],
-	procesarRCLV: async (datos) => {
+	procesaLosDatos: async (datos) => {
 		// Variables
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
@@ -228,5 +242,46 @@ module.exports = {
 			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
 		}
 		return DE;
+	},
+	// RCLV - Detalle
+	convierteEdicPropiasDeProdsEnProds: async (RCLV, userID) => {
+		// Obtiene las ediciones propias
+		let edicionesPropias = [];
+		for (let edicion of RCLV.prods_edicion)
+			if (edicion.editado_por_id == userID) edicionesPropias.push(edicion);
+		if (edicionesPropias.length)
+			edicionesPropias = edicionesPropias.filter((n) => n.editado_por_id == userID);
+		// Configura la variable de productos
+		let productos = {};
+		for (let entidad of variables.entidadesProd) productos[entidad] = [];
+
+		// Si no hay ediciones propias, termina la función
+		if (!edicionesPropias.length) return productos;
+
+		// Obtiene los productos de esas ediciones
+		for (let edicion of edicionesPropias) {
+			// Obtiene la entidad y el campo 'entidad_id'
+			let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
+			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+			// Obtiene los registros del producto original y su edición por el usuario
+			let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
+				entidad,
+				edicion[entidad_id],
+				userID,
+				"prods_edicion",
+				"productos"
+			);
+			// Pule la edición y actualiza la variable del registro original
+			[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+			let producto = {...prodOrig, ...prodEdic};
+			// Fin
+			productos[entidad].push(producto);
+		}
+
+		// Combina los productos originales con los productos de las ediciones
+		for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
+		delete RCLV.prods_edicion;
+		// Fin
+		return RCLV;
 	},
 };

@@ -1,8 +1,8 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesos = require("./RCLV-FN-Procesos");
-const valida = require("./RCLV-FN-Validar");
+const variables = require("../../funciones/3-Procesos/Variables");
+const valida = require("./RCLV-Validar");
 
 module.exports = {
 	registrosConEsaFecha: async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = {
 		return res.json(mensaje);
 	},
 	prefijos: (req, res) => {
-		let prefijos=procesos.prefijos
+		let prefijos=variables.prefijos
 		return res.json(prefijos);
 	},
 };

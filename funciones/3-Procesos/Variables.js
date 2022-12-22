@@ -173,7 +173,7 @@ module.exports = {
 		const registrosRCLV = await (async () => {
 			// Variables
 			let registros = {};
-			let entidades = this.rclvs;
+			let entidades = this.entidadesRCLV;
 
 			// Obtiene todos los registros RCLV
 			entidades.forEach((entidad) => {
@@ -317,7 +317,7 @@ module.exports = {
 			},
 		];
 	},
-	prods: ["peliculas", "colecciones", "capitulos"],
+	entidadesProd: ["peliculas", "colecciones", "capitulos"],
 
 	// RCLV
 	camposRCLV: {
@@ -336,7 +336,21 @@ module.exports = {
 		hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "ncn", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
-	rclvs: ["personajes", "hechos", "valores"],
+	entidadesRCLV: ["personajes", "hechos", "valores"],
+	prefijos: [
+		"San",
+		"Santo",
+		"Santa",
+		"Beato",
+		"Beata",
+		"Ven",
+		"Venerable",
+		"Don",
+		"Papa",
+		"Sor",
+		"Padre",
+		"Hna",
+	],
 
 	// Links
 	provsQueNoRespetanCopyright: [

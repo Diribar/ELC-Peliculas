@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesosCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -21,7 +21,7 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
 			entidad,
 			prodID,
 			userID,
@@ -114,7 +114,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procesosCRUD.obtieneVersionesDelRegistro(
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
 			entidad,
 			prodID,
 			userID,
@@ -148,7 +148,8 @@ module.exports = {
 			}
 		}
 		// Actualiza la edición
-		if (!errores.hay) await comp.guardaEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+		if (!errores.hay)
+			await procsCRUD.guardaEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
