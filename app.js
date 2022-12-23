@@ -50,11 +50,12 @@ app.use(usuario);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
-// Para disparar tareas en cierto horario
-var cron = require("node-cron");
+// Cambia la fecha de la 'Línea de Cambio de Fecha'
 const comp = require("./funciones/3-Procesos/Compartidas");
-comp.horarioLCF(); // Cambia la fecha de la 'Línea de Cambio de Fecha'
-cron.schedule("35 6 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+comp.horarioLCF(); 
+// Dispara tareas en cierto horario
+var cron = require("node-cron");
+cron.schedule("0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 // cron.schedule("25 14 * * *", () => comp.tareasDiarias());
 // console.log(new Date().getTimezoneOffset());
 
