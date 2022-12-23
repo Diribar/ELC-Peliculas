@@ -175,11 +175,6 @@ module.exports = {
 
 	// USUARIOS ---------------------------------------------------------
 	// Controlador/Usuario/Login
-	obtieneUsuarioPorID: (id) => {
-		return db.usuarios
-			.findByPk(id, {include: ["rol_usuario", "status_registro"]})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
 	obtieneUsuarioDistintoIdMasFiltros: (userID, filtros) => {
 		return db.usuarios
 			.findAll({

@@ -280,6 +280,14 @@ module.exports = {
 			"hs"
 		);
 	},
+	fechaLCF: () => {
+		// Obtiene la fecha actual
+		let milisegs = new Date().getTime();
+		let milisegsLCF = milisegs + unaHora * 12;
+		let fechaLCF = new Date(milisegsLCF);
+		// Fin
+		return fechaLCF;
+	},
 
 	// Gestión de archivos
 	averiguaSiExisteUnArchivo: (archivo) => {
@@ -371,10 +379,7 @@ module.exports = {
 	},
 	cambiaImagenDerecha: async function () {
 		let imagenDerecha = await (async () => {
-			// Obtiene la fecha actual
-			let milisegs = new Date().getTime();
-			let milisegsLCF = milisegs + unaHora * 12;
-			let fecha = new Date(milisegsLCF);
+			let fecha = this.fechaLCF();
 
 			// Obtiene el registro del dia_del_ano
 			let dia = fecha.getDate();
@@ -393,8 +398,6 @@ module.exports = {
 			);
 			// Espera a recibir la info
 			[dia_del_ano, banco_de_imagenes] = await Promise.all([dia_del_ano, banco_de_imagenes]);
-			// Obtiene el dia del año y le suma un año
-			let dia_del_ano_id = dia_del_ano.id + 366;
 
 			// Genera 3 tablas de 'banco de imagenes' consecutivas, y las consolida
 			let banco = [...banco_de_imagenes];
@@ -404,6 +407,9 @@ module.exports = {
 			banco_de_imagenes.forEach((n) =>
 				banco.push({dia_del_ano_id: n.dia_del_ano_id + 732, nombre_archivo: n.nombre_archivo})
 			);
+
+			// Obtiene el dia del año y le suma un año
+			let dia_del_ano_id = dia_del_ano.id + 366;
 
 			// Realiza la búsqueda 0, +2, -1 hasta encontrar un candidato
 			let imagenDerecha;
