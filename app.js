@@ -24,7 +24,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
 	};
 	// Fin
-	return
+	return;
 })();
 
 const path = require("path");
@@ -49,6 +49,11 @@ app.use(usuario);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
+// Para disparar tareas en cierto horario
+var cron = require("node-cron");
+const comp = require("./funciones/3-Procesos/Compartidas");
+cron.schedule("0 0 * * *", () => comp.cambiaImagenDerecha(), {timezone: "Etc/GMT-12"});
+// comp.cambiaImagenDerecha()
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
