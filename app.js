@@ -3,6 +3,7 @@ global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+global.horarioLCF = new Date().getTime();
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
@@ -52,8 +53,9 @@ app.use(userLogs);
 // Para disparar tareas en cierto horario
 var cron = require("node-cron");
 const comp = require("./funciones/3-Procesos/Compartidas");
-cron.schedule("0 0 * * *", () => comp.cambiaImagenDerecha(), {timezone: "Etc/GMT-12"});
-comp.cambiaImagenDerecha();
+comp.horarioLCF(); // Cambia la fecha de la 'Línea de Cambio de Fecha'
+cron.schedule("35 6 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+// cron.schedule("25 14 * * *", () => comp.tareasDiarias());
 // console.log(new Date().getTimezoneOffset());
 
 // Para saber el recorrido del proyecto

@@ -280,13 +280,13 @@ module.exports = {
 			"hs"
 		);
 	},
-	fechaLCF: () => {
-		// Obtiene la fecha actual
+	horarioLCF: () => {
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
 		let milisegs = new Date().getTime();
 		let milisegsLCF = milisegs + unaHora * 12;
-		let fechaLCF = new Date(milisegsLCF);
+		horarioLCF = new Date(milisegsLCF).getTime();
 		// Fin
-		return fechaLCF;
+		return;
 	},
 
 	// Gestión de archivos
@@ -377,9 +377,18 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	tareasDiarias: async function () {
+		// Tareas
+		console.log(382, new Date(horarioLCF));
+		this.horarioLCF();
+		console.log(384, new Date(horarioLCF));
+		await this.cambiaImagenDerecha();
+		// Fin
+		return;
+	},
 	cambiaImagenDerecha: async function () {
 		let imagenDerecha = await (async () => {
-			let fecha = this.fechaLCF();
+			let fecha = horarioLCF;
 
 			// Obtiene el registro del dia_del_ano
 			let dia = fecha.getDate();
