@@ -288,6 +288,15 @@ module.exports = {
 		// Fin
 		return;
 	},
+	tareasDiarias: async function () {
+		// Tareas
+		console.log(382, new Date(horarioLCF));
+		this.horarioLCF();
+		console.log(384, new Date(horarioLCF));
+		await this.cambiaImagenDerecha();
+		// Fin
+		return;
+	},
 
 	// Gestión de archivos
 	averiguaSiExisteUnArchivo: (archivo) => {
@@ -376,15 +385,6 @@ module.exports = {
 		});
 		// Fin
 		return resultado;
-	},
-	tareasDiarias: async function () {
-		// Tareas
-		console.log(382, new Date(horarioLCF));
-		this.horarioLCF();
-		console.log(384, new Date(horarioLCF));
-		await this.cambiaImagenDerecha();
-		// Fin
-		return;
 	},
 	cambiaImagenDerecha: async function () {
 		let imagenDerecha = await (async () => {

@@ -160,7 +160,7 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
-		await procesos.actualizaElUsuario("editables", usuario, req.body);
+		await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Avatar-Usuarios");
@@ -186,7 +186,7 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
 	},
-	validarForm: async (req, res) => {
+	validaForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";
 		// Redireccionar si corresponde
@@ -224,7 +224,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	validarGuardar: async (req, res) => {
+	validaGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
 		// Obtiene los datos
@@ -234,7 +234,9 @@ module.exports = {
 			id: usuario.id,
 		};
 		if (req.file) datos.tamano = req.file.size;
-		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/3-DNI-Usuarios-Revisar/";
+		datos.ruta = req.file
+			? "./publico/imagenes/9-Provisorio/"
+			: "./publico/imagenes/3-DNI-Usuarios-Revisar/";
 		// Averigua si hay errores de validación
 		let errores = await valida.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
@@ -254,7 +256,11 @@ module.exports = {
 		// Prepara la información a actualizar
 		req.body.fecha_revisores = comp.ahora();
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
+		req.session.usuario = await procesos.actualizaElStatusDelUsuario(
+			usuario,
+			"ident_a_validar",
+			req.body
+		);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "3-DNI-Usuarios-Revisar");
 		// Redirecciona
@@ -305,13 +311,13 @@ module.exports = {
 			req.session.email = req.cookies && req.cookies.email ? req.cookies.email : undefined;
 		// 2. Obtiene el Data Entry ya realizado
 		let dataEntry =
-			req.session.email !== undefined || req.session.contrasena !== undefined
+			req.session.email && req.session.contrasena
 				? {email: req.session.email, contrasena: req.session.contrasena}
 				: "";
 		delete req.session.email;
 		delete req.session.contrasena;
 		// 3. Variables para la vista
-		let {errores} = dataEntry ? await valida.mailContrasena_y_ObtieneUsuario(dataEntry) : {errores: ""};
+		let errores = dataEntry ? await valida.login(dataEntry) : {};
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
@@ -329,16 +335,18 @@ module.exports = {
 	},
 	loginGuardar: async (req, res) => {
 		// Averigua si hay errores de data-entry
-		let {errores, usuario} = await valida.mailContrasena_y_ObtieneUsuario(req.body);
-		// Si hay errores de validación, redireccionar
+		let errores = await valida.login(datos);
+		// Si hay errores de validación, redirecciona
 		if (errores.hay) {
 			req.session.email = req.body.email;
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
+		// Obtiene el usuario con los include y la imagenDerecha
+		let usuario = await procesos.loginConMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
-			usuario = await procesos.actualizaElUsuario("mail_validado", usuario);
+			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Borra todas las cookies
 		if (req.cookies && req.cookies.emailUnMes != req.body.email)
 			for (let prop in req.cookies) res.clearCookie(prop);
