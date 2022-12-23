@@ -124,8 +124,9 @@ module.exports = {
 	login: (datos) => {
 		// Variables
 		let {email, contrasena} = datos;
-		let errores = {};
-		if (contrasena) var largoContr = largoContrasena(contrasena);
+		let errores = {},
+			largoContr;
+		if (contrasena) largoContr = largoContrasena(contrasena);
 		// Verificar errores
 		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";

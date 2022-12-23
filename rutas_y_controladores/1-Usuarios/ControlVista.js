@@ -328,15 +328,15 @@ module.exports = {
 		});
 	},
 	loginGuardar: async (req, res) => {
-		// 1. Averigua si hay errores de data-entry
+		// Averigua si hay errores de data-entry
 		let {errores, usuario} = await valida.mailContrasena_y_ObtieneUsuario(req.body);
-		// 4. Si hay errores de validación, redireccionar
+		// Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.email = req.body.email;
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// 5. Si corresponde, le cambia el status a 'mail_validado'
+		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElUsuario("mail_validado", usuario);
 		// Borra todas las cookies
