@@ -53,7 +53,7 @@ module.exports = {
 	},
 	prodsEnBD: async function (RCLV, userID) {
 		// Función
-		let convierteEdicPropiasDeProdsEnProds= async () => {
+		let convierteEdicPropiasDeProdsEnProds = async () => {
 			// Obtiene las ediciones propias
 			let edicionesPropias = [];
 			for (let edicion of RCLV.prods_edicion)
@@ -63,10 +63,10 @@ module.exports = {
 			// Configura la variable de productos
 			let productos = {};
 			for (let entidad of variables.entidadesProd) productos[entidad] = [];
-	
+
 			// Si no hay ediciones propias, termina la función
 			if (!edicionesPropias.length) return productos;
-	
+
 			// Obtiene los productos de esas ediciones
 			for (let edicion of edicionesPropias) {
 				// Obtiene la entidad y el campo 'entidad_id'
@@ -86,15 +86,15 @@ module.exports = {
 				// Fin
 				productos[entidad].push(producto);
 			}
-	
+
 			// Combina los productos originales con los productos de las ediciones
 			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
 			delete RCLV.prods_edicion;
 			// Fin
 			return RCLV;
-		}
+		};
 		// Convierte las ediciones en productos
-		if (RCLV.prods_edicion.length) RCLV = await convierteEdicPropiasDeProdsEnProds();
+		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
 
 		// Completa la información de cada producto
 		let prodsEnBD = [];

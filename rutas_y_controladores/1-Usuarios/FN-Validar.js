@@ -133,7 +133,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		// Verifica credenciales
 		if (!errores.hay) {
-			usuario = await BD_genericas.obtienePorCampos("usuarios", {email});
+			let usuario = await BD_genericas.obtienePorCampos("usuarios", {email});
 			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
 			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
 			errores.hay = errores.credenciales;
