@@ -299,26 +299,50 @@ module.exports = {
 		let archivoDestino = carpetaDestino + nombre;
 		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
 		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
-			console.log("No se encuentra el archivo " + archivoOrigen);
+			console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
 		else
 			fs.rename(archivoOrigen, archivoDestino, (error) => {
 				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
 				else throw error;
 			});
 	},
-	borraUnArchivo: function (ruta, archivo) {
+	cambiaElNombreDeUnArchivo: function (ruta, nombreOrig, nombreFinal) {
+		ruta = "./publico/imagenes/" + ruta + "/";
+		if (!this.averiguaSiExisteUnArchivo(ruta + nombreOrig))
+			console.log("No se encuentra el archivo " + nombreOrig + " para cambiarle el nombre");
+		else
+			fs.rename(ruta + nombreOrig, ruta + nombreFinal, (error) => {
+				if (!error) console.log("Archivo " + nombreOrig + " renombrado como " + nombreFinal);
+				else throw error;
+			});
+	},
+	copiaUnArchivoDeImagen: function (archivoOrigen, archivoDestino) {
+		let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
+		let nombreDestino = "./publico/imagenes/" + archivoDestino;
+		let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+		if (!this.averiguaSiExisteUnArchivo(nombreOrigen))
+			console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+		else
+			fs.copyFile(nombreOrigen, nombreDestino, (error) => {
+				if (!error)
+					console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+				else throw error;
+			});
+	},
+	borraUnArchivo: async function (ruta, archivo) {
 		// Arma el nombre del archivo
 		let rutaArchivo = path.join(ruta, archivo);
 
 		// Se fija si encuentra el archivo
 		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
 			// Borra el archivo
-			fs.unlinkSync(rutaArchivo);
+			await fs.unlinkSync(rutaArchivo);
 			// Avisa que lo borra
 			console.log("Archivo '" + archivo + "' borrado");
 		}
 		// Mensaje si no lo encuentra
-		else console.log("Archivo " + archivo + " no encontrado");
+		else console.log("Archivo " + archivo + " no encontrado para borrar");
 		// Fin
 		return;
 	},
@@ -338,12 +362,86 @@ module.exports = {
 				resolve("OK");
 			});
 			writer.on("error", (error) => {
-				console.log(472, error);
+				console.log(error);
 				reject("Error");
 			});
 		});
 		// Fin
 		return resultado;
+	},
+	cambiaImagenDerecha: async function () {
+		let imagenDerecha = await (async () => {
+			// Obtiene la fecha actual
+			let milisegs = new Date().getTime();
+			let milisegsLCF = milisegs + unaHora * 12;
+			let fecha = new Date(milisegsLCF);
+
+			// Obtiene el registro del dia_del_ano
+			let dia = fecha.getDate();
+			let mes_id = fecha.getMonth() + 1;
+			let datos = {dia, mes_id};
+			let dia_del_ano = BD_genericas.obtienePorCampos("dias_del_ano", datos);
+
+			// Obtiene la tabla de 'banco de imagenes'
+			let banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
+				n.map((n) => {
+					return {
+						dia_del_ano_id: n.dia_del_ano_id,
+						nombre_archivo: n.nombre_archivo,
+					};
+				})
+			);
+			// Espera a recibir la info
+			[dia_del_ano, banco_de_imagenes] = await Promise.all([dia_del_ano, banco_de_imagenes]);
+			// Obtiene el dia del año y le suma un año
+			let dia_del_ano_id = dia_del_ano.id + 366;
+
+			// Genera 3 tablas de 'banco de imagenes' consecutivas, y las consolida
+			let banco = [...banco_de_imagenes];
+			banco_de_imagenes.forEach((n) =>
+				banco.push({dia_del_ano_id: n.dia_del_ano_id + 366, nombre_archivo: n.nombre_archivo})
+			);
+			banco_de_imagenes.forEach((n) =>
+				banco.push({dia_del_ano_id: n.dia_del_ano_id + 732, nombre_archivo: n.nombre_archivo})
+			);
+
+			// Realiza la búsqueda 0, +2, -1 hasta encontrar un candidato
+			let imagenDerecha;
+			for (let i = 0; i <= 50; i++) {
+				imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2);
+				if (!imagenDerecha)
+					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2 + 1);
+				if (!imagenDerecha)
+					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id - i - 1);
+				if (imagenDerecha) break;
+			}
+			// Obtiene el dia_del_ano_id con imagen
+			dia_del_ano_id = imagenDerecha.dia_del_ano_id;
+			dia_del_ano_id > 732
+				? (dia_del_ano_id -= 732)
+				: dia_del_ano_id > 366
+				? (dia_del_ano_id -= 366)
+				: null;
+			// Obtiene todos los registros con ese 'dia_del_ano_id'
+			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
+			let indice = parseInt(Math.random() * registros.length);
+			if (indice == registros.length) indice--;
+			imagenDerecha = registros[indice].nombre_archivo;
+
+			// Fin
+			console.log(dia_del_ano_id, imagenDerecha, new Date());
+			return imagenDerecha;
+		})();
+
+		// Cuando lo encuentra,
+		// 1. Borra la 'imagenAnterior'
+		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
+		// 2. Cambia el nombre de la 'imagenDerecha' por 'imagenAnterior'
+		await this.cambiaElNombreDeUnArchivo("0-Base", "imagenDerecha.jpg", "imgDerAnt.jpg");
+		// Copia la nueva imagen como 'imagenDerecha'
+		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imagenDerecha, "0-Base/imagenDerecha.jpg");
+		// Fin
+		return;
 	},
 
 	// Validaciones

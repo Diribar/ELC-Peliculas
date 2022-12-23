@@ -53,7 +53,8 @@ app.use(userLogs);
 var cron = require("node-cron");
 const comp = require("./funciones/3-Procesos/Compartidas");
 cron.schedule("0 0 * * *", () => comp.cambiaImagenDerecha(), {timezone: "Etc/GMT-12"});
-// comp.cambiaImagenDerecha()
+comp.cambiaImagenDerecha();
+// console.log(new Date().getTimezoneOffset());
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
