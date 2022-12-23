@@ -55,8 +55,10 @@ const comp = require("./funciones/3-Procesos/Compartidas");
 comp.horarioLCF(); 
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
+// Tareas a medianoche
 cron.schedule("0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-// cron.schedule("25 14 * * *", () => comp.tareasDiarias());
+// Tareas en cada cambio de hora
+cron.schedule("0 * * * *", () => console.log(new Date()));
 // console.log(new Date().getTimezoneOffset());
 
 // Para saber el recorrido del proyecto
