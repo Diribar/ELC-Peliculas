@@ -3,6 +3,9 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
+	// app
+	fechaActual: {dia: 25, mes: 12, ano: 2022},
+
 	// Inicio
 	opcionesInicio: [
 		{
