@@ -413,61 +413,45 @@ module.exports = {
 		return;
 	},
 	cambiaImagenDerecha: async function () {
-		let imagenDerecha = await (async () => {
+		// Variables
+		let dia_del_ano_id, banco_de_imagenes, imagenDerecha;
+
+		// Obtiene dia_del_ano_id y el banco_de_imagenes
+		await (async () => {
 			let fecha = new Date(horarioLCF);
-			console.log(418, fecha);
+			let dia = fecha.getDate();
+			let mes_id = fecha.getMonth() + 1;
+			let datos = {dia, mes_id};
+			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
 
-			// Obtiene dia_del_ano_id y el banco_de_imagenes
-			let dia_del_ano_id, bancoDosAnos;
-			await (async () => {
-				let dia = fecha.getDate();
-				let mes_id = fecha.getMonth() + 1;
-				let datos = {dia, mes_id};
-				dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
-
-				// Obtiene la tabla de 'banco_de_imagenes'
-				let banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then(
-					(n) =>
-						n.map((n) => {
-							return {
-								dia_del_ano_id: n.dia_del_ano_id,
-								nombre_archivo: n.nombre_archivo,
-							};
-						})
-				);
-				// Espera a recibir la info
-				[dia_del_ano_id, banco_de_imagenes] = await Promise.all([dia_del_ano_id, banco_de_imagenes]);
-
-				// Genera 2 tablas de 'banco_de_imagenes' consecutivas y consolidadas
-				bancoDosAnos = [...banco_de_imagenes];
-				banco_de_imagenes.forEach((n) =>
-					bancoDosAnos.push({
-						dia_del_ano_id: n.dia_del_ano_id + 366,
+			// Obtiene la tabla de 'banco_de_imagenes'
+			banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
+				n.map((n) => {
+					return {
+						dia_del_ano_id: n.dia_del_ano_id,
 						nombre_archivo: n.nombre_archivo,
-					})
-				);
-			})();
+					};
+				})
+			);
+			// Espera a recibir la info
+			[dia_del_ano_id, banco_de_imagenes] = await Promise.all([dia_del_ano_id, banco_de_imagenes]);
+		})();
 
-			// Obtiene la imagen derecha
-			let imagenDerecha;
-			(() => {
-				for (let i = 0; i < bancoDosAnos.length; i++) {
-					imagenDerecha = bancoDosAnos.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
-					if (imagenDerecha) break;
-				}
-				// Obtiene el dia_del_ano_id con imagen
-				dia_del_ano_id = imagenDerecha.dia_del_ano_id;
-				dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
-				// Obtiene todos los registros con ese 'dia_del_ano_id'
-				let registros = bancoDosAnos.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
-				let indice = parseInt(Math.random() * registros.length);
-				if (indice == registros.length) indice--;
-				imagenDerecha = registros[indice].nombre_archivo;
-			})();
-
-			// Fin
-			console.log(dia_del_ano_id, imagenDerecha, new Date());
-			return imagenDerecha;
+		// Obtiene la imagen derecha
+		(() => {
+			for (let i = 0; i < banco_de_imagenes.length; i++) {
+				if (dia_del_ano_id + i > 366) i -= 366;
+				imagenDerecha = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
+				if (imagenDerecha) break;
+			}
+			// Obtiene el dia_del_ano_id con imagen
+			dia_del_ano_id = imagenDerecha.dia_del_ano_id;
+			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
+			// Obtiene todos los registros con ese 'dia_del_ano_id'
+			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
+			let indice = parseInt(Math.random() * registros.length);
+			if (indice == registros.length) indice--;
+			imagenDerecha = registros[indice].nombre_archivo;
 		})();
 
 		// 1. Borra la 'imagenAnterior'
