@@ -280,47 +280,6 @@ module.exports = {
 			"hs"
 		);
 	},
-	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
-		let milisegs = new Date().getTime();
-		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF).getTime();
-		// Fin
-		return;
-	},
-	tareasDiarias: async function () {
-		// Actualiza el horarioLCF
-		this.horarioLCF();
-
-		// Tareas si cambió la fecha
-		const nombreDeArchivo = "archFechaVig.json";
-		let rutaNombre = path.join(__dirname, nombreDeArchivo);
-		let fechas = () => {
-			// Variables
-			// Obtiene el valor de las fechas
-			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-			let fechaActual =
-				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
-			// Fin
-			return [fechaActual, fechaVigente];
-		};
-		let [fechaActual, fechaVigente] = fechas();
-		if (fechaActual != fechaVigente) {
-			// Actualiza el valor de la fecha
-			(()=>{
-				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
-					if (err) return console.log(304, err);
-					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-					console.log("Fecha actualizada a " + fechaVigente);
-				});	
-			})()
-			// Actualiza el archivo de la imagen derecha
-			await this.cambiaImagenDerecha();
-		}
-
-		// Fin
-		return;
-	},
 
 	// Gestión de archivos
 	averiguaSiExisteUnArchivo: (archivo) => {
@@ -410,72 +369,110 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+
+	// Tareas diarias y horarias
+	horarioLCF: () => {
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
+		let milisegs = new Date().getTime();
+		let milisegsLCF = milisegs + unaHora * 12;
+		horarioLCF = new Date(milisegsLCF).getTime();
+		// Fin
+		return;
+	},
+	tareasDiarias: async function () {
+		// Actualiza el horarioLCF
+		this.horarioLCF();
+
+		// Tareas si cambió la fecha
+		const nombreDeArchivo = "archFechaVig.json";
+		let rutaNombre = path.join(__dirname, nombreDeArchivo);
+		let fechas = () => {
+			// Variables
+			// Obtiene el valor de las fechas
+			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+			let fechaActual =
+				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
+			// Fin
+			return [fechaActual, fechaVigente];
+		};
+		let [fechaActual, fechaVigente] = fechas();
+		if (fechaActual != fechaVigente) {
+			// Actualiza el valor de la fecha
+			(() => {
+				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
+					if (err) return console.log(304, err);
+					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+					console.log("Fecha actualizada a " + fechaVigente);
+				});
+			})();
+			// Actualiza el archivo de la imagen derecha
+			await this.cambiaImagenDerecha();
+		}
+
+		// Fin
+		return;
+	},
 	cambiaImagenDerecha: async function () {
 		let imagenDerecha = await (async () => {
 			let fecha = new Date(horarioLCF);
+			console.log(418, fecha);
 
-			// Obtiene el registro del dia_del_ano
-			let dia = fecha.getDate();
-			let mes_id = fecha.getMonth() + 1;
-			let datos = {dia, mes_id};
-			let dia_del_ano = BD_genericas.obtienePorCampos("dias_del_ano", datos);
+			// Obtiene dia_del_ano_id y el banco_de_imagenes
+			let dia_del_ano_id, bancoDosAnos;
+			await (async () => {
+				let dia = fecha.getDate();
+				let mes_id = fecha.getMonth() + 1;
+				let datos = {dia, mes_id};
+				dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
 
-			// Obtiene la tabla de 'banco de imagenes'
-			let banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
-				n.map((n) => {
-					return {
-						dia_del_ano_id: n.dia_del_ano_id,
+				// Obtiene la tabla de 'banco_de_imagenes'
+				let banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then(
+					(n) =>
+						n.map((n) => {
+							return {
+								dia_del_ano_id: n.dia_del_ano_id,
+								nombre_archivo: n.nombre_archivo,
+							};
+						})
+				);
+				// Espera a recibir la info
+				[dia_del_ano_id, banco_de_imagenes] = await Promise.all([dia_del_ano_id, banco_de_imagenes]);
+
+				// Genera 2 tablas de 'banco_de_imagenes' consecutivas y consolidadas
+				bancoDosAnos = [...banco_de_imagenes];
+				banco_de_imagenes.forEach((n) =>
+					bancoDosAnos.push({
+						dia_del_ano_id: n.dia_del_ano_id + 366,
 						nombre_archivo: n.nombre_archivo,
-					};
-				})
-			);
-			// Espera a recibir la info
-			[dia_del_ano, banco_de_imagenes] = await Promise.all([dia_del_ano, banco_de_imagenes]);
+					})
+				);
+			})();
 
-			// Genera 3 tablas de 'banco de imagenes' consecutivas, y las consolida
-			let banco = [...banco_de_imagenes];
-			banco_de_imagenes.forEach((n) =>
-				banco.push({dia_del_ano_id: n.dia_del_ano_id + 366, nombre_archivo: n.nombre_archivo})
-			);
-			banco_de_imagenes.forEach((n) =>
-				banco.push({dia_del_ano_id: n.dia_del_ano_id + 732, nombre_archivo: n.nombre_archivo})
-			);
-
-			// Obtiene el dia del año y le suma un año
-			let dia_del_ano_id = dia_del_ano.id + 366;
-
-			// Realiza la búsqueda 0, +2, -1 hasta encontrar un candidato
+			// Obtiene la imagen derecha
 			let imagenDerecha;
-			for (let i = 0; i <= 50; i++) {
-				imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2);
-				if (!imagenDerecha)
-					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2 + 1);
-				if (!imagenDerecha)
-					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id - i - 1);
-				if (imagenDerecha) break;
-			}
-			// Obtiene el dia_del_ano_id con imagen
-			dia_del_ano_id = imagenDerecha.dia_del_ano_id;
-			dia_del_ano_id > 732
-				? (dia_del_ano_id -= 732)
-				: dia_del_ano_id > 366
-				? (dia_del_ano_id -= 366)
-				: null;
-			// Obtiene todos los registros con ese 'dia_del_ano_id'
-			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
-			let indice = parseInt(Math.random() * registros.length);
-			if (indice == registros.length) indice--;
-			imagenDerecha = registros[indice].nombre_archivo;
+			(() => {
+				for (let i = 0; i < bancoDosAnos.length; i++) {
+					imagenDerecha = bancoDosAnos.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
+					if (imagenDerecha) break;
+				}
+				// Obtiene el dia_del_ano_id con imagen
+				dia_del_ano_id = imagenDerecha.dia_del_ano_id;
+				dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
+				// Obtiene todos los registros con ese 'dia_del_ano_id'
+				let registros = bancoDosAnos.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
+				let indice = parseInt(Math.random() * registros.length);
+				if (indice == registros.length) indice--;
+				imagenDerecha = registros[indice].nombre_archivo;
+			})();
 
 			// Fin
 			console.log(dia_del_ano_id, imagenDerecha, new Date());
 			return imagenDerecha;
 		})();
 
-		// Cuando lo encuentra,
 		// 1. Borra la 'imagenAnterior'
 		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
-		// 2. Cambia el nombre de la 'imagenDerecha' por 'imagenAnterior'
+		// 2. Cambia el nombre del archivo 'imagenDerecha' por 'imagenAnterior'
 		await this.cambiaElNombreDeUnArchivo("0-Base", "imagenDerecha.jpg", "imgDerAnt.jpg");
 		// Copia la nueva imagen como 'imagenDerecha'
 		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imagenDerecha, "0-Base/imagenDerecha.jpg");
