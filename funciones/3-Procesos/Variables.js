@@ -3,8 +3,6 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
-	// app
-
 	// Inicio
 	opcionesInicio: [
 		{
