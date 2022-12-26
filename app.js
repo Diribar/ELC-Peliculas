@@ -56,10 +56,11 @@ comp.horarioLCF();
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
 // 1. Tareas a medianoche
-cron.schedule("0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+cron.schedule("1 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 // 2. Tareas en cada cambio de hora
-cron.schedule("0 * * * *", () => console.log(new Date()));
-// console.log(new Date().getTimezoneOffset());
+// cron.schedule("1 * * * *", () => comp.tareasHorarias());
+comp.tareasDiarias()
+// comp.tareasHorarias()
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');

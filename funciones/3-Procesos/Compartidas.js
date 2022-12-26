@@ -289,11 +289,35 @@ module.exports = {
 		return;
 	},
 	tareasDiarias: async function () {
-		// Tareas
-		console.log(382, new Date(horarioLCF));
+		// Actualiza el horarioLCF
 		this.horarioLCF();
-		console.log(384, new Date(horarioLCF));
-		await this.cambiaImagenDerecha();
+
+		// Tareas si cambió la fecha
+		const nombreDeArchivo = "archFechaVig.json";
+		let rutaNombre = path.join(__dirname, nombreDeArchivo);
+		let fechas = () => {
+			// Variables
+			// Obtiene el valor de las fechas
+			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+			let fechaActual =
+				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
+			// Fin
+			return [fechaActual, fechaVigente];
+		};
+		let [fechaActual, fechaVigente] = fechas();
+		if (fechaActual != fechaVigente) {
+			// Actualiza el valor de la fecha
+			(()=>{
+				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
+					if (err) return console.log(304, err);
+					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+					console.log("Fecha actualizada a " + fechaVigente);
+				});	
+			})()
+			// Actualiza el archivo de la imagen derecha
+			await this.cambiaImagenDerecha();
+		}
+
 		// Fin
 		return;
 	},
@@ -388,7 +412,7 @@ module.exports = {
 	},
 	cambiaImagenDerecha: async function () {
 		let imagenDerecha = await (async () => {
-			let fecha = horarioLCF;
+			let fecha = new Date(horarioLCF);
 
 			// Obtiene el registro del dia_del_ano
 			let dia = fecha.getDate();
