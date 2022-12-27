@@ -412,6 +412,13 @@ module.exports = {
 		// Fin
 		return;
 	},
+	tareasHorarias: () => {
+		console.log(new Date().getTimezoneOffset());
+		console.log(new Date());
+		let imagen={
+			
+		}
+	},
 	cambiaImagenDerecha: async function () {
 		// Variables
 		let dia_del_ano_id, banco_de_imagenes, imagenDerecha;
