@@ -52,15 +52,14 @@ const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
 // Cambia la fecha de la 'Línea de Cambio de Fecha'
 const comp = require("./funciones/3-Procesos/Compartidas");
-comp.horarioLCF(); 
+comp.horarioLCF();
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
 // 1. Tareas a medianoche
 cron.schedule("1 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 // 2. Tareas en cada cambio de hora
-// cron.schedule("1 * * * *", () => comp.tareasHorarias());
-await comp.tareasDiarias()
-await comp.tareasHorarias()
+// cron.schedule("2 * * * *", () => comp.tareasHorarias());
+comp.tareasDiarias().then(() => comp.tareasHorarias());
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
