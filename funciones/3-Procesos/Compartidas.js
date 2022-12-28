@@ -692,7 +692,7 @@ module.exports = {
 		let resultado = [];
 		// Agrega los productos con edición más antigua
 		for (let prod of prods)
-			if (!resultado.filter((n) => n.id == prod.id && n.entidad == prod.entidad).length)
+			if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad))
 				resultado.push(prod);
 		// Fin
 		return resultado;

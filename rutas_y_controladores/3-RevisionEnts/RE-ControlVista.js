@@ -22,7 +22,7 @@ module.exports = {
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
-		return res.send(productos.CL)
+		// return res.send(productos.CL)
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
