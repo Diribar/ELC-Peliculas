@@ -59,8 +59,8 @@ var cron = require("node-cron");
 cron.schedule("1 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 // 2. Tareas en cada cambio de hora
 // cron.schedule("1 * * * *", () => comp.tareasHorarias());
-comp.tareasDiarias()
-comp.tareasHorarias()
+await comp.tareasDiarias()
+await comp.tareasHorarias()
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
