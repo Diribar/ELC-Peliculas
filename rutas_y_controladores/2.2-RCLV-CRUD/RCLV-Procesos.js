@@ -156,7 +156,6 @@ module.exports = {
 		// Tareas
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
-			entidad, datos, userID;
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
 			// Agregar el RCLV a DP/ED
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
