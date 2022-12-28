@@ -88,7 +88,7 @@ module.exports = {
 	},
 	guardaEdicion: async function ({entidadOrig, entidadEdic, original, edicion, userID}) {
 		// Variables
-		// Si es un link, obtiene el producto
+		// Si es un link, obtiene la relación con el producto
 		let entidad_idProd =
 			entidadOrig == "links"
 				? comp.obtieneEntidad_idDesdeEntidad(comp.obtieneProdDesdeEntidad_id(original))
