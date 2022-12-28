@@ -107,7 +107,7 @@ module.exports = {
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Completa la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
-		if (entidadOrig == "links") edicion = {...edicion, [entidad_idProd]: original[entidad_idProd]};
+		if (entidad_idProd) edicion = {...edicion, [entidad_idProd]: original[entidad_idProd]};
 		// Agrega la nueva edición
 		await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		// Fin
