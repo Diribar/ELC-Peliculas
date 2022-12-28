@@ -35,8 +35,9 @@
 /* Temas de edición */
 #datos table tbody tr {height: 30px;}
 #datos table tbody tr td {padding: 1px 5px;}
-#datos table tbody tr input, 
-#datos table tbody tr select {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
+#datos table tbody tr input, #datos table tbody tr select {text-align: center; border-radius: 5px; border-width: 1px;}
+#datos table tbody tr input, #datos table tbody tr select {padding: 0 5px 2px; line-height: 1; height: 22px;}
+#datos table tbody tr input, #datos table tbody tr select {max-width: 100%;}
 
 /* Tablas - Anchos */
 #datos table .ancho_url {width: 140px;}
@@ -50,7 +51,7 @@
 #datos table .ancho_accion {width: 70px;}
 
 /* Tablas - Columnas específicas */
-#datos table tbody tr td.url img {max-width: 100%; max-height: 20px;}
+#datos table tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
 #datos table tbody tr td.url .inputError .prov_id {display: none;}
 #datos table tbody tr td.calidad option {text-align: center; }
 

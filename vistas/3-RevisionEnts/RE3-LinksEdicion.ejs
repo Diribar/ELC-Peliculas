@@ -10,14 +10,16 @@
 	<td class="ancho_url url campo"></td>
 	<!-- Demás campos con valor agregado -->
 	<% for (campo of camposARevisar) { %>
-		<td class="ancho_<%= campo %> <%= campo %>">
+		<td class="<%= campo %>">
 			<% if (edicion[campo]!==null) { %>
-				<div class="inputError">
+				<div class="inputError ancho_<%= campo %>">
 					<% let valor= campo=="tipo_id" ? (edicion[campo]==1?"Trailer":"Película") : (campo=="castellano" || campo=="gratuito" || campo=="completo") ? (edicion[campo]?"SI":"NO") : edicion[campo] %> 
 					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
-					<i class="fa-solid fa-circle-check decision <%- edicPropia ? 'ocultar' : '' %>"></i>
-					<i class="fa-solid fa-circle-xmark decision <%- edicPropia ? 'ocultar' : '' %>"></i>
+					<div class="errores">
+						<i class="fa-solid fa-circle-check decision <%- edicPropia ? 'ocultar' : '' %>"></i>
+						<i class="fa-solid fa-circle-xmark decision <%- edicPropia ? 'ocultar' : '' %>"></i>
+					</div>
 					<!-- Edición ID -->
 					<div class="edicion_id ocultar"><%= edicion.id %></div>
 				</div>
