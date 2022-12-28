@@ -270,7 +270,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
-		const entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+		const entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 		// Mensajes
 		let mensajeSinEdicion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],

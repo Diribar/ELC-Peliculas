@@ -10,23 +10,6 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	obtieneEntidad_id: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula_id"
-			: entidad == "colecciones"
-			? "coleccion_id"
-			: entidad == "capitulos"
-			? "capitulo_id"
-			: entidad == "personajes"
-			? "personaje_id"
-			: entidad == "hechos"
-			? "hecho_id"
-			: entidad == "valores"
-			? "valor_id"
-			: entidad == "links"
-			? "link_id"
-			: "";
-	},
 	obtieneVersionesDelRegistro: async function (entidad, regID, userID, edicNombre, familia) {
 		// Variables
 		let includesEdic = comp.includes(familia);
@@ -43,7 +26,7 @@ module.exports = {
 		regOrig = this.quitaCamposSinContenido(regOrig);
 
 		// Obtiene el registro EDITADO
-		let entidad_id = this.obtieneEntidad_id(entidad);
+		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 		let datos = [edicNombre, {[entidad_id]: regID, editado_por_id: userID}, includesEdic];
 		if (userID) regEdic = await BD_genericas.obtienePorCamposConInclude(...datos);
 		if (regEdic) regEdic = this.quitaCamposSinContenido(regEdic);
@@ -103,11 +86,16 @@ module.exports = {
 		// Fin
 		return [edicion, quedanCampos];
 	},
-	guardaEdicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
+	guardaEdicion: async function ({entidadOrig, entidadEdic, original, edicion, userID}) {
 		// Variables
+		// Si es un link, obtiene el producto
+		let entidad_idProd =
+			entidadOrig == "links"
+				? comp.obtieneEntidad_idDesdeEntidad(comp.obtieneProdDesdeEntidad_id(original))
+				: "";
 		edicion = {...edicion, entidad: entidadEdic};
 		// Si existe una edición de ese original y de ese usuario --> lo elimina
-		let entidad_id = this.obtieneEntidad_id(entidadOrig);
+		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadOrig);
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtienePorCampos(entidadEdic, objeto);
 		if (registroEdic) await BD_genericas.eliminaPorId(entidadEdic, registroEdic.id);
@@ -119,6 +107,7 @@ module.exports = {
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Completa la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
+		if (entidadOrig == "links") edicion = {...edicion, [entidad_idProd]: original[entidad_idProd]};
 		// Agrega la nueva edición
 		await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		// Fin
@@ -136,11 +125,14 @@ module.exports = {
 		else if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar))
 			avatarOrig = "/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar;
 		// Si el avatar está 'a revisar'
-		else if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar))
+		else if (
+			comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
+		)
 			avatarOrig = "/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar;
 
 		// avatarEdic
-		avatarEdic = prodEdic && prodEdic.avatar ? "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
+		avatarEdic =
+			prodEdic && prodEdic.avatar ? "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};

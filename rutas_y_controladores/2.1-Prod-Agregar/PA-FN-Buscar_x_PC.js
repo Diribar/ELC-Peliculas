@@ -186,7 +186,7 @@ module.exports = {
 				// Procesa duplicados
 				if (coincidencias && coincidencias > 1) {
 					resultados.productos[indice].duplicado = true;
-					// resultados.productos.splice(indice, 1);
+					resultados.productos.splice(indice, 1);
 				}
 			}
 		})();

@@ -147,8 +147,15 @@ module.exports = {
 			}
 		}
 		// Actualiza la edición
+
 		if (!errores.hay)
-			await procsCRUD.guardaEdicion(entidad, "prods_edicion", prodOrig, req.body, userID);
+			await procsCRUD.guardaEdicion({
+				entidadOrig: entidad,
+				entidadEdic: "prods_edicion",
+				original: prodOrig,
+				edicion: req.body,
+				userID,
+			});
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

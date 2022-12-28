@@ -47,13 +47,13 @@ module.exports = {
 	},
 
 	// ABM de registros
-	creaRegistro: async (entidad, datos, userID) => {
+	creaRegistro: async ({entidad, datos, userID}) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
-	actualizaRegistro: async (entidad, id, datos) => {
+	actualizaRegistro: async ({entidad, id, datos}) => {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
@@ -158,6 +158,24 @@ module.exports = {
 		let RCLV = this.obtieneRCLVdesdeEntidad_id(edicion);
 		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";
 	},
+	obtieneEntidad_idDesdeEntidad: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula_id"
+			: entidad == "colecciones"
+			? "coleccion_id"
+			: entidad == "capitulos"
+			? "capitulo_id"
+			: entidad == "personajes"
+			? "personaje_id"
+			: entidad == "hechos"
+			? "hecho_id"
+			: entidad == "valores"
+			? "valor_id"
+			: entidad == "links"
+			? "link_id"
+			: "";
+	},
+
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
@@ -413,10 +431,10 @@ module.exports = {
 		return;
 	},
 	tareasHorarias: () => {
-		console.log(new Date().getTimezoneOffset());
-		console.log(new Date());
+		// console.log(new Date().getTimezoneOffset());
+		// console.log(new Date());
 		let imagen={
-			
+
 		}
 	},
 	cambiaImagenDerecha: async function () {

@@ -438,7 +438,7 @@ module.exports = {
 	},
 	// ConfirmarGuardar
 	guarda_cal_registros: (confirma, registro) => {
-		let producto_id = procsCRUD.obtieneEntidad_id(confirma.entidad);
+		let producto_id = comp.obtieneEntidad_idDesdeEntidad(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
 			usuario_id: registro.creado_por_id,
