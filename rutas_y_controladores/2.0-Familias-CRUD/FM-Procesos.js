@@ -114,24 +114,23 @@ module.exports = {
 		return "Edición guardada";
 	},
 	avatarOrigEdic: (prodOrig, prodEdic) => {
-		// Variables
-		let avatarOrig, avatarEdic;
-
-		// Si no existe avatarOrig
-		if (!prodOrig || !prodOrig.avatar) avatarOrig = "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
-		// Si es un url
-		else if (prodOrig.avatar.startsWith("http")) avatarOrig = prodOrig.avatar;
-		// Si el avatar está 'aprobado'
-		else if (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar))
-			avatarOrig = "/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar;
-		// Si el avatar está 'a revisar'
-		else if (
-			comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
-		)
-			avatarOrig = "/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar;
+		let avatarOrig =
+			// Si no existe avatarOrig
+			!prodOrig || !prodOrig.avatar
+				? "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg"
+				: // Si es un url
+				prodOrig.avatar.startsWith("http")
+				? prodOrig.avatar
+				: // Si el avatar está 'aprobado'
+				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar)
+				? "/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar
+				: // Si el avatar está 'a revisar'
+				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
+				? "/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar
+				: "";
 
 		// avatarEdic
-		avatarEdic =
+		let avatarEdic =
 			prodEdic && prodEdic.avatar ? "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
 
 		// Fin
