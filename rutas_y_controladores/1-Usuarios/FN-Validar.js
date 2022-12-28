@@ -121,38 +121,26 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	login: (datos) => {
+	login: async (datos) => {
 		// Variables
 		let {email, contrasena} = datos;
-		let errores = {};
-		if (contrasena) var largoContr = largoContrasena(contrasena);
+		let errores = {},
+			largoContr;
+		if (contrasena) largoContr = largoContrasena(contrasena);
 		// Verificar errores
 		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
+		// Verifica credenciales
+		if (!errores.hay) {
+			usuario = await BD_genericas.obtienePorCampos("usuarios", {email});
+			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
+			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
+			errores.hay = errores.credenciales;
+		}
+
 		// Fin
 		return errores;
-	},
-	mailContrasena_y_ObtieneUsuario: async function (datos) {
-		// Variables
-		let usuario;
-		// Averigua los errores
-		let errores = await this.login(datos);
-		// Acciones si no hay errores
-		if (!errores.hay) {
-			// Si no hay error => averigua el usuario
-			usuario = await BD_especificas.obtieneUsuarioPorMail(datos.email);
-			// Si existe el usuario => averigua si la contraseña es válida
-			if (usuario) {
-				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
-				// Si la contraseña no es válida => Credenciales Inválidas
-				if (errores.credenciales) errores.hay = true;
-			}
-			// Si el usuario no existe => Credenciales Inválidas
-			else errores = {credenciales: true, hay: true};
-		}
-		// Fin
-		return {errores, usuario};
 	},
 	olvidoContrBE: async (datos) => {
 		// Variables

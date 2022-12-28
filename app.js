@@ -3,6 +3,7 @@ global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+global.horarioLCF = new Date().getTime();
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
@@ -24,7 +25,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
 	};
 	// Fin
-	return
+	return;
 })();
 
 const path = require("path");
@@ -49,6 +50,16 @@ app.use(usuario);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
+// Cambia la fecha de la 'Línea de Cambio de Fecha'
+const comp = require("./funciones/3-Procesos/Compartidas");
+comp.horarioLCF(); 
+// Dispara tareas en cierto horario
+var cron = require("node-cron");
+// 1. Tareas a medianoche
+cron.schedule("0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+// 2. Tareas en cada cambio de hora
+cron.schedule("0 * * * *", () => console.log(new Date()));
+// console.log(new Date().getTimezoneOffset());
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "banco_fotos";
+	const alias = "banco_imagenes";
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(45)},
@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		valor_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "aux_banco_fotos",
+		tableName: "aux_banco_imagenes",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

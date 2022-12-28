@@ -2,12 +2,13 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// ControlVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
-	actualizaElUsuario: async (status, usuario, novedades) => {
+	actualizaElStatusDelUsuario: async (usuario, status, novedades) => {
 		// Obtiene el nuevo status
 		let statusNuevo = status_registro_us.find((n) => n[status]);
 		// Genera la info a actualizar
@@ -60,5 +61,26 @@ module.exports = {
 		};
 		// Fin
 		return informacion;
+	},
+	loginConMail: async function (email) {
+		// Obtiene el usuario
+		let usuario = await BD_especificas.obtieneUsuarioPorMail(email);
+		// Le agrega la diferencia horaria
+		// usuario.imagenDerecha = this.imagenDerecha(usuario);
+		// Fin
+		return usuario
+	},
+	imagenDerecha: (usuario) => {
+		// Averigua el horario local
+		let diferenciaHoraria = (new Date().getTimezoneOffset() / 60 + 12) * unaHora;
+		let horarioLocal = horarioLCF - diferenciaHoraria;
+		// Averigua las fechas local y LCF
+		let fechaLocal = new Date(horarioLocal).toDateString;
+		let fechaLCF = new Date(horarioLCF).toDateString;
+
+		// mismoDia=
+
+		// Fin
+		return diferenciaHoraria;
 	},
 };
