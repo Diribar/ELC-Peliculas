@@ -1,6 +1,11 @@
 <!-- Flechas -->
 <script src="/javascript/2.0-Familias-CRUD/FM-Flechas.js"></script>
 
+<!-- Colecciones y Capítulos -->
+<% if (entidad != "peliculas") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script><% } %>
+<!-- Capítulos -->
+<% if (entidad == "capitulos") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script><% } %>
+
 <!-- Uso Compartido con Revisión-->
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM3-Links.css" />
 <script src="/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>

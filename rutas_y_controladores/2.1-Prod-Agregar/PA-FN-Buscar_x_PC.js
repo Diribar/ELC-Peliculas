@@ -230,7 +230,7 @@ module.exports = {
 		(() => {
 			// Variables
 			let productos = [];
-			resultados.productos.forEach((prod, indice) => {
+			resultados.productos.forEach((prod) => {
 				if (!productos.find((n) => n.TMDB_entidad == prod.TMDB_entidad && n.TMDB_id == prod.TMDB_id))
 					productos.push(prod);
 			});
