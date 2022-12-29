@@ -118,8 +118,8 @@ module.exports = {
 
 		// Actualiza el campo 'links_gratuitos' en el producto
 		if (link.gratuito && link.tipo.pelicula) {
-			if (prodAprob) procesos.links_gratuitoEnProd(prodEntidad, prodID);
-			else procesos.links_averiguaGratuitoEnProd(prodEntidad, prodID);
+			if (prodAprob) procesos.linksABM_gratuitoEnProd(prodEntidad, prodID);
+			else procesos.linksAltaBaja_averiguaGratuitoEnProd(prodEntidad, prodID);
 		}
 
 		// Se recarga la vista
@@ -138,17 +138,21 @@ module.exports = {
 		let condicion = linkEdic && !linkEdic[campo];
 		if (!linkEdic || condicion) return res.json({mensaje: "false", reload: true});
 		// Obtiene los campos 'consecuencia'
-		let campos = procesos.obtieneCamposLinkEdic(edicAprob, linkEdicion, campo);
+		let campos = procesos.linksEdic_obtieneCampos(edicAprob, linkEdic, campo);
 		// Si la edición fue aprobada, actualiza el registro 'original' *******************
 		let linkID = linkEdic.link_id;
 		let linkOrig = {id: linkID};
+
 		if (edicAprob) linkOrig = await procesos.actualizaOriginal(linkOrig, linkEdic, campos, userID);
+
 		// Actualizaciones en el USUARIO
 		await procesos.edic_AccionesAdic(req, linkOrig, linkEdic);
+
+
 		// Limpia las ediciones
-		await linksEdic_LimpiarEdiciones(linkOrig);
+		await procesos.linksEdic_limpiaEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) procesos.links_gratuitoEnProd(prodEntidad, prodID, campo);
+		if (edicAprob) procesos.linksABM_gratuitoEnProd(prodEntidad, prodID, campo);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},

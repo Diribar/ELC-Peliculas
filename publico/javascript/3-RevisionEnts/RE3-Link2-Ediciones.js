@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let inputs = document.querySelectorAll(".edicion .input");
+	let inputs = document.querySelectorAll(".edicion .inputs");
 	let iconosDecision = document.querySelectorAll(".edicion .decision");
 	let ediciones_id = document.querySelectorAll(".edicion .edicion_id");
 	let ruta = "/revision/api/link-edicion/";
