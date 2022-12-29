@@ -267,6 +267,7 @@ module.exports = {
 	},
 
 	// Edición Form
+	// Producto y RCLV
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
@@ -368,7 +369,8 @@ module.exports = {
 		// Fin
 		return derecha;
 	},
-	guardar_edic: async function (req, regOrig, regEdic) {
+	// Producto
+	guardar_edicionProd: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
@@ -593,7 +595,7 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	// Prod/RCLV-Edición Form
+	// Prod-Edición Form
 	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
 		// Obtiene todos los campos a revisar
 		let campos = [...variables.camposRevisar.productos];
@@ -640,8 +642,6 @@ module.exports = {
 		// Fin
 		return [ingresos, reemplazos];
 	},
-
-	// Prod/RCLV-Edición Guardar
 	prodEdicGuardar_Avatar: async (req, prodOrig, prodEdic) => {
 		// Variables
 		const edicAprob = req.query.aprob == "true";

@@ -29,7 +29,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.guardar_edic(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.guardar_edicionProd(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
