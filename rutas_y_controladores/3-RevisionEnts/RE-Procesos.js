@@ -266,8 +266,7 @@ module.exports = {
 		);
 	},
 
-	// Edición Form
-	// Producto y RCLV
+	// Producto y RCLV - Edición Form
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
@@ -369,8 +368,8 @@ module.exports = {
 		// Fin
 		return derecha;
 	},
-	// Producto
-	guardar_edicionProd: async function (req, regOrig, regEdic) {
+	// Producto y RCLV - API/Vista
+	guardar_edicion: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
@@ -468,17 +467,15 @@ module.exports = {
 		// Averigua si quedan campos por procesar
 		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
-		// Acciones si no quedan campos
-		if (!quedanCampos) {
+		// Acciones para productos si no quedan campos
+		if (!quedanCampos && producto) {
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
 				// Averigua si tiene errores
-				let errores = producto
-					? await validaProds.consolidado(null, {...regOrig, entidad})
-					: await validaRCLVs.consolidado({...regOrig, entidad});
+				let errores = await validaProds.consolidado(null, {...regOrig, entidad});
 				// Acciones si el original no tiene errores y está en status 'gr_creado'
 				if (!errores.hay && regOrig.status_registro.gr_creado) {
 					// Genera la información a actualizar en el registro original
@@ -653,7 +650,10 @@ module.exports = {
 			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
+			if (
+				avatarOrig &&
+				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig)
+			)
 				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
@@ -808,7 +808,7 @@ module.exports = {
 	},
 
 	// Links - Vista
-	linksForm_avisoProblemas: (producto, urlAnterior) => {
+	linksForm_problemasProd: (producto, urlAnterior) => {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);

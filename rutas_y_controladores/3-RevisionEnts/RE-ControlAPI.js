@@ -12,15 +12,17 @@ module.exports = {
 		// Variables
 		const {entidad, id: entID, edicion_id: edicID, campo} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const nombreEdic = (familia == "productos" ? "prods" : "rclvs") + "_edicion";
+		const nombreEdic = (familia == "productos" ? "prods" : familia) + "_edicion";
+		let quedanCampos, statusAprob;
+
 		// Obtiene el registro editado
 		let includesEdic = comp.includes(familia);
 		let regEdic = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includesEdic);
-		let quedanCampos, statusAprob;
 		// Si no existe la edición, interrumpe el flujo
 		if (!regEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
 		if (!regEdic[campo]) return res.json({OK: false, mensaje: "El campo ya se había procesado"});
+
 		// Obtiene la versión original con includes
 		let includesOrig = [...includesEdic, "status_registro"];
 		let regOrig = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
@@ -29,7 +31,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.guardar_edicionProd(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.guardar_edicion(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
@@ -124,36 +126,5 @@ module.exports = {
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
-	},
-	linkEdic: async (req, res) => {
-		// Variables
-		const {prodEntidad, prodID, edicion_id: edicID, campo} = req.query;
-		const edicAprob = req.query.aprob == "true";
-		const decision = edicAprob ? "edics_aprob" : "edics_rech";
-		const userID = req.session.usuario.id;
-		let datos;
-		// Obtiene el registro editado
-		let linkEdic = await BD_genericas.obtienePorId("links_edicion", edicID);
-		// Verificación: averigua si existe la edición y el campo a analizar
-		let condicion = linkEdic && !linkEdic[campo];
-		if (!linkEdic || condicion) return res.json({mensaje: "false", reload: true});
-		// Obtiene los campos 'consecuencia'
-		let campos = procesos.linksEdic_obtieneCampos(edicAprob, linkEdic, campo);
-		// Si la edición fue aprobada, actualiza el registro 'original' *******************
-		let linkID = linkEdic.link_id;
-		let linkOrig = {id: linkID};
-
-		if (edicAprob) linkOrig = await procesos.actualizaOriginal(linkOrig, linkEdic, campos, userID);
-
-		// Actualizaciones en el USUARIO
-		await procesos.edic_AccionesAdic(req, linkOrig, linkEdic);
-
-
-		// Limpia las ediciones
-		await procesos.linksEdic_limpiaEdiciones(linkOrig);
-		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) procesos.linksABM_gratuitoEnProd(prodEntidad, prodID, campo);
-		// Se recarga la vista
-		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
 };

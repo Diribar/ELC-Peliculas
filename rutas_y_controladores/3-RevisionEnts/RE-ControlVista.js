@@ -192,7 +192,7 @@ module.exports = {
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edicionProd(
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edicion(
 					req,
 					prodOrig,
 					prodEdic
@@ -217,6 +217,7 @@ module.exports = {
 		}
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
+			// Achica la edición a su mínima expresión
 			let [edicion, quedanCampos] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
 			// Fin, si no quedan campos
 			if (!quedanCampos)
@@ -379,8 +380,8 @@ module.exports = {
 		includes = ["links", "status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = procesos.linksForm_avisoProblemas(producto, req.session.urlAnterior);
+		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
+		let informacion = procesos.linksForm_problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
