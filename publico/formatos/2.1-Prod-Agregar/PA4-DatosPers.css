@@ -1,13 +1,15 @@
 /* Cuerpo del formulario */
-#dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
+#dataEntry #datos {display: flex; flex-direction: row;}
 #dataEntry #primeraColumna {margin-right: 70px;}
-#dataEntry #segundaColumna {margin-right: 25px;}
+#dataEntry #segundaColumna {margin-right: 25px; align-self: center;}
 #dataEntry .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #dataEntry .label-input.ocultar {display: none;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
-#dataEntry h3 {margin-bottom: 0; color: var(--verde-oscuro);}
+#dataEntry h3 {margin-top: 0; color: var(--verde-oscuro);}
+#dataEntry #primeraColumna #tituloSecundario {margin-bottom: 10px;}
+#dataEntry #segundaColumna #tituloRCLV {margin-top: 15px;}
 #dataEntry .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
 #dataEntry .label-input .inputError {margin-left: 5px;}
 #dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
