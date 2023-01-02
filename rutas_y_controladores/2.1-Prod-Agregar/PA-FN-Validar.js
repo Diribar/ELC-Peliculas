@@ -25,13 +25,13 @@ module.exports = {
 		let cartelActuacion =
 			comp.inputVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 50},
+			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 70},
 			{
 				nombre: "nombre_castellano",
 				idioma: "completo",
 				cartel: comp.inputVacio,
 				corto: 3,
-				largo: 50,
+				largo: 70,
 			},
 			{nombre: "direccion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "guion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
