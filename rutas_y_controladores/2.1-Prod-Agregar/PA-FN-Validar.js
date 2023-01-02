@@ -141,7 +141,6 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = [
-			"en_castellano_id",
 			"en_color_id",
 			"publico_sugerido_id",
 			"categoria_id",

@@ -636,7 +636,6 @@ window.addEventListener("load", async () => {
 	};
 	let feedback = {
 		RCLI: async (comunicacion) => {
-			console.log(comunicacion);
 			let {campo, todos} = comunicacion;
 			// 1. Acciones si se cambia el año
 			if (campo == "ano" || todos) {
@@ -652,9 +651,7 @@ window.addEventListener("load", async () => {
 			}
 			// 4. Acciones si se cambia 'jss', 'cnt', o 'ncn' en Personajes
 			if (v.entidad == "personajes") {
-				console.log("personajes");
 				if (campo && ["cnt"].includes(campo)) procesos.RCLI.personajes[campo]();
-				console.log(campo && ["cnt"].includes(campo));
 			}
 
 			// Revisa los errores en RCLI

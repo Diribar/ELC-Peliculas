@@ -11,8 +11,6 @@
 		<%- include("PR-Pais") %>
 		<!-- Idioma original -->
 		<%- include("PR-Idioma", {idioma_id: producto.idioma_original_id}) %>
-		<!--Existe una versión en castellano-->
-		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", campoDato: "productos"}) %>
 		<!--Es a Color-->
 		<%- include("PR-Select", {nombreDelCampo: "en_color_id", campoDato: "productos"}) %>
 		<!-- Producción -->

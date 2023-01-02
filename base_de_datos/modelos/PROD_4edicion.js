@@ -20,7 +20,6 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(18)},
 		avatar_url: {type: dt.STRING(100)},
 
-		en_castellano_id: {type: dt.INTEGER},
 		en_color_id: {type: dt.INTEGER},
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.STRING(3)},

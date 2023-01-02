@@ -63,14 +63,8 @@ module.exports = {
 			if (datosAPI.original_title) datos.nombre_original = datosAPI.original_title;
 			if (datosAPI.title) datos.nombre_castellano = datosAPI.title;
 			// Idioma
-			if (datosAPI.original_language) {
-				datos.idioma_original_id = datosAPI.original_language;
-				if (
-					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
-				)
-					datos.en_castellano_id = 1;
-			}
+			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+
 			// año de estreno, duración, país de origen
 			if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
 			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
@@ -195,7 +189,6 @@ module.exports = {
 			capitulo: indice + 1,
 			creado_por_id: 2,
 		};
-		if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
 		datosCap.categoria_id = datosCol.categoria_id;
 		datosCap.subcategoria_id = datosCol.subcategoria_id;
@@ -235,14 +228,8 @@ module.exports = {
 			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1)
 				datos.duracion = datosAPI.episode_run_time[0];
 			// Idioma
-			if (datosAPI.original_language) {
-				datos.idioma_original_id = datosAPI.original_language;
-				if (
-					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
-				)
-					datos.en_castellano_id = 1;
-			}
+			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) datos.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
 			if (datosAPI.last_air_date) datos.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
@@ -280,7 +267,6 @@ module.exports = {
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
-		if (datosCol.en_castellano_id != 2) datos.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
 		datos.categoria_id = datosCol.categoria_id;
 		datos.subcategoria_id = datosCol.subcategoria_id;

@@ -195,26 +195,7 @@ module.exports = {
 			// Fin
 			return registros;
 		})();
-		// const registrosRCLV = await funcionRegistrosRCLV(userID);
 		return [
-			{
-				titulo: "Existe una versión en castellano",
-				nombre: "en_castellano_id",
-				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
-				mensajePeli: [
-					"SI: cuando es el idioma de toda la película, o está subtitulada.",
-					"PARCIAL: cuando lo anterior se cumple parcialmente.",
-					"NO: cuando no se cumple lo anterior.",
-					"Si la película está subtitulada, se especificará luego en el link.",
-				],
-				mensajeColec: [
-					"SI: cuando es el idioma de todos los capítulos, o están subtitulados.",
-					"PARCIAL: cuando lo anterior se cumple parcialmente.",
-					"NO: cuando no se cumple lo anterior.",
-					"Cuando un capítulo está subtitulado, se especifica en el link.",
-				],
-				angosto: true,
-			},
 			{
 				titulo: "Es a Color",
 				nombre: "en_color_id",
@@ -386,12 +367,6 @@ module.exports = {
 			{titulo: "Actuación", nombre: "actuacion", input: true},
 			{titulo: "Producción", nombre: "produccion", input: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
-			{
-				titulo: "Versión en castellano",
-				nombre: "en_castellano_id",
-				relac_include: "en_castellano",
-				campo_include: "productos",
-			},
 			{
 				titulo: "Es a Color",
 				nombre: "en_color_id",
