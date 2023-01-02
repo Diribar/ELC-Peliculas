@@ -14,6 +14,8 @@
 #dataEntry .label-input .inputError input {padding: 0px 5px;}
 #dataEntry .label-input .inputError select {padding: 0;}
 #cuerpo .inputError .ayudaMostrar {max-width: 400px;}
+#dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
+#dataEntry #checkbox label {margin-left: 5px; line-height: normal;}
 
 /* Links RCLV */
 #dataEntry .label-input .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
@@ -23,6 +25,8 @@
 
 /* Anchos específicos de inputs */
 #dataEntry .label-input .inputError select.angosto {width: 70px}	
+#dataEntry .label-input .inputError select.intermedio {width: 90px}	
+#dataEntry .label-input .inputError .input[type='checkbox'] {width: auto;}	
 
 /* Flechas */
 #dataEntry .flechas {margin-top: 20px;}

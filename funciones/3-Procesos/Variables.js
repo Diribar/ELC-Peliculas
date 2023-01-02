@@ -277,7 +277,7 @@ module.exports = {
 				nombre: "fe_valores_id",
 				valores: userID ? await BD_genericas.obtieneTodos("fe_valores", "orden") : [],
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 			{
@@ -285,7 +285,7 @@ module.exports = {
 				nombre: "entretiene_id",
 				valores: userID ? await BD_genericas.obtieneTodos("entretiene", "orden") : [],
 				mensajes: ["¿Se disfruta el rato viéndola?"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 			{
@@ -293,7 +293,7 @@ module.exports = {
 				nombre: "calidad_tecnica_id",
 				valores: userID ? await BD_genericas.obtieneTodos("calidad_tecnica", "orden") : [],
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 		];
