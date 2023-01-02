@@ -317,7 +317,7 @@ module.exports = {
 		delete req.session.email;
 		delete req.session.contrasena;
 		// 3. Variables para la vista
-		let errores = dataEntry ? await valida.login(dataEntry) : {};
+		let errores = dataEntry ? await valida.login(dataEntry) : "";
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},

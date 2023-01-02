@@ -5,6 +5,7 @@
 		<!-- Input -->
 		<select name="<%= campo %>" class="input RCLV" autofocus>
 			<option value="1">Ninguno</option>
+			<option value="2">Varios</option>
 			<!-- "valor" es cada Personaje, Hecho, Valor -->
 			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
