@@ -19,10 +19,10 @@ module.exports = {
 		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
-		// return res.send(productos)
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
+		// return res.send(productos.CL)
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
@@ -54,7 +54,7 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// Le agrega datos de la edición cuando no proviene de TMDB
 		if (prodOrig.fuente != "TMDB") {
-			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[entidad_id]: id});
 			prodEdic = procsCRUD.quitaCamposSinContenido(prodEdic);
 			prodOrig = {...prodOrig, ...prodEdic, id};
@@ -383,7 +383,7 @@ module.exports = {
 		let informacion = procesos.linksForm_avisoProblemas(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
-		let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));

@@ -47,13 +47,13 @@ module.exports = {
 	},
 
 	// ABM de registros
-	creaRegistro: async (entidad, datos, userID) => {
+	creaRegistro: async ({entidad, datos, userID}) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
-	actualizaRegistro: async (entidad, id, datos) => {
+	actualizaRegistro: async ({entidad, id, datos}) => {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
@@ -158,6 +158,24 @@ module.exports = {
 		let RCLV = this.obtieneRCLVdesdeEntidad_id(edicion);
 		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";
 	},
+	obtieneEntidad_idDesdeEntidad: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula_id"
+			: entidad == "colecciones"
+			? "coleccion_id"
+			: entidad == "capitulos"
+			? "capitulo_id"
+			: entidad == "personajes"
+			? "personaje_id"
+			: entidad == "hechos"
+			? "hecho_id"
+			: entidad == "valores"
+			? "valor_id"
+			: entidad == "links"
+			? "link_id"
+			: "";
+	},
+
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
@@ -280,23 +298,6 @@ module.exports = {
 			"hs"
 		);
 	},
-	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
-		let milisegs = new Date().getTime();
-		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF).getTime();
-		// Fin
-		return;
-	},
-	tareasDiarias: async function () {
-		// Tareas
-		console.log(382, new Date(horarioLCF));
-		this.horarioLCF();
-		console.log(384, new Date(horarioLCF));
-		await this.cambiaImagenDerecha();
-		// Fin
-		return;
-	},
 
 	// Gestión de archivos
 	averiguaSiExisteUnArchivo: (archivo) => {
@@ -386,18 +387,70 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	cambiaImagenDerecha: async function () {
-		let imagenDerecha = await (async () => {
-			let fecha = horarioLCF;
 
-			// Obtiene el registro del dia_del_ano
+	// Tareas diarias y horarias
+	horarioLCF: () => {
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
+		let milisegs = new Date().getTime();
+		let milisegsLCF = milisegs + unaHora * 12;
+		horarioLCF = new Date(milisegsLCF).getTime();
+		// Fin
+		return;
+	},
+	tareasDiarias: async function () {
+		// Actualiza el horarioLCF
+		this.horarioLCF();
+
+		// Tareas si cambió la fecha
+		const nombreDeArchivo = "archFechaVig.json";
+		let rutaNombre = path.join(__dirname, nombreDeArchivo);
+		let fechas = () => {
+			// Variables
+			// Obtiene el valor de las fechas
+			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+			let fechaActual =
+				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
+			// Fin
+			return [fechaActual, fechaVigente];
+		};
+		let [fechaActual, fechaVigente] = fechas();
+		if (fechaActual != fechaVigente) {
+			// Actualiza el valor de la fecha
+			(() => {
+				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
+					if (err) return console.log(304, err);
+					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
+					console.log("Fecha actualizada a " + fechaVigente);
+				});
+			})();
+			// Actualiza el archivo de la imagen derecha
+			await this.cambiaImagenDerecha();
+		}
+
+		// Fin
+		return;
+	},
+	tareasHorarias: () => {
+		// console.log(new Date().getTimezoneOffset());
+		// console.log(new Date());
+		let imagen={
+
+		}
+	},
+	cambiaImagenDerecha: async function () {
+		// Variables
+		let dia_del_ano_id, banco_de_imagenes, imagenDerecha;
+
+		// Obtiene dia_del_ano_id y el banco_de_imagenes
+		await (async () => {
+			let fecha = new Date(horarioLCF);
 			let dia = fecha.getDate();
 			let mes_id = fecha.getMonth() + 1;
 			let datos = {dia, mes_id};
-			let dia_del_ano = BD_genericas.obtienePorCampos("dias_del_ano", datos);
+			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
 
-			// Obtiene la tabla de 'banco de imagenes'
-			let banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
+			// Obtiene la tabla de 'banco_de_imagenes'
+			banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
 				n.map((n) => {
 					return {
 						dia_del_ano_id: n.dia_del_ano_id,
@@ -406,52 +459,29 @@ module.exports = {
 				})
 			);
 			// Espera a recibir la info
-			[dia_del_ano, banco_de_imagenes] = await Promise.all([dia_del_ano, banco_de_imagenes]);
+			[dia_del_ano_id, banco_de_imagenes] = await Promise.all([dia_del_ano_id, banco_de_imagenes]);
+		})();
 
-			// Genera 3 tablas de 'banco de imagenes' consecutivas, y las consolida
-			let banco = [...banco_de_imagenes];
-			banco_de_imagenes.forEach((n) =>
-				banco.push({dia_del_ano_id: n.dia_del_ano_id + 366, nombre_archivo: n.nombre_archivo})
-			);
-			banco_de_imagenes.forEach((n) =>
-				banco.push({dia_del_ano_id: n.dia_del_ano_id + 732, nombre_archivo: n.nombre_archivo})
-			);
-
-			// Obtiene el dia del año y le suma un año
-			let dia_del_ano_id = dia_del_ano.id + 366;
-
-			// Realiza la búsqueda 0, +2, -1 hasta encontrar un candidato
-			let imagenDerecha;
-			for (let i = 0; i <= 50; i++) {
-				imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2);
-				if (!imagenDerecha)
-					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id + i * 2 + 1);
-				if (!imagenDerecha)
-					imagenDerecha = banco.find((n) => n.dia_del_ano_id == dia_del_ano_id - i - 1);
+		// Obtiene la imagen derecha
+		(() => {
+			for (let i = 0; i < banco_de_imagenes.length; i++) {
+				if (dia_del_ano_id + i > 366) i -= 366;
+				imagenDerecha = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
 				if (imagenDerecha) break;
 			}
 			// Obtiene el dia_del_ano_id con imagen
 			dia_del_ano_id = imagenDerecha.dia_del_ano_id;
-			dia_del_ano_id > 732
-				? (dia_del_ano_id -= 732)
-				: dia_del_ano_id > 366
-				? (dia_del_ano_id -= 366)
-				: null;
+			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
 			// Obtiene todos los registros con ese 'dia_del_ano_id'
 			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--;
 			imagenDerecha = registros[indice].nombre_archivo;
-
-			// Fin
-			console.log(dia_del_ano_id, imagenDerecha, new Date());
-			return imagenDerecha;
 		})();
 
-		// Cuando lo encuentra,
 		// 1. Borra la 'imagenAnterior'
 		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
-		// 2. Cambia el nombre de la 'imagenDerecha' por 'imagenAnterior'
+		// 2. Cambia el nombre del archivo 'imagenDerecha' por 'imagenAnterior'
 		await this.cambiaElNombreDeUnArchivo("0-Base", "imagenDerecha.jpg", "imgDerAnt.jpg");
 		// Copia la nueva imagen como 'imagenDerecha'
 		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imagenDerecha, "0-Base/imagenDerecha.jpg");
@@ -662,7 +692,7 @@ module.exports = {
 		let resultado = [];
 		// Agrega los productos con edición más antigua
 		for (let prod of prods)
-			if (!resultado.filter((n) => n.id == prod.id && n.entidad == prod.entidad).length)
+			if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad))
 				resultado.push(prod);
 		// Fin
 		return resultado;

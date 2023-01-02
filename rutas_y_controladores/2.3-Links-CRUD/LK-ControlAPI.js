@@ -34,10 +34,16 @@ module.exports = {
 		);
 		// Obtiene el mensaje de la tarea realizada
 		let mensaje = !link
-			? await comp.creaRegistro("links", datos, userID) // El link no existe --> se lo debe crear
+			? await comp.creaRegistro({entidad: "links", datos, userID}) // El link no existe --> se lo debe crear
 			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
-			? await comp.actualizaRegistro("links", link.id, datos) // Actualizar el link
-			: await procsCRUD.guardaEdicion("links", "links_edicion", link, datos, userID); // Guardar la edición
+			? await comp.actualizaRegistro({entidad: "links", id: link.id, datos}) // Actualizar el link
+			: await procsCRUD.guardaEdicion({
+					entidadOrig: "links",
+					entidadEdic: "links_edicion",
+					original: link,
+					edicion: datos,
+					userID,
+			  }); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -157,4 +163,3 @@ module.exports = {
 		return res.json(respuesta);
 	},
 };
-

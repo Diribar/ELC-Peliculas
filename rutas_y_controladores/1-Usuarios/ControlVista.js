@@ -335,7 +335,7 @@ module.exports = {
 	},
 	loginGuardar: async (req, res) => {
 		// Averigua si hay errores de data-entry
-		let errores = await valida.login(datos);
+		let errores = await valida.login(req.body);
 		// Si hay errores de validación, redirecciona
 		if (errores.hay) {
 			req.session.email = req.body.email;

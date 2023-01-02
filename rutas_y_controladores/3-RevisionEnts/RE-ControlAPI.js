@@ -54,7 +54,6 @@ module.exports = {
 	linkAltaBaja: async (req, res) => {
 		// Variables
 		const {prodEntidad, prodID, url} = req.query;
-		console.log(req.query);
 		const prodAprob = req.query.aprob == "SI";
 		const userID = req.session.usuario.id;
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;

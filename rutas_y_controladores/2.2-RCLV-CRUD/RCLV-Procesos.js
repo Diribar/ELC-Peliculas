@@ -53,7 +53,7 @@ module.exports = {
 	},
 	prodsEnBD: async function (RCLV, userID) {
 		// Función
-		let convierteEdicPropiasDeProdsEnProds= async () => {
+		let convierteEdicPropiasDeProdsEnProds = async () => {
 			// Obtiene las ediciones propias
 			let edicionesPropias = [];
 			for (let edicion of RCLV.prods_edicion)
@@ -63,15 +63,15 @@ module.exports = {
 			// Configura la variable de productos
 			let productos = {};
 			for (let entidad of variables.entidadesProd) productos[entidad] = [];
-	
+
 			// Si no hay ediciones propias, termina la función
 			if (!edicionesPropias.length) return productos;
-	
+
 			// Obtiene los productos de esas ediciones
 			for (let edicion of edicionesPropias) {
 				// Obtiene la entidad y el campo 'entidad_id'
 				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
-				let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 				// Obtiene los registros del producto original y su edición por el usuario
 				let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
 					entidad,
@@ -86,15 +86,15 @@ module.exports = {
 				// Fin
 				productos[entidad].push(producto);
 			}
-	
+
 			// Combina los productos originales con los productos de las ediciones
 			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
 			delete RCLV.prods_edicion;
 			// Fin
 			return RCLV;
-		}
+		};
 		// Convierte las ediciones en productos
-		if (RCLV.prods_edicion.length) RCLV = await convierteEdicPropiasDeProdsEnProds();
+		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
 
 		// Completa la información de cada producto
 		let prodsEnBD = [];
@@ -156,9 +156,9 @@ module.exports = {
 		// Tareas
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
-			let id = await comp.creaRegistro(entidad, DE, userID);
+			let id = await comp.creaRegistro({entidad, datos: DE, userID});
 			// Agregar el RCLV a DP/ED
-			let entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DP") {
 				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
@@ -174,13 +174,19 @@ module.exports = {
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualizaRegistro(entidad, id, DE) // Actualiza el registro original
-				: await procsCRUD.guardaEdicion(entidad, "rclvs_edicion", RCLV_original, DE, userID); // Guarda la edición
+				? await comp.actualizaRegistro({entidad, id, datos: DE}) // Actualiza el registro original
+				: await procsCRUD.guardaEdicion({
+						entidadOrig: entidad,
+						entidadEdic: "rclvs_edicion",
+						original: RCLV_original,
+						edicion: DE,
+						userID,
+				  }); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualizaRegistro(entidad, id, DE); // Actualizar el registro original
+			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
 		}
 		// Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];

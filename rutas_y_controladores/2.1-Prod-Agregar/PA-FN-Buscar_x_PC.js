@@ -186,7 +186,7 @@ module.exports = {
 				// Procesa duplicados
 				if (coincidencias && coincidencias > 1) {
 					resultados.productos[indice].duplicado = true;
-					// resultados.productos.splice(indice, 1);
+					resultados.productos.splice(indice, 1);
 				}
 			}
 		})();
@@ -230,7 +230,7 @@ module.exports = {
 		(() => {
 			// Variables
 			let productos = [];
-			resultados.productos.forEach((prod, indice) => {
+			resultados.productos.forEach((prod) => {
 				if (!productos.find((n) => n.TMDB_entidad == prod.TMDB_entidad && n.TMDB_id == prod.TMDB_id))
 					productos.push(prod);
 			});

@@ -120,8 +120,9 @@ module.exports = {
 				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 			});
 		});
-		// 4.A. Elimina repetidos
+		// 4. Ordena por la fecha más antigua
 		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+		// 4.A. Elimina repetidos
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos aprobados
 		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
@@ -270,7 +271,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
 		const userID = req.session.usuario.id;
-		const entidad_id = procsCRUD.obtieneEntidad_id(entidad);
+		const entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 		// Mensajes
 		let mensajeSinEdicion = {
 			mensajes: ["No encontramos ninguna edición ajena para revisar"],
