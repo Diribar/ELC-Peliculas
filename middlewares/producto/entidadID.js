@@ -10,16 +10,16 @@ module.exports = async (req, res, next) => {
 		: req.originalUrl.startsWith("/revision/usuarios")
 		? "usuarios"
 		: "";
-	const prodID = req.query.id;
+	const id = req.query.id;
 	let informacion;
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 
 	// PROBLEMA 1: No existe el ID
 	// Verificar los datos
-	if (!prodID) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
+	if (!id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 	// PROBLEMA 2: Registro no encontrado
-	const registro = await BD_genericas.obtienePorId(entidad, prodID);
+	const registro = await BD_genericas.obtienePorId(entidad, id);
 	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones

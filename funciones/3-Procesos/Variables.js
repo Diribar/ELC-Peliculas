@@ -197,7 +197,7 @@ module.exports = {
 		})();
 		return [
 			{
-				titulo: "Es a Color",
+				titulo: "Es a color",
 				nombre: "en_color_id",
 				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
