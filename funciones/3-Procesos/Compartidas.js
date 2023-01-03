@@ -405,7 +405,6 @@ module.exports = {
 		const nombreDeArchivo = "archFechaVig.json";
 		let rutaNombre = path.join(__dirname, nombreDeArchivo);
 		let fechas = () => {
-			// Variables
 			// Obtiene el valor de las fechas
 			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
 			let fechaActual =
