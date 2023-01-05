@@ -148,7 +148,6 @@ window.addEventListener("load", async () => {
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value);
 		});
-		console.log(datosUrl);
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
@@ -415,19 +414,16 @@ window.addEventListener("load", async () => {
 		},
 		datosUrl: (campo) => {
 			// Agrega el valor de la subcategoría
-			let url = "";
-			let sector;
-			// Particularidades para sinCalifics
-			if (campo == "sinCalif") sector = "Calif";
-			// Particularidades para subcategoría, sinRCLVs y RCLVs
-			else {
-				sector = "RCLV";
-				if (v.subcatSelect.value) url += "subcategoria_id=" + v.subcatSelect.value + "&";
-			}
+			let sector = campo.slice(3);
+			let checked = v["check" + sector].checked;
+			let url = checked ? campo + "=on" + "&" : "";
+			if (campo == "sinRCLV" && v.subcatSelect.value)
+				url += "subcategoria_id=" + v.subcatSelect.value + "&";
 			// Agrega el valor de los RCLV
-			v["campos" + sector].forEach((n, i) => {
-				url += n + "=" + (v["check" + sector].checked ? "OK" : v["inputs" + sector][i].value) + "&";
-			});
+			if (!checked)
+				v["campos" + sector].forEach((n, i) => {
+					url += n + "=" + v["inputs" + sector][i].value + "&";
+				});
 			// Fin
 			return url;
 		},

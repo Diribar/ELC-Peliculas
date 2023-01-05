@@ -191,7 +191,8 @@ module.exports = {
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("datos-duros");
 		// 2. Obtiene los DatosPers
-		delete aux.sinCalif, aux.sinRCLV;
+		delete aux.sinCalif;
+		delete aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
 		if (datosPers.sinCalif || datosPers.sinRCLV) datosPers = procesos.puleDatosPers(datosPers);
 		for (let campo in datosPers) if (!datosPers[campo]) delete datosPers[campo];

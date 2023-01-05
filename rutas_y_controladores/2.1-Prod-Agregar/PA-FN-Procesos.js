@@ -306,7 +306,7 @@ module.exports = {
 		if (datosPers.sinCalif) for (let campo of camposCalif) delete datosPers[campo];
 		if (datosPers.sinRCLV) for (let campo of camposRCLV) delete datosPers[campo];
 		// Fin
-		return datosPers
+		return datosPers;
 	},
 	// Confirma
 	agregaCapitulosDeTV: async function (datosCol) {
@@ -476,7 +476,8 @@ let consolidaValores = (datos, cantCapitulos) => {
 		for (let indice = repeticiones.length - 1; indice >= 0; indice--) {
 			if (repeticiones[indice] == frecuencia) {
 				resultado.push(valores[indice]);
-				delete valores[indice], repeticiones[indice];
+				delete valores[indice];
+				delete repeticiones[indice];
 			}
 		}
 		// 1: Los máximos, siempre que:
