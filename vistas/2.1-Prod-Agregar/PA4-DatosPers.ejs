@@ -37,11 +37,11 @@
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
 			<!-- Tu calificación -->
-			<div class="flexCol">
+			<div id="Calif" class="flexCol">
 				<h3>Tu Calificación</h3>
 				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DP4-Checkbox", {campo: "sinCalificacion", }) %>
-				<div class="flexCol ocultar">
+				<%- include("PA4-DP4-Checkbox", {campo: "sinCalif", }) %>
+				<div class="flexCol selects">
 					<!--Inspira fe y/o valores-->
 					<%- include("PA4-DP1-Select", {campo: "fe_valores_id", nombre: "nombre"}) %>
 					<!--Entretiene-->
@@ -51,11 +51,11 @@
 				</div>
 			</div>
 			<!-- Relación con la vida -->
-			<div class="flexCol invisible">
+			<div id="RCLV" class="flexCol invisible">
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DP4-Checkbox", {campo: "sinRCLV", }) %>
-				<div class="flexCol ocultar">
+				<div class="flexCol selects">
 					<!--Personaje histórico-->
 					<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
 					<!--Hecho histórico-->

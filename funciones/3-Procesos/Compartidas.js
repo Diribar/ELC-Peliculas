@@ -256,7 +256,7 @@ module.exports = {
 					.replace(/[ýŷÿ]/g, "y")
 					.replace(/[ŽŹŻŽ]/g, "Z")
 					.replace(/[žźżž]/g, "z")
-					.replace(/[”“«»]/g, '"')
+					.replace(/[‘“’”«»]/g, '"')
 					.replace(/[º]/g, "°");
 			}
 		}

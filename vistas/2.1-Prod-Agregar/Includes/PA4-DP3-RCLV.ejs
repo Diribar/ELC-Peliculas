@@ -1,9 +1,9 @@
 <% registro = camposDP.find(n => n.nombre == campo) %>
-<section class="label-input invisible RCLV">
+<section class="label-input">
 	<label><%= registro.titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input RCLV" autofocus>
+		<select name="<%= campo %>" class="input" autofocus>
 			<option value="1">Ninguno</option>
 			<option value="2">Varios</option>
 			<!-- "valor" es cada Personaje, Hecho, Valor -->

@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 		DP: paso == "datos-personalizados",
 	};
 	// Variables
-	let v= {
+	let v = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-	}
+	};
 	let campos = Array.from(v.inputs).map((n) => n.name);
 	if (paso.PC) {
 		v.resultado = document.querySelector("#dataEntry #resultado");
@@ -109,15 +109,22 @@ window.addEventListener("load", async () => {
 		v.subcatSelect = document.querySelector("select[name='subcategoria_id']");
 		v.subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 		v.subcategorias = await fetch("/producto/agregar/api/DP-obtiene-subcategs").then((n) => n.json());
+		// Calificaciones y RCLV
+		v.camposCalif = ["fe_valores_id", "entretiene_id", "calidad_tecnica_id"];
+		v.camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
+		["Calif", "RCLV"].forEach((sector) => {
+			v["inputs" + sector] = document.querySelectorAll("#" + sector + " .inputError .input");
+			v["check" + sector] = document.querySelector("#" + sector + " #checkbox input");
+			v["ocultar" + sector] = document.querySelector("#" + sector + " .selects");
+		});
 		// Datos RCLV
-		v.inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
+		v.RCLV = document.querySelector("#RCLV");
+		v.iconosOK_RCLV = document.querySelectorAll("#RCLV .inputError .fa-circle-check");
+		v.iconosError_RCLV = document.querySelectorAll("#RCLV .inputError .fa-circle-xmark");
+		v.opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option");
+		v.opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option");
 		v.linkPersAlta = document.querySelector(".inputError .linkRCLV.alta");
 		v.linksRCLVEdic = document.querySelectorAll(".inputError .linkRCLV.edicion");
-		v.iconosOK_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-check");
-		v.iconosError_RCLV = document.querySelectorAll(".RCLV .inputError .fa-circle-xmark");
-		v.opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option.RCLV");
-		v.opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option.RCLV");
-		v.invisibles = document.querySelectorAll(".invisible");
 	}
 	// Ruta
 	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
@@ -129,17 +136,27 @@ window.addEventListener("load", async () => {
 		v.inputs.forEach((input, i) => {
 			// Caracter de unión para i>0
 			if (i) datosUrl += "&";
+			// Particularidad para DD
 			if (paso.DD && input.name == "avatar" && !v.sinAvatar) return;
+			// Particularidades para DP
+			if (paso.DP)
+				for (let sector of ["Calif", "RCLV"])
+					if (v["campos" + sector].includes(input.name) && v["check" + sector].checked) {
+						datosUrl += input.name + "=OK";
+						return;
+					}
+			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value);
 		});
+		console.log(datosUrl);
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
 		// Fin
 		return;
 	};
-	let muestraLosErrores = async (datosUrl, mostrarIconoError) => {
-		let errores = await fetch(rutaValidar + datosUrl).then((n) => n.json());
+	let muestraLosErrores = async (datos, mostrarIconoError) => {
+		let errores = await fetch(rutaValidar + datos).then((n) => n.json());
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
@@ -331,10 +348,10 @@ window.addEventListener("load", async () => {
 					});
 
 				// Muestra los campos RCLV
-				for (let invisible of v.invisibles) invisible.classList.remove("invisible");
+				RCLV.classList.remove("invisible");
 			}
 			// Si la subcategoría no tiene valor --> oculta los campos RCLV
-			else for (let invisible of v.invisibles) invisible.classList.add("invisible");
+			else RCLV.classList.add("invisible");
 
 			// Fin
 			return;
@@ -394,13 +411,33 @@ window.addEventListener("load", async () => {
 				this.verificaUnaSolaOpcionRCLV();
 			}
 		},
-		adicSubcat: (campo) => {
-			let adicSubcategoria = "";
-			if (campo != "subcategoria_id") adicSubcategoria += "&subcategoria_id=" + v.subcatSelect.value;
-			if (campo != "personaje_id") adicSubcategoria += "&personaje_id=" + v.inputsRCLV[0].value;
-			if (campo != "hecho_id") adicSubcategoria += "&hecho_id=" + v.inputsRCLV[1].value;
-			if (campo != "valor_id") adicSubcategoria += "&valor_id=" + v.inputsRCLV[2].value;
-			return adicSubcategoria;
+		datosUrl: (campo) => {
+			// Agrega el valor de la subcategoría
+			let url = "";
+			let sector;
+			// Particularidades para sinCalifics
+			if (campo == "sinCalif") sector = "Calif";
+			// Particularidades para subcategoría, sinRCLVs y RCLVs
+			else {
+				sector = "RCLV";
+				if (v.subcatSelect.value) url += "subcategoria_id=" + v.subcatSelect.value + "&";
+			}
+			// Agrega el valor de los RCLV
+			v["campos" + sector].forEach((n, i) => {
+				url += n + "=" + (v["check" + sector].checked ? "OK" : v["inputs" + sector][i].value) + "&";
+			});
+			// Fin
+			return url;
+		},
+		muestraOcultaElSector: (campo) => {
+			// Variables
+			let sector = campo.slice(3);
+			// Acción
+			v["check" + sector].checked
+				? v["ocultar" + sector].classList.add("ocultar")
+				: v["ocultar" + sector].classList.remove("ocultar");
+			// Fin
+			return;
 		},
 	};
 
@@ -410,7 +447,7 @@ window.addEventListener("load", async () => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = encodeURIComponent(e.target.value);
-		let datosUrl;
+		let datosUrl = "";
 		// Particularidades por paso
 		if (paso.PC) {
 			// Cambiar submit por '?'
@@ -444,14 +481,14 @@ window.addEventListener("load", async () => {
 			datosUrl = campo + "=" + valor;
 		}
 		if (paso.DP) {
-			// Si se cambia la categoría
+			// Particularidades si se cambia la categoría
 			if (campo == "categoria_id") {
 				v.subcatSelect.value = "";
 				DP.actualizaOpsSubcat();
 				DP.limpiaInputsRCLV();
 				DP.actualizaOpsRCLV();
 			}
-			// Si se cambia la subcategoría
+			// Particularidades si se cambia la subcategoría
 			if (campo == "subcategoria_id") {
 				DP.limpiaInputsRCLV();
 				DP.actualizaOpsRCLV();
@@ -459,16 +496,16 @@ window.addEventListener("load", async () => {
 			}
 
 			// Particularidades si se elije el personaje 'Jesús' o 'Ninguno'
-			if (campo == "subcategoria_id" || e.target.className.includes("RCLV")) DP.particsJesusNinguno();
+			if (["subcategoria_id", ...v.camposRCLV].includes(campo)) DP.particsJesusNinguno();
 
 			// Particularidades si la subcategoría es AMA y se elije un RCLV
-			if (v.subcatSelect.value == "AMA" && e.target.className.includes("RCLV"))
-				DP.interaccionesApMar(campo);
+			if (v.subcatSelect.value == "AMA" && v.camposRCLV.includes(campo)) DP.interaccionesApMar(campo);
 
-			// Datos de la subcategoría y rclvs, por si se necesitan para validar RCLV
-			let adicSubcategoria = v.subcatSelect.value ? DP.adicSubcat(campo) : "";
 			// Prepara el datosUrl con los datos a validar
-			datosUrl = campo + "=" + valor + adicSubcategoria;
+			if (campo == "sinCalif" || campo == "sinRCLV") DP.muestraOcultaElSector(campo);
+			if (["subcategoria_id", ...v.camposRCLV, "sinCalif", "sinRCLV"].includes(campo))
+				datosUrl += DP.datosUrl(campo);
+			else datosUrl += campo + "=" + valor;
 		}
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
