@@ -413,13 +413,15 @@ window.addEventListener("load", async () => {
 			}
 		},
 		datosUrl: (campo) => {
-			// Agrega el valor de la subcategoría
-			let sector = campo.slice(3);
+			// Obtiene el sector (todos los demás campos son del sector 'RCLV')
+			let sector = campo == "sinCalif" ? "Calif" : "RCLV";
+			// Otras variables
 			let checked = v["check" + sector].checked;
 			let url = checked ? campo + "=on" + "&" : "";
-			if (campo == "sinRCLV" && v.subcatSelect.value)
+			// Agrega la subcategoría, si corresponde
+			if (sector == "RCLV" && v.subcatSelect.value)
 				url += "subcategoria_id=" + v.subcatSelect.value + "&";
-			// Agrega el valor de los RCLV
+			// Agrega el valor de los campos
 			if (!checked)
 				v["campos" + sector].forEach((n, i) => {
 					url += n + "=" + v["inputs" + sector][i].value + "&";
