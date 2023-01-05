@@ -14,6 +14,6 @@ header #busquedaRapida .menu_mostrar #displayResultados table {border-collapse: 
 header #busquedaRapida .menu_mostrar #displayResultados p,
 header #busquedaRapida .menu_mostrar #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
 header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td {padding: 2px 5px;}
+header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td:first-child {display: flex; flex-direction: column;}
 header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td:nth-of-type(2) {text-align: center;}
 header #busquedaRapida .menu_mostrar #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
-
