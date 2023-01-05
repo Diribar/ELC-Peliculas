@@ -168,7 +168,19 @@ module.exports = {
 			capitulos: true,
 		},
 	],
-	camposDP: async function (userID) {
+	camposDP: [
+		{titulo: "Es a color", nombre: "en_color_id"},
+		{titulo: "Público sugerido", nombre: "publico_sugerido_id"},
+		{titulo: "Categoría", nombre: "categoria_id"},
+		{titulo: "Sub-categoría", nombre: "subcategoria_id"},
+		{titulo: "Personaje histórico", nombre: "personaje_id", grupo: "RCLV"},
+		{titulo: "Hecho histórico", nombre: "hecho_id", grupo: "RCLV"},
+		{titulo: "Valor principal", nombre: "valor_id", grupo: "RCLV"},
+		{titulo: "Inspira fe y/o valores", nombre: "fe_valores_id", grupo: "calificala"},
+		{titulo: "Entretiene", nombre: "entretiene_id", grupo: "calificala"},
+		{titulo: "Calidad sonora y visual", nombre: "calidad_tecnica_id", grupo: "calificala"},
+	],
+	camposDP_conValores: async function (userID) {
 		// Variables
 		const registrosRCLV = await (async () => {
 			// Variables
