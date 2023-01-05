@@ -4,8 +4,8 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -28,8 +28,7 @@ module.exports = {
 		}
 	},
 
-	// MOVIES *****************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - MOVIES
 	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
@@ -88,9 +87,7 @@ module.exports = {
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-
-	// COLLECTIONS ************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - COLLECTIONS
 	DS_collection: async (datos) => {
 		// Fórmula
 		let completaColeccion = async (datos) => {
@@ -171,7 +168,6 @@ module.exports = {
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-	// ControllerVista (confirma)
 	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
@@ -201,9 +197,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-
-	// TV *********************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - TV
 	DS_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		datos = {
@@ -302,7 +296,19 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
-	// ControllerVista (confirma)
+	// Datos Personales
+	puleDatosPers: (datosPers) => {
+		// Variables
+		let camposDP = variables.camposDP;
+		let camposCalif = camposDP.filter((n) => n.grupo == "calificala").map((m) => m.nombre);
+		let camposRCLV = camposDP.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
+		// Acciones
+		if (datosPers.sinCalif) for (let campo of camposCalif) delete datosPers[campo];
+		if (datosPers.sinRCLV) for (let campo of camposRCLV) delete datosPers[campo];
+		// Fin
+		return datosPers
+	},
+	// Confirma
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
