@@ -476,8 +476,7 @@ let consolidaValores = (datos, cantCapitulos) => {
 		for (let indice = repeticiones.length - 1; indice >= 0; indice--) {
 			if (repeticiones[indice] == frecuencia) {
 				resultado.push(valores[indice]);
-				delete valores[indice];
-				delete repeticiones[indice];
+				delete valores[indice], repeticiones[indice];
 			}
 		}
 		// 1: Los máximos, siempre que:

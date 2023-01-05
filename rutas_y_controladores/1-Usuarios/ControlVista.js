@@ -314,8 +314,7 @@ module.exports = {
 			req.session.email && req.session.contrasena
 				? {email: req.session.email, contrasena: req.session.contrasena}
 				: "";
-		delete req.session.email;
-		delete req.session.contrasena;
+		delete req.session.email, req.session.contrasena;
 		// 3. Variables para la vista
 		let errores = dataEntry ? await valida.login(dataEntry) : "";
 		let variables = [

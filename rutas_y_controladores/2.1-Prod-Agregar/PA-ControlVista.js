@@ -170,7 +170,7 @@ module.exports = {
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
-		let camposDP = await variables.camposDP(userID);
+		let camposDP = await variables.camposDP_conValores(userID);
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -190,21 +190,17 @@ module.exports = {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("datos-duros");
-		// 2. Sumar el req.body a lo que ya se tenía
-		if (aux.sinCalif) delete aux.sinCalif
-		if (aux.sinRCLV) delete aux.sinRCLV
+		// 2. Obtiene los DatosPers
+		delete aux.sinCalif, aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
-
-		// 3. Borrar campos innecesarios
-		for (let campo in datosPers) {
-			if (!datosPers[campo]) delete datosPers[campo];
-		}
+		if (datosPers.sinCalif || datosPers.sinRCLV) datosPers = procesos.puleDatosPers(datosPers);
+		for (let campo in datosPers) if (!datosPers[campo]) delete datosPers[campo];
 		// 4. Guarda el data entry en session y cookie
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 5. Averigua si hay errores de validación
-		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombre));
+		let camposDP = variables.camposDP.map((m) => m.nombre);
 		let errores = await valida.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("datos-personalizados");
