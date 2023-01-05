@@ -152,6 +152,8 @@ window.addEventListener("load", async () => {
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
+		// Muestra u oculta el sector que corresponda
+		for (let campo of ["sinCalif", "sinRCLV"]) DP.muestraOcultaElSector(campo);
 		// Fin
 		return;
 	};

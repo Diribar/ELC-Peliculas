@@ -191,7 +191,10 @@ module.exports = {
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("datos-duros");
 		// 2. Sumar el req.body a lo que ya se tenía
+		if (aux.sinCalif) delete aux.sinCalif
+		if (aux.sinRCLV) delete aux.sinRCLV
 		let datosPers = {...aux, ...req.body};
+
 		// 3. Borrar campos innecesarios
 		for (let campo in datosPers) {
 			if (!datosPers[campo]) delete datosPers[campo];
