@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 			});
 		}
 		// Imagen derecha
-		v.sinAvatar = document.querySelector("#imagenDerecha img").src.includes("imagenes/0-Base");
+		v.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
 	}
 	if (paso.DP) {
 		// Ayuda Sub-categoría

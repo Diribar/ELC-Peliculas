@@ -3,9 +3,9 @@ main {height: 91vh;}
 main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;}
 
 /* Imagen Derecha */
-main #imagenDerecha {display: flex; flex-direction: column; justify-content: center;}
-main #imagenDerecha {background-color: var(--gris-claro);}
-main #imagenDerecha img {max-width: 30vw; max-height: 91vh;}
+main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
+main #imgDerecha {background-color: var(--gris-claro);}
+main #imgDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo */
 main #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}

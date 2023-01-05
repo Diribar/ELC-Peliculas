@@ -32,9 +32,9 @@ window.addEventListener("load", async () => {
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		rutaVersiones: "/producto/api/edicion/obtiene-original-y-edicion/",
 		// Temas de avatar
-		imgsAvatar: document.querySelectorAll("#imagenDerecha.inputError .imgAvatar"),
-		avatarInicial: document.querySelector("#imagenDerecha.inputError #avatarEdicN").src,
-		inputAvatarEdicN: document.querySelector("#imagenDerecha.inputError .input"),
+		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
+		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
+		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 		esImagen: true,
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activar"),
