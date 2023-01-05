@@ -1,5 +1,5 @@
 <div id="checkbox" class="flexRow">
 	<!-- Input -->
-	<input id="<%= campo %>" type="checkbox" name="<%= campo %>" tabindex="-1" <% if (dataEntry && dataEntry[campo] && dataEntry[campo].checked) { %>checked<% } %>>
+	<input id="<%= campo %>" type="checkbox" name="<%= campo %>" tabindex="-1" <% if (dataEntry && dataEntry[campo]) { %>checked<% } %>>
 	<label for="<%= campo %>">No lo voy a responder por ahora</label>
 </div>

@@ -41,7 +41,7 @@
 				<h3>Tu Calificación</h3>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DP4-Checkbox", {campo: "sinCalif", }) %>
-				<div class="flexCol selects">
+				<div class="flexCol selects ocultar">
 					<!--Inspira fe y/o valores-->
 					<%- include("PA4-DP1-Select", {campo: "fe_valores_id", nombre: "nombre"}) %>
 					<!--Entretiene-->
@@ -55,7 +55,7 @@
 				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DP4-Checkbox", {campo: "sinRCLV", }) %>
-				<div class="flexCol selects">
+				<div class="flexCol selects ocultar">
 					<!--Personaje histórico-->
 					<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
 					<!--Hecho histórico-->
