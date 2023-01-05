@@ -417,15 +417,15 @@ window.addEventListener("load", async () => {
 			let sector = campo == "sinCalif" ? "Calif" : "RCLV";
 			// Otras variables
 			let checked = v["check" + sector].checked;
-			let url = checked ? campo + "=on" + "&" : "";
+			// Agrega el valor del campo 'sin' o todos los campos
+			let url = checked
+				? campo + "=on" + "&"
+				: v["campos" + sector].forEach((n, i) => {
+						url += n + "=" + v["inputs" + sector][i].value + "&";
+				  });
 			// Agrega la subcategoría, si corresponde
 			if (sector == "RCLV" && v.subcatSelect.value)
-				url += "subcategoria_id=" + v.subcatSelect.value + "&";
-			// Agrega el valor de los campos
-			if (!checked)
-				v["campos" + sector].forEach((n, i) => {
-					url += n + "=" + v["inputs" + sector][i].value + "&";
-				});
+				url += "subcategoria_id=" + v.subcatSelect.value;
 			// Fin
 			return url;
 		},
