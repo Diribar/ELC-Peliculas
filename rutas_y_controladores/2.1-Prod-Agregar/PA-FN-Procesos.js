@@ -477,7 +477,6 @@ let consValsColeccion = (datos, cantCapitulos) => {
 		frecuencias.forEach((cantidad, indice) => {
 			if (cantidad == frecuencia) resultado.push(valores[indice]);
 		});
-
 		// FRENOS
 		// 1. Si el resultado ya es demasiado largo, ¡STOP!
 		if (resultado.join(", ").length > 500) {
@@ -523,8 +522,8 @@ let limpiaValores = (datos) => {
 };
 let funcionCast = (dato) => {
 	// Variables
-	let actuacion="";
-	let largo=500
+	let actuacion = "";
+	let largo = 500;
 	// Acciones
 	if (dato.length) {
 		// Obtiene los nombres y convierte el array en string
