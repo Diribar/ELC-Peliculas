@@ -457,8 +457,6 @@ let funcionParentesis = (dato) => {
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
 let consValsColeccion = (datos, cantCapitulos) => {
-	// Consolida valores de colección
-
 	// Corrige defectos
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quita el último ', '
