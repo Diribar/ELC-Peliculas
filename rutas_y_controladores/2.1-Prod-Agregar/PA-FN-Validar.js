@@ -38,7 +38,7 @@ module.exports = {
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
 			{nombre: "produccion", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "actuacion", idioma: "completo", cartel: cartelActuacion, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "sinopsis", cartel: comp.inputVacio, corto: 15, largo: 1004},
+			{nombre: "sinopsis", idioma: "sinopsis", cartel: comp.inputVacio, corto: 11, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
