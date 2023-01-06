@@ -482,7 +482,7 @@ let consValsColeccion = (datos, cantCapitulos) => {
 		if (resultado.join(", ").length > 500) {
 			let texto = resultado.join(", ");
 			texto = texto.slice(0, 500);
-			texto = texto.slice(0, texto.lastIndexOf(","));
+			if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
 			resultado = texto.split(", ");
 			break;
 		}
@@ -514,7 +514,7 @@ let limpiaValores = (datos) => {
 		texto = valores.join(", ");
 		if (texto.length > largo) {
 			texto = texto.slice(0, largo);
-			texto = texto.slice(0, texto.lastIndexOf(","));
+			if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
 		}
 	}
 	// Fin
@@ -533,7 +533,7 @@ let funcionCast = (dato) => {
 		// Quita el excedente
 		if (actuacion.length > largo) {
 			actuacion = actuacion.slice(0, largo);
-			actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
+			if (actuacion.includes(",")) actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 		}
 	}
 	// Fin
