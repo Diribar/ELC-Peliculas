@@ -70,14 +70,14 @@ module.exports = {
 		let datos = JSON.parse(req.query.datos);
 		// Obtiene más información del producto
 		let infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
+		// Guarda los datos originales en una cookie
+		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// Fin
-		return res.json(infoTMDBparaDD);
+		return res.json();
 	},
 	desambGuardar2: async (req, res) => {
-		let datosDuros = JSON.parse(req.query.datos);
-		// Guarda los datos originales en una cookie
-		let datosOriginales = {...datosDuros};
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		//let datosDuros = JSON.parse(req.query.datos);
+		let datosDuros = req.cookies.datosOriginales;
 		// Para datosDuros, dar de alta el avatar_url y de baja el avatar
 		datosDuros.avatar_url = datosDuros.avatar;
 		delete datosDuros.avatar;
