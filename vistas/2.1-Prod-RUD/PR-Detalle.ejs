@@ -55,8 +55,12 @@
 	<div class="infoDesplazam">
 		<!-- Calificaciones -->
 		<h3>Calificaciones</h3>
-		<p id="calificacionesResultados"></p>
-		<div id="calificacionesGrafico"></div>
+		<% if (producto.calificacion) { %>
+			<p id="calificacionesResultados"></p>
+			<div id="calificacionesGrafico"></div>
+		<% } else { %>
+			<p style="text-align: center; margin-top: 10px; font-style: italic;">- Sin calificaciones aún -</p>
+		<% } %>
 		<!-- Texto -->
 		<h3>Datos Adicionales</h3>
 		<div id="texto">
