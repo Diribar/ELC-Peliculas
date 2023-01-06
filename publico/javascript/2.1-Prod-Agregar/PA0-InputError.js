@@ -152,7 +152,7 @@ window.addEventListener("load", async () => {
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
 		// Muestra u oculta el sector que corresponda
-		for (let campo of ["sinCalif", "sinRCLV"]) DP.muestraOcultaElSector(campo);
+		if (paso.DP) for (let campo of ["sinCalif", "sinRCLV"]) DP.muestraOcultaElSector(campo);
 		// Fin
 		return;
 	};
@@ -502,6 +502,7 @@ window.addEventListener("load", async () => {
 			if (v.subcatSelect.value == "AMA" && v.camposRCLV.includes(campo)) DP.interaccionesApMar(campo);
 
 			// Prepara el datosUrl con los datos a validar
+			console.log(campo);
 			if (campo == "sinCalif" || campo == "sinRCLV") DP.muestraOcultaElSector(campo);
 			if (["subcategoria_id", ...v.camposRCLV, "sinCalif", "sinRCLV"].includes(campo))
 				datosUrl += DP.datosUrl(campo);

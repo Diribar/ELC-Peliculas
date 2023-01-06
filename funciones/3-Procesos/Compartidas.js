@@ -257,7 +257,9 @@ module.exports = {
 					.replace(/[ŽŹŻŽ]/g, "Z")
 					.replace(/[žźżž]/g, "z")
 					.replace(/[‘“’”«»]/g, '"')
-					.replace(/[º]/g, "°");
+					.replace(/[º]/g, "°")
+					.replace(/\t/g, " ")
+					;
 			}
 		}
 		return resultado;
