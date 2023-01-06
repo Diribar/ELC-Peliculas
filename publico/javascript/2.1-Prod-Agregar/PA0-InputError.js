@@ -502,7 +502,6 @@ window.addEventListener("load", async () => {
 			if (v.subcatSelect.value == "AMA" && v.camposRCLV.includes(campo)) DP.interaccionesApMar(campo);
 
 			// Prepara el datosUrl con los datos a validar
-			console.log(campo);
 			if (campo == "sinCalif" || campo == "sinRCLV") DP.muestraOcultaElSector(campo);
 			if (["subcategoria_id", ...v.camposRCLV, "sinCalif", "sinRCLV"].includes(campo))
 				datosUrl += DP.datosUrl(campo);

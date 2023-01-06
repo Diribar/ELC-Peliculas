@@ -123,12 +123,12 @@ module.exports = {
 			}
 			// Procesar los resultados
 			let cantCapitulos = datos.capitulosID_TMDB.length;
-			if (paises_id) exportar.paises_id = consolidaValores(paises_id, cantCapitulos).replace(/,/g, "");
-			if (produccion) exportar.produccion = consolidaValores(produccion, cantCapitulos);
-			if (direccion) exportar.direccion = consolidaValores(direccion, cantCapitulos);
-			if (guion) exportar.guion = consolidaValores(guion, cantCapitulos);
-			if (musica) exportar.musica = consolidaValores(musica, cantCapitulos);
-			if (actuacion) exportar.actuacion = consolidaValores(actuacion, cantCapitulos);
+			if (paises_id) exportar.paises_id = consValsColeccion(paises_id, cantCapitulos).replace(/,/g, "");
+			if (produccion) exportar.produccion = consValsColeccion(produccion, cantCapitulos);
+			if (direccion) exportar.direccion = consValsColeccion(direccion, cantCapitulos);
+			if (guion) exportar.guion = consValsColeccion(guion, cantCapitulos);
+			if (musica) exportar.musica = consValsColeccion(musica, cantCapitulos);
+			if (actuacion) exportar.actuacion = consValsColeccion(actuacion, cantCapitulos);
 			// Fin
 			return exportar;
 		};
@@ -165,8 +165,10 @@ module.exports = {
 		// Datos de los capítulos para completar la colección
 		let otrosDatos = await completaColeccion(datos);
 		datos = {...datos, ...otrosDatos};
+		// Convierte las letras al castellano
+		datos = comp.convierteLetrasAlCastellano(datos);
 		// Fin
-		return comp.convierteLetrasAlCastellano(datos);
+		return datos;
 	},
 	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
@@ -454,71 +456,89 @@ let funcionParentesis = (dato) => {
 	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
-let consolidaValores = (datos, cantCapitulos) => {
+let consValsColeccion = (datos, cantCapitulos) => {
+	// Consolida valores de colección
+
+	// Corrige defectos
 	datos = datos.replace(/(, )+/g, ", ");
-	// Quitar el último ', '
+	// Quita el último ', '
 	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
-	// Convertir los valores en un array
+	// Convierte los valores en un array
 	datos = datos.split(", ");
-	// Crear un objeto literal para el campo
-	let campo = {};
-	// En el objeto literal, hacer un método por cada valor, con la cantidad de veces que aparece
-	for (let dato of datos) {
-		campo[dato] ? campo[dato]++ : (campo[dato] = 1);
-	}
+	// Crea un objeto literal para el campo
+	let objeto = {};
+	// En el objeto literal, hace un método por cada valor, con la cantidad de veces que aparece
+	for (let dato of datos) objeto[dato] ? objeto[dato]++ : (objeto[dato] = 1);
 	// Averigua cuántas veces se repite el método más frecuente
-	let valores = Object.keys(campo);
-	let repeticiones = Object.values(campo);
-	let frecMaxima = Math.max(...repeticiones);
-	// Copiar el nombre del método
+	let valores = Object.keys(objeto);
+	let frecuencias = Object.values(objeto);
+	let frecMaxima = Math.max(...frecuencias);
+	// Copia el nombre del método
 	let resultado = [];
 	for (let frecuencia = frecMaxima; frecuencia > 0; frecuencia--) {
-		for (let indice = repeticiones.length - 1; indice >= 0; indice--) {
-			if (repeticiones[indice] == frecuencia) {
-				resultado.push(valores[indice]);
-				delete valores[indice];
-				delete repeticiones[indice];
-			}
+		frecuencias.forEach((cantidad, indice) => {
+			if (cantidad == frecuencia) resultado.push(valores[indice]);
+		});
+
+		// FRENOS
+		// 1. Si el resultado ya es demasiado largo, ¡STOP!
+		if (resultado.join(", ").length > 500) {
+			let texto = resultado.join(", ");
+			texto = texto.slice(0, 500);
+			texto = texto.slice(0, texto.lastIndexOf(","));
+			resultado = texto.split(", ");
+			break;
 		}
-		// 1: Los máximos, siempre que:
+		// 2. Los máximos, siempre que:
 		//     - Sean más de uno y se hayan hecho por lo menos 2 ruedas
 		//     - Se haya hecho la primera de dos ruedas
 		if ((resultado.length > 1 && frecuencia == frecMaxima - 1) || frecMaxima == 2) break;
-		// 2: Los máximos tres
+		// 3. Los máximos tres
 		if (resultado.length > 2) break;
-		// 3: Si hay resultados y la frecuencia ya es muy baja, ¡STOP!
+		// 4. Si hay resultados y la frecuencia ya es muy baja, ¡STOP!
 		if (resultado.length && frecuencia - 1 < cantCapitulos * 0.25) break;
 	}
+	// Fin
 	resultado = resultado.join(", ");
 	return resultado;
 };
 let limpiaValores = (datos) => {
 	// Variables
 	let largo = 100;
-	let valores = [];
-	// Procesar si hay información
+	let texto = "";
+	// Procesa si hay información
 	if (datos.length) {
-		// Obtiene el nombre y descartar lo demás
+		// Obtiene el nombre y descarta lo demás
 		datos = datos.map((n) => n.name);
-		// Quitar duplicados
+		// Quita duplicados
+		let valores = [];
 		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
-		// Acortar el string excedente
-		let texto = valores.join(", ");
-		while (texto.length > largo && valores.length > 1) {
-			valores.pop();
-			texto = valores.join(", ");
+		// Acorta el string excedente
+		texto = valores.join(", ");
+		if (texto.length > largo) {
+			texto = texto.slice(0, largo);
+			texto = texto.slice(0, texto.lastIndexOf(","));
 		}
 	}
-	// Terminar el proceso
-	valores = valores.join(", ");
-	return valores;
+	// Fin
+	return texto;
 };
 let funcionCast = (dato) => {
-	let actuacion = dato
-		.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : ""))
-		.join(", ");
-	while (dato.length > 0 && actuacion.length > 500) {
-		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
+	// Variables
+	let actuacion="";
+	let largo=500
+	// Acciones
+	if (dato.length) {
+		// Obtiene los nombres y convierte el array en string
+		actuacion = dato
+			.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : ""))
+			.join(", ");
+		// Quita el excedente
+		if (actuacion.length > largo) {
+			actuacion = actuacion.slice(0, largo);
+			actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
+		}
 	}
+	// Fin
 	return actuacion;
 };
