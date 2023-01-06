@@ -98,14 +98,18 @@ module.exports = {
 			// Obtiene la info de los capítulos
 			let datosAPI = [];
 			let capitulos = [];
-			for (let capTMDB_id of datos.capitulosID_TMDB)
-				datosAPI.push(detailsTMDB("movie", capTMDB_id), creditsTMDB("movie", capTMDB_id));
-			await Promise.all(datosAPI).then((n) => {
-				for (let i = 0; i < datosAPI.length; i += 2) capitulos.push({...n[i], ...n[i + 1]});
+			datos.capitulosID_TMDB.forEach((capTMDB_id, orden) => {
+				datosAPI.push(detailsTMDB("movie", capTMDB_id), creditsTMDB("movie", capTMDB_id), {orden});
 			});
+			await Promise.all(datosAPI).then((n) => {
+				for (let i = 0; i < datosAPI.length; i += 3)
+					capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
+			});
+			// Ordena los registros
+			capitulos.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 
+			// Por cada capítulo, agrega un método de cada campo con sus valores sin repetir
 			for (let capitulo of capitulos) {
-				// Por cada capítulo, agrega un método de cada campo con sus valores sin repetir
 				// Paises_id
 				if (capitulo.production_countries.length)
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
@@ -122,7 +126,7 @@ module.exports = {
 				// Cast
 				if (capitulo.cast.length) actuacion += funcionCast(capitulo.cast) + ", ";
 			}
-			// Procesar los resultados
+			// Procesa los resultados
 			let cantCaps = capitulos.length;
 			if (paises_id) exportar.paises_id = consValsColeccion(paises_id, cantCaps).replace(/,/g, "");
 			if (produccion) exportar.produccion = consValsColeccion(produccion, cantCaps);
