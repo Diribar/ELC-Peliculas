@@ -1,7 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "subcategorias";
 	const columns = {
-		orden: {type: dt.INTEGER},
+		orden_abm: {type: dt.INTEGER},
+		orden_cons: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
 		
 		cfc: {type: dt.BOOLEAN},
