@@ -271,8 +271,8 @@ window.addEventListener("load", async () => {
 						? opcion.classList.remove("ocultar")
 						: opcion.classList.add("ocultar");
 				}
-				// La subcategoría puede tener un valor inicial
-				if (!v.subcatSelect.value) v.subcatSelect.removeAttribute("disabled");
+				// Habilita la subcategoría
+				v.subcatSelect.removeAttribute("disabled");
 				// Habilita y actualiza el ayuda
 				v.iconoAyudaSubcat.classList.remove("inactivo");
 				// Deja visibles las ayudas correspondientes

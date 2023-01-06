@@ -3,7 +3,9 @@
 <div class="ayuda">
 	<i class="fa-solid fa-circle-question ayudaClick despl_click">
 		<ul type="<%- registro.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar despl_mostrar">
-			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
+			<% registro.mensajes.forEach((mensaje, indice) => { %>
+				<li <% if (registro.mensCateg) { %>class="<%= registro.mensCateg[indice] %>"<% } %>><%= mensaje %></li>
+			<% }) %> 
 		</ul>
 	</i>
 </div>

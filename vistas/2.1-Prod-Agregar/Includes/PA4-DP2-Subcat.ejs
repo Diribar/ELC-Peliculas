@@ -14,7 +14,7 @@
 				</option>
 			<% } %>
 		</select>
-		<%- include("PA4-DP9-Ayuda", {registro: {...registro, mensajes: registro.mensajes.map(n=>n.texto)}}) %>
+		<%- include("PA4-DP9-Ayuda", {registro: {...registro, mensajes: registro.mensajes.map(n => n.texto), mensCateg: registro.mensajes.map(n => n.categ)}}) %>
 		<%- include("CMP-Errores", {display: true}) %>
 	</div>
 </section>

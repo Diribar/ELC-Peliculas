@@ -86,9 +86,7 @@ module.exports = {
 	// CRUD
 	obtieneCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
-			.findAll({
-				where: {coleccion_id: coleccion_id, temporada: temporada},
-			})
+			.findAll({where: {coleccion_id, temporada}, order: [["capitulo", "ASC"]]})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
