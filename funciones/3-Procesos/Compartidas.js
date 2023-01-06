@@ -210,7 +210,7 @@ module.exports = {
 		for (let i = 0; i < campos.length; i++) {
 			if (typeof valores[i] == "string") {
 				resultado[campos[i]] = valores[i]
-					.replace(/  /g, " ")
+					.replace(/ +/g, " ")
 					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 					.replace(/[àâãäåāăą]/g, "a")
 					.replace(/Æ/g, "Ae")
@@ -259,6 +259,7 @@ module.exports = {
 					.replace(/[‘“’”«»]/g, '"')
 					.replace(/[º]/g, "°")
 					.replace(/\t/g, " ")
+					.replace(/#/g, "")
 					;
 			}
 		}

@@ -30,7 +30,7 @@
 				<% } %>
 				<!-- FA -->
 				<% if (dataEntry.fuente!="FA") { %>
-					<% fa = dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
+					<% fa = dataEntry.nombre_castellano ? "search.php?stext=" + dataEntry.nombre_castellano : dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
 					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity"></a>
 				<% } %>
 				<!-- IMDB -->

@@ -107,10 +107,6 @@ module.exports = {
 			});
 			prodsEnBD.push(...aux);
 		});
-		// Ordenar por año (decreciente)
-		prodsEnBD.sort((a, b) =>
-			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
-		);
 		// Separa entre colecciones y resto
 		let colecciones = prodsEnBD.filter((n) => n.entidad == "colecciones");
 		let noColecciones = prodsEnBD.filter((n) => n.entidad != "colecciones");
@@ -118,8 +114,12 @@ module.exports = {
 		let coleccionesId = colecciones.map((n) => n.id);
 		for (let i = noColecciones.length - 1; i >= 0; i--)
 			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
-		// Fin
+		// Ordenar por año (decreciente)
 		prodsEnBD = [...colecciones, ...noColecciones];
+		prodsEnBD.sort((a, b) =>
+			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
+		);
+		// Fin
 		return prodsEnBD;
 	},
 	procCanoniz: async (RCLV) => {
