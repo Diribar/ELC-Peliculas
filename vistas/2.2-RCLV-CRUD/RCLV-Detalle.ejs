@@ -1,4 +1,4 @@
-<div id="tituloPrincipal">
+<section id="tituloPrincipal">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
 	<div class="ayuda">
@@ -10,8 +10,8 @@
 			</ul>
 		</i>	
 	</div>
-</div>
-<div id="datos">
+</section>
+<section id="datos">
 	<div id="datosLargos">
 		<div id="encabezado">
 			<div id="tituloSecundario">
@@ -24,6 +24,7 @@
 					</i>
 				</div>
 			</div>
+			<p>Cantidad de Hallazagos: <%= prodsEnBD.length %></p>
 		</div>	
 		<div id="cuadroDeResultados">
 			<i class="fa-solid fa-caret-left mover inactivo"></i>
@@ -56,4 +57,4 @@
 			<% } %>
 		</div>
 	</div>
-</div>
+</section>
