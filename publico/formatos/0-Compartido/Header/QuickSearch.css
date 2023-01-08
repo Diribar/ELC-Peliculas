@@ -1,19 +1,26 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
-header #busquedaRapida {position: relative;}
-header #busquedaRapida .menu_mostrar {position: absolute; top: 35px;}
-header #busquedaRapida .menu_mostrar input, 
-header #busquedaRapida .menu_mostrar #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-header #busquedaRapida .menu_mostrar input {padding: 2px 5px; }
-header #busquedaRapida .menu_mostrar #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
-header #busquedaRapida .menu_mostrar #displayResultados table,
-header #busquedaRapida .menu_mostrar #displayResultados table thead,
-header #busquedaRapida .menu_mostrar #displayResultados table thead th,
-header #busquedaRapida .menu_mostrar #escribiMas, 
-header #busquedaRapida .menu_mostrar #displayResultados p {width: max-content;}
-header #busquedaRapida .menu_mostrar #displayResultados table {border-collapse: collapse;}
-header #busquedaRapida .menu_mostrar #displayResultados p,
-header #busquedaRapida .menu_mostrar #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
-header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td {padding: 2px 5px;}
-header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td:first-child {display: flex; flex-direction: column;}
-header #busquedaRapida .menu_mostrar #displayResultados table tbody tr td:nth-of-type(2) {text-align: center;}
-header #busquedaRapida .menu_mostrar #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
+#busquedaRapida {position: relative;}
+#busquedaRapida .menu_mostrar {position: absolute; top: 35px;}
+#busquedaRapida .menu_mostrar * {width: max-content;}
+#busquedaRapida .menu_mostrar input, 
+#busquedaRapida .menu_mostrar #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+#busquedaRapida .menu_mostrar input {padding: 2px 5px; width: 200px;}
+#busquedaRapida .menu_mostrar #displayResultados {border-top-left-radius: 0; overflow: hidden;}
+
+/* Opciones de #displayResultados */
+#busquedaRapida #displayResultados table {border-collapse: collapse;}
+/* Colores de fondo */
+#busquedaRapida #displayResultados p,
+#busquedaRapida #displayResultados tr.prod:nth-of-type(odd) {background-color: whitesmoke;}
+#busquedaRapida #displayResultados tr.prod:nth-of-type(even) {background-color: var(--celeste-claro);}
+#busquedaRapida #displayResultados tr.rclv:nth-of-type(odd) {background-color: var(--amarillo-oscuro);}
+#busquedaRapida #displayResultados tr.rclv:nth-of-type(even) {background-color: var(--amarillo-claro);}
+
+/* Para que el anchor de la primera columna ocupe todo el ancho */
+#busquedaRapida #displayResultados tr td:first-child {display: flex; flex-direction: column;}
+/* Alineación de la columna de 'familia' */
+#busquedaRapida #displayResultados tr td:nth-of-type(2) {text-align: left;}
+#busquedaRapida #displayResultados tr td:nth-of-type(2):first-letter {text-transform: uppercase;}
+/* Otros */
+#busquedaRapida #displayResultados tr td {padding: 2px 5px;}
+#busquedaRapida #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}

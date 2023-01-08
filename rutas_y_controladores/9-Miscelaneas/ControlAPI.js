@@ -28,7 +28,7 @@ module.exports = {
 			let resultado = await BD_especificas.quickSearchRegistros(condiciones, datos[i]);
 			if (resultado.length) resultados.push(...resultado);
 		}
-		// Ordena los resultados
+		// Ordena los resultados, 1a prioridad: familia, 2a prioridad: nombre
 		resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 		resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
 		// Enviar la info al FE
