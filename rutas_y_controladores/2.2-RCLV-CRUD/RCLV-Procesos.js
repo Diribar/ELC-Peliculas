@@ -95,7 +95,6 @@ module.exports = {
 		};
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
-
 		// Completa la información de cada producto
 		let prodsEnBD = [];
 		variables.entidadesProd.forEach((entidad) => {

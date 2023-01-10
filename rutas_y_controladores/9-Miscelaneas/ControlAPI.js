@@ -21,11 +21,11 @@ module.exports = {
 		let resultados = [];
 		let userID = req.session.usuario ? req.session.usuario.id : 0;
 		// Rutina
-		for (let i = 0; i < datos.length; i++) {
+		for (let dato of datos) {
 			// Obtiene las condiciones
-			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, datos[i], userID);
+			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, dato, userID);
 			// Obtiene los registros que cumplen las condiciones
-			let resultado = await BD_especificas.quickSearchRegistros(condiciones, datos[i]);
+			let resultado = await BD_especificas.quickSearchRegistros(condiciones, dato);
 			if (resultado.length) resultados.push(...resultado);
 		}
 		// Ordena los resultados, 1a prioridad: familia, 2a prioridad: nombre

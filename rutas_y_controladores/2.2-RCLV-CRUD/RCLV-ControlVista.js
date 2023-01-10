@@ -136,7 +136,7 @@ module.exports = {
 		// Productos
 		let prodsEnBD = await procesos.prodsEnBD(RCLV, userID);
 		let cantProdsEnBD = prodsEnBD.length;
-		// 5. Ir a la vista
+		// Ir a la vista
 		// return res.send(prodsEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,

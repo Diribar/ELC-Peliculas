@@ -5,9 +5,10 @@ module.exports = (sequelize, dt) => {
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 		solo_cfc: {type: dt.BOOLEAN},
+		ant: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
-		ncn: {type: dt.BOOLEAN},
+		pst: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 		
 		prods_aprob: {type: dt.BOOLEAN},
