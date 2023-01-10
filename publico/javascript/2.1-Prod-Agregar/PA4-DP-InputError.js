@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
-		let errores = await fetch(rutaValidar + datos).then((n) => n.json());
+		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
@@ -102,6 +102,7 @@ window.addEventListener("load", async () => {
 	let actualizaOpsSubcat = () => {
 		if (v.categoriaSelect.value) {
 			// Actualiza las opciones de sub-categoría
+			console.dir(subcatSelect);
 			for (let opcion of v.subcategoriaOpciones) {
 				opcion.className.includes(v.categoriaSelect.value)
 					? opcion.classList.remove("ocultar")
@@ -248,7 +249,7 @@ window.addEventListener("load", async () => {
 			verificaUnaSolaOpcionRCLV();
 		}
 	};
-	let datosUrl = (campo) => {
+	let FN_datosUrl = (campo) => {
 		// Obtiene el sector (todos los demás campos son del sector 'RCLV')
 		let sector = campo == "sinCalif" ? "Calif" : "RCLV";
 		// Otras variables
@@ -307,7 +308,7 @@ window.addEventListener("load", async () => {
 		// Prepara el datosUrl con los datos a validar
 		if (campo == "sinCalif" || campo == "sinRCLV") muestraOcultaElSector(campo);
 		if (["subcategoria_id", ...v.camposRCLV, "sinCalif", "sinRCLV"].includes(campo))
-			datosUrl += datosUrl(campo);
+			datosUrl += FN_datosUrl(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Validar errores
@@ -336,5 +337,5 @@ window.addEventListener("load", async () => {
 	particsJesusNinguno();
 
 	// Errores y boton 'Submit'
-	statusInicial(mostrarIconoError);
+	statusInicial();
 });
