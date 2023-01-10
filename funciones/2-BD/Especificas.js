@@ -24,48 +24,50 @@ module.exports = {
 		// Convierte las palabras en un array
 		palabras = palabras.split(" ");
 		// Crea el objeto literal con los valores a buscar
-		let valoresOR = [];
+		let condicTodasLasPalabrasPresentesEnCampos = [];
 		// Almacena la condición en una matriz
 		for (let campo of dato.campos) {
-			let condicionesDeCampo = [];
+			let condicPalabrasABuscarEnCampo = [];
 			for (let palabra of palabras) {
 				// Que encuentre la palabra en el campo
-				let condicionDePalabra = {
+				let condicPalabraABuscarEnCampo = {
 					[Op.or]: [
 						{[campo]: {[Op.like]: "% " + palabra + "%"}},
 						{[campo]: {[Op.like]: palabra + "%"}},
 					],
 				};
-				// Se fija que la palabra esté en el campo
-				condicionesDeCampo.push(condicionDePalabra);
+				// Agrega la palabra al conjunto de palabras a buscar
+				condicPalabrasABuscarEnCampo.push(condicPalabraABuscarEnCampo);
 			}
-			// Condición: se fija que cada palabra esté en el campo
-			let resumenDeCampo = {[Op.and]: condicionesDeCampo};
+			// Exige que cada palabra del conjunto esté presente
+			let condicTodasLasPalabrasPresentesEnCampo = {[Op.and]: condicPalabrasABuscarEnCampo};
 			// Consolida el resultado
-			valoresOR.push(resumenDeCampo);
+			condicTodasLasPalabrasPresentesEnCampos.push(condicTodasLasPalabrasPresentesEnCampo);
 		}
 		// Se fija que la condición de palabras se cumpla en alguno de los campos
-		let condicionPalabra = {[Op.or]: valoresOR};
+		let condicPalabras = {[Op.or]: condicTodasLasPalabrasPresentesEnCampos};
 		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
-		let stGrCreadoID = status_registro.filter((n) => n.gr_creado).map((n) => n.id);
-		let stAprobadoID = status_registro.find((n) => n.aprobado).id;
-		let condicionStatus = {
+		let statusGrCreado_id = status_registro.filter((n) => n.gr_creado).map((n) => n.id);
+		let statusAprob_id = status_registro.find((n) => n.aprobado).id;
+		let condicStatus = {
 			[Op.or]: [
-				{status_registro_id: stAprobadoID},
-				{[Op.and]: [{status_registro_id: stGrCreadoID}, {creado_por_id: userID}]},
+				{status_registro_id: statusAprob_id},
+				{
+					[Op.and]: [
+						{status_registro_id: statusGrCreado_id},
+						{[Op.or]: [{creado_por_id: userID}, {creado_por_id: 2}]},
+					],
+				},
 			],
 		};
 		// Consolidado
-		let condiciones = {[Op.and]: [condicionPalabra, condicionStatus]};
+		let condics = {[Op.and]: [condicPalabras, condicStatus]};
 		// Fin
-		return condiciones;
+		return condics;
 	},
-	quickSearchRegistros: async (condiciones, dato) => {
-		// Variables
-		let hallazgos = [];
-		let resultado = [];
+	quickSearchRegistros: (condiciones, dato) => {
 		// Obtiene los registros
-		let registros = await db[dato.entidad]
+		return db[dato.entidad]
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
@@ -79,8 +81,6 @@ module.exports = {
 					};
 				})
 			);
-		// Enviar el resultado
-		return registros;
 	},
 
 	// CRUD
