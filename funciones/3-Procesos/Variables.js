@@ -243,7 +243,7 @@ module.exports = {
 				nombre: "subcategoria_id",
 				valores: userID ? await BD_genericas.obtieneTodos("subcategorias", "orden_abm") : [],
 				mensajes: [
-					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: ""},
+					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: "CFC VPC"},
 					{texto: "Hagiografía - el protagonista debe ser un santo o beato", categ: "CFC"},
 					{
 						texto: "Historias de la Iglesia - cuando no se cumple ninguno de los anteriores",

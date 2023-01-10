@@ -79,7 +79,7 @@ module.exports = {
 				prodComb.temporada
 			);
 		// Va a la vista
-		//return res.send(bloquesDerecha)
+		// return res.send(prodComb)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,

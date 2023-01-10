@@ -271,8 +271,8 @@ window.addEventListener("load", async () => {
 						? opcion.classList.remove("ocultar")
 						: opcion.classList.add("ocultar");
 				}
-				// La subcategoría puede tener un valor inicial
-				if (!v.subcatSelect.value) v.subcatSelect.removeAttribute("disabled");
+				// Habilita la subcategoría
+				v.subcatSelect.removeAttribute("disabled");
 				// Habilita y actualiza el ayuda
 				v.iconoAyudaSubcat.classList.remove("inactivo");
 				// Deja visibles las ayudas correspondientes
@@ -319,14 +319,14 @@ window.addEventListener("load", async () => {
 				// 1. Restringido por subcategoría
 				if (v.subcategoria.pers_codigo)
 					v.opcionesPersonaje.forEach((opcion) => {
-						opcion.classList.contains(v.subcategoria.id)
+						opcion.classList.contains(v.subcategoria.id) || opcion.value == 2
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});
 				// 2. Restringido por categoría
 				else
 					v.opcionesPersonaje.forEach((opcion) => {
-						opcion.classList.contains(categoriaValor)
+						opcion.classList.contains(categoriaValor) || opcion.value == 2
 							? opcion.classList.remove("ocultar")
 							: opcion.classList.add("ocultar");
 					});

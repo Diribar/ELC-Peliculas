@@ -33,7 +33,7 @@
 #centro #medio #info #titulo * {font-size: 1.2rem;}
 #centro #medio #info #titulo .fa-solid {font-size: 1.5rem;}
 #centro #medio #info #titulo h3 {margin: 0 5px;}
-#centro #medio #info #titulo h3::first-letter {text-transform:capitalize;}
+#centro #medio #info #titulo h3:first-letter {text-transform:capitalize;}
 #centro #medio #info ul {list-style-position: inside;}
 #centro #medio #info ul li {margin-left: 25px;}
 /* Sección central - Flechas */

@@ -95,40 +95,45 @@ module.exports = {
 			let paises_id, produccion, direccion, guion, musica, actuacion;
 			paises_id = produccion = direccion = guion = musica = actuacion = "";
 			let exportar = {};
-			// Rutina por cada capítulo
-			for (let capTMDB_id of datos.capitulosID_TMDB) {
-				// Obtiene las API
-				let datosAPI = await Promise.all([
-					detailsTMDB("movie", capTMDB_id),
-					creditsTMDB("movie", capTMDB_id),
-				]).then(([a, b]) => {
-					return {...a, ...b};
-				});
-				// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
+			// Obtiene la info de los capítulos
+			let datosAPI = [];
+			let capitulos = [];
+			datos.capitulosID_TMDB.forEach((capTMDB_id, orden) => {
+				datosAPI.push(detailsTMDB("movie", capTMDB_id), creditsTMDB("movie", capTMDB_id), {orden});
+			});
+			await Promise.all(datosAPI).then((n) => {
+				for (let i = 0; i < datosAPI.length; i += 3)
+					capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
+			});
+			// Ordena los registros
+			capitulos.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
+
+			// Por cada capítulo, agrega un método de cada campo con sus valores sin repetir
+			for (let capitulo of capitulos) {
 				// Paises_id
-				if (datosAPI.production_countries.length)
-					paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
+				if (capitulo.production_countries.length)
+					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
-				if (datosAPI.production_companies.length)
-					produccion += limpiaValores(datosAPI.production_companies) + ", ";
+				if (capitulo.production_companies.length)
+					produccion += limpiaValores(capitulo.production_companies) + ", ";
 				// Crew
-				if (datosAPI.crew.length) {
+				if (capitulo.crew.length) {
 					direccion +=
-						limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
-					guion += limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
-					musica += limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
+						limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (datosAPI.cast.length) actuacion += funcionCast(datosAPI.cast) + ", ";
+				if (capitulo.cast.length) actuacion += funcionCast(capitulo.cast) + ", ";
 			}
-			// Procesar los resultados
-			let cantCapitulos = datos.capitulosID_TMDB.length;
-			if (paises_id) exportar.paises_id = consValsColeccion(paises_id, cantCapitulos).replace(/,/g, "");
-			if (produccion) exportar.produccion = consValsColeccion(produccion, cantCapitulos);
-			if (direccion) exportar.direccion = consValsColeccion(direccion, cantCapitulos);
-			if (guion) exportar.guion = consValsColeccion(guion, cantCapitulos);
-			if (musica) exportar.musica = consValsColeccion(musica, cantCapitulos);
-			if (actuacion) exportar.actuacion = consValsColeccion(actuacion, cantCapitulos);
+			// Procesa los resultados
+			let cantCaps = capitulos.length;
+			if (paises_id) exportar.paises_id = consValsColeccion(paises_id, cantCaps).replace(/,/g, "");
+			if (produccion) exportar.produccion = consValsColeccion(produccion, cantCaps);
+			if (direccion) exportar.direccion = consValsColeccion(direccion, cantCaps);
+			if (guion) exportar.guion = consValsColeccion(guion, cantCaps);
+			if (musica) exportar.musica = consValsColeccion(musica, cantCaps);
+			if (actuacion) exportar.actuacion = consValsColeccion(actuacion, cantCaps);
 			// Fin
 			return exportar;
 		};
@@ -144,7 +149,7 @@ module.exports = {
 		};
 		// Obtiene las API
 		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
-		// Procesar la información
+		// Procesa la información
 		if (Object.keys(datosAPI).length) {
 			// nombre_castellano
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
