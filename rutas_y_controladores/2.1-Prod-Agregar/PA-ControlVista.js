@@ -172,6 +172,7 @@ module.exports = {
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP_conValores(userID);
 		let camposDE = Object.keys(datosPers);
+		let tipos_de_actuacion = await BD_genericas.obtieneTodos("tipos_de_actuacion", "orden");
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -182,8 +183,9 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
-			camposDE,
 			camposDP,
+			camposDE,
+			tipos_de_actuacion,
 			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
