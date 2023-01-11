@@ -171,6 +171,12 @@ module.exports = {
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP_conValores(userID);
+		let temasSINO = [
+			{titulo: "Centrada en la Fe Católica", campo: "cfc"},
+			{titulo: "Basada en Hechos Reales", campo: "ocurrio"},
+			{titulo: "Es un musical", campo: "musical"},
+			{titulo: "Es a color", campo: "color"},			
+		]
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -182,6 +188,7 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
+			temasSINO,
 			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
