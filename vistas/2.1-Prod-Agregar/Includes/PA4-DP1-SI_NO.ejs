@@ -5,11 +5,11 @@
 	<div id="siNoOpciones" class="flexRowAlign">
 		<div class="flexRowAlign">
 			<label for="<%= campo %>SI">SI</label>
-			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (dataEntry[campo]==1) { %>checked<% } %> class="">
+			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (dataEntry[campo]==1) { %>checked<% } %>>
 		</div>
 		<div class="flexRowAlign">
 			<label for="<%= campo %>NO">NO</label>
-			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (camposDE.includes(tema[campo]) && (dataEntry[campo]==0)) { %>checked<% } %> class="">
+			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (camposDE.includes(tema[campo]) && (dataEntry[campo]==0)) { %>checked<% } %>>
 		</div>
 	</div>
 </div>
