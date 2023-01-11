@@ -172,7 +172,7 @@ module.exports = {
 		{nombre: "cfc"},
 		{nombre: "ocurrio"},
 		{nombre: "musical"},
-		{nombre: "actuacion_id"},
+		{nombre: "tipo_actuacion_id"},
 		{nombre: "publico_sugerido_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
@@ -209,7 +209,7 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
-			{titulo: "Actuación", nombre: "actuacion_id"},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id"},
 			{
 				titulo: "Público sugerido",
 				nombre: "publico_sugerido_id",
@@ -325,7 +325,7 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", input: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", input: true},
 			{titulo: "Es un musical", nombre: "musical", input: true},
-			{titulo: "Actuación", nombre: "actuacion_id", relac_include: "tipo_de_actuacion"},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion"},
 
 			{titulo: "Público sugerido", nombre: "publico_sugerido_id", relac_include: "publico_sugerido"},
 			{

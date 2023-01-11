@@ -837,8 +837,8 @@ module.exports = {
 		let si = si_no_parcial.find((n) => n.si).id;
 		// Actualiza el registro de producto
 		await BD_genericas.actualizaPorId(prodEntidad, prodID, {
-			links_gratuitos_cargados_id: si,
-			links_gratuitos_en_la_web_id: si,
+			links_gratis_en_bd_id: si,
+			links_gratis_en_web_id: si,
 		});
 		// Fin
 		return;
@@ -865,8 +865,8 @@ module.exports = {
 			: false;
 		// Actualiza el registro
 		let datos = gratuito
-			? {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si}
-			: {links_gratuitos_cargados_id: no};
+			? {links_gratis_en_bd_id: si, links_gratis_en_web_id: si}
+			: {links_gratis_en_bd_id: no};
 		// Fin
 		return;
 	},
