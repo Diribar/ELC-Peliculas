@@ -6,7 +6,7 @@
 <form method="POST" id="dataEntry" class="flexCol" >
 	<!-- Título y Ayuda -->
 	<div id="tituloSecundario">
-		<h2>Paso 4 de 5: Datos Personalizados</h2>
+		<h2>Paso 4 de 5: Datos Adicionales</h2>
 		<!-- Ayuda -->
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -22,6 +22,7 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Datos generales -->
+			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
 				<!-- Centrada en la Fe Católica, Ocurrió, Musical -->
 				<% for (tema of camposDP.filter(n => n.siNo)) { %>
