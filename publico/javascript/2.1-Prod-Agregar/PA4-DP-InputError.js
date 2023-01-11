@@ -34,6 +34,7 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/producto/agregar/api/valida/datos-personalizados/?",
 	};
 	let campos = Array.from(v.inputs).map((n) => n.name);
+
 	// Calificaciones y RCLV
 	["Calif", "RCLV"].forEach((sector) => {
 		v["inputs" + sector] = document.querySelectorAll("#" + sector + " .inputError .input");
@@ -101,23 +102,22 @@ window.addEventListener("load", async () => {
 	// Actualizar la subcategoría
 	let actualizaOpsSubcat = () => {
 		if (v.categoriaSelect.value) {
-			// Actualiza las opciones de sub-categoría
-			console.dir(subcatSelect);
-			for (let opcion of v.subcategoriaOpciones) {
-				opcion.className.includes(v.categoriaSelect.value)
-					? opcion.classList.remove("ocultar")
-					: opcion.classList.add("ocultar");
-			}
+			// Elimina las opciones de sub-categoría
+			v.subcatSelect.innerHTML = "";
+			// Agrega las opciones de sub-categoría de la categoría
+			for (let opcion of v.subcategoriaOpciones)
+				if (opcion.className.includes(v.categoriaSelect.value)) v.subcatSelect.append(opcion);
+
 			// Habilita la subcategoría
 			v.subcatSelect.removeAttribute("disabled");
-			// Habilita y actualiza el ayuda
-			v.iconoAyudaSubcat.classList.remove("inactivo");
 			// Deja visibles las ayudas correspondientes
 			v.mensajesAyudaSubcat.forEach((mensaje) => {
 				mensaje.className && !mensaje.className.includes(v.categoriaSelect.value)
 					? mensaje.classList.add("ocultar")
 					: mensaje.classList.remove("ocultar");
 			});
+			// Habilita el ayuda
+			v.iconoAyudaSubcat.classList.remove("inactivo");
 		} else {
 			// Borra la sub-categoría y la deja inactivada
 			v.subcatSelect.setAttribute("disabled", "disabled");
@@ -142,7 +142,7 @@ window.addEventListener("load", async () => {
 	let actualizaOpsRCLV = () => {
 		// Variables
 		let clave;
-		// Borra los iconosOK_RCLV y los iconosError_RCLV
+		// Oculta los iconosOK_RCLV y los iconosError_RCLV
 		for (let icono of v.iconosOK_RCLV) icono.classList.add("ocultar");
 		for (let icono of v.iconosError_RCLV) icono.classList.add("ocultar");
 
@@ -311,7 +311,7 @@ window.addEventListener("load", async () => {
 			datosUrl += FN_datosUrl(campo);
 		else datosUrl += campo + "=" + valor;
 
-		// Validar errores
+		// Valida errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
 		actualizaBotonSubmit();
