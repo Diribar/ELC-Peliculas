@@ -230,9 +230,12 @@ module.exports = {
 		direccion = direccion.slice(0, indice);
 		// 4. Datos de la actuación
 		maximo = 170;
-		let actores = confirma.actores.slice(0, maximo);
-		indice = actores.lastIndexOf(",") != -1 ? actores.lastIndexOf(",") : maximo;
-		actores = actores.slice(0, indice);
+		let actores = confirma.actores;
+		if (actores.length > maximo) {
+			actores = actores.slice(0, maximo);
+			indice = actores.lastIndexOf(",") != -1 ? actores.lastIndexOf(",") : maximo;
+			actores = actores.slice(0, indice);
+		}
 		// Imagen derecha
 		let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
 		// 5. Render del formulario
