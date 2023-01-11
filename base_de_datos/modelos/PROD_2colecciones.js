@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
-		actuacion: {type: dt.STRING(500)},
+		actores: {type: dt.STRING(500)},
 		produccion: {type: dt.STRING(50)},
 		sinopsis: {type: dt.STRING(1004)},
 		avatar: {type: dt.STRING(100)},

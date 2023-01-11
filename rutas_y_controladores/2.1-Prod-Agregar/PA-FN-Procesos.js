@@ -83,7 +83,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
@@ -92,8 +92,8 @@ module.exports = {
 		// Fórmula
 		let completaColeccion = async (datos) => {
 			// Definir variables
-			let paises_id, produccion, direccion, guion, musica, actuacion;
-			paises_id = produccion = direccion = guion = musica = actuacion = "";
+			let paises_id, produccion, direccion, guion, musica, actores;
+			paises_id = produccion = direccion = guion = musica = actores = "";
 			let exportar = {};
 			// Obtiene la info de los capítulos
 			let datosAPI = [];
@@ -124,7 +124,7 @@ module.exports = {
 					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actuacion += funcionCast(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += funcionCast(capitulo.cast) + ", ";
 			}
 			// Procesa los resultados
 			let cantCaps = capitulos.length;
@@ -133,7 +133,7 @@ module.exports = {
 			if (direccion) exportar.direccion = consValsColeccion(direccion, cantCaps);
 			if (guion) exportar.guion = consValsColeccion(guion, cantCaps);
 			if (musica) exportar.musica = consValsColeccion(musica, cantCaps);
-			if (actuacion) exportar.actuacion = consValsColeccion(actuacion, cantCaps);
+			if (actores) exportar.actores = consValsColeccion(actores, cantCaps);
 			// Fin
 			return exportar;
 		};
@@ -251,7 +251,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
@@ -290,10 +290,10 @@ module.exports = {
 			datos.guion = limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
 			datos.musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 		}
-		let actuacion = [];
-		if (datosTemp.cast.length) actuacion.push(...datosTemp.cast);
-		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
-		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
+		let actores = [];
+		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
+		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
+		if (actores.length) datos.actores = funcionCast(actores);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path
 			? datosCap.still_path
@@ -413,7 +413,7 @@ module.exports = {
 		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
 		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
 		if (contenido.indexOf("Reparto") > 0)
-			resultado.actuacion = contenido[contenido.indexOf("Reparto") + 1];
+			resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
 		if (contenido.indexOf("Productora") > 0)
 			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
@@ -527,20 +527,20 @@ let limpiaValores = (datos) => {
 };
 let funcionCast = (dato) => {
 	// Variables
-	let actuacion = "";
+	let actores = "";
 	let largo = 500;
 	// Acciones
 	if (dato.length) {
 		// Obtiene los nombres y convierte el array en string
-		actuacion = dato
+		actores = dato
 			.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : ""))
 			.join(", ");
 		// Quita el excedente
-		if (actuacion.length > largo) {
-			actuacion = actuacion.slice(0, largo);
-			if (actuacion.includes(",")) actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
+		if (actores.length > largo) {
+			actores = actores.slice(0, largo);
+			if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 		}
 	}
 	// Fin
-	return actuacion;
+	return actores;
 };

@@ -140,8 +140,8 @@ module.exports = {
 			campoInput: true,
 		},
 		{
-			titulo: "Actuación",
-			nombre: "actuacion",
+			titulo: "Actores",
+			nombre: "actores",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -376,7 +376,7 @@ module.exports = {
 			{titulo: "Dirección", nombre: "direccion", input: true},
 			{titulo: "Guión", nombre: "guion", input: true},
 			{titulo: "Música", nombre: "musica", input: true},
-			{titulo: "Actuación", nombre: "actuacion", input: true},
+			{titulo: "Actores", nombre: "actores", input: true},
 			{titulo: "Producción", nombre: "produccion", input: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
 			{

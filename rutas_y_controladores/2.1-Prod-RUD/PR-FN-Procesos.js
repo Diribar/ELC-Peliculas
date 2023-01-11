@@ -29,7 +29,7 @@ module.exports = {
 				valor: prodComb.produccion ? prodComb.produccion : "Sin datos",
 			},
 		];
-		let bloque3 = [{titulo: "Actuación", valor: prodComb.actuacion ? prodComb.actuacion : "Sin datos"}];
+		let bloque3 = [{titulo: "Actores", valor: prodComb.actores ? prodComb.actores : "Sin datos"}];
 		// Fin
 		return [bloque1, bloque2, bloque3];
 	},

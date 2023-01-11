@@ -548,7 +548,7 @@ module.exports = {
 		if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
 		if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
 		// Bloque 3
-		if (prodOrig.actuacion) bloque3.push({titulo: "Actuación", valor: prodOrig.actuacion});
+		if (prodOrig.actores) bloque3.push({titulo: "Actores", valor: prodOrig.actores});
 		// Bloque izquierdo consolidado
 		let izquierda = [bloque1, bloque2, bloque3];
 		// Bloque derecho
