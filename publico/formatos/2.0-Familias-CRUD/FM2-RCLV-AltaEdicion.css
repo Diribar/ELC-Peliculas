@@ -18,7 +18,7 @@
 #dataEntry .altoFila {height: 25px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
-label[for] {cursor: pointer; padding-left: 3px;}
+label[for] {padding-left: 3px;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 
