@@ -1,13 +1,13 @@
-<% registro = camposDP.find(n => n.nombre == campo) %>
+<% let {titulo, valores, grupo} = camposDP.find(n => n.nombre == campo) %>
 <section class="label-input">
-	<label><%= registro.titulo %></label>
+	<label><%= titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= campo %>" class="input" autofocus>
 			<option value="1">Ninguno</option>
 			<option value="2">Varios</option>
 			<!-- "valor" es cada Personaje, Hecho, Valor -->
-			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
+			<% for (let valor of valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
 					class="RCLV
 						<% // Datos para PERSONAJES %>
@@ -36,9 +36,9 @@
 		<%- include("PA4-DP9-Ayuda") %>
 		<%- include("CMP-Errores", {display: true}) %>
 		<!-- Link a Relación con la vida -->
-		<% if (registro.grupo=="RCLV") { %>
-			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
+		<% if (grupo=="RCLV") { %>
+			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 		<% } %>
 	</div>
 </section>
