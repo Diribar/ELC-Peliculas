@@ -175,8 +175,9 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", campo: "cfc"},
 			{titulo: "Basada en Hechos Reales", campo: "ocurrio"},
 			{titulo: "Es un musical", campo: "musical"},
-			{titulo: "Es a color", campo: "color"},			
-		]
+			{titulo: "Es a color", campo: "color"},
+		];
+		let camposDE = Object.keys(datosPers);
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -187,6 +188,7 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
+			camposDE,
 			camposDP,
 			temasSINO,
 			imgDerPers,
@@ -235,9 +237,9 @@ module.exports = {
 		direccion = direccion.slice(0, indice);
 		// 4. Datos de la actuación
 		maximo = 170;
-		let actuacion = confirma.actuacion.slice(0, maximo);
-		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
-		actuacion = actuacion.slice(0, indice);
+		let actores = confirma.actores.slice(0, maximo);
+		indice = actores.lastIndexOf(",") != -1 ? actores.lastIndexOf(",") : maximo;
+		actores = actores.slice(0, indice);
 		// Imagen derecha
 		let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
 		// 5. Render del formulario
@@ -247,7 +249,7 @@ module.exports = {
 			titulo: "Agregar - Confirma",
 			dataEntry: confirma,
 			direccion,
-			actuacion,
+			actores,
 			imgDerPers,
 			tituloImgDerPers: confirma.nombre_castellano,
 		});
