@@ -23,7 +23,6 @@ label[for] {cursor: pointer; padding-left: 3px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 
 /* Temas particulares de dataEntry */
-#dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {scale: .8; cursor: pointer;}
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
