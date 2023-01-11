@@ -171,12 +171,6 @@ module.exports = {
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP_conValores(userID);
-		let temasSINO = [
-			{titulo: "Centrada en la Fe Católica", campo: "cfc"},
-			{titulo: "Basada en Hechos Reales", campo: "ocurrio"},
-			{titulo: "Es un musical", campo: "musical"},
-			{titulo: "Es a color", campo: "color"},
-		];
 		let camposDE = Object.keys(datosPers);
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
@@ -190,7 +184,6 @@ module.exports = {
 			dataEntry: datosPers,
 			camposDE,
 			camposDP,
-			temasSINO,
 			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
@@ -203,7 +196,7 @@ module.exports = {
 		delete aux.sinCalif;
 		delete aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
-		if (datosPers.sinCalif || datosPers.sinRCLV) datosPers = procesos.puleDatosPers(datosPers);
+		if (datosPers.sinRCLV) datosPers = procesos.puleDatosPersRCLV(datosPers);
 		for (let campo in datosPers) if (!datosPers[campo]) delete datosPers[campo];
 		// 4. Guarda el data entry en session y cookie
 		req.session.datosPers = datosPers;

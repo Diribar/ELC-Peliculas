@@ -304,13 +304,10 @@ module.exports = {
 		return datos;
 	},
 	// Datos Personales
-	puleDatosPers: (datosPers) => {
+	puleDatosPersRCLV: (datosPers) => {
 		// Variables
 		let camposDP = variables.camposDP;
-		let camposCalif = camposDP.filter((n) => n.grupo == "calificala").map((m) => m.nombre);
 		let camposRCLV = camposDP.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
-		// Acciones
-		if (datosPers.sinCalif) for (let campo of camposCalif) delete datosPers[campo];
 		if (datosPers.sinRCLV) for (let campo of camposRCLV) delete datosPers[campo];
 		// Fin
 		return datosPers;
