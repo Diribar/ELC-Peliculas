@@ -26,9 +26,9 @@
 #dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
 #dataEntry #checkbox label {margin-left: 5px; line-height: normal;}
 #dataEntry #segundaColumna hr {margin: 10px 0;}
+#dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto;}
 
 /* Temas RCLV */
-#dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto;}
 #dataEntry #selectsRCLV .ayuda {left: -5px; right: auto; translate: -100% -50%;}
 #dataEntry .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry .linkRCLV {width: 15px; cursor: pointer;}
