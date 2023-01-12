@@ -1,4 +1,5 @@
-<% let {titulo, valores, grupo} = camposDP.find(n => n.nombre == campo) %>
+<% registro = camposDP.find(n => n.nombre == campo) %>
+<% let {titulo, valores, grupo} = registro %>
 <section id="<%= campo %>" class="label-input">
 	<label><%= titulo %></label>
 	<div class="inputError">
@@ -33,5 +34,6 @@
 			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
 			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 		<% } %>
+		<%- include("PA4-DP9-Ayuda") %>
 	</div>
 </section>

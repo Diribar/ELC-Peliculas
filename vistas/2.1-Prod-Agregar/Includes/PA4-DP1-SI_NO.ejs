@@ -12,5 +12,5 @@
 			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (camposDE.includes(campo) && (dataEntry[campo]==0)) { %>checked<% } %> class="radioNO">
 		</div>
 	</div>
-	<%- include("CMP-Errores", {display: true}) %>
+	<%- include("CMP-Errores", {display: true, campo}) %>
 </div>

@@ -39,7 +39,7 @@
 		<div id="segundaColumna">
 			<!-- Relación con la vida -->
 			<div id="RCLV" class="flexCol invisibleCfc invisibleOcurrio">
-				<div class="flexRowAlign">
+				<div class="flexRowAlign inputError">
 					<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 					<!-- Ayuda para un RCLV -->
 					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick despl_click">
@@ -54,7 +54,9 @@
 							Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
 						</p>
 					</i>
-					<%- include("CMP-Errores", {display: true}) %>
+					<div id="errorRCLV" class="ocultar">
+						<%- include("CMP-Errores", {display: true, campo: "RCLV"}) %>
+					</div>
 				</div>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DP8-Checkbox", {campo: "sinRCLV", }) %>

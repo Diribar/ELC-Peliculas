@@ -142,23 +142,27 @@ module.exports = {
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_sugerido_id"];
 		// Datos generales + calificación
-		for (let campo of camposPosibles) {
+		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] ? comp.selectVacio : "";
-		}
+
 		// RCLV - Combinados
 		if (datos.ocurrio) {
 			// Variables
-			errores.personaje_id = "";
-			errores.hecho_id = "";
-			errores.valor_id = "";
-			// Acciones para "ocurrio"
-			let vacio =
+			let sinResponder =
 				(!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
-			if (datos.ocurrio == "1" && !datos.sinRCLV && vacio)
-				errores.personaje_id = errores.hecho_id = comp.selectVacio;
-			// Acciones para "no ocurrió"
-			if (datos.ocurrio == "0" && !datos.sinRCLV && (!datos.valor_id || datos.valor_id == 1))
-				errores.valor_id = comp.selectVacio;
+			// Resultado
+			errores.RCLV =
+				// Acciones para 'no lo voy a responder por ahora'
+				datos.sinRCLV
+					? ""
+					: // Acciones para "ocurrio"
+					datos.ocurrio == "1" && sinResponder
+					? "Necesitamos que respondas por el Personaje o el Hecho Histórico"
+					: // Acciones para "no ocurrió"
+					datos.ocurrio == "0" && (!datos.valor_id || datos.valor_id == 1)
+					? "Necesitamos que respondas por el Valor"
+					: // Acciones si no se cumple ninguna de las anteriores
+					  "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);

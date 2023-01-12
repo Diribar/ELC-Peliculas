@@ -17,7 +17,7 @@
 #dataEntry .flexRowAlign #siNoTitulo {width: 170px;}
 #dataEntry .flexRowAlign #siNoOpciones {width: 65px; justify-content: space-between;}
 #dataEntry .flexRowAlign#AAD_opciones {width: 100%; justify-content: space-between;}
-#dataEntry #siNoOpciones label, #dataEntry #AAD_opciones label {margin-right: 2px;}
+#dataEntry #siNoOpciones label, #dataEntry #AAD_opciones label {padding-right: 2px;}
 #dataEntry .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
 #dataEntry .label-input .inputError {margin-left: 5px;}
 #dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
@@ -28,7 +28,7 @@
 
 
 /* Temas RCLV */
-#dataEntry #RCLV .errores {margin-left: 5px;}
+#dataEntry #RCLV .errores {margin-left: 5px; position: static; translate: none;}
 #dataEntry .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry .linkRCLV {width: 15px; cursor: pointer;}
 #dataEntry .linkRCLV.alta {right: -20px; font-size: 1rem;}

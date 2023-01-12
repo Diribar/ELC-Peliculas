@@ -1,4 +1,5 @@
-<% let {valores} = camposDP.find(n => n.nombre == "tipo_actuacion_id") %>
+<% const campo = "tipo_actuacion_id" %>
+<% let {valores} = camposDP.find(n => n.nombre == campo) %>
 <div id="AAD_opciones" class="inputError flexRowAlign altoFila">
 	<% for (let valor of valores) { %>
 		<div class="flexRowAlign">
@@ -6,5 +7,5 @@
 			<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (dataEntry.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
 		</div>
 	<% } %>
-	<%- include("CMP-Errores", {display: true}) %>
+	<%- include("CMP-Errores", {display: true, campo}) %>
 </div>

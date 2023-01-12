@@ -231,7 +231,6 @@ module.exports = {
 				nombre: "personaje_id",
 				valores: registrosRCLV.personajes,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual (salvo excepciones), haciendo click en los íconos de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas.",
 				],
 				link: "personajes",
@@ -242,7 +241,6 @@ module.exports = {
 				nombre: "hecho_id",
 				valores: registrosRCLV.hechos,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos.",
 				],
 				link: "hechos",
@@ -253,7 +251,6 @@ module.exports = {
 				nombre: "valor_id",
 				valores: registrosRCLV.valores,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
 					"Poné el más representativo.",
 				],
 				link: "valores",

@@ -21,6 +21,10 @@ window.addEventListener("load", async () => {
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
 		// RCLV
 		camposRCLV: ["personaje_id", "hecho_id", "valor_id"],
+		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
+		checkRCLV: document.querySelector("#RCLV #checkbox input"),
+		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
+		errorRCLV: document.querySelector(".inputError #errorRCLV"),
 		// RCLV - Sectores
 		sectorRCLV: document.querySelector("#RCLV"),
 		sectorPers: document.querySelector("#RCLV #personaje_id"),
@@ -40,42 +44,35 @@ window.addEventListener("load", async () => {
 		// Ruta
 		rutaValidar: "/producto/agregar/api/valida/datos-personalizados/?",
 	};
-	let campos = [
-		...Array.from(v.inputs).map((n) => n.name),
+	let camposError = [
 		...Array.from(v.radioSI).map((n) => n.name),
-		"tipo_actuacion_id",
+		...["tipo_actuacion_id", "publico_sugerido_id", "RCLV"],
 	];
-
-	// RCLV
-	v.inputsRCLV = document.querySelectorAll("#RCLV .inputError .input");
-	v.checkRCLV = document.querySelector("#RCLV #checkbox input");
-	v.selectsRCLV = document.querySelector("#RCLV #selectsRCLV");
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
 	let statusInicial = async (mostrarIconoError) => {
 		// Variables
 		let datosUrl = "";
-		//Busca todos los valores 'input'
-		v.inputs.forEach((input, i) => {
-			// Caracter de unión para i > 0
-			if (i) datosUrl += "&";
-			// Particularidad para RCLV
-			if (v.camposRCLV.includes(input.name) && v.checkRCLV.checked) return;
-			// Agrega el campo y el valor
-			datosUrl += input.name + "=" + encodeURIComponent(input.value);
-		});
 		//Busca todos los valores 'radio'
 		v.radioSI.forEach((radioSI, i) => {
 			// Variables
-			let respuesta = radioSI.checked ? "SI" : v.radioNO[i].checked ? "NO" : "";
+			let respuesta = radioSI.checked ? "1" : v.radioNO[i].checked ? "0" : "";
 			// Acción
-			datosUrl += "&" + radioSI.name + "=" + respuesta;
+			datosUrl += radioSI.name + "=" + respuesta + "&";
+			if (radioSI.name == "ocurrio" && respuesta) v.errorRCLV.classList.remove("ocultar");
 		});
 		//Busca todos los valores 'tipoActuacion'
 		let respuesta = "";
 		for (let tipo of v.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
-		datosUrl += "&tipo_actuacion_id=" + respuesta;
+		datosUrl += "tipo_actuacion_id=" + respuesta + "&";
+		//Busca todos los valores 'input'
+		v.inputs.forEach((input, i) => {
+			// Particularidad para RCLV
+			if (v.camposRCLV.includes(input.name) && v.checkRCLV.checked) return;
+			// Agrega el campo y el valor
+			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
+		});
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
@@ -85,10 +82,10 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
-		console.log(datos);
-		return;
 		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
-		campos.forEach((campo, indice) => {
+		console.log(errores);
+		// return;
+		camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
@@ -149,7 +146,7 @@ window.addEventListener("load", async () => {
 		},
 		ocurrio: () => {
 			// Variables
-			let ocurrio = ocurrioSI.checked ? "SI" : ocurrioNO.checked ? "NO" : "";
+			let ocurrio = ocurrioSI.checked ? "1" : ocurrioNO.checked ? "0" : "";
 
 			// Oculta o muestra el sector de RCLVs
 			ocurrio
@@ -157,7 +154,7 @@ window.addEventListener("load", async () => {
 				: v.sectorRCLV.classList.add("invisibleOcurrio");
 
 			// Acciones si ocurrió
-			if (ocurrio == "SI") {
+			if (ocurrio == "1") {
 				// Muestra 'personaje_id' y 'hecho_id'
 				v.sectorPers.classList.remove("ocultar");
 				v.sectorHecho.classList.remove("ocultar");
@@ -168,7 +165,7 @@ window.addEventListener("load", async () => {
 				v.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
-			if (ocurrio == "NO") {
+			if (ocurrio == "0") {
 				// Muestra 'valor_id
 				v.sectorValor.classList.remove("ocultar");
 				// Oculta 'personaje_id' y 'hecho_id'
@@ -225,7 +222,7 @@ window.addEventListener("load", async () => {
 	};
 	let urlRCLV = (campo) => {
 		// Variables
-		let ocurrio = v.ocurrioSI.checked ? "SI" : v.ocurrioNO.checked ? "NO" : "";
+		let ocurrio = v.ocurrioSI.checked ? "1" : v.ocurrioNO.checked ? "0" : "";
 		let checkRCLV = v.checkRCLV.checked;
 		// Agrega el valor del campo 'sin' o de los demás campos
 		let url = "";
@@ -248,11 +245,12 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(e.target.value);
 		let datosUrl = "";
 
-		// Particularidades 
+		// Particularidades
 		// 1. Para campos 'cfc', 'ocurrió', 'sinRCLV'
 		if (campo == "cfc" || campo == "ocurrio" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
 		// 2. Para campos 'RCLV'
 		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
+		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) v.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
 		if ([...v.camposRCLV, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
