@@ -17,7 +17,7 @@
 #dataEntry .flexRowAlign #siNoTitulo {width: 170px;}
 #dataEntry .flexRowAlign #siNoOpciones {width: 65px; justify-content: space-between;}
 #dataEntry .flexRowAlign#AAD_opciones {width: 100%; justify-content: space-between;}
-#dataEntry .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
+#dataEntry .label-input label {margin: 0 15px 0 0; font-weight: bold; min-height: 19px;}
 #dataEntry .label-input .inputError {margin-left: 5px;}
 #dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
 #dataEntry .label-input .inputError input {padding: 0px 5px;}
@@ -28,7 +28,7 @@
 #dataEntry #segundaColumna hr {margin: 10px 0;}
 
 /* Temas RCLV */
-#dataEntry #RCLV .errores {margin-left: 5px; position: static; translate: none;}
+#dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto;}
 #dataEntry #selectsRCLV .ayuda {left: -5px; right: auto; translate: -100% -50%;}
 #dataEntry .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry .linkRCLV {width: 15px; cursor: pointer;}
