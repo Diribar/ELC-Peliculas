@@ -5,68 +5,88 @@ window.addEventListener("load", async () => {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
-		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
+		radioSI: document.querySelectorAll(".inputError .radioSI"),
+		radioNO: document.querySelectorAll(".inputError .radioNO"),
+		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-		// Ayuda Sub-categoría
-		iconoAyudaSubcat: document.querySelector("#ayudaSubcat .ayudaClick"),
-		mensajesAyudaSubcat: document.querySelectorAll("#ayudaSubcat ul li"),
-		// Categoría y subcategoría
-		categoriaSelect: document.querySelector("select[name='categoria_id']"),
-		subcatSelect: document.querySelector("select[name='subcategoria_id']"),
-		subcategoriaOpciones: document.querySelectorAll("select[name='subcategoria_id'] option"),
-		subcategorias: await fetch("/producto/agregar/api/DP-obtiene-subcategs").then((n) => n.json()),
-		// Calificaciones y RCLV
-		camposCalif: ["fe_valores_id", "entretiene_id", "calidad_tecnica_id"],
+		// CFC
+		cfcSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
+		cfcNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+		// Ocurrió
+		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
+		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+		// RCLV
 		camposRCLV: ["personaje_id", "hecho_id", "valor_id"],
-		// Datos RCLV
-		RCLV: document.querySelector("#RCLV"),
+		// RCLV - Sectores
+		sectorRCLV: document.querySelector("#RCLV"),
+		sectorPers: document.querySelector("#RCLV #personaje_id"),
+		sectorHecho: document.querySelector("#RCLV #hecho_id"),
+		sectorValor: document.querySelector("#RCLV #valor_id"),
+		// RCLV - Selects y Opciones
+		selectPers: document.querySelector("select[name='personaje_id']"),
+		selectHecho: document.querySelector("select[name='hecho_id']"),
+		opcionesPers: document.querySelectorAll("select[name='personaje_id'] option"),
+		opcionesHecho: document.querySelectorAll("select[name='hecho_id'] option"),
+		// RCLV - Varios
+		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-xmark"),
-		opcionesPersonaje: document.querySelectorAll("select[name='personaje_id'] option"),
-		opcionesHecho: document.querySelectorAll("select[name='hecho_id'] option"),
 		linkPersAlta: document.querySelector(".inputError .linkRCLV.alta"),
 		linksRCLVEdic: document.querySelectorAll(".inputError .linkRCLV.edicion"),
 		// Ruta
 		rutaValidar: "/producto/agregar/api/valida/datos-personalizados/?",
 	};
-	let campos = Array.from(v.inputs).map((n) => n.name);
+	let campos = [
+		...Array.from(v.inputs).map((n) => n.name),
+		...Array.from(v.radioSI).map((n) => n.name),
+		"tipo_actuacion_id",
+	];
 
-	// Calificaciones y RCLV
-	["Calif", "RCLV"].forEach((sector) => {
-		v["inputs" + sector] = document.querySelectorAll("#" + sector + " .inputError .input");
-		v["check" + sector] = document.querySelector("#" + sector + " #checkbox input");
-		v["ocultar" + sector] = document.querySelector("#" + sector + " .selects");
-	});
+	// RCLV
+	v.inputsRCLV = document.querySelectorAll("#RCLV .inputError .input");
+	v.checkRCLV = document.querySelector("#RCLV #checkbox input");
+	v.selectsRCLV = document.querySelector("#RCLV #selectsRCLV");
 
 	// FUNCIONES *******************************************
+	// Comunes a todos los campos
 	let statusInicial = async (mostrarIconoError) => {
-		//Buscar todos los valores
+		// Variables
 		let datosUrl = "";
+		//Busca todos los valores 'input'
 		v.inputs.forEach((input, i) => {
-			// Caracter de unión para i>0
+			// Caracter de unión para i > 0
 			if (i) datosUrl += "&";
-			// Particularidades para Calif y RCLV
-			for (let sector of ["Calif", "RCLV"])
-				if (v["campos" + sector].includes(input.name) && v["check" + sector].checked) {
-					datosUrl += input.name + "=OK";
-					return;
-				}
+			// Particularidad para RCLV
+			if (v.camposRCLV.includes(input.name) && v.checkRCLV.checked) return;
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value);
 		});
+		//Busca todos los valores 'radio'
+		v.radioSI.forEach((radioSI, i) => {
+			// Variables
+			let respuesta = radioSI.checked ? "SI" : v.radioNO[i].checked ? "NO" : "";
+			// Acción
+			datosUrl += "&" + radioSI.name + "=" + respuesta;
+		});
+		//Busca todos los valores 'tipoActuacion'
+		let respuesta = "";
+		for (let tipo of v.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
+		datosUrl += "&tipo_actuacion_id=" + respuesta;
 		// Consecuencias de las validaciones de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
-		// Muestra u oculta el sector que corresponda
-		for (let campo of ["sinCalif", "sinRCLV"]) muestraOcultaElSector(campo);
+		// Impactos en RCLV
+		for (let metodo in impactoVisualEnRCLV) impactoVisualEnRCLV[metodo]();
 		// Fin
 		return;
 	};
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
+		console.log(datos);
+		return;
 		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
@@ -99,137 +119,91 @@ window.addEventListener("load", async () => {
 		if (v.submit.classList.contains("inactivo")) statusInicial(true);
 		else v.form.submit();
 	};
-	// Actualizar la subcategoría
-	let actualizaOpsSubcat = () => {
-		if (v.categoriaSelect.value) {
-			// Elimina las opciones de sub-categoría
-			v.subcatSelect.innerHTML = "";
-			// Agrega las opciones de sub-categoría de la categoría
-			for (let opcion of v.subcategoriaOpciones)
-				if (opcion.className.includes(v.categoriaSelect.value)) v.subcatSelect.append(opcion);
-
-			// Habilita la subcategoría
-			v.subcatSelect.removeAttribute("disabled");
-			// Deja visibles las ayudas correspondientes
-			v.mensajesAyudaSubcat.forEach((mensaje) => {
-				mensaje.className && !mensaje.className.includes(v.categoriaSelect.value)
-					? mensaje.classList.add("ocultar")
-					: mensaje.classList.remove("ocultar");
-			});
-			// Habilita el ayuda
-			v.iconoAyudaSubcat.classList.remove("inactivo");
-		} else {
-			// Borra la sub-categoría y la deja inactivada
-			v.subcatSelect.setAttribute("disabled", "disabled");
-			v.subcatSelect.value = "";
-			// Inhabilita el ayuda
-			v.iconoAyudaSubcat.classList.add("inactivo");
-		}
-		// Fin
-		return;
-	};
 	// RCLV
-	let limpiaInputsRCLV = () => {
-		// Borra el valor de los inputsRCLV
-		v.inputsRCLV.forEach((input, i) => {
-			input.value = "1";
-			v.iconosOK_RCLV[i].classList.add("ocultar");
-			v.iconosError_RCLV[1].classList.add("ocultar");
-		});
-		// Fin
-		return;
-	};
-	let actualizaOpsRCLV = () => {
-		// Variables
-		let clave;
-		// Oculta los iconosOK_RCLV y los iconosError_RCLV
-		for (let icono of v.iconosOK_RCLV) icono.classList.add("ocultar");
-		for (let icono of v.iconosError_RCLV) icono.classList.add("ocultar");
+	let impactoVisualEnRCLV = {
+		cfc: () => {
+			// Variables
+			let categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
+			// Si no hay respuesta, agrega el 'oculta' de RCLVs
+			if (!categoria) v.sectorRCLV.classList.add("invisibleCfc");
+			// Acciones si hay respuesta
+			else {
+				// 1. Personajes: muestra solamente las opciones de la categoría (CFC / VPC)
+				v.selectPers.innerHTML = "";
+				for (let opcion of v.opcionesPers)
+					if (opcion.classList.contains(categoria) || opcion.value <= 2)
+						v.selectPers.appendChild(opcion);
+				// 2. Hechos: si la categoría es VPC, muestra solamente las opciones que no sean 'solo_cfc'
+				v.selectHecho.innerHTML = "";
+				for (let opcion of v.opcionesHecho)
+					if (
+						categoria == "CFC" ||
+						(categoria == "VPC" && (opcion.classList.contains(categoria) || opcion.value <= 2))
+					)
+						v.selectHecho.appendChild(opcion);
+				// Quita el 'oculta' de RCLVs
+				v.sectorRCLV.classList.remove("invisibleCfc");
+				// Fin
+				return;
+			}
+		},
+		ocurrio: () => {
+			// Variables
+			let ocurrio = ocurrioSI.checked ? "SI" : ocurrioNO.checked ? "NO" : "";
 
-		// Si la subcategoría tiene valor --> restricción en las opciones
-		if (v.subcatSelect.value) {
-			// Actualiza las opciones de RCLV
-			let categoriaValor = v.categoriaSelect.value;
-			v.subcategoria = v.subcategorias.find((n) => n.id == v.subcatSelect.value);
+			// Oculta o muestra el sector de RCLVs
+			ocurrio
+				? v.sectorRCLV.classList.remove("invisibleOcurrio")
+				: v.sectorRCLV.classList.add("invisibleOcurrio");
 
-			// Acciones para el PERSONAJE
-			// 1. Restringido por subcategoría
-			if (v.subcategoria.pers_codigo)
-				v.opcionesPersonaje.forEach((opcion) => {
-					opcion.classList.contains(v.subcategoria.id) || opcion.value == 2
-						? opcion.classList.remove("ocultar")
-						: opcion.classList.add("ocultar");
-				});
-			// 2. Restringido por categoría
-			else
-				v.opcionesPersonaje.forEach((opcion) => {
-					opcion.classList.contains(categoriaValor) || opcion.value == 2
-						? opcion.classList.remove("ocultar")
-						: opcion.classList.add("ocultar");
-				});
-
-			// Acciones para el HECHO
-			clave = v.subcategoria.hechos_codigo;
-			// 1. Restringido por subcategoría
-			if (clave)
-				v.opcionesHecho.forEach((opcion) => {
-					opcion.classList.contains(clave)
-						? opcion.classList.remove("ocultar")
-						: opcion.classList.add("ocultar");
-				});
-			// 2. Restringido por categoría
-			else
-				v.opcionesHecho.forEach((opcion) => {
-					opcion.classList.contains(categoriaValor)
-						? opcion.classList.remove("ocultar")
-						: opcion.classList.add("ocultar");
-				});
-
-			// Muestra los campos RCLV
-			RCLV.classList.remove("invisible");
-		}
-		// Si la subcategoría no tiene valor --> oculta los campos RCLV
-		else RCLV.classList.add("invisible");
-
-		// Fin
-		return;
-	};
-	let verificaUnaSolaOpcionRCLV = () => {
-		// Rutina para los 2 tipos de RCLV
-		let opPer = Array.from(v.opcionesPersonaje).filter((n) => !n.classList.contains("ocultar"));
-		let opHec = Array.from(v.opcionesHecho).filter((n) => !n.classList.contains("ocultar"));
-		// Cambios en personaje
-		if (opPer.length == 1) v.inputsRCLV[0].value = opPer[0].value;
-		// Cambios en hechos
-		if (opHec.length == 1) v.inputsRCLV[1].value = opHec[0].value;
-		// Fin
-		return;
-	};
-	let particsJesusNinguno = () => {
-		// 1. Acciones para Editar
-		// 1.1. Acciones si el valor es 'Ninguno'
-		v.inputsRCLV.forEach((inputRCLV, indice) => {
-			inputRCLV.value == "1"
-				? v.linksRCLVEdic[indice].classList.add("ocultar")
-				: v.linksRCLVEdic[indice].classList.remove("ocultar");
-		});
-		// 1.2. Acciones si elvalor es 'Jesús'
-		if (v.inputsRCLV[0].value == "11") v.linksRCLVEdic[0].classList.add("ocultar");
-
-		// 2. Acciones para Agregar
-		v.subcatSelect.value == "JSS"
-			? v.linkPersAlta.classList.add("ocultar")
-			: v.linkPersAlta.classList.remove("ocultar");
-
-		// Fin
-		return;
+			// Acciones si ocurrió
+			if (ocurrio == "SI") {
+				// Muestra 'personaje_id' y 'hecho_id'
+				v.sectorPers.classList.remove("ocultar");
+				v.sectorHecho.classList.remove("ocultar");
+				// Oculta 'valor_id'
+				v.sectorValor.classList.add("ocultar");
+				// Ayudas
+				v.ayudaRCLV[0].classList.remove("ocultaAyudaRCLV");
+				v.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
+			}
+			// Acciones si no ocurrió
+			if (ocurrio == "NO") {
+				// Muestra 'valor_id
+				v.sectorValor.classList.remove("ocultar");
+				// Oculta 'personaje_id' y 'hecho_id'
+				v.sectorPers.classList.add("ocultar");
+				v.sectorHecho.classList.add("ocultar");
+				// Ayudas
+				v.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
+				v.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
+			}
+		},
+		sinRCLV: () => {
+			// Muestra u oculta el sector RCLV
+			v.checkRCLV.checked
+				? v.selectsRCLV.classList.add("ocultar")
+				: v.selectsRCLV.classList.remove("ocultar");
+			// Fin
+			return;
+		},
+		edicJesusNinguno: () => {
+			// Acciones si el valor es 'Ninguno' o 'Jesús'
+			v.inputsRCLV.forEach((inputRCLV, indice) => {
+				inputRCLV.value == "1" || (indice == 0 && inputRCLV.value == "11")
+					? v.linksRCLVEdic[indice].classList.add("ocultar")
+					: v.linksRCLVEdic[indice].classList.remove("ocultar");
+			});
+			// Fin
+			return;
+		},
 	};
 	let interaccionesApMar = (campo) => {
 		// Cambia el contenido del Personaje o Hecho
 		// Acciones si se cambia el personaje
 		if (campo == "personaje_id") {
 			// Obtiene del personaje, el 'id' de la Aparición Mariana
-			for (var opcion of v.opcionesPersonaje) if (opcion.value == v.inputsRCLV[0].value) break;
+			for (var opcion of v.opcionesPers) if (opcion.value == v.inputsRCLV[0].value) break;
 			let clases = opcion.className.split(" ");
 			let indice = clases.indexOf("AMA");
 			clases.splice(indice, 1);
@@ -240,7 +214,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el hecho
 		if (campo == "hecho_id") {
 			// Muestra los personajes que hayan presenciado la aparición y oculta los demás
-			v.opcionesPersonaje.forEach((opcion) => {
+			v.opcionesPers.forEach((opcion) => {
 				if (opcion.className.includes("AM" + v.inputsRCLV[1].value))
 					opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
@@ -249,32 +223,21 @@ window.addEventListener("load", async () => {
 			verificaUnaSolaOpcionRCLV();
 		}
 	};
-	let FN_datosUrl = (campo) => {
-		// Obtiene el sector (todos los demás campos son del sector 'RCLV')
-		let sector = campo == "sinCalif" ? "Calif" : "RCLV";
-		// Otras variables
-		let checked = v["check" + sector].checked;
-		// Agrega el valor del campo 'sin' o todos los campos
+	let urlRCLV = (campo) => {
+		// Variables
+		let ocurrio = v.ocurrioSI.checked ? "SI" : v.ocurrioNO.checked ? "NO" : "";
+		let checkRCLV = v.checkRCLV.checked;
+		// Agrega el valor del campo 'sin' o de los demás campos
 		let url = "";
-		checked
+		checkRCLV
 			? (url += campo + "=on" + "&")
-			: v["campos" + sector].forEach((n, i) => {
-					url += n + "=" + v["inputs" + sector][i].value + "&";
+			: v.camposRCLV.forEach((n, i) => {
+					url += n + "=" + v.inputsRCLV[i].value + "&";
 			  });
-		// Agrega la subcategoría, si corresponde
-		if (sector == "RCLV" && v.subcatSelect.value) url += "subcategoria_id=" + v.subcatSelect.value;
+		// Agrega 'ocurrió'
+		if (ocurrio) url += "ocurrio=" + ocurrio;
 		// Fin
 		return url;
-	};
-	let muestraOcultaElSector = (campo) => {
-		// Variables
-		let sector = campo.slice(3);
-		// Acción
-		v["check" + sector].checked
-			? v["ocultar" + sector].classList.add("ocultar")
-			: v["ocultar" + sector].classList.remove("ocultar");
-		// Fin
-		return;
 	};
 
 	// ADD EVENT LISTENERS *********************************
@@ -285,30 +248,14 @@ window.addEventListener("load", async () => {
 		let valor = encodeURIComponent(e.target.value);
 		let datosUrl = "";
 
-		// Particularidades si se cambia la categoría
-		if (campo == "categoria_id") {
-			v.subcatSelect.value = "";
-			actualizaOpsSubcat();
-			limpiaInputsRCLV();
-			actualizaOpsRCLV();
-		}
-		// Particularidades si se cambia la subcategoría
-		if (campo == "subcategoria_id") {
-			limpiaInputsRCLV();
-			actualizaOpsRCLV();
-			verificaUnaSolaOpcionRCLV();
-		}
+		// Particularidades 
+		// 1. Para campos 'cfc', 'ocurrió', 'sinRCLV'
+		if (campo == "cfc" || campo == "ocurrio" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
+		// 2. Para campos 'RCLV'
+		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
 
-		// Particularidades si se elije el personaje 'Jesús' o 'Ninguno'
-		if (["subcategoria_id", ...v.camposRCLV].includes(campo)) particsJesusNinguno();
-
-		// Particularidades si la subcategoría es AMA y se elije un RCLV
-		if (v.subcatSelect.value == "AMA" && v.camposRCLV.includes(campo)) interaccionesApMar(campo);
-
-		// Prepara el datosUrl con los datos a validar
-		if (campo == "sinCalif" || campo == "sinRCLV") muestraOcultaElSector(campo);
-		if (["subcategoria_id", ...v.camposRCLV, "sinCalif", "sinRCLV"].includes(campo))
-			datosUrl += FN_datosUrl(campo);
+		// Prepara los datos a validar
+		if ([...v.camposRCLV, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
@@ -328,14 +275,6 @@ window.addEventListener("load", async () => {
 		if (e.key == "Enter" || e.key == "Space") submitForm(e);
 	});
 
-	// STATUS INICIAL *************************************
-
-	// Rutinas de categoría / subcategoría
-	actualizaOpsSubcat();
-	if (v.subcatSelect.value) actualizaOpsRCLV();
-	// Activar links RCLV
-	particsJesusNinguno();
-
-	// Errores y boton 'Submit'
+	// STATUS INICIAL
 	statusInicial();
 });

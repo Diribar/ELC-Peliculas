@@ -7,7 +7,7 @@
 			<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto && !registro.intermedio ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>>
-					<%= valor[nombre] %>
+					<%= valor.nombre %>
 				</option>
 			<% } %>
 		</select>

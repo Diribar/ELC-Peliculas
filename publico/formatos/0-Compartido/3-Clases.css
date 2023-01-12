@@ -24,9 +24,9 @@ header .inactivoVersion, header .inactivoVersion * {opacity: .5; cursor: not-all
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
-.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen {display: none;}
+.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV {display: none;}
 
-.invisible {visibility: hidden;}
+.invisible, .invisibleCfc, .invisibleOcurrio {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
 .rojo {color: var(--rojo-oscuro);}
 .negrita {font-weight: bold;}

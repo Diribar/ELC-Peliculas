@@ -191,11 +191,8 @@ module.exports = {
 			temporada: 1,
 			capitulo: indice + 1,
 			creado_por_id: 2,
+			...({cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol),
 		};
-		if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
-		datosCap.categoria_id = datosCol.categoria_id;
-		datosCap.subcategoria_id = datosCol.subcategoria_id;
-		datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 		// Guardar los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			.then((n) => (n = {...n, ...datosCap}))
@@ -265,17 +262,23 @@ module.exports = {
 		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2};
 
 		// Datos de la colección
+		datos = {
+			...datos,
+			...({
+				cfc,
+				ocurrio,
+				musical,
+				tipo_actuacion_id,
+				publico_sugerido_id,
+				direccion,
+				guion,
+				musica,
+				produccion,
+			} = datosCol),
+		};
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
-		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
-		datos.categoria_id = datosCol.categoria_id;
-		datos.subcategoria_id = datosCol.subcategoria_id;
-		datos.publico_sugerido_id = datosCol.publico_sugerido_id;
-		datos.direccion = datosCol.direccion;
-		datos.guion = datosCol.guion;
-		datos.musica = datosCol.musica;
-		datos.produccion = datosCol.produccion;
 
 		// Datos de la temporada
 		datos.temporada = datosTemp.season_number;
@@ -409,8 +412,7 @@ module.exports = {
 			resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
 		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
 		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
-		if (contenido.indexOf("Reparto") > 0)
-			resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
+		if (contenido.indexOf("Reparto") > 0) resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
 		if (contenido.indexOf("Productora") > 0)
 			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
