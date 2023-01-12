@@ -4,7 +4,8 @@ h2 {font-size: 1.20rem;}
 h3 {font-size: 1.10rem;}
 
 /* Formularios */
-select, option, a, button[type="submit"], label img {cursor: pointer;}
+select, option, a, button[type="submit"], label img, label[for],
+input[type="radio"], input[type="checkbox"] {cursor: pointer;}
 select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Varios */
@@ -19,3 +20,4 @@ label {line-height: 1;}
 select option[value=''] {display: none;}
 ::placeholder, select:invalid {font-style: italic;}
 select option {font-style: normal;}
+input[type="radio"], input[type="checkbox"] {scale: .8;}

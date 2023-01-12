@@ -22,8 +22,8 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let cartelMusica = comp.inputVacio + '. Si no tiene música, poné "No tiene música"';
-		let cartelActuacion =
-			comp.inputVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
+		let cartelActores =
+			comp.inputVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"';
 		let camposPosibles = [
 			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 70},
 			{
@@ -37,7 +37,7 @@ module.exports = {
 			{nombre: "guion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
 			{nombre: "produccion", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 100},
-			{nombre: "actuacion", idioma: "completo", cartel: cartelActuacion, corto: 3, largo: 500},
+			{nombre: "actores", idioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
 			{nombre: "sinopsis", idioma: "sinopsis", cartel: comp.inputVacio, corto: 11, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******

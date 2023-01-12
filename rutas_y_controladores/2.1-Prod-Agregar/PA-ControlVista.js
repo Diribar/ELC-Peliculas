@@ -171,6 +171,8 @@ module.exports = {
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP_conValores(userID);
+		let camposDE = Object.keys(datosPers);
+		let tipos_de_actuacion = await BD_genericas.obtieneTodos("tipos_de_actuacion", "orden");
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -182,6 +184,8 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosPers,
 			camposDP,
+			camposDE,
+			tipos_de_actuacion,
 			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
@@ -194,7 +198,7 @@ module.exports = {
 		delete aux.sinCalif;
 		delete aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
-		if (datosPers.sinCalif || datosPers.sinRCLV) datosPers = procesos.puleDatosPers(datosPers);
+		if (datosPers.sinRCLV) datosPers = procesos.puleDatosPersRCLV(datosPers);
 		for (let campo in datosPers) if (!datosPers[campo]) delete datosPers[campo];
 		// 4. Guarda el data entry en session y cookie
 		req.session.datosPers = datosPers;
@@ -228,9 +232,12 @@ module.exports = {
 		direccion = direccion.slice(0, indice);
 		// 4. Datos de la actuación
 		maximo = 170;
-		let actuacion = confirma.actuacion.slice(0, maximo);
-		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
-		actuacion = actuacion.slice(0, indice);
+		let actores = confirma.actores;
+		if (actores.length > maximo) {
+			actores = actores.slice(0, maximo);
+			indice = actores.lastIndexOf(",") != -1 ? actores.lastIndexOf(",") : maximo;
+			actores = actores.slice(0, indice);
+		}
 		// Imagen derecha
 		let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
 		// 5. Render del formulario
@@ -240,7 +247,7 @@ module.exports = {
 			titulo: "Agregar - Confirma",
 			dataEntry: confirma,
 			direccion,
-			actuacion,
+			actores,
 			imgDerPers,
 			tituloImgDerPers: confirma.nombre_castellano,
 		});

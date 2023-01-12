@@ -17,14 +17,15 @@ module.exports = (sequelize, dt) => {
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
-		actuacion: {type: dt.STRING(500)},
+		actores: {type: dt.STRING(500)},
 		produccion: {type: dt.STRING(100)},
 		sinopsis: {type: dt.STRING(1004)},
 		avatar: {type: dt.STRING(100)},
-		en_castellano_id: {type: dt.INTEGER},
-		en_color_id: {type: dt.INTEGER},
-		categoria_id: {type: dt.STRING(3)},
-		subcategoria_id: {type: dt.STRING(3)},
+		
+		cfc: {type: dt.BOOLEAN},
+		ocurrio: {type: dt.BOOLEAN},
+		musical: {type: dt.BOOLEAN},
+		tipo_actuacion_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
@@ -36,6 +37,9 @@ module.exports = (sequelize, dt) => {
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
+		color: {type: dt.BOOLEAN},
+		castellano: {type: dt.BOOLEAN},
+		
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
 		alta_analizada_por_id: {type: dt.INTEGER},
@@ -58,8 +62,8 @@ module.exports = (sequelize, dt) => {
 		capturado_en: {type: dt.DATE},
 		captura_activa: {type: dt.BOOLEAN},
 
-		links_gratuitos_cargados_id: {type: dt.INTEGER},
-		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
+		links_gratis_en_bd_id: {type: dt.INTEGER},
+		links_gratis_en_web_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "prod_3capitulos",
@@ -68,11 +72,9 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
+
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.tipos_de_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
@@ -89,8 +91,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
+		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_BD", foreignKey: "links_gratis_en_bd_id"});
+		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_web", foreignKey: "links_gratis_en_web_id"});
 
 		entidad.hasMany(n.historial_cambios_de_status, {as: "historial", foreignKey: "capitulo_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "capitulo_id"});

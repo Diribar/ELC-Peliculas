@@ -1,0 +1,8 @@
+<div id="AAD_opciones" class="flexRowAlign altoFila">
+	<% for (let tipo of tipos_de_actuacion) { %>
+		<div class="flexRowAlign">
+			<label for="<%= tipo.id %>SI"><%= tipo.nombre %></label>
+			<input id="<%= tipo.id %>SI" type="radio" name="<%= tipo %>" value="<%= tipo.id %>" <% if (dataEntry.tipo_actuacion_id==tipo.id) { %>checked<% } %>>
+		</div>
+	<% } %>
+</div>

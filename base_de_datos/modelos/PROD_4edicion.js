@@ -14,15 +14,16 @@ module.exports = (sequelize, dt) => {
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
-		actuacion: {type: dt.STRING(500)},
+		actores: {type: dt.STRING(500)},
 		produccion: {type: dt.STRING(100)},
 		sinopsis: {type: dt.STRING(900)},
 		avatar: {type: dt.STRING(18)},
 		avatar_url: {type: dt.STRING(100)},
 
-		en_color_id: {type: dt.INTEGER},
-		categoria_id: {type: dt.STRING(3)},
-		subcategoria_id: {type: dt.STRING(3)},
+		cfc: {type: dt.BOOLEAN},
+		ocurrio: {type: dt.BOOLEAN},
+		musical: {type: dt.BOOLEAN},
+		tipo_actuacion_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
@@ -42,11 +43,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
-		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.tipos_de_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});

@@ -548,7 +548,7 @@ module.exports = {
 		if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
 		if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
 		// Bloque 3
-		if (prodOrig.actuacion) bloque3.push({titulo: "Actuación", valor: prodOrig.actuacion});
+		if (prodOrig.actores) bloque3.push({titulo: "Actores", valor: prodOrig.actores});
 		// Bloque izquierdo consolidado
 		let izquierda = [bloque1, bloque2, bloque3];
 		// Bloque derecho
@@ -606,16 +606,15 @@ module.exports = {
 			if (!campo) continue;
 			// Obtiene las variables de include
 			let relac_include = campo.relac_include;
-			let campo_include = campo.campo_include;
 			// Criterio para determinar qué valores originales mostrar
 			campo.mostrarOrig =
 				relac_include && prodOrig[relac_include] // El producto original tiene un valor 'include'
-					? prodOrig[relac_include][campo_include] // Muestra el valor 'include'
+					? prodOrig[relac_include].nombre // Muestra el valor 'include'
 					: prodOrig[nombre]; // Muestra el valor 'simple'
 			// Criterio para determinar qué valores editados mostrar
 			campo.mostrarEdic =
 				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
-					? edicion[relac_include][campo_include] // Muestra el valor 'include'
+					? edicion[relac_include].nombre // Muestra el valor 'include'
 					: edicion[nombre]; // Muestra el valor 'simple'
 			// Consolidar los resultados
 			resultado.push(campo);
@@ -786,16 +785,15 @@ module.exports = {
 			if (!campo) continue;
 			// Obtiene las variables de include
 			let relac_include = campo.relac_include;
-			let campo_include = campo.campo_include;
 			// Criterio para determinar qué valores originales mostrar
 			campo.mostrarOrig =
 				relac_include && rclvOrig[relac_include] // El producto original tiene un valor 'include'
-					? rclvOrig[relac_include][campo_include] // Muestra el valor 'include'
+					? rclvOrig[relac_include].nombre // Muestra el valor 'include'
 					: rclvOrig[nombre]; // Muestra el valor 'simple'
 			// Criterio para determinar qué valores editados mostrar
 			campo.mostrarEdic =
 				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
-					? edicion[relac_include][campo_include] // Muestra el valor 'include'
+					? edicion[relac_include].nombre // Muestra el valor 'include'
 					: edicion[nombre]; // Muestra el valor 'simple'
 			// Consolidar los resultados
 			resultado.push(campo);
@@ -839,8 +837,8 @@ module.exports = {
 		let si = si_no_parcial.find((n) => n.si).id;
 		// Actualiza el registro de producto
 		await BD_genericas.actualizaPorId(prodEntidad, prodID, {
-			links_gratuitos_cargados_id: si,
-			links_gratuitos_en_la_web_id: si,
+			links_gratis_en_bd_id: si,
+			links_gratis_en_web_id: si,
 		});
 		// Fin
 		return;
@@ -867,8 +865,8 @@ module.exports = {
 			: false;
 		// Actualiza el registro
 		let datos = gratuito
-			? {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si}
-			: {links_gratuitos_cargados_id: no};
+			? {links_gratis_en_bd_id: si, links_gratis_en_web_id: si}
+			: {links_gratis_en_bd_id: no};
 		// Fin
 		return;
 	},
