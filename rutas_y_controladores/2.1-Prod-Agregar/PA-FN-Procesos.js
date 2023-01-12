@@ -83,7 +83,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
@@ -124,7 +124,7 @@ module.exports = {
 					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actores += funcionCast(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += FN_actores(capitulo.cast) + ", ";
 			}
 			// Procesa los resultados
 			let cantCaps = capitulos.length;
@@ -248,7 +248,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
@@ -288,7 +288,7 @@ module.exports = {
 		let actores = [];
 		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
 		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-		if (actores.length) datos.actores = funcionCast(actores);
+		if (actores.length) datos.actores = FN_actores(actores);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path
 			? datosCap.still_path
@@ -516,7 +516,7 @@ let limpiaValores = (datos) => {
 	// Fin
 	return texto;
 };
-let funcionCast = (dato) => {
+let FN_actores = (dato) => {
 	// Variables
 	let actores = "";
 	let largo = 500;
