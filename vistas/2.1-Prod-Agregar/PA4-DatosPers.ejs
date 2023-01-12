@@ -31,14 +31,15 @@
 				<hr>
 				<!-- Tipo de Actuación -->
 				<%- include("PA4-DP2-TipoActuac") %>
-				<!-- Público sugerido -->
-				<%- include("PA4-DP3-Select", {campo: "publico_sugerido_id"}) %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
+			<!-- Público sugerido -->
+			<%- include("PA4-DP3-Select", {campo: "publico_sugerido_id"}) %>
+			<hr>
 			<!-- Relación con la vida -->
-			<div id="RCLV" class="flexCol invisibleCfc invisibleOcurrio">
+			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
 				<div class="flexRowAlign inputError">
 					<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
 					<!-- Ayuda para un RCLV -->

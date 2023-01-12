@@ -5,7 +5,7 @@
 #dataEntry #datos {display: flex; flex-direction: row;}
 #dataEntry #tituloSecundario {margin-bottom: 10px;}
 #dataEntry #primeraColumna {margin-right: 70px;}
-#dataEntry #segundaColumna {margin-right: 25px; width: 281px;}
+#dataEntry #segundaColumna {margin-right: 25px; width: 290px;}
 #dataEntry .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #dataEntry .label-input.ocultar {display: none;}
 
@@ -17,18 +17,19 @@
 #dataEntry .flexRowAlign #siNoTitulo {width: 170px;}
 #dataEntry .flexRowAlign #siNoOpciones {width: 65px; justify-content: space-between;}
 #dataEntry .flexRowAlign#AAD_opciones {width: 100%; justify-content: space-between;}
-#dataEntry #siNoOpciones label, #dataEntry #AAD_opciones label {padding-right: 2px;}
 #dataEntry .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
 #dataEntry .label-input .inputError {margin-left: 5px;}
 #dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
 #dataEntry .label-input .inputError input {padding: 0px 5px;}
 #dataEntry .label-input .inputError select {padding: 0;}
+#dataEntry #siNoOpciones label, #dataEntry #AAD_opciones label {padding-right: 2px;}
 #dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
 #dataEntry #checkbox label {margin-left: 5px; line-height: normal;}
-
+#dataEntry #segundaColumna hr {margin: 10px 0;}
 
 /* Temas RCLV */
 #dataEntry #RCLV .errores {margin-left: 5px; position: static; translate: none;}
+#dataEntry #selectsRCLV .ayuda {left: -5px; right: auto; translate: -100% -50%;}
 #dataEntry .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry .linkRCLV {width: 15px; cursor: pointer;}
 #dataEntry .linkRCLV.alta {right: -20px; font-size: 1rem;}

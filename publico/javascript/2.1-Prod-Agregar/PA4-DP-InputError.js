@@ -39,10 +39,12 @@ window.addEventListener("load", async () => {
 		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-xmark"),
-		linkPersAlta: document.querySelector(".inputError .linkRCLV.alta"),
-		linksRCLVEdic: document.querySelectorAll(".inputError .linkRCLV.edicion"),
-		// Ruta
+		// RCLV - Links
+		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
+		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
+		// Rutas
 		rutaValidar: "/producto/agregar/api/valida/datos-personalizados/?",
+		rutaGuardaDatosPers: "/producto/agregar/api/DP-guarda-datos-pers/?",
 	};
 	let camposError = [
 		...Array.from(v.radioSI).map((n) => n.name),
@@ -51,7 +53,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
-	let statusInicial = async (mostrarIconoError) => {
+	let obtieneLosDatos = () => {
 		// Variables
 		let datosUrl = "";
 		//Busca todos los valores 'radio'
@@ -73,7 +75,13 @@ window.addEventListener("load", async () => {
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
 		});
-		// Consecuencias de las validaciones de errores
+		// Fin
+		return datosUrl;
+	};
+	let statusInicial = async (mostrarIconoError) => {
+		// Variables
+		let datosUrl = obtieneLosDatos()
+		// Consecuencias de la validación de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
 		// Impactos en RCLV
@@ -83,7 +91,6 @@ window.addEventListener("load", async () => {
 	};
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
 		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
-		console.log(errores);
 		// return;
 		camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
@@ -122,7 +129,7 @@ window.addEventListener("load", async () => {
 			// Variables
 			let categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
 			// Si no hay respuesta, agrega el 'oculta' de RCLVs
-			if (!categoria) v.sectorRCLV.classList.add("invisibleCfc");
+			if (!categoria) v.sectorRCLV.classList.add("ocultaCfc");
 			// Acciones si hay respuesta
 			else {
 				// 1. Personajes: muestra solamente las opciones de la categoría (CFC / VPC)
@@ -139,7 +146,7 @@ window.addEventListener("load", async () => {
 					)
 						v.selectHecho.appendChild(opcion);
 				// Quita el 'oculta' de RCLVs
-				v.sectorRCLV.classList.remove("invisibleCfc");
+				v.sectorRCLV.classList.remove("ocultaCfc");
 				// Fin
 				return;
 			}
@@ -150,8 +157,8 @@ window.addEventListener("load", async () => {
 
 			// Oculta o muestra el sector de RCLVs
 			ocurrio
-				? v.sectorRCLV.classList.remove("invisibleOcurrio")
-				: v.sectorRCLV.classList.add("invisibleOcurrio");
+				? v.sectorRCLV.classList.remove("ocultaOcurrio")
+				: v.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
 			if (ocurrio == "1") {
@@ -188,8 +195,8 @@ window.addEventListener("load", async () => {
 			// Acciones si el valor es 'Ninguno' o 'Jesús'
 			v.inputsRCLV.forEach((inputRCLV, indice) => {
 				inputRCLV.value == "1" || (indice == 0 && inputRCLV.value == "11")
-					? v.linksRCLVEdic[indice].classList.add("ocultar")
-					: v.linksRCLVEdic[indice].classList.remove("ocultar");
+					? v.linksRCLV_Edic[indice].classList.add("ocultar")
+					: v.linksRCLV_Edic[indice].classList.remove("ocultar");
 			});
 			// Fin
 			return;
@@ -236,6 +243,13 @@ window.addEventListener("load", async () => {
 		// Fin
 		return url;
 	};
+	let guardaLosValoresEnSessionCookies = () => {
+		let params = obtieneLosDatos()
+		// Guardar los valores en session y cookies
+		if (params.length) fetch(v.rutaGuardaDatosPers + params);
+		// Fin
+		return;
+	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
@@ -262,6 +276,31 @@ window.addEventListener("load", async () => {
 		actualizaBotonSubmit();
 	});
 
+	// Links a RCLV - Alta
+	v.linksRCLV_Alta.forEach((link) => {
+		link.addEventListener("click", () => {
+			// Guardar los valores en Session y Cookies
+			guardaLosValoresEnSessionCookies();
+			// Obtiene la RCLV_entidad
+			let entidad = "?entidad=" + entidades(link);
+			// Para ir a la vista RCLV
+			// window.location.href = "/rclv/agregar/" + entidad + "&origen=DP";
+		});
+	});
+	// Links a RCLV - Edición
+	v.linksRCLV_Edic.forEach((link, i) => {
+		link.addEventListener("click", () => {
+			// Guardar los valores en Session y Cookies
+			guardaLosValoresEnSessionCookies();
+			// Obtiene la RCLV_entidad
+			let entidad = "?entidad=" + entidades(link);
+			// Obtiene el RCLV_id
+			let id = "&id=" + inputsRCLV[i].value;
+			// Para ir a la vista RCLV
+			// window.location.href = "/rclv/edicion/" + entidad + id + "&origen=DP";
+		});
+	});
+
 	// Submit
 	v.form.addEventListener("submit", async (e) => {
 		submitForm(e);
@@ -276,3 +315,11 @@ window.addEventListener("load", async () => {
 	// STATUS INICIAL
 	statusInicial();
 });
+
+let entidades = (link) => {
+	return link.className.includes("personaje")
+		? "personajes"
+		: link.className.includes("hecho")
+		? "hechos"
+		: "valores";
+};
