@@ -29,11 +29,11 @@
 				<option value="<%= valor.id %>" class="RCLV <%= clase %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 			<% } %>
 		</select>
+		<%- include("PA4-DP9-Ayuda") %>
 		<!-- Link a Relación con la vida -->
 		<% if (grupo=="RCLV") { %>
 			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
 			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 		<% } %>
-		<%- include("PA4-DP9-Ayuda") %>
 	</div>
 </section>
