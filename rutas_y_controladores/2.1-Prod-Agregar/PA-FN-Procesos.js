@@ -264,18 +264,10 @@ module.exports = {
 		// Datos de la colección
 		datos = {
 			...datos,
-			...({
-				cfc,
-				ocurrio,
-				musical,
-				tipo_actuacion_id,
-				publico_sugerido_id,
-				direccion,
-				guion,
-				musica,
-				produccion,
-			} = datosCol),
+			...({direccion, guion, musica, produccion} = datosCol),
+			...({cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol),
 		};
+		console.log(279, datos);
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
