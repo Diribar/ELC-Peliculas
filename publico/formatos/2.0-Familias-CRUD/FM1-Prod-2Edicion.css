@@ -5,7 +5,7 @@ main form #cuerpo .inputError {display: flex; flex-direction: row;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
-main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
+main form #cuerpo #edicionForm {justify-content: space-around; padding: 15px 70px 10px 50px;}
 main form #cuerpo #edicionForm .altoFila {height: 21px;}
 
 /* Imagen */
@@ -34,7 +34,7 @@ form #imgDerecha.inputError .agregados {margin: 0 auto; padding: 5px 10px; borde
 form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
 
 /* Partes del formulario */
-#datos {display: flex; flex-direction: row; justify-content: space-between;}
+#datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 #datos #primeraColumna {width: 42%;}
 #datos #segundaColumna {width: 45%;}
 #datos #primeraColumna .label-input .inputError .input {width: 200px;}
