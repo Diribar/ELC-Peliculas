@@ -5,7 +5,7 @@
 	<% for (let valor of valores) { %>
 		<div class="flexRowAlign">
 			<label for="<%= valor.id %>"><%= valor.nombre %></label>
-			<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (dataEntry.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
+			<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (producto.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
 		</div>
 	<% } %>
 	<%- include("CMP-Errores", {display: true, campo}) %>
