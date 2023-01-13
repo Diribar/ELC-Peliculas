@@ -7,12 +7,10 @@
 		<h3>Datos Generales</h3>
 		<!-- Primeros campos -->
 		<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
-		<!-- País -->
+		<!-- Otros -->
 		<%- include("PR-Edic-Pais") %>
-		<!-- Idioma original -->
 		<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
-		<!-- Producción -->
-		<% for (let campo of camposInput3) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+		<%- include("PR-Edic-Input", {campo: produccion}) %>
 		<h3>Datos Adicionales</h3>
 		<!--Público sugerido-->
 		<%- include("PR-Edic-Select", {nombreDelCampo: "publico_sugerido_id", campoDato: "nombre"}) %>

@@ -41,7 +41,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
-		let camposInput1, camposInput2, camposInput3, camposDP, BD_paises, BD_idiomas;
+		let camposInput1, camposInput2, produccion, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let verificarReq = (dato) => {
@@ -60,7 +60,7 @@ module.exports = {
 			let camposInput = variables.camposDD.filter((n) => n[entidad]).filter((n) => n.campoInput);
 			camposInput1 = camposInput.filter((n) => n.antesDePais);
 			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
-			camposInput3 = camposInput.filter((n) => n.nombre == "produccion");
+			produccion = camposInput.find((n) => n.nombre == "produccion");
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
@@ -93,7 +93,7 @@ module.exports = {
 			bloquesDerecha,
 			camposInput1,
 			camposInput2,
-			camposInput3,
+			produccion,
 			BD_paises,
 			BD_idiomas,
 			camposDP,
