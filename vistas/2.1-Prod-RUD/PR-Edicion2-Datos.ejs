@@ -11,9 +11,12 @@
 		<%- include("PR-Edic-Pais") %>
 		<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
 		<%- include("PR-Edic-Input", {campo: produccion}) %>
+		<%- include("PR-Edic-Select", {nombreDelCampo: "publico_sugerido_id"}) %>
 		<h3>Datos Adicionales</h3>
-		<!--Público sugerido-->
-		<%- include("PR-Edic-Select", {nombreDelCampo: "publico_sugerido_id", campoDato: "nombre"}) %>
+		<!-- Campos SI / NO -->
+		<% for (let tema of camposDP.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {tema}) %><% } %>
+		<!-- Tipo de Actuación -->
+		<%- include("PR-Edic-TipoActuac") %>
 	</div>
 	<div id="segundaColumna">
 		<!-- Cast/Crew -->
