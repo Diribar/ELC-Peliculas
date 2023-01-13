@@ -5,13 +5,13 @@
 #filtros select {border-radius: 5px;}
 
 /* Filtros personales guardados */
-#personalizado {display: flex; flex-direction: column; background-color: var(--azul-oscuro); padding: 20px;}
+#personalizado {display: flex; flex-direction: column; background: var(--azul-oscuro); padding: 20px;}
 #personalizado h1 {color: var(--celeste-claro);}
 #personalizado select {font-weight: bold;}
-#personalizado select, #personalizado option {color: var(--azul-oscuro); background-color: var(--amarillo-claro);}
+#personalizado select, #personalizado option {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 
 /* Filtros actuales */
-#filtro-inf {background-color: var(--gris-claro); padding: 20px;}
+#filtro-inf {background: var(--gris-claro); padding: 20px;}
 #filtro-inf select {margin-bottom: 15px;}
 #filtro-inf .radio {margin: 2px auto 15px;}
 #filtro-inf .radio input {margin-right: 3px;margin-top: 2px;}

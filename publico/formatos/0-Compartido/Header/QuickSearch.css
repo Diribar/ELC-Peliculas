@@ -11,10 +11,10 @@
 #busquedaRapida #displayResultados table {border-collapse: collapse;}
 /* Colores de fondo */
 #busquedaRapida #displayResultados p,
-#busquedaRapida #displayResultados tr.prod:nth-of-type(odd) {background-color: whitesmoke;}
-#busquedaRapida #displayResultados tr.prod:nth-of-type(even) {background-color: var(--celeste-claro);}
-#busquedaRapida #displayResultados tr.rclv:nth-of-type(odd) {background-color: var(--amarillo-oscuro);}
-#busquedaRapida #displayResultados tr.rclv:nth-of-type(even) {background-color: var(--amarillo-claro);}
+#busquedaRapida #displayResultados tr.prod:nth-of-type(odd) {background: whitesmoke;}
+#busquedaRapida #displayResultados tr.prod:nth-of-type(even) {background: var(--celeste-claro);}
+#busquedaRapida #displayResultados tr.rclv:nth-of-type(odd) {background: var(--amarillo-oscuro);}
+#busquedaRapida #displayResultados tr.rclv:nth-of-type(even) {background: var(--amarillo-claro);}
 
 /* Para que el anchor de la primera columna ocupe todo el ancho */
 #busquedaRapida #displayResultados tr td:first-child {display: flex; flex-direction: column;}
@@ -23,4 +23,4 @@
 #busquedaRapida #displayResultados tr td:nth-of-type(2):first-letter {text-transform: uppercase;}
 /* Otros */
 #busquedaRapida #displayResultados tr td {padding: 2px 5px;}
-#busquedaRapida #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
+#busquedaRapida #escribiMas {background: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}

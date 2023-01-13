@@ -8,16 +8,12 @@
 /* Íconos clave */
 .fa-solid {line-height: normal;}
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left, 
-.fa-circle-right {background-color: var(--backIcono); border-color: var(--backIcono);}
+.fa-circle-right {background: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
-header .inactivo, header .inactivo *, 
-header .inactivoErrores, header .inactivoErrores *, 
-header .inactivoVersion, header .inactivoVersion * {opacity: .5; cursor: not-allowed;}
-#cuerpo .inactivo, #cuerpo .inactivo *, 
-#cuerpo .inactivoErrores, #cuerpo .inactivoErrores *, 
-#cuerpo .inactivoVersion, #cuerpo .inactivoVersion * {opacity: .5; cursor: not-allowed;}
-#cuerpo .inactivo *, #cuerpo .inactivoErrores *, #cuerpo .inactivoVersion * {border-color: transparent;}
+.inactivo, .inactivo *, .inactivoErrores, .inactivoErrores *, .inactivoVersion, .inactivoVersion * 
+{opacity: .5 !important; cursor: not-allowed !important;}
+.inactivo *, .inactivoErrores *, .inactivoVersion * {border-color: transparent !important;}
 
 /* Otras */
 .absolute {position: absolute}
@@ -28,6 +24,6 @@ header .inactivoVersion, header .inactivoVersion * {opacity: .5; cursor: not-all
 .ocultaCfc, .ocultaOcurrio {display: none;}
 
 .invisible {visibility: hidden;}
-.bloqueado {background-color: var(--celeste-oscuro);}
+.bloqueado {background: var(--celeste-oscuro);}
 .rojo {color: var(--rojo-oscuro);}
 .negrita {font-weight: bold;}
