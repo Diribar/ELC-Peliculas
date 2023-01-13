@@ -140,37 +140,29 @@ module.exports = {
 	datosPers: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["en_color_id", "publico_sugerido_id", "categoria_id", "subcategoria_id"];
-		if (datos.sinCalif) errores = {fe_valores_id: "", entretiene_id: "", calidad_tecnica_id: ""};
-		else camposPosibles.push("fe_valores_id", "entretiene_id", "calidad_tecnica_id");
+		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_sugerido_id"];
 		// Datos generales + calificación
-		for (let campo of camposPosibles) {
+		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] ? comp.selectVacio : "";
-		}
+
 		// RCLV - Combinados
-		if (datos.subcategoria_id) {
+		if (datos.ocurrio) {
 			// Variables
-			errores.personaje_id = "";
-			errores.hecho_id = "";
-			errores.valor_id = "";
-			if (!datos.sinRCLV) {
-				// Obtiene el registro de la subcategoría
-				let subcategoria = await BD_genericas.obtienePorId("subcategorias", datos.subcategoria_id);
-				// Relación con la vida
-				let rclv_necesario = subcategoria.rclv_necesario;
-				if (rclv_necesario == "personaje")
-					errores.personaje_id =
-						!datos.personaje_id || datos.personaje_id == 1 ? comp.selectVacio : "";
-				else if (rclv_necesario == "hecho")
-					errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? comp.selectVacio : "";
-				else {
-					let alguno =
-						(!datos.personaje_id || datos.personaje_id == 1) &&
-						(!datos.hecho_id || datos.hecho_id == 1) &&
-						(!datos.valor_id || datos.valor_id == 1);
-					errores.valor_id = alguno ? "Se debe completar alguno de estos 3 campos" : "";
-				}
-			}
+			let sinResponder =
+				(!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
+			// Resultado
+			errores.RCLV =
+				// Acciones para 'no lo voy a responder por ahora'
+				datos.sinRCLV
+					? ""
+					: // Acciones para "ocurrio"
+					datos.ocurrio == "1" && sinResponder
+					? "Necesitamos que respondas por el Personaje o el Hecho Histórico"
+					: // Acciones para "no ocurrió"
+					datos.ocurrio == "0" && (!datos.valor_id || datos.valor_id == 1)
+					? "Necesitamos que respondas por el Valor"
+					: // Acciones si no se cumple ninguna de las anteriores
+					  "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);

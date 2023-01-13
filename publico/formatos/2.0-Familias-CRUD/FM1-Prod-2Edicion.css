@@ -10,7 +10,7 @@ main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70
 /* Imagen */
 form #imgDerecha label {line-height: 0;}
 /* Imagen - Íconos */
-form #imgDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
+form #imgDerecha .fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
 form #imgDerecha .ayuda,
 form #imgDerecha .errores {left: 50%; translate: -50% -50%; right: auto;}
 form #imgDerecha .errores {z-index: 4;}
@@ -29,7 +29,7 @@ form #imgDerecha.inputError .errores .mensajeError::before {border-color: var(--
 
 /* Imagen - Links a sitios externos */
 form #imgDerecha.inputError .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
-form #imgDerecha.inputError .agregados {background-color: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
+form #imgDerecha.inputError .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
 form #imgDerecha.inputError .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
 form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
 
@@ -44,7 +44,7 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 
 /* Partes específicas del formulario */
 #datos .label-input .inputError .input,
-#datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background: white;}
 #datos .label-input .inputError {margin-left: 5px;}
 #datos .label-input .inputError .ayuda {right: -5px;}
 
@@ -57,7 +57,7 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos .label-input .inputError select {padding: 0;}
 #datos .label-input .inputError .input:disabled, 
 #datos .label-input#paises_id input#mostrarPaises:disabled,
-#datos .label-input#paises_id select:disabled {background-color: var(--amarillo-claro); opacity: 1; color: inherit;}
+#datos .label-input#paises_id select:disabled {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 
 /* País */
 #datos #paises_id {align-items: center;}
@@ -86,6 +86,6 @@ form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translat
 
 /* Comandos - Particularidades */
 .flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none;}
-.flechas i.activar {background-color: var(--azul-oscuro); color: var(--gris-claro);}
+.flechas i.activar {background: var(--azul-oscuro); color: var(--gris-claro);}
 .flechas i.activar {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.flechas i.activar.activo {background-color: var(--verde-oscuro);}
+.flechas i.activar.activo {background: var(--verde-oscuro);}

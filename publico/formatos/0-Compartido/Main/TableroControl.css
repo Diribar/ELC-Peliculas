@@ -6,5 +6,5 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Bloques - Título */
 .bloques .tituloSecundario {position: relative; min-width: 270px;}
-.bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background-color: var(--verde-oscuro); color: var(--gris-claro);}
+.bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background: var(--verde-oscuro); color: var(--gris-claro);}
 .bloques .tituloSecundario .ayudaMostrar p {margin-bottom: 3px;}

@@ -1,2 +1,2 @@
 /* Cuerpo */
-#cuerpo {background-color: var(--gris-claro); flex-direction: column;}
+#cuerpo {background: var(--gris-claro); flex-direction: column;}

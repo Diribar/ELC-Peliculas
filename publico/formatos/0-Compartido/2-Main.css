@@ -4,7 +4,7 @@ main #cuerpoFooter {display: flex; flex-grow: 1; flex-direction: column-reverse;
 
 /* Imagen Derecha */
 main #imgDerecha {display: flex; flex-direction: column; justify-content: center;}
-main #imgDerecha {background-color: var(--gris-claro);}
+main #imgDerecha {background: var(--gris-claro);}
 main #imgDerecha img {max-width: 30vw; max-height: 91vh;}
 
 /* Cuerpo */

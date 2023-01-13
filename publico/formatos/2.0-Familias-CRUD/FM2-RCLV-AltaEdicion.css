@@ -1,17 +1,17 @@
 /* Cuerpo */
-#cuerpo {background-color: transparent; flex-direction: column;}
+#cuerpo {background: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
 #cuerpo #dataEntry {display: flex; flex-direction: column; z-index: 4;}
-#cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #dataEntry {background: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
 #dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
 #dataEntry #datos #primeraCol {margin-right: 50px; width: 210px;}
 #dataEntry #datos #segundaCol {display: flex; flex-direction: column; width: 206px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
+#dataEntry select {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Temas de filas */
 #dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
@@ -24,7 +24,7 @@ label[for] {padding-left: 3px;}
 
 /* Temas particulares de dataEntry */
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-#dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
+#dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Nombres */
 #dataEntry #datos #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}

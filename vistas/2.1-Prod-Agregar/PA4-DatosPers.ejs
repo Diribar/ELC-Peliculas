@@ -31,18 +31,37 @@
 				<hr>
 				<!-- Tipo de Actuación -->
 				<%- include("PA4-DP2-TipoActuac") %>
-				<!-- Público sugerido -->
-				<%- include("PA4-DP3-Select", {campo: "publico_sugerido_id", nombre: "nombre"}) %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
+			<!-- Público sugerido -->
+			<%- include("PA4-DP3-Select", {campo: "publico_sugerido_id"}) %>
+			<hr>
 			<!-- Relación con la vida -->
-			<div id="RCLV" class="flexCol invisible">
-				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
+				<div class="flexRowAlign inputError">
+					<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+					<!-- Ayuda para un RCLV -->
+					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.</li>
+							<li>Necesitamos que respondas por lo menos uno de los campos.</li>
+						</ul>
+					</i>
+					<!-- Ayuda para dos RCLVs -->
+					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick despl_click">
+						<p class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
+						</p>
+					</i>
+					<div id="errorRCLV" class="ocultar">
+						<%- include("CMP-Errores", {display: true, campo: "RCLV"}) %>
+					</div>
+				</div>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DP8-Checkbox", {campo: "sinRCLV", }) %>
-				<div class="flexCol selects ocultar">
+				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->
 					<%- include("PA4-DP4-RCLV", {campo: "personaje_id"}) %>
 					<!--Hecho histórico-->

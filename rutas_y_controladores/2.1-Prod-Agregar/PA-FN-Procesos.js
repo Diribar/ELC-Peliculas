@@ -1,5 +1,7 @@
 "use strict";
 // Definir variables
+const fs = require("fs");
+const path = require("path");
 const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
@@ -83,7 +85,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
@@ -124,7 +126,7 @@ module.exports = {
 					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actores += funcionCast(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += FN_actores(capitulo.cast) + ", ";
 			}
 			// Procesa los resultados
 			let cantCaps = capitulos.length;
@@ -185,17 +187,15 @@ module.exports = {
 	},
 	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
 		// Preparar datos del capítulo
+		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol;
 		let datosCap = {
 			coleccion_id: datosCol.id,
 			fuente: "TMDB",
 			temporada: 1,
 			capitulo: indice + 1,
 			creado_por_id: 2,
+			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id},
 		};
-		if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
-		datosCap.categoria_id = datosCol.categoria_id;
-		datosCap.subcategoria_id = datosCol.subcategoria_id;
-		datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 		// Guardar los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			.then((n) => (n = {...n, ...datosCap}))
@@ -251,7 +251,7 @@ module.exports = {
 				datos.musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
@@ -265,17 +265,16 @@ module.exports = {
 		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2};
 
 		// Datos de la colección
+		let {direccion, guion, musica, produccion} = datosCol;
+		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol;
+		datos = {
+			...datos,
+			...{direccion, guion, musica, produccion},
+			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id},
+		};
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
-		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
-		datos.categoria_id = datosCol.categoria_id;
-		datos.subcategoria_id = datosCol.subcategoria_id;
-		datos.publico_sugerido_id = datosCol.publico_sugerido_id;
-		datos.direccion = datosCol.direccion;
-		datos.guion = datosCol.guion;
-		datos.musica = datosCol.musica;
-		datos.produccion = datosCol.produccion;
 
 		// Datos de la temporada
 		datos.temporada = datosTemp.season_number;
@@ -293,7 +292,7 @@ module.exports = {
 		let actores = [];
 		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
 		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-		if (actores.length) datos.actores = funcionCast(actores);
+		if (actores.length) datos.actores = FN_actores(actores);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path
 			? datosCap.still_path
@@ -303,7 +302,7 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
-	// Datos Personales
+	// Datos Adicionales
 	puleDatosPersRCLV: (datosPers) => {
 		// Variables
 		let camposDP = variables.camposDP;
@@ -312,7 +311,7 @@ module.exports = {
 		// Fin
 		return datosPers;
 	},
-	// Confirma
+	// Confirma Guardar
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
@@ -336,6 +335,61 @@ module.exports = {
 		}
 		// Fin
 		return;
+	},
+	descargaMueveElAvatar: async (confirma) => {
+		// Descarga la imagen del url
+		let descarga;
+		if (!confirma.avatar) {
+			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + confirma.avatar;
+			await comp.descarga(confirma.avatar_url, rutaYnombre);
+		}
+		// Mueve el avatar de 'provisorio' a 'revisar'
+		await comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+		// Fin
+		return;
+	},
+	// Terminaste
+	revisaProblemas: ({registroProd, entidad, id, req}) => {
+		// Variables
+		let resultado;
+		// Problema: PRODUCTO NO ENCONTRADO
+		if (!registroProd) {
+			// Información
+			let informacion = {
+				mensajes: ["Producto no encontrado"],
+				iconos: [
+					{
+						nombre: "fa-circle-left",
+						link: req.session.urlAnterior,
+						titulo: "Ir a la vista anterior",
+					},
+				],
+			};
+			// Argumentos para el 'res'
+			resultado = {objeto: "render", parentesis: ["CMP-0Estructura", {informacion}]};
+		}
+		// Problema: PRODUCTO YA REVISADO
+		if (!registroProd.status_registro.gr_creado)
+			resultado = {
+				objeto: "redirect",
+				parentesis: ["/producto/detalle/?entidad=" + entidad + "&id=" + id],
+			};
+
+		// Fin
+		return resultado;
+	},
+	imagenMuchasGracias: () => {
+		// Obtiene el listado de archivos
+		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
+		// Elije al azar el n° de imagen
+		let indice = parseInt(Math.random() * muchasGracias.length);
+		// Si se pasó del n°, lo reduce en 1 unidad
+		if (indice == muchasGracias.length) indice--;
+		// Genera la ruta y el nombre del archivo
+		let imagenMuchasGracias = "/imagenes/0-Base/Muchas-gracias/" + muchasGracias[indice];
+		// Fin
+		return imagenMuchasGracias;
 	},
 
 	// FILM AFFINITY **********************
@@ -409,8 +463,7 @@ module.exports = {
 			resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
 		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
 		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
-		if (contenido.indexOf("Reparto") > 0)
-			resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
+		if (contenido.indexOf("Reparto") > 0) resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
 		if (contenido.indexOf("Productora") > 0)
 			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
@@ -432,20 +485,6 @@ module.exports = {
 		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
-	// ConfirmarGuardar
-	guarda_cal_registros: (confirma, registro) => {
-		let producto_id = comp.obtieneEntidad_idDesdeEntidad(confirma.entidad);
-		let datos = {
-			entidad: "cal_registros",
-			usuario_id: registro.creado_por_id,
-			[producto_id]: registro.id,
-			fe_valores: confirma.fe_valores,
-			entretiene: confirma.entretiene,
-			calidad_tecnica: confirma.calidad_tecnica,
-			resultado: confirma.calificacion,
-		};
-		BD_genericas.agregaRegistro(datos.entidad, datos);
-	},
 };
 
 // Funciones *********************
@@ -461,8 +500,9 @@ let funcionParentesis = (dato) => {
 let consValsColeccion = (datos, cantCapitulos) => {
 	// Corrige defectos
 	datos = datos.replace(/(, )+/g, ", ");
+	datos = datos.trim();
 	// Quita el último ', '
-	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
+	if (datos.slice(-1) == ",") datos = datos.slice(0, -1);
 	// Convierte los valores en un array
 	datos = datos.split(", ");
 	// Crea un objeto literal para el campo
@@ -522,7 +562,7 @@ let limpiaValores = (datos) => {
 	// Fin
 	return texto;
 };
-let funcionCast = (dato) => {
+let FN_actores = (dato) => {
 	// Variables
 	let actores = "";
 	let largo = 500;

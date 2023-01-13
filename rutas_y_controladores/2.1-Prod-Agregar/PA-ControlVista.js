@@ -1,7 +1,4 @@
 "use strict";
-// Definir variables
-const fs = require("fs");
-const path = require("path");
 // Definir funciones
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
@@ -135,6 +132,7 @@ module.exports = {
 		// Guarda el data entry en session y cookie
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// Averigua si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		let camposRevisar = camposDD.map((n) => n.nombre);
@@ -156,6 +154,7 @@ module.exports = {
 		// Guarda el data entry en session y cookie de Datos Personales
 		req.session.datosPers = datosDuros;
 		res.cookie("datosPers", datosDuros, {maxAge: unDia});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-personalizados");
 	},
@@ -172,7 +171,6 @@ module.exports = {
 		// 5. Prepara variables para la vista
 		let camposDP = await variables.camposDP_conValores(userID);
 		let camposDE = Object.keys(datosPers);
-		let tipos_de_actuacion = await BD_genericas.obtieneTodos("tipos_de_actuacion", "orden");
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -185,7 +183,6 @@ module.exports = {
 			dataEntry: datosPers,
 			camposDP,
 			camposDE,
-			tipos_de_actuacion,
 			imgDerPers,
 			tituloImgDerPers: datosPers.nombre_castellano,
 		});
@@ -195,7 +192,6 @@ module.exports = {
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("datos-duros");
 		// 2. Obtiene los DatosPers
-		delete aux.sinCalif;
 		delete aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
 		if (datosPers.sinRCLV) datosPers = procesos.puleDatosPersRCLV(datosPers);
@@ -204,17 +200,15 @@ module.exports = {
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 5. Averigua si hay errores de validación
+		// 5. Si hay errores de validación, redirecciona
 		let camposDP = variables.camposDP.map((m) => m.nombre);
 		let errores = await valida.datosPers(camposDP, datosPers);
-		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("datos-personalizados");
-		// Si no hay errores, continuar
-		// 7. Preparar la info para el siguiente paso
+		// 6. Si no hay errores, prepara la info para el siguiente paso
 		req.session.confirma = req.session.datosPers;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 8. Redirecciona a la siguiente instancia
+		// 7. Redirecciona a la siguiente instancia
 		return res.redirect("confirma");
 	},
 	confirmaForm: (req, res) => {
@@ -227,16 +221,17 @@ module.exports = {
 		if (!confirma) return res.redirect("datos-personalizados");
 		// 3. Datos de la producción
 		maximo = 50;
-		let direccion = confirma.direccion.slice(0, maximo);
-		indice = direccion.lastIndexOf(",") != -1 ? direccion.lastIndexOf(",") : maximo;
-		direccion = direccion.slice(0, indice);
+		let direccion = confirma.direccion;
+		if (direccion.length > maximo) {
+			direccion = direccion.slice(0, maximo);
+			if (direccion.includes(",")) direccion = direccion.slice(0, direccion.lastIndexOf(","));
+		}
 		// 4. Datos de la actuación
 		maximo = 170;
 		let actores = confirma.actores;
 		if (actores.length > maximo) {
 			actores = actores.slice(0, maximo);
-			indice = actores.lastIndexOf(",") != -1 ? actores.lastIndexOf(",") : maximo;
-			actores = actores.slice(0, indice);
+			if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 		}
 		// Imagen derecha
 		let imgDerPers = confirma.avatar ? "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
@@ -253,64 +248,41 @@ module.exports = {
 		});
 	},
 	confirmaGuardar: async (req, res) => {
-		// 1. Si se perdió la info, volver a la instancia anterior
+		// 1. Si se perdió la info, vuelve a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("datos-personalizados");
-		// Descarga la imagen del url
-		let descargaOK;
-		if (!confirma.avatar) {
-			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + confirma.avatar;
-			descargaOK = comp.descarga(confirma.avatar_url, rutaYnombre);
-		}
-		// 2. Obtiene la calificación
-		let calificaciones;
-		if (!confirma.sinCalif) {
-			let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-				BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
-				BD_genericas.obtienePorId("entretiene", confirma.entretiene_id).then((n) => n.valor),
-				BD_genericas.obtienePorId("calidad_tecnica", confirma.calidad_tecnica_id).then(
-					(n) => n.valor
-				),
-			]);
-			let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-			calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
-		}
-		// 3. Guarda los datos de 'Original'
+		// 2. Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
-			...calificaciones,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
-		// 4. Guarda los datos de 'Edición'
-		await procsCRUD.guardaEdicion({
+		// 3. Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
+		procsCRUD.guardaEdicion({
 			entidadOrig: original.entidad,
 			entidadEdic: "prods_edicion",
 			original: registro,
 			edicion: confirma,
 			userID: req.session.usuario.id,
 		});
-		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		// 4. Si es una "collection" o "tv" (TMDB), agrega las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
-		// 6. Guarda las calificaciones
-		if (!confirma.sinCalif) procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
-		// 8. Elimina todas las session y cookie del proceso AgregarProd
+		// 5. Descarga el avatar y lo mueve de 'provisorio' a 'revisar', no hace falta esperarlo
+		procesos.descargaMueveElAvatar(confirma);
+		// 6. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
-		// 9. Borra la vista actual para que no vaya a vistaAnterior
+		// 7. Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
-		// 10. Crea la cookie para 'Terminaste'
-		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
-		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
-		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		await Promise.all([descargaOK]);
-		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
-		// 11. Redirecciona
+		// 8. Crea la cookie para 'Terminaste' por sólo 3 segs, para la vista siguiente
+		let prodTerm = {entidad: confirma.entidad, id: registro.id};
+		req.session.prodTerm = prodTerm;
+		res.cookie("prodTerm", prodTerm, {maxAge: 3000});
+		// 9. Redirecciona
 		return res.redirect("terminaste");
 	},
 	terminasteForm: async (req, res) => {
@@ -318,36 +290,20 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
 		// 2. Si se perdió la info, redirije a 'palabras clave'
-		let prodTerminaste = req.cookies.prodTerminaste;
-		if (!prodTerminaste) return res.redirect("palabras-clave");
+		let prodTerm = req.session.prodTerm ? req.session.prodTerm : req.cookies.prodTerm;
+		delete req.session.prodTerm;
+		if (!prodTerm) return res.redirect("palabras-clave");
 		// 3. Obtiene los datos clave del producto
-		let {entidad, id} = prodTerminaste;
+		let {entidad, id} = prodTerm;
 		// 4. Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		// Problema: PRODUCTO NO ENCONTRADO
-		if (!registroProd) {
-			let informacion = {
-				mensajes: ["Producto no encontrado"],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-				],
-			};
-			return res.render("CMP-0Estructura", {informacion});
-		}
-		// Problema: PRODUCTO YA REVISADO
-		if (!registroProd.status_registro.gr_creado)
-			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
+		// Problemas
+		let resultado = procesos.revisaProblemas({registroProd, entidad, id, req});
+		if (resultado) res[resultado.objeto](...resultado.parentesis);
 		// 5. Obtiene el producto
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
-		let indice = parseInt(Math.random() * muchasGracias.length);
-		if (indice == muchasGracias.length) indice--;
-		let imagenMuchasGracias = "/imagenes/0-Base/Muchas-gracias/" + muchasGracias[indice];
+		// 6. Prepara la información sobre las imágenes de MUCHAS GRACIAS
+		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,

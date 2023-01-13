@@ -209,11 +209,15 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
-			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id"},
+			{
+				titulo: "Tipo de Actuación",
+				nombre: "tipo_actuacion_id",
+				valores: await BD_genericas.obtieneTodos("tipos_de_actuacion", "orden"),
+			},
 			{
 				titulo: "Público sugerido",
 				nombre: "publico_sugerido_id",
-				valores: userID ? await BD_genericas.obtieneTodos("publicos_sugeridos", "orden") : [],
+				valores: await BD_genericas.obtieneTodos("publicos_sugeridos", "orden"),
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
@@ -225,9 +229,8 @@ module.exports = {
 			{
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
-				valores: userID ? registrosRCLV.personajes : [],
+				valores: registrosRCLV.personajes,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual (salvo excepciones), haciendo click en los íconos de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas.",
 				],
 				link: "personajes",
@@ -236,9 +239,8 @@ module.exports = {
 			{
 				titulo: "Hecho histórico",
 				nombre: "hecho_id",
-				valores: userID ? registrosRCLV.hechos : [],
+				valores: registrosRCLV.hechos,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos.",
 				],
 				link: "hechos",
@@ -247,9 +249,8 @@ module.exports = {
 			{
 				titulo: "Valor principal",
 				nombre: "valor_id",
-				valores: userID ? registrosRCLV.valores : [],
+				valores: registrosRCLV.valores,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
 					"Poné el más representativo.",
 				],
 				link: "valores",

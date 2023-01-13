@@ -1,9 +1,9 @@
 /* Cuerpo */
-#cuerpo {background-color: var(--gris-claro);}
+#cuerpo {background: var(--gris-claro);}
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
+#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background: var(--celeste-claro);}
 #cuerpo #encabezado #nombres, #cuerpo #encabezado #colCap {max-width: 50%;}
 #cuerpo #encabezado #nombres h2 {margin: 0; }
 #cuerpo #encabezado #nombres h2 {padding-bottom: 3px;}
@@ -14,7 +14,7 @@
 #cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center; line-height: 1;}
 #cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
 #cuerpo #encabezado #colCap #colecciones i,
-#cuerpo #encabezado #colCap #tempCapI i {color: white; background-color: var(--gris-oscuro); cursor: pointer; margin-right: 15px; align-self: center; line-height: 1; border-radius: 15px;}
+#cuerpo #encabezado #colCap #tempCapI i {color: white; background: var(--gris-oscuro); cursor: pointer; margin-right: 15px; align-self: center; line-height: 1; border-radius: 15px;}
 #cuerpo #encabezado #colCap #colecciones i {padding: 5px; font-size: .9rem;}
 #cuerpo #encabezado #colCap #tempCapI i {padding: 3px 5px 2px; font-size: .9rem;}
 #cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px;}

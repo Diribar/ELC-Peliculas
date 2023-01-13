@@ -5,7 +5,7 @@
 #datos {display: flex; flex-direction: column; }
 #datos #tipoLink {align-self: flex-start; margin-bottom: 10px;}
 #datos #tabla {align-self: center;}
-#datos #tags div {padding: 3px 15px; background-color: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
+#datos #tags div {padding: 3px 15px; background: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
 #datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
 #datos #tags * {cursor: context-menu;}
 #datos #tags .traslucido {opacity: 50%; cursor: pointer;}
@@ -15,10 +15,10 @@
 #datos table thead * {font-size: 1.1rem;}
 #datos table .fa-solid {font-size: 1rem;}
 #datos table thead tr th, #datos table tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
-#datos table thead tr th {padding: 5px; background-color: var(--verde-ingles); color: var(--amarillo-claro);}
-#datos table tbody tr td.motivo {background-color: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
+#datos table thead tr th {padding: 5px; background: var(--verde-ingles); color: var(--amarillo-claro);}
+#datos table tbody tr td.motivo {background: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
 #datos table tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
-#datos table tbody tr.oscuro_true {background-color: var(--gris-intermedio);}
+#datos table tbody tr.oscuro_true {background: var(--gris-intermedio);}
 
 /* Campos con input */
 #datos table tbody tr td .inputError .input {width: 100%;}
@@ -56,7 +56,7 @@
 #datos table tbody tr td.calidad option {text-align: center; }
 
 /* Formato del desperdicio */
-#datos table .desperdicio {background-color: var(--verde-intermedio);}
+#datos table .desperdicio {background: var(--verde-intermedio);}
 #datos table .desperdicio .inputError .fa-circle-check {display: none;}
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
