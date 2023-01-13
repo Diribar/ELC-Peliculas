@@ -298,7 +298,7 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
-	// Datos Personales
+	// Datos Adicionales
 	puleDatosPersRCLV: (datosPers) => {
 		// Variables
 		let camposDP = variables.camposDP;
@@ -307,7 +307,7 @@ module.exports = {
 		// Fin
 		return datosPers;
 	},
-	// Confirma
+	// Confirma Guardar
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
@@ -331,6 +331,61 @@ module.exports = {
 		}
 		// Fin
 		return;
+	},
+	descargaMueveElAvatar: async (confirma) => {
+		// Descarga la imagen del url
+		let descarga;
+		if (!confirma.avatar) {
+			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + confirma.avatar;
+			await comp.descarga(confirma.avatar_url, rutaYnombre);
+		}
+		// Mueve el avatar de 'provisorio' a 'revisar'
+		await comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+		// Fin
+		return;
+	},
+	// Terminaste
+	revisaProblemas: async ({registroProd, entidad, id, req}) => {
+		// Variables
+		let resultado;
+		// Problema: PRODUCTO NO ENCONTRADO
+		if (!registroProd) {
+			// Información
+			let informacion = {
+				mensajes: ["Producto no encontrado"],
+				iconos: [
+					{
+						nombre: "fa-circle-left",
+						link: req.session.urlAnterior,
+						titulo: "Ir a la vista anterior",
+					},
+				],
+			};
+			// Argumentos para el 'res'
+			resultado = {objeto: "render", parentesis: ["CMP-0Estructura", {informacion}]};
+		}
+		// Problema: PRODUCTO YA REVISADO
+		if (!registroProd.status_registro.gr_creado)
+			resultado = {
+				objeto: "redirect",
+				parentesis: ["/producto/detalle/?entidad=" + entidad + "&id=" + id],
+			};
+
+		// Fin
+		return resultado;
+	},
+	imagenMuchasGracias: () => {
+		// Obtiene el listado de archivos
+		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
+		// Elije al azar el n° de imagen
+		let indice = parseInt(Math.random() * muchasGracias.length);
+		// Si se pasó del n°, lo reduce en 1 unidad
+		if (indice == muchasGracias.length) indice--;
+		// Genera la ruta y el nombre del archivo
+		let imagenMuchasGracias = "/imagenes/0-Base/Muchas-gracias/" + muchasGracias[indice];
+		// Fin
+		return imagenMuchasGracias;
 	},
 
 	// FILM AFFINITY **********************
@@ -426,20 +481,6 @@ module.exports = {
 		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
-	// ConfirmarGuardar
-	guarda_cal_registros: (confirma, registro) => {
-		let producto_id = comp.obtieneEntidad_idDesdeEntidad(confirma.entidad);
-		let datos = {
-			entidad: "cal_registros",
-			usuario_id: registro.creado_por_id,
-			[producto_id]: registro.id,
-			fe_valores: confirma.fe_valores,
-			entretiene: confirma.entretiene,
-			calidad_tecnica: confirma.calidad_tecnica,
-			resultado: confirma.calificacion,
-		};
-		BD_genericas.agregaRegistro(datos.entidad, datos);
-	},
 };
 
 // Funciones *********************
@@ -455,8 +496,9 @@ let funcionParentesis = (dato) => {
 let consValsColeccion = (datos, cantCapitulos) => {
 	// Corrige defectos
 	datos = datos.replace(/(, )+/g, ", ");
+	datos = datos.trim();
 	// Quita el último ', '
-	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
+	if (datos.slice(-1) == ",") datos = datos.slice(0, -1);
 	// Convierte los valores en un array
 	datos = datos.split(", ");
 	// Crea un objeto literal para el campo
