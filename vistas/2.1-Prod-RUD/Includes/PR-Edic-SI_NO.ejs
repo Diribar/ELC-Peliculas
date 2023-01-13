@@ -1,0 +1,16 @@
+<% const campo = tema.nombre %>
+<% if (campo=="musical") { %><hr><% } %>
+<div class="inputError flexRowAlign altoFila">
+	<label id="siNoTitulo"><%= tema.titulo %></label>
+	<div id="siNoOpciones" class="flexRowAlign">
+		<div class="flexRowAlign">
+			<label for="<%= campo %>SI">SI</label>
+			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (dataEntry[campo]==1) { %>checked<% } %> class="radioSI">
+		</div>
+		<div class="flexRowAlign">
+			<label for="<%= campo %>NO">NO</label>
+			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (!camposDE.includes(campo)&&campo=="musical" || camposDE.includes(campo)&&(dataEntry[campo]==0)) { %>checked<% } %> class="radioNO">
+		</div>
+	</div>
+	<%- include("CMP-Errores", {display: true, campo}) %>
+</div>
