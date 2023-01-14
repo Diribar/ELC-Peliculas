@@ -14,7 +14,6 @@
 #dataEntry select {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Temas de filas */
-#dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
 #dataEntry .altoFila {height: 25px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}

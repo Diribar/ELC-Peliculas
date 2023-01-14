@@ -1,40 +1,43 @@
-<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-<%- include("CR-Encabezado") %>
-<!-- Datos -->
-<section id="datos">
-	<!-- Datos generales -->
-	<div id="primeraColumna">
-		<h3>Datos Generales</h3>
-		<!-- Primeros campos -->
-		<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
-		<!-- País -->
-		<%- include("PR-Edic-Pais") %>
-		<!-- Idioma original -->
-		<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
-		<!-- Producción -->
-		<% for (let campo of camposInput3) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
-		<h3>Datos Adicionales</h3>
-		<!--Público sugerido-->
-		<%- include("PR-Edic-Select", {nombreDelCampo: "publico_sugerido_id", campoDato: "nombre"}) %>
-	</div>
-	<div id="segundaColumna">
-		<!-- Cast/Crew -->
-		<h3>Personas</h3>
-		<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
-		<!-- Relación con la vida -->
-		<h3>Relación con la vida</h3>
-		<!--Personaje histórico-->
-		<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id", campoDato: "nombre"}) %>
-		<!--Hecho histórico-->
-		<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id", campoDato: "nombre"}) %>
-		<!--Valor-->
-		<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id", campoDato: "nombre"}) %>
-		<h3>Sinopsis</h3>
-		<!--Sinopsis-->
-		<%- include("PR-Edic-Sinopsis") %>
+<section id="encabezadoDatos" class="flexCol">
+	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+	<%- include("CR-Encabezado") %>
+	<!-- Datos -->
+	<div id="datos">
+		<!-- Datos generales -->
+		<div id="primeraColumna">
+			<h3>Datos Generales</h3>
+			<!-- Primeros campos -->
+			<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<!-- Otros -->
+			<%- include("PR-Edic-Pais") %>
+			<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
+			<%- include("PR-Edic-Input", {campo: produccion}) %>
+			<%- include("PR-Edic-Select", {nombreDelCampo: "publico_sugerido_id"}) %>
+			<h3>Datos Adicionales</h3>
+			<!-- Campos SI / NO -->
+			<% for (let tema of camposDP.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {tema}) %><% } %>
+			<!-- Tipo de Actuación -->
+			<%- include("PR-Edic-TipoActuac") %>
+		</div>
+		<div id="segundaColumna">
+			<!-- Cast/Crew -->
+			<h3>Personas</h3>
+			<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<!-- Relación con la vida -->
+			<h3>Relación con la vida</h3>
+			<!--Personaje histórico-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id", campoDato: "nombre"}) %>
+			<!--Hecho histórico-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id", campoDato: "nombre"}) %>
+			<!--Valor-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id", campoDato: "nombre"}) %>
+			<h3>Sinopsis</h3>
+			<!--Sinopsis-->
+			<%- include("PR-Edic-Sinopsis") %>
+		</div>
 	</div>
 </section>
-<div class="flexRow">
+<section class="flexRow">
 	<!-- Botones -->
 	<%- include("CR-Flechas") %> 
 	<!-- Comandos -->
@@ -67,4 +70,4 @@
 			<i class="fa-solid fa-house activar" tabindex="-1" title='Ver la versión original'></i>
 		</div>
 	</section>
-</div>
+</section>

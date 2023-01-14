@@ -2,6 +2,7 @@
 .flexCol {display: flex; flex-direction: column;}
 .flexRow {display: flex; flex-direction: row;}
 .flexRowReverse {display: flex; flex-direction: row-reverse;}
+.flexRowAlign {display: flex; flex-direction: row; align-items: center;}
 .grow {flex-grow: 1;}
 .spaceBetween {justify-content: space-between;}
 
