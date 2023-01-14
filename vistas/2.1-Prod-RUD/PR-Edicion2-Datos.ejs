@@ -26,22 +26,23 @@
 			<!-- Relación con la vida -->
 			<h3>Relación con la vida</h3>
 			<!--Personaje histórico-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id", campoDato: "nombre"}) %>
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id"}) %>
 			<!--Hecho histórico-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id", campoDato: "nombre"}) %>
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id"}) %>
 			<!--Valor-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id", campoDato: "nombre"}) %>
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id"}) %>
 			<h3>Sinopsis</h3>
 			<!--Sinopsis-->
 			<%- include("PR-Edic-Sinopsis") %>
 		</div>
 	</div>
 </section>
+<!-- Botones y Comandos -->
 <section class="flexRow">
 	<!-- Botones -->
 	<%- include("CR-Flechas") %> 
 	<!-- Comandos -->
-	<section class="flechas">
+	<div class="flechas">
 		<!-- Versión editada 'edicN' -->
 		<div class="pack">
 			<!-- Ver la versión -->
@@ -69,5 +70,5 @@
 			<!-- Ver la versión -->
 			<i class="fa-solid fa-house activar" tabindex="-1" title='Ver la versión original'></i>
 		</div>
-	</section>
+	</div>
 </section>
