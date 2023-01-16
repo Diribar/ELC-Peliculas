@@ -1,20 +1,29 @@
-<!-- Contador -->
-<% if (locals.subOpcion) { %><button type="text" id="contador-de-peliculas">Contador</button><% } %>
 <!-- Filtros o Vitreaux -->
-<div id="zona-de-vitreaux">
+<div id="zona-de-filtros">
 	<% if (locals.subOpcion) { %><%- include('Filtros') %>
 	<% } else { %><img alt="Vitreaux" src="/imagenes/0-Base/Varios/Vitraux.jpg" title="Vitreaux"><% } %>
 </div>
 
 <!-- Menús -->
-<div id="zona-de-pelis" class="flexCol grow">
-	<!-- Opciones -->
-	<select onchange="location = this.value;" id="menuOpciones">
-		<% if (!locals.opcion) { %><option class="ocultar" selected>Elegí una opción</option><% } %>
-		<% for (let menuOpcion of menuOpciones) { %>
-			<option value="/consultas/<%= menuOpcion.url %>" <% if (locals.opcion && menuOpcion.url == opcion.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
-		<% } %>
-	</select>
+<div id="zona-de-prods" class="flexCol grow">
+	<!-- Encabezado -->
+	<div id="encabezado" class="flex-col">
+		<div class="izquierda">
+			<!-- Opciones -->
+			<select name="layout" class="opcionesElegidas">
+				<% console.log(14, !locals.opcionesElegidas || !locals.opcionesElegidas.layout) %> 
+				<option value="" class="ocultar" <% if (!locals.opcionesElegidas || !locals.opcionesElegidas.layout) { %>selected<% } %>>Layout</option>
+				<% for (let menuOpcion of menuOpciones) { %>
+					<option value="/consultas/<%= menuOpcion.url %>" <% if (locals.opcion && menuOpcion.url == opcion.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
+				<% } %>
+			</select>
+
+		</div>
+		<div class="derecha">
+			<!-- Contador -->
+
+		</div>
+	</div>
 	<!-- Sub-Opciones -->
 	<% if (locals.opcion) { %>
 		<select id = "menuSubopciones">

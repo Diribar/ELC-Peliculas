@@ -23,34 +23,19 @@ module.exports = {
 	],
 
 	// Consulta de Productos
-	menuOpciones: [
-		{
-			nombre: "Todas las Películas",
-			url: "listado",
-			titulo: "Listado",
-			vista: "CN1-Listado",
-			comentario: "Todas las películas de nuestra Base de Datos",
-		},
-		{
-			nombre: "Un paseo por CFC",
-			url: "cfc",
-			titulo: "CFC",
-			vista: "CN2-CFC",
-			comentario: "Películas Centradas en la Fe Católica (CFC)",
-		},
-		{
-			nombre: "Un paseo por VPC",
-			url: "vpc",
-			titulo: "VPC",
-			vista: "CN3-VPC",
-			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
-		},
+	layouts: [
+		{nombre: "Todas las Películas", valor:"LT"},
+		{nombre: "Películas con algún Personaje Histórico", valor:"BHR PR"},
+		{nombre: "Películas con algún Hecho Histórico", valor:"BHR HC"},
+		{nombre: "Películas con Valores", valor:"VL"},
 	],
-	menuSubOpcionesListado: [
-		{nombre: "Sugeridas para el momento del año", url: "sugeridas"},
-		{nombre: "Por mejor calificación", url: "calificacion"},
-		{nombre: "Por año de estreno más reciente", url: "estreno"},
-		{nombre: "Por incorporación más reciente", url: "incorporacion"},
+	opcionesOrden: [
+		{nombre: "Sugeridas para el momento del año", valor: "momento"},
+		{nombre: "Por fecha de incorporación a nuestra página", valor: "incorporacion"},
+		{nombre: "Por año de estreno", valor: "estreno"},
+		{nombre: "Por nombre del personaje/hecho", valor: "RCLV"},
+		{nombre: "Por nombre de la película/colección", valor: "producto"},
+		{nombre: "Por mejor calificación", valor: "calificacion"},
 	],
 
 	// Agregar Productos

@@ -13,29 +13,23 @@ module.exports = {
 		});
 	},
 	quienesSomos: (req, res) => {
-		const tema = "institucional";
-		const codigo = "quienes-somos";
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
+			tema: "institucional",
+			codigo: "quienes-somos",
 			titulo: "Quiénes somos",
 		});
 	},
 	copyright: (req, res) => {
-		const tema = "institucional";
-		const codigo = "copyright";
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
+			tema: "institucional",
+			codigo: "copyright",
 			titulo: "Nuestra Política sobre DA",
 		});
 	},
 	perfilProductos: (req, res) => {
-		const tema = "institucional";
-		const codigo = "perfil-productos";
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
+			tema: "institucional",
+			codigo: "perfil-productos",
 			titulo: "Perfil de Películas",
 		});
 	},

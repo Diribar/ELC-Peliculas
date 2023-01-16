@@ -7,23 +7,13 @@ global.horarioLCF = new Date().getTime();
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
-// Variable status_registro
 // Se requiere el acceso a la BD, por eso el 'dotenv' va antes
 (async () => {
+	// Variable status_registro
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	global.status_registro = await BD_genericas.obtieneTodos("status_registro", "orden");
 	global.status_registro_us = await BD_genericas.obtieneTodos("status_registro_us", "orden");
 	global.roles_us = await BD_genericas.obtieneTodos("roles_usuarios", "orden");
-	// Menus de consultas
-	const variables = require("./funciones/3-Procesos/Variables");
-	global.menuOpciones = variables.menuOpciones;
-	let subOpcionesListado = variables.menuSubOpcionesListado;
-	let subOpcionesCFC_VPC = await BD_genericas.obtieneTodos("subcategorias", "orden_cons");
-	global.menusSubOpciones = {
-		listado: subOpcionesListado,
-		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
-		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
-	};
 	// Fin
 	return;
 })();
