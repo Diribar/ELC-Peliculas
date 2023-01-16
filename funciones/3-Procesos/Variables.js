@@ -24,10 +24,10 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las Películas", valor:"LT"},
-		{nombre: "Películas con algún Personaje Histórico", valor:"BHR PR"},
-		{nombre: "Películas con algún Hecho Histórico", valor:"BHR HC"},
-		{nombre: "Películas con Valores", valor:"VL"},
+		{nombre: "Todas las Películas", url: "listado", bhr: true, ficcion: true},
+		{nombre: "Películas con algún Personaje Histórico", url: "personajes", bhr: true},
+		{nombre: "Películas con algún Hecho Histórico", url: "hechos", bhr: true},
+		{nombre: "Películas con Valores", url: "valores", ficcion: true},
 	],
 	opcionesOrden: [
 		{nombre: "Sugeridas para el momento del año", valor: "momento"},
@@ -235,9 +235,7 @@ module.exports = {
 				titulo: "Valor principal",
 				nombre: "valor_id",
 				valores: registrosRCLV.valores,
-				mensajes: [
-					"Poné el más representativo.",
-				],
+				mensajes: ["Poné el más representativo."],
 				link: "valores",
 				grupo: "RCLV",
 			},
