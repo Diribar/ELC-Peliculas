@@ -1,0 +1,28 @@
+/* General */
+#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); overflow: hidden;}
+#filtros {display: flex; flex-direction: column; flex-grow: 1;}
+#filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
+#filtros * {font-size: 1rem; margin: 0;}
+#filtros select {border-radius: 5px;}
+
+/* Filtros personales guardados */
+#filtros #personalizados {display: flex; flex-direction: column; background: var(--gris-oscuro); padding: 20px;}
+#filtros #personalizados h1 {color: var(--celeste-claro);}
+#filtros #personalizados select {font-weight: bold;}
+#filtros #personalizados :is(select, option) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+
+/* Filtros actuales */
+#filtros #opciones {background: var(--gris-claro); padding: 20px;}
+#filtros #opciones {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
+#filtros #opciones select {margin-bottom: 15px;}
+#filtros #opciones .radio {margin: 2px auto 15px;}
+#filtros #opciones .radio input {margin-right: 3px;margin-top: 2px;}
+#filtros #opciones #busqueda {padding-bottom: 15px;}
+#filtros #opciones #busqueda input {padding: 0px 4px 0px 4px;}
+#filtros #opciones .margen-izq {margin-left: 15px;}
+
+/* Final */
+#filtros #opciones #final {justify-content: space-around; align-items: center;}
+#filtros #opciones #final button {border: none;}
+#filtros #opciones #final .fa-floppy-disk {color:blue; border-style: none;}
+#filtros #opciones #final .fa-circle-right {color:green;}
