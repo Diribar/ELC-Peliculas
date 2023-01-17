@@ -21,6 +21,32 @@ module.exports = {
 			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
 		},
 	],
+	// Uso general
+	variableGlobal: async () => {
+		// Campos de uso general
+		let campos = {
+			// Variable de entidades
+			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+			// Variables de usuario
+			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		};
+		// Variables de consultas
+		// let personajes=await BD_genericas.obtieneTodos("personajes", "nombre")
+
+		// Espera a  que todas se procesen y consolida la info
+		let valores = Object.values(campos);
+		valores = await Promise.all(valores).then(([...result]) => [...result]);
+
+		// Variables de 'campos'
+		let resultado = {};
+		Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		// console.log(50, resultado);
+
+		// Fin
+		return resultado;
+	},
 
 	// Consulta de Productos
 	layouts: [
@@ -38,6 +64,57 @@ module.exports = {
 		{nombre: "Por nombre de la película/colección", valor: "producto"},
 		{nombre: "Por mejor calificación", valor: "calificacion"},
 	],
+	camposConsulta: {
+		hechosReales: {
+			titulo: "Hechos Reales / Ficción",
+			listado: true,
+			valores: true,
+			opciones: [
+				{valor: "PersHecho", nombre: "Con Personaje y/o Hecho"},
+				{valor: "Pers", nombre: "Con Personaje Histórico"},
+				{valor: "Hecho", nombre: "Con Hecho Histórico"},
+				{valor: "Ficcion", nombre: "Ficción"},
+			],
+		},
+		personajes: {
+			titulo: "Personajes Históricos",
+			listado: true,
+			personajes: true,
+			valores: true,
+		},
+		hechos: {
+			titulo: "Hechos Históricos",
+			listado: true,
+			hechos: true,
+			valores: true,
+		},
+		valores: {
+			titulo: "Valores",
+			siempre: true,
+		},
+		publico: {
+			titulo: "Público Recomendado",
+			siempre: true,
+		},
+		epoca: {
+			titulo: "Época de Estreno",
+			siempre: true,
+			opciones: [
+				{valor: "1969", nombre: "Antes de 1970"},
+				{valor: "1999", nombre: "1970 - 1999"},
+				{valor: "2015", nombre: "2000 - 2015"},
+				{valor: "2016", nombre: "2016 - Presente"},
+			],
+		},
+		tipo_actuacion: {
+			titulo: "Tipo de Actuación",
+			siempre: true,
+		},
+		preferenciasUsuario: {
+			titulo: "Preferencias Personales",
+			siempre: true,
+		},
+	},
 
 	// Agregar Productos
 	camposDD: [

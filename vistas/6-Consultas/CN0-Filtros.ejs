@@ -31,64 +31,20 @@
 			</label>
 		</div>
 		<!-- Basada en Hechos Reales / Ficción -->
-		<div class="filtro flexCol listado">
-			<h3>Hechos Reales / Ficción</h3>
-			<select name="publico" >
-				<option value="">Sin Filtro</option>
-				<option value="">Con Personaje Histórico</option>
-				<option value="">Con Hecho Histórico</option>
-				<option value="">Con Personaje y/o Hecho</option>
-				<option value="">Ficción</option>
-			</select>
-		</div>
+		<%- include('CN-1Selects',{tema: hechosReales}) %>
 		<hr>
-		<!--Público Recomendado-->
-		<div class="flexCol">
-			<h1>Público Recomendado</h1>
-			<select name="publico" >
-				<option value="SF" selected>Sin Filtro</option>
-				<option value="FM">Familia</option>
-				<option value="MY">Mayores</option>
-				<option value="MN">Menores</option>
-			</select>
-		</div>
-		<!--ATP-->
-		<div>
-			<h1>Aptas Todo Público</h1>
-			<div class="radio flexRow">
-				<label><input type="radio" name="ATP" value="SF" checked>Sin Filtro</label>
-				<label><input type="radio" name="ATP" value="SI" class="margen-izq">Sólo ATP</label>
-			</div>
-	
-		</div>
-		<!--Mostrar Favoritas-->
-		<div>
-			<h1>Sólo Favoritas</h1>
-			<div class="radio flexRow">
-				<label><input type="radio" name="CFC-VPC" value="SF" checked>Sin Filtro</label>
-				<label><input type="radio" name="CFC-VPC" value="SI" class="margen-izq">SI</label>
-			</div>
-		</div>
-		<!--Vistas / Interés-->
-		<div class="flexCol">
-			<h1>Mostrar Descartadas</h1>
-			<select name="cuales">
-				<option value="NO" selected>NO</option>
-				<option value="SI">SI</option>
-				<option value="SV" >SI, y sólo éstas</option>
-			</select>
-		</div>
-		<!--Época de Estreno-->
-		<div class="flexCol">
-			<h1>Época de Estreno</h1>
-			<select name="Epoca" >
-				<option value="SF" selected>Sin Filtro</option>
-				<option value="1969">Antes de 1970</option>
-				<option value="1999">1970 - 1999</option>
-				<option value="2014">2000 - 2014</option>
-				<option value="2015">2015 - Presente</option>
-			</select>
-		</div>
+		<!-- Personajes Históricos -->
+		<%- include('CN-1Selects',{tema: personajes}) %>
+		<!-- Hechos Históricos -->
+		<%- include('CN-1Selects',{tema: hechos}) %>
+		<!-- Valores -->
+		<%- include('CN-1Selects',{tema: valores}) %>
+		<hr>
+		<!-- Público Recomendado -->
+		<%- include('CN-1Selects',{tema: publico}) %>
+		<!-- Época de Estreno -->
+		<%- include('CN-1Selects',{tema: epoca}) %>
+
 		<!--BÚSQUEDA-->
 		<div id="busqueda" class="flexCol"> 
 			<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
