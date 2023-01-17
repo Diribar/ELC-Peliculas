@@ -17,7 +17,7 @@
 					<% } %>
 				</select>
 				<!-- Orden -->
-				<select name="orden">
+				<select name="orden" required>
 					<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
 					<% if (!ordenElegido) { %>
 						<option value="" class="ocultar" selected>Ordenar por...</option>

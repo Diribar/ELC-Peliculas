@@ -3,9 +3,18 @@
 	<div id="personalizados"> 
 		<h1 >Filtro Personalizado</h1>
 		<select name="filtro-personalizado">
-			<option value="">Filtros Guardados</option>
-			<option value="1">Estándar</option>
+			<option value="">Filtros Guardados...</option>
+			<% for (filtro of filtrosPers) { %>
+				<option value="<%= filtro.id %>"><%= filtro.nombre %></option>
+			<% } %>
 		</select>
+		<div id="iconos" class="flexRow">
+			<i class="fa-solid fa-file" title="Crear un filtro nuevo"></i>
+			<i class="fa-solid fa-rotate-right" title="Reiniciar el filtro actual"></i>
+			<i class="fa-solid fa-floppy-disk" title="Guardar los cambios"></i>
+			<i class="fa-solid fa-pen" title="Cambiar el nombre"></i>
+			<i class="fa-solid fa-trash-can" title="Eliminar el filtro actual"></i>
+		</div>
 	</div>
 	<!-- Nuevos Filtros -->
 	<div id="opciones" class="flexCol">

@@ -14,6 +14,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 	global.status_registro = await BD_genericas.obtieneTodos("status_registro", "orden");
 	global.status_registro_us = await BD_genericas.obtieneTodos("status_registro_us", "orden");
 	global.roles_us = await BD_genericas.obtieneTodos("roles_usuarios", "orden");
+	global.filtroEstandar = await BD_genericas.obtienePorId("filtros_cabecera", 1);
 	// Fin
 	return;
 })();

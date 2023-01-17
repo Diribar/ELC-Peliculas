@@ -6,10 +6,11 @@
 #filtros select {border-radius: 5px;}
 
 /* Filtros personales guardados */
-#filtros #personalizados {display: flex; flex-direction: column; background: var(--gris-oscuro); padding: 20px;}
-#filtros #personalizados h1 {color: var(--celeste-claro);}
+#filtros #personalizados {display: flex; flex-direction: column; background: var(--gris-oscuro); padding: 15px 20px;}
+#filtros #personalizados :is(h1, .fa-solid) {color: var(--celeste-claro);}
 #filtros #personalizados select {font-weight: bold;}
 #filtros #personalizados :is(select, option) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+#filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 
 /* Filtros actuales */
 #filtros #opciones {background: var(--gris-claro); padding: 20px;}
