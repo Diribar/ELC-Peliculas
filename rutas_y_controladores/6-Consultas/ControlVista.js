@@ -13,7 +13,7 @@ module.exports = {
 		if (!req.session.opcionesElegidas) req.session.opcionesElegidas = {};
 		req.session.opcionesElegidas.layout = layoutElegido;
 		let opcionesElegidas = req.session.opcionesElegidas;
-		let ordenElegido = opcionesElegidas ? opcionesElegidas.orden : "";
+		let ordenElegido = opcionesElegidas && opcionesElegidas.orden ? opcionesElegidas.orden : "";
 
 		// Va a la vista
 		res.render("CMP-0Estructura", {
