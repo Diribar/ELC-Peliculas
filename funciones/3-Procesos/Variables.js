@@ -24,16 +24,17 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las Películas", url: "listados", bhr: true, ficcion: true},
+		{nombre: "Listado con Imagen", url: "listado"},
 		{nombre: "Películas con Personaje Histórico", url: "personajes", bhr: true},
 		{nombre: "Películas con Hecho Histórico", url: "hechos", bhr: true},
-		{nombre: "Películas con Valores", url: "valores", ficcion: true},
+		{nombre: "Películas con Valores", url: "valores"},
 	],
-	opcionesOrden: [
+	orden: [
 		{nombre: "Sugeridas para el momento del año", valor: "momento"},
 		{nombre: "Por fecha de incorporación", valor: "incorporacion"},
 		{nombre: "Por año de estreno", valor: "estreno"},
-		{nombre: "Por nombre del personaje/hecho", valor: "RCLV"},
+		{nombre: "Por año de ocurrencia", valor: "estreno", bhr: true},
+		{nombre: "Por nombre del personaje/hecho", valor: "rclv", bhr: true},
 		{nombre: "Por nombre de la película/colección", valor: "producto"},
 		{nombre: "Por mejor calificación", valor: "calificacion"},
 	],

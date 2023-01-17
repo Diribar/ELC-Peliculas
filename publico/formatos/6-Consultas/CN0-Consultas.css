@@ -1,5 +1,6 @@
 /* Temas generales */
 #cuerpo {flex-direction: row;}
+form {display: flex; flex-direction: row; flex-grow: 1;}
 
 /* Zona de Filtros */
 #cuerpo #zona-de-filtros {width: 220px; display: flex; flex-direction: column; justify-content: flex-start;}
@@ -7,12 +8,13 @@
 /* Zona de productos */
 #cuerpo #zona-de-prods {align-items: flex-start; height: 100%;}
 #cuerpo #zona-de-prods #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+#zona-de-prods #encabezado #izquierda {display: flex; flex-direction: row;}
 
 /* Menú de Opciones */
 #zona-de-prods select[name="layout"],
 #zona-de-prods select[name="orden"] {padding: 3px 6px; font-size: 1rem; font-weight: bold;}
 #zona-de-prods select[name="layout"],
-#zona-de-prods select[name="orden"] {border-radius: 10px; background: var(--gris-claro);}
+#zona-de-prods select[name="orden"] {border-radius: 7px; background: var(--gris-claro);}
 
 /* Contador */
 #cuerpo #contador-de-prods {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}

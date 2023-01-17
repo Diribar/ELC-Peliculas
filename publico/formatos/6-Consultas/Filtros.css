@@ -1,17 +1,19 @@
 /* General */
-#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); border-radius: 10px; overflow: hidden;}
+#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); overflow: hidden;}
+#filtros {display: flex; flex-direction: column; flex-grow: 1;}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
 #filtros * {font-size: 1rem; margin: 0;}
 #filtros select {border-radius: 5px;}
 
 /* Filtros personales guardados */
-#personalizado {display: flex; flex-direction: column; background: var(--azul-oscuro); padding: 20px;}
+#personalizado {display: flex; flex-direction: column; background: var(--gris-oscuro); padding: 20px;}
 #personalizado h1 {color: var(--celeste-claro);}
 #personalizado select {font-weight: bold;}
 #personalizado select, #personalizado option {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 
 /* Filtros actuales */
 #filtro-inf {background: var(--gris-claro); padding: 20px;}
+#filtro-inf {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
 #filtro-inf select {margin-bottom: 15px;}
 #filtro-inf .radio {margin: 2px auto 15px;}
 #filtro-inf .radio input {margin-right: 3px;margin-top: 2px;}

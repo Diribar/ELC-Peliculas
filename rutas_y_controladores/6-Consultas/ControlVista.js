@@ -25,7 +25,7 @@ module.exports = {
 			ordenElegido,
 			// Bases de datos
 			layouts: variables.layouts,
-			opcionesOrden: variables.opcionesOrden,
+			ordenes: variables.orden,
 		});
 	},
 };

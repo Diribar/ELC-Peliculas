@@ -1,42 +1,55 @@
-<!-- Filtros o Vitreaux -->
-<div id="zona-de-filtros">
-	<%- include('Filtros') %>
-</div>
-
-<!-- Menús -->
-<div id="zona-de-prods" class="flexCol grow">
-	<!-- Encabezado -->
-	<div id="encabezado" class="flexRow">
-		<div class="izquierda">
-			<!-- Layout -->
-			<select name="layout">
-				<!-- Opciones en base de datos -->
-				<% for (let layout of layouts) { %>
-					<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido.url) { %>selected<% } %>><%= layout.nombre %></option>
-				<% } %>
-			</select>
-			<!-- Orden -->
-			<select name="orden">
-				<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
-				<% if (!ordenElegido) { %>
-					<option value="" class="ocultar" selected>Ordenar por...</option>
-				<% } %>
-				<!-- Opciones en base de datos -->
-				<% for (let opcion of opcionesOrden) { %>
-					<option value="<%= opcion.valor %>" <% if (ordenElegido && opcion.valor == ordenElegido) { %>selected<% } %>><%= opcion.nombre %></option>
-				<% } %>
-			</select>
+<form action="">
+	<!-- Zona de Filtros -->
+	<div id="zona-de-filtros">
+		<%- include('Filtros') %>
+	</div>
+	
+	<!-- Zona de Productos -->
+	<div id="zona-de-prods" class="flexCol grow">
+		<!-- Encabezado -->
+		<div id="encabezado" class="flexRow">
+			<div id="izquierda">
+				<!-- Layout -->
+				<select name="layout">
+					<!-- Opciones en base de datos -->
+					<% for (let layout of layouts) { %>
+						<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido.url) { %>selected<% } %>><%= layout.nombre %></option>
+					<% } %>
+				</select>
+				<!-- Orden -->
+				<select name="orden">
+					<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
+					<% if (!ordenElegido) { %>
+						<option value="" class="ocultar" selected>Ordenar por...</option>
+					<% } %>
+					<!-- Opciones en base de datos -->
+					<% for (let orden of ordenes) { %>
+						<option value="<%= orden.valor %>" <% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %>><%= orden.nombre %></option>
+					<% } %>
+				</select>
+				<!-- Ascendente / Descendente -->
+				<div class="flexCol">
+					<div class="flexRow">
+						<input type="radio" name="orden" id="ascendente">
+						<label for="ascendente">Ascendente</label>
+					</div>
+					<div class="flexRow">
+						<input type="radio" name="orden" id="descendente">
+						<label for="descendente">Descendente</label>
+					</div>
+				</div>
+			</div>
+			<div id="derecha">
+				<!-- Contador -->
+				<button type="text" id="contador-de-prods">Contador</button>
+			</div>
 		</div>
-		<div class="derecha">
-			<!-- Contador -->
-			<button type="text" id="contador-de-prods">Contador</button>
+		<!-- Sector de películas -->
+		<div id="vistaProds">
+			<%- include("CN1-Listado") %>
+			<%- include("CN2-Personajes") %>
+			<%- include("CN3-Hechos") %>
+			<%- include("CN4-Valores") %>
 		</div>
 	</div>
-	<!-- Sector de películas -->
-	<div id="vistaProds">
-		<%- include("CN1-Listado") %>
-		<%- include("CN2-Personajes") %>
-		<%- include("CN3-Hechos") %>
-		<%- include("CN4-Valores") %>
-	</div>
-</div>
+</form>
