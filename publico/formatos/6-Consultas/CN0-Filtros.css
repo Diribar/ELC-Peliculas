@@ -13,17 +13,17 @@
 #filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 
 /* Filtros actuales */
-#filtros #opciones {background: var(--gris-claro); padding: 20px;}
-#filtros #opciones {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
-#filtros #opciones select {margin-bottom: 15px;}
-#filtros #opciones .radio {margin: 2px auto 15px;}
-#filtros #opciones .radio input {margin-right: 3px;margin-top: 2px;}
-#filtros #opciones #busqueda {padding-bottom: 15px;}
-#filtros #opciones #busqueda input {padding: 0px 4px 0px 4px;}
-#filtros #opciones .margen-izq {margin-left: 15px;}
+#filtros #campos {background: var(--gris-claro); padding: 20px;}
+#filtros #campos {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
+#filtros #campos select {margin-bottom: 15px;}
+#filtros #campos .radio {margin: 2px auto 15px;}
+#filtros #campos .radio input {margin-right: 3px;margin-top: 2px;}
+#filtros #campos #busqueda {padding-bottom: 15px;}
+#filtros #campos #busqueda input {padding: 0px 4px 0px 4px;}
+#filtros #campos .margen-izq {margin-left: 15px;}
 
 /* Final */
-#filtros #opciones #final {justify-content: space-around; align-items: center;}
-#filtros #opciones #final button {border: none;}
-#filtros #opciones #final .fa-floppy-disk {color:blue; border-style: none;}
-#filtros #opciones #final .fa-circle-right {color:green;}
+#filtros #campos #final {justify-content: space-around; align-items: center;}
+#filtros #campos #final button {border: none;}
+#filtros #campos #final .fa-floppy-disk {color:blue; border-style: none;}
+#filtros #campos #final .fa-circle-right {color:green;}
