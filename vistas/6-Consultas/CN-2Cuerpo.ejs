@@ -1,40 +1,42 @@
 <!-- Filtros o Vitreaux -->
 <div id="zona-de-filtros">
-	<% if (locals.subOpcion) { %><%- include('Filtros') %>
-	<% } else { %><img alt="Vitreaux" src="/imagenes/0-Base/Varios/Vitraux.jpg" title="Vitreaux"><% } %>
+	<%- include('Filtros') %>
 </div>
 
 <!-- Menús -->
 <div id="zona-de-prods" class="flexCol grow">
 	<!-- Encabezado -->
-	<div id="encabezado" class="flex-col">
+	<div id="encabezado" class="flexRow">
 		<div class="izquierda">
-			<!-- Opciones -->
-			<select name="layout" class="opcionesElegidas">
-				<% console.log(14, !locals.opcionesElegidas || !locals.opcionesElegidas.layout) %> 
-				<option value="" class="ocultar" <% if (!locals.opcionesElegidas || !locals.opcionesElegidas.layout) { %>selected<% } %>>Layout</option>
-				<% for (let menuOpcion of menuOpciones) { %>
-					<option value="/consultas/<%= menuOpcion.url %>" <% if (locals.opcion && menuOpcion.url == opcion.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
+			<!-- Layout -->
+			<select name="layout">
+				<!-- Opciones en base de datos -->
+				<% for (let layout of layouts) { %>
+					<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido.url) { %>selected<% } %>><%= layout.nombre %></option>
 				<% } %>
 			</select>
-
+			<!-- Orden -->
+			<select name="orden">
+				<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
+				<% if (!ordenElegido) { %>
+					<option value="" class="ocultar" selected>Ordenar por...</option>
+				<% } %>
+				<!-- Opciones en base de datos -->
+				<% for (let opcion of opcionesOrden) { %>
+					<option value="<%= opcion.valor %>" <% if (ordenElegido && opcion.valor == ordenElegido) { %>selected<% } %>><%= opcion.nombre %></option>
+				<% } %>
+			</select>
 		</div>
 		<div class="derecha">
 			<!-- Contador -->
-
+			<button type="text" id="contador-de-prods">Contador</button>
 		</div>
 	</div>
-	<!-- Sub-Opciones -->
-	<% if (locals.opcion) { %>
-		<select id = "menuSubopciones">
-		<% if (!locals.subOpcion) { %><option value="" selected>Elegí una opción</option><% } %>
-		<% for (let menuSubOpcion of menuSubOpciones) { %>
-			<option value="/consultas/<%= opcion.url + "/" + menuSubOpcion.url %>" <% if (locals.subOpcion && menuSubOpcion.url == subOpcion.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
-		<% } %>
-		</select>
-	<% } %>
 	<!-- Sector de películas -->
-	<div id="vistaPelis">
-		<% if (locals.subOpcion) { %><%- include(opcion.vista) %><% } %>
+	<div id="vistaProds">
+		<%- include("CN1-Listado") %>
+		<%- include("CN2-Personajes") %>
+		<%- include("CN3-Hechos") %>
+		<%- include("CN4-Valores") %>
 	</div>
 </div>

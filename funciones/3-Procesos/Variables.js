@@ -6,17 +6,17 @@ module.exports = {
 	// Inicio
 	opcionesInicio: [
 		{
-			href: "/consultas/listado/sugeridas",
+			href: "/consultas/listado",
 			src: "/imagenes/0-Base/Inicio/Recomendame.jpg",
 			p: "Quiero que me recomienden una película o colección",
 		},
 		{
-			href: "/consultas/cfc",
+			href: "/consultas/listado/cfc",
 			src: "/imagenes/0-Base/Inicio/Cruz.jpg",
 			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
 		},
 		{
-			href: "/consultas/vpc",
+			href: "/consultas/listado/vpc",
 			src: "/imagenes/0-Base/Inicio/Valores.jpg",
 			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
 		},
@@ -24,14 +24,14 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las Películas", url: "listado", bhr: true, ficcion: true},
-		{nombre: "Películas con algún Personaje Histórico", url: "personajes", bhr: true},
-		{nombre: "Películas con algún Hecho Histórico", url: "hechos", bhr: true},
+		{nombre: "Todas las Películas", url: "listados", bhr: true, ficcion: true},
+		{nombre: "Películas con Personaje Histórico", url: "personajes", bhr: true},
+		{nombre: "Películas con Hecho Histórico", url: "hechos", bhr: true},
 		{nombre: "Películas con Valores", url: "valores", ficcion: true},
 	],
 	opcionesOrden: [
 		{nombre: "Sugeridas para el momento del año", valor: "momento"},
-		{nombre: "Por fecha de incorporación a nuestra página", valor: "incorporacion"},
+		{nombre: "Por fecha de incorporación", valor: "incorporacion"},
 		{nombre: "Por año de estreno", valor: "estreno"},
 		{nombre: "Por nombre del personaje/hecho", valor: "RCLV"},
 		{nombre: "Por nombre de la película/colección", valor: "producto"},
