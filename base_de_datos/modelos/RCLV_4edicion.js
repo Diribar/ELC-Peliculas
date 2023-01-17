@@ -9,15 +9,16 @@ module.exports = (sequelize, dt) => {
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 
-		// Campos para PERSONAJES
+		// Específico de 'personajes'
 		apodo: {type: dt.STRING(30)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
+		epoca_id: {type: dt.STRING(3)},
 		ap_mar_id: {type: dt.INTEGER},
 		proceso_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 
-		// Campos para HECHOS
+		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
