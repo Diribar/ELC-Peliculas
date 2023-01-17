@@ -6,17 +6,12 @@ global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "se
 global.horarioLCF = new Date().getTime();
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
-require("dotenv").config(); // Para usar el archivo '.env'
 // Se requiere el acceso a la BD, por eso el 'dotenv' va antes
+require("dotenv").config(); // Para usar el archivo '.env'
 (async () => {
-	// Variable status_registro
-	const BD_genericas = require("./funciones/2-BD/Genericas");
-	global.status_registro = await BD_genericas.obtieneTodos("status_registro", "orden");
-	global.status_registro_us = await BD_genericas.obtieneTodos("status_registro_us", "orden");
-	global.roles_us = await BD_genericas.obtieneTodos("roles_usuarios", "orden");
-	global.filtroEstandar = await BD_genericas.obtienePorId("filtros_cabecera", 1);
-	// Fin
-	return;
+	const variables = require("./funciones/3-Procesos/Variables");
+	let resultados = await variables.variableGlobal();
+	global = {...global, ...resultados};
 })();
 
 const path = require("path");

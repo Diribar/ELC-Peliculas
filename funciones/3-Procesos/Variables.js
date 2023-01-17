@@ -26,37 +26,26 @@ module.exports = {
 		// Campos de uso general
 		let campos = {
 			// Variable de entidades
-			status_registro: BD_genericas.obtieneTodos("status_registro", "orden").then(n=>n.map(n=>n.nombre)),
+			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
 			// Variables de usuario
-			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden").then(n=>n.map(n=>n.nombre)),
-			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden").then(n=>n.map(n=>n.nombre)),
+			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		};
 		// Variables de consultas
-		let BD_opciones = {
-			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1).then(n=>n.nombre),
-			// personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
-		};
-
-		// console.log(42, campos, BD_opciones);
+		// let personajes=await BD_genericas.obtieneTodos("personajes", "nombre")
 
 		// Espera a  que todas se procesen y consolida la info
-		let nombres = [...Object.keys(campos), ...Object.keys(BD_opciones)];
-		let valoresCampos = Object.values(campos);
-		let valoresBD_opciones = Object.values(BD_opciones);
-		let valores = await Promise.all([...valoresCampos, ...valoresBD_opciones]).then(([...result]) => {
-			console.log(48,result.length);
-			return [...result];
-		});
-		// let resultado = {};
-		// valores.forEach((valor, i) => (resultado[nombres[i]] = valor));
-		// console.log(50, resultado);
-		console.log(58, valores);
+		let valores = Object.values(campos);
+		valores = await Promise.all(valores).then(([...result]) => [...result]);
 
-		// Los agrega a la variable 'global'
-		// global = {...global};
+		// Variables de 'campos'
+		let resultado = {};
+		Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		// console.log(50, resultado);
 
 		// Fin
-		return;
+		return resultado;
 	},
 
 	// Consulta de Productos
