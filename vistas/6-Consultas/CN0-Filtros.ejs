@@ -31,27 +31,29 @@
 			</label>
 		</div>
 		<!-- Basada en Hechos Reales / Ficción -->
-		<%- include('CN-1Selects',{tema: hechosReales}) %>
+		<%- include('CN-1Selects', {tema: hechosReales}) %>
 		<hr>
 		<!-- Personajes Históricos -->
-		<%- include('CN-1Selects',{tema: personajes}) %>
+		<%- include('CN-1Selects', {tema: personajes}) %>
 		<!-- Hechos Históricos -->
-		<%- include('CN-1Selects',{tema: hechos}) %>
+		<%- include('CN-1Selects', {tema: hechos}) %>
 		<!-- Valores -->
-		<%- include('CN-1Selects',{tema: valores}) %>
+		<%- include('CN-1Selects', {tema: valores}) %>
 		<hr>
 		<!-- Público Recomendado -->
-		<%- include('CN-1Selects',{tema: publico}) %>
+		<%- include('CN-1Selects', {tema: publicos}) %>
 		<!-- Época de Estreno -->
-		<%- include('CN-1Selects',{tema: epoca}) %>
+		<%- include('CN-1Selects', {tema: epoca}) %>
+		<!-- Tipo de Actuación -->
+
+		<!-- Musical -->
+
+		<!-- Interés en la Película -->
+		<%- include('CN-1Selects', {tema: interes_opciones}) %>
 
 		<!--BÚSQUEDA-->
 		<div id="busqueda" class="flexCol"> 
 			<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
-		</div>
-		<div id="final" class="flexRow"><!--Íconos y botones-->
-			<button class="sin-boton" type="text" title="Sin ningún filtro"><i class="fa-solid fa-circle-xmark"></i></button>
-			<button class="sin-boton" type="text"><i class="fa-solid fa-floppy-disk" title="Guardar los filtros"></i></button>
 			<button class="sin-boton" type="submit"><i class="fa-solid fa-circle-right" title="Aplicar los filtros"></i></button>
 		</div>
 	</div>

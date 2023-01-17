@@ -30,14 +30,18 @@ module.exports = {
 			// Variables de usuario
 			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+			// Consultas
 			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+			personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
+			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
+			valores: BD_genericas.obtieneTodos("valores", "nombre"),
+			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "nombre"),
 		};
-		// Variables de consultas
-		// let personajes=await BD_genericas.obtieneTodos("personajes", "nombre")
 
 		// Espera a  que todas se procesen y consolida la info
 		let valores = Object.values(campos);
-		valores = await Promise.all(valores).then(([...result]) => [...result]);
+		valores = await Promise.all(valores);
 
 		// Variables de 'campos'
 		let resultado = {};
@@ -92,7 +96,7 @@ module.exports = {
 			titulo: "Valores",
 			siempre: true,
 		},
-		publico: {
+		publicos: {
 			titulo: "Público Recomendado",
 			siempre: true,
 		},
@@ -110,8 +114,8 @@ module.exports = {
 			titulo: "Tipo de Actuación",
 			siempre: true,
 		},
-		preferenciasUsuario: {
-			titulo: "Preferencias Personales",
+		interes_opciones: {
+			titulo: "Interés en la Película",
 			siempre: true,
 		},
 	},
@@ -236,7 +240,7 @@ module.exports = {
 		{nombre: "ocurrio"},
 		{nombre: "musical"},
 		{nombre: "tipo_actuacion_id"},
-		{nombre: "publico_sugerido_id"},
+		{nombre: "publico_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "valor_id", grupo: "RCLV"},
@@ -279,8 +283,8 @@ module.exports = {
 			},
 			{
 				titulo: "Público sugerido",
-				nombre: "publico_sugerido_id",
-				valores: await BD_genericas.obtieneTodos("publicos_sugeridos", "orden"),
+				nombre: "publico_id",
+				valores: await BD_genericas.obtieneTodos("publicos", "orden"),
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
@@ -330,7 +334,6 @@ module.exports = {
 			"dia_del_ano_id",
 			"ano",
 			"categoria_id",
-			"subcategoria_id",
 			"ap_mar_id",
 			"proceso_id",
 			"rol_iglesia_id",
@@ -389,7 +392,7 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", input: true},
 			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion"},
 
-			{titulo: "Público sugerido", nombre: "publico_sugerido_id", relac_include: "publico_sugerido"},
+			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico"},
 			{
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
@@ -420,12 +423,6 @@ module.exports = {
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
-			{
-				nombre: "subcategoria_id",
-				titulo: "Subcategoría",
-				personajes: true,
-				relac_include: "subcategoria",
-			},
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
 			{
 				nombre: "proceso_id",

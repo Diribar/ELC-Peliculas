@@ -31,7 +31,10 @@ module.exports = {
 		})();
 		let camposConsulta = variables.camposConsulta;
 		for (let campo in camposConsulta)
-			if (!camposConsulta[campo].opciones) camposConsulta[campo].opciones = [];
+			if (!camposConsulta[campo].opciones) {
+				let opciones = global[campo];
+				camposConsulta[campo].opciones = opciones ? opciones : [];
+			}
 
 		// Va a la vista
 		res.render("CMP-0Estructura", {
