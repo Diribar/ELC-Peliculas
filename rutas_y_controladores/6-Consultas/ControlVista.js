@@ -1,5 +1,6 @@
 "use strict";
-// Definir variables
+// Variables
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -7,14 +8,20 @@ module.exports = {
 		delete req.session.opcionesElegidas;
 		res.redirect("./listado");
 	},
-	consultasConLayout: (req, res) => {
+	consultasConLayout: async (req, res) => {
 		// Variables
 		let layoutElegido = req.path.replace("/", "");
 		if (!req.session.opcionesElegidas) req.session.opcionesElegidas = {};
 		req.session.opcionesElegidas.layout = layoutElegido;
 		let opcionesElegidas = req.session.opcionesElegidas;
 		let ordenElegido = opcionesElegidas && opcionesElegidas.orden ? opcionesElegidas.orden : "";
-
+		// Base de datos
+		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let filtrosPers = userID
+			? await BD_genericas.obtienePorCampos("filtros_cabecera", {usuario_id: userID})
+			: [];
+		if (!filtrosPers) filtrosPers = [];
+		filtrosPers.push(filtroEstandar);
 		// Va a la vista
 		res.render("CMP-0Estructura", {
 			tema: "consultas",
@@ -26,6 +33,7 @@ module.exports = {
 			// Bases de datos
 			layouts: variables.layouts,
 			ordenes: variables.orden,
+			filtrosPers,
 		});
 	},
 };
