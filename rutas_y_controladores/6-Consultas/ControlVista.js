@@ -20,7 +20,8 @@ module.exports = {
 		let filtrosPers = userID
 			? await BD_genericas.obtienePorCampos("filtros_cabecera", {usuario_id: userID})
 			: [];
-		filtrosPers.push(filtroEstandar)
+		if (!filtrosPers) filtrosPers = [];
+		filtrosPers.push(filtroEstandar);
 		// Va a la vista
 		res.render("CMP-0Estructura", {
 			tema: "consultas",

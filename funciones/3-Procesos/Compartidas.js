@@ -404,7 +404,7 @@ module.exports = {
 		this.horarioLCF();
 
 		// Tareas si cambió la fecha
-		const nombreDeArchivo = "archFechaVig.json";
+		const nombreDeArchivo = "fecha.json";
 		let rutaNombre = path.join(__dirname, nombreDeArchivo);
 		let fechas = () => {
 			// Obtiene el valor de las fechas

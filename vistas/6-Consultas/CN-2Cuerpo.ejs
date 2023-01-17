@@ -8,41 +8,7 @@
 	<div id="zona-de-prods" class="flexCol grow">
 		<!-- Encabezado -->
 		<div id="encabezado" class="flexRow">
-			<div id="izquierda">
-				<!-- Layout -->
-				<select name="layout">
-					<!-- Opciones en base de datos -->
-					<% for (let layout of layouts) { %>
-						<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido.url) { %>selected<% } %>><%= layout.nombre %></option>
-					<% } %>
-				</select>
-				<!-- Orden -->
-				<select name="orden" required>
-					<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
-					<% if (!ordenElegido) { %>
-						<option value="" class="ocultar" selected>Ordenar por...</option>
-					<% } %>
-					<!-- Opciones en base de datos -->
-					<% for (let orden of ordenes) { %>
-						<option value="<%= orden.valor %>" <% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %>><%= orden.nombre %></option>
-					<% } %>
-				</select>
-				<!-- Ascendente / Descendente -->
-				<div class="flexCol">
-					<div class="flexRow">
-						<input type="radio" name="orden" id="ascendente">
-						<label for="ascendente">Ascendente</label>
-					</div>
-					<div class="flexRow">
-						<input type="radio" name="orden" id="descendente">
-						<label for="descendente">Descendente</label>
-					</div>
-				</div>
-			</div>
-			<div id="derecha">
-				<!-- Contador -->
-				<button type="text" id="contador-de-prods">Contador</button>
-			</div>
+			<%- include('CN0-Encabezado') %>
 		</div>
 		<!-- Sector de películas -->
 		<div id="vistaProds">

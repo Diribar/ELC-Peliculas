@@ -1,21 +1,27 @@
 /* General */
 #filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); overflow: hidden;}
-#filtros {display: flex; flex-direction: column; flex-grow: 1;}
+/* #filtros {display: flex; flex-direction: column; flex-grow: 1;} */
+#filtros {display: flex; flex-direction: column;}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
 #filtros * {font-size: 1rem; margin: 0;}
 #filtros select {border-radius: 5px;}
 
-/* Filtros personales guardados */
+/* Filtros - Encabezado */
 #filtros #personalizados {display: flex; flex-direction: column; background: var(--gris-oscuro); padding: 15px 20px;}
 #filtros #personalizados :is(h1, .fa-solid) {color: var(--celeste-claro);}
 #filtros #personalizados select {font-weight: bold;}
 #filtros #personalizados :is(select, option) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 #filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 
-/* Filtros actuales */
+/* Filtros - Campos */
 #filtros #campos {background: var(--gris-claro); padding: 20px;}
-#filtros #campos {display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;}
-#filtros #campos select {margin-bottom: 15px;}
+#filtros #campos {flex-grow: 1; justify-content: space-between;}
+#filtros #campos .filtro {margin: 7.5px 0;}
+/* Filtros - Campos - Checkbox */
+#filtros #campos .filtro.checkbox {display: flex; flex-direction: row; align-items: center; justify-content: space-around;}
+#filtros #campos .filtro.checkbox * {line-height: 0; display: flex; flex-direction: row; align-items: center;}
+#filtros #campos .filtro.checkbox input {margin-right: 3px;}
+
 #filtros #campos .radio {margin: 2px auto 15px;}
 #filtros #campos .radio input {margin-right: 3px;margin-top: 2px;}
 #filtros #campos #busqueda {padding-bottom: 15px;}

@@ -5,6 +5,7 @@
 .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
 .grow {flex-grow: 1;}
 .spaceBetween {justify-content: space-between;}
+.spaceAround {justify-content: space-around;}
 
 /* Íconos clave */
 .fa-solid {line-height: normal;}

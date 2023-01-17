@@ -18,6 +18,30 @@
 	</div>
 	<!-- Campos específicos -->
 	<div id="campos" class="flexCol">
+
+		<!-- CFC/VPC -->
+		<div class="filtro checkbox mostrar-siempre">
+			<label>
+				<input type="checkbox" name="categoría_id" value="CFC" class="input">
+				Fe Católica
+			</label>
+			<label>
+				<input type="checkbox" name="categoría_id" value="VPC" class="input">
+				Valores
+			</label>
+		</div>
+		<!-- Basada en Hechos Reales / Ficción -->
+		<div class="filtro flexCol listado">
+			<h3>Hechos Reales / Ficción</h3>
+			<select name="publico" >
+				<option value="">Sin Filtro</option>
+				<option value="">Con Personaje Histórico</option>
+				<option value="">Con Hecho Histórico</option>
+				<option value="">Con Personaje y/o Hecho</option>
+				<option value="">Ficción</option>
+			</select>
+		</div>
+		<hr>
 		<!--Público Recomendado-->
 		<div class="flexCol">
 			<h1>Público Recomendado</h1>
@@ -36,15 +60,6 @@
 				<label><input type="radio" name="ATP" value="SI" class="margen-izq">Sólo ATP</label>
 			</div>
 	
-		</div>
-		<!--Centradas en la Fe Católica-->
-		<div>
-			<h1>CFC / VPC</h1>
-			<div class="radio flexRow spaceBetween">
-				<label><input type="radio" name="CFC_VPC" value="SF" checked>Sin Filtro</label>
-				<label><input type="radio" name="CFC_VPC" value="CFC">CFC</label>
-				<label><input type="radio" name="CFC_VPC" value="VPC">VPC</label>
-			</div>
 		</div>
 		<!--Mostrar Favoritas-->
 		<div>
