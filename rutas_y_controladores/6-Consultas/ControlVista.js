@@ -3,18 +3,29 @@
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	home: (req, res) => {
+	consultasSinLayout: (req, res) => {
+		delete req.session.opcionesElegidas;
 		res.redirect("./listado");
 	},
-	consultas: (req, res) => {
-		console.log(10, req.path.replace("/", ""));
+	consultasConLayout: (req, res) => {
+		// Variables
+		let layoutElegido = req.path.replace("/", "");
+		if (!req.session.opcionesElegidas) req.session.opcionesElegidas = {};
+		req.session.opcionesElegidas.layout = layoutElegido;
+		let opcionesElegidas = req.session.opcionesElegidas;
+		let ordenElegido = opcionesElegidas ? opcionesElegidas.orden : "";
+
 		// Va a la vista
 		res.render("CMP-0Estructura", {
 			tema: "consultas",
 			titulo: "Consulta de Películas",
-			layoutElegido: req.path.replace("/", ""),
+			// Elecciones
+			layoutElegido,
+			opcionesElegidas,
+			ordenElegido,
+			// Bases de datos
 			layouts: variables.layouts,
-			orden: variables.opcionesOrden,
+			opcionesOrden: variables.opcionesOrden,
 		});
 	},
 };

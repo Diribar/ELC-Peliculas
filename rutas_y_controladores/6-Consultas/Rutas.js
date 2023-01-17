@@ -8,10 +8,10 @@ const vista = require("./ControlVista");
 let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
 
 // Home
-router.get("/", vista.home);
+router.get("/", vista.consultasSinLayout);
 
 // Vistas de Opciones
-router.get("/:opcion", urlAceptadas, vista.consultas);
+router.get("/:opcion", urlAceptadas, vista.consultasConLayout);
 
 // Fin
 module.exports = router;
