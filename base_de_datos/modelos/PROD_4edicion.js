@@ -21,7 +21,6 @@ module.exports = (sequelize, dt) => {
 		avatar_url: {type: dt.STRING(100)},
 
 		categoria_id: {type: dt.STRING(3)},
-		
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
