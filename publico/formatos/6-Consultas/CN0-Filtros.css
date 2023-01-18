@@ -30,8 +30,8 @@
 #filtros .filtro.checkbox #label-input * {line-height: 0;}
 #filtros .filtro.checkbox #label-inputs label {margin-left: 4px;}
 #filtros .filtro.checkbox #label-inputs input {margin: 0 2px;}
-#filtros .filtro.checkbox.vertical #label-inputs {margin-top: 5px;}
-#filtros .filtro.checkbox.horizontal h3 {width: -webkit-fill-available;}
+#filtros .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
+#filtros .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
 
 /* Condicionales */
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
