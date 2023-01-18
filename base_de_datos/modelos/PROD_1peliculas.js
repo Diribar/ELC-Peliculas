@@ -70,7 +70,7 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.belongsTo(n.tipos_de_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
+		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
 		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});

@@ -37,6 +37,7 @@ module.exports = {
 			valores: BD_genericas.obtieneTodos("valores", "nombre"),
 			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "nombre"),
+			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "nombre"),
 		};
 
 		// Espera a  que todas se procesen y consolida la info
@@ -60,15 +61,23 @@ module.exports = {
 		{nombre: "Películas con Valores", url: "valores"},
 	],
 	orden: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento"},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", asc: true},
 		{nombre: "Por fecha de incorporación", valor: "incorporacion"},
 		{nombre: "Por año de estreno", valor: "estreno"},
 		{nombre: "Por año de ocurrencia", valor: "estreno", bhr: true},
-		{nombre: "Por nombre del personaje/hecho", valor: "rclv", bhr: true},
-		{nombre: "Por nombre de la película/colección", valor: "producto"},
+		{nombre: "Por nombre del personaje/hecho", valor: "rclv", bhr: true, asc: true},
+		{nombre: "Por nombre de la película/colección", valor: "producto", asc: true},
 		{nombre: "Por mejor calificación", valor: "calificacion"},
 	],
-	camposConsulta: {
+	camposFiltros: {
+		categoria:{
+			titulo: "Relacionada con la Fe Católica",
+			siempre: true,
+			opciones: [
+				{id: "CFC", nombre: "SI"},
+				{id: "VPC", nombre: "NO"},
+			],
+		},
 		hechosReales: {
 			titulo: "Hechos Reales / Ficción",
 			listado: true,
@@ -110,7 +119,7 @@ module.exports = {
 				{valor: "2016", nombre: "2016 - Presente"},
 			],
 		},
-		tipo_actuacion: {
+		tipos_actuacion: {
 			titulo: "Tipo de Actuación",
 			siempre: true,
 		},
@@ -279,7 +288,7 @@ module.exports = {
 			{
 				titulo: "Tipo de Actuación",
 				nombre: "tipo_actuacion_id",
-				valores: await BD_genericas.obtieneTodos("tipos_de_actuacion", "orden"),
+				valores: await BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 			},
 			{
 				titulo: "Público sugerido",

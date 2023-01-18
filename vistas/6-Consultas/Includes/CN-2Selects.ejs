@@ -1,0 +1,8 @@
+<div id="<%= tema.codigo %>" class="filtro flexCol">
+	<select name="publico" required>
+		<option value=""><%= tema.titulo %></option>
+		<% for (let opcion of tema.opciones) { %>
+			<option value="<%= opcion.valor %> "><%= opcion.nombre %></option>
+		<% } %>
+	</select>
+</div>

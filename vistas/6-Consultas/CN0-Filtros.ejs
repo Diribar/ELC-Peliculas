@@ -1,7 +1,6 @@
 <section id="filtros">
 	<!--Filtros Guardados-->
 	<div id="personalizados"> 
-		<h1 >Filtro Personalizado</h1>
 		<select name="filtro-personalizado">
 			<option value="">Filtros Guardados...</option>
 			<% for (filtro of filtrosPers) { %>
@@ -18,43 +17,34 @@
 	</div>
 	<!-- Campos específicos -->
 	<div id="campos" class="flexCol">
-
 		<!-- CFC/VPC -->
-		<div class="filtro checkbox mostrar-siempre">
-			<label>
-				<input type="checkbox" name="categoría_id" value="CFC" class="input">
-				Fe Católica
-			</label>
-			<label>
-				<input type="checkbox" name="categoría_id" value="VPC" class="input">
-				Valores
-			</label>
-		</div>
-		<!-- Basada en Hechos Reales / Ficción -->
-		<%- include('CN-1Selects', {tema: hechosReales}) %>
+		<%- include('CN-1Checkbox', {tema: categoria}) %>
 		<hr>
+		<!-- Basada en Hechos Reales / Ficción -->
+		<%- include('CN-2Selects', {tema: hechosReales}) %>
 		<!-- Personajes Históricos -->
-		<%- include('CN-1Selects', {tema: personajes}) %>
+		<%- include('CN-2Selects', {tema: personajes}) %>
 		<!-- Hechos Históricos -->
-		<%- include('CN-1Selects', {tema: hechos}) %>
+		<%- include('CN-2Selects', {tema: hechos}) %>
 		<!-- Valores -->
-		<%- include('CN-1Selects', {tema: valores}) %>
+		<%- include('CN-2Selects', {tema: valores}) %>
 		<hr>
 		<!-- Público Recomendado -->
-		<%- include('CN-1Selects', {tema: publicos}) %>
+		<%- include('CN-2Selects', {tema: publicos}) %>
 		<!-- Época de Estreno -->
-		<%- include('CN-1Selects', {tema: epoca}) %>
+		<%- include('CN-2Selects', {tema: epoca}) %>
+		<!-- Interés en la Película -->
+		<%- include('CN-2Selects', {tema: interes_opciones}) %>
+		<hr>
 		<!-- Tipo de Actuación -->
-
+		<%- include('CN-1Checkbox', {tema: tipos_actuacion}) %>
 		<!-- Musical -->
 
-		<!-- Interés en la Película -->
-		<%- include('CN-1Selects', {tema: interes_opciones}) %>
-
-		<!--BÚSQUEDA-->
-		<div id="busqueda" class="flexCol"> 
+		<hr>
+		<!-- Búsqueda -->
+		<div id="busqueda" class="filtro flexCol"> 
 			<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
-			<button class="sin-boton" type="submit"><i class="fa-solid fa-circle-right" title="Aplicar los filtros"></i></button>
+			<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
 		</div>
 	</div>
 </section>
