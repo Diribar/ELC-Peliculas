@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 	};
 	let camposError = [
 		...Array.from(v.radioSI).map((n) => n.name),
-		...["tipo_actuacion_id", "publico_sugerido_id", "RCLV"],
+		...["tipo_actuacion_id", "publico_id", "RCLV"],
 	];
 
 	// FUNCIONES *******************************************
