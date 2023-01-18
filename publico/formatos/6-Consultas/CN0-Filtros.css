@@ -41,6 +41,7 @@
 #filtros #campos .filtro.checkbox#categoria:not(:has(input:checked)) {background: var(--rojo-oscuro); color: snow; font-weight: bold;}
 
 /* Filtros - Búsqueda */
-#filtros #campos #busqueda {position: relative;}
+#filtros #campos #busqueda {position: relative; background-color: var(--verde-intermedio);}
+#filtros #campos #busqueda {padding-top: 10px; padding-bottom: 10px;}
 #filtros #campos #busqueda input {padding: 0px 4px; }
 #filtros #campos #busqueda i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
