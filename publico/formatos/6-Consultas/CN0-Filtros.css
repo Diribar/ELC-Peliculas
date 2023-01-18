@@ -37,7 +37,7 @@
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold;}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
-#filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; background: var(--verde-oscuro); font-weight: bold;}
+#filtros #campos .filtro.checkbox:has(input:checked) > * {background: var(--verde-oscuro); color: snow; font-weight: bold;}
 
 /* Filtros - Búsqueda */
 #filtros #campos #busqueda {position: relative;}
