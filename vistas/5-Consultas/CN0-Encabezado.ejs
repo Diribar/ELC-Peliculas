@@ -1,10 +1,10 @@
 <section id="encabezado" class="flexRow">
 	<div id="izquierda">
 		<!-- Layout -->
-		<select name="layout">
+		<select name="layout" onchange="location = this.value;">
 			<!-- Opciones en base de datos -->
 			<% for (let layout of layouts) { %>
-				<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido.url) { %>selected<% } %>><%= layout.nombre %></option>
+				<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido) { %>selected<% } %>><%= layout.nombre %></option>
 			<% } %>
 		</select>
 		<!-- Orden -->
