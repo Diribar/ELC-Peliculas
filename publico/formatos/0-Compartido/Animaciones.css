@@ -1,5 +1,5 @@
 /* Desplazamiento - Desplazar el contenido*/
-.sectorConDesplV {overflow-y: scroll;}
+.sectorConDesplV {overflow-y: auto;}
 /* Desplazamiento - Ocultar la 'side-bar' */
 /* .sectorConDesplV {scrollbar-width: none; Firefox} */
 /* .sectorConDesplV::-webkit-scrollbar {display: none; Safari and Chrome} */
