@@ -10,9 +10,9 @@
 #datosLargos #contenido .datosAdicionales {margin-top: 10px;}
 
 /* Sinopsis - General y Texto*/
-#datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
-#datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background: var(--amarillo-claro);}
-#datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 93px;}
+#datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; background: var(--amarillo-claro);}
+#datosLargos #contenido #sinopsis {border-radius: 15px; border: var(--gris-oscuro) 5px solid;}
+#datosLargos #contenido #sinopsis #sinopsisContenido {font-size: 1.1rem;}
 /* Sinopsis - Ayuda */
 #datosLargos #contenido #sinopsis .ayuda .ayudaMostrar {max-width: 300px;}
 
