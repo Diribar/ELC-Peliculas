@@ -29,13 +29,15 @@ module.exports = {
 			// Fin
 			return resultado;
 		})();
-		let camposConsulta = variables.camposConsulta;
-		for (let campo in camposConsulta)
-			if (!camposConsulta[campo].opciones) {
+		let camposFiltros = variables.camposFiltros;
+		for (let campo in camposFiltros) {
+			camposFiltros[campo].codigo = campo;
+			if (!camposFiltros[campo].opciones) {
 				let opciones = global[campo];
-				camposConsulta[campo].opciones = opciones ? opciones : [];
+				camposFiltros[campo].opciones = opciones ? opciones : [];
 			}
-
+		}
+		// return res.send(camposFiltros)
 		// Va a la vista
 		res.render("CMP-0Estructura", {
 			tema: "consultas",
@@ -50,7 +52,7 @@ module.exports = {
 			// Filtros - Encabezado
 			filtrosPers,
 			// Filtros - Campos
-			...camposConsulta,
+			...camposFiltros,
 		});
 	},
 };
