@@ -127,6 +127,25 @@ module.exports = {
 			titulo: "Interés en la Película",
 			siempre: true,
 		},
+		links: {
+			titulo: "Links",
+			siempre: true,
+			opciones: [
+				{id: "CFC", nombre: "Con links gratuitos"},
+				{id: "VPC", nombre: "Con links 'pay per view'"},
+				{id: "VPC", nombre: "Con links gratuitos y ppv"},
+				{id: "VPC", nombre: "Con links de abono"},
+				{id: "VPC", nombre: "Todos los links"},
+			],
+		},
+		musical:{
+			titulo: "Es un musical",
+			siempre: true,
+			opciones: [
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
+			],
+		},
 	},
 
 	// Agregar Productos
