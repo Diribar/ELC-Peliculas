@@ -18,27 +18,26 @@
 #filtros #campos {flex-grow: 1; justify-content: space-between;}
 #filtros #campos * {order: 2;}
 #filtros #campos .filtro {padding: 7.5px 20px;}
-#filtros #campos .filtro:has(select:valid, input:checked) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
 
 /* Filtros - Campos - Select */
 #filtros .filtro select {border-radius: 5px;}
-#filtros .filtro select:valid {color: snow; background: var(--verde-oscuro); font-weight: bold;}
-#filtros .filtro select option {color: var(--azul-oscuro); background: snow;}
-#filtros .filtro select option#sinFiltro {display: block;}
+#filtros .filtro select option {background: snow; color: var(--azul-oscuro);}
+#filtros .filtro select option#sinFiltro {display: block; font-style: italic;}
 
 /* Filtros - Campos - Checkbox */
 #filtros .filtro.checkbox {display: flex; flex-direction: column; align-items: center;}
-#filtros .filtro.checkbox#categoria {order: 1}
-#filtros .filtro:has(input:checked) > * {color: snow; background: var(--verde-oscuro); font-weight: bold;}
+#filtros .filtro.checkbox#categoria {order: 1} /* La categoría siempre va arriba de todo */
 #filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; margin-top: 5px; width: 100%;}
 #filtros .filtro.checkbox #label-input * {line-height: 0;}
-#filtros .filtro.checkbox label {margin-left: 4px;}
-#filtros .filtro.checkbox input {margin: 0 2px;}
+#filtros .filtro.checkbox #label-inputs label {margin-left: 4px;}
+#filtros .filtro.checkbox #label-inputs input {margin: 0 2px;}
 
-/* Filtros - Campos - Radio */
-#filtros #campos .radio {margin: 2px auto 15px;}
-#filtros #campos .radio input {margin-right: 3px;margin-top: 2px;}
+/* Condicionales */
+#filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
+#filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold;}
+#filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
+#filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; background: var(--verde-oscuro); font-weight: bold;}
 
 /* Filtros - Búsqueda */
 #filtros #campos #busqueda {position: relative;}
