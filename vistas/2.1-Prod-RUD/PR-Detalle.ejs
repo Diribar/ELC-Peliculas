@@ -15,8 +15,8 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("CR-Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis" class="desplazam">
-				<nav class="infoDesplazam"><%= producto.sinopsis %></nav>
+			<div id="sinopsis" class="bordeConSombra">
+				<div id="contenidoSinopsis"><%= producto.sinopsis %></div>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -51,8 +51,8 @@
 		</div>
 	</div>
 </section>
-<section id="datosBreves" class="desplazam aparece">
-	<div class="infoDesplazam">
+<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+	<nav>
 		<!-- Calificaciones -->
 		<h3>Calificaciones</h3>
 		<% if (producto.calificacion) { %>
@@ -76,5 +76,5 @@
 				</p>
 			<% } %>
 		</div>
-	</div>
+	</nav>
 </section>
