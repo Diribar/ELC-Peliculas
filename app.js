@@ -10,7 +10,7 @@ global.horarioLCF = new Date().getTime();
 require("dotenv").config(); // Para usar el archivo '.env'
 (async () => {
 	const variables = require("./funciones/3-Procesos/Variables");
-	let resultados = await variables.variableGlobal();
+	let resultados = await variables.global();
 	global = {...global, ...resultados};
 })();
 

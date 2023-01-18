@@ -22,7 +22,7 @@ module.exports = {
 		},
 	],
 	// Uso general
-	variableGlobal: async () => {
+	global: async () => {
 		// Campos de uso general
 		let campos = {
 			// Variable de entidades
@@ -36,8 +36,8 @@ module.exports = {
 			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
 			valores: BD_genericas.obtieneTodos("valores", "nombre"),
 			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
-			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "nombre"),
-			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "nombre"),
+			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
+			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 		};
 
 		// Espera a  que todas se procesen y consolida la info

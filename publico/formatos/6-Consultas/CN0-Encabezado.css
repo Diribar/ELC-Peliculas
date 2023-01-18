@@ -1,6 +1,6 @@
 /* Izquierda */
 #encabezado #izquierda {display: flex; flex-direction: row;}
-#encabezado #izquierda select {padding: 3px 6px; font-size: 1rem; font-weight: bold; border-radius: 7px;}
+#encabezado #izquierda select {padding: 3px 6px; font-size: 1rem; font-weight: bold;}
 #encabezado #izquierda select:invalid {background: var(--rojo-oscuro); color: snow; font-style: italic;}
 #encabezado #izquierda select:valid {background: var(--verde-oscuro); color: snow;}
 #encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}

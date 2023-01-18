@@ -24,7 +24,7 @@ module.exports = {
 				: [];
 			if (!resultado) resultado = [];
 			// Le agrega el filtro estándar
-			if (!global.filtroEstandar) await variables.variableGlobal();
+			if (!global.filtroEstandar) await variables.global();
 			resultado.push(global.filtroEstandar);
 			// Fin
 			return resultado;
