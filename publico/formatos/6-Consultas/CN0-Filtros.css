@@ -23,7 +23,7 @@
 /* Filtros - Campos - Select */
 #filtros .filtro select {border-radius: 5px;}
 #filtros .filtro select option {background: snow; color: var(--azul-oscuro);}
-#filtros .filtro select option#sinFiltro {display: block; font-style: italic;}
+#filtros .filtro select option.sinFiltro {display: block; font-style: italic;}
 
 /* Filtros - Campos - Checkbox */
 #filtros .filtro.checkbox {display: flex; flex-direction: column; align-items: center;}
