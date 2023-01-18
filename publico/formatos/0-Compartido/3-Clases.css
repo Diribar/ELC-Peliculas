@@ -17,15 +17,17 @@
 {opacity: .5 !important; cursor: not-allowed !important;}
 .inactivo *, .inactivoErrores *, .inactivoVersion * {border-color: transparent !important;}
 
+/* Maneras de Ocultar */
+.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, 
+.ocultaCfc, .ocultaOcurrio {display: none;}
+.invisible {visibility: hidden;}
+
 /* Otras */
 .absolute {position: absolute}
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
-.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, 
-.ocultaCfc, .ocultaOcurrio {display: none;}
-
-.invisible {visibility: hidden;}
-.bloqueado {background: var(--celeste-oscuro);}
 .rojo {color: var(--rojo-oscuro);}
 .negrita {font-weight: bold;}
+.bloqueado {background: var(--celeste-oscuro);}
+.bordeConSombra {box-shadow: 0px 0px 10px rgb(100 100 100)}
