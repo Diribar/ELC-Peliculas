@@ -1,9 +1,8 @@
 /* Contexto */
 #subCuerpo {flex-grow: 1; justify-content: space-evenly;}
-#subCuerpo #datos {margin: 0 50px; background: var(--gris-intermedio); height: 70%;}
 #subCuerpo #datos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#subCuerpo #datos {padding: 20px; border-radius: 20px;}
-#subCuerpo #datos {border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
+#subCuerpo #datos {border: var(--gris-oscuro) 7px solid; background: var(--gris-intermedio);}
+#subCuerpo #datos {margin: 0 50px; padding: 20px; height: 70%; border-radius: 20px;}
 #subCuerpo #datos * {line-height: 1;}
 
 /* Datos a validar */
