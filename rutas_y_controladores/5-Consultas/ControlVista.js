@@ -30,12 +30,12 @@ module.exports = {
 			return resultado;
 		})();
 		// Proceso de 'camposFiltros
-		let camposFiltros = variables.camposFiltros
+		let camposFiltros = {...variables.camposFiltros}
 		for (let campo in camposFiltros) {
 			// Si el campo no aplica para el 'layoutElegido', lo elimina
-			if (!camposFiltros[campo].siempre&&!camposFiltros[campo][layoutElegido]) {
-				delete camposFiltros[campo]
-				continue
+			if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) {
+				delete camposFiltros[campo];
+				continue;
 			}
 			// Le agrega el nombre del campo a cada bloque de información
 			camposFiltros[campo].codigo = campo;

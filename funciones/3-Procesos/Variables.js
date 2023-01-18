@@ -94,19 +94,19 @@ module.exports = {
 			],
 		},
 		personajes: {
-			titulo: "Personajes Históricos",
+			titulo: "Personaje Histórico",
 			listado: true,
 			personajes: true,
 			valores: true,
 		},
 		hechos: {
-			titulo: "Hechos Históricos",
+			titulo: "Hecho Histórico",
 			listado: true,
 			hechos: true,
 			valores: true,
 		},
 		valores: {
-			titulo: "Valores",
+			titulo: "Valor",
 			siempre: true,
 		},
 		publicos: {
