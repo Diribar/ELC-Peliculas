@@ -55,7 +55,7 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Listado con Imagen", url: "listado"},
+		{nombre: "Listado de Imágenes", url: "listado"},
 		{nombre: "Películas con Personaje Histórico", url: "personajes", bhr: true},
 		{nombre: "Películas con Hecho Histórico", url: "hechos", bhr: true},
 		{nombre: "Películas con Valores", url: "valores"},
