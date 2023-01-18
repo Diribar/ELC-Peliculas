@@ -76,8 +76,8 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/6-Consultas"),
-	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
+	path.resolve(__dirname, "./vistas/5-Consultas"),
+	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
@@ -97,7 +97,7 @@ app.use("/links", rutaLinks_CRUD);
 const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
 const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
-const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
+const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/revision/usuarios", rutaRevisarUs);
