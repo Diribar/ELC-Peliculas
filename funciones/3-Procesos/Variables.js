@@ -22,7 +22,7 @@ module.exports = {
 		},
 	],
 	// Uso general
-	global: async function()  {
+	global: async function () {
 		// Campos para consultas
 		let campos = {
 			// Variable de entidades
@@ -47,7 +47,14 @@ module.exports = {
 		// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
 		let resultado = {};
 		Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
-		
+
+		// RCLVs: conserva solamente los aprobados y con producto
+		let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
+		for (let entidadRCLV of this.entidadesRCLV) {
+			resultado[entidadRCLV] = resultado[entidadRCLV].filter(
+				(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
+			);
+		}
 		// Fin
 		// console.log(50, resultado);
 		return resultado;
@@ -87,10 +94,10 @@ module.exports = {
 			listado: true,
 			valores: true,
 			opciones: [
-				{valor: "Pers", nombre: "Con Personaje Histórico"},
-				{valor: "Hecho", nombre: "Con Hecho Histórico"},
-				{valor: "PersHecho", nombre: "Con Personaje y/o Hecho"},
-				{valor: "Ficcion", nombre: "Ficción"},
+				{id: "Pers", nombre: "Con Personaje Histórico"},
+				{id: "Hecho", nombre: "Con Hecho Histórico"},
+				{id: "PersHecho", nombre: "Con Personaje y/o Hecho"},
+				{id: "Ficcion", nombre: "Ficción"},
 			],
 		},
 		personajes: {
@@ -98,6 +105,9 @@ module.exports = {
 			listado: true,
 			personajes: true,
 			valores: true,
+			// opciones: [
+
+			// ]
 		},
 		hechos: {
 			titulo: "Hecho Histórico",
@@ -117,10 +127,10 @@ module.exports = {
 			titulo: "Época de Estreno",
 			siempre: true,
 			opciones: [
-				{valor: "1969", nombre: "Antes de 1970"},
-				{valor: "1999", nombre: "1970 - 1999"},
-				{valor: "2015", nombre: "2000 - 2015"},
-				{valor: "2016", nombre: "2016 - Presente"},
+				{id: "1969", nombre: "Antes de 1970"},
+				{id: "1999", nombre: "1970 - 1999"},
+				{id: "2015", nombre: "2000 - 2015"},
+				{id: "2016", nombre: "2016 - Presente"},
 			],
 		},
 		tipos_actuacion: {
@@ -140,6 +150,15 @@ module.exports = {
 				{id: "VPC", nombre: "Con links gratuitos y ppv"},
 				{id: "VPC", nombre: "Con links de abono"},
 				{id: "VPC", nombre: "Todos los links"},
+			],
+		},
+		castellano: {
+			titulo: "Idioma Castellano",
+			siempre: true,
+			opciones: [
+				{id: "SI", nombre: "Hablada en castellano"},
+				{id: "Subt", nombre: "Subtítulos en castellano"},
+				{id: "NO", nombre: "En otro idioma"},
 			],
 		},
 		musical: {
