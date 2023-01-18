@@ -29,14 +29,24 @@ module.exports = {
 			// Fin
 			return resultado;
 		})();
-		let camposFiltros = variables.camposFiltros;
+		// Proceso de 'camposFiltros
+		let camposFiltros = variables.camposFiltros
 		for (let campo in camposFiltros) {
+			// Si el campo no aplica para el 'layoutElegido', lo elimina
+			if (!camposFiltros[campo].siempre&&!camposFiltros[campo][layoutElegido]) {
+				delete camposFiltros[campo]
+				continue
+			}
+			// Le agrega el nombre del campo a cada bloque de información
 			camposFiltros[campo].codigo = campo;
+			// Le agrega las opciones de la BD, si no tiene ninguna
 			if (!camposFiltros[campo].opciones) {
 				let opciones = global[campo];
 				camposFiltros[campo].opciones = opciones ? opciones : [];
 			}
 		}
+		// Opciones de 'orden'
+		let ordenes = variables.orden.filter((n) => n.siempre || n[layoutElegido]);
 		// return res.send(camposFiltros)
 		// Va a la vista
 		res.render("CMP-0Estructura", {
@@ -48,11 +58,11 @@ module.exports = {
 			ordenElegido,
 			// Layout y Orden
 			layouts: variables.layouts,
-			ordenes: variables.orden,
+			ordenes,
 			// Filtros - Encabezado
 			filtrosPers,
 			// Filtros - Campos
-			...camposFiltros,
+			campos: camposFiltros,
 		});
 	},
 };

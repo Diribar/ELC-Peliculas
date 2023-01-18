@@ -18,32 +18,32 @@
 	<!-- Campos específicos -->
 	<div id="campos" class="flexCol">
 		<!-- CFC/VPC -->
-		<%- include('CN-1CheckboxV', {tema: categoria}) %>
+		<%- include('CN-1CheckboxV', {tema: campos.categoria}) %>
 		<div class="sectorConDesplV">
 			<nav>
 				<!-- Basada en Hechos Reales / Ficción -->
-				<%- include('CN-3Selects', {tema: hechosReales}) %>
+				<%- include('CN-3Selects', {tema: campos.hechosReales}) %>
 				<!-- Personajes Históricos -->
-				<%- include('CN-3Selects', {tema: personajes}) %>
+				<%- include('CN-3Selects', {tema: campos.personajes}) %>
 				<!-- Hechos Históricos -->
-				<%- include('CN-3Selects', {tema: hechos}) %>
+				<%- include('CN-3Selects', {tema: campos.hechos}) %>
 				<!-- Valores -->
-				<%- include('CN-3Selects', {tema: valores}) %>
+				<%- include('CN-3Selects', {tema: campos.valores}) %>
 				<hr>
 				<!-- Público Recomendado -->
-				<%- include('CN-3Selects', {tema: publicos}) %>
+				<%- include('CN-3Selects', {tema: campos.publicos}) %>
 				<!-- Época de Estreno -->
-				<%- include('CN-3Selects', {tema: epoca}) %>
+				<%- include('CN-3Selects', {tema: campos.epoca}) %>
 				<!-- Interés en la Película -->
-				<%- include('CN-3Selects', {tema: interes_opciones}) %>
+				<%- include('CN-3Selects', {tema: campos.interes_opciones}) %>
 				<!-- Links -->
-				<%- include('CN-3Selects', {tema: links}) %>
+				<%- include('CN-3Selects', {tema: campos.links}) %>
 				<hr>
 				<!-- Tipo de Actuación -->
-				<%- include('CN-1CheckboxV', {tema: tipos_actuacion}) %>
+				<%- include('CN-1CheckboxV', {tema: campos.tipos_actuacion}) %>
 				<hr>
 				<!-- Musical -->
-				<%- include('CN-2CheckboxH', {tema: musical}) %>
+				<%- include('CN-2CheckboxH', {tema: campos.musical}) %>
 				<hr>
 			</nav>
 		</div>

@@ -1,9 +1,11 @@
-<div id="<%= tema.codigo %>" class="filtro select flexCol">
-	<select name="<%= tema.codigo %>">
-		<option value=""><%= tema.titulo %></option>
-		<option value="" class="sinFiltro">Sin filtro</option>
-		<% for (let opcion of tema.opciones) { %>
-			<option value="<%= opcion.valor %> "><%= opcion.nombre %></option>
-		<% } %>
-	</select>
-</div>
+<% if (tema) { %>
+	<div id="<%= tema.codigo %>" class="filtro select flexCol">
+		<select name="<%= tema.codigo %>">
+			<option value=""><%= tema.titulo %></option>
+			<option value="" class="sinFiltro">Sin filtro</option>
+			<% for (let opcion of tema.opciones) { %>
+				<option value="<%= opcion.valor %> "><%= opcion.nombre %></option>
+			<% } %>
+		</select>
+	</div>
+<% } %>
