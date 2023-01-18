@@ -14,8 +14,8 @@
 #filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 
 /* Filtros - Campos - General */
-#filtros #campos {background: var(--gris-claro); padding: 10px 0;}
-#filtros #campos {flex-grow: 1; justify-content: space-between;}
+#filtros #campos {background: var(--gris-claro);}
+#filtros #campos {flex-grow: 1; height: 0; justify-content: space-between; }
 #filtros #campos * {order: 2;}
 #filtros #campos .filtro {padding: 7.5px 20px;}
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
@@ -26,20 +26,21 @@
 #filtros .filtro select option.sinFiltro {display: block; font-style: italic;}
 
 /* Filtros - Campos - Checkbox */
-#filtros .filtro.checkbox {display: flex; flex-direction: column; align-items: center;}
-#filtros .filtro.checkbox#categoria {order: 1} /* La categoría siempre va arriba de todo */
-#filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; margin-top: 5px; width: 100%;}
+#filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
 #filtros .filtro.checkbox #label-input * {line-height: 0;}
 #filtros .filtro.checkbox #label-inputs label {margin-left: 4px;}
 #filtros .filtro.checkbox #label-inputs input {margin: 0 2px;}
+#filtros .filtro.checkbox.vertical #label-inputs {margin-top: 5px;}
+#filtros .filtro.checkbox.horizontal h3 {width: -webkit-fill-available;}
 
 /* Condicionales */
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold;}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.checkbox:has(input:checked) > * {background: var(--verde-oscuro); color: snow; font-weight: bold;}
+#filtros #campos .filtro.checkbox#categoria:not(:has(input:checked)) {background: var(--rojo-oscuro); color: snow; font-weight: bold;}
 
 /* Filtros - Búsqueda */
 #filtros #campos #busqueda {position: relative;}
 #filtros #campos #busqueda input {padding: 0px 4px; }
-#filtros #campos #busqueda i {position: absolute; right: 2px; translate: 0 -50%; top: 50%;}
+#filtros #campos #busqueda i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
