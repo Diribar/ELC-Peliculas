@@ -1,13 +1,10 @@
-/* Zona de Filtros */
-#cuerpo #zona-de-filtros {width: 220px; display: flex; flex-direction: column; justify-content: flex-start;}
-
 /* General */
-#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); overflow: hidden;}
+#cuerpo #filtros {width: 220px;}
+#cuerpo #filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #filtros {display: flex; flex-direction: column; }
+
 /* #filtros {display: flex; flex-direction: column; flex-grow: 1;} */
-#filtros {display: flex; flex-direction: column;}
-#filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
-#filtros * {font-size: 1rem; margin: 0;}
-#filtros select {border-radius: 5px;}
+#filtros * {font-size: 1rem;}
 
 /* Filtros - Personalizados */
 #filtros #personalizados {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
@@ -17,11 +14,16 @@
 #filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 
 /* Filtros - Campos */
-#filtros #campos {background: var(--gris-claro); padding: 10px 20px;}
+#filtros #campos {background: var(--gris-claro); padding: 10px 0;}
 #filtros #campos {flex-grow: 1; justify-content: space-between;}
-#filtros #campos .filtro {margin: 7.5px 0;}
-#filtros select:valid {background: var(--verde-oscuro); color: snow; font-weight: bold;}
-#filtros hr {border-top: var(--gris-oscuro) 1px dashed;}
+#filtros #campos :has(select:valid) {background: var(--verde-oscuro);}
+#filtros #campos .filtro {padding: 7.5px 20px;}
+#filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
+
+/* Filtros - Campos - Select */
+#filtros .filtro select {border-radius: 5px;}
+#filtros .filtro select:valid {color: snow; background: var(--verde-oscuro); font-weight: bold;}
+#filtros .filtro option {color: var(--azul-oscuro); background: snow;}
 
 /* Filtros - Campos - Checkbox */
 #filtros #campos .filtro.checkbox {display: flex; flex-direction: column; align-items: center;}
