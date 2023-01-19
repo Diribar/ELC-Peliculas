@@ -30,7 +30,7 @@ module.exports = {
 		const codigo = req.path.slice(1);
 		let titulo =
 			codigo == "alta-mail"
-				? "Registro de Mail"
+				? "Alta de Mail"
 				: codigo == "olvido-contrasena"
 				? "Olvido de Contraseña"
 				: "";
@@ -81,25 +81,25 @@ module.exports = {
 		if (!feedbackEnvioMail.OK)
 			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Agrega el usuario
+		let status_registro_id = global.status_registro_us.find((n) => n.mail_a_validar).id;
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,
 			email,
-			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
+			status_registro_id,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
 		let informacion = {
 			mensajes: [
-				"La generación de una nueva contraseña fue exitosa.",
-				"Te la hemos enviado por mail.",
-				"Por favor, usala para ingresar al login.",
-				"Haciendo click abajo de este mensaje, vas al Login.",
+				"Hemos generado tu usuario con éxito, con esa dirección de mail.",
+				"También hemos generado un contraseña, te la hemos enviado por mail.",
+				"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
 			],
 			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-			titulo: "Generación de contraseña",
-			colorFondo: "verde",
+			titulo: "Alta de Usuario",
+			check: true,
 		};
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
@@ -181,7 +181,7 @@ module.exports = {
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
 			titulo: "Bienvenido/a a la familia ELC",
-			colorFondo: "verde",
+			check: true,
 		};
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
@@ -281,7 +281,7 @@ module.exports = {
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 			titulo: "Solicitud de ABM exitosa",
-			colorFondo: "verde",
+			check: true,
 		};
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
@@ -374,7 +374,7 @@ module.exports = {
 				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout", autofocus: true},
 			],
 			titulo: "Logout",
-			colorFondo: "gris",
+			trabajando: true,
 		};
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
