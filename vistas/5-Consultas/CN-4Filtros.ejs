@@ -20,7 +20,7 @@
 		<!-- CFC/VPC -->
 		<%- include('CN-1CheckboxV', {tema: categoria}) %>
 		<div class="sectorConDesplV">
-			<nav>
+			<nav class="flexCol">
 				<!-- Basada en Hechos Reales / Ficción -->
 				<%- include('CN-3Selects', {tema: hechosReales}) %>
 				<!-- Personajes Históricos -->
@@ -38,6 +38,8 @@
 				<%- include('CN-3Selects', {tema: interes_opciones}) %>
 				<!-- Links -->
 				<%- include('CN-3Selects', {tema: links}) %>
+				<!-- Idioma Castellano -->
+				<%- include('CN-3Selects', {tema: castellano}) %>
 				<hr>
 				<!-- Tipo de Actuación -->
 				<%- include('CN-1CheckboxV', {tema: tipos_actuacion}) %>

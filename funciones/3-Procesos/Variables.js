@@ -22,35 +22,59 @@ module.exports = {
 		},
 	],
 	// Uso general
-	global: async () => {
-		// Campos de uso general
+	global_BD: async function () {
+		// Funciones
+		let FN_awaits = async () => {
+			// Espera a  que todas se procesen y consolida la info
+			let valores = Object.values(campos);
+			valores = await Promise.all(valores);
+
+			// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
+			Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		};
+		let FN_RCLVs = () => {
+			let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
+			for (let entidadRCLV of entidadesRCLV) 
+				resultado[entidadRCLV] = resultado[entidadRCLV].filter(
+					(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
+				);			
+		};
+
+		// Variables
+		let resultado = {};
+		let entidadesRCLV = this.entidadesRCLV;
 		let campos = {
 			// Variable de entidades
 			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
 			// Variables de usuario
 			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
-			// Consultas
+			// Consultas - Filtro Personalizado
 			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+			// Consultas - RCLV
 			personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
 			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
 			valores: BD_genericas.obtieneTodos("valores", "nombre"),
+			// Consultas - Complementos de RCLV
+			epoca: BD_genericas.obtieneTodos("epoca", "orden"),
+			procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+			roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+			// Consultas - Otros
 			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
 			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 		};
+		// Procesa los 'awaits'
+		await FN_awaits();
 
-		// Espera a  que todas se procesen y consolida la info
-		let valores = Object.values(campos);
-		valores = await Promise.all(valores);
+		// Conserva solamente los RCLVs aprobados y con producto
+		FN_RCLVs();
 
-		// Variables de 'campos'
-		let resultado = {};
-		Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
-		// console.log(50, resultado);
+		// Resultado
+		global = {...global, ...resultado};
 
 		// Fin
-		return resultado;
+		return;
 	},
 
 	// Consulta de Productos
@@ -61,16 +85,21 @@ module.exports = {
 		{nombre: "Películas con Valores", url: "valores"},
 	],
 	orden: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", asc: true},
-		{nombre: "Por fecha de incorporación", valor: "incorporacion"},
-		{nombre: "Por año de estreno", valor: "estreno"},
-		{nombre: "Por año de ocurrencia", valor: "estreno", bhr: true},
-		{nombre: "Por nombre del personaje/hecho", valor: "rclv", bhr: true, asc: true},
-		{nombre: "Por nombre de la película/colección", valor: "producto", asc: true},
-		{nombre: "Por mejor calificación", valor: "calificacion"},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", asc: true, siempre: true},
+		{nombre: "Por fecha interna de agregado", valor: "incorporacion", siempre: true},
+		{nombre: "Por año de estreno", valor: "estreno", siempre: true},
+		{nombre: "Por año de nacimiento del personaje", valor: "estreno", bhr: true, personajes: true},
+		{nombre: "Por año de ocurrencia del hecho", valor: "estreno", bhr: true, hechos: true},
+		{nombre: "Por año de nacimiento u ocurrencia", valor: "estreno", bhr: true, listado: true},
+		{nombre: "Por nombre del personaje", valor: "rclv", asc: true, personajes: true},
+		{nombre: "Por nombre del hecho", valor: "rclv", asc: true, hechos: true},
+		{nombre: "Por nombre del valor", valor: "rclv", asc: true, valores: true},
+		{nombre: "Por nombre de la película o colección", valor: "producto", asc: true, siempre: true},
+		{nombre: "Por calificación interna", valor: "calificacion", siempre: true},
 	],
 	camposFiltros: {
-		categoria:{
+		// Principales
+		categoria: {
 			titulo: "Relacionada con la Fe Católica",
 			siempre: true,
 			opciones: [
@@ -83,28 +112,30 @@ module.exports = {
 			listado: true,
 			valores: true,
 			opciones: [
-				{valor: "PersHecho", nombre: "Con Personaje y/o Hecho"},
-				{valor: "Pers", nombre: "Con Personaje Histórico"},
-				{valor: "Hecho", nombre: "Con Hecho Histórico"},
-				{valor: "Ficcion", nombre: "Ficción"},
+				{id: "Pers", nombre: "Con Personaje Histórico"},
+				{id: "Hecho", nombre: "Con Hecho Histórico"},
+				{id: "PersHecho", nombre: "Con Personaje y/o Hecho"},
+				{id: "Ficcion", nombre: "Ficción"},
 			],
 		},
+		// RCLV
 		personajes: {
-			titulo: "Personajes Históricos",
+			titulo: "Personaje Histórico",
 			listado: true,
 			personajes: true,
 			valores: true,
 		},
 		hechos: {
-			titulo: "Hechos Históricos",
+			titulo: "Hecho Histórico",
 			listado: true,
 			hechos: true,
 			valores: true,
 		},
 		valores: {
-			titulo: "Valores",
+			titulo: "Valor",
 			siempre: true,
 		},
+		// Otros
 		publicos: {
 			titulo: "Público Recomendado",
 			siempre: true,
@@ -113,10 +144,10 @@ module.exports = {
 			titulo: "Época de Estreno",
 			siempre: true,
 			opciones: [
-				{valor: "1969", nombre: "Antes de 1970"},
-				{valor: "1999", nombre: "1970 - 1999"},
-				{valor: "2015", nombre: "2000 - 2015"},
-				{valor: "2016", nombre: "2016 - Presente"},
+				{id: "1969", nombre: "Antes de 1970"},
+				{id: "1999", nombre: "1970 - 1999"},
+				{id: "2015", nombre: "2000 - 2015"},
+				{id: "2016", nombre: "2016 - Presente"},
 			],
 		},
 		tipos_actuacion: {
@@ -138,7 +169,16 @@ module.exports = {
 				{id: "VPC", nombre: "Todos los links"},
 			],
 		},
-		musical:{
+		castellano: {
+			titulo: "Idioma Castellano",
+			siempre: true,
+			opciones: [
+				{id: "SI", nombre: "Hablada en castellano"},
+				{id: "Subt", nombre: "Subtítulos en castellano"},
+				{id: "NO", nombre: "En otro idioma"},
+			],
+		},
+		musical: {
 			titulo: "Es un musical",
 			siempre: true,
 			opciones: [

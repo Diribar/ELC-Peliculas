@@ -2,8 +2,8 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const API = require("./US-ControlAPI");
+const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");

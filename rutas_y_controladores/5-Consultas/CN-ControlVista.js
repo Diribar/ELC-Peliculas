@@ -1,7 +1,7 @@
 "use strict";
 // Variables
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procesos = require("./CN-Procesos");
 
 module.exports = {
 	consultasSinLayout: (req, res) => {
@@ -17,26 +17,10 @@ module.exports = {
 		let ordenElegido = opcionesElegidas && opcionesElegidas.orden ? opcionesElegidas.orden : "";
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		// Información para la vista
-		let filtrosPers = await (async () => {
-			// Obtiene los filtros personales
-			let resultado = userID
-				? await BD_genericas.obtienePorCampos("filtros_cabecera", {usuario_id: userID})
-				: [];
-			if (!resultado) resultado = [];
-			// Le agrega el filtro estándar
-			if (!global.filtroEstandar) await variables.global();
-			resultado.push(global.filtroEstandar);
-			// Fin
-			return resultado;
-		})();
-		let camposFiltros = variables.camposFiltros;
-		for (let campo in camposFiltros) {
-			camposFiltros[campo].codigo = campo;
-			if (!camposFiltros[campo].opciones) {
-				let opciones = global[campo];
-				camposFiltros[campo].opciones = opciones ? opciones : [];
-			}
-		}
+		let filtrosPers = await procesos.filtrosPers(userID);
+		let camposFiltros = procesos.camposFiltros(layoutElegido)
+		// Obtiene los 'órdenes' que corresponden al layout elegido
+		let ordenes = variables.orden.filter((n) => n.siempre || n[layoutElegido]);
 		// return res.send(camposFiltros)
 		// Va a la vista
 		res.render("CMP-0Estructura", {
@@ -48,7 +32,7 @@ module.exports = {
 			ordenElegido,
 			// Layout y Orden
 			layouts: variables.layouts,
-			ordenes: variables.orden,
+			ordenes,
 			// Filtros - Encabezado
 			filtrosPers,
 			// Filtros - Campos
