@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 // const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const vista = require("./RU-ControlVista");
 
 // Middlewares ***********************************************
 const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
