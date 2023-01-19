@@ -2,7 +2,7 @@
 // Definir variables
 const express = require("express");
 const router = express.Router();
-const vista = require("./ControlVista");
+const vista = require("./CN-ControlVista");
 
 // Middlewares
 let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
