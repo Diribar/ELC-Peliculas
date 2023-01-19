@@ -47,20 +47,25 @@ module.exports = {
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
 	// Genera el cartel de información
-	cartelNuevaContrasena: () => {
-		// Datos para la vista
-		let informacion = {
-			mensajes: [
-				"Te hemos enviado una contraseña por mail.",
-				"Por favor, usala para ingresar al login.",
-				"Haciendo click abajo de este mensaje, vas al Login.",
-			],
-			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-			titulo: "La generación de una nueva contraseña fue exitosa",
-			check: true,
-		};
-		// Fin
-		return informacion;
+	cartelNuevaContrasena: {
+		mensajes: [
+			"Te hemos enviado una contraseña por mail.",
+			"Por favor, usala para ingresar al login.",
+			"Haciendo click abajo de este mensaje, vas al Login.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
+		titulo: "La generación de una nueva contraseña fue exitosa",
+		check: true,
+	},
+	cartelAltaExitosaMail: {
+		mensajes: [
+			"Hemos generado tu usuario con éxito, con esa dirección de mail.",
+			"También hemos generado un contraseña, te la hemos enviado por mail.",
+			"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
+		titulo: "Alta exitosa de Usuario",
+		check: true,
 	},
 	loginConMail: async function (email) {
 		// Obtiene el usuario
@@ -68,7 +73,7 @@ module.exports = {
 		// Le agrega la diferencia horaria
 		// usuario.imagenDerecha = this.imagenDerecha(usuario);
 		// Fin
-		return usuario
+		return usuario;
 	},
 	imagenDerecha: (usuario) => {
 		// Averigua el horario local

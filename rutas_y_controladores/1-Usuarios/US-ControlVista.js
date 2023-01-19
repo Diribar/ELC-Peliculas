@@ -91,16 +91,7 @@ module.exports = {
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
-		let informacion = {
-			mensajes: [
-				"Hemos generado tu usuario con éxito, con esa dirección de mail.",
-				"También hemos generado un contraseña, te la hemos enviado por mail.",
-				"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
-			],
-			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-			titulo: "Alta de Usuario",
-			check: true,
-		};
+		let informacion = procesos.cartelAltaExitosaMail;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},
@@ -360,25 +351,6 @@ module.exports = {
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
-	preLogout: (req, res) => {
-		// Variables
-		let usuario = req.session.usuario;
-		let informacion = {
-			mensajes: [
-				"¿Estás segur" +
-					(usuario.sexo_id == "M" ? "a" : usuario.sexo_id == "V" ? "o" : "o/a") +
-					" de que te querés desloguear?",
-			],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Cancelar"},
-				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout", autofocus: true},
-			],
-			titulo: "Logout",
-			trabajando: true,
-		};
-		// Fin
-		return res.render("CMP-0Estructura", {informacion});
-	},
 	logout: (req, res) => {
 		let url = req.session.urlSinUsuario;
 		// Borra el session y un cookie
@@ -411,8 +383,7 @@ module.exports = {
 		// Borra los errores
 		req.session.errores = "";
 		// Datos para la vista
-		const codigo = req.path.slice(1);
-		let informacion = procesos.cartelNuevaContrasena(codigo);
+		let informacion = procesos.cartelNuevaContrasena;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},
