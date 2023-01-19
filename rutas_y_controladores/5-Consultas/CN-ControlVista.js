@@ -21,7 +21,7 @@ module.exports = {
 		let camposFiltros = procesos.camposFiltros(layoutElegido)
 		// Obtiene los 'órdenes' que corresponden al layout elegido
 		let ordenes = variables.orden.filter((n) => n.siempre || n[layoutElegido]);
-		return res.send(camposFiltros)
+		// return res.send(camposFiltros)
 		// Va a la vista
 		res.render("CMP-0Estructura", {
 			tema: "consultas",

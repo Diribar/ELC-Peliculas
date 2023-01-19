@@ -3,9 +3,6 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
-const BD_especificas = require("../../funciones/2-BD/Especificas");
-const comp = require("../../funciones/3-Procesos/Compartidas");
-
 module.exports = {
 	filtrosPers: async (userID) => {
 		// Obtiene los filtros personales
@@ -14,28 +11,39 @@ module.exports = {
 			: [];
 		if (!resultado) resultado = [];
 		// Le agrega el filtro estándar
-		if (!global.filtroEstandar) await variables.global();
+		if (!global.filtroEstandar) await variables.global_BD();
 		resultado.push(global.filtroEstandar);
 		// Fin
 		return resultado;
 	},
 	camposFiltros: (layoutElegido) => {
-		let camposFiltros = {...variables.camposFiltros};
-		for (let campo in camposFiltros) {
-			// Si el campo no aplica para el 'layoutElegido', lo elimina
-			if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) {
-				delete camposFiltros[campo];
-				continue;
+		// Agrega las opciones de BD
+		let qqq = (() => {
+			// Variables
+			let resultado = {...variables.camposFiltros};
+			// Procesa cada campo
+			for (let campo in resultado) {
+				// Si el campo no aplica para el 'layoutElegido', lo elimina
+				if (!resultado[campo].siempre && !resultado[campo][layoutElegido]) {
+					delete resultado[campo];
+					continue;
+				}
+				// Le agrega el nombre del campo a cada bloque de información
+				resultado[campo].codigo = campo;
+				// Le agrega las opciones de la BD, si no tiene ninguna
+				if (!resultado[campo].opciones) {
+					let opciones = global[campo];
+					resultado[campo].opciones = opciones ? opciones : [];
+				}
 			}
-			// Le agrega el nombre del campo a cada bloque de información
-			camposFiltros[campo].codigo = campo;
-			// Le agrega las opciones de la BD, si no tiene ninguna
-			if (!camposFiltros[campo].opciones) {
-				let opciones = global[campo];
-				camposFiltros[campo].opciones = opciones ? opciones : [];
-			}
-		}
+			// Fin
+			return resultado
+		})();
+
+		// Agrega opciones grupales
+
+		// opcionesPersonajes();
 		// Fin
-		return camposFiltros;
+		return qqq;
 	},
 };

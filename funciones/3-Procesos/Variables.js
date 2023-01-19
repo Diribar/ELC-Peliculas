@@ -22,42 +22,88 @@ module.exports = {
 		},
 	],
 	// Uso general
-	global: async function () {
-		// Campos para consultas
+	global_BD: async function () {
+		// Funciones
+		let FN_awaits = async () => {
+			// Espera a  que todas se procesen y consolida la info
+			let valores = Object.values(campos);
+			valores = await Promise.all(valores);
+
+			// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
+			Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		};
+		let FN_RCLVs = () => {
+			let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
+			for (let entidadRCLV of entidadesRCLV) {
+				resultado[entidadRCLV] = resultado[entidadRCLV].filter(
+					(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
+				);
+			}
+		};
+
+		// Variables
+		let resultado = {};
+		let entidadesRCLV = this.entidadesRCLV;
 		let campos = {
 			// Variable de entidades
 			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
 			// Variables de usuario
 			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
-			// Consultas
+			// Consultas - Filtro Personalizado
 			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+			// Consultas - RCLV
 			personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
 			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
 			valores: BD_genericas.obtieneTodos("valores", "nombre"),
+			// Consultas - Complementos de RCLV
+			epoca: BD_genericas.obtieneTodos("epoca", "orden"),
+			procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+			roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+			// Consultas - Otros
 			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
 			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 		};
+		// Procesa los 'awaits'
+		await FN_awaits();
 
-		// Espera a  que todas se procesen y consolida la info
-		let valores = Object.values(campos);
-		valores = await Promise.all(valores);
+		// Conserva solamente los RCLVs aprobados y con producto
+		FN_RCLVs();
 
-		// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
-		let resultado = {};
-		Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		// Resultado
+		global = {...global, ...resultado};
 
-		// RCLVs: conserva solamente los aprobados y con producto
-		let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
-		for (let entidadRCLV of this.entidadesRCLV) {
-			resultado[entidadRCLV] = resultado[entidadRCLV].filter(
-				(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
-			);
-		}
 		// Fin
-		// console.log(50, resultado);
-		return resultado;
+		return;
+	},
+	grupos: {
+		personajes: function (datos) {
+			// Época de nacimiento
+			let epoca = datos.epoca.filter((n) => n.nombre_pers);
+			epoca = epoca.map((n) => {
+				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
+			});
+			// Proceso de canonización
+			let procs_canon = datos.procs_canon.filter((n) => n.id.length == 2);
+			procs_canon = puleCampos(procs_canon, "CFC procs_canon");
+			// Roles Iglesia
+			let roles_iglesia = datos.roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
+			roles_iglesia = puleCampos(roles_iglesia, "CFC roles_iglesia");
+			// Consolidación
+			let grupoPersonajes = [
+				{nombre: "Época de vida", clase: "CFC VPC"},
+				{id: "JSS", nombre: "Jesús"},
+				...epoca,
+				{nombre: "Proceso de Canonización", clase: "CFC"},
+				...procs_canon,
+				{nombre: "Rol en la Iglesia", clase: "CFC"},
+				...roles_iglesia,
+				{nombre: "Listado de Personajes", clase: "CFC VPC"},
+			];
+			// Fin
+			return grupoPersonajes;
+		},
 	},
 
 	// Consulta de Productos
@@ -81,6 +127,7 @@ module.exports = {
 		{nombre: "Por calificación interna", valor: "calificacion", siempre: true},
 	],
 	camposFiltros: {
+		// Principales
 		categoria: {
 			titulo: "Relacionada con la Fe Católica",
 			siempre: true,
@@ -100,14 +147,12 @@ module.exports = {
 				{id: "Ficcion", nombre: "Ficción"},
 			],
 		},
+		// RCLV
 		personajes: {
 			titulo: "Personaje Histórico",
 			listado: true,
 			personajes: true,
 			valores: true,
-			// opciones: [
-
-			// ]
 		},
 		hechos: {
 			titulo: "Hecho Histórico",
@@ -119,6 +164,7 @@ module.exports = {
 			titulo: "Valor",
 			siempre: true,
 		},
+		// Otros
 		publicos: {
 			titulo: "Público Recomendado",
 			siempre: true,
@@ -575,4 +621,13 @@ module.exports = {
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
 	},
+};
+
+let puleCampos = (campo, clase) => {
+	// Obtiene los campos necesarios
+	campo = campo.map((n) => {
+		return {id: n.id, nombre: n.nombre, clase};
+	});
+	// Fin
+	return campo;
 };
