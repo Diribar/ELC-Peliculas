@@ -12,9 +12,11 @@
 					<% label = true %>
 					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
 				<% } else { %>
+					<!-- Acciones si es una opción dentro del mismo rubro -->
 					<option value="<%= opcion.id %>" class="<%= opcion.clase %>"><%= opcion.nombre %></option>
 				<% } %>
 			<% } %>
+			<!-- Si se había abierto un rubro, lo cierra -->
 			<% if (label) { %></optgroup><% } %>
 		</select>
 	</div>
