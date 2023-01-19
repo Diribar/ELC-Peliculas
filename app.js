@@ -8,10 +8,8 @@ global.horarioLCF = new Date().getTime();
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Se requiere el acceso a la BD, por eso el 'dotenv' va antes
 require("dotenv").config(); // Para usar el archivo '.env'
-(async () => {
-	const variables = require("./funciones/3-Procesos/Variables");
-	await variables.global_BD();
-})();
+const variables = require("./funciones/3-Procesos/Variables");
+variables.global_BD();
 
 const path = require("path");
 // Para usar propiedades de express

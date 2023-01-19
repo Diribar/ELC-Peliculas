@@ -16,7 +16,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	camposFiltros: (layoutElegido) => {
+	camposFiltros: function (layoutElegido) {
 		// Variable 'camposFiltros'
 		let camposFiltros = {...variables.camposFiltros};
 
@@ -40,9 +40,50 @@ module.exports = {
 		})();
 
 		// Agrega las opciones grupales
-		// for (let entidad in )
+		for (let entidad in this.gruposConsultas) {
+			let resultado = this.gruposConsultas[entidad]();
+			camposFiltros[entidad] = {...camposFiltros[entidad], ...resultado};
+		}
 
 		// Fin
 		return camposFiltros;
 	},
+	gruposConsultas: {
+		personajes: () => {
+			// Época de nacimiento
+			let epoca = global.epoca.filter((n) => n.nombre_pers);
+			epoca = epoca.map((n) => {
+				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
+			});
+			// Proceso de canonización
+			let procs_canon = global.procs_canon.filter((n) => n.id.length == 2);
+			procs_canon = puleCampos(procs_canon, "CFC procs_canon");
+			// Roles Iglesia
+			let roles_iglesia = global.roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
+			roles_iglesia = puleCampos(roles_iglesia, "CFC roles_iglesia");
+			// Consolidación
+			let resultado = {
+				grupo_personajes: [
+					{nombre: "Época de vida", clase: "CFC VPC"},
+					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
+					...epoca,
+					{nombre: "Proceso de Canonización", clase: "CFC"},
+					...procs_canon,
+					{nombre: "Rol en la Iglesia", clase: "CFC"},
+					...roles_iglesia,
+					{nombre: "Listado de Personajes", clase: "CFC VPC"},
+				],
+			};
+			// Fin
+			return resultado;
+		},
+	},
+};
+let puleCampos = (campo, clase) => {
+	// Obtiene los campos necesarios
+	campo = campo.map((n) => {
+		return {id: n.id, nombre: n.nombre, clase};
+	});
+	// Fin
+	return campo;
 };

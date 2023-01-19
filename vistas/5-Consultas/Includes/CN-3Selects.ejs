@@ -4,13 +4,12 @@
 			<option value="" class="sinFiltro"><%= tema.titulo %></option>
 			<% let label %>
 			<% let grupo = tema["grupo_" + tema.codigo] %>
-			<% console.log(7,!!grupo, Object.keys(tema)) %> 
 			<% let opciones = grupo ? grupo : tema.opciones %>
 			<% for (let opcion of opciones) { %>
-				<% if (typeof opcion == "string") { %>
+				<% if (!opcion.id) { %>
 					<% if (label) { %></optgroup><% } %>
-					<% label = opcion %>
-					<optgroup label="<%= label %>" class="<%= opcion.clase %>">
+					<% label = true %>
+					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
 					<% continue %>
 				<% } %>
 				<option value="<%= opcion.id %>" class="<%= opcion.clase %>"><%= opcion.nombre %></option>
