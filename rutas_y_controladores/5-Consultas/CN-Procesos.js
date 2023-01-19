@@ -17,33 +17,32 @@ module.exports = {
 		return resultado;
 	},
 	camposFiltros: (layoutElegido) => {
+		// Variable 'camposFiltros'
+		let camposFiltros = {...variables.camposFiltros};
+
 		// Agrega las opciones de BD
-		let qqq = (() => {
-			// Variables
-			let resultado = {...variables.camposFiltros};
+		(() => {
 			// Procesa cada campo
-			for (let campo in resultado) {
+			for (let campo in camposFiltros) {
 				// Si el campo no aplica para el 'layoutElegido', lo elimina
-				if (!resultado[campo].siempre && !resultado[campo][layoutElegido]) {
-					delete resultado[campo];
+				if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) {
+					delete camposFiltros[campo];
 					continue;
 				}
 				// Le agrega el nombre del campo a cada bloque de información
-				resultado[campo].codigo = campo;
+				camposFiltros[campo].codigo = campo;
 				// Le agrega las opciones de la BD, si no tiene ninguna
-				if (!resultado[campo].opciones) {
+				if (!camposFiltros[campo].opciones) {
 					let opciones = global[campo];
-					resultado[campo].opciones = opciones ? opciones : [];
+					camposFiltros[campo].opciones = opciones ? opciones : [];
 				}
 			}
-			// Fin
-			return resultado
 		})();
 
-		// Agrega opciones grupales
+		// Agrega las opciones grupales
+		// for (let entidad in )
 
-		// opcionesPersonajes();
 		// Fin
-		return qqq;
+		return camposFiltros;
 	},
 };
