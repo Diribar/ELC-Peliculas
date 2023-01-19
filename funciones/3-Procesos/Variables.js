@@ -34,11 +34,10 @@ module.exports = {
 		};
 		let FN_RCLVs = () => {
 			let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
-			for (let entidadRCLV of entidadesRCLV) {
+			for (let entidadRCLV of entidadesRCLV) 
 				resultado[entidadRCLV] = resultado[entidadRCLV].filter(
 					(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
-				);
-			}
+				);			
 		};
 
 		// Variables
