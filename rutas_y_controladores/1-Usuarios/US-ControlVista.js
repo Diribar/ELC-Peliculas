@@ -412,7 +412,7 @@ module.exports = {
 		req.session.errores = "";
 		// Datos para la vista
 		const codigo = req.path.slice(1);
-		let informacion = procesos.cartelInformacion(codigo);
+		let informacion = procesos.cartelNuevaContrasena(codigo);
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},

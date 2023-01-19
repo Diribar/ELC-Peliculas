@@ -47,7 +47,7 @@ module.exports = {
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
 	// Genera el cartel de información
-	cartelInformacion: () => {
+	cartelNuevaContrasena: () => {
 		// Datos para la vista
 		let informacion = {
 			mensajes: [
@@ -57,7 +57,7 @@ module.exports = {
 			],
 			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 			titulo: "La generación de una nueva contraseña fue exitosa",
-			colorFondo: "verde",
+			check: true,
 		};
 		// Fin
 		return informacion;
