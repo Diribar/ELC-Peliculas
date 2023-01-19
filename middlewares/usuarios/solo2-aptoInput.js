@@ -65,7 +65,7 @@ module.exports = async (req, res, next) => {
 					],
 					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 					titulo: "Aviso",
-					colorFondo: "gris",
+					trabajando: true,
 				};
 			// Status: editables
 			if (usuario.status_registro.editables)
@@ -90,7 +90,7 @@ module.exports = async (req, res, next) => {
 						},
 					],
 					titulo: "Aviso",
-					colorFondo: "azul",
+					trabajando: true,
 				};
 		}
 
@@ -102,12 +102,11 @@ module.exports = async (req, res, next) => {
 		if (!usuario.rol_usuario.perm_inputs) {
 			informacion = {
 				mensajes: [
-					"Por alguna razón no tenés este permiso a pesar de que tenés validad tu identidad.",
+					"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
 					"Seguramente se te explicó el motivo vía mail.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 				titulo: "Aviso",
-				colorFondo: "gris",
 			};
 		}
 		// Fin
@@ -194,7 +193,6 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: mensajes(edicion),
 				iconos: [vistaAnterior],
-				colorFondo: "gris",
 			};
 		// Fin
 		return informacion;
