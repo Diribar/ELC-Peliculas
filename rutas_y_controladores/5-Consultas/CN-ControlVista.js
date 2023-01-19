@@ -36,7 +36,7 @@ module.exports = {
 			// Filtros - Encabezado
 			filtrosPers,
 			// Filtros - Campos
-			campos: camposFiltros,
+			...camposFiltros,
 		});
 	},
 };
