@@ -119,7 +119,7 @@ module.exports = {
 		// Preparar los datos
 		let datos = {
 			sugerido_por_id: userID,
-			sugerido_en: funcionAhora(),
+			sugerido_en: FN_ahora(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};
@@ -319,7 +319,7 @@ module.exports = {
 
 	// Fecha y Hora
 	ahora: () => {
-		return funcionAhora();
+		return FN_ahora();
 	},
 	nuevoHorario: (delay, horario) => {
 		return nuevoHorario(delay, horario);
@@ -340,7 +340,7 @@ module.exports = {
 		return fecha;
 	},
 	fechaHorarioTexto: (horario) => {
-		horario = horario ? new Date(horario) : funcionAhora();
+		horario = horario ? new Date(horario) : FN_ahora();
 		return (
 			horario.getDate() +
 			"/" +
@@ -746,12 +746,11 @@ module.exports = {
 };
 
 // Funciones
-let funcionAhora = () => {
-	// Instante actual en horario local
-	return new Date(new Date().toUTCString());
+let FN_ahora = () => {
+	return new Date(new Date().toUTCString()) // <-- para convertir en 'horario local'
 };
 let nuevoHorario = (delay, horario) => {
-	horario = horario ? horario : funcionAhora();
+	horario = horario ? horario : FN_ahora();
 	let nuevoHorario = new Date(horario);
 	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 	return nuevoHorario;
