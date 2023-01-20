@@ -14,11 +14,11 @@ const fs = require("fs");
 	// Averigua los títulos de la imagen de ayer y hoy
 	let rutaNombre = "./funciones/3-Procesos/fecha.json";
 	let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"))
-	global.tituloImgDerAyer = datos.tituloImagenAyer
-	global.tituloImgDerHoy = datos.tituloImagenHoy
+	global.tituloImgDerAyer = datos.tituloImgDerAyer
+	global.tituloImgDerHoy = datos.tituloImgDerHoy
 
 	// Averigua la fecha de la 'Línea de Cambio de Fecha'
-	global.horarioLCF = new Date().getTime();
+	global.horarioLCF = null;
 	comp.horarioLCF();
 
 	// Completa el objeto 'global'

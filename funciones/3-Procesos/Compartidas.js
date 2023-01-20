@@ -448,7 +448,7 @@ module.exports = {
 		let milisegs = new Date().getTime();
 		// Obtiene el horario de la "línea de cambio de fecha"
 		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF).getTime();
+		horarioLCF = new Date(milisegsLCF);
 		// Fin
 		return;
 	},
@@ -456,20 +456,20 @@ module.exports = {
 		// Variables
 		let rutaNombre = path.join(__dirname, "fecha.json");
 		let info = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
-		let fechaVigente = info.dia;
-		let fechaActual;
+		let fechaGuardada = info.fechaLCF;
+		let fechaReal;
 
-		// Actualiza la fechaActual
+		// Actualiza la fechaReal
 		this.horarioLCF();
-		fechaActual = new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
+		fechaReal = horarioLCF.getDate() + "/" + mesesAbrev[horarioLCF.getMonth()];
 
 		// Tareas si cambió la fecha
-		if (fechaActual != fechaVigente) {
+		if (fechaReal != fechaGuardada) {
 			// Actualiza el archivo de la imagen derecha y sus datos
 			await this.actualizaImagenDerecha();
 
 			// Actualiza los valores del archivo
-			let datos = {dia: fechaActual, tituloImgDerAyer, tituloImgDerHoy};
+			let datos = {fechaLCF: fechaReal, tituloImgDerAyer, tituloImgDerHoy};
 			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
 				if (err) return console.log(304, err);
 			});
@@ -484,9 +484,8 @@ module.exports = {
 
 		// Obtiene dia_del_ano_id y el banco_de_imagenes
 		await (async () => {
-			let fecha = new Date(horarioLCF);
-			let dia = fecha.getDate();
-			let mes_id = fecha.getMonth() + 1;
+			let dia = horarioLCF.getDate();
+			let mes_id = horarioLCF.getMonth() + 1;
 			let datos = {dia, mes_id};
 			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
 
