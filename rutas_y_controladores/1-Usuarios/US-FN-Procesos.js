@@ -9,7 +9,7 @@ module.exports = {
 	// ControlVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
 	actualizaElStatusDelUsuario: async (usuario, status, novedades) => {
 		// Obtiene el nuevo status
-		let statusNuevo = global.status_registro_us.find((n) => n[status]);
+		let statusNuevo = status_registro_us.find((n) => n[status]);
 		// Genera la info a actualizar
 		novedades = {...novedades, status_registro_id: statusNuevo.id};
 		// Actualiza la info

@@ -11,8 +11,6 @@ module.exports = {
 			: [];
 		if (!resultado) resultado = [];
 		// Le agrega el filtro estándar
-		if (!global.filtroEstandar)
-			global.filtroEstandar = await BD_genericas.obtienePorId("filtros_cabecera", 1);
 		resultado.push(filtroEstandar);
 		// Fin
 		return resultado;
@@ -52,15 +50,15 @@ module.exports = {
 	gruposConsultas: {
 		personajes: () => {
 			// Época de nacimiento
-			let epoca = global.epoca.filter((n) => n.nombre_pers);
+			let epoca = epoca.filter((n) => n.nombre_pers);
 			epoca = epoca.map((n) => {
 				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
 			});
 			// Proceso de canonización
-			let procs_canon = global.procs_canon.filter((n) => n.id.length == 2);
+			let procs_canon = procs_canon.filter((n) => n.id.length == 2);
 			procs_canon = puleCampos(procs_canon, "CFC procs_canon");
 			// Roles Iglesia
-			let roles_iglesia = global.roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
+			let roles_iglesia = roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
 			roles_iglesia = puleCampos(roles_iglesia, "CFC roles_iglesia");
 			// Consolidación
 			let resultado = {
