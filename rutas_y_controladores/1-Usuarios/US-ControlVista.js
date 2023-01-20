@@ -81,11 +81,12 @@ module.exports = {
 		if (!feedbackEnvioMail.OK)
 			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Agrega el usuario
+		let status_registro_id = global.status_registro_us.find((n) => n.mail_a_validar).id;
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,
 			email,
-			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
+			status_registro_id,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
