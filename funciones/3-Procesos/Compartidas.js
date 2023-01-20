@@ -10,59 +10,6 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Uso general
-	global_BD: async () => {
-		// Funciones
-		let FN_awaits = async () => {
-			// Espera a  que todas se procesen y consolida la info
-			let valores = Object.values(campos);
-			valores = await Promise.all(valores);
-
-			// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
-			Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
-		};
-		let FN_RCLVs = () => {
-			let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
-			for (let entidadRCLV of entidadesRCLV)
-				resultado[entidadRCLV] = resultado[entidadRCLV].filter(
-					(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
-				);
-		};
-
-		// Variables
-		let resultado = {};
-		let entidadesRCLV = variables.entidadesRCLV;
-		let campos = {
-			// Variable de entidades
-			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
-			// Variables de usuario
-			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
-			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
-			// Consultas - Filtro Personalizado
-			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
-			// Consultas - RCLV
-			personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
-			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
-			valores: BD_genericas.obtieneTodos("valores", "nombre"),
-			// Consultas - Complementos de RCLV
-			epoca: BD_genericas.obtieneTodos("epoca", "orden"),
-			procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
-			roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
-			// Consultas - Otros
-			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
-			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
-			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
-		};
-		// Procesa los 'awaits'
-		await FN_awaits();
-
-		// Conserva solamente los RCLVs aprobados y con producto
-		FN_RCLVs();
-
-		// Fin
-		return resultado;
-	},
-
 	// Temas de Entidades
 	obtieneLeadTime: (desdeOrig, hastaOrig) => {
 		// Variables
