@@ -332,19 +332,18 @@ module.exports = {
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// Obtiene el usuario con los include y la imagenDerecha
+		// Obtiene el usuario con los include
 		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Borra todas las cookies
-		if (req.cookies && req.cookies.emailUnMes != req.body.email)
+		if (req.cookies != req.body.email)
 			for (let prop in req.cookies) res.clearCookie(prop);
-		// 6. Inicia la sesión del usuario
+		// Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies
 		res.cookie("email", req.body.email, {maxAge: unDia});
-		res.cookie("emailUnMes", req.body.email, {maxAge: unMes});
 		// 8. Notificar al contador de logins
 		let hoyAhora = comp.ahora();
 		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);

@@ -21,9 +21,9 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario, hoyAhora) => {
-		let hoyUsuario = usuario.fecha_ultimo_login;
+		let fechaUltimoLogin = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		if (hoyAhora != hoyUsuario) {
+		if (hoyAhora != fechaUltimoLogin) {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
 			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
