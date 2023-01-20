@@ -1,16 +1,23 @@
-// VARIABLES GLOBALES -------------------------------------------------
+// VARIABLE 'GLOBAL' --------------------------------------------------------------
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-global.horarioLCF = new Date().getTime();
 
-// REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Se requiere el acceso a la BD, por eso el 'dotenv' va antes
 require("dotenv").config(); // Para usar el archivo '.env'
-const variables = require("./funciones/3-Procesos/Variables");
-variables.global_BD();
+// Variables que usan funciones
+const comp = require("./funciones/3-Procesos/Compartidas");
+global.imagenDerecha = comp.imagenDerecha;
+// Cambia la fecha de la 'Línea de Cambio de Fecha'
+global.horarioLCF = new Date().getTime();
+comp.horarioLCF();
+// Función para completar el objeto 'global'
+(async () => {
+	global = {...global, ...(await comp.global_BD())};
+})();
 
+// REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
@@ -33,9 +40,6 @@ app.use(usuario);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
-// Cambia la fecha de la 'Línea de Cambio de Fecha'
-const comp = require("./funciones/3-Procesos/Compartidas");
-comp.horarioLCF();
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
 // 1. Tareas a medianoche

@@ -443,7 +443,7 @@ module.exports = {
 	},
 	imagenDerecha: (usuario) => {
 		// 1. Obtiene la zona horaria del usuario
-		let zh = usuario.zona_horaria;
+		let zh = usuario ? usuario.zona_horaria : null
 		// 2. Obtiene la hora de la Línea de Cambio de Fecha
 		let horaLCF = horarioLCF.getHours();
 		// 3. Si el horario LCF es mayor o igual que la ZN del usuario, imagenDerecha, si no, imgDerAnt
