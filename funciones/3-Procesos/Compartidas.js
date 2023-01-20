@@ -58,9 +58,9 @@ module.exports = {
 
 		// Conserva solamente los RCLVs aprobados y con producto
 		FN_RCLVs();
-		
+
 		// Fin
-		return resultado
+		return resultado;
 	},
 
 	// Temas de Entidades
@@ -441,18 +441,6 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	imagenDerecha: (usuario) => {
-		// 1. Obtiene la zona horaria del usuario
-		let zh = usuario ? usuario.zona_horaria : null
-		// 2. Obtiene la hora de la Línea de Cambio de Fecha
-		let horaLCF = horarioLCF.getHours();
-		// 3. Si el horario LCF es mayor o igual que la ZN del usuario, imagenDerecha, si no, imgDerAnt
-		let imagen =
-			"/imagenes/0-Base/" + (zh === null || horaLCF >= zh ? "imgDerecha.jpg" : "imgDerAnt.jpg");
-
-		// Fin
-		return imagen;
-	},
 
 	// Tareas diarias y horarias
 	horarioLCF: () => {
@@ -544,11 +532,11 @@ module.exports = {
 		})();
 
 		// 1. Borra la 'imagenAnterior'
-		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
+		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
-		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerecha.jpg", "imgDerAnt.jpg");
+		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 		// Copia la nueva imagen como 'imgDerecha'
-		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerecha.jpg");
+		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerechaHoy.jpg");
 		// Fin
 		return;
 	},
