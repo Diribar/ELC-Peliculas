@@ -81,12 +81,11 @@ module.exports = {
 		if (!feedbackEnvioMail.OK)
 			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Agrega el usuario
-		let status_registro_id = status_registro_us.find((n) => n.mail_a_validar).id;
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,
 			email,
-			status_registro_id,
+			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
@@ -338,8 +337,7 @@ module.exports = {
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Borra todas las cookies
-		if (req.cookies != req.body.email)
-			for (let prop in req.cookies) res.clearCookie(prop);
+		if (req.cookies != req.body.email) for (let prop in req.cookies) res.clearCookie(prop);
 		// Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies
