@@ -57,7 +57,7 @@ module.exports = {
 		titulo: "La generación de una nueva contraseña fue exitosa",
 		check: true,
 	},
-	cartelAltaExitosaMail: {
+	cartelAltaExitosa: {
 		mensajes: [
 			"Hemos generado tu usuario con éxito, con esa dirección de mail.",
 			"También hemos generado un contraseña, te la hemos enviado por mail.",
@@ -66,26 +66,5 @@ module.exports = {
 		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 		titulo: "Alta exitosa de Usuario",
 		check: true,
-	},
-	loginConMail: async function (email) {
-		// Obtiene el usuario
-		let usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-		// Le agrega la diferencia horaria
-		// usuario.imagenDerecha = this.imagenDerecha(usuario);
-		// Fin
-		return usuario;
-	},
-	imagenDerecha: (usuario) => {
-		// Averigua el horario local
-		let diferenciaHoraria = (new Date().getTimezoneOffset() / 60 + 12) * unaHora;
-		let horarioLocal = horarioLCF - diferenciaHoraria;
-		// Averigua las fechas local y LCF
-		let fechaLocal = new Date(horarioLocal).toDateString;
-		let fechaLCF = new Date(horarioLCF).toDateString;
-
-		// mismoDia=
-
-		// Fin
-		return diferenciaHoraria;
 	},
 };

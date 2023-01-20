@@ -91,7 +91,7 @@ module.exports = {
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
-		let informacion = procesos.cartelAltaExitosaMail;
+		let informacion = procesos.cartelAltaExitosa;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},
@@ -333,7 +333,7 @@ module.exports = {
 			return res.redirect("/usuarios/login");
 		}
 		// Obtiene el usuario con los include y la imagenDerecha
-		let usuario = await procesos.loginConMail(req.body.email);
+		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");

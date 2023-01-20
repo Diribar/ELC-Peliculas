@@ -175,7 +175,6 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
@@ -389,12 +388,24 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	imagenDerecha: (usuario) => {
+		// 1. Obtiene la zona horaria del usuario
+		let zh = usuario.zona_horaria;
+		// 2. Obtiene la hora de la Línea de Cambio de Fecha
+		let horaLCF = horarioLCF.getHours();
+		// 3. Si el horario LCF es mayor o igual que la ZN del usuario, imagenDerecha, si no, imgDerAnt
+		let imagen = "/imagenes/0-Base/" + (zh === null || horaLCF >= zh ? "imgDerecha.jpg" : "imgDerAnt.jpg");
+
+		// Fin
+		return imagen;
+	},
 
 	// Tareas diarias y horarias
 	horarioLCF: () => {
 		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
 		let milisegs = new Date().getTime();
 		let milisegsLCF = milisegs + unaHora * 12;
+		// Obtiene el horario de la "línea de cambio de fecha"
 		horarioLCF = new Date(milisegsLCF).getTime();
 		// Fin
 		return;
