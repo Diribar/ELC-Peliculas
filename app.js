@@ -4,16 +4,24 @@ global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
-// Se requiere el acceso a la BD, por eso el 'dotenv' va antes
-require("dotenv").config(); // Para usar el archivo '.env'
-// Variables que usan funciones
+// Requires
+require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 const comp = require("./funciones/3-Procesos/Compartidas");
-global.imagenDerecha = comp.imagenDerecha;
-// Cambia la fecha de la 'Línea de Cambio de Fecha'
-global.horarioLCF = new Date().getTime();
-comp.horarioLCF();
-// Función para completar el objeto 'global'
+const fs = require("fs");
+
+// Variables que usan funciones
 (async () => {
+	// Averigua los títulos de la imagen de ayer y hoy
+	let rutaNombre = "./funciones/3-Procesos/fecha.json";
+	let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"))
+	global.tituloImgDerAyer = datos.tituloImagenAyer
+	global.tituloImgDerHoy = datos.tituloImagenHoy
+
+	// Averigua la fecha de la 'Línea de Cambio de Fecha'
+	global.horarioLCF = new Date().getTime();
+	comp.horarioLCF();
+
+	// Completa el objeto 'global'
 	global = {...global, ...(await comp.global_BD())};
 })();
 
@@ -42,11 +50,9 @@ const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
-// 1. Tareas a medianoche
-cron.schedule("10 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-// 2. Tareas en cada cambio de hora
-cron.schedule("11 * * * *", () => comp.tareasHorarias());
-comp.tareasDiarias().then(() => comp.tareasHorarias());
+// 1. Tareas a realizar a la hora 00:05 de GMT-12
+cron.schedule("5 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+comp.tareasDiarias()
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');

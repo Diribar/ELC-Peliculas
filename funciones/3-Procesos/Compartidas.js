@@ -444,52 +444,41 @@ module.exports = {
 
 	// Tareas diarias y horarias
 	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para poder sumarle las 12 horas luego
 		let milisegs = new Date().getTime();
-		let milisegsLCF = milisegs + unaHora * 12;
 		// Obtiene el horario de la "línea de cambio de fecha"
+		let milisegsLCF = milisegs + unaHora * 12;
 		horarioLCF = new Date(milisegsLCF).getTime();
 		// Fin
 		return;
 	},
 	tareasDiarias: async function () {
-		// Actualiza el horarioLCF
+		// Variables
+		let rutaNombre = path.join(__dirname, "fecha.json");
+		let info = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+		let fechaVigente = info.dia;
+		let fechaActual;
+
+		// Actualiza la fechaActual
 		this.horarioLCF();
+		fechaActual = new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
 
 		// Tareas si cambió la fecha
-		const nombreDeArchivo = "fecha.json";
-		let rutaNombre = path.join(__dirname, nombreDeArchivo);
-		let fechas = () => {
-			// Obtiene el valor de las fechas
-			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-			let fechaActual =
-				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
-			// Fin
-			return [fechaActual, fechaVigente];
-		};
-		let [fechaActual, fechaVigente] = fechas();
 		if (fechaActual != fechaVigente) {
-			// Actualiza el valor de la fecha
-			(() => {
-				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
-					if (err) return console.log(304, err);
-					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-					console.log("Fecha actualizada a " + fechaVigente);
-				});
-			})();
-			// Actualiza el archivo de la imagen derecha
-			await this.cambiaImagenDerecha();
+			// Actualiza el archivo de la imagen derecha y sus datos
+			await this.actualizaImagenDerecha();
+
+			// Actualiza los valores del archivo
+			let datos = {dia: fechaActual, tituloImgDerAyer, tituloImgDerHoy};
+			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
+				if (err) return console.log(304, err);
+			});
 		}
 
 		// Fin
 		return;
 	},
-	tareasHorarias: () => {
-		// console.log(new Date().getTimezoneOffset());
-		// console.log(new Date());
-		let imagen = {};
-	},
-	cambiaImagenDerecha: async function () {
+	actualizaImagenDerecha: async function () {
 		// Variables
 		let dia_del_ano_id, banco_de_imagenes, imgDerecha;
 
@@ -507,6 +496,7 @@ module.exports = {
 					return {
 						dia_del_ano_id: n.dia_del_ano_id,
 						nombre_archivo: n.nombre_archivo,
+						nombre: n.nombre,
 					};
 				})
 			);
@@ -523,20 +513,26 @@ module.exports = {
 			}
 			// Obtiene el dia_del_ano_id con imagen
 			dia_del_ano_id = imgDerecha.dia_del_ano_id;
-			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
 			// Obtiene todos los registros con ese 'dia_del_ano_id'
 			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--;
-			imgDerecha = registros[indice].nombre_archivo;
+			imgDerecha = registros[indice];
 		})();
+
+		// Actualiza los valores de los títulos de imagenDerecha de ayer y hoy
+		tituloImgDerAyer = tituloImgDerHoy;
+		tituloImgDerHoy = imgDerecha.nombre;
 
 		// 1. Borra la 'imagenAnterior'
 		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
 		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 		// Copia la nueva imagen como 'imgDerecha'
-		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerechaHoy.jpg");
+		await this.copiaUnArchivoDeImagen(
+			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
+			"0-Base/imgDerechaHoy.jpg"
+		);
 		// Fin
 		return;
 	},
