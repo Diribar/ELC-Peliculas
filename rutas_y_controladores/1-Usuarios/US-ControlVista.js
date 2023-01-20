@@ -345,8 +345,7 @@ module.exports = {
 		// 7. Guarda el mail en cookies
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
-		let hoyAhora = comp.ahora();
-		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
+		procesos.actualizaElContadorDeLogins(usuario);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
