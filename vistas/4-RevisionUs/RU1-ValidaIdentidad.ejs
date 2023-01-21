@@ -1,5 +1,6 @@
 <%- include('CMP-TimerContador') %>
 <section id="tituloPrincipal">
+	<!-- Título y Ayuda -->
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
 	<div class="ayuda">
@@ -21,7 +22,7 @@
 					<option value="" selected>Elegí una opción</option>
 					<option value="0">Corresponde a un documento nacional</option>
 					<% for (motivo of motivos_docum) { %>
-						<option value="<%= motivo.id %>" class="rojo"><%= motivo.descripcion %></option>
+						<option value="<%= motivo.id %>" class="rojo"><%= motivo.comentario %></option>
 					<% } %>
 				</select>
 			</div>

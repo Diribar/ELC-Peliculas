@@ -12,7 +12,6 @@ module.exports = (sequelize, dt) => {
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 		rol_usuario_id: {type: dt.INTEGER},
-		bloqueo_perm_inputs: {type: dt.BOOLEAN},
 		mostrar_cartel_respons: {type: dt.BOOLEAN},
 		autorizado_fa: {type: dt.BOOLEAN},
 		docum_numero: {type: dt.STRING(15)},
@@ -32,6 +31,8 @@ module.exports = (sequelize, dt) => {
 
 		prods_aprob: {type: dt.INTEGER},
 		prods_rech: {type: dt.INTEGER},
+		rclvs_aprob: {type: dt.INTEGER},
+		rclvs_rech: {type: dt.INTEGER},
 		links_aprob: {type: dt.INTEGER},
 		links_rech: {type: dt.INTEGER},
 		edics_aprob: {type: dt.INTEGER},

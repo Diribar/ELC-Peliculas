@@ -204,7 +204,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Datos del Documento",
+			titulo: "Validación de Identidad",
 			dataEntry,
 			errores,
 			hablaHispana,
