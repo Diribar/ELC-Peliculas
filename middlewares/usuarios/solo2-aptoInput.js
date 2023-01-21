@@ -180,10 +180,10 @@ module.exports = async (req, res, next) => {
 		// Obtiene datos del url
 		const originalUrl = req.originalUrl;
 		// Obtiene la tarea
+		const edicion = originalUrl.includes("/edicion/");
 		const producto = originalUrl.startsWith("/producto/agregar/");
 		const rclv = originalUrl.startsWith("/rclv/agregar");
 		const links = originalUrl.startsWith("/links/abm/");
-		const edicion = originalUrl.includes("/edicion/");
 		// Obtiene su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros
