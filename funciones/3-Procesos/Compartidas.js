@@ -10,6 +10,59 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	// Uso general
+	global_BD: async () => {
+		// Funciones
+		let FN_awaits = async () => {
+			// Espera a  que todas se procesen y consolida la info
+			let valores = Object.values(campos);
+			valores = await Promise.all(valores);
+
+			// Construye el objeto con el 'nombre' y 'valor' de cada 'método'
+			Object.keys(campos).forEach((campo, i) => (resultado[campo] = valores[i]));
+		};
+		let FN_RCLVs = () => {
+			let statusAprob_id = resultado.status_registro.find((n) => n.aprobado).id;
+			for (let entidadRCLV of entidadesRCLV)
+				resultado[entidadRCLV] = resultado[entidadRCLV].filter(
+					(n) => n.status_registro_id == statusAprob_id && n.prods_aprob
+				);
+		};
+
+		// Variables
+		let resultado = {};
+		let entidadesRCLV = variables.entidadesRCLV;
+		let campos = {
+			// Variable de entidades
+			status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+			// Variables de usuario
+			roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+			status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+			// Consultas - Filtro Personalizado
+			filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+			// Consultas - RCLV
+			personajes: BD_genericas.obtieneTodos("personajes", "nombre"),
+			hechos: BD_genericas.obtieneTodos("hechos", "nombre"),
+			valores: BD_genericas.obtieneTodos("valores", "nombre"),
+			// Consultas - Complementos de RCLV
+			epoca: BD_genericas.obtieneTodos("epoca", "orden"),
+			procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+			roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+			// Consultas - Otros
+			publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+			interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
+			tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+		};
+		// Procesa los 'awaits'
+		await FN_awaits();
+
+		// Conserva solamente los RCLVs aprobados y con producto
+		FN_RCLVs();
+
+		// Fin
+		return resultado;
+	},
+
 	// Temas de Entidades
 	obtieneLeadTime: (desdeOrig, hastaOrig) => {
 		// Variables
@@ -66,7 +119,7 @@ module.exports = {
 		// Preparar los datos
 		let datos = {
 			sugerido_por_id: userID,
-			sugerido_en: funcionAhora(),
+			sugerido_en: FN_ahora(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};
@@ -175,7 +228,6 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
@@ -267,7 +319,7 @@ module.exports = {
 
 	// Fecha y Hora
 	ahora: () => {
-		return funcionAhora();
+		return FN_ahora();
 	},
 	nuevoHorario: (delay, horario) => {
 		return nuevoHorario(delay, horario);
@@ -288,7 +340,7 @@ module.exports = {
 		return fecha;
 	},
 	fechaHorarioTexto: (horario) => {
-		horario = horario ? new Date(horario) : funcionAhora();
+		horario = horario ? new Date(horario) : FN_ahora();
 		return (
 			horario.getDate() +
 			"/" +
@@ -392,59 +444,48 @@ module.exports = {
 
 	// Tareas diarias y horarias
 	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para poder sumarle las 12 horas luego
 		let milisegs = new Date().getTime();
+		// Obtiene el horario de la "línea de cambio de fecha"
 		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF).getTime();
+		horarioLCF = new Date(milisegsLCF);
 		// Fin
 		return;
 	},
 	tareasDiarias: async function () {
-		// Actualiza el horarioLCF
+		// Variables
+		let rutaNombre = path.join(__dirname, "fecha.json");
+		let info = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+		let fechaGuardada = info.fechaLCF;
+		let fechaReal;
+
+		// Actualiza la fechaReal
 		this.horarioLCF();
+		fechaReal = horarioLCF.getDate() + "/" + mesesAbrev[horarioLCF.getMonth()];
 
 		// Tareas si cambió la fecha
-		const nombreDeArchivo = "fecha.json";
-		let rutaNombre = path.join(__dirname, nombreDeArchivo);
-		let fechas = () => {
-			// Obtiene el valor de las fechas
-			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-			let fechaActual =
-				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
-			// Fin
-			return [fechaActual, fechaVigente];
-		};
-		let [fechaActual, fechaVigente] = fechas();
-		if (fechaActual != fechaVigente) {
-			// Actualiza el valor de la fecha
-			(() => {
-				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
-					if (err) return console.log(304, err);
-					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-					console.log("Fecha actualizada a " + fechaVigente);
-				});
-			})();
-			// Actualiza el archivo de la imagen derecha
-			await this.cambiaImagenDerecha();
+		if (fechaReal != fechaGuardada) {
+			// Actualiza el archivo de la imagen derecha y sus datos
+			await this.actualizaImagenDerecha();
+
+			// Actualiza los valores del archivo
+			let datos = {fechaLCF: fechaReal, tituloImgDerAyer, tituloImgDerHoy};
+			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
+				if (err) return console.log(304, err);
+			});
 		}
 
 		// Fin
 		return;
 	},
-	tareasHorarias: () => {
-		// console.log(new Date().getTimezoneOffset());
-		// console.log(new Date());
-		let imagen = {};
-	},
-	cambiaImagenDerecha: async function () {
+	actualizaImagenDerecha: async function () {
 		// Variables
 		let dia_del_ano_id, banco_de_imagenes, imgDerecha;
 
 		// Obtiene dia_del_ano_id y el banco_de_imagenes
 		await (async () => {
-			let fecha = new Date(horarioLCF);
-			let dia = fecha.getDate();
-			let mes_id = fecha.getMonth() + 1;
+			let dia = horarioLCF.getDate();
+			let mes_id = horarioLCF.getMonth() + 1;
 			let datos = {dia, mes_id};
 			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
 
@@ -454,6 +495,7 @@ module.exports = {
 					return {
 						dia_del_ano_id: n.dia_del_ano_id,
 						nombre_archivo: n.nombre_archivo,
+						nombre: n.nombre,
 					};
 				})
 			);
@@ -470,20 +512,26 @@ module.exports = {
 			}
 			// Obtiene el dia_del_ano_id con imagen
 			dia_del_ano_id = imgDerecha.dia_del_ano_id;
-			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
 			// Obtiene todos los registros con ese 'dia_del_ano_id'
 			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--;
-			imgDerecha = registros[indice].nombre_archivo;
+			imgDerecha = registros[indice];
 		})();
 
+		// Actualiza los valores de los títulos de imagenDerecha de ayer y hoy
+		tituloImgDerAyer = tituloImgDerHoy;
+		tituloImgDerHoy = imgDerecha.nombre;
+
 		// 1. Borra la 'imagenAnterior'
-		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
+		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
-		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerecha.jpg", "imgDerAnt.jpg");
+		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 		// Copia la nueva imagen como 'imgDerecha'
-		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerecha.jpg");
+		await this.copiaUnArchivoDeImagen(
+			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
+			"0-Base/imgDerechaHoy.jpg"
+		);
 		// Fin
 		return;
 	},
@@ -698,12 +746,11 @@ module.exports = {
 };
 
 // Funciones
-let funcionAhora = () => {
-	// Instante actual en horario local
-	return new Date(new Date().toUTCString());
+let FN_ahora = () => {
+	return new Date(new Date().toUTCString()) // <-- para convertir en 'horario local'
 };
 let nuevoHorario = (delay, horario) => {
-	horario = horario ? horario : funcionAhora();
+	horario = horario ? horario : FN_ahora();
 	let nuevoHorario = new Date(horario);
 	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 	return nuevoHorario;

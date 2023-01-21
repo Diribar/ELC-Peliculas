@@ -30,7 +30,7 @@ module.exports = {
 		const codigo = req.path.slice(1);
 		let titulo =
 			codigo == "alta-mail"
-				? "Registro de Mail"
+				? "Alta de Mail"
 				: codigo == "olvido-contrasena"
 				? "Olvido de Contraseña"
 				: "";
@@ -90,17 +90,7 @@ module.exports = {
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
-		let informacion = {
-			mensajes: [
-				"La generación de una nueva contraseña fue exitosa.",
-				"Te la hemos enviado por mail.",
-				"Por favor, usala para ingresar al login.",
-				"Haciendo click abajo de este mensaje, vas al Login.",
-			],
-			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-			titulo: "Generación de contraseña",
-			colorFondo: "verde",
-		};
+		let informacion = procesos.cartelAltaExitosa;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},
@@ -181,7 +171,7 @@ module.exports = {
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
 			titulo: "Bienvenido/a a la familia ELC",
-			colorFondo: "verde",
+			check: true,
 		};
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
@@ -281,7 +271,7 @@ module.exports = {
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 			titulo: "Solicitud de ABM exitosa",
-			colorFondo: "verde",
+			check: true,
 		};
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
@@ -341,43 +331,21 @@ module.exports = {
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// Obtiene el usuario con los include y la imagenDerecha
-		let usuario = await procesos.loginConMail(req.body.email);
+		// Obtiene el usuario con los include
+		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Borra todas las cookies
-		if (req.cookies && req.cookies.emailUnMes != req.body.email)
-			for (let prop in req.cookies) res.clearCookie(prop);
-		// 6. Inicia la sesión del usuario
+		if (req.cookies != req.body.email) for (let prop in req.cookies) res.clearCookie(prop);
+		// Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies
 		res.cookie("email", req.body.email, {maxAge: unDia});
-		res.cookie("emailUnMes", req.body.email, {maxAge: unMes});
 		// 8. Notificar al contador de logins
-		let hoyAhora = comp.ahora();
-		procesos.actualizaElContadorDeLogins(usuario, hoyAhora);
+		procesos.actualizaElContadorDeLogins(usuario);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
-	},
-	preLogout: (req, res) => {
-		// Variables
-		let usuario = req.session.usuario;
-		let informacion = {
-			mensajes: [
-				"¿Estás segur" +
-					(usuario.sexo_id == "M" ? "a" : usuario.sexo_id == "V" ? "o" : "o/a") +
-					" de que te querés desloguear?",
-			],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Cancelar"},
-				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout", autofocus: true},
-			],
-			titulo: "Logout",
-			colorFondo: "gris",
-		};
-		// Fin
-		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
 		let url = req.session.urlSinUsuario;
@@ -411,8 +379,7 @@ module.exports = {
 		// Borra los errores
 		req.session.errores = "";
 		// Datos para la vista
-		const codigo = req.path.slice(1);
-		let informacion = procesos.cartelInformacion(codigo);
+		let informacion = procesos.cartelNuevaContrasena;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},

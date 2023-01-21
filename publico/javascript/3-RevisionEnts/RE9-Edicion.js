@@ -106,15 +106,15 @@ window.addEventListener("load", () => {
 			let {arrayMensajes, icono} = datos;
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");
-			let error = document.querySelector("#error");
-			let gracias = document.querySelector("#gracias");
-			let mensajes = document.querySelector("ul#mensajes");
+			let alerta = document.querySelector("#cartel #alerta");
+			let check = document.querySelector("#cartel #check");
+			let mensajes = document.querySelector("#cartel ul#mensajes");
 			let flechas = document.querySelector("#cartel #flechasCartel");
 
 			// Formatos
 			cartel.style.backgroundColor = "var(--verde-oscuro)";
-			error.classList.add("ocultar");
-			gracias.classList.remove("ocultar");
+			alerta.classList.add("ocultar");
+			check.classList.remove("ocultar");
 
 			// Cambia el contenido del mensaje y las flechas
 			mensajes.innerHTML = "";

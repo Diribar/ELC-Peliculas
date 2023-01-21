@@ -30,7 +30,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "perfil-productos",
-			titulo: "Perfil de Películas",
+			titulo: "Nuestro Perfil de Películas",
 		});
 	},
 

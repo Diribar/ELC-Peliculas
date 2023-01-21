@@ -2,7 +2,6 @@
 // Definir variables
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
@@ -20,10 +19,11 @@ module.exports = {
 		return usuario;
 	},
 	// ControlVista: loginGuardar
-	actualizaElContadorDeLogins: (usuario, hoyAhora) => {
-		let hoyUsuario = usuario.fecha_ultimo_login;
+	actualizaElContadorDeLogins: (usuario) => {
+		let hoyAhora = comp.ahora();
+		let fechaUltimoLogin = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		if (hoyAhora != hoyUsuario) {
+		if (hoyAhora != fechaUltimoLogin) {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
 			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
@@ -47,40 +47,24 @@ module.exports = {
 		return {ahora, contrasena, feedbackEnvioMail};
 	},
 	// Genera el cartel de información
-	cartelInformacion: () => {
-		// Datos para la vista
-		let informacion = {
-			mensajes: [
-				"Te hemos enviado una contraseña por mail.",
-				"Por favor, usala para ingresar al login.",
-				"Haciendo click abajo de este mensaje, vas al Login.",
-			],
-			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
-			titulo: "La generación de una nueva contraseña fue exitosa",
-			colorFondo: "verde",
-		};
-		// Fin
-		return informacion;
+	cartelNuevaContrasena: {
+		mensajes: [
+			"Te hemos enviado una contraseña por mail.",
+			"Por favor, usala para ingresar al login.",
+			"Haciendo click abajo de este mensaje, vas al Login.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
+		titulo: "La generación de una nueva contraseña fue exitosa",
+		check: true,
 	},
-	loginConMail: async function (email) {
-		// Obtiene el usuario
-		let usuario = await BD_especificas.obtieneUsuarioPorMail(email);
-		// Le agrega la diferencia horaria
-		// usuario.imagenDerecha = this.imagenDerecha(usuario);
-		// Fin
-		return usuario
-	},
-	imagenDerecha: (usuario) => {
-		// Averigua el horario local
-		let diferenciaHoraria = (new Date().getTimezoneOffset() / 60 + 12) * unaHora;
-		let horarioLocal = horarioLCF - diferenciaHoraria;
-		// Averigua las fechas local y LCF
-		let fechaLocal = new Date(horarioLocal).toDateString;
-		let fechaLCF = new Date(horarioLCF).toDateString;
-
-		// mismoDia=
-
-		// Fin
-		return diferenciaHoraria;
+	cartelAltaExitosa: {
+		mensajes: [
+			"Hemos generado tu usuario con éxito, con esa dirección de mail.",
+			"También hemos generado un contraseña, te la hemos enviado por mail.",
+			"Con el ícono de abajo accedes al Login. Usá esa contraseña.",
+		],
+		iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
+		titulo: "Alta exitosa de Usuario",
+		check: true,
 	},
 };

@@ -11,8 +11,9 @@ module.exports = {
 			: [];
 		if (!resultado) resultado = [];
 		// Le agrega el filtro estándar
-		if (!global.filtroEstandar) await variables.global_BD();
-		resultado.push(global.filtroEstandar);
+		if (!global.filtroEstandar)
+			global.filtroEstandar = await BD_genericas.obtienePorId("filtros_cabecera", 1);
+		resultado.push(filtroEstandar);
 		// Fin
 		return resultado;
 	},

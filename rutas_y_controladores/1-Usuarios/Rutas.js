@@ -37,7 +37,6 @@ router.put("/edicion", soloUsuariosCompl, multer.single("avatar"), vista.edicion
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
 router.post("/login", soloVisitas, vista.loginGuardar);
-router.get("/pre-logout", soloUsuarios, vista.preLogout);
 router.get("/logout", soloUsuarios, vista.logout);
 router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
 router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
