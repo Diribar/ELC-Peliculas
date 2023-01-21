@@ -25,11 +25,11 @@ const comp = require("./funciones/3-Procesos/Compartidas");
 	// Completa el objeto 'global'
 	// global.status_registro= await BD_genericas.obtieneTodos("status_registro", "orden")
 	let campos = {
+		// Variables de usuario
+		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
 		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
-		// Variables de usuario
-		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
-		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
 		// Consultas - Filtro Personalizado
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		// Consultas - Complementos de RCLV
