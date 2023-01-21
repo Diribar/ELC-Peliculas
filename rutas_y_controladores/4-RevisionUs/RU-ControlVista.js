@@ -37,7 +37,9 @@ module.exports = {
 			"status_registro",
 		]);
 		// Redireccionar si no existe el usuario o el avatar
-		let docum_avatar = usuario ? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar : false;
+		let docum_avatar = usuario
+			? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar
+			: false;
 		if (procesos.validaContenidoIF(usuario, docum_avatar))
 			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
@@ -52,7 +54,7 @@ module.exports = {
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
 		let motivos_rech = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let motivos_docum = motivos_rech.filter((n) => n.mostrar_para_docum);
+		let motivos_docum = motivos_rech.filter((n) => n.avatar_us);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
 		return res.render("CMP-0Estructura", {
@@ -70,10 +72,9 @@ module.exports = {
 		});
 	},
 	validaIdentidadGuardar: async (req, res) => {
-		// return res.send(req.body)
 		// Toma los datos del formulario
 		let datos = {...req.query, ...req.body};
-		// Si no se respondió algún campo necesario, reenvía al formulario
+		// Si no se respondió algún campo necesario, avisa que se debe reenviar el formulario
 		let redireccionar;
 		if (datos.motivo_docum_id == "0") {
 			let campos = [
@@ -85,7 +86,10 @@ module.exports = {
 				"docum_numero",
 			];
 			for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
-		} else if (!datos.motivo_docum_id) redireccionar = true;
+		}
+		// Si no se respondió el motivo, avisa que se debe reenviar el formulario
+		else if (!datos.motivo_docum_id) redireccionar = true;
+		// Si hubo algún error en el data-entry reenvía el formulario
 		if (redireccionar) return res.redirect(req.originalUrl);
 
 		// Variables de usuarios
@@ -101,27 +105,29 @@ module.exports = {
 		// Informacion a agregarle al usuario
 		let objeto = {fecha_revisores: comp.ahora()};
 
-		// Acciones en función de lo que haya respondido sobre la imagen del documento
+		// Acciones si la imagen del documento fue aprobada
 		if (datos.motivo_docum_id == "0") {
+			// Rutinas para los demás campos --> lleva al status 'editables'
+			let campos = [
+				"docum_pais_id",
+				"docum_numero",
+				"nombre",
+				"apellido",
+				"sexo_id",
+				"fecha_nacimiento",
+			];
 			// Motivo genérico
 			let motivo = motivos.find((n) => n.info_erronea);
-			// Rutinas para los demás campos --> lleva al status 'editables'
-			let campos;
-			campos = ["docum_pais_id", "docum_numero"];
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
+					// Agrega un registro por la edición rechazada
 					procesos.usuarioEdicRech(campo, usuario, revID, motivo);
 					status_registro_id = st_editables_ID;
 					durac_penalidad += Number(motivo.duracion);
 				}
-			campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
-			for (let campo of campos)
-				if (datos[campo] == "NO") {
-					procesos.usuarioEdicRech(campo, usuario, revID, motivo);
-					status_registro_id = st_editables_ID;
-					durac_penalidad += Number(motivo.duracion);
-				}
-		} else {
+		}
+		// Acciones si la imagen del documento NO fue aprobada
+		else {
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			procesos.usuarioEdicRech("docum_avatar", usuario, revID, motivo);
@@ -131,18 +137,17 @@ module.exports = {
 		// Acciones si se aprueba la validación
 		if (status_registro_id == st_ident_validada_ID) {
 			// Asigna el rol 'permInputs'
-			let rolPermInputs = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
-			objeto.rol_usuario_id = rolPermInputs;
+			let rolPermInputs_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
+			objeto.rol_usuario_id = rolPermInputs_id;
 			// Mueve la imagen del documento a su carpeta definitiva
 			comp.mueveUnArchivoImagen(usuario.docum_avatar, "3-DNI-Usuarios-Revisar", "3-DNI-Usuarios-Final");
 		}
 		// Actualiza el usuario
 		objeto = {...objeto, status_registro_id};
-		await BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
+		BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
 		if (durac_penalidad)
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
-
 		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
 	},

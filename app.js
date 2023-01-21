@@ -6,23 +6,45 @@ global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "se
 
 // Requires
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-const comp = require("./funciones/3-Procesos/Compartidas");
 const fs = require("fs");
+const BD_genericas = require("./funciones/2-BD/Genericas");
+const comp = require("./funciones/3-Procesos/Compartidas");
 
 // Variables que usan funciones
 (async () => {
 	// Averigua los títulos de la imagen de ayer y hoy
 	let rutaNombre = "./funciones/3-Procesos/fecha.json";
-	let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"))
-	global.tituloImgDerAyer = datos.tituloImgDerAyer
-	global.tituloImgDerHoy = datos.tituloImgDerHoy
+	let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+	global.tituloImgDerAyer = datos.tituloImgDerAyer;
+	global.tituloImgDerHoy = datos.tituloImgDerHoy;
 
 	// Averigua la fecha de la 'Línea de Cambio de Fecha'
 	global.horarioLCF = null;
 	comp.horarioLCF();
 
 	// Completa el objeto 'global'
-	global = {...global, ...(await comp.global_BD())};
+	// global.status_registro= await BD_genericas.obtieneTodos("status_registro", "orden")
+	let campos = {
+		// Variables de usuario
+		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+		// Variable de entidades
+		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+		// Consultas - Filtro Personalizado
+		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		// Consultas - Complementos de RCLV
+		epoca: BD_genericas.obtieneTodos("epoca", "orden"),
+		procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+		// Consultas - Otros
+		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+		interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
+		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+	};
+	// Espera a que todas se procesen y consolida la info
+	let valores = Object.values(campos);
+	valores = await Promise.all(valores);
+	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 })();
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
@@ -52,7 +74,7 @@ app.use(userLogs);
 var cron = require("node-cron");
 // 1. Tareas a realizar a la hora 00:05 de GMT-12
 cron.schedule("5 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-comp.tareasDiarias()
+comp.tareasDiarias();
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
