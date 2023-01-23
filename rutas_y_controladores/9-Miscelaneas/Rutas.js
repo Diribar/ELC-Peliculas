@@ -25,8 +25,8 @@ router.get("/", vista.inicio);
 router.get("/quienes-somos", vista.quienesSomos);
 router.get("/mision-y-vision", vista.misionVision);
 router.get("/valores", vista.valores);
-router.get("/politica-sobre-derechos-de-autor", vista.derechosAutor);
-router.get("/criterios-de-data-entry", vista.criteriosDataEntry);
+router.get("/derechos-de-autor", vista.derechosAutor);
+router.get("/data-entry", vista.dataEntry);
 
 // Session y Cookies
 router.get("/session", vista.session);

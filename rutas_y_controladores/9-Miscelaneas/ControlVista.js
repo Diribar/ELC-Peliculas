@@ -40,11 +40,11 @@ module.exports = {
 			titulo: "Nuestra Política sobre Derechos de Autor",
 		});
 	},
-	criteriosDataEntry: (req, res) => {
+	dataEntry: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "criteriosDataEntry",
-			titulo: "Nuestros Criterios de Data-Entry",
+			codigo: "dataEntry",
+			titulo: "Nuestra Política de Data-Entry",
 		});
 	},
 
