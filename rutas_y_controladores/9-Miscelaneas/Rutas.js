@@ -23,7 +23,7 @@ router.get("/", vista.inicio);
 
 // Vistas de vistas - Institucional
 router.get("/quienes-somos", vista.quienesSomos);
-router.get("/nuestra-mision-y-vision", vista.misionVision);
+router.get("/mision-y-vision", vista.misionVision);
 router.get("/valores", vista.valores);
 router.get("/politica-sobre-derechos-de-autor", vista.derechosAutor);
 router.get("/criterios-de-data-entry", vista.criteriosDataEntry);
