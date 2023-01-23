@@ -26,7 +26,7 @@ module.exports = {
 			titulo: "Nuestra Misión y Visión",
 		});
 	},
-	nuestrosValores: (req, res) => {
+	valores: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "nuestrosValores",
@@ -44,7 +44,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "criteriosDataEntry",
-			titulo: "Criterios sobre el Data-Entry",
+			titulo: "Nuestros Criterios de Data-Entry",
 		});
 	},
 
