@@ -40,6 +40,13 @@ module.exports = {
 			titulo: "Nuestra Política sobre Derechos de Autor",
 		});
 	},
+	criteriosDataEntry: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "criteriosDataEntry",
+			titulo: "Criterios sobre el Data-Entry",
+		});
+	},
 
 	// Session y Cookies
 	session: (req, res) => {
