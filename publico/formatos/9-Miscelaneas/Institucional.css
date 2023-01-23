@@ -11,5 +11,5 @@
 #cuerpo #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
 #cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;}
 #cuerpo #cuadro-de-texto .bloque :where(p, ul li) {margin-top: 5px; font-size: 1.1rem; color: var(--marron);}
-#cuerpo #cuadro-de-texto .bloque ul.secundario {margin-left: 30px;}
-#cuerpo #cuadro-de-texto .bloque ul.secundario li {margin-top: 2px;}
+#cuerpo #cuadro-de-texto .bloque ul li ul {margin-left: 30px;}
+#cuerpo #cuadro-de-texto .bloque ul li ul li {margin-top: 2px;}

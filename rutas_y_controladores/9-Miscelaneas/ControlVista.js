@@ -23,7 +23,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "misionVision",
-			titulo: "Misión y Visión",
+			titulo: "Nuestra Misión y Visión",
 		});
 	},
 	nuestrosValores: (req, res) => {
