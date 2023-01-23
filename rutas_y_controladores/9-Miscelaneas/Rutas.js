@@ -21,9 +21,9 @@ router.get("/api/horario-inicial/", API.horarioInicial);
 // Vistas de vistas - Institucional
 router.get("/", vista.inicio);
 router.get("/quienes-somos", vista.quienesSomos);
-router.get("/mision-valores", vista.misionValores);
-router.get("/derechos-de-autor", vista.copyright);
-router.get("/nuestro-perfil-de-peliculas", vista.perfilProductos);
+router.get("/nuestra-mision-y-vision", vista.misionVision);
+router.get("/nuestros-valores", vista.nuestrosValores);
+router.get("/nuestra-politica-sobre-los-derechos-de-autor", vista.derechosAutor);
 
 // Session y Cookies
 router.get("/session", vista.session);

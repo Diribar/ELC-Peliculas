@@ -19,25 +19,25 @@ module.exports = {
 			titulo: "Quiénes somos",
 		});
 	},
-	misionValores: (req, res) => {
+	misionVision: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "misionValores",
-			titulo: "Misión, Visión y Valores",
+			titulo: "Misión y Visión",
 		});
 	},
-	copyright: (req, res) => {
+	nuestrosValores: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "nuestrosValores",
+			titulo: "Nuestros Valores",
+		});
+	},
+	derechosAutor: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "derechosAutor",
 			titulo: "Nuestra Política sobre Derechos de Autor",
-		});
-	},
-	perfilProductos: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			codigo: "perfilProductos",
-			titulo: "Nuestro Perfil de Películas",
 		});
 	},
 

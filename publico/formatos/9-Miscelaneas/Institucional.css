@@ -9,6 +9,7 @@
 
 /* CUADRO DE TEXTO - TEXTO */
 #cuerpo #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
-#cuerpo #cuadro-de-texto .bloque h2 {margin-bottom: 5px;}
 #cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;}
-.bloque p, .bloque ul * {margin-bottom: 5px; font-size: 1.1rem; color:rgb(102,51,0);}
+#cuerpo #cuadro-de-texto .bloque :where(p, ul li) {margin-top: 5px; font-size: 1.1rem; color: var(--marron);}
+#cuerpo #cuadro-de-texto .bloque ul.secundario {margin-left: 30px;}
+#cuerpo #cuadro-de-texto .bloque ul.secundario li {margin-top: 2px;}
