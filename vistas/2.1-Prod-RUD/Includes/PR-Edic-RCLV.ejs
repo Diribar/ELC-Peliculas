@@ -6,7 +6,7 @@
 		<!-- Input -->
 		<select name="<%= nombreDelCampo %>" class="input RCLV">
 			<option value="1">Ninguno</option>
-			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[campoDato] %></option><% } %>
+			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option><% } %>
 		</select>
 		<!-- Ayuda -->
 		<div class="ayuda">
@@ -17,7 +17,6 @@
 				</ul>
 			</i>
 		</div>
-		<%- include("CMP-Errores") %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->

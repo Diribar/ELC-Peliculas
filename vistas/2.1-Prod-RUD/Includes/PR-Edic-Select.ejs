@@ -8,10 +8,8 @@
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>
-					<% if (nombreDelCampo == "subcategoria_id") { %>class="<%= (valor.cfc ? "CFC" : "") + " " + (valor.vpc ? "VPC" : "") %>"<% } %>
-					<% if (entidad != "colecciones" && nombreDelCampo == "en_color_id" && valor.id == 2) { %>class="ocultar"<% } %>
 				>
-					<%= valor[campoDato] %>
+					<%= valor.nombre %>
 				</option>
 			<% } %>
 		</select>

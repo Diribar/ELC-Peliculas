@@ -3,7 +3,7 @@
 #cuerpo {flex-direction: column; justify-content: center; align-items: center;}
 
 /* General del formulario */
-#cuerpo form {background-color: var(--gris-oscuro); border-radius: 10px;}
+#cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
 #cuerpo form {padding: 20px; z-index: 11; min-width: 360px;}
 #cuerpo form {display: flex; flex-direction: column;}
 #cuerpo form #tituloPrincipal {align-self: center;}
@@ -31,5 +31,5 @@
 #cuerpo form #credencialesInvalidas {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
 #cuerpo form #credencialesInvalidas.ocultar {display: none;}
 #cuerpo form #credencialesInvalidas, 
-#cuerpo form #credencialesInvalidas p {background-color: var(--rojo-oscuro); color: var(--gris-claro);}
+#cuerpo form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
 #cuerpo form #credencialesInvalidas p {margin: 0;}

@@ -39,14 +39,16 @@ window.addEventListener("load", async () => {
 	// Valores para !valores
 	if (!v.valores) {
 		v.cfc = document.querySelectorAll("#preguntas .cfc");
-		(v.camposRCLI = (() => {
+		v.camposRCLI = (() => {
 			// Obtiene todos los campos RCLI
 			let campos = document.querySelectorAll("#dataEntry #preguntas .RCLI");
 			campos = Array.from(campos).map((n) => n.name);
+			// Elimina los valores repetidos
 			campos = [...new Set(campos)];
+			// Fin
 			return campos;
-		})()),
-			(v.preguntas = document.querySelector("#dataEntry #preguntas"));
+		})();
+		v.preguntas = document.querySelector("#dataEntry #preguntas");
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.ama = document.querySelectorAll("input[name='ama']");
 		v.cnt = document.querySelectorAll("input[name='cnt']");

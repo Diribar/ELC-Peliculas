@@ -109,7 +109,7 @@ module.exports = {
 
 	// Vista (datosPers)
 	obtieneSubcategs: async (req, res) => {
-		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
+		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden_abm");
 		return res.json(subcategorias);
 	},
 	validaDatosPers: async (req, res) => {

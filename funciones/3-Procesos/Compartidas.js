@@ -210,7 +210,6 @@ module.exports = {
 		for (let i = 0; i < campos.length; i++) {
 			if (typeof valores[i] == "string") {
 				resultado[campos[i]] = valores[i]
-					.replace(/ +/g, " ")
 					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 					.replace(/[àâãäåāăą]/g, "a")
 					.replace(/Æ/g, "Ae")
@@ -256,11 +255,11 @@ module.exports = {
 					.replace(/[ýŷÿ]/g, "y")
 					.replace(/[ŽŹŻŽ]/g, "Z")
 					.replace(/[žźżž]/g, "z")
+					.replace(/ +/g, " ")
 					.replace(/[‘“’”«»]/g, '"')
 					.replace(/[º]/g, "°")
 					.replace(/\t/g, " ")
-					.replace(/#/g, "")
-					;
+					.replace(/#/g, "");
 			}
 		}
 		return resultado;
@@ -435,9 +434,7 @@ module.exports = {
 	tareasHorarias: () => {
 		// console.log(new Date().getTimezoneOffset());
 		// console.log(new Date());
-		let imagen={
-
-		}
+		let imagen = {};
 	},
 	cambiaImagenDerecha: async function () {
 		// Variables
@@ -694,8 +691,7 @@ module.exports = {
 		let resultado = [];
 		// Agrega los productos con edición más antigua
 		for (let prod of prods)
-			if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad))
-				resultado.push(prod);
+			if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
 		// Fin
 		return resultado;
 	},

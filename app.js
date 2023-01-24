@@ -18,7 +18,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 	const variables = require("./funciones/3-Procesos/Variables");
 	global.menuOpciones = variables.menuOpciones;
 	let subOpcionesListado = variables.menuSubOpcionesListado;
-	let subOpcionesCFC_VPC = await BD_genericas.obtieneTodos("subcategorias", "orden");
+	let subOpcionesCFC_VPC = await BD_genericas.obtieneTodos("subcategorias", "orden_cons");
 	global.menusSubOpciones = {
 		listado: subOpcionesListado,
 		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),

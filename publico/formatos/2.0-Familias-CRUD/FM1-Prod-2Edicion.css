@@ -5,14 +5,14 @@ main form #cuerpo .inputError {display: flex; flex-direction: row;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
-main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
+main form #cuerpo #edicionForm {justify-content: space-around; padding: 15px 70px 10px 50px;}
+main form #cuerpo #edicionForm .altoFila {height: 21px;}
 
 /* Imagen */
 form #imgDerecha label {line-height: 0;}
 /* Imagen - Íconos */
-form #imgDerecha .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%;}
-form #imgDerecha .ayuda,
-form #imgDerecha .errores {left: 50%; translate: -50% -50%; right: auto;}
+form #imgDerecha .fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
+form #imgDerecha :is(.ayuda, .errores) {left: 50%; translate: -50% -50%; right: auto;}
 form #imgDerecha .errores {z-index: 4;}
 
 /* Imagen - AyudaMostrar */
@@ -29,12 +29,12 @@ form #imgDerecha.inputError .errores .mensajeError::before {border-color: var(--
 
 /* Imagen - Links a sitios externos */
 form #imgDerecha.inputError .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
-form #imgDerecha.inputError .agregados {background-color: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
+form #imgDerecha.inputError .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
 form #imgDerecha.inputError .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
 form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
 
 /* Partes del formulario */
-#datos {display: flex; flex-direction: row; justify-content: space-between;}
+#datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 #datos #primeraColumna {width: 42%;}
 #datos #segundaColumna {width: 45%;}
 #datos #primeraColumna .label-input .inputError .input {width: 200px;}
@@ -43,8 +43,7 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos #segundaColumna .label-input .inputError .input {width: 240px;}
 
 /* Partes específicas del formulario */
-#datos .label-input .inputError .input,
-#datos .label-input .inputError input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .label-input .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
 #datos .label-input .inputError {margin-left: 5px;}
 #datos .label-input .inputError .ayuda {right: -5px;}
 
@@ -55,15 +54,14 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos .label-input .inputError .input {align-self: center;}
 #datos .label-input .inputError input {padding: 0px 5px;}
 #datos .label-input .inputError select {padding: 0;}
-#datos .label-input .inputError .input:disabled, 
-#datos .label-input#paises_id input#mostrarPaises:disabled,
-#datos .label-input#paises_id select:disabled {background-color: var(--amarillo-claro); opacity: 1; color: inherit;}
+#datos .label-input .inputError .input:disabled, #datos .label-input#paises_id 
+:is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .inputError {width: 200px;}
-#datos #paises_id .inputError input#mostrarPaises,
-#datos #paises_id .inputError select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+#datos #paises_id .inputError 
+:is(input#mostrarPaises, select) {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
@@ -78,7 +76,6 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
-
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}
 .inputError .fa-arrow-right-long {color: var(--verde-oscuro);}
@@ -86,6 +83,6 @@ form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translat
 
 /* Comandos - Particularidades */
 .flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none;}
-.flechas i.activar {background-color: var(--azul-oscuro); color: var(--gris-claro);}
+.flechas i.activar {background: var(--azul-oscuro); color: var(--gris-claro);}
 .flechas i.activar {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.flechas i.activar.activo {background-color: var(--verde-oscuro);}
+.flechas i.activar.activo {background: var(--verde-oscuro);}

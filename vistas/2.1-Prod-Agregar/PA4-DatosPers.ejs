@@ -4,64 +4,70 @@
 	</h1>
 </div>
 <form method="POST" id="dataEntry" class="flexCol" >
+	<!-- Título y Ayuda -->
+	<div id="tituloSecundario">
+		<h2>Paso 4 de 5: Datos Adicionales</h2>
+		<!-- Ayuda -->
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+					<li>Necesitamos que nos des la información que no disponemos.</li>
+					<li>Para cada dato, te sugerimos que consultes las ayudas.</li>
+				</ul>	
+			</i>
+		</div>
+	</div>
 	<!-- Datos -->
 	<section id="datos">
 		<!--Primera columna-->
 		<div id="primeraColumna">
-			<!-- Título y Ayuda -->
-			<div id="tituloSecundario">
-				<h2>Paso 4 de 5: Datos Personalizados</h2>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick despl_click">
-						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
-							<li>Necesitamos que nos des la información que no disponemos.</li>
-							<li>Para cada dato, te sugerimos que consultes las ayudas.</li>
-						</ul>	
-					</i>
-				</div>
-			</div>
 			<!-- Datos generales -->
+			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
-				<h3>Datos Generales</h3>
-				<!--Categoría-->
-				<%- include("PA4-DP1-Select", {campo: "categoria_id", nombre: "nombre"}) %>
-				<!--Sub-categoría-->
-				<%- include("PA4-DP2-Subcat", {campo: "subcategoria_id", nombre: "nombre"}) %>
-				<!--Público sugerido-->
-				<%- include("PA4-DP1-Select", {campo: "publico_sugerido_id", nombre: "nombre"}) %>
-				<!--Es a Color-->
-				<%- include("PA4-DP1-Select", {campo: "en_color_id", nombre: "productos"}) %>
+				<!-- Centrada en la Fe Católica, Ocurrió, Musical -->
+				<% for (tema of camposDP.filter(n => n.siNo)) { %>
+					<%- include("PA4-DP1-SI_NO", {tema}) %>
+				<% } %>
+				<hr>
+				<!-- Tipo de Actuación -->
+				<%- include("PA4-DP2-TipoActuac") %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
-			<!-- Tu calificación -->
-			<div id="Calif" class="flexCol">
-				<h3>Tu Calificación</h3>
-				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DP4-Checkbox", {campo: "sinCalif", }) %>
-				<div class="flexCol selects ocultar">
-					<!--Inspira fe y/o valores-->
-					<%- include("PA4-DP1-Select", {campo: "fe_valores_id", nombre: "nombre"}) %>
-					<!--Entretiene-->
-					<%- include("PA4-DP1-Select", {campo: "entretiene_id", nombre: "nombre"}) %>
-					<!--Calidad Técnica-->
-					<%- include("PA4-DP1-Select", {campo: "calidad_tecnica_id", nombre: "nombre"}) %>
-				</div>
-			</div>
+			<!-- Público sugerido -->
+			<%- include("PA4-DP3-Select", {campo: "publico_sugerido_id"}) %>
+			<hr>
 			<!-- Relación con la vida -->
-			<div id="RCLV" class="flexCol invisible">
-				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
+				<div class="flexRowAlign inputError">
+					<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+					<!-- Ayuda para un RCLV -->
+					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick despl_click">
+						<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							<li>Podés ingresar un registro nuevo o modificar los actuales, haciendo <em>click</em> en los íconos de la derecha.</li>
+							<li>Necesitamos que respondas por lo menos uno de los campos.</li>
+						</ul>
+					</i>
+					<!-- Ayuda para dos RCLVs -->
+					<i class="ocultaAyudaRCLV fa-solid fa-circle-question ayudaClick despl_click">
+						<p class="ayudaMostrar ocultar despl_mostrar" type="dots">
+							Podés ingresar un registro nuevo o modificar el actual, haciendo <em>click</em> en los íconos de la derecha.
+						</p>
+					</i>
+					<div id="errorRCLV" class="ocultar">
+						<%- include("CMP-Errores", {display: true, campo: "RCLV"}) %>
+					</div>
+				</div>
 				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DP4-Checkbox", {campo: "sinRCLV", }) %>
-				<div class="flexCol selects ocultar">
+				<%- include("PA4-DP8-Checkbox", {campo: "sinRCLV", }) %>
+				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->
-					<%- include("PA4-DP3-RCLV", {campo: "personaje_id"}) %>
+					<%- include("PA4-DP4-RCLV", {campo: "personaje_id"}) %>
 					<!--Hecho histórico-->
-					<%- include("PA4-DP3-RCLV", {campo: "hecho_id"}) %>
+					<%- include("PA4-DP4-RCLV", {campo: "hecho_id"}) %>
 					<!--Valor-->
-					<%- include("PA4-DP3-RCLV", {campo: "valor_id"}) %>
+					<%- include("PA4-DP4-RCLV", {campo: "valor_id"}) %>
 				</div>
 			</div>
 		</div>

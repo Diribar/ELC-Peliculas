@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 	const entidades = variables.entidadesRCLV;
 	let informacion;
 	// Verificar los datos
-	if (entidades.includes(entidad) || id < 50)
+	if (entidades.includes(entidad) && id < 50)
 		informacion = {
 			mensajes: [
 				"No está permitido editar este registro.",

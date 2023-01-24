@@ -1,6 +1,6 @@
 /* Configuración general */
 header {height: 9vh; z-index: 10;}
-header {background-color: var(--azul-oscuro); justify-content: space-between; z-index: 1;}
+header {background: var(--azul-oscuro); justify-content: space-between; z-index: 1;}
 header, header section {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
@@ -24,4 +24,4 @@ header #tituloHeader * {font-family: Monotype Corsiva; color: var(--amarillo-cla
 header #icono_usuario {border-radius: 50%; overflow: hidden; }
 header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
 header #icono_usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
-header #icono_usuario #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
+header #icono_usuario #letraInicial {background: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}

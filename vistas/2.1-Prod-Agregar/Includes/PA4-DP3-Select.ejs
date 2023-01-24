@@ -1,0 +1,15 @@
+<% registro = camposDP.find(n => n.nombre == campo) %>
+<section class="label-input inputError">
+	<label><%= registro.titulo %></label>
+	<!-- Input -->
+	<select name="<%= campo %>" class="input <%- registro.intermedio ? 'intermedio' : registro.angosto ? 'angosto' : '' %>" autofocus>
+		<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto && !registro.intermedio ? ' una opción' : '' %></option>
+		<% for (let valor of registro.valores) { %>
+			<option value="<%= valor.id %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>>
+				<%= valor.nombre %>
+			</option>
+		<% } %>
+	</select>
+	<%- include("PA4-DP9-Ayuda") %>
+	<%- include("CMP-Errores", {display: true}) %>	
+</section>

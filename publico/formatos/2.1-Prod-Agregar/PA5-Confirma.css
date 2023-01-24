@@ -15,5 +15,5 @@
 #dataEntry #datosProd p {margin: 3px;}
 
 #dataEntry .flechas {margin-top: 30px; display: flex; flex-direction: row; }
-#dataEntry .flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
+#dataEntry .flechas button {background: transparent; border: none; padding: 0; border-radius: 50%; margin: 0 15px;}
 #dataEntry .flechas #llegada {height: 40px; margin: 0;}

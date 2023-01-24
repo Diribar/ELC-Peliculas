@@ -1,0 +1,30 @@
+		// 2. Obtiene la calificación
+		let calificaciones;
+		if (!confirma.sinCalif) {
+			let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
+				BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
+				BD_genericas.obtienePorId("entretiene", confirma.entretiene_id).then((n) => n.valor),
+				BD_genericas.obtienePorId("calidad_tecnica", confirma.calidad_tecnica_id).then(
+					(n) => n.valor
+				),
+			]);
+			let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
+			calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
+		}
+		// 6. Guarda las calificaciones
+		if (!confirma.sinCalif) procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
+
+
+	guarda_cal_registros: (confirma, registro) => {
+		let producto_id = comp.obtieneEntidad_idDesdeEntidad(confirma.entidad);
+		let datos = {
+			entidad: "cal_registros",
+			usuario_id: registro.creado_por_id,
+			[producto_id]: registro.id,
+			fe_valores: confirma.fe_valores,
+			entretiene: confirma.entretiene,
+			calidad_tecnica: confirma.calidad_tecnica,
+			resultado: confirma.calificacion,
+		};
+		BD_genericas.agregaRegistro(datos.entidad, datos);
+	},

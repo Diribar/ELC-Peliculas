@@ -3,10 +3,10 @@
 
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
 #cartel {color: var(--gris-claro)}
-#cartel {background-color: var(--rojo-oscuro);}
-#cartel.gris {background-color: var(--gris-oscuro);}
-#cartel.verde {background-color: var(--verde-oscuro);}
-#cartel.azul {background-color: var(--azul-oscuro);}
+#cartel {background: var(--rojo-oscuro);}
+#cartel.gris {background: var(--gris-oscuro);}
+#cartel.verde {background: var(--verde-oscuro);}
+#cartel.azul {background: var(--azul-oscuro);}
 
 /* Alineación interna */
 #cartel {display: flex; flex-direction: column; align-items: center;}
@@ -29,10 +29,10 @@
 #cartel #flechasCartel * {border-radius: 50%;}
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
 #cartel .fa-house, #cartel .fa-thumbs-up, #cartel .fa-spell-check, 
-#cartel .fa-circle-info {background-color: var(--backIcono); border: 1px solid var(--backIcono); color: var(--gris-oscuro);}
+#cartel .fa-circle-info {background: var(--backIcono); border: 1px solid var(--backIcono); color: var(--gris-oscuro);}
 #cartel .fa-circle-left {color: var(--gris-oscuro);}
 #cartel .fa-circle-right {color: var(--verde-oscuro);}
 
 /* Tapar el fondo */
 main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
-main #cuerpoFooter #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+main #cuerpoFooter #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
