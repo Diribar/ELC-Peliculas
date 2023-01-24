@@ -84,7 +84,7 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-circle-right",
-							link: "/usuarios/documento",
+							link: "/usuarios/validacion-identidad",
 							titulo: "Ir a 'Documento'",
 							autofocus: true,
 						},

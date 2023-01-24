@@ -178,7 +178,7 @@ module.exports = {
 	},
 	validaForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "documento";
+		const codigo = "validacion-identidad";
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
@@ -234,7 +234,7 @@ module.exports = {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
-			return res.redirect("/usuarios/documento");
+			return res.redirect("/usuarios/validacion-identidad");
 		}
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
@@ -254,9 +254,9 @@ module.exports = {
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "3-DNI-Usuarios-Revisar");
 		// Redirecciona
-		return res.redirect("/usuarios/documento-recibido");
+		return res.redirect("/usuarios/validacion-en-proceso");
 	},
-	validado: (req, res) => {
+	validacionEnProceso: (req, res) => {
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");
@@ -270,7 +270,7 @@ module.exports = {
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-			titulo: "Solicitud de ABM exitosa",
+			titulo: "Validación en Proceso",
 			check: true,
 		};
 		// Fin
