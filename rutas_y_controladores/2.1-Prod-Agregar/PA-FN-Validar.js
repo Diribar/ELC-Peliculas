@@ -140,7 +140,7 @@ module.exports = {
 	datosPers: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_sugerido_id"];
+		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_id"];
 		// Datos generales + calificación
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] ? comp.selectVacio : "";

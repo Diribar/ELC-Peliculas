@@ -4,9 +4,8 @@
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
 #cartel {color: var(--gris-claro)}
 #cartel {background: var(--rojo-oscuro);}
-#cartel.gris {background: var(--gris-oscuro);}
-#cartel.verde {background: var(--verde-oscuro);}
-#cartel.azul {background: var(--azul-oscuro);}
+#cartel.check {background: var(--verde-oscuro);}
+#cartel.trabajando {background: var(--azul-oscuro);}
 
 /* Alineación interna */
 #cartel {display: flex; flex-direction: column; align-items: center;}

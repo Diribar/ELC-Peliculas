@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	var cartel = document.querySelector("#cartel");
 	let cartelTitulo = document.querySelector("#cartel #titulo");
 	let cartelUl = document.querySelector("#cartel ul");
-	let cartelError = document.querySelector("#cartel #error");
+	let cartelAlerta = document.querySelector("#cartel #alerta");
 	let cartelTrabajando = document.querySelector("#cartel #trabajando");
 	let lis_fa_circle;
 
@@ -26,9 +26,9 @@ window.addEventListener("load", async () => {
 		// Quita los dots del 'ul'
 		cartelUl.style.listStyleType = "none";
 		// Cambia el color de fondo
-		cartel.classList.add("azul");
+		cartel.classList.add("trabajando");
 		// Cambia el ícono de encabezado
-		cartelError.classList.add("ocultar");
+		cartelAlerta.classList.add("ocultar");
 		cartelTrabajando.classList.remove("ocultar");
 	})();
 

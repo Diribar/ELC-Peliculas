@@ -61,7 +61,7 @@ module.exports = async (req, res, next) => {
 			: "";
 	};
 	let creadoHaceMasDeUnaHora = () => {
-		let informacion = "";
+		let informacion;
 		if (
 			creado_en < haceUnaHora && // creado hace más de una hora
 			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión

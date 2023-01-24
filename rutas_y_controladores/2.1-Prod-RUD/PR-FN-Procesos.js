@@ -36,9 +36,8 @@ module.exports = {
 	bloquesDerecha:(entidad,prodComb)=>{
 		// Iniciales
 		let bloques=[
-			{titulo: "Público Sugerido", valor: comp.valorNombre(prodComb.publico_sugerido, "Sin datos")},
+			{titulo: "Público Sugerido", valor: comp.valorNombre(prodComb.publico, "Sin datos")},
 			{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
-			{titulo: "Sub-categoría", valor: comp.valorNombre(prodComb.subcategoria, "Sin datos")},
 		];
 		// rclvs
 		let rclvs = (campo, titulo, RCLV_entidad, rel) => {

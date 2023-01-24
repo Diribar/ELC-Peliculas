@@ -187,14 +187,14 @@ module.exports = {
 	},
 	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
 		// Preparar datos del capítulo
-		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol;
+		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
 		let datosCap = {
 			coleccion_id: datosCol.id,
 			fuente: "TMDB",
 			temporada: 1,
 			capitulo: indice + 1,
 			creado_por_id: 2,
-			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id},
+			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
 		};
 		// Guardar los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
@@ -266,11 +266,11 @@ module.exports = {
 
 		// Datos de la colección
 		let {direccion, guion, musica, produccion} = datosCol;
-		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id} = datosCol;
+		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
 		datos = {
 			...datos,
 			...{direccion, guion, musica, produccion},
-			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_sugerido_id},
+			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
 		};
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;

@@ -1,0 +1,80 @@
+<section id="datosLargos">
+	<div id="tituloPrincipal">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<div class="ayuda">
+			<i class="fa-solid fa-circle-question ayudaClick despl_click">
+				<ul class="ayudaMostrar ocultar despl_mostrar" type="none">
+					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.</li>
+				</ul>
+			</i>
+		</div>
+	</div>
+	<div id="datos">
+		<div id="contenido">
+			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+			<%- include("CR-Encabezado") %>
+			<!-- Sinopsis -->
+			<div id="sinopsis" class="bordeConSombra">
+				<div id="contenidoSinopsis"><%= producto.sinopsis %></div>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick despl_click">
+						<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
+							<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+						</ul>
+					</i>
+				</div>
+			</div>
+			<!-- Demás Datos Duros -->
+			<% for (bloque of bloquesIzquierda) { %>
+				<div class="datosAdicionales">
+					<% for (campo of bloque) { %>
+						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
+					<% } %> 
+				</div>				
+			<% } %>
+		</div>
+		<!-- Comandos -->
+		<!-- Botones -->
+		<div class="flexRow">
+			<%- include("CR-Flechas") %>
+			<div class="flechas inactivo">
+				<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
+				<% if (entidad != "colecciones") { %>
+					<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
+				<% } %>
+				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+				<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+				<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+			</div>
+		</div>
+	</div>
+</section>
+<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+	<nav>
+		<!-- Calificaciones -->
+		<h3>Calificaciones</h3>
+		<% if (producto.calificacion) { %>
+			<p id="calificacionesResultados"></p>
+			<div id="calificacionesGrafico"></div>
+		<% } else { %>
+			<p style="text-align: center; margin-top: 10px; font-style: italic;">- Sin calificaciones aún -</p>
+		<% } %>
+		<!-- Texto -->
+		<h3>Datos Adicionales</h3>
+		<div id="texto">
+			<% for (bloque of bloquesDerecha) { %>
+				<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
+					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+					<% if (bloque.RCLV_entidad) { %>
+						<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
+						<a href="/rclv/detalle/?<%= datosRCLV %>">
+							<i class="fa-solid fa-circle-info"></i>
+						</a>
+					<% } %>
+				</p>
+			<% } %>
+		</div>
+	</nav>
+</section>

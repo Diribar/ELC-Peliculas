@@ -65,7 +65,7 @@ module.exports = async (req, res, next) => {
 					],
 					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 					titulo: "Aviso",
-					colorFondo: "gris",
+					trabajando: true,
 				};
 			// Status: editables
 			if (usuario.status_registro.editables)
@@ -90,7 +90,7 @@ module.exports = async (req, res, next) => {
 						},
 					],
 					titulo: "Aviso",
-					colorFondo: "azul",
+					trabajando: true,
 				};
 		}
 
@@ -102,12 +102,11 @@ module.exports = async (req, res, next) => {
 		if (!usuario.rol_usuario.perm_inputs) {
 			informacion = {
 				mensajes: [
-					"Por alguna razón no tenés este permiso a pesar de que tenés validad tu identidad.",
+					"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
 					"Seguramente se te explicó el motivo vía mail.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 				titulo: "Aviso",
-				colorFondo: "gris",
 			};
 		}
 		// Fin
@@ -120,13 +119,14 @@ module.exports = async (req, res, next) => {
 			let contarRegistros = 0;
 			// Contar registros con status 'a revisar'
 			let entidades;
-			if (producto) entidades = variables.entidadesProd;
-			else if (rclv) entidades = variables.entidadesRCLV;
-			else if (links) entidades = ["links"];
-			if (entidades)
+			if (edicion) contarRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id)
+			else {
+				if (producto) entidades = variables.entidadesProd;
+				else if (rclv) entidades = variables.entidadesRCLV;
+				else if (links) entidades = ["links"];
 				contarRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
+			}
 			// Contar registros de edición
-			else if (edicion) contarRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id);
 			// Fin
 			return contarRegistros;
 		};
@@ -180,21 +180,20 @@ module.exports = async (req, res, next) => {
 		// Obtiene datos del url
 		const originalUrl = req.originalUrl;
 		// Obtiene la tarea
+		const edicion = originalUrl.includes("/edicion/");
 		const producto = originalUrl.startsWith("/producto/agregar/");
-		const edicion = originalUrl.startsWith("/producto/edicion/");
-		const rclv = originalUrl.startsWith("/rclv/");
+		const rclv = originalUrl.startsWith("/rclv/agregar");
 		const links = originalUrl.startsWith("/links/abm/");
 		// Obtiene su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros
-		const contarRegistros = contar_registros(usuario, producto, rclv, links, edicion);
+		const contarRegistros = await contar_registros(usuario, producto, rclv, links, edicion);
 
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
 		if (contarRegistros >= nivelDeConfianza)
 			informacion = {
 				mensajes: mensajes(edicion),
 				iconos: [vistaAnterior],
-				colorFondo: "gris",
 			};
 		// Fin
 		return informacion;
