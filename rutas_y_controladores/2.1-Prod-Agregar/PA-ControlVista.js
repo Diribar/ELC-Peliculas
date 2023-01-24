@@ -170,7 +170,7 @@ module.exports = {
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
-		let camposDP = await variables.camposDP(userID);
+		let camposDP = await variables.camposDP_conValores(userID);
 		// Imagen derecha
 		let imgDerPers = datosPers.avatar
 			? "/imagenes/9-Provisorio/" + datosPers.avatar
@@ -190,18 +190,18 @@ module.exports = {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("datos-duros");
-		// 2. Sumar el req.body a lo que ya se tenía
+		// 2. Obtiene los DatosPers
+		delete aux.sinCalif;
+		delete aux.sinRCLV;
 		let datosPers = {...aux, ...req.body};
-		// 3. Borrar campos innecesarios
-		for (let campo in datosPers) {
-			if (!datosPers[campo]) delete datosPers[campo];
-		}
+		if (datosPers.sinCalif || datosPers.sinRCLV) datosPers = procesos.puleDatosPers(datosPers);
+		for (let campo in datosPers) if (!datosPers[campo]) delete datosPers[campo];
 		// 4. Guarda el data entry en session y cookie
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 5. Averigua si hay errores de validación
-		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombre));
+		let camposDP = variables.camposDP.map((m) => m.nombre);
 		let errores = await valida.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("datos-personalizados");
@@ -257,13 +257,18 @@ module.exports = {
 			descargaOK = comp.descarga(confirma.avatar_url, rutaYnombre);
 		}
 		// 2. Obtiene la calificación
-		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
-			BD_genericas.obtienePorId("entretiene", confirma.entretiene_id).then((n) => n.valor),
-			BD_genericas.obtienePorId("calidad_tecnica", confirma.calidad_tecnica_id).then((n) => n.valor),
-		]);
-		let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-		let calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
+		let calificaciones;
+		if (!confirma.sinCalif) {
+			let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
+				BD_genericas.obtienePorId("fe_valores", confirma.fe_valores_id).then((n) => n.valor),
+				BD_genericas.obtienePorId("entretiene", confirma.entretiene_id).then((n) => n.valor),
+				BD_genericas.obtienePorId("calidad_tecnica", confirma.calidad_tecnica_id).then(
+					(n) => n.valor
+				),
+			]);
+			let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
+			calificaciones = {fe_valores, entretiene, calidad_tecnica, calificacion};
+		}
 		// 3. Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
@@ -273,7 +278,7 @@ module.exports = {
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// 4. Guarda los datos de 'Edición'
 		await procsCRUD.guardaEdicion({
-			entidadOrig: confirma.entidad,
+			entidadOrig: original.entidad,
 			entidadEdic: "prods_edicion",
 			original: registro,
 			edicion: confirma,
@@ -286,7 +291,7 @@ module.exports = {
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
-		procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
+		if (!confirma.sinCalif) procesos.guarda_cal_registros({...confirma, ...calificaciones}, registro);
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
@@ -296,7 +301,7 @@ module.exports = {
 		let prodTerminaste = {entidad: confirma.entidad, id: registro.id};
 		res.cookie("prodTerminaste", prodTerminaste, {maxAge: 3000});
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		Promise.all([descargaOK]);
+		await Promise.all([descargaOK]);
 		comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
 		// 11. Redirecciona
 		return res.redirect("terminaste");

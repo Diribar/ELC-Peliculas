@@ -96,11 +96,11 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtiene los productos
-		let productos = linksAjenos.length ? this.obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = linksAjenos.length ? this.TC_obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},
-	obtieneProdsDeLinks: function (links, ahora, userID) {
+	TC_obtieneProdsDeLinks: function (links, ahora, userID) {
 		// 1. Variables
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let productos = [];
@@ -266,7 +266,7 @@ module.exports = {
 		);
 	},
 
-	// Edición Form
+	// Producto y RCLV - Edición Form
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
@@ -368,7 +368,8 @@ module.exports = {
 		// Fin
 		return derecha;
 	},
-	guardar_edic: async function (req, regOrig, regEdic) {
+	// Producto y RCLV - API/Vista
+	guardar_edicion: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
@@ -466,17 +467,15 @@ module.exports = {
 		// Averigua si quedan campos por procesar
 		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
-		// Acciones si no quedan campos
-		if (!quedanCampos) {
+		// Acciones para productos si no quedan campos
+		if (!quedanCampos && producto) {
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
 				// Variables
 				let statusAprob;
 				// Averigua si tiene errores
-				let errores = producto
-					? await validaProds.consolidado(null, {...regOrig, entidad})
-					: await validaRCLVs.consolidado({...regOrig, entidad});
+				let errores = await validaProds.consolidado(null, {...regOrig, entidad});
 				// Acciones si el original no tiene errores y está en status 'gr_creado'
 				if (!errores.hay && regOrig.status_registro.gr_creado) {
 					// Genera la información a actualizar en el registro original
@@ -593,7 +592,7 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	// Prod/RCLV-Edición Form
+	// Prod-Edición Form
 	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
 		// Obtiene todos los campos a revisar
 		let campos = [...variables.camposRevisar.productos];
@@ -640,8 +639,6 @@ module.exports = {
 		// Fin
 		return [ingresos, reemplazos];
 	},
-
-	// Prod/RCLV-Edición Guardar
 	prodEdicGuardar_Avatar: async (req, prodOrig, prodEdic) => {
 		// Variables
 		const edicAprob = req.query.aprob == "true";
@@ -653,7 +650,10 @@ module.exports = {
 			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
+			if (
+				avatarOrig &&
+				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig)
+			)
 				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
@@ -808,7 +808,7 @@ module.exports = {
 	},
 
 	// Links - Vista
-	linksForm_avisoProblemas: (producto, urlAnterior) => {
+	linksForm_problemasProd: (producto, urlAnterior) => {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
@@ -833,32 +833,7 @@ module.exports = {
 		return informacion;
 	},
 	// Links - API
-	linksEdic_LimpiarEdiciones: async (linkOrig) => {
-		// Limpia las ediciones
-		// 1. Obtiene el link con sus ediciones
-		linkOrig = await BD_genericas.obtienePorIdConInclude("links", linkOrig.id, ["ediciones"]);
-		// Genera un objeto con valores null
-		let camposVacios = {};
-		variables.camposRevisar.links.forEach((campo) => (camposVacios[campo.nombre] = null));
-		// Purga cada edición
-		linkOrig.ediciones.forEach(async (linkEdic) => {
-			let edicID = linkEdic.id;
-			// La variable 'linkEdic' queda solamente con los camos con valor
-			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
-			// Si quedan campos, actualiza la edición
-			if (quedanCampos)
-				await BD_genericas.actualizaPorId("links_edicion", edicID, {
-					...camposVacios,
-					...linkEdic,
-				});
-			// Si no quedan, elimina el registro de la edición
-			else await BD_genericas.eliminaPorId("links_edicion", edicID);
-		});
-		// Fin
-		return;
-	},
-	links_gratuitoEnProd: async (prodEntidad, prodID) => {
+	linksABM_gratuitoEnProd: async (prodEntidad, prodID) => {
 		// Obtiene el ID de 'si'
 		let si_no_parcial = await BD_genericas.obtieneTodos("si_no_parcial", "id");
 		let si = si_no_parcial.find((n) => n.si).id;
@@ -870,7 +845,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	links_averiguaGratuitoEnProd: async (prodEntidad, prodID) => {
+	linksAltaBaja_averiguaGratuitoEnProd: async (prodEntidad, prodID) => {
 		// Lecturas
 		let si_no_parcial = BD_genericas.obtieneTodos("si_no_parcial", "id");
 		let tipos = BD_genericas.obtieneTodos("links_tipos", "nombre");
@@ -897,8 +872,32 @@ module.exports = {
 		// Fin
 		return;
 	},
-
-	obtieneCamposLinkEdic: (edicAprob, linkEdicion, campo) => {
+	linksEdic_limpiaEdiciones: async (linkOrig) => {
+		// Limpia las ediciones
+		// 1. Obtiene el link con sus ediciones
+		linkOrig = await BD_genericas.obtienePorIdConInclude("links", linkOrig.id, ["ediciones"]);
+		// Genera un objeto con valores null
+		let camposVacios = {};
+		variables.camposRevisar.links.forEach((campo) => (camposVacios[campo.nombre] = null));
+		// Purga cada edición
+		linkOrig.ediciones.forEach(async (linkEdic) => {
+			let edicID = linkEdic.id;
+			// La variable 'linkEdic' queda solamente con los camos con valor
+			linkEdic = {...linkEdic, entidad: "links_edicion"};
+			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
+			// Si quedan campos, actualiza la edición
+			if (quedanCampos)
+				await BD_genericas.actualizaPorId("links_edicion", edicID, {
+					...camposVacios,
+					...linkEdic,
+				});
+			// Si no quedan, elimina el registro de la edición
+			else await BD_genericas.eliminaPorId("links_edicion", edicID);
+		});
+		// Fin
+		return;
+	},
+	linksEdic_obtieneCampos: (edicAprob, linkEdicion, campo) => {
 		// Se preparan los datos 'consecuencia' a guardar
 		let datos = {[campo]: edicAprob ? linkEdicion[campo] : null};
 		if (campo == "tipo_id" && linkEdicion.completo !== null)

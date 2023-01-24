@@ -4,8 +4,8 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -28,8 +28,7 @@ module.exports = {
 		}
 	},
 
-	// MOVIES *****************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - MOVIES
 	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
@@ -63,14 +62,8 @@ module.exports = {
 			if (datosAPI.original_title) datos.nombre_original = datosAPI.original_title;
 			if (datosAPI.title) datos.nombre_castellano = datosAPI.title;
 			// Idioma
-			if (datosAPI.original_language) {
-				datos.idioma_original_id = datosAPI.original_language;
-				if (
-					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
-				)
-					datos.en_castellano_id = 1;
-			}
+			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+
 			// año de estreno, duración, país de origen
 			if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
 			if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
@@ -94,9 +87,7 @@ module.exports = {
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-
-	// COLLECTIONS ************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - COLLECTIONS
 	DS_collection: async (datos) => {
 		// Fórmula
 		let completaColeccion = async (datos) => {
@@ -177,7 +168,6 @@ module.exports = {
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-	// ControllerVista (confirma)
 	agregaCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
@@ -195,7 +185,6 @@ module.exports = {
 			capitulo: indice + 1,
 			creado_por_id: 2,
 		};
-		if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
 		datosCap.categoria_id = datosCol.categoria_id;
 		datosCap.subcategoria_id = datosCol.subcategoria_id;
@@ -208,9 +197,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-
-	// TV *********************************
-	// ControllerVista (desambiguarGuardar)
+	// Desambiguar - TV
 	DS_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		datos = {
@@ -235,14 +222,8 @@ module.exports = {
 			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1)
 				datos.duracion = datosAPI.episode_run_time[0];
 			// Idioma
-			if (datosAPI.original_language) {
-				datos.idioma_original_id = datosAPI.original_language;
-				if (
-					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
-				)
-					datos.en_castellano_id = 1;
-			}
+			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) datos.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
 			if (datosAPI.last_air_date) datos.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
@@ -280,7 +261,6 @@ module.exports = {
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
-		if (datosCol.en_castellano_id != 2) datos.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
 		datos.categoria_id = datosCol.categoria_id;
 		datos.subcategoria_id = datosCol.subcategoria_id;
@@ -316,7 +296,19 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
-	// ControllerVista (confirma)
+	// Datos Personales
+	puleDatosPers: (datosPers) => {
+		// Variables
+		let camposDP = variables.camposDP;
+		let camposCalif = camposDP.filter((n) => n.grupo == "calificala").map((m) => m.nombre);
+		let camposRCLV = camposDP.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
+		// Acciones
+		if (datosPers.sinCalif) for (let campo of camposCalif) delete datosPers[campo];
+		if (datosPers.sinRCLV) for (let campo of camposRCLV) delete datosPers[campo];
+		// Fin
+		return datosPers;
+	},
+	// Confirma
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)

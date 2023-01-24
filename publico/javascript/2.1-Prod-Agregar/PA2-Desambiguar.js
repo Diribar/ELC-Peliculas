@@ -213,12 +213,12 @@ window.addEventListener("load", async () => {
 			// 1. Obtiene más información del producto
 			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
 			ruta = "api/desambiguar-guardar1/?datos=" + JSON.stringify(datos);
-			datos = await fetch(ruta).then((n) => n.json());
+			await fetch(ruta); // El 'await' es para esperar a que se grabe la cookie en la controladora
 			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 			// 2. Revisa la información disponible, para determinar los próximos pasos
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar2/?datos=" + JSON.stringify(datos);
+			ruta = "api/desambiguar-guardar2"
 			errores = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 

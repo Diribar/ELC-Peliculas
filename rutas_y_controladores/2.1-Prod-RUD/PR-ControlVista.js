@@ -65,7 +65,7 @@ module.exports = {
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
-			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
+			camposDP = await variables.camposDP_conValores(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);

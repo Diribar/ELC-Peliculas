@@ -168,7 +168,19 @@ module.exports = {
 			capitulos: true,
 		},
 	],
-	camposDP: async function (userID) {
+	camposDP: [
+		{nombre: "en_color_id"},
+		{nombre: "publico_sugerido_id"},
+		{nombre: "categoria_id"},
+		{nombre: "subcategoria_id"},
+		{nombre: "personaje_id", grupo: "RCLV"},
+		{nombre: "hecho_id", grupo: "RCLV"},
+		{nombre: "valor_id", grupo: "RCLV"},
+		{nombre: "fe_valores_id", grupo: "calificala"},
+		{nombre: "entretiene_id", grupo: "calificala"},
+		{nombre: "calidad_tecnica_id", grupo: "calificala"},
+	],
+	camposDP_conValores: async function (userID) {
 		// Variables
 		const registrosRCLV = await (async () => {
 			// Variables
@@ -195,31 +207,12 @@ module.exports = {
 			// Fin
 			return registros;
 		})();
-		// const registrosRCLV = await funcionRegistrosRCLV(userID);
 		return [
 			{
-				titulo: "Existe una versión en castellano",
-				nombre: "en_castellano_id",
-				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
-				mensajePeli: [
-					"SI - cuando es el idioma de toda la película, o está subtitulada.",
-					"PARCIAL - cuando lo anterior se cumple parcialmente.",
-					"NO - cuando no se cumple lo anterior.",
-					"Si la película está subtitulada, se especificará luego en el link.",
-				],
-				mensajeColec: [
-					"SI - cuando es el idioma de todos los capítulos, o están subtitulados.",
-					"PARCIAL - cuando lo anterior se cumple parcialmente.",
-					"NO - cuando no se cumple lo anterior.",
-					"Cuando un capítulo está subtitulado, se especifica en el link.",
-				],
-				angosto: true,
-			},
-			{
-				titulo: "Es a Color",
+				titulo: "Es a color",
 				nombre: "en_color_id",
 				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
-				mensajePeli: ["SI - es a color.", "NO - es en blanco y negro."],
+				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 				mensajeColec: ["En caso de que algunos capítulos sean a color y otros no, elegí PARCIAL"],
 				angosto: true,
 			},
@@ -296,7 +289,7 @@ module.exports = {
 				nombre: "fe_valores_id",
 				valores: userID ? await BD_genericas.obtieneTodos("fe_valores", "orden") : [],
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 			{
@@ -304,7 +297,7 @@ module.exports = {
 				nombre: "entretiene_id",
 				valores: userID ? await BD_genericas.obtieneTodos("entretiene", "orden") : [],
 				mensajes: ["¿Se disfruta el rato viéndola?"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 			{
@@ -312,7 +305,7 @@ module.exports = {
 				nombre: "calidad_tecnica_id",
 				valores: userID ? await BD_genericas.obtieneTodos("calidad_tecnica", "orden") : [],
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-				angosto: true,
+				intermedio: true,
 				grupo: "calificala",
 			},
 		];
@@ -386,12 +379,6 @@ module.exports = {
 			{titulo: "Actuación", nombre: "actuacion", input: true},
 			{titulo: "Producción", nombre: "produccion", input: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
-			{
-				titulo: "Versión en castellano",
-				nombre: "en_castellano_id",
-				relac_include: "en_castellano",
-				campo_include: "productos",
-			},
 			{
 				titulo: "Es a Color",
 				nombre: "en_color_id",

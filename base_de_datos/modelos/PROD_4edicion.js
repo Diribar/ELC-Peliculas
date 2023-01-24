@@ -4,8 +4,8 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		nombre_original: {type: dt.STRING(100)},
-		nombre_castellano: {type: dt.STRING(100)},
+		nombre_original: {type: dt.STRING(70)},
+		nombre_castellano: {type: dt.STRING(70)},
 		duracion: {type: dt.INTEGER},
 		ano_estreno: {type: dt.INTEGER},
 		ano_fin: {type: dt.INTEGER},
@@ -20,7 +20,6 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(18)},
 		avatar_url: {type: dt.STRING(100)},
 
-		en_castellano_id: {type: dt.INTEGER},
 		en_color_id: {type: dt.INTEGER},
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.STRING(3)},

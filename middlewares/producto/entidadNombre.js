@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
 	// Obtiene la entidad
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		let prodNombre = funciones.obtieneEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
 				mensajes: ["La entidad ingresada no es válida"],

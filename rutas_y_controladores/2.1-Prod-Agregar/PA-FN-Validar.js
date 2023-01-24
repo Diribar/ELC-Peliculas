@@ -25,13 +25,13 @@ module.exports = {
 		let cartelActuacion =
 			comp.inputVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 50},
+			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 70},
 			{
 				nombre: "nombre_castellano",
 				idioma: "completo",
 				cartel: comp.inputVacio,
 				corto: 3,
-				largo: 50,
+				largo: 70,
 			},
 			{nombre: "direccion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
 			{nombre: "guion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
@@ -140,39 +140,36 @@ module.exports = {
 	datosPers: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = [
-			"en_castellano_id",
-			"en_color_id",
-			"publico_sugerido_id",
-			"categoria_id",
-			"subcategoria_id",
-			"fe_valores_id",
-			"entretiene_id",
-			"calidad_tecnica_id",
-		];
+		let camposPosibles = ["en_color_id", "publico_sugerido_id", "categoria_id", "subcategoria_id"];
+		if (datos.sinCalif) errores = {fe_valores_id: "", entretiene_id: "", calidad_tecnica_id: ""};
+		else camposPosibles.push("fe_valores_id", "entretiene_id", "calidad_tecnica_id");
 		// Datos generales + calificación
 		for (let campo of camposPosibles) {
 			if (campos.includes(campo)) errores[campo] = !datos[campo] ? comp.selectVacio : "";
 		}
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
-			// Obtiene el registro de la subcategoría
-			let subcategoria = await BD_genericas.obtienePorId("subcategorias", datos.subcategoria_id);
-			let rclv_necesario = subcategoria.rclv_necesario;
-			// Relación con la vida
+			// Variables
 			errores.personaje_id = "";
 			errores.hecho_id = "";
 			errores.valor_id = "";
-			if (rclv_necesario == "personaje")
-				errores.personaje_id = !datos.personaje_id || datos.personaje_id == 1 ? comp.selectVacio : "";
-			else if (rclv_necesario == "hecho")
-				errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? comp.selectVacio : "";
-			else {
-				let alguno =
-					(!datos.personaje_id || datos.personaje_id == 1) &&
-					(!datos.hecho_id || datos.hecho_id == 1) &&
-					(!datos.valor_id || datos.valor_id == 1);
-				errores.valor_id = alguno ? "Se debe completar alguno de estos 3 campos" : "";
+			if (!datos.sinRCLV) {
+				// Obtiene el registro de la subcategoría
+				let subcategoria = await BD_genericas.obtienePorId("subcategorias", datos.subcategoria_id);
+				// Relación con la vida
+				let rclv_necesario = subcategoria.rclv_necesario;
+				if (rclv_necesario == "personaje")
+					errores.personaje_id =
+						!datos.personaje_id || datos.personaje_id == 1 ? comp.selectVacio : "";
+				else if (rclv_necesario == "hecho")
+					errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? comp.selectVacio : "";
+				else {
+					let alguno =
+						(!datos.personaje_id || datos.personaje_id == 1) &&
+						(!datos.hecho_id || datos.hecho_id == 1) &&
+						(!datos.valor_id || datos.valor_id == 1);
+					errores.valor_id = alguno ? "Se debe completar alguno de estos 3 campos" : "";
+				}
 			}
 		}
 		// ***** RESUMEN *******

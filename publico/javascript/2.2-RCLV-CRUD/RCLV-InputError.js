@@ -355,6 +355,33 @@ window.addEventListener("load", async () => {
 					}
 					return;
 				},
+				cnt: async () => {
+					// Variables
+					let dato = v.cnt[0].checked ? v.cnt[0].value : v.cnt[1].checked ? v.cnt[1].value : "";
+					let ama = {};
+
+					// Resultados
+					if (dato == "1") {
+						// Aparición Mariana
+						ama.certeza = true; // Si 'cnt' es true, hay certeza de que 'ama' es false
+						ama.dato = false; // Si 'cnt' es true, 'ama' es false
+					} else ama.certeza = false;
+
+					// Aparición Mariana - Situaciones en las que se oculta el sector
+					if (ama.certeza) {
+						// Oculta el sector
+						v.sector_ama.classList.add("ocultaPorCNT");
+						// Completa el dato de ama
+						ama.dato ? (v.ama[0].checked = true) : (v.ama[1].checked = true);
+					} else {
+						v.sector_ama.classList.remove("ocultaPorCNT");
+						v.ama[0].checked = false;
+						v.ama[1].checked = false;
+					}
+
+					// Fin
+					return;
+				},
 			},
 			hechos: {
 				ano: () => {
@@ -617,10 +644,15 @@ window.addEventListener("load", async () => {
 			}
 			// 2. Acciones si se cambia el sexo
 			if (campo == "sexo_id" || todos) procesos.RCLI.personajes.sexo();
-			// 3. Acciones si se cambia 'jss', 'cnt', o 'ncn'
-			if (campo && ["jss", "cnt", "ncn"].includes(campo)) procesos.RCLI.hechos[campo]();
-			else if (todos && v.entidad == "hechos")
-				for (let campo of ["jss", "cnt", "ncn"]) procesos.RCLI.hechos[campo]();
+			// 3. Acciones si se cambia 'jss', 'cnt', o 'ncn' en Hechos
+			if (v.entidad == "hechos") {
+				if (campo && ["jss", "cnt", "ncn"].includes(campo)) procesos.RCLI.hechos[campo]();
+				else if (todos) for (let campo of ["jss", "cnt", "ncn"]) procesos.RCLI.hechos[campo]();
+			}
+			// 4. Acciones si se cambia 'jss', 'cnt', o 'ncn' en Personajes
+			if (v.entidad == "personajes") {
+				if (campo && ["cnt"].includes(campo)) procesos.RCLI.personajes[campo]();
+			}
 
 			// Revisa los errores en RCLI
 			await validacs.RCLI.consolidado();

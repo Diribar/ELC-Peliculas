@@ -14,6 +14,7 @@
 					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
 						<li>Necesitamos que nos des la información que no disponemos.</li>
 						<li>Arriba de la imagen, disponés de links útiles para conseguirla.</li>
+						<li>Si no conseguís algún dato que nos falte, podés  poner <em>Desconocido</em>.</li>
 					</ul>	
 				</i>
 			</div>
@@ -29,7 +30,7 @@
 				<% } %>
 				<!-- FA -->
 				<% if (dataEntry.fuente!="FA") { %>
-					<% fa = dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
+					<% fa = dataEntry.nombre_castellano ? "search.php?stext=" + dataEntry.nombre_castellano : dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
 					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity"></a>
 				<% } %>
 				<!-- IMDB -->

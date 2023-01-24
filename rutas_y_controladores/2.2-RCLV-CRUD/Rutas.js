@@ -11,14 +11,15 @@ const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosComp
 const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");
-const id = require("../../middlewares/producto/entidadID");
+const entidadID = require("../../middlewares/producto/entidadID");
+const jesus = require("../../middlewares/producto/jesus");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
 const todosAgregar = [soloUsuariosCompl, soloAptoInput, entidad];
-const todos = [...todosAgregar, id, permUserReg, capturaActivar];
+const todos = [...todosAgregar, entidadID, permUserReg, capturaActivar];
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar
@@ -29,9 +30,9 @@ router.get("/api/prefijos", API.prefijos);
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", ...todosAgregar, vista.altaEdicForm);
 router.post("/agregar", ...todosAgregar, vista.altaEdicGrabar);
-router.get("/edicion", ...todos, vista.altaEdicForm);
+router.get("/edicion", ...todos, jesus, vista.altaEdicForm);
 router.post("/edicion", ...todos, capturaInactivar, vista.altaEdicGrabar);
-router.get("/detalle", entidad, id, capturaInactivar, vista.detalle);
+router.get("/detalle", entidad, entidadID, capturaInactivar, vista.detalle);
 // router.get("/inactivar", ...todos, vista.inactivar);
 // router.get("/recuperar", ...todos, vista.recuperar);
 

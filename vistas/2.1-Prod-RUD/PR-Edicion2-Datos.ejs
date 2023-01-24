@@ -4,15 +4,13 @@
 <section id="datos">
 	<!-- Datos generales -->
 	<div id="primeraColumna">
-		<h3>Datos generales</h3>
+		<h3>Datos Generales</h3>
 		<!-- Primeros campos -->
 		<% for (let campo of camposInput1) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- País -->
 		<%- include("PR-Pais") %>
 		<!-- Idioma original -->
 		<%- include("PR-Idioma", {idioma_id: producto.idioma_original_id}) %>
-		<!--Existe una versión en castellano-->
-		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", campoDato: "productos"}) %>
 		<!--Es a Color-->
 		<%- include("PR-Select", {nombreDelCampo: "en_color_id", campoDato: "productos"}) %>
 		<!-- Producción -->

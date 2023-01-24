@@ -210,7 +210,7 @@ module.exports = {
 		for (let i = 0; i < campos.length; i++) {
 			if (typeof valores[i] == "string") {
 				resultado[campos[i]] = valores[i]
-					.replace(/  /g, " ")
+					.replace(/ +/g, " ")
 					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 					.replace(/[àâãäåāăą]/g, "a")
 					.replace(/Æ/g, "Ae")
@@ -256,8 +256,11 @@ module.exports = {
 					.replace(/[ýŷÿ]/g, "y")
 					.replace(/[ŽŹŻŽ]/g, "Z")
 					.replace(/[žźżž]/g, "z")
-					.replace(/[”“«»]/g, '"')
-					.replace(/[º]/g, "°");
+					.replace(/[‘“’”«»]/g, '"')
+					.replace(/[º]/g, "°")
+					.replace(/\t/g, " ")
+					.replace(/#/g, "")
+					;
 			}
 		}
 		return resultado;
@@ -405,7 +408,6 @@ module.exports = {
 		const nombreDeArchivo = "archFechaVig.json";
 		let rutaNombre = path.join(__dirname, nombreDeArchivo);
 		let fechas = () => {
-			// Variables
 			// Obtiene el valor de las fechas
 			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
 			let fechaActual =
@@ -439,7 +441,7 @@ module.exports = {
 	},
 	cambiaImagenDerecha: async function () {
 		// Variables
-		let dia_del_ano_id, banco_de_imagenes, imagenDerecha;
+		let dia_del_ano_id, banco_de_imagenes, imgDerecha;
 
 		// Obtiene dia_del_ano_id y el banco_de_imagenes
 		await (async () => {
@@ -466,25 +468,25 @@ module.exports = {
 		(() => {
 			for (let i = 0; i < banco_de_imagenes.length; i++) {
 				if (dia_del_ano_id + i > 366) i -= 366;
-				imagenDerecha = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
-				if (imagenDerecha) break;
+				imgDerecha = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
+				if (imgDerecha) break;
 			}
 			// Obtiene el dia_del_ano_id con imagen
-			dia_del_ano_id = imagenDerecha.dia_del_ano_id;
+			dia_del_ano_id = imgDerecha.dia_del_ano_id;
 			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
 			// Obtiene todos los registros con ese 'dia_del_ano_id'
 			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--;
-			imagenDerecha = registros[indice].nombre_archivo;
+			imgDerecha = registros[indice].nombre_archivo;
 		})();
 
 		// 1. Borra la 'imagenAnterior'
 		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
-		// 2. Cambia el nombre del archivo 'imagenDerecha' por 'imagenAnterior'
-		await this.cambiaElNombreDeUnArchivo("0-Base", "imagenDerecha.jpg", "imgDerAnt.jpg");
-		// Copia la nueva imagen como 'imagenDerecha'
-		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imagenDerecha, "0-Base/imagenDerecha.jpg");
+		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
+		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerecha.jpg", "imgDerAnt.jpg");
+		// Copia la nueva imagen como 'imgDerecha'
+		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerecha.jpg");
 		// Fin
 		return;
 	},

@@ -6,4 +6,4 @@
 #cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px;}
 
 /* Formato del mensaje */
-#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {align-self: flex-start; z-index: 3;}
+#cuerpo #tituloPrincipal, #cuerpo #tituloSecundario {align-self: flex-start; z-index: 8;}
