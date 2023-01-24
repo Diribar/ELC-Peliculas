@@ -1,0 +1,17 @@
+/* Cuerpo */
+#cuerpo {position: relative; display: flex; flex-direction: column; flex-grow: 1;}
+
+/* CUADRO DE TEXTO - CUADRO */
+#cuerpo #cuadro-de-texto {top: 50%; left: 50%; translate: -50% -50%; position: absolute;}
+#cuerpo #cuadro-de-texto {display: flex; flex-direction: column;}
+#cuerpo #cuadro-de-texto {padding: 30px; border-radius: 20px; width: 70%;}
+#cuerpo #cuadro-de-texto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
+
+/* CUADRO DE TEXTO - TEXTO */
+#cuerpo #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
+#cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;}
+#cuerpo #cuadro-de-texto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+#cuerpo #cuadro-de-texto .bloque ul ul {margin-left: 30px;}
+#cuerpo #cuadro-de-texto .bloque ul ul li {margin-top: 2px;}
+
+mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}

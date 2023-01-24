@@ -4,7 +4,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 // *********** Controlador ***********
 module.exports = {
 	// Vistas de vistas - Institucional
-	home: (req, res) => {
+	inicio: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
 			codigo: "inicio",
@@ -15,22 +15,36 @@ module.exports = {
 	quienesSomos: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "quienes-somos",
+			codigo: "quienesSomos",
 			titulo: "Quiénes somos",
 		});
 	},
-	copyright: (req, res) => {
+	misionVision: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "copyright",
-			titulo: "Nuestra Política sobre DA",
+			codigo: "misionVision",
+			titulo: "Nuestra Misión y Visión",
 		});
 	},
-	perfilProductos: (req, res) => {
+	valores: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "perfil-productos",
-			titulo: "Nuestro Perfil de Películas",
+			codigo: "nuestrosValores",
+			titulo: "Nuestros Valores",
+		});
+	},
+	derechosAutor: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "derechosAutor",
+			titulo: "Nuestra Política sobre Derechos de Autor",
+		});
+	},
+	dataEntry: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "dataEntry",
+			titulo: "Nuestra Política de Data-Entry",
 		});
 	},
 

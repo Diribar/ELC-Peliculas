@@ -153,40 +153,33 @@ module.exports = {
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
-			// Verifica si la dirección de mail fue validada
-			let fechaHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
-			if (!usuario.status_registro.mail_validado) {
+			// Detecta si ya se envió un mail en las últimas 24hs
+			let ahora = comp.ahora();
+			let fechaContr = usuario.fecha_contrasena;
+			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
+			if (diferencia < 24) {
+				let fechaContrHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
 				errores = {
 					email:
-						"Esta dirección de email no está validada. Ya se envió un mail con la contraseña el día " +
-						fechaHorario,
+						"Ya se envió un mail con la contraseña el día " +
+						fechaContrHorario +
+						". Para evitar 'spam', deben transcurrir 24hs antes de enviar una nueva contraseña.",
 				};
-			} else {
-				// Verifica si ya se envió un mail en el día
-				let ahora = comp.fechaTexto(comp.ahora());
-				let fecha = comp.fechaTexto(usuario.fecha_contrasena);
-				if (ahora == fecha)
-					errores = {
-						email:
-							"El mail fue enviado el " +
-							fechaHorario +
-							", y se permite un sólo envío por día.",
-					};
-				// Verifica si tiene status de 'documento'
-				else if (usuario.status_registro.ident_a_validar) {
-					// Verifica los posibles errores
-					errores.docum_numero = !datos.docum_numero
-						? comp.inputVacio
-						: datos.docum_numero != usuario.docum_numero
-						? "El número de documento no coincide con el de nuestra Base de Datos"
-						: "";
-					errores.docum_pais_id = !datos.docum_pais_id
-						? comp.selectVacio
-						: datos.docum_pais_id != usuario.docum_pais_id
-						? "El país no coincide con el de nuestra Base de Datos"
-						: "";
-					errores.documento = !!errores.docum_numero || !!errores.docum_pais_id;
-				}
+			}
+			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
+			else if (usuario.status_registro.ident_a_validar || usuario.status_registro.ident_validada) {
+				// Verifica los posibles errores
+				errores.docum_numero = !datos.docum_numero
+					? comp.inputVacio
+					: datos.docum_numero != usuario.docum_numero
+					? "El número de documento no coincide con el de nuestra Base de Datos"
+					: "";
+				errores.docum_pais_id = !datos.docum_pais_id
+					? comp.selectVacio
+					: datos.docum_pais_id != usuario.docum_pais_id
+					? "El país no coincide con el de nuestra Base de Datos"
+					: "";
+				errores.documento = !!errores.docum_numero || !!errores.docum_pais_id;
 			}
 		}
 		// Fin

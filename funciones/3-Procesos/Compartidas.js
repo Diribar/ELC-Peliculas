@@ -526,35 +526,33 @@ module.exports = {
 		// Variables
 		let {avatar, avatar_url, docum_avatar, tamano, esImagen} = datos;
 		avatar = avatar ? avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
-		// Funciones
-		let FN_esImagen = () => {
-			return esImagen == "NO" ? "El archivo no es una imagen" : "";
-		};
-		let FN_nombre = () => {
-			return !avatar ? "Necesitamos que agregues una imagen" : "";
-		};
-		let FN_extension = () => {
-			let ext = path.extname(avatar).toLocaleLowerCase();
-			return !ext
-				? "El archivo debe tener alguna extensión"
-				: ![".jpg", ".png", ".jpeg"].includes(ext)
-				? "Usaste un archivo con la extensión '" +
-				  ext.slice(1).toUpperCase() +
-				  "'. Las extensiones válidas son JPG, JPEG y PNG"
-				: "";
-		};
-		let FN_tamano = () => {
-			return tamano && tamano > 1100000
+		let ext = path.extname(avatar).toLocaleLowerCase();
+
+		// Mensajes
+		let MN_esImagen = esImagen == "NO" ? "El archivo no es una imagen" : "";
+
+		let MN_nombre = !avatar ? "Necesitamos que agregues una imagen" : "";
+
+		let MN_extension = !ext
+			? "El archivo debe tener alguna extensión"
+			: ![".jpg", ".png", ".jpeg"].includes(ext)
+			? "Usaste un archivo con la extensión '" +
+			  ext.slice(1).toUpperCase() +
+			  "'. Las extensiones válidas son JPG, JPEG y PNG"
+			: "";
+
+		let MN_tamano =
+			tamano && tamano > 1100000
 				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 				: "";
-		};
+
 		// Variables
 		let respuesta = "";
 		// Validaciones
-		if (!respuesta) respuesta = FN_esImagen();
-		if (!respuesta) respuesta = FN_nombre();
-		if (!respuesta) respuesta = FN_extension();
-		if (!respuesta) respuesta = FN_tamano();
+		if (!respuesta) respuesta = MN_esImagen;
+		if (!respuesta) respuesta = MN_nombre;
+		if (!respuesta) respuesta = MN_extension;
+		if (!respuesta) respuesta = MN_tamano;
 		// Fin
 		return respuesta;
 	},
@@ -694,7 +692,7 @@ module.exports = {
 
 // Funciones
 let FN_ahora = () => {
-	return new Date(new Date().toUTCString()) // <-- para convertir en 'horario local'
+	return new Date(new Date().toUTCString()); // <-- para convertir en 'horario local'
 };
 let nuevoHorario = (delay, horario) => {
 	horario = horario ? horario : FN_ahora();
