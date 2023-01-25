@@ -1,9 +1,9 @@
 <% registro = camposDP.find(n => n.nombre == campo) %>
-<section class="label-input inputError">
+<section class="label-select inputError">
 	<label><%= registro.titulo %></label>
 	<!-- Input -->
-	<select name="<%= campo %>" class="input <%- registro.intermedio ? 'intermedio' : registro.angosto ? 'angosto' : '' %>" autofocus>
-		<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto && !registro.intermedio ? ' una opción' : '' %></option>
+	<select name="<%= campo %>" class="input" autofocus>
+		<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 		<% for (let valor of registro.valores) { %>
 			<option value="<%= valor.id %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>>
 				<%= valor.nombre %>

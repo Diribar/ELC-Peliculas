@@ -5,35 +5,32 @@
 #dataEntry #datos {display: flex; flex-direction: row;}
 #dataEntry #tituloSecundario {margin-bottom: 10px;}
 #dataEntry #primeraColumna {margin-right: 70px;}
-#dataEntry #segundaColumna {margin-right: 25px; width: 290px;}
-#dataEntry .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
-#dataEntry .label-input.ocultar {display: none;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
 #dataEntry h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
 #dataEntry .altoFila {height: 25px;}
-#dataEntry .label-input label {margin: 0 15px 0 0; font-weight: bold; min-height: 19px;}
-#dataEntry .label-input .inputError {margin-left: 5px;}
-#dataEntry .label-input .inputError .input {align-self: center; width: 150px;}
-#dataEntry .label-input .inputError input {padding: 0px 5px;}
-#dataEntry .label-input .inputError select {padding: 0;}
-#dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
-#dataEntry #checkbox label {padding-left: 5px; line-height: normal;}
+
+/* Temas de la 2a columna */
+#dataEntry #segundaColumna {margin-right: 25px; width: 290px;}
 #dataEntry #segundaColumna hr {margin: 10px 0;}
 #dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto;}
 
+/* Selects */
+#dataEntry .label-select {display: flex; flex-direction: row; justify-content: space-between;}
+#dataEntry .label-select {margin-top: 5px;}
+#dataEntry .label-select label {margin: 0 15px 0 0; font-weight: bold;}
+#dataEntry .label-select select {padding: 0; width: 150px; margin-left: 5px;}
+
 /* Temas RCLV */
+#dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
+#dataEntry #checkbox label {padding-left: 5px; line-height: normal;}
+#dataEntry #selectsRCLV .label-select.ocultar {display: none;}
 #dataEntry #selectsRCLV .ayuda {left: -5px; right: auto; translate: -100% -50%;}
 #dataEntry #selectsRCLV .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%;}
 #dataEntry #selectsRCLV .linkRCLV {width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry #selectsRCLV .linkRCLV.alta {right: -20px; font-size: 1rem;}
 #dataEntry #selectsRCLV .linkRCLV.edicion {right: -40px; font-size: 1.15rem;}
-
-/* Anchos específicos de inputs */
-#dataEntry .label-input .inputError select.angosto {width: 70px}	
-#dataEntry .label-input .inputError select.intermedio {width: 90px}	
-#dataEntry .label-input .inputError .input[type='checkbox'] {width: auto;}	
 
 /* Flechas */
 #dataEntry .flechas {margin-top: 20px;}
