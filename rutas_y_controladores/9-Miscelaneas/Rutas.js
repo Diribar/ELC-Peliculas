@@ -18,11 +18,15 @@ const todos = [soloUsuariosCompl, soloAptoInput, entidad, id, capturaInactivar];
 router.get("/api/quick-search/", API.quickSearch);
 router.get("/api/horario-inicial/", API.horarioInicial);
 
+// Inicio
+router.get("/", vista.inicio);
+
 // Vistas de vistas - Institucional
-router.get("/", vista.home);
 router.get("/quienes-somos", vista.quienesSomos);
-router.get("/derechos-de-autor", vista.copyright);
-router.get("/nuestro-perfil-de-peliculas", vista.perfilProductos);
+router.get("/mision-y-vision", vista.misionVision);
+router.get("/valores", vista.valores);
+router.get("/derechos-de-autor", vista.derechosAutor);
+router.get("/data-entry", vista.dataEntry);
 
 // Session y Cookies
 router.get("/session", vista.session);
