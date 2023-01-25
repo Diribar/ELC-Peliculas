@@ -1,7 +1,7 @@
 <% registro = camposDP.find(n => n.nombre == campo) %>
-<section class="label-select inputError">
+<section class="label-select">
 	<label><%= registro.titulo %></label>
-	<div class="flexRowAlign relative">
+	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= campo %>" class="input" autofocus>
 			<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
