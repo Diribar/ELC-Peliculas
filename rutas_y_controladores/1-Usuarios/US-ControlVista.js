@@ -373,7 +373,10 @@ module.exports = {
 
 		// Si todo anduvo bien...
 		// Envía la contraseña por mail
-		let {ahora, contrasena} = await procesos.enviaMailConContrasena(req);
+		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
+		if (!feedbackEnvioMail.OK)
+			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Actualiza la contraseña en la BD
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
