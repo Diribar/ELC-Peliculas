@@ -142,7 +142,7 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	olvidoContrBE: async (datos,req) => {
+	olvidoContrBE: async (datos, req) => {
 		// Variables
 		let errores = {};
 		let informacion;
