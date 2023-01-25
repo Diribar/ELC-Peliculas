@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
 const bcryptjs = require("bcryptjs");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	altaMail: async (email) => {
@@ -142,9 +142,10 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	olvidoContrBE: async (datos) => {
+	olvidoContrBE: async (datos, req) => {
 		// Variables
 		let errores = {};
+		let informacion;
 		let usuario = await BD_genericas.obtienePorCamposConInclude(
 			"usuarios",
 			{email: datos.email},
@@ -159,11 +160,12 @@ module.exports = {
 			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
 			if (diferencia < 24) {
 				let fechaContrHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
-				errores = {
-					email:
-						"Ya se envió un mail con la contraseña el día " +
-						fechaContrHorario +
-						". Para evitar 'spam', deben transcurrir 24hs antes de enviar una nueva contraseña.",
+				informacion = {
+					mensajes: [
+						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",
+						"Para evitar 'spam', esperamos 24hs antes de enviar una nueva contraseña.",
+					],
+					iconos: [variables.vistaEntendido(req.session.urlSinLogin)],
 				};
 			}
 			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
@@ -184,7 +186,7 @@ module.exports = {
 		}
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
-		return [errores, usuario];
+		return [errores, informacion, usuario];
 	},
 };
 

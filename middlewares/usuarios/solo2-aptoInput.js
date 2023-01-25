@@ -84,7 +84,7 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-circle-right",
-							link: "/usuarios/documento",
+							link: "/usuarios/validacion-identidad",
 							titulo: "Ir a 'Documento'",
 							autofocus: true,
 						},
@@ -115,20 +115,19 @@ module.exports = async (req, res, next) => {
 	let compararRegistrosConNivelDeConfianza = async () => {
 		// Funciones
 		let contar_registros = async (usuario, producto, rclv, links, edicion) => {
-			// Contar registros
-			let contarRegistros = 0;
-			// Contar registros con status 'a revisar'
+			let cuentaRegistros = 0;
 			let entidades;
-			if (edicion) contarRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id)
+			// Cuenta registros de edición
+			if (edicion) cuentaRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id)
+			// Cuenta registros originales con status 'a revisar'
 			else {
 				if (producto) entidades = variables.entidadesProd;
 				else if (rclv) entidades = variables.entidadesRCLV;
 				else if (links) entidades = ["links"];
-				contarRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
+				cuentaRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
 			}
-			// Contar registros de edición
 			// Fin
-			return contarRegistros;
+			return cuentaRegistros;
 		};
 		let mensajes = (edicion) => {
 			return edicion

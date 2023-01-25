@@ -178,7 +178,7 @@ module.exports = {
 	},
 	validaForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "documento";
+		const codigo = "validacion-identidad";
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
@@ -234,7 +234,7 @@ module.exports = {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
-			return res.redirect("/usuarios/documento");
+			return res.redirect("/usuarios/validacion-identidad");
 		}
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
@@ -254,9 +254,9 @@ module.exports = {
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "3-DNI-Usuarios-Revisar");
 		// Redirecciona
-		return res.redirect("/usuarios/documento-recibido");
+		return res.redirect("/usuarios/validacion-en-proceso");
 	},
-	validado: (req, res) => {
+	validacionEnProceso: (req, res) => {
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");
@@ -270,7 +270,7 @@ module.exports = {
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-			titulo: "Solicitud de ABM exitosa",
+			titulo: "Validación en Proceso",
 			check: true,
 		};
 		// Fin
@@ -359,17 +359,25 @@ module.exports = {
 		// Averigua si hay errores de validación
 		let dataEntry = req.body;
 		let errores = await valida.altaMail(dataEntry.email);
-		let usuario;
+		let usuario, informacion;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, usuario] = await valida.olvidoContrBE(dataEntry);
+		if (!errores.hay) [errores, informacion, usuario] = await valida.olvidoContrBE(dataEntry, req);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.erroresOC = errores;
 			return res.redirect(req.originalUrl);
 		}
-		// Si no hubieron errores de validación...
-		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
+		// Interrumpe si hay un mensaje con información
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Si todo anduvo bien...
+		// Envía la contraseña por mail
+		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
+		if (!feedbackEnvioMail.OK)
+			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+		// Actualiza la contraseña en la BD
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
@@ -379,7 +387,7 @@ module.exports = {
 		// Borra los errores
 		req.session.errores = "";
 		// Datos para la vista
-		let informacion = procesos.cartelNuevaContrasena;
+		informacion = procesos.cartelNuevaContrasena;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},

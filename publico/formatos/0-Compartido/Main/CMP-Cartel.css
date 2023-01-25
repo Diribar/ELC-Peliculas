@@ -27,9 +27,9 @@
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 #cartel #flechasCartel * {border-radius: 50%;}
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
-#cartel .fa-house, #cartel .fa-thumbs-up, #cartel .fa-spell-check, 
-#cartel .fa-circle-info {background: var(--backIcono); border: 1px solid var(--backIcono); color: var(--gris-oscuro);}
-#cartel .fa-circle-left {color: var(--gris-oscuro);}
+#cartel :where(.fa-spell-check, .fa-circle-info) {background: var(--backIcono); border: 1px solid var(--backIcono);}
+#cartel :where(.fa-house, .fa-thumbs-up, .fa-spell-check, .fa-circle-info) {color: var(--amarillo-oscuro);}
+#cartel .fa-circle-left {color: var(--azul-oscuro);}
 #cartel .fa-circle-right {color: var(--verde-oscuro);}
 
 /* Tapar el fondo */

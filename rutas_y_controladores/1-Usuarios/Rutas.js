@@ -26,9 +26,9 @@ router.get("/editables", soloUsuarios, vista.editablesForm);
 router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
 router.get("/bienvenido", soloUsuariosCompl, vista.bienvenido);
 // router.get("/responsabilidad", soloUsuariosCompl, vista.responsab);
-router.get("/documento", soloUsuariosCompl, vista.validaForm);
-router.post("/documento", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
-router.get("/documento-recibido", soloUsuariosCompl, vista.validado);
+router.get("/validacion-identidad", soloUsuariosCompl, vista.validaForm);
+router.post("/validacion-identidad", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
+router.get("/validacion-en-proceso", soloUsuariosCompl, vista.validacionEnProceso);
 
 // Rutas RUD
 router.get("/edicion", soloUsuariosCompl, vista.edicionForm);
