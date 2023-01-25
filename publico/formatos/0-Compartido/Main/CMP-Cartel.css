@@ -29,7 +29,7 @@
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
 #cartel :where(.fa-spell-check, .fa-circle-info) {background: var(--backIcono); border: 1px solid var(--backIcono);}
 #cartel :where(.fa-house, .fa-thumbs-up, .fa-spell-check, .fa-circle-info) {color: var(--amarillo-oscuro);}
-#cartel .fa-circle-left {color: var(--gris-oscuro);}
+#cartel .fa-circle-left {color: var(--azul-oscuro);}
 #cartel .fa-circle-right {color: var(--verde-oscuro);}
 
 /* Tapar el fondo */
