@@ -72,8 +72,8 @@ const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
 // Dispara tareas en cierto horario
 var cron = require("node-cron");
-// 1. Tareas a realizar a la hora 00:05 de GMT-12
-cron.schedule("5 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+// 1. Tareas a realizar a la hora 00:00 de GMT-12
+cron.schedule("0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 comp.tareasDiarias();
 
 // Para saber el recorrido del proyecto

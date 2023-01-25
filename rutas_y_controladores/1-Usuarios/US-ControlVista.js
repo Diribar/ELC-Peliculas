@@ -359,17 +359,22 @@ module.exports = {
 		// Averigua si hay errores de validación
 		let dataEntry = req.body;
 		let errores = await valida.altaMail(dataEntry.email);
-		let usuario;
+		let usuario, informacion;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, usuario] = await valida.olvidoContrBE(dataEntry);
+		if (!errores.hay) [errores, informacion, usuario] = await valida.olvidoContrBE(dataEntry, req);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.erroresOC = errores;
 			return res.redirect(req.originalUrl);
 		}
-		// Si no hubieron errores de validación...
-		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
+		// Interrumpe si hay un mensaje con información
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Si todo anduvo bien...
+		// Envía la contraseña por mail
+		let {ahora, contrasena} = await procesos.enviaMailConContrasena(req);
+		// Actualiza la contraseña en la BD
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
@@ -379,7 +384,7 @@ module.exports = {
 		// Borra los errores
 		req.session.errores = "";
 		// Datos para la vista
-		let informacion = procesos.cartelNuevaContrasena;
+		informacion = procesos.cartelNuevaContrasena;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
 	},

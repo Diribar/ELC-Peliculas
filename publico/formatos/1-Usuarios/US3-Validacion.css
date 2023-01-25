@@ -1,4 +1,4 @@
-#cuerpo form #tituloPrincipal {justify-content: center; padding: 8px 10px;}
+#cuerpo form #tituloPrincipal {padding: 8px 10px;}
 #cuerpo form #tituloPrincipal h1 {margin: 0;}
 #cuerpo form .ayudaClick {border-style: solid; border-width: 1px; color: var(--gris-mas-oscuro);}
 #cuerpo form .ayudaMostrar {background: var(--gris-mas-oscuro);}
@@ -9,3 +9,5 @@
 #cuerpo form #columna1 .input {width: 150px}
 #cuerpo form #columna2 {margin-left: 40px;}
 #cuerpo form #columna2 .ayudaClick {color: var(--rojo-oscuro);}
+
+/* #cuerpo form */

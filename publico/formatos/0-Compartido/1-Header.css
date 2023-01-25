@@ -7,7 +7,7 @@ header section {margin: 0 15px;}
 /* Formato de íconos */
 header section .grupos {margin: 0 15px; position: relative;}
 header section .grupos.margenDerecho {margin-right: 40px;}
-header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
+header section .grupos .iconoHeader {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header section .grupos .iconoHeader.revision {color: var(--verde-intermedio);}
 header #icono_usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold; font-style: normal;}
 
