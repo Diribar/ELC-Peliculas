@@ -229,7 +229,7 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			if (errores.hay) location.href = "datos-duros";
-			else location.href = "datos-personalizados";
+			else location.href = "datos-adicionales";
 		});
 	});
 

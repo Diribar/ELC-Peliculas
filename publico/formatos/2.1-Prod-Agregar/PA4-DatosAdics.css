@@ -25,10 +25,10 @@
 
 /* Temas RCLV */
 #dataEntry #selectsRCLV .ayuda {left: -5px; right: auto; translate: -100% -50%;}
-#dataEntry .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
-#dataEntry .linkRCLV {width: 15px; cursor: pointer;}
-#dataEntry .linkRCLV.alta {right: -20px; font-size: 1rem;}
-#dataEntry .linkRCLV.edicion {right: -40px; font-size: 1.15rem;}
+#dataEntry #selectsRCLV .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%;}
+#dataEntry #selectsRCLV .linkRCLV {width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);}
+#dataEntry #selectsRCLV .linkRCLV.alta {right: -20px; font-size: 1rem;}
+#dataEntry #selectsRCLV .linkRCLV.edicion {right: -40px; font-size: 1.15rem;}
 
 /* Anchos específicos de inputs */
 #dataEntry .label-input .inputError select.angosto {width: 70px}	

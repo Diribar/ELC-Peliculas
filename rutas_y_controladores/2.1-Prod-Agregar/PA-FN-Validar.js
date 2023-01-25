@@ -136,8 +136,8 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validaDatosPers)
-	datosPers: async (campos, datos) => {
+	// ControllerAPI (validaDatosAdics)
+	datosAdics: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_id"];

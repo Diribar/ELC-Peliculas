@@ -17,7 +17,7 @@ module.exports = {
 		}
 		// Averigua si hay errores de validación DD y DP
 		let erroresDD = await validaProd.datosDuros(campos, datos);
-		let erroresDP = await validaProd.datosPers(campos, datos);
+		let erroresDP = await validaProd.datosAdics(campos, datos);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDP};
 		errores.hay = erroresDD.hay || erroresDP.hay;
