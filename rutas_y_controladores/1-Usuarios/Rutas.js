@@ -16,7 +16,7 @@ const multer = require("../../middlewares/varios/multer");
 router.get("/api/valida-login", API.validaLogin);
 router.get("/api/valida-mail", API.validaMail);
 router.get("/api/valida-editables", API.validaEditables);
-router.get("/api/valida-documento", API.validaDocumento);
+router.get("/api/valida-identidad", API.validaIdentidad);
 
 // Rutas de Altas
 router.get("/redireccionar", vista.redireccionar);
@@ -26,8 +26,8 @@ router.get("/editables", soloUsuarios, vista.editablesForm);
 router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
 router.get("/bienvenido", soloUsuariosCompl, vista.bienvenido);
 // router.get("/responsabilidad", soloUsuariosCompl, vista.responsab);
-router.get("/validacion-identidad", soloUsuariosCompl, vista.validaForm);
-router.post("/validacion-identidad", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
+router.get("/valida-identidad", soloUsuariosCompl, vista.validaForm);
+router.post("/valida-identidad", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
 router.get("/validacion-en-proceso", soloUsuariosCompl, vista.validacionEnProceso);
 
 // Rutas RUD

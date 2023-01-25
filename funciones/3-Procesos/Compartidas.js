@@ -479,6 +479,7 @@ module.exports = {
 			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
 			"0-Base/imgDerechaHoy.jpg"
 		);
+		console.log(482, this.ahora());
 		// Fin
 		return;
 	},

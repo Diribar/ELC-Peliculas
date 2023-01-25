@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	documentoFE: (datos) => {
+	identidadFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
@@ -94,7 +94,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	documentoBE: async function (datos) {
+	identidadBE: async function (datos) {
 		// Averigua los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
