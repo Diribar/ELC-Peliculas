@@ -176,9 +176,9 @@ module.exports = {
 			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
 		};
 		// Guarda los datos del capítulo
-		await this.DS_movie({TMDB_id: capituloID_TMDB, ...datosCap}).then(
-			async (n) => await BD_genericas.agregaRegistro("capitulos", n)
-		);
+		await this.DS_movie({TMDB_id: capituloID_TMDB})
+			.then((n) => (n = {...n, ...datosCap}))
+			.then(async (n) => await BD_genericas.agregaRegistro("capitulos", n));
 
 		// Fin
 		return;
