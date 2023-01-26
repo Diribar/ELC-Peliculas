@@ -408,7 +408,7 @@ module.exports = {
 
 		// Actualiza la fechaReal
 		this.horarioLCF();
-		fechaReal = horarioLCF.getDate() + "/" + mesesAbrev[horarioLCF.getMonth()];
+		fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
 
 		// Tareas si cambió la fecha
 		if (fechaReal != fechaGuardada) {
@@ -416,7 +416,7 @@ module.exports = {
 			await this.actualizaImagenDerecha();
 
 			// Actualiza los valores del archivo
-			let datos = {fechaLCF: fechaReal, tituloImgDerAyer, tituloImgDerHoy};
+			let datos = {fechaLCF: fechaReal, hora: this.fechaHorarioTexto(), tituloImgDerAyer, tituloImgDerHoy};
 			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
 				if (err) return console.log(304, err);
 			});
