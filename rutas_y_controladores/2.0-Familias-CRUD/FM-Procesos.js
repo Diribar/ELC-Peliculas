@@ -91,7 +91,7 @@ module.exports = {
 		// Si es un link, obtiene la relación con el producto
 		let entidad_idProd =
 			entidadOrig == "links"
-				? comp.obtieneEntidad_idDesdeEntidad(comp.obtieneProdDesdeEntidad_id(original))
+				? comp.obtieneEntidad_id(original)
 				: "";
 		edicion = {...edicion, entidad: entidadEdic};
 		// Si existe una edición de ese original y de ese usuario --> lo elimina
