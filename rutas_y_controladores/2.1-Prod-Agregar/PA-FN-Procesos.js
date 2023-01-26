@@ -5,7 +5,6 @@ const path = require("path");
 const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
@@ -31,31 +30,19 @@ module.exports = {
 	},
 
 	// Desambiguar - MOVIES
+	// Desambiguar - agregaCapituloDeCollection
 	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
 		// Obtiene las API
-		let datosAPI = await Promise.all([
-			detailsTMDB("movie", datos.TMDB_id),
-			creditsTMDB("movie", datos.TMDB_id),
-		]).then(([a, b]) => {
+		let detalles = detailsTMDB("movie", datos.TMDB_id);
+		let creditos = creditsTMDB("movie", datos.TMDB_id);
+		let datosAPI = await Promise.all([detalles, creditos]).then(([a, b]) => {
 			return {...a, ...b};
 		});
-		// Procesar la información
+		// Procesa la información
 		if (Object.keys(datosAPI).length) {
-			// Datos de la colección a la que pertenece, si corresponde
-			if (datosAPI.belongs_to_collection != null) {
-				datos.en_coleccion = true;
-				datos.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
-				datos.en_colec_nombre = datosAPI.belongs_to_collection.name;
-				// elc_id de la colección
-				datos.en_colec_id = await BD_especificas.obtieneELC_id("colecciones", {
-					TMDB_id: datos.en_colec_TMDB_id,
-				});
-				datos.prodNombre = "Capítulo";
-				datos.entidad = "capitulos";
-			} else {
-				datos.en_coleccion = false;
+			if (!datosAPI.belongs_to_collection) {
 				datos.prodNombre = "Película";
 				datos.entidad = "peliculas";
 			}
@@ -177,29 +164,21 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	agregaCapitulosDeCollection: async function (datosCol) {
-		// Replicar para todos los capítulos de la colección
-		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
-			await this.agregaCapituloDeCollection(datosCol, capituloID_TMDB, indice);
-		});
-		// Fin
-		return;
-	},
 	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
-		// Preparar datos del capítulo
+		// Toma los datos de la colección
 		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
+		// Prepara los datos del capítulo
 		let datosCap = {
 			coleccion_id: datosCol.id,
-			fuente: "TMDB",
 			temporada: 1,
 			capitulo: indice + 1,
 			creado_por_id: 2,
 			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
 		};
-		// Guardar los datos del capítulo
-		await this.DS_movie({TMDB_id: capituloID_TMDB})
-			.then((n) => (n = {...n, ...datosCap}))
-			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
+		// Guarda los datos del capítulo
+		await this.DS_movie({TMDB_id: capituloID_TMDB, ...datosCap}).then(
+			async (n) => await BD_genericas.agregaRegistro("capitulos", n)
+		);
 
 		// Fin
 		return;
@@ -312,6 +291,33 @@ module.exports = {
 		return datosAdics;
 	},
 	// Confirma Guardar
+	verificaQueExistanLosRCLV: async (confirma) => {
+		// Variables
+		let entidadesRCLV = variables.entidadesRCLV;
+		let resultado = true;
+		// Revisa que exista el RCLV
+		for (let entidad of entidadesRCLV) {
+			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			// Averigua si existe, para los RCLV_id que existan y no sean 'ninguno' ni 'varios'
+			if (confirma[entidad_id] && confirma[entidad_id] > 2) {
+				let existe = await BD_genericas.obtienePorId(entidad, confirma[entidad_id]);
+				if (!existe) {
+					resultado = false;
+					break;
+				}
+			}
+		}
+		// Fin
+		return resultado;
+	},
+	agregaCapitulosDeCollection: async function (datosCol) {
+		// Replicar para todos los capítulos de la colección
+		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
+			await this.agregaCapituloDeCollection(datosCol, capituloID_TMDB, indice);
+		});
+		// Fin
+		return;
+	},
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)

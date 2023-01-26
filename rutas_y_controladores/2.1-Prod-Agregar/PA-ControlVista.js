@@ -188,7 +188,7 @@ module.exports = {
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
-		// 1. Si se perdió la info anterior, volver a esa instancia
+		// 1. Si se perdió la info anterior, vuelve a esa instancia
 		let aux = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 		if (!aux) return res.redirect("datos-duros");
 		// 2. Obtiene los DatosAdics y elimina los campos sin datos
@@ -215,7 +215,7 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "confirma";
-		let maximo, indice;
+		let maximo;
 		// 2. Si se perdió la info anterior, volver a esa instancia
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("datos-adicionales");
@@ -248,16 +248,19 @@ module.exports = {
 		});
 	},
 	confirmaGuardar: async (req, res) => {
-		// 1. Si se perdió la info, vuelve a la instancia anterior
+		// Si se perdió la info, vuelve a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("datos-adicionales");
-		// 2. Guarda los datos de 'Original'
+		// Si no existe algún RCLV, vuelve a la instancia anterior
+		let existe = procesos.verificaQueExistanLosRCLV(confirma);
+		if (!existe) return res.redirect("datos-adicionales");
+		// Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
-		// 3. Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
+		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
 		procsCRUD.guardaEdicion({
 			entidadOrig: original.entidad,
 			entidadEdic: "prods_edicion",
@@ -265,24 +268,24 @@ module.exports = {
 			edicion: confirma,
 			userID: req.session.usuario.id,
 		});
-		// 4. Si es una "collection" o "tv" (TMDB), agrega las partes en forma automática
+		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
-		// 5. Descarga el avatar y lo mueve de 'provisorio' a 'revisar', no hace falta esperarlo
+		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'  (no hace falta esperar a que concluya)
 		procesos.descargaMueveElAvatar(confirma);
-		// 6. Elimina todas las session y cookie del proceso AgregarProd
+		// Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
-		// 7. Establece como vista anterior la vista del primer paso
+		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
-		// 8. Crea la cookie para 'Terminaste' por sólo 3 segs, para la vista siguiente
+		// Crea la cookie para 'Terminaste' por sólo 5 segs, para la vista siguiente
 		let prodTerm = {entidad: confirma.entidad, id: registro.id};
 		req.session.prodTerm = prodTerm;
-		res.cookie("prodTerm", prodTerm, {maxAge: 3000});
-		// 9. Redirecciona
+		res.cookie("prodTerm", prodTerm, {maxAge: 5000});
+		// Redirecciona
 		return res.redirect("terminaste");
 	},
 	terminasteForm: async (req, res) => {
