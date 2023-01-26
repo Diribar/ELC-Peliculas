@@ -181,21 +181,13 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidad_id: (edicion) => {
+	obtieneEntidadProd_id: (edicion) => {
 		return edicion.pelicula_id
 			? "pelicula_id"
 			: edicion.coleccion_id
 			? "coleccion_id"
 			: edicion.capitulo_id
 			? "capitulo_id"
-			: edicion.personaje_id
-			? "personaje_id"
-			: edicion.hecho_id
-			? "hecho_id"
-			: edicion.valor_id
-			? "valor_id"
-			: edicion.link_id
-			? "link_id"
 			: "";
 	},
 	convierteLetrasAlIngles: (resultado) => {

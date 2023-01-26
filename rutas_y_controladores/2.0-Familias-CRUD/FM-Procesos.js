@@ -89,9 +89,9 @@ module.exports = {
 	guardaEdicion: async function ({entidadOrig, entidadEdic, original, edicion, userID}) {
 		// Variables
 		// Si es un link, obtiene la relación con el producto
-		let entidad_idProd =
+		let entidadProd_id =
 			entidadOrig == "links"
-				? comp.obtieneEntidad_id(original)
+				? comp.obtieneEntidadProd_id(original)
 				: "";
 		edicion = {...edicion, entidad: entidadEdic};
 		// Si existe una edición de ese original y de ese usuario --> lo elimina
@@ -107,7 +107,7 @@ module.exports = {
 		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Completa la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
-		if (entidad_idProd) edicion = {...edicion, [entidad_idProd]: original[entidad_idProd]};
+		if (entidadProd_id) edicion = {...edicion, [entidadProd_id]: original[entidadProd_id]};
 		// Agrega la nueva edición
 		await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		// Fin
