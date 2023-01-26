@@ -21,7 +21,7 @@ const multer = require("../../middlewares/varios/multer");
 // Validar
 router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
 router.get("/api/valida/datos-duros", API.validaDatosDuros);
-router.get("/api/valida/datos-personalizados", API.validaDatosPers);
+router.get("/api/valida/datos-adicionales", API.validaDatosAdics);
 router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
 // Desambiguar - Form
 router.get("/api/desambiguar-form0", API.desambForm0);
@@ -38,8 +38,7 @@ router.get("/api/IM-colecciones", API.averiguaColecciones);
 router.get("/api/IM-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
 router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
-router.get("/api/DP-obtiene-subcategs", API.obtieneSubcategs);
-router.get("/api/DP-guarda-datos-pers/", API.guardaDatosPers);
+router.get("/api/DP-guarda-datos-adics/", API.guardaDatosAdics);
 
 // VISTAS
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
@@ -48,8 +47,8 @@ router.get("/desambiguar", ...algunos, vista.desambiguarForm);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...todos, vista.datosDurosForm);
 router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-personalizados", ...todos, vista.datosPersForm);
-router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
+router.get("/datos-adicionales", ...todos, vista.datosAdicsForm);
+router.post("/datos-adicionales", ...todos, vista.datosAdicsGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"

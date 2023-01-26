@@ -1,3 +1,4 @@
+/* Datos Adicionales */
 .flexRowAlign #siNoTitulo {width: 170px;}
 #dataEntry :is(#siNoOpciones label, #AAD_opciones label) {padding-right: 2px;}
 #siNoOpciones {width: 65px; justify-content: space-between;}

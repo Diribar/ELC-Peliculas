@@ -158,10 +158,10 @@ module.exports = {
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
 			// Agregar el RCLV a DP/ED
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			if (origen == "DP") {
-				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
-				res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
+			if (origen == "DA") {
+				req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+				req.session.datosAdics = {...req.session.datosAdics, [entidad_id]: id};
+				res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 			} else if (origen == "ED") {
 				req.session.edicProd = req.session.edicProd ? req.session.edicProd : req.cookies.edicProd;
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
@@ -200,13 +200,13 @@ module.exports = {
 		if (codigo == "agregar") {
 			// Desde vista 'agregar' no hace falta inactivar => vuelve al origen
 			let rutaOrigen =
-				datos.origen == "DP"
-					? "/producto/agregar/datos-personalizados"
+				datos.origen == "DA"
+					? "/producto/agregar/datos-adicionales"
 					: datos.origen == "ED"
 					? "/producto/edicion/"
 					: "/";
 			let entidadIdOrigen =
-				datos.origen && datos.origen != "DP"
+				datos.origen && datos.origen != "DA"
 					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
 					: "";
 			rutaSalir = rutaOrigen + entidadIdOrigen;
@@ -215,7 +215,7 @@ module.exports = {
 			// La vista actual puede ser '/rclv/edicion' o '/revisar/rclv/alta'
 			let entidadIdActual = "?entidad=" + datos.entidad + "&id=" + datos.id;
 			let entidadIdOrigen =
-				datos.origen && datos.origen != "DP"
+				datos.origen && datos.origen != "DA"
 					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
 					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DP'
 			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);

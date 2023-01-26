@@ -20,7 +20,7 @@ module.exports = {
 			"FA",
 			"datosOriginales",
 			"datosDuros",
-			"datosPers",
+			"datosAdics",
 			"confirma",
 		];
 		let indice = pasos.indexOf(paso) + 1;
@@ -303,13 +303,13 @@ module.exports = {
 		return datos;
 	},
 	// Datos Adicionales
-	puleDatosPersRCLV: (datosPers) => {
+	quitaCamposRCLV: (datosAdics) => {
 		// Variables
 		let camposDP = variables.camposDP;
 		let camposRCLV = camposDP.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
-		if (datosPers.sinRCLV) for (let campo of camposRCLV) delete datosPers[campo];
+		if (datosAdics.sinRCLV) for (let campo of camposRCLV) delete datosAdics[campo];
 		// Fin
-		return datosPers;
+		return datosAdics;
 	},
 	// Confirma Guardar
 	agregaCapitulosDeTV: async function (datosCol) {

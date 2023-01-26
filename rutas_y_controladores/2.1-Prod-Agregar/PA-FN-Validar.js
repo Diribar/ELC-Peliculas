@@ -10,7 +10,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		let longitud = dato ? comp.longitud(dato, 3, 50) : "";
+		let longitud = dato ? comp.longitud(dato, 3, 30) : "";
 		errores.palabrasClave = !dato ? comp.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -136,8 +136,8 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validaDatosPers)
-	datosPers: async (campos, datos) => {
+	// ControllerAPI (validaDatosAdics)
+	datosAdics: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_id"];

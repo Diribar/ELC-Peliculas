@@ -43,8 +43,8 @@ window.addEventListener("load", async () => {
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
 		// Rutas
-		rutaValidar: "/producto/agregar/api/valida/datos-personalizados/?",
-		rutaGuardaDatosPers: "/producto/agregar/api/DP-guarda-datos-pers/?",
+		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
+		rutaGuardaDatosAdics: "/producto/agregar/api/DP-guarda-datos-adics/?",
 	};
 	let camposError = [
 		...Array.from(v.radioSI).map((n) => n.name),
@@ -246,7 +246,7 @@ window.addEventListener("load", async () => {
 	let guardaLosValoresEnSessionCookies = () => {
 		let params = obtieneLosDatos()
 		// Guardar los valores en session y cookies
-		if (params.length) fetch(v.rutaGuardaDatosPers + params);
+		if (params.length) fetch(v.rutaGuardaDatosAdics + params);
 		// Fin
 		return;
 	};

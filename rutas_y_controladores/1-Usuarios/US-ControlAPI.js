@@ -11,8 +11,8 @@ module.exports = {
 		let errores = await validaUsuarios.editables(req.query);
 		return res.json(errores);
 	},
-	validaDocumento: async (req, res) => {
-		let errores = await validaUsuarios.documentoFE(req.query);
+	validaIdentidad: async (req, res) => {
+		let errores = await validaUsuarios.identidadFE(req.query);
 		return res.json(errores);
 	},
 	validaLogin: async (req, res) => {

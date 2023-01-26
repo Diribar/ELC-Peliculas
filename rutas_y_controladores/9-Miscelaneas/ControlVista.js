@@ -61,7 +61,7 @@ module.exports = {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id} = req.query;
 		// Si es 'tablero', ir a tablero
-		if (origen == "DP") origen = "/producto/agregar/datos-personalizados";
+		if (origen == "DA") origen = "/producto/agregar/datos-adicionales";
 		if (origen == "ED") origen = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
 		if (origen == "DT_RCLV") origen = "/rclv/detalle/?entidad=" + entidad + "&id=" + id;
 		if (origen == "tableroUs") origen = "/revision/usuarios/tablero-de-control";

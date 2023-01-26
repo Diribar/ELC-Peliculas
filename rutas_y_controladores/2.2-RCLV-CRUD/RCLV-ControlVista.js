@@ -102,8 +102,8 @@ module.exports = {
 		await procesos.guardaLosCambios(req, res, DE);
 		// 9. Redirecciona a la siguiente instancia
 		let destino =
-			origen == "DP"
-				? "/producto/agregar/datos-personalizados"
+			origen == "DA"
+				? "/producto/agregar/datos-adicionales"
 				: origen == "ED"
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"

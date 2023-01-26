@@ -3,7 +3,7 @@
 
 window.addEventListener("load", async () => {
 	// Variables
-	let ruta = "/producto/agregar/api/desambiguar-form0";
+	let ruta = "api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
 
 	// DOM - Opciones
@@ -229,7 +229,7 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			if (errores.hay) location.href = "datos-duros";
-			else location.href = "datos-personalizados";
+			else location.href = "datos-adicionales";
 		});
 	});
 

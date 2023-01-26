@@ -12,43 +12,43 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 
-	// Fórmulas
-	let penalidadAcum = async () => {
+	// Penalidad acumulada. Debe ser await para que primero se bloquee y después se fije si está bloqueado
+	await (async () => {
 		let datos = {};
-		let penalizac_acum = parseInt(Number(usuario.penalizac_acum));
+		let penalizac_acum = parseInt(usuario.penalizac_acum);
 		if (penalizac_acum) {
 			// Variables
 			let ahora = comp.ahora().setHours(0, 0, 0);
 			// Agregar valores en datos
-			datos.penalizado_hasta = Math.max(ahora, usuario.penalizado_hasta) + penalizac_acum * unDia;
-			datos.penalizado_en = ahora;
-			datos.penalizac_acum -= penalizac_acum;
-			// Activa el cartel de Responsabilidad
+			let penalizadoDesde = Math.max(ahora, usuario.penalizado_hasta);
+			datos.penalizado_hasta = penalizadoDesde + penalizac_acum * unDia;
+			datos.penalizac_acum = usuario.penalizac_acum - penalizac_acum;
+			// Si el usuario no tenía una penalización vigente, se actualiza la fecha 'penalizado_en'
+			if (usuario.penalizado_hasta <= ahora) datos.penalizado_en = ahora;
+			// Activa el cartel de Responsabilidad para la siguiente vez que se quiera agregar una entidad
 			datos.mostrar_cartel_respons = true;
 		}
 		// Actualiza el registro
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
 		// Actualizar la variable usuario
 		usuario = {...usuario, ...datos};
-	};
-	let usuarioPenalizado = () => {
-		// Variables
-		let informacion;
-		// Proceso
+	})();
+
+	// VERIFICACIÓN 1: Usuario penalizado
+	if (!informacion) {
 		if (usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
 			let fecha = comp.fechaTexto(usuario.penalizado_hasta);
 			informacion = {
 				mensajes: [
-					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa.",
+					"Hemos recibido información tuya, a la que le hemos hecho observaciones comunicadas por mail.",
 					"Podrás volver a ingresar información el día " + fecha + ".",
 				],
 				iconos: [vistaAnterior],
 			};
 		}
-		return informacion;
-	};
-	let identidadValidada = () => {
-		let informacion;
+	}
+	// VERIFICACIÓN 2: Tiene identidad validada
+	if (!informacion) {
 		// Verifica si la identidad está validada
 		if (!usuario.status_registro.ident_validada) {
 			// Status: identidad a validar
@@ -84,7 +84,7 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-circle-right",
-							link: "/usuarios/validacion-identidad",
+							link: "/usuarios/valida-identidad",
 							titulo: "Ir a 'Documento'",
 							autofocus: true,
 						},
@@ -93,12 +93,9 @@ module.exports = async (req, res, next) => {
 					trabajando: true,
 				};
 		}
-
-		// Fin
-		return informacion;
-	};
-	let permInputs = () => {
-		let informacion;
+	}
+	// VERIFICACIÓN 3: Permiso input
+	if (!informacion) {
 		if (!usuario.rol_usuario.perm_inputs) {
 			informacion = {
 				mensajes: [
@@ -109,42 +106,34 @@ module.exports = async (req, res, next) => {
 				titulo: "Aviso",
 			};
 		}
-		// Fin
-		return informacion;
-	};
-	let compararRegistrosConNivelDeConfianza = async () => {
-		// Funciones
-		let contar_registros = async (usuario, producto, rclv, links, edicion) => {
-			let cuentaRegistros = 0;
-			let entidades;
+	}
+	// VERIFICACIÓN 4: Nivel de Confianza
+	if (!informacion) {
+		// Variables
+		let cuentaRegistros, nivelDeConfianza
+		// Obtiene la tarea
+		const originalUrl = req.originalUrl;
+		const edicion = originalUrl.includes("/edicion/");
+		const producto = originalUrl.startsWith("/producto/agregar/");
+		const rclv = originalUrl.startsWith("/rclv/agregar");
+		const links = originalUrl.startsWith("/links/abm/");
+
+		// Cuenta los registros pendientes de revisar
+		await (async () => {
 			// Cuenta registros de edición
-			if (edicion) cuentaRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id)
+			if (edicion) cuentaRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id);
 			// Cuenta registros originales con status 'a revisar'
 			else {
+				let entidades;
 				if (producto) entidades = variables.entidadesProd;
 				else if (rclv) entidades = variables.entidadesRCLV;
 				else if (links) entidades = ["links"];
 				cuentaRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
 			}
-			// Fin
-			return cuentaRegistros;
-		};
-		let mensajes = (edicion) => {
-			return edicion
-				? [
-						"Gracias por los ediciones sugeridas anteriormente.",
-						"Queremos analizarlas, antes de que sigas editando otros registros.",
-						"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
-						"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-				  ]
-				: [
-						"Gracias por los registros agregados anteriormente.",
-						"Queremos analizarlos, antes de que sigas agregando otros.",
-						"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
-						"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-				  ];
-		};
-		let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
+		})();
+
+		// Obtiene el nivel de confianza
+		(() => {
 			// Obtiene la cantidad de aprobaciones
 			const aprob = producto
 				? usuario.prods_aprob
@@ -165,49 +154,34 @@ module.exports = async (req, res, next) => {
 				: edicion
 				? usuario.edics_rech
 				: 0;
-			// Preparar los parámetros
+			// Prepara los parámetros
 			const cantMinima = parseInt(process.env.cantMinima);
 			const acelerador = parseInt(process.env.acelerador);
 			const cantDesempeno = aprob - rech + acelerador;
 			// Obtiene el nivel de confianza
-			const nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
-			// Fin
-			return nivelDeConfianza;
-		};
-		// Variables
-		let informacion;
-		// Obtiene datos del url
-		const originalUrl = req.originalUrl;
-		// Obtiene la tarea
-		const edicion = originalUrl.includes("/edicion/");
-		const producto = originalUrl.startsWith("/producto/agregar/");
-		const rclv = originalUrl.startsWith("/rclv/agregar");
-		const links = originalUrl.startsWith("/links/abm/");
-		// Obtiene su nivel de confianza
-		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
-		// Contar registros
-		const contarRegistros = await contar_registros(usuario, producto, rclv, links, edicion);
+			nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
+		})();
 
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
-		if (contarRegistros >= nivelDeConfianza)
+		let mensajes = edicion
+			? [
+					"Gracias por los ediciones sugeridas anteriormente.",
+					"Queremos analizarlas, antes de que sigas editando otros registros.",
+					"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
+					"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+			  ]
+			: [
+					"Gracias por los registros agregados anteriormente.",
+					"Queremos analizarlos, antes de que sigas agregando otros.",
+					"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
+					"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+			  ];
+		if (cuentaRegistros >= nivelDeConfianza)
 			informacion = {
 				mensajes: mensajes(edicion),
 				iconos: [vistaAnterior],
 			};
-		// Fin
-		return informacion;
-	};
-
-	// Penalidad acumulada
-	await penalidadAcum(); // Debe ser await para que primero se bloquee y después se fije si está bloqueado
-	// VERIFICACIÓN 1: Usuario penalizado
-	if (!informacion) informacion = usuarioPenalizado();
-	// VERIFICACIÓN 2: Tiene identidad validada
-	if (!informacion) informacion = identidadValidada();
-	// VERIFICACIÓN 3: Permiso input
-	if (!informacion) informacion = permInputs();
-	// VERIFICACIÓN 4: Nivel de Confianza
-	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
+	}
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

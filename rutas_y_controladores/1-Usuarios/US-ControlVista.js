@@ -178,7 +178,7 @@ module.exports = {
 	},
 	validaForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "validacion-identidad";
+		const codigo = "valida-identidad";
 		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
 		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
@@ -228,13 +228,13 @@ module.exports = {
 			? "./publico/imagenes/9-Provisorio/"
 			: "./publico/imagenes/3-DNI-Usuarios-Revisar/";
 		// Averigua si hay errores de validación
-		let errores = await valida.documentoBE(datos);
+		let errores = await valida.identidadBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
-			return res.redirect("/usuarios/validacion-identidad");
+			return res.redirect("/usuarios/valida-identidad");
 		}
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
