@@ -24,8 +24,8 @@ router.get("/alta-mail", soloVisitas, vista.altaMailForm);
 router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
 router.get("/editables", soloUsuarios, vista.editablesForm);
 router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
+// Sólo para usuarios completos
 router.get("/bienvenido", soloUsuariosCompl, vista.bienvenido);
-// router.get("/responsabilidad", soloUsuariosCompl, vista.responsab);
 router.get("/valida-identidad", soloUsuariosCompl, vista.validaForm);
 router.post("/valida-identidad", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
 router.get("/validacion-en-proceso", soloUsuariosCompl, vista.validacionEnProceso);
