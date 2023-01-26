@@ -6,12 +6,12 @@ const API = require("./ControlAPI");
 const vista = require("./ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
-const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
-const entidad = require("../../middlewares/producto/entidadNombre");
-const id = require("../../middlewares/producto/entidadID");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-2soloUsuariosTerm");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
+const entidad = require("../../middlewares/producto/filtro-entidadNombre");
+const id = require("../../middlewares/producto/filtro-entidadID");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-const todos = [soloUsuariosCompl, soloAptoInput, entidad, id, capturaInactivar];
+const todos = [soloUsuariosTerm, soloAptoInput, entidad, id, capturaInactivar];
 
 // Vistas *******************************************
 // Vistas de APIs
