@@ -276,36 +276,36 @@ module.exports = {
 		}
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'  (no hace falta esperar a que concluya)
 		procesos.descargaMueveElAvatar(confirma);
-		// Elimina todas las session y cookie del proceso AgregarProd
-		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
-		// Crea la cookie para 'Terminaste' por sólo 5 segs, para la vista siguiente
-		let prodTerm = {entidad: confirma.entidad, id: registro.id};
-		req.session.prodTerm = prodTerm;
-		res.cookie("prodTerm", prodTerm, {maxAge: 5000});
-		// Redirecciona
+		// Elimina todas las session y cookie del proceso AgregarProd
+		procesos.borraSessionCookies(req, res, "borrarTodo");
+		// Crea la cookie para 'Terminaste' para la vista siguiente
+		let terminaste = {entidad: confirma.entidad, id: registro.id};
+		req.session.terminaste = terminaste;
+		res.cookie("terminaste", terminaste, {maxAge: unDia});
+		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar la url de 'guardar'
 		return res.redirect("terminaste");
 	},
-	terminasteForm: async (req, res) => {
-		// 1. Tema y Código
+	terminaste: async (req, res) => {
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
-		// 2. Si se perdió la info, redirije a 'palabras clave'
-		let prodTerm = req.session.prodTerm ? req.session.prodTerm : req.cookies.prodTerm;
-		delete req.session.prodTerm;
-		if (!prodTerm) return res.redirect("palabras-clave");
-		// 3. Obtiene los datos clave del producto
-		let {entidad, id} = prodTerm;
-		// 4. Obtiene los demás datos del producto
+		// Obtiene los datos de 'terminaste'
+		let terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
+		// Borra 'session' y 'cookie' para que no se pueda recargar la página
+		delete req.session.terminaste;
+		res.clearCookie("terminaste");
+		// Si se perdió la info, redirige a 'palabras clave'
+		if (!terminaste) return res.redirect("palabras-clave");
+		// Obtiene los datos clave del producto
+		let {entidad, id} = terminaste;
+		// Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		// Problemas
-		let resultado = procesos.revisaProblemas({registroProd, entidad, id, req});
-		if (resultado) res[resultado.objeto](...resultado.parentesis);
-		// 5. Obtiene el producto
+		// Obtiene el producto
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		// 6. Prepara la información sobre las imágenes de MUCHAS GRACIAS
+		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Render del formulario
 		return res.render("CMP-0Estructura", {

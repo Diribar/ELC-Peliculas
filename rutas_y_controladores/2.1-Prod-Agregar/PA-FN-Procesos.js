@@ -356,35 +356,6 @@ module.exports = {
 		return;
 	},
 	// Terminaste
-	revisaProblemas: ({registroProd, entidad, id, req}) => {
-		// Variables
-		let resultado;
-		// Problema: PRODUCTO NO ENCONTRADO
-		if (!registroProd) {
-			// Información
-			let informacion = {
-				mensajes: ["Producto no encontrado"],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-				],
-			};
-			// Argumentos para el 'res'
-			resultado = {objeto: "render", parentesis: ["CMP-0Estructura", {informacion}]};
-		}
-		// Problema: PRODUCTO YA REVISADO
-		if (!registroProd.status_registro.gr_creado)
-			resultado = {
-				objeto: "redirect",
-				parentesis: ["/producto/detalle/?entidad=" + entidad + "&id=" + id],
-			};
-
-		// Fin
-		return resultado;
-	},
 	imagenMuchasGracias: () => {
 		// Obtiene el listado de archivos
 		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
