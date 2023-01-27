@@ -6,14 +6,18 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
+// Comunes a todas las entidades
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
+// Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
-const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
+// Consolidados
 const algunos = [usPenalizado, soloAptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
+// Otros
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
