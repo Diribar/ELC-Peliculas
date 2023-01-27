@@ -4,7 +4,10 @@ module.exports = (req, res, next) => {
 	// Redirecciona si el usuario está sin login
 	if (!usuario) return res.redirect("/usuarios/redireccionar");
 
-	// Redirecciona si el usuario no tiene el permiso necesario
+	// Redirecciona si el usuario no tiene validada su identidad
+	if (!usuario.status_registro.ident_validada) return res.redirect("/usuarios/redireccionar");
+
+	// Redirecciona si el usuario no tiene el rol necesario
 	let informacion;
 	if (!usuario.rol_usuario.revisor_ents)
 		informacion = {
