@@ -14,14 +14,13 @@ module.exports = async (req, res, next) => {
 
 	// VERIFICACIÓN 2: Tiene identidad validada
 	if (!informacion) {
-		// Verifica si la identidad está validada
 		if (!usuario.status_registro.ident_validada) {
 			// Status: identidad a validar
 			if (usuario.status_registro.ident_a_validar)
 				informacion = {
 					mensajes: [
 						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tu documento el " +
+						"Nos informaste tus datos el " +
 							comp.fechaHorarioTexto(usuario.fecha_revisores) +
 							".",
 						"Tenés que esperar a que el equipo de Revisores haga la validación.",
@@ -49,8 +48,8 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-circle-right",
-							link: "/usuarios/valida-identidad",
-							titulo: "Ir a 'Documento'",
+							link: "/usuarios/redireccionar",
+							titulo: "Ir a 'Solicitar la Validación de Identidad'",
 							autofocus: true,
 						},
 					],
