@@ -35,17 +35,15 @@ module.exports = async (req, res, next) => {
 	})();
 
 	// VERIFICACIÓN
-	if (!informacion) {
-		if (usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
-			let fecha = comp.fechaTexto(usuario.penalizado_hasta);
-			informacion = {
-				mensajes: [
-					"Hemos recibido información tuya, a la que le hemos hecho observaciones comunicadas por mail.",
-					"Podrás volver a ingresar información el día " + fecha + ".",
-				],
-				iconos: [vistaAnterior],
-			};
-		}
+	if (usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
+		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
+		informacion = {
+			mensajes: [
+				"Hemos recibido información tuya, a la que le hemos hecho observaciones comunicadas por mail.",
+				"Podrás volver a ingresar información el día " + fecha + ".",
+			],
+			iconos: [vistaAnterior],
+		};
 	}
 
 	// Fin
