@@ -36,7 +36,8 @@ router.get("/bienvenido", soloEditables, vista.bienvenido);
 // 4. Solo usuarios con status 'editables' y no penalizadas
 router.get("/valida-identidad", soloEditables, usPenalizado, vista.validaForm);
 router.post("valida-identidad", soloEditables, usPenalizado, multer.single("avatar"), vista.validaGuardar);
-router.get("/validacion-en-proceso", soloIdentValidar, usPenalizado, vista.validacionEnProceso);
+// 3. Solo usuarios con status 'ident_a_validar'
+router.get("/validacion-en-proceso", soloIdentValidar, vista.validacionEnProceso);
 
 // Rutas RUD
 router.get("/edicion", soloUsuariosTerm, vista.edicionForm);
