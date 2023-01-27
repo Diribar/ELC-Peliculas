@@ -2,6 +2,7 @@
 // Requires
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const procesos = require("../../rutas_y_controladores/2.1-Prod-Agregar/PA-FN-Procesos");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
@@ -18,9 +19,12 @@ module.exports = async (req, res, next) => {
 		let elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
 		if (elc_id) {
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
+			let prodNombre = comp.obtieneEntidadNombre(datos.entidad);
 			informacion = {
 				mensajes: [
-					"La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en el ícono de 'información'",
+					"La " +
+						prodNombre +
+						" ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en el ícono de 'información'",
 				],
 				iconos: [
 					{

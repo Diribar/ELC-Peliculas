@@ -20,7 +20,7 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(18)},
 		avatar_url: {type: dt.STRING(100)},
 
-		categoria_id: {type: dt.STRING(3)},
+		cfc: {type: dt.BOOLEAN},
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
@@ -44,7 +44,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
 		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 

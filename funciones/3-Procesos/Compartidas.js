@@ -76,9 +76,15 @@ module.exports = {
 
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+		return entidad == "peliculas" ||
+			entidad == "colecciones" ||
+			entidad == "capitulos" ||
+			entidad == "prods_edicion"
 			? "producto"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			: entidad == "personajes" ||
+			  entidad == "hechos" ||
+			  entidad == "valores" ||
+			  entidad == "rclvs_edicion"
 			? "rclv"
 			: entidad == "links"
 			? "links"
@@ -175,20 +181,14 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
+	obtieneEntidadProd_id: (edicion) => {
+		return edicion.pelicula_id
+			? "pelicula_id"
+			: edicion.coleccion_id
+			? "coleccion_id"
+			: edicion.capitulo_id
+			? "capitulo_id"
+			: "";
 	},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado
@@ -262,6 +262,21 @@ module.exports = {
 			}
 		}
 		return resultado;
+	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
 	},
 
 	// Fecha y Hora
@@ -408,7 +423,7 @@ module.exports = {
 
 		// Actualiza la fechaReal
 		this.horarioLCF();
-		fechaReal = horarioLCF.getDate() + "/" + mesesAbrev[horarioLCF.getMonth()];
+		fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
 
 		// Tareas si cambió la fecha
 		if (fechaReal != fechaGuardada) {
@@ -416,7 +431,12 @@ module.exports = {
 			await this.actualizaImagenDerecha();
 
 			// Actualiza los valores del archivo
-			let datos = {fechaLCF: fechaReal, tituloImgDerAyer, tituloImgDerHoy};
+			let datos = {
+				fechaLCF: fechaReal,
+				hora: this.fechaHorarioTexto(),
+				tituloImgDerAyer,
+				tituloImgDerHoy,
+			};
 			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
 				if (err) return console.log(304, err);
 			});

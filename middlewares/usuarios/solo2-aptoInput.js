@@ -110,7 +110,7 @@ module.exports = async (req, res, next) => {
 	// VERIFICACIÓN 4: Nivel de Confianza
 	if (!informacion) {
 		// Variables
-		let cuentaRegistros, nivelDeConfianza
+		let cuentaRegistros, nivelDeConfianza;
 		// Obtiene la tarea
 		const originalUrl = req.originalUrl;
 		const edicion = originalUrl.includes("/edicion/");
@@ -178,7 +178,7 @@ module.exports = async (req, res, next) => {
 			  ];
 		if (cuentaRegistros >= nivelDeConfianza)
 			informacion = {
-				mensajes: mensajes(edicion),
+				mensajes,
 				iconos: [vistaAnterior],
 			};
 	}
