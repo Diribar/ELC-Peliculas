@@ -7,7 +7,7 @@ const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
 const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");

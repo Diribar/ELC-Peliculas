@@ -7,8 +7,8 @@ const vista = require("./RU-ControlVista");
 
 // Middlewares ***********************************************
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
-const soloRevisorUs = require("../../middlewares/usuarios/filtro-soloRevisorUs");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const soloRevisorUs = require("../../middlewares/usuarios/filtro-soloRol3-RevUs");
 const entidadID = require("../../middlewares/producto/filtro-entidadID");
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");

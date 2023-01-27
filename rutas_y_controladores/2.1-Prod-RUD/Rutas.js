@@ -8,7 +8,7 @@ const vista = require("./PR-ControlVista");
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/filtro-entidadNombre");
 const id = require("../../middlewares/producto/filtro-entidadID");

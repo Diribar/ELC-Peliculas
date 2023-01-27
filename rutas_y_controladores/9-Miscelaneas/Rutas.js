@@ -5,14 +5,6 @@ const router = express.Router();
 const API = require("./ControlAPI");
 const vista = require("./ControlVista");
 
-// Middlewares ***********************************************
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
-const entidad = require("../../middlewares/producto/filtro-entidadNombre");
-const id = require("../../middlewares/producto/filtro-entidadID");
-const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-const todos = [soloUsuariosTerm, soloAptoInput, entidad, id, capturaInactivar];
-
 // Vistas *******************************************
 // Vistas de APIs
 router.get("/api/quick-search/", API.quickSearch);
@@ -33,7 +25,7 @@ router.get("/session", vista.session);
 router.get("/cookies", vista.cookies);
 
 // Miscelaneas
-router.get("/inactivar-captura", ...todos, vista.redireccionar);
+router.get("/inactivar-captura", vista.redireccionar);
 
 // Exportarlo **********************************************
 module.exports = router;

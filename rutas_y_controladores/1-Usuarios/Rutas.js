@@ -8,7 +8,12 @@ const vista = require("./US-ControlVista");
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/filtro-soloVisitas");
 const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
+const soloMailValidado = require("../../middlewares/usuarios/filtro-soloSt2-MailVal");
+const soloEditables = require("../../middlewares/usuarios/filtro-soloSt3-Editables");
+const soloIdentValidar = require("../../middlewares/usuarios/filtro-soloSt4-IdentValidar");
+
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
+const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -19,16 +24,19 @@ router.get("/api/valida-editables", API.validaEditables);
 router.get("/api/valida-identidad", API.validaIdentidad);
 
 // Rutas de Altas
+// 1. Sólo visitas
 router.get("/redireccionar", vista.redireccionar);
 router.get("/alta-mail", soloVisitas, vista.altaMailForm);
 router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
-router.get("/editables", soloUsuarios, vista.editablesForm);
-router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
-// Sólo para altas de usuarios terminadas
-router.get("/bienvenido", soloUsuariosTerm, vista.bienvenido);
-router.get("/valida-identidad", soloUsuariosTerm, vista.validaForm);
-router.post("/valida-identidad", soloUsuariosTerm, multer.single("avatar"), vista.validaGuardar);
-router.get("/validacion-en-proceso", soloUsuariosTerm, vista.validacionEnProceso);
+// 2. Solo usuarios con status 'mail_validado'
+router.get("/editables", soloMailValidado, vista.editablesForm);
+router.post("/editables", soloMailValidado, multer.single("avatar"), vista.editablesGuardar);
+// 3. Solo usuarios con status 'editables'
+router.get("/bienvenido", soloEditables, vista.bienvenido);
+// 4. Solo usuarios con status 'editables' y no penalizadas
+router.get("/valida-identidad", soloEditables, usPenalizado, vista.validaForm);
+router.post("valida-identidad", soloEditables, usPenalizado, multer.single("avatar"), vista.validaGuardar);
+router.get("/validacion-en-proceso", soloIdentValidar, usPenalizado, vista.validacionEnProceso);
 
 // Rutas RUD
 router.get("/edicion", soloUsuariosTerm, vista.edicionForm);

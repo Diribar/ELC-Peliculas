@@ -8,8 +8,8 @@ const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
-const soloRevisorEnts = require("../../middlewares/usuarios/filtro-soloRevisorEnts");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const soloRevisorEnts = require("../../middlewares/usuarios/filtro-soloRol3-RevEnts");
 const entidad = require("../../middlewares/producto/filtro-entidadNombre");
 const entidadID = require("../../middlewares/producto/filtro-entidadID");
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
