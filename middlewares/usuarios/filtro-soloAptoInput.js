@@ -8,9 +8,12 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables
 	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
-	let usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
+	let usuario = req.session.usuario;
+
+	// Redirecciona si el usuario está sin login
+	if (!usuario) return res.redirect("/usuarios/redireccionar");
 
 	// VERIFICACIÓN 2: Tiene identidad validada
 	if (!informacion) {
@@ -32,7 +35,7 @@ module.exports = async (req, res, next) => {
 					trabajando: true,
 				};
 			// Status: editables
-			if (usuario.status_registro.editables)
+			else if (usuario.status_registro.editables)
 				informacion = {
 					mensajes: [
 						"El ingreso de información para otras personas, requiere responsabilidad.",
@@ -56,6 +59,7 @@ module.exports = async (req, res, next) => {
 					titulo: "Aviso",
 					trabajando: true,
 				};
+			else res.redirect ("/usuarios/redireccionar")
 		}
 	}
 	// VERIFICACIÓN 3: Permiso input

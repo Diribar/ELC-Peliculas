@@ -8,9 +8,12 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables
 	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
-	let usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
+	let usuario = req.session.usuario;
+
+	// Redirecciona si el usuario está sin login
+	if (!usuario) return res.redirect("/usuarios/redireccionar");
 
 	// Penalidad acumulada. Debe ser await para que primero se bloquee y después se fije si está bloqueado
 	await (async () => {

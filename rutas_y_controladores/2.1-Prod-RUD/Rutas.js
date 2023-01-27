@@ -7,7 +7,6 @@ const vista = require("./PR-ControlVista");
 
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 // Existen la entidad y el producto
@@ -19,7 +18,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const todos = [soloUsuariosTerm, usPenalizado, soloAptoInput, entidad, id, permUserReg, capturaActivar];
+const todos = [usPenalizado, soloAptoInput, entidad, id, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs

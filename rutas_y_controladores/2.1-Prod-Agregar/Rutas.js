@@ -6,13 +6,12 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
 const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
-const algunos = [soloUsuariosTerm, usPenalizado, soloAptoInput];
+const algunos = [usPenalizado, soloAptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
 const multer = require("../../middlewares/varios/multer");
@@ -42,6 +41,7 @@ router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/DP-guarda-datos-adics/", API.guardaDatosAdics);
 
 // VISTAS
+router.get("/responsabilidad", ...algunos, vista.responsabilidad);
 router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...algunos, vista.desambiguarForm);
@@ -53,8 +53,7 @@ router.post("/datos-adicionales", ...todos, vista.datosAdicsGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", soloUsuariosTerm, vista.terminaste);
-router.get("/responsabilidad", soloUsuariosTerm, vista.responsabilidad);
+router.get("/terminaste", vista.terminaste);
 // Ingreso Manual
 router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.IM_Form);
 router.post("/ingreso-manual", ...algunos, vista.IM_Guardar);

@@ -65,8 +65,8 @@ app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false
 const cookies = require("cookie-parser");
 app.use(cookies());
 // Para estar siempre logueado, si existe el cookie
-const usuario = require("./middlewares/usuarios/loginConCookie");
-app.use(usuario);
+const loginConCookie = require("./middlewares/usuarios/loginConCookie");
+app.use(loginConCookie);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
