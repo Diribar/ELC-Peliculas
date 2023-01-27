@@ -6,9 +6,9 @@ const API = require("./US-ControlAPI");
 const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
-const soloVisitas = require("../../middlewares/usuarios/filtro-0soloVisitas");
-const soloUsuarios = require("../../middlewares/usuarios/filtro-1soloUsuarios");
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-2soloUsuariosTerm");
+const soloVisitas = require("../../middlewares/usuarios/filtro-soloVisitas");
+const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -24,7 +24,7 @@ router.get("/alta-mail", soloVisitas, vista.altaMailForm);
 router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
 router.get("/editables", soloUsuarios, vista.editablesForm);
 router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
-// Sólo para usuarios completos
+// Sólo para altas de usuarios terminadas
 router.get("/bienvenido", soloUsuariosTerm, vista.bienvenido);
 router.get("/valida-identidad", soloUsuariosTerm, vista.validaForm);
 router.post("/valida-identidad", soloUsuariosTerm, multer.single("avatar"), vista.validaGuardar);

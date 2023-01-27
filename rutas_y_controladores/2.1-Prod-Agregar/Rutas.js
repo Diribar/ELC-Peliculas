@@ -6,7 +6,7 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-2soloUsuariosTerm");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
@@ -52,7 +52,6 @@ router.post("/datos-adicionales", ...todos, vista.datosAdicsGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-// Miscelaneas
 router.get("/terminaste", soloUsuariosTerm, vista.terminaste);
 router.get("/responsabilidad", soloUsuariosTerm, vista.responsabilidad);
 // Ingreso Manual

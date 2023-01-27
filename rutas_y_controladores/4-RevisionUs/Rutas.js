@@ -6,9 +6,9 @@ const router = express.Router();
 const vista = require("./RU-ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-2soloUsuariosTerm");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
-const soloRevisorUs = require("../../middlewares/usuarios/filtro-4soloRevisorUs");
+const soloRevisorUs = require("../../middlewares/usuarios/filtro-soloRevisorUs");
 const entidadID = require("../../middlewares/producto/filtro-entidadID");
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");

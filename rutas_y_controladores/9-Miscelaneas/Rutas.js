@@ -6,7 +6,7 @@ const API = require("./ControlAPI");
 const vista = require("./ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-2soloUsuariosTerm");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-3soloAptoInput");
 const entidad = require("../../middlewares/producto/filtro-entidadNombre");
 const id = require("../../middlewares/producto/filtro-entidadID");
