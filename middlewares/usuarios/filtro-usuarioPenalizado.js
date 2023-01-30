@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	let usuario = req.session.usuario;
 
 	// Redirecciona si el usuario está sin login
-	if (!usuario) return res.redirect("/usuarios/redireccionar");
+	if (!usuario) return res.redirect("/usuarios/garantiza-login-y-completo");
 
 	// Penalidad acumulada. Debe ser await para que primero se bloquee y después se fije si está bloqueado
 	await (async () => {

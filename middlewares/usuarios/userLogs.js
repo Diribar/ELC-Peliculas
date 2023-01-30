@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
 	// Asignar urls
 	if (
 		rutaAceptada &&
-		!actual.includes("/redireccionar") &&
+		!actual.includes("/garantiza-login-y-completo") &&
 		!actual.includes("/api/") &&
 		anterior != actual
 	) {
