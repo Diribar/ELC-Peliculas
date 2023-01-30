@@ -169,7 +169,7 @@ module.exports = {
 		let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 		if (!datosAdics) return res.redirect("datos-duros");
 		// 5. Prepara variables para la vista
-		let camposDP = await variables.camposDP_conValores(userID);
+		let camposDA = await variables.camposDA_conValores(userID);
 		let camposDE = Object.keys(datosAdics);
 		// Imagen derecha
 		let imgDerPers = datosAdics.avatar
@@ -181,34 +181,36 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
 			dataEntry: datosAdics,
-			camposDP,
+			camposDA,
 			camposDE,
 			imgDerPers,
 			tituloImgDerPers: datosAdics.nombre_castellano,
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
-		// 1. Si se perdió la info anterior, vuelve a esa instancia
+		// Si se perdió la info anterior, vuelve a esa instancia
 		let aux = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 		if (!aux) return res.redirect("datos-duros");
-		// 2. Obtiene los DatosAdics y elimina los campos sin datos
+		// Obtiene los DatosAdics y elimina los campos sin datos
 		delete aux.sinRCLV;
 		let datosAdics = {...aux, ...req.body};
 		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
-		// 3. Guarda el data entry en session y cookie
+		// Valor para actores
+		if (!datosAdics.actores) datosAdics.actores = procesos.valorParaActores(datosAdics);
+		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
 		res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 4. Si hay errores de validación, redirecciona
-		let camposDP = variables.camposDP.map((m) => m.nombre);
-		let errores = await valida.datosAdics(camposDP, datosAdics);
+		// Si hay errores de validación, redirecciona
+		let camposDA = variables.camposDA.map((m) => m.nombre);
+		let errores = await valida.datosAdics(camposDA, datosAdics);
 		if (errores.hay) return res.redirect("datos-adicionales");
-		// 5. Si no hay errores, prepara la info para el siguiente paso
+		// Si no hay errores, prepara la info para el siguiente paso
 		req.session.confirma = req.session.datosAdics;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 6. Redirecciona a la siguiente instancia
+		// Redirecciona a la siguiente instancia
 		return res.redirect("confirma");
 	},
 	confirmaForm: (req, res) => {
