@@ -12,8 +12,8 @@ module.exports = {
 		// Obtiene los campos
 		if (!campos) {
 			let camposDD = variables.camposDD.filter((n) => n[entidad]);
-			let camposDP = variables.camposDP
-			campos = [...camposDD, ...camposDP].map((n) => n.nombre);
+			let camposDA = variables.camposDA
+			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
 		// Averigua si hay errores de validación DD y DP
 		let erroresDD = await validaProd.datosDuros(campos, datos);

@@ -41,7 +41,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
-		let camposInput1, camposInput2, produccion, camposDP, BD_paises, BD_idiomas;
+		let camposInput1, camposInput2, produccion, camposDA, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let edicion = (() => {
@@ -75,7 +75,7 @@ module.exports = {
 			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			// Datos Personalizados
-			camposDP = await variables.camposDP_conValores(userID);
+			camposDA = await variables.camposDA_conValores(userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
@@ -106,7 +106,7 @@ module.exports = {
 			produccion,
 			BD_paises,
 			BD_idiomas,
-			camposDP,
+			camposDA,
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
