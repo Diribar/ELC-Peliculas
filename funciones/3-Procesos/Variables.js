@@ -247,7 +247,7 @@ module.exports = {
 			capitulos: true,
 		},
 	],
-	camposDP: [
+	camposDA: [
 		{nombre: "cfc"},
 		{nombre: "ocurrio"},
 		{nombre: "musical"},
@@ -257,7 +257,7 @@ module.exports = {
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "valor_id", grupo: "RCLV"},
 	],
-	camposDP_conValores: async function (userID) {
+	camposDA_conValores: async function (userID) {
 		// Variables
 		const registrosRCLV = await (async () => {
 			// Variables

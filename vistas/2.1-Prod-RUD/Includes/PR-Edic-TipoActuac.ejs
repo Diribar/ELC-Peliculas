@@ -1,5 +1,5 @@
 <% const campo = "tipo_actuacion_id" %>
-<% let {titulo, valores} = camposDP.find(n => n.nombre == campo) %>
+<% let {titulo, valores} = camposDA.find(n => n.nombre == campo) %>
 <div id="AAD_opciones" class="inputError flexRowAlign altoFila">
 	<label class="negrita"><%= titulo %> </label>
 	<% for (let valor of valores) { %>

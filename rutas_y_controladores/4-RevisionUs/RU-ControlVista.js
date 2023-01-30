@@ -25,7 +25,7 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	validaIdentidadForm: async (req, res) => {
+	identidadForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionUs";
 		const codigo = "validaIdentidad";
@@ -71,7 +71,7 @@ module.exports = {
 			mostrarCartel: true,
 		});
 	},
-	validaIdentidadGuardar: async (req, res) => {
+	identidadGuardar: async (req, res) => {
 		// Toma los datos del formulario
 		let datos = {...req.query, ...req.body};
 		// Si no se respondió algún campo necesario, avisa que se debe reenviar el formulario

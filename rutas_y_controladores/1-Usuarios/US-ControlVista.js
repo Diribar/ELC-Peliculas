@@ -9,7 +9,7 @@ const procesos = require("./US-FN-Procesos");
 const valida = require("./US-FN-Validar");
 
 module.exports = {
-	redireccionar: async (req, res) => {
+	login_y_completo: async (req, res) => {
 		// Enviar a Login si no está logueado
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
@@ -18,8 +18,6 @@ module.exports = {
 			? res.redirect("/usuarios/login")
 			: status_usuario.mail_validado
 			? res.redirect("/usuarios/editables")
-			: status_usuario.editables
-			? res.redirect("/usuarios/valida-identidad")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
 			: res.redirect("/");
@@ -141,7 +139,7 @@ module.exports = {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
-			return res.redirect("/usuarios/redireccionar");
+			return res.redirect("/usuarios/garantiza-login-y-completo");
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
@@ -176,10 +174,10 @@ module.exports = {
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
 	},
-	validaForm: async (req, res) => {
+	identidadForm: async (req, res) => {
 		// Variables
 		const tema = "usuario";
-		const codigo = "valida-identidad";
+		const codigo = "identidad";
 		let usuario = req.session.usuario;
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		// Genera la info para la vista
@@ -212,7 +210,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	validaGuardar: async (req, res) => {
+	identidadGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
 		// Obtiene los datos
@@ -232,7 +230,7 @@ module.exports = {
 			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
-			return res.redirect("/usuarios/valida-identidad");
+			return res.redirect("/usuarios/identidad");
 		}
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
@@ -341,7 +339,7 @@ module.exports = {
 		// 8. Notificar al contador de logins
 		procesos.actualizaElContadorDeLogins(usuario);
 		// 9. Redireccionar
-		return res.redirect("/usuarios/redireccionar");
+		return res.redirect("/usuarios/garantiza-login-y-completo");
 	},
 	logout: (req, res) => {
 		let url = req.session.urlSinUsuario;

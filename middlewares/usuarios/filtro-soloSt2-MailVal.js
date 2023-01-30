@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 	// Redirecciona si el usuario está en alguna de esta situaciones:
 	// - Sin login
 	// - En un status distinto a 'mail_validado'
-	if (!usuario || !usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
+	if (!usuario || !usuario.status_registro.mail_validado) return res.redirect("/usuarios/garantiza-login-y-completo");
 
 	// Fin
 	next();

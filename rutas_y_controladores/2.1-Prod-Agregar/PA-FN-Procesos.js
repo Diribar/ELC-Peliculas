@@ -29,8 +29,27 @@ module.exports = {
 		}
 	},
 
-	// Desambiguar - MOVIES
-	// Desambiguar - agregaCapituloDeCollection
+	// DesambiguarForm
+	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
+		// Toma los datos de la colección
+		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
+		// Prepara los datos del capítulo
+		let datosCap = {
+			coleccion_id: datosCol.id,
+			temporada: 1,
+			capitulo: indice + 1,
+			creado_por_id: 2,
+			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
+		};
+		// Guarda los datos del capítulo
+		await this.DS_movie({TMDB_id: capituloID_TMDB})
+			.then((n) => (n = {...n, ...datosCap}))
+			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
+
+		// Fin
+		return;
+	},
+	// DesambiguarGuardar
 	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
@@ -76,7 +95,6 @@ module.exports = {
 		}
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-	// Desambiguar - COLLECTIONS
 	DS_collection: async (datos) => {
 		// Fórmula
 		let completaColeccion = async (datos) => {
@@ -164,26 +182,6 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
-		// Toma los datos de la colección
-		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
-		// Prepara los datos del capítulo
-		let datosCap = {
-			coleccion_id: datosCol.id,
-			temporada: 1,
-			capitulo: indice + 1,
-			creado_por_id: 2,
-			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
-		};
-		// Guarda los datos del capítulo
-		await this.DS_movie({TMDB_id: capituloID_TMDB})
-			.then((n) => (n = {...n, ...datosCap}))
-			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
-
-		// Fin
-		return;
-	},
-	// Desambiguar - TV
 	DS_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		datos = {
@@ -281,15 +279,30 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
+
 	// Datos Adicionales
-	quitaCamposRCLV: (datosAdics) => {
+	quitaCamposRCLV: (datos) => {
 		// Variables
-		let camposDP = variables.camposDP;
-		let camposRCLV = camposDP.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
-		if (datosAdics.sinRCLV) for (let campo of camposRCLV) delete datosAdics[campo];
+		let camposDA = variables.camposDA;
+		let camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
+		if (datos.sinRCLV) for (let campo of camposRCLV) delete datos[campo];
 		// Fin
-		return datosAdics;
+		return datos;
 	},
+	valorParaActores: (datos) => {
+		// Variables
+		let anime = tipos_actuacion.find((n) => n.anime);
+		let documental = tipos_actuacion.find((n) => n.documental);
+
+		// Acciones si no hay un valor para actores
+		return
+			datos.tipo_actuacion_id == anime.id
+				? "Dibujos Animados"
+				: datos.tipo_actuacion_id == documental.id
+				? "Documental"
+				: "Desconocido";
+	},
+
 	// Confirma Guardar
 	verificaQueExistanLosRCLV: async (confirma) => {
 		// Variables

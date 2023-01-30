@@ -54,6 +54,8 @@ module.exports = {
 					if (!respuesta) respuesta = comp.castellano[idioma](dato);
 					if (!respuesta) respuesta = comp.inicial[idioma](dato);
 				} else respuesta = comp.inputVacio;
+				// Excepción para actores
+				if (nombre == "actores" && respuesta == comp.inputVacio) respuesta = "";
 				// Fin
 				errores[nombre] = respuesta;
 			}

@@ -6,10 +6,10 @@ const API = require("./RCLV-ControlAPI");
 const vista = require("./RCLV-ControlVista");
 
 //************************ Middlewares ******************************
-// Login y Roles de Usuario
-const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
+// Comunes a todas las entidades
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/filtro-entidadNombre");
 const entidadID = require("../../middlewares/producto/filtro-entidadID");
@@ -19,7 +19,7 @@ const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
-const todosAgregar = [soloUsuariosTerm, usPenalizado, soloAptoInput, entidad];
+const todosAgregar = [usPenalizado, cartelRespons,soloAptoInput, entidad];
 const todos = [...todosAgregar, entidadID, permUserReg, capturaActivar];
 
 // Rutas *******************************************
