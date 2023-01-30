@@ -7,18 +7,19 @@ const vista = require("./RCLV-ControlVista");
 
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
-const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
-const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
+const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 // Existen la entidad y el producto
-const entidad = require("../../middlewares/producto/entidadNombre");
-const entidadID = require("../../middlewares/producto/entidadID");
-const jesus = require("../../middlewares/producto/jesus");
+const entidad = require("../../middlewares/producto/filtro-entidadNombre");
+const entidadID = require("../../middlewares/producto/filtro-entidadID");
+const jesus = require("../../middlewares/producto/filtro-jesus");
 // Temas de captura
-const permUserReg = require("../../middlewares/captura/permUserReg");
+const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
-const todosAgregar = [soloUsuariosCompl, soloAptoInput, entidad];
+const todosAgregar = [soloUsuariosTerm, usPenalizado, soloAptoInput, entidad];
 const todos = [...todosAgregar, entidadID, permUserReg, capturaActivar];
 
 // Rutas *******************************************

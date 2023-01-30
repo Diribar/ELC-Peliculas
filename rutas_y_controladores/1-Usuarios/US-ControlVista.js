@@ -18,6 +18,8 @@ module.exports = {
 			? res.redirect("/usuarios/login")
 			: status_usuario.mail_validado
 			? res.redirect("/usuarios/editables")
+			: status_usuario.editables
+			? res.redirect("/usuarios/valida-identidad")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
 			: res.redirect("/");
@@ -95,12 +97,10 @@ module.exports = {
 		return res.render("CMP-0Estructura", {informacion});
 	},
 	editablesForm: async (req, res) => {
+		// Variables
 		const tema = "usuario";
 		const codigo = "editables";
-		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
-		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
-		// Variables
 		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
 		sexos = sexos.filter((m) => m.letra_final);
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
@@ -177,14 +177,12 @@ module.exports = {
 		return res.render("CMP-0Estructura", {informacion});
 	},
 	validaForm: async (req, res) => {
+		// Variables
 		const tema = "usuario";
 		const codigo = "valida-identidad";
-		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
-		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
-		// Variables
 		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-		// Generar la info para la vista
+		// Genera la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
@@ -204,7 +202,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			titulo: "Validación de Identidad",
+			titulo: "Solicitar la Validación de Identidad",
 			dataEntry,
 			errores,
 			hablaHispana,
@@ -257,10 +255,8 @@ module.exports = {
 		return res.redirect("/usuarios/validacion-en-proceso");
 	},
 	validacionEnProceso: (req, res) => {
-		// Redireccionar si corresponde
-		let usuario = req.session.usuario;
-		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");
 		// Variables
+		let usuario = req.session.usuario;
 		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [

@@ -6,12 +6,13 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
-const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
-const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
-const prodYaEnBD = require("../../middlewares/producto/prodYaEnBD");
-const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-const cartelRespons = require("../../middlewares/usuarios/cartelRespons");
-const algunos = [soloUsuariosCompl, soloAptoInput];
+const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
+const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
+const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
+const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
+const algunos = [soloUsuariosTerm, usPenalizado, soloAptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
 const multer = require("../../middlewares/varios/multer");
@@ -52,9 +53,8 @@ router.post("/datos-adicionales", ...todos, vista.datosAdicsGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-// Miscelaneas
-router.get("/terminaste", soloUsuariosCompl, vista.terminaste);
-router.get("/responsabilidad", soloUsuariosCompl, vista.responsabilidad);
+router.get("/terminaste", soloUsuariosTerm, vista.terminaste);
+router.get("/responsabilidad", soloUsuariosTerm, vista.responsabilidad);
 // Ingreso Manual
 router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.IM_Form);
 router.post("/ingreso-manual", ...algunos, vista.IM_Guardar);

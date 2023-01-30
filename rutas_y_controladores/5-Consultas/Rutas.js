@@ -5,7 +5,7 @@ const router = express.Router();
 const vista = require("./CN-ControlVista");
 
 // Middlewares
-let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
+let urlAceptadas = require("../../middlewares/varios/filtro-urlAceptadas");
 
 // Home
 router.get("/", vista.consultasSinLayout);

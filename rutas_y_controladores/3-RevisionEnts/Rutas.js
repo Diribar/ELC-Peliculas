@@ -7,14 +7,13 @@ const vista = require("./RE-ControlVista");
 const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
-const soloAptoInput = require("../../middlewares/usuarios/solo2-aptoInput");
-const soloRevisorEnts = require("../../middlewares/usuarios/solo3-revisor-ents");
-const entidad = require("../../middlewares/producto/entidadNombre");
-const entidadID = require("../../middlewares/producto/entidadID");
-const permUserReg = require("../../middlewares/captura/permUserReg");
+const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
+const soloRevisorEnts = require("../../middlewares/usuarios/filtro-soloRol3-RevEnts");
+const entidad = require("../../middlewares/producto/filtro-entidadNombre");
+const entidadID = require("../../middlewares/producto/filtro-entidadID");
+const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const algunos = [soloUsuariosCompl, soloAptoInput, soloRevisorEnts];
+const algunos = [usPenalizado, soloRevisorEnts];
 const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
