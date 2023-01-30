@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
@@ -11,71 +11,26 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 	let usuario = req.session.usuario;
+	const usuarioSinRolDeInput = {
+		mensajes: [
+			"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
+			"Seguramente se te explicó el motivo vía mail.",
+		],
+		iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+		titulo: "Aviso",
+	};
 
-	// Redirecciona si el usuario está sin login
-	if (!usuario) return res.redirect("/usuarios/redireccionar");
+	// Redirecciona si el usuario está sin login o no completó el alta
+	if (!usuario || !usuario.completado_en) return res.redirect("/usuarios/garantiza-login-y-completo");
 
-	// VERIFICACIÓN 2: Tiene identidad validada
-	if (!informacion) {
-		if (!usuario.status_registro.ident_validada) {
-			// Status: identidad a validar
-			if (usuario.status_registro.ident_a_validar)
-				informacion = {
-					mensajes: [
-						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tus datos el " +
-							comp.fechaHorarioTexto(usuario.fecha_revisores) +
-							".",
-						"Tenés que esperar a que el equipo de Revisores haga la validación.",
-						"Luego de la validación, recibirás un mail de feedback.",
-						"En caso de estar aprobado, podrás ingresarnos información.",
-					],
-					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-					titulo: "Aviso",
-					trabajando: true,
-				};
-			// Status: editables
-			else if (usuario.status_registro.editables)
-				informacion = {
-					mensajes: [
-						"El ingreso de información para otras personas, requiere responsabilidad.",
-						"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
-						"Por eso, necesitamos validar tu identidad con tu documento.",
-						"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
-					],
-					iconos: [
-						{
-							nombre: "fa-circle-left",
-							link: req.session.urlSinPermInput,
-							titulo: "Ir a la vista anterior",
-						},
-						{
-							nombre: "fa-circle-right",
-							link: "/usuarios/redireccionar",
-							titulo: "Ir a 'Solicitar la Validación de Identidad'",
-							autofocus: true,
-						},
-					],
-					titulo: "Aviso",
-					trabajando: true,
-				};
-			else res.redirect ("/usuarios/redireccionar")
-		}
-	}
-	// VERIFICACIÓN 3: Permiso input
-	if (!informacion) {
-		if (!usuario.rol_usuario.perm_inputs) {
-			informacion = {
-				mensajes: [
-					"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
-					"Seguramente se te explicó el motivo vía mail.",
-				],
-				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-				titulo: "Aviso",
-			};
-		}
-	}
-	// VERIFICACIÓN 4: Nivel de Confianza
+	// VERIFICACIÓN 1: Revisa si tiene validada su identidad
+	informacion = procesos.feedbackSobreIdentidadValidada(req);
+
+	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
+	if (!informacion) 
+		if (!usuario.rol_usuario.perm_inputs) informacion = usuarioSinRolDeInput;
+	
+	// VERIFICACIÓN 3: Revisa si está dentro de su Nivel de Confianza
 	if (!informacion) {
 		// Variables
 		let cuentaRegistros, nivelDeConfianza;

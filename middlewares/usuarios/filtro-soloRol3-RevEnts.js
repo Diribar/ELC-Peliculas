@@ -1,25 +1,25 @@
 "use strict";
 module.exports = (req, res, next) => {
-	let usuario = req.session.usuario;
-	// Redirecciona si el usuario está sin login
-	if (!usuario) return res.redirect("/usuarios/redireccionar");
-
-	// Redirecciona si el usuario no tiene validada su identidad
-	if (!usuario.status_registro.ident_validada) return res.redirect("/usuarios/redireccionar");
-
-	// Redirecciona si el usuario no tiene el rol necesario
+	// Variables
+	const usuario = req.session.usuario;
+	const usuarioSinRolDeRevisor = {
+		mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
+		iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
+	};
 	let informacion;
-	if (!usuario.rol_usuario.revisor_ents)
-		informacion = {
-			mensajes: [
-				"Se requiere un permiso especial para revisar la información ingresada a nuestro sistema.",
-			],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			],
-		};
-	// Si corresponde, mostrar el mensaje de error
+
+	// Redirecciona si el usuario está sin login o sin completar
+	if (!usuario || !usuario.completado_en) return res.redirect("/usuarios/garantiza-login-y-completo");
+
+	// Revisa si el usuario tiene validada su identidad
+	informacion = procesos.feedbackSobreIdentidadValidada(req);
+
+	// Revisa si el usuario tiene el rol necesario
+	if (!usuario.rol_usuario.revisor_ents) informacion = usuarioSinRolDeRevisor;
+
+	// Si corresponde, muestra el mensaje de error
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
+
 	// Fin
 	next();
 };

@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 	// Redirecciona si el usuario está en alguna de esta situaciones:
 	// - Sin login
 	// - En un status distinto a 'editables'
-	if (!usuario || !usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
+	if (!usuario || !usuario.status_registro.editables) return res.redirect("/usuarios/editables");
 
 	// Fin
 	next();
