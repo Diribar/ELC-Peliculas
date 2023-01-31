@@ -7,6 +7,7 @@ const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
 // Comunes a todas las entidades
+const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
 const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
 const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
@@ -14,7 +15,7 @@ const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons")
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
 // Consolidados
-const algunos = [usPenalizado, soloAptoInput];
+const algunos = [soloUsuarios, usPenalizado, soloAptoInput];
 const todos = [...algunos, prodYaEnBD];
 const todosFA = [...algunos, autorizadoFA];
 // Otros
