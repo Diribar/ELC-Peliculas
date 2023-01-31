@@ -24,8 +24,21 @@ module.exports = (req, res, next) => {
 	let anterior = req.session.urlActual;
 	let actual = req.originalUrl;
 
+	// Condición
+	let rutasAceptadas = [
+		"/producto",
+		"/rclv",
+		"/links",
+		"/usuarios",
+		"/revision",
+		"/consultas",
+		"/institucional",
+	];
+	let rutaAceptada = rutasAceptadas.some((n) => actual.startsWith(n)) || actual == "/";
+
 	// Asignar urls
 	if (
+		rutaAceptada &&
 		!actual.startsWith("/usuarios/garantiza-login-y-completo") &&
 		!actual.includes("/api/") &&
 		anterior != actual
