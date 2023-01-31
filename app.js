@@ -127,11 +127,13 @@ const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
 const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
 const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
+const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/revision/usuarios", rutaRevisarUs);
 app.use("/revision", rutaRevisarEnts);
 app.use("/consultas", rutaConsultas);
+app.use("/institucional", rutaInstitucional);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************

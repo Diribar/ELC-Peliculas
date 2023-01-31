@@ -32,6 +32,7 @@ module.exports = (req, res, next) => {
 		"/usuarios",
 		"/revision",
 		"/consultas",
+		"/mantenimiento",
 		"/institucional",
 	];
 	let rutaAceptada = rutasAceptadas.some((n) => actual.startsWith(n)) || actual == "/";
