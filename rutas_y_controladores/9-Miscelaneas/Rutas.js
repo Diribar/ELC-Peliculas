@@ -10,15 +10,9 @@ const vista = require("./ControlVista");
 router.get("/api/quick-search/", API.quickSearch);
 router.get("/api/horario-inicial/", API.horarioInicial);
 
-// Inicio
-router.get("/", vista.inicio);
-
-// Vistas de vistas - Institucional
-router.get("/quienes-somos", vista.quienesSomos);
-router.get("/mision-y-vision", vista.misionVision);
-router.get("/valores", vista.valores);
-router.get("/derechos-de-autor", vista.derechosAutor);
-router.get("/data-entry", vista.dataEntry);
+// Redireccionar a Inicio
+router.get("/", vista.redireccionarInicio);
+router.get("/inicio", vista.redireccionarInicio);
 
 // Session y Cookies
 router.get("/session", vista.session);
