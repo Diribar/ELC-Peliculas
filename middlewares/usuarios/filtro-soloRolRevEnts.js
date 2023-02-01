@@ -11,9 +11,6 @@ module.exports = (req, res, next) => {
 	};
 	let informacion;
 
-	// Redirecciona si el usuario está sin login o sin completar
-	if (!usuario || !usuario.completado_en) return res.redirect("/usuarios/garantiza-login-y-completo");
-
 	// Revisa si el usuario tiene validada su identidad
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 

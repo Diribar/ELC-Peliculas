@@ -19,9 +19,6 @@ module.exports = async (req, res, next) => {
 		titulo: "Aviso",
 	};
 
-	// Redirecciona si el usuario está sin login o no completó el alta
-	if (!usuario || !usuario.completado_en) return res.redirect("/usuarios/garantiza-login-y-completo");
-
 	// VERIFICACIÓN 1: Revisa si tiene validada su identidad
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 
