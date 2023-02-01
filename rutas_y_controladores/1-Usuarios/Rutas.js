@@ -12,7 +12,7 @@ const soloMailValidado = require("../../middlewares/usuarios/filtro-soloSt2-Mail
 const soloEditables = require("../../middlewares/usuarios/filtro-soloSt3-Editables");
 const soloIdentValidar = require("../../middlewares/usuarios/filtro-soloSt4-IdentValidar");
 const soloUsuariosTerm = require("../../middlewares/usuarios/filtro-soloUsuariosTerm");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
+const usPenalizado = require("../../middlewares/usuarios/filtro-penalizado");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************

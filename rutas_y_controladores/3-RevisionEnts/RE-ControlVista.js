@@ -105,7 +105,7 @@ module.exports = {
 		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
-		// Variables
+		// Más variables
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
@@ -137,13 +137,14 @@ module.exports = {
 		if (rechazado) {
 			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
 			datosHistorial.motivo_id = motivo.id;
-			datosHistorial.duracion = Number(motivo.duracion);
+			duracion = Number(motivo.duracion);
+			datosHistorial.duracion = duracion;
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
 		// Aumenta el valor de prod_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
-		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
+		if (duracion) comp.usuarioAumentaPenaliz(creador_ID, duracion, "prods");
 		// Obtiene el edicID
 		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
 		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
@@ -297,7 +298,6 @@ module.exports = {
 			captura_activa: false,
 			status_registro_id: aprobado_id,
 		};
-		// return res.send(dataEntry);
 		// 5. Guarda los cambios
 		await procsRCLV.guardaLosCambios(req, res, dataEntry);
 		// 6. Actualiza la tabla de edics aprob/rech

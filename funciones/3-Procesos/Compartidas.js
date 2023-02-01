@@ -598,17 +598,29 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuario_aumentaPenalizacAcum: (userID, motivo) => {
+	usuarioAumentaPenaliz: (userID, motivo, familia) => {
 		// Variables
-		let rol_consultasID = roles_us.find((n) => !n.perm_inputs).id;
-		// Se le baja el rol a 'Consultas', si el motivo lo amerita
-		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_consultasID});
+		let duracion = motivo.duracion;
+		let objeto = {};
+
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", motivo.duracion);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
+
+		// Si corresponde, que se muestre el cartel de responsabilidad
+		if (duracion > 1 && familia) {
+			let cartel = "cartel_resp_" + (familia == "productos" ? "prods" : familia);
+			objeto[cartel] = true;
+		}
+		// Si corresponde, se le baja el rol a 'Consultas'
+		if (motivo.bloqueo_perm_inputs) objeto.rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+
+		// Si corresponde, actualiza el usuario
+		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
+
 		// Fin
 		return;
 	},
-	usuario_Ficha: async (userID, ahora) => {
+	usuarioFicha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
