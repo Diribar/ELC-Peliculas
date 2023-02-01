@@ -7,10 +7,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
-	let informacion;
+	const vistaEntendido = variables.vistaEntendido(req.session.urlActual);
+	req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(req.session.usuario.email);
 	let usuario = req.session.usuario;
+	let informacion;
 
 	// Redirecciona si el usuario está sin login
 	if (!usuario) return res.redirect("/usuarios/garantiza-login-y-completo");
@@ -28,18 +29,17 @@ module.exports = async (req, res, next) => {
 			datos.penalizac_acum = usuario.penalizac_acum - penalizac_acum;
 			// Si el usuario no tenía una penalización vigente, se actualiza la fecha 'penalizado_en'
 			if (usuario.penalizado_hasta <= ahora) datos.penalizado_en = ahora;
-			// Activa el cartel de Responsabilidad para la siguiente vez que se quiera agregar una entidad
-			datos.mostrar_cartel_respons = true;
+			// Activa el cartel de "Fin de la Penalización", para cuando ésta termine
+			datos.cartel_fin_penaliz = true;
 		}
-		// Actualiza el registro
+		// Actualiza el usuario
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
-		// Actualiza la variable usuario
 		usuario = {...usuario, ...datos};
 		req.session.usuario = usuario;
 	})();
 
-	// VERIFICACIÓN
-	if (usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
+	// VERIFICACIÓN 1: Se fija si el usuario está penalizado
+	if (!informacion && usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
 		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
 		informacion = {
 			mensajes: [
@@ -47,6 +47,26 @@ module.exports = async (req, res, next) => {
 				"Podrás volver a ingresar información el día " + fecha + ".",
 			],
 			iconos: [vistaAnterior],
+		};
+	}
+
+	// VERIFICACIÓN 2: Se fija si se tiene que mostrar el cartel de "Fin de la Penalización"
+	if (!informacion && usuario.cartel_fin_penaliz) {
+		// Actualiza el usuario
+		let datos = {cartel_fin_penaliz: false};
+		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
+		usuario = {...usuario, ...datos};
+		req.session.usuario = usuario;
+
+		// Cartel de "Fin de la Penalización"
+		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
+		informacion = {
+			mensajes: [
+				"La penalización concluyó el día " + fecha + ".",
+				"Ya podés ingresar información en nuestro sistema.",
+			],
+			iconos: [vistaEntendido],
+			check: true,
 		};
 	}
 
