@@ -194,8 +194,8 @@ module.exports = {
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
-	// Middleware/Usuario/autorizadoFA
-	obtieneAutorizadoFA: (id) => {
+	// Middleware/Usuario/usAutorizFA
+	obtieneAutorizFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	// Middlewares - Usuario habilitado
