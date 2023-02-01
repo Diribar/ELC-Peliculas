@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 
 	// PROBLEMA 2: ID inválido
 	const registro = await BD_genericas.obtienePorId(entidad, id);
-	if (!registro) informacion = {mensajes: ["ID inválido"], iconos: [vistaAnterior]};
+	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

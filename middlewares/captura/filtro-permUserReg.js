@@ -245,13 +245,13 @@ module.exports = async (req, res, next) => {
 	//    El registro está en status creado y la vista no es de revisión
 	//    El registro está en status creadoAprob y el usuario no es revisor
 	if (!informacion) informacion = creadoHaceMasDeUnaHora();
-	// 2. El registro está capturado por otro usuario en forma 'activa'
+	// 3. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();
-	// 3. El usuario capturó la entidad hace más de una hora y menos de dos horas
+	// 4. El usuario capturó la entidad hace más de una hora y menos de dos horas
 	if (!informacion) informacion = capturaExcedida();
-	// 4. El usuario tiene capturado otro registro en forma activa
+	// 5. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) informacion = await otroRegistroCapturado();
-	// Verificaciones exclusivas de las vistas de Revisión
+	// 6. Verificaciones exclusivas de las vistas de Revisión
 	if (!informacion) informacion = verificacionesDeRevision();
 
 	// Fin

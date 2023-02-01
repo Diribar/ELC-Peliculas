@@ -33,8 +33,9 @@ module.exports = async (req, res, next) => {
 		}
 		// Actualiza el registro
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
-		// Actualizar la variable usuario
+		// Actualiza la variable usuario
 		usuario = {...usuario, ...datos};
+		req.session.usuario = usuario;
 	})();
 
 	// VERIFICACIÓN
