@@ -9,12 +9,12 @@ const vista = require("./RCLV-ControlVista");
 // Comunes a todas las entidades
 const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-aptoInput");
 const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
 // Existen la entidad y el producto
-const entidad = require("../../middlewares/producto/filtro-entidadNombre");
-const entidadID = require("../../middlewares/producto/filtro-entidadID");
-const jesus = require("../../middlewares/producto/filtro-jesus");
+const entidad = require("../../middlewares/producto/filtro-entidadInvalida");
+const entidadID = require("../../middlewares/producto/filtro-IDinvalido");
+const jesus = require("../../middlewares/producto/filtro-edicBloqueada");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");

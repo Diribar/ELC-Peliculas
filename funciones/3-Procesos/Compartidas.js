@@ -112,11 +112,11 @@ module.exports = {
 			? "Colección"
 			: entidad == "capitulos"
 			? "Capítulo"
-			: entidad.includes("personaje")
+			: entidad == "personajes"
 			? "Personaje"
-			: entidad.includes("hecho")
+			: entidad == "hechos"
 			? "Hecho"
-			: entidad.includes("valor")
+			: entidad == "valores"
 			? "Valor"
 			: entidad == "links"
 			? "Links"
@@ -578,17 +578,23 @@ module.exports = {
 		return respuesta;
 	},
 	cartelRepetido: function (datos) {
-		return (
-			"Este/a <a href='/" +
-			this.obtieneFamiliaEnSingular(datos.entidad) +
-			"/detalle/?entidad=" +
-			datos.entidad +
-			"&id=" +
-			datos.id +
-			"' target='_blank'><u><strong>" +
-			this.obtieneEntidadNombre(datos.entidad).toLowerCase() +
-			"</strong></u></a> ya se encuentra en nuestra base de datos"
-		);
+		// Variables
+		// 1. Inicio
+		let genero = datos.entidad == "capitulos" ? "o" : "a";
+		let inicio = "Est" + genero + " ";
+
+		// 2. Anchor
+		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
+		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
+		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
+		let anchor = " <a href='" + link + "' target='_blank'> " + entidadHTML + "</a>";
+
+		// 3. Final
+		let final = " ya se encuentra en nuestra base de datos";
+
+		// Fin
+		return inicio + anchor + final;
 	},
 
 	// Usuarios

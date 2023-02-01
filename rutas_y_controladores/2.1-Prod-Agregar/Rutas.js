@@ -9,7 +9,7 @@ const vista = require("./PA-ControlVista");
 // Comunes a todas las entidades
 const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
 const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
+const soloAptoInput = require("../../middlewares/usuarios/filtro-aptoInput");
 const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");

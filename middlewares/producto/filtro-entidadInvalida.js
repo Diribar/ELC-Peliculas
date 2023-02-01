@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
-				mensajes: ["La entidad ingresada no es válida"],
+				mensajes: ["La entidad ingresada es inválida"],
 				iconos: [
 					{
 						nombre: "fa-circle-left",

@@ -110,13 +110,13 @@ module.exports = async (req, res, next) => {
 		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia();
 		if (prodCapturado) {
 			// Datos para el mensaje
-			const pc_entidadCodigo = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidadCodigo);
+			const pc_entidad = prodCapturado.entidad;
+			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidad);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
 				"/inactivar-captura/?entidad=" +
-				pc_entidadCodigo +
+				pc_entidad +
 				"&id=" +
 				pc_entidadID +
 				"&origen=" +
@@ -129,17 +129,14 @@ module.exports = async (req, res, next) => {
 			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
-				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"
-					? {entidad: "la ", reservado: "a"}
-					: {entidad: "el ", reservado: "o"};
-			const nombre =
-				pc_entidadCodigo == "personajes" ||
-				pc_entidadCodigo == "hechos" ||
-				pc_entidadCodigo == "valores"
-					? "nombre"
-					: prodCapturado.nombre_castellano
-					? "nombre_castellano"
-					: "nombre_original";
+				pc_entidad == "capitulos"
+					? {entidad: "el ", reservado: "o"}
+					: {entidad: "la ", reservado: "a"};
+			const nombre = prodCapturado.nombre
+				? "nombre"
+				: prodCapturado.nombre_castellano
+				? "nombre_castellano"
+				: "nombre_original";
 			informacion = {
 				mensajes: [
 					"Tenés que liberar " +

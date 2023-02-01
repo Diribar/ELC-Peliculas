@@ -18,28 +18,29 @@ module.exports = async (req, res, next) => {
 		let fuente_id = datos.fuente + "_id";
 		let elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
 		if (elc_id) {
+			// Links
+			let linkAnterior = "/producto/agregar/desambiguar";
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
-			let prodNombre = comp.obtieneEntidadNombre(datos.entidad);
+			// Nombre de la entidad
+			let entidadNombre = comp.obtieneEntidadNombre(datos.entidad);
+			// Información para el cartel
 			informacion = {
 				mensajes: [
-					"La " +
-						prodNombre +
-						" ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en el ícono de 'información'",
+					"La " + entidadNombre + " ya está en nuestra BD.",
+					"Podés ver el detalle haciendo click abajo, en el ícono de 'información'.",
 				],
 				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: "/producto/agregar/palabras-clave",
-						titulo: "Regresar a 'Palabra Clave'",
-					},
+					{nombre: "fa-circle-left", link: linkAnterior, titulo: "Regresar a 'Desambiguar'"},
 					{nombre: "fa-circle-info", link: linkDetalle, titulo: "Ir a la vista Detalle"},
 				],
 			};
+			// Elimina los hallazgos anteriores
+			req.session.desambiguar = "";
+			// Envía a la vista
+			return res.render("CMP-0Estructura", {informacion});
 		}
 	}
-	if (informacion) {
-		procesos.borraSessionCookies(req, res, "borrarTodo");
-		return res.render("CMP-0Estructura", {informacion});
-	}
+
+	// Fin
 	next();
 };

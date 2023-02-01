@@ -8,11 +8,11 @@ module.exports = (req, res, next) => {
 	const entidades = variables.entidadesRCLV;
 	let informacion;
 	// Verificar los datos
-	if (entidades.includes(entidad) && id < 50)
+	if (entidades.includes(entidad) && id < 20)
 		informacion = {
 			mensajes: [
-				"No está permitido editar este registro.",
-				"Fue creado por los administradores."
+				"Este registro es de alta sensibilidad.",
+				"Su acceso para editarlo está bloqueado por los administradores."
 			],
 			iconos: [
 				{
