@@ -332,8 +332,6 @@ module.exports = {
 		// Si corresponde, le cambia el status a 'mail_validado'
 		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
-		// Borra todas las cookies
-		if (req.cookies != req.body.email) for (let prop in req.cookies) res.clearCookie(prop);
 		// Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies
@@ -342,14 +340,6 @@ module.exports = {
 		procesos.actualizaElContadorDeLogins(usuario);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/garantiza-login-y-completo");
-	},
-	logout: (req, res) => {
-		let url = req.session.urlFueraDeUsuarios;
-		// Borra el session y un cookie
-		req.session.destroy();
-		res.clearCookie("email");
-		// Fin
-		return res.redirect(url);
 	},
 	olvidoContrGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
@@ -386,5 +376,14 @@ module.exports = {
 		informacion = procesos.cartelNuevaContrasena;
 		// Redireccionar
 		return res.render("CMP-0Estructura", {informacion});
+	},
+	logout: (req, res) => {
+		let url = req.session.urlFueraDeUsuarios;
+		// Borra el session y un cookie
+		req.session.destroy();
+		for (let prop in req.cookies) res.clearCookie(prop);
+		//res.clearCookie("email");
+		// Fin
+		return res.redirect(url);
 	},
 };

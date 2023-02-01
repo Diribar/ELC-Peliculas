@@ -2,26 +2,18 @@
 // Requires
 
 module.exports = (req, res, next) => {
-	// Funciones
-	let activaSessionCookie = (url) => {
-		req.session[url] = anterior;
-		res.cookie(url, anterior, {maxAge: unDia});
-	};
-
-	// Datos originales
-	let urls = [
-		"urlSinLogin",
-		"urlFueraDeUsuarios",
-		"urlSinCaptura",
-		"urlSinPermInput",
-		"urlAnterior",
-		"urlActual",
-	];
-	urls.forEach((url) => {
+	// Valores de startup
+	let urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinCaptura", "urlAnterior", "urlActual"];
+	urlsGuardadas.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
 	// Variables
-	let anterior = req.session.urlActual;
+	let anterior =
+		req.session && req.session.urlActual
+			? req.session.urlActual
+			: req.cookies.urlActual
+			? req.cookies.urlActual
+			: "/";
 	let actual = req.originalUrl;
 
 	// Condición
@@ -35,15 +27,24 @@ module.exports = (req, res, next) => {
 		"/mantenimiento",
 		"/institucional",
 	];
-	let rutaAceptada = rutasAceptadas.some((n) => actual.startsWith(n)) || actual == "/";
+	let rutaAceptada =
+		// Pertenece a las rutas aceptadas
+		rutasAceptadas.some((n) => actual.startsWith(n)) &&
+		// No es una ruta sin vista
+		!actual.startsWith("/usuarios/garantiza-login-y-completo") &&
+		!actual.startsWith("/usuarios/logout") &&
+		!actual.includes("/api/") &&
+		// Es diferente a la ruta anterior
+		anterior != actual;
 
 	// Asignar urls
-	if (
-		rutaAceptada &&
-		!actual.startsWith("/usuarios/garantiza-login-y-completo") &&
-		!actual.includes("/api/") &&
-		anterior != actual
-	) {
+	if (rutaAceptada) {
+		// Función
+		let activaSessionCookie = (url) => {
+			req.session[url] = anterior;
+			res.cookie(url, anterior, {maxAge: unDia});
+		};
+
 		// 1. urlSinLogin
 		// Cualquier ruta que no requiera login
 		if (
@@ -69,9 +70,10 @@ module.exports = (req, res, next) => {
 		)
 			activaSessionCookie("urlSinCaptura");
 
-		// Actualiza en session la url 'anterior'
+		// Actualiza la url 'anterior'
 		activaSessionCookie("urlAnterior");
-		// Actualiza en session la url 'actual'
+
+		// Actualiza la url 'actual'
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
 	}

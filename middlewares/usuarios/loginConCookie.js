@@ -10,7 +10,10 @@ module.exports = async (req, res, next) => {
 		// Si existe el usuario y ya confirmó el mail, pasa los datos del usuario a session
 		if (usuario && !usuario.status_registro.mail_a_validar) req.session.usuario = usuario;
 	}
-	// Graba a Locals los datos del usuario
-	if (req.session.usuario && !res.locals.usuario) res.locals.usuario = req.session.usuario;
+	// Graba los datos del usuario a 'locals', para que estén en la vista
+	if (req.session.usuario && req.session.usuario != res.locals.usuario)
+		res.locals.usuario = req.session.usuario;
+
+	// Fin
 	next();
 };
