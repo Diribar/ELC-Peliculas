@@ -234,12 +234,12 @@
 							</div>
 						</div>
 						<!-- Status del proceso de canonización -->
-						<div name="proceso_id" class="ocultar RCLI cfc">
+						<select name="proceso_id" class="ocultar RCLI cfc">
 							<option value="" selected>Elejí una opción</option>
 							<% for (let proceso of procs_canon) { %>
 								<option class="<%- dataEntry.sexo_id != proceso.id.slice(-1) ? 'ocultar' : '' %>" value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
 							<% } %> 
-						</div>
+						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
 					<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
