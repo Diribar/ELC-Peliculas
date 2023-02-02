@@ -6,28 +6,18 @@ const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
 
 //************************ Middlewares ******************************
-// Comunes a todas las entidades
-const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-aptoInput");
-const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
-// Existen la entidad y el producto
-const entidad = require("../../middlewares/producto/filtro-entidadInvalida");
-const entidadID = require("../../middlewares/producto/filtro-IDinvalido");
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
+// Específicos de links
+const entValida = require("../../middlewares/producto/filtro-entidadValida");
+const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
-const todos = [
-	soloUsuarios,
-	usPenalizado,
-	cartelRespons,
-	soloAptoInput,
-	entidad,
-	entidadID,
-	permUserReg,
-	capturaActivar,
-];
+const ABM = [usAltaTerm, penalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -41,7 +31,7 @@ router.get("/api/deshacer", API.deshacer);
 
 // Rutas de vistas
 // Links
-router.get("/abm", ...todos, vista.linksForm);
+router.get("/abm", ...ABM, vista.linksForm);
 
 // Fin
 module.exports = router;

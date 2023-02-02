@@ -103,6 +103,8 @@ module.exports = {
 			? "rclvs"
 			: entidad == "links" || entidad == "links_edicion"
 			? "links"
+			: entidad == "usuarios"
+			? "usuarios"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {

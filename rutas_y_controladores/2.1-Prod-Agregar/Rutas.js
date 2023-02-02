@@ -6,18 +6,17 @@ const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
-// Comunes a todas las entidades
-const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-aptoInput");
-const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
+const usAutorizFA = require("../../middlewares/usuarios/filtro-usAutorizFA");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
-const autorizadoFA = require("../../middlewares/usuarios/filtro-autorizadoFA");
 // Consolidados
-const algunos = [soloUsuarios, usPenalizado, soloAptoInput];
-const todos = [...algunos, prodYaEnBD];
-const todosFA = [...algunos, autorizadoFA];
+const dataEntry = [usAltaTerm, penalizaciones, usAptoInput];
+const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
+const dataEntryMasFA = [...dataEntry, usAutorizFA];
 // Otros
 const multer = require("../../middlewares/varios/multer");
 
@@ -46,26 +45,26 @@ router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/DP-guarda-datos-adics/", API.guardaDatosAdics);
 
 // VISTAS
-router.get("/responsabilidad", ...algunos, vista.responsabilidad);
-router.get("/palabras-clave", ...algunos, cartelRespons, vista.palabrasClaveForm);
-router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
-router.get("/desambiguar", ...algunos, vista.desambiguarForm);
+router.get("/responsabilidad", ...dataEntry, vista.responsabilidad);
+router.get("/palabras-clave", ...dataEntry, vista.palabrasClaveForm);
+router.post("/palabras-clave", ...dataEntry, vista.palabrasClaveGuardar);
+router.get("/desambiguar", ...dataEntry, vista.desambiguarForm);
 // Comienzo de "prodYaEnBD"
-router.get("/datos-duros", ...todos, vista.datosDurosForm);
-router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-adicionales", ...todos, vista.datosAdicsForm);
-router.post("/datos-adicionales", ...todos, vista.datosAdicsGuardar);
-router.get("/confirma", ...todos, vista.confirmaForm);
-router.post("/confirma", ...todos, vista.confirmaGuardar);
+router.get("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDurosForm);
+router.post("/datos-duros", ...dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDurosGuardar);
+router.get("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsForm);
+router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsGuardar);
+router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirmaForm);
+router.post("/confirma", ...dataEntryMasYaEnBD, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", vista.terminaste);
 // Ingreso Manual
-router.get("/ingreso-manual", ...algunos, autorizadoFA, vista.IM_Form);
-router.post("/ingreso-manual", ...algunos, vista.IM_Guardar);
+router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM_Form);
+router.post("/ingreso-manual", ...dataEntry, vista.IM_Guardar);
 // Ingreso FA
-router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
-router.get("/ingreso-fa", ...todosFA, vista.copiarFA_Form);
-router.post("/ingreso-fa", ...todosFA, vista.copiarFA_Guardar);
+router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Form);
+router.get("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Form);
+router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Guardar);
 
 // Fin
 module.exports = router;
