@@ -1,16 +1,16 @@
-<% if (locals.informacion || mostrar) { %>
+<% if (locals.informacion || locals.mostrar) { %>
 	<!-- Formato -->
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/CMP-Cartel.css">
 	<!-- Tapar el fondo -->
 	<section id="tapar-el-fondo" class="<%- !locals.informacion ? 'ocultar' : '' %>"></section>
 	<!-- Cartel -->
 	<section id="cartel" class="<%- !locals.informacion ? 'ocultar' : informacion.check ? 'check' : informacion.trabajando ? 'trabajando' : '' %>">
-		
+
 		<!-- Íconos -->
 		<i id="alerta" class="fa-solid fa-triangle-exclamation inicio <%- !locals.informacion || locals.informacion.check || locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
-		<img id="check" src="/imagenes/0-Base/Varios/Check.png" height="60px" class="<%- !locals.informacion || !locals.informacion.check ? 'ocultar' : '' %>">
-		<i id="trabajando" class="fa-solid fa-tools ocultar inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
-		
+		<img id="check" src="/imagenes/0-Base/Varios/Check.png" class="inicio <%- !locals.informacion || !locals.informacion.check ? 'ocultar' : '' %>" height="60px">
+		<i id="trabajando" class="fa-solid fa-tools inicio <%- !locals.informacion || !locals.informacion.trabajando ? 'ocultar' : '' %>"></i>
+
 		<!-- Título -->
 		<p id="titulo"></p>
 

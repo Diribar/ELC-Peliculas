@@ -6,30 +6,20 @@ const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");
 
 //************************ Middlewares ******************************
-// Comunes a todas las entidades
-const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloAptoInput = require("../../middlewares/usuarios/filtro-soloAptoInput");
-const cartelRespons = require("../../middlewares/usuarios/filtro-cartelRespons");
-// Existen la entidad y el producto
-const entidad = require("../../middlewares/producto/filtro-entidadNombre");
-const entidadID = require("../../middlewares/producto/filtro-entidadID");
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
+// Específicos de productos
+const entValida = require("../../middlewares/producto/filtro-entidadValida");
+const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const todos = [
-	soloUsuarios,
-	usPenalizado,
-	cartelRespons,
-	soloAptoInput,
-	entidad,
-	entidadID,
-	permUserReg,
-	capturaActivar,
-];
+const dataEntry = [usAltaTerm, penalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -43,11 +33,11 @@ router.get("/api/edicion/eliminar", API.prod_EliminarEdicG);
 
 // Rutas de vistas
 // Producto
-router.get("/detalle", entidad, entidadID, capturaInactivar, vista.prodDetEdic_Form);
-router.get("/edicion", ...todos, vista.prodDetEdic_Form);
-router.post("/edicion", ...todos, multer.single("avatar"), vista.prodEdic_Guardar);
+router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetEdic_Form);
+router.get("/edicion", ...dataEntry, vista.prodDetEdic_Form);
+router.post("/edicion", ...dataEntry, multer.single("avatar"), vista.prodEdic_Guardar);
 // Pendiente
-router.get("/calificala", ...todos, vista.calificala);
+router.get("/calificala", ...dataEntry, vista.calificala);
 
 // Fin
 module.exports = router;

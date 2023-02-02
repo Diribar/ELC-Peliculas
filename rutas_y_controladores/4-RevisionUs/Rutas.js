@@ -6,21 +6,27 @@ const router = express.Router();
 const vista = require("./RU-ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloRevisorUs = require("../../middlewares/usuarios/filtro-soloRol3-RevUs");
-const entidadID = require("../../middlewares/producto/filtro-entidadID");
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const revisorEnts = require("../../middlewares/usuarios/filtro-usRolRevUs");
+// Específicos de entidades
+const entValida = require("../../middlewares/producto/filtro-entidadValida");
+const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
+// Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const algunos = [soloUsuarios, usPenalizado, soloRevisorUs];
-const todos = [...algunos, entidadID, permUserReg, capturaActivar];
+// Consolidados
+const aptoRevisor = [usAltaTerm, penalizaciones, revisorEnts];
+const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 
 // VISTAS --------------------------------------------------
-router.get("/tablero-de-control", ...algunos, vista.tableroControl);
-router.get("/identidad", ...todos, vista.identidadForm);
-router.post("/identidad", ...todos, vista.identidadGuardar);
+router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
+// Identidad
+router.get("/identidad", ...aptoRevMasEnt, vista.identidadForm);
+router.post("/identidad", ...aptoRevMasEnt, vista.identidadGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;

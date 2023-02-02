@@ -7,40 +7,44 @@ const vista = require("./RE-ControlVista");
 const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
-const soloUsuarios = require("../../middlewares/usuarios/filtro-soloUsuarios");
-const usPenalizado = require("../../middlewares/usuarios/filtro-usuarioPenalizado");
-const soloRevisorEnts = require("../../middlewares/usuarios/filtro-soloRol3-RevEnts");
-const entidad = require("../../middlewares/producto/filtro-entidadNombre");
-const entidadID = require("../../middlewares/producto/filtro-entidadID");
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const revisorEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
+// Específicos de entidades
+const entValida = require("../../middlewares/producto/filtro-entidadValida");
+const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
+// Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const algunos = [soloUsuarios, usPenalizado, soloRevisorEnts];
-const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
+// Consolidados
+const aptoRevisor = [usAltaTerm, penalizaciones, revisorEnts];
+const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
-router.get("/api/edicion-aprob-rech", ...algunos, API.edic_AprobRech);
-router.get("/api/producto-guarda-avatar", ...algunos, API.prodEdic_ConvierteUrlEnArchivo);
+router.get("/api/edicion-aprob-rech", ...aptoRevisor, API.edic_AprobRech);
+router.get("/api/producto-guarda-avatar", ...aptoRevisor, API.prodEdic_ConvierteUrlEnArchivo);
 // Links
-router.get("/api/link-alta", ...algunos, API.linkAltaBaja);
-router.get("/api/link-eliminar", ...algunos, API.linkAltaBaja);
-router.get("/api/link-edicion", ...algunos, API.edic_AprobRech);
+router.get("/api/link-alta", ...aptoRevisor, API.linkAltaBaja);
+router.get("/api/link-eliminar", ...aptoRevisor, API.linkAltaBaja);
+router.get("/api/link-edicion", ...aptoRevisor, API.edic_AprobRech);
 
 // VISTAS --------------------------------------------------
-router.get("/tablero-de-control", ...algunos, vista.tableroControl);
+router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Producto
-router.get("/producto/alta", ...todos, vista.prodAltaForm);
-router.post("/producto/alta", ...todos, vista.prodAltaGuardar);
-router.get("/producto/edicion", ...todos, vista.prodEdicForm);
+router.get("/producto/alta", ...aptoRevMasEnt, vista.prodAltaForm);
+router.post("/producto/alta", ...aptoRevMasEnt, vista.prodAltaGuardar);
+router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
 // RCLV
-router.get("/rclv/alta", ...todos, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...todos, vista.rclvAltaGuardar);
-router.get("/rclv/edicion", ...todos, vista.rclvEdicForm);
+router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
+router.post("/rclv/alta", ...aptoRevMasEnt, vista.rclvAltaGuardar);
+router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
 
 // Links
-router.get("/links", ...todos, vista.linksForm);
+router.get("/links", ...aptoRevMasEnt, vista.linksForm);
 
 // Exportarlo **********************************************
 module.exports = router;

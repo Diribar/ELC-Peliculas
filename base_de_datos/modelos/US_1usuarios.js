@@ -12,7 +12,12 @@ module.exports = (sequelize, dt) => {
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 		rol_usuario_id: {type: dt.INTEGER},
-		mostrar_cartel_respons: {type: dt.BOOLEAN},
+
+		cartel_resp_prods: {type: dt.BOOLEAN},
+		cartel_resp_rclvs: {type: dt.BOOLEAN},
+		cartel_resp_links: {type: dt.BOOLEAN},
+		cartel_fin_penaliz: {type: dt.BOOLEAN},
+
 		autorizado_fa: {type: dt.BOOLEAN},
 		docum_numero: {type: dt.STRING(15)},
 		docum_pais_id: {type: dt.STRING(2)},
@@ -64,7 +69,7 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "creado_por_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "creado_por_id"});
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "creado_por_id"});
-		
+
 		entidad.hasMany(n.peliculas, {as: "captura_peliculas", foreignKey: "capturado_por_id"});
 		entidad.hasMany(n.colecciones, {as: "captura_colecciones", foreignKey: "capturado_por_id"});
 		entidad.hasMany(n.capitulos, {as: "captura_capitulos", foreignKey: "capturado_por_id"});

@@ -110,13 +110,13 @@ module.exports = async (req, res, next) => {
 		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia();
 		if (prodCapturado) {
 			// Datos para el mensaje
-			const pc_entidadCodigo = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidadCodigo);
+			const pc_entidad = prodCapturado.entidad;
+			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidad);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
 				"/inactivar-captura/?entidad=" +
-				pc_entidadCodigo +
+				pc_entidad +
 				"&id=" +
 				pc_entidadID +
 				"&origen=" +
@@ -129,17 +129,14 @@ module.exports = async (req, res, next) => {
 			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
-				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"
-					? {entidad: "la ", reservado: "a"}
-					: {entidad: "el ", reservado: "o"};
-			const nombre =
-				pc_entidadCodigo == "personajes" ||
-				pc_entidadCodigo == "hechos" ||
-				pc_entidadCodigo == "valores"
-					? "nombre"
-					: prodCapturado.nombre_castellano
-					? "nombre_castellano"
-					: "nombre_original";
+				pc_entidad == "capitulos"
+					? {entidad: "el ", reservado: "o"}
+					: {entidad: "la ", reservado: "a"};
+			const nombre = prodCapturado.nombre
+				? "nombre"
+				: prodCapturado.nombre_castellano
+				? "nombre_castellano"
+				: "nombre_original";
 			informacion = {
 				mensajes: [
 					"Tenés que liberar " +
@@ -248,13 +245,13 @@ module.exports = async (req, res, next) => {
 	//    El registro está en status creado y la vista no es de revisión
 	//    El registro está en status creadoAprob y el usuario no es revisor
 	if (!informacion) informacion = creadoHaceMasDeUnaHora();
-	// 2. El registro está capturado por otro usuario en forma 'activa'
+	// 3. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();
-	// 3. El usuario capturó la entidad hace más de una hora y menos de dos horas
+	// 4. El usuario capturó la entidad hace más de una hora y menos de dos horas
 	if (!informacion) informacion = capturaExcedida();
-	// 4. El usuario tiene capturado otro registro en forma activa
+	// 5. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) informacion = await otroRegistroCapturado();
-	// Verificaciones exclusivas de las vistas de Revisión
+	// 6. Verificaciones exclusivas de las vistas de Revisión
 	if (!informacion) informacion = verificacionesDeRevision();
 
 	// Fin

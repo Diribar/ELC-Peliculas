@@ -103,6 +103,8 @@ module.exports = {
 			? "rclvs"
 			: entidad == "links" || entidad == "links_edicion"
 			? "links"
+			: entidad == "usuarios"
+			? "usuarios"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {
@@ -112,11 +114,11 @@ module.exports = {
 			? "Colección"
 			: entidad == "capitulos"
 			? "Capítulo"
-			: entidad.includes("personaje")
+			: entidad == "personajes"
 			? "Personaje"
-			: entidad.includes("hecho")
+			: entidad == "hechos"
 			? "Hecho"
-			: entidad.includes("valor")
+			: entidad == "valores"
 			? "Valor"
 			: entidad == "links"
 			? "Links"
@@ -578,31 +580,49 @@ module.exports = {
 		return respuesta;
 	},
 	cartelRepetido: function (datos) {
-		return (
-			"Este/a <a href='/" +
-			this.obtieneFamiliaEnSingular(datos.entidad) +
-			"/detalle/?entidad=" +
-			datos.entidad +
-			"&id=" +
-			datos.id +
-			"' target='_blank'><u><strong>" +
-			this.obtieneEntidadNombre(datos.entidad).toLowerCase() +
-			"</strong></u></a> ya se encuentra en nuestra base de datos"
-		);
+		// Variables
+		// 1. Inicio
+		let genero = datos.entidad == "capitulos" ? "o" : "a";
+		let inicio = "Est" + genero + " ";
+
+		// 2. Anchor
+		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
+		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
+		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
+		let anchor = " <a href='" + link + "' target='_blank'> " + entidadHTML + "</a>";
+
+		// 3. Final
+		let final = " ya se encuentra en nuestra base de datos";
+
+		// Fin
+		return inicio + anchor + final;
 	},
 
 	// Usuarios
-	usuario_aumentaPenalizacAcum: (userID, motivo) => {
+	usuarioAumentaPenaliz: (userID, motivo, familia) => {
 		// Variables
-		let rol_consultasID = roles_us.find((n) => !n.perm_inputs).id;
-		// Se le baja el rol a 'Consultas', si el motivo lo amerita
-		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_consultasID});
+		let duracion = motivo.duracion;
+		let objeto = {};
+
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", motivo.duracion);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
+
+		// Si corresponde, que se muestre el cartel de responsabilidad
+		if (duracion > 1 && familia) {
+			let cartel = "cartel_resp_" + (familia == "productos" ? "prods" : familia);
+			objeto[cartel] = true;
+		}
+		// Si corresponde, se le baja el rol a 'Consultas'
+		if (motivo.bloqueo_perm_inputs) objeto.rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+
+		// Si corresponde, actualiza el usuario
+		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
+
 		// Fin
 		return;
 	},
-	usuario_Ficha: async (userID, ahora) => {
+	usuarioFicha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);

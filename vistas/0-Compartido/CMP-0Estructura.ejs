@@ -7,7 +7,7 @@
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud") { %><%- include("CR-1Head") %><% } %>	
+	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud" || codigo == "responsabilidad") { %><%- include("CR-1Head") %><% } %>
 	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
 	<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
 	<% if (tema == "consultas") { %><%- include("CN-1Head") %><% } %>
@@ -23,15 +23,17 @@
 			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
 				<%- include('CMP-Cartel', {mostrar: locals.mostrarCartel}) %>
-				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
-				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
-				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>
-				<% if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %><% } %>
-				<% if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %><% } %>
-				<% if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %><% } %>
-				<% if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %><% } %>
-				<% if (tema == "consultas") { %><%- include("CN-2Consultas") %><% } %>
-				<% if (tema == "miscelaneas" || tema == "institucional") { %><%- include("MI-2Cuerpo") %><% } %>
+				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
+				<% } else if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %>
+				<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
+				<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
+				<% } else if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %>
+				<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
+				<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
+				<% } else if (tema == "consultas") { %><%- include("CN-2Consultas") %>
+				<% } else if (tema == "miscelaneas" || tema == "institucional") { %><%- include("MI-2Cuerpo") %>
+				<% } else if (codigo == "responsabilidad") { %><%- include(locals.vista) %>
+				<% } %>
 			</section>
 		</section>
 	</main>

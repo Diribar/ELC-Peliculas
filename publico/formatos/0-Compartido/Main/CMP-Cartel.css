@@ -1,20 +1,18 @@
 /* Formato general del cartel */
 #cartel {position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 12;}
-
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
+#cartel {width: max-content; min-width: 250px; max-width: 600px;}
 #cartel {color: var(--gris-claro)}
+#cartel {display: flex; flex-direction: column; align-items: center;}
+#cartel.ocultar {display: none;}
 #cartel {background: var(--rojo-oscuro);}
 #cartel.check {background: var(--verde-oscuro);}
 #cartel.trabajando {background: var(--azul-oscuro);}
 
-/* Alineación interna */
-#cartel {display: flex; flex-direction: column; align-items: center;}
-#cartel {width: max-content; min-width: 250px; max-width: 600px;}
-#cartel.ocultar {display: none;}
-
 /* Partes internas */
 #cartel .inicio {font-size: 4rem; color: var(--amarillo-oscuro); margin-bottom: 40px;}
 #cartel #titulo {margin-bottom: 15px; font-size: 1.5rem;}
+#cartel #titulo:empty {margin: 0;}
 #cartel #mensajes, #cartel #mensajes * {font-size: 1.2rem; line-height: 1.5;}
 #cartel #mensajes {margin: 0 20px 40px; text-align: center;}
 #cartel #mensajes li {text-align: left;}
@@ -27,10 +25,12 @@
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 #cartel #flechasCartel * {border-radius: 50%;}
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
-#cartel :where(.fa-spell-check, .fa-circle-info) {background: var(--backIcono); border: 1px solid var(--backIcono);}
-#cartel :where(.fa-house, .fa-thumbs-up, .fa-spell-check, .fa-circle-info) {color: var(--amarillo-oscuro);}
-#cartel .fa-circle-left {color: var(--azul-oscuro);}
-#cartel .fa-circle-right {color: var(--verde-oscuro);}
+/* Íconos de retroceder y avanzar */
+#cartel #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
+#cartel #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
+/* Íconos especiales */
+#cartel #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
+#cartel #flechasCartel :where(.fa-circle-info, .fa-thumbs-up) {color: var(--amarillo-oscuro);}
 
 /* Tapar el fondo */
 main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}

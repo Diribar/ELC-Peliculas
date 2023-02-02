@@ -295,12 +295,11 @@ module.exports = {
 		let documental = tipos_actuacion.find((n) => n.documental);
 
 		// Acciones si no hay un valor para actores
-		return
-			datos.tipo_actuacion_id == anime.id
-				? "Dibujos Animados"
-				: datos.tipo_actuacion_id == documental.id
-				? "Documental"
-				: "Desconocido";
+		return datos.tipo_actuacion_id == anime.id
+			? "Dibujos Animados"
+			: datos.tipo_actuacion_id == documental.id
+			? "Documental"
+			: "Desconocido";
 	},
 
 	// Confirma Guardar
