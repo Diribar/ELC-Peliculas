@@ -56,7 +56,7 @@ router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsGuardar
 router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirmaForm);
 router.post("/confirma", ...dataEntryMasYaEnBD, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", vista.terminaste);
+router.get("/terminaste", ...dataEntry, vista.terminaste);
 // Ingreso Manual
 router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM_Form);
 router.post("/ingreso-manual", ...dataEntry, vista.IM_Guardar);
