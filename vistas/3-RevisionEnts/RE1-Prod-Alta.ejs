@@ -80,22 +80,32 @@
 				<!-- TMDB -->
 				<% if (prodOrig.fuente != "TMDB") { %>
 					<% tmdb = prodOrig.nombre_original ? "search?language=es&query=" + prodOrig.nombre_original : "" %>
-					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database"></a>
+					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank">
+						<img src="//localhost/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database">
+					</a>
 				<% } %>
 				<!-- FA -->
 				<% if (prodOrig.fuente!="FA") { %>
 					<% fa = prodOrig.nombre_original ? "search.php?stext=" + prodOrig.nombre_original : "" %>
-					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity"></a>
+					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
+						<img src="//localhost/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity">
+					</a>
 				<% } %>
 				<!-- IMDB -->
 				<% imdb = prodOrig.IMDB_id ? "title/"+prodOrig.IMDB_id+"/technical" : (prodOrig.nombre_original ? "find?q="+prodOrig.nombre_original : "") %>
-				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database"></a>
+				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database">
+				</a>
 				<!-- Wikipedia -->
 				<% wiki = prodOrig.nombre_castellano ? prodOrig.nombre_castellano.toLowerCase() : "" %>
-				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia"></a>
+				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia">
+				</a>
 				<!-- Google -->
 				<% google = prodOrig.nombre_castellano ? "search?q="+prodOrig.nombre_castellano.toLowerCase() : "" %>
-				<a class="logos" href="//google.com/<%= google %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-Google.jpg" title="Google"></a>
+				<a class="logos" href="//google.com/<%= google %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
+				</a>
 			</nav>
 		</div>
 		<!-- Datos Breves -->

@@ -72,7 +72,9 @@
 			<a href="/producto/agregar/desambiguar" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
 			<button class="inactivo submit" type="submit" title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
 			<% if (autorizado_fa) { %>
-				<label class="inactivo submit" for="inputSubmit" title="Avanzar mediante Film Affinity"><img src="/imagenes/0-Base/Logos/BD-FA.jpg" alt="FA" height="30px"></label>
+				<label class="inactivo submit" for="inputSubmit" title="Avanzar mediante Film Affinity">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-FA.jpg" alt="FA" height="30px">
+				</label>
 				<input id="inputSubmit" type="submit" class="submit ocultar" formaction="/producto/agregar/ingreso-fa" formmethod="post" >
 			<% } %> 
 		</section>
