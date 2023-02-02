@@ -69,7 +69,6 @@ module.exports = {
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
 		// Ir a la vista
-		// return res.send(procs_canon)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
