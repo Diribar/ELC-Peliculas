@@ -1,5 +1,6 @@
 "use strict";
 // Requires
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
@@ -23,9 +24,8 @@ module.exports = async (req, res, next) => {
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
-	if (!informacion) 
-		if (!usuario.rol_usuario.perm_inputs) informacion = usuarioSinRolDeInput;
-	
+	if (!informacion && !usuario.rol_usuario.perm_inputs) informacion = usuarioSinRolDeInput;
+
 	// VERIFICACIÓN 3: Revisa si está dentro de su Nivel de Confianza
 	if (!informacion) {
 		// Variables
@@ -100,6 +100,35 @@ module.exports = async (req, res, next) => {
 				mensajes,
 				iconos: [vistaAnterior],
 			};
+	}
+
+	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
+	if (!informacion) {
+		// Variables
+		let baseUrl = req.baseUrl.slice(1);
+		let familia = baseUrl.startsWith("producto")
+			? {campo: "prods", vista: "PA"}
+			: baseUrl.startsWith("rclv")
+			? {campo: "rclvs", vista: "RCLV"}
+			: baseUrl.startsWith("links")
+			? {campo: "links", vista: "LK"}
+			: "";
+		let cartel = "cartel_resp_" + familia.campo;
+		// Revisa si requiere el cartel de "responsabilidad" de la familia
+		if (familia && usuario[cartel]) {
+			// Variable
+			let objeto = {
+				titulo: "Responsabilidad",
+				tema: "",
+				codigo: "responsabilidad",
+				vista: familia.vista + "9-Responsab",
+				urlActual: req.session.urlActual,
+			};
+			// Quita la necesidad del cartel
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {[cartel]: false});
+			// Vista
+			return res.render("CMP-0Estructura", objeto);
+		}
 	}
 
 	// Fin

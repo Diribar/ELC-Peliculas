@@ -45,7 +45,6 @@ router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/DP-guarda-datos-adics/", API.guardaDatosAdics);
 
 // VISTAS
-router.get("/responsabilidad", ...dataEntry, vista.responsabilidad);
 router.get("/palabras-clave", ...dataEntry, vista.palabrasClaveForm);
 router.post("/palabras-clave", ...dataEntry, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...dataEntry, vista.desambiguarForm);

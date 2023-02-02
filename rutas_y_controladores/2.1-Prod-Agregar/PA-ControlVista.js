@@ -324,14 +324,8 @@ module.exports = {
 			tituloImgDerPers: registroProd.nombre_castellano,
 		});
 	},
-	responsabilidad: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "prod_agregar",
-			codigo: "responsab",
-			titulo: "Responsabilidad",
-			urlSalir: req.session.urlSinPermInput,
-		});
-	},
+
+	// Ingresos Manuales
 	IM_Form: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_agregar";
