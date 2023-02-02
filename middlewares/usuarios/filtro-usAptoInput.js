@@ -119,8 +119,7 @@ module.exports = async (req, res, next) => {
 			// Variable
 			let objeto = {
 				titulo: "Responsabilidad",
-				tema: "",
-				codigo: "responsabilidad",
+				tema: "responsabilidad",
 				vista: familia.vista + "9-Responsab",
 				urlActual: req.session.urlActual,
 			};

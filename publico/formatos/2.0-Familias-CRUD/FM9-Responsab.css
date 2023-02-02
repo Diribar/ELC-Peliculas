@@ -1,5 +1,5 @@
 /* Formato General */
-#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px; z-index: 11;}
+#cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px; z-index: 11;}
 #cuerpo #dataEntry {border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #cuerpo #dataEntry {max-width: 650px; background: var(--azul-oscuro);}
 #cuerpo #dataEntry h2 {font-size: 1.5rem; font-weight: bold;}
