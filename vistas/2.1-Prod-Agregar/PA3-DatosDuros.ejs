@@ -39,7 +39,9 @@
 				<% } %>
 				<!-- IMDB -->
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "") %>
-				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="//localhost/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database"></a>
+				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database">
+				</a>
 				<!-- Wikipedia -->
 				<% wiki = dataEntry.nombre_castellano ? dataEntry.nombre_castellano.toLowerCase() : "" %>
 				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank">
