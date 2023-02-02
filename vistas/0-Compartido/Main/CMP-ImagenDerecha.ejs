@@ -3,7 +3,7 @@
 	<% let rutaImagen, tituloImagen %>
 	<!-- Opciones según el caso -->
 	<!-- 1. Imagen Institucional -->
-	<% if (locals.tema == "institucional") {rutaImagen = '/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
+	<% if (locals.tema == "institucional") {rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
 	<!-- 2. Imagen Personalizada -->
 	<% if (!rutaImagen && locals.imgDerPers) {rutaImagen = imgDerPers; tituloImagen=locals.tituloImgDerPers} %>
 	<!-- 3. Imagen Diaria -->
@@ -13,11 +13,11 @@
 		<% let difHoraria = new Date().getTimezoneOffset() / 60 + 12 %>
 		<% let hoy = horario + difHoraria <= 24 %>
 		<% let imagen = hoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
-		<% rutaImagen = "/imagenes/0-Base/" + imagen %>
+		<% rutaImagen = "//localhost/imagenes/0-Base/" + imagen %>
 		<% tituloImagen = hoy ? tituloImgDerHoy : tituloImgDerAyer %>
 	<% } %>
 	<!-- Mostrar la Imagen -->
 	<section id="imgDerecha">
-		<img src="//localhost<%= rutaImagen %>" title="<%= tituloImagen %>">
+		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>
 <% } %>
