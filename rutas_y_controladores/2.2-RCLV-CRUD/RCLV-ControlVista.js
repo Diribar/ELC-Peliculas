@@ -34,6 +34,7 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let apariciones_marianas, roles_iglesia, procs_canon;
+		let epocas = entidad == "personajes" ? ["ANT", "CNT", "PST"] : ["ant", "jss", "cnt", "pst"];
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
@@ -79,6 +80,7 @@ module.exports = {
 			dataEntry,
 			DE: !!Object.keys(dataEntry).length,
 			meses,
+			epocas,
 			roles_iglesia,
 			procs_canon,
 			apariciones_marianas,
