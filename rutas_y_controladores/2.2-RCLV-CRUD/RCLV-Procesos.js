@@ -156,7 +156,7 @@ module.exports = {
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
-			// Agrega el RCLV a AD/ED
+			// Agrega el RCLV a DA/ED
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
 				req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
@@ -218,7 +218,7 @@ module.exports = {
 			let entidadIdOrigen =
 				datos.origen && datos.origen != "DA"
 					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
-					: ""; // Sería para '/revision/tablero' y '/producto/agregar/AD'
+					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DA'
 			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);
 			// rutaSalir
 			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;

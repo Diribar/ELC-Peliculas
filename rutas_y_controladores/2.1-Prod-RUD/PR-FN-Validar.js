@@ -15,7 +15,7 @@ module.exports = {
 			let camposDA = variables.camposDA
 			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
-		// Averigua si hay errores de validación DD y AD
+		// Averigua si hay errores de validación DD y DA
 		let erroresDD = await validaProd.datosDuros(campos, datos);
 		let erroresAD = await validaProd.datosAdics(campos, datos);
 		// Terminar
