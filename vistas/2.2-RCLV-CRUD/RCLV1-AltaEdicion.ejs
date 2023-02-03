@@ -6,8 +6,8 @@
 	<h1 id="titulo"><%= tituloCuerpo %> </h1>
 	<!-- Ayuda -->
 	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
 				<li>Ayuda...</li>
 			</ul>
 		</i>
@@ -18,35 +18,40 @@
 	<section id="datos" class="OK">
 		<!--Primera columna-->
 		<div id="primeraCol">
-			<!-- Nombre -->
-			<div class="flexCol">
+			<!-- Nombres y Sexo -->
+			<div id="nombres" class="flexCol">
 				<% if (entidad == "personajes") { %>
 					<!-- Título, Ayuda y Error/OK -->
 					<div class="flexRow">
 						<div class="margenBottomTitulo inputError" style="z-index: 5;">
 							<!-- Título -->
-							<h3>Nombres</h3>
+							<h3>Nombres y Sexo</h3>
 							<!-- Ayuda -->
 							<div class="ayuda">
-								<i class="fa-solid fa-circle-question ayudaClick despl_click">
-									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
-										<p>Para las personas que cambiaron su nombre:</p>
-										<li><strong>Formal</strong>: usamos el nuevo nombre por el que se hicieron llamar (ej: Juan Pablo II o Teresa de Calcuta).</li>
-										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos, sea el original (ej: Karol Wojtyla) o un alternativo del nuevo nombre (ej: Madre Teresa).</li>
-										<p>Para las personas que <em>no</em> cambiaron su nombre:</p>
-										<li><strong>Formal</strong>: usamos su nombre de civil (ej: Juan Bosco).</li>
-										<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos (ej: Don Bosco), o se deja vacío.</li>
-										<p>El Nombre es <em>obligatorio</em>, el Alternativo es <em>opcional.</em></p>
-									</ul>
+								<i class="fa-solid fa-circle-question ayudaClick desplClick">
+									<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+										<li>Para las personas que cambiaron su nombre:</li>
+										<ul>
+											<li><strong>Formal</strong>: usamos el nuevo nombre por el que se hicieron llamar (ej: Juan Pablo II o Teresa de Calcuta).</li>
+											<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos, sea el original (ej: Karol Wojtyla) o un alternativo del nuevo nombre (ej: Madre Teresa).</li>
+										</ul>
+										<li>Para las personas que <em>no</em> cambiaron su nombre:</li>
+										<ul>
+											<li><strong>Formal</strong>: usamos su nombre de civil (ej: Juan Bosco).</li>
+											<li><strong>Alternativo</strong>: usamos algún otro nombre por el que sean conocidos (ej: Don Bosco), o se deja vacío.</li>
+										</ul>
+										<li>El Nombre es <em>necesario</em>, el Alternativo es <em>opcional.</em></li>
+										<li>También es necesario que nos informes el sexo</li>
+									</ul>	
 								</i>
 							</div>
 							<%- include("CMP-errores", {campo:"nombre", display: true}) %>
 						</div>
 					</div>
 				<% } %>
-				<!-- Valores -->
+				<!-- Campos -->
 				<div id="valoresNombre" class="flexCol spaceBetween">
-					<!-- Nombre -->
+					<!-- Nombre Formal o Nombre-->
 					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
 						<% if (entidad == "personajes") { %><label>Formal</label>
 						<% } else { %><h3>Nombre</h3><% } %>
@@ -54,9 +59,22 @@
 						<% if (entidad != "personajes") { %><%- include("CMP-errores", {campo:"nombre", display: true}) %><% } %>
 					</div>
 					<% if (entidad == "personajes") { %>
+						<!-- Nombre Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
 							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+						</div>
+						<!-- Sexo -->
+						<div id="sexo_id" class="flexRowAlign cfc">
+							<label class="margenDer">Sexo</label>
+							<div class="flexRowAlign">
+								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
+								<label for="V">Varón</label>
+							</div>
+							<div class="flexRowAlign" style="margin-left: 10px;">
+								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
+								<label for="M">Mujer</label>
+							</div>
 						</div>
 					<% } %>
 				</div>
@@ -70,8 +88,8 @@
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<p>Usamos la fecha en que se lo recuerda.</p>
 									<% if (entidad == "personajes") { %>
 										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
@@ -139,8 +157,8 @@
 						<h3>Nombres con esa fecha</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick despl_click">
-								<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 									<li>Destildalos para controlar si no está ya en nuestra BD</li>
 								</ul>
 							</i>
@@ -165,18 +183,6 @@
 				<div id="personaje">
 					<!-- Sexo y CFC/VPC -->
 					<div class="flexRowAlign spaceBetween">
-						<!-- Sexo -->
-						<div id="sexo_id" class="flexRowAlign cfc">
-							<label class="margenDer">Sexo</label>
-							<div class="flexRowAlign">
-								<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %> class="RCLI">
-								<label for="V">Varón</label>
-							</div>
-							<div class="flexRowAlign" style="margin-left: 10px;">
-								<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %> class="RCLI">
-								<label for="M">Mujer</label>
-							</div>
-						</div>
 						<!-- CFC/VPC -->
 						<div class="flexRowAlign altoFila cfc">
 							<label class="margenDer">¿Relacionado con la Iglesia Católica?</label>
@@ -200,8 +206,8 @@
 							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<div class="ayuda">
-								<i class="fa-solid fa-circle-question ayudaClick despl_click">
-									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+								<i class="fa-solid fa-circle-question ayudaClick desplClick">
+									<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
 									</ul>
@@ -290,8 +296,8 @@
 							<input type="text" name="ano" class="input angosto RCLI" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<div class="ayuda">
-								<i class="fa-solid fa-circle-question ayudaClick despl_click">
-									<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+								<i class="fa-solid fa-circle-question ayudaClick desplClick">
+									<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 										<li>Nos ayuda a ubicarlo cronológicamente.</li>
 										<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 										<li>Si no se conoce el año exacto, podés dejarlo vacío.</li>
