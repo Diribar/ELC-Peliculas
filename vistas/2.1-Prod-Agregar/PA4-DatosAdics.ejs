@@ -26,17 +26,17 @@
 			<div class="flexCol">
 				<!-- Centrada en la Fe Católica, Ocurrió, Musical -->
 				<% for (tema of camposDA.filter(n => n.siNo)) { %>
-					<%- include("PA4-AD1-SI_NO", {tema}) %>
+					<%- include("PA4-DA1-SI_NO", {tema}) %>
 				<% } %>
 				<hr>
 				<!-- Tipo de Actuación -->
-				<%- include("PA4-AD2-TipoActuac") %>
+				<%- include("PA4-DA2-TipoActuac") %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
 		<div id="segundaColumna">
 			<!-- Público sugerido -->
-			<%- include("PA4-AD3-Select", {campo: "publico_id"}) %>
+			<%- include("PA4-DA3-Select", {campo: "publico_id"}) %>
 			<hr>
 			<!-- Relación con la vida -->
 			<div id="RCLV" class="flexCol ocultaCfc ocultaOcurrio">
@@ -60,14 +60,14 @@
 					</div>
 				</div>
 				<!--No lo voy a responder ahora-->
-				<%- include("PA4-AD8-Checkbox", {campo: "sinRCLV", }) %>
+				<%- include("PA4-DA8-Checkbox", {campo: "sinRCLV", }) %>
 				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->
-					<%- include("PA4-AD4-RCLV", {campo: "personaje_id"}) %>
+					<%- include("PA4-DA4-RCLV", {campo: "personaje_id"}) %>
 					<!--Hecho histórico-->
-					<%- include("PA4-AD4-RCLV", {campo: "hecho_id"}) %>
+					<%- include("PA4-DA4-RCLV", {campo: "hecho_id"}) %>
 					<!--Valor-->
-					<%- include("PA4-AD4-RCLV", {campo: "valor_id"}) %>
+					<%- include("PA4-DA4-RCLV", {campo: "valor_id"}) %>
 				</div>
 			</div>
 		</div>
