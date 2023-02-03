@@ -17,10 +17,10 @@ module.exports = {
 		}
 		// Averigua si hay errores de validación DD y DA
 		let erroresDD = await validaProd.datosDuros(campos, datos);
-		let erroresAD = await validaProd.datosAdics(campos, datos);
+		let erroresDA = await validaProd.datosAdics(campos, datos);
 		// Terminar
-		let errores = {...erroresDD, ...erroresAD};
-		errores.hay = erroresDD.hay || erroresAD.hay;
+		let errores = {...erroresDD, ...erroresDA};
+		errores.hay = erroresDD.hay || erroresDA.hay;
 		return errores;
 	},
 };
