@@ -2,14 +2,14 @@
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar) { %>
 			<div id="imagenUsuario">
-				<img src="//localhost/imagenes/1-Avatar-Usuarios/<%= usuario.avatar %>" class="despl_click">
+				<img src="//localhost/imagenes/1-Avatar-Usuarios/<%= usuario.avatar %>" class="desplClick">
 			</div>
 		<% } else if (usuario.nombre != null) { %>
-			<i id="letraInicial" class="despl_click iconoHeader">
+			<i id="letraInicial" class="desplClick iconoHeader">
 				<%= usuario.nombre.slice(0,1).toUpperCase() %>
 			</i>
 		<% } else { %>
-			<i class="fa-solid fa-circle-user despl_click iconoHeader"></i>
+			<i class="fa-solid fa-circle-user desplClick iconoHeader"></i>
 		<% } %>
 	<% } else { %>
 		<a href="/usuarios/login">

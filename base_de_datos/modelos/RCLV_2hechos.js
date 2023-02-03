@@ -8,8 +8,8 @@ module.exports = (sequelize, dt) => {
 		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
 		ant: {type: dt.BOOLEAN},
+		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
-		apo: {type: dt.BOOLEAN},
 		pst: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 		

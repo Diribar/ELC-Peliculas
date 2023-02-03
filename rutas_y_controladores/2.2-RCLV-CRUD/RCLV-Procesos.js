@@ -156,7 +156,7 @@ module.exports = {
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
-			// Agregar el RCLV a DP/ED
+			// Agrega el RCLV a DA/ED
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
 				req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
@@ -187,11 +187,11 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
 		}
-		// Borrar session y cookies de RCLV
+		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
-		return;
+		return [req,res];
 	},
 	rutaSalir: (codigo, datos) => {
 		// Variables
@@ -209,6 +209,7 @@ module.exports = {
 				datos.origen && datos.origen != "DA"
 					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
 					: "";
+				console.log(datos.origen);
 			rutaSalir = rutaOrigen + entidadIdOrigen;
 		} else {
 			// Desde vista distinta a 'agregar' hace falta inactivar
@@ -217,12 +218,13 @@ module.exports = {
 			let entidadIdOrigen =
 				datos.origen && datos.origen != "DA"
 					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
-					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DP'
+					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DA'
 			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);
 			// rutaSalir
 			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;
 		}
 		// Fin
+		console.log(226,rutaSalir);
 		return rutaSalir;
 	},
 	procesaLosDatos: async (datos) => {

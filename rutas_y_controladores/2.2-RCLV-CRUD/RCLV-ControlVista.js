@@ -33,13 +33,14 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
+		let apariciones_marianas, roles_iglesia, procs_canon;
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
+			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
 			procs_canon = procs_canon.filter((m) => m.id.length == 3);
-			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
+			roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
+			apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
 		}
 		// Pasos exclusivos para edición
@@ -69,11 +70,10 @@ module.exports = {
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
 		// Ir a la vista
-		// return res.send(procs_canon)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			entidad: entidad,
+			entidad,
 			titulo,
 			tituloCuerpo,
 			dataEntry,
@@ -87,21 +87,22 @@ module.exports = {
 	},
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
-		// 1. Variables
+
+		// Variables
 		let {entidad, id: rclvID, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
-		// 2. Averigua si hay errores de validación y toma acciones
+		// Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
-		// 3. Obtiene el dataEntry
+		// Obtiene el dataEntry
 		let DE = await procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
-		await procesos.guardaLosCambios(req, res, DE);
-		// 9. Redirecciona a la siguiente instancia
+		[req, res] = await procesos.guardaLosCambios(req, res, DE);
+		// Obtiene el url de la siguiente instancia
 		let destino =
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
@@ -112,6 +113,7 @@ module.exports = {
 				: origen == "DT_RCLV"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
 				: "/";
+		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
 	},
 	detalle: async (req, res) => {
