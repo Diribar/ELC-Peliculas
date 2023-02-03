@@ -7,11 +7,11 @@
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud" || codigo == "responsabilidad") { %><%- include("CR-1Head") %><% } %>
+	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud" || tema == "responsabilidad") { %><%- include("CR-1Head") %><% } %>
 	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
 	<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
 	<% if (tema == "consultas") { %><%- include("CN-1Head") %><% } %>
-	<% if (tema == "institucional") { %><%- include("MI-1Head") %><% } %>
+	<% if (tema == "institucional") { %><%- include("IN-1Head") %><% } %>
 </head>
 <body>
 	<!-- Header genérico -->
@@ -31,8 +31,8 @@
 				<% } else if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %>
 				<% } else if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %>
 				<% } else if (tema == "consultas") { %><%- include("CN-2Consultas") %>
-				<% } else if (tema == "miscelaneas" || tema == "institucional") { %><%- include("MI-2Cuerpo") %>
-				<% } else if (codigo == "responsabilidad") { %><%- include(locals.vista) %>
+				<% } else if (tema == "institucional") { %><%- include("IN-2Cuerpo") %>
+				<% } else if (tema == "responsabilidad") { %><%- include(locals.vista) %>
 				<% } %>
 			</section>
 		</section>

@@ -10,11 +10,11 @@ const valida = require("./RCLV-Validar");
 module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1);
 		const datos = req.query;
-		// 2. Variables
+		// Variables
 		let entidad = req.query.entidad;
 		let rclvID = req.query.id;
 		let userID = req.session.usuario.id;
@@ -33,7 +33,7 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
-		// 3. Variables específicas para personajes
+		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
 			procs_canon = procs_canon.filter((m) => m.id.length == 3);
@@ -42,7 +42,7 @@ module.exports = {
 			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
 		}
-		// 4. Pasos exclusivos para edición
+		// Pasos exclusivos para edición
 		if (codigo != "agregar") {
 			// Obtiene el rclvOrig y rclvEdic
 			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneVersionesDelRegistro(
@@ -68,7 +68,8 @@ module.exports = {
 		}
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
-		// 5. Ir a la vista
+		// Ir a la vista
+		// return res.send(procs_canon)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,

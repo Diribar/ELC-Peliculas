@@ -108,10 +108,10 @@ module.exports = async (req, res, next) => {
 		let baseUrl = req.baseUrl.slice(1);
 		let familia = baseUrl.startsWith("producto")
 			? {campo: "prods", vista: "PA"}
-			: baseUrl.startsWith("rclv")
-			? {campo: "rclvs", vista: "RCLV"}
-			: baseUrl.startsWith("links")
-			? {campo: "links", vista: "LK"}
+			// : baseUrl.startsWith("rclv")
+			// ? {campo: "rclvs", vista: "RCLV"}
+			// : baseUrl.startsWith("links")
+			// ? {campo: "links", vista: "LK"}
 			: "";
 		let cartel = "cartel_resp_" + familia.campo;
 		// Revisa si requiere el cartel de "responsabilidad" de la familia
@@ -119,8 +119,7 @@ module.exports = async (req, res, next) => {
 			// Variable
 			let objeto = {
 				titulo: "Responsabilidad",
-				tema: "",
-				codigo: "responsabilidad",
+				tema: "responsabilidad",
 				vista: familia.vista + "9-Responsab",
 				urlActual: req.session.urlActual,
 			};

@@ -107,7 +107,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
 	path.resolve(__dirname, "./vistas/5-Consultas"),
 	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
-	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
+	path.resolve(__dirname, "./vistas/7-Institucional"),
 ]);
 
 // ************************* Rutas ********************************

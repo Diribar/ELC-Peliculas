@@ -1,12 +1,12 @@
 <section id="imgDerecha" class="inputError">
 	<!-- Input de avatar nuevo -->
 	<label for="inputImagen">
-		<img id="avatarEdicN" src="<%= imgDerPers.edic %>" class="pointer imgAvatar edicN">
+		<img id="avatarEdicN" src="//localhost<%= imgDerPers.edic %>" class="pointer imgAvatar edicN">
 	</label>
 	<input name="avatar" id="inputImagen" type="file" accept="image/*" class="input ocultar">
 	<!-- Demás avatars -->
-	<img id="avatarEdicG" src="<%= imgDerPers.edic %>" class="ocultar imgAvatar edicG">
-	<img id="avatarOrig" src="<%= imgDerPers.orig %>" class="ocultar imgAvatar orig">
+	<img id="avatarEdicG" src="//localhost<%= imgDerPers.edic %>" class="ocultar imgAvatar edicG">
+	<img id="avatarOrig" src="//localhost<%= imgDerPers.orig %>" class="ocultar imgAvatar orig">
 	<!-- Ayuda -->
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick despl_click">
@@ -24,7 +24,7 @@
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
-				<img src="<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
+				<img src="//localhost<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
 		<% } %>
 	</nav>

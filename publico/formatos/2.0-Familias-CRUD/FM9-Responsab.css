@@ -1,7 +1,7 @@
 /* Formato General */
-#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px; z-index: 11;}
+#cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px; z-index: 11;}
 #cuerpo #dataEntry {border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#cuerpo #dataEntry {max-width: 650px; background: var(--azul-oscuro);}
+#cuerpo #dataEntry {max-width: 65%; background: var(--azul-oscuro);}
 #cuerpo #dataEntry h2 {font-size: 1.5rem; font-weight: bold;}
 
 /* Formato del contenido */
@@ -9,8 +9,9 @@
 #dataEntry p, #dataEntry p *, #dataEntry li {font-size: 1.25rem; text-align: justify;}
 #dataEntry p, #dataEntry ol li.ol {line-height: 1.3; margin-top: 10px;}
 #dataEntry ol, #dataEntry ul li {line-height: 1.15; margin-top: 3px; margin-left: 30px;}
-#cuerpo #dataEntry ol * {color: var(--amarillo-claro);}
+#dataEntry ol * {color: var(--amarillo-claro);}
 #dataEntry ul li {font-style: italic;}
+#dataEntry li {text-align: left;}
 
 /* Submit button */
 #dataEntry .flechas {margin: 20px auto 0;}
