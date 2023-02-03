@@ -33,13 +33,14 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
+		let apariciones_marianas, roles_iglesia, procs_canon;
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
+			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
 			procs_canon = procs_canon.filter((m) => m.id.length == 3);
-			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
+			roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
 			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
+			apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
 		}
 		// Pasos exclusivos para edición
@@ -72,7 +73,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			entidad: entidad,
+			entidad,
 			titulo,
 			tituloCuerpo,
 			dataEntry,

@@ -492,6 +492,7 @@ module.exports = {
 		tituloImgDerAyer = tituloImgDerHoy;
 		tituloImgDerHoy = imgDerecha.nombre;
 
+		console.log("Actualiza la imagen derecha");
 		// 1. Borra la 'imagenAnterior'
 		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
@@ -501,7 +502,7 @@ module.exports = {
 			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
 			"0-Base/imgDerechaHoy.jpg"
 		);
-		console.log(482, this.ahora());
+
 		// Fin
 		return;
 	},

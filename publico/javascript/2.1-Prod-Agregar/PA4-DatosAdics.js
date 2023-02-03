@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
 		// Rutas
 		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
-		rutaGuardaDatosAdics: "/producto/agregar/api/DP-guarda-datos-adics/?",
+		rutaGuardaDatosAdics: "/producto/agregar/api/AD-guarda-datos-adics/?",
 	};
 	let camposError = [
 		...Array.from(v.radioSI).map((n) => n.name),
@@ -284,7 +284,7 @@ window.addEventListener("load", async () => {
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/agregar/" + entidad + "&origen=DP";
+			window.location.href = "/rclv/agregar/" + entidad + "&origen=AD";
 		});
 	});
 	// Links a RCLV - Edición
@@ -297,7 +297,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el RCLV_id
 			let id = "&id=" + v.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/edicion/" + entidad + id + "&origen=DP";
+			window.location.href = "/rclv/edicion/" + entidad + id + "&origen=AD";
 		});
 	});
 
