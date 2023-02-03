@@ -35,7 +35,7 @@
 
 /* Desplegables Ayuda - Temas generales */
 .ayudaMostrar li {padding: 3px 0; margin-left: 0;}
-ul[type="dots"].ayudaMostrar li {list-style-position: inside;}
+ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px;}
 
 /* Desplegables Errores - Temas generales */
 .mensajeError {display: none;}
