@@ -187,7 +187,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
 		}
-		// Borrar session y cookies de RCLV
+		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
