@@ -14,7 +14,7 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	valida: async (req, res) => {
+	validaSector: async (req, res) => {
 		let mensaje = await valida[req.query.funcion](req.query);
 		return res.json(mensaje);
 	},
