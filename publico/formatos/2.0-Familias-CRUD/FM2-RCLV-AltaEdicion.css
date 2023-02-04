@@ -52,14 +52,16 @@
 #epoca .opciones input {align-self: center;}
 
 /* Preguntas */
-#dataEntry #preguntas select {width: 144px;}
-#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
-#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
-#dataEntry #preguntas .ocultaPorAno, 
-#dataEntry #preguntas .ocultaPorRCLI, 
-#dataEntry #preguntas .ocultaPorJSS, 
-#dataEntry #preguntas .ocultaPorCNT, 
-#dataEntry #preguntas .ocultaPorNoCFC {display: none;}
+#RCLIC #soloCFC {margin-bottom: 5px;}
+#soloCFC #pregunta {font-size: 1.10rem;}
+#soloCFC .siNo {width: 70px; justify-content: space-between; margin-left: 10px;}
+
+#soloCFC .ocultar, #soloCFC .ocultarOKano, 
+#soloCFC .ocultaPorAno, 
+#soloCFC .ocultaPorRCLI, 
+#soloCFC .ocultaPorJSS, 
+#soloCFC .ocultaPorCNT, 
+#soloCFC .ocultaPorNoCFC {display: none;}
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}

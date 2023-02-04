@@ -37,12 +37,12 @@ module.exports = {
 		let epocas =
 			entidad == "personajes"
 				? [
-						{nombre: "Anterior", valor: "ANT", ayuda: "Si falleció antes de que naciera Jesús"},
+						{nombre: "Anterior", valor: "ANT", ayuda: "Sólo si falleció antes de que naciera Jesús"},
 						{nombre: "Contemporáneo", valor: "CNT"},
 						{
 							nombre: "Posterior",
 							valor: "PST",
-							ayuda: "Si nació después de que falleciera Jesús",
+							ayuda: "Sólo si nació después de que falleciera Jesús",
 						},
 				  ]
 				: [
