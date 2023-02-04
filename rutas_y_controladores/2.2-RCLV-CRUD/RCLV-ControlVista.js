@@ -34,7 +34,23 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let apariciones_marianas, roles_iglesia, procs_canon;
-		let epocas = entidad == "personajes" ? ["ANT", "CNT", "PST"] : ["ant", "jss", "cnt", "pst"];
+		let epocas =
+			entidad == "personajes"
+				? [
+						{nombre: "Anterior", valor: "ANT", ayuda: "Si falleció antes de que naciera Jesús"},
+						{nombre: "Contemporáneo", valor: "CNT"},
+						{
+							nombre: "Posterior",
+							valor: "PST",
+							ayuda: "Si nació después de que falleciera Jesús",
+						},
+				  ]
+				: [
+						{nombre: "Anterior", valor: "ant"},
+						{nombre: "Durante", valor: "jss"},
+						{nombre: "Apóstoles", valor: "cnt"},
+						{nombre: "Posterior", valor: "pst"},
+				  ];
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
