@@ -278,7 +278,7 @@
 						<div class="flexRowAlign altoFila">
 							<select name="rol_iglesia_id" class="input">
 								<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-								<% for (let rol_iglesia of roles_iglesia) { %>
+								<% for (let rol_iglesia of roles_igl) { %>
 									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>>
 										<%= rol_iglesia.nombre %>
 									</option>
@@ -289,7 +289,7 @@
 						<div class="flexRowAlign altoFila">
 							<select name="proceso_id" class="input">
 								<option value="" <% if (!dataEntry.proceso_id) { %>selected<% } %>>Proceso de Canonización</option>
-								<% for (let proc_canon of procs_canon) { %>
+								<% for (let proc_canon of procesos_canon) { %>
 									<option value="<%= proc_canon.id %>" <% if (dataEntry.proceso_id == proc_canon.id) { %>selected<% } %>>
 										<%= proc_canon.nombre %>
 									</option>

@@ -8,7 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	resumen: async (RCLV, cantProdsEnBD) => {
 		// Variable fecha
-		let diaDelAno = await BD_genericas.obtienePorId("dias_del_ano", RCLV.dia_del_ano_id);
+		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
 		let mes = mesesAbrev[diaDelAno.mes_id - 1];
 		let fecha = dia + "/" + mes;
@@ -159,7 +159,9 @@ module.exports = {
 			// Agrega el RCLV a DA/ED
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
-				req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+				req.session.datosAdics = req.session.datosAdics
+					? req.session.datosAdics
+					: req.cookies.datosAdics;
 				req.session.datosAdics = {...req.session.datosAdics, [entidad_id]: id};
 				res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 			} else if (origen == "ED") {
@@ -191,7 +193,7 @@ module.exports = {
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
-		return [req,res];
+		return [req, res];
 	},
 	rutaSalir: (codigo, datos) => {
 		// Variables
@@ -225,7 +227,7 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	procesaLosDatos: async (datos) => {
+	procesaLosDatos: (datos) => {
 		// Variables
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
@@ -234,7 +236,7 @@ module.exports = {
 		DE.nombre = datos.nombre;
 		// Día del año
 		if (!datos.desconocida)
-			DE.dia_del_ano_id = await BD_genericas.obtieneTodos("dias_del_ano", "id")
+			DE.dia_del_ano_id = dias_del_ano
 				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 				.then((n) => n.id);
 		// Año

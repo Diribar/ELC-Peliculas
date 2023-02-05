@@ -18,7 +18,6 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let rclvID = req.query.id;
 		let userID = req.session.usuario.id;
-		let meses = await BD_genericas.obtieneTodos("meses", "id");
 		let dataEntry = req.session[entidad]
 			? req.session[entidad]
 			: req.cookies[entidad]
@@ -33,11 +32,15 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
-		let ap_mars, roles_iglesia, procs_canon;
+		let ap_mars, roles_igl, procesos_canon;
 		let epocas =
 			entidad == "personajes"
 				? [
-						{nombre: "Anterior", valor: "ANT", ayuda: "Sólo si falleció antes de que naciera Jesús"},
+						{
+							nombre: "Anterior",
+							valor: "ANT",
+							ayuda: "Sólo si falleció antes de que naciera Jesús",
+						},
 						{nombre: "Contemporáneo", valor: "CNT"},
 						{
 							nombre: "Posterior",
@@ -53,10 +56,8 @@ module.exports = {
 				  ];
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
-			roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
-			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3 && m.personaje);
-			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
-			procs_canon = procs_canon.filter((m) => m.id.length == 3);
+			roles_igl = roles_iglesia.filter((m) => m.id.length == 3 && m.personaje);
+			procesos_canon = procs_canon.filter((m) => m.id.length == 3);
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "nombre");
 			ap_mars = ap_mars.filter((n) => n.ama);
 		}
@@ -77,9 +78,7 @@ module.exports = {
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = await BD_genericas.obtieneTodos("dias_del_ano", "id").then((n) =>
-					n.find((m) => m.id == dataEntry.dia_del_ano_id)
-				);
+				let dia_del_ano = dias_del_ano.then((n) => n.find((m) => m.id == dataEntry.dia_del_ano_id));
 				dataEntry.dia = dia_del_ano.dia;
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
@@ -97,8 +96,8 @@ module.exports = {
 			DE: !!Object.keys(dataEntry).length,
 			meses,
 			epocas,
-			roles_iglesia,
-			procs_canon,
+			roles_igl,
+			procesos_canon,
 			ap_mars,
 			rutaSalir,
 		});
@@ -117,7 +116,7 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// Obtiene el dataEntry
-		let DE = await procesos.procesaLosDatos(datos);
+		let DE = procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
 		[req, res] = await procesos.guardaLosCambios(req, res, DE);
 		// Obtiene el url de la siguiente instancia

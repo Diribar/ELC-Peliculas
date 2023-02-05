@@ -456,7 +456,9 @@ module.exports = {
 			let dia = horarioLCF.getDate();
 			let mes_id = horarioLCF.getMonth() + 1;
 			let datos = {dia, mes_id};
-			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
+			dia_del_ano_id = dias_del_ano
+				.then((n) => n.find((m) => m.dia == datos.dia && m.mes_id == datos.mes_id))
+				.then((n) => n.id);
 
 			// Obtiene la tabla de 'banco_de_imagenes'
 			banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
