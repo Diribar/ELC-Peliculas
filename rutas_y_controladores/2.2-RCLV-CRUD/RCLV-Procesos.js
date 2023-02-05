@@ -209,7 +209,6 @@ module.exports = {
 				datos.origen && datos.origen != "DA"
 					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
 					: "";
-				console.log(datos.origen);
 			rutaSalir = rutaOrigen + entidadIdOrigen;
 		} else {
 			// Desde vista distinta a 'agregar' hace falta inactivar

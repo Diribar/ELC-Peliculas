@@ -50,16 +50,17 @@
 #epoca .opciones {justify-content: center; }
 #epoca .opciones .ayuda {position: static; translate: 5px 0px;}
 #epoca .opciones input {align-self: center;}
+/* Oculta o muestra el año, dependiendo de si está elegida la opción 'PST' */
+#epoca:has(.opciones input#PST:checked) .invisible {visibility: visible;}
 
-/* Preguntas */
-#dataEntry #preguntas select {width: 144px;}
-#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
-#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
-#dataEntry #preguntas .ocultaPorAno, 
-#dataEntry #preguntas .ocultaPorRCLI, 
-#dataEntry #preguntas .ocultaPorJSS, 
-#dataEntry #preguntas .ocultaPorCNT, 
-#dataEntry #preguntas .ocultaPorNoCFC {display: none;}
+/* Relación con la Iglesia Católica */
+#RCLIC #soloCFC {margin-bottom: 5px;}
+#RCLIC #soloCFC #pregunta {font-size: 1.10rem;}
+#RCLIC #soloCFC .siNo {width: 70px; justify-content: space-between; margin-left: 10px;}
+/* Oculta o muestra preguntas, dependiendo de si está elegida la opción 'SI' */
+#RCLIC:has(#soloCFC input#SI:checked) #preguntasRCLIC.invisible {visibility: visible;}
+/* Oculta o muestra 'ap_mar_id', dependiendo de si está elegida la opción 'PST' */
+#dataEntry:has(#epoca .opciones input#PST:checked) #preguntasRCLIC .invisible {visibility: inherit;}
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}
