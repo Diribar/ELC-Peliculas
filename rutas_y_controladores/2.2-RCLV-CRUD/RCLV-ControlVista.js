@@ -33,30 +33,10 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let ap_mars, roles_igl, procesos_canon;
-		let epocas =
-			entidad == "personajes"
-				? [
-						{
-							nombre: "Anterior",
-							valor: "ANT",
-							ayuda: "Sólo si falleció antes de que naciera Jesús",
-						},
-						{nombre: "Contemporáneo", valor: "CNT"},
-						{
-							nombre: "Posterior",
-							valor: "PST",
-							ayuda: "Sólo si nació después de que falleciera Jesús",
-						},
-				  ]
-				: [
-						{nombre: "Anterior", valor: "ant"},
-						{nombre: "Durante", valor: "jss"},
-						{nombre: "Apóstoles", valor: "cnt"},
-						{nombre: "Posterior", valor: "pst"},
-				  ];
+		let epocas = procesos.epocas(entidad)
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
-			roles_igl = roles_iglesia.filter((m) => m.id.length == 3 && m.personaje);
+			roles_igl = roles_iglesia.filter((m) => m.personaje);
 			procesos_canon = procs_canon.filter((m) => m.id.length == 3);
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "nombre");
 			ap_mars = ap_mars.filter((n) => n.ama);
@@ -99,6 +79,7 @@ module.exports = {
 			roles_igl,
 			procesos_canon,
 			ap_mars,
+			sexos,
 			rutaSalir,
 		});
 	},

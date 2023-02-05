@@ -11,7 +11,7 @@ module.exports = {
 			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
 		};
-		if (datos.repetido) errores.repetidos = cartelDuplicado;
+		if (datos.repetidos) errores.repetidos = cartelDuplicado;
 		// Campos exclusivos
 		if (datos.entidad != "valores") errores.RCLI = this[datos.entidad](datos);
 		// Completar con 'hay errores'
@@ -106,12 +106,14 @@ module.exports = {
 		if (datos.ano) {
 			let ano = parseInt(datos.ano);
 			respuesta =
-				typeof ano != "number"
-					? "No es un número válido"
-					: ano > new Date().getFullYear()
-					? "El año no debe superar al actual"
-					: ano < -32768
-					? "El año debe ser mayor"
+				datos.epoca_id == "PST" || datos.pst
+					? typeof ano != "number"
+						? "No es un número válido"
+						: ano > new Date().getFullYear()
+						? "El año no debe superar al actual"
+						: ano < 100
+						? "El año debe ser mayor"
+						: ""
 					: "";
 		}
 		// Fin

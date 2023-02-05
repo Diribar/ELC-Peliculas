@@ -148,35 +148,30 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-errores", {campo:"repetido", display: true}) %>
+						<%- include("CMP-errores", {campo:"repetidos", display: true}) %>
 					</div>
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
 			<% if (entidad == "personajes") { %>
 				<!-- Sexo -->
-				<div id="sexo_id" class="flexRowAlign altoFila">
+				<div id="sexo_id" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
-					<div class="flexRowAlign opciones">
-						<input type="radio" name="sexo_id" value="V" id="V" <% if (dataEntry.sexo_id=="V") { %>checked<% } %>>
-						<label for="V">Varón</label>
-					</div>
-					<div class="flexRowAlign opciones">
-						<input type="radio" name="sexo_id" value="M" id="M" <% if (dataEntry.sexo_id=="M") { %>checked<% } %>>
-						<label for="M">Mujer</label>
-					</div>
-					<div class="flexRowAlign opciones relative">
-						<input type="radio" name="sexo_id" value="X" id="X" <% if (dataEntry.sexo_id=="X") { %>checked<% } %>>
-						<label for="X">Mixto</label>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
-								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-									<li>Se usa 'mixto' si te referís a un grupo con varones y mujeres.</li>
-								</ul>
-							</i>
+					<% for (let sexo of sexos) { %>
+						<div class="flexRowAlign opciones relative">
+							<input type="radio" name="sexo_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.sexo_id==sexo.id) { %>checked<% } %>>
+							<label for="<%= sexo.id %>"><%= sexo.nombre %></label>
 						</div>
+					<% } %>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+								<li>Se usa 'mixto' si te referís a un grupo con varones y mujeres.</li>
+							</ul>
+						</i>
 					</div>
+					<%- include("CMP-errores", {campo:"sexo_id", display: true}) %>
 				</div>
 			<% } %>
 		</div>
@@ -200,7 +195,7 @@
 							</i>
 						</div>
 					<% } %>
-					<%- include("CMP-errores", {campo:"fecha", display: true}) %>
+					<%- include("CMP-errores", {campo: "epoca", display: true}) %>
 				</div>
 			</div>
 			<!-- Valores -->
@@ -210,7 +205,7 @@
 					<% let z_index = "z-index: " + (1 + epocas.length - indice) %>
 					<div class="flexRowAlign opciones" style="<%= z_index %>">
 						<% if (entidad == "personajes") { %>
-							<input type="radio" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor %>" <% if (dataEntry.sexo_id==epoca.valor) { %>checked<% } %> class="epoca">
+							<input type="radio" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor %>" <% if (dataEntry.epoca_id==epoca.valor) { %>checked<% } %> class="epoca">
 							<label for="<%= epoca.valor %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
 							<% if (epoca.ayuda) { %> 
@@ -222,8 +217,8 @@
 									</i>
 								</div>
 							<% } %>
-						<% } else { %>
-							<input type="checkbox" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor.toUpperCase() %>" <% if (dataEntry.sexo_id==epoca.valor) { %>checked<% } %> class="epoca">
+						<% } else if (entidad == "hechos") { %>
+							<input type="checkbox" name="<%= epoca.valor %>" id="<%= epoca.valor.toUpperCase() %>" <% if (dataEntry[epoca.valor]=="1") { %>checked<% } %> class="epoca <%- epoca.valor != "pst" ? 'noPST' : '' %>">
 							<label for="<%= epoca.valor.toUpperCase() %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
 							<% if (epoca.ayuda) { %> 
@@ -259,7 +254,7 @@
 			<% if (entidad == "personajes") { %>
 				<div class="personajes">
 					<!-- ¿El personaje está relacionado con la Iglesia Católica? -->
-					<div id="soloCFC" class="flexRowAlign altoFila">
+					<div id="soloCFC" class="flexRowAlign altoFila inputError">
 						<p class="pregunta">¿El personaje está relacionado con la Iglesia Católica?</p>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign opciones">
@@ -271,15 +266,20 @@
 								<label for="NO">NO</label>
 							</div>
 						</div>
+						<%- include("CMP-errores", {campo:"RCLIC", display: true}) %>
 					</div>
-					<!-- Rol en la Iglesia, Proceso de Canonización, Aparición Mariana -->
+					<!-- Preguntas RCLIC -->
 					<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
 						<!-- Rol en la Iglesia -->
 						<div class="flexRowAlign altoFila">
 							<select name="rol_iglesia_id" class="input">
 								<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
 								<% for (let rol_iglesia of roles_igl) { %>
-									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>>
+									<option 
+										value="<%= rol_iglesia.id %>" 
+										<% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>
+										class="<%= rol_iglesia.id.slice(-1) %>"
+									>
 										<%= rol_iglesia.nombre %>
 									</option>
 								<% } %>
@@ -298,8 +298,8 @@
 							</select>
 						</div>
 						<!-- Aparición Mariana -->
-						<div class="flexRowAlign altoFila invisible">
-							<select name="ap_mar_id" class="input">
+						<div class="flexRowAlign altoFila">
+							<select name="ap_mar_id" class="input invisible">
 								<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
 								<option value="null" <% if (dataEntry.ap_mar_id===null) { %>selected<% } %>>No presenció ninguna</option>
 								<% for (let ap_mar of ap_mars) { %>
@@ -322,7 +322,7 @@
 					</div>
 					<!-- Valores -->
 					<!-- ¿Es un hecho específico de la historia de la Iglesia Católica? -->
-					<div id="soloCFC" class="flexRowAlign altoFil">
+					<div id="soloCFC" class="flexRowAlign">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign opciones">
 								<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %>>
@@ -336,7 +336,7 @@
 						<p class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</p>
 					</div>
 					<!-- ¿Es una aparición mariana -->
-					<div id="preguntasRCLIC" class="flexRowAlign altoFil invisible">
+					<div id="preguntasRCLIC" class="flexRowAlign invisible">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign opciones">
 								<input type="radio" name="ama" value="1" id="ama_SI" <% if (dataEntry.ama=="1") { %>checked<% } %>>
