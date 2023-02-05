@@ -65,7 +65,7 @@
 /* 2. PERSONAJES */
 /* PreguntasRCLIC --> si soloCFC='SI' y contestó 'sexo' */
 #dataEntry:not(
-	:not(:has(.personajes #soloCFC input#SI:checked)),
+	:not(:has(.personajes #categoria_id input#CFC:checked)),
 	:not(:has(#sexo_id input:checked))
 ) #preguntasRCLIC.invisible {visibility: visible;}
 /* 3. HECHOS */

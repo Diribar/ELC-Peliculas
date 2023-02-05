@@ -253,17 +253,17 @@
 		<section id="RCLIC" class="borderTop OK">
 			<% if (entidad == "personajes") { %>
 				<div class="personajes">
-					<!-- ¿El personaje está relacionado con la Iglesia Católica? -->
-					<div id="soloCFC" class="flexRowAlign altoFila inputError">
-						<p class="pregunta">¿El personaje está relacionado con la Iglesia Católica?</p>
+					<!-- ¿El personaje es conocido por su relación con la Iglesia Católica? -->
+					<div id="categoria_id" class="flexRowAlign altoFila inputError">
+						<p class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</p>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign opciones">
-								<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="V") { %>checked<% } %>>
-								<label for="SI">SI</label>
+								<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %>>
+								<label for="CFC">SI</label>
 							</div>
 							<div class="flexRowAlign opciones">
-								<input type="radio" name="solo_cfc" value="0" id="NO" <% if (dataEntry.solo_cfc=="M") { %>checked<% } %>>
-								<label for="NO">NO</label>
+								<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %>>
+								<label for="VPC">NO</label>
 							</div>
 						</div>
 						<%- include("CMP-errores", {campo:"RCLIC", display: true}) %>
