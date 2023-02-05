@@ -254,62 +254,64 @@
 				</div>
 			</div>
 		</section>
-	<% } %>
-	<% if (entidad == "personajes") { %>
 		<!-- Relación con la Iglesia Católica -->
 		<section id="RCLIC" class="borderTop OK">
-			<!-- ¿El personaje está relacionado con la Iglesia Católica? -->
-			<div id="soloCFC" class="flexRowAlign altoFila">
-				<p id="pregunta">¿El personaje está relacionado con la Iglesia Católica?</p>
-				<div class="flexRowAlign siNo">
-					<div class="flexRowAlign opciones">
-						<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="V") { %>checked<% } %>>
-						<label for="SI">SI</label>
+			<% if (entidad == "personajes") { %>
+				<!-- ¿El personaje está relacionado con la Iglesia Católica? -->
+				<div id="soloCFC" class="flexRowAlign altoFila">
+					<p id="pregunta">¿El personaje está relacionado con la Iglesia Católica?</p>
+					<div class="flexRowAlign siNo">
+						<div class="flexRowAlign opciones">
+							<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="V") { %>checked<% } %>>
+							<label for="SI">SI</label>
+						</div>
+						<div class="flexRowAlign opciones">
+							<input type="radio" name="solo_cfc" value="0" id="NO" <% if (dataEntry.solo_cfc=="M") { %>checked<% } %>>
+							<label for="NO">NO</label>
+						</div>
 					</div>
-					<div class="flexRowAlign opciones">
-						<input type="radio" name="solo_cfc" value="0" id="NO" <% if (dataEntry.solo_cfc=="M") { %>checked<% } %>>
-						<label for="NO">NO</label>
+				</div>
+				<!-- Rol en la Iglesia, Proceso de Canonización, Aparición Mariana -->
+				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
+					<!-- Rol en la Iglesia -->
+					<div class="flexRowAlign altoFila">
+						<select name="rol_iglesia_id" class="input">
+							<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
+							<% for (let rol_iglesia of roles_iglesia) { %>
+								<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>>
+									<%= rol_iglesia.nombre %>
+								</option>
+							<% } %>
+						</select>
+					</div>
+					<!-- Proceso de Canonización -->
+					<div class="flexRowAlign altoFila">
+						<select name="proceso_id" class="input">
+							<option value="" <% if (!dataEntry.proceso_id) { %>selected<% } %>>Proceso de Canonización</option>
+							<% for (let proc_canon of procs_canon) { %>
+								<option value="<%= proc_canon.id %>" <% if (dataEntry.proceso_id == proc_canon.id) { %>selected<% } %>>
+									<%= proc_canon.nombre %>
+								</option>
+							<% } %>
+							<option value="null" <% if (dataEntry.proceso_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+						</select>
+					</div>
+					<!-- Aparición Mariana -->
+					<div class="flexRowAlign altoFila invisible">
+						<select name="ap_mar_id" class="input">
+							<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
+							<option value="null" <% if (dataEntry.ap_mar_id===null) { %>selected<% } %>>No presenció ninguna</option>
+							<% for (let ap_mar of ap_mars) { %>
+								<option value="<%= ap_mar.id %>" <% if (dataEntry.ap_mar_id == ap_mar.id) { %>selected<% } %>>
+									<%= ap_mar.nombre %>
+								</option>
+							<% } %>
+						</select>
 					</div>
 				</div>
-			</div>
-			<!-- Rol en la Iglesia, Proceso de Canonización, Aparición Mariana -->
-			<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
-				<!-- Rol en la Iglesia -->
-				<div class="flexRowAlign altoFila">
-					<select name="rol_iglesia_id" class="input">
-						<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-						<% for (let rol_iglesia of roles_iglesia) { %>
-							<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>>
-								<%= rol_iglesia.nombre %>
-							</option>
-						<% } %>
-					</select>
-				</div>
-				<!-- Proceso de Canonización -->
-				<div class="flexRowAlign altoFila">
-					<select name="proceso_id" class="input">
-						<option value="" <% if (!dataEntry.proceso_id) { %>selected<% } %>>Proceso de Canonización</option>
-						<% for (let proc_canon of procs_canon) { %>
-							<option value="<%= proc_canon.id %>" <% if (dataEntry.proceso_id == proc_canon.id) { %>selected<% } %>>
-								<%= proc_canon.nombre %>
-							</option>
-						<% } %>
-						<option value="null" <% if (dataEntry.proceso_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
-					</select>
-				</div>
-				<!-- Aparición Mariana -->
-				<div class="flexRowAlign altoFila invisible">
-					<select name="ap_mar_id" class="input">
-						<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
-						<option value="null" <% if (dataEntry.ap_mar_id===null) { %>selected<% } %>>No presenció ninguna</option>
-						<% for (let ap_mar of ap_mars) { %>
-							<option value="<%= ap_mar.id %>" <% if (dataEntry.ap_mar_id == ap_mar.id) { %>selected<% } %>>
-								<%= ap_mar.nombre %>
-							</option>
-						<% } %>
-					</select>
-				</div>
-			</div>
+			<% } else { %>
+				
+			<% } %>
 		</section>
 	<% } %>
 	<!-- Flechas y Botón -->
