@@ -34,11 +34,13 @@ window.addEventListener("load", async () => {
 		// Campos por sector
 		v.camposError = ["nombre", "fecha", "repetidos"];
 		v.camposNombre = document.querySelectorAll("#dataEntry #nombre .input");
+		v.camposNombre = Array.from(v.camposNombre).map((n) => n.name);
 		v.camposFecha = document.querySelectorAll("#dataEntry #fecha .input");
-		v.camposRepetidos = document.querySelectorAll("#dataEntry #repetidos .input");
+		v.camposFecha = Array.from(v.camposFecha).map((n) => n.name);
+		// Errores
+		v.OK = {};
+		v.errores = {};
 	})();
-	let OK = {};
-	let errores = {};
 	// Valores para !valores
 	if (!v.valores) {
 		// Valores comunes a 'personajes' y 'hechos'
@@ -81,17 +83,17 @@ window.addEventListener("load", async () => {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value);
-				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Si hay errores, cambia el OK a false
-				if (errores.nombre) v.OK.nombre = false;
+				if (v.errores.nombre) v.OK.nombre = false;
 				// Fin
 				return;
 			},
 			apodo: async () => {
 				// Verifica errores en el sector 'nombre', campo 'apodo'
 				let params = "&apodo=" + encodeURIComponent(v.apodo.value);
-				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-				if (errores.nombre) v.OK.nombre = false;
+				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				if (v.errores.nombre) v.OK.nombre = false;
 				// Fin
 				return;
 			},
@@ -100,9 +102,9 @@ window.addEventListener("load", async () => {
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
 				if (v.personajes) params += "&apodo=" + encodeURIComponent(v.apodo.value);
 				if (v.id) params += "&id=" + v.id;
-				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Consolidar la info
-				v.OK.nombre = !errores.nombre;
+				v.OK.nombre = !v.errores.nombre;
 				// Fin
 				return;
 			},
@@ -112,11 +114,11 @@ window.addEventListener("load", async () => {
 			if (!v.desconocida.checked) {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
-				errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
-				v.OK.fecha = !errores.fecha;
+				v.errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
+				v.OK.fecha = !v.errores.fecha;
 			} else {
 				// Errores y OK
-				errores.fecha = "";
+				v.errores.fecha = "";
 				v.OK.fecha = true;
 			}
 			// Fin
@@ -128,8 +130,8 @@ window.addEventListener("load", async () => {
 			let cartelDuplicado =
 				"Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 			// Errores y OK
-			errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-			v.OK.repetidos = !errores.repetidos;
+			v.errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+			v.OK.repetidos = !v.errores.repetidos;
 			// Fin
 			return;
 		},
@@ -144,15 +146,15 @@ window.addEventListener("load", async () => {
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
-			OK[v.camposError[i]] && !ocultarOK
+			v.OK[v.camposError[i]] && !ocultarOK
 				? v.iconoOK[i].classList.remove("ocultar")
 				: v.iconoOK[i].classList.add("ocultar");
 			// Íconos de error
-			errores[v.camposError[i]]
+			v.errores[v.camposError[i]]
 				? v.iconoError[i].classList.remove("ocultar")
 				: v.iconoError[i].classList.add("ocultar");
 			// Mensaje de error
-			v.mensajeError[i].innerHTML = errores[v.camposError[i]] ? errores[v.camposError[i]] : "";
+			v.mensajeError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
 		},
 		muestraErroresOK: function () {
 			// Muestra los íconos de Error y OK
@@ -162,7 +164,7 @@ window.addEventListener("load", async () => {
 		},
 		botonSubmit: () => {
 			// Botón submit
-			let resultado = Object.values(OK);
+			let resultado = Object.values(v.OK);
 			let resultadoTrue = resultado.length ? resultado.every((n) => n == true) : false;
 			resultadoTrue && resultado.length == v.camposError.length
 				? v.botonSubmit.classList.remove("inactivo")
@@ -328,12 +330,12 @@ window.addEventListener("load", async () => {
 		// Variables
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
-		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) {
+		if (v.camposNombre.includes(campo) && v.nombre.value) {
 			await validacs.nombre.nombreApodo();
 			if (v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia el sector Fecha
-		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
+		if (v.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
 				await validacs.fecha();
