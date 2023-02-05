@@ -50,8 +50,6 @@
 #epoca .opciones {justify-content: center; }
 #epoca .opciones .ayuda {position: static; translate: 5px 0px;}
 #epoca .opciones input {align-self: center;}
-/* Oculta o muestra el año, dependiendo de si está elegida la opción 'PST' */
-#epoca:has(.opciones input#PST:checked) .invisible {visibility: visible;}
 
 /* Relación con la Iglesia Católica */
 #RCLIC #soloCFC {margin-bottom: 5px;}
@@ -59,10 +57,26 @@
 #RCLIC .siNo {width: 70px; justify-content: space-between;}
 #RCLIC .personajes .siNo {margin-left: 10px;}
 #RCLIC .hechos .siNo {margin-right: 10px;}
-/* Oculta o muestra preguntas, dependiendo de si está elegida la opción 'SI' */
-#RCLIC:has(#soloCFC input#SI:checked) #preguntasRCLIC.invisible {visibility: visible;}
-/* Oculta o muestra 'ap_mar_id', dependiendo de si está elegida la opción 'PST' */
-#dataEntry:has(#epoca .opciones input#PST:checked) #preguntasRCLIC .invisible {visibility: inherit;}
+
+/* Oculta o muestra */
+/* 1. Año --> si epoca = 'PST' */
+#epoca:has(.opciones input#PST:checked) .invisible {visibility: visible;}
+/* 2. PERSONAJES */
+/* PreguntasRCLIC --> si soloCFC='SI' y contestó 'sexo' */
+#dataEntry:not(
+	:not(:has(.personajes #soloCFC input#SI:checked)),
+	:not(:has(#sexo_id input:checked))
+) #preguntasRCLIC.invisible {visibility: visible;}
+/* Aparición Mariana */
+#dataEntry:has(#epoca .opciones input#PST:checked) 
+	.personajes #preguntasRCLIC select[name="ap_mar_id"].invisible {visibility: inherit;}
+/* 3. HECHOS */
+/* PreguntasRCLIC (hechos) --> si soloCFC='SI' y epoca='PST' y  */
+#dataEntry:not(
+	:not(:has(.hechos #soloCFC input#SI:checked)),
+	:not(:has(#epoca .opciones input#PST:checked)),
+	:has(#epoca .opciones input.noPST:checked)
+) #preguntasRCLIC.invisible {visibility: visible;}
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}

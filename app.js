@@ -43,6 +43,7 @@ const comp = require("./funciones/3-Procesos/Compartidas");
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodos("dias_del_ano", "id"),
+		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 	};
 	// Espera a que todas se procesen y consolida la info
 	let valores = Object.values(campos);
