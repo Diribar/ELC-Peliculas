@@ -33,7 +33,7 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
-		let apariciones_marianas, roles_iglesia, procs_canon;
+		let ap_mars, roles_iglesia, procs_canon;
 		let epocas =
 			entidad == "personajes"
 				? [
@@ -53,12 +53,12 @@ module.exports = {
 				  ];
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
+			roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
+			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3 && m.personaje);
 			procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
 			procs_canon = procs_canon.filter((m) => m.id.length == 3);
-			roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
-			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
-			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
+			ap_mars = await BD_genericas.obtieneTodos("hechos", "nombre");
+			ap_mars = ap_mars.filter((n) => n.ama);
 		}
 		// Pasos exclusivos para edición
 		if (codigo != "agregar") {
@@ -99,7 +99,7 @@ module.exports = {
 			epocas,
 			roles_iglesia,
 			procs_canon,
-			apariciones_marianas,
+			ap_mars,
 			rutaSalir,
 		});
 	},
