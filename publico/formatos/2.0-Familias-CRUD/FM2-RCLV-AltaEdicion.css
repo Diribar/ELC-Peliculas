@@ -59,7 +59,8 @@
 #RCLIC .hechos .siNo {margin-right: 10px;}
 
 /* Oculta o muestra */
-/* 1. Año --> si epoca = 'PST' */
+/* 1. PERSONAJES y HECHOS */
+/* Año --> si epoca = 'PST' */
 #epoca:has(.opciones input#PST:checked) .invisible {visibility: visible;}
 /* 2. PERSONAJES */
 /* PreguntasRCLIC --> si soloCFC='SI' y contestó 'sexo' */

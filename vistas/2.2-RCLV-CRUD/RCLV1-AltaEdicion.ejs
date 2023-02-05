@@ -275,7 +275,11 @@
 							<select name="rol_iglesia_id" class="input">
 								<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
 								<% for (let rol_iglesia of roles_igl) { %>
-									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>>
+									<option 
+										value="<%= rol_iglesia.id %>" 
+										<% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>
+										class="<%= rol_iglesia.id.slice(-1) %>"
+									>
 										<%= rol_iglesia.nombre %>
 									</option>
 								<% } %>

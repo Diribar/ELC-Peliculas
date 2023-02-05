@@ -276,4 +276,26 @@ module.exports = {
 		}
 		return DE;
 	},
+	epocas: (entidad) => {
+		return entidad == "personajes"
+			? [
+					{
+						nombre: "Anterior",
+						valor: "ANT",
+						ayuda: "Sólo si falleció antes de que naciera Jesús",
+					},
+					{nombre: "Contemporáneo", valor: "CNT"},
+					{
+						nombre: "Posterior",
+						valor: "PST",
+						ayuda: "Sólo si nació después de que falleciera Jesús",
+					},
+			  ]
+			: [
+					{nombre: "Anterior", valor: "ant"},
+					{nombre: "Durante", valor: "jss"},
+					{nombre: "Apóstoles", valor: "cnt"},
+					{nombre: "Posterior", valor: "pst"},
+			  ];
+	},
 };
