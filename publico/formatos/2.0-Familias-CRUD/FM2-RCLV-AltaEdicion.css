@@ -68,9 +68,6 @@
 	:not(:has(.personajes #soloCFC input#SI:checked)),
 	:not(:has(#sexo_id input:checked))
 ) #preguntasRCLIC.invisible {visibility: visible;}
-/* Aparición Mariana */
-#dataEntry:has(#epoca .opciones input#PST:checked) 
-	.personajes #preguntasRCLIC select[name="ap_mar_id"].invisible {visibility: inherit;}
 /* 3. HECHOS */
 /* PreguntasRCLIC (hechos) --> si soloCFC='SI' y epoca='PST' y  */
 #dataEntry:not(

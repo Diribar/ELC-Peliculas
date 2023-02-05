@@ -236,9 +236,7 @@ module.exports = {
 		DE.nombre = datos.nombre;
 		// Día del año
 		if (!datos.desconocida)
-			DE.dia_del_ano_id = dias_del_ano
-				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
-				.then((n) => n.id);
+			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
 		// Año
 		if (datos.entidad != "valores" && datos.ano) DE.ano = datos.ano;
 		// Datos para personajes
