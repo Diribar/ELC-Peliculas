@@ -55,8 +55,10 @@
 
 /* Relación con la Iglesia Católica */
 #RCLIC #soloCFC {margin-bottom: 5px;}
-#RCLIC #soloCFC #pregunta {font-size: 1.10rem;}
-#RCLIC #soloCFC .siNo {width: 70px; justify-content: space-between; margin-left: 10px;}
+#RCLIC .pregunta {font-size: 1.10rem;}
+#RCLIC .siNo {width: 70px; justify-content: space-between;}
+#RCLIC .personajes .siNo {margin-left: 10px;}
+#RCLIC .hechos .siNo {margin-right: 10px;}
 /* Oculta o muestra preguntas, dependiendo de si está elegida la opción 'SI' */
 #RCLIC:has(#soloCFC input#SI:checked) #preguntasRCLIC.invisible {visibility: visible;}
 /* Oculta o muestra 'ap_mar_id', dependiendo de si está elegida la opción 'PST' */
