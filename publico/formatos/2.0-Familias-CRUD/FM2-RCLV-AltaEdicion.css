@@ -7,35 +7,49 @@
 #cuerpo #dataEntry {background: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
-#dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #datos #primeraCol {margin-right: 50px; width: 210px;}
-#dataEntry #datos #segundaCol {display: flex; flex-direction: column; width: 206px;}
+#dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
+#dataEntry #inicio #primeraCol {margin-right: 50px; width: 210px;}
+#dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background: white;}
+#dataEntry label[for] {padding-left: 3px;}
 
 /* Temas de filas */
 #dataEntry .altoFila {height: 25px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
-label[for] {padding-left: 3px;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 
 /* Temas particulares de dataEntry */
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-#dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background: white;}
+#dataEntry input, #inicio #posiblesRepetidos {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Nombres */
-#dataEntry #datos #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
-#dataEntry #datos #sexo_id {padding-top: 3px;}
+#inicio #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
 
 /* Fechas */
-#dataEntry #dia {margin-left: 15px;}
-#dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
-#dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
+#inicio #dia {margin-left: 15px;}
+#inicio #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
+#inicio #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 
 /* Repetidos */
-#dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#repetidos #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
+#repetidos #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
+#repetidos #posiblesRepetidos li input {margin-right: 5px;}
+#repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+
+/* Sexo */
+#inicio #sexo_id {margin-top: 10px;}
+#inicio #sexo_id .opciones {margin-left: 10px;}
+#inicio #sexo_id .opciones .ayuda ul {max-width: 200px;}
+
+/* Época */
+#epoca h3 {margin-bottom: 5px;}
+#epoca .opciones {justify-content: center; }
+#epoca .opciones .ayuda {position: static; translate: 5px 0px;}
+#epoca .opciones input {align-self: center;}
 
 /* Preguntas */
 #dataEntry #preguntas select {width: 144px;}
@@ -46,12 +60,6 @@ label[for] {padding-left: 3px;}
 #dataEntry #preguntas .ocultaPorJSS, 
 #dataEntry #preguntas .ocultaPorCNT, 
 #dataEntry #preguntas .ocultaPorNoCFC {display: none;}
-
-/* Temas específicos de dataEntry - Posibles Repetidos */
-#dataEntry #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
-#dataEntry #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
-#dataEntry #posiblesRepetidos li input {margin-right: 5px;}
-#dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}

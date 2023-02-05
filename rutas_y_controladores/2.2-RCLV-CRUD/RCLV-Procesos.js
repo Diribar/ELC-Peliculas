@@ -224,7 +224,6 @@ module.exports = {
 			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;
 		}
 		// Fin
-		console.log(226,rutaSalir);
 		return rutaSalir;
 	},
 	procesaLosDatos: async (datos) => {
