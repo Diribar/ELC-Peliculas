@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
 		rutaRegistrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 		// Links a otros sitios
-		linksClick: document.querySelectorAll("#dataEntry #valoresFecha .links"),
+		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
@@ -24,22 +24,31 @@ window.addEventListener("load", async () => {
 		dia: document.querySelector("#dataEntry select[name='dia']"),
 		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
-		camposError: ["nombre", "fecha", "repetidos"],
 	};
-	v = {
-		...v,
-		// Obtiene la entidad en formato booleano
-		personajes: v.entidad == "personajes",
-		hechos: v.entidad == "hechos",
-		valores: v.entidad == "valores",
-	};
+	// Otros valores
+	(() => {
+		// Entidades en formato booleano
+		v.personajes = v.entidad == "personajes";
+		v.hechos = v.entidad == "hechos";
+		v.valores = v.entidad == "valores";
+		// Campos por sector
+		v.camposError = ["nombre", "fecha", "repetidos"];
+		v.camposNombre = document.querySelectorAll("#dataEntry #nombre .input");
+		v.camposFecha = document.querySelectorAll("#dataEntry #fecha .input");
+		v.camposRepetidos = document.querySelectorAll("#dataEntry #repetidos .input");
+	})();
 	let OK = {};
 	let errores = {};
 	// Valores para !valores
 	if (!v.valores) {
 		// Valores comunes a 'personajes' y 'hechos'
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
-		v.camposError.push("epoca", "RCLI");
+		v.camposError.push("epoca", "RCLIC");
+		// Campos por sector
+		v.camposEpoca = document.querySelectorAll("#dataEntry #epoca .input");
+		v.camposEpoca = Array.from(v.camposEpoca).map((n) => n.name);
+		v.camposRCLIC = document.querySelectorAll("#dataEntry #RCLIC .input");
+		v.camposRCLIC = Array.from(v.camposRCLIC).map((n) => n.name);
 	}
 	// Valores para personajes
 	if (v.personajes) {
@@ -67,14 +76,14 @@ window.addEventListener("load", async () => {
 	}
 	// -------------------------------------------------------
 	// Funciones
-	let validaciones = {
+	let validacs = {
 		nombre: {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value);
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Si hay errores, cambia el OK a false
-				if (errores.nombre) OK.nombre = false;
+				if (errores.nombre) v.OK.nombre = false;
 				// Fin
 				return;
 			},
@@ -82,7 +91,7 @@ window.addEventListener("load", async () => {
 				// Verifica errores en el sector 'nombre', campo 'apodo'
 				let params = "&apodo=" + encodeURIComponent(v.apodo.value);
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
-				if (errores.nombre) OK.nombre = false;
+				if (errores.nombre) v.OK.nombre = false;
 				// Fin
 				return;
 			},
@@ -93,22 +102,22 @@ window.addEventListener("load", async () => {
 				if (v.id) params += "&id=" + v.id;
 				errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
 				// Consolidar la info
-				OK.nombre = !errores.nombre;
+				v.OK.nombre = !errores.nombre;
 				// Fin
 				return;
 			},
 		},
-		fechas: async () => {
+		fecha: async () => {
 			// Si se conoce la fecha...
 			if (!v.desconocida.checked) {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 				errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
-				OK.fecha = !errores.fecha;
+				v.OK.fecha = !errores.fecha;
 			} else {
 				// Errores y OK
 				errores.fecha = "";
-				OK.fecha = true;
+				v.OK.fecha = true;
 			}
 			// Fin
 			return;
@@ -120,7 +129,7 @@ window.addEventListener("load", async () => {
 				"Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 			// Errores y OK
 			errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-			OK.repetidos = !errores.repetidos;
+			v.OK.repetidos = !errores.repetidos;
 			// Fin
 			return;
 		},
@@ -161,11 +170,11 @@ window.addEventListener("load", async () => {
 		},
 		startup: () => {},
 	};
-	let consecuencias = {
+	let impactos = {
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
-				if (OK.nombre)
+				if (v.OK.nombre)
 					v.linksClick.forEach((link, i) => {
 						link.href = v.linksUrl[i] + v.nombre.value;
 						link.classList.remove("ocultar");
@@ -175,7 +184,7 @@ window.addEventListener("load", async () => {
 				return;
 			},
 		},
-		fechas: {
+		fecha: {
 			muestraLosDiasDelMes: () => {
 				// Aplicar cambios en los días 30 y 31
 				// Variables
@@ -246,19 +255,26 @@ window.addEventListener("load", async () => {
 			},
 		},
 		personajes: {
-			ano: () => {
-				// Si el año > 1100, muestra ama
-				// De lo contrario, la oculta
-			},
 			sexo: () => {
 				// Inhabilita las opciones de 'rol' y 'proceso', para los demás sexos
 				// Habilita las opciones de 'rol' y 'proceso', para el sexo elegido
 			},
+			epoca: () => {
+				// Si !PST, oculta el año y borra su contenido
+				// Año > 1100 y 'CFC', muestra ama, si no lo oculta
+			},
+			RCLIC: () => {
+				// Año > 1100 y 'CFC', muestra ama, si no lo oculta
+			},
 		},
 		hechos: {
-			ano: () => {
-				// Si el año > 1100 y sólo CFC=SI, muestra 'ama'
+			epoca: () => {
+				// Si !PST, oculta el año y borra su contenido
+				// Si el año > 1100 y sóloCFC=SI, muestra 'ama'
 				// Si no, lo oculta
+			},
+			RCLIC: () => {
+				// Año > 1100 y soloCFC='SI', muestra ama, si no lo oculta
 			},
 		},
 	};
@@ -292,8 +308,8 @@ window.addEventListener("load", async () => {
 			// 4. Quita los caracteres que exceden el largo permitido
 			if (valor.length > 30) v[campo].value = valor.slice(0, 30);
 			// Revisa los errores y los publica si existen
-			await validaciones.nombre[campo]();
-			validaciones.muestraErrorOK(0, true);
+			await validacs.nombre[campo]();
+			validacs.muestraErrorOK(0, true);
 		}
 		if (campo == "ano") {
 			// Sólo números en el año
@@ -301,7 +317,10 @@ window.addEventListener("load", async () => {
 			// Menor o igual que el año actual
 			let anoIngresado = parseInt(v.ano.value);
 			let anoActual = new Date().getFullYear();
-			v.ano.value=Math.min(anoIngresado,anoActual)
+			v.ano.value = Math.min(anoIngresado, anoActual);
+			// Menor o igual que el año mínimo
+			let anoMinimo = v.personajes ? 33 : v.hechos ? 100 : 0;
+			v.ano.value = Math.max(anoIngresado, anoMinimo);
 		}
 	});
 	// Acciones cuando se  confirma el input
@@ -310,58 +329,66 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
 		if ((campo == "nombre" || campo == "apodo") && v.nombre.value) {
-			await validaciones.nombre.nombreApodo();
-			if (OK.nombre) consecuencias.nombre.logosWikiSantopedia();
+			await validacs.nombre.nombreApodo();
+			if (v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia el sector Fecha
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
-			if (campo == "mes_id") consecuencias.fechas.muestraLosDiasDelMes();
+			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
-				await validaciones.fechas();
+				await validacs.fecha();
 				// Acciones si la fecha está OK
-				if (OK.fecha) {
-					await consecuencias.fechas.muestraPosiblesDuplicados();
-					validaciones.repetido();
+				if (v.OK.fecha) {
+					await impactos.fecha.muestraPosiblesDuplicados();
+					validacs.repetido();
 				}
 			}
 			if (campo == "desconocida" && v.desconocida.checked) {
-				consecuencias.fechas.limpiezaDeFechaRepetidos();
-				await validaciones.fechas();
-				validaciones.repetido();
+				impactos.fecha.limpiezaDeFechaRepetidos();
+				await validacs.fecha();
+				validacs.repetido();
 			}
 		}
 		// 3. Acciones si se cambia el sector Repetido
-		if (campo == "repetido") validaciones.repetido();
+		if (campo == "repetido") validacs.repetido();
 		// 4. Acciones si se cambia el sector Sexo
-		console.log(campo);
 		if (campo == "sexo_id") {
+			impactos.personajes.sexo();
 		}
 		// 5. Acciones si se cambia el sector Época
+		if (v.camposEpoca.includes(campo)) {
+			impactos[v.entidad].epoca();
+			validacs[v.entidad].epoca();
+		}
 
 		// 6. Acciones si se cambia el sector RCLIC
+		if (v.camposRCLIC.includes(campo)) {
+			impactos[v.entidad].RCLIC();
+			validacs[v.entidad].RCLIC();
+		}
 
 		// Final de la rutina
-		validaciones.muestraErroresOK();
-		validaciones.botonSubmit();
+		validacs.muestraErroresOK();
+		validacs.botonSubmit();
 	});
 	// Botón submit
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
 		if (v.botonSubmit.classList.contains("inactivo")) {
-			// Realiza todas las validaciones
-			await validaciones.nombre.nombreApodo();
-			await validaciones.fechas();
-			validaciones.repetido();
-			if (!v.valores) await validaciones.RCLI.consolidado(true);
+			// Realiza todas las validacs
+			await validacs.nombre.nombreApodo();
+			await validacs.fecha();
+			validacs.repetido();
+			if (!v.valores) await validacs.RCLI.consolidado(true);
 			// Fin
-			validaciones.muestraErroresOK();
+			validacs.muestraErroresOK();
 		}
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
 	});
 
 	// Status inicial
-	// await validaciones.startUp();
-	// validaciones.muestraErroresOK();
-	// validaciones.botonSubmit();
+	// await validacs.startUp();
+	// validacs.muestraErroresOK();
+	// validacs.botonSubmit();
 });
