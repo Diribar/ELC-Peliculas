@@ -39,7 +39,7 @@ window.addEventListener("load", async () => {
 		v.hechos = v.entidad == "hechos";
 		v.valores = v.entidad == "valores";
 		// Campos por sector
-		if (v.personajes) v.camposError.push("sexo_id");
+		if (v.personajes) v.camposError.push("sexo_id"); // Tiene que estar antes de "época"
 		v.camposNombre = Array.from(v.camposNombre).map((n) => n.name);
 		v.camposFecha = Array.from(v.camposFecha).map((n) => n.name);
 	})();
