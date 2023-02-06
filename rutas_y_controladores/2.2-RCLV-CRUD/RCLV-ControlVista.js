@@ -58,7 +58,7 @@ module.exports = {
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = dias_del_ano.then((n) => n.find((m) => m.id == dataEntry.dia_del_ano_id));
+				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id)
 				dataEntry.dia = dia_del_ano.dia;
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
