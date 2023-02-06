@@ -86,6 +86,149 @@ window.addEventListener("load", async () => {
 	}
 	// -------------------------------------------------------
 	// Funciones
+	let impactos = {
+		nombre: {
+			logosWikiSantopedia: () => {
+				// Mostrar logo de Wiki y Santopedia
+				if (v.OK.nombre)
+					v.linksClick.forEach((link, i) => {
+						link.href = v.linksUrl[i] + v.nombre.value;
+						link.classList.remove("ocultar");
+					});
+				else for (let link of v.linksClick) link.classList.add("ocultar");
+				// Fin
+				return;
+			},
+		},
+		fecha: {
+			muestraLosDiasDelMes: () => {
+				// Aplicar cambios en los días 30 y 31
+				// Variables
+				let dia30 = document.querySelector("select[name='dia'] option[value='30']");
+				let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+				let mes = v.mes_id.value;
+
+				// Revisar para febrero
+				if (mes == 2) {
+					dia30.classList.add("ocultar");
+					dia31.classList.add("ocultar");
+					if (v.dia.value > 29) v.dia.value = "";
+				} else {
+					// Revisar para los demás meses de 30 días
+					dia30.classList.remove("ocultar");
+					if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+						dia31.classList.add("ocultar");
+						if (v.dia.value > 30) v.dia.value = "";
+					} else dia31.classList.remove("ocultar");
+				}
+			},
+			muestraPosiblesDuplicados: async () => {
+				// Obtiene los casos con esa fecha
+				// 1. Obtiene los parámetros
+				let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
+				if (v.id) params += "&id=" + v.id;
+				// 2. Busca otros casos con esa fecha
+				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
+
+				// Si no hay otros casos, mensaje de "No hay otros casos"
+				if (!casos.length) {
+					v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
+					v.posiblesRepetidos.classList.add("sinCasos");
+				}
+				// Si hay otros casos, los muestra y valida 'repetidos'
+				else {
+					v.posiblesRepetidos.innerHTML = "";
+					v.posiblesRepetidos.classList.remove("sinCasos");
+					for (let caso of casos) {
+						// Crear el input
+						let input = document.createElement("input");
+						input.type = "checkbox";
+						input.name = "repetido";
+						input.checked = true;
+						// Crear la label
+						let texto = document.createTextNode(caso);
+						let label = document.createElement("label");
+						label.appendChild(texto);
+						// Crear el 'li'
+						let li = document.createElement("li");
+						li.appendChild(input);
+						li.appendChild(label);
+						v.posiblesRepetidos.appendChild(li);
+					}
+					// Valida repetidos
+					validacs.repetido();
+				}
+
+				// Fin
+				return;
+			},
+			limpiezaDeFechaRepetidos: () => {
+				// Limpia los valores de mes, día y repetidos
+				v.mes_id.value = "";
+				v.dia.value = "";
+				v.posiblesRepetidos.innerHTML = "";
+				// Fin
+				return;
+			},
+		},
+		sexo: async () => {
+			// Obtiene la opción elegida
+			let sexo_id = opcionElegida(v.sexos_id);
+
+			// Función para dejar solamente las opciones con ese sexo
+			let FN = (select, opciones) => {
+				select.innerHTML = "";
+				for (let opcion of opciones)
+					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2)
+						select.appendChild(opcion);
+			};
+			// Opciones para 'Rol en la Iglesia'
+			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
+			// Opciones para 'Proceso de Canonización'
+			FN(v.proceso_id, v.opcionesProceso);
+
+			// Valida CFC
+			// 1. Se fija si el usuario ya eligió una categoria
+			let categoria_id = opcionElegida(v.categorias_id);
+			// 2. En caso afirmativo, muestra el error
+			if (categoria_id.value) await validacs.RCLIC.personajes();
+
+			// Fin
+			return;
+		},
+		epoca: {
+			personajes: async () => {
+				// Obtiene la opción elegida
+				let epoca_id = opcionElegida(v.epocas_id);
+				// Obtiene el año
+				let ano = FN_ano(v.ano.value);
+
+				// Si 'PST' y Año > 1100, muestra ama. Si no, lo oculta
+				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
+				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
+				else v.sectorApMar.style.visibility = "hidden";
+
+				// Valida RCLIC
+				let categoria_id = opcionElegida(v.categorias_id);
+				if (categoria_id.value) await validacs.RCLIC.personajes();
+
+				// Fin
+				return;
+			},
+			hechos: function () {
+				// Obtiene la opción elegida
+				let epoca = opcionElegida(v.epocas);
+
+				// Obtiene el año
+				let ano = FN_ano(v.ano.value);
+
+				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
+				// Es necesario dejar la condición 'PST', para que lo oculte si el usuario lo combina con otra opción
+				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
+				else v.sectorApMar.classList.add("invisible");
+			},
+		},
+	};
 	let validacs = {
 		// Sectores
 		nombre: {
@@ -247,149 +390,6 @@ window.addEventListener("load", async () => {
 				: v.botonSubmit.classList.add("inactivo");
 		},
 		startup: () => {},
-	};
-	let impactos = {
-		nombre: {
-			logosWikiSantopedia: () => {
-				// Mostrar logo de Wiki y Santopedia
-				if (v.OK.nombre)
-					v.linksClick.forEach((link, i) => {
-						link.href = v.linksUrl[i] + v.nombre.value;
-						link.classList.remove("ocultar");
-					});
-				else for (let link of v.linksClick) link.classList.add("ocultar");
-				// Fin
-				return;
-			},
-		},
-		fecha: {
-			muestraLosDiasDelMes: () => {
-				// Aplicar cambios en los días 30 y 31
-				// Variables
-				let dia30 = document.querySelector("select[name='dia'] option[value='30']");
-				let dia31 = document.querySelector("select[name='dia'] option[value='31']");
-				let mes = v.mes_id.value;
-
-				// Revisar para febrero
-				if (mes == 2) {
-					dia30.classList.add("ocultar");
-					dia31.classList.add("ocultar");
-					if (v.dia.value > 29) v.dia.value = "";
-				} else {
-					// Revisar para los demás meses de 30 días
-					dia30.classList.remove("ocultar");
-					if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
-						dia31.classList.add("ocultar");
-						if (v.dia.value > 30) v.dia.value = "";
-					} else dia31.classList.remove("ocultar");
-				}
-			},
-			muestraPosiblesDuplicados: async () => {
-				// Obtiene los casos con esa fecha
-				// 1. Obtiene los parámetros
-				let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
-				if (v.id) params += "&id=" + v.id;
-				// 2. Busca otros casos con esa fecha
-				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
-
-				// Si no hay otros casos, mensaje de "No hay otros casos"
-				if (!casos.length) {
-					v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
-					v.posiblesRepetidos.classList.add("sinCasos");
-				}
-				// Si hay otros casos, los muestra y valida 'repetidos'
-				else {
-					v.posiblesRepetidos.innerHTML = "";
-					v.posiblesRepetidos.classList.remove("sinCasos");
-					for (let caso of casos) {
-						// Crear el input
-						let input = document.createElement("input");
-						input.type = "checkbox";
-						input.name = "repetido";
-						input.checked = true;
-						// Crear la label
-						let texto = document.createTextNode(caso);
-						let label = document.createElement("label");
-						label.appendChild(texto);
-						// Crear el 'li'
-						let li = document.createElement("li");
-						li.appendChild(input);
-						li.appendChild(label);
-						v.posiblesRepetidos.appendChild(li);
-					}
-					// Valida repetidos
-					validacs.repetido();
-				}
-
-				// Fin
-				return;
-			},
-			limpiezaDeFechaRepetidos: () => {
-				// Limpia los valores de mes, día y repetidos
-				v.mes_id.value = "";
-				v.dia.value = "";
-				v.posiblesRepetidos.innerHTML = "";
-				// Fin
-				return;
-			},
-		},
-		sexo: async () => {
-			// Obtiene la opción elegida
-			let sexo_id = opcionElegida(v.sexos_id);
-
-			// Función para dejar solamente las opciones con ese sexo
-			let FN = (select, opciones) => {
-				select.innerHTML = "";
-				for (let opcion of opciones)
-					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2)
-						select.appendChild(opcion);
-			};
-			// Opciones para 'Rol en la Iglesia'
-			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
-			// Opciones para 'Proceso de Canonización'
-			FN(v.proceso_id, v.opcionesProceso);
-
-			// Valida CFC
-			// 1. Se fija si el usuario ya eligió una categoria
-			let categoria_id = opcionElegida(v.categorias_id);
-			// 2. En caso afirmativo, muestra el error
-			if (categoria_id.value) await validacs.RCLIC.personajes();
-
-			// Fin
-			return;
-		},
-		epoca: {
-			personajes: async () => {
-				// Obtiene la opción elegida
-				let epoca_id = opcionElegida(v.epocas_id);
-				// Obtiene el año
-				let ano = FN_ano(v.ano.value);
-
-				// Si 'PST' y Año > 1100, muestra ama. Si no, lo oculta
-				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
-				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
-				else v.sectorApMar.style.visibility = "hidden";
-
-				// Valida RCLIC
-				let categoria_id = opcionElegida(v.categorias_id);
-				if (categoria_id.value) await validacs.RCLIC.personajes();
-
-				// Fin
-				return;
-			},
-			hechos: function () {
-				// Obtiene la opción elegida
-				let epoca = opcionElegida(v.epocas);
-
-				// Obtiene el año
-				let ano = FN_ano(v.ano.value);
-
-				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
-				// Es necesario dejar la condición 'PST', para que lo oculte si el usuario lo combina con otra opción
-				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
-				else v.sectorApMar.classList.add("invisible");
-			},
-		},
 	};
 
 	// Correcciones mientras se escribe
