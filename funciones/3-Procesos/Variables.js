@@ -490,6 +490,10 @@ module.exports = {
 		];
 	},
 
+	// Carteles
+	inputVacio: "Necesitamos que completes este campo",
+	selectVacio: "Necesitamos que elijas un valor",
+
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
 	vistaActual: (req) => {

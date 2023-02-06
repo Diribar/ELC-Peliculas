@@ -205,7 +205,7 @@
 					<% let z_index = "z-index: " + (1 + epocas.length - indice) %>
 					<div class="flexRowAlign opciones" style="<%= z_index %>">
 						<% if (entidad == "personajes") { %>
-							<input type="radio" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor %>" <% if (dataEntry.epoca_id==epoca.valor) { %>checked<% } %> class="input">
+							<input type="radio" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor %>" <% if (dataEntry.epoca_id==epoca.valor) { %>checked<% } %> class="input<%= epoca.valor!="PST"?" noPST":"" %>">
 							<label for="<%= epoca.valor %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
 							<% if (epoca.ayuda) { %> 
@@ -218,7 +218,7 @@
 								</div>
 							<% } %>
 						<% } else if (entidad == "hechos") { %>
-							<input type="checkbox" name="<%= epoca.valor %>" id="<%= epoca.valor.toUpperCase() %>" <% if (dataEntry[epoca.valor]=="1") { %>checked<% } %> class="input">
+							<input type="checkbox" name="<%= epoca.valor %>" id="<%= epoca.valor.toUpperCase() %>" <% if (dataEntry[epoca.valor]=="1") { %>checked<% } %> class="input<%= epoca.valor!="pst"?" noPST":"" %>">
 							<label for="<%= epoca.valor.toUpperCase() %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
 							<% if (epoca.ayuda) { %> 
@@ -278,7 +278,6 @@
 									<option 
 										value="<%= rol_iglesia.id %>" 
 										<% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>
-										class="<%= rol_iglesia.id.slice(-1) %>"
 									>
 										<%= rol_iglesia.nombre %>
 									</option>
@@ -298,8 +297,8 @@
 							</select>
 						</div>
 						<!-- Aparición Mariana -->
-						<div class="flexRowAlign altoFila">
-							<select name="ap_mar_id" class="input invisible">
+						<div id="sectorApMar" class="flexRowAlign altoFila invisible">
+							<select name="ap_mar_id" class="input">
 								<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
 								<option value="null" <% if (dataEntry.ap_mar_id===null) { %>selected<% } %>>No presenció ninguna</option>
 								<% for (let ap_mar of ap_mars) { %>
@@ -311,7 +310,7 @@
 						</div>
 					</div>
 				</div>
-			<% } else { %>
+			<% } else if (entidad == "hechos") { %>
 				<div class="hechos">
 					<!-- Relación con la Iglesia Católica -->
 					<!-- Título, Ayuda y Error/OK -->
@@ -335,19 +334,21 @@
 						</div>
 						<p class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</p>
 					</div>
-					<!-- ¿Es una aparición mariana -->
-					<div id="preguntasRCLIC" class="flexRowAlign invisible">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign opciones">
-								<input type="radio" name="ama" value="1" id="ama_SI" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
-								<label for="ama_SI">SI</label>
+					<div id="preguntasRCLIC" class="invisible">
+						<!-- ¿Es una aparición mariana -->
+						<div id="sectorApMar" class="flexRowAlign invisible">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign opciones">
+									<input type="radio" name="ama" value="1" id="ama_SI" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
+									<label for="ama_SI">SI</label>
+								</div>
+								<div class="flexRowAlign opciones">
+									<input type="radio" name="ama" value="0" id="ama_NO" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
+									<label for="ama_NO">NO</label>
+								</div>
 							</div>
-							<div class="flexRowAlign opciones">
-								<input type="radio" name="ama" value="0" id="ama_NO" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
-								<label for="ama_NO">NO</label>
-							</div>
+							<p class="pregunta">¿Es una aparición mariana?</p>
 						</div>
-						<p class="pregunta">¿Es una aparición mariana?</p>
 					</div>
 				</div>
 			<% } %>
