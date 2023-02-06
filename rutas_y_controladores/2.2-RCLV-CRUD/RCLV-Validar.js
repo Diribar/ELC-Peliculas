@@ -137,7 +137,7 @@ module.exports = {
 			else if (
 				contador == 2 && // Averigua si se eligieron dos
 				((datos[epocas[0]] && !datos[epocas[1]]) || // Averigua si se eligió la primera y se salteó la siguiente
-				(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
+					(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
 			)
 				respuesta = seSalteoUnaEpoca;
 			// 3. Averigua si se eligieron 3 y se salteó una
@@ -155,58 +155,51 @@ module.exports = {
 			let ano = datos.ano;
 			respuesta = !ano
 				? cartelAno
-				: !/[^\d]/.test(ano)
+				: /[^\d]/.test(ano)
 				? "No es un número válido"
 				: parseInt(ano) > new Date().getFullYear()
 				? "El año no debe superar al actual"
-				: parseInt(ano) < 33 && datos.epoca_id == "PST"
-				? "El año debe ser mayor"
-				: parseInt(ano) < 100 && datos.pst
-				? "El año debe ser mayor"
+				: (parseInt(ano) < 33 && datos.epoca_id == "PST") || (parseInt(ano) < 100 && datos.pst)
+				? "Ese año no corresponda a la época posterior"
 				: "";
 		}
 		// Fin
 		return respuesta;
 	},
-	RCLIC: {
-		personajes: function (datos) {
-			let respuesta = this.ano(datos);
-			if (respuesta) return respuesta;
-			// Respuesta
-			else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
-			else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
-			else if (datos.categoria_id == "VPC") respuesta = "";
-			// Respuestas sólo si CFC
-			else if (!datos.rol_iglesia_id)
-				respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
-			else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
-			else if (datos.enProcCan == "1" && !datos.proceso_id)
-				respuesta = "Necesitamos saber el status del Proceso de Canonización";
-			else if (!datos.cnt) respuesta = "Necesitamos saber si fue contemporáneo";
-			else if (!datos.ama) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
-			else if (datos.ama == "1" && !datos.ap_mar_id)
-				respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
-			else respuesta = "";
+	RCLIC_personajes: function (datos) {
+		let respuesta = !datos.categoria_id
+			? "Necesitamos saber sobre su relación con la Iglesia"
+			: datos.categoria_id == "CFC"
+			? !datos.sexo_id
+				? "Estamos a la espera de que nos informes el sexo"
+				: !datos.rol_iglesia_id
+				? "Necesitamos saber el rol de la persona en la Iglesia"
+				: !datos.proceso_id
+				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
+				: datos.epoca_id == "PST" && datos.ano && !datos.ap_mar_id
+				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
+				: ""
+			: datos.categoria_id != "VPC"
+			? "No reconocemos la opción elegida"
+			: "";
+		// Fin
+		return respuesta;
+	},
+	RCLIC_hechos: (datos) => {
+		let respuesta = "";
+		if (false) return "";
+		// Respuestas
+		else if (!datos.solo_cfc)
+			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
+		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
+		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
+		else if (!datos.ncn)
+			respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
+		else if (datos.solo_cfc == "1" && !datos.ama)
+			respuesta = "Necesitamos saber si es una aparición mariana";
 
-			// Fin
-			return respuesta;
-		},
-		hechos: (datos) => {
-			let respuesta = "";
-			if (false) return "";
-			// Respuestas
-			else if (!datos.solo_cfc)
-				respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
-			else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-			else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-			else if (!datos.ncn)
-				respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
-			else if (datos.solo_cfc == "1" && !datos.ama)
-				respuesta = "Necesitamos saber si es una aparición mariana";
-
-			// Fin
-			return respuesta;
-		},
+		// Fin
+		return respuesta;
 	},
 };
 
@@ -215,5 +208,4 @@ const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
-const cartelEpoca = "Necesitamos saber la época";
 const cartelAno = "Necesitamos saber el año";
