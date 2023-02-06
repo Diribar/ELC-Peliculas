@@ -84,7 +84,7 @@ module.exports = {
 			titulo: "Público Recomendado",
 			siempre: true,
 		},
-		epoca: {
+		epocasEstreno: {
 			titulo: "Época de Estreno",
 			siempre: true,
 			opciones: [
@@ -370,6 +370,7 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	epocasHechos: ["ant", "jss", "cnt", "pst"],
 
 	// Links
 	provsQueNoRespetanCopyright: [

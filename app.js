@@ -105,7 +105,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		// Consultas - Filtro Personalizado
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		// Consultas - Complementos de RCLV
-		epoca: BD_genericas.obtieneTodos("epoca", "orden"),
+		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
 		procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
 		// Consultas - Otros

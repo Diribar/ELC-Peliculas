@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "epoca";
+	const alias = "epocas";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		nombre_hecho: {type: dt.STRING(50)},
 	};
 	const config = {
-		tableName: "rclv_epoca",
+		tableName: "rclv_epocas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
