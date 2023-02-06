@@ -69,6 +69,8 @@ window.addEventListener("load", async () => {
 		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 		v.opcionesRolIglesia = document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option");
 		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='proceso_id'] option");
+		v.camposCFC = document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input");
+		// v.camposCFC = Array.from(v.camposCFC).map((n) => n.name);
 	}
 	// Valores para hechos
 	if (v.hechos) {
@@ -143,9 +145,8 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		sexo: async () => {
-			// Detecta cuál opción está elegida
-			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
-			if (!sexo_id.checked) sexo_id.value = "";
+			// Obtiene la opción elegida
+			let sexo_id = opcionElegida(v.sexos_id);
 
 			// Genera la variable de parámetros
 			let params = "sexo&sexo_id=" + sexo_id.value;
@@ -163,7 +164,7 @@ window.addEventListener("load", async () => {
 			let params = "epoca&entidad=" + v.entidad;
 			let nombre, valor;
 
-			// Obtiene el valor de cada campo
+			// Agrega cada opción elegida
 			for (let campo of campos) {
 				if (v.personajes) {
 					nombre = "epoca_id";
@@ -175,17 +176,48 @@ window.addEventListener("load", async () => {
 				// Si el campo está chequeado, lo agrega a los parámetros
 				if (campo.checked) params += "&" + nombre + "=" + valor;
 			}
+			// Agrega el año
+			params += "&ano=" + ano.value;
 
 			// OK y Errores
 			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
 			v.OK.epoca = !v.errores.epoca;
-			console.log(params, v.errores);
 
 			// Fin
 			return;
 		},
 		RCLIC: {
-			personajes: () => {},
+			personajes: async () => {
+				// Variables
+				let params = "RCLIC_" + v.entidad;
+				let sexo_id;
+				// Obtiene la categoría
+				let categoria_id = opcionElegida(v.categorias_id);
+				params += "&categoria_id=" + categoria_id.value;
+
+				// Obtiene el sexo_id
+				if (categoria_id) sexo_id = opcionElegida(v.sexos_id);
+				params += "&sexo_id=" + (sexo_id.value ? "on" : "");
+
+				// Obtiene los valores de los camposCFC
+				if (sexo_id.value) {
+					// Agrega los datos de CFC
+					for (let campo of v.camposCFC)
+						if (campo.value) params += "&" + campo.name + "=" + campo.value;
+					// Agrega los datos de PST y año
+					let epoca_id = opcionElegida(v.epocas_id);
+					let ano = FN_ano(v.ano.value);
+					params += "&epoca_id=" + epoca_id.value;
+					if (ano > 1100) params += "&ano=on";
+				}
+
+				// OK y Errores
+				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
+				v.OK.RCLIC = !v.errores.RCLIC;
+
+				// Fin
+				return;
+			},
 			hechos: () => {},
 		},
 		muestraErrorOK: (i, ocultarOK) => {
@@ -301,54 +333,56 @@ window.addEventListener("load", async () => {
 				return;
 			},
 		},
-		sexo: () => {
-			// En 'Personajes - RCLIC', deja solamente las opciones que corresponden
+		sexo: async () => {
+			// Obtiene la opción elegida
+			let sexo_id = opcionElegida(v.sexos_id);
 
-			// Averigua el sexo
-			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
-			let sexo = sexo_id.checked ? sexo_id.value : "";
 			// Función para dejar solamente las opciones con ese sexo
 			let FN = (select, opciones) => {
 				select.innerHTML = "";
 				for (let opcion of opciones)
-					if (opcion.value.slice(-1) == sexo || opcion.value <= 2) select.appendChild(opcion);
+					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2)
+						select.appendChild(opcion);
 			};
 			// Opciones para 'Rol en la Iglesia'
 			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
 			// Opciones para 'Proceso de Canonización'
 			FN(v.proceso_id, v.opcionesProceso);
+
+			// Valida CFC
+			// 1. Se fija si el usuario ya eligió una categoria
+			let categoria_id = opcionElegida(v.categorias_id);
+			// 2. En caso afirmativo, muestra el error
+			if (categoria_id.value) await validacs.RCLIC.personajes();
+
+			// Fin
+			return;
 		},
 		epoca: {
-			ano: () => {
-				// Obtiene el valor
-				let ano = v.ano.value;
-				// Si está vacío, lo considera cero
-				ano = ano ? parseInt(ano) : 0;
-				// Envía el valor
-				return ano;
-			},
-			personajes: function () {
-				// Detecta cuál opción está elegida
-				for (var epoca of v.epocas_id) if (epoca.checked) break;
-				if (!epoca.checked) epoca.value=""
+			personajes: async () => {
+				// Obtiene la opción elegida
+				let epoca_id = opcionElegida(v.epocas_id);
 				// Obtiene el año
-				let ano = this.ano();
+				let ano = FN_ano(v.ano.value);
 
-				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
+				// Si 'PST' y Año > 1100, muestra ama. Si no, lo oculta
 				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
-				if (epoca.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
+				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
 				else v.sectorApMar.style.visibility = "hidden";
+
+				// Valida RCLIC
+				let categoria_id = opcionElegida(v.categorias_id);
+				if (categoria_id.value) await validacs.RCLIC.personajes();
 
 				// Fin
 				return;
 			},
 			hechos: function () {
-				// Detecta cuál opción está elegida
-				for (var epoca of v.epocas) if (epoca.checked) break;
-				if (!epoca.checked) epoca.name=""
+				// Obtiene la opción elegida
+				let epoca = opcionElegida(v.epocas);
 
 				// Obtiene el año
-				let ano = this.ano();
+				let ano = FN_ano(v.ano.value);
 
 				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
 				// Es necesario dejar la condición 'PST', para que lo oculte si el usuario lo combina con otra opción
@@ -428,7 +462,7 @@ window.addEventListener("load", async () => {
 		if (campo == "repetido") validacs.repetido();
 		// 4. Acciones si se cambia el sector Sexo
 		if (campo == "sexo_id") {
-			impactos.sexo();
+			await impactos.sexo();
 			await validacs.sexo();
 		}
 		// 5. Acciones si se cambia el sector Época
@@ -436,13 +470,13 @@ window.addEventListener("load", async () => {
 			// Si se eligió el checkbox "Posterior", pone el cursor en 'Año'
 			if (campo == "pst" || (campo == "epoca_id" && e.target.value == "PST")) v.ano.focus();
 			// Impacto y Validaciones
-			impactos.epoca[v.entidad]();
+			await impactos.epoca[v.entidad]();
 			await validacs.epoca();
 		}
 		// 6. Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
-			validacs.RCLIC[v.entidad]();
+			await validacs.RCLIC[v.entidad]();
 		}
 
 		// Final de la rutina
@@ -459,7 +493,7 @@ window.addEventListener("load", async () => {
 			validacs.repetido();
 			if (v.personajes) await validacs.sexo();
 			if (!v.valores) await validacs.epoca();
-			// if (!v.valores) await validacs.RCLI.consolidado(true);
+			if (!v.valores) await validacs.RCLIC[v.entidad]();
 			// Fin
 			validacs.muestraErroresOK();
 		}
@@ -472,3 +506,19 @@ window.addEventListener("load", async () => {
 	// validacs.muestraErroresOK();
 	// validacs.botonSubmit();
 });
+
+// Funciones
+let opcionElegida = (opciones) => {
+	// Detecta la opción elegida
+	for (var opcion of opciones) if (opcion.checked) break;
+	if (!opcion.checked) opcion = {value: "", name: ""};
+
+	// Fin
+	return opcion;
+};
+let FN_ano = (ano) => {
+	// Si está vacío, lo considera cero
+	ano = ano ? parseInt(ano) : 0;
+	// Envía el valor
+	return ano;
+};
