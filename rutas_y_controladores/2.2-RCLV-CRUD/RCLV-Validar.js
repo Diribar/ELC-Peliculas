@@ -129,7 +129,7 @@ module.exports = {
 			else if (datos.epoca_id == "PST") anoNecesario = true;
 		} else if (datos.entidad == "hechos") {
 			// Averigua la cantidad de épocas elegidas
-			let epocas = variables.epocas;
+			let epocas = variables.epocasHechos;
 			let cantEpocas = epocas.length;
 			for (let epoca of epocas) if (datos[epoca]) contador++;
 			// 1. Averigua si no fue respondido
