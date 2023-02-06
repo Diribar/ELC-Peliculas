@@ -69,6 +69,8 @@ window.addEventListener("load", async () => {
 		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 		v.opcionesRolIglesia = document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option");
 		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='proceso_id'] option");
+		v.camposCFC = document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input");
+		// v.camposCFC = Array.from(v.camposCFC).map((n) => n.name);
 	}
 	// Valores para hechos
 	if (v.hechos) {
@@ -143,9 +145,8 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		sexo: async () => {
-			// Detecta cuál opción está elegida
-			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
-			if (!sexo_id.checked) sexo_id.value = "";
+			// Obtiene la opción elegida
+			let sexo_id = opcionElegida(v.sexos_id);
 
 			// Genera la variable de parámetros
 			let params = "sexo&sexo_id=" + sexo_id.value;
@@ -179,13 +180,38 @@ window.addEventListener("load", async () => {
 			// OK y Errores
 			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
 			v.OK.epoca = !v.errores.epoca;
-			console.log(params, v.errores);
 
 			// Fin
 			return;
 		},
 		RCLIC: {
-			personajes: () => {},
+			personajes: async () => {
+				// Variables
+				let params = "RCLIC_" + v.entidad;
+				let sexo_id;
+				// Obtiene la categoría
+				let categoria_id = v.categorias_id[0].checked
+					? v.categorias_id[0].value
+					: v.categorias_id[1].checked
+					? v.categorias_id[1].value
+					: "";
+				params += "&categoria_id=" + categoria_id;
+				console.log(v.camposCFC);
+				// Obtiene los valores de RCLIC
+				if (categoria_id) sexo_id;
+				if (sexo_id)
+					for (let campo of v.camposCFC)
+						if (!campo.value) params += "&" + campo.name + "=" + campo.value;
+
+				// OK y Errores
+				console.log(params);
+				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
+				v.OK.RCLIC = !v.errores.RCLIC;
+				console.log(v.errores.RCLIC);
+
+				// Fin
+				return;
+			},
 			hechos: () => {},
 		},
 		muestraErrorOK: (i, ocultarOK) => {
@@ -302,16 +328,14 @@ window.addEventListener("load", async () => {
 			},
 		},
 		sexo: () => {
-			// En 'Personajes - RCLIC', deja solamente las opciones que corresponden
+			// Obtiene la opción elegida
+			let sexo_id = opcionElegida(v.sexos_id);
 
-			// Averigua el sexo
-			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
-			let sexo = sexo_id.checked ? sexo_id.value : "";
 			// Función para dejar solamente las opciones con ese sexo
 			let FN = (select, opciones) => {
 				select.innerHTML = "";
 				for (let opcion of opciones)
-					if (opcion.value.slice(-1) == sexo || opcion.value <= 2) select.appendChild(opcion);
+					if (opcion.value.slice(-1) == sexo_id || opcion.value <= 2) select.appendChild(opcion);
 			};
 			// Opciones para 'Rol en la Iglesia'
 			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
@@ -328,24 +352,22 @@ window.addEventListener("load", async () => {
 				return ano;
 			},
 			personajes: function () {
-				// Detecta cuál opción está elegida
-				for (var epoca of v.epocas_id) if (epoca.checked) break;
-				if (!epoca.checked) epoca.value=""
+				// Obtiene la opción elegida
+				let epoca_id = opcionElegida(v.epocas_id);
 				// Obtiene el año
 				let ano = this.ano();
 
 				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
 				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
-				if (epoca.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
+				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
 				else v.sectorApMar.style.visibility = "hidden";
 
 				// Fin
 				return;
 			},
 			hechos: function () {
-				// Detecta cuál opción está elegida
-				for (var epoca of v.epocas) if (epoca.checked) break;
-				if (!epoca.checked) epoca.name=""
+				// Obtiene la opción elegida
+				let epoca = opcionElegida(v.epocas);
 
 				// Obtiene el año
 				let ano = this.ano();
@@ -442,7 +464,7 @@ window.addEventListener("load", async () => {
 		// 6. Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
-			validacs.RCLIC[v.entidad]();
+			await validacs.RCLIC[v.entidad]();
 		}
 
 		// Final de la rutina
@@ -459,7 +481,7 @@ window.addEventListener("load", async () => {
 			validacs.repetido();
 			if (v.personajes) await validacs.sexo();
 			if (!v.valores) await validacs.epoca();
-			// if (!v.valores) await validacs.RCLI.consolidado(true);
+			if (!v.valores) await validacs.RCLIC[v.entidad]();
 			// Fin
 			validacs.muestraErroresOK();
 		}
@@ -472,3 +494,13 @@ window.addEventListener("load", async () => {
 	// validacs.muestraErroresOK();
 	// validacs.botonSubmit();
 });
+
+// Funciones
+let opcionElegida = (opciones) => {
+	// Detecta la opción elegida
+	for (var opcion of opciones) if (opcion.checked) break;
+	if (!opcion.checked) opcion = {value: "", name: ""};
+
+	// Fin
+	return opcion;
+};
