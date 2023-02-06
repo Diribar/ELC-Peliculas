@@ -118,13 +118,12 @@ module.exports = {
 	epoca: (datos) => {
 		// Variables
 		let contador = 0;
-		let seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
 		let respuesta = "";
 		let anoNecesario;
 		// Epocas
 		if (datos.entidad == "personajes") {
 			// Averigua si no fue respondido
-			if (!datos.epoca_id) respuesta = "Necesitamos saber la época";
+			if (!datos.epoca_id) respuesta = cartelEpoca;
 			// Averigua si hace falta el año
 			else if (datos.epoca_id == "PST") anoNecesario = true;
 		} else if (datos.entidad == "hechos") {
@@ -133,7 +132,7 @@ module.exports = {
 			let cantEpocas = epocas.length;
 			for (let epoca of epocas) if (datos[epoca]) contador++;
 			// 1. Averigua si no fue respondido
-			if (!contador) respuesta = "Necesitamos saber la época";
+			if (!contador) respuesta = cartelEpoca;
 			// 2. Averigua si se eligieron 2 y se salteó una
 			else if (
 				contador == 2 && // Averigua si se eligieron dos
@@ -216,3 +215,5 @@ module.exports = {
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+const seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
+const cartelEpoca = "Necesitamos saber la época";
