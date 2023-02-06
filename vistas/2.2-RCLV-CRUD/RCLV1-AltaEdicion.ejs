@@ -20,7 +20,7 @@
 		<div id="primeraCol">
 			<!-- Nombres -->
 			<div class="flexCol">
-				<% if (entidad == "personajes") { %>
+				<% if (personajes) { %>
 					<!-- Título, Ayuda y Error/OK -->
 					<div class="flexRow">
 						<div class="margenBottomTitulo inputError" style="z-index: 5;">
@@ -49,12 +49,12 @@
 				<div id="nombre" class="flexCol spaceBetween">
 					<!-- Nombre Formal o Nombre-->
 					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
-						<% if (entidad == "personajes") { %><label>Formal</label>
+						<% if (personajes) { %><label>Formal</label>
 						<% } else { %><h3>Nombre</h3><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 						<% if (entidad != "personajes") { %><%- include("CMP-errores", {campo:"nombre", display: true}) %><% } %>
 					</div>
-					<% if (entidad == "personajes") { %>
+					<% if (personajes) { %>
 						<!-- Nombre Alternativo -->
 						<div class="flexRowAlign spaceBetween altoFila">
 							<label>Alternativo</label>
@@ -75,7 +75,7 @@
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 									<p>Usamos la fecha en que se lo recuerda.</p>
-									<% if (entidad == "personajes") { %>
+									<% if (personajes) { %>
 										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
 										<li>Para los demás, suele ser la fecha de su muerte.</li>
 									<% } %>
@@ -117,7 +117,7 @@
 						<a id="wiki" target="blank" class="links ocultar" tabindex="-1">
 							<img src="//localhost/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
 						</a>
-						<% if (entidad == "personajes") { %>
+						<% if (personajes) { %>
 							<a id="santopedia" target="blank" class="links ocultar" tabindex="-1">
 								<img src="//localhost/imagenes/0-Base/Logos/BD-Santopedia.jpg" title="Consultar en Santopedia">
 							</a>
@@ -153,7 +153,7 @@
 				</div>
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
-			<% if (entidad == "personajes") { %>
+			<% if (personajes) { %>
 				<!-- Sexo -->
 				<div id="sexo_id" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
@@ -184,9 +184,9 @@
 			<div class="flexRow">
 				<div class="margenBottomTitulo inputError">
 					<!-- Título -->
-					<h3>Época en la que <%- entidad == "personajes" ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
+					<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 					<!-- Ayuda -->
-					<% if (entidad == "hechos") { %>
+					<% if (hechos) { %>
 						<div class="ayuda" style="z-index: 3;">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
@@ -204,7 +204,7 @@
 				<% epocas.forEach((epoca, indice) => { %>
 					<% let z_index = "z-index: " + (1 + epocas.length - indice) %>
 					<div class="flexRowAlign opciones" style="<%= z_index %>">
-						<% if (entidad == "personajes") { %>
+						<% if (personajes) { %>
 							<input type="radio" name="epoca_id" value="<%= epoca.valor %>" id="<%= epoca.valor %>" <% if (dataEntry.epoca_id==epoca.valor) { %>checked<% } %> class="input<%= epoca.valor!="PST"?" noPST":"" %>">
 							<label for="<%= epoca.valor %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
@@ -217,7 +217,7 @@
 									</i>
 								</div>
 							<% } %>
-						<% } else if (entidad == "hechos") { %>
+						<% } else if (hechos) { %>
 							<input type="checkbox" name="<%= epoca.valor %>" id="<%= epoca.valor.toUpperCase() %>" <% if (dataEntry[epoca.valor]=="1") { %>checked<% } %> class="input<%= epoca.valor!="pst"?" noPST":"" %>">
 							<label for="<%= epoca.valor.toUpperCase() %>"><%= epoca.nombre %> </label>
 							<!-- Ayuda -->
@@ -241,8 +241,10 @@
 					<div class="ayuda">
 						<i class="fa-solid fa-circle-question ayudaClick desplClick">
 							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-								<li>Se refiere al año en que <%= entidad == "personajes" ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
-								<li>Solo se necesita si es <u><em>posterior</em></u>.</li>
+								<li>Se refiere al año en que <%= personajes ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
+								<li>Solo se necesita si la época es <u><em>posterior</em></u>.</li>
+								<li>Asumimos que Jesús vivió entre los años 1 y 33</li>
+								<% if (hechos) { %><li>Asumimos que los Apóstoles vivieron entre los años 1 y 100</li><% } %>
 							</ul>
 						</i>
 					</div>
@@ -251,7 +253,7 @@
 		</section>
 		<!-- Relación con la Iglesia Católica -->
 		<section id="RCLIC" class="borderTop OK">
-			<% if (entidad == "personajes") { %>
+			<% if (personajes) { %>
 				<div class="personajes">
 					<!-- ¿El personaje es conocido por su relación con la Iglesia Católica? -->
 					<div id="categoria_id" class="flexRowAlign altoFila inputError">
@@ -310,7 +312,7 @@
 						</div>
 					</div>
 				</div>
-			<% } else if (entidad == "hechos") { %>
+			<% } else if (hechos) { %>
 				<div class="hechos">
 					<!-- Relación con la Iglesia Católica -->
 					<!-- Título, Ayuda y Error/OK -->
