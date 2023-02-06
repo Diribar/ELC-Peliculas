@@ -137,8 +137,7 @@ module.exports = {
 			else if (
 				contador == 2 && // Averigua si se eligieron dos
 				((datos[epocas[0]] && !datos[epocas[1]]) || // Averigua si se eligió la primera y se salteó la siguiente
-					false)
-				//(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
+				(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
 			)
 				respuesta = seSalteoUnaEpoca;
 			// 3. Averigua si se eligieron 3 y se salteó una

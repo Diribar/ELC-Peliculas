@@ -33,7 +33,7 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let ap_mars, roles_igl, procesos_canon;
-		let epocas = procesos.epocas(entidad)
+		let epocas = procesos.epocas(entidad);
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
@@ -58,7 +58,7 @@ module.exports = {
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id)
+				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
 				dataEntry.dia = dia_del_ano.dia;
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
@@ -70,6 +70,8 @@ module.exports = {
 			tema,
 			codigo,
 			entidad,
+			personajes: entidad == "personajes",
+			hechos: entidad == "hechos",
 			titulo,
 			tituloCuerpo,
 			dataEntry,
