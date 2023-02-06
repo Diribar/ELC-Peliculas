@@ -56,14 +56,16 @@ window.addEventListener("load", async () => {
 	if (v.personajes) {
 		// Data-Entry adicional
 		v.apodo = document.querySelector("#dataEntry input[name='apodo']");
-		v.sexo_id = document.querySelectorAll("#dataEntry input[name='sexo_id']");
-		v.epoca_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
-		v.categoria_id = document.querySelectorAll("#dataEntry input[name='categoria_id']");
+		v.sexos_id = document.querySelectorAll("#dataEntry input[name='sexo_id']");
+		v.epocas_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
+		v.categorias_id = document.querySelectorAll("#dataEntry input[name='categoria_id']");
 		v.rol_iglesia_id = document.querySelector("#dataEntry select[name='rol_iglesia_id']");
 		v.proceso_id = document.querySelector("#dataEntry select[name='proceso_id']");
 		v.ap_mar_id = document.querySelector("#dataEntry select[name='ap_mar_id']");
 		// Otros
 		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
+		v.opcionesRolIglesia = document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option");
+		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='proceso_id'] option");
 	}
 	// Valores para hechos
 	if (v.hechos) {
@@ -258,25 +260,34 @@ window.addEventListener("load", async () => {
 		},
 		personajes: {
 			sexo: () => {
-				// Inhabilita las opciones de 'rol' y 'proceso', para los demás sexos
-				// Habilita las opciones de 'rol' y 'proceso', para el sexo elegido
+				// Deja solamente las opciones con ese sexo, descarta las demás
+				// Averigua el sexo
+				for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
+				let sexo = sexo_id.value;
+				// Función para dejar solamente las opciones con ese sexo
+				let FN = (select, opciones) => {
+					select.innerHTML = "";
+					for (let opcion of opciones)
+						if (opcion.value.slice(-1) == sexo || opcion.value <= 2) select.appendChild(opcion);
+				};
+				// Opciones para 'Rol en la Iglesia'
+				FN(v.rol_iglesia_id, v.opcionesRolIglesia);
+				// Opciones para 'Proceso de Canonización'
+				FN(v.proceso_id, v.opcionesProceso);
 			},
 			epoca: () => {
-				// Si !PST, oculta el año y borra su contenido
-				// Año > 1100 y 'CFC', muestra ama, si no lo oculta
-			},
-			RCLIC: () => {
-				// Año > 1100 y 'CFC', muestra ama, si no lo oculta
+				// Detecta cuál opción está elegida
+				for (var epoca of v.epocas_id) if (epoca.checked) break;
+				let ano = v.ano.value;
+
+				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
+				if (epoca.value == "PST" && ano > 1100) v.ap_mar_id.style.visibility="inherit"
+				else v.ap_mar_id.style.visibility="hidden"
 			},
 		},
 		hechos: {
 			epoca: () => {
-				// Si !PST, oculta el año y borra su contenido
-				// Si el año > 1100 y sóloCFC=SI, muestra 'ama'
-				// Si no, lo oculta
-			},
-			RCLIC: () => {
-				// Año > 1100 y soloCFC='SI', muestra ama, si no lo oculta
+				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
 			},
 		},
 	};
@@ -320,9 +331,6 @@ window.addEventListener("load", async () => {
 			let anoIngresado = parseInt(v.ano.value);
 			let anoActual = new Date().getFullYear();
 			v.ano.value = Math.min(anoIngresado, anoActual);
-			// Menor o igual que el año mínimo
-			let anoMinimo = v.personajes ? 33 : v.hechos ? 100 : 0;
-			v.ano.value = Math.max(anoIngresado, anoMinimo);
 		}
 	});
 	// Acciones cuando se  confirma el input
@@ -365,7 +373,7 @@ window.addEventListener("load", async () => {
 
 		// 6. Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {
-			impactos[v.entidad].RCLIC();
+			// Nota: sus impactos se resuelven con CSS
 			validacs[v.entidad].RCLIC();
 		}
 
