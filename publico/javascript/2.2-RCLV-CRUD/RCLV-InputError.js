@@ -24,6 +24,13 @@ window.addEventListener("load", async () => {
 		dia: document.querySelector("#dataEntry select[name='dia']"),
 		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
+		// Errores
+		camposError: ["nombre", "fecha", "repetidos"],
+		OK: {},
+		errores: {},
+		// Otros
+		camposNombre: document.querySelectorAll("#dataEntry #nombre .input"),
+		camposFecha: document.querySelectorAll("#dataEntry #fecha .input"),
 	};
 	// Otros valores
 	(() => {
@@ -32,14 +39,9 @@ window.addEventListener("load", async () => {
 		v.hechos = v.entidad == "hechos";
 		v.valores = v.entidad == "valores";
 		// Campos por sector
-		v.camposError = ["nombre", "fecha", "repetidos"];
-		v.camposNombre = document.querySelectorAll("#dataEntry #nombre .input");
+		if (v.personajes) v.camposError.push("sexo_id");
 		v.camposNombre = Array.from(v.camposNombre).map((n) => n.name);
-		v.camposFecha = document.querySelectorAll("#dataEntry #fecha .input");
 		v.camposFecha = Array.from(v.camposFecha).map((n) => n.name);
-		// Errores
-		v.OK = {};
-		v.errores = {};
 	})();
 	// Valores para !valores
 	if (!v.valores) {
@@ -75,7 +77,7 @@ window.addEventListener("load", async () => {
 		v.jss = document.querySelectorAll("#dataEntry #epoca input[name='jss']");
 		v.cnt = document.querySelectorAll("#dataEntry #epoca input[name='cnt']");
 		v.pst = document.querySelectorAll("#dataEntry #epoca input[name='pst']");
-		v.epocas = document.querySelectorAll("#dataEntry #epoca .input");
+		v.epocas = document.querySelectorAll("#dataEntry #epoca .input[type='checkbox']");
 		// Inputs - RCLIC
 		v.solo_cfc = document.querySelectorAll("#dataEntry input[name='solo_cfc']");
 		v.ama = document.querySelectorAll("#dataEntry input[name='ama']");
@@ -140,10 +142,46 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		sexo: () => {},
-		epoca: {
-			personajes: () => {},
-			hechos: () => {},
+		sexo: async () => {
+			// Detecta cuál opción está elegida
+			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
+
+			// Genera la variable de parámetros
+			let params = "sexo&sexo_id=" + sexo_id.value;
+
+			// OK y Errores
+			v.errores.sexo_id = await fetch(v.rutaValidacion + params).then((n) => n.json());
+			v.OK.sexo_id = !v.errores.sexo_id;
+
+			// Fin
+			return;
+		},
+		epoca: async () => {
+			// Variables
+			let campos = v.entidad == "personajes" ? v.epocas_id : v.epocas;
+			let params = "epoca&entidad=" + v.entidad;
+			let nombre, valor;
+
+			// Obtiene el valor de cada campo
+			for (let campo of campos) {
+				if (v.entidad == "personajes") {
+					nombre = "epoca_id";
+					valor = campo.value;
+				} else if (v.entidad == "hechos") {
+					nombre = campo.name;
+					valor = "on";
+				}
+				// Si el campo está chequeado, lo agrega a los parámetros
+				if (campo.checked) params += "&" + nombre + "=" + valor;
+			}
+
+			// OK y Errores
+			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
+			v.OK.epoca = !v.errores.epoca;
+			console.log(params, v.errores);
+
+			// Fin
+			return;
 		},
 		RCLIC: {
 			personajes: () => {},
@@ -226,8 +264,7 @@ window.addEventListener("load", async () => {
 					v.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
 					v.posiblesRepetidos.classList.add("sinCasos");
 				}
-
-				// Si hay otros casos, los muestra
+				// Si hay otros casos, los muestra y valida 'repetidos'
 				else {
 					v.posiblesRepetidos.innerHTML = "";
 					v.posiblesRepetidos.classList.remove("sinCasos");
@@ -247,6 +284,8 @@ window.addEventListener("load", async () => {
 						li.appendChild(label);
 						v.posiblesRepetidos.appendChild(li);
 					}
+					// Valida repetidos
+					validacs.repetido();
 				}
 
 				// Fin
@@ -373,10 +412,7 @@ window.addEventListener("load", async () => {
 			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
 				await validacs.fecha();
 				// Acciones si la fecha está OK
-				if (v.OK.fecha) {
-					await impactos.fecha.muestraPosiblesDuplicados();
-					validacs.repetido();
-				}
+				if (v.OK.fecha) await impactos.fecha.muestraPosiblesDuplicados();
 			}
 			if (campo == "desconocida" && v.desconocida.checked) {
 				impactos.fecha.limpiezaDeFechaRepetidos();
@@ -387,14 +423,18 @@ window.addEventListener("load", async () => {
 		// 3. Acciones si se cambia el sector Repetido
 		if (campo == "repetido") validacs.repetido();
 		// 4. Acciones si se cambia el sector Sexo
-		if (campo == "sexo_id") impactos.sexo();
+		if (campo == "sexo_id") {
+			impactos.sexo();
+			await validacs.sexo()
+			console.log(v.errores);
+		}
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
 			// Si se eligió el checkbox "Posterior", pone el cursor en 'Año'
 			if (campo == "pst" || (campo == "epoca_id" && e.target.value == "PST")) v.ano.focus();
 			// Impacto y Validaciones
 			impactos.epoca[v.entidad]();
-			// validacs.epoca[v.entidad]();
+			await validacs.epoca();
 		}
 		// 6. Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {
