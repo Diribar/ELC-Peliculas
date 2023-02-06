@@ -160,7 +160,7 @@ module.exports = {
 				: parseInt(ano) > new Date().getFullYear()
 				? "El año no debe superar al actual"
 				: (parseInt(ano) < 33 && datos.epoca_id == "PST") || (parseInt(ano) < 100 && datos.pst)
-				? "Ese año no corresponda a la época posterior"
+				? "Ese año no corresponde a la época posterior"
 				: "";
 		}
 		// Fin
