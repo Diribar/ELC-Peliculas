@@ -426,7 +426,6 @@ window.addEventListener("load", async () => {
 		if (campo == "sexo_id") {
 			impactos.sexo();
 			await validacs.sexo()
-			console.log(v.errores);
 		}
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
