@@ -58,23 +58,21 @@
 #RCLIC .personajes .siNo {margin-left: 10px;}
 #RCLIC .hechos .siNo {margin-right: 10px;}
 
-/* Oculta o muestra */
-/* 1. PERSONAJES y HECHOS */
-/* Año --> si epoca = 'PST' */
-#epoca:has(.opciones input#PST:checked) .invisible {visibility: visible;}
-/* 2. PERSONAJES */
-/* PreguntasRCLIC --> si soloCFC='SI' y contestó 'sexo' */
+/* 1. Año (personajes y hechos) */
+#epoca:not(
+	:not(:has(.opciones input#PST:checked)),	/* epoca = 'PST' */
+	:has(.opciones input.noPST:checked)			/* ninguna otra opción está 'checked' */
+) .invisible {visibility: visible;}
+
+/* 2. PreguntasRCLIC (personajes) */
 #dataEntry:not(
-	:not(:has(.personajes #categoria_id input#CFC:checked)),
-	:not(:has(#sexo_id input:checked))
-) #preguntasRCLIC.invisible {visibility: visible;}
-/* 3. HECHOS */
-/* PreguntasRCLIC (hechos) --> si soloCFC='SI' y epoca='PST' y  */
-#dataEntry:not(
-	:not(:has(.hechos #soloCFC input#SI:checked)),
-	:not(:has(#epoca .opciones input#PST:checked)),
-	:has(#epoca .opciones input.noPST:checked)
-) #preguntasRCLIC.invisible {visibility: visible;}
+	:not(:has(.personajes #categoria_id input#CFC:checked)),	/* la categoría es 'CFC' */
+	:not(:has(#sexo_id input:checked))							/* contestó 'sexo' */
+)	#preguntasRCLIC.invisible {visibility: visible;}
+
+/* 3. PreguntasRCLIC (hechos) */
+#dataEntry:has(.hechos #soloCFC input#SI:checked) 				/* --> si soloCFC='SI' */
+	#preguntasRCLIC.invisible {visibility: visible;}
 
 /* Temas de ayuda */
 #dataEntry ul#ayudaNombrePers {max-width: 400px;}
