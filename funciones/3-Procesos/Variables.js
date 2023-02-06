@@ -370,7 +370,7 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
-	epocas: ["ant", "jss", "cnt", "pst"],
+	epocasHechos: ["ant", "jss", "cnt", "pst"],
 
 	// Links
 	provsQueNoRespetanCopyright: [
