@@ -50,8 +50,8 @@ module.exports = {
 	gruposConsultas: {
 		personajes: () => {
 			// Época de nacimiento
-			let epoca = epoca.filter((n) => n.nombre_pers);
-			epoca = epoca.map((n) => {
+			let epocas = epocas.filter((n) => n.nombre_pers);
+			epocas = epocas.map((n) => {
 				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
 			});
 			// Proceso de canonización
@@ -65,7 +65,7 @@ module.exports = {
 				grupo_personajes: [
 					{nombre: "Época de vida", clase: "CFC VPC"},
 					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
-					...epoca,
+					...epocas,
 					{nombre: "Proceso de Canonización", clase: "CFC"},
 					...procs_canon,
 					{nombre: "Rol en la Iglesia", clase: "CFC"},
