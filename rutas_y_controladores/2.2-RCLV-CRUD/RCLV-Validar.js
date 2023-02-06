@@ -155,7 +155,7 @@ module.exports = {
 		if (!respuesta && anoNecesario) {
 			let ano = datos.ano;
 			respuesta = !ano
-				? "Necesitamos saber el año"
+				? cartelAno
 				: !/[^\d]/.test(ano)
 				? "No es un número válido"
 				: parseInt(ano) > new Date().getFullYear()
@@ -217,3 +217,4 @@ const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
 const cartelEpoca = "Necesitamos saber la época";
+const cartelAno = "Necesitamos saber el año";
