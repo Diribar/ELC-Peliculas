@@ -508,8 +508,6 @@ module.exports = {
 	},
 
 	// Validaciones
-	inputVacio: "Necesitamos que completes este campo",
-	selectVacio: "Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto
 			? "El contenido debe ser más largo"

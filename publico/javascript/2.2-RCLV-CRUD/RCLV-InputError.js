@@ -319,7 +319,7 @@ window.addEventListener("load", async () => {
 	v.dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		// Acciones si se cambia el nombre o apodo
-		if (campo == "nombre" || campo == "apodo") {
+		if (v.camposNombre.includes(campo)) {
 			// Variables
 			let valor = v[campo].value;
 			// 1. Primera letra en mayúscula

@@ -24,12 +24,12 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
-			} else respuesta = comp.inputVacio;
+			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.apodo = respuesta;
 		}
-		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? comp.selectVacio : "";
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? comp.selectVacio : "";
+		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? variables.selectVacio : "";
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
 		errores.hay = Object.values(errores).some((n) => !!n);
 		// Fin
@@ -49,7 +49,7 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
-			} else respuesta = comp.inputVacio;
+			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.nombre = respuesta;
 		}
@@ -62,7 +62,7 @@ module.exports = {
 				if (!respuesta) respuesta = comp.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.inicial.basico(dato);
 				if (!respuesta) comp.longitud(dato, 2, 30);
-			} else respuesta = comp.inputVacio;
+			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.apellido = respuesta;
 		}
@@ -73,7 +73,7 @@ module.exports = {
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
 		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? comp.selectVacio : "";
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? variables.selectVacio : "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			// Variables
@@ -81,13 +81,13 @@ module.exports = {
 			let respuesta = "";
 			// Validaciones
 			if (dato) respuesta = comp.longitud(dato, 4, 15);
-			else respuesta = comp.inputVacio;
+			else respuesta = variables.inputVacio;
 			// Fin
 			errores.docum_numero = respuesta;
 		}
 		// Revisar 'docum_pais_id'
 		if (campos.includes("docum_pais_id"))
-			errores.docum_pais_id = !datos.docum_pais_id ? comp.selectVacio : "";
+			errores.docum_pais_id = !datos.docum_pais_id ? variables.selectVacio : "";
 		// Revisar 'avatar'
 		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.avatar(datos);
 		// Fin
@@ -172,12 +172,12 @@ module.exports = {
 			else if (usuario.status_registro.ident_a_validar || usuario.status_registro.ident_validada) {
 				// Verifica los posibles errores
 				errores.docum_numero = !datos.docum_numero
-					? comp.inputVacio
+					? variables.inputVacio
 					: datos.docum_numero != usuario.docum_numero
 					? "El número de documento no coincide con el de nuestra Base de Datos"
 					: "";
 				errores.docum_pais_id = !datos.docum_pais_id
-					? comp.selectVacio
+					? variables.selectVacio
 					: datos.docum_pais_id != usuario.docum_pais_id
 					? "El país no coincide con el de nuestra Base de Datos"
 					: "";
