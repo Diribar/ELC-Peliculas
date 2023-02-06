@@ -145,6 +145,7 @@ window.addEventListener("load", async () => {
 		sexo: async () => {
 			// Detecta cuál opción está elegida
 			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
+			if (!sexo_id.checked) sexo_id.value = "";
 
 			// Genera la variable de parámetros
 			let params = "sexo&sexo_id=" + sexo_id.value;
@@ -158,16 +159,16 @@ window.addEventListener("load", async () => {
 		},
 		epoca: async () => {
 			// Variables
-			let campos = v.entidad == "personajes" ? v.epocas_id : v.epocas;
+			let campos = v.personajes ? v.epocas_id : v.epocas;
 			let params = "epoca&entidad=" + v.entidad;
 			let nombre, valor;
 
 			// Obtiene el valor de cada campo
 			for (let campo of campos) {
-				if (v.entidad == "personajes") {
+				if (v.personajes) {
 					nombre = "epoca_id";
 					valor = campo.value;
-				} else if (v.entidad == "hechos") {
+				} else if (v.hechos) {
 					nombre = campo.name;
 					valor = "on";
 				}
@@ -305,7 +306,7 @@ window.addEventListener("load", async () => {
 
 			// Averigua el sexo
 			for (var sexo_id of v.sexos_id) if (sexo_id.checked) break;
-			let sexo = sexo_id.value;
+			let sexo = sexo_id.checked ? sexo_id.value : "";
 			// Función para dejar solamente las opciones con ese sexo
 			let FN = (select, opciones) => {
 				select.innerHTML = "";
@@ -329,6 +330,7 @@ window.addEventListener("load", async () => {
 			personajes: function () {
 				// Detecta cuál opción está elegida
 				for (var epoca of v.epocas_id) if (epoca.checked) break;
+				if (!epoca.checked) epoca.value=""
 				// Obtiene el año
 				let ano = this.ano();
 
@@ -343,6 +345,8 @@ window.addEventListener("load", async () => {
 			hechos: function () {
 				// Detecta cuál opción está elegida
 				for (var epoca of v.epocas) if (epoca.checked) break;
+				if (!epoca.checked) epoca.name=""
+
 				// Obtiene el año
 				let ano = this.ano();
 
@@ -372,7 +376,7 @@ window.addEventListener("load", async () => {
 				.replace(/\r/g, "");
 			valor = v[campo].value;
 			// 3. Quita el prefijo 'San'
-			if (campo == "nombre" && v.entidad == "personajes")
+			if (campo == "nombre" && v.personajes)
 				for (let prefijo of v.prefijos) {
 					if (valor.startsWith(prefijo + " ")) {
 						v[campo].value = valor.slice(prefijo.length + 1);
@@ -425,7 +429,7 @@ window.addEventListener("load", async () => {
 		// 4. Acciones si se cambia el sector Sexo
 		if (campo == "sexo_id") {
 			impactos.sexo();
-			await validacs.sexo()
+			await validacs.sexo();
 		}
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
@@ -453,7 +457,9 @@ window.addEventListener("load", async () => {
 			await validacs.nombre.nombreApodo();
 			await validacs.fecha();
 			validacs.repetido();
-			if (!v.valores) await validacs.RCLI.consolidado(true);
+			if (v.personajes) await validacs.sexo();
+			if (!v.valores) await validacs.epoca();
+			// if (!v.valores) await validacs.RCLI.consolidado(true);
 			// Fin
 			validacs.muestraErroresOK();
 		}

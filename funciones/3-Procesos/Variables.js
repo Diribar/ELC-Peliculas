@@ -494,6 +494,7 @@ module.exports = {
 	// Carteles
 	inputVacio: "Necesitamos que completes este campo",
 	selectVacio: "Necesitamos que elijas un valor",
+	radioVacio: "Necesitamos que elijas alguna opción",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},

@@ -113,7 +113,7 @@ module.exports = {
 	},
 	// Personajes o Hechos
 	sexo: (datos) => {
-		return !datos.sexo_id ? variables.inputVacio : "";
+		return !datos.sexo_id ? variables.radioVacio : "";
 	},
 	epoca: (datos) => {
 		// Variables
@@ -123,7 +123,7 @@ module.exports = {
 		// Epocas
 		if (datos.entidad == "personajes") {
 			// Averigua si no fue respondido
-			if (!datos.epoca_id) respuesta = cartelEpoca;
+			if (!datos.epoca_id) respuesta = variables.radioVacio;
 			// Averigua si hace falta el año
 			else if (datos.epoca_id == "PST") anoNecesario = true;
 		} else if (datos.entidad == "hechos") {
@@ -132,7 +132,7 @@ module.exports = {
 			let cantEpocas = epocas.length;
 			for (let epoca of epocas) if (datos[epoca]) contador++;
 			// 1. Averigua si no fue respondido
-			if (!contador) respuesta = cartelEpoca;
+			if (!contador) respuesta = variables.radioVacio;
 			// 2. Averigua si se eligieron 2 y se salteó una
 			else if (
 				contador == 2 && // Averigua si se eligieron dos
