@@ -229,10 +229,14 @@ module.exports = {
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
 		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
-		// Datos comunes
+		// Datos comunes - Nombre
 		DE.nombre = datos.nombre;
-		if (!datos.desconocida)
+		// Datos comunes - Día del año
+		if (datos.mes_id && datos.dia)
 			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+		else if (datos.desconocida)
+			DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
+		else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
 			if (datos.apodo) DE.apodo = datos.apodo;
