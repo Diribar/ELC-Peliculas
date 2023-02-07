@@ -60,7 +60,7 @@
 
 /* 1. Año (personajes y hechos) */
 #epoca:not(
-	:not(:has(.opciones input#PST:checked)), /* epoca = 'PST' */
+	:not(:has(.opciones input#pst:checked)), /* epoca = 'pst' */
 	:has(.opciones input.noPST:checked)      /* ninguna otra opción está 'checked' */
 ) .invisible {visibility: visible;}
 

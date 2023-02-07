@@ -122,7 +122,7 @@ window.addEventListener("load", async () => {
 					} else dia31.classList.remove("ocultar");
 				}
 			},
-			muestraPosiblesDuplicados: async () => {
+			muestraPosiblesRepetidos: async () => {
 				// Obtiene los casos con esa fecha
 				// 1. Obtiene los parámetros
 				let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
@@ -155,9 +155,10 @@ window.addEventListener("load", async () => {
 						li.appendChild(label);
 						v.posiblesRepetidos.appendChild(li);
 					}
-					// Valida repetidos
-					validacs.repetido();
 				}
+
+				// Valida repetidos
+				validacs.repetido();
 
 				// Fin
 				return;
@@ -207,9 +208,9 @@ window.addEventListener("load", async () => {
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 
-				// Si 'PST' y Año > 1100, muestra sectorApMar. Si no, lo oculta
-				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
-				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
+				// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
+				// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
+				if (epoca_id.value == "pst" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
 				else v.sectorApMar.style.visibility = "hidden";
 
 				// Valida RCLIC
@@ -228,8 +229,8 @@ window.addEventListener("load", async () => {
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 
-				// Si 'PST' y Año > 1100, muestra sectorApMar. Si no, lo oculta
-				// Es necesario dejar la condición 'PST', para que lo oculte si el usuario lo combina con otra opción
+				// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
+				// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
 				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
 				else v.sectorApMar.classList.add("invisible");
 
@@ -288,7 +289,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Acciones si la fecha está OK
-			if (v.OK.fecha) await impactos.fecha.muestraPosiblesDuplicados();
+			if (v.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
 
 			// Fin
 			return;
@@ -365,11 +366,11 @@ window.addEventListener("load", async () => {
 					// Agrega los datos de CFC
 					for (let campo of v.camposCFC)
 						if (campo.value) params += "&" + campo.name + "=" + campo.value;
-					// Agrega los datos de PST y año
+					// Agrega los datos de epoca_id y año
 					let epoca_id = opcionElegida(v.epocas_id);
 					let ano = FN_ano(v.ano.value);
 					params += "&epoca_id=" + epoca_id.value;
-					if (ano > 1100) params += "&ano=on";
+					if (epoca_id.value == "pst" && ano > 1100) params += "&ano=on";
 				}
 
 				// OK y Errores
@@ -391,11 +392,12 @@ window.addEventListener("load", async () => {
 				let ama = opcionElegida(v.ama);
 				params += "&ama=" + ama.value;
 
-				// Agrega los datos de PST y año
+				// Agrega los datos de época y año
 				let epoca = opcionElegida(v.epocas);
+				params += "&epoca=" + epoca.name;
+
 				let ano = FN_ano(v.ano.value);
-				params += "&epoca=" + epoca.value;
-				if (ano > 1100) params += "&ano=on";
+				if (epoca.name == "pst" && ano > 1100) params += "&ano=on";
 
 				// OK y Errores
 				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
@@ -460,6 +462,10 @@ window.addEventListener("load", async () => {
 				(v.hechos && opcionElegida(v.solo_cfc).name)
 			)
 				await this.RCLIC[v.entidad]();
+
+			// Fin
+			this.muestraErroresOK();
+			this.botonSubmit();
 		},
 	};
 
@@ -535,7 +541,7 @@ window.addEventListener("load", async () => {
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
 			// Si se eligió el checkbox "Posterior", pone el cursor en 'Año'
-			if (campo == "pst" || (campo == "epoca_id" && e.target.value == "PST")) v.ano.focus();
+			if (campo == "pst" || (campo == "epoca_id" && e.target.value == "pst")) v.ano.focus();
 			// Impacto y Validaciones
 			await impactos.epoca[v.entidad]();
 			await validacs.epoca();
@@ -553,25 +559,13 @@ window.addEventListener("load", async () => {
 	// Botón submit
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
-		if (v.botonSubmit.classList.contains("inactivo")) {
-			// Realiza todas las validacs
-			await validacs.nombre.nombreApodo();
-			await validacs.fecha();
-			validacs.repetido();
-			if (v.personajes) await validacs.sexo();
-			if (!v.valores) await validacs.epoca();
-			if (!v.valores) await validacs.RCLIC[v.entidad]();
-			// Fin
-			validacs.muestraErroresOK();
-		}
+		if (v.botonSubmit.classList.contains("inactivo")) await validacs.startUp();
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
 	});
 
 	// Status inicial
 	await validacs.startUp();
-	validacs.muestraErroresOK();
-	validacs.botonSubmit();
 });
 
 // Funciones

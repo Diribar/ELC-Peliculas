@@ -126,7 +126,7 @@ module.exports = {
 			// Averigua si no fue respondido
 			if (!datos.epoca_id) respuesta = variables.radioVacio;
 			// Averigua si hace falta el año
-			else if (datos.epoca_id == "PST") anoNecesario = true;
+			else if (datos.epoca_id == "pst") anoNecesario = true;
 		} else if (datos.entidad == "hechos") {
 			// Averigua la cantidad de épocas elegidas
 			let epocas = variables.epocasHechos;
@@ -160,7 +160,7 @@ module.exports = {
 				? "No es un número válido"
 				: parseInt(ano) > new Date().getFullYear()
 				? "El año no debe superar al actual"
-				: (parseInt(ano) < 33 && datos.epoca_id == "PST") || (parseInt(ano) < 100 && datos.pst)
+				: (parseInt(ano) < 33 && datos.epoca_id == "pst") || (parseInt(ano) < 100 && datos.pst)
 				? "Ese año no corresponde a la época 'posterior'"
 				: "";
 		}
@@ -177,7 +177,7 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.proceso_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epoca_id == "PST" && datos.ano
+				: datos.epoca_id == "pst" && datos.ano
 				? !datos.ap_mar_id
 					? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
 					: ""
