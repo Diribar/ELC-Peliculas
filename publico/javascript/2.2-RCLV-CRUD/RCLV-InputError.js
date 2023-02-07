@@ -377,19 +377,41 @@ window.addEventListener("load", async () => {
 		},
 		muestraErroresOK: function () {
 			// Muestra los íconos de Error y OK
-			v.camposError.forEach((sector, i) => {
-				this.muestraErrorOK(i);
-			});
+			for (let i = 0; i < v.camposError.length; i++) this.muestraErrorOK(i);
 		},
 		botonSubmit: () => {
 			// Botón submit
 			let resultado = Object.values(v.OK);
-			let resultadoTrue = resultado.length ? resultado.every((n) => n == true) : false;
-			resultadoTrue && resultado.length == v.camposError.length
+			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
+			resultadosTrue && resultado.length == v.camposError.length
 				? v.botonSubmit.classList.remove("inactivo")
 				: v.botonSubmit.classList.add("inactivo");
 		},
-		startup: () => {},
+		startUp: async function () {
+			// 1. Valida el nombre
+			if (v.nombre.value) await this.nombre.nombreApodo();
+			if (v.nombre.value && v.OK.nombre) impactos.nombre.logosWikiSantopedia();
+
+			// 2. Valida las fechas
+			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
+
+			// 3. Valida el sector Repetido
+			if (v.desconocida.checked) impactos.fecha.limpiezaDeFechaRepetidos();
+
+			// 4. Valida el sexo
+			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
+			if (v.personajes && opcionElegida(v.sexos_id).name) await this.sexo();
+
+			// 5. Valida la época
+			if ((v.personajes && opcionElegida(v.epocas_id).name) || (v.hechos && opcionElegida(v.epocas).name))
+				await impactos.epoca[v.entidad]();
+			if ((v.personajes && opcionElegida(v.epocas_id).name) || (v.hechos && opcionElegida(v.epocas).name))
+				await this.epoca();
+
+			// 6. Valida RCLIC
+			if (v.personajes && opcionElegida(v.categorias_id).name) await this.RCLIC[v.entidad]();
+		},
 	};
 
 	// Correcciones mientras se escribe
@@ -447,15 +469,11 @@ window.addEventListener("load", async () => {
 		// 2. Acciones si se cambia el sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value)
 				await validacs.fecha();
-				// Acciones si la fecha está OK
-				if (v.OK.fecha) await impactos.fecha.muestraPosiblesDuplicados();
-			}
 			if (campo == "desconocida" && v.desconocida.checked) {
 				impactos.fecha.limpiezaDeFechaRepetidos();
 				await validacs.fecha();
-				validacs.repetido();
 			}
 		}
 		// 3. Acciones si se cambia el sector Repetido
@@ -502,9 +520,9 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	// await validacs.startUp();
-	// validacs.muestraErroresOK();
-	// validacs.botonSubmit();
+	await validacs.startUp();
+	validacs.muestraErroresOK();
+	validacs.botonSubmit();
 });
 
 // Funciones
