@@ -203,7 +203,7 @@ window.addEventListener("load", async () => {
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 
-				// Si 'PST' y Año > 1100, muestra ama. Si no, lo oculta
+				// Si 'PST' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 				// Es necesario dejar la condición 'PST', para que oculte  si el usuario cambia
 				if (epoca_id.value == "PST" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
 				else v.sectorApMar.style.visibility = "hidden";
@@ -215,17 +215,23 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			hechos: function () {
+			hechos:async () => {
 				// Obtiene la opción elegida
 				let epoca = opcionElegida(v.epocas);
-
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 
-				// Si 'PST' y Año > 1100, muestra ama, si no lo oculta
+				// Si 'PST' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 				// Es necesario dejar la condición 'PST', para que lo oculte si el usuario lo combina con otra opción
 				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
 				else v.sectorApMar.classList.add("invisible");
+
+				// Valida RCLIC
+				let solo_cfc = opcionElegida(v.solo_cfc);
+				if (solo_cfc.value) await validacs.RCLIC.hechos();
+
+				// Fin
+				return;
 			},
 		},
 	};
@@ -332,8 +338,9 @@ window.addEventListener("load", async () => {
 		RCLIC: {
 			personajes: async () => {
 				// Variables
-				let params = "RCLIC_" + v.entidad;
+				let params = "RCLIC_personajes";
 				let sexo_id;
+
 				// Obtiene la categoría
 				let categoria_id = opcionElegida(v.categorias_id);
 				params += "&categoria_id=" + categoria_id.value;
@@ -361,7 +368,31 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			hechos: () => {},
+			hechos: async () => {
+				// Variables
+				let params = "RCLIC_hechos";
+
+				// Obtiene el 'solo_cfc'
+				let solo_cfc = opcionElegida(v.solo_cfc);
+				params += "&solo_cfc=" + solo_cfc.value;
+
+				// Obtiene el 'solo_cfc'
+				let ama = opcionElegida(v.ama);
+				params += "&ama=" + ama.value;
+
+				// Agrega los datos de PST y año
+				let epoca = opcionElegida(v.epocas);
+				let ano = FN_ano(v.ano.value);
+				params += "&epoca=" + epoca.value;
+				if (ano > 1100) params += "&ano=on";
+
+				// OK y Errores
+				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
+				v.OK.RCLIC = !v.errores.RCLIC;
+
+				// Fin
+				return;
+			},
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -377,19 +408,48 @@ window.addEventListener("load", async () => {
 		},
 		muestraErroresOK: function () {
 			// Muestra los íconos de Error y OK
-			v.camposError.forEach((sector, i) => {
-				this.muestraErrorOK(i);
-			});
+			for (let i = 0; i < v.camposError.length; i++) this.muestraErrorOK(i);
 		},
 		botonSubmit: () => {
 			// Botón submit
 			let resultado = Object.values(v.OK);
-			let resultadoTrue = resultado.length ? resultado.every((n) => n == true) : false;
-			resultadoTrue && resultado.length == v.camposError.length
+			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
+			resultadosTrue && resultado.length == v.camposError.length
 				? v.botonSubmit.classList.remove("inactivo")
 				: v.botonSubmit.classList.add("inactivo");
 		},
-		startup: () => {},
+		startUp: async function () {
+			// 1. Valida el nombre
+			if (v.nombre.value) await this.nombre.nombreApodo();
+			if (v.nombre.value && v.OK.nombre) impactos.nombre.logosWikiSantopedia();
+
+			// 2. Valida las fechas
+			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
+
+			// 3. Valida el sector Repetido
+			if (v.desconocida.checked) impactos.fecha.limpiezaDeFechaRepetidos();
+
+			// 4. Valida el sexo
+			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
+			if (v.personajes && opcionElegida(v.sexos_id).name) await this.sexo();
+
+			// 5. Valida la época
+			if (
+				(v.personajes && opcionElegida(v.epocas_id).name) ||
+				(v.hechos && opcionElegida(v.epocas).name)
+			) {
+				await impactos.epoca[v.entidad]();
+				await this.epoca();
+			}
+
+			// 6. Valida RCLIC
+			if (
+				(v.personajes && opcionElegida(v.categorias_id).name) ||
+				(v.hechos && opcionElegida(v.solo_cfc).name)
+			)
+				await this.RCLIC[v.entidad]();
+		},
 	};
 
 	// Correcciones mientras se escribe
@@ -447,15 +507,11 @@ window.addEventListener("load", async () => {
 		// 2. Acciones si se cambia el sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value)
 				await validacs.fecha();
-				// Acciones si la fecha está OK
-				if (v.OK.fecha) await impactos.fecha.muestraPosiblesDuplicados();
-			}
 			if (campo == "desconocida" && v.desconocida.checked) {
 				impactos.fecha.limpiezaDeFechaRepetidos();
 				await validacs.fecha();
-				validacs.repetido();
 			}
 		}
 		// 3. Acciones si se cambia el sector Repetido
@@ -502,9 +558,9 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	// await validacs.startUp();
-	// validacs.muestraErroresOK();
-	// validacs.botonSubmit();
+	await validacs.startUp();
+	validacs.muestraErroresOK();
+	validacs.botonSubmit();
 });
 
 // Funciones
