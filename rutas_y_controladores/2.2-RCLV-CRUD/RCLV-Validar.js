@@ -16,8 +16,8 @@ module.exports = {
 		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
 		// Época y RCLI
 		if (datos.entidad != "valores") {
-			errores.epoca = this.epoca[datos.entidad](datos);
-			errores.RCLI = this.RCLIC[datos.entidad](datos);
+			errores.epoca = this.epoca(datos);
+			errores.RCLI = this["RCLIC_" + datos.entidad](datos);
 		}
 		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -111,10 +111,11 @@ module.exports = {
 	repetidos: (datos) => {
 		return datos.repetidos ? cartelDuplicado : "";
 	},
-	// Personajes o Hechos
+	// Personajes
 	sexo: (datos) => {
 		return !datos.sexo_id ? variables.radioVacio : "";
 	},
+	// Personajes o Hechos
 	epoca: (datos) => {
 		// Variables
 		let contador = 0;
@@ -166,7 +167,7 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	RCLIC_personajes: function (datos) {
+	RCLIC_personajes: (datos) => {
 		let respuesta = !datos.categoria_id
 			? "Necesitamos saber sobre su relación con la Iglesia"
 			: datos.categoria_id == "CFC"

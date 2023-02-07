@@ -167,6 +167,10 @@ window.addEventListener("load", async () => {
 				v.mes_id.value = "";
 				v.dia.value = "";
 				v.posiblesRepetidos.innerHTML = "";
+
+				// Actualiza la validación de Repetidos
+				validacs.repetido();
+
 				// Fin
 				return;
 			},
@@ -279,6 +283,10 @@ window.addEventListener("load", async () => {
 				v.errores.fecha = "";
 				v.OK.fecha = true;
 			}
+
+			// Acciones si la fecha está OK
+			if (v.OK.fecha) await impactos.fecha.muestraPosiblesDuplicados();
+
 			// Fin
 			return;
 		},
