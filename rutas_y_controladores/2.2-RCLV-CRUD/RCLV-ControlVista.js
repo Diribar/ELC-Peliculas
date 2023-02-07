@@ -33,7 +33,6 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let ap_mars, roles_igl, procesos_canon;
-		let epocas = procesos.epocas(entidad);
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);

@@ -219,7 +219,7 @@
 								</div>
 							<% } %>
 						<% } else if (hechos) { %>
-							<input type="checkbox" name="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry[epoca.id]=="1") { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
+							<input type="checkbox" name="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry[epoca.id]) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
 							<label for="<%= epoca.id %>"><%= epoca.nombre_hecho %> </label>
 							<!-- Ayuda -->
 							<% if (epoca.ayuda_hecho) { %> 
