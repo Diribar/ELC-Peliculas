@@ -160,7 +160,7 @@ module.exports = {
 				: parseInt(ano) > new Date().getFullYear()
 				? "El año no debe superar al actual"
 				: (parseInt(ano) < 33 && datos.epoca_id == "PST") || (parseInt(ano) < 100 && datos.pst)
-				? "Ese año no corresponde a la época posterior"
+				? "Ese año no corresponde a la época 'posterior'"
 				: "";
 		}
 		// Fin
@@ -176,8 +176,10 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.proceso_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epoca_id == "PST" && datos.ano && !datos.ap_mar_id
-				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
+				: datos.epoca_id == "PST" && datos.ano
+				? !datos.ap_mar_id
+					? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
+					: ""
 				: ""
 			: datos.categoria_id != "VPC"
 			? "No reconocemos la opción elegida"
@@ -186,18 +188,15 @@ module.exports = {
 		return respuesta;
 	},
 	RCLIC_hechos: (datos) => {
-		let respuesta = "";
-		if (false) return "";
-		// Respuestas
-		else if (!datos.solo_cfc)
-			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
-		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if (!datos.ncn)
-			respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
-		else if (datos.solo_cfc == "1" && !datos.ama)
-			respuesta = "Necesitamos saber si es una aparición mariana";
-
+		let respuesta = !datos.solo_cfc
+			? "Necesitamos saber sobre su relación con la historia de la Iglesia"
+			: datos.solo_cfc == "1"
+			? datos.ano && !datos.ama
+				? "Necesitamos saber si es una aparición mariana"
+				: ""
+			: datos.solo_cfc != "0"
+			? "No reconocemos la opción elegida"
+			: "";
 		// Fin
 		return respuesta;
 	},
