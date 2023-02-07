@@ -100,7 +100,10 @@ module.exports = {
 		// Obtiene el dataEntry
 		let DE = procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
-		[req, res] = await procesos.guardaLosCambios(req, res, DE);
+		await procesos.guardaLosCambios(req, res, DE);
+		// Borra el RCLV en session y cookies
+		if (req.session[entidad]) delete req.session[entidad];
+		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Obtiene el url de la siguiente instancia
 		let destino =
 			origen == "DA"

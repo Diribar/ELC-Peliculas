@@ -174,7 +174,7 @@ module.exports = {
 			let id = req.query.id;
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
-			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
+			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio y en status creado?
 				? await comp.actualizaRegistro({entidad, id, datos: DE}) // Actualiza el registro original
 				: await procsCRUD.guardaEdicion({
 						entidadOrig: entidad,
@@ -189,11 +189,8 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
 		}
-		// Borra el RCLV en session y cookies
-		if (req.session[entidad]) delete req.session[entidad];
-		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
-		return [req, res];
+		return;
 	},
 	rutaSalir: (codigo, datos) => {
 		// Variables
