@@ -232,68 +232,38 @@ module.exports = {
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
 		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
-		// Nombre
+		// Datos comunes
 		DE.nombre = datos.nombre;
-		// Día del año
 		if (!datos.desconocida)
 			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-		// Año
-		if (datos.entidad != "valores" && datos.ano) DE.ano = datos.ano;
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
-			// Datos sencillos
 			if (datos.apodo) DE.apodo = datos.apodo;
 			DE.sexo_id = datos.sexo_id;
-			DE.categoria_id = datos.categoria_id;
+			DE.epoca_id = datos.epoca_id;
+			if (datos.epoca_id == "pst") DE.ano = datos.ano;
 			// RCLI
+			DE.categoria_id = datos.categoria_id;
 			if (datos.categoria_id == "CFC") {
-				// Datos sencillos
 				DE.rol_iglesia_id = datos.rol_iglesia_id;
-				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
-				if (datos.ama == "1") DE.ap_mar_id = datos.ap_mar_id;
-				// subcategoria_id
-				let santoBeato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
-				if (datos.cnt == "1") DE.subcategoria_id = "CNT";
-				else if (datos.enProcCan == "1" && santoBeato) DE.subcategoria_id = "HAG";
+				DE.proceso_id = datos.proceso_id;
+				if (datos.epoca_id == "pst" && parseInt(datos.ano) > 1100) DE.ap_mar_id = datos.ap_mar_id;
 			}
 		}
+		// Datos para hechos
 		if (datos.entidad == "hechos") {
 			// Variables
-			let {solo_cfc, jss, cnt, ncn, ama} = datos;
-			// Datos sencillos
+			let {ant, jss, cnt, pst, solo_cfc, ama, ano} = datos;
+			// Época
+			DE.ant = ant ? 1 : 0;
+			DE.jss = jss ? 1 : 0;
+			DE.cnt = cnt ? 1 : 0;
+			DE.pst = pst ? 1 : 0;
+			if (!ant && !jss && !cnt && pst) DE.ano = ano;
+			// RCLIC
 			DE.solo_cfc = solo_cfc;
-			DE.jss = jss;
-			// cnt
-			if (DE.jss == "1") DE.cnt = "1";
-			else DE.cnt = cnt;
-			// ncn
-			if (DE.cnt == "0") DE.ncn = "1";
-			else DE.ncn = ncn;
-			// ama
-			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
+			if (solo_cfc == "1") DE.ama = ama;
 		}
 		return DE;
-	},
-	epocas: (entidad) => {
-		return entidad == "personajes"
-			? [
-					{
-						nombre: "Anterior",
-						valor: "ANT",
-						ayuda: "Sólo si falleció antes de que naciera Jesús",
-					},
-					{nombre: "Contemporáneo", valor: "CNT"},
-					{
-						nombre: "Posterior",
-						valor: "PST",
-						ayuda: "Sólo si nació después de que falleciera Jesús",
-					},
-			  ]
-			: [
-					{nombre: "Anterior", valor: "ant"},
-					{nombre: "Durante", valor: "jss"},
-					{nombre: "Apóstoles", valor: "cnt"},
-					{nombre: "Posterior", valor: "pst"},
-			  ];
 	},
 };
