@@ -3,7 +3,14 @@ global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+global.horarioLCF = null;
 
+// Averigua los títulos de la imagen de ayer y hoy
+const fs = require("fs");
+let rutaNombre = "./funciones/3-Procesos/fecha.json";
+let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+global.tituloImgDerAyer = datos.tituloImgDerAyer;
+global.tituloImgDerHoy = datos.tituloImgDerHoy;
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -80,22 +87,12 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 // Variables que usan funciones
 (async () => {
-	// Requires
-	const fs = require("fs");
-	const BD_genericas = require("./funciones/2-BD/Genericas");
-	const comp = require("./funciones/3-Procesos/Compartidas");
-
-	// Averigua los títulos de la imagen de ayer y hoy
-	let rutaNombre = "./funciones/3-Procesos/fecha.json";
-	let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
-	global.tituloImgDerAyer = datos.tituloImgDerAyer;
-	global.tituloImgDerHoy = datos.tituloImgDerHoy;
-
 	// Averigua la fecha de la 'Línea de Cambio de Fecha'
-	global.horarioLCF = null;
+	const comp = require("./funciones/3-Procesos/Compartidas");
 	comp.horarioLCF();
 
 	// Completa el objeto 'global'
+	const BD_genericas = require("./funciones/2-BD/Genericas");
 	let campos = {
 		// Variables de usuario
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
@@ -129,7 +126,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 	comp.tareasDiarias();
 
-	// urls
+	// urls --> es crítico que esto esté después del 'await' de 'global'
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
