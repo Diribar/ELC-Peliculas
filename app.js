@@ -111,7 +111,9 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
-		dias_del_ano: BD_genericas.obtieneTodos("dias_del_ano", "id"),
+		dias_del_ano: BD_genericas.obtieneTodos("dias_del_ano", "id").then((n) =>
+			n.filter((m) => m.id < 400)
+		),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 	};
 	// Espera a que todas se procesen y consolida la info
