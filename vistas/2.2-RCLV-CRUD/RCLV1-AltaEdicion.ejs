@@ -302,7 +302,6 @@
 						<div id="sectorApMar" class="flexRowAlign altoFila invisible">
 							<select name="ap_mar_id" class="input">
 								<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
-								<option value="null" <% if (dataEntry.ap_mar_id===null) { %>selected<% } %>>No presenció ninguna</option>
 								<% for (let ap_mar of ap_mars) { %>
 									<option value="<%= ap_mar.id %>" <% if (dataEntry.ap_mar_id == ap_mar.id) { %>selected<% } %>>
 										<%= ap_mar.nombre %>

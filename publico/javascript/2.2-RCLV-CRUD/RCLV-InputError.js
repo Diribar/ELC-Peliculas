@@ -75,11 +75,11 @@ window.addEventListener("load", async () => {
 	// Valores para hechos
 	if (v.hechos) {
 		// Inputs - Epoca
-		v.ant = document.querySelectorAll("#dataEntry #epoca input[name='ant']");
-		v.jss = document.querySelectorAll("#dataEntry #epoca input[name='jss']");
-		v.cnt = document.querySelectorAll("#dataEntry #epoca input[name='cnt']");
-		v.pst = document.querySelectorAll("#dataEntry #epoca input[name='pst']");
-		v.epocas = document.querySelectorAll("#dataEntry #epoca .input[type='checkbox']");
+		v.ant = document.querySelector("#dataEntry #epoca input[name='ant']");
+		v.jss = document.querySelector("#dataEntry #epoca input[name='jss']");
+		v.cnt = document.querySelector("#dataEntry #epoca input[name='cnt']");
+		v.pst = document.querySelector("#dataEntry #epoca input[name='pst']");
+		v.epocas = document.querySelectorAll("#dataEntry #epoca input[type='checkbox']");
 		// Inputs - RCLIC
 		v.solo_cfc = document.querySelectorAll("#dataEntry input[name='solo_cfc']");
 		v.ama = document.querySelectorAll("#dataEntry input[name='ama']");
@@ -219,9 +219,12 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			hechos:async () => {
+			hechos: async () => {
 				// Obtiene la opción elegida
 				let epoca = opcionElegida(v.epocas);
+				// Si 'jss' --> 'cnt'
+				if (epoca.name == "jss") v.cnt.checked = true;
+
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 

@@ -38,7 +38,7 @@ module.exports = {
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
 			procesos_canon = procs_canon.filter((m) => m.id.length == 3);
-			ap_mars = await BD_genericas.obtieneTodos("hechos", "nombre");
+			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
 			ap_mars = ap_mars.filter((n) => n.ama);
 		}
 		// Pasos exclusivos para edición
