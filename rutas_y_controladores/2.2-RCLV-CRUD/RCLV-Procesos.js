@@ -247,7 +247,7 @@ module.exports = {
 			if (datos.categoria_id == "CFC") {
 				DE.rol_iglesia_id = datos.rol_iglesia_id;
 				DE.proceso_id = datos.proceso_id;
-				if (datos.epoca_id == "pst" && parseInt(ano) > 1100) DE.ap_mar_id = datos.ap_mar_id;
+				if (datos.epoca_id == "pst" && parseInt(datos.ano) > 1100) DE.ap_mar_id = datos.ap_mar_id;
 			}
 		}
 		// Datos para hechos
