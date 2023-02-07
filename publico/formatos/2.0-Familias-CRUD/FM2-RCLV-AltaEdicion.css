@@ -65,10 +65,11 @@
 ) .invisible {visibility: visible;}
 
 /* 2. PreguntasRCLIC (personajes) */
-#dataEntry:not(
-	:not(:has(.personajes #categoria_id input#CFC:checked)), /* la categoría es 'CFC' */
-	:not(:has(#sexo_id input:checked))                       /* contestó 'sexo' */
-)	#preguntasRCLIC.invisible {visibility: visible;}
+#dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
+	#preguntasRCLIC.invisible {visibility: visible;}
+
+#dataEntry:has(#sexo_id input:checked)                       /* contestó 'sexo' */
+	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
 
 /* 3. PreguntasRCLIC (hechos) */
 #dataEntry:has(.hechos #soloCFC input#SI:checked)            /* --> si soloCFC='SI' */
