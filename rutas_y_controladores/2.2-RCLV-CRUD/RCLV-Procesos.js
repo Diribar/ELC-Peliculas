@@ -253,7 +253,7 @@ module.exports = {
 		// Datos para hechos
 		if (datos.entidad == "hechos") {
 			// Variables
-			let {ant, jss, cnt, pst, solo_cfc, ama, ano} = datos;
+			let {ant, jss, cnt, pst, ano, solo_cfc, ama} = datos;
 			// Época
 			DE.ant = ant ? 1 : 0;
 			DE.jss = jss ? 1 : 0;
