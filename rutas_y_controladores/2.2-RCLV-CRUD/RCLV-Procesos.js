@@ -248,7 +248,7 @@ module.exports = {
 			let CFC = datos.categoria_id == "CFC";
 			DE.rol_iglesia_id = CFC ? datos.rol_iglesia_id : "NN" + datos.sexo_id;
 			DE.proceso_id = CFC ? datos.proceso_id : "NN" + datos.sexo_id;
-			DE.ap_mar_id = cfc && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : 2;
+			DE.ap_mar_id = CFC && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : 2;
 		}
 		// Datos para hechos
 		if (datos.entidad == "hechos") {
