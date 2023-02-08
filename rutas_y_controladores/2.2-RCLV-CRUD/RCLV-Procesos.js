@@ -72,16 +72,11 @@ module.exports = {
 				// Obtiene la entidad y el campo 'entidad_id'
 				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
 				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+				let entID = edicion[entidad_id];
 				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-					entidad,
-					edicion[entidad_id],
-					userID,
-					"prods_edicion",
-					"productos"
-				);
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
 				// Pule la edición y actualiza la variable del registro original
-				[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+				prodEdic = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
 				productos[entidad].push(producto);
@@ -176,13 +171,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio y en status creado?
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
-				: await procsCRUD.guardaEdicion({
-						entidadOrig: entidad,
-						entidadEdic: "rclvs_edicion",
-						original: RCLV_original,
-						edicion: DE,
-						userID,
-				  }); // Guarda la edición
+				: await procsCRUD.guardaEdicion({original: RCLV_original, edicion: DE, entidad, userID}); // Guarda la edición
 		} else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
