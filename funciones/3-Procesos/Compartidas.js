@@ -52,7 +52,7 @@ module.exports = {
 		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
 		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
-	},
+	}, 
 	actualizaRegistro: async ({entidad, id, datos}) => {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
