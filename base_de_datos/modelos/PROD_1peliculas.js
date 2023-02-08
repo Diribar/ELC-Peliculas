@@ -23,7 +23,7 @@ module.exports = (sequelize, dt) => {
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
-		publico_sugerido_id: {type: dt.INTEGER},
+		publico_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
@@ -51,6 +51,7 @@ module.exports = (sequelize, dt) => {
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
+		perenne: {type: dt.BOOLEAN},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
@@ -69,8 +70,8 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.tipos_de_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
-		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
+		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
+		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});

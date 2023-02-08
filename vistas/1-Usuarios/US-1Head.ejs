@@ -1,17 +1,17 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
-<link rel="stylesheet" href="/formatos/1-Usuarios/0-Usuarios.css">
+<link rel="stylesheet" href="/formatos/1-Usuarios/US-Usuarios.css">
 <% if (codigo == "alta-mail" || codigo == "olvido-contrasena") { %>
-	<link rel="stylesheet" href="/formatos/1-Usuarios/1-Alta-Mail.css">
-	<script src="/javascript/1-Usuarios/1-Mail.js"></script>
+	<link rel="stylesheet" href="/formatos/1-Usuarios/US1-AltaMail.css">
+	<script src="/javascript/1-Usuarios/US1-AltaMail.js"></script>
 <% } else if (codigo == "editables") { %>
-	<link rel="stylesheet" href="/formatos/1-Usuarios/2-Datos-Editables.css">
-	<script src="/javascript/1-Usuarios/2-InputError.js"></script>
-<% } else if (codigo == "documento") { %>
-	<link rel="stylesheet" href="/formatos/1-Usuarios/2-Datos-Editables.css">
-	<link rel="stylesheet" href="/formatos/1-Usuarios/3-Documento.css">
-	<script src="/javascript/1-Usuarios/2-InputError.js"></script>
+	<link rel="stylesheet" href="/formatos/1-Usuarios/US2-Editables.css">
+	<script src="/javascript/1-Usuarios/US-InputError.js"></script>
+<% } else if (codigo == "identidad") { %>
+	<link rel="stylesheet" href="/formatos/1-Usuarios/US2-Editables.css">
+	<link rel="stylesheet" href="/formatos/1-Usuarios/US3-Validacion.css">
+	<script src="/javascript/1-Usuarios/US-InputError.js"></script>
 <% } else if (codigo == "login") { %>
-	<link rel="stylesheet" href="/formatos/1-Usuarios/8-Login.css">
-	<script src="/javascript/1-Usuarios/ojitoContrasena.js"></script>
-	<script src="/javascript/1-Usuarios/2-InputError.js"></script>
+	<link rel="stylesheet" href="/formatos/1-Usuarios/US8-Login.css">
+	<script src="/javascript/1-Usuarios/US8-OjitoContrasena.js"></script>
+	<script src="/javascript/1-Usuarios/US-InputError.js"></script>
 <% } %>

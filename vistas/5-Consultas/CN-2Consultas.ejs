@@ -1,0 +1,14 @@
+<form action="">
+	<!-- Zona de Filtros -->
+	<%- include('CN-4Filtros') %>
+	
+	<!-- Zona de Productos -->
+	<div id="zona-de-prods" class="flexCol grow">
+		<!-- Encabezado -->
+		<%- include('CN-3Encabezado') %>
+		<!-- Sector de películas -->
+		<div id="vistaProds">
+			<%- include("CN-" + layoutElegido) %>
+		</div>
+	</div>
+</form>

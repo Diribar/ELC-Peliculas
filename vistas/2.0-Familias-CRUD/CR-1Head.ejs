@@ -1,8 +1,12 @@
 <!-- Compartidos -->
-<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
-<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+<% if (tema != "responsabilidad") { %>
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+<% } %>
 
 <!-- Personalizados -->
-<% if (tema == "prod_rud") { %><%- include('PR-1Head') %><% } %>
-<% if (tema == "rclv_crud") { %><%- include("RCLV-1Head") %><% } %>
-<% if (tema == "links_crud") { %><%- include('LK-1Head') %><% } %>
+<% if (tema == "prod_rud") { %><%- include('PR-1Head') %>
+<% } else if (tema == "rclv_crud") { %><%- include("RCLV-1Head") %>
+<% } else if (tema == "links_crud") { %><%- include('LK-1Head') %>
+<% } else if (tema == "responsabilidad") { %><link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM9-Responsab.css">
+<% } %>

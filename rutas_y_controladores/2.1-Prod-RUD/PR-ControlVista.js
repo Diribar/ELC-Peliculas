@@ -21,13 +21,7 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
@@ -41,7 +35,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
-		let camposInput1, camposInput2, produccion, camposDP, BD_paises, BD_idiomas;
+		let camposInput1, camposInput2, produccion, camposDA, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let edicion = (() => {
@@ -75,7 +69,7 @@ module.exports = {
 			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			// Datos Personalizados
-			camposDP = await variables.camposDP_conValores(userID);
+			camposDA = await variables.camposDA_conValores(userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
@@ -106,7 +100,7 @@ module.exports = {
 			produccion,
 			BD_paises,
 			BD_idiomas,
-			camposDP,
+			camposDA,
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
@@ -123,13 +117,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;
@@ -159,13 +147,7 @@ module.exports = {
 		// Actualiza la edición
 
 		if (!errores.hay)
-			await procsCRUD.guardaEdicion({
-				entidadOrig: entidad,
-				entidadEdic: "prods_edicion",
-				original: prodOrig,
-				edicion: req.body,
-				userID,
-			});
+			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion: req.body, entidad, userID});
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

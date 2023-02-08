@@ -8,7 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	resumen: async (RCLV, cantProdsEnBD) => {
 		// Variable fecha
-		let diaDelAno = await BD_genericas.obtienePorId("dias_del_ano", RCLV.dia_del_ano_id);
+		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
 		let mes = mesesAbrev[diaDelAno.mes_id - 1];
 		let fecha = dia + "/" + mes;
@@ -72,16 +72,11 @@ module.exports = {
 				// Obtiene la entidad y el campo 'entidad_id'
 				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
 				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+				let entID = edicion[entidad_id];
 				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-					entidad,
-					edicion[entidad_id],
-					userID,
-					"prods_edicion",
-					"productos"
-				);
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
 				// Pule la edición y actualiza la variable del registro original
-				[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+				prodEdic = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
 				productos[entidad].push(producto);
@@ -152,44 +147,41 @@ module.exports = {
 		let origen = req.query.origen;
 		let userID = req.session.usuario.id;
 		const codigo = req.baseUrl + req.path;
-		// Tareas
+		// Tareas para un nuevo registro
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
-			// Agregar el RCLV a DP/ED
+			// Les agrega el 'rclv_id' a session y cookie de origen
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			if (origen == "DP") {
-				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
-				res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
+			if (origen == "DA") {
+				req.session.datosAdics = req.session.datosAdics
+					? req.session.datosAdics
+					: req.cookies.datosAdics;
+				req.session.datosAdics = {...req.session.datosAdics, [entidad_id]: id};
+				res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 			} else if (origen == "ED") {
 				req.session.edicProd = req.session.edicProd ? req.session.edicProd : req.cookies.edicProd;
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} else if (codigo == "/rclv/edicion/") {
+		} 
+		// Tareas para edición
+		else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
 			let id = req.query.id;
-			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
-			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualizaRegistro({entidad, id, datos: DE}) // Actualiza el registro original
-				: await procsCRUD.guardaEdicion({
-						entidadOrig: entidad,
-						entidadEdic: "rclvs_edicion",
-						original: RCLV_original,
-						edicion: DE,
-						userID,
-				  }); // Guarda la edición
-		} else if (codigo == "/revision/rclv/alta/") {
+			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
+				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
+				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
+		} 
+		// Tareas para revisión
+		else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
+			await BD_genericas.actualizaPorId(entidad, id, DE); // Actualizar el registro original
 		}
-		// Borrar session y cookies de RCLV
-		if (req.session[entidad]) delete req.session[entidad];
-		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
 		return;
 	},
@@ -200,13 +192,13 @@ module.exports = {
 		if (codigo == "agregar") {
 			// Desde vista 'agregar' no hace falta inactivar => vuelve al origen
 			let rutaOrigen =
-				datos.origen == "DP"
-					? "/producto/agregar/datos-personalizados"
+				datos.origen == "DA"
+					? "/producto/agregar/datos-adicionales"
 					: datos.origen == "ED"
 					? "/producto/edicion/"
 					: "/";
 			let entidadIdOrigen =
-				datos.origen && datos.origen != "DP"
+				datos.origen && datos.origen != "DA"
 					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
 					: "";
 			rutaSalir = rutaOrigen + entidadIdOrigen;
@@ -215,9 +207,9 @@ module.exports = {
 			// La vista actual puede ser '/rclv/edicion' o '/revisar/rclv/alta'
 			let entidadIdActual = "?entidad=" + datos.entidad + "&id=" + datos.id;
 			let entidadIdOrigen =
-				datos.origen && datos.origen != "DP"
+				datos.origen && datos.origen != "DA"
 					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
-					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DP'
+					: ""; // Sería para '/revision/tablero' y '/producto/agregar/DA'
 			let origen = "&origen=" + (!datos.origen ? "tableroEnts" : datos.origen);
 			// rutaSalir
 			rutaSalir = "/inactivar-captura/" + entidadIdActual + entidadIdOrigen + origen;
@@ -225,52 +217,45 @@ module.exports = {
 		// Fin
 		return rutaSalir;
 	},
-	procesaLosDatos: async (datos) => {
+	procesaLosDatos: (datos) => {
 		// Variables
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
 		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
-		// Nombre
+		// Datos comunes - Nombre
 		DE.nombre = datos.nombre;
-		// Día del año
-		if (!datos.desconocida)
-			DE.dia_del_ano_id = await BD_genericas.obtieneTodos("dias_del_ano", "id")
-				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
-				.then((n) => n.id);
-		// Año
-		if (datos.entidad != "valores" && datos.ano) DE.ano = datos.ano;
+		// Datos comunes - Día del año
+		if (datos.mes_id && datos.dia)
+			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+		else if (datos.desconocida)
+			DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
+		else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
-			// Datos sencillos
-			if (datos.apodo) DE.apodo = datos.apodo;
+			DE.apodo = datos.apodo ? datos.apodo : "";
 			DE.sexo_id = datos.sexo_id;
-			DE.categoria_id = datos.categoria_id;
+			DE.epoca_id = datos.epoca_id;
+			DE.ano = datos.epoca_id == "pst" ? datos.ano : 0;
 			// RCLI
-			if (datos.categoria_id == "CFC") {
-				// Datos sencillos
-				DE.rol_iglesia_id = datos.rol_iglesia_id;
-				if (datos.enProcCan == "1") DE.proceso_id = datos.proceso_id;
-				if (datos.ama == "1") DE.ap_mar_id = datos.ap_mar_id;
-				// subcategoria_id
-				let santoBeato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
-				if (datos.cnt == "1") DE.subcategoria_id = "CNT";
-				else if (datos.enProcCan == "1" && santoBeato) DE.subcategoria_id = "HAG";
-			}
+			DE.categoria_id = datos.categoria_id;
+			let CFC = datos.categoria_id == "CFC";
+			DE.rol_iglesia_id = CFC ? datos.rol_iglesia_id : "NN" + datos.sexo_id;
+			DE.proceso_id = CFC ? datos.proceso_id : "NN" + datos.sexo_id;
+			DE.ap_mar_id = CFC && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : 2;
 		}
+		// Datos para hechos
 		if (datos.entidad == "hechos") {
 			// Variables
-			let {solo_cfc, jss, cnt, ncn, ama} = datos;
-			// Datos sencillos
+			let {ant, jss, cnt, pst, ano, solo_cfc, ama} = datos;
+			// Época
+			DE.ant = ant ? 1 : 0;
+			DE.jss = jss ? 1 : 0;
+			DE.cnt = cnt ? 1 : 0;
+			DE.pst = pst ? 1 : 0;
+			DE.ano = !ant && !jss && !cnt && pst ? ano : 0;
+			// RCLIC
 			DE.solo_cfc = solo_cfc;
-			DE.jss = jss;
-			// cnt
-			if (DE.jss == "1") DE.cnt = "1";
-			else DE.cnt = cnt;
-			// ncn
-			if (DE.cnt == "0") DE.ncn = "1";
-			else DE.ncn = ncn;
-			// ama
-			if (solo_cfc == "1" && DE.ncn == "1") DE.ama = ama;
+			DE.ama = solo_cfc == "1" ? ama : 0;
 		}
 		return DE;
 	},

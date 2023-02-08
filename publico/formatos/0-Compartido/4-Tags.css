@@ -18,6 +18,7 @@ label {line-height: 1;}
 
 /* Formularios */
 select option[value=''] {display: none;}
-::placeholder, select:invalid {font-style: italic;}
+::placeholder, select:has(option[value=""]:checked) {font-style: italic;}
 select option {font-style: normal;}
 input[type="radio"], input[type="checkbox"] {scale: .8;}
+input[type="radio"] {align-self: end;}

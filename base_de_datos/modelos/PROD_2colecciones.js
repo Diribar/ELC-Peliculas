@@ -19,12 +19,12 @@ module.exports = (sequelize, dt) => {
 		produccion: {type: dt.STRING(50)},
 		sinopsis: {type: dt.STRING(1004)},
 		avatar: {type: dt.STRING(100)},
-		
+
 		cfc: {type: dt.BOOLEAN},
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
-		publico_sugerido_id: {type: dt.INTEGER},
+		publico_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
@@ -34,7 +34,7 @@ module.exports = (sequelize, dt) => {
 		entretiene: {type: dt.INTEGER},
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
-		
+
 		color: {type: dt.BOOLEAN},
 		castellano: {type: dt.BOOLEAN},
 
@@ -52,6 +52,7 @@ module.exports = (sequelize, dt) => {
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
+		perenne: {type: dt.BOOLEAN},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
@@ -70,8 +71,8 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.tipos_de_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
-		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
+		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
+		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
@@ -90,7 +91,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_BD", foreignKey: "links_gratis_en_bd_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_web", foreignKey: "links_gratis_en_web_id"});
 
-		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.historial_cambios_de_status, {as: "historial", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links, {as: "links", foreignKey: "coleccion_id"});

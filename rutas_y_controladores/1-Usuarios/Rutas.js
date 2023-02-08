@@ -2,13 +2,17 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const API = require("./US-ControlAPI");
+const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
-const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
-const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const soloUsuariosCompl = require("../../middlewares/usuarios/solo1-usuariosCompl");
+const visitas = require("../../middlewares/usuarios/filtro-visitas");
+const usuarios = require("../../middlewares/usuarios/filtro-usuarios");
+const stMailValidado = require("../../middlewares/usuarios/filtro-usSt2-MailVal");
+const stEditables = require("../../middlewares/usuarios/filtro-usSt3-Editables");
+const stIdentValidar = require("../../middlewares/usuarios/filtro-usSt4-IdentValidar");
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -16,30 +20,33 @@ const multer = require("../../middlewares/varios/multer");
 router.get("/api/valida-login", API.validaLogin);
 router.get("/api/valida-mail", API.validaMail);
 router.get("/api/valida-editables", API.validaEditables);
-router.get("/api/valida-documento", API.validaDocumento);
+router.get("/api/valida-identidad", API.validaIdentidad);
 
 // Rutas de Altas
-router.get("/redireccionar", vista.redireccionar);
-router.get("/alta-mail", soloVisitas, vista.altaMailForm);
-router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
-router.get("/editables", soloUsuarios, vista.editablesForm);
-router.post("/editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
-router.get("/bienvenido", soloUsuariosCompl, vista.bienvenido);
-// router.get("/responsabilidad", soloUsuariosCompl, vista.responsab);
-router.get("/documento", soloUsuariosCompl, vista.validaForm);
-router.post("/documento", soloUsuariosCompl, multer.single("avatar"), vista.validaGuardar);
-router.get("/documento-recibido", soloUsuariosCompl, vista.validado);
+// 1. Sólo visitas
+router.get("/garantiza-login-y-completo", vista.login_y_completo);
+router.get("/alta-mail", visitas, vista.altaMailForm);
+router.post("/alta-mail", visitas, vista.altaMailGuardar);
+// 2. Solo usuarios con status 'mail_validado'
+router.get("/editables", stMailValidado, vista.editablesForm);
+router.post("/editables", stMailValidado, multer.single("avatar"), vista.editablesGuardar);
+// 3. Solo usuarios con status 'editables'
+router.get("/bienvenido", stEditables, vista.bienvenido);
+// 4. Solo usuarios con status 'editables' y no penalizadas
+router.get("/identidad", stEditables, penalizaciones, vista.identidadForm);
+router.post("identidad", stEditables, penalizaciones, multer.single("avatar"), vista.identidadGuardar);
+// 5. Solo usuarios con status 'ident_a_validar'
+router.get("/validacion-en-proceso", stIdentValidar, vista.validacionEnProceso);
 
 // Rutas RUD
-router.get("/edicion", soloUsuariosCompl, vista.edicionForm);
-router.put("/edicion", soloUsuariosCompl, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
+router.get("/edicion", usAltaTerm, vista.edicionForm);
+router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
 
 // Login
-router.get("/login", soloVisitas, vista.loginForm);
-router.post("/login", soloVisitas, vista.loginGuardar);
-router.get("/pre-logout", soloUsuarios, vista.preLogout);
-router.get("/logout", soloUsuarios, vista.logout);
-router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
-router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
+router.get("/login", visitas, vista.loginForm);
+router.post("/login", visitas, vista.loginGuardar);
+router.get("/logout", usuarios, vista.logout);
+router.get("/olvido-contrasena", visitas, vista.altaMailForm);
+router.post("/olvido-contrasena", visitas, vista.olvidoContrGuardar);
 
 module.exports = router;

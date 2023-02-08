@@ -1,11 +1,11 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let clicks = document.querySelectorAll(".despl_click");
-	let mostrar = document.querySelectorAll(".despl_mostrar");
+	let clicks = document.querySelectorAll(".desplClick");
+	let mostrar = document.querySelectorAll(".desplMostrar");
 	// Otras variables
-	let busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .despl_mostrar");
-	let busquedaRapida_input = document.querySelector("header #busquedaRapida .despl_mostrar input");
+	let busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .desplMostrar");
+	let busquedaRapida_input = document.querySelector("header #busquedaRapida .desplMostrar input");
 
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {

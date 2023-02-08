@@ -35,12 +35,12 @@ module.exports = {
 		// Fin
 		return leadTime;
 	},
-	includes: (familia) => {
+	obtieneTodosLosCamposInclude: (familia) => {
 		// Obtiene todos los campos
 		let campos = [...variables.camposRevisar[familia]];
 		// Deja solamente los campos con vínculo
 		let camposConVinculo = campos.filter((n) => n.relac_include);
-		// Obtiene los vínculos
+		// Obtiene una matriz con los vínculos
 		let includes = camposConVinculo.map((n) => n.relac_include);
 		// Fin
 		return includes;
@@ -66,7 +66,7 @@ module.exports = {
 		// Preparar los datos
 		let datos = {
 			sugerido_por_id: userID,
-			sugerido_en: funcionAhora(),
+			sugerido_en: FN_ahora(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};
@@ -76,9 +76,15 @@ module.exports = {
 
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+		return entidad == "peliculas" ||
+			entidad == "colecciones" ||
+			entidad == "capitulos" ||
+			entidad == "prods_edicion"
 			? "producto"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			: entidad == "personajes" ||
+			  entidad == "hechos" ||
+			  entidad == "valores" ||
+			  entidad == "rclvs_edicion"
 			? "rclv"
 			: entidad == "links"
 			? "links"
@@ -97,6 +103,17 @@ module.exports = {
 			? "rclvs"
 			: entidad == "links" || entidad == "links_edicion"
 			? "links"
+			: entidad == "usuarios"
+			? "usuarios"
+			: "";
+	},
+	obtieneNombreEdicionDesdeEntidad: (entidad) => {
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+			? "prods_edicion"
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			? "rclvs_edicion"
+			: entidad == "links"
+			? "links_edicion"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {
@@ -106,11 +123,11 @@ module.exports = {
 			? "Colección"
 			: entidad == "capitulos"
 			? "Capítulo"
-			: entidad.includes("personaje")
+			: entidad == "personajes"
 			? "Personaje"
-			: entidad.includes("hecho")
+			: entidad == "hechos"
 			? "Hecho"
-			: entidad.includes("valor")
+			: entidad == "valores"
 			? "Valor"
 			: entidad == "links"
 			? "Links"
@@ -175,21 +192,14 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
-			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
+	obtieneProducto_id: (edicion) => {
+		return edicion.pelicula_id
+			? "pelicula_id"
+			: edicion.coleccion_id
+			? "coleccion_id"
+			: edicion.capitulo_id
+			? "capitulo_id"
+			: "";
 	},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado
@@ -264,10 +274,25 @@ module.exports = {
 		}
 		return resultado;
 	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
+	},
 
 	// Fecha y Hora
 	ahora: () => {
-		return funcionAhora();
+		return FN_ahora();
 	},
 	nuevoHorario: (delay, horario) => {
 		return nuevoHorario(delay, horario);
@@ -288,7 +313,7 @@ module.exports = {
 		return fecha;
 	},
 	fechaHorarioTexto: (horario) => {
-		horario = horario ? new Date(horario) : funcionAhora();
+		horario = horario ? new Date(horario) : FN_ahora();
 		return (
 			horario.getDate() +
 			"/" +
@@ -392,61 +417,55 @@ module.exports = {
 
 	// Tareas diarias y horarias
 	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para que le sume las 12 horas
+		// Obtiene la fecha actual - es imprescindible el 'getTime' para poder sumarle las 12 horas luego
 		let milisegs = new Date().getTime();
+		// Obtiene el horario de la "línea de cambio de fecha"
 		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF).getTime();
+		horarioLCF = new Date(milisegsLCF);
 		// Fin
 		return;
 	},
 	tareasDiarias: async function () {
-		// Actualiza el horarioLCF
+		// Variables
+		let rutaNombre = path.join(__dirname, "fecha.json");
+		let info = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+		let fechaGuardada = info.fechaLCF;
+		let fechaReal;
+
+		// Actualiza la fechaReal
 		this.horarioLCF();
+		fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
 
 		// Tareas si cambió la fecha
-		const nombreDeArchivo = "archFechaVig.json";
-		let rutaNombre = path.join(__dirname, nombreDeArchivo);
-		let fechas = () => {
-			// Obtiene el valor de las fechas
-			let fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-			let fechaActual =
-				new Date(horarioLCF).getDate() + "/" + mesesAbrev[new Date(horarioLCF).getMonth()];
-			// Fin
-			return [fechaActual, fechaVigente];
-		};
-		let [fechaActual, fechaVigente] = fechas();
-		if (fechaActual != fechaVigente) {
-			// Actualiza el valor de la fecha
-			(() => {
-				fs.writeFile(rutaNombre, JSON.stringify({dia: fechaActual}), function writeJSON(err) {
-					if (err) return console.log(304, err);
-					fechaVigente = JSON.parse(fs.readFileSync(rutaNombre, "utf8")).dia;
-					console.log("Fecha actualizada a " + fechaVigente);
-				});
-			})();
-			// Actualiza el archivo de la imagen derecha
-			await this.cambiaImagenDerecha();
+		if (fechaReal != fechaGuardada) {
+			// Actualiza el archivo de la imagen derecha y sus datos
+			await this.actualizaImagenDerecha();
+
+			// Actualiza los valores del archivo
+			let datos = {
+				fechaLCF: fechaReal,
+				hora: this.fechaHorarioTexto(),
+				tituloImgDerAyer,
+				tituloImgDerHoy,
+			};
+			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
+				if (err) return console.log(304, err);
+			});
 		}
 
 		// Fin
 		return;
 	},
-	tareasHorarias: () => {
-		// console.log(new Date().getTimezoneOffset());
-		// console.log(new Date());
-		let imagen = {};
-	},
-	cambiaImagenDerecha: async function () {
+	actualizaImagenDerecha: async function () {
 		// Variables
 		let dia_del_ano_id, banco_de_imagenes, imgDerecha;
 
 		// Obtiene dia_del_ano_id y el banco_de_imagenes
 		await (async () => {
-			let fecha = new Date(horarioLCF);
-			let dia = fecha.getDate();
-			let mes_id = fecha.getMonth() + 1;
+			let dia = horarioLCF.getDate();
+			let mes_id = horarioLCF.getMonth() + 1;
 			let datos = {dia, mes_id};
-			dia_del_ano_id = BD_genericas.obtienePorCampos("dias_del_ano", datos).then((n) => n.id);
+			dia_del_ano_id = dias_del_ano.find((n) => n.dia == datos.dia && n.mes_id == datos.mes_id).id;
 
 			// Obtiene la tabla de 'banco_de_imagenes'
 			banco_de_imagenes = BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id").then((n) =>
@@ -454,6 +473,7 @@ module.exports = {
 					return {
 						dia_del_ano_id: n.dia_del_ano_id,
 						nombre_archivo: n.nombre_archivo,
+						nombre: n.nombre,
 					};
 				})
 			);
@@ -470,27 +490,33 @@ module.exports = {
 			}
 			// Obtiene el dia_del_ano_id con imagen
 			dia_del_ano_id = imgDerecha.dia_del_ano_id;
-			dia_del_ano_id > 366 ? (dia_del_ano_id -= 366) : null;
 			// Obtiene todos los registros con ese 'dia_del_ano_id'
 			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == dia_del_ano_id);
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--;
-			imgDerecha = registros[indice].nombre_archivo;
+			imgDerecha = registros[indice];
 		})();
 
+		// Actualiza los valores de los títulos de imagenDerecha de ayer y hoy
+		tituloImgDerAyer = tituloImgDerHoy;
+		tituloImgDerHoy = imgDerecha.nombre;
+
+		console.log("Actualiza la imagen derecha");
 		// 1. Borra la 'imagenAnterior'
-		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerAnt.jpg");
+		await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
-		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerecha.jpg", "imgDerAnt.jpg");
+		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 		// Copia la nueva imagen como 'imgDerecha'
-		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha, "0-Base/imgDerecha.jpg");
+		await this.copiaUnArchivoDeImagen(
+			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
+			"0-Base/imgDerechaHoy.jpg"
+		);
+
 		// Fin
 		return;
 	},
 
 	// Validaciones
-	inputVacio: "Necesitamos que completes este campo",
-	selectVacio: "Necesitamos que elijas un valor",
 	longitud: (dato, corto, largo) => {
 		return dato.length < corto
 			? "El contenido debe ser más largo"
@@ -531,64 +557,80 @@ module.exports = {
 		// Variables
 		let {avatar, avatar_url, docum_avatar, tamano, esImagen} = datos;
 		avatar = avatar ? avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
-		// Funciones
-		let FN_esImagen = () => {
-			return esImagen == "NO" ? "El archivo no es una imagen" : "";
-		};
-		let FN_nombre = () => {
-			return !avatar ? "Necesitamos que agregues una imagen" : "";
-		};
-		let FN_extension = () => {
-			let ext = path.extname(avatar).toLocaleLowerCase();
-			return !ext
-				? "El archivo debe tener alguna extensión"
-				: ![".jpg", ".png", ".jpeg"].includes(ext)
-				? "Usaste un archivo con la extensión '" +
-				  ext.slice(1).toUpperCase() +
-				  "'. Las extensiones válidas son JPG, JPEG y PNG"
-				: "";
-		};
-		let FN_tamano = () => {
-			return tamano && tamano > 1100000
+		let ext = path.extname(avatar).toLocaleLowerCase();
+
+		// Mensajes
+		let MN_esImagen = esImagen == "NO" ? "El archivo no es una imagen" : "";
+
+		let MN_nombre = !avatar ? "Necesitamos que agregues una imagen" : "";
+
+		let MN_extension = !ext
+			? "El archivo debe tener alguna extensión"
+			: ![".jpg", ".png", ".jpeg"].includes(ext)
+			? "Usaste un archivo con la extensión '" +
+			  ext.slice(1).toUpperCase() +
+			  "'. Las extensiones válidas son JPG, JPEG y PNG"
+			: "";
+
+		let MN_tamano =
+			tamano && tamano > 1100000
 				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
 				: "";
-		};
+
 		// Variables
 		let respuesta = "";
 		// Validaciones
-		if (!respuesta) respuesta = FN_esImagen();
-		if (!respuesta) respuesta = FN_nombre();
-		if (!respuesta) respuesta = FN_extension();
-		if (!respuesta) respuesta = FN_tamano();
+		if (!respuesta) respuesta = MN_esImagen;
+		if (!respuesta) respuesta = MN_nombre;
+		if (!respuesta) respuesta = MN_extension;
+		if (!respuesta) respuesta = MN_tamano;
 		// Fin
 		return respuesta;
 	},
 	cartelRepetido: function (datos) {
-		return (
-			"Este/a <a href='/" +
-			this.obtieneFamiliaEnSingular(datos.entidad) +
-			"/detalle/?entidad=" +
-			datos.entidad +
-			"&id=" +
-			datos.id +
-			"' target='_blank'><u><strong>" +
-			this.obtieneEntidadNombre(datos.entidad).toLowerCase() +
-			"</strong></u></a> ya se encuentra en nuestra base de datos"
-		);
+		// Variables
+		// 1. Inicio
+		let genero = datos.entidad == "capitulos" ? "o" : "a";
+		let inicio = "Est" + genero + " ";
+
+		// 2. Anchor
+		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
+		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
+		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
+		let anchor = " <a href='" + link + "' target='_blank'> " + entidadHTML + "</a>";
+
+		// 3. Final
+		let final = " ya se encuentra en nuestra base de datos";
+
+		// Fin
+		return inicio + anchor + final;
 	},
 
 	// Usuarios
-	usuario_aumentaPenalizacAcum: (userID, motivo) => {
+	usuarioAumentaPenaliz: (userID, motivo, familia) => {
 		// Variables
-		let rol_consultasID = roles_us.find((n) => !n.perm_inputs).id;
-		// Se le baja el rol a 'Consultas', si el motivo lo amerita
-		if (motivo.bloqueo_perm_inputs) BD_genericas.actualizaPorId("usuarios", userID, {rol_consultasID});
+		let duracion = motivo.duracion;
+		let objeto = {};
+
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", motivo.duracion);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
+
+		// Si corresponde, que se muestre el cartel de responsabilidad
+		if (duracion > 1 && familia) {
+			let cartel = "cartel_resp_" + (familia == "productos" ? "prods" : familia);
+			objeto[cartel] = true;
+		}
+		// Si corresponde, se le baja el rol a 'Consultas'
+		if (motivo.bloqueo_perm_inputs) objeto.rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+
+		// Si corresponde, actualiza el usuario
+		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
+
 		// Fin
 		return;
 	},
-	usuario_Ficha: async (userID, ahora) => {
+	usuarioFicha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
@@ -698,12 +740,11 @@ module.exports = {
 };
 
 // Funciones
-let funcionAhora = () => {
-	// Instante actual en horario local
-	return new Date(new Date().toUTCString());
+let FN_ahora = () => {
+	return new Date(new Date().toUTCString()); // <-- para convertir en 'horario local'
 };
 let nuevoHorario = (delay, horario) => {
-	horario = horario ? horario : funcionAhora();
+	horario = horario ? horario : FN_ahora();
 	let nuevoHorario = new Date(horario);
 	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 	return nuevoHorario;

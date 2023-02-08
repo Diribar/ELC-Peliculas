@@ -3,7 +3,7 @@
 	<label><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="text" class="input<% if (inputOK) { %> despl_click<% } %>" name="<%= campo %>" autocomplete="off"
+		<input type="text" class="input<% if (inputOK) { %> desplClick<% } %>" name="<%= campo %>" autocomplete="off"
 			value="<%= dataEntry[campo] %>"
 			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>

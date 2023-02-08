@@ -8,18 +8,17 @@ module.exports = {
 	registrosConEsaFecha: async (req, res) => {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
-		let dia_del_ano_id = await BD_genericas.obtienePorCampos("dias_del_ano", objeto).then((n) => n.id);
+		let dia_del_ano_id = dias_del_ano.find((n) => (n.dia == objeto.dia && n.mes_id == objeto.mes_id)).id
 		let casos = await BD_genericas.obtieneTodosPorCampos(entidad, {dia_del_ano_id})
 			.then((n) => n.filter((m) => m.id != id))
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	valida: async (req, res) => {
+	validaSector: async (req, res) => {
 		let mensaje = await valida[req.query.funcion](req.query);
 		return res.json(mensaje);
 	},
 	prefijos: (req, res) => {
-		let prefijos=variables.prefijos
-		return res.json(prefijos);
+		return res.json(variables.prefijos);
 	},
 };

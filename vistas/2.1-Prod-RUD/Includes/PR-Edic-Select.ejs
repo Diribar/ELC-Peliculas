@@ -1,4 +1,4 @@
-<% let campo = camposDP.find(n => n.nombre == nombreDelCampo) %>
+<% let campo = camposDA.find(n => n.nombre == nombreDelCampo) %>
 <section class="label-input">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
@@ -15,8 +15,8 @@
 		</select>
 		<!-- Ayuda -->
 		<div class="ayuda">
-			<i class="fa-solid fa-circle-question ayudaClick despl_click">
-				<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+			<i class="fa-solid fa-circle-question ayudaClick desplClick">
+				<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 					<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
 					<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
 				</ul>

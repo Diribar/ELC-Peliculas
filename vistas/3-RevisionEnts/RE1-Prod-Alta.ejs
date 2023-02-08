@@ -3,8 +3,8 @@
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
 	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
 				<li>Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.</li>
 				<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
 			</ul>
@@ -17,12 +17,12 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("RE0-2Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis" class="desplazam">
-				<nav class="infoDesplazam"><%= prodOrig.sinopsis %></nav>
+			<div id="sinopsis" class="bordeConSombra">
+				<div id="sinopsisContenido"><%= prodOrig.sinopsis %></div>
 				<!-- Ayuda -->
 				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick despl_click">
-						<ul type="none" class="ayudaMostrar ocultar despl_mostrar">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
 							<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
 						</ul>
 					</i>
@@ -80,22 +80,32 @@
 				<!-- TMDB -->
 				<% if (prodOrig.fuente != "TMDB") { %>
 					<% tmdb = prodOrig.nombre_original ? "search?language=es&query=" + prodOrig.nombre_original : "" %>
-					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database"></a>
+					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank">
+						<img src="//localhost/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database">
+					</a>
 				<% } %>
 				<!-- FA -->
 				<% if (prodOrig.fuente!="FA") { %>
 					<% fa = prodOrig.nombre_original ? "search.php?stext=" + prodOrig.nombre_original : "" %>
-					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity"></a>
+					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
+						<img src="//localhost/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity">
+					</a>
 				<% } %>
 				<!-- IMDB -->
 				<% imdb = prodOrig.IMDB_id ? "title/"+prodOrig.IMDB_id+"/technical" : (prodOrig.nombre_original ? "find?q="+prodOrig.nombre_original : "") %>
-				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database"></a>
+				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database">
+				</a>
 				<!-- Wikipedia -->
 				<% wiki = prodOrig.nombre_castellano ? prodOrig.nombre_castellano.toLowerCase() : "" %>
-				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia"></a>
+				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia">
+				</a>
 				<!-- Google -->
 				<% google = prodOrig.nombre_castellano ? "search?q="+prodOrig.nombre_castellano.toLowerCase() : "" %>
-				<a class="logos" href="//google.com/<%= google %>" target="_blank"><img src="/imagenes/0-Base/Logos/BD-Google.jpg" title="Google"></a>
+				<a class="logos" href="//google.com/<%= google %>" target="_blank">
+					<img src="//localhost/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
+				</a>
 			</nav>
 		</div>
 		<!-- Datos Breves -->

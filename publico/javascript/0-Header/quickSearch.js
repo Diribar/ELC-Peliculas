@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida .despl_mostrar input");
-	let hallazgos = document.querySelector("#busquedaRapida .despl_mostrar #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida .despl_mostrar #escribiMas");
+	let input = document.querySelector("#busquedaRapida .desplMostrar input");
+	let hallazgos = document.querySelector("#busquedaRapida .desplMostrar #displayResultados");
+	let escribiMas = document.querySelector("#busquedaRapida .desplMostrar #escribiMas");
 
 	// Funciones
 	let agregaHallazgos = (registros) => {

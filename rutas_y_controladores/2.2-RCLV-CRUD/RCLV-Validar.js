@@ -6,18 +6,25 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	consolidado: async function (datos) {
-		// Campos que siempre están
+		// Campos comunes a los 3 RCLV
 		let errores = {
 			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
+			repetidos: this.repetidos(datos),
 		};
-		if (datos.repetido) errores.repetidos = cartelDuplicado;
-		// Campos exclusivos
-		if (datos.entidad != "valores") errores.RCLI = this[datos.entidad](datos);
-		// Completar con 'hay errores'
+		// Sexo
+		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
+		// Época y RCLI
+		if (datos.entidad != "valores") {
+			errores.epoca = this.epoca(datos);
+			errores.RCLI = this["RCLIC_" + datos.entidad](datos);
+		}
+		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
+		// Fin
 		return errores;
 	},
+	// Campos comunes a los 3 RCLV
 	nombre: async function (datos) {
 		// Funciones
 		let mientrasEscribe = (campo) => {
@@ -54,7 +61,7 @@ module.exports = {
 			let respuesta = "";
 			let dato = datos[campo];
 			// Validaciones
-			if (!dato && campo == "nombre") respuesta = comp.inputVacio;
+			if (!dato && campo == "nombre") respuesta = variables.inputVacio;
 			if (dato) {
 				if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
 				// Nombre repetido
@@ -101,62 +108,104 @@ module.exports = {
 		}
 		return respuesta;
 	},
-	ano: (datos) => {
+	repetidos: (datos) => {
+		return datos.repetidos ? cartelDuplicado : "";
+	},
+	// Personajes
+	sexo: (datos) => {
+		return !datos.sexo_id ? variables.radioVacio : "";
+	},
+	// Personajes o Hechos
+	epoca: (datos) => {
+		// Variables
+		let contador = 0;
 		let respuesta = "";
-		if (datos.ano) {
-			let ano = parseInt(datos.ano);
-			respuesta =
-				typeof ano != "number"
-					? "No es un número válido"
-					: ano > new Date().getFullYear()
-					? "El año no debe superar al actual"
-					: ano < -32768
-					? "El año debe ser mayor"
-					: "";
+		let anoNecesario;
+		// Epocas
+		if (datos.entidad == "personajes") {
+			// Averigua si no fue respondido
+			if (!datos.epoca_id) respuesta = variables.radioVacio;
+			// Averigua si hace falta el año
+			else if (datos.epoca_id == "pst") anoNecesario = true;
+		} else if (datos.entidad == "hechos") {
+			// Averigua la cantidad de épocas elegidas
+			let epocas = variables.epocasHechos;
+			let cantEpocas = epocas.length;
+			for (let epoca of epocas) if (datos[epoca]) contador++;
+			// 1. Averigua si no fue respondido
+			if (!contador) respuesta = variables.radioVacio;
+			// 2. Averigua si se eligieron 2 y se salteó una
+			else if (
+				contador == 2 && // Averigua si se eligieron dos
+				((datos[epocas[0]] && !datos[epocas[1]]) || // Averigua si se eligió la primera y se salteó la siguiente
+					(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
+			)
+				respuesta = seSalteoUnaEpoca;
+			// 3. Averigua si se eligieron 3 y se salteó una
+			else if (
+				contador == 3 && // Averigua si se eligieron tres
+				datos[epocas[0]] &&
+				datos[epocas[cantEpocas - 1]] // Averigua si se eligió primera y la última
+			)
+				respuesta = seSalteoUnaEpoca;
+			// Averigua si hace falta el año
+			if (contador == 1 && datos.pst) anoNecesario = true;
+		}
+		// Año
+		if (!respuesta && anoNecesario) {
+			let ano = datos.ano;
+			respuesta = !ano
+				? cartelAno
+				: /[^\d]/.test(ano)
+				? "No es un número válido"
+				: parseInt(ano) > new Date().getFullYear()
+				? "El año no debe superar al actual"
+				: (parseInt(ano) < 33 && datos.epoca_id == "pst") || (parseInt(ano) < 100 && datos.pst)
+				? "Ese año no corresponde a la época 'posterior'"
+				: "";
 		}
 		// Fin
 		return respuesta;
 	},
-	personajes: function (datos) {
-		let respuesta = this.ano(datos);
-		if (respuesta) return respuesta;
-		// Respuesta
-		else if (!datos.sexo_id) respuesta = "Necesitamos saber el sexo de la persona";
-		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
-		else if (datos.categoria_id == "VPC") respuesta = "";
-		// Respuestas sólo si CFC
-		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
-		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
-		else if (datos.enProcCan == "1" && !datos.proceso_id)
-			respuesta = "Necesitamos saber el status del Proceso de Canonización";
-		else if (!datos.cnt) respuesta = "Necesitamos saber si fue contemporáneo";
-		else if (!datos.ama) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
-		else if (datos.ama == "1" && !datos.ap_mar_id)
-			respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
-		else respuesta = "";
-
+	RCLIC_personajes: (datos) => {
+		let respuesta = !datos.categoria_id
+			? "Necesitamos saber sobre su relación con la Iglesia"
+			: datos.categoria_id == "CFC"
+			? !datos.sexo_id
+				? "Estamos a la espera de que nos informes el sexo"
+				: !datos.rol_iglesia_id
+				? "Necesitamos saber el rol de la persona en la Iglesia"
+				: !datos.proceso_id
+				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
+				: datos.epoca_id == "pst" && datos.ano
+				? !datos.ap_mar_id
+					? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
+					: ""
+				: ""
+			: datos.categoria_id != "VPC"
+			? "No reconocemos la opción elegida"
+			: "";
 		// Fin
 		return respuesta;
 	},
-	hechos: (datos) => {
-		let respuesta = "";
-		if (false) return "";
-		// Respuestas
-		else if (!datos.solo_cfc)
-			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
-		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
-		else if (!datos.cnt) respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
-		else if (!datos.ncn)
-			respuesta = "Necesitamos saber si también ocurrió fuera de la vida de los Apóstoles";
-		else if (datos.solo_cfc == "1" && !datos.ama)
-			respuesta = "Necesitamos saber si es una aparición mariana";
-
+	RCLIC_hechos: (datos) => {
+		let respuesta = !datos.solo_cfc
+			? "Necesitamos saber sobre su relación con la historia de la Iglesia"
+			: datos.solo_cfc == "1"
+			? datos.ano && !datos.ama
+				? "Necesitamos saber si es una aparición mariana"
+				: ""
+			: datos.solo_cfc != "0"
+			? "No reconocemos la opción elegida"
+			: "";
 		// Fin
 		return respuesta;
 	},
 };
 
-// Variables
+// Carteles
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+const seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
+const cartelAno = "Necesitamos saber el año";

@@ -1,0 +1,17 @@
+<% registro = camposDA.find(n => n.nombre == campo) %>
+<section class="label-select inputError">
+	<label><%= registro.titulo %></label>
+	<div class="flexRowAlign relative">
+		<!-- Input -->
+		<select name="<%= campo %>" class="input" autofocus>
+			<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+			<% for (let valor of registro.valores) { %>
+				<option value="<%= valor.id %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>>
+					<%= valor.nombre %>
+				</option>
+			<% } %>
+		</select>
+		<%- include("PA4-DA9-Ayuda") %>
+	</div>
+	<%- include("CMP-Errores", {display: true}) %>
+</section>
