@@ -19,13 +19,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			prodEntidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(prodEntidad, prodID, userID);
 		// Obtiene el avatar
 		let imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
 		// Combinar los datos Editados con la versión Original

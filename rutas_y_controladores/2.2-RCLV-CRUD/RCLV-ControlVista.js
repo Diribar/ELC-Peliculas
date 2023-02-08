@@ -40,16 +40,10 @@ module.exports = {
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
 			ap_mars = ap_mars.filter((n) => n.ama);
 		}
-		// Pasos exclusivos para edición
+		// Pasos exclusivos para edición y revisión
 		if (codigo != "agregar") {
 			// Obtiene el rclvOrig y rclvEdic
-			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-				entidad,
-				rclvID,
-				userID,
-				"rclvs_edicion",
-				"rclvs"
-			);
+			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, rclvID, userID);
 			// Pisa el data entry de session
 			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
 			// 3. Revisar error de revisión
@@ -100,7 +94,10 @@ module.exports = {
 		// Obtiene el dataEntry
 		let DE = procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
-		[req, res] = await procesos.guardaLosCambios(req, res, DE);
+		await procesos.guardaLosCambios(req, res, DE);
+		// Borra el RCLV en session y cookies
+		if (req.session[entidad]) delete req.session[entidad];
+		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Obtiene el url de la siguiente instancia
 		let destino =
 			origen == "DA"

@@ -297,7 +297,7 @@ module.exports = {
 			],
 		};
 		// Genera la variable 'includes'
-		let includes = comp.includes(familia);
+		let includes = comp.obtieneTodosLosCamposInclude(familia);
 		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 		// Obtiene las ediciones del producto
 		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
@@ -369,7 +369,7 @@ module.exports = {
 		return derecha;
 	},
 	// Producto y RCLV - API/Vista
-	guardar_edicion: async function (req, regOrig, regEdic) {
+	guardaEdicRev: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
@@ -465,10 +465,10 @@ module.exports = {
 		delete regEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
+		let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
 		// Acciones para productos si no quedan campos
-		if (!quedanCampos && producto) {
+		if (!edicion && producto) {
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
@@ -882,9 +882,9 @@ module.exports = {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
 			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
+			linkEdic = await procsCRUD.puleEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
-			if (quedanCampos)
+			if (linkEdic)
 				await BD_genericas.actualizaPorId("links_edicion", edicID, {
 					...camposVacios,
 					...linkEdic,

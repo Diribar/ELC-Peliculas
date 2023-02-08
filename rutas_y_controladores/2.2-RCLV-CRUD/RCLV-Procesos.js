@@ -72,16 +72,11 @@ module.exports = {
 				// Obtiene la entidad y el campo 'entidad_id'
 				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
 				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+				let entID = edicion[entidad_id];
 				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-					entidad,
-					edicion[entidad_id],
-					userID,
-					"prods_edicion",
-					"productos"
-				);
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
 				// Pule la edición y actualiza la variable del registro original
-				[prodEdic] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+				prodEdic = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
 				productos[entidad].push(producto);
@@ -152,11 +147,11 @@ module.exports = {
 		let origen = req.query.origen;
 		let userID = req.session.usuario.id;
 		const codigo = req.baseUrl + req.path;
-		// Tareas
+		// Tareas para un nuevo registro
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
-			// Agrega el RCLV a DA/ED
+			// Les agrega el 'rclv_id' a session y cookie de origen
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
 				req.session.datosAdics = req.session.datosAdics
@@ -169,31 +164,26 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} else if (codigo == "/rclv/edicion/") {
+		} 
+		// Tareas para edición
+		else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
 			let id = req.query.id;
-			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
-			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await comp.actualizaRegistro({entidad, id, datos: DE}) // Actualiza el registro original
-				: await procsCRUD.guardaEdicion({
-						entidadOrig: entidad,
-						entidadEdic: "rclvs_edicion",
-						original: RCLV_original,
-						edicion: DE,
-						userID,
-				  }); // Guarda la edición
-		} else if (codigo == "/revision/rclv/alta/") {
+			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
+				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
+				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
+		} 
+		// Tareas para revisión
+		else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
+			await BD_genericas.actualizaPorId(entidad, id, DE); // Actualizar el registro original
 		}
-		// Borra el RCLV en session y cookies
-		if (req.session[entidad]) delete req.session[entidad];
-		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// Fin
-		return [req, res];
+		return;
 	},
 	rutaSalir: (codigo, datos) => {
 		// Variables
@@ -232,37 +222,40 @@ module.exports = {
 		let DE = {};
 		// Asigna el valor 'null' a todos los campos
 		for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
-		// Datos comunes
+		// Datos comunes - Nombre
 		DE.nombre = datos.nombre;
-		if (!datos.desconocida)
+		// Datos comunes - Día del año
+		if (datos.mes_id && datos.dia)
 			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+		else if (datos.desconocida)
+			DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
+		else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
 		// Datos para personajes
 		if (datos.entidad == "personajes") {
-			if (datos.apodo) DE.apodo = datos.apodo;
+			DE.apodo = datos.apodo ? datos.apodo : "";
 			DE.sexo_id = datos.sexo_id;
 			DE.epoca_id = datos.epoca_id;
-			if (datos.epoca_id == "pst") DE.ano = datos.ano;
+			DE.ano = datos.epoca_id == "pst" ? datos.ano : 0;
 			// RCLI
 			DE.categoria_id = datos.categoria_id;
-			if (datos.categoria_id == "CFC") {
-				DE.rol_iglesia_id = datos.rol_iglesia_id;
-				DE.proceso_id = datos.proceso_id;
-				if (datos.epoca_id == "pst" && parseInt(datos.ano) > 1100) DE.ap_mar_id = datos.ap_mar_id;
-			}
+			let CFC = datos.categoria_id == "CFC";
+			DE.rol_iglesia_id = CFC ? datos.rol_iglesia_id : "NN" + datos.sexo_id;
+			DE.proceso_id = CFC ? datos.proceso_id : "NN" + datos.sexo_id;
+			DE.ap_mar_id = CFC && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : 2;
 		}
 		// Datos para hechos
 		if (datos.entidad == "hechos") {
 			// Variables
-			let {ant, jss, cnt, pst, solo_cfc, ama, ano} = datos;
+			let {ant, jss, cnt, pst, ano, solo_cfc, ama} = datos;
 			// Época
 			DE.ant = ant ? 1 : 0;
 			DE.jss = jss ? 1 : 0;
 			DE.cnt = cnt ? 1 : 0;
 			DE.pst = pst ? 1 : 0;
-			if (!ant && !jss && !cnt && pst) DE.ano = ano;
+			DE.ano = !ant && !jss && !cnt && pst ? ano : 0;
 			// RCLIC
 			DE.solo_cfc = solo_cfc;
-			if (solo_cfc == "1") DE.ama = ama;
+			DE.ama = solo_cfc == "1" ? ama : 0;
 		}
 		return DE;
 	},

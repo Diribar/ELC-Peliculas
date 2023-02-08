@@ -169,10 +169,10 @@ module.exports = {
 		const {entidad, id: prodID} = req.query;
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob, infoErronea_id;
+		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("productos"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("productos"), "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
@@ -193,7 +193,8 @@ module.exports = {
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edicion(
+				let statusAprob;
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(
 					req,
 					prodOrig,
 					prodEdic
@@ -219,10 +220,9 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
 			// Achica la edición a su mínima expresión
-			let [edicion, quedanCampos] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
 			// Fin, si no quedan campos
-			if (!quedanCampos)
-				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
@@ -324,13 +324,13 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("rclvs"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("rclvs"), "status_registro"];
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
+		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
 		// Fin, si no quedan campos
-		if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+		if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos
 		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
 		// Variables

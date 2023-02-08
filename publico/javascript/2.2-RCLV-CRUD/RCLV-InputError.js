@@ -187,9 +187,9 @@ window.addEventListener("load", async () => {
 					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2)
 						select.appendChild(opcion);
 			};
-			// Opciones para 'Rol en la Iglesia'
+			// Opciones de 'Rol en la Iglesia'
 			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
-			// Opciones para 'Proceso de Canonización'
+			// Opciones de 'Proceso de Canonización'
 			FN(v.proceso_id, v.opcionesProceso);
 
 			// Valida CFC

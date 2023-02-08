@@ -263,11 +263,10 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
-		procsCRUD.guardaEdicion({
-			entidadOrig: original.entidad,
-			entidadEdic: "prods_edicion",
+		procsCRUD.guardaActEdicCRUD({
 			original: registro,
 			edicion: confirma,
+			entidad: original.entidad,
 			userID: req.session.usuario.id,
 		});
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
