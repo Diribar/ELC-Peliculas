@@ -192,7 +192,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneEntidadProd_id: (edicion) => {
+	obtieneProducto_id: (edicion) => {
 		return edicion.pelicula_id
 			? "pelicula_id"
 			: edicion.coleccion_id
