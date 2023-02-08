@@ -172,7 +172,7 @@ module.exports = {
 		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("productos"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("productos"), "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
@@ -324,7 +324,7 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("rclvs"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("rclvs"), "status_registro"];
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar

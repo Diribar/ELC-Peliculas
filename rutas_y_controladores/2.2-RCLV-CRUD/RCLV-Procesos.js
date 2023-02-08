@@ -175,7 +175,7 @@ module.exports = {
 			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio y en status creado?
-				? await comp.actualizaRegistro({entidad, id, datos: DE}) // Actualiza el registro original
+				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
 				: await procsCRUD.guardaEdicion({
 						entidadOrig: entidad,
 						entidadEdic: "rclvs_edicion",

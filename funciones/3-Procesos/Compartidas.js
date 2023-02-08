@@ -35,12 +35,12 @@ module.exports = {
 		// Fin
 		return leadTime;
 	},
-	includes: (familia) => {
+	obtieneTodosLosCamposInclude: (familia) => {
 		// Obtiene todos los campos
 		let campos = [...variables.camposRevisar[familia]];
 		// Deja solamente los campos con vínculo
 		let camposConVinculo = campos.filter((n) => n.relac_include);
-		// Obtiene los vínculos
+		// Obtiene una matriz con los vínculos
 		let includes = camposConVinculo.map((n) => n.relac_include);
 		// Fin
 		return includes;
@@ -105,6 +105,15 @@ module.exports = {
 			? "links"
 			: entidad == "usuarios"
 			? "usuarios"
+			: "";
+	},
+	obtieneNombreEdicionDesdeEntidad: (entidad) => {
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+			? "prods_edicion"
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			? "rclvs_edicion"
+			: entidad == "links"
+			? "links_edicion"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {

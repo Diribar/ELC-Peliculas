@@ -16,7 +16,7 @@ module.exports = {
 		let quedanCampos, statusAprob;
 
 		// Obtiene el registro editado
-		let includesEdic = comp.includes(familia);
+		let includesEdic = comp.obtieneTodosLosCamposInclude(familia);
 		let regEdic = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includesEdic);
 		// Si no existe la edición, interrumpe el flujo
 		if (!regEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
