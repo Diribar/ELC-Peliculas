@@ -6,7 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Funciones de soporte para edición
+	// Soporte para edición
 	quitaCamposDeEdicion: (original, edicion, familia) => {
 		// 1. Quita de edición los campos que no se comparan
 		(() => {
@@ -88,11 +88,9 @@ module.exports = {
 		// Fin
 		return edicion;
 	},
-
 	// Guardado de edición
-	guardaEdicion: async function (original, edicion, entidad, userID) {
-		// 1. Pule la edición
-		// No hace falta el 'await' para 'puleEdicion', porque la eliminación del registro no afecta al resto de la rutina
+	guardaActualizaEdicion: async function (original, edicion, entidad, userID) {
+		// 1. Pule la edición. No hace falta el 'await' para 'puleEdicion', porque la eliminación del registro no afecta al resto de la rutina
 		edicion = this.puleEdicion(original, edicion, entidad);
 
 		// 2. Acciones si quedan campos
@@ -132,7 +130,7 @@ module.exports = {
 		// Fin
 		return {...valoresNull, ...edicion};
 	},
-
+	// Avatar
 	avatarOrigEdic: (prodOrig, prodEdic) => {
 		let avatarOrig =
 			// Si no existe avatarOrig
