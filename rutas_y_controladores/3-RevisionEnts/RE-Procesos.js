@@ -369,7 +369,7 @@ module.exports = {
 		return derecha;
 	},
 	// Producto y RCLV - API/Vista
-	guardar_edicion: async function (req, regOrig, regEdic) {
+	guardaEdicRev: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);

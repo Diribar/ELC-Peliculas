@@ -193,8 +193,8 @@ module.exports = {
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				let statusAprob
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edicion(
+				let statusAprob;
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(
 					req,
 					prodOrig,
 					prodEdic
@@ -222,8 +222,7 @@ module.exports = {
 			// Achica la edición a su mínima expresión
 			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
 			// Fin, si no quedan campos
-			if (!edicion)
-				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
