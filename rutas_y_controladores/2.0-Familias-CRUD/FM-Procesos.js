@@ -44,12 +44,11 @@ module.exports = {
 	// Lectura de edicion
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(familia);
-		let includesOrig = [nombreEdicion, ...includesEstandar, "creado_por", "status_registro"];
+		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -59,10 +58,11 @@ module.exports = {
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Obtiene la edición a partir del vínculo del original
-		let edicion = original[nombreEdicion].find((n) => n.editado_por_id == userID);
+		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		// Obtiene la edición con sus includes y le quita los campos sin contenido
 		if (edicion) {
 			// Obtiene la edición con sus includes
+			let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Le quita los campos sin contenido
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
