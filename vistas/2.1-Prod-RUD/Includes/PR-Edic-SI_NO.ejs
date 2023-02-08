@@ -3,12 +3,12 @@
 	<label id="siNoTitulo" class="negrita"><%= tema.titulo %></label>
 	<div id="siNoOpciones" class="flexRowAlign">
 		<div class="flexRowAlign">
-			<label for="<%= campo %>SI">SI</label>
 			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (producto[campo]==1) { %>checked<% } %> class="radioSI">
+			<label for="<%= campo %>SI">SI</label>
 		</div>
 		<div class="flexRowAlign">
-			<label for="<%= campo %>NO">NO</label>
 			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (producto[campo]==0) { %>checked<% } %> class="radioNO">
+			<label for="<%= campo %>NO">NO</label>
 		</div>
 	</div>
 	<%- include("CMP-Errores", {display: true, campo}) %>
