@@ -1,8 +1,8 @@
 "use strict";
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./PA-FN-Procesos");
 
 module.exports = {
@@ -10,8 +10,8 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		let longitud = dato ? comp.longitud(dato, 3, 50) : "";
-		errores.palabrasClave = !dato ? comp.inputVacio : longitud ? longitud : "";
+		let longitud = dato ? comp.longitud(dato, 3, 30) : "";
+		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -21,24 +21,24 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let cartelMusica = comp.inputVacio + '. Si no tiene música, poné "No tiene música"';
-		let cartelActuacion =
-			comp.inputVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
+		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "No tiene música"';
+		let cartelActores =
+			variables.inputVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 70},
+			{nombre: "nombre_original", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{
 				nombre: "nombre_castellano",
 				idioma: "completo",
-				cartel: comp.inputVacio,
+				cartel: variables.inputVacio,
 				corto: 3,
 				largo: 70,
 			},
-			{nombre: "direccion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
-			{nombre: "guion", idioma: "basico", cartel: comp.inputVacio, corto: 3, largo: 100},
+			{nombre: "direccion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
+			{nombre: "guion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-			{nombre: "produccion", idioma: "completo", cartel: comp.inputVacio, corto: 3, largo: 100},
-			{nombre: "actuacion", idioma: "completo", cartel: cartelActuacion, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "sinopsis", cartel: comp.inputVacio, corto: 15, largo: 1004},
+			{nombre: "produccion", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 100},
+			{nombre: "actores", idioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
+			{nombre: "sinopsis", idioma: "sinopsis", cartel: variables.inputVacio, corto: 11, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
@@ -53,7 +53,9 @@ module.exports = {
 					if (!respuesta) respuesta = comp.longitud(dato, campo.corto, campo.largo);
 					if (!respuesta) respuesta = comp.castellano[idioma](dato);
 					if (!respuesta) respuesta = comp.inicial[idioma](dato);
-				} else respuesta = comp.inputVacio;
+				} else respuesta = variables.inputVacio;
+				// Excepción para actores
+				if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
 				// Fin
 				errores[nombre] = respuesta;
 			}
@@ -61,7 +63,7 @@ module.exports = {
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("ano_estreno"))
 			errores.ano_estreno = !datos.ano_estreno
-				? comp.inputVacio
+				? variables.inputVacio
 				: formatoAno(datos.ano_estreno)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_estreno < 1900
@@ -71,7 +73,7 @@ module.exports = {
 				: "";
 		if (campos.includes("ano_fin"))
 			errores.ano_fin = !datos.ano_fin
-				? comp.inputVacio
+				? variables.inputVacio
 				: formatoAno(datos.ano_fin)
 				? "Debe ser un número de 4 dígitos"
 				: datos.ano_fin < 1900
@@ -81,7 +83,7 @@ module.exports = {
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
-				? comp.inputVacio
+				? variables.inputVacio
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
 				: datos.duracion > 300
@@ -89,12 +91,12 @@ module.exports = {
 				: "";
 		if (campos.includes("paises_id"))
 			errores.paises_id = !datos.paises_id
-				? comp.inputVacio
+				? variables.inputVacio
 				: datos.paises_id.length > 2 * 1 + 3 * 3
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idioma_original_id"))
-			errores.idioma_original_id = !datos.idioma_original_id ? comp.inputVacio : "";
+			errores.idioma_original_id = !datos.idioma_original_id ? variables.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) errores.avatar = comp.avatar(datos);
 
@@ -136,41 +138,33 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-	// ControllerAPI (validaDatosPers)
-	datosPers: async (campos, datos) => {
+	// ControllerAPI (validaDatosAdics)
+	datosAdics: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["en_color_id", "publico_sugerido_id", "categoria_id", "subcategoria_id"];
-		if (datos.sinCalif) errores = {fe_valores_id: "", entretiene_id: "", calidad_tecnica_id: ""};
-		else camposPosibles.push("fe_valores_id", "entretiene_id", "calidad_tecnica_id");
+		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_id"];
 		// Datos generales + calificación
-		for (let campo of camposPosibles) {
-			if (campos.includes(campo)) errores[campo] = !datos[campo] ? comp.selectVacio : "";
-		}
+		for (let campo of camposPosibles)
+			if (campos.includes(campo)) errores[campo] = !datos[campo] ? variables.selectVacio : "";
+
 		// RCLV - Combinados
-		if (datos.subcategoria_id) {
+		if (datos.ocurrio) {
 			// Variables
-			errores.personaje_id = "";
-			errores.hecho_id = "";
-			errores.valor_id = "";
-			if (!datos.sinRCLV) {
-				// Obtiene el registro de la subcategoría
-				let subcategoria = await BD_genericas.obtienePorId("subcategorias", datos.subcategoria_id);
-				// Relación con la vida
-				let rclv_necesario = subcategoria.rclv_necesario;
-				if (rclv_necesario == "personaje")
-					errores.personaje_id =
-						!datos.personaje_id || datos.personaje_id == 1 ? comp.selectVacio : "";
-				else if (rclv_necesario == "hecho")
-					errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? comp.selectVacio : "";
-				else {
-					let alguno =
-						(!datos.personaje_id || datos.personaje_id == 1) &&
-						(!datos.hecho_id || datos.hecho_id == 1) &&
-						(!datos.valor_id || datos.valor_id == 1);
-					errores.valor_id = alguno ? "Se debe completar alguno de estos 3 campos" : "";
-				}
-			}
+			let sinResponder =
+				(!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
+			// Resultado
+			errores.RCLV =
+				// Acciones para 'no lo voy a responder por ahora'
+				datos.sinRCLV
+					? ""
+					: // Acciones para "ocurrio"
+					datos.ocurrio == "1" && sinResponder
+					? "Necesitamos que respondas por el Personaje o el Hecho Histórico"
+					: // Acciones para "no ocurrió"
+					datos.ocurrio == "0" && (!datos.valor_id || datos.valor_id == 1)
+					? "Necesitamos que respondas por el Valor"
+					: // Acciones si no se cumple ninguna de las anteriores
+					  "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -189,7 +183,7 @@ module.exports = {
 		// Dirección
 		let url = datos.direccion;
 		errores.direccion = !url
-			? comp.inputVacio
+			? variables.inputVacio
 			: !url.includes("www.filmaffinity.com/") ||
 			  !(
 					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
@@ -208,7 +202,7 @@ module.exports = {
 		// Contenido
 		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
-			? comp.inputVacio
+			? variables.inputVacio
 			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
 			: "";

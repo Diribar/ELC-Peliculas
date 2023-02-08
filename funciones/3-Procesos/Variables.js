@@ -6,52 +6,131 @@ module.exports = {
 	// Inicio
 	opcionesInicio: [
 		{
-			href: "/consultas/listado/sugeridas",
+			href: "/consultas/listado",
 			src: "/imagenes/0-Base/Inicio/Recomendame.jpg",
 			p: "Quiero que me recomienden una película o colección",
 		},
 		{
-			href: "/consultas/cfc",
+			href: "/consultas/listado/cfc",
 			src: "/imagenes/0-Base/Inicio/Cruz.jpg",
 			p: "Un paseo por nuestras peliculas Centradas en la Fe Católica (CFC)",
 		},
 		{
-			href: "/consultas/vpc",
+			href: "/consultas/listado/vpc",
 			src: "/imagenes/0-Base/Inicio/Valores.jpg",
 			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
 		},
 	],
-
 	// Consulta de Productos
-	menuOpciones: [
-		{
-			nombre: "Todas las Películas",
-			url: "listado",
-			titulo: "Listado",
-			vista: "CN1-Listado",
-			comentario: "Todas las películas de nuestra Base de Datos",
-		},
-		{
-			nombre: "Un paseo por CFC",
-			url: "cfc",
-			titulo: "CFC",
-			vista: "CN2-CFC",
-			comentario: "Películas Centradas en la Fe Católica (CFC)",
-		},
-		{
-			nombre: "Un paseo por VPC",
-			url: "vpc",
-			titulo: "VPC",
-			vista: "CN3-VPC",
-			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
-		},
+	layouts: [
+		{nombre: "Listado de Imágenes", url: "listado"},
+		{nombre: "Películas con Personaje Histórico", url: "personajes", bhr: true},
+		{nombre: "Películas con Hecho Histórico", url: "hechos", bhr: true},
+		{nombre: "Películas con Valores", url: "valores"},
 	],
-	menuSubOpcionesListado: [
-		{nombre: "Sugeridas para el momento del año", url: "sugeridas"},
-		{nombre: "Por mejor calificación", url: "calificacion"},
-		{nombre: "Por año de estreno más reciente", url: "estreno"},
-		{nombre: "Por incorporación más reciente", url: "incorporacion"},
+	orden: [
+		{nombre: "Sugeridas para el momento del año", valor: "momento", asc: true, siempre: true},
+		{nombre: "Por fecha interna de agregado", valor: "incorporacion", siempre: true},
+		{nombre: "Por año de estreno", valor: "estreno", siempre: true},
+		{nombre: "Por año de nacimiento del personaje", valor: "estreno", bhr: true, personajes: true},
+		{nombre: "Por año de ocurrencia del hecho", valor: "estreno", bhr: true, hechos: true},
+		{nombre: "Por año de nacimiento u ocurrencia", valor: "estreno", bhr: true, listado: true},
+		{nombre: "Por nombre del personaje", valor: "rclv", asc: true, personajes: true},
+		{nombre: "Por nombre del hecho", valor: "rclv", asc: true, hechos: true},
+		{nombre: "Por nombre del valor", valor: "rclv", asc: true, valores: true},
+		{nombre: "Por nombre de la película o colección", valor: "producto", asc: true, siempre: true},
+		{nombre: "Por calificación interna", valor: "calificacion", siempre: true},
 	],
+	camposFiltros: {
+		// Principales
+		categoria: {
+			titulo: "Relacionada con la Fe Católica",
+			siempre: true,
+			opciones: [
+				{id: "CFC", nombre: "SI"},
+				{id: "VPC", nombre: "NO"},
+			],
+		},
+		hechosReales: {
+			titulo: "Hechos Reales / Ficción",
+			listado: true,
+			valores: true,
+			opciones: [
+				{id: "Pers", nombre: "Con Personaje Histórico"},
+				{id: "Hecho", nombre: "Con Hecho Histórico"},
+				{id: "PersHecho", nombre: "Con Personaje y/o Hecho"},
+				{id: "Ficcion", nombre: "Ficción"},
+			],
+		},
+		// RCLV
+		personajes: {
+			titulo: "Personaje Histórico",
+			listado: true,
+			personajes: true,
+			valores: true,
+		},
+		hechos: {
+			titulo: "Hecho Histórico",
+			listado: true,
+			hechos: true,
+			valores: true,
+		},
+		valores: {
+			titulo: "Valor",
+			siempre: true,
+		},
+		// Otros
+		publicos: {
+			titulo: "Público Recomendado",
+			siempre: true,
+		},
+		epocasEstreno: {
+			titulo: "Época de Estreno",
+			siempre: true,
+			opciones: [
+				{id: "1969", nombre: "Antes de 1970"},
+				{id: "1999", nombre: "1970 - 1999"},
+				{id: "2015", nombre: "2000 - 2015"},
+				{id: "2016", nombre: "2016 - Presente"},
+			],
+		},
+		tipos_actuacion: {
+			titulo: "Tipo de Actuación",
+			siempre: true,
+		},
+		interes_opciones: {
+			titulo: "Interés en la Película",
+			siempre: true,
+		},
+		links: {
+			titulo: "Links",
+			siempre: true,
+			opciones: [
+				{id: "CFC", nombre: "Con links gratuitos"},
+				{id: "VPC", nombre: "Con links 'pay per view'"},
+				{id: "VPC", nombre: "Con links gratuitos y ppv"},
+				{id: "VPC", nombre: "Con links de abono"},
+				{id: "VPC", nombre: "Todos los links"},
+			],
+		},
+		castellano: {
+			titulo: "Idioma Castellano",
+			siempre: true,
+			opciones: [
+				{id: "SI", nombre: "Hablada en castellano"},
+				{id: "Subt", nombre: "Subtítulos en castellano"},
+				{id: "NO", nombre: "En otro idioma"},
+			],
+		},
+		musical: {
+			titulo: "Es un musical",
+			siempre: true,
+			opciones: [
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
+			],
+		},
+	},
 
 	// Agregar Productos
 	camposDD: [
@@ -140,8 +219,8 @@ module.exports = {
 			campoInput: true,
 		},
 		{
-			titulo: "Actuación",
-			nombre: "actuacion",
+			titulo: "Actores",
+			nombre: "actores",
 			peliculas: true,
 			colecciones: true,
 			capitulos: true,
@@ -168,19 +247,17 @@ module.exports = {
 			capitulos: true,
 		},
 	],
-	camposDP: [
-		{nombre: "en_color_id"},
-		{nombre: "publico_sugerido_id"},
-		{nombre: "categoria_id"},
-		{nombre: "subcategoria_id"},
+	camposDA: [
+		{nombre: "cfc"},
+		{nombre: "ocurrio"},
+		{nombre: "musical"},
+		{nombre: "tipo_actuacion_id"},
+		{nombre: "publico_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "valor_id", grupo: "RCLV"},
-		{nombre: "fe_valores_id", grupo: "calificala"},
-		{nombre: "entretiene_id", grupo: "calificala"},
-		{nombre: "calidad_tecnica_id", grupo: "calificala"},
 	],
-	camposDP_conValores: async function (userID) {
+	camposDA_conValores: async function (userID) {
 		// Variables
 		const registrosRCLV = await (async () => {
 			// Variables
@@ -208,18 +285,18 @@ module.exports = {
 			return registros;
 		})();
 		return [
+			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
+			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
+			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{
-				titulo: "Es a color",
-				nombre: "en_color_id",
-				valores: userID ? await BD_genericas.obtieneTodos("si_no_parcial", "id") : [],
-				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
-				mensajeColec: ["En caso de que algunos capítulos sean a color y otros no, elegí PARCIAL"],
-				angosto: true,
+				titulo: "Tipo de Actuación",
+				nombre: "tipo_actuacion_id",
+				valores: await BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 			},
 			{
 				titulo: "Público sugerido",
-				nombre: "publico_sugerido_id",
-				valores: userID ? await BD_genericas.obtieneTodos("publicos_sugeridos", "orden") : [],
+				nombre: "publico_id",
+				valores: await BD_genericas.obtieneTodos("publicos", "orden"),
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
 					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
@@ -229,34 +306,10 @@ module.exports = {
 				],
 			},
 			{
-				titulo: "Categoría",
-				nombre: "categoria_id",
-				valores: userID ? await BD_genericas.obtieneTodos("categorias", "orden") : [],
-				mensajes: [
-					"Centradas en la Fe Católica: significa que el rol de la Fe Católica es protagónico.",
-					"Valores Presentes en la Cultura: los buenos valores deben ser evidentes.",
-					"Si la fe es cristiana pero no católica, se pone como Valores Presentes en la Cultura.",
-				],
-			},
-			{
-				titulo: "Sub-categoría",
-				nombre: "subcategoria_id",
-				valores: userID ? await BD_genericas.obtieneTodos("subcategorias", "orden") : [],
-				mensajes: [
-					{texto: "Te pedimos que la elijas por la primera coincidencia que encuentres", categ: ""},
-					{texto: "Hagiografía - el protagonista debe ser un santo o beato", categ: "CFC"},
-					{
-						texto: "Historias de la Iglesia - cuando no se cumple ninguno de los anteriores",
-						categ: "CFC",
-					},
-				],
-			},
-			{
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
-				valores: userID ? registrosRCLV.personajes : [],
+				valores: registrosRCLV.personajes,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual (salvo excepciones), haciendo click en los íconos de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas.",
 				],
 				link: "personajes",
@@ -265,9 +318,8 @@ module.exports = {
 			{
 				titulo: "Hecho histórico",
 				nombre: "hecho_id",
-				valores: userID ? registrosRCLV.hechos : [],
+				valores: registrosRCLV.hechos,
 				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos.",
 				],
 				link: "hechos",
@@ -276,37 +328,10 @@ module.exports = {
 			{
 				titulo: "Valor principal",
 				nombre: "valor_id",
-				valores: userID ? registrosRCLV.valores : [],
-				mensajes: [
-					"Podés ingresar un registro nuevo o modificar el actual, haciendo click en los íconos de al lado.",
-					"Poné el más representativo.",
-				],
+				valores: registrosRCLV.valores,
+				mensajes: ["Poné el más representativo."],
 				link: "valores",
 				grupo: "RCLV",
-			},
-			{
-				titulo: "Inspira fe y/o valores",
-				nombre: "fe_valores_id",
-				valores: userID ? await BD_genericas.obtieneTodos("fe_valores", "orden") : [],
-				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
-				intermedio: true,
-				grupo: "calificala",
-			},
-			{
-				titulo: "Entretiene",
-				nombre: "entretiene_id",
-				valores: userID ? await BD_genericas.obtieneTodos("entretiene", "orden") : [],
-				mensajes: ["¿Se disfruta el rato viéndola?"],
-				intermedio: true,
-				grupo: "calificala",
-			},
-			{
-				titulo: "Calidad sonora y visual",
-				nombre: "calidad_tecnica_id",
-				valores: userID ? await BD_genericas.obtieneTodos("calidad_tecnica", "orden") : [],
-				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-				intermedio: true,
-				grupo: "calificala",
 			},
 		];
 	},
@@ -317,16 +342,16 @@ module.exports = {
 		personajes: [
 			"nombre",
 			"apodo",
-			"sexo_id",
 			"dia_del_ano_id",
+			"sexo_id",
+			"epoca_id",
 			"ano",
 			"categoria_id",
-			"subcategoria_id",
-			"ap_mar_id",
-			"proceso_id",
 			"rol_iglesia_id",
+			"proceso_id",
+			"ap_mar_id",
 		],
-		hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "ncn", "ama"],
+		hechos: ["nombre", "dia_del_ano_id", "ant", "jss", "cnt", "pst", "ano", "solo_cfc", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
 	entidadesRCLV: ["personajes", "hechos", "valores"],
@@ -346,6 +371,7 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
+	epocasHechos: ["ant", "jss", "cnt", "pst"],
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -367,47 +393,24 @@ module.exports = {
 			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true},
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true},
 			{titulo: "País/es", nombre: "paises_id"},
-			{
-				titulo: "Idioma Original",
-				nombre: "idioma_original_id",
-				relac_include: "idioma_original",
-				campo_include: "nombre",
-			},
+			{titulo: "Idioma Original", nombre: "idioma_original_id", relac_include: "idioma_original"},
 			{titulo: "Dirección", nombre: "direccion", input: true},
 			{titulo: "Guión", nombre: "guion", input: true},
 			{titulo: "Música", nombre: "musica", input: true},
-			{titulo: "Actuación", nombre: "actuacion", input: true},
+			{titulo: "Actores", nombre: "actores", input: true},
 			{titulo: "Producción", nombre: "produccion", input: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
-			{
-				titulo: "Es a Color",
-				nombre: "en_color_id",
-				relac_include: "en_color",
-				campo_include: "productos",
-			},
-			{
-				titulo: "Categoría",
-				nombre: "categoria_id",
-				relac_include: "categoria",
-				campo_include: "nombre",
-			},
-			{
-				titulo: "Sub-categoría",
-				nombre: "subcategoria_id",
-				relac_include: "subcategoria",
-				campo_include: "nombre",
-			},
-			{
-				titulo: "Público sugerido",
-				nombre: "publico_sugerido_id",
-				relac_include: "publico_sugerido",
-				campo_include: "nombre",
-			},
+
+			{titulo: "Centrada en la Fe Católica", nombre: "cfc", input: true},
+			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", input: true},
+			{titulo: "Es un musical", nombre: "musical", input: true},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion"},
+
+			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico"},
 			{
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
 				relac_include: "personaje",
-				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
@@ -415,7 +418,6 @@ module.exports = {
 				titulo: "Hecho histórico",
 				nombre: "hecho_id",
 				relac_include: "hecho",
-				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
@@ -423,7 +425,6 @@ module.exports = {
 				titulo: "Valor principal",
 				nombre: "valor_id",
 				relac_include: "valor",
-				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
@@ -432,49 +433,22 @@ module.exports = {
 			// Personajes
 			{nombre: "nombre", titulo: "Nombre Formal", personajes: true, hechos: true, valores: true},
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
-			{
-				nombre: "sexo_id",
-				titulo: "Sexo",
-				personajes: true,
-				relac_include: "sexo",
-				campo_include: "nombre",
-			},
+			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
-			{
-				nombre: "categoria_id",
-				titulo: "Categoría",
-				personajes: true,
-				relac_include: "categoria",
-				campo_include: "nombre",
-			},
-			{
-				nombre: "subcategoria_id",
-				titulo: "Subcategoría",
-				personajes: true,
-				relac_include: "subcategoria",
-				campo_include: "nombre",
-			},
-			{
-				nombre: "ap_mar_id",
-				titulo: "Aparición Mariana",
-				personajes: true,
-				relac_include: "ap_mar",
-				campo_include: "nombre",
-			},
+			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
+			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
 			{
 				nombre: "proceso_id",
 				titulo: "Proceso de Canonizac.",
 				personajes: true,
 				relac_include: "proc_canon",
-				campo_include: "nombre",
 			},
 			{
 				nombre: "rol_iglesia_id",
 				titulo: "Rol en la Iglesia",
 				personajes: true,
 				relac_include: "rol_iglesia",
-				campo_include: "nombre",
 			},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
@@ -517,6 +491,11 @@ module.exports = {
 			},
 		];
 	},
+
+	// Carteles
+	inputVacio: "Necesitamos que completes este campo",
+	selectVacio: "Necesitamos que elijas un valor",
+	radioVacio: "Necesitamos que elijas alguna opción",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},

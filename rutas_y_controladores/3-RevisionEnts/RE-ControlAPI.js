@@ -16,7 +16,7 @@ module.exports = {
 		let quedanCampos, statusAprob;
 
 		// Obtiene el registro editado
-		let includesEdic = comp.includes(familia);
+		let includesEdic = comp.obtieneTodosLosCamposInclude(familia);
 		let regEdic = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includesEdic);
 		// Si no existe la edición, interrumpe el flujo
 		if (!regEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
@@ -31,7 +31,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.guardar_edicion(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
@@ -87,7 +87,7 @@ module.exports = {
 		if (!decisAprob && (creado || recuperar)) {
 			motivo_id = req.query.motivo_id;
 			motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
-			comp.usuario_aumentaPenalizacAcum(sugerido_por_id, motivo);
+			comp.usuarioAumentaPenaliz(sugerido_por_id, motivo, "links");
 		}
 
 		// LINK - Pasa a status aprobado/rechazado

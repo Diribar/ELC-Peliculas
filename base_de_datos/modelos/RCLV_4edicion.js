@@ -9,16 +9,16 @@ module.exports = (sequelize, dt) => {
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 
-		// Campos para PERSONAJES
+		// Específico de 'personajes'
 		apodo: {type: dt.STRING(30)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
-		subcategoria_id: {type: dt.STRING(3)},
+		epoca_id: {type: dt.STRING(3)},
 		ap_mar_id: {type: dt.INTEGER},
 		proceso_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 
-		// Campos para HECHOS
+		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
@@ -42,7 +42,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "ap_mar_id"});
 		entidad.belongsTo(n.procs_canon, {as: "proc_canon",	foreignKey: "proceso_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});

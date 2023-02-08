@@ -9,12 +9,12 @@
 		<div id="tituloSecundario">
 			<h2>¡Terminaste!</h2>
 		</div>
-		<img id="gracias" src="<%= imagenMuchasGracias %>" alt="Muchas gracias">
+		<img id="gracias" src="//localhost<%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul id="datos">
-			<li class="texto">La <%= prodNombre.toLowerCase() %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> fue agregada a nuestra Base de Datos.</li>
+			<li class="texto">Hemos agregado la <%= prodNombre.toLowerCase() %> a nuestra base de datos.</li>
 			<li class="texto inputError">Nuestro equipo de Revisores analizará los datos ingresados.
-				<i class="fa-solid fa-circle-question ayudaClick despl_click">
-					<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 						<li>Según la alineación del producto con nuestro perfil, el resultado será:</li>
 						<ul id="subPuntos">
 							<li><strong><em>Aprobado</em></strong>.</li>
@@ -25,12 +25,12 @@
 					</ul>
 				</i>
 			</li>
-			<li class="texto">Mientras tanto, sólo <u style="font-size: inherit;">vos</u> y los revisores podrán ver el registro agregado.</li>
-			<li class="texto">Si querés editarlo, podés hacerlo durante 1 hora desde que lo terminaste de agregar.</li>
+			<li class="texto">Mientras tanto, sólo <u>vos</u> y los revisores podrán ver la información agregada.</li>
+			<li class="texto">Disponés de 1 hora, si querés editarla o agregarle los links.</li>
 			<!-- Colección -->
 			<% if (entidad == "colecciones") { %>
 				<% if (dataEntry.fuente == "TMDB") { %>
-					<li id="partesAutomatico" class="texto"><span>Los capítulos de la colección se agregaron a nuestra BD en forma automática.</span></li>
+					<li id="capitulos" class="texto"><span>Los capítulos de la colección se agregaron a nuestra BD en forma automática.</span></li>
 				<% } else { %>
 					<li class="texto">¡Muchas gracias! ¿Podrás ahora cargar los capítulos de la colección?</li>
 				<% } %>

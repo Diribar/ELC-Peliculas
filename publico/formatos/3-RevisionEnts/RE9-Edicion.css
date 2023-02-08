@@ -5,7 +5,7 @@
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
 #datosLargos {padding: 0 40px;}
 #datosLargos h1 {font-size: 1.5rem;}
-#datosLargos .contenido {max-height: 50vh; min-height: 35vh; overflow-y: auto; background-color: var(--verde-claro);}
+#datosLargos .contenido {max-height: 50vh; min-height: 35vh; overflow-y: auto; background: var(--verde-claro);}
 #datosLargos .contenido {padding: 0 5px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
 #datosLargos .contenido h2 {margin-top: 15px; font-variant: small-caps}
 #datosLargos .contenido #ingrs {margin-top: 5px;}
@@ -19,16 +19,16 @@
 #datosLargos .fa-trash-can {color: var(--rojo-oscuro);}
 
 /* Datos Largos - Ingresos */
-#datosLargos .contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
+#datosLargos .contenido #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
 #datosLargos .contenido #ingrs tr .campoTitulo {width: 150px;}
 #datosLargos .contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
-#datosLargos .contenido #ingrs tr #cartelMotivosRechazo select {background-color: inherit;}
+#datosLargos .contenido #ingrs tr #cartelMotivosRechazo select {background: inherit;}
 
 /* Datos Largos - Reemplazos */
-#datosLargos .contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
+#datosLargos .contenido #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
 #datosLargos .contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
 #datosLargos .contenido #reemps .infoMostrar.ocultar {display: block;}
-#datosLargos .contenido #reemps #cartelMotivosRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background-color: transparent}
+#datosLargos .contenido #reemps #cartelMotivosRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
 #datosLargos .contenido #reemps #cartelMotivosRechazo select {margin: 0;}
 
 /* Comandos - Particularidades */

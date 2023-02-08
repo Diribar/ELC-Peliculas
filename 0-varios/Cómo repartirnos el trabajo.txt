@@ -1,15 +1,16 @@
-RRII "para adelante"
-	- Determinar sitios amigos y relación con ellos
-	- Determinar fuentes de links que respetan copyright
-	- Imagen institucional a exhibir según la época del año
-
 Experiencia de usuario
-	- Revisión de Entidades 
+    - Revisión de Entidades 
 
-RRII "para atrás"
-	- ABM de Links
-	- Relación con Distribuidoras de Pelis
+Comercial con proveedores
+    - Relación con Productores y Distribuidoras de Pelis
+    - ABM de Links
+
+Relaciones institucionales
+    - Determinar sitios amigos y relación con ellos
+    - Determinar fuentes de links que respetan copyright
+    - Imagen institucional a exhibir según la época del año
 
 Innovación
-	- Revisión de Usuarios
-	- Revisión de Entidades
+    - Revisión de Usuarios
+    - Revisión de Entidades
+    - Tecnología y Desarrollo

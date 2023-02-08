@@ -1,0 +1,366 @@
+<% if (codigo != "agregar") { %>
+	<%- include('CMP-TimerContador') %>
+	<%- include('CMP-Cartel') %>
+<% } %>
+<div id="tituloPrincipal">
+	<h1 id="titulo"><%= tituloCuerpo %> </h1>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+				<li>Ayuda...</li>
+			</ul>
+		</i>
+	</div>
+</div>
+<form method="POST" id="dataEntry" class="aparece">
+	<!-- Preguntas de Encabezado -->
+	<section id="inicio" class="OK">
+		<!--Primera columna-->
+		<div id="primeraCol">
+			<!-- Nombres -->
+			<div class="flexCol">
+				<% if (personajes) { %>
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flexRow">
+						<div class="margenBottomTitulo inputError" style="z-index: 5;">
+							<!-- Título -->
+							<h3>Nombres</h3>
+							<!-- Ayuda -->
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick desplClick">
+									<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+										<li>El <strong>Nombre Formal</strong> es <u>necesario</u>, el Alternativo es opcional.</li>
+										<li><u><em>Formal</em></u>: para las personas que,</li>
+										<ul class="subgrupo">
+											<li>Cambiaron su nombre usamos el nuevo.</li>
+											<li>No lo  cambiaron, usamos su nombre de civil.</li>
+										</ul>
+										<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
+										<li>También es necesario que nos informes el sexo.</li>
+									</ul>	
+								</i>
+							</div>
+							<%- include("CMP-errores", {campo:"nombre", display: true}) %>
+						</div>
+					</div>
+				<% } %>
+				<!-- Campos -->
+				<div id="nombre" class="flexCol spaceBetween">
+					<!-- Nombre Formal o Nombre-->
+					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
+						<% if (personajes) { %><label>Formal</label>
+						<% } else { %><h3>Nombre</h3><% } %>
+						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+						<% if (entidad != "personajes") { %><%- include("CMP-errores", {campo:"nombre", display: true}) %><% } %>
+					</div>
+					<% if (personajes) { %>
+						<!-- Nombre Alternativo -->
+						<div class="flexRowAlign spaceBetween altoFila">
+							<label>Alternativo</label>
+							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+						</div>
+					<% } %>
+				</div>
+			</div>
+			<!-- Fecha Representativa -->
+			<div class="borderTop flexCol">
+				<!-- Título, Ayuda y Error/OK -->
+				<div class="flexRow">
+					<div class="margenBottomTitulo inputError" style="z-index: 4;">
+						<!-- Título -->
+						<h3>Fecha más representativa</h3>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<p>Usamos la fecha en que se lo recuerda.</p>
+									<% if (personajes) { %>
+										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
+										<li>Para los demás, suele ser la fecha de su muerte.</li>
+									<% } %>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {campo:"fecha", display: true}) %>
+					</div>
+				</div>
+				<!-- Valores -->
+				<div id="fecha" class="flexCol spaceBetween">
+					<!-- Mes y Día -->
+					<div class="flexRowAlign">
+						<!-- Meses -->
+						<div class="flexRowAlign altoFila">
+							<select name="mes_id" class="input">
+								<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
+								<% for (let mes of meses) { %>
+									<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+										<%= mes.nombre %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Días -->
+						<div id="dia" class="flexRowAlign altoFila separarDiv">
+							<select name="dia" class="input">
+								<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
+								<% for (let dia = 1; dia < 32; dia++) { %>
+									<option value="<%= dia %>" 
+										<% if (dia > 29) { %>class="ocultar"<% } %>
+										<% if (dataEntry.dia == dia) { %>selected<% } %>
+									>
+										<%= dia %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<a id="wiki" target="blank" class="links ocultar" tabindex="-1">
+							<img src="//localhost/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
+						</a>
+						<% if (personajes) { %>
+							<a id="santopedia" target="blank" class="links ocultar" tabindex="-1">
+								<img src="//localhost/imagenes/0-Base/Logos/BD-Santopedia.jpg" title="Consultar en Santopedia">
+							</a>
+						<% } %>
+					</div>
+					<!-- Fecha desconocida -->
+					<div class="flexRowAlign altoFila">
+						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
+						<label for="desconocida">Sin fecha representativa</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Segunda columna-->
+		<div id="segundaCol">
+			<!-- Repetidos -->
+			<div id="repetidos">
+				<!-- Título, Ayuda y Error/OK -->
+				<div class="flexRow">
+					<div class="margenBottomTitulo inputError" style="z-index: 3;">
+						<!-- Título -->
+						<h3>Nombres con esa fecha</h3>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+									<li>Destildalos si no coinciden con el tuyo.</li>
+								</ul>
+							</i>
+						</div>
+						<%- include("CMP-errores", {campo:"repetidos", display: true}) %>
+					</div>
+				</div>
+				<ul type="none" id="posiblesRepetidos"></ul>
+			</div>
+			<% if (personajes) { %>
+				<!-- Sexo -->
+				<div id="sexo_id" class="flexRowAlign altoFila inputError">
+					<h3>Sexo</h3>
+					<% for (let sexo of sexos) { %>
+						<div class="flexRowAlign opciones relative">
+							<input type="radio" name="sexo_id" value="<%= sexo.id %>" id="<%= sexo.id %>" <% if (dataEntry.sexo_id==sexo.id) { %>checked<% } %>>
+							<label for="<%= sexo.id %>"><%= sexo.nombre %></label>
+						</div>
+					<% } %>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+								<li>Se usa 'mixto' si te referís a un grupo con varones y mujeres.</li>
+							</ul>
+						</i>
+					</div>
+					<%- include("CMP-errores", {campo:"sexo_id", display: true}) %>
+				</div>
+			<% } %>
+		</div>
+	</section>
+	<!-- Preguntas relacionadas con la Iglesia Católica -->
+	<% if (entidad != "valores") { %>
+		<!-- Época respecto a Jesús -->
+		<section id="epoca" class="borderTop OK">
+			<!-- Título, Ayuda y Error/OK -->
+			<div class="flexRow">
+				<div class="margenBottomTitulo inputError">
+					<!-- Título -->
+					<h3>Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
+					<!-- Ayuda -->
+					<% if (hechos) { %>
+						<div class="ayuda" style="z-index: 3;">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<li>Si transcurre durante varias épocas, marcalas a todas.</li>
+								</ul>
+							</i>
+						</div>
+					<% } %>
+					<%- include("CMP-errores", {campo: "epoca", display: true}) %>
+				</div>
+			</div>
+			<!-- Valores -->
+			<div class="flexRowAlign grow spaceBetween">
+				<!-- Épocas -->
+				<% epocas.forEach((epoca, indice) => { %>
+					<% if (personajes && !epoca.nombre_pers) {return} %> 
+					<% let z_index = "z-index: " + (1 + epocas.length - indice) %>
+					<div class="flexRowAlign opciones" style="<%= z_index %>">
+						<% if (personajes) { %>
+							<input type="radio" name="epoca_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epoca_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
+							<label for="<%= epoca.id %>"><%= epoca.nombre_pers %></label>
+							<!-- Ayuda -->
+							<% if (epoca.ayuda_pers) { %> 
+								<div class="ayuda">
+									<i class="fa-solid fa-circle-question ayudaClick desplClick">
+										<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+											<li><%= epoca.ayuda %>.</li>
+										</ul>
+									</i>
+								</div>
+							<% } %>
+						<% } else if (hechos) { %>
+							<input type="checkbox" name="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry[epoca.id]) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
+							<label for="<%= epoca.id %>"><%= epoca.nombre_hecho %> </label>
+							<!-- Ayuda -->
+							<% if (epoca.ayuda_hecho) { %> 
+								<div class="ayuda">
+									<i class="fa-solid fa-circle-question ayudaClick desplClick">
+										<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+											<li><%= epoca.ayuda %>.</li>
+										</ul>
+									</i>
+								</div>
+							<% } %>
+						<% } %>
+					</div>
+				<% }) %>
+				<!-- Año -->
+				<div class="flexRowAlign inputError invisible">
+					<label for="ano">Año</label>
+					<input id="ano" type="text" name="ano" class="input angosto" value="<%= dataEntry.ano %>" autocomplete="off">
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<li>Se refiere al año en que <%= personajes ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
+								<li>Solo se necesita si la época es <u><em>posterior</em></u>.</li>
+								<li>Asumimos que Jesús vivió entre los años 1 y 33</li>
+								<% if (hechos) { %><li>Asumimos que los Apóstoles vivieron entre los años 1 y 100</li><% } %>
+							</ul>
+						</i>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Relación con la Iglesia Católica -->
+		<section id="RCLIC" class="borderTop OK">
+			<% if (personajes) { %>
+				<div class="personajes">
+					<!-- ¿El personaje es conocido por su relación con la Iglesia Católica? -->
+					<div id="categoria_id" class="flexRowAlign altoFila inputError">
+						<p class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</p>
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign opciones">
+								<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="input">
+								<label for="CFC">SI</label>
+							</div>
+							<div class="flexRowAlign opciones">
+								<input type="radio" name="categoria_id" value="VPC" id="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="input">
+								<label for="VPC">NO</label>
+							</div>
+						</div>
+						<%- include("CMP-errores", {campo:"RCLIC", display: true}) %>
+					</div>
+					<!-- Preguntas RCLIC -->
+					<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
+						<!-- Rol en la Iglesia -->
+						<div class="flexRowAlign altoFila segunSexo_id invisible">
+							<select name="rol_iglesia_id" class="input">
+								<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
+								<% for (let rol_iglesia of roles_igl) { %>
+									<option 
+										value="<%= rol_iglesia.id %>" 
+										<% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>
+									>
+										<%= rol_iglesia.nombre %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Proceso de Canonización -->
+						<div class="flexRowAlign altoFila segunSexo_id invisible">
+							<select name="proceso_id" class="input">
+								<option value="" <% if (!dataEntry.proceso_id) { %>selected<% } %>>Proceso de Canonización</option>
+								<% for (let proc_canon of procesos_canon) { %>
+									<option value="<%= proc_canon.id %>" <% if (dataEntry.proceso_id == proc_canon.id) { %>selected<% } %>>
+										<%= proc_canon.nombre %>
+									</option>
+								<% } %>
+								<option value="null" <% if (dataEntry.proceso_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+							</select>
+						</div>
+						<!-- Aparición Mariana -->
+						<div id="sectorApMar" class="flexRowAlign altoFila invisible">
+							<select name="ap_mar_id" class="input">
+								<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
+								<% for (let ap_mar of ap_mars) { %>
+									<option value="<%= ap_mar.id %>" <% if (dataEntry.ap_mar_id == ap_mar.id) { %>selected<% } %>>
+										<%= ap_mar.nombre %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+					</div>
+				</div>
+			<% } else if (hechos) { %>
+				<div class="hechos">
+					<!-- Relación con la Iglesia Católica -->
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="margenBottomTitulo inputError" style="z-index: 4;">
+						<!-- Título -->
+						<h3>Relación con la Iglesia Católica</h3>
+						<%- include("CMP-errores", {campo:"RCLIC", display: true}) %>
+					</div>
+					<!-- Valores -->
+					<!-- ¿Es un hecho específico de la historia de la Iglesia Católica? -->
+					<div id="soloCFC" class="flexRowAlign">
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign opciones">
+								<input type="radio" name="solo_cfc" value="1" id="SI" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %> class="input">
+								<label for="SI">SI</label>
+							</div>
+							<div class="flexRowAlign opciones">
+								<input type="radio" name="solo_cfc" value="0" id="solo_cfc_NO" <% if (dataEntry.solo_cfc=="0") { %>checked<% } %> class="input">
+								<label for="solo_cfc_NO">NO</label>
+							</div>
+						</div>
+						<p class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</p>
+					</div>
+					<div id="preguntasRCLIC" class="invisible">
+						<!-- ¿Es una aparición mariana -->
+						<div id="sectorApMar" class="flexRowAlign invisible">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign opciones">
+									<input type="radio" name="ama" value="1" id="ama_SI" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
+									<label for="ama_SI">SI</label>
+								</div>
+								<div class="flexRowAlign opciones">
+									<input type="radio" name="ama" value="0" id="ama_NO" <% if (dataEntry.ama=="1") { %>checked<% } %> class="input">
+									<label for="ama_NO">NO</label>
+								</div>
+							</div>
+							<p class="pregunta">¿Es una aparición mariana?</p>
+						</div>
+					</div>
+				</div>
+			<% } %>
+		</section>
+	<% } %>
+	<!-- Flechas y Botón -->
+	<section class="flechas">
+		<a href="<%= rutaSalir %>">
+			<i id="salir" class="fa-solid fa-circle-left" title="Salir"></i>
+		</a>
+		<i id="submit" class="fa-solid fa-circle-check inactivo" title="Guardar"></i>
+	</section>
+</form>

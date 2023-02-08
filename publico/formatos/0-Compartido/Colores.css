@@ -15,9 +15,10 @@ body {
 	--azul-oscuro: rgb(37,64,97);
 	--azul-frances: rgb(31,73,125);
 	--naranja-oscuro: #F57C00;
-	--rojo-oscuro: rgb(209, 65, 40);
+	--rojo-oscuro: firebrick;
 	--verde-oscuro:rgb(79,98,40);
 	--verde-ingles: #009879;
+	--marron: rgb(102,51,0);
 
 	/* Colores por Tema */
 	--colorAyuda: white;

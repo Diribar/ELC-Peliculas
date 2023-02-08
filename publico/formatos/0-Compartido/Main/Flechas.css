@@ -1,8 +1,8 @@
 /* Flechas */
 .flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 .flechas {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
-.flechas {background-color: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
-.flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background-color: transparent; border: none;}
+.flechas {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
+.flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}
 .flechas i, .flechas img, .flechas a, .flechas button {margin: 0 10px; border-radius: 50%; cursor: pointer;}
 .flechas a i, .flechas button i {margin: 0;}
 .flechas .pack {margin: 0 20px; display: flex; flex-direction: row; align-items: center;}

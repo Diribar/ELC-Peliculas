@@ -9,20 +9,20 @@
 /* Botones para productos */
 #listado button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
 #listado button {border: none; text-align: left; width: 290px;}
-#listado #prodsNuevos button {background-color: var(--verde-intermedio);}
-#listado #prodsNuevos button:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
-#listado #ingrManual button {background-color: var(--rojo-claro);}
-#listado #ingrManual button:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#listado #prodsYaEnBD button {background-color: var(--celeste-oscuro);}
-#listado #prodsYaEnBD button:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
+#listado #prodsNuevos button {background: var(--verde-intermedio);}
+#listado #prodsNuevos button:hover {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+#listado #ingrManual button {background: var(--rojo-claro);}
+#listado #ingrManual button:hover {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#listado #prodsYaEnBD button {background: var(--celeste-oscuro);}
+#listado #prodsYaEnBD button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */
 #listado button .imagenChica, #listado button #texto {height: 100%;}
 #listado button #texto {display: flex; flex-direction: column; justify-content: space-between;}
 #listado button #texto, #listado button #texto * {color: inherit;}
 #listado button #infoPeli {margin: 10px 15px;}
-#listado button #coleccion {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
-#listado button #prodNuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#listado button #coleccion {font-weight: normal; margin-top: 0; background: var(--rojo-claro); padding: 2px 15px;}
+#listado button #prodNuevo:hover #coleccion {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
 #listado button #coleccion #colec_nombre {font-weight: bold; font-style: italic}
 #listado button .interlineadoChico {margin-top: 5px;}
 

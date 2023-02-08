@@ -201,14 +201,13 @@ module.exports = {
 		await (async () => {
 			// Variables
 			let colecciones = [];
-			// Rutina para el lote de productos
+			// Obtiene el detalle de las películas
 			for (let prod of resultados.productos)
 				colecciones.push(prod.entidad == "peliculas" ? detailsTMDB("movie", prod.TMDB_id) : "");
-			// Obtiene las promesas
 			colecciones = await Promise.all(colecciones);
-			// Reemplaza películas por colecciones
+			// Reemplaza las películas de colección por su colección
 			colecciones.forEach((coleccion, indice) => {
-				// Si no hay nada que cambiar, interrumpe
+				// Si no pertenece a una colección, interrumpe
 				if (!coleccion || !coleccion.belongs_to_collection) return;
 				// Idioma original
 				let idioma_original_id = resultados.productos[indice].idioma_original_id;
@@ -366,11 +365,13 @@ module.exports = {
 
 		// Agrega capitulos
 		(() => {
-			// Si no hay productosYaEnBD o no son de colecciones, saltea la rutina
+			// Si no hay productosYaEnBD, saltea la rutina
 			if (!resultados.prodsYaEnBD.length) return;
+			// Si no hay productosYaEnBD de colecciones, saltea la rutina
 			if (!resultados.prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
 			// Rutina
 			resultados.prodsYaEnBD.forEach((coleccion) => {
+				// Chequea que sea una colección, y que la cantidad de capítulos sea diferente entre TMDB y ELC
 				if (coleccion.capitulos && coleccion.capitulos != coleccion.capitulosELC) {
 					if (coleccion.TMDB_entidad == "collection") agregaCapitulosCollection(coleccion);
 					if (coleccion.TMDB_entidad == "tv") agregaCapitulosTV(coleccion);

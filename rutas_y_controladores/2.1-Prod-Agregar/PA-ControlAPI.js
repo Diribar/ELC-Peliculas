@@ -88,10 +88,10 @@ module.exports = {
 		// Genera la session y cookie para DatosDuros
 		req.session.datosDuros = {...datosDuros};
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		// Genera la session y cookie para datosPers
+		// Genera la session y cookie para datosAdics
 		if (!errores.hay) {
-			req.session.datosPers = {...datosDuros};
-			res.cookie("datosPers", datosDuros, {maxAge: unDia});
+			req.session.datosAdics = {...datosDuros};
+			res.cookie("datosAdics", datosDuros, {maxAge: unDia});
 		}
 		// Fin
 		return res.json(errores);
@@ -107,24 +107,20 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	// Vista (datosPers)
-	obtieneSubcategs: async (req, res) => {
-		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
-		return res.json(subcategorias);
-	},
-	validaDatosPers: async (req, res) => {
+	// Vista (datosAdics)
+	validaDatosAdics: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		let errores = await valida.datosPers(campos, req.query);
+		let errores = await valida.datosAdics(campos, req.query);
 		return res.json(errores);
 	},
-	guardaDatosPers: (req, res) => {
-		let datosPers = {
-			...(req.session.datosPers ? req.session.datosPers : req.cookies.datosPers),
+	guardaDatosAdics: (req, res) => {
+		let datosAdics = {
+			...(req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics),
 			...req.query,
 		};
-		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {maxAge: unDia});
+		req.session.datosAdics = datosAdics;
+		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 		return res.json();
 	},
 

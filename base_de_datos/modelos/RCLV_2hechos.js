@@ -4,10 +4,13 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
+
+		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
+		ant: {type: dt.BOOLEAN},
 		jss: {type: dt.BOOLEAN},
 		cnt: {type: dt.BOOLEAN},
-		ncn: {type: dt.BOOLEAN},
+		pst: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 		
 		prods_aprob: {type: dt.BOOLEAN},
@@ -25,6 +28,7 @@ module.exports = (sequelize, dt) => {
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
+		perenne: {type: dt.BOOLEAN},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},

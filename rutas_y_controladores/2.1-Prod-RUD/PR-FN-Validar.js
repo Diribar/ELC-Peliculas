@@ -12,15 +12,15 @@ module.exports = {
 		// Obtiene los campos
 		if (!campos) {
 			let camposDD = variables.camposDD.filter((n) => n[entidad]);
-			let camposDP = variables.camposDP.filter((m) => m.grupo != "calificala");
-			campos = [...camposDD, ...camposDP].map((n) => n.nombre);
+			let camposDA = variables.camposDA
+			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
-		// Averigua si hay errores de validación DD y DP
+		// Averigua si hay errores de validación DD y DA
 		let erroresDD = await validaProd.datosDuros(campos, datos);
-		let erroresDP = await validaProd.datosPers(campos, datos);
+		let erroresDA = await validaProd.datosAdics(campos, datos);
 		// Terminar
-		let errores = {...erroresDD, ...erroresDP};
-		errores.hay = erroresDD.hay || erroresDP.hay;
+		let errores = {...erroresDD, ...erroresDA};
+		errores.hay = erroresDD.hay || erroresDA.hay;
 		return errores;
 	},
 };

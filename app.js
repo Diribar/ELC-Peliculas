@@ -1,33 +1,19 @@
-// VARIABLES GLOBALES -------------------------------------------------
+// VARIABLE 'GLOBAL' --------------------------------------------------------------
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-global.horarioLCF = new Date().getTime();
+global.horarioLCF = null;
+
+// Averigua los títulos de la imagen de ayer y hoy
+const fs = require("fs");
+let rutaNombre = "./funciones/3-Procesos/fecha.json";
+let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
+global.tituloImgDerAyer = datos.tituloImgDerAyer;
+global.tituloImgDerHoy = datos.tituloImgDerHoy;
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
-require("dotenv").config(); // Para usar el archivo '.env'
-// Variable status_registro
-// Se requiere el acceso a la BD, por eso el 'dotenv' va antes
-(async () => {
-	const BD_genericas = require("./funciones/2-BD/Genericas");
-	global.status_registro = await BD_genericas.obtieneTodos("status_registro", "orden");
-	global.status_registro_us = await BD_genericas.obtieneTodos("status_registro_us", "orden");
-	global.roles_us = await BD_genericas.obtieneTodos("roles_usuarios", "orden");
-	// Menus de consultas
-	const variables = require("./funciones/3-Procesos/Variables");
-	global.menuOpciones = variables.menuOpciones;
-	let subOpcionesListado = variables.menuSubOpcionesListado;
-	let subOpcionesCFC_VPC = await BD_genericas.obtieneTodos("subcategorias", "orden");
-	global.menusSubOpciones = {
-		listado: subOpcionesListado,
-		cfc: subOpcionesCFC_VPC.filter((n) => n.cfc),
-		vpc: subOpcionesCFC_VPC.filter((n) => n.vpc),
-	};
-	// Fin
-	return;
-})();
-
+require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
@@ -45,21 +31,11 @@ app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false
 const cookies = require("cookie-parser");
 app.use(cookies());
 // Para estar siempre logueado, si existe el cookie
-const usuario = require("./middlewares/usuarios/loginConCookie");
-app.use(usuario);
+const loginConCookie = require("./middlewares/usuarios/loginConCookie");
+app.use(loginConCookie);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
-// Cambia la fecha de la 'Línea de Cambio de Fecha'
-const comp = require("./funciones/3-Procesos/Compartidas");
-comp.horarioLCF();
-// Dispara tareas en cierto horario
-var cron = require("node-cron");
-// 1. Tareas a medianoche
-cron.schedule("10 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-// 2. Tareas en cada cambio de hora
-cron.schedule("11 * * * *", () => comp.tareasHorarias());
-comp.tareasDiarias().then(() => comp.tareasHorarias());
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
@@ -90,41 +66,88 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/6-Consultas"),
-	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
-	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
+	path.resolve(__dirname, "./vistas/5-Consultas"),
+	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
+	path.resolve(__dirname, "./vistas/7-Institucional"),
 ]);
 
 // ************************* Rutas ********************************
-// CRUD
+// Requires
 const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
 const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
 const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
 const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
 const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
-app.use("/crud/api", rutaCRUD);
-app.use("/producto/agregar", rutaProd_Crear);
-app.use("/producto", rutaProd_RUD);
-app.use("/rclv", rutaRCLV_CRUD);
-app.use("/links", rutaLinks_CRUD);
-// Demás
 const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
 const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
-const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
+const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
+const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
-app.use("/usuarios", rutaUsuarios);
-app.use("/revision/usuarios", rutaRevisarUs);
-app.use("/revision", rutaRevisarEnts);
-app.use("/consultas", rutaConsultas);
-app.use("/", rutaMiscelaneas);
 
-// ************************ Errores *******************************
-app.use((req, res) => {
-	const variables = require("./funciones/3-Procesos/Variables");
-	let informacion = {
-		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+// Variables que usan funciones
+(async () => {
+	// Averigua la fecha de la 'Línea de Cambio de Fecha'
+	const comp = require("./funciones/3-Procesos/Compartidas");
+	comp.horarioLCF();
+
+	// Completa el objeto 'global'
+	const BD_genericas = require("./funciones/2-BD/Genericas");
+	let campos = {
+		// Variables de usuario
+		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+		// Variable de entidades
+		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+		// Consultas - Filtro Personalizado
+		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		// Consultas - Complementos de RCLV
+		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
+		procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
+		// Consultas - Otros
+		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+		interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
+		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+		// Otros
+		meses: BD_genericas.obtieneTodos("meses", "id"),
+		dias_del_ano: BD_genericas.obtieneTodos("dias_del_ano", "id").then((n) =>
+			n.filter((m) => m.id < 400)
+		),
+		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 	};
-	res.status(404).render("CMP-0Estructura", {informacion});
-});
+	// Espera a que todas se procesen y consolida la info
+	let valores = Object.values(campos);
+	valores = await Promise.all(valores);
+	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
+
+	// Tareas posteriores
+	// Dispara tareas en cierto horario
+	var cron = require("node-cron");
+	// 1. Tareas a realizar a la hora 00:00:01 de GMT-12
+	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+	comp.tareasDiarias();
+
+	// urls --> es crítico que esto esté después del 'await' de 'global'
+	app.use("/crud/api", rutaCRUD);
+	app.use("/producto/agregar", rutaProd_Crear);
+	app.use("/producto", rutaProd_RUD);
+	app.use("/rclv", rutaRCLV_CRUD);
+	app.use("/links", rutaLinks_CRUD);
+	app.use("/usuarios", rutaUsuarios);
+	app.use("/revision/usuarios", rutaRevisarUs);
+	app.use("/revision", rutaRevisarEnts);
+	app.use("/consultas", rutaConsultas);
+	app.use("/institucional", rutaInstitucional);
+	app.use("/", rutaMiscelaneas);
+
+	// ************************ Errores *******************************
+	app.use((req, res) => {
+		const variables = require("./funciones/3-Procesos/Variables");
+		let informacion = {
+			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+		};
+		res.status(404).render("CMP-0Estructura", {informacion});
+	});
+})();
