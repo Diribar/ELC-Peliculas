@@ -465,10 +465,10 @@ module.exports = {
 		delete regEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
+		let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
 
 		// Acciones para productos si no quedan campos
-		if (!quedanCampos && producto) {
+		if (!edicion && producto) {
 			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
 			// 2. Informa si el status pasó a aprobado
 			statusAprobFinal = await (async () => {
@@ -882,9 +882,9 @@ module.exports = {
 			let edicID = linkEdic.id;
 			// La variable 'linkEdic' queda solamente con los camos con valor
 			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			[linkEdic, quedanCampos] = await procsCRUD.puleEdicion(linkOrig, linkEdic);
+			linkEdic = await procsCRUD.puleEdicion(linkOrig, linkEdic);
 			// Si quedan campos, actualiza la edición
-			if (quedanCampos)
+			if (linkEdic)
 				await BD_genericas.actualizaPorId("links_edicion", edicID, {
 					...camposVacios,
 					...linkEdic,
