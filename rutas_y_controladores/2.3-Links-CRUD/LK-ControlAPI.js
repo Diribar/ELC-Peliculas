@@ -37,12 +37,7 @@ module.exports = {
 			? await comp.creaRegistro({entidad: "links", datos, userID}) // El link no existe --> se lo debe crear
 			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
 			? await comp.actualizaRegistro({entidad: "links", id: link.id, datos}) // Actualizar el link
-			: await procsCRUD.guardaActualizaEdicion({
-					original: link,
-					edicion: datos,
-					entidad: "links",
-					userID,
-			  }); // Guardar la edición
+			: await procsCRUD.guardaActEdicCRUD({original: link, edicion: datos, entidad: "links", userID}); // Guardar la edición
 		// Fin
 		return res.json(mensaje);
 	},

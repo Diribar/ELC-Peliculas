@@ -173,7 +173,7 @@ module.exports = {
 			// Actualiza el registro o crea una edición
 			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
-				: await procsCRUD.guardaActualizaEdicion({original, edicion: DE, entidad, userID}); // Guarda la edición
+				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
 		} 
 		// Tareas para revisión
 		else if (codigo == "/revision/rclv/alta/") {

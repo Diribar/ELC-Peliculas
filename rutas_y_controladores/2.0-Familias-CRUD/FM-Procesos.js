@@ -89,7 +89,7 @@ module.exports = {
 		return edicion;
 	},
 	// Guardado de edición
-	guardaActualizaEdicion: async function (original, edicion, entidad, userID) {
+	guardaActEdicCRUD: async function (original, edicion, entidad, userID) {
 		// 1. Pule la edición. No hace falta el 'await' para 'puleEdicion', porque la eliminación del registro no afecta al resto de la rutina
 		edicion = this.puleEdicion(original, edicion, entidad);
 
