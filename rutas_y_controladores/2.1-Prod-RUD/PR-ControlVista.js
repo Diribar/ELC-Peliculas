@@ -21,13 +21,7 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
@@ -123,13 +117,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;
@@ -159,13 +147,7 @@ module.exports = {
 		// Actualiza la edición
 
 		if (!errores.hay)
-			await procsCRUD.guardaEdicion({
-				entidadOrig: entidad,
-				entidadEdic: "prods_edicion",
-				original: prodOrig,
-				edicion: req.body,
-				userID,
-			});
+			await procsCRUD.guardaEdicion({original: prodOrig, edicion: req.body, entidad, userID});
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
