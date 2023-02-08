@@ -144,8 +144,8 @@ module.exports = {
 				return res.send(errores);
 			}
 		}
-		// Actualiza la edición
 
+		// Actualiza la edición
 		if (!errores.hay)
 			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion: req.body, entidad, userID});
 		// Fin
