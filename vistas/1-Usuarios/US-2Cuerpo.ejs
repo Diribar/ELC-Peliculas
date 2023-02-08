@@ -1,9 +1,9 @@
 <!-- Alta -->
-<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US1-Alta-Mail") : "" %>
+<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US1-AltaMail") : "" %>
 <%- codigo == "editables" ? include("US2-Editables") : "" %>
-<%- codigo == "documento" ? include("US3-Validar") : "" %>
+<%- codigo == "identidad" ? include("US3-Identidad") : "" %>
 <%- codigo == "edicion" ? include("US5-Edicion") : "" %>
 <!-- Revisar -->
 <%- codigo == "tableroControl" ? include("US6-Tablero-Control") : "" %>
 <!-- Login -->
-<%- codigo == "login" ? include("US9-Login") : "" %>
+<%- codigo == "login" ? include("US8-Login") : "" %>

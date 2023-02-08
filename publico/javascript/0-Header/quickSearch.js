@@ -1,17 +1,17 @@
 "use strict";
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida .despl_mostrar input");
-	let display = document.querySelector("#busquedaRapida .despl_mostrar #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida .despl_mostrar #escribiMas");
+	let input = document.querySelector("#busquedaRapida .desplMostrar input");
+	let hallazgos = document.querySelector("#busquedaRapida .desplMostrar #displayResultados");
+	let escribiMas = document.querySelector("#busquedaRapida .desplMostrar #escribiMas");
 
 	// Funciones
-	let agregarHallazgos = (registros) => {
-		// Generar las condiciones para que se pueda mostrar el 'display'
+	let agregaHallazgos = (registros) => {
+		// Generar las condiciones para que se puedan mostrar los 'hallazgos'
 		input.style.borderBottomLeftRadius = 0;
 		input.style.borderBottomRightRadius = 0;
-		display.innerHTML = "";
-		display.classList.remove("ocultar");
+		hallazgos.innerHTML = "";
+		hallazgos.classList.remove("ocultar");
 
 		// Rutinas en función del tipo de variable que sea 'registros'
 		if (Array.isArray(registros)) {
@@ -25,14 +25,19 @@ window.addEventListener("load", () => {
 				let {familia, entidad, id, ano, nombre} = registro;
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
+				fila.classList.add(familia.slice(0, 4));
 				let anchor = document.createElement("a");
 				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 				// Prepara las variables de la fila
-				let anchoMax = 30;
-				let nom = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
+				// 1. Procesa el nombre
+				let anchoMax = 40;
+				nombre = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
 				if (familia == "producto") nombre += " (" + ano + ")";
-				let ent = entidad.slice(0, 3).toUpperCase();
-				let datos = [nom, ent];
+				// 2. Procesa la entidad
+				let ent = entidad.slice(0, 5);
+				if (ent == "perso") ent = "pers.";
+				else if (ent != entidad) ent += ".";
+				let datos = [nombre, ent];
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
 					let celda = document.createElement("td");
@@ -51,14 +56,16 @@ window.addEventListener("load", () => {
 				// Agrega la fila al cuerpo de la tabla (tblbody)
 				tblBody.appendChild(fila);
 				tabla.appendChild(tblBody);
-				display.appendChild(tabla);
+				hallazgos.appendChild(tabla);
 			}
-		} else {
+		}
+		// En caso de que sea un sólo registro
+		else {
 			let parrafo = document.createElement("p");
 			parrafo.style.fontStyle = "italic";
 			parrafo.style.textAlign = "center";
 			parrafo.appendChild(document.createTextNode(registros));
-			display.appendChild(parrafo);
+			hallazgos.appendChild(parrafo);
 		}
 	};
 
@@ -68,30 +75,31 @@ window.addEventListener("load", () => {
 		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
 		let dataEntry = input.value;
 
-		// Elimina palabras repetidas
+		// Elimina palabras
 		let palabras = dataEntry.split(" ");
-		for (let i = palabras.length - 1; i > 0; i--) {
-			if (
-				palabras.filter((x) => x == palabras[i]).length > 1 ||
-				palabras.filter((x) => x == "").length
-			) {
-				palabras.splice(i, 1);
-			}
-		}
+		for (let i = palabras.length - 1; i > 0; i--)
+			// Elimina palabras repetidas o ¿vacías?
+			if (palabras.filter((n) => n == palabras[i]).length > 1 || !palabras[i]) palabras.splice(i, 1);
 		let pasaNoPasa = palabras.join("");
 
-		// Termina el proceso si la palabra tiene menos de 4 caracteres significativos
+		// Acciones si la palabra tiene menos de 4 caracteres significativos
 		if (pasaNoPasa.length < 4) {
+			// Estandariza los bordes redondeados en el input
 			input.style.borderRadius = "5px";
-			display.classList.add("ocultar");
+			// Oculta el sector de Hallazgos
+			hallazgos.classList.add("ocultar");
+			// Muestra el cartel de "escribí más"
 			escribiMas.classList.remove("ocultar");
 			return;
-		} else escribiMas.classList.add("ocultar");
+		}
+		// Oculta el cartel de "escribí más"
+		else escribiMas.classList.add("ocultar");
 
 		// Busca los productos
 		palabras = palabras.join(" ");
 		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
-		if (resultados.length) agregarHallazgos(resultados);
-		else agregarHallazgos("- No encontramos coincidencias -");
+		// Acciones en función de si encuentra resultados o no
+		if (resultados.length) agregaHallazgos(resultados);
+		else agregaHallazgos("- No encontramos coincidencias -");
 	});
 });

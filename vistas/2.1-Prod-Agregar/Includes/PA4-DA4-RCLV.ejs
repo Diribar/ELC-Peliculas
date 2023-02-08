@@ -1,0 +1,39 @@
+<% registro = camposDA.find(n => n.nombre == campo) %>
+<% let {titulo, valores, grupo} = registro %>
+<section id="<%= campo %>" class="label-select">
+	<label><%= titulo %></label>
+	<div class="inputError">
+		<!-- Input -->
+		<select name="<%= campo %>" class="input" autofocus>
+			<option value="1">Ninguno</option>
+			<option value="2">Varios</option>
+			<!-- "valor" es cada Personaje, Hecho, Valor -->
+			<% for (let valor of valores.filter(n => n.id > 10)) { %>
+				<% let clase="" %> 
+				<% // Datos para PERSONAJES %>
+				<% if (campo == "personaje_id") { %>
+					<% clase += valor.categoria_id  %>
+						<% if (valor.ap_mar_id) {clase += " AMA AM" + valor.ap_mar_id} %>
+				<% } %>
+				<% // Datos para HECHOS %>
+				<% if (campo == "hecho_id") { %>
+					<% clase += " CFC" %>
+					<% if (!valor.solo_cfc) {clase += ' VPC'} %>
+					<% if (valor.ant) {clase += ' ant'} %>
+					<% if (valor.jss) {clase += ' jss'} %>
+					<% if (valor.cnt) {clase += ' cnt'} %>
+					<% if (valor.pst) {clase += ' pst'} %>
+					<% if (valor.ama) {clase += ' ama'} %>
+				<% } %>
+				<% clase = clase.trim() %> 
+				<option value="<%= valor.id %>" class="RCLV <%= clase %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+			<% } %>
+		</select>
+		<%- include("PA4-DA9-Ayuda") %>
+		<!-- Link a Relación con la vida -->
+		<% if (grupo=="RCLV") { %>
+			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
+		<% } %>
+	</div>
+</section>

@@ -30,7 +30,7 @@ module.exports = {
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
-		// return res.send([productos, rclvs]);
+		return res.send([productos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -105,7 +105,7 @@ module.exports = {
 		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
-		// Variables
+		// Más variables
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
@@ -137,13 +137,14 @@ module.exports = {
 		if (rechazado) {
 			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
 			datosHistorial.motivo_id = motivo.id;
-			datosHistorial.duracion = Number(motivo.duracion);
+			duracion = Number(motivo.duracion);
+			datosHistorial.duracion = duracion;
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
 		// Aumenta el valor de prod_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
 		// Penaliza al usuario si corresponde
-		if (datosHistorial.duracion) procesos.usuario_Penalizar(creador_ID, motivo);
+		if (duracion) comp.usuarioAumentaPenaliz(creador_ID, duracion, "prods");
 		// Obtiene el edicID
 		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
 		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
@@ -168,10 +169,10 @@ module.exports = {
 		const {entidad, id: prodID} = req.query;
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let quedanCampos, ingresos, reemplazos, bloqueDer, statusAprob, infoErronea_id;
+		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("productos"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("productos"), "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
@@ -192,7 +193,8 @@ module.exports = {
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardar_edic(
+				let statusAprob;
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(
 					req,
 					prodOrig,
 					prodEdic
@@ -217,10 +219,10 @@ module.exports = {
 		}
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
-			let [edicion, quedanCampos] = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+			// Achica la edición a su mínima expresión
+			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
 			// Fin, si no quedan campos
-			if (!quedanCampos)
-				return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
@@ -284,7 +286,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
 		// 3. Procesa el data-entry
-		let dataEntry = await procsRCLV.procesaLosDatos(datos);
+		let dataEntry = procsRCLV.procesaLosDatos(datos);
 		// 4. Genera la información para guardar
 		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
@@ -296,7 +298,6 @@ module.exports = {
 			captura_activa: false,
 			status_registro_id: aprobado_id,
 		};
-		// return res.send(dataEntry);
 		// 5. Guarda los cambios
 		await procsRCLV.guardaLosCambios(req, res, dataEntry);
 		// 6. Actualiza la tabla de edics aprob/rech
@@ -323,13 +324,13 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.includes("rclvs"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude("rclvs"), "status_registro"];
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let [edicion, quedanCampos] = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
+		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
 		// Fin, si no quedan campos
-		if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+		if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos
 		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
 		// Variables
@@ -379,8 +380,8 @@ module.exports = {
 		includes = ["links", "status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		// RESUMEN DE PROBLEMAS A VERIFICAR
-		let informacion = procesos.linksForm_avisoProblemas(producto, req.session.urlAnterior);
+		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
+		let informacion = procesos.linksForm_problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);

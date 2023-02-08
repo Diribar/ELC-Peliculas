@@ -8,11 +8,11 @@
 #datosLargos #sinopsis .ayuda {right: -10px;}
 
 /* Z-Index: coordinación entre Ayuda y Errores */
-#primeraColumna {z-index: 2;}
 .inputError .ayuda {z-index: 3;}
 .inputError .errores {z-index: 4}
 .ayuda .ayudaMostrar, .ayudaMostrar {z-index: 5;}
 .errores .mensajeError {z-index: 6;}
+#primeraColumna {z-index: 7;}
 
 /* Bordes */
 .ayudaClick, .fa-circle-question, .fa-circle-check, .fa-circle-xmark, 
@@ -52,13 +52,13 @@ ul[type="dots"].ayudaMostrar li {list-style-position: outside; margin-left: 15px
 .link {text-align: center; font-weight: bold; line-height: 1; padding: 1px; }
 
 /* Colores */
-.resultadoExitoso {background-color: var(--verde-oscuro);}
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-.ayudaClick {background-color: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
-.ayudaMostrar, .ayudaMostrar * {background-color: var(--backAyuda); color: var(--colorAyuda);}
+.resultadoExitoso {background: var(--verde-oscuro);}
+.resultadoInvalido {background: var(--rojo-oscuro);}
+.resultadoEnEspera {background: var(--gris-oscuro);}
+.ayudaClick {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
+.ayudaMostrar, .ayudaMostrar * {background: var(--backAyuda); color: var(--colorAyuda);}
 .ayudaMostrar {border-color: var(--bordeAyuda);}
-.mensajeError {color: var(--colorMensajeError); background-color: var(--backMensajeError); border-color: var(--colorMensajeError);}
-.link {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+.mensajeError {color: var(--colorMensajeError); background: var(--backMensajeError); border-color: var(--colorMensajeError);}
+.link {background: var(--gris-oscuro); color: var(--gris-claro);}
 .ayudaMostrar::before {border-color: transparent var(--backAyuda) transparent transparent;}
 .mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}

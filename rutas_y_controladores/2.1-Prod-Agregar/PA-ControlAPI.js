@@ -70,14 +70,14 @@ module.exports = {
 		let datos = JSON.parse(req.query.datos);
 		// Obtiene más información del producto
 		let infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
+		// Guarda los datos originales en una cookie
+		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// Fin
-		return res.json(infoTMDBparaDD);
+		return res.json();
 	},
 	desambGuardar2: async (req, res) => {
-		let datosDuros = JSON.parse(req.query.datos);
-		// Guarda los datos originales en una cookie
-		let datosOriginales = {...datosDuros};
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		//let datosDuros = JSON.parse(req.query.datos);
+		let datosDuros = req.cookies.datosOriginales;
 		// Para datosDuros, dar de alta el avatar_url y de baja el avatar
 		datosDuros.avatar_url = datosDuros.avatar;
 		delete datosDuros.avatar;
@@ -88,10 +88,10 @@ module.exports = {
 		// Genera la session y cookie para DatosDuros
 		req.session.datosDuros = {...datosDuros};
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		// Genera la session y cookie para datosPers
+		// Genera la session y cookie para datosAdics
 		if (!errores.hay) {
-			req.session.datosPers = {...datosDuros};
-			res.cookie("datosPers", datosDuros, {maxAge: unDia});
+			req.session.datosAdics = {...datosDuros};
+			res.cookie("datosAdics", datosDuros, {maxAge: unDia});
 		}
 		// Fin
 		return res.json(errores);
@@ -107,24 +107,20 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	// Vista (datosPers)
-	obtieneSubcategs: async (req, res) => {
-		let subcategorias = await BD_genericas.obtieneTodos("subcategorias", "orden");
-		return res.json(subcategorias);
-	},
-	validaDatosPers: async (req, res) => {
+	// Vista (datosAdics)
+	validaDatosAdics: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		let errores = await valida.datosPers(campos, req.query);
+		let errores = await valida.datosAdics(campos, req.query);
 		return res.json(errores);
 	},
-	guardaDatosPers: (req, res) => {
-		let datosPers = {
-			...(req.session.datosPers ? req.session.datosPers : req.cookies.datosPers),
+	guardaDatosAdics: (req, res) => {
+		let datosAdics = {
+			...(req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics),
 			...req.query,
 		};
-		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {maxAge: unDia});
+		req.session.datosAdics = datosAdics;
+		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 		return res.json();
 	},
 

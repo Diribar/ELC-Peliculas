@@ -8,7 +8,7 @@ Categoria
 Subcategoría
 Película / Colección / Capítulo
 Dirección
-Actuación
+Actores
 Música
 Producción
 Personaje Histórico

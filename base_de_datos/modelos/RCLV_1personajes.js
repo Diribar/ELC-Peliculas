@@ -4,11 +4,12 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
-		
+
+		// Específico de 'personajes'
 		apodo: {type: dt.STRING(30)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
-		subcategoria_id: {type: dt.STRING(3)},
+		epoca_id: {type: dt.STRING(3)},
 		ap_mar_id: {type: dt.INTEGER},
 		proceso_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
@@ -28,6 +29,7 @@ module.exports = (sequelize, dt) => {
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
+		perenne: {type: dt.BOOLEAN},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
@@ -46,9 +48,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "ap_mar_id"});
-		entidad.belongsTo(n.procs_canon, {as: "proc_canon",	foreignKey: "proceso_id",});
+		entidad.belongsTo(n.procs_canon, {as: "proc_canon", foreignKey: "proceso_id"});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});

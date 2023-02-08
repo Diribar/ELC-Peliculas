@@ -1,17 +1,17 @@
 /* General */
-#dataEntry {background-color: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid; max-width: 80%; display: flex; flex-direction: column;}
+#dataEntry {background: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid; max-width: 80%; display: flex; flex-direction: column;}
 
 /* Título */
 #dataEntry #gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
 
 /* Texto */
 #dataEntry #datos {padding-left: 20px;}
-#dataEntry #datos .texto {margin: 5px 0; font-size: 1.2rem;}
+#dataEntry #datos .texto {margin: 10px 0 5px; font-size: 1.2rem;}
 #dataEntry #datos .ayudaClick {margin-left: 5px;}
 #dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos {margin-left: 20px; margin-bottom: 5px;}
 #dataEntry #datos .ayudaClick .ayudaMostrar #subPuntos li {padding-top: 0;}
-#dataEntry #datos #partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
-#dataEntry #datos #partesAutomatico span {color: var(--gris-claro);}
+#dataEntry #datos #capitulos {background: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
+#dataEntry #datos #capitulos span {color: var(--gris-claro);}
 
 /* Flechas */
 #dataEntry .flechas {margin-top: 30px;}

@@ -40,8 +40,8 @@ module.exports = {
 		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(prodEntidad);
 		// Obtiene el producto con include a links
 		let producto = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, [
-			"links_gratuitos_cargados",
-			"links_gratuitos_en_la_web",
+			"links_gratis_en_BD",
+			"links_gratis_en_web",
 			"links",
 			"status_registro",
 		]);
@@ -62,13 +62,13 @@ module.exports = {
 			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 			let no = si_no_parcial.find((n) => n.no).id;
 			// Acciones para LINKS GRATUITOS EN LA WEB
-			datos.links_gratuitos_en_la_web_id = linksActivos.length
+			datos.links_gratis_en_web_id = linksActivos.length
 				? si
-				: producto.links_gratuitos_en_la_web_id != no
+				: producto.links_gratis_en_web_id != no
 				? talVez
 				: no;
 			// Acciones para LINKS GRATUITOS CARGADOS
-			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
+			datos.links_gratis_en_bd_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
 			// Actualizar la BD
 			BD_genericas.actualizaPorId(prodEntidad, prodID, datos);
 		}

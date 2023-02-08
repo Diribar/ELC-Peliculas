@@ -1,0 +1,34 @@
+/* General */
+#cuerpo {position: absolute; margin: 0; height: 100%; width: 100%;}
+#cuerpo {flex-direction: column; justify-content: center; align-items: center;}
+
+/* General del formulario */
+#cuerpo form {background: var(--gris-oscuro); border-radius: 10px;}
+#cuerpo form {padding: 20px; z-index: 11; min-width: 360px;}
+#cuerpo form {display: flex; flex-direction: column;}
+#cuerpo form #tituloPrincipal {align-self: center;}
+
+/* Partes del formulario */
+#cuerpo form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
+#cuerpo form h1 {font-size: 1.5em; text-align: center;}
+#cuerpo form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
+
+/* Input del formulario */
+#cuerpo form label {color: white; margin-right: 30px; text-align: left;}
+#cuerpo form .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
+#cuerpo form select {text-align: left;}
+#cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+
+/* Íconos y Mensajes de Error */
+/* #cuerpo .inputError .mensajeError {left: 20px;} */
+
+/* Flechas */
+#cuerpo .flechas {margin: 15px auto 5px;}
+
+/* Credenciales inválidas*/
+#cuerpo form #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center; align-items: center;}
+#cuerpo form #credencialesInvalidas {margin: 10px auto; border-radius: 7px; font-style: italic; padding: 2px 7px;}
+#cuerpo form #credencialesInvalidas.ocultar {display: none;}
+#cuerpo form #credencialesInvalidas, 
+#cuerpo form #credencialesInvalidas p {background: var(--rojo-oscuro); color: var(--gris-claro);}
+#cuerpo form #credencialesInvalidas p {margin: 0;}

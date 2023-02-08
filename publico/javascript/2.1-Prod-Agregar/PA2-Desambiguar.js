@@ -3,7 +3,7 @@
 
 window.addEventListener("load", async () => {
 	// Variables
-	let ruta = "/producto/agregar/api/desambiguar-form0";
+	let ruta = "api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
 
 	// DOM - Opciones
@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	var cartel = document.querySelector("#cartel");
 	let cartelTitulo = document.querySelector("#cartel #titulo");
 	let cartelUl = document.querySelector("#cartel ul");
-	let cartelError = document.querySelector("#cartel #error");
+	let cartelAlerta = document.querySelector("#cartel #alerta");
 	let cartelTrabajando = document.querySelector("#cartel #trabajando");
 	let lis_fa_circle;
 
@@ -26,9 +26,9 @@ window.addEventListener("load", async () => {
 		// Quita los dots del 'ul'
 		cartelUl.style.listStyleType = "none";
 		// Cambia el color de fondo
-		cartel.classList.add("azul");
+		cartel.classList.add("trabajando");
 		// Cambia el ícono de encabezado
-		cartelError.classList.add("ocultar");
+		cartelAlerta.classList.add("ocultar");
 		cartelTrabajando.classList.remove("ocultar");
 	})();
 
@@ -213,12 +213,12 @@ window.addEventListener("load", async () => {
 			// 1. Obtiene más información del producto
 			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
 			ruta = "api/desambiguar-guardar1/?datos=" + JSON.stringify(datos);
-			datos = await fetch(ruta).then((n) => n.json());
+			await fetch(ruta); // El 'await' es para esperar a que se grabe la cookie en la controladora
 			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 			// 2. Revisa la información disponible, para determinar los próximos pasos
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar2/?datos=" + JSON.stringify(datos);
+			ruta = "api/desambiguar-guardar2"
 			errores = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
@@ -229,7 +229,7 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			if (errores.hay) location.href = "datos-duros";
-			else location.href = "datos-personalizados";
+			else location.href = "datos-adicionales";
 		});
 	});
 

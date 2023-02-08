@@ -1,58 +1,83 @@
 /* Cuerpo */
-#cuerpo {background-color: transparent; flex-direction: column;}
+#cuerpo {background: transparent; flex-direction: column;}
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
-#cuerpo #dataEntry {display: flex; flex-direction: column; z-index: 4;}
-#cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #dataEntry {display: flex; flex-direction: column; z-index: 8;}
+#cuerpo #dataEntry {background: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
-#dataEntry #datos {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #datos #primeraCol {margin-right: 50px; width: 210px;}
-#dataEntry #datos #segundaCol {display: flex; flex-direction: column; width: 206px;}
+#dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
+#dataEntry #inicio #primeraCol {margin-right: 50px; width: 210px;}
+#dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
+#dataEntry select {border-width: .7px; border-radius: 5px; background: white;}
+#dataEntry label[for] {padding-left: 3px;}
 
 /* Temas de filas */
-#dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
 #dataEntry .altoFila {height: 25px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
-label[for] {cursor: pointer; padding-left: 3px;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 
 /* Temas particulares de dataEntry */
-#dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {scale: .8; cursor: pointer;}
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-#dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
+#dataEntry input, #inicio #posiblesRepetidos {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Nombres */
-#dataEntry #datos #valoresNombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
+#inicio #nombre .input {padding-left: 5px; margin-left: 7px; width: 100%;}
 
 /* Fechas */
-#dataEntry #dia {margin-left: 15px;}
-#dataEntry #datos #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
-#dataEntry #datos #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
+#inicio #dia {margin-left: 15px;}
+#inicio #fecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
+#inicio #fecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 
 /* Repetidos */
-#dataEntry #segundaCol #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#repetidos #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
+#repetidos #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
+#repetidos #posiblesRepetidos li input {margin-right: 5px;}
+#repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
-/* Preguntas */
-#dataEntry #preguntas select {width: 144px;}
-#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
-#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarOKano, 
-#dataEntry #preguntas .ocultaPorAno, 
-#dataEntry #preguntas .ocultaPorRCLI, 
-#dataEntry #preguntas .ocultaPorJSS, 
-#dataEntry #preguntas .ocultaPorCNT, 
-#dataEntry #preguntas .ocultaPorNoCFC {display: none;}
+/* Sexo */
+#inicio #sexo_id {margin-top: 10px;}
+#inicio #sexo_id .opciones {margin-left: 10px;}
+#inicio #sexo_id .opciones .ayuda ul {max-width: 200px;}
 
-/* Temas específicos de dataEntry - Posibles Repetidos */
-#dataEntry #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
-#dataEntry #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
-#dataEntry #posiblesRepetidos li input {margin-right: 5px;}
-#dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+/* Época */
+#epoca h3 {margin-bottom: 5px;}
+#epoca .opciones {justify-content: center; }
+#epoca .opciones .ayuda {position: static; translate: 5px 0px;}
+#epoca .opciones input {align-self: center;}
+
+/* Relación con la Iglesia Católica */
+#RCLIC #soloCFC {margin-bottom: 5px;}
+#RCLIC .pregunta {font-size: 1.10rem;}
+#RCLIC .siNo {width: 70px; justify-content: space-between;}
+#RCLIC .personajes .siNo {margin-left: 10px;}
+#RCLIC .hechos .siNo {margin-right: 10px;}
+
+/* 1. Año (personajes y hechos) */
+#epoca:not(
+	:not(:has(.opciones input#pst:checked)), /* epoca = 'pst' */
+	:has(.opciones input.noPST:checked)      /* ninguna otra opción está 'checked' */
+) .invisible {visibility: visible;}
+
+/* 2. PreguntasRCLIC (personajes) */
+#dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
+	#preguntasRCLIC.invisible {visibility: visible;}
+
+#dataEntry:has(#sexo_id input:checked)                       /* contestó 'sexo' */
+	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
+
+/* 3. PreguntasRCLIC (hechos) */
+#dataEntry:has(.hechos #soloCFC input#SI:checked)            /* --> si soloCFC='SI' */
+	#preguntasRCLIC.invisible {visibility: visible;}
+
+/* Temas de ayuda */
+#dataEntry ul#ayudaNombrePers {max-width: 400px;}
+#dataEntry ul#ayudaNombrePers ul {padding-left: 20px;}
 
 /* Submit button */
 #dataEntry .flechas {margin-top: 20px;}

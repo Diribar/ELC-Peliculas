@@ -30,6 +30,7 @@ module.exports = (sequelize, dt) => {
 
 		vigencia_revisada_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
+		perenne: {type: dt.BOOLEAN},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},

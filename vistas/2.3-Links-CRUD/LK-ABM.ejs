@@ -3,8 +3,8 @@
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
 	<div class="ayuda">
-		<i class="fa-solid fa-circle-question ayudaClick despl_click">
-			<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
 				<% if (tema == "revisionEnts") { %>
 					<li>Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor</li>
 				<% } else { %>
@@ -64,7 +64,7 @@
 					<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 				</a>
 				<a href="/links/abm/?entidad=<%= entidad %>&id=<%= prodOrig.id %>" target="_blank">
-					<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
+					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista Detalle"></i>
 				</a>
 			</div>
 		<% } else { %>
@@ -77,7 +77,7 @@
 					target="_blank"
 					tabindex="-1"
 				>
-					<img src="/imagenes/0-Base/Logos/<%= prov.avatar %>" tabindex="-1">
+					<img src="//localhost/imagenes/0-Base/Logos/<%= prov.avatar %>" tabindex="-1">
 				</a>
 			<% } %>
 		</div>

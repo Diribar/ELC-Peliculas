@@ -55,38 +55,27 @@ module.exports = {
 		return res.json(errores);
 	},
 	obtieneVersionesDelProducto: async (req, res) => {
-		let {entidad, id: prodID} = req.query;
+		let {entidad: producto, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
 	prod_EliminarEdicG: async (req, res) => {
 		// Obtiene los datos identificatorios del producto
-		let entidad = req.query.entidad;
+		let producto = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
 
 		if (condicion && prodEdic) {
-			if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
+			if (prodEdic.avatar)
+				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
 			BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
 		}
 		// Terminar

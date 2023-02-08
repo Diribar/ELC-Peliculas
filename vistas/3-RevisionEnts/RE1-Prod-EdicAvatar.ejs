@@ -1,10 +1,10 @@
 <div id="izquierda" class="imagenes">
 	<!-- Imagen sugerida -->
-	<img src="<%= avatar.edicion %>" title="Imagen propuesta">
+	<img src="//localhost<%= avatar.edicion %>" title="Imagen propuesta">
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
-				<img src="<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
+				<img src="//localhost<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
 		<% } %>
 	</nav>
@@ -16,8 +16,8 @@
 			<h1 id="titulo"><%= titulo %></h1>
 			<!-- Ayuda -->
 			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaClick despl_click">
-					<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
 						<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
 						<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
 					</ul>
@@ -75,5 +75,5 @@
 </div>
 <div id="derecha" class="imagenes">
 	<!-- Imagen actual -->
-	<img src="<%= avatar.original %>" title="Imagen actual">
+	<img src="//localhost<%= avatar.original %>" title="Imagen actual">
 </div>

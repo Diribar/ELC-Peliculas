@@ -12,7 +12,7 @@
 	<!-- Url -->
 	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
-			<img src="/imagenes/0-Base/Logos/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.url %>">
+			<img src="//localhost/imagenes/0-Base/Logos/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.url %>">
 		</a>
 		<input name='url' type="text" class="ocultar" value="<%= link.url %>">
 	</td>
@@ -83,8 +83,8 @@
 		<% } %>
 		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
 		<% if (link.motivo) { %>
-			<i class="fa-solid fa-circle-question ayudaClick despl_click" tabindex="-1" title="Motivo">
-				<span class="ayudaMostrar ocultar despl_mostrar"><%= link.motivo.comentario %> </span>
+			<i class="fa-solid fa-circle-question ayudaClick desplClick" tabindex="-1" title="Motivo">
+				<span class="ayudaMostrar ocultar desplMostrar"><%= link.motivo.comentario %> </span>
 			</i>
 		<% } %>
 	</td>

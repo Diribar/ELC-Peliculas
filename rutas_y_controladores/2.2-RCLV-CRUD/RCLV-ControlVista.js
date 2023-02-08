@@ -10,15 +10,14 @@ const valida = require("./RCLV-Validar");
 module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1);
 		const datos = req.query;
-		// 2. Variables
+		// Variables
 		let entidad = req.query.entidad;
 		let rclvID = req.query.id;
 		let userID = req.session.usuario.id;
-		let meses = await BD_genericas.obtieneTodos("meses", "id");
 		let dataEntry = req.session[entidad]
 			? req.session[entidad]
 			: req.cookies[entidad]
@@ -33,25 +32,18 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
-		// 3. Variables específicas para personajes
+		let ap_mars, roles_igl, procesos_canon;
+		// Variables específicas para personajes
 		if (entidad == "personajes") {
-			var procs_canon = await BD_genericas.obtieneTodos("procs_canon", "orden");
-			procs_canon = procs_canon.filter((m) => m.id.length == 3);
-			var roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "orden");
-			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-			var apariciones_marianas = await BD_genericas.obtieneTodos("hechos", "nombre");
-			apariciones_marianas = apariciones_marianas.filter((n) => n.ama);
+			roles_igl = roles_iglesia.filter((m) => m.personaje);
+			procesos_canon = procs_canon.filter((m) => m.id.length == 3);
+			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
+			ap_mars = ap_mars.filter((n) => n.ama);
 		}
-		// 4. Pasos exclusivos para edición
+		// Pasos exclusivos para edición y revisión
 		if (codigo != "agregar") {
 			// Obtiene el rclvOrig y rclvEdic
-			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-				entidad,
-				rclvID,
-				userID,
-				"rclvs_edicion",
-				"rclvs"
-			);
+			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, rclvID, userID);
 			// Pisa el data entry de session
 			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
 			// 3. Revisar error de revisión
@@ -59,51 +51,57 @@ module.exports = {
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = await BD_genericas.obtieneTodos("dias_del_ano", "id").then((n) =>
-					n.find((m) => m.id == dataEntry.dia_del_ano_id)
-				);
+				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
 				dataEntry.dia = dia_del_ano.dia;
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
 		}
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
-		// 5. Ir a la vista
+		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			entidad: entidad,
+			entidad,
+			personajes: entidad == "personajes",
+			hechos: entidad == "hechos",
 			titulo,
 			tituloCuerpo,
 			dataEntry,
 			DE: !!Object.keys(dataEntry).length,
 			meses,
-			roles_iglesia,
-			procs_canon,
-			apariciones_marianas,
+			epocas,
+			roles_igl,
+			procesos_canon,
+			ap_mars,
+			sexos,
 			rutaSalir,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
-		// 1. Variables
+
+		// Variables
 		let {entidad, id: rclvID, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
-		// 2. Averigua si hay errores de validación y toma acciones
+		// Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
-		// 3. Obtiene el dataEntry
-		let DE = await procesos.procesaLosDatos(datos);
+		// Obtiene el dataEntry
+		let DE = procesos.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
 		await procesos.guardaLosCambios(req, res, DE);
-		// 9. Redirecciona a la siguiente instancia
+		// Borra el RCLV en session y cookies
+		if (req.session[entidad]) delete req.session[entidad];
+		if (req.cookies[entidad]) res.clearCookie(entidad);
+		// Obtiene el url de la siguiente instancia
 		let destino =
-			origen == "DP"
-				? "/producto/agregar/datos-personalizados"
+			origen == "DA"
+				? "/producto/agregar/datos-adicionales"
 				: origen == "ED"
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"
@@ -111,6 +109,7 @@ module.exports = {
 				: origen == "DT_RCLV"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
 				: "/";
+		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
 	},
 	detalle: async (req, res) => {
@@ -136,7 +135,7 @@ module.exports = {
 		// Productos
 		let prodsEnBD = await procesos.prodsEnBD(RCLV, userID);
 		let cantProdsEnBD = prodsEnBD.length;
-		// 5. Ir a la vista
+		// Ir a la vista
 		// return res.send(prodsEnBD);
 		return res.render("CMP-0Estructura", {
 			tema,

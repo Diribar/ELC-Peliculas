@@ -1,6 +1,5 @@
 Revisión
 - Productos: 
-	- Circuito de revisión para Status Provisorio
 	- Altas, botón de Links con menú desplegable:
 		- Link a externo
 		- Cuando no se dispongan Links -> "no se dispone aún"
@@ -20,12 +19,6 @@ CRUD
 		- Links, menú pop-up
 			- Si no tiene: "¿Querés agregarlos"
 			- Si tiene, desplegarlos
-	- Edición
-		- Ayuda título:
-			- Salir/Edición/Original/RCLV: Debés guardar o descartar los cambios antes de usar esta opción
-			- Descartar: Los cambios no guardados se perderán definitivamente
-		- Sólo se permite una edición para cada campo
-		- Sólo se pueden editar aprobados o propios.creado
 - ABM Links:
 	- Agregar input 'checkbox' para "No se encuentran links gratuitos"
 	- Para colecciones, sólo links de Trailer

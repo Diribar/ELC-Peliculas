@@ -21,13 +21,7 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
 		// 5. Configura el título de la vista
@@ -41,31 +35,41 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
-		let camposInput1, camposInput2, camposInput3, camposDP, BD_paises, BD_idiomas;
+		let camposInput1, camposInput2, produccion, camposDA, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
-			let verificarReq = (dato) => {
-				return req[dato] && req[dato].entidad == entidad && req[dato].id == prodID;
-			};
-			let edicion = verificarReq("session.edicProd")
-				? req.session.edicProd
-				: verificarReq("cookies.edicProd")
-				? req.cookies.edicProd
-				: "";
-			req.session.edicProd = "";
-			res.clearCookie("edicProd");
+			let edicion = (() => {
+				// Función
+				let verificaReq = (dato) => {
+					return req[dato] && req[dato].entidad == entidad && req[dato].id == prodID;
+				};
+				// Obtiene la información
+				let resultado = verificaReq("session.edicProd")
+					? req.session.edicProd
+					: verificaReq("cookies.edicProd")
+					? req.cookies.edicProd
+					: "";
+				// Borra 'session' y 'cookie'
+				req.session.edicProd = "";
+				res.clearCookie("edicProd");
+				// Fin
+				return resultado;
+			})();
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicion};
-			// Variables de 'Edición'
+			// Datos Duros - Campos Input
 			let camposInput = variables.camposDD.filter((n) => n[entidad]).filter((n) => n.campoInput);
 			camposInput1 = camposInput.filter((n) => n.antesDePais);
 			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
-			camposInput3 = camposInput.filter((n) => n.nombre == "produccion");
+			produccion = camposInput.find((n) => n.nombre == "produccion");
+			// Datos Duros - Bases de Datos
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
+			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
-			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
+			// Datos Personalizados
+			camposDA = await variables.camposDA_conValores(userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
@@ -79,7 +83,7 @@ module.exports = {
 				prodComb.temporada
 			);
 		// Va a la vista
-		//return res.send(bloquesDerecha)
+		// return res.send(prodComb)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -93,10 +97,10 @@ module.exports = {
 			bloquesDerecha,
 			camposInput1,
 			camposInput2,
-			camposInput3,
+			produccion,
 			BD_paises,
 			BD_idiomas,
-			camposDP,
+			camposDA,
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
@@ -113,13 +117,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneVersionesDelRegistro(
-			entidad,
-			prodID,
-			userID,
-			"prods_edicion",
-			"productos"
-		);
+		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;
@@ -149,13 +147,7 @@ module.exports = {
 		// Actualiza la edición
 
 		if (!errores.hay)
-			await procsCRUD.guardaEdicion({
-				entidadOrig: entidad,
-				entidadEdic: "prods_edicion",
-				original: prodOrig,
-				edicion: req.body,
-				userID,
-			});
+			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion: req.body, entidad, userID});
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

@@ -1,0 +1,26 @@
+<form method="POST" enctype="multipart/form-data">
+	<%- include('CMP-Cartel', {mostrar: true}) %>
+	<%- include("PR2-Edicion-Avatar") %> 
+	<section id="cuerpoFooter">
+		<%- include('CMP-3Footer', {mostrar: true}) %>
+		<!--**************************** CUERPO ************************-->
+		<div id="cuerpo">
+			<%- include('CMP-TimerContador') %>
+			<div id="tituloPrincipal">
+				<h1 id="titulo"><%= titulo %></h1>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+							<li>Al terminar, te pedimos que vayas a la vista <em>Detalle de Producto</em> para liberarlo.</li>
+						</ul>	
+					</i>
+				</div>
+			</div>
+			<div id="edicionForm">
+				<%- include('PR2-Edicion-Datos') %>
+			</div>
+		</div>
+		<!--****************************** FIN *************************-->
+	</section>
+</form>

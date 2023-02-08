@@ -4,18 +4,21 @@ h2 {font-size: 1.20rem;}
 h3 {font-size: 1.10rem;}
 
 /* Formularios */
-select, option, a, button[type="submit"], label img {cursor: pointer;}
+select, option, a, button[type="submit"], label img, label[for],
+input[type="radio"], input[type="checkbox"] {cursor: pointer;}
 select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Varios */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 a {text-decoration: none;}
-select, option, optgroup, input, button, a, i, span,
+select, option, optgroup, input, textarea, button, a, i, span,
 em, strong, u {font-size: inherit; color: inherit; line-height: inherit;}
 p, li {line-height: 1.2rem;}
 label {line-height: 1;}
 
 /* Formularios */
 select option[value=''] {display: none;}
-::placeholder, select:invalid {font-style: italic;}
+::placeholder, select:has(option[value=""]:checked) {font-style: italic;}
 select option {font-style: normal;}
+input[type="radio"], input[type="checkbox"] {scale: .8;}
+input[type="radio"] {align-self: end;}

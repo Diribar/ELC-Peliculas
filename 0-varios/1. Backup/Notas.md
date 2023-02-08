@@ -1,0 +1,1 @@
+DBeaver - File name pattern: Script-${database}-${timestamp}.sql
