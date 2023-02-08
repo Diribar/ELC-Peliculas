@@ -147,11 +147,11 @@ module.exports = {
 		let origen = req.query.origen;
 		let userID = req.session.usuario.id;
 		const codigo = req.baseUrl + req.path;
-		// Tareas
+		// Tareas para un nuevo registro
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
 			let id = await comp.creaRegistro({entidad, datos: DE, userID});
-			// Agrega el RCLV a DA/ED
+			// Les agrega el 'rclv_id' a session y cookie de origen
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
 				req.session.datosAdics = req.session.datosAdics
@@ -164,19 +164,23 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} else if (codigo == "/rclv/edicion/") {
+		} 
+		// Tareas para edición
+		else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
 			let id = req.query.id;
-			let RCLV_original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 			// Actualiza el registro o crea una edición
-			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio y en status creado?
+			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
-				: await procsCRUD.guardaEdicion({original: RCLV_original, edicion: DE, entidad, userID}); // Guarda la edición
-		} else if (codigo == "/revision/rclv/alta/") {
+				: await procsCRUD.guardaActualizaEdicion({original, edicion: DE, entidad, userID}); // Guarda la edición
+		} 
+		// Tareas para revisión
+		else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
 			let id = req.query.id;
 			// Actualiza el registro o crea una edición
-			await comp.actualizaRegistro({entidad, id, datos: DE}); // Actualizar el registro original
+			await BD_genericas.actualizaPorId(entidad, id, DE); // Actualizar el registro original
 		}
 		// Fin
 		return;

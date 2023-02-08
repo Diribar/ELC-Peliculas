@@ -147,7 +147,7 @@ module.exports = {
 		// Actualiza la edición
 
 		if (!errores.hay)
-			await procsCRUD.guardaEdicion({original: prodOrig, edicion: req.body, entidad, userID});
+			await procsCRUD.guardaActualizaEdicion({original: prodOrig, edicion: req.body, entidad, userID});
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

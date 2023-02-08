@@ -263,7 +263,7 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
-		procsCRUD.guardaEdicion({
+		procsCRUD.guardaActualizaEdicion({
 			original: registro,
 			edicion: confirma,
 			entidad: original.entidad,
