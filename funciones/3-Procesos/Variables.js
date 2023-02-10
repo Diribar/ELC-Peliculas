@@ -520,18 +520,21 @@ module.exports = {
 						req.query.id +
 						"&origen=tableroEnts",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
+					autofocus: true,
 			  }
 			: req.originalUrl.startsWith("/producto/edicion/") || req.originalUrl.startsWith("/links/abm/")
 			? {
 					nombre: "fa-circle-info",
 					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
 					titulo: "Ir al 'Detalle de Producto'",
+					autofocus: true,
 			  }
 			: req.originalUrl.startsWith("/rclv/edicion/")
 			? {
 					nombre: "fa-circle-info",
 					link: "/rclv/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
 					titulo: "Ir al 'Detalle de RCLV'",
+					autofocus: true,
 			  }
 			: {};
 	},
@@ -539,6 +542,7 @@ module.exports = {
 		nombre: "fa-spell-check",
 		link: "/revision/tablero-de-control",
 		titulo: "Ir al 'Tablero de Control' de Revisiones",
+		autofocus: true
 	},
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};

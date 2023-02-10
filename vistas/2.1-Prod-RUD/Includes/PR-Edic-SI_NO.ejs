@@ -1,7 +1,7 @@
 <% const campo = tema.nombre %>
-<div class="inputError flexRowAlign altoFila">
+<section class="inputError flexRowAlign altoFila">
 	<label id="siNoTitulo" class="negrita"><%= tema.titulo %></label>
-	<div id="siNoOpciones" class="flexRowAlign">
+	<div id="siNoOpciones" class="flexRowAlign relative">
 		<div class="flexRowAlign">
 			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (producto[campo]==1) { %>checked<% } %> class="radioSI">
 			<label for="<%= campo %>SI">SI</label>
@@ -10,6 +10,8 @@
 			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (producto[campo]==0) { %>checked<% } %> class="radioNO">
 			<label for="<%= campo %>NO">NO</label>
 		</div>
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
 	<%- include("CMP-Errores", {display: true, campo}) %>
-</div>
+</section>

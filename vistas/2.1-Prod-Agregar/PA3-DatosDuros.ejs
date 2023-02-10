@@ -27,30 +27,30 @@
 				<% if (dataEntry.fuente != "TMDB") { %>
 					<% tmdb = dataEntry.nombre_original ? "search?language=es&query=" + dataEntry.nombre_original : "" %>
 					<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank">
-						<img src="//localhost/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database">
+						<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database">
 					</a>
 				<% } %>
 				<!-- FA -->
 				<% if (dataEntry.fuente!="FA") { %>
 					<% fa = dataEntry.nombre_castellano ? "search.php?stext=" + dataEntry.nombre_castellano : dataEntry.nombre_original ? "search.php?stext=" + dataEntry.nombre_original : "" %>
 					<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
-						<img src="//localhost/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity">
+						<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity">
 					</a>
 				<% } %>
 				<!-- IMDB -->
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "") %>
 				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank">
-					<img src="//localhost/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database">
+					<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-IMDB.jpg" title="Internet Movie Database">
 				</a>
 				<!-- Wikipedia -->
 				<% wiki = dataEntry.nombre_castellano ? dataEntry.nombre_castellano.toLowerCase() : "" %>
 				<a class="logos" href="//es.wikipedia.org/wiki/<%= wiki %>" target="_blank">
-					<img src="//localhost/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia">
+					<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia">
 				</a>
 				<!-- Google -->
 				<% google = dataEntry.nombre_castellano ? "search?q="+dataEntry.nombre_castellano.toLowerCase() : "" %>
 				<a class="logos" href="//google.com/<%= google %>" target="_blank">
-					<img src="//localhost/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
+					<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
 				</a>
 			</nav>
 		</div>
@@ -73,10 +73,10 @@
 		<!--Segunda columna-->
 		<div id="segundaColumna" class="inputError">
 			<% if (dataEntry.avatar_url) { %>
-				<img src="//localhost/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg" title="Usaremos la imagen de la derecha">
+				<img src="<%= localhost %>/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg" title="Usaremos la imagen de la derecha">
 			<% } else { %>
 				<label for="inputImagen" id="preview">
-					<img src="//localhost/imagenes/0-Base/Avatar/Prod-Agrega-una-imagen.jpg">
+					<img src="<%= localhost %>/imagenes/0-Base/Avatar/Prod-Agrega-una-imagen.jpg">
 				</label>
 				<input name="avatar" id="inputImagen" type="file" accept="image/*" class="ocultar input">
 				<%- include("CMP-Errores", {campo: "avatar"}) %>

@@ -2,7 +2,7 @@
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar) { %>
 			<div id="imagenUsuario">
-				<img src="//localhost/imagenes/1-Avatar-Usuarios/<%= usuario.avatar %>" class="desplClick">
+				<img src="<%= localhost %>/imagenes/1-Avatar-Usuarios/<%= usuario.avatar %>" class="desplClick">
 			</div>
 		<% } else if (usuario.nombre != null) { %>
 			<i id="letraInicial" class="desplClick iconoHeader">

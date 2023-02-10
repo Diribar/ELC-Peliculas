@@ -1,6 +1,5 @@
 /* Datos Adicionales */
-.flexRowAlign #siNoTitulo {width: 170px;}
 #siNoOpciones {width: 75px; justify-content: space-between;}
-#siNoOpciones label[for], #tipoActuacionOpciones label[for] {padding-left: 3px;}
-#tipoActuacionOpciones {width: 100%; justify-content: space-between;}
+#siNoOpciones label[for], #tipoActuacion label[for] {padding-left: 3px;}
+#tipoActuacion {width: 100%; justify-content: space-between;}
 

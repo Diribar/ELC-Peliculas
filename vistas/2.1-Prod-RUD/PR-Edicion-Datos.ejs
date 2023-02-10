@@ -43,32 +43,17 @@
 	<%- include("CR-Flechas") %> 
 	<!-- Comandos -->
 	<div class="flechas">
-		<!-- Versión editada 'edicN' -->
-		<div class="pack">
-			<!-- Ver la versión -->
-			<i class="fa-solid fa-pen-to-square activar activo" tabindex="-1" title='Ver la versión editada SIN GUARDAR'></i>
-			<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-			<!-- Descartar la versión -->
-			<i class="fa-solid fa-trash-can descartar edicN inactivoVersion" tabindex="-1" title='Descartar esta versión'></i>
-			<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-			<!-- Guardar los cambios -->
-			<label for="submit">
-				<i class="fa-solid fa-floppy-disk guardar edicN inactivoVersion" tabindex="-1" title='Guardar esta versión'></i>
-			</label>
-			<button type="submit" id="submit" class="ocultar"></button>
-		</div>
-		<!-- Versión editada 'edicG' -->
-		<div class="pack">
-			<!-- Ver la versión -->
-			<i class="fa-solid fa-pencil activar edicG inactivoVersion" tabindex="-1" title='Ver la versión editada GUARDADA'></i>
-			<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-			<!-- Eliminar la versión -->
-			<i class="fa-solid fa-trash-can descartar edicG inactivoVersion" tabindex="-1" title='Eliminar esta versión'></i>
-		</div>
-		<!-- Versión original -->
-		<div class="pack">
-			<!-- Ver la versión -->
-			<i class="fa-solid fa-house activar" tabindex="-1" title='Ver la versión original'></i>
-		</div>
+		<!-- Muestra la nueva edición sin guardar -->
+		<i class="fa-solid fa-pen-to-square activarVersion activo" tabindex="-1" title='Muestra la nueva edición sin guardar'></i>
+		<!-- Guarda los cambios de la nueva edición -->
+		<button type="submit">
+			<i type="submit" id="guardar" class="fa-solid fa-floppy-disk edicN inactivoVersion" tabindex="-1" title='Guarda los cambios'></i>
+		</button>
+		<!-- Muestra la edición guardada -->
+		<i class="fa-solid fa-pencil activarVersion inactivoVersion" tabindex="-1" title='Muestra la edición guardada'></i>
+		<!-- Elimina la edición guardada -->
+		<i id="eliminar" class="fa-solid fa-trash-can edicG inactivoVersion" tabindex="-1" title='Elimina la edición guardada'></i>
+		<!-- Muestra la versión original -->
+		<i class="fa-solid fa-house activarVersion" tabindex="-1" title='Muestra la versión original'></i>
 	</div>
 </section>

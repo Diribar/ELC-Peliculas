@@ -1,6 +1,6 @@
 <!-- Vitreaux -->
 <div id="zona-de-vitreaux">
-	<img src="//localhost/imagenes/0-Base/Varios/Vitraux.jpg" title="Vitreaux" alt="Vitreaux">
+	<img src="<%= localhost %>/imagenes/0-Base/Varios/Vitraux.jpg" title="Vitreaux" alt="Vitreaux">
 </div>
 
 <!-- Zona de Bienvenida -->
@@ -8,7 +8,7 @@
 	<div class="flexCol">
 		<a href="<%= opciones[0].href %>">
 			<button class="scale">
-				<img src="//localhost<%= opciones[0].src %> ">
+				<img src="<%= localhost %><%= opciones[0].src %> ">
 				<p><%= opciones[0].p %> </p>
 			</button>
 		</a>
@@ -16,7 +16,7 @@
 			<% for (let i=1; i<opciones.length; i++) { %>
 				<a href="<%= opciones[i].href %>">
 					<button class="scale">
-						<img src="//localhost<%= opciones[i].src %> ">
+						<img src="<%= localhost %><%= opciones[i].src %> ">
 						<p><%= opciones[i].p %> </p>
 					</button>
 				</a>

@@ -14,19 +14,16 @@ form #imgDerecha label {line-height: 0;}
 form #imgDerecha .fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
 form #imgDerecha :is(.ayuda, .errores) {left: 50%; translate: -50% -50%; right: auto;}
 form #imgDerecha .errores {z-index: 4;}
-
 /* Imagen - AyudaMostrar */
 form #imgDerecha.inputError .ayuda .ayudaMostrar {right: auto; top: auto;}
 form #imgDerecha.inputError .ayuda .ayudaMostrar {left: 50%; bottom: -7px; translate: -50% 100%;}
 form #imgDerecha.inputError .ayuda .ayudaMostrar::before {left: 50%; top: 0; translate: -50% -100%;}
 form #imgDerecha.inputError .ayuda .ayudaMostrar::before {border-color: transparent transparent var(--backAyuda) transparent;}
-
 /* Imagen - MensajeError */
 form #imgDerecha.inputError .errores .mensajeError {right: auto; top: auto;}
 form #imgDerecha.inputError .errores .mensajeError {left: 50%; top: -5px; translate: -50% -100%;}
 form #imgDerecha.inputError .errores .mensajeError::before {left: 50%; bottom: 0; translate: -50% 100%;}
 form #imgDerecha.inputError .errores .mensajeError::before {border-color: var(--colorMensajeError) transparent transparent;}
-
 /* Imagen - Links a sitios externos */
 form #imgDerecha.inputError .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
 form #imgDerecha.inputError .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
@@ -43,19 +40,20 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos #segundaColumna .label-input .inputError .input {width: 240px;}
 
 /* Partes específicas del formulario */
+#datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
+#datos h3:first-child {margin-top: 0;}
 #datos .label-input .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
 #datos .label-input .inputError {margin-left: 5px;}
 #datos .label-input .inputError .ayuda {right: -5px;}
-
-#datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
-#datos h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
 #datos .label-input .inputError .input {align-self: center;}
 #datos .label-input .inputError input {padding: 0px 5px;}
 #datos .label-input .inputError select {padding: 0;}
 #datos .label-input .inputError .input:disabled, #datos .label-input#paises_id 
-:is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
+#datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
+#datos .flexRowAlign #siNoTitulo {width: 180px;}
+#datos #tipoActuacion #tipos {margin-left: 35px;}
 
 /* País */
 #datos #paises_id {align-items: center;}
@@ -83,6 +81,6 @@ form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translat
 
 /* Comandos - Particularidades */
 .flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none;}
-.flechas i.activar {background: var(--azul-oscuro); color: var(--gris-claro);}
-.flechas i.activar {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.flechas i.activar.activo {background: var(--verde-oscuro);}
+.flechas i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
+.flechas i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
+.flechas i.activarVersion.activo {background: var(--verde-oscuro);}

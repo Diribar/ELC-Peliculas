@@ -13,7 +13,7 @@
 		<% let difHoraria = new Date().getTimezoneOffset() / 60 + 12 %>
 		<% let hoy = horario + difHoraria <= 24 %>
 		<% let imagen = hoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
-		<% rutaImagen = "//localhost/imagenes/0-Base/" + imagen %>
+		<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
 		<% tituloImagen = hoy ? tituloImgDerHoy : tituloImgDerAyer %>
 	<% } %>
 	<!-- Mostrar la Imagen -->

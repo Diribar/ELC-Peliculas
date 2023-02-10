@@ -13,7 +13,8 @@ module.exports = async (req, res, next) => {
 	// Graba los datos del usuario a 'locals', para que estén en la vista
 	if (req.session.usuario && req.session.usuario != res.locals.usuario)
 		res.locals.usuario = req.session.usuario;
-
+	// Guarda localhost
+	if (!res.locals.localhost) res.locals.localhost = global.localhost;
 	// Fin
 	next();
 };
