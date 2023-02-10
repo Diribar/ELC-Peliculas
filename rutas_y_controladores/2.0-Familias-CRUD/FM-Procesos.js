@@ -117,7 +117,6 @@ module.exports = {
 						edicion[producto_id] = original[producto_id];
 					}
 					// Se agrega el registro
-					let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 					await BD_genericas.agregaRegistro(nombreEdicion, edicion);
 				})();
 		}
