@@ -24,7 +24,7 @@
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
-				<img src="//localhost<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
+				<img src="<%= localhost %><%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
 		<% } %>
 	</nav>
