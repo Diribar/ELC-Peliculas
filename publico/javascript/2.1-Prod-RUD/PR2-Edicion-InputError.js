@@ -388,7 +388,7 @@ let versiones = async (rutaVersiones) => {
 	// Obtiene las versiones original y de edición
 	let [orig, edicG] = await fetch(rutaVersiones).then((n) => n.json());
 	// Procesa la versión de edición guardada
-	let edicG_existe = !!edicG;
+	let edicG_existe = !!edicG.id;
 	edicG = {...orig, ...edicG};
 	// Obtiene la versión de edición nueva
 	let edicN = {...edicG};

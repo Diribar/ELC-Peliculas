@@ -125,12 +125,14 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 			req.body.tamano = req.file.size;
 		}
-		// Une 'Edición' y 'Original'
-		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID};
+
 		// Averigua si hay errores de validación
+		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID}; // se debe agregar el prodID, para verificar que no esté repetido
 		let errores = await valida.consolidado("", {...prodComb, entidad});
+
+		// Acciones si recibimos un archivo avatar
 		if (req.file) {
-			// Actualiza los archivos avatar
+			// Si no hay errores, actualiza el archivo avatar
 			if (!errores.hay) {
 				// Mueve el archivo actual a su ubicación para ser revisado
 				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
@@ -138,19 +140,24 @@ module.exports = {
 				if (prodEdic.avatar)
 					comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
 			}
-			// Si hay errores, entonces borra el archivo
+			// Si hay errores, borra el archivo avatar
 			else {
 				comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", req.file.filename);
 				return res.send(errores);
 			}
 		}
 
-		// Actualiza la edición
-		if (!errores.hay)
-			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion: req.body, entidad, userID});
+		// Si no hay errores, actualiza la edición
+		if (!errores.hay) {
+			let edicion = {...req.body};
+			if (prodEdic.id) edicion.id = prodEdic.id;
+			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion, entidad, userID});
+		}
+
 		// Fin
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
+
 	calificala: (req, res) => {
 		return res.send("Estoy en calificala");
 	},

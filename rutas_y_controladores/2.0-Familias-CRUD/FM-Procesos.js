@@ -6,16 +6,22 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Soporte para edición
-	quitaCamposDeEdicion: (original, edicion, familia) => {
+	// Soporte para lectura y guardado de edición
+	puleEdicion: async (original, edicion, entidad) => {
+		// Variables
+		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+
+		// Quita los campos que no se comparan, y los que tienen el mismo valor que el original
+		let edicion_id = edicion.id;
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
 		// 1. Quita de edición los campos que no se comparan
 		(() => {
 			// Obtiene los campos a comparar
 			let camposRevisar = [];
-			variables.camposRevisar[familia].forEach((campo) => {
+			for (let campo of variables.camposRevisar[familia]) {
 				camposRevisar.push(campo.nombre);
 				if (campo.relac_include) camposRevisar.push(campo.relac_include);
-			});
+			}
 			// Quita la duración de las colecciones
 			// if (edicion.coleccion_id) {
 			// 	let indice = camposRevisar.indexOf("duracion");
@@ -24,25 +30,35 @@ module.exports = {
 			// Quita de edicion los campos que no se comparan
 			for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
 		})();
-
 		// 2. Quita de edición las coincidencias con el original
 		for (let campo in edicion) {
-			if (
-				edicion[campo] === original[campo] || // El valor de edicion es estrictamente igual al de original
-				(edicion[campo] && original[campo] && edicion[campo].id == original[campo].id) // El objeto vinculado tiene el mismo ID
-			)
-				delete edicion[campo];
+			// Condiciones
+			// 1. El valor de edicion es igual al de original
+			let condicion1 = edicion[campo] == original[campo];
+			// 2. El objeto vinculado tiene el mismo ID
+			let condicion2 =
+				edicion[campo] &&
+				edicion[campo].id &&
+				original[campo] &&
+				edicion[campo].id == original[campo].id;
+			if (condicion1 || condicion2) delete edicion[campo];
+			// else console.log(45, campo, edicion[campo], original[campo], edicion[campo] == original[campo]);
 		}
 
-		// 3. Averigua si quedan campos
+		// Averigua si quedan campos
 		let quedanCampos = !!Object.keys(edicion).length;
-		if (!quedanCampos) edicion = "";
+		if (!quedanCampos) edicion = null;
+
+		// Si no quedan campos y existe edicion_id --> se elimina el registro de la tabla
+		if (!edicion && edicion_id) await BD_genericas.eliminaPorId(nombreEdicion, edicion_id);
+		// Si quedan campos le devuelve su valor 'id'
+		else if (edicion_id) edicion.id = edicion_id;
 
 		// Fin
 		return edicion;
 	},
 	// Lectura de edicion
-	obtieneOriginalEdicion: async function (entidad, entID, userID) {
+	obtieneOriginalEdicion: async (entidad, entID, userID) => {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 
@@ -53,7 +69,7 @@ module.exports = {
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 
-		// Obtiene el registro original
+		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
@@ -66,35 +82,21 @@ module.exports = {
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Le quita los campos sin contenido
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-		} else edicion = "";
+		} else edicion = {};
 
 		// Fin
 		return [original, edicion];
 	},
-	puleEdicion: async function (original, edicion, entidad) {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-		let edicion_id = edicion.id;
-		// Quita los campos que no se comparan, y los que tienen el mismo valor que el original
-		edicion = this.quitaCamposDeEdicion(original, edicion, familia);
-		// Acciones si no quedan campos
-		if (!edicion) {
-			// Si existe edicion_id --> se elimina el registro de la tabla
-			if (edicion_id) await BD_genericas.eliminaPorId(nombreEdicion, edicion_id);
-		}
-		// Si quedan campos le devuelve su valor 'id'
-		else if (edicion_id) edicion.id = edicion_id;
-		// Fin
-		return edicion;
-	},
 	// Guardado de edición
-	guardaActEdicCRUD: async function (original, edicion, entidad, userID) {
-		// 1. Pule la edición. No hace falta el 'await' para 'puleEdicion', porque la eliminación del registro no afecta al resto de la rutina
-		edicion = this.puleEdicion(original, edicion, entidad);
+	guardaActEdicCRUD: async function ({original, edicion, entidad, userID}) {
+		// 1. Pule la edición.
+		edicion = await this.puleEdicion(original, edicion, entidad);
 
 		// 2. Acciones si quedan campos
 		if (edicion) {
+			// Variables
+			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			// 2.A. Se combina la edición con valoresNull
 			edicion = this.valoresNull(edicion, familia);
 			// 2.B.1. Si existe edicion.id --> se actualiza el registro
@@ -113,6 +115,7 @@ module.exports = {
 						edicion[producto_id] = original[producto_id];
 					}
 					// Se agrega el registro
+					let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 					await BD_genericas.agregaRegistro(nombreEdicion, edicion);
 				})();
 		}
