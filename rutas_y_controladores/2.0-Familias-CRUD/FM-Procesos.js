@@ -137,7 +137,8 @@ module.exports = {
 			prodOrig.avatar.startsWith("http")
 				? prodOrig.avatar
 				: // Si no existe avatarOrig
-				  "//localhost/imagenes/" +
+				  localhost +
+				  "/imagenes/" +
 				  (!prodOrig || !prodOrig.avatar
 						? "0-Base/Avatar/Prod-Sin-Avatar.jpg"
 						: // Si el avatar está 'aprobado'
@@ -154,7 +155,9 @@ module.exports = {
 
 		// avatarEdic
 		let avatarEdic =
-			prodEdic && prodEdic.avatar ? "//localhost/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
+			prodEdic && prodEdic.avatar
+				? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar
+				: avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
