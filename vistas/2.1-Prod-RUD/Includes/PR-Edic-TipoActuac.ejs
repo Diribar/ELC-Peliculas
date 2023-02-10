@@ -1,14 +1,16 @@
 <% const campo = "tipo_actuacion_id" %>
 <% let {titulo, valores} = camposDA.find(n => n.nombre == campo) %>
-<div id="tipoActuacionOpciones" class="inputError flexRowAlign altoFila">
-	<label class="negrita"><%= titulo %> </label>
-	<% for (let valor of valores) { %>
-		<div class="flexRowAlign">
-			<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (producto.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
-			<label for="<%= valor.id %>"><%= valor.nombre %></label>
-		</div>
-	<% } %>
+<div id="tipoActuacion" class="inputError flexRowAlign altoFila">
+	<label class="negrita"><%= titulo %></label>
+	<div id="tipos" class="flexRowAlign relative altoFila grow spaceBetween">
+		<% for (let valor of valores) { %>
+			<div class="flexRowAlign">
+				<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (producto.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
+				<label for="<%= valor.id %>"><%= valor.nombre %></label>
+			</div>
+		<% } %>
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
+	</div>
 	<%- include("CMP-Errores", {display: true, campo}) %>
-	<!-- Aviso de cambio en el data-entry -->
-	<i class="fa-solid fa-arrow-right-long ocultar"></i>
 </div>
