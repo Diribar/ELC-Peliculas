@@ -41,6 +41,8 @@ module.exports = {
 				edicion[campo].id &&
 				original[campo] &&
 				edicion[campo].id == original[campo].id;
+
+			// Si se cumple alguna de las condiciones, se elimina ese método
 			if (condicion1 || condicion2) delete edicion[campo];
 			// else console.log(45, campo, edicion[campo], original[campo], edicion[campo] == original[campo]);
 		}
