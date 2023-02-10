@@ -1,10 +1,10 @@
 <div id="izquierda" class="imagenes">
 	<!-- Imagen sugerida -->
-	<img src="//localhost<%= avatar.edicion %>" title="Imagen propuesta">
+	<img src="<%= localhost %><%= avatar.edicion %>" title="Imagen propuesta">
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
-				<img src="//localhost<%= registro.src %>" alt="<%= registro.alt %>" class="scale">
+				<img src="<%= localhost %><%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
 		<% } %>
 	</nav>
@@ -75,5 +75,5 @@
 </div>
 <div id="derecha" class="imagenes">
 	<!-- Imagen actual -->
-	<img src="//localhost<%= avatar.original %>" title="Imagen actual">
+	<img src="<%= localhost %><%= avatar.original %>" title="Imagen actual">
 </div>
