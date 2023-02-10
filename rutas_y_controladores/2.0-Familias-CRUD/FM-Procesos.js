@@ -84,7 +84,7 @@ module.exports = {
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Le quita los campos sin contenido
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-		} else edicion = {};
+		} else edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
 		return [original, edicion];
