@@ -27,9 +27,9 @@ const dataEntry = [usAltaTerm, penalizaciones, usAptoInput, entValida, IDvalido,
 router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
 // Edición
 router.get("/api/edicion/valida", API.validaEdicion);
-router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesDelProducto);
+router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesProd);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
-router.get("/api/edicion/eliminar", API.prod_EliminarEdicG);
+router.get("/api/edicion/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
 // Producto

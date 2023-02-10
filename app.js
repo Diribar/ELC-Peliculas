@@ -4,6 +4,7 @@ global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 global.mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 global.horarioLCF = null;
+global.localhost = "//localhost";
 
 // Averigua los títulos de la imagen de ayer y hoy
 const fs = require("fs");

@@ -1,6 +1,6 @@
 <% const campo = "tipo_actuacion_id" %>
 <% let {valores} = camposDA.find(n => n.nombre == campo) %>
-<div id="AAD_opciones" class="inputError flexRowAlign altoFila">
+<div id="tipoActuacion" class="inputError flexRowAlign altoFila">
 	<% for (let valor of valores) { %>
 		<div class="flexRowAlign">
 			<label for="<%= valor.id %>"><%= valor.nombre %></label>

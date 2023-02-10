@@ -125,6 +125,7 @@ module.exports = async (req, res, next) => {
 				nombre: "fa-circle-check",
 				link: linkInactivar,
 				titulo: "Liberar automáticamente",
+				autofocus: true,
 			};
 			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información

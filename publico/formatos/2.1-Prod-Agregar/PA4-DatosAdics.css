@@ -10,6 +10,7 @@
 #dataEntry h1 {margin-bottom: 15px;}
 #dataEntry h3 {color: var(--verde-oscuro); margin-top: 0; margin-right: 5px;}
 #dataEntry .altoFila {height: 25px;}
+#dataEntry #siNoTitulo {width: 170px;}
 
 /* Temas de la 2a columna */
 #dataEntry #segundaColumna {margin-right: 25px; width: 290px;}

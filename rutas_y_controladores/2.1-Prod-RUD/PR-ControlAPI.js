@@ -54,7 +54,7 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtieneVersionesDelProducto: async (req, res) => {
+	obtieneVersionesProd: async (req, res) => {
 		let {entidad: producto, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
@@ -62,7 +62,7 @@ module.exports = {
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
-	prod_EliminarEdicG: async (req, res) => {
+	eliminaEdicG: async (req, res) => {
 		// Obtiene los datos identificatorios del producto
 		let producto = req.query.entidad;
 		let prodID = req.query.id;
@@ -81,7 +81,6 @@ module.exports = {
 		// Terminar
 		return res.json();
 	},
-
 	enviarAReqSession: async (req, res) => {
 		if (req.query.avatar) delete req.query.avatar;
 		req.session.edicProd = req.query;

@@ -1,0 +1,59 @@
+<section id="encabezadoDatos" class="flexCol">
+	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+	<%- include("CR-Encabezado") %>
+	<!-- Datos -->
+	<div id="datos">
+		<!-- Datos generales -->
+		<div id="primeraColumna">
+			<h3>Datos Generales</h3>
+			<!-- Primeros campos -->
+			<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<!-- Otros -->
+			<%- include("PR-Edic-Pais") %>
+			<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
+			<%- include("PR-Edic-Input", {campo: produccion}) %>
+			<%- include("PR-Edic-Select", {nombreDelCampo: "publico_id"}) %>
+			<h3>Datos Adicionales</h3>
+			<!-- Campos SI / NO -->
+			<% for (let tema of camposDA.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {tema}) %><% } %>
+			<!-- Tipo de Actuación -->
+			<%- include("PR-Edic-TipoActuac") %>
+		</div>
+		<div id="segundaColumna">
+			<!-- Cast/Crew -->
+			<h3>Personas</h3>
+			<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<!-- Relación con la vida -->
+			<h3>Relación con la vida</h3>
+			<!--Personaje histórico-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id"}) %>
+			<!--Hecho histórico-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id"}) %>
+			<!--Valor-->
+			<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id"}) %>
+			<h3>Sinopsis</h3>
+			<!--Sinopsis-->
+			<%- include("PR-Edic-Sinopsis") %>
+		</div>
+	</div>
+</section>
+<!-- Botones y Comandos -->
+<section class="flexRow">
+	<!-- Botones -->
+	<%- include("CR-Flechas") %> 
+	<!-- Comandos -->
+	<div class="flechas">
+		<!-- Muestra la nueva edición sin guardar -->
+		<i class="fa-solid fa-pen-to-square activarVersion activo" tabindex="-1" title='Muestra la nueva edición sin guardar'></i>
+		<!-- Guarda los cambios de la nueva edición -->
+		<button type="submit">
+			<i type="submit" id="guardar" class="fa-solid fa-floppy-disk edicN inactivoVersion" tabindex="-1" title='Guarda los cambios'></i>
+		</button>
+		<!-- Muestra la edición guardada -->
+		<i class="fa-solid fa-pencil activarVersion inactivoVersion" tabindex="-1" title='Muestra la edición guardada'></i>
+		<!-- Elimina la edición guardada -->
+		<i id="eliminar" class="fa-solid fa-trash-can edicG inactivoVersion" tabindex="-1" title='Elimina la edición guardada'></i>
+		<!-- Muestra la versión original -->
+		<i class="fa-solid fa-house activarVersion" tabindex="-1" title='Muestra la versión original'></i>
+	</div>
+</section>
