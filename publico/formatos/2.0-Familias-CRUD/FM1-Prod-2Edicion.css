@@ -81,6 +81,6 @@ form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translat
 
 /* Comandos - Particularidades */
 .flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none;}
-.flechas i.activar {background: var(--azul-oscuro); color: var(--gris-claro);}
-.flechas i.activar {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
-.flechas i.activar.activo {background: var(--verde-oscuro);}
+.flechas i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
+.flechas i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
+.flechas i.activarVersion.activo {background: var(--verde-oscuro);}
