@@ -34,9 +34,9 @@ window.addEventListener("load", async () => {
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 		esImagen: true,
 		// Botones
-		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activar"),
-		botonesDescartar: document.querySelectorAll("#cuerpo .flechas .descartar"),
-		botonGuardar: document.querySelector("#cuerpo .flechas .guardar"),
+		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activarVersion"),
+		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
+		botonEliminar: document.querySelector("#cuerpo .flechas #eliminar"),
 		botones: {
 			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
 			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
@@ -69,7 +69,6 @@ window.addEventListener("load", async () => {
 						? v.inputAvatarEdicN.files[0].name
 						: version.edicG.avatar;
 			}
-			console.log(inputs[1].name, inputs[1].value, inputs[1].value.length);
 
 			// Fin
 			return;
@@ -126,11 +125,11 @@ window.addEventListener("load", async () => {
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
 				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
-				if (!version.origPendAprobar) v.botonesDescartar[1].classList.remove("inactivoVersion");
-				else v.botonesDescartar[1].classList.add("inactivoVersion");
+				if (!version.origPendAprobar) v.botonEliminar.classList.remove("inactivoVersion");
+				else v.botonEliminar.classList.add("inactivoVersion");
 			} else {
 				v.botonesActivarVersion[1].classList.add("inactivoVersion");
-				v.botonesDescartar[1].classList.add("inactivoVersion");
+				v.botonEliminar.classList.add("inactivoVersion");
 			}
 			// Acciones sobre la edición nueva
 			// 1. Funciones
@@ -309,7 +308,28 @@ window.addEventListener("load", async () => {
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
-	// Botones
+	// Revisa los campos
+	v.form.addEventListener("input", async (e) => {
+		// Si la versión actual no es la esperada para 'inputs', interrumpe
+		if (v.versionActual != v.versiones[0]) return;
+
+		// Acciones si se cambió el país
+		if (e.target == v.paisesSelect) {
+			FN.actualizaPaisesID();
+			FN.actualizaPaisesNombre();
+		}
+		// Primera letra en mayúscula
+		if (e.target.localName == "input" && e.target.type == "text") {
+			let aux = e.target.value;
+			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+		}
+
+		// Acciones si se cambió el avatar
+		if (e.target == v.inputAvatarEdicN) FN.revisaAvatarNuevo();
+		else FN.actualizaVarios();
+	});
+
+	// Botones - 1. Activa las versiones
 	v.botonesActivarVersion.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Interrumpe si las versiones son iguales
@@ -330,56 +350,31 @@ window.addEventListener("load", async () => {
 			v.versionAnt = aux;
 		});
 	});
-	v.botonesDescartar.forEach((boton, indice) => {
-		boton.addEventListener("click", () => {
-			// Si está inactivo aborta la operación
-			if (boton.className.includes("inactivo")) return;
-			// Acciones si es la edición nueva
-			else if (v.versiones[indice] == "edicN") version.edicN = {...version.orig, ...version.edicG};
-			// Acciones si es la edición guardada
-			else if (v.versiones[indice] == "edicG") {
-				// Elimina los datos de edicG en la BD
-				fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
-				// Actualiza los datos de edicG con los originales
-				version.edicG = {...version.orig};
-				// Actualiza el avatar de edicG
-				v.imgsAvatar[1].src = v.imgsAvatar[2].src;
-				// Si corresponde, actualiza el avatar de edicN
-				if (!v.inputAvatarEdicN.value && v.esImagen) {
-					version.edicN.avatar = version.orig.avatar;
-					v.imgsAvatar[0].src = v.imgsAvatar[2].src;
-				}
-				// Avisa que ya no existe la edicG
-				version.edicG_existe = false;
-			}
-			// Tareas finales
-			FN.accionesPorCambioDeVersion();
-			FN.actualizaBotones();
-		});
-	});
-	v.botonGuardar.addEventListener("click", (e) => {
-		// Si el botón está inactivo, concluye la función
+	// Botones - 2. Guarda los cambios
+	v.form.addEventListener("submit", async (e) => {
+		// Si el botón está inactivo, impide el 'submit'
 		if (v.botonGuardar.className.includes("inactivo")) e.preventDefault();
 	});
-	// Revisar campos en forma INDIVIDUAL
-	v.form.addEventListener("input", async (e) => {
-		// Si la versión actual no es la esperada para 'inputs', interrumpe
-		if (v.versionActual != v.versiones[0]) return;
-
-		// Acciones si se cambió el país
-		if (e.target == v.paisesSelect) {
-			FN.actualizaPaisesID();
-			FN.actualizaPaisesNombre();
+	// Botones - 3. Elimina la edición guardada
+	v.botonEliminar.addEventListener("click", () => {
+		// Si está inactivo aborta la operación
+		if (botonEliminar.className.includes("inactivo")) return;
+		// Elimina los datos de edicG en la BD
+		fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
+		// Actualiza los datos de edicG con los originales
+		version.edicG = {...version.orig};
+		// Actualiza el avatar de edicG
+		v.imgsAvatar[1].src = v.imgsAvatar[2].src;
+		// Si corresponde, actualiza el avatar de edicN
+		if (!v.inputAvatarEdicN.value && v.esImagen) {
+			version.edicN.avatar = version.orig.avatar;
+			v.imgsAvatar[0].src = v.imgsAvatar[2].src;
 		}
-		// Primera letra en mayúscula
-		if (e.target.localName == "input" && e.target.type == "text") {
-			let aux = e.target.value;
-			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
-		}
-
-		// Acciones si se cambió el avatar
-		if (e.target == v.inputAvatarEdicN) FN.revisaAvatarNuevo();
-		else FN.actualizaVarios();
+		// Avisa que ya no existe la edicG
+		version.edicG_existe = false;
+		// Tareas finales
+		FN.accionesPorCambioDeVersion();
+		FN.actualizaBotones();
 	});
 
 	// Startup
