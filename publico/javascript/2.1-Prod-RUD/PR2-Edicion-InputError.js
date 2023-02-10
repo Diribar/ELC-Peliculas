@@ -9,9 +9,6 @@ window.addEventListener("load", async () => {
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputs: document.querySelectorAll(".inputError .input"),
-		radioSI: document.querySelectorAll(".inputError .radioSI"),
-		radioNO: document.querySelectorAll(".inputError .radioNO"),
-		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
@@ -23,6 +20,10 @@ window.addEventListener("load", async () => {
 		paisesListado: Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
 			return {id: n.value, nombre: n.innerHTML};
 		}),
+		// Categoría y subcategoría
+		categoria: document.querySelector("select[name='categoria_id']"),
+		subcategoria: document.querySelector("select[name='subcategoria_id']"),
+		subcategoriaOpciones: document.querySelectorAll("select[name='subcategoria_id'] option"),
 		// Versiones de datos
 		versiones: ["edicN", "edicG", "orig"],
 		versionActual: "edicN",
@@ -48,13 +49,7 @@ window.addEventListener("load", async () => {
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
-	let camposInput = [
-		...Array.from(v.inputs).map((n) => n.name),
-		...Array.from(v.radioSI).map((n) => n.name),
-		"tipo_actuacion_id",
-	];
-	let camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
-
+	v.campos = Array.from(v.inputs).map((n) => n.name);
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA y si existe la edición guardada
 	let version = await versiones(v.rutaVersiones);
@@ -182,6 +177,8 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			})();
+			// Actualiza la subcategoría
+			if (v.estamosEnEdicNueva) this.actualizaOpcionesSubcat();
 			// Actualiza los nombres de país
 			this.actualizaPaisesNombre();
 			// Muestra/oculta los íconos de RCLV, ayuda y error
@@ -208,6 +205,13 @@ window.addEventListener("load", async () => {
 			await this.averiguaMuestraLosErrores();
 			// Fin
 			return;
+		},
+		actualizaOpcionesSubcat: () => {
+			let categ = v.categoria.value;
+			v.subcategoriaOpciones.forEach((opcion) => {
+				if (opcion.className.includes(categ)) opcion.classList.remove("ocultar");
+				else opcion.classList.add("ocultar");
+			});
 		},
 		actualizaPaisesID: () => {
 			// Variables
@@ -350,6 +354,11 @@ window.addEventListener("load", async () => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
 		if (v.versionActual != v.versiones[0]) return;
 
+		// Acciones si se cambió la categoría
+		if (e.target.name == "categoria_id") {
+			FN.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			v.subcategoria.value = ""; // Limpia la subcategoría
+		}
 		// Acciones si se cambió el país
 		if (e.target == v.paisesSelect) {
 			FN.actualizaPaisesID();
@@ -368,6 +377,7 @@ window.addEventListener("load", async () => {
 
 	// Startup
 	FN.obtieneLosValoresEdicN();
+	FN.actualizaOpcionesSubcat();
 	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores
 	FN.actualizaBotones();
 });
