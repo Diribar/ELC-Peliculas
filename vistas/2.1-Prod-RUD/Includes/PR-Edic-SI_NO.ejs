@@ -1,5 +1,5 @@
 <% const campo = tema.nombre %>
-<div class="inputError flexRowAlign altoFila">
+<section class="inputError flexRowAlign altoFila">
 	<label id="siNoTitulo" class="negrita"><%= tema.titulo %></label>
 	<div id="siNoOpciones" class="flexRowAlign">
 		<div class="flexRowAlign">
@@ -14,4 +14,4 @@
 	<%- include("CMP-Errores", {display: true, campo}) %>
 	<!-- Aviso de cambio en el data-entry -->
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
-</div>
+</section>
