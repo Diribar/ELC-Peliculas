@@ -908,11 +908,11 @@ module.exports = {
 };
 let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, includes) => {
 	// Variables
-	let campos = [ahora, status, userID, includes, campoFechaRef, autor_id];
+	let campos = {ahora, status, userID, includes, campoFechaRef, autor_id}
 	let resultados = [];
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades)
-		resultados.push(...(await BD_especificas.TC_obtieneRegs(entidad, ...campos)));
+		resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)

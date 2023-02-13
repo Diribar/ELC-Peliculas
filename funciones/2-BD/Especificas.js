@@ -92,7 +92,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
+	TC_obtieneRegs: ({entidad, ahora, status, userID, includes, fechaRef, autor_id}) => {
 		const haceUnaHora = comp.nuevoHorario(-1, ahora);
 		const haceDosHoras = comp.nuevoHorario(-2, ahora);
 		return db[entidad]
