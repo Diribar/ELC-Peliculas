@@ -92,7 +92,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: ({entidad, ahora, status, userID, include, fechaRef, autor_id}) => {
+	TC_obtieneRegs: ({entidad, ahora, status, userID, include, campoFechaRef, autor_id}) => {
 		const haceUnaHora = comp.nuevoHorario(-1, ahora);
 		const haceDosHoras = comp.nuevoHorario(-2, ahora);
 		return db[entidad]
@@ -114,7 +114,7 @@ module.exports = {
 						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 					],
 					// Que esté propuesto hace más de una hora
-					[fechaRef]: {[Op.lt]: haceUnaHora},
+					[campoFechaRef]: {[Op.lt]: haceUnaHora},
 					// Que esté propuesto por otro usuario
 					[autor_id]: {[Op.ne]: userID},
 				},

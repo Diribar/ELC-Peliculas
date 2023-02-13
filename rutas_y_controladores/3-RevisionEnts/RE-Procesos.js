@@ -84,7 +84,8 @@ module.exports = {
 		// Obtiene los links 'a revisar'
 		let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
 		// Obtiene los productos
-		let productos = links.length ? this.TC_obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = links.length ? this.TC_obtieneProdsDeLinks(links, ahora, userID) : [];
+		
 		// Fin
 		return productos;
 	},
@@ -875,12 +876,14 @@ module.exports = {
 		return datos;
 	},
 };
+
+// Funciones
 let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, include) => {
 	// Variables
 	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of entidades)
+	for (let entidad of entidades) 
 		resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
