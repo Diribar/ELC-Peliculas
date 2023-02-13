@@ -53,11 +53,10 @@ module.exports = {
 		// Función
 		let convierteEdicPropiasDeProdsEnProds = async () => {
 			// Obtiene las ediciones propias
-			let edicionesPropias = [];
-			for (let edicion of RCLV.prods_edicion)
-				if (edicion.editado_por_id == userID) edicionesPropias.push(edicion);
-			if (edicionesPropias.length)
-				edicionesPropias = edicionesPropias.filter((n) => n.editado_por_id == userID);
+			let edicionesPropias = RCLV.prods_edicion
+				? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID)
+				: [];
+
 			// Configura la variable de productos
 			let productos = {};
 			for (let entidad of variables.entidadesProd) productos[entidad] = [];
@@ -67,7 +66,7 @@ module.exports = {
 
 			// Obtiene los productos de esas ediciones
 			for (let edicion of edicionesPropias) {
-				// Obtiene la entidad y el campo 'entidad_id'
+				// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
 				let entProd = comp.obtieneProdDesdeProducto_id(edicion);
 				let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
 				let entID = edicion[producto_id];
@@ -82,16 +81,17 @@ module.exports = {
 
 			// Combina los productos originales con los productos de las ediciones
 			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
+			// Elimina la asociación con las ediciones
 			delete RCLV.prods_edicion;
 			// Fin
 			return RCLV;
 		};
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
-		// Completa la información de cada asociación
+		// Completa la información de cada tipo de producto
 		let prodsDelRCLV = [];
 		for (let entidad of variables.entidadesProd) {
-			// Completa la información de cada producto
+			// Completa la información de cada producto dentro del tipo de producto
 			let aux = RCLV[entidad].map((registro) => {
 				// Averigua la ruta y el nombre del avatar
 				let avatar = procsCRUD.avatarOrigEdic(registro).edic;
