@@ -10,8 +10,6 @@ module.exports = {
 	puleEdicion: async (original, edicion, entidad) => {
 		// Variables
 		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-
-		// Quita los campos que no se comparan, y los que tienen el mismo valor que el original
 		let edicion_id = edicion.id;
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 		

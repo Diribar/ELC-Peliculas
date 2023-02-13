@@ -6,7 +6,7 @@ const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	resumen: async (RCLV, cantProdsEnBD) => {
+	bloqueDerecha: async (RCLV, cantProds) => {
 		// Variable fecha
 		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
@@ -45,13 +45,13 @@ module.exports = {
 			{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 			{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 			{titulo: "Última actualizac.", valor: ultimaActualizacion},
-			{titulo: "Productos en BD", valor: cantProdsEnBD},
+			{titulo: "Productos en BD", valor: cantProds},
 			{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 		);
 		// Fin
 		return {resumenRCLV, resumenRegistro};
 	},
-	prodsEnBD: async function (RCLV, userID) {
+	prodsDelRCLV: async function (RCLV, userID) {
 		// Función
 		let convierteEdicPropiasDeProdsEnProds = async () => {
 			// Obtiene las ediciones propias
@@ -91,7 +91,7 @@ module.exports = {
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
 		// Completa la información de cada producto
-		let prodsEnBD = [];
+		let prodsDelRCLV = [];
 		variables.entidadesProd.forEach((entidad) => {
 			let aux = RCLV[entidad].map((registro) => {
 				// Averigua la ruta y el nombre del avatar
@@ -99,22 +99,22 @@ module.exports = {
 				// Agrega la entidad, el avatar, y el nombre de la entidad
 				return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
-			prodsEnBD.push(...aux);
+			prodsDelRCLV.push(...aux);
 		});
 		// Separa entre colecciones y resto
-		let colecciones = prodsEnBD.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsEnBD.filter((n) => n.entidad != "colecciones");
+		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
+		let noColecciones = prodsDelRCLV.filter((n) => n.entidad != "colecciones");
 		// Elimina capitulos si las colecciones están presentes
 		let coleccionesId = colecciones.map((n) => n.id);
 		for (let i = noColecciones.length - 1; i >= 0; i--)
 			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
 		// Ordenar por año (decreciente)
-		prodsEnBD = [...colecciones, ...noColecciones];
-		prodsEnBD.sort((a, b) =>
+		prodsDelRCLV = [...colecciones, ...noColecciones];
+		prodsDelRCLV.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
 		);
 		// Fin
-		return prodsEnBD;
+		return prodsDelRCLV;
 	},
 	procCanoniz: async (RCLV) => {
 		// Variables
