@@ -38,7 +38,6 @@ module.exports = {
 	TC_obtieneProdsConEdicAjena: async (ahora, userID) => {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
-		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
@@ -56,7 +55,7 @@ module.exports = {
 		// 3.B. Obtiene los productos originales
 		if (ediciones.length) {
 			ediciones.map((n) => {
-				let entidad = comp.obtieneProdDesdeEntidad_id(n);
+				let entidad = comp.obtieneProdDesdeProducto_id(n);
 				let asociacion = comp.obtieneAsociacion(entidad);
 				productos.push({
 					...n[asociacion],
@@ -91,11 +90,10 @@ module.exports = {
 	},
 	TC_obtieneProdsDeLinks: function (links, ahora, userID) {
 		// 1. Variables
-		const aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let productos = [];
-		// 3. Obtiene los productos
+		// 2. Obtiene los productos
 		links.map((n) => {
-			let entidad = comp.obtieneProdDesdeEntidad_id(n);
+			let entidad = comp.obtieneProdDesdeProducto_id(n);
 			let asociacion = comp.obtieneAsociacion(entidad);
 			let campoFechaRef = !n.status_registro_id
 				? "editado_en"
@@ -109,13 +107,13 @@ module.exports = {
 				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 			});
 		});
-		// 4. Ordena por la fecha más antigua
+		// 3. Ordena por la fecha más antigua
 		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-		// 4.A. Elimina repetidos
+		// 4. Elimina repetidos
 		productos = comp.eliminaRepetidos(productos);
-		// 4.B. Deja solamente los productos aprobados
+		// 5. Deja solamente los productos aprobados
 		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-		// 5. Deja solamente los sin problemas de captura
+		// 6. Deja solamente los sin problemas de captura
 		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
 		// Fin
@@ -149,7 +147,6 @@ module.exports = {
 	TC_obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let includes = ["personaje", "hecho", "valor"];
 		let rclvs = [];
 		// 2. Obtiene todas las ediciones ajenas
@@ -158,7 +155,7 @@ module.exports = {
 		if (ediciones.length) {
 			// Obtiene los rclvs originales
 			ediciones.map((n) => {
-				let entidad = comp.obtieneRCLVdesdeEntidad_id(n);
+				let entidad = comp.obtieneRCLVdesdeRCLV_id(n);
 				let asociacion = comp.obtieneAsociacion(entidad);
 				rclvs.push({
 					...n[asociacion],
@@ -733,7 +730,7 @@ module.exports = {
 			entidades_id.forEach((entidad_id) => {
 				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
 				if (RCLV_id) {
-					let entidad = comp.obtieneRCLVdesdeEntidad_id({[entidad_id]: true});
+					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
 					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
 				}
 			});
@@ -801,45 +798,6 @@ module.exports = {
 		return informacion;
 	},
 	// Links - API
-	linksABM_gratuitoEnProd: async (prodEntidad, prodID) => {
-		// Obtiene el ID de 'si'
-		let si_no_parcial = await BD_genericas.obtieneTodos("si_no_parcial", "id");
-		let si = si_no_parcial.find((n) => n.si).id;
-		// Actualiza el registro de producto
-		await BD_genericas.actualizaPorId(prodEntidad, prodID, {
-			links_gratis_en_bd_id: si,
-			links_gratis_en_web_id: si,
-		});
-		// Fin
-		return;
-	},
-	linksAltaBaja_averiguaGratuitoEnProd: async (prodEntidad, prodID) => {
-		// Lecturas
-		let si_no_parcial = BD_genericas.obtieneTodos("si_no_parcial", "id");
-		let tipos = BD_genericas.obtieneTodos("links_tipos", "nombre");
-		[si_no_parcial, tipos] = await Promise.all([si_no_parcial, tipos]);
-		// Variables
-		let si = si_no_parcial.find((n) => n.si).id;
-		let no = si_no_parcial.find((n) => n.no).id;
-		let pelicula_id = tipos.find((n) => n.pelicula).id;
-		let aprobado_id = status_registro.find((n) => n.aprobado);
-
-		// Obtiene el registro del producto con el include de links
-		let producto = await BD_genericas.obtienePorIdConInclude(prodEntidad, prodID, "links");
-		// Averigua si tiene algún link gratuito de película
-		let links = producto.links;
-		let gratuito = links
-			? links.find((n) => n.gratuito && n.tipo_id == pelicula_id && status_registro_id == aprobado_id)
-				? true
-				: false
-			: false;
-		// Actualiza el registro
-		let datos = gratuito
-			? {links_gratis_en_bd_id: si, links_gratis_en_web_id: si}
-			: {links_gratis_en_bd_id: no};
-		// Fin
-		return;
-	},
 	linksEdic_limpiaEdiciones: async (linkOrig) => {
 		// Limpia las ediciones
 		// 1. Obtiene el link con sus ediciones
