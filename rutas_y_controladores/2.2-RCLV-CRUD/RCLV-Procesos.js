@@ -88,9 +88,10 @@ module.exports = {
 		};
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
-		// Completa la información de cada producto
+		// Completa la información de cada asociación
 		let prodsDelRCLV = [];
-		variables.entidadesProd.forEach((entidad) => {
+		for (let entidad of variables.entidadesProd) {
+			// Completa la información de cada producto
 			let aux = RCLV[entidad].map((registro) => {
 				// Averigua la ruta y el nombre del avatar
 				let avatar = procsCRUD.avatarOrigEdic(registro).edic;
@@ -98,7 +99,7 @@ module.exports = {
 				return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsDelRCLV.push(...aux);
-		});
+		}
 		// Separa entre colecciones y resto
 		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 		let noColecciones = prodsDelRCLV.filter((n) => n.entidad != "colecciones");
@@ -106,7 +107,7 @@ module.exports = {
 		let coleccionesId = colecciones.map((n) => n.id);
 		for (let i = noColecciones.length - 1; i >= 0; i--)
 			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
-		// Ordenar por año (decreciente)
+		// Ordena por año (decreciente)
 		prodsDelRCLV = [...colecciones, ...noColecciones];
 		prodsDelRCLV.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
