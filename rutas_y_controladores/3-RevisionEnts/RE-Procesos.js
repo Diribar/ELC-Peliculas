@@ -6,7 +6,6 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
-const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
 	// Tablero
@@ -36,7 +35,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	TC_obtieneProdsConEdicAjena: async function (ahora, userID) {
+	TC_obtieneProdsConEdicAjena: async (ahora, userID) => {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
 		const aprobado_id = status_registro.find((n) => n.aprobado).id;
@@ -58,7 +57,7 @@ module.exports = {
 		if (ediciones.length) {
 			ediciones.map((n) => {
 				let entidad = comp.obtieneProdDesdeEntidad_id(n);
-				let asociacion = comp.obtieneEntidadSingular(entidad);
+				let asociacion = comp.obtieneAsociacion(entidad);
 				productos.push({
 					...n[asociacion],
 					entidad,
@@ -68,35 +67,24 @@ module.exports = {
 				});
 			});
 		}
-		// 4.A Elimina los repetidos
+		// 4.A Elimina los repetidos más recientes
 		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 		productos = comp.eliminaRepetidos(productos);
 		// 4.B. Deja solamente los productos en status creado_aprob y aprobado
 		if (productos.length)
 			productos = productos.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
 		// 5. Deja solamente los sin problemas de captura
-		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
 		// Fin
 		return productos;
 	},
 	TC_obtieneProdsConLink: async function (ahora, userID) {
-		// Obtiene todos los productos aprobados, con algún link ajeno en status no estable
+		// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
 		// Obtiene los links 'a revisar'
-		let links = await BD_especificas.TC_obtieneLinks_y_Edics();
-		// Si no hay => salir
-		if (!links.length) return [];
-		// Obtiene los links ajenos
-		let linksAjenos = links.filter(
-			(n) =>
-				(n.status_registro &&
-					((n.status_registro.creado && n.creado_por_id != userID) ||
-						((n.status_registro.inactivar || n.status_registro.recuperar) &&
-							n.sugerido_por_id != userID))) ||
-				(!n.status_registro && n.editado_por_id != userID)
-		);
+		let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
 		// Obtiene los productos
-		let productos = linksAjenos.length ? this.TC_obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
+		let productos = links.length ? this.TC_obtieneProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},
@@ -107,7 +95,7 @@ module.exports = {
 		// 3. Obtiene los productos
 		links.map((n) => {
 			let entidad = comp.obtieneProdDesdeEntidad_id(n);
-			let asociacion = comp.obtieneEntidadSingular(entidad);
+			let asociacion = comp.obtieneAsociacion(entidad);
 			let campoFechaRef = !n.status_registro_id
 				? "editado_en"
 				: n.status_registro.creado
@@ -127,7 +115,7 @@ module.exports = {
 		// 4.B. Deja solamente los productos aprobados
 		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
 		// 5. Deja solamente los sin problemas de captura
-		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
 		// Fin
 		return productos;
@@ -170,7 +158,7 @@ module.exports = {
 			// Obtiene los rclvs originales
 			ediciones.map((n) => {
 				let entidad = comp.obtieneRCLVdesdeEntidad_id(n);
-				let asociacion = comp.obtieneEntidadSingular(entidad);
+				let asociacion = comp.obtieneAsociacion(entidad);
 				rclvs.push({
 					...n[asociacion],
 					entidad,
@@ -189,7 +177,7 @@ module.exports = {
 			rclvs = comp.eliminaRepetidos(rclvs);
 		}
 		// 5. Deja solamente los sin problemas de captura
-		if (rclvs.length) rclvs = this.sinProblemasDeCaptura(rclvs, userID, ahora);
+		if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, userID, ahora);
 		// Fin
 		return rclvs;
 	},
@@ -245,25 +233,6 @@ module.exports = {
 
 		// Fin
 		return rclvs;
-	},
-	sinProblemasDeCaptura: (familia, userID, ahora) => {
-		// Variables
-		const haceUnaHora = comp.nuevoHorario(-1, ahora);
-		const haceDosHoras = comp.nuevoHorario(-2, ahora);
-		// Fin
-		return familia.filter(
-			(n) =>
-				// Que no esté capturado
-				!n.capturado_en ||
-				// Que esté capturado hace más de dos horas
-				n.capturado_en < haceDosHoras ||
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
-				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturado_por_id != userID && !n.captura_activa) ||
-				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
-		);
 	},
 
 	// Producto y RCLV - Edición Form
@@ -906,9 +875,9 @@ module.exports = {
 		return datos;
 	},
 };
-let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, includes) => {
+let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, include) => {
 	// Variables
-	let campos = {ahora, status, userID, includes, campoFechaRef, autor_id}
+	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades)
@@ -931,4 +900,23 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// Fin
 	return resultados;
+};
+let sinProblemasDeCaptura = (familia, userID, ahora) => {
+	// Variables
+	const haceUnaHora = comp.nuevoHorario(-1, ahora);
+	const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	// Fin
+	return familia.filter(
+		(n) =>
+			// Que no esté capturado
+			!n.capturado_en ||
+			// Que esté capturado hace más de dos horas
+			n.capturado_en < haceDosHoras ||
+			// Que la captura haya sido por otro usuario y hace más de una hora
+			(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+			// Que la captura haya sido por otro usuario y esté inactiva
+			(n.capturado_por_id != userID && !n.captura_activa) ||
+			// Que esté capturado por este usuario hace menos de una hora
+			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+	);
 };
