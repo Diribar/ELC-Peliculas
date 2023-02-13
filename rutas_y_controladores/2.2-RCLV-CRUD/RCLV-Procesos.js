@@ -70,16 +70,16 @@ module.exports = {
 			// Obtiene los productos de esas ediciones
 			for (let edicion of edicionesPropias) {
 				// Obtiene la entidad y el campo 'entidad_id'
-				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
-				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-				let entID = edicion[entidad_id];
+				let entProd = comp.obtieneProdDesdeProducto_id(edicion);
+				let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
+				let entID = edicion[producto_id];
 				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
 				// Actualiza la variable del registro original
 				delete prodEdic.id
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
-				productos[entidad].push(producto);
+				productos[entProd].push(producto);
 			}
 
 			// Combina los productos originales con los productos de las ediciones
