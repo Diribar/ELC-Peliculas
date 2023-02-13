@@ -148,10 +148,7 @@ module.exports = {
 			],
 		};
 		let originales = db.links
-			.findAll({
-				where: condiciones,
-				include: [...include, "status_registro"],
-			})
+			.findAll({where: condiciones, include: [...include, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtiene todas las ediciones ajenas
 		let condicion = {editado_por_id: {[Op.ne]: userID}};
