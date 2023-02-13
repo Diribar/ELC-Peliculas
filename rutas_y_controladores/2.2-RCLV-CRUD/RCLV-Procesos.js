@@ -75,8 +75,8 @@ module.exports = {
 				let entID = edicion[entidad_id];
 				// Obtiene los registros del producto original y su edición por el usuario
 				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
-				// Pule la edición y actualiza la variable del registro original
-				prodEdic = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
+				// Actualiza la variable del registro original
+				delete prodEdic.id
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
 				productos[entidad].push(producto);
