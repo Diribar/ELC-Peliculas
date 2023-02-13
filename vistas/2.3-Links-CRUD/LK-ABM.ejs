@@ -21,17 +21,18 @@
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 		<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
-		<select id="tipoLink">
-			<option value="TR">Trailer</option>
-			<option value="PL">Película</option>
-			<option value="TD" selected>Todos</option>
-		</select>
-		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
+		<div id="filtros" class="flexRow spaceAround">
+			<!-- Tipo de Link -->
+			<select id="tipoLink">
+				<option value="PL">Película</option>
+				<option value="TR">Trailer</option>
+				<option value="TD" selected>Películas y Trailers</option>
+			</select>
 			<!-- Activo/Inactivo -->
-			<div id="tags" class="flexRow">
-				<div id="activo">Activos</div>
-				<div id="inactivo" class="traslucido">Inactivos</div>
-			</div>
+				<div id="activo">Ocultar Links Inactivos</div>
+				<div id="inactivo" class="traslucido">Mostrar Links Inactivos</div>
+		</div>
+		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<!-- Tabla -->
 			<table>
 				<!-- Títulos -->
