@@ -9,9 +9,7 @@ module.exports = {
 	bloqueDerecha: async (RCLV, cantProds) => {
 		// Variable fecha
 		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
-		let dia = diaDelAno.dia;
-		let mes = mesesAbrev[diaDelAno.mes_id - 1];
-		let fecha = dia + "/" + mes;
+		let fecha = diaDelAno ? diaDelAno.dia + "/" + diaDelAno.mes.abrev : "Sin fecha o varias";
 		// Variable ultimaActualizacion
 		let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
 		fechas.push(RCLV.edic_analizada_en, RCLV.sugerido_en);
@@ -76,7 +74,7 @@ module.exports = {
 				// Obtiene los registros del producto original y su edición por el usuario
 				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
 				// Actualiza la variable del registro original
-				delete prodEdic.id
+				delete prodEdic.id;
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
 				productos[entProd].push(producto);
@@ -164,7 +162,7 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} 
+		}
 		// Tareas para edición
 		else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
@@ -174,7 +172,7 @@ module.exports = {
 			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
 				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
-		} 
+		}
 		// Tareas para revisión
 		else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original

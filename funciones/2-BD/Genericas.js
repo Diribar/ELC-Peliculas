@@ -5,19 +5,11 @@ const db = require("../../base_de_datos/modelos");
 module.exports = {
 	// Obtiene
 	obtieneTodos: (entidad, orden) => {
-		return db[entidad]
-			.findAll({
-				order: [[orden, "ASC"]],
-			})
-			.then((n) => n.map((m) => m.toJSON()));
+		return db[entidad].findAll({order: [[orden, "ASC"]]}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
-	obtieneTodosConInclude: (entidad, includes) => {
-		return db[entidad]
-			.findAll({
-				include: includes,
-			})
-			.then((n) => n.map((m) => m.toJSON()));
+	obtieneTodosConInclude: (entidad, include) => {
+		return db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtieneTodosPorCampos: (entidad, objeto) => {

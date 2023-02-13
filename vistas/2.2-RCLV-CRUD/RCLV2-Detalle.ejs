@@ -24,12 +24,12 @@
 					</i>
 				</div>
 			</div>
-			<p>Cantidad de Hallazagos: <%= prodsEnBD.length %></p>
+			<p>Cantidad de Hallazagos: <%= prodsDelRCLV.length %></p>
 		</div>	
 		<div id="cuadroDeResultados">
 			<i class="fa-solid fa-caret-left mover inactivo"></i>
 			<ul id="listado">
-				<% if (prodsEnBD.length) { %><%- include('RCLV-DT1-ProdsEnBD', {prodsEnBD}) %>
+				<% if (prodsDelRCLV.length) { %><%- include('RCLV-DT1-prodsDelRCLV', {prodsDelRCLV}) %>
 				<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
 			</ul>
 			<i class="fa-solid fa-caret-right mover inactivo"></i>
