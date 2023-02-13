@@ -6,6 +6,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
 	// Tablero
