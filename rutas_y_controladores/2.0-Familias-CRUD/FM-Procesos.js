@@ -162,18 +162,17 @@ module.exports = {
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	// Actualiza el campo 'links_gratuitos' en productos
-	links_gratuitos: async function (link) {
-		// Averigua si existe algún link gratuito y aprobado, para ese producto
+	links_gratuitos: async (link) => {
+		// Variables
 		let producto_id = comp.obtieneProducto_id(link);
-		let objeto = {[producto_id]: link[producto_id], gratuito: 1, status_registro_id: aprobado_id};
-		let links = await BD_genericas.obtienePorCampos("links", objeto);
+		let producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		let prodID = link[producto_id];
+		let objeto = {[producto_id]: prodID, gratuito: 1, status_registro_id: aprobado_id};
 
-		// Fija la variable con true/false
-		let links_gratuitos = !!links;
+		// Averigua si existe algún link gratuito y aprobado, para ese producto
+		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", objeto));
 
 		// Actualiza el registro
-		let producto = comp.obtieneProdDesdeProducto_id(producto_id);
-		let id = link[producto_id];
 		BD_genericas.actualizaPorId(producto, id, {links_gratuitos});
 
 		// Fin
