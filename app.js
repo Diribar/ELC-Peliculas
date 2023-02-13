@@ -122,6 +122,12 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	valores = await Promise.all(valores);
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
+	// Status
+	global.creado_id = global.status_registro.find((n) => n.creado).id;
+	global.aprobado_id = global.status_registro.find((n) => n.aprobado).id;
+	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
+	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;
+
 	// Tareas posteriores
 	// Dispara tareas en cierto horario
 	var cron = require("node-cron");

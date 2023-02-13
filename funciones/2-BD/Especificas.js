@@ -48,10 +48,9 @@ module.exports = {
 		let condicPalabras = {[Op.or]: condicTodasLasPalabrasPresentesEnCampos};
 		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
 		let statusGrCreado_id = status_registro.filter((n) => n.gr_creado).map((n) => n.id);
-		let statusAprob_id = status_registro.find((n) => n.aprobado).id;
 		let condicStatus = {
 			[Op.or]: [
-				{status_registro_id: statusAprob_id},
+				{status_registro_id: aprobado_id},
 				{
 					[Op.and]: [
 						{status_registro_id: statusGrCreado_id},
@@ -139,9 +138,6 @@ module.exports = {
 	},
 	TC_obtieneLinks_y_EdicsAjenas: async (userID) => {
 		// Variables
-		const creado_id = status_registro.find((n) => n.creado).id;
-		const inactivar_id = status_registro.find((n) => n.inactivar).id;
-		const recuperar_id = status_registro.find((n) => n.recuperar).id;
 		let include = ["pelicula", "coleccion", "capitulo"];
 		// Obtiene los links en status 'a revisar'
 		let condiciones = {
@@ -216,9 +212,6 @@ module.exports = {
 	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
 		// Variables
-		const creado_id = status_registro.find((n) => n.creado).id;
-		const inactivar_id = status_registro.find((n) => n.inactivar).id;
-		const recuperar_id = status_registro.find((n) => n.recuperar).id;
 		let contarRegistros = 0;
 		// Rutina para contar
 		let condiciones = {
