@@ -135,7 +135,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtieneEntidadSingular: (entidad) => {
+	obtieneAsociacion: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
 			: entidad == "colecciones"

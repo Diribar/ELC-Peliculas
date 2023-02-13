@@ -121,7 +121,6 @@ module.exports = {
 		let RCLV_id = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
-		let entidadSingular = comp.obtieneEntidadSingular(entidad);
 		// Obtiene RCLV con productos
 		let includes = [
 			...variables.entidadesProd,
@@ -150,7 +149,6 @@ module.exports = {
 			entidad,
 			RCLV_id,
 			entidadNombre,
-			entidadSingular,
 		});
 	},
 };

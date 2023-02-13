@@ -20,13 +20,13 @@ module.exports = {
 		// Productos y Ediciones
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
-		// Obtiene Links
-		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
-		// return res.send(productos.CL)
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
-		// Procesa los campos
+		// Obtiene Links
+		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
+		// return res.send(productos.CL)
+		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
