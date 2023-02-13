@@ -773,7 +773,7 @@ module.exports = {
 	},
 
 	// Links - Vista
-	linksForm_problemasProd: (producto, urlAnterior) => {
+	problemasProd: (producto, urlAnterior) => {
 		// Variables
 		let informacion;
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
@@ -798,41 +798,6 @@ module.exports = {
 		return informacion;
 	},
 	// Links - API
-	linksEdic_limpiaEdiciones: async (linkOrig) => {
-		// Limpia las ediciones
-		// 1. Obtiene el link con sus ediciones
-		linkOrig = await BD_genericas.obtienePorIdConInclude("links", linkOrig.id, ["ediciones"]);
-		// Genera un objeto con valores null
-		let camposVacios = {};
-		variables.camposRevisar.links.forEach((campo) => (camposVacios[campo.nombre] = null));
-		// Purga cada edición
-		linkOrig.ediciones.forEach(async (linkEdic) => {
-			let edicID = linkEdic.id;
-			// La variable 'linkEdic' queda solamente con los camos con valor
-			linkEdic = {...linkEdic, entidad: "links_edicion"};
-			linkEdic = await procsCRUD.puleEdicion(linkOrig, linkEdic);
-			// Si quedan campos, actualiza la edición
-			if (linkEdic)
-				await BD_genericas.actualizaPorId("links_edicion", edicID, {
-					...camposVacios,
-					...linkEdic,
-				});
-			// Si no quedan, elimina el registro de la edición
-			else await BD_genericas.eliminaPorId("links_edicion", edicID);
-		});
-		// Fin
-		return;
-	},
-	linksEdic_obtieneCampos: (edicAprob, linkEdicion, campo) => {
-		// Se preparan los datos 'consecuencia' a guardar
-		let datos = {[campo]: edicAprob ? linkEdicion[campo] : null};
-		if (campo == "tipo_id" && linkEdicion.completo !== null)
-			datos.completo = edicAprob ? linkEdicion.completo : null;
-		if (campo == "tipo_id" && linkEdicion.parte !== null)
-			datos.parte = edicAprob ? linkEdicion.parte : null;
-		// Fin
-		return datos;
-	},
 };
 
 // Funciones

@@ -379,7 +379,7 @@ module.exports = {
 		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		let informacion = procesos.linksForm_problemasProd(producto, req.session.urlAnterior);
+		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
