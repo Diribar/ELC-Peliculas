@@ -21,7 +21,7 @@ module.exports = {
 		);
 		// Ordenar por ID
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-		// Combinarlos con la edición, si existe
+		// Los combina con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
 				let edicion = link.ediciones.find((n) => n.editado_por_id == userID);
