@@ -112,9 +112,6 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		let respuesta = {};
-		// Completar la info
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
-		let inactivo_id = status_registro.find((n) => n.inactivo).id;
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",

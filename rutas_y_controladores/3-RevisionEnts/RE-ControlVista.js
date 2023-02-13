@@ -270,8 +270,6 @@ module.exports = {
 		const {entidad, id} = req.query;
 		let datos = {...req.body, ...req.query};
 		let userID = req.session.usuario.id;
-		let creado_id = status_registro.find((n) => n.creado).id;
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await validaRCLV.consolidado(datos);
 		if (errores.hay) {
