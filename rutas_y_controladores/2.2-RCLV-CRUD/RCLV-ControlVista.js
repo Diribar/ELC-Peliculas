@@ -72,6 +72,7 @@ module.exports = {
 			ap_mars,
 			sexos,
 			rutaSalir,
+			institucional: true,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
