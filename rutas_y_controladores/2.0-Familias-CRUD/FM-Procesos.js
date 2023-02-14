@@ -164,16 +164,32 @@ module.exports = {
 	// Actualiza el campo 'links_gratuitos' en productos
 	links_gratuitos: async (link) => {
 		// Variables
-		let producto_id = comp.obtieneProducto_id(link);
-		let producto = comp.obtieneProdDesdeProducto_id(producto_id);
-		let prodID = link[producto_id];
-		let objeto = {[producto_id]: prodID, gratuito: 1, status_registro_id: aprobado_id};
+		const producto_id = comp.obtieneProducto_id(link);
+		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const prodID = link[producto_id];
+		const tipo_id = link_pelicula_id;
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		let objeto;
 
-		// Averigua si existe algún link gratuito y aprobado, para ese producto
-		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", objeto));
+		// Averigua si existe algún link, para ese producto
+		objeto = {[producto_id]: prodID, tipo_id};
+		let links_general = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			? false // Tiene en potencia
+			: null; // No tiene
+
+		// Averigua si existe algún link gratuito, para ese producto
+		objeto = {...objeto, gratuito: true};
+		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			? false // Tiene en potencia
+			: null; // No tiene
 
 		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, id, {links_gratuitos});
+		BD_genericas.actualizaPorId(producto, id, {links_general, links_gratuitos});
 
 		// Fin
 		return;
