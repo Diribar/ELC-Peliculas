@@ -18,9 +18,16 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
+		let prodsConEdic = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
-		// return res.send([productos.PA]);
-		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
+		if (prodsConEdic.length) {
+			// Deja solamente los productos en status creado
+			productos.PA = prodsConEdic.filter((n) => n.status_registro_id == creado_id);
+			// Deja solamente los productos en status creado_aprob y aprobado
+			const gr_aprobado_id = [creado_aprob_id, aprobado_id];
+			productos.ED = prodsConEdic.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
+		}
+
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);

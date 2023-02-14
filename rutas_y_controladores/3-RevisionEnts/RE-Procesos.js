@@ -14,14 +14,7 @@ module.exports = {
 		// Obtiene productos en situaciones particulares
 		// Variables
 		let entidades = ["peliculas", "colecciones"];
-		let creado_id = status_registro.find((n) => n.creado).id;
-		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
-		let inactivar_id = status_registro.find((n) => n.inactivar).id;
-		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		let campos;
-		// PA: Pendientes de Aprobar (en status creado)
-		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
-		let PA = await TC_obtieneRegs(...campos);
 		// SE: Sin Edición (en status creado_aprob)
 		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 		let SE = await TC_obtieneRegs(...campos);
@@ -34,17 +27,18 @@ module.exports = {
 		let RC = await TC_obtieneRegs(...campos);
 
 		// Fin
-		return {PA, IN, RC, SE};
+		return {IN, RC, SE};
 	},
 	TC_obtieneProdsConEdicAjena: async (ahora, userID) => {
 		// 1. Variables
 		const campoFechaRef = "editado_en";
-		const gr_aprobado_id = [status_registro.find((n) => n.creado_aprob).id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
+
 		// 2. Obtiene todas las ediciones ajenas
 		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
-		// 3.A. Elimina las edicionesProd con RCLV no aprobado
+
+		// 3.Elimina las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
 				if (
@@ -53,8 +47,9 @@ module.exports = {
 					(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
 				)
 					ediciones.splice(i, 1);
-		// 3.B. Obtiene los productos originales
-		if (ediciones.length) {
+
+		// 4. Obtiene los productos originales
+		if (ediciones.length)
 			ediciones.map((n) => {
 				let entidad = comp.obtieneProdDesdeProducto_id(n);
 				let asociacion = comp.obtieneAsociacion(entidad);
@@ -66,14 +61,12 @@ module.exports = {
 					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 				});
 			});
-		}
-		// 4.A Elimina los repetidos más recientes
+
+		// 5. Elimina los repetidos más recientes
 		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 		productos = comp.eliminaRepetidos(productos);
-		// 4.B. Deja solamente los productos en status creado_aprob y aprobado
-		if (productos.length)
-			productos = productos.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
-		// 5. Deja solamente los sin problemas de captura
+
+		// 6. Deja solamente los sin problemas de captura
 		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
 		// Fin
@@ -85,7 +78,7 @@ module.exports = {
 		let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
 		// Obtiene los productos
 		let productos = links.length ? this.TC_obtieneProdsDeLinks(links, ahora, userID) : [];
-		
+
 		// Fin
 		return productos;
 	},
@@ -124,7 +117,6 @@ module.exports = {
 		// Obtiene rclvs en situaciones particulares
 		// Variables
 		let entidades = variables.entidadesRCLV;
-		let creado_id = status_registro.find((n) => n.creado).id;
 		let campos, includes;
 		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
 		includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
@@ -807,7 +799,7 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of entidades) 
+	for (let entidad of entidades)
 		resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
