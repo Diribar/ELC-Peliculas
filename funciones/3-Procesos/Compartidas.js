@@ -748,6 +748,51 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	rutaSalir: (tema, codigo, datos) => {
+		// Variables
+		let rutaSalir;
+		// Obtiene la ruta
+		if (tema == "rclv_crud" && codigo == "agregar") {
+			// Desde vista 'agregar' no hace falta inactivar
+
+			// 1. Obtiene la ruta a la cual ir
+			let rutaOrigen =
+				datos.origen == "DA"
+					? "/producto/agregar/datos-adicionales"
+					: datos.origen == "ED"
+					? "/producto/edicion/"
+					: "/";
+			// Obtiene los parámetros de entidad + ID, en la ruta de origen
+			let entidadIdOrigen =
+				datos.origen && datos.origen != "DA"
+					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
+					: "";
+
+			// Fin - Consolida la información
+			rutaSalir = rutaOrigen + entidadIdOrigen;
+		} else {
+			// Desde otras vistas, hace falta inactivar
+			// Obtiene la ruta a la cual ir
+			let rutaOrigen = "/inactivar-captura/";
+
+			// Obtiene la vista de origen
+			let vistaOrigen = "?origen=" + (datos.origen ? datos.origen : "tableroEnts");
+
+			// Obtiene los parámetros de entidad + ID, a inactivar
+			let entidadId_inactivar = "&entidad=" + datos.entidad + "&id=" + datos.id;
+
+			// Datos sólo si el origen es 'ED'
+			let soloSiOrigenED =
+				datos.origen && datos.origen == "ED"
+					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
+					: "";
+
+			// Fin - Consolida la información
+			rutaSalir = rutaOrigen + vistaOrigen + entidadId_inactivar + soloSiOrigenED;
+		}
+		// Fin
+		return rutaSalir;
+	},
 };
 
 // Funciones
