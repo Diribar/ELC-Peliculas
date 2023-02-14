@@ -11,7 +11,7 @@ module.exports = {
 		// Obtiene todos los productos aprobados, sin ningún link
 		return [];
 		// Obtiene los links 'a revisar'
-		let links = await BD_especificas.TC_obtieneLinks_y_Edics();
+		let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas();
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtiene los links ajenos

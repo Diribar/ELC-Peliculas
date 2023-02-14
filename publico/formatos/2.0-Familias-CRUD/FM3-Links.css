@@ -2,15 +2,21 @@
 #cuerpo {flex-direction: column;}
 #contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-around; flex-grow: 1;}
 #contenido {padding: 20px 40px 20px;}
-#datos {display: flex; flex-direction: column; }
-#datos #tipoLink {align-self: flex-start; margin-bottom: 10px;}
-#datos #tabla {align-self: center;}
-#datos #tags div {padding: 3px 15px; background: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
-#datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
-#datos #tags * {cursor: context-menu;}
-#datos #tags .traslucido {opacity: 50%; cursor: pointer;}
+#datos {display: flex; flex-direction: column;}
+
+/* Filtros */
+#datos #filtros {margin: 15px 0;}
+#datos #filtros select {border-radius: 10px;}
+#datos #filtros div {background: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
+#datos #filtros div {padding: 5px 10px; border-radius: 15px;}
+/* #datos #tags div {border-bottom: 1px solid var(--amarillo-claro);} */
+/* #datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);} */
+#datos #filtros #tags * {cursor: context-menu;}
+#datos #filtros .traslucido {opacity: 50%; cursor: pointer;}
+
 
 /* Tablas - Temas generales */
+#datos #tabla {align-self: center;}
 #datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos table thead * {font-size: 1.1rem;}
 #datos table .fa-solid {font-size: 1rem;}

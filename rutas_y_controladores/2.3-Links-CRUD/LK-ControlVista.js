@@ -22,8 +22,8 @@ module.exports = {
 		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(prodEntidad, prodID, userID);
 		// Obtiene el avatar
 		let imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
-		// Combinar los datos Editados con la versión Original
-		let producto = {...prodOrig, ...prodEdic};
+		// Combina los datos Editados con la versión Original
+		let producto = {...prodOrig, ...prodEdic, id: prodID};
 		// Obtiene información de BD
 		let links = await procesos.obtieneLinksActualizados(prodEntidad, prodID, userID);
 		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");

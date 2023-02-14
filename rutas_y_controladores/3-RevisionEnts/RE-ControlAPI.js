@@ -3,6 +3,7 @@
 const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./RE-Procesos");
 
 // *********** Controlador ***********
@@ -58,8 +59,6 @@ module.exports = {
 		const {prodEntidad, prodID, url} = req.query;
 		const prodAprob = req.query.aprob == "SI";
 		const userID = req.session.usuario.id;
-		const aprobado_id = status_registro.find((n) => n.aprobado).id;
-		const inactivo_id = status_registro.find((n) => n.inactivo).id;
 		const ahora = comp.ahora();
 		let datos, motivo, motivo_id;
 		// Averigua si existe el dato del 'url'
@@ -101,6 +100,9 @@ module.exports = {
 		}
 		await BD_genericas.actualizaPorId("links", link.id, datos);
 
+		// Actualiza el campo 'links_gratuitos' en el producto
+		procsCRUD.links_gratuitos(link);
+
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = !prodAprob ? motivo.duracion : 0;
 		datos = {
@@ -117,12 +119,6 @@ module.exports = {
 			duracion,
 		};
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
-
-		// Actualiza el campo 'links_gratuitos' en el producto
-		if (link.gratuito && link.tipo.pelicula) {
-			if (prodAprob) procesos.linksABM_gratuitoEnProd(prodEntidad, prodID);
-			else procesos.linksAltaBaja_averiguaGratuitoEnProd(prodEntidad, prodID);
-		}
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});

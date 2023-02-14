@@ -35,6 +35,7 @@ module.exports = (sequelize, dt) => {
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
+		links_gratuitos: {type: dt.BOOLEAN},
 		color: {type: dt.BOOLEAN},
 		castellano: {type: dt.BOOLEAN},
 
@@ -60,9 +61,6 @@ module.exports = (sequelize, dt) => {
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 		captura_activa: {type: dt.BOOLEAN},
-
-		links_gratis_en_bd_id: {type: dt.INTEGER},
-		links_gratis_en_web_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "prod_2colecciones",
@@ -87,9 +85,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
-
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_BD", foreignKey: "links_gratis_en_bd_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratis_en_web", foreignKey: "links_gratis_en_web_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.historial_cambios_de_status, {as: "historial", foreignKey: "coleccion_id"});

@@ -20,17 +20,17 @@ module.exports = {
 		// Productos y Ediciones
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
-		// Obtiene Links
-		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
-		// return res.send(productos.CL)
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
 		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
-		// Procesa los campos
+		// Obtiene Links
+		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
+		// return res.send(productos.CL)
+		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
-		return res.send([productos]);
+		//return res.send([productos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -270,8 +270,6 @@ module.exports = {
 		const {entidad, id} = req.query;
 		let datos = {...req.body, ...req.query};
 		let userID = req.session.usuario.id;
-		let creado_id = status_registro.find((n) => n.creado).id;
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await validaRCLV.consolidado(datos);
 		if (errores.hay) {
@@ -381,7 +379,7 @@ module.exports = {
 		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		let informacion = procesos.linksForm_problemasProd(producto, req.session.urlAnterior);
+		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);

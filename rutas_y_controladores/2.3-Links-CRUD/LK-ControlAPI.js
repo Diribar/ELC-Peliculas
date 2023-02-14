@@ -59,9 +59,8 @@ module.exports = {
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
-				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 				await BD_genericas.eliminaPorId("links", link.id);
-				procesos.prodCampoLG(prodEntidad, prodID);
+				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 			}
 			// El link existe y no tiene status 'aprobado'
 			else if (!link.status_registro.aprobado)
@@ -73,7 +72,7 @@ module.exports = {
 			else {
 				// Inactivar
 				await comp.inactivaRegistro("links", link.id, userID, motivo_id);
-				procesos.prodCampoLG(prodEntidad, prodID);
+				procsCRUD.links_gratuitos(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
@@ -113,9 +112,6 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		let respuesta = {};
-		// Completar la info
-		let aprobado_id = status_registro.find((n) => n.aprobado).id;
-		let inactivo_id = status_registro.find((n) => n.inactivo).id;
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",

@@ -6,7 +6,7 @@ const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	resumen: async (RCLV, cantProdsEnBD) => {
+	bloqueDerecha: async (RCLV, cantProds) => {
 		// Variable fecha
 		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
 		let dia = diaDelAno.dia;
@@ -45,13 +45,13 @@ module.exports = {
 			{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 			{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 			{titulo: "Última actualizac.", valor: ultimaActualizacion},
-			{titulo: "Productos en BD", valor: cantProdsEnBD},
+			{titulo: "Productos en BD", valor: cantProds},
 			{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
 		);
 		// Fin
 		return {resumenRCLV, resumenRegistro};
 	},
-	prodsEnBD: async function (RCLV, userID) {
+	prodsDelRCLV: async function (RCLV, userID) {
 		// Función
 		let convierteEdicPropiasDeProdsEnProds = async () => {
 			// Obtiene las ediciones propias
@@ -70,16 +70,16 @@ module.exports = {
 			// Obtiene los productos de esas ediciones
 			for (let edicion of edicionesPropias) {
 				// Obtiene la entidad y el campo 'entidad_id'
-				let entidad = comp.obtieneProdDesdeEntidad_id(edicion);
-				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-				let entID = edicion[entidad_id];
+				let entProd = comp.obtieneProdDesdeProducto_id(edicion);
+				let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
+				let entID = edicion[producto_id];
 				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, entID, userID);
-				// Pule la edición y actualiza la variable del registro original
-				prodEdic = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
+				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
+				// Actualiza la variable del registro original
+				delete prodEdic.id
 				let producto = {...prodOrig, ...prodEdic};
 				// Fin
-				productos[entidad].push(producto);
+				productos[entProd].push(producto);
 			}
 
 			// Combina los productos originales con los productos de las ediciones
@@ -91,7 +91,7 @@ module.exports = {
 		// Convierte las ediciones en productos
 		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
 		// Completa la información de cada producto
-		let prodsEnBD = [];
+		let prodsDelRCLV = [];
 		variables.entidadesProd.forEach((entidad) => {
 			let aux = RCLV[entidad].map((registro) => {
 				// Averigua la ruta y el nombre del avatar
@@ -99,22 +99,22 @@ module.exports = {
 				// Agrega la entidad, el avatar, y el nombre de la entidad
 				return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
-			prodsEnBD.push(...aux);
+			prodsDelRCLV.push(...aux);
 		});
 		// Separa entre colecciones y resto
-		let colecciones = prodsEnBD.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsEnBD.filter((n) => n.entidad != "colecciones");
+		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
+		let noColecciones = prodsDelRCLV.filter((n) => n.entidad != "colecciones");
 		// Elimina capitulos si las colecciones están presentes
 		let coleccionesId = colecciones.map((n) => n.id);
 		for (let i = noColecciones.length - 1; i >= 0; i--)
 			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
 		// Ordenar por año (decreciente)
-		prodsEnBD = [...colecciones, ...noColecciones];
-		prodsEnBD.sort((a, b) =>
+		prodsDelRCLV = [...colecciones, ...noColecciones];
+		prodsDelRCLV.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
 		);
 		// Fin
-		return prodsEnBD;
+		return prodsDelRCLV;
 	},
 	procCanoniz: async (RCLV) => {
 		// Variables

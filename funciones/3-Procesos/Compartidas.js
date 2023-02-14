@@ -50,30 +50,23 @@ module.exports = {
 	creaRegistro: async ({entidad, datos, userID}) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
-		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizaRegistro: async ({entidad, id, datos}) => {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
-		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivaRegistro: async (entidad, entidad_id, userID, motivo_id) => {
-		// Obtiene el status_id de 'inactivar'
-		let inactivarID = await BD_genericas.obtienePorCampos("status_registro", {inactivar: true}).then(
-			(n) => n.id
-		);
-		// Preparar los datos
+		// Prepara los datos
 		let datos = {
 			sugerido_por_id: userID,
 			sugerido_en: FN_ahora(),
 			motivo_id,
-			status_registro_id: inactivarID,
+			status_registro_id: inactivar_id,
 		};
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
 	},
-
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" ||
@@ -135,7 +128,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtieneEntidadSingular: (entidad) => {
+	obtieneAsociacion: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
 			: entidad == "colecciones"
@@ -152,7 +145,7 @@ module.exports = {
 			? "link"
 			: "";
 	},
-	obtieneProdDesdeEntidad_id: (edicion) => {
+	obtieneProdDesdeProducto_id: (edicion) => {
 		return edicion.pelicula_id
 			? "peliculas"
 			: edicion.coleccion_id
@@ -161,7 +154,7 @@ module.exports = {
 			? "capitulos"
 			: "";
 	},
-	obtieneRCLVdesdeEntidad_id: (edicion) => {
+	obtieneRCLVdesdeRCLV_id: (edicion) => {
 		return edicion.personaje_id
 			? "personajes"
 			: edicion.hecho_id
@@ -171,9 +164,27 @@ module.exports = {
 			: "";
 	},
 	obtieneEntidadDesdeEntidad_id: function (edicion) {
-		let producto = this.obtieneProdDesdeEntidad_id(edicion);
-		let RCLV = this.obtieneRCLVdesdeEntidad_id(edicion);
+		let producto = this.obtieneProdDesdeProducto_id(edicion);
+		let RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);
 		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";
+	},
+	obtieneProducto_id: (edicion) => {
+		return edicion.pelicula_id
+			? "pelicula_id"
+			: edicion.coleccion_id
+			? "coleccion_id"
+			: edicion.capitulo_id
+			? "capitulo_id"
+			: "";
+	},
+	obtieneRCLV_id: (edicion) => {
+		return edicion.personaje_id
+			? "personaje_id"
+			: edicion.hecho_id
+			? "hecho_id"
+			: edicion.valor_id
+			? "valor_id"
+			: "";
 	},
 	obtieneEntidad_idDesdeEntidad: (entidad) => {
 		return entidad == "peliculas"
@@ -190,15 +201,6 @@ module.exports = {
 			? "valor_id"
 			: entidad == "links"
 			? "link_id"
-			: "";
-	},
-	obtieneProducto_id: (edicion) => {
-		return edicion.pelicula_id
-			? "pelicula_id"
-			: edicion.coleccion_id
-			? "coleccion_id"
-			: edicion.capitulo_id
-			? "capitulo_id"
 			: "";
 	},
 	convierteLetrasAlIngles: (resultado) => {

@@ -24,8 +24,8 @@ module.exports = {
 		return db[entidad].findAll({where: objeto}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
-	obtieneTodosPorCamposConInclude: (entidad, objeto, includes) => {
-		return db[entidad].findAll({where: objeto, include: includes}).then((n) => n.map((m) => m.toJSON()));
+	obtieneTodosPorCamposConInclude: (entidad, objeto, include) => {
+		return db[entidad].findAll({where: objeto, include}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtienePorId: (entidad, id) => {

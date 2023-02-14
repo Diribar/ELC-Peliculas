@@ -48,10 +48,9 @@ module.exports = {
 		let condicPalabras = {[Op.or]: condicTodasLasPalabrasPresentesEnCampos};
 		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
 		let statusGrCreado_id = status_registro.filter((n) => n.gr_creado).map((n) => n.id);
-		let statusAprob_id = status_registro.find((n) => n.aprobado).id;
 		let condicStatus = {
 			[Op.or]: [
-				{status_registro_id: statusAprob_id},
+				{status_registro_id: aprobado_id},
 				{
 					[Op.and]: [
 						{status_registro_id: statusGrCreado_id},
@@ -92,7 +91,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
+	TC_obtieneRegs: ({entidad, ahora, status, userID, include, campoFechaRef, autor_id}) => {
 		const haceUnaHora = comp.nuevoHorario(-1, ahora);
 		const haceDosHoras = comp.nuevoHorario(-2, ahora);
 		return db[entidad]
@@ -114,11 +113,11 @@ module.exports = {
 						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 					],
 					// Que esté propuesto hace más de una hora
-					[fechaRef]: {[Op.lt]: haceUnaHora},
+					[campoFechaRef]: {[Op.lt]: haceUnaHora},
 					// Que esté propuesto por otro usuario
 					[autor_id]: {[Op.ne]: userID},
 				},
-				include: includes,
+				include,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
@@ -137,16 +136,25 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	TC_obtieneLinks_y_Edics: async () => {
+	TC_obtieneLinks_y_EdicsAjenas: async (userID) => {
 		// Variables
-		let gr_inestables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let include = ["pelicula", "coleccion", "capitulo"];
 		// Obtiene los links en status 'a revisar'
+		let condiciones = {
+			[Op.or]: [
+				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: userID}}]},
+				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
+				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
+			],
+		};
 		let originales = db.links
-			.findAll({where: {status_registro_id: gr_inestables}, include: [...include, "status_registro"]})
+			.findAll({where: condiciones, include: [...include, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
-		// Obtiene todas las ediciones
-		let ediciones = db.links_edicion.findAll({include}).then((n) => n.map((m) => m.toJSON()));
+		// Obtiene todas las ediciones ajenas
+		let condicion = {editado_por_id: {[Op.ne]: userID}};
+		let ediciones = db.links_edicion
+			.findAll({where: condicion, include})
+			.then((n) => n.map((m) => m.toJSON()));
 		// Consolidarlos
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;
@@ -201,9 +209,6 @@ module.exports = {
 	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
 		// Variables
-		const creado_id = status_registro.find((n) => n.creado).id;
-		const inactivar_id = status_registro.find((n) => n.inactivar).id;
-		const recuperar_id = status_registro.find((n) => n.recuperar).id;
 		let contarRegistros = 0;
 		// Rutina para contar
 		let condiciones = {
