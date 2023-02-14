@@ -50,45 +50,34 @@ module.exports = {
 		return {resumenRCLV, resumenRegistro};
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
-		// Función
-		let convierteEdicPropiasDeProdsEnProds = async () => {
+		// Convierte las ediciones propias de productos en productos
+		if (userID) {
 			// Obtiene las ediciones propias
 			let edicionesPropias = RCLV.prods_edicion
 				? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID)
 				: [];
 
-			// Configura la variable de productos
-			let productos = {};
-			for (let entidad of variables.entidadesProd) productos[entidad] = [];
+			// Acciones si hay ediciones propias
+			if (edicionesPropias.length) {
+				// Configura RCLV
+				for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
 
-			// Si no hay ediciones propias, termina la función
-			if (!edicionesPropias.length) return productos;
-
-			// Obtiene los productos de esas ediciones
-			for (let edicion of edicionesPropias) {
-				// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
-				let entProd = comp.obtieneProdDesdeProducto_id(edicion);
-				let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
-				let entID = edicion[producto_id];
-				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
-				// Actualiza la variable del registro original
-				delete prodEdic.id;
-				let producto = {...prodOrig, ...prodEdic};
-				// Fin
-				productos[entProd].push(producto);
+				// Obtiene los productos de esas ediciones
+				for (let edicion of edicionesPropias) {
+					// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
+					let entProd = comp.obtieneProdDesdeProducto_id(edicion);
+					let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
+					let entID = edicion[producto_id];
+					// Obtiene los registros del producto original y su edición por el usuario
+					let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
+					// Actualiza la variable del registro original
+					let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
+					// Fin
+					RCLV[entProd].push(producto);
+				}
 			}
-
-			// Combina los productos originales con los productos de las ediciones
-			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
-			// Elimina la asociación con las ediciones
-			delete RCLV.prods_edicion;
-			// Fin
-			return RCLV;
-		};
-		// Convierte las ediciones en productos
-		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
-		// Completa la información de cada tipo de producto
+		}
+		// Completa la información de cada tipo de producto y une los productos en una sola array
 		let prodsDelRCLV = [];
 		for (let entidad of variables.entidadesProd) {
 			// Completa la información de cada producto dentro del tipo de producto
@@ -101,14 +90,15 @@ module.exports = {
 			prodsDelRCLV.push(...aux);
 		}
 		// Separa entre colecciones y resto
-		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsDelRCLV.filter((n) => n.entidad != "colecciones");
+		let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
+		let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
 		// Elimina capitulos si las colecciones están presentes
+		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 		let coleccionesId = colecciones.map((n) => n.id);
-		for (let i = noColecciones.length - 1; i >= 0; i--)
-			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
+		for (let i = capitulos.length - 1; i >= 0; i--)
+			if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
 		// Ordena por año (decreciente)
-		prodsDelRCLV = [...colecciones, ...noColecciones];
+		prodsDelRCLV = [...capitulos, ...noCapitulos];
 		prodsDelRCLV.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
 		);
