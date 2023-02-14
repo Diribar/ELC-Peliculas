@@ -53,7 +53,7 @@ module.exports = {
 			dataEntry = comp.diaDelAno(dataEntry);
 		}
 		// Botón salir
-		let rutaSalir = procesos.rutaSalir(codigo, datos);
+		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,

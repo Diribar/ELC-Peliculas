@@ -84,6 +84,8 @@ module.exports = {
 			n.filter((m) => m.prod)
 		);
 		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+		// Botón salir
+		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
 		//return res.send(prodOrig)
 		return res.render("CMP-0Estructura", {
@@ -101,6 +103,7 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			mostrarCartel: true,
 			url,
+			rutaSalir,
 		});
 	},
 	prodAltaGuardar: async (req, res) => {
