@@ -5,8 +5,7 @@
 .flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}
 .flechas i, .flechas img, .flechas a, .flechas button {margin: 0 10px; border-radius: 50%; cursor: pointer;}
 .flechas a i, .flechas button i {margin: 0;}
-.flechas .pack {margin: 0 20px; display: flex; flex-direction: row; align-items: center;}
-.flechas .pack i {margin: 0;}
+.flechas .pack {margin: 0; display: flex; flex-direction: row; align-items: center;}
 
 .flechas .fa-circle-left, .flechas .fa-circle-right {color: var(--bordeFlechas); border: none;}
 

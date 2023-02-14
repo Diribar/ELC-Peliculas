@@ -38,7 +38,7 @@
 				<%- include("LK0-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
-					<% links.forEach((link,fila)=> { %>
+					<% links.forEach((link, fila)=> { %>
 						<% let cond = {} %>
 						<%- include("LK0-Condiciones", {link, cond}) %>
 						<%- include("LK1-Datos", {link, cond, fila}) %>

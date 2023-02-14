@@ -14,6 +14,7 @@ module.exports = {
 		// Quita los campos que no se comparan, y los que tienen el mismo valor que el original
 		let edicion_id = edicion.id;
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		
 		// 1. Quita de edición los campos que no se comparan
 		(() => {
 			// Obtiene los campos a comparar
@@ -30,8 +31,12 @@ module.exports = {
 			// Quita de edicion los campos que no se comparan
 			for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
 		})();
+
 		// 2. Quita de edición las coincidencias con el original
 		for (let campo in edicion) {
+			// Corrige errores de data-entry
+			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
+
 			// Condiciones
 			// 1. El valor de edicion es igual al de original
 			let condicion1 = edicion[campo] == original[campo];
