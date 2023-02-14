@@ -22,3 +22,4 @@ select option[value=''] {display: none;}
 select option {font-style: normal;}
 input[type="radio"], input[type="checkbox"] {scale: .8;}
 input[type="radio"] {align-self: end;}
+:focus {outline: none;}

@@ -502,12 +502,8 @@ module.exports = {
 	vistaActual: (req) => {
 		return {nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"};
 	},
-	vistaAnterior: (urlAnterior) => {
-		return {
-			nombre: "fa-circle-left",
-			link: urlAnterior ? urlAnterior : "/",
-			titulo: "Ir a la vista anterior",
-		};
+	vistaAnterior: (url) => {
+		return {nombre: "fa-circle-left", link: url ? url : "/", titulo: "Ir a la vista anterior"};
 	},
 	vistaInactivar: (req) => {
 		return req.originalUrl.startsWith("/revision/")
@@ -542,7 +538,7 @@ module.exports = {
 		nombre: "fa-spell-check",
 		link: "/revision/tablero-de-control",
 		titulo: "Ir al 'Tablero de Control' de Revisiones",
-		autofocus: true
+		autofocus: true,
 	},
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
