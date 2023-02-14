@@ -64,18 +64,18 @@ module.exports = {
 		return [edicion, camposNull];
 	},
 	// Lectura de edicion
-	obtieneOriginalEdicion: async function (entidad, entID, userID) {		
+	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
 		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-		
+
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 		for (let campo in original) if (original[campo] === null) delete original[campo];
-		
+
 		// Obtiene la edición a partir del vínculo del original
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
