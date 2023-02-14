@@ -93,6 +93,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 	// Completa el objeto 'global'
 	const BD_genericas = require("./funciones/2-BD/Genericas");
+	const BD_especificas = require("./funciones/2-BD/Especificas");
 	let campos = {
 		// Variables de usuario
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
@@ -115,6 +116,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 			n.filter((m) => m.id < 400)
 		),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
+		link_pelicula_id: BD_especificas.obtieneELC_id("links_tipos", {pelicula: true}),
 	};
 	// Espera a que todas se procesen y consolida la info
 	let valores = Object.values(campos);
@@ -123,6 +125,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 	// Status
 	global.creado_id = global.status_registro.find((n) => n.creado).id;
+	global.creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
 	global.aprobado_id = global.status_registro.find((n) => n.aprobado).id;
 	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;

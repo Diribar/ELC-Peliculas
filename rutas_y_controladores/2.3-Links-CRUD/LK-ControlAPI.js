@@ -84,7 +84,6 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Completar la info
-		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCamposConInclude(
 			"links",

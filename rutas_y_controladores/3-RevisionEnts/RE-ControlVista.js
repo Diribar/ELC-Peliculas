@@ -19,6 +19,7 @@ module.exports = {
 		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos = await procesos.TC_obtieneProds(ahora, userID);
+		// return res.send([productos.PA]);
 		productos.ED = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID);
 		// RCLV
 		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
@@ -30,7 +31,6 @@ module.exports = {
 		productos = procesos.TC_prod_ProcesarCampos(productos);
 		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
-		//return res.send([productos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
