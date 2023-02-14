@@ -116,9 +116,7 @@ module.exports = {
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
-		const inactivoID = status_registro.find((n) => n.inactivo).id;
-		const status_registro_id = rechazado ? inactivoID : creadoAprobID;
+		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
 		let datosEntidad = {status_registro_id, alta_analizada_por_id: userID, alta_analizada_en: ahora};
 
 		// Actualiza el status en el registro original y en la variable

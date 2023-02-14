@@ -127,6 +127,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	global.aprobado_id = global.status_registro.find((n) => n.aprobado).id;
 	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;
+	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
 
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
