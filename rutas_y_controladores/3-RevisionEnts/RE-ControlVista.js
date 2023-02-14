@@ -101,7 +101,7 @@ module.exports = {
 			motivosRechazo,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
-			mostrarCartel: true,
+			cartelEscondido: true,
 			url,
 			rutaSalir,
 		});
@@ -268,7 +268,7 @@ module.exports = {
 			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 
@@ -365,7 +365,7 @@ module.exports = {
 			id: prodID,
 			bloqueDer,
 			title: rclvOrig.nombre_castellano,
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 
@@ -426,12 +426,11 @@ module.exports = {
 			avatar,
 			motivos,
 			calidades: variables.calidades,
-			mostrar: null,
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
 			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 };

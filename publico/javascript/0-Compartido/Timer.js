@@ -84,12 +84,12 @@ window.addEventListener("load", async () => {
 		// Flechas
 		let icono = codigo.startsWith("/revision/usuarios")
 			? {
-					link: "/inactivar-captura/?entidad=usuarios&id=" + entID + "&origen=tableroUs",
+					link: "/revision/usuarios/tablero-de-control",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/revision/")
 			? {
-					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + entID + "&origen=tableroEnts",
+					link: "/revision/tablero-de-control",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/producto/edicion/") || codigo.startsWith("/links/abm/")
@@ -103,8 +103,7 @@ window.addEventListener("load", async () => {
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  }
 			: {};
-		flechas.innerHTML = "";
-		flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
+		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
 		taparElFondo.classList.remove("ocultar");

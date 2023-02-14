@@ -73,6 +73,7 @@ module.exports = {
 			sexos,
 			rutaSalir,
 			institucional: true,
+			cartelEscondido: true,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
