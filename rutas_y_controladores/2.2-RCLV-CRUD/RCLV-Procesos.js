@@ -246,6 +246,7 @@ module.exports = {
 			DE.solo_cfc = solo_cfc;
 			DE.ama = solo_cfc == "1" ? ama : 0;
 		}
+		// Fin
 		return DE;
 	},
 };

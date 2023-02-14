@@ -166,14 +166,10 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			limpiezaDeFechaRepetidos: () => {
+			limpiezaDeMesDia: () => {
 				// Limpia los valores de mes, día y repetidos
 				v.mes_id.value = "";
 				v.dia.value = "";
-				v.posiblesRepetidos.innerHTML = "";
-
-				// Actualiza la validación de Repetidos
-				validacs.repetido();
 
 				// Fin
 				return;
@@ -440,12 +436,10 @@ window.addEventListener("load", async () => {
 			if (v.nombre.value && v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
+			if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
-
-			// 3. Valida el sector Repetido
-			if (v.desconocida.checked) impactos.fecha.limpiezaDeFechaRepetidos();
-
+			
 			// 4. Valida el sexo
 			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
 			if (v.personajes && opcionElegida(v.sexos_id).name) await this.sexo();
@@ -527,10 +521,12 @@ window.addEventListener("load", async () => {
 		// 2. Acciones si se cambia el sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value)
+			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+				v.desconocida.checked = false;
 				await validacs.fecha();
+			}
 			if (campo == "desconocida" && v.desconocida.checked) {
-				impactos.fecha.limpiezaDeFechaRepetidos();
+				impactos.fecha.limpiezaDeMesDia();
 				await validacs.fecha();
 			}
 		}
