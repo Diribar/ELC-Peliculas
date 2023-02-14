@@ -34,8 +34,8 @@ app.use(cookies());
 const loginConCookie = require("./middlewares/usuarios/loginConCookie");
 app.use(loginConCookie);
 // Para tener el rastro de los últimos url
-const userLogs = require("./middlewares/usuarios/userLogs");
-app.use(userLogs);
+const urlsUsadas = require("./middlewares/usuarios/urlsUsadas");
+app.use(urlsUsadas);
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
