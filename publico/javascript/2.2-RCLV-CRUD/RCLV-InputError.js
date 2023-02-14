@@ -125,8 +125,11 @@ window.addEventListener("load", async () => {
 			muestraPosiblesRepetidos: async () => {
 				// Obtiene los casos con esa fecha
 				// 1. Obtiene los parámetros
-				let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
+				let params = "?entidad=" + v.entidad;
 				if (v.id) params += "&id=" + v.id;
+				params += v.desconocida.checked
+					? "&dia=0"
+					: "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 				// 2. Busca otros casos con esa fecha
 				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
 

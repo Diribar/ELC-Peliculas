@@ -57,11 +57,11 @@ module.exports = {
 				? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID)
 				: [];
 
+			// Configura RCLV
+			for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
+
 			// Acciones si hay ediciones propias
 			if (edicionesPropias.length) {
-				// Configura RCLV
-				for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
-
 				// Obtiene los productos de esas ediciones
 				for (let edicion of edicionesPropias) {
 					// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
