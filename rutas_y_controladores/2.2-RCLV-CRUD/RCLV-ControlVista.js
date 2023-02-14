@@ -52,7 +52,7 @@ module.exports = {
 			// Obtiene el día y el mes
 			dataEntry = comp.diaDelAno(dataEntry);
 		}
-		// Botón salir
+		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
