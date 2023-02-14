@@ -64,22 +64,18 @@ module.exports = {
 		return [edicion, camposNull];
 	},
 	// Lectura de edicion
-	obtieneOriginalEdicion: async function (entidad, entID, userID) {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposNull;
-
+	obtieneOriginalEdicion: async function (entidad, entID, userID) {		
 		// Obtiene los campos include
-		let includesEstandar = comp.obtieneTodosLosCamposInclude(familia);
+		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
 		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-
+		
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 		for (let campo in original) if (original[campo] === null) delete original[campo];
-
+		
 		// Obtiene la edición a partir del vínculo del original
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
@@ -88,6 +84,7 @@ module.exports = {
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
+			let camposNull;
 			[edicion, camposNull] = this.puleEdicion(original, edicion, entidad);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)

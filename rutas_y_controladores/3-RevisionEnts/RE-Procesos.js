@@ -257,7 +257,7 @@ module.exports = {
 			],
 		};
 		// Genera la variable 'includes'
-		let includes = comp.obtieneTodosLosCamposInclude(familia);
+		let includes = comp.obtieneTodosLosCamposInclude(entidad);
 		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 		// Obtiene las ediciones del producto
 		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(

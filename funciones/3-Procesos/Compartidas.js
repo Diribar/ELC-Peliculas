@@ -35,11 +35,19 @@ module.exports = {
 		// Fin
 		return leadTime;
 	},
-	obtieneTodosLosCamposInclude: (familia) => {
-		// Obtiene todos los campos
+	obtieneTodosLosCamposInclude: function (entidad) {
+		// Obtiene la familia
+		let familia = this.obtieneFamiliaEnPlural(entidad);
+
+		// Obtiene todos los campos de la familia
 		let campos = [...variables.camposRevisar[familia]];
+
+		// Deja solamente los que tienen que ver con la entidad
+		let camposEntidad = campos.filter((n) => n[entidad]);
+
 		// Deja solamente los campos con vínculo
-		let camposConVinculo = campos.filter((n) => n.relac_include);
+		let camposConVinculo = camposEntidad.filter((n) => n.relac_include);
+
 		// Obtiene una matriz con los vínculos
 		let includes = camposConVinculo.map((n) => n.relac_include);
 		// Fin
@@ -334,7 +342,7 @@ module.exports = {
 			dataEntry.mes_id = dia_del_ano.mes_id;
 		}
 		// Fin
-		return dataEntry
+		return dataEntry;
 	},
 
 	// Gestión de archivos
