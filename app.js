@@ -112,9 +112,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
-		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes").then((n) =>
-			n.filter((m) => m.id < 400)
-		),
+		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		link_pelicula_id: BD_especificas.obtieneELC_id("links_tipos", {pelicula: true}),
 	};
@@ -132,6 +130,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
+	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
 
 	// Tareas posteriores
 	// Dispara tareas en cierto horario
