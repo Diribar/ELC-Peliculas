@@ -6,6 +6,58 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	// Soporte para lectura y guardado de edición
+	puleEdicion: async (original, edicion) => {
+		// Variables
+		let edicion_id = edicion.id;
+		let camposNull = {}(
+			// 1. Quita de edición los campos que no se comparan
+			() => {
+				// Obtiene los campos a comparar
+				let camposRevisar = [];
+				for (let campo of variables.camposRevisar[familia]) {
+					camposRevisar.push(campo.nombre);
+					if (campo.relac_include) camposRevisar.push(campo.relac_include);
+				}
+				// Quita de edicion los campos que no se comparan
+				for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
+			}
+		)();
+
+		// 2. Quita de edición las coincidencias con el original
+		for (let campo in edicion) {
+			// Corrige errores de data-entry
+			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
+
+			// Condiciones
+			// 1. El valor de edicion es igual al de original
+			let condicion1 = edicion[campo] == original[campo];
+			// 2. El objeto vinculado tiene el mismo ID
+			let condicion2 =
+				edicion[campo] &&
+				edicion[campo].id &&
+				original[campo] &&
+				edicion[campo].id == original[campo].id;
+
+			// Si se cumple alguna de las condiciones, se elimina ese método
+			if (condicion1 || condicion2) delete edicion[campo];
+			if (condicion1) camposNull[campo] = null;
+		}
+
+		// 3. Averigua si quedan campos
+		let quedanCampos = !!Object.keys(edicion).length;
+		if (!quedanCampos) edicion = null;
+
+		// 4. Acciones si existe edicion_id
+		if (edicion_id) {
+			let identificacion = [nombreEdicion, edicion_id];
+			// Si no quedan campos --> se elimina el registro de la BD
+			if (!quedanCampos) await BD_genericas.eliminaPorId(...identificacion);
+			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores del registro de edicion
+			else if (Object.keys(camposNull).length)
+				await BD_genericas.actualizaPorId(...identificacion, camposNull);
+		}
+	},
 	// Lectura de edicion
 	obtieneOriginalEdicion: async (entidad, entID, userID) => {
 		// Variables
