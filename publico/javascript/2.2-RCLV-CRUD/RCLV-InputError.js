@@ -142,9 +142,10 @@ window.addEventListener("load", async () => {
 				else {
 					v.posiblesRepetidos.innerHTML = "";
 					v.posiblesRepetidos.classList.remove("sinCasos");
-					for (let caso of casos) {
+					casos.forEach((caso, i) => {
 						// Crear el input
 						let input = document.createElement("input");
+						input.id = "caso" + i;
 						input.type = "checkbox";
 						input.name = "repetido";
 						input.checked = true;
@@ -152,12 +153,13 @@ window.addEventListener("load", async () => {
 						let texto = document.createTextNode(caso);
 						let label = document.createElement("label");
 						label.appendChild(texto);
+						label.htmlFor = "caso" + i;
 						// Crear el 'li'
 						let li = document.createElement("li");
 						li.appendChild(input);
 						li.appendChild(label);
 						v.posiblesRepetidos.appendChild(li);
-					}
+					});
 				}
 
 				// Valida repetidos
@@ -439,7 +441,7 @@ window.addEventListener("load", async () => {
 			if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
-			
+
 			// 4. Valida el sexo
 			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
 			if (v.personajes && opcionElegida(v.sexos_id).name) await this.sexo();
@@ -525,8 +527,8 @@ window.addEventListener("load", async () => {
 				v.desconocida.checked = false;
 				await validacs.fecha();
 			}
-			if (campo == "desconocida" && v.desconocida.checked) {
-				impactos.fecha.limpiezaDeMesDia();
+			if (campo == "desconocida") {
+				if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 				await validacs.fecha();
 			}
 		}
