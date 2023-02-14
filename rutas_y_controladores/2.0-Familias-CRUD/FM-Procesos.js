@@ -161,8 +161,8 @@ module.exports = {
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
-	// Actualiza el campo 'links_gratuitos' en productos
-	links_gratuitos: async (link) => {
+	// Actualiza los campos de links en el producto
+	prodConLinks: async (link) => {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto = comp.obtieneProdDesdeProducto_id(producto_id);

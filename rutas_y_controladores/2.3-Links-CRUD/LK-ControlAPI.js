@@ -72,7 +72,7 @@ module.exports = {
 			else {
 				// Inactivar
 				await comp.inactivaRegistro("links", link.id, userID, motivo_id);
-				procsCRUD.links_gratuitos(prodEntidad, prodID);
+				procsCRUD.prodConLinks(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);

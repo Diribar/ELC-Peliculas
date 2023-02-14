@@ -100,8 +100,8 @@ module.exports = {
 		}
 		await BD_genericas.actualizaPorId("links", link.id, datos);
 
-		// Actualiza el campo 'links_gratuitos' en el producto
-		procsCRUD.links_gratuitos(link);
+		// Actualiza los campos de links en el producto
+		procsCRUD.prodConLinks(link);
 
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = !prodAprob ? motivo.duracion : 0;
