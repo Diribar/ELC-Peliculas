@@ -4,7 +4,7 @@
 	<div class="inputError">
 		<textarea 
 			name="sinopsis" rows="1" class="input<% if (inputOK) { %> desplClick<% } %>" placeholder="Ingresa aquí la sinopsis"
-			<% if (inputOK) { %>disabled<% } %>
+			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 		><%= dataEntry.sinopsis %></textarea>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
 		<%- include("CMP-Errores", {campo: "sinopsis"}) %>
