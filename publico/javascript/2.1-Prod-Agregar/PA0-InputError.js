@@ -214,7 +214,7 @@ window.addEventListener("load", async () => {
 	v.form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
-		e.target.value = e.target.value.trim();
+		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.trim();
 		let valor = encodeURIComponent(e.target.value);
 		let datosUrl = "";
 		// Particularidades por paso
