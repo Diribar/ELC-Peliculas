@@ -162,7 +162,7 @@ module.exports = {
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	prods_aprob: async function (producto) {
+	rclvConProd: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
