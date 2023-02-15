@@ -43,7 +43,7 @@ module.exports = {
 		let campos = [...variables.camposRevisar[familia]];
 
 		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad] || familia);
+		let camposEntidad = campos.filter((n) => n[entidad] || n[familia]);
 
 		// Deja solamente los campos con vínculo
 		let camposConVinculo = camposEntidad.filter((n) => n.relac_include);

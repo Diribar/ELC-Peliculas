@@ -21,6 +21,7 @@ module.exports = {
 			"datosDuros",
 			"datosAdics",
 			"confirma",
+			"terminaste",
 		];
 		let indice = pasos.indexOf(paso) + 1;
 		for (indice; indice < pasos.length; indice++) {
@@ -79,11 +80,9 @@ module.exports = {
 				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path)
-				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
-			if (datosAPI.production_companies.length > 0)
-				datos.produccion = limpiaValores(datosAPI.production_companies);
+			if (datosAPI.production_companies.length > 0) datos.produccion = limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
 				datos.direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
@@ -109,8 +108,7 @@ module.exports = {
 				datosAPI.push(detailsTMDB("movie", capTMDB_id), creditsTMDB("movie", capTMDB_id), {orden});
 			});
 			await Promise.all(datosAPI).then((n) => {
-				for (let i = 0; i < datosAPI.length; i += 3)
-					capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
+				for (let i = 0; i < datosAPI.length; i += 3) capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
 			});
 			// Ordena los registros
 			capitulos.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
@@ -121,12 +119,10 @@ module.exports = {
 				if (capitulo.production_countries.length)
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
-				if (capitulo.production_companies.length)
-					produccion += limpiaValores(capitulo.production_companies) + ", ";
+				if (capitulo.production_companies.length) produccion += limpiaValores(capitulo.production_companies) + ", ";
 				// Crew
 				if (capitulo.crew.length) {
-					direccion +=
-						limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					direccion += limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
 					guion += limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
 					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
@@ -162,15 +158,12 @@ module.exports = {
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
 			if (datosAPI.parts.length > 0) {
-				datos.ano_estreno = Math.min(
-					...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
-				);
+				datos.ano_estreno = Math.min(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
 				datos.ano_fin = Math.max(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
 			}
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path)
-				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
 			datos.capitulosID_TMDB = datosAPI.parts.map((n) => n.id);
 		}
@@ -192,10 +185,7 @@ module.exports = {
 			TMDB_entidad: "tv",
 		};
 		// Obtiene las API
-		let datosAPI = await Promise.all([
-			detailsTMDB("tv", datos.TMDB_id),
-			creditsTMDB("tv", datos.TMDB_id),
-		]).then(([a, b]) => {
+		let datosAPI = await Promise.all([detailsTMDB("tv", datos.TMDB_id), creditsTMDB("tv", datos.TMDB_id)]).then(([a, b]) => {
 			return {...a, ...b};
 		});
 		// Procesar la información
@@ -203,8 +193,7 @@ module.exports = {
 			// nombre_original, nombre_castellano, duración de capítulos
 			if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
-			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1)
-				datos.duracion = datosAPI.episode_run_time[0];
+			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1) datos.duracion = datosAPI.episode_run_time[0];
 			// Idioma
 			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
 
@@ -214,13 +203,10 @@ module.exports = {
 			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path)
-				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Guión, produccion
-			if (datosAPI.created_by.length > 0)
-				datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
-			if (datosAPI.production_companies.length > 0)
-				datos.produccion = limpiaValores(datosAPI.production_companies);
+			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
+			if (datosAPI.production_companies.length > 0) datos.produccion = limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
 				datos.direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
@@ -271,11 +257,7 @@ module.exports = {
 		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
 		if (actores.length) datos.actores = FN_actores(actores);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		let avatar = datosCap.still_path
-			? datosCap.still_path
-			: datosCap.poster_path
-			? datosCap.poster_path
-			: "";
+		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
@@ -332,8 +314,7 @@ module.exports = {
 	},
 	agregaCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS
-		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++)
-			this.agregaCapituloDeTV(datosCol, temporada);
+		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
 		// Fin
 		return;
 	},
@@ -435,11 +416,8 @@ module.exports = {
 		if (contenido.indexOf("Ficha") > 0)
 			resultado.nombre_castellano = funcionParentesis(contenido[contenido.indexOf("Ficha") - 1]);
 		if (contenido.indexOf("Título original") > 0)
-			resultado.nombre_original = funcionParentesis(
-				contenido[contenido.indexOf("Título original") + 1]
-			);
-		if (contenido.indexOf("Año") > 0)
-			resultado.ano_estreno = parseInt(contenido[contenido.indexOf("Año") + 1]);
+			resultado.nombre_original = funcionParentesis(contenido[contenido.indexOf("Título original") + 1]);
+		if (contenido.indexOf("Año") > 0) resultado.ano_estreno = parseInt(contenido[contenido.indexOf("Año") + 1]);
 		if (contenido.indexOf("Duración") > 0) {
 			let duracion = contenido[contenido.indexOf("Duración") + 1];
 			resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));
@@ -448,13 +426,11 @@ module.exports = {
 			let pais_nombre = contenido[contenido.indexOf("País") + 1];
 			resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
 		}
-		if (contenido.indexOf("Dirección") > 0)
-			resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
+		if (contenido.indexOf("Dirección") > 0) resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
 		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
 		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
 		if (contenido.indexOf("Reparto") > 0) resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
-		if (contenido.indexOf("Productora") > 0)
-			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
+		if (contenido.indexOf("Productora") > 0) resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
 			let aux = contenido[contenido.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
@@ -558,9 +534,7 @@ let FN_actores = (dato) => {
 	// Acciones
 	if (dato.length) {
 		// Obtiene los nombres y convierte el array en string
-		actores = dato
-			.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : ""))
-			.join(", ");
+		actores = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
 		// Quita el excedente
 		if (actores.length > largo) {
 			actores = actores.slice(0, largo);

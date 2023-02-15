@@ -156,38 +156,45 @@ module.exports = {
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		const objeto = {[entidad_id]: RCLV_id};
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 
 		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
-		for (entidadRCLV of entidadesRCLV) {
+		for (let entidadRCLV of entidadesRCLV) {
 			// Variables
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadRCLV);
 			let RCLV_id = producto[entidad_id];
+			let objeto = {[entidad_id]: RCLV_id};
 			// Acciones si el producto tiene ese 'campo_id'
-			if (RCLV_id) {
-				// Averigua si existe algún producto, para ese RCLV
+			if (RCLV_id > 10) {
+				// 1. Averigua si existe algún producto, para ese RCLV
 				let prods_aprob;
-				// Averigua si existe algún producto aprobado, para ese RCLV, en alguno de los 3 tipos de producto
-				for (entidadProd of entidadesProds) {
-					prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
-						...objeto,
-						...statusAprobado,
-					}));
+				// Averigua si existe algún producto, con ese RCLV
+				for (let entidadProd of entidadesProds) {
+					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
 					if (prods_aprob) break;
 				}
-				// Averigua si existe algún producto 'potencial', para ese RCLV, en alguno de los 3 tipos de producto
-				if (!prods_aprob) {
-					for (entidadProd of entidadesProds) {
-						// Averigua si existe algún producto 'potencial', para ese RCLV
-						prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
-							...objeto,
-							...statusPotencia,
-						}));
+				if (prods_aprob) prods_aprob = true;
+				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
+				else {
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 						if (prods_aprob) break;
 					}
-					prods_aprob = prods_aprob ? false : null;
 				}
+				if (prods_aprob) prods_aprob = false;
+				// 3. Averigua si existe alguna edición
+				else {
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+						if (prods_aprob) break;
+					}
+				}
+				if (prods_aprob) prods_aprob = false;
+				// 4. No encontró ningún caso
+				else prods_aprob = null;
+
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
 			}
