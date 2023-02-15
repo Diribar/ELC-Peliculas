@@ -309,9 +309,7 @@ module.exports = {
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
 				valores: registrosRCLV.personajes,
-				mensajes: [
-					"Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas.",
-				],
+				mensajes: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 				link: "personajes",
 				grupo: "RCLV",
 			},
@@ -384,72 +382,50 @@ module.exports = {
 
 	// Entorno Revisiones
 	camposRevisar: {
+		// Campos
+		// productos, películas, colecciones, capítulos --> para filtrar los campos por entidad
+		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
-			{titulo: "Avatar", nombre: "avatar"},
+			// Todos
+			{titulo: "Título original", nombre: "nombre_original", input: true, productos: true},
+			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true, productos: true},
+			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true, productos: true},
+			{titulo: "País/es", nombre: "paises_id", productos: true},
+			{titulo: "Idioma Original", nombre: "idioma_original_id", relac_include: "idioma_original", productos: true},
+			{titulo: "Dirección", nombre: "direccion", input: true, productos: true},
+			{titulo: "Guión", nombre: "guion", input: true, productos: true},
+			{titulo: "Música", nombre: "musica", input: true, productos: true},
+			{titulo: "Actores", nombre: "actores", input: true, productos: true},
+			{titulo: "Producción", nombre: "produccion", input: true, productos: true},
+			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
+			{titulo: "Avatar", nombre: "avatar", productos: true},
 			// {titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod/RCLV'
-			{titulo: "Título original", nombre: "nombre_original", input: true},
-			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true},
-			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true},
-			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true},
-			{titulo: "Duración", nombre: "duracion", angosto: true, input: true},
-			{titulo: "País/es", nombre: "paises_id"},
-			{titulo: "Idioma Original", nombre: "idioma_original_id", relac_include: "idioma_original"},
-			{titulo: "Dirección", nombre: "direccion", input: true},
-			{titulo: "Guión", nombre: "guion", input: true},
-			{titulo: "Música", nombre: "musica", input: true},
-			{titulo: "Actores", nombre: "actores", input: true},
-			{titulo: "Producción", nombre: "produccion", input: true},
-			{titulo: "Sinopsis", nombre: "sinopsis", input: true},
-
-			{titulo: "Centrada en la Fe Católica", nombre: "cfc", input: true},
-			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", input: true},
-			{titulo: "Es un musical", nombre: "musical", input: true},
-			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion"},
-
-			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico"},
-			{
-				titulo: "Personaje histórico",
-				nombre: "personaje_id",
-				relac_include: "personaje",
-				rclv: true,
-				input: true,
-			},
-			{
-				titulo: "Hecho histórico",
-				nombre: "hecho_id",
-				relac_include: "hecho",
-				rclv: true,
-				input: true,
-			},
-			{
-				titulo: "Valor principal",
-				nombre: "valor_id",
-				relac_include: "valor",
-				rclv: true,
-				input: true,
-			},
+			{titulo: "Centrada en la Fe Católica", nombre: "cfc", productos: true},
+			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
+			{titulo: "Es un musical", nombre: "musical", productos: true},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion", productos: true},
+			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico", productos: true},
+			{titulo: "Personaje histórico", nombre: "personaje_id", relac_include: "personaje", rclv: true, productos: true},
+			{titulo: "Hecho histórico", nombre: "hecho_id", relac_include: "hecho", rclv: true, productos: true},
+			{titulo: "Valor principal", nombre: "valor_id", relac_include: "valor", rclv: true, productos: true},
+			// Películas y Capítulos
+			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
+			// Colecciones
+			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true, colecciones: true},
 		],
 		rclvs: [
+			// Todos
+			{nombre: "nombre", titulo: "Nombre Formal", rclvs: true},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true},
+			// Personajes y Hechos
+			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			// Personajes
-			{nombre: "nombre", titulo: "Nombre Formal", personajes: true, hechos: true, valores: true},
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
-			{nombre: "dia_del_ano_id", titulo: "Día del Año", personajes: true, hechos: true, valores: true},
-			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
-			{
-				nombre: "proceso_id",
-				titulo: "Proceso de Canonizac.",
-				personajes: true,
-				relac_include: "proc_canon",
-			},
-			{
-				nombre: "rol_iglesia_id",
-				titulo: "Rol en la Iglesia",
-				personajes: true,
-				relac_include: "rol_iglesia",
-			},
+			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},
+			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true, relac_include: "rol_iglesia"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "jss", titulo: "Durante la vida de Jesús", hechos: true},
@@ -509,12 +485,7 @@ module.exports = {
 		return req.originalUrl.startsWith("/revision/")
 			? {
 					nombre: "fa-spell-check",
-					link:
-						"/inactivar-captura/?entidad=" +
-						req.query.entidad +
-						"&id=" +
-						req.query.id +
-						"&origen=tableroEnts",
+					link: "/inactivar-captura/?entidad=" + req.query.entidad + "&id=" + req.query.id + "&origen=tableroEnts",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 					autofocus: true,
 			  }
