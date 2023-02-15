@@ -43,13 +43,14 @@ module.exports = {
 		let campos = [...variables.camposRevisar[familia]];
 
 		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad]);
+		let camposEntidad = campos.filter((n) => n[entidad] || familia);
 
 		// Deja solamente los campos con vínculo
 		let camposConVinculo = camposEntidad.filter((n) => n.relac_include);
 
 		// Obtiene una matriz con los vínculos
 		let includes = camposConVinculo.map((n) => n.relac_include);
+
 		// Fin
 		return includes;
 	},
@@ -77,30 +78,18 @@ module.exports = {
 	},
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
-		return entidad == "peliculas" ||
-			entidad == "colecciones" ||
-			entidad == "capitulos" ||
-			entidad == "prods_edicion"
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"
 			? "producto"
-			: entidad == "personajes" ||
-			  entidad == "hechos" ||
-			  entidad == "valores" ||
-			  entidad == "rclvs_edicion"
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores" || entidad == "rclvs_edicion"
 			? "rclv"
 			: entidad == "links"
 			? "links"
 			: "";
 	},
 	obtieneFamiliaEnPlural: (entidad) => {
-		return entidad == "peliculas" ||
-			entidad == "colecciones" ||
-			entidad == "capitulos" ||
-			entidad == "prods_edicion"
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"
 			? "productos"
-			: entidad == "personajes" ||
-			  entidad == "hechos" ||
-			  entidad == "valores" ||
-			  entidad == "rclvs_edicion"
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores" || entidad == "rclvs_edicion"
 			? "rclvs"
 			: entidad == "links" || entidad == "links_edicion"
 			? "links"
@@ -154,22 +143,10 @@ module.exports = {
 			: "";
 	},
 	obtieneProdDesdeProducto_id: (edicion) => {
-		return edicion.pelicula_id
-			? "peliculas"
-			: edicion.coleccion_id
-			? "colecciones"
-			: edicion.capitulo_id
-			? "capitulos"
-			: "";
+		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
-		return edicion.personaje_id
-			? "personajes"
-			: edicion.hecho_id
-			? "hechos"
-			: edicion.valor_id
-			? "valores"
-			: "";
+		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
 	},
 	obtieneEntidadDesdeEntidad_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
@@ -186,13 +163,7 @@ module.exports = {
 			: "";
 	},
 	obtieneRCLV_id: (edicion) => {
-		return edicion.personaje_id
-			? "personaje_id"
-			: edicion.hecho_id
-			? "hecho_id"
-			: edicion.valor_id
-			? "valor_id"
-			: "";
+		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.valor_id ? "valor_id" : "";
 	},
 	obtieneEntidad_idDesdeEntidad: (entidad) => {
 		return entidad == "peliculas"
@@ -389,8 +360,7 @@ module.exports = {
 			console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
 		else
 			fs.copyFile(nombreOrigen, nombreDestino, (error) => {
-				if (!error)
-					console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+				if (!error) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
 				else throw error;
 			});
 	},
@@ -526,10 +496,7 @@ module.exports = {
 		// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
 		await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 		// Copia la nueva imagen como 'imgDerecha'
-		await this.copiaUnArchivoDeImagen(
-			"4-Banco-de-imagenes/" + imgDerecha.nombre_archivo,
-			"0-Base/imgDerechaHoy.jpg"
-		);
+		await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha.nombre_archivo, "0-Base/imgDerechaHoy.jpg");
 
 		// Fin
 		return;
@@ -663,9 +630,8 @@ module.exports = {
 		}
 		// Antigüedad
 		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
-				.toFixed(1)
-				.replace(".", ",") + " años";
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10).toFixed(1).replace(".", ",") +
+			" años";
 		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
 		// Rol en la iglesia
 		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
@@ -684,9 +650,7 @@ module.exports = {
 					OK: false,
 					informacion: {
 						mensajes: ["No hay conexión a internet"],
-						iconos: [
-							{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"},
-						],
+						iconos: [{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}],
 					},
 				};
 			});
@@ -733,11 +697,7 @@ module.exports = {
 
 		// Espera a recibir el feedback
 		[hayConexionInternet, mailEnviado] = await Promise.all([hayConexionInternet, mailEnviado]);
-		let resultado = !hayConexionInternet.OK
-			? hayConexionInternet
-			: !mailEnviado.OK
-			? mailEnviado
-			: {OK: true};
+		let resultado = !hayConexionInternet.OK ? hayConexionInternet : !mailEnviado.OK ? mailEnviado : {OK: true};
 
 		// Fin
 		return resultado;
@@ -751,8 +711,7 @@ module.exports = {
 		// Variables
 		let resultado = [];
 		// Agrega los productos con edición más antigua
-		for (let prod of prods)
-			if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
+		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
 		// Fin
 		return resultado;
 	},
@@ -765,16 +724,10 @@ module.exports = {
 
 			// 1. Obtiene la ruta a la cual ir
 			let rutaOrigen =
-				datos.origen == "DA"
-					? "/producto/agregar/datos-adicionales"
-					: datos.origen == "ED"
-					? "/producto/edicion/"
-					: "/";
+				datos.origen == "DA" ? "/producto/agregar/datos-adicionales" : datos.origen == "ED" ? "/producto/edicion/" : "/";
 			// Obtiene los parámetros de entidad + ID, en la ruta de origen
 			let entidadIdOrigen =
-				datos.origen && datos.origen != "DA"
-					? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID
-					: "";
+				datos.origen && datos.origen != "DA" ? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID : "";
 
 			// Fin - Consolida la información
 			rutaSalir = rutaOrigen + entidadIdOrigen;
@@ -790,10 +743,7 @@ module.exports = {
 			let entidadId_inactivar = "&entidad=" + datos.entidad + "&id=" + datos.id;
 
 			// Datos sólo si el origen es 'ED'
-			let soloSiOrigenED =
-				datos.origen && datos.origen == "ED"
-					? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID
-					: "";
+			let soloSiOrigenED = datos.origen == "ED" ? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID : "";
 
 			// Fin - Consolida la información
 			rutaSalir = rutaOrigen + vistaOrigen + entidadId_inactivar + soloSiOrigenED;
