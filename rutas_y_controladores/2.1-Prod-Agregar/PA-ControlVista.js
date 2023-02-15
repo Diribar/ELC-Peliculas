@@ -15,9 +15,7 @@ module.exports = {
 		const codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
 		let dataEntry = {};
-		dataEntry.palabrasClave = req.session.palabrasClave
-			? req.session.palabrasClave
-			: req.cookies.palabrasClave;
+		dataEntry.palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesos.borraSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
@@ -79,9 +77,7 @@ module.exports = {
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
 		// 5. Obtiene los errores
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = req.session.erroresDD
-			? req.session.erroresDD
-			: await valida.datosDuros(camposDD_nombre, datosDuros);
+		let errores = req.session.erroresDD ? req.session.erroresDD : await valida.datosDuros(camposDD_nombre, datosDuros);
 		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
@@ -172,9 +168,7 @@ module.exports = {
 		let camposDA = await variables.camposDA_conValores(userID);
 		let camposDE = Object.keys(datosAdics);
 		// Imagen derecha
-		let imgDerPers = datosAdics.avatar
-			? "/imagenes/9-Provisorio/" + datosAdics.avatar
-			: datosAdics.avatar_url;
+		let imgDerPers = datosAdics.avatar ? "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
 		// 6. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -264,8 +258,8 @@ module.exports = {
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
 		procsCRUD.guardaActEdicCRUD({
-			original: registro,
-			edicion: confirma,
+			original: {...registro},
+			edicion: {...confirma}, // es clave escribirlo así, para que la función no lo cambie
 			entidad: original.entidad,
 			userID: req.session.usuario.id,
 		});
@@ -275,6 +269,9 @@ module.exports = {
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
+		// Actualiza prods_aprob en RCLVs
+		let producto = {...confirma, id: registro.id};
+		// procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'  (no hace falta esperar a que concluya)
 		procesos.descargaMueveElAvatar(confirma);
 		// Establece como vista anterior la vista del primer paso
@@ -287,6 +284,7 @@ module.exports = {
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar la url de 'guardar'
+		procsCRUD.rclvConProd(producto);
 		return res.redirect("terminaste");
 	},
 	terminaste: async (req, res) => {
