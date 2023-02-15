@@ -85,7 +85,7 @@ module.exports = {
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			let camposNull;
-			[edicion, camposNull] = this.puleEdicion(original, edicion, entidad);
+			[edicion, camposNull] = await this.puleEdicion(original, edicion, entidad);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
 				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, camposNull);
@@ -101,7 +101,7 @@ module.exports = {
 		let camposNull;
 
 		// Quita la info que no agrega valor
-		[edicion, camposNull] = this.puleEdicion(original, edicion, entidad);
+		[edicion, camposNull] = await this.puleEdicion(original, edicion, entidad);
 
 		// Acciones si quedan campos
 		if (edicion) {
@@ -161,40 +161,7 @@ module.exports = {
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
-	// Actualiza los campos de links en el producto
-	prodConLinks: async (link) => {
-		// Variables
-		const producto_id = comp.obtieneProducto_id(link);
-		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
-		const prodID = link[producto_id];
-		const tipo_id = link_pelicula_id;
-		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		let objeto;
-
-		// Averigua si existe algún link, para ese producto
-		objeto = {[producto_id]: prodID, tipo_id};
-		let links_general = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
-			? false // Tiene en potencia
-			: null; // No tiene
-
-		// Averigua si existe algún link gratuito, para ese producto
-		objeto = {...objeto, gratuito: true};
-		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
-			? false // Tiene en potencia
-			: null; // No tiene
-
-		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, id, {links_general, links_gratuitos});
-
-		// Fin
-		return;
-	},
-	// Actualiza los campos de producto en el RCLV
+	// Actualiza los campos de 'producto' en el RCLV
 	prods_aprob: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
@@ -236,6 +203,39 @@ module.exports = {
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
 			}
 		}
+
+		// Fin
+		return;
+	},
+	// Actualiza los campos de 'links' en el producto
+	prodConLinks: async (link) => {
+		// Variables
+		const producto_id = comp.obtieneProducto_id(link);
+		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const prodID = link[producto_id];
+		const tipo_id = link_pelicula_id;
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		let objeto;
+
+		// Averigua si existe algún link, para ese producto
+		objeto = {[producto_id]: prodID, tipo_id};
+		let links_general = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			? false // Tiene en potencia
+			: null; // No tiene
+
+		// Averigua si existe algún link gratuito, para ese producto
+		objeto = {...objeto, gratuito: true};
+		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			? false // Tiene en potencia
+			: null; // No tiene
+
+		// Actualiza el registro
+		BD_genericas.actualizaPorId(producto, id, {links_general, links_gratuitos});
 
 		// Fin
 		return;
