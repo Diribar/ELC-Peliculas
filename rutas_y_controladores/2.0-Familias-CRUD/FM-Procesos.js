@@ -175,22 +175,20 @@ module.exports = {
 				}
 				if (prods_aprob) prods_aprob = true;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-				else {
+				else
 					for (let entidadProd of entidadesProds) {
 						// Averigua si existe algún producto, con ese RCLV
 						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 						if (prods_aprob) break;
 					}
-				}
 				if (prods_aprob) prods_aprob = false;
 				// 3. Averigua si existe alguna edición
-				else {
+				else
 					for (let entidadProd of entidadesProds) {
 						// Averigua si existe algún producto, con ese RCLV
 						prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 						if (prods_aprob) break;
 					}
-				}
 				if (prods_aprob) prods_aprob = false;
 				// 4. No encontró ningún caso
 				else prods_aprob = null;
