@@ -271,7 +271,7 @@ module.exports = {
 		}
 		// Actualiza prods_aprob en RCLVs
 		let producto = {...confirma, id: registro.id};
-		// procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
+		procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'  (no hace falta esperar a que concluya)
 		procesos.descargaMueveElAvatar(confirma);
 		// Establece como vista anterior la vista del primer paso
@@ -284,7 +284,6 @@ module.exports = {
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar la url de 'guardar'
-		procsCRUD.rclvConProd(producto);
 		return res.redirect("terminaste");
 	},
 	terminaste: async (req, res) => {
