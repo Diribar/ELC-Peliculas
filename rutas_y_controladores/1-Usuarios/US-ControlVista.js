@@ -378,11 +378,13 @@ module.exports = {
 		return res.render("CMP-0Estructura", {informacion});
 	},
 	logout: (req, res) => {
-		let url = req.session.urlFueraDeUsuarios;
+		// Guarda el url de la última vista fuera de 'usuarios'
+		let url = req.session.urlFueraDeUsuarios ? req.session.urlFueraDeUsuarios : "/";
+
 		// Borra el session y un cookie
 		req.session.destroy();
-		for (let prop in req.cookies) res.clearCookie(prop);
-		//res.clearCookie("email");
+		for (let metodo in req.cookies) res.clearCookie(metodo);
+
 		// Fin
 		return res.redirect(url);
 	},
