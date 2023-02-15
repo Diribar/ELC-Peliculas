@@ -40,11 +40,7 @@ module.exports = {
 				// La edición no puede ser 'undefined', porque existe el método
 				original[campo] !== undefined && edicion[campo] == original[campo];
 			// 2. El objeto vinculado tiene el mismo ID
-			let condicion2 =
-				edicion[campo] &&
-				edicion[campo].id &&
-				original[campo] &&
-				edicion[campo].id == original[campo].id;
+			let condicion2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
 			if (condicion1 || condicion2) delete edicion[campo];
@@ -106,8 +102,7 @@ module.exports = {
 		// Acciones si quedan campos
 		if (edicion) {
 			// Si existe edicion.id --> se actualiza el registro
-			if (edicion.id)
-				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, {...camposNull, ...edicion});
+			if (edicion.id) await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, {...camposNull, ...edicion});
 			// Si no existe edicion.id --> se agrega el registro
 			else
 				await (async () => {
@@ -141,22 +136,16 @@ module.exports = {
 				  (!prodOrig || !prodOrig.avatar
 						? "0-Base/Avatar/Prod-Sin-Avatar.jpg"
 						: // Si el avatar está 'aprobado'
-						comp.averiguaSiExisteUnArchivo(
-								"./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar
-						  )
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar)
 						? "2-Avatar-Prods-Final/" + prodOrig.avatar
 						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo(
-								"./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar
-						  )
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
 						? "2-Avatar-Prods-Revisar/" + prodOrig.avatar
 						: "");
 
 		// avatarEdic
 		let avatarEdic =
-			prodEdic && prodEdic.avatar
-				? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar
-				: avatarOrig;
+			prodEdic && prodEdic.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
