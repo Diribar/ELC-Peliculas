@@ -125,8 +125,11 @@ window.addEventListener("load", async () => {
 			muestraPosiblesRepetidos: async () => {
 				// Obtiene los casos con esa fecha
 				// 1. Obtiene los parámetros
-				let params = "?mes_id=" + v.mes_id.value + "&dia=" + v.dia.value + "&entidad=" + v.entidad;
+				let params = "?entidad=" + v.entidad;
 				if (v.id) params += "&id=" + v.id;
+				params += v.desconocida.checked
+					? "&dia=0"
+					: "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 				// 2. Busca otros casos con esa fecha
 				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
 
@@ -139,9 +142,10 @@ window.addEventListener("load", async () => {
 				else {
 					v.posiblesRepetidos.innerHTML = "";
 					v.posiblesRepetidos.classList.remove("sinCasos");
-					for (let caso of casos) {
+					casos.forEach((caso, i) => {
 						// Crear el input
 						let input = document.createElement("input");
+						input.id = "caso" + i;
 						input.type = "checkbox";
 						input.name = "repetido";
 						input.checked = true;
@@ -149,12 +153,13 @@ window.addEventListener("load", async () => {
 						let texto = document.createTextNode(caso);
 						let label = document.createElement("label");
 						label.appendChild(texto);
+						label.htmlFor = "caso" + i;
 						// Crear el 'li'
 						let li = document.createElement("li");
 						li.appendChild(input);
 						li.appendChild(label);
 						v.posiblesRepetidos.appendChild(li);
-					}
+					});
 				}
 
 				// Valida repetidos
@@ -163,14 +168,10 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			limpiezaDeFechaRepetidos: () => {
+			limpiezaDeMesDia: () => {
 				// Limpia los valores de mes, día y repetidos
 				v.mes_id.value = "";
 				v.dia.value = "";
-				v.posiblesRepetidos.innerHTML = "";
-
-				// Actualiza la validación de Repetidos
-				validacs.repetido();
 
 				// Fin
 				return;
@@ -437,11 +438,9 @@ window.addEventListener("load", async () => {
 			if (v.nombre.value && v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
+			if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
-
-			// 3. Valida el sector Repetido
-			if (v.desconocida.checked) impactos.fecha.limpiezaDeFechaRepetidos();
 
 			// 4. Valida el sexo
 			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
@@ -524,10 +523,12 @@ window.addEventListener("load", async () => {
 		// 2. Acciones si se cambia el sector Fecha
 		if (v.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value)
+			if ((campo == "mes_id" || campo == "dia") && v.mes_id.value && v.dia.value) {
+				v.desconocida.checked = false;
 				await validacs.fecha();
-			if (campo == "desconocida" && v.desconocida.checked) {
-				impactos.fecha.limpiezaDeFechaRepetidos();
+			}
+			if (campo == "desconocida") {
+				if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 				await validacs.fecha();
 			}
 		}

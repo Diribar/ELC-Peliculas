@@ -50,11 +50,7 @@ module.exports = {
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
 				res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
-			if (dataEntry.dia_del_ano_id) {
-				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
-				dataEntry.dia = dia_del_ano.dia;
-				dataEntry.mes_id = dia_del_ano.mes_id;
-			}
+			dataEntry = comp.diaDelAno(dataEntry);
 		}
 		// Botón salir
 		let rutaSalir = procesos.rutaSalir(codigo, datos);
@@ -76,6 +72,7 @@ module.exports = {
 			ap_mars,
 			sexos,
 			rutaSalir,
+			institucional: true,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {

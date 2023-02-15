@@ -9,9 +9,7 @@ module.exports = {
 	bloqueDerecha: async (RCLV, cantProds) => {
 		// Variable fecha
 		let diaDelAno = dias_del_ano.find((n) => n.id == RCLV.dia_del_ano_id);
-		let dia = diaDelAno.dia;
-		let mes = mesesAbrev[diaDelAno.mes_id - 1];
-		let fecha = dia + "/" + mes;
+		let fecha = diaDelAno ? diaDelAno.dia + "/" + diaDelAno.mes.abrev : "Sin fecha o varias";
 		// Variable ultimaActualizacion
 		let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
 		fechas.push(RCLV.edic_analizada_en, RCLV.sugerido_en);
@@ -52,47 +50,37 @@ module.exports = {
 		return {resumenRCLV, resumenRegistro};
 	},
 	prodsDelRCLV: async function (RCLV, userID) {
-		// Función
-		let convierteEdicPropiasDeProdsEnProds = async () => {
+		// Convierte las ediciones propias de productos en productos
+		if (userID) {
 			// Obtiene las ediciones propias
-			let edicionesPropias = [];
-			for (let edicion of RCLV.prods_edicion)
-				if (edicion.editado_por_id == userID) edicionesPropias.push(edicion);
-			if (edicionesPropias.length)
-				edicionesPropias = edicionesPropias.filter((n) => n.editado_por_id == userID);
-			// Configura la variable de productos
-			let productos = {};
-			for (let entidad of variables.entidadesProd) productos[entidad] = [];
+			let edicionesPropias = RCLV.prods_edicion
+				? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID)
+				: [];
 
-			// Si no hay ediciones propias, termina la función
-			if (!edicionesPropias.length) return productos;
+			// Configura RCLV
+			for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
 
-			// Obtiene los productos de esas ediciones
-			for (let edicion of edicionesPropias) {
-				// Obtiene la entidad y el campo 'entidad_id'
-				let entProd = comp.obtieneProdDesdeProducto_id(edicion);
-				let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
-				let entID = edicion[producto_id];
-				// Obtiene los registros del producto original y su edición por el usuario
-				let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
-				// Actualiza la variable del registro original
-				delete prodEdic.id
-				let producto = {...prodOrig, ...prodEdic};
-				// Fin
-				productos[entProd].push(producto);
+			// Acciones si hay ediciones propias
+			if (edicionesPropias.length) {
+				// Obtiene los productos de esas ediciones
+				for (let edicion of edicionesPropias) {
+					// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
+					let entProd = comp.obtieneProdDesdeProducto_id(edicion);
+					let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
+					let entID = edicion[producto_id];
+					// Obtiene los registros del producto original y su edición por el usuario
+					let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
+					// Actualiza la variable del registro original
+					let producto = {...prodOrig, ...prodEdic, id: prodOrig.id};
+					// Fin
+					RCLV[entProd].push(producto);
+				}
 			}
-
-			// Combina los productos originales con los productos de las ediciones
-			for (let entidad of variables.entidadesProd) RCLV[entidad].push(...productos[entidad]);
-			delete RCLV.prods_edicion;
-			// Fin
-			return RCLV;
-		};
-		// Convierte las ediciones en productos
-		if (RCLV.prods_edicion.length && userID) RCLV = await convierteEdicPropiasDeProdsEnProds();
-		// Completa la información de cada producto
+		}
+		// Completa la información de cada tipo de producto y une los productos en una sola array
 		let prodsDelRCLV = [];
-		variables.entidadesProd.forEach((entidad) => {
+		for (let entidad of variables.entidadesProd) {
+			// Completa la información de cada producto dentro del tipo de producto
 			let aux = RCLV[entidad].map((registro) => {
 				// Averigua la ruta y el nombre del avatar
 				let avatar = procsCRUD.avatarOrigEdic(registro).edic;
@@ -100,16 +88,17 @@ module.exports = {
 				return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 			});
 			prodsDelRCLV.push(...aux);
-		});
+		}
 		// Separa entre colecciones y resto
-		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
-		let noColecciones = prodsDelRCLV.filter((n) => n.entidad != "colecciones");
+		let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
+		let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
 		// Elimina capitulos si las colecciones están presentes
+		let colecciones = prodsDelRCLV.filter((n) => n.entidad == "colecciones");
 		let coleccionesId = colecciones.map((n) => n.id);
-		for (let i = noColecciones.length - 1; i >= 0; i--)
-			if (coleccionesId.includes(noColecciones[i].coleccion_id)) noColecciones.splice(i, 1);
-		// Ordenar por año (decreciente)
-		prodsDelRCLV = [...colecciones, ...noColecciones];
+		for (let i = capitulos.length - 1; i >= 0; i--)
+			if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
+		// Ordena por año (decreciente)
+		prodsDelRCLV = [...capitulos, ...noCapitulos];
 		prodsDelRCLV.sort((a, b) =>
 			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
 		);
@@ -164,7 +153,7 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} 
+		}
 		// Tareas para edición
 		else if (codigo == "/rclv/edicion/") {
 			// Obtiene el registro original
@@ -174,7 +163,7 @@ module.exports = {
 			original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
 				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
-		} 
+		}
 		// Tareas para revisión
 		else if (codigo == "/revision/rclv/alta/") {
 			// Obtiene el registro original
@@ -257,6 +246,7 @@ module.exports = {
 			DE.solo_cfc = solo_cfc;
 			DE.ama = solo_cfc == "1" ? ama : 0;
 		}
+		// Fin
 		return DE;
 	},
 };

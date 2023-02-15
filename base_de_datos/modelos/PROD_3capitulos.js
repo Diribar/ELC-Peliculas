@@ -37,6 +37,7 @@ module.exports = (sequelize, dt) => {
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
+		links_general: {type: dt.BOOLEAN},
 		links_gratuitos: {type: dt.BOOLEAN},
 		color: {type: dt.BOOLEAN},
 		castellano: {type: dt.BOOLEAN},

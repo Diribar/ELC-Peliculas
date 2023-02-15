@@ -3,7 +3,7 @@
 	<% let rutaImagen, tituloImagen %>
 	<!-- Opciones según el caso -->
 	<!-- 1. Imagen Institucional -->
-	<% if (locals.tema == "institucional") {rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
+	<% if (locals.tema == "institucional" || locals.institucional) {rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
 	<!-- 2. Imagen Personalizada -->
 	<% if (!rutaImagen && locals.imgDerPers) {rutaImagen = imgDerPers; tituloImagen=locals.tituloImgDerPers} %>
 	<!-- 3. Imagen Diaria -->

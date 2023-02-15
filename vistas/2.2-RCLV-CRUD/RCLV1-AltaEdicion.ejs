@@ -125,7 +125,7 @@
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
-						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
+						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && dataEntry.dia_del_ano_id>=400) { %>checked<% } %>>
 						<label for="desconocida">Sin fecha representativa</label>
 					</div>
 				</div>
