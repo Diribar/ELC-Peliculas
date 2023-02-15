@@ -41,7 +41,6 @@ router.get("/producto/recuperar");
 // RCLV
 router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
 router.post("/rclv/alta", ...aptoRevMasEnt, vista.rclvAltaGuardar);
-router.post("/rclv/inactivar", ...aptoRevMasEnt, vista.rclvAltaGuardar);
 router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
 
 // Links
