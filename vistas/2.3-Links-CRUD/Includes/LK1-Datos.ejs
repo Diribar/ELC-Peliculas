@@ -61,8 +61,8 @@
 	<!-- Acción -->
 	<td class="ancho_accion">
 		<!-- EDITAR -->
-		<!-- Sólo en RUD para links creados y aprobados -->
-		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creado && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+		<!-- Sólo en RUD para links creadosPropios y aprobados -->
+		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creadoPropio && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- APROBAR -->
 		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
 		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>

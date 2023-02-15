@@ -65,12 +65,8 @@ module.exports = {
 	},
 	// Lectura de edicion
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposNull;
-
 		// Obtiene los campos include
-		let includesEstandar = comp.obtieneTodosLosCamposInclude(familia);
+		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
 		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
@@ -88,6 +84,7 @@ module.exports = {
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
+			let camposNull;
 			[edicion, camposNull] = this.puleEdicion(original, edicion, entidad);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
@@ -197,12 +194,14 @@ module.exports = {
 		// Fin
 		return;
 	},
-	// Campo 'prods_aprob' en RCLVs
+	// Actualiza los campos de producto en el RCLV
 	prods_aprob: async function (producto) {
 		// Variables
-		let status_registro_id = aprobado_id;
-		let entidadesRCLV = variables.entidadesRCLV;
-		let entidadesProds = variables.entidadesProd;
+		const entidadesRCLV = variables.entidadesRCLV;
+		const entidadesProds = variables.entidadesProd;
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		const objeto = {[entidad_id]: RCLV_id};
 
 		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
 		for (entidadRCLV of entidadesRCLV) {
@@ -211,14 +210,27 @@ module.exports = {
 			let RCLV_id = producto[entidad_id];
 			// Acciones si el producto tiene ese 'campo_id'
 			if (RCLV_id) {
-				// Arma el objeto
-				let objeto = {[entidad_id]: RCLV_id, status_registro_id};
+				// Averigua si existe algún producto, para ese RCLV
 				let prods_aprob;
-				// Cada RCLV puede estar en hasta 3 tipos de producto - Rutina por tipo de producto
+				// Averigua si existe algún producto aprobado, para ese RCLV, en alguno de los 3 tipos de producto
 				for (entidadProd of entidadesProds) {
-					// Averigua si existe algún producto aprobado, para ese RCLV
-					prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, objeto));
+					prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
+						...objeto,
+						...statusAprobado,
+					}));
 					if (prods_aprob) break;
+				}
+				// Averigua si existe algún producto 'potencial', para ese RCLV, en alguno de los 3 tipos de producto
+				if (!prods_aprob) {
+					for (entidadProd of entidadesProds) {
+						// Averigua si existe algún producto 'potencial', para ese RCLV
+						prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
+							...objeto,
+							...statusPotencia,
+						}));
+						if (prods_aprob) break;
+					}
+					prods_aprob = prods_aprob ? false : null;
 				}
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});

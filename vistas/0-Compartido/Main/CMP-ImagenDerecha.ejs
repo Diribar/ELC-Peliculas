@@ -1,23 +1,25 @@
 <% if (mostrar) { %>
-	<!-- Definición de Variables -->
-	<% let rutaImagen, tituloImagen %>
-	<!-- Opciones según el caso -->
-	<!-- 1. Imagen Institucional -->
-	<% if (locals.tema == "institucional" || locals.institucional) {rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas"} %>
-	<!-- 2. Imagen Personalizada -->
-	<% if (!rutaImagen && locals.imgDerPers) {rutaImagen = imgDerPers; tituloImagen=locals.tituloImgDerPers} %>
-	<!-- 3. Imagen Diaria -->
-	<% if (!rutaImagen) { %>
-		<!-- Averigua qué datos usar -->
-		<% let horario = new Date().getHours() %>
-		<% let difHoraria = new Date().getTimezoneOffset() / 60 + 12 %>
-		<% let hoy = horario + difHoraria <= 24 %>
-		<% let imagen = hoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
-		<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
-		<% tituloImagen = hoy ? tituloImgDerHoy : tituloImgDerAyer %>
-	<% } %>
 	<!-- Mostrar la Imagen -->
 	<section id="imgDerecha">
+		<% let rutaImagen, tituloImagen %>
+		<% if (locals.tema == "institucional" || locals.institucional) { %>
+			<!-- 1. Imagen Institucional -->
+			<% rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas" %>
+		<% } %>
+		<% if (!rutaImagen && locals.imgDerPers) { %>
+			<!-- 2. Imagen Personalizada -->
+			<% rutaImagen = imgDerPers; tituloImagen=locals.tituloImgDerPers %>
+		<% } %>
+		<% if (!rutaImagen) { %>
+			<!-- 3. Imagen Diaria -->
+			<!-- Averigua qué datos usar -->
+			<% let horario = new Date().getHours() %>
+			<% let difHoraria = new Date().getTimezoneOffset() / 60 + 12 %>
+			<% let hoy = horario + difHoraria <= 24 %>
+			<% let imagen = hoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
+			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
+			<% tituloImagen = hoy ? tituloImgDerHoy : tituloImgDerAyer %>
+		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>
 <% } %>

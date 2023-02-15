@@ -84,6 +84,8 @@ module.exports = {
 			n.filter((m) => m.prod)
 		);
 		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+		// Botón salir
+		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
 		//return res.send(prodOrig)
 		return res.render("CMP-0Estructura", {
@@ -99,8 +101,9 @@ module.exports = {
 			motivosRechazo,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
-			mostrarCartel: true,
+			cartelEscondido: true,
 			url,
+			rutaSalir,
 		});
 	},
 	prodAltaGuardar: async (req, res) => {
@@ -116,9 +119,7 @@ module.exports = {
 		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const creadoAprobID = status_registro.find((n) => n.creado_aprob).id;
-		const inactivoID = status_registro.find((n) => n.inactivo).id;
-		const status_registro_id = rechazado ? inactivoID : creadoAprobID;
+		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
 		let datosEntidad = {status_registro_id, alta_analizada_por_id: userID, alta_analizada_en: ahora};
 
 		// Actualiza el status en el registro original y en la variable
@@ -179,7 +180,7 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.obtieneTodosLosCamposInclude("productos"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
@@ -267,7 +268,7 @@ module.exports = {
 			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 
@@ -329,7 +330,7 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.obtieneTodosLosCamposInclude("rclvs"), "status_registro"];
+		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
@@ -364,7 +365,7 @@ module.exports = {
 			id: prodID,
 			bloqueDer,
 			title: rclvOrig.nombre_castellano,
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 
@@ -425,12 +426,11 @@ module.exports = {
 			avatar,
 			motivos,
 			calidades: variables.calidades,
-			mostrar: null,
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
 			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 };

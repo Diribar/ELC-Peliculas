@@ -34,8 +34,9 @@ module.exports = async (req, res, next) => {
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinCaptura);
 	const vistaInactivar = variables.vistaInactivar(req);
-	const vistaAnteriorInactivar = [vistaAnterior, vistaInactivar];
+	const vistaEntendido=variables.vistaEntendido(req.session.urlSinCaptura)
 	const vistaTablero = variables.vistaTablero;
+	const vistaAnteriorInactivar = [vistaAnterior, vistaInactivar];
 	const vistaAnteriorTablero = () => {
 		let vista = [vistaAnterior];
 		let usuario = req.session.usuario;
@@ -101,7 +102,7 @@ module.exports = async (req, res, next) => {
 						"Quedó a disposición de los demás " + tipoUsuario + ".",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
-					iconos: vistaAnteriorInactivar,
+					iconos: [vistaEntendido],
 			  }
 			: "";
 	};

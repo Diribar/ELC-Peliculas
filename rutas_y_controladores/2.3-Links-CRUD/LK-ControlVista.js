@@ -64,7 +64,7 @@ module.exports = {
 			calidades: variables.calidades,
 			motivos,
 			imgDerPers,
-			mostrarCartel: true,
+			cartelEscondido: true,
 		});
 	},
 };
