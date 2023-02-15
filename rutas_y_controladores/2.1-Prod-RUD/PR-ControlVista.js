@@ -78,10 +78,7 @@ module.exports = {
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
-			prodComb.capitulos = await BD_especificas.obtieneCapitulos(
-				prodComb.coleccion_id,
-				prodComb.temporada
-			);
+			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		// Va a la vista
 		// return res.send(prodComb)
 		return res.render("CMP-0Estructura", {
@@ -137,8 +134,7 @@ module.exports = {
 				// Mueve el archivo actual a su ubicación para ser revisado
 				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
 				// Elimina el anterior archivo de imagen
-				if (prodEdic.avatar)
-					comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
+				if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
 			}
 			// Si hay errores, borra el archivo avatar
 			else {
