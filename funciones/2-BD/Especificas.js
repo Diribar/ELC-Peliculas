@@ -15,8 +15,11 @@ module.exports = {
 		// El mismo valor para los campos
 		let objeto = {};
 		for (let campo of campos) objeto[campo] = datos[campo];
-		// Distinto ID
+
+		// Si tiene ID, agrega la condición de que sea distinto
 		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
+
+		// Fin
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
 	// Header
@@ -31,10 +34,7 @@ module.exports = {
 			for (let palabra of palabras) {
 				// Que encuentre la palabra en el campo
 				let condicPalabraABuscarEnCampo = {
-					[Op.or]: [
-						{[campo]: {[Op.like]: "% " + palabra + "%"}},
-						{[campo]: {[Op.like]: palabra + "%"}},
-					],
+					[Op.or]: [{[campo]: {[Op.like]: "% " + palabra + "%"}}, {[campo]: {[Op.like]: palabra + "%"}}],
 				};
 				// Agrega la palabra al conjunto de palabras a buscar
 				condicPalabrasABuscarEnCampo.push(condicPalabraABuscarEnCampo);
@@ -52,10 +52,7 @@ module.exports = {
 			[Op.or]: [
 				{status_registro_id: aprobado_id},
 				{
-					[Op.and]: [
-						{status_registro_id: statusGrCreado_id},
-						{[Op.or]: [{creado_por_id: userID}, {creado_por_id: 2}]},
-					],
+					[Op.and]: [{status_registro_id: statusGrCreado_id}, {[Op.or]: [{creado_por_id: userID}, {creado_por_id: 2}]}],
 				},
 			],
 		};
@@ -152,9 +149,7 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtiene todas las ediciones ajenas
 		let condicion = {editado_por_id: {[Op.ne]: userID}};
-		let ediciones = db.links_edicion
-			.findAll({where: condicion, include})
-			.then((n) => n.map((m) => m.toJSON()));
+		let ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
 		// Consolidarlos
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;
