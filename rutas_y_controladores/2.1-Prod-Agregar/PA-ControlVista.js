@@ -7,6 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./PA-FN-Procesos");
 const valida = require("./PA-FN-Validar");
+const path = require("path");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
@@ -250,6 +251,9 @@ module.exports = {
 		// Si no existe algún RCLV, vuelve a la instancia anterior
 		let existe = procesos.verificaQueExistanLosRCLV(confirma);
 		if (!existe) return res.redirect("datos-adicionales");
+		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
+		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
 		// Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
@@ -272,8 +276,6 @@ module.exports = {
 		// Actualiza prods_aprob en RCLVs
 		let producto = {...confirma, id: registro.id};
 		procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
-		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'  (no hace falta esperar a que concluya)
-		procesos.descargaMueveElAvatar(confirma);
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});

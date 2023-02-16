@@ -399,7 +399,7 @@ module.exports = {
 			{titulo: "Producción", nombre: "produccion", input: true, productos: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
 			{titulo: "Avatar", nombre: "avatar", productos: true},
-			// {titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod/RCLV'
+			{titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod'
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
