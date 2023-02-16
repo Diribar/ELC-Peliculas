@@ -10,6 +10,11 @@
 		<% if (!inputOK) { %>
 			<select tabindex="-1">
 				<option value="borrar">Borrar todo/s</option>
+				<optgroup label="Más Frecuentes">
+					<% for (let pais of paisesTop5) { %>
+						<option value="<%= pais.id %>"><%= pais.nombre %></option>
+					<% } %>	
+				</optgroup>
 				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 				<% for (let continente of continentes) { %>
 					<optgroup label="<%= continente %>">
