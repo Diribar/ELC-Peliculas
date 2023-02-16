@@ -54,7 +54,7 @@ module.exports = {
 			edicion = null;
 			// Si además había una edición guardada en la BD, la elimina
 			if (edicion_id) await BD_genericas.eliminaPorId(nombreEdicion, edicion_id);
-		} else edicion.id = edicion_id;
+		} else if (edicion_id) edicion.id = edicion_id;
 
 		// Fin
 		return [edicion, camposNull];

@@ -404,6 +404,7 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
+			{titulo: "Es a color", nombre: "color", productos: true},
 			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion", productos: true},
 			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico", productos: true},
 			{titulo: "Personaje histórico", nombre: "personaje_id", relac_include: "personaje", rclv: true, productos: true},
