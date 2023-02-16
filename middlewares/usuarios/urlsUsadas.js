@@ -9,11 +9,7 @@ module.exports = (req, res, next) => {
 	});
 	// Variables
 	let anterior =
-		req.session && req.session.urlActual
-			? req.session.urlActual
-			: req.cookies.urlActual
-			? req.cookies.urlActual
-			: "/";
+		req.session && req.session.urlActual ? req.session.urlActual : req.cookies.urlActual ? req.cookies.urlActual : "/";
 	let actual = req.originalUrl;
 
 	// Condición
@@ -76,6 +72,7 @@ module.exports = (req, res, next) => {
 		// Actualiza la url 'actual'
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
+		res.locals.urlActual = actual;
 	}
 
 	next();

@@ -364,12 +364,11 @@ module.exports = {
 
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)
-	infoFAparaDD: async function (dato) {
+	infoFAparaDD: async function (datos) {
 		// Obtiene los campos del formulario
-		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
+		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		let FA_id = this.obtieneFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			let paisNombreToId = async (pais_nombre) => {
@@ -391,17 +390,17 @@ module.exports = {
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
-		let datos = {
+		let respuesta = {
 			prodNombre,
 			entidad,
 			fuente: "FA",
 			FA_id,
-			en_coleccion,
-			avatar,
+			coleccion_id,
+			avatar_url,
 			...contenido,
 		};
 		// Fin
-		return comp.convierteLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(respuesta);
 	},
 	// Función validar (FA)
 	// This (infoFAparaDD)

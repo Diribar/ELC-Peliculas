@@ -192,11 +192,11 @@ module.exports = {
 			? "No parece ser una dirección de Film Affinity"
 			: "";
 		// Avatar
-		errores.avatar = !datos.avatar
+		errores.avatar_url = !datos.avatar_url
 			? "Necesitamos que agregues una imagen"
-			: !datos.avatar.includes("pics.filmaffinity.com/")
+			: !datos.avatar_url.includes("pics.filmaffinity.com/")
 			? "No parece ser una imagen de FilmAffinity"
-			: !datos.avatar.includes("large.jpg")
+			: !datos.avatar_url.includes("large.jpg")
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
