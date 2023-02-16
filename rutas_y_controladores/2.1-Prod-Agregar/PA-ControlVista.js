@@ -218,8 +218,10 @@ module.exports = {
 		// 1. Obtiene el Data Entry de session y cookies
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		// Si no existe algún RCLV, vuelve a la instancia anterior
-		let existe = procesos.verificaQueExistanLosRCLV(confirma);
-		if (!existe) return res.redirect("datos-adicionales");
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
+			let existe = procesos.verificaQueExistanLosRCLV(confirma);
+			if (!existe) return res.redirect("datos-adicionales");
+		}
 		// Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
@@ -229,22 +231,26 @@ module.exports = {
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
 		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
 		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
-		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
-		procsCRUD.guardaActEdicCRUD({
+		// Guarda los datos de 'Edición'
+		await procsCRUD.guardaActEdicCRUD({
 			original: {...registro},
 			edicion: {...confirma}, // es clave escribirlo así, para que la función no lo cambie
 			entidad: original.entidad,
 			userID: req.session.usuario.id,
 		});
+		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
+			let producto = {...confirma, id: registro.id};
+			procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
+		}
+
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
 				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
-		// Actualiza prods_aprob en RCLVs
-		let producto = {...confirma, id: registro.id};
-		procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
+
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
@@ -254,7 +260,7 @@ module.exports = {
 		let terminaste = {entidad: confirma.entidad, id: registro.id};
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
-		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar la url de 'guardar'
+		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
 		return res.redirect("terminaste");
 	},
 	terminaste: async (req, res) => {
