@@ -42,6 +42,7 @@ module.exports = {
 		const codigo = "desambiguar";
 		// 2. Obtiene el Data Entry de session y cookies
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+		if (!palabrasClave) return res.redirect("palabras-clave"); // Es distinto a los demás
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -74,6 +75,9 @@ module.exports = {
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
 			: localhost + "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
+		// Datos para la vista
+		let origen =
+			req.session.FA || req.cookies.FA ? "ingreso-fa" : req.session.IM || req.cookies.IM ? "ingreso-manual" : "desambiguar";
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
