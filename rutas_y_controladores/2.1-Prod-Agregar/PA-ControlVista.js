@@ -213,7 +213,7 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "confirma";
 		let maximo;
-		// 2. Si se perdió la info anterior, volver a esa instancia
+		// 2. Si se perdió la info anterior, vuelve a esa instancia
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("datos-adicionales");
 		// 3. Datos de la producción
@@ -251,15 +251,15 @@ module.exports = {
 		// Si no existe algún RCLV, vuelve a la instancia anterior
 		let existe = procesos.verificaQueExistanLosRCLV(confirma);
 		if (!existe) return res.redirect("datos-adicionales");
-		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
-		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
 		// Guarda los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
+		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
+		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
 		// Guarda los datos de 'Edición' (no hace falta esperar a que concluya)
 		procsCRUD.guardaActEdicCRUD({
 			original: {...registro},
