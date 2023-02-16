@@ -11,8 +11,7 @@ module.exports = (req, res, next) => {
 	if (entidades.includes(entidad) && id < 20)
 		informacion = {
 			mensajes: [
-				"Este registro es de alta sensibilidad.",
-				"Su acceso para editarlo está bloqueado por los administradores."
+				"El acceso para este registro está bloqueado por los administradores."
 			],
 			iconos: [
 				{
