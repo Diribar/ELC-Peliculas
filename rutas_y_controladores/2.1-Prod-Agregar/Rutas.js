@@ -15,7 +15,7 @@ const usAutorizFA = require("../../middlewares/usuarios/filtro-usAutorizFA");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
 // Consolidados
-const dataEntry = [usAltaTerm, penalizaciones, usAptoInput];
+const dataEntry = [usAltaTerm, penalizaciones, usAptoInput, prodAgregar];
 const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, usAutorizFA];
 // Otros
