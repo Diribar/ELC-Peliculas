@@ -200,8 +200,8 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : null;
-		errores.contenido = !cantDatosObtenidos
+		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
+		errores.contenido = !datos.contenido
 			? variables.inputVacio
 			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
