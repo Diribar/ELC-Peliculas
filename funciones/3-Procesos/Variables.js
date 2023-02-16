@@ -288,6 +288,7 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
+			{titulo: "Es a color", nombre: "color", siNo: true},
 			{
 				titulo: "Tipo de Actuación",
 				nombre: "tipo_actuacion_id",

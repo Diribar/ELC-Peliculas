@@ -227,7 +227,28 @@ module.exports = {
 			: null; // No tiene
 
 		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, id, {links_general, links_gratuitos});
+		BD_genericas.actualizaPorId(producto, prodID, {links_general, links_gratuitos});
+
+		// Fin
+		return;
+	},
+	prodCastellano: async (link) => {
+		// Variables
+		const producto_id = comp.obtieneProducto_id(link);
+		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const prodID = link[producto_id];
+		const tipo_id = link_pelicula_id;
+		let objeto = {[producto_id]: prodID, tipo_id};
+
+		// Averigua si existe algún link en castellano, para ese producto
+		let castellano = !!(await BD_genericas.obtienePorCampos("links", {...objeto, castellano: true}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", objeto))
+			? false // No tiene
+			: null; // No sabemos
+
+		// Actualiza el registro
+		BD_genericas.actualizaPorId(producto, prodID, {castellano});
 
 		// Fin
 		return;
