@@ -510,7 +510,7 @@ window.addEventListener("load", async () => {
 			await impactos.sexo();
 			await validacs.sexo();
 			// Si corresponde, valida RCLIC
-			if (v.OK.sexo && opcionElegida(v.categorias_id).value == "CFC") validacs.RCLIC.personajes();
+			if (v.OK.sexo_id && opcionElegida(v.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 		}
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
