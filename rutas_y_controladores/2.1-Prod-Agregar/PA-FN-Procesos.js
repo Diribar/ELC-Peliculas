@@ -335,16 +335,16 @@ module.exports = {
 		// Fin
 		return;
 	},
-	descargaMueveElAvatar: async (confirma) => {
+	descargaMueveElAvatar: async (datos) => {
+		// Obtiene el nombre
+		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
+
 		// Descarga la imagen del url
-		let descarga;
-		if (!confirma.avatar) {
-			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + confirma.avatar;
-			await comp.descarga(confirma.avatar_url, rutaYnombre);
-		}
+		await comp.descarga(datos.avatar_url, rutaYnombre);
+
 		// Mueve el avatar de 'provisorio' a 'revisar'
-		await comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+		await comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+
 		// Fin
 		return;
 	},
