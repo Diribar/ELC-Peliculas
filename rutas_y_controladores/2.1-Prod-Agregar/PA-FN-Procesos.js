@@ -390,7 +390,7 @@ module.exports = {
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
-		let datos = {
+		let respuesta = {
 			prodNombre,
 			entidad,
 			fuente: "FA",
@@ -400,7 +400,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return comp.convierteLetrasAlCastellano(datos);
+		return comp.convierteLetrasAlCastellano(respuesta);
 	},
 	// Función validar (FA)
 	// This (infoFAparaDD)
