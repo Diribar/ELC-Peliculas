@@ -424,6 +424,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relac_include: "epoca"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
 			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},
