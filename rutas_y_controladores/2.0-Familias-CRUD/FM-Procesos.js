@@ -151,7 +151,7 @@ module.exports = {
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	rclvConProd: async function (producto) {
+	rclvConProd_status: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
@@ -173,6 +173,7 @@ module.exports = {
 					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
 					if (prods_aprob) break;
 				}
+
 				if (prods_aprob) prods_aprob = true;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
@@ -181,14 +182,11 @@ module.exports = {
 						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 						if (prods_aprob) break;
 					}
+
 				if (prods_aprob) prods_aprob = false;
 				// 3. Averigua si existe alguna edición
-				else
-					for (let entidadProd of entidadesProds) {
-						// Averigua si existe algún producto, con ese RCLV
-						prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
-						if (prods_aprob) break;
-					}
+				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+
 				if (prods_aprob) prods_aprob = false;
 				// 4. No encontró ningún caso
 				else prods_aprob = null;
