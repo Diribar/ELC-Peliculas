@@ -304,10 +304,10 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	agregaCapitulosDeCollection: async function (datosCol) {
-		// Replicar para todos los capítulos de la colección
-		datosCol.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
-			await this.agregaCapituloDeCollection(datosCol, capituloID_TMDB, indice);
+	agregaCapitulosDeCollection: async function (datos) {
+		// Replica para todos los capítulos de la colección
+		datos.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
+			await this.agregaCapituloDeCollection(datos, capituloID_TMDB, indice);
 		});
 		// Fin
 		return;
