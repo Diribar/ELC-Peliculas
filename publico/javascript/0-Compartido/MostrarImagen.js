@@ -1,14 +1,16 @@
 "use strict";
 window.addEventListener("load", () => {
+	// Variables
+	let inputImagen = document.querySelector("form #inputImagen");
 
 	// Acciones si cambió alguna imagen
-	let inputImagen = document.querySelector("form #inputImagen");
-	inputImagen.addEventListener("change", (e) => {
-		let texto = inputImagen.value;
-		let ext = texto.slice(texto.length - 4);
-		[".jpg", "jpeg", ".png"].includes(ext) ? mostrarImagen(e) : "";
-	});
-})
+	if (inputImagen)
+		inputImagen.addEventListener("change", (e) => {
+			let texto = inputImagen.value;
+			let ext = texto.slice(texto.length - 4);
+			[".jpg", "jpeg", ".png"].includes(ext) ? mostrarImagen(e) : "";
+		});
+});
 
 let mostrarImagen = (e) => {
 	// Creamos el objeto de la clase FileReader
@@ -23,4 +25,4 @@ let mostrarImagen = (e) => {
 		preview.innerHTML = "";
 		preview.append(image);
 	};
-}
+};

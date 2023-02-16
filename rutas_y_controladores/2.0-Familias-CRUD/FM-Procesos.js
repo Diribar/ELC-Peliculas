@@ -40,11 +40,7 @@ module.exports = {
 				// La edición no puede ser 'undefined', porque existe el método
 				original[campo] !== undefined && edicion[campo] == original[campo];
 			// 2. El objeto vinculado tiene el mismo ID
-			let condicion2 =
-				edicion[campo] &&
-				edicion[campo].id &&
-				original[campo] &&
-				edicion[campo].id == original[campo].id;
+			let condicion2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
 			if (condicion1 || condicion2) delete edicion[campo];
@@ -106,8 +102,7 @@ module.exports = {
 		// Acciones si quedan campos
 		if (edicion) {
 			// Si existe edicion.id --> se actualiza el registro
-			if (edicion.id)
-				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, {...camposNull, ...edicion});
+			if (edicion.id) await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, {...camposNull, ...edicion});
 			// Si no existe edicion.id --> se agrega el registro
 			else
 				await (async () => {
@@ -141,64 +136,63 @@ module.exports = {
 				  (!prodOrig || !prodOrig.avatar
 						? "0-Base/Avatar/Prod-Sin-Avatar.jpg"
 						: // Si el avatar está 'aprobado'
-						comp.averiguaSiExisteUnArchivo(
-								"./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar
-						  )
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar)
 						? "2-Avatar-Prods-Final/" + prodOrig.avatar
 						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo(
-								"./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar
-						  )
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
 						? "2-Avatar-Prods-Revisar/" + prodOrig.avatar
 						: "");
 
 		// avatarEdic
 		let avatarEdic =
-			prodEdic && prodEdic.avatar
-				? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar
-				: avatarOrig;
+			prodEdic && prodEdic.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	prods_aprob: async function (producto) {
+	rclvConProd: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		const objeto = {[entidad_id]: RCLV_id};
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 
 		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
-		for (entidadRCLV of entidadesRCLV) {
+		for (let entidadRCLV of entidadesRCLV) {
 			// Variables
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadRCLV);
 			let RCLV_id = producto[entidad_id];
+			let objeto = {[entidad_id]: RCLV_id};
 			// Acciones si el producto tiene ese 'campo_id'
-			if (RCLV_id) {
-				// Averigua si existe algún producto, para ese RCLV
+			if (RCLV_id > 10) {
+				// 1. Averigua si existe algún producto, para ese RCLV
 				let prods_aprob;
-				// Averigua si existe algún producto aprobado, para ese RCLV, en alguno de los 3 tipos de producto
-				for (entidadProd of entidadesProds) {
-					prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
-						...objeto,
-						...statusAprobado,
-					}));
+				// Averigua si existe algún producto, con ese RCLV
+				for (let entidadProd of entidadesProds) {
+					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
 					if (prods_aprob) break;
 				}
-				// Averigua si existe algún producto 'potencial', para ese RCLV, en alguno de los 3 tipos de producto
-				if (!prods_aprob) {
-					for (entidadProd of entidadesProds) {
-						// Averigua si existe algún producto 'potencial', para ese RCLV
-						prods_aprob = !!(await BD_genericas.obtienePorCampos(entidadProd, {
-							...objeto,
-							...statusPotencia,
-						}));
+				if (prods_aprob) prods_aprob = true;
+				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
+				else
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 						if (prods_aprob) break;
 					}
-					prods_aprob = prods_aprob ? false : null;
-				}
+				if (prods_aprob) prods_aprob = false;
+				// 3. Averigua si existe alguna edición
+				else
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+						if (prods_aprob) break;
+					}
+				if (prods_aprob) prods_aprob = false;
+				// 4. No encontró ningún caso
+				else prods_aprob = null;
+
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
 			}

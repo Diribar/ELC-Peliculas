@@ -355,7 +355,7 @@ module.exports = {
 					: (hayMas ? "muchas" : coincidencias) +
 					  " coincidencias" +
 					  (hayMas ? ". Te mostramos " + coincidencias : "") +
-					  (cantN == coincidencias ? ", ninguna" : cantN ? ", " + cantN + " no" : ", todas ya")) +
+					  (cantN == coincidencias ? ", ninguna" : cantN ? ", de las cuales " + cantN + " no" : ", todas ya")) +
 				" está" +
 				(cantN > 1 && cantN < coincidencias ? "n" : "") +
 				" en nuestra BD.";

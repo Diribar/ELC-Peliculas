@@ -32,31 +32,22 @@ window.addEventListener("load", async () => {
 			// Variables
 			let {cantProds, cantProdsNuevos, hayMas} = resultados;
 			// Determinar oracion y formato
-			let formatoVigente, oracion;
+			let formatoVigente = "resultadoInvalido";
+			let oracion;
 			// Resultado exitoso
-			if (cantProds > 0 && !hayMas) {
-				oracion =
-					"Encontramos " +
-					(cantProds == 1
-						? "1 sola coincidencia, que " + (cantProdsNuevos ? "no" : "ya")
-						: cantProds +
-						  " coincidencias, " +
-						  (cantProdsNuevos == cantProds
-								? "y ninguna"
-								: cantProdsNuevos
-								? cantProdsNuevos + " no"
-								: "y todas")) +
-					" está" +
-					(cantProdsNuevos > 1 && cantProdsNuevos != cantProds ? "n" : "") +
-					" en nuestra BD";
-				formatoVigente = "resultadoExitoso";
+			if (cantProds && !hayMas) {
+				let plural = cantProdsNuevos > 1 ? "s" : "";
+				oracion = cantProdsNuevos
+					? "Encontramos " + cantProdsNuevos + " coincidencia" + plural + " nueva" + plural
+					: "No encontramos ninguna coincidencia nueva";
+				if (cantProds > cantProdsNuevos) oracion += ", y " + (cantProds - cantProdsNuevos) + " ya en BD";
+				if (cantProdsNuevos) formatoVigente = "resultadoExitoso";
 			} else {
 				// Resultados inválidos
-				formatoVigente = "resultadoInvalido";
 				oracion = hayMas
 					? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
 					: cantProds == 0
-					? "No encontramos coincidencias con estas palabras"
+					? "No encontramos ninguna coincidencia"
 					: oracion;
 			}
 			v.resultado.innerHTML = oracion;
@@ -122,15 +113,11 @@ window.addEventListener("load", async () => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
-				errores[campo]
-					? v.iconosError[indice].classList.add("error")
-					: v.iconosError[indice].classList.remove("error");
+				errores[campo] ? v.iconosError[indice].classList.add("error") : v.iconosError[indice].classList.remove("error");
 				errores[campo] && mostrarIconoError
 					? v.iconosError[indice].classList.remove("ocultar")
 					: v.iconosError[indice].classList.add("ocultar");
-				errores[campo]
-					? v.iconosOK[indice].classList.add("ocultar")
-					: v.iconosOK[indice].classList.remove("ocultar");
+				errores[campo] ? v.iconosOK[indice].classList.add("ocultar") : v.iconosOK[indice].classList.remove("ocultar");
 			}
 		});
 		// Fin
@@ -227,6 +214,7 @@ window.addEventListener("load", async () => {
 	v.form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
+		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.trim();
 		let valor = encodeURIComponent(e.target.value);
 		let datosUrl = "";
 		// Particularidades por paso
@@ -243,10 +231,7 @@ window.addEventListener("load", async () => {
 		}
 		if (paso.DD) {
 			// Primera letra en mayúscula (sólo para Datos Duros)
-			if (
-				(e.target.localName == "input" && e.target.type == "text") ||
-				e.target.localName == "textarea"
-			) {
+			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
 				valor = e.target.value;
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 				valor = encodeURIComponent(e.target.value);

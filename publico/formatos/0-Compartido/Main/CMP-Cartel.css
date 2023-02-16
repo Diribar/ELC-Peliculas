@@ -24,6 +24,7 @@
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 #cartel #flechasCartel * {border-radius: 50%;}
+#cartel #flechasCartel *:focus {outline: none;}
 #cartel #flechasCartel a i {font-size: 2rem; cursor: pointer;}
 /* Íconos de retroceder y avanzar */
 #cartel #flechasCartel :where(.fa-circle-left) {color: var(--azul-oscuro);}
