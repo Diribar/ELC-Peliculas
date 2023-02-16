@@ -18,14 +18,9 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let rclvID = req.query.id;
 		let userID = req.session.usuario.id;
-		let dataEntry = req.session[entidad]
-			? req.session[entidad]
-			: req.cookies[entidad]
-			? req.cookies[entidad]
-			: {};
+		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
 		let nombre = comp.obtieneEntidadNombre(entidad);
-		let titulo =
-			(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
+		let titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
 		let tituloCuerpo =
 			(codigo == "agregar"
 				? "Agregá un " + nombre + " a"
@@ -47,8 +42,7 @@ module.exports = {
 			// Pisa el data entry de session
 			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
 			// 3. Revisar error de revisión
-			if (tema == "revisionEnts" && !dataEntry.status_registro.creado)
-				res.redirect("/revision/tablero-de-control");
+			if (tema == "revisionEnts" && !dataEntry.status_registro.creado) res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			dataEntry = comp.diaDelAno(dataEntry);
 		}
@@ -120,13 +114,7 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		// Obtiene RCLV con productos
-		let includes = [
-			...variables.entidadesProd,
-			"prods_edicion",
-			"status_registro",
-			"creado_por",
-			"alta_analizada_por",
-		];
+		let includes = [...variables.entidadesProd, "prods_edicion", "status_registro", "creado_por", "alta_analizada_por"];
 		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 		// Productos

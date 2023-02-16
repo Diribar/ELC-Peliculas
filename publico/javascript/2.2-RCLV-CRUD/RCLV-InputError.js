@@ -517,12 +517,11 @@ window.addEventListener("load", async () => {
 			// Impacto y Validaciones
 			await impactos.epoca[v.entidad]();
 			await validacs.epoca();
+			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
+			if (v.personajes && e.target.value == "pst") v.ano.focus();
+			if (v.hechos && opcionElegida(v.epocas).name == "pst") v.ano.focus();
 			// Si corresponde, valida RCLIC
 			if (v.OK.epoca) {
-				// Si se eligió el checkbox "pst", pone el cursor en 'Año'
-				if (v.personajes && e.target.value == "pst") v.ano.focus();
-				if (v.hechos && opcionElegida(v.epocas).name == "pst") v.ano.focus();
-				// Si se eligió "CFC", valida RCLIC
 				if (v.personajes && opcionElegida(v.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 				if (v.hechos && opcionElegida(v.solo_cfc).value == 1) await validacs.RCLIC.hechos();
 			}
