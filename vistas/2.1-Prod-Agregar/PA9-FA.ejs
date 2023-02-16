@@ -11,10 +11,12 @@
 		<div id="entidad" class="ocultar"><%= dataEntry.entidad %></div>
 		<!-- Datos a completar -->
 		<section id="datos">
+			<% let campo; let display = true %>
 			<h3>Ingresá la dirección de la página</h3>
 			<div class="inputError">
+				<% campo = "direccion" %>
 				<!-- Data Entry -->
-				<input name="direccion" type="text" class="input"
+				<input name="<%= campo %>" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.direccion : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
@@ -35,11 +37,13 @@
 						</ul>
 					</i>
 				</div>
-				<%- include("CMP-Errores", {display: true}) %>
+				<%- include("CMP-Errores", {campo, display}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
 			<div class="inputError">
-				<input name="avatar" type="text" class="input"
+				<% campo = "avatar_url" %>
+				<!-- Data Entry -->
+				<input name="<%= campo %>" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.avatar : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
@@ -55,11 +59,13 @@
 						</ul>
 					</i>
 				</div>
-				<%- include("CMP-Errores", {display: true}) %>
+				<%- include("CMP-Errores", {campo, display}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="inputError">
-				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
+				<% campo = "contenido" %>
+				<!-- Data Entry -->
+				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -75,7 +81,7 @@
 						</ul>
 					</i>
 				</div>
-				<%- include("CMP-Errores", {display: true}) %>
+				<%- include("CMP-Errores", {campo, display}) %>
 			</div>
 			<div id="resultado"><br></div>
 		</section>

@@ -10,6 +10,7 @@ const vista = require("./PA-ControlVista");
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
 const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
+const prodAgregar = require("../../middlewares/varios/filtro-prodAgregar");
 const usAutorizFA = require("../../middlewares/usuarios/filtro-usAutorizFA");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
@@ -61,7 +62,6 @@ router.get("/terminaste", vista.terminaste);
 router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM_Form);
 router.post("/ingreso-manual", ...dataEntry, vista.IM_Guardar);
 // Ingreso FA
-router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Form);
 router.get("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Form);
 router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Guardar);
 
