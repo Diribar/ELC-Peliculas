@@ -242,7 +242,7 @@ module.exports = {
 			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
 			? false // Tiene en potencia
 			: null; // No tiene
-		
+
 		// Averigua si existe algún link gratuito, para ese producto
 		objeto = {...objeto, gratuito: true};
 		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
@@ -253,14 +253,7 @@ module.exports = {
 
 		// Actualiza el registro
 		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
-
-		// Si es un capítulo, actualiza también la colección
-		if (producto_ent == "capitulos") {
-			let capitulo = await BD_genericas.obtienePorId("capitulos", prodID);
-			let colID = capitulo.coleccion_id;
-			BD_genericas.actualizaPorId("colecciones", colID, {links_general, links_gratuitos});
-			console.log(267, {links_general, links_gratuitos});
-		}
+		console.log(256, producto_ent, prodID, {links_general, links_gratuitos});
 
 		// Fin
 		return;
@@ -268,20 +261,22 @@ module.exports = {
 	prodConLinkCast: async (link) => {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
-		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
 		const prodID = link[producto_id];
 		const tipo_id = link_pelicula_id;
-		let objeto = {[producto_id]: prodID, tipo_id};
+		let objeto = {[producto_id]: prodID, tipo_id, castellano: true};
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 
 		// Averigua si existe algún link en castellano, para ese producto
-		let castellano = !!(await BD_genericas.obtienePorCampos("links", {...objeto, castellano: true}))
+		let castellano = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
 			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", objeto))
+			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
 			? false // No tiene
 			: null; // No sabemos
 
 		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, prodID, {castellano});
+		BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
 
 		// Fin
 		return;

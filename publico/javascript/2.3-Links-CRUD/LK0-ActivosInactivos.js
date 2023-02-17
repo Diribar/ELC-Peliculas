@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let botonActivo = document.querySelector("#datos #tags #activo");
-	let botonInactivo = document.querySelector("#datos #tags #inactivo");
+	let botonActivo = document.querySelector("#datos #filtros #activo");
+	let botonInactivo = document.querySelector("#datos #filtros #inactivo");
 	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
 	let filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
 	let pasivos = new URL(window.location.href).searchParams.get("pasivos");
