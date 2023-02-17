@@ -154,7 +154,7 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, id, datos) {
-		// Averigua si el registro existe en la BD		
+		// Averigua si el registro existe en la BD
 		let registro = await BD_genericas.obtienePorId(entidad, id);
 
 		// Actualiza el registro con los datos
@@ -165,13 +165,13 @@ module.exports = {
 			} else registro = datos;
 		}
 
-		// En las siguientes rutinas, no hace falta el 'await'
+		// Usamos el await sólo cuando hay 1 función
 		// Rutina por producto
 		if (variables.entidadesProd.includes(entidad)) this.rclvConProd(registro);
 
 		// Rutinas por links
-		if (variables.entidadesRCLV.includes(entidad)) {
-			this.prodConLink(registro);
+		if (entidad == "links") {
+			await this.prodConLink(registro);
 			this.prodConLinkCast(registro);
 		}
 	},
@@ -228,7 +228,7 @@ module.exports = {
 	prodConLink: async (link) => {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
-		const producto_ent = comp.obtieneProdDesdeProducto_id(producto_id);
+		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
 		const prodID = link[producto_id];
 		const tipo_id = link_pelicula_id;
 		const statusAprobado = {status_registro_id: aprobado_id};
@@ -242,7 +242,7 @@ module.exports = {
 			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
 			? false // Tiene en potencia
 			: null; // No tiene
-
+		
 		// Averigua si existe algún link gratuito, para ese producto
 		objeto = {...objeto, gratuito: true};
 		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
@@ -253,6 +253,14 @@ module.exports = {
 
 		// Actualiza el registro
 		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
+
+		// Si es un capítulo, actualiza también la colección
+		if (producto_ent == "capitulos") {
+			let capitulo = await BD_genericas.obtienePorId("capitulos", prodID);
+			let colID = capitulo.coleccion_id;
+			BD_genericas.actualizaPorId("colecciones", colID, {links_general, links_gratuitos});
+			console.log(267, {links_general, links_gratuitos});
+		}
 
 		// Fin
 		return;
