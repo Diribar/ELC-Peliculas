@@ -157,9 +157,13 @@ module.exports = {
 			// nombre_castellano
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
-			if (datosAPI.parts.length > 0) {
-				datos.ano_estreno = Math.min(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
-				datos.ano_fin = Math.max(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
+			if (datosAPI.parts.length) {
+				let release_date = datosAPI.parts
+					.map((n) => n.release_date)
+					.filter((n) => n)
+					.map((n) => parseInt(n.slice(0, 4)));
+				datos.ano_estreno =release_date.length? Math.min(...release_date):"";
+				datos.ano_fin = release_date.length? Math.max(...release_date):"";
 			}
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
