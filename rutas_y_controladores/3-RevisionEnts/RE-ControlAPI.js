@@ -56,7 +56,7 @@ module.exports = {
 	// Links
 	linkAltaBaja: async (req, res) => {
 		// Variables
-		const {prodEntidad, prodID, url} = req.query;
+		const {url} = req.query;
 		const prodAprob = req.query.aprob == "SI";
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
