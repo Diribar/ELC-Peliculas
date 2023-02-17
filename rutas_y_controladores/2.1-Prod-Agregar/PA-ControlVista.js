@@ -146,7 +146,7 @@ module.exports = {
 		let camposDE = Object.keys(datosAdics);
 		// Grupos RCLV
 		let gruposPers = procesos.gruposPers(camposDA);
-		// let gruposHechos =  procesos.gruposHechos(camposDA);
+		let gruposHechos =  procesos.gruposHechos(camposDA);
 
 		// 4. Imagen derecha
 		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
@@ -159,6 +159,7 @@ module.exports = {
 			camposDA,
 			camposDE,
 			gruposPers,
+			gruposHechos,
 			imgDerPers,
 			tituloImgDerPers: datosAdics.nombre_castellano,
 		});
