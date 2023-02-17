@@ -13,14 +13,15 @@ const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 // Específicos de RCLVs
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
-const edicBloqueada = require("../../middlewares/producto/filtro-edicBloqueada");
+const accesoBloq = require("../../middlewares/producto/filtro-accesoBloq");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
 const DE_agregar = [usAltaTerm, penalizaciones, usAptoInput, entValida];
-const DE_editar = [...DE_agregar, IDvalido, edicBloqueada, permUserReg];
+const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq];
+const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar
@@ -33,7 +34,7 @@ router.get("/agregar", ...DE_agregar, vista.altaEdicForm);
 router.post("/agregar", ...DE_agregar, vista.altaEdicGrabar);
 router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
 router.post("/edicion", ...DE_editar, capturaInactivar, vista.altaEdicGrabar);
-router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.detalle);
+router.get("/detalle", ...DE_detalle, vista.detalle);
 // router.get("/inactivar", ...DE_editar, vista.inactivar);
 // router.get("/recuperar", ...DE_editar, vista.recuperar);
 

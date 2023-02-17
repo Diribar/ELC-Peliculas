@@ -404,6 +404,7 @@ module.exports = {
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
+			{titulo: "Es a color", nombre: "color", productos: true},
 			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion", productos: true},
 			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico", productos: true},
 			{titulo: "Personaje histórico", nombre: "personaje_id", relac_include: "personaje", rclv: true, productos: true},
@@ -423,6 +424,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relac_include: "epoca"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
 			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},

@@ -67,6 +67,7 @@ module.exports = {
 		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
+		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0,5);
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Imagen derecha
@@ -88,6 +89,7 @@ module.exports = {
 			camposInput2: camposInput.filter((n) => !n.antesDePais),
 			paises,
 			BD_paises,
+			paisesTop5,
 			idiomas,
 			origen,
 			errores,
@@ -222,28 +224,13 @@ module.exports = {
 			let existe = procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
 		}
-		// Guarda los datos de 'Original'
+		// ORIGINAL ------------------------------------
+		// Guarda los datos
 		let original = {
 			...req.cookies.datosOriginales,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
-		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
-		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
-		// Guarda los datos de 'Edición'
-		await procsCRUD.guardaActEdicCRUD({
-			original: {...registro},
-			edicion: {...confirma}, // es clave escribirlo así, para que la función no lo cambie
-			entidad: original.entidad,
-			userID: req.session.usuario.id,
-		});
-		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
-			let producto = {...confirma, id: registro.id};
-			procsCRUD.rclvConProd_status(producto); // No es necesario el 'await', el proceso no necesita ese resultado
-		}
-
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
@@ -251,6 +238,25 @@ module.exports = {
 				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
 		}
 
+		// EDICION -------------------------------------
+		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
+		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
+		// Guarda los datos de 'edición'
+		await procsCRUD.guardaActEdicCRUD({
+			original: {...registro},
+			edicion: {...confirma}, // es clave escribirlo así, para que la función no lo cambie
+			entidad: original.entidad,
+			userID: req.session.usuario.id,
+		});
+
+		// MISCELANEAS
+		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
+			let producto = {...confirma, id: registro.id};
+			procsCRUD.rclvConProd_status(producto); // No es necesario el 'await', el proceso no necesita ese resultado
+		}
+		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
 		res.cookie("urlActual", "/", {maxAge: unDia});
@@ -260,7 +266,8 @@ module.exports = {
 		let terminaste = {entidad: confirma.entidad, id: registro.id};
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
-		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
+
+		// REDIRECCIONA --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
 		return res.redirect("terminaste");
 	},
 	terminaste: async (req, res) => {

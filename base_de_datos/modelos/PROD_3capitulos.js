@@ -25,6 +25,7 @@ module.exports = (sequelize, dt) => {
 		cfc: {type: dt.BOOLEAN},
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
+		color: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
 
@@ -39,7 +40,6 @@ module.exports = (sequelize, dt) => {
 
 		links_general: {type: dt.BOOLEAN},
 		links_gratuitos: {type: dt.BOOLEAN},
-		color: {type: dt.BOOLEAN},
 		castellano: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},

@@ -23,6 +23,7 @@ module.exports = (sequelize, dt) => {
 		cfc: {type: dt.BOOLEAN},
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
+		color: {type: dt.BOOLEAN},
 		tipo_actuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
 
