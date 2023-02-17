@@ -144,6 +144,11 @@ module.exports = {
 		// 3. Prepara variables para la vista
 		let camposDA = await variables.camposDA_conValores(userID);
 		let camposDE = Object.keys(datosAdics);
+		// RCLV - Personajes
+		let gruposPers = await procesos.gruposPers(camposDA);
+
+		// RCLV - Hechos;
+
 		// 4. Imagen derecha
 		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
 		// 5. Render del formulario
@@ -154,6 +159,7 @@ module.exports = {
 			dataEntry: datosAdics,
 			camposDA,
 			camposDE,
+			gruposPers,
 			imgDerPers,
 			tituloImgDerPers: datosAdics.nombre_castellano,
 		});

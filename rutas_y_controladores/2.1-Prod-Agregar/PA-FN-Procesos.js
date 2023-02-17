@@ -162,8 +162,8 @@ module.exports = {
 					.map((n) => n.release_date)
 					.filter((n) => n)
 					.map((n) => parseInt(n.slice(0, 4)));
-				datos.ano_estreno =release_date.length? Math.min(...release_date):"";
-				datos.ano_fin = release_date.length? Math.max(...release_date):"";
+				datos.ano_estreno = release_date.length ? Math.min(...release_date) : "";
+				datos.ano_fin = release_date.length ? Math.max(...release_date) : "";
 			}
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
@@ -286,6 +286,63 @@ module.exports = {
 			: datos.tipo_actuacion_id == documental.id
 			? "Documental"
 			: "Desconocido";
+	},
+	gruposPers: async (camposDA) => {
+		// Variables
+		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
+		personajes = personajes.map((n) => {
+			return {
+				id: n.id,
+				nombre: n.nombre,
+				rol_iglesia_id: n.rol_iglesia_id,
+				categoria_id: n.categoria_id,
+				ap_mar_id: n.ap_mar_id,
+			};
+		});
+		let roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "nombre").then((n) => n.filter((m) => m.plural));
+		let listadoGral = [];
+		let casosPuntuales = [];
+		// Grupos personales
+		let gruposPers = [
+			{codigo: "SF", orden: 2},
+			{codigo: "AL", orden: 3},
+			{codigo: "PP", orden: 4},
+			{codigo: "AP", orden: 15},
+		];
+		for (let grupo of gruposPers) {
+			grupo.label = roles_iglesia.find((n) => n.id.startsWith(grupo.codigo)).plural;
+			grupo.valores = [];
+			grupo.clase = "CFC";
+		}
+		// Vslores para los grupos personales
+		for (let personaje of personajes) {
+			// Si tiene 'rol_iglesia_id'
+			if (personaje.rol_iglesia_id) {
+				let OK = false;
+				// Si es alguno de los 'gruposPers'
+				for (let grupo of gruposPers)
+					if (personaje.rol_iglesia_id.startsWith(grupo.codigo)) {
+						grupo.valores.push(personaje);
+						OK = true;
+						break;
+					}
+
+				// Si no es ninguno de los 'gruposPers'
+				if (!OK) listadoGral.push(personaje);
+			}
+			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
+			else casosPuntuales.push(personaje);
+		}
+		// Grupo 'Listado General'
+		gruposPers.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
+		// Grupo 'Casos Puntuales'
+		gruposPers.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
+
+		// Ordena los grupos
+		gruposPers.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return gruposPers;
 	},
 
 	// Confirma Guardar
