@@ -5,14 +5,12 @@
 	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= campo %>" class="input" autofocus>
-			<option value="1">Ninguno</option>
-			<option value="2">Varios</option>
 			<!-- "valor" es cada Personaje, Hecho, Valor -->
-			<% for (let valor of valores.filter(n => n.id > 10)) { %>
+			<% for (let valor of valores) { %>
 				<% let clase="" %> 
 				<% // Datos para PERSONAJES %>
 				<% if (campo == "personaje_id") { %>
-					<% clase += valor.categoria_id  %>
+					<% clase += valor.categoria_id ? valor.categoria_id : 'CFC VPC'  %>
 						<% if (valor.ap_mar_id) {clase += " AMA AM" + valor.ap_mar_id} %>
 				<% } %>
 				<% // Datos para HECHOS %>
