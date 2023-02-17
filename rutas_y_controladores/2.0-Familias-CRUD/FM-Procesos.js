@@ -154,9 +154,16 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, id, datos) {
-		// Actualiza el registro 'original' en la BD
-		await BD_genericas.actualizaPorId(entidad, id, datos);
+		// Averigua si el registro existe en la BD		
 		let registro = await BD_genericas.obtienePorId(entidad, id);
+
+		// Actualiza el registro con los datos
+		if (datos) {
+			if (registro) {
+				await BD_genericas.actualizaPorId(entidad, id, datos);
+				registro = await BD_genericas.obtienePorId(entidad, id);
+			} else registro = datos;
+		}
 
 		// En las siguientes rutinas, no hace falta el 'await'
 		// Rutina por producto

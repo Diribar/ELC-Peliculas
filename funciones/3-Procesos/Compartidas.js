@@ -55,12 +55,6 @@ module.exports = {
 		return includes;
 	},
 
-	// ABM de registros
-	actualizaRegistro: async ({entidad, id, datos}) => {
-		await BD_genericas.actualizaPorId(entidad, id, datos);
-		return "Registro original actualizado";
-	},
-
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"
