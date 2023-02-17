@@ -98,10 +98,7 @@ module.exports = {
 			datos.lead_time_creacion = comp.obtieneLeadTime(link.creado_en, ahora);
 			if (!prodAprob) datos.motivo_id = motivo_id;
 		}
-		await BD_genericas.actualizaPorId("links", link.id, datos);
-
-		// Actualiza los campos de links en el producto
-		procsCRUD.prodConLinks(link);
+		await procsCRUD.cambioDeStatus("links", link.id, datos);
 
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = !prodAprob ? motivo.duracion : 0;
