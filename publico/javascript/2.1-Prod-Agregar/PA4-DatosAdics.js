@@ -35,7 +35,6 @@ window.addEventListener("load", async () => {
 		selectHecho: document.querySelector("select[name='hecho_id']"),
 		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
-		opcionesHecho: document.querySelectorAll("select[name='hecho_id'] option"),
 		// RCLV - Varios
 		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
@@ -48,12 +47,23 @@ window.addEventListener("load", async () => {
 		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
 	(() => {
+		// Campos de error
 		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "publico_id", "RCLV"]];
+
+		// Opciones para personajes
 		v.opcionesPers = (() => {
 			let respuesta = [];
 			for (let grupo of v.optgroupPers) respuesta.push([...grupo.children]);
 			return respuesta;
 		})();
+
+		// Opciones para hechos
+		v.opcionesHechos = (() => {
+			let respuesta = [];
+			for (let grupo of v.optgroupHecho) respuesta.push([...grupo.children]);
+			return respuesta;
+		})();
+
 	})();
 
 	// FUNCIONES *******************************************
@@ -133,6 +143,7 @@ window.addEventListener("load", async () => {
 			if (!categoria) v.sectorRCLV.classList.add("ocultaCfc");
 			// Acciones si hay respuesta
 			else {
+				// Opciones para Personajes
 				v.selectPers.innerHTML = "";
 				v.optgroupPers.forEach((grupo, i) => {
 					// Acciones si el grupo tiene la clase
@@ -140,22 +151,23 @@ window.addEventListener("load", async () => {
 						// Borra todas las opciones y agrega las que van
 						grupo.innerHTML = "";
 						for (let opcion of v.opcionesPers[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
-						// Muestra el grupo
-						v.selectPers.appendChild(grupo);
+						// Si tiene opciones, agrega el grupo
+						if (grupo.childElementCount) v.selectPers.appendChild(grupo);
 					}
 				});
 
-				// Borra todas las opciones
-				// v.optgroupHecho[0].innerHTML = "";
-				// v.optgroupHecho[1].innerHTML = "";
-
-				// // 2. Hechos:
-				// // 1.A. Muestra solamente las opciones menores a id=10
-				// for (let opcion of v.opcionesHecho) if (opcion.value < 10) v.optgroupHecho[0].appendChild(opcion);
-				// // 2. Si la categoría es VPC, muestra solamente las opciones que no sean 'solo_cfc'
-				// for (let opcion of v.opcionesHecho)
-				// 	if ((categoria == "CFC" || (categoria == "VPC" && opcion.classList.contains("VPC"))) && opcion.value > 10)
-				// 		v.optgroupHecho[1].appendChild(opcion);
+				// Opciones para Hechos
+				v.selectHecho.innerHTML = "";
+				v.optgroupHecho.forEach((grupo, i) => {
+					// Acciones si el grupo tiene la clase
+					if (grupo.className.includes(categoria)) {
+						// Borra todas las opciones y agrega las que van
+						grupo.innerHTML = "";
+						for (let opcion of v.opcionesHechos[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						// Si tiene opciones, agrega el grupo
+						if (grupo.childElementCount) v.selectHecho.appendChild(grupo);
+					}
+				});
 
 				// Quita el 'oculta' de RCLVs
 				v.sectorRCLV.classList.remove("ocultaCfc");
