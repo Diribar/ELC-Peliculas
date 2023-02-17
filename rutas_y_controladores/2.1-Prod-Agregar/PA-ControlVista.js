@@ -250,11 +250,9 @@ module.exports = {
 			userID: req.session.usuario.id,
 		});
 
-		// MISCELANEAS
+		// PRODUCTO EN RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		// console.log(255,confirma.personaje_id || confirma.hecho_id || confirma.valor_id);
-		// console.log(256,confirma.personaje_id , confirma.hecho_id , confirma.valor_id);
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) procsCRUD.rclvConProd_status(confirma); // No es necesario el 'await', el proceso no necesita ese resultado
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) procsCRUD.rclvConProd(confirma); // No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso
