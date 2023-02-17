@@ -157,9 +157,13 @@ module.exports = {
 			// nombre_castellano
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
-			if (datosAPI.parts.length > 0) {
-				datos.ano_estreno = Math.min(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
-				datos.ano_fin = Math.max(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
+			if (datosAPI.parts.length) {
+				let release_date = datosAPI.parts
+					.map((n) => n.release_date)
+					.filter((n) => n)
+					.map((n) => parseInt(n.slice(0, 4)));
+				datos.ano_estreno = release_date.length ? Math.min(...release_date) : "";
+				datos.ano_fin = release_date.length ? Math.max(...release_date) : "";
 			}
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
@@ -282,6 +286,126 @@ module.exports = {
 			: datos.tipo_actuacion_id == documental.id
 			? "Documental"
 			: "Desconocido";
+	},
+	gruposPers: (camposDA) => {
+		// Variables
+		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
+		personajes = personajes.map((n) => {
+			return {
+				id: n.id,
+				nombre: n.nombre,
+				rol_iglesia_id: n.rol_iglesia_id,
+				categoria_id: n.categoria_id,
+				ap_mar_id: n.ap_mar_id,
+			};
+		});
+		let roles = roles_iglesia.filter((m) => m.plural);
+		let listadoGral = [];
+		let casosPuntuales = [];
+		// Grupos Estándar
+		let grupos = [
+			{codigo: "SF", orden: 2},
+			{codigo: "AL", orden: 3},
+			{codigo: "PP", orden: 4},
+			{codigo: "AP", orden: 15},
+		];
+		for (let grupo of grupos) {
+			grupo.label = roles.find((n) => n.id.startsWith(grupo.codigo)).plural;
+			grupo.valores = [];
+			grupo.clase = "CFC";
+		}
+		// Valores para los grupos
+		for (let personaje of personajes) {
+			// Clase
+			personaje.clase = personaje.categoria_id ? personaje.categoria_id : 'CFC VPC' 
+			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id
+
+			// Si tiene 'rol_iglesia_id'
+			if (personaje.rol_iglesia_id) {
+				let OK = false;
+				// Si es alguno de los 'grupos'
+				for (let grupo of grupos)
+					if (personaje.rol_iglesia_id.startsWith(grupo.codigo)) {
+						grupo.valores.push(personaje);
+						OK = true;
+						break;
+					}
+
+				// Si no es ninguno de los 'grupos'
+				if (!OK) listadoGral.push(personaje);
+			}
+			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
+			else casosPuntuales.push(personaje);
+		}
+		// Grupo 'Listado General'
+		grupos.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
+		// Grupo 'Casos Puntuales'
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
+
+		// Ordena los grupos
+		grupos.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return grupos;
+	},
+	gruposHechos: (camposDA) => {
+		// Variables
+		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
+		hechos = hechos.map((n) => {
+			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
+			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
+		});
+		let apMar = [];
+		let casosPuntuales = [];
+
+		// Grupos estándar
+		let grupos = [
+			{codigo: "jss", orden: 2, label: "Durante la vida de Cristo"},
+			{codigo: "cnt", orden: 3, label: "Durante los Apóstoles"},
+			{codigo: "pst", orden: 5, label: "Posterior a Cristo"},
+			{codigo: "ant", orden: 6, label: "Anterior a Cristo"},
+		];
+		for (let grupo of grupos) {
+			grupo.clase = "CFC VPC";
+			grupo.valores = [];
+		}
+		// Valores para los grupos
+		for (let hecho of hechos) {
+			// Si es un caso que no se debe mostrar, lo saltea
+			if (hecho.id == 10) continue;
+			// Variables
+			let OK = false;
+			hecho.clase = "CFC ";
+			if (!hecho.solo_cfc) hecho.clase += 'VPC '
+
+			// Apariciones Marianas
+			if (hecho.ama) {
+				hecho.clase += "ama";
+				apMar.push(hecho);
+				OK = true;
+			}
+
+			// Si es alguno de los 'grupos'
+			if (!OK)
+				for (let grupo of grupos)
+					if (hecho[grupo.codigo]) {
+						hecho.clase += grupo.codigo;
+						grupo.valores.push(hecho);
+						OK = true;
+						break;
+					}
+			// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
+			if (!OK) casosPuntuales.push(hecho);
+		}
+		// Grupo Apariciones Marianas
+		grupos.push({codigo: "ama", orden: 4, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
+		// Grupo 'Casos Puntuales'
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
+		// Ordena los grupos
+		grupos.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return grupos;
 	},
 
 	// Confirma Guardar

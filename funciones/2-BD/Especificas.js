@@ -3,8 +3,6 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const comp = require("../3-Procesos/Compartidas");
-const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
-const variables = require("../3-Procesos/Variables");
 
 module.exports = {
 	// Varios

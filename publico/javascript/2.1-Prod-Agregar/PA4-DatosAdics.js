@@ -33,8 +33,8 @@ window.addEventListener("load", async () => {
 		// RCLV - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),
-		opcionesPers: document.querySelectorAll("select[name='personaje_id'] option"),
-		opcionesHecho: document.querySelectorAll("select[name='hecho_id'] option"),
+		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
+		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
 		// RCLV - Varios
 		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
@@ -46,10 +46,25 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
 		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
-	let camposError = [
-		...Array.from(v.radioSI).map((n) => n.name),
-		...["tipo_actuacion_id", "publico_id", "RCLV"],
-	];
+	(() => {
+		// Campos de error
+		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "publico_id", "RCLV"]];
+
+		// Opciones para personajes
+		v.opcionesPers = (() => {
+			let respuesta = [];
+			for (let grupo of v.optgroupPers) respuesta.push([...grupo.children]);
+			return respuesta;
+		})();
+
+		// Opciones para hechos
+		v.opcionesHechos = (() => {
+			let respuesta = [];
+			for (let grupo of v.optgroupHecho) respuesta.push([...grupo.children]);
+			return respuesta;
+		})();
+
+	})();
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
@@ -80,7 +95,7 @@ window.addEventListener("load", async () => {
 	};
 	let statusInicial = async (mostrarIconoError) => {
 		// Variables
-		let datosUrl = obtieneLosDatos()
+		let datosUrl = obtieneLosDatos();
 		// Consecuencias de la validación de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
@@ -92,19 +107,15 @@ window.addEventListener("load", async () => {
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
 		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
 		// return;
-		camposError.forEach((campo, indice) => {
+		v.camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
-				errores[campo]
-					? v.iconosError[indice].classList.add("error")
-					: v.iconosError[indice].classList.remove("error");
+				errores[campo] ? v.iconosError[indice].classList.add("error") : v.iconosError[indice].classList.remove("error");
 				errores[campo] && mostrarIconoError
 					? v.iconosError[indice].classList.remove("ocultar")
 					: v.iconosError[indice].classList.add("ocultar");
-				errores[campo]
-					? v.iconosOK[indice].classList.add("ocultar")
-					: v.iconosOK[indice].classList.remove("ocultar");
+				errores[campo] ? v.iconosOK[indice].classList.add("ocultar") : v.iconosOK[indice].classList.remove("ocultar");
 			}
 		});
 		// Fin
@@ -132,19 +143,32 @@ window.addEventListener("load", async () => {
 			if (!categoria) v.sectorRCLV.classList.add("ocultaCfc");
 			// Acciones si hay respuesta
 			else {
-				// 1. Personajes: muestra solamente las opciones de la categoría (CFC / VPC)
+				// Opciones para Personajes
 				v.selectPers.innerHTML = "";
-				for (let opcion of v.opcionesPers)
-					if (opcion.classList.contains(categoria) || opcion.value <= 2)
-						v.selectPers.appendChild(opcion);
-				// 2. Hechos: si la categoría es VPC, muestra solamente las opciones que no sean 'solo_cfc'
+				v.optgroupPers.forEach((grupo, i) => {
+					// Acciones si el grupo tiene la clase
+					if (grupo.className.includes(categoria)) {
+						// Borra todas las opciones y agrega las que van
+						grupo.innerHTML = "";
+						for (let opcion of v.opcionesPers[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						// Si tiene opciones, agrega el grupo
+						if (grupo.childElementCount) v.selectPers.appendChild(grupo);
+					}
+				});
+
+				// Opciones para Hechos
 				v.selectHecho.innerHTML = "";
-				for (let opcion of v.opcionesHecho)
-					if (
-						categoria == "CFC" ||
-						(categoria == "VPC" && (opcion.classList.contains(categoria) || opcion.value <= 2))
-					)
-						v.selectHecho.appendChild(opcion);
+				v.optgroupHecho.forEach((grupo, i) => {
+					// Acciones si el grupo tiene la clase
+					if (grupo.className.includes(categoria)) {
+						// Borra todas las opciones y agrega las que van
+						grupo.innerHTML = "";
+						for (let opcion of v.opcionesHechos[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						// Si tiene opciones, agrega el grupo
+						if (grupo.childElementCount) v.selectHecho.appendChild(grupo);
+					}
+				});
+
 				// Quita el 'oculta' de RCLVs
 				v.sectorRCLV.classList.remove("ocultaCfc");
 				// Fin
@@ -156,9 +180,7 @@ window.addEventListener("load", async () => {
 			let ocurrio = ocurrioSI.checked ? "1" : ocurrioNO.checked ? "0" : "";
 
 			// Oculta o muestra el sector de RCLVs
-			ocurrio
-				? v.sectorRCLV.classList.remove("ocultaOcurrio")
-				: v.sectorRCLV.classList.add("ocultaOcurrio");
+			ocurrio ? v.sectorRCLV.classList.remove("ocultaOcurrio") : v.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
 			if (ocurrio == "1") {
@@ -185,9 +207,7 @@ window.addEventListener("load", async () => {
 		},
 		sinRCLV: () => {
 			// Muestra u oculta el sector RCLV
-			v.checkRCLV.checked
-				? v.selectsRCLV.classList.add("ocultar")
-				: v.selectsRCLV.classList.remove("ocultar");
+			v.checkRCLV.checked ? v.selectsRCLV.classList.add("ocultar") : v.selectsRCLV.classList.remove("ocultar");
 			// Fin
 			return;
 		},
@@ -219,8 +239,7 @@ window.addEventListener("load", async () => {
 		if (campo == "hecho_id") {
 			// Muestra los personajes que hayan presenciado la aparición y oculta los demás
 			v.opcionesPers.forEach((opcion) => {
-				if (opcion.className.includes("AM" + v.inputsRCLV[1].value))
-					opcion.classList.remove("ocultar");
+				if (opcion.className.includes("AM" + v.inputsRCLV[1].value)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
 			});
 			// Cambia el contenido del Personaje
@@ -244,7 +263,7 @@ window.addEventListener("load", async () => {
 		return url;
 	};
 	let guardaLosValoresEnSessionCookies = () => {
-		let params = obtieneLosDatos()
+		let params = obtieneLosDatos();
 		// Guardar los valores en session y cookies
 		if (params.length) fetch(v.rutaGuardaDatosAdics + params);
 		// Fin
@@ -253,7 +272,7 @@ window.addEventListener("load", async () => {
 
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
-	v.form.addEventListener("input", async (e) => {
+	v.form.addEventListener("change", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = encodeURIComponent(e.target.value);
@@ -262,6 +281,11 @@ window.addEventListener("load", async () => {
 		// Particularidades
 		// 1. Para campos 'cfc', 'ocurrió', 'sinRCLV'
 		if (campo == "cfc" || campo == "ocurrio" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
+		if (campo == "cfc") {
+			// Le asigna a los selects un valor estandar
+			v.selectPers.value = "1";
+			v.selectHecho.value = "1";
+		}
 		// 2. Para campos 'RCLV'
 		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
 		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) v.errorRCLV.classList.remove("ocultar");
@@ -317,9 +341,5 @@ window.addEventListener("load", async () => {
 });
 
 let entidades = (link) => {
-	return link.className.includes("personaje")
-		? "personajes"
-		: link.className.includes("hecho")
-		? "hechos"
-		: "valores";
+	return link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "valores";
 };

@@ -55,27 +55,6 @@ module.exports = {
 		return includes;
 	},
 
-	// ABM de registros
-	creaRegistro: async ({entidad, datos, userID}) => {
-		datos.creado_por_id = userID;
-		let id = await BD_genericas.agregaRegistro(entidad, datos).then((n) => n.id);
-		return id;
-	},
-	actualizaRegistro: async ({entidad, id, datos}) => {
-		await BD_genericas.actualizaPorId(entidad, id, datos);
-		return "Registro original actualizado";
-	},
-	inactivaRegistro: async (entidad, entidad_id, userID, motivo_id) => {
-		// Prepara los datos
-		let datos = {
-			sugerido_por_id: userID,
-			sugerido_en: FN_ahora(),
-			motivo_id,
-			status_registro_id: inactivar_id,
-		};
-		// Actualiza el registro 'original' en la BD
-		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
-	},
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"

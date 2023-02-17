@@ -431,9 +431,10 @@ module.exports = {
 			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true, relac_include: "rol_iglesia"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
+			{nombre: "ant", titulo: "Anterior a Jesús", hechos: true},
 			{nombre: "jss", titulo: "Durante la vida de Jesús", hechos: true},
 			{nombre: "cnt", titulo: "Durante la vida de los Apóstoles", hechos: true},
-			{nombre: "ncn", titulo: "Fuera de la vida de los Apóstoles", hechos: true},
+			{nombre: "pst", titulo: "Posterior a los Apóstoles", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 		],
 		links: [

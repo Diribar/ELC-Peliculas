@@ -61,13 +61,14 @@
 				</div>
 				<!--No lo voy a responder ahora-->
 				<%- include("PA4-DA8-Checkbox", {campo: "sinRCLV", }) %>
+				<!-- Opciones -->
 				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->
-					<%- include("PA4-DA4-RCLV", {campo: "personaje_id"}) %>
+					<%- include("PA4-DA4-RCLV_ph", {campo: "personaje_id", grupos: gruposPers}) %>
 					<!--Hecho histórico-->
-					<%- include("PA4-DA4-RCLV", {campo: "hecho_id"}) %>
+					<%- include("PA4-DA4-RCLV_ph", {campo: "hecho_id", grupos: gruposHechos}) %>
 					<!--Valor-->
-					<%- include("PA4-DA4-RCLV", {campo: "valor_id"}) %>
+					<%- include("PA4-DA4-RCLV_val", {campo: "valor_id"}) %>
 				</div>
 			</div>
 		</div>

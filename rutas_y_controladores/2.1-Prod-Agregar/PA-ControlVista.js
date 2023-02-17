@@ -67,7 +67,7 @@ module.exports = {
 		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
-		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0,5);
+		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Imagen derecha
@@ -144,6 +144,10 @@ module.exports = {
 		// 3. Prepara variables para la vista
 		let camposDA = await variables.camposDA_conValores(userID);
 		let camposDE = Object.keys(datosAdics);
+		// Grupos RCLV
+		let gruposPers = procesos.gruposPers(camposDA);
+		let gruposHechos =  procesos.gruposHechos(camposDA);
+
 		// 4. Imagen derecha
 		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
 		// 5. Render del formulario
@@ -154,6 +158,8 @@ module.exports = {
 			dataEntry: datosAdics,
 			camposDA,
 			camposDE,
+			gruposPers,
+			gruposHechos,
 			imgDerPers,
 			tituloImgDerPers: datosAdics.nombre_castellano,
 		});
@@ -250,12 +256,10 @@ module.exports = {
 			userID: req.session.usuario.id,
 		});
 
-		// MISCELANEAS
+		// PRODUCTO EN RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
-			let producto = {...confirma, id: registro.id};
-			procsCRUD.rclvConProd_status(producto); // No es necesario el 'await', el proceso no necesita ese resultado
-		}
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) procsCRUD.rclvConProd(confirma); // No es necesario el 'await', el proceso no necesita ese resultado
+
 		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";

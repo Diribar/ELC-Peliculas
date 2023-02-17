@@ -53,9 +53,7 @@ module.exports = {
 		// Convierte las ediciones propias de productos en productos
 		if (userID) {
 			// Obtiene las ediciones propias
-			let edicionesPropias = RCLV.prods_edicion
-				? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID)
-				: [];
+			let edicionesPropias = RCLV.prods_edicion ? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID) : [];
 
 			// Configura RCLV
 			for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
@@ -99,9 +97,7 @@ module.exports = {
 			if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
 		// Ordena por año (decreciente)
 		prodsDelRCLV = [...capitulos, ...noCapitulos];
-		prodsDelRCLV.sort((a, b) =>
-			a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0
-		);
+		prodsDelRCLV.sort((a, b) => (a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0));
 		// Fin
 		return prodsDelRCLV;
 	},
@@ -139,13 +135,12 @@ module.exports = {
 		// Tareas para un nuevo registro
 		if (codigo == "/rclv/agregar/") {
 			// Guarda el nuevo registro
-			let id = await comp.creaRegistro({entidad, datos: DE, userID});
+			DE.creado_por_id = userID;
+			let id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
 			// Les agrega el 'rclv_id' a session y cookie de origen
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			if (origen == "DA") {
-				req.session.datosAdics = req.session.datosAdics
-					? req.session.datosAdics
-					: req.cookies.datosAdics;
+				req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 				req.session.datosAdics = {...req.session.datosAdics, [entidad_id]: id};
 				res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 			} else if (origen == "ED") {
@@ -184,8 +179,7 @@ module.exports = {
 		// Datos comunes - Día del año
 		if (datos.mes_id && datos.dia)
 			DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-		else if (datos.desconocida)
-			DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
+		else if (datos.desconocida) DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
 		else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
 		// Datos para personajes
 		if (datos.entidad == "personajes") {

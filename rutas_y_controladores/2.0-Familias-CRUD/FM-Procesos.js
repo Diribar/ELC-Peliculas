@@ -150,8 +150,34 @@ module.exports = {
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
+
+	// CAMBIOS DE STATUS
+	// Cambia el status de un registro
+	cambioDeStatus: async function (entidad, id, datos) {
+		// Averigua si el registro existe en la BD		
+		let registro = await BD_genericas.obtienePorId(entidad, id);
+
+		// Actualiza el registro con los datos
+		if (datos) {
+			if (registro) {
+				await BD_genericas.actualizaPorId(entidad, id, datos);
+				registro = await BD_genericas.obtienePorId(entidad, id);
+			} else registro = datos;
+		}
+
+		// En las siguientes rutinas, no hace falta el 'await'
+		// Rutina por producto
+		if (variables.entidadesProd.includes(entidad)) this.rclvConProd(registro);
+
+		// Rutinas por links
+		if (variables.entidadesRCLV.includes(entidad)) {
+			this.prodConLink(registro);
+			this.prodConLinkCast(registro);
+		}
+	},
+
 	// Actualiza los campos de 'producto' en el RCLV
-	rclvConProd_status: async function (producto) {
+	rclvConProd: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
@@ -163,10 +189,9 @@ module.exports = {
 			// Variables
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadRCLV);
 			let RCLV_id = producto[entidad_id];
-			let objeto = {[entidad_id]: RCLV_id};
 			// Acciones si el producto tiene ese 'campo_id'
 			if (RCLV_id > 10) {
-				// 1. Averigua si existe algún producto, para ese RCLV
+				let objeto = {[entidad_id]: RCLV_id};
 				let prods_aprob;
 				// Averigua si existe algún producto, con ese RCLV
 				for (let entidadProd of entidadesProds) {
@@ -200,10 +225,10 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'links' en el producto
-	prodConLinks: async (link) => {
+	prodConLink: async (link) => {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
-		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const producto_ent = comp.obtieneProdDesdeProducto_id(producto_id);
 		const prodID = link[producto_id];
 		const tipo_id = link_pelicula_id;
 		const statusAprobado = {status_registro_id: aprobado_id};
@@ -227,12 +252,12 @@ module.exports = {
 			: null; // No tiene
 
 		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, prodID, {links_general, links_gratuitos});
+		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
 
 		// Fin
 		return;
 	},
-	prodCastellano: async (link) => {
+	prodConLinkCast: async (link) => {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto = comp.obtieneProdDesdeProducto_id(producto_id);

@@ -35,13 +35,7 @@ module.exports = {
 				let productos = [];
 				for (let prod of lote.productos) {
 					// Variables
-					let prodNombre,
-						entidad,
-						nombre_original,
-						nombre_castellano,
-						idioma_original_id,
-						ano_estreno,
-						ano_fin;
+					let prodNombre, entidad, nombre_original, nombre_castellano, idioma_original_id, ano_estreno, ano_fin;
 					ano_estreno = ano_fin = "";
 					// Colecciones
 					if (TMDB_entidad == "collection") {
@@ -70,14 +64,8 @@ module.exports = {
 						ano_estreno = ano_fin = parseInt(prod.release_date.slice(0, 4));
 					}
 					// Define el título sin "distractores", para encontrar duplicados
-					let desempate1 = comp
-						.convierteLetrasAlIngles(nombre_original)
-						.replace(/ /g, "")
-						.replace(/'/g, "");
-					let desempate2 = comp
-						.convierteLetrasAlIngles(nombre_castellano)
-						.replace(/ /g, "")
-						.replace(/'/g, "");
+					let desempate1 = comp.convierteLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+					let desempate2 = comp.convierteLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 					// Deja sólo algunos campos
 					productos.push({
 						TMDB_entidad,
@@ -145,9 +133,7 @@ module.exports = {
 			// Acumula los lotes
 			(() => {
 				// Unifica cantPaginasAPI
-				if (pagina == 1)
-					for (let lote of lotes)
-						acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
+				if (pagina == 1) for (let lote of lotes) acumulador.cantPaginasAPI[lote.TMDB_entidad] = lote.cantPaginasAPI;
 
 				// Unifica productos
 				for (let lote of lotes) {
@@ -276,9 +262,7 @@ module.exports = {
 			let colecciones = [];
 			// Obtiene las colecciones/series que se necesitan
 			resultados.productos.forEach((prod) => {
-				colecciones.push(
-					prod.TMDB_entidad != "movie" ? detailsTMDB(prod.TMDB_entidad, prod.TMDB_id) : ""
-				);
+				colecciones.push(prod.TMDB_entidad != "movie" ? detailsTMDB(prod.TMDB_entidad, prod.TMDB_id) : "");
 			});
 			colecciones = await Promise.all(colecciones);
 			// Completa los campos
@@ -289,8 +273,8 @@ module.exports = {
 				if (coleccion.parts) {
 					// Variables para colecciones
 					let anos_estreno = coleccion.parts.map((n) => (n.release_date ? n.release_date : "-"));
-					let ano_estreno = anos_estreno.reduce((a, b) => (a < b ? a : b));
-					let ano_fin = anos_estreno.reduce((a, b) => (a > b && a != "-" ? a : b));
+					let ano_estreno = anos_estreno.reduce((a, b) => ((a < b && a != "-") || b == "-" ? a : b));
+					let ano_fin = anos_estreno.reduce((a, b) => (a > b  ? a : b));
 					let capitulosID_TMDB = coleccion.parts.map((n) => n.id);
 					// Agrega información
 					resultados.productos[indice] = {
@@ -313,9 +297,7 @@ module.exports = {
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
-						ano_fin: coleccion.last_air_date
-							? parseInt(coleccion.last_air_date.slice(0, 4))
-							: "-",
+						ano_fin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
 						capitulos,
 						cant_temporadas,
 					};
@@ -329,13 +311,9 @@ module.exports = {
 		(() => {
 			if (resultados.productos.length > 1) {
 				// Criterio secundario: primero colecciones, luego películas
-				resultados.productos.sort((a, b) =>
-					a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0
-				);
+				resultados.productos.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
 				// Criterio principal: primero la más reciente
-				resultados.productos.sort((a, b) =>
-					a.ano_fin > b.ano_fin ? -1 : a.ano_fin < b.ano_fin ? 1 : 0
-				);
+				resultados.productos.sort((a, b) => (a.ano_fin > b.ano_fin ? -1 : a.ano_fin < b.ano_fin ? 1 : 0));
 			}
 		})();
 

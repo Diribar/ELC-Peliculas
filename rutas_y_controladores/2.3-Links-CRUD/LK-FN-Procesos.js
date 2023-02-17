@@ -14,11 +14,7 @@ module.exports = {
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude(
-			"links",
-			{[producto_id]: prodID},
-			includes
-		);
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[producto_id]: prodID}, includes);
 		// Ordenar por ID
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// Los combina con la edición, si existe
@@ -27,8 +23,7 @@ module.exports = {
 				let edicion = link.ediciones.find((n) => n.editado_por_id == userID);
 				if (edicion)
 					for (let campo in edicion)
-						if (edicion[campo] !== null && camposARevisar.includes(campo))
-							links[i][campo] = edicion[campo];
+						if (edicion[campo] !== null && camposARevisar.includes(campo)) links[i][campo] = edicion[campo];
 			}
 		});
 		// Fin
@@ -43,15 +38,13 @@ module.exports = {
 		(async () => {
 			// Obtiene el proveedor
 			let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
-			// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-			let proveedor = proveedores
-				.filter((n) => !n.generico)
-				.find((n) => datos.url.includes(n.url_distintivo));
+			// Busca el proveedor por lo distintivo de su 'url'
+			let proveedor = proveedores.find((n) => datos.url.includes(n.url_distintivo));
 			// Si no se reconoce el proveedor, se asume el 'desconocido'
 			proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
 			prov_id = proveedor.id;
 		})();
-		datos.prov_id = prov_id
+		datos.prov_id = prov_id;
 		// Particularidades
 		if (datos.castellano == "1") datos.subtit_castellano = null;
 		if (datos.tipo_id == "1") datos.completo = 1;

@@ -2,7 +2,8 @@ module.exports = (sequelize, dt) => {
 	const alias = "roles_iglesia";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(100)},
+		nombre: {type: dt.STRING(20)},
+		plural: {type: dt.STRING(20)},
 		usuario: {type: dt.BOOLEAN},
 		personaje: {type: dt.BOOLEAN},
 		varon: {type: dt.BOOLEAN},
