@@ -163,10 +163,9 @@ module.exports = {
 			// Variables
 			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadRCLV);
 			let RCLV_id = producto[entidad_id];
-			let objeto = {[entidad_id]: RCLV_id};
 			// Acciones si el producto tiene ese 'campo_id'
 			if (RCLV_id > 10) {
-				// 1. Averigua si existe algún producto, para ese RCLV
+				let objeto = {[entidad_id]: RCLV_id};
 				let prods_aprob;
 				// Averigua si existe algún producto, con ese RCLV
 				for (let entidadProd of entidadesProds) {

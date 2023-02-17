@@ -67,7 +67,7 @@ module.exports = {
 		// Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
-		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0,5);
+		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Imagen derecha
@@ -252,10 +252,10 @@ module.exports = {
 
 		// MISCELANEAS
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
-			let producto = {...confirma, id: registro.id};
-			procsCRUD.rclvConProd_status(producto); // No es necesario el 'await', el proceso no necesita ese resultado
-		}
+		// console.log(255,confirma.personaje_id || confirma.hecho_id || confirma.valor_id);
+		// console.log(256,confirma.personaje_id , confirma.hecho_id , confirma.valor_id);
+		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) procsCRUD.rclvConProd_status(confirma); // No es necesario el 'await', el proceso no necesita ese resultado
+
 		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso
 		req.session.urlActual = "/";
