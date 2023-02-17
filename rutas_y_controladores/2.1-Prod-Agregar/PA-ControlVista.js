@@ -267,7 +267,7 @@ module.exports = {
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 
-		// Redirecciona --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
+		// REDIRECCIONA --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
 		return res.redirect("terminaste");
 	},
 	terminaste: async (req, res) => {
