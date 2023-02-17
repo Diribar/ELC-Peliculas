@@ -302,7 +302,7 @@ module.exports = {
 		let roles = roles_iglesia.filter((m) => m.plural);
 		let listadoGral = [];
 		let casosPuntuales = [];
-		// Grupos
+		// Grupos Estándar
 		let grupos = [
 			{codigo: "SF", orden: 2},
 			{codigo: "AL", orden: 3},
@@ -316,6 +316,10 @@ module.exports = {
 		}
 		// Valores para los grupos
 		for (let personaje of personajes) {
+			// Clase
+			personaje.clase = personaje.categoria_id ? personaje.categoria_id : 'CFC VPC' 
+			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id
+
 			// Si tiene 'rol_iglesia_id'
 			if (personaje.rol_iglesia_id) {
 				let OK = false;
@@ -351,9 +355,9 @@ module.exports = {
 			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
 			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
 		});
-		let apMar=[]
+		let apMar = [];
 		let casosPuntuales = [];
-	
+
 		// Grupos estándar
 		let grupos = [
 			{codigo: "jss", orden: 2, label: "Durante la vida de Cristo"},
@@ -368,21 +372,24 @@ module.exports = {
 		// Valores para los grupos
 		for (let hecho of hechos) {
 			// Si es un caso que no se debe mostrar, lo saltea
-			if (hecho.id == 10) continue
-
+			if (hecho.id == 10) continue;
 			// Variables
 			let OK = false;
+			hecho.clase = "CFC ";
+			if (!hecho.solo_cfc) hecho.clase += 'VPC '
 
 			// Apariciones Marianas
 			if (hecho.ama) {
-				apMar.push(hecho)
-				OK=true
+				hecho.clase += "ama";
+				apMar.push(hecho);
+				OK = true;
 			}
 
 			// Si es alguno de los 'grupos'
 			if (!OK)
 				for (let grupo of grupos)
 					if (hecho[grupo.codigo]) {
+						hecho.clase += grupo.codigo;
 						grupo.valores.push(hecho);
 						OK = true;
 						break;
@@ -392,10 +399,8 @@ module.exports = {
 		}
 		// Grupo Apariciones Marianas
 		grupos.push({codigo: "ama", orden: 4, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
-
 		// Grupo 'Casos Puntuales'
 		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
-
 		// Ordena los grupos
 		grupos.sort((a, b) => a.orden - b.orden);
 

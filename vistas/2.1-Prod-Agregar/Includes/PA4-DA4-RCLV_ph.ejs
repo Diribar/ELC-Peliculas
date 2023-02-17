@@ -8,7 +8,7 @@
 			<% for (let grupo of grupos) { %>
 				<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
 					<% for (let valor of grupo.valores) { %>
-						<%- include("PA4-DA4-RCLV-opcion", {valor}) %>
+						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 					<% } %>
 				</optgroup>
 			<% } %>

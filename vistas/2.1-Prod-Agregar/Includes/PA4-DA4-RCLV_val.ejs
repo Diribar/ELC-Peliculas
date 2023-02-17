@@ -7,12 +7,12 @@
 		<select name="<%= campo %>" class="input" autofocus>
 			<optgroup label="Casos Puntuales">
 				<% for (let valor of valores.filter(n => n.id < 10)) { %>
-					<%- include("PA4-DA4-RCLV-opcion", {valor}) %>
+					<option value="<%= valor.id %>" class="RCLV" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 				<% } %>
 			</optgroup>
 			<optgroup label="Listado General">
 				<% for (let valor of valores.filter(n => n.id > 10)) { %>
-					<%- include("PA4-DA4-RCLV-opcion", {valor}) %>
+					<option value="<%= valor.id %>" class="RCLV" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 				<% } %>
 			</optgroup>	
 		</select>
