@@ -27,11 +27,7 @@ module.exports = {
 		datos = await procesos.datosLink(datos);
 
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCamposConInclude(
-			"links",
-			{url: datos.url},
-			"status_registro"
-		);
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
 		// Obtiene el mensaje de la tarea realizada
 		let mensaje = !link
 			? await comp.creaRegistro({entidad: "links", datos, userID}) // El link no existe --> se lo debe crear
@@ -63,12 +59,10 @@ module.exports = {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 			}
 			// El link existe y no tiene status 'aprobado'
-			else if (!link.status_registro.aprobado)
-				respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
+			else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
 			// El link existe y tiene status 'aprobado'
 			// No existe el motivo
-			else if (!motivo_id)
-				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
+			else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
 				await comp.inactivaRegistro("links", link.id, userID, motivo_id);
@@ -85,11 +79,7 @@ module.exports = {
 		let respuesta = {};
 		// Completar la info
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCamposConInclude(
-			"links",
-			{url: datos.url},
-			"status_registro"
-		);
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
@@ -112,11 +102,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCamposConInclude(
-			"links",
-			{url: datos.url},
-			"status_registro"
-		);
+		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
