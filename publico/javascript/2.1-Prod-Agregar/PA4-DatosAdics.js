@@ -34,7 +34,6 @@ window.addEventListener("load", async () => {
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),
 		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
-		opcionesPers: document.querySelectorAll("select[name='personaje_id'] option"),
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
 		opcionesHecho: document.querySelectorAll("select[name='hecho_id'] option"),
 		// RCLV - Varios
@@ -48,7 +47,14 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
 		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
-	let camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "publico_id", "RCLV"]];
+	(() => {
+		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "publico_id", "RCLV"]];
+		v.opcionesPers = (() => {
+			let respuesta = [];
+			for (let grupo of v.optgroupPers) respuesta.push([...grupo.children]);
+			return respuesta;
+		})();
+	})();
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
@@ -91,7 +97,7 @@ window.addEventListener("load", async () => {
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
 		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
 		// return;
-		camposError.forEach((campo, indice) => {
+		v.camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				v.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
@@ -127,27 +133,29 @@ window.addEventListener("load", async () => {
 			if (!categoria) v.sectorRCLV.classList.add("ocultaCfc");
 			// Acciones si hay respuesta
 			else {
+				v.selectPers.innerHTML = "";
+				v.optgroupPers.forEach((grupo, i) => {
+					// Acciones si el grupo tiene la clase
+					if (grupo.className.includes(categoria)) {
+						// Borra todas las opciones y agrega las que van
+						grupo.innerHTML = "";
+						for (let opcion of v.opcionesPers[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						// Muestra el grupo
+						v.selectPers.appendChild(grupo);
+					}
+				});
+
 				// Borra todas las opciones
-				v.optgroupPers[0].innerHTML = "";
-				v.optgroupPers[1].innerHTML = "";
-				console.log(v.selectPers.value);
-				v.optgroupHecho[0].innerHTML = "";
-				v.optgroupHecho[1].innerHTML = "";
+				// v.optgroupHecho[0].innerHTML = "";
+				// v.optgroupHecho[1].innerHTML = "";
 
-				// 1. Personajes
-				// 1.A. Muestra solamente las opciones menores a id=10
-				for (let opcion of v.opcionesPers) if (opcion.value < 10) v.optgroupPers[0].appendChild(opcion);
-				// 1.B. Muestra solamente las opciones de la categoría (CFC / VPC)
-				for (let opcion of v.opcionesPers)
-					if (opcion.classList.contains(categoria) && opcion.value > 10) v.optgroupPers[1].appendChild(opcion);
-
-				// 2. Hechos:
-				// 1.A. Muestra solamente las opciones menores a id=10
-				for (let opcion of v.opcionesHecho) if (opcion.value < 10) v.optgroupHecho[0].appendChild(opcion);
-				// 2. Si la categoría es VPC, muestra solamente las opciones que no sean 'solo_cfc'
-				for (let opcion of v.opcionesHecho)
-					if ((categoria == "CFC" || (categoria == "VPC" && opcion.classList.contains("VPC"))) && opcion.value > 10)
-						v.optgroupHecho[1].appendChild(opcion);
+				// // 2. Hechos:
+				// // 1.A. Muestra solamente las opciones menores a id=10
+				// for (let opcion of v.opcionesHecho) if (opcion.value < 10) v.optgroupHecho[0].appendChild(opcion);
+				// // 2. Si la categoría es VPC, muestra solamente las opciones que no sean 'solo_cfc'
+				// for (let opcion of v.opcionesHecho)
+				// 	if ((categoria == "CFC" || (categoria == "VPC" && opcion.classList.contains("VPC"))) && opcion.value > 10)
+				// 		v.optgroupHecho[1].appendChild(opcion);
 
 				// Quita el 'oculta' de RCLVs
 				v.sectorRCLV.classList.remove("ocultaCfc");
