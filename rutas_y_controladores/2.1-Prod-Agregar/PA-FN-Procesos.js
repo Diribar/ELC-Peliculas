@@ -287,7 +287,7 @@ module.exports = {
 			? "Documental"
 			: "Desconocido";
 	},
-	gruposPers: async (camposDA) => {
+	gruposPers: (camposDA) => {
 		// Variables
 		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
 		personajes = personajes.map((n) => {
@@ -299,50 +299,108 @@ module.exports = {
 				ap_mar_id: n.ap_mar_id,
 			};
 		});
-		let roles_iglesia = await BD_genericas.obtieneTodos("roles_iglesia", "nombre").then((n) => n.filter((m) => m.plural));
+		let roles = roles_iglesia.filter((m) => m.plural);
 		let listadoGral = [];
 		let casosPuntuales = [];
-		// Grupos personales
-		let gruposPers = [
+		// Grupos
+		let grupos = [
 			{codigo: "SF", orden: 2},
 			{codigo: "AL", orden: 3},
 			{codigo: "PP", orden: 4},
 			{codigo: "AP", orden: 15},
 		];
-		for (let grupo of gruposPers) {
-			grupo.label = roles_iglesia.find((n) => n.id.startsWith(grupo.codigo)).plural;
+		for (let grupo of grupos) {
+			grupo.label = roles.find((n) => n.id.startsWith(grupo.codigo)).plural;
 			grupo.valores = [];
 			grupo.clase = "CFC";
 		}
-		// Vslores para los grupos personales
+		// Valores para los grupos
 		for (let personaje of personajes) {
 			// Si tiene 'rol_iglesia_id'
 			if (personaje.rol_iglesia_id) {
 				let OK = false;
-				// Si es alguno de los 'gruposPers'
-				for (let grupo of gruposPers)
+				// Si es alguno de los 'grupos'
+				for (let grupo of grupos)
 					if (personaje.rol_iglesia_id.startsWith(grupo.codigo)) {
 						grupo.valores.push(personaje);
 						OK = true;
 						break;
 					}
 
-				// Si no es ninguno de los 'gruposPers'
+				// Si no es ninguno de los 'grupos'
 				if (!OK) listadoGral.push(personaje);
 			}
 			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
 			else casosPuntuales.push(personaje);
 		}
 		// Grupo 'Listado General'
-		gruposPers.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
+		grupos.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
 		// Grupo 'Casos Puntuales'
-		gruposPers.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
 
 		// Ordena los grupos
-		gruposPers.sort((a, b) => a.orden - b.orden);
+		grupos.sort((a, b) => a.orden - b.orden);
 
 		// Fin
-		return gruposPers;
+		return grupos;
+	},
+	gruposHechos: (camposDA) => {
+		// Variables
+		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
+		hechos = hechos.map((n) => {
+			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
+			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
+		});
+		let apMar=[]
+		let casosPuntuales = [];
+	
+		// Grupos estándar
+		let grupos = [
+			{codigo: "jss", orden: 2, label: "Durante la vida de Cristo"},
+			{codigo: "cnt", orden: 3, label: "Durante los Apóstoles"},
+			{codigo: "pst", orden: 5, label: "Posterior a Cristo"},
+			{codigo: "ant", orden: 6, label: "Anterior a Cristo"},
+		];
+		for (let grupo of grupos) {
+			grupo.clase = "CFC VPC";
+			grupo.valores = [];
+		}
+		// Valores para los grupos
+		for (let hecho of hechos) {
+			// Si es un caso que no se debe mostrar, lo saltea
+			if (hecho.id == 10) continue
+
+			// Variables
+			let OK = false;
+
+			// Apariciones Marianas
+			if (hecho.ama) {
+				apMar.push(hecho)
+				OK=true
+			}
+
+			// Si es alguno de los 'grupos'
+			if (!OK)
+				for (let grupo of grupos)
+					if (hecho[grupo.codigo]) {
+						grupo.valores.push(hecho);
+						OK = true;
+						break;
+					}
+			// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
+			if (!OK) casosPuntuales.push(hecho);
+		}
+		// Grupo Apariciones Marianas
+		grupos.push({codigo: "ama", orden: 4, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
+
+		// Grupo 'Casos Puntuales'
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
+
+		// Ordena los grupos
+		grupos.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return grupos;
 	},
 
 	// Confirma Guardar
