@@ -25,15 +25,27 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		// Completa y procesa la info
 		datos = await procesos.datosLink(datos);
+		let mensaje;
 
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
-		// Obtiene el mensaje de la tarea realizada
-		let mensaje = !link
-			? await comp.creaRegistro({entidad: "links", datos, userID}) // El link no existe --> se lo debe crear
-			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
-			? await comp.actualizaRegistro({entidad: "links", id: link.id, datos}) // Actualizar el link
-			: await procsCRUD.guardaActEdicCRUD({original: link, edicion: datos, entidad: "links", userID}); // Guardar la edición
+
+		// Averigua si el link ya existía
+		if (!link) {
+			// Crea el link
+			datos.creado_por_id = userID;
+			await BD_genericas.agregaRegistro("links", datos);
+			mensaje = "Link creado";
+		}
+		// Averigua si es un link propio y en status creado
+		else if (link.creado_por_id == userID && link.status_registro.creado) {
+			// Actualiza el link
+			await comp.actualizaRegistro({entidad: "links", id: link.id, datos});
+			mensaje = "Link actualizado";
+		}
+		// Guarda la edición
+		else mensaje = await procsCRUD.guardaActEdicCRUD({original: link, edicion: datos, entidad: "links", userID});
+
 		// Fin
 		return res.json(mensaje);
 	},
@@ -65,8 +77,13 @@ module.exports = {
 			else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
-				await comp.inactivaRegistro("links", link.id, userID, motivo_id);
-				procsCRUD.prodConLinks(prodEntidad, prodID);
+				let datos = {
+					sugerido_por_id: userID,
+					sugerido_en: FN_ahora(),
+					motivo_id,
+					status_registro_id: inactivar_id,
+				};
+				await procsCRUD.cambioDeStatus("links", link.id, datos);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
