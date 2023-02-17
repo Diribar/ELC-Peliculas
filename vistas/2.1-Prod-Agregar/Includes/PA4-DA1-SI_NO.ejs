@@ -4,7 +4,7 @@
 	<label id="siNoTitulo" class="negrita"><%= tema.titulo %></label>
 	<div id="siNoOpciones" class="flexRowAlign">
 		<div class="flexRowAlign">
-			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (dataEntry[campo]==1) { %>checked<% } %> class="radioSI">
+			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (!camposDE.includes(campo)&&campo=="color" || dataEntry[campo]==1) { %>checked<% } %> class="radioSI">
 			<label for="<%= campo %>SI">SI</label>
 		</div>
 		<div class="flexRowAlign">

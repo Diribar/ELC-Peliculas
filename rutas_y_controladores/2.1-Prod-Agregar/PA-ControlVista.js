@@ -241,7 +241,7 @@ module.exports = {
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
 			let producto = {...confirma, id: registro.id};
-			procsCRUD.rclvConProd(producto); // No es necesario el 'await', el proceso no necesita ese resultado
+			procsCRUD.rclvConProd_status(producto); // No es necesario el 'await', el proceso no necesita ese resultado
 		}
 
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)

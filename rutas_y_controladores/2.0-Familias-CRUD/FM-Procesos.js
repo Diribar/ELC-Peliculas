@@ -151,7 +151,7 @@ module.exports = {
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	rclvConProd: async function (producto) {
+	rclvConProd_status: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
@@ -173,6 +173,7 @@ module.exports = {
 					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
 					if (prods_aprob) break;
 				}
+
 				if (prods_aprob) prods_aprob = true;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
@@ -181,14 +182,11 @@ module.exports = {
 						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 						if (prods_aprob) break;
 					}
+
 				if (prods_aprob) prods_aprob = false;
 				// 3. Averigua si existe alguna edición
-				else
-					for (let entidadProd of entidadesProds) {
-						// Averigua si existe algún producto, con ese RCLV
-						prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
-						if (prods_aprob) break;
-					}
+				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+
 				if (prods_aprob) prods_aprob = false;
 				// 4. No encontró ningún caso
 				else prods_aprob = null;
@@ -229,7 +227,28 @@ module.exports = {
 			: null; // No tiene
 
 		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto, id, {links_general, links_gratuitos});
+		BD_genericas.actualizaPorId(producto, prodID, {links_general, links_gratuitos});
+
+		// Fin
+		return;
+	},
+	prodCastellano: async (link) => {
+		// Variables
+		const producto_id = comp.obtieneProducto_id(link);
+		const producto = comp.obtieneProdDesdeProducto_id(producto_id);
+		const prodID = link[producto_id];
+		const tipo_id = link_pelicula_id;
+		let objeto = {[producto_id]: prodID, tipo_id};
+
+		// Averigua si existe algún link en castellano, para ese producto
+		let castellano = !!(await BD_genericas.obtienePorCampos("links", {...objeto, castellano: true}))
+			? true // Tiene
+			: !!(await BD_genericas.obtienePorCampos("links", objeto))
+			? false // No tiene
+			: null; // No sabemos
+
+		// Actualiza el registro
+		BD_genericas.actualizaPorId(producto, prodID, {castellano});
 
 		// Fin
 		return;

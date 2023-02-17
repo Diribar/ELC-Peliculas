@@ -6,6 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	consolidado: async function (datos) {
+		datos = {...datos}; // Es fundamental escribir 'datos' así
 		// Campos comunes a los 3 RCLV
 		let errores = {
 			nombre: await this.nombre(datos),
@@ -36,8 +37,7 @@ module.exports = {
 				if (campo == "nombre")
 					for (let prefijo of prefijos) {
 						if (nombre.startsWith(prefijo + " "))
-							respuesta =
-								"El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
+							respuesta = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 						break;
 					}
 				// Fin
@@ -79,8 +79,7 @@ module.exports = {
 		// Variable 'campos'
 		let campos = Object.keys(datos);
 		// Descarta los campos que no sean de nombre
-		for (let i = campos.length - 1; i >= 0; i--)
-			if (!["nombre", "apodo"].includes(campos[i])) campos.splice(i, 1);
+		for (let i = campos.length - 1; i >= 0; i--) if (!["nombre", "apodo"].includes(campos[i])) campos.splice(i, 1);
 
 		// Validaciones
 		let mensaje = "";
@@ -90,8 +89,7 @@ module.exports = {
 			if (mensaje) break;
 		}
 		// Revisa si los nombres son iguales
-		if (!mensaje && datos.nombre && datos.nombre == datos.apodo)
-			mensaje = "El nombre y el apodo deben ser diferentes";
+		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
 		// Fin
 		return mensaje;
 	},
@@ -118,56 +116,36 @@ module.exports = {
 	// Personajes o Hechos
 	epoca: (datos) => {
 		// Variables
-		let contador = 0;
 		let respuesta = "";
-		let anoNecesario;
+		let anoNecesario = false;
+
 		// Epocas
 		if (datos.entidad == "personajes") {
 			// Averigua si no fue respondido
 			if (!datos.epoca_id) respuesta = variables.radioVacio;
 			// Averigua si hace falta el año
 			else if (datos.epoca_id == "pst") anoNecesario = true;
-		} else if (datos.entidad == "hechos") {
-			// Averigua la cantidad de épocas elegidas
-			let epocas = variables.epocasHechos;
-			let cantEpocas = epocas.length;
-			for (let epoca of epocas) if (datos[epoca]) contador++;
-			// 1. Averigua si no fue respondido
-			if (!contador) respuesta = variables.radioVacio;
-			// 2. Averigua si se eligieron 2 y se salteó una
-			else if (
-				contador == 2 && // Averigua si se eligieron dos
-				((datos[epocas[0]] && !datos[epocas[1]]) || // Averigua si se eligió la primera y se salteó la siguiente
-					(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
-			)
-				respuesta = seSalteoUnaEpoca;
-			// 3. Averigua si se eligieron 3 y se salteó una
-			else if (
-				contador == 3 && // Averigua si se eligieron tres
-				datos[epocas[0]] &&
-				datos[epocas[cantEpocas - 1]] // Averigua si se eligió primera y la última
-			)
-				respuesta = seSalteoUnaEpoca;
-			// Averigua si hace falta el año
-			if (contador == 1 && datos.pst) anoNecesario = true;
-		}
+		} else if (datos.entidad == "hechos") [respuesta, anoNecesario] = epocaHechos(datos);
+
 		// Año
 		if (!respuesta && anoNecesario) {
 			let ano = datos.ano;
-			respuesta = !ano
-				? cartelAno
-				: /[^\d]/.test(ano)
-				? "No es un número válido"
-				: parseInt(ano) > new Date().getFullYear()
-				? "El año no debe superar al actual"
-				: (parseInt(ano) < 33 && datos.epoca_id == "pst") || (parseInt(ano) < 100 && datos.pst)
-				? "Ese año no corresponde a la época 'posterior'"
-				: "";
+			respuesta =
+				ano == 0
+					? "Necesitamos saber el año"
+					: /[^\d]/.test(ano)
+					? "No es un número válido"
+					: parseInt(ano) > new Date().getFullYear()
+					? "El año no debe superar al actual"
+					: (parseInt(ano) < 33 && datos.epoca_id == "pst") || (parseInt(ano) < 100 && datos.pst)
+					? "Ese año no corresponde a la época 'posterior'"
+					: "";
 		}
 		// Fin
 		return respuesta;
 	},
 	RCLIC_personajes: (datos) => {
+		if (datos.ano) datos.ano = parseInt(datos.ano);
 		let respuesta = !datos.categoria_id
 			? "Necesitamos saber sobre su relación con la Iglesia"
 			: datos.categoria_id == "CFC"
@@ -177,10 +155,8 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.proceso_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epoca_id == "pst" && datos.ano
-				? !datos.ap_mar_id
-					? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
-					: ""
+				: datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ap_mar_id
+				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
 				: ""
 			: datos.categoria_id != "VPC"
 			? "No reconocemos la opción elegida"
@@ -189,10 +165,12 @@ module.exports = {
 		return respuesta;
 	},
 	RCLIC_hechos: (datos) => {
-		let respuesta = !datos.solo_cfc
+		if (datos.ano) datos.ano = parseInt(datos.ano);
+		let [respuesta, anoNecesario] = epocaHechos(datos);
+		respuesta = !datos.solo_cfc
 			? "Necesitamos saber sobre su relación con la historia de la Iglesia"
 			: datos.solo_cfc == "1"
-			? datos.ano && !datos.ama
+			? anoNecesario && datos.ano && datos.ano > 1100 && !datos.ama
 				? "Necesitamos saber si es una aparición mariana"
 				: ""
 			: datos.solo_cfc != "0"
@@ -208,4 +186,36 @@ const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const seSalteoUnaEpoca = "Se deben elegir épocas consecutivas";
-const cartelAno = "Necesitamos saber el año";
+
+// Funciones
+let epocaHechos = (datos) => {
+	let contador = 0;
+	let respuesta = "";
+	let anoNecesario = false;
+	// Averigua la cantidad de épocas elegidas
+	let epocas = variables.epocasHechos;
+	let cantEpocas = epocas.length;
+	for (let epoca of epocas) if (datos[epoca]) contador++;
+	// 1. Averigua si no fue respondido
+	if (!contador) respuesta = variables.radioVacio;
+	// 2. Averigua si se eligieron 2 y se salteó una
+	else if (
+		contador == 2 && // Averigua si se eligieron dos
+		((datos[epocas[0]] && !datos[epocas[1]]) || // Averigua si se eligió la primera y se salteó la siguiente
+			(datos[epocas[cantEpocas - 1]] && !datos[epocas[cantEpocas - 2]])) // Averigua si se eligió la última y se salteó la anterior
+	)
+		respuesta = seSalteoUnaEpoca;
+	// 3. Averigua si se eligieron 3 y se salteó una
+	else if (
+		contador == 3 && // Averigua si se eligieron tres
+		datos[epocas[0]] &&
+		datos[epocas[cantEpocas - 1]] // Averigua si se eligió primera y la última
+	)
+		respuesta = seSalteoUnaEpoca;
+	// Averigua si hace falta el año
+	if (contador == 1 && datos.pst) anoNecesario = true;
+
+	// Fin
+	console.log(220);
+	return [respuesta, anoNecesario];
+};

@@ -127,9 +127,7 @@ window.addEventListener("load", async () => {
 				// 1. Obtiene los parámetros
 				let params = "?entidad=" + v.entidad;
 				if (v.id) params += "&id=" + v.id;
-				params += v.desconocida.checked
-					? "&dia=0"
-					: "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
+				params += v.desconocida.checked ? "&dia=0" : "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 				// 2. Busca otros casos con esa fecha
 				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
 
@@ -185,19 +183,12 @@ window.addEventListener("load", async () => {
 			let FN = (select, opciones) => {
 				select.innerHTML = "";
 				for (let opcion of opciones)
-					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2)
-						select.appendChild(opcion);
+					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2) select.appendChild(opcion);
 			};
 			// Opciones de 'Rol en la Iglesia'
 			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
 			// Opciones de 'Proceso de Canonización'
 			FN(v.proceso_id, v.opcionesProceso);
-
-			// Valida CFC
-			// 1. Se fija si el usuario ya eligió una categoria
-			let categoria_id = opcionElegida(v.categorias_id);
-			// 2. En caso afirmativo, muestra el error
-			if (categoria_id.value) await validacs.RCLIC.personajes();
 
 			// Fin
 			return;
@@ -213,10 +204,6 @@ window.addEventListener("load", async () => {
 				// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
 				if (epoca_id.value == "pst" && ano > 1100) v.sectorApMar.style.visibility = "inherit";
 				else v.sectorApMar.style.visibility = "hidden";
-
-				// Valida RCLIC
-				let categoria_id = opcionElegida(v.categorias_id);
-				if (categoria_id.value) await validacs.RCLIC.personajes();
 
 				// Fin
 				return;
@@ -234,10 +221,6 @@ window.addEventListener("load", async () => {
 				// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
 				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
 				else v.sectorApMar.classList.add("invisible");
-
-				// Valida RCLIC
-				let solo_cfc = opcionElegida(v.solo_cfc);
-				if (solo_cfc.value) await validacs.RCLIC.hechos();
 
 				// Fin
 				return;
@@ -298,8 +281,7 @@ window.addEventListener("load", async () => {
 		repetido: () => {
 			// Variables
 			let casos = document.querySelectorAll("#posiblesRepetidos li input");
-			let cartelDuplicado =
-				"Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+			let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 			// Errores y OK
 			v.errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 			v.OK.repetidos = !v.errores.repetidos;
@@ -322,24 +304,19 @@ window.addEventListener("load", async () => {
 		},
 		epoca: async () => {
 			// Variables
-			let campos = v.personajes ? v.epocas_id : v.epocas;
 			let params = "epoca&entidad=" + v.entidad;
-			let nombre, valor;
 
-			// Agrega cada opción elegida
-			for (let campo of campos) {
-				if (v.personajes) {
-					nombre = "epoca_id";
-					valor = campo.value;
-				} else if (v.hechos) {
-					nombre = campo.name;
-					valor = "on";
-				}
-				// Si el campo está chequeado, lo agrega a los parámetros
-				if (campo.checked) params += "&" + nombre + "=" + valor;
+			// Agrega los demás parámetros
+			if (v.personajes) {
+				let epoca_id = opcionElegida(v.epocas_id);
+				params += "&epoca_id=" + epoca_id.value;
+				if (epoca_id.value == "pst") params += "&ano=" + FN_ano(v.ano.value);
 			}
-			// Agrega el año
-			params += "&ano=" + ano.value;
+			if (v.hechos) {
+				// Si el campo está chequeado, lo agrega a los parámetros
+				for (let epoca of v.epocas) if (epoca.checked) params += "&" + epoca.name + "=on";
+				if (opcionElegida(v.epocas).name == "pst") params += "&ano=" + FN_ano(v.ano.value);
+			}
 
 			// OK y Errores
 			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
@@ -358,20 +335,21 @@ window.addEventListener("load", async () => {
 				let categoria_id = opcionElegida(v.categorias_id);
 				params += "&categoria_id=" + categoria_id.value;
 
-				// Obtiene el sexo_id
-				if (categoria_id) sexo_id = opcionElegida(v.sexos_id);
-				params += "&sexo_id=" + (sexo_id.value ? "on" : "");
+				if (categoria_id.value == "CFC") {
+					// Obtiene el sexo_id
+					if (categoria_id) sexo_id = opcionElegida(v.sexos_id);
+					params += "&sexo_id=" + (sexo_id.value ? "on" : "");
 
-				// Obtiene los valores de los camposCFC
-				if (sexo_id.value) {
-					// Agrega los datos de CFC
-					for (let campo of v.camposCFC)
-						if (campo.value) params += "&" + campo.name + "=" + campo.value;
-					// Agrega los datos de epoca_id y año
-					let epoca_id = opcionElegida(v.epocas_id);
-					let ano = FN_ano(v.ano.value);
-					params += "&epoca_id=" + epoca_id.value;
-					if (epoca_id.value == "pst" && ano > 1100) params += "&ano=on";
+					// Obtiene los valores de los camposCFC
+					if (sexo_id.value) {
+						// Agrega los datos de CFC
+						for (let campo of v.camposCFC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
+						// Agrega los datos de epoca_id y año
+						let epoca_id = opcionElegida(v.epocas_id);
+						params += "&epoca_id=" + epoca_id.value;
+						let ano = FN_ano(v.ano.value);
+						if (epoca_id.value == "pst") params += "&ano=" + ano;
+					}
 				}
 
 				// OK y Errores
@@ -389,16 +367,17 @@ window.addEventListener("load", async () => {
 				let solo_cfc = opcionElegida(v.solo_cfc);
 				params += "&solo_cfc=" + solo_cfc.value;
 
-				// Obtiene el 'solo_cfc'
-				let ama = opcionElegida(v.ama);
-				params += "&ama=" + ama.value;
+				if (solo_cfc.value == 1) {
+					// Obtiene los datos de época y año
+					let epoca = opcionElegida(v.epocas);
+					params += "&epoca=" + epoca.name;
 
-				// Agrega los datos de época y año
-				let epoca = opcionElegida(v.epocas);
-				params += "&epoca=" + epoca.name;
-
-				let ano = FN_ano(v.ano.value);
-				if (epoca.name == "pst" && ano > 1100) params += "&ano=on";
+					let ano = FN_ano(v.ano.value);
+					if (epoca.name == "pst") {
+						params += "&ano=" + ano;
+						if (ano > 1100) params += "&ama=" + opcionElegida(v.ama).value;
+					}
+				}
 
 				// OK y Errores
 				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
@@ -414,9 +393,7 @@ window.addEventListener("load", async () => {
 				? v.iconoOK[i].classList.remove("ocultar")
 				: v.iconoOK[i].classList.add("ocultar");
 			// Íconos de error
-			v.errores[v.camposError[i]]
-				? v.iconoError[i].classList.remove("ocultar")
-				: v.iconoError[i].classList.add("ocultar");
+			v.errores[v.camposError[i]] ? v.iconoError[i].classList.remove("ocultar") : v.iconoError[i].classList.add("ocultar");
 			// Mensaje de error
 			v.mensajeError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
 		},
@@ -443,23 +420,17 @@ window.addEventListener("load", async () => {
 			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
 
 			// 4. Valida el sexo
-			if (v.personajes && opcionElegida(v.sexos_id).name) await impactos.sexo();
-			if (v.personajes && opcionElegida(v.sexos_id).name) await this.sexo();
+			if (v.personajes && opcionElegida(v.sexos_id).value) await impactos.sexo();
+			if (v.personajes && opcionElegida(v.sexos_id).value) await this.sexo();
 
 			// 5. Valida la época
-			if (
-				(v.personajes && opcionElegida(v.epocas_id).name) ||
-				(v.hechos && opcionElegida(v.epocas).name)
-			) {
+			if ((v.personajes && opcionElegida(v.epocas_id).value) || (v.hechos && opcionElegida(v.epocas).name)) {
 				await impactos.epoca[v.entidad]();
 				await this.epoca();
 			}
 
 			// 6. Valida RCLIC
-			if (
-				(v.personajes && opcionElegida(v.categorias_id).name) ||
-				(v.hechos && opcionElegida(v.solo_cfc).name)
-			)
+			if ((v.personajes && opcionElegida(v.categorias_id).value) || (v.hechos && opcionElegida(v.solo_cfc).value))
 				await this.RCLIC[v.entidad]();
 
 			// Fin
@@ -538,14 +509,22 @@ window.addEventListener("load", async () => {
 		if (campo == "sexo_id") {
 			await impactos.sexo();
 			await validacs.sexo();
+			// Si corresponde, valida RCLIC
+			if (v.OK.sexo && opcionElegida(v.categorias_id).value == "CFC") validacs.RCLIC.personajes();
 		}
 		// 5. Acciones si se cambia el sector Época
 		if (v.camposEpoca.includes(campo)) {
-			// Si se eligió el checkbox "Posterior", pone el cursor en 'Año'
-			if (campo == "pst" || (campo == "epoca_id" && e.target.value == "pst")) v.ano.focus();
 			// Impacto y Validaciones
 			await impactos.epoca[v.entidad]();
 			await validacs.epoca();
+			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
+			if (v.personajes && e.target.value == "pst") v.ano.focus();
+			if (v.hechos && opcionElegida(v.epocas).name == "pst") v.ano.focus();
+			// Si corresponde, valida RCLIC
+			if (v.OK.epoca) {
+				if (v.personajes && opcionElegida(v.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
+				if (v.hechos && opcionElegida(v.solo_cfc).value == 1) await validacs.RCLIC.hechos();
+			}
 		}
 		// 6. Acciones si se cambia el sector RCLIC
 		if (v.camposRCLIC.includes(campo)) {

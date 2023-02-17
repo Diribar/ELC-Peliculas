@@ -22,8 +22,7 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "No tiene música"';
-		let cartelActores =
-			variables.inputVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"';
+		let cartelActores = variables.inputVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"';
 		let camposPosibles = [
 			{nombre: "nombre_original", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{
@@ -102,34 +101,16 @@ module.exports = {
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
-		if (
-			datos.ano_estreno &&
-			!errores.ano_estreno &&
-			datos.ano_fin &&
-			!errores.ano_fin &&
-			datos.ano_estreno > datos.ano_fin
-		) {
+		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin && datos.ano_estreno > datos.ano_fin) {
 			errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
 		// Nombre Original y Año de Estreno
-		if (
-			datos.nombre_original &&
-			!errores.nombre_original &&
-			datos.ano_estreno &&
-			!errores.ano_estreno &&
-			datos.entidad
-		) {
+		if (datos.nombre_original && !errores.nombre_original && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
 			let id = await BD_especificas.validaRepetidos(["nombre_original", "ano_estreno"], datos);
 			if (id) errores.nombre_original = comp.cartelRepetido({...datos, id});
 		}
 		// Nombre Castellano y Año de Estreno
-		if (
-			datos.nombre_castellano &&
-			!errores.nombre_castellano &&
-			datos.ano_estreno &&
-			!errores.ano_estreno &&
-			datos.entidad
-		) {
+		if (datos.nombre_castellano && !errores.nombre_castellano && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
 			let id = await BD_especificas.validaRepetidos(["nombre_castellano", "ano_estreno"], datos);
 			if (id) errores.nombre_castellano = comp.cartelRepetido({...datos, id});
 		}
@@ -142,16 +123,14 @@ module.exports = {
 	datosAdics: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["cfc", "ocurrio", "musical", "tipo_actuacion_id", "publico_id"];
+		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipo_actuacion_id", "publico_id"];
 		// Datos generales + calificación
-		for (let campo of camposPosibles)
-			if (campos.includes(campo)) errores[campo] = !datos[campo] ? variables.selectVacio : "";
+		for (let campo of camposPosibles) if (campos.includes(campo)) errores[campo] = !datos[campo] ? variables.selectVacio : "";
 
 		// RCLV - Combinados
 		if (datos.ocurrio) {
 			// Variables
-			let sinResponder =
-				(!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
+			let sinResponder = (!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
 			// Resultado
 			errores.RCLV =
 				// Acciones para 'no lo voy a responder por ahora'
@@ -220,9 +199,5 @@ let formatoAno = (dato) => {
 };
 let formatoNumero = (dato, minimo) => {
 	let formato = /^\d+$/;
-	return !formato.test(dato)
-		? "Debe ser un número"
-		: dato < minimo
-		? "Debe ser un número mayor a " + minimo
-		: "";
+	return !formato.test(dato) ? "Debe ser un número" : dato < minimo ? "Debe ser un número mayor a " + minimo : "";
 };
