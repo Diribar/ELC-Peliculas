@@ -44,8 +44,7 @@ window.addEventListener("load", async () => {
 			let campo = e.target.name;
 			// Obtiene la columna y fila del input
 			let columna = v.camposInput.indexOf(campo);
-			for (var fila = 0; fila < filas; fila++)
-				if (e.target === v.inputs[fila * columnas + columna]) break;
+			for (var fila = 0; fila < filas; fila++) if (e.target === v.inputs[fila * columnas + columna]) break;
 			return [fila, columna];
 		},
 		depuraUrl: () => {
@@ -54,12 +53,10 @@ window.addEventListener("load", async () => {
 			// Obtiene ambos índices
 			let indice1 = valor.indexOf("www.");
 			let indice2 = valor.indexOf("//");
-			let url =
-				indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
+			let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
 			// Si es YOUTUBE, quitarle el sufijo
-			if (url.startsWith("youtube.com") && url.includes("&t="))
-				url = url.slice(0, url.lastIndexOf("&t="));
+			if (url.startsWith("youtube.com") && url.includes("&t=")) url = url.slice(0, url.lastIndexOf("&t="));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
 			if (url.startsWith("ver.formed.lat")) {
@@ -132,10 +129,7 @@ window.addEventListener("load", async () => {
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion =
-				(prov.trailer && !prov.pelicula) ||
-				prov.siempre_completa ||
-				v.colecciones ||
-				v.tipoInputs[fila].value == 1;
+				(prov.trailer && !prov.pelicula) || prov.siempre_completa || v.colecciones || v.tipoInputs[fila].value == 1;
 			if (condicion) v.completoInputs[fila].value = "1";
 			v.completoInputs[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
@@ -187,9 +181,7 @@ window.addEventListener("load", async () => {
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
 				.every((n) => n.includes("ocultar"));
-			OK && error
-				? v.guardar[fila].classList.remove("inactivo")
-				: v.guardar[fila].classList.add("inactivo");
+			OK && error ? v.guardar[fila].classList.remove("inactivo") : v.guardar[fila].classList.add("inactivo");
 		},
 	};
 	// Sub-funciones ------------------------------------------------------------
@@ -263,12 +255,8 @@ window.addEventListener("load", async () => {
 		// Reemplaza el mensaje
 		v.mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error
-		mensaje
-			? v.iconosError[indice].classList.remove("ocultar")
-			: v.iconosError[indice].classList.add("ocultar");
-		!mensaje
-			? v.iconosOK[indice].classList.remove("ocultar")
-			: v.iconosOK[indice].classList.add("ocultar");
+		mensaje ? v.iconosError[indice].classList.remove("ocultar") : v.iconosError[indice].classList.add("ocultar");
+		!mensaje ? v.iconosOK[indice].classList.remove("ocultar") : v.iconosOK[indice].classList.add("ocultar");
 		return error;
 	};
 
