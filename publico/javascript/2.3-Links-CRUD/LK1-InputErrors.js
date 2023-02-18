@@ -73,7 +73,30 @@ window.addEventListener("load", async () => {
 		controlesEnUrl: async (fila) => {
 			// Detectar errores y aplicar consecuencias
 			let error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
-			return !error || !error.url;
+			let sinErrores = !error || !error.url;
+
+			// Obtiene el proveedor
+			if (sinErrores) {
+				// Obtiene el url
+				let url = v.urlInputs[fila].value;
+				// Intenta reconocer al proveedor
+				prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+				// Si no lo reconoce, se asume el 'desconocido'
+				prov = prov ? prov : provs.find((n) => n.generico);
+				// Acciones si es la fila de altas
+				if (fila == filaAlta) {
+					// Muestra el ícono de genérico o de OK
+					prov.generico
+						? v.provsDesconocido[filaAlta].classList.remove("prov_id")
+						: v.provsDesconocido[filaAlta].classList.add("prov_id");
+					!prov.generico
+						? v.provsConocido[filaAlta].classList.remove("prov_id")
+						: v.provsConocido[filaAlta].classList.add("prov_id");
+				}
+			} else prov = null;
+
+			// Fin
+			return sinErrores;
 		},
 		controlesEnCalidad: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
@@ -187,33 +210,13 @@ window.addEventListener("load", async () => {
 	};
 	// Sub-funciones ------------------------------------------------------------
 	let controlesDataEntry = async (fila, columna) => {
-		// Función
-		let obtieneProveedor = (fila) => {
-			// Obtiene el url
-			let url = v.urlInputs[fila].value;
-			// Intenta reconocer al proveedor
-			let prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
-			// Si no lo reconoce, se asume el 'desconocido'
-			prov = prov ? prov : provs.find((n) => n.generico);
-			// Acciones si es la fila de altas
-			if (fila == filaAlta) {
-				// Muestra el ícono de genérico o de OK
-				prov.generico
-					? v.provsDesconocido[filaAlta].classList.remove("prov_id")
-					: v.provsDesconocido[filaAlta].classList.add("prov_id");
-				!prov.generico
-					? v.provsConocido[filaAlta].classList.remove("prov_id")
-					: v.provsConocido[filaAlta].classList.add("prov_id");
-			}
-			return prov;
-		};
 		// Barre el contenido de izquierda a derecha
 		let OK = true;
 		let autofocus = false;
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
+			if (!OK) break;
 			if (!col && OK) OK = await fn.controlesEnUrl(fila);
-			if (!col && OK) prov = obtieneProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, prov);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, prov);
 			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
