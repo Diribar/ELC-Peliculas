@@ -4,8 +4,13 @@ global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
-require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
+require("dotenv").config();
+const comp = require("./funciones/3-Procesos/Compartidas");
+// Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
+// Averigua la fecha de la 'Línea de Cambio de Fecha'
+global.horarioLCF = null;
+comp.horarioLCF();
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
@@ -79,8 +84,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 // Procesos que requieren de 'async' y 'await'
 (async () => {
-	// ************** Lectura de la base de datos ****************
-	// Requires
+	// Lectura de la base de datos 
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	const BD_especificas = require("./funciones/2-BD/Especificas");
 	let campos = {
@@ -112,7 +116,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	valores = await Promise.all(valores);
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
-	// ******** Variables que dependen de las lecturas **********
+	// Variables que dependen de las lecturas de BD
 	// Status
 	global.creado_id = global.status_registro.find((n) => n.creado).id;
 	global.creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
@@ -124,12 +128,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
 
-	// ********************** Funciones *****************************
-	// Requires
-	const comp = require("./funciones/3-Procesos/Compartidas");
-	// Averigua la fecha de la 'Línea de Cambio de Fecha'
-	global.horarioLCF = null;
-	comp.horarioLCF();
+	// Procesos que dependen de las lecturas de BD 
 	// Ejecuta las tareas diarias
 	global.tituloImgDerAyer = null;
 	global.tituloImgDerHoy = null;
@@ -138,8 +137,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	const cron = require("node-cron");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
-	// ************************ urls *******************************
-	// Es crítico que esto esté después del 'await' de 'global'
+	// Urls que dependen de las lecturas de BD 
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
@@ -152,13 +150,8 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
 
-	// ************************ Errores *******************************
-	app.use((req, res) => {
-		const variables = require("./funciones/3-Procesos/Variables");
-		let informacion = {
-			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
-		};
-		res.status(404).render("CMP-0Estructura", {informacion});
-	});
+	// Middleware que se debe informar después de los urls anteriores
+	// Mensaje si un usuario usa un url desconocido
+	const urlDescon = require("./middlewares/varios/urlDescon");
+	app.use(urlDescon);
 })();
