@@ -108,7 +108,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 	};
 	// Procesa todas las lecturas
-	valores = Object.values(campos);
+	let valores = Object.values(campos);
 	valores = await Promise.all(valores);
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
