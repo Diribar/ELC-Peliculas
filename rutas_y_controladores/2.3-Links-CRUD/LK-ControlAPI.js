@@ -15,9 +15,8 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtieneProvs: async (req, res) => {
-		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
-		return res.json(provs);
+	obtieneProvs: (req, res) => {
+		return res.json(links_provs);
 	},
 	guardar: async (req, res) => {
 		// Variables

@@ -35,9 +35,9 @@ module.exports = {
 		datos[producto_id] = datos.prodID;
 
 		// Obtiene el proveedor
-		let proveedor = proveedores.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));
+		let proveedor = links_provs.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));
 		// Si no se reconoce el proveedor, se asume el 'desconocido'
-		proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
+		proveedor = proveedor ? proveedor : links_provs.find((n) => n.generico);
 		datos.prov_id = proveedor.id;
 
 		// Particularidades

@@ -84,7 +84,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 // Procesos que requieren de 'async' y 'await'
 (async () => {
-	// Lectura de la base de datos 
+	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	const BD_especificas = require("./funciones/2-BD/Especificas");
 	let campos = {
@@ -93,6 +93,9 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
 		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+		links_provs: BD_genericas.obtieneTodos("links_provs", "nombre"),
+		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+
 		// Consultas - Filtro Personalizado
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		// Consultas - Complementos de RCLV
@@ -107,8 +110,6 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
-		link_pelicula_id: BD_especificas.obtieneELC_id("links_tipos", {pelicula: true}),
-		proveedores: BD_genericas.obtieneTodos("links_provs", "nombre"),
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 	};
 	// Procesa todas las lecturas
@@ -127,8 +128,9 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
+	link_pelicula_id = links_tipos.find((n) => n.pelicula);
 
-	// Procesos que dependen de las lecturas de BD 
+	// Procesos que dependen de las lecturas de BD
 	// Ejecuta las tareas diarias
 	global.tituloImgDerAyer = null;
 	global.tituloImgDerHoy = null;
@@ -137,7 +139,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	const cron = require("node-cron");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
-	// Urls que dependen de las lecturas de BD 
+	// Urls que dependen de las lecturas de BD
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
