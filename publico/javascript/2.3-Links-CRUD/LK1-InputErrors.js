@@ -143,7 +143,7 @@ window.addEventListener("load", async () => {
 		controlesEnTipo: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = !prov.trailer || !prov.pelicula || v.colecciones;
-			if (condicion) v.tipoInputs[fila].value = !prov.pelicula ? 1 : 2;
+			if (condicion) v.tipoInputs[fila].value = !prov.pelicula || v.colecciones ? 1 : 2;
 			if (fila == filaAlta) v.tipoInputs[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
 			let error = await mensajeDeError(fila, "tipo_id");
