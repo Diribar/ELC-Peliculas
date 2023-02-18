@@ -36,6 +36,7 @@ window.addEventListener("load", async () => {
 	let filas = v.inputs.length / columnas;
 	let filaAlta = filas - 1;
 	let provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
+	let prov;
 
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
@@ -44,8 +45,7 @@ window.addEventListener("load", async () => {
 			let campo = e.target.name;
 			// Obtiene la columna y fila del input
 			let columna = v.camposInput.indexOf(campo);
-			for (var fila = 0; fila < filas; fila++)
-				if (e.target === v.inputs[fila * columnas + columna]) break;
+			for (var fila = 0; fila < filas; fila++) if (e.target === v.inputs[fila * columnas + columna]) break;
 			return [fila, columna];
 		},
 		depuraUrl: () => {
@@ -54,12 +54,10 @@ window.addEventListener("load", async () => {
 			// Obtiene ambos índices
 			let indice1 = valor.indexOf("www.");
 			let indice2 = valor.indexOf("//");
-			let url =
-				indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
+			let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
 			// Si es YOUTUBE, quitarle el sufijo
-			if (url.startsWith("youtube.com") && url.includes("&t="))
-				url = url.slice(0, url.lastIndexOf("&t="));
+			if (url.startsWith("youtube.com") && url.includes("&t=")) url = url.slice(0, url.lastIndexOf("&t="));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
 			if (url.startsWith("ver.formed.lat")) {
@@ -75,7 +73,30 @@ window.addEventListener("load", async () => {
 		controlesEnUrl: async (fila) => {
 			// Detectar errores y aplicar consecuencias
 			let error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
-			return !error || !error.url;
+			let sinErrores = !error || !error.url;
+
+			// Obtiene el proveedor
+			if (sinErrores) {
+				// Obtiene el url
+				let url = v.urlInputs[fila].value;
+				// Intenta reconocer al proveedor
+				prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+				// Si no lo reconoce, se asume el 'desconocido'
+				prov = prov ? prov : provs.find((n) => n.generico);
+				// Acciones si es la fila de altas
+				if (fila == filaAlta) {
+					// Muestra el ícono de genérico o de OK
+					prov.generico
+						? v.provsDesconocido[filaAlta].classList.remove("prov_id")
+						: v.provsDesconocido[filaAlta].classList.add("prov_id");
+					!prov.generico
+						? v.provsConocido[filaAlta].classList.remove("prov_id")
+						: v.provsConocido[filaAlta].classList.add("prov_id");
+				}
+			} else prov = null;
+
+			// Fin
+			return sinErrores;
 		},
 		controlesEnCalidad: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
@@ -132,10 +153,7 @@ window.addEventListener("load", async () => {
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion =
-				(prov.trailer && !prov.pelicula) ||
-				prov.siempre_completa ||
-				v.colecciones ||
-				v.tipoInputs[fila].value == 1;
+				(prov.trailer && !prov.pelicula) || prov.siempre_completa || v.colecciones || v.tipoInputs[fila].value == 1;
 			if (condicion) v.completoInputs[fila].value = "1";
 			v.completoInputs[fila].disabled = condicion;
 			// Detectar errores y aplicar consecuencias
@@ -187,41 +205,18 @@ window.addEventListener("load", async () => {
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
 				.every((n) => n.includes("ocultar"));
-			OK && error
-				? v.guardar[fila].classList.remove("inactivo")
-				: v.guardar[fila].classList.add("inactivo");
+			OK && error ? v.guardar[fila].classList.remove("inactivo") : v.guardar[fila].classList.add("inactivo");
 		},
 	};
 	// Sub-funciones ------------------------------------------------------------
 	let controlesDataEntry = async (fila, columna) => {
-		// Función
-		let obtieneProveedor = (fila) => {
-			// Obtiene el url
-			let url = v.urlInputs[fila].value;
-			// Intenta reconocer al proveedor
-			let prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
-			// Si no lo reconoce, se asume el 'desconocido'
-			prov = prov ? prov : provs.find((n) => n.generico);
-			// Acciones si es la fila de altas
-			if (fila == filaAlta) {
-				// Muestra el ícono de genérico o de OK
-				prov.generico
-					? v.provsDesconocido[filaAlta].classList.remove("prov_id")
-					: v.provsDesconocido[filaAlta].classList.add("prov_id");
-				!prov.generico
-					? v.provsConocido[filaAlta].classList.remove("prov_id")
-					: v.provsConocido[filaAlta].classList.add("prov_id");
-			}
-			return prov;
-		};
 		// Barre el contenido de izquierda a derecha
 		let OK = true;
 		let autofocus = false;
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
-			let prov;
+			if (!OK) break;
 			if (!col && OK) OK = await fn.controlesEnUrl(fila);
-			if (OK) prov = obtieneProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, prov);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, prov);
 			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
@@ -263,12 +258,8 @@ window.addEventListener("load", async () => {
 		// Reemplaza el mensaje
 		v.mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error
-		mensaje
-			? v.iconosError[indice].classList.remove("ocultar")
-			: v.iconosError[indice].classList.add("ocultar");
-		!mensaje
-			? v.iconosOK[indice].classList.remove("ocultar")
-			: v.iconosOK[indice].classList.add("ocultar");
+		mensaje ? v.iconosError[indice].classList.remove("ocultar") : v.iconosError[indice].classList.add("ocultar");
+		!mensaje ? v.iconosOK[indice].classList.remove("ocultar") : v.iconosOK[indice].classList.add("ocultar");
 		return error;
 	};
 
