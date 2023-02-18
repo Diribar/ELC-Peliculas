@@ -134,8 +134,8 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	const cron = require("node-cron");
 	global.tituloImgDerAyer = null;
 	global.tituloImgDerHoy = null;
-	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 	await comp.tareasDiarias();
+	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
 	// ************************ urls *******************************
 	// Es crítico que esto esté después del 'await' de 'global'
