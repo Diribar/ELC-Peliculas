@@ -72,7 +72,7 @@
 			<%- include("CR-Flechas") %>
 		<% } %>
 		<div class="flechas img">
-			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
+			<% for (let prov of links_provs.filter(n => n.buscador_automatico)) { %>
 				<a 
 					href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
 					target="_blank"
