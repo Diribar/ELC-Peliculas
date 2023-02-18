@@ -74,6 +74,7 @@ window.addEventListener("load", async () => {
 			// Detecta errores y aplica consecuencia
 			let error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
 			sinErrores = !error || !error.url;
+			if (sinErrores) col++;
 
 			// Obtiene el proveedor
 			if (sinErrores) {
@@ -96,7 +97,6 @@ window.addEventListener("load", async () => {
 			} else prov = null;
 
 			// Fin
-			if (sinErrores) col++;
 			return;
 		},
 		controlesEnCalidad: async (fila, prov) => {
