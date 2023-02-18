@@ -36,6 +36,7 @@ window.addEventListener("load", async () => {
 	let filas = v.inputs.length / columnas;
 	let filaAlta = filas - 1;
 	let provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
+	let prov;
 
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
@@ -211,9 +212,8 @@ window.addEventListener("load", async () => {
 		let autofocus = false;
 		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
-			let prov;
 			if (!col && OK) OK = await fn.controlesEnUrl(fila);
-			if (OK) prov = obtieneProveedor(fila);
+			if (!col && OK) prov = obtieneProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, prov);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, prov);
 			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
