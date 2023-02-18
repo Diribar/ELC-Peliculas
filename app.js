@@ -2,15 +2,7 @@
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
-global.horarioLCF = null;
-global.localhost = "//localhost";
-
-// Averigua los títulos de la imagen de ayer y hoy
-const fs = require("fs");
-let rutaNombre = "./funciones/3-Procesos/fecha.json";
-let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
-global.tituloImgDerAyer = datos.tituloImgDerAyer;
-global.tituloImgDerHoy = datos.tituloImgDerHoy;
+global.localhost = "//localhost"; //
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -87,11 +79,8 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 // Variables que usan funciones
 (async () => {
-	// Averigua la fecha de la 'Línea de Cambio de Fecha'
-	const comp = require("./funciones/3-Procesos/Compartidas");
-	comp.horarioLCF();
-
-	// Completa el objeto 'global'
+	// ************** Lectura de la base de datos ****************
+	// Requires
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	const BD_especificas = require("./funciones/2-BD/Especificas");
 	let campos = {
@@ -118,11 +107,12 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		proveedores: BD_genericas.obtieneTodos("links_provs", "nombre"),
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 	};
-	// Espera a que todas se procesen y consolida la info
-	let valores = Object.values(campos);
+	// Procesa todas las lecturas
+	valores = Object.values(campos);
 	valores = await Promise.all(valores);
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
+	// ******** Variables que dependen de las lecturas **********
 	// Status
 	global.creado_id = global.status_registro.find((n) => n.creado).id;
 	global.creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
@@ -130,19 +120,25 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
-
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
 
-	// Tareas posteriores
+	// ********************** Funciones *****************************
+	// Requires
+	const comp = require("./funciones/3-Procesos/Compartidas");
+	// Averigua la fecha de la 'Línea de Cambio de Fecha'
+	global.horarioLCF = null;
+	comp.horarioLCF();
 	// Dispara tareas en cierto horario
-	var cron = require("node-cron");
-	// 1. Tareas a realizar a la hora 00:00:01 de GMT-12
+	const cron = require("node-cron");
+	global.tituloImgDerAyer;
+	global.tituloImgDerHoy;
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-	comp.tareasDiarias();
+	await comp.tareasDiarias();
 
-	// urls --> es crítico que esto esté después del 'await' de 'global'
+	// ************************ urls *******************************
+	// Es crítico que esto esté después del 'await' de 'global'
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
