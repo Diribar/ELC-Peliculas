@@ -5,7 +5,7 @@ global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el pro
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-global.localhost =  process.env.localhost;
+global.localhost = process.env.localhost;
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
@@ -132,8 +132,8 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	comp.horarioLCF();
 	// Dispara tareas en cierto horario
 	const cron = require("node-cron");
-	global.tituloImgDerAyer;
-	global.tituloImgDerHoy;
+	global.tituloImgDerAyer = null;
+	global.tituloImgDerHoy = null;
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 	await comp.tareasDiarias();
 
