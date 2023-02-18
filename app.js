@@ -116,6 +116,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		link_pelicula_id: BD_especificas.obtieneELC_id("links_tipos", {pelicula: true}),
 		proveedores: BD_genericas.obtieneTodos("links_provs", "nombre"),
+		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 	};
 	// Espera a que todas se procesen y consolida la info
 	let valores = Object.values(campos);
