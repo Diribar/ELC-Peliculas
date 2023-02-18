@@ -33,14 +33,14 @@ module.exports = {
 	// DesambiguarForm
 	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
 		// Toma los datos de la colección
-		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
+		let {cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id} = datosCol;
 		// Prepara los datos del capítulo
 		let datosCap = {
 			coleccion_id: datosCol.id,
 			temporada: 1,
 			capitulo: indice + 1,
 			creado_por_id: 2,
-			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
+			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
 		};
 		// Guarda los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
@@ -233,11 +233,11 @@ module.exports = {
 
 		// Datos de la colección
 		let {direccion, guion, musica, produccion} = datosCol;
-		let {cfc, ocurrio, musical, tipo_actuacion_id, publico_id} = datosCol;
+		let {cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id} = datosCol;
 		datos = {
 			...datos,
 			...{direccion, guion, musica, produccion},
-			...{cfc, ocurrio, musical, tipo_actuacion_id, publico_id},
+			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
 		};
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
@@ -317,8 +317,8 @@ module.exports = {
 		// Valores para los grupos
 		for (let personaje of personajes) {
 			// Clase
-			personaje.clase = personaje.categoria_id ? personaje.categoria_id : 'CFC VPC' 
-			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id
+			personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
+			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id;
 
 			// Si tiene 'rol_iglesia_id'
 			if (personaje.rol_iglesia_id) {
@@ -376,7 +376,7 @@ module.exports = {
 			// Variables
 			let OK = false;
 			hecho.clase = "CFC ";
-			if (!hecho.solo_cfc) hecho.clase += 'VPC '
+			if (!hecho.solo_cfc) hecho.clase += "VPC ";
 
 			// Apariciones Marianas
 			if (hecho.ama) {
