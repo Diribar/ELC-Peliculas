@@ -29,22 +29,17 @@ module.exports = {
 		// Fin
 		return links;
 	},
-	datosLink: async (datos) => {
+	datosLink: (datos) => {
 		// Datos del producto
 		let producto_id = comp.obtieneEntidad_idDesdeEntidad(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
-		// Datos del proveedor
-		let prov_id;
-		(async () => {
-			// Obtiene el proveedor
-			let proveedores = await BD_genericas.obtieneTodos("links_provs", "nombre");
-			// Busca el proveedor por lo distintivo de su 'url'
-			let proveedor = proveedores.find((n) => datos.url.includes(n.url_distintivo));
-			// Si no se reconoce el proveedor, se asume el 'desconocido'
-			proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
-			prov_id = proveedor.id;
-		})();
-		datos.prov_id = prov_id;
+
+		// Obtiene el proveedor
+		let proveedor = links_provs.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));
+		// Si no se reconoce el proveedor, se asume el 'desconocido'
+		proveedor = proveedor ? proveedor : links_provs.find((n) => n.generico);
+		datos.prov_id = proveedor.id;
+
 		// Particularidades
 		if (datos.castellano == "1") datos.subtit_castellano = null;
 		if (datos.tipo_id == "1") datos.completo = 1;

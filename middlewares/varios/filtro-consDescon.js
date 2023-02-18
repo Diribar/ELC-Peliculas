@@ -6,10 +6,10 @@ module.exports = async (req, res, next) => {
 	// Variables
 	let layoutElegido = req.path.replace("/", "");
 
-	// Acciones si la opción elegida no existe
+	// Acciones si no se reconoce la consulta elegida
 	if (!variables.layouts.find((n) => n.url == layoutElegido)) {
 		let informacion = {
-			mensajes: ["No tenemos esa dirección de url en nuestro sistema"],
+			mensajes: [variables.urlDesconocida],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 		};
 		return res.render("CMP-0Estructura", {informacion});

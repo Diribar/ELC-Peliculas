@@ -400,8 +400,6 @@ module.exports = {
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
-		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
@@ -421,8 +419,8 @@ module.exports = {
 			producto,
 			prodOrig: producto,
 			links,
-			provs,
-			links_tipos: linksTipos,
+			links_provs,
+			links_tipos,
 			avatar,
 			motivos,
 			calidades: variables.calidades,

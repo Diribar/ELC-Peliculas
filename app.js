@@ -1,23 +1,21 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
+// Variables de tiempo
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
-global.horarioLCF = null;
-global.localhost = "//localhost";
-
-// Averigua los títulos de la imagen de ayer y hoy
-const fs = require("fs");
-let rutaNombre = "./funciones/3-Procesos/fecha.json";
-let datos = JSON.parse(fs.readFileSync(rutaNombre, "utf8"));
-global.tituloImgDerAyer = datos.tituloImgDerAyer;
-global.tituloImgDerHoy = datos.tituloImgDerHoy;
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
-require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-const path = require("path");
+// Para usar el archivo '.env' --> se debe colocar al principio
+require("dotenv").config();
+global.localhost = process.env.localhost;
+// Variable de fecha de la 'Línea de Cambio de Fecha'
+global.horarioLCF = null;
+const comp = require("./funciones/3-Procesos/Compartidas");
+comp.horarioLCF();
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
+const path = require("path");
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
@@ -85,13 +83,9 @@ const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
 const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
-// Variables que usan funciones
+// Procesos que requieren de 'async' y 'await'
 (async () => {
-	// Averigua la fecha de la 'Línea de Cambio de Fecha'
-	const comp = require("./funciones/3-Procesos/Compartidas");
-	comp.horarioLCF();
-
-	// Completa el objeto 'global'
+	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	const BD_especificas = require("./funciones/2-BD/Especificas");
 	let campos = {
@@ -100,6 +94,9 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
 		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+		links_provs: BD_genericas.obtieneTodos("links_provs", "nombre"),
+		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+
 		// Consultas - Filtro Personalizado
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		// Consultas - Complementos de RCLV
@@ -114,13 +111,14 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
-		link_pelicula_id: BD_especificas.obtieneELC_id("links_tipos", {pelicula: true}),
+		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 	};
-	// Espera a que todas se procesen y consolida la info
+	// Procesa todas las lecturas
 	let valores = Object.values(campos);
 	valores = await Promise.all(valores);
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
+	// Variables que dependen de las lecturas de BD
 	// Status
 	global.creado_id = global.status_registro.find((n) => n.creado).id;
 	global.creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
@@ -128,19 +126,21 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
-
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
+	link_pelicula_id = links_tipos.find((n) => n.pelicula);
 
-	// Tareas posteriores
+	// Procesos que dependen de las lecturas de BD
+	// Ejecuta las tareas diarias
+	global.tituloImgDerAyer = null;
+	global.tituloImgDerHoy = null;
+	await comp.tareasDiarias();
 	// Dispara tareas en cierto horario
-	var cron = require("node-cron");
-	// 1. Tareas a realizar a la hora 00:00:01 de GMT-12
+	const cron = require("node-cron");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
-	comp.tareasDiarias();
 
-	// urls --> es crítico que esto esté después del 'await' de 'global'
+	// Urls que dependen de las lecturas de BD
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
@@ -153,13 +153,8 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
 
-	// ************************ Errores *******************************
-	app.use((req, res) => {
-		const variables = require("./funciones/3-Procesos/Variables");
-		let informacion = {
-			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
-		};
-		res.status(404).render("CMP-0Estructura", {informacion});
-	});
+	// Middleware que se debe informar después de los urls anteriores
+	// Mensaje si un usuario usa un url desconocido
+	const urlDescon = require("./middlewares/varios/urlDescon");
+	app.use(urlDescon);
 })();

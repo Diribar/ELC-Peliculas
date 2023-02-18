@@ -15,16 +15,15 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-	obtieneProvs: async (req, res) => {
-		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
-		return res.json(provs);
+	obtieneProvs: (req, res) => {
+		return res.json(links_provs);
 	},
 	guardar: async (req, res) => {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		// Completa y procesa la info
-		datos = await procesos.datosLink(datos);
+		datos = procesos.datosLink(datos);
 		let mensaje;
 
 		// Obtiene el link
@@ -33,7 +32,7 @@ module.exports = {
 		// Si el link no existía, lo crea
 		if (!link) {
 			datos.creado_por_id = userID;
-			await BD_genericas.agregaRegistro("links", datos);
+			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.cambioDeStatus("links", link.id); // No hace falta el 'await', el proceso no espera un resultado
 			mensaje = "Link creado";
 		}

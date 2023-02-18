@@ -26,8 +26,6 @@ module.exports = {
 		let producto = {...prodOrig, ...prodEdic, id: prodID};
 		// Obtiene información de BD
 		let links = await procesos.obtieneLinksActualizados(prodEntidad, prodID, userID);
-		let provs = await BD_genericas.obtieneTodos("links_provs", "orden");
-		let linksTipos = await BD_genericas.obtieneTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
 		let prodNombre = comp.obtieneEntidadNombre(prodEntidad);
@@ -55,10 +53,10 @@ module.exports = {
 			prodID,
 			userID,
 			titulo,
-			links,
-			provs,
 			producto,
-			links_tipos: linksTipos,
+			links,
+			links_provs,
+			links_tipos,
 			vista: req.baseUrl + req.path,
 			title: producto.nombre_castellano,
 			calidades: variables.calidades,

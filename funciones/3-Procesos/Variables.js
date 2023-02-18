@@ -21,6 +21,7 @@ module.exports = {
 			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
 		},
 	],
+
 	// Consulta de Productos
 	layouts: [
 		{nombre: "Listado de Imágenes", url: "listado"},
@@ -476,6 +477,7 @@ module.exports = {
 	inputVacio: "Necesitamos que completes este campo",
 	selectVacio: "Necesitamos que elijas un valor",
 	radioVacio: "Necesitamos que elijas alguna opción",
+	urlDesconocida: "No tenemos esa dirección de url en nuestro sistema",
 
 	// Links a vistas
 	vistaInicio: {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
