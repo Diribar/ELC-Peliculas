@@ -130,11 +130,12 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	// Averigua la fecha de la 'Línea de Cambio de Fecha'
 	global.horarioLCF = null;
 	comp.horarioLCF();
-	// Dispara tareas en cierto horario
-	const cron = require("node-cron");
+	// Ejecuta las tareas diarias
 	global.tituloImgDerAyer = null;
 	global.tituloImgDerHoy = null;
 	await comp.tareasDiarias();
+	// Dispara tareas en cierto horario
+	const cron = require("node-cron");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
 	// ************************ urls *******************************
