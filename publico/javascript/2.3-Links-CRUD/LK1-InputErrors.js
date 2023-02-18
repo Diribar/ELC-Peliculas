@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 	let filas = v.inputs.length / columnas;
 	let filaAlta = filas - 1;
 	let provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
-	let prov;
+	let prov, col;
 
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 			return url;
 		},
 		controlesEnUrl: async (fila) => {
-			// Detectar errores y aplicar consecuencias
+			// Detecta errores y aplica consecuencia
 			let error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
 			let sinErrores = !error || !error.url;
 
@@ -96,6 +96,7 @@ window.addEventListener("load", async () => {
 			} else prov = null;
 
 			// Fin
+			if (sinErrores) col++;
 			return sinErrores;
 		},
 		controlesEnCalidad: async (fila, prov) => {
@@ -103,30 +104,42 @@ window.addEventListener("load", async () => {
 			let condicion = !!prov.calidad;
 			if (condicion) v.calidadInputs[fila].value = prov.calidad;
 			if (fila == filaAlta) v.calidadInputs[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencias
 			let error = await mensajeDeError(fila, "calidad");
+			let sinErrores = !error || !error.calidad;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.calidad;
+			return sinErrores;
 		},
 		controlesEnCastellano: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = prov.siempre_castellano == 1;
 			if (condicion) v.castellanoInputs[fila].value = "1";
 			if (fila == filaAlta) v.castellanoInputs[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "castellano");
+			let sinErrores = !error || !error.castellano;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.castellano;
+			return sinErrores;
 		},
 		controlesEnSubtitulosCastellano: async (fila) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = v.castellanoInputs[fila].value == "1";
 			if (condicion) v.subtit_castellano[fila].value = "-";
 			v.subtit_castellano[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "subtit_castellano");
+			let sinErrores = !error || !error.subtit_castellano;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.subtit_castellano;
+			return sinErrores;
 		},
 		controlesEnGratuito: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
@@ -135,20 +148,28 @@ window.addEventListener("load", async () => {
 			if (condicion1) v.gratuitoInputs[fila].value = "1";
 			else if (condicion2) v.gratuitoInputs[fila].value = "0";
 			if (fila == filaAlta) v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "gratuito");
+			let sinErrores = !error || !error.gratuito;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.gratuito;
+			return sinErrores;
 		},
 		controlesEnTipo: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = !prov.trailer || !prov.pelicula || v.colecciones;
 			if (condicion) v.tipoInputs[fila].value = !prov.pelicula || v.colecciones ? 1 : 2;
 			if (fila == filaAlta) v.tipoInputs[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "tipo_id");
+			let sinErrores = !error || !error.tipo_id;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.tipo_id;
+			return sinErrores;
 		},
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
@@ -156,10 +177,14 @@ window.addEventListener("load", async () => {
 				(prov.trailer && !prov.pelicula) || prov.siempre_completa || v.colecciones || v.tipoInputs[fila].value == 1;
 			if (condicion) v.completoInputs[fila].value = "1";
 			v.completoInputs[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "completo");
+			let sinErrores = !error || !error.completo;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.completo;
+			return sinErrores;
 		},
 		controlesEnParte: async (fila) => {
 			// Eliminar los caracteres que no sean '-' o un número
@@ -168,10 +193,14 @@ window.addEventListener("load", async () => {
 			let condicion = v.completoInputs[fila].value == "1";
 			if (condicion) v.parteInputs[fila].value = "-";
 			v.parteInputs[fila].disabled = condicion;
-			// Detectar errores y aplicar consecuencias
+
+			// Detecta errores y aplica consecuencia
 			let error = await mensajeDeError(fila, "parte");
+			let sinErrores = !error || !error.parte;
+			if (sinErrores) col++;
+
 			// Fin
-			return !error || !error.parte;
+			return sinErrores;
 		},
 		actualizaFormato: (fila, columna) => {
 			// Barre el formato de izquierda a derecha
@@ -196,7 +225,7 @@ window.addEventListener("load", async () => {
 			}
 			return;
 		},
-		activarInactivarbotonGuardar: (fila) => {
+		activaInactivabotonGuardar: (fila) => {
 			let OK = Array.from(v.iconosOK)
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
@@ -212,30 +241,22 @@ window.addEventListener("load", async () => {
 	let controlesDataEntry = async (fila, columna) => {
 		// Barre el contenido de izquierda a derecha
 		let OK = true;
-		let autofocus = false;
-		let focoEnColumna;
-		for (let col = columna; col < columnas; col++) {
-			if (!OK) break;
-			if (!col && OK) OK = await fn.controlesEnUrl(fila);
-			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, prov);
-			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, prov);
-			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
-			if (col == 4 && OK) OK = await fn.controlesEnGratuito(fila, prov);
-			if (col == 5 && OK) OK = await fn.controlesEnTipo(fila, prov);
-			if (col == 6 && OK) OK = await fn.controlesEnCompleto(fila, prov);
-			if (col == 7 && OK) OK = await fn.controlesEnParte(fila);
-			if (!OK && !autofocus) {
-				autofocus = true;
-				focoEnColumna = col;
-			}
-		}
-
+		col = columna;
+		if (!col && OK) OK = await fn.controlesEnUrl(fila);
+		if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, prov);
+		if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, prov);
+		if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
+		if (col == 4 && OK) OK = await fn.controlesEnGratuito(fila, prov);
+		if (col == 5 && OK) OK = await fn.controlesEnTipo(fila, prov);
+		if (col == 6 && OK) OK = await fn.controlesEnCompleto(fila, prov);
+		if (col == 7 && OK) OK = await fn.controlesEnParte(fila);
 		// Actualizar el formato
 		fn.actualizaFormato(fila, columna);
 		// Submit
-		fn.activarInactivarbotonGuardar(fila);
+		fn.activaInactivabotonGuardar(fila);
 		// Poner el foco en el input a resolver
-		if (focoEnColumna) v.inputs[focoEnColumna].focus();
+		if (col<columnas) v.inputs[col].focus();
+		// else 
 	};
 	let mensajeDeError = async (fila, campo) => {
 		// Obtiene la columna
