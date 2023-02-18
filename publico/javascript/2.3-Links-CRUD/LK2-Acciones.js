@@ -37,8 +37,7 @@ window.addEventListener("load", async () => {
 	// Guardar - Hecho
 	botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", async (e) => {
-			e.preventDefault()
-			// Averigua si está inactivo --> return
+			// Si está inactivo --> interrumpe la ejecución
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
 			// Obtiene los datos

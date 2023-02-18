@@ -255,7 +255,8 @@ window.addEventListener("load", async () => {
 		// Submit
 		fn.activaInactivabotonGuardar(fila);
 		// Pone el foco en el input a resolver o en el botón guardar
-		if (col < columnas) v.inputs[col].focus();
+		let celda = fila * columnas + col;
+		if (col < columnas) v.inputs[celda].focus();
 		else if (!v.guardar[fila].classList.contains("inactivo")) v.guardar[fila].focus();
 	};
 	let mensajeDeError = async (fila, campo) => {
