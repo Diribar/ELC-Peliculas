@@ -237,25 +237,26 @@ module.exports = {
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 		let objeto = {[producto_id]: prodID, tipo_id};
+		console.log(240, objeto);
 
 		// Averigua si existe algún link gratuito, para ese producto
 		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
-			? true // Tiene
+			? 3 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}))
-			? false // Tiene en potencia
-			: null; // No tiene
+			? 2 // Tiene en potencia
+			: 1; // No tiene
 
 		// Averigua si existe algún link, para ese producto
 		let links_general =
-			links_gratuitos || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-				? true // Tiene
-				: links_gratuitos === false || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-				? false // Tiene en potencia
-				: null; // No tiene
+			links_gratuitos == 3 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+				? 3 // Tiene
+				: links_gratuitos === 2 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
+				? 2 // Tiene en potencia
+				: 1; // No tiene
 
-		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
-		console.log(256, producto_ent, prodID, {links_general, links_gratuitos});
+		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
+		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
+		console.log(259, producto_ent, prodID, {links_general, links_gratuitos});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (producto_ent == "capitulos") {
@@ -281,13 +282,13 @@ module.exports = {
 
 		// Averigua si existe algún link en castellano, para ese producto
 		let castellano = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? true // Tiene
+			? 3 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-			? false // No tiene
-			: null; // No sabemos
+			? 2 // No tiene
+			: 1; // No sabemos
 
-		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
+		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
+		await BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (producto_ent == "capitulos") this.actualizaColeccion(prodID, "castellano");
@@ -302,21 +303,22 @@ module.exports = {
 		let objeto = {coleccion_id: colID};
 
 		// Cuenta la cantidad de casos true, false y null
-		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: true});
-		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: false});
-		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: null});
+		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 3});
+		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 2});
+		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 1});
 		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-		console.log(300, campo, OK, potencial, no);
+		console.log(310, campo, OK, potencial, no);
 
 		// Averigua los porcentajes de OK y Potencial
 		let total = OK + potencial + no;
 		let resultadoOK = OK / total;
 		let resultadoPot = (OK + potencial) / total;
+		console.log(316, campo, OK / total, potencial / total, no / total);
 
 		// En función de los resultados, actualiza la colección
-		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: true});
-		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: false});
-		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: null});
+		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 3});
+		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
+		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
 		console.log(311, campo);
 	},
 };
