@@ -466,10 +466,9 @@ module.exports = {
 			// Actualiza los valores de los títulos de imagenDerecha de ayer y hoy
 			tituloImgDerAyer = tituloImgDerHoy;
 			tituloImgDerHoy = imgDerecha.nombre;
-
-			// 1. Borra la 'imagenAnterior'
+			// Borra la 'imagenAnterior'
 			await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
-			// 2. Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
+			// Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
 			await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
 			// Copia la nueva imagen como 'imgDerecha'
 			await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha.nombre_archivo, "0-Base/imgDerechaHoy.jpg");
