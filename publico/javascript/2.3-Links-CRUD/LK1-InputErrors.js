@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Generales
 		colecciones: new URL(window.location.href).searchParams.get("entidad") == "colecciones",
 		form: document.querySelector("#datos form"),
-		guardar: document.querySelectorAll("tbody .fa-floppy-disk"),
+		guardar: document.querySelectorAll("tbody tr button"),
 
 		// Variables de Edición y Alta
 		campos: document.querySelectorAll("tbody .campo"),
@@ -254,9 +254,9 @@ window.addEventListener("load", async () => {
 		fn.actualizaFormato(fila, columna);
 		// Submit
 		fn.activaInactivabotonGuardar(fila);
-		// Poner el foco en el input a resolver
-		if (col<columnas) v.inputs[col].focus();
-		// else 
+		// Pone el foco en el input a resolver o en el botón guardar
+		if (col < columnas) v.inputs[col].focus();
+		else if (!v.guardar[fila].classList.contains("inactivo")) v.guardar[fila].focus()
 	};
 	let mensajeDeError = async (fila, campo) => {
 		// Obtiene la columna

@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	let botonesEditar = document.querySelectorAll("tbody .yaExistentes .editar");
 	let botonesRecuperar = document.querySelectorAll("tbody .yaExistentes .in");
 	let botonesDeshacer = document.querySelectorAll("tbody .yaExistentes .deshacer");
-	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
+	let botonesGuardar = document.querySelectorAll("tbody tr button");
 
 	// Formulas
 	let obtieneDataEntry = (fila) => {
@@ -36,11 +36,12 @@ window.addEventListener("load", async () => {
 	});
 	// Guardar - Hecho
 	botonesGuardar.forEach((botonGuardar, fila) => {
-		botonGuardar.addEventListener("click", async () => {
+		botonGuardar.addEventListener("click", async (e) => {
+			e.preventDefault()
 			// Averigua si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
-			// Obtiene los datos 
+			// Obtiene los datos
 			let objeto = obtieneDataEntry(fila);
 			// Submit
 			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
@@ -75,10 +76,8 @@ window.addEventListener("load", async () => {
 			// window.location.reload();
 			if (respuesta.reload) window.location.reload();
 			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");
-			if (respuesta.activos && activos.classList.contains("traslucido"))
-				activos.innerHTML = "* Activos";
-			if (respuesta.pasivos && pasivos.classList.contains("traslucido"))
-				pasivos.innerHTML = "* Pasivos";
+			if (respuesta.activos && activos.classList.contains("traslucido")) activos.innerHTML = "* Activos";
+			if (respuesta.pasivos && pasivos.classList.contains("traslucido")) pasivos.innerHTML = "* Pasivos";
 		});
 	});
 });
