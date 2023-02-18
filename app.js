@@ -2,14 +2,14 @@
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
-global.localhost = "//localhost"; //
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
-const path = require("path");
+global.localhost =  process.env.localhost;
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
+const path = require("path");
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
@@ -77,7 +77,7 @@ const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
 const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
-// Variables que usan funciones
+// Procesos que requieren de 'async' y 'await'
 (async () => {
 	// ************** Lectura de la base de datos ****************
 	// Requires
