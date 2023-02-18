@@ -46,8 +46,8 @@
 #datos table tbody tr input, #datos table tbody tr select {max-width: 100%;}
 
 /* Tablas - Anchos */
-#datos table .ancho_url {max-width: 140px; min-width: 60px; width: fit-content;}
-#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulo {max-width: 70px; min-width: 57px; }
+#datos table .ancho_url {width: 60px;}
+#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulo {width: 70px; }
 #datos table .ancho_gratuito {width: 64px;}
 #datos table .ancho_tipo {width: 90px;}
 #datos table .ancho_completo {width: 73px;}
