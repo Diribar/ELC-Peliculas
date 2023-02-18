@@ -5,13 +5,13 @@ const router = express.Router();
 const vista = require("./CN-ControlVista");
 
 // Middlewares
-let urlAceptadas = require("../../middlewares/varios/filtro-urlAceptadas");
+let consDescon = require("../../middlewares/varios/filtro-consDescon");
 
 // Home
 router.get("/", vista.consultasSinLayout);
 
 // Vistas de Opciones
-router.get("/:opcion", urlAceptadas, vista.consultasConLayout);
+router.get("/:opcion", consDescon, vista.consultasConLayout);
 
 // Fin
 module.exports = router;
