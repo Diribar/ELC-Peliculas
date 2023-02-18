@@ -225,7 +225,7 @@ window.addEventListener("load", async () => {
 			}
 			return;
 		},
-		activaInactivabotonGuardar: (fila) => {
+		activaInactivaBotonGuardar: (fila) => {
 			let OK = Array.from(v.iconosOK)
 				.slice(fila * columnas, (fila + 1) * columnas)
 				.map((n) => n.className)
@@ -253,7 +253,7 @@ window.addEventListener("load", async () => {
 		// Actualizar el formato
 		fn.actualizaFormato(fila, columna);
 		// Submit
-		fn.activaInactivabotonGuardar(fila);
+		fn.activaInactivaBotonGuardar(fila);
 		// Pone el foco en el input a resolver o en el botón guardar
 		let celda = fila * columnas + col;
 		if (col < columnas) v.inputs[celda].focus();
