@@ -129,7 +129,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
-	link_pelicula_id = links_tipos.find((n) => n.pelicula);
+	link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 
 	// Procesos que dependen de las lecturas de BD
 	// Ejecuta las tareas diarias
