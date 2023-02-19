@@ -225,60 +225,98 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'links' en el producto
-	prodConLink: async (link) => {
+	prodConLink: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
+		if (producto_ent == "colecciones") return;
+
+		// Más variables
 		const prodID = link[producto_id];
 		const tipo_id = link_pelicula_id;
 		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		let objeto;
-
-		// Averigua si existe algún link, para ese producto
-		objeto = {[producto_id]: prodID, tipo_id};
-		let links_general = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
-			? false // Tiene en potencia
-			: null; // No tiene
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		let objeto = {[producto_id]: prodID, tipo_id};
 
 		// Averigua si existe algún link gratuito, para ese producto
-		objeto = {...objeto, gratuito: true};
-		let links_gratuitos = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
 			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}))
 			? false // Tiene en potencia
 			: null; // No tiene
+
+		// Averigua si existe algún link, para ese producto
+		let links_general =
+			links_gratuitos || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+				? true // Tiene
+				: links_gratuitos === false || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
+				? false // Tiene en potencia
+				: null; // No tiene
 
 		// Actualiza el registro
 		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
 		console.log(256, producto_ent, prodID, {links_general, links_gratuitos});
 
+		// Colecciones - la actualiza en función de la mayoría de los capítulos
+		if (producto_ent == "capitulos") {
+			this.actualizaColeccion(prodID, "links_general");
+			this.actualizaColeccion(prodID, "links_gratuitos");
+		}
+
 		// Fin
 		return;
 	},
-	prodConLinkCast: async (link) => {
+	prodConLinkCast: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
+		if (producto_ent == "colecciones") return;
+
+		// Más variables
 		const prodID = link[producto_id];
 		const tipo_id = link_pelicula_id;
 		let objeto = {[producto_id]: prodID, tipo_id, castellano: true};
 		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencia = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 
 		// Averigua si existe algún link en castellano, para ese producto
-		let castellano = !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+		let castellano = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
 			? true // Tiene
-			: !!(await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencia}))
+			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
 			? false // No tiene
 			: null; // No sabemos
 
 		// Actualiza el registro
 		BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
 
+		// Colecciones - la actualiza en función de la mayoría de los capítulos
+		if (producto_ent == "capitulos") this.actualizaColeccion(prodID, "castellano");
+
 		// Fin
 		return;
+	},
+	actualizaColeccion: async (capID, campo) => {
+		// Obtiene los datos para identificar la colección
+		const capitulo = await BD_genericas.obtienePorId("capitulos", capID);
+		const colID = capitulo.coleccion_id;
+		let objeto = {coleccion_id: colID};
+
+		// Cuenta la cantidad de casos true, false y null
+		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: true});
+		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: false});
+		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: null});
+		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+		console.log(300, campo, OK, potencial, no);
+
+		// Averigua los porcentajes de OK y Potencial
+		let total = OK + potencial + no;
+		let resultadoOK = OK / total;
+		let resultadoPot = (OK + potencial) / total;
+
+		// En función de los resultados, actualiza la colección
+		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: true});
+		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: false});
+		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: null});
+		console.log(311, campo);
 	},
 };
