@@ -10,7 +10,7 @@ const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
-const revisorEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
+const usRolRevEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
 // Específicos de entidades
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
@@ -18,7 +18,7 @@ const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
-const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
+const aptoRevisor = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
