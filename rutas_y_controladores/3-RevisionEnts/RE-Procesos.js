@@ -718,18 +718,26 @@ module.exports = {
 				titulo: campoComparar.titulo,
 				valor_aprob,
 			};
-			// Obtiene la entidad
+
+			// Obtiene la entidad y completa los datos
 			let entidadAprobRech;
 			if (original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]) {
+				// Obtiene la entidad
 				entidadAprobRech = "edics_rech";
+				// Completa los datos
 				datos.valor_rech = valor_rech;
 				let motivo =
 					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo" ? motivoVersionActual : motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;
-			} else entidadAprobRech = "edics_aprob";
-			// Guarda los registros
-			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
+			}
+			// Obtiene la entidad
+			else entidadAprobRech = "edics_aprob";
+
+			// Guarda los registros en edics_aprob / edics_rech
+			BD_genericas.agregaRegistro(entidadAprobRech, datos);
+			// Aumenta en el usuario la cantidad de edics_aprob / edics_rech
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, entidadAprobRech, 1);
 		}
 
 		// Fin

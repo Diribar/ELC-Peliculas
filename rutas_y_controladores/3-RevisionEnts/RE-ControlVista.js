@@ -285,28 +285,30 @@ module.exports = {
 
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const campoDecision = petitFamilia + (rechazado ? "rech" : "aprob");
+		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
-		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
+		const alta_analizada_en = ahora;
+		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
+		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 		let datosCompletos = {
 			status_registro_id,
 			alta_analizada_por_id: userID,
-			alta_analizada_en: ahora,
+			alta_analizada_en,
 			lead_time_creacion,
 			captura_activa: false,
 		};
 		if (rclvs) datosCompletos = {...datosCompletos, ...procsRCLV.procesaLosDatos(datos)};
+		// return res.send(datosCompletos);
 
 		// 1. Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
 		original = {...original, ...datosCompletos};
 
-		// 2. Si es una colección, actualiza el status en los registros de los capítulos
+		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
-		// 3. Si es un RCLV, actualiza la tabla de edics aprob/rech
+		// 3. Si es un RCLV, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
 		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, userID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
