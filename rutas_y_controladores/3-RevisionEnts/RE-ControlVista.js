@@ -299,17 +299,17 @@ module.exports = {
 		};
 		if (rclvs) datosCompletos = {...datosCompletos, ...procsRCLV.procesaLosDatos(datos)};
 
-		// Actualiza el status en el registro original y en la variable
+		// 1. Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
 		original = {...original, ...datosCompletos};
 
-		// Si es una colección, actualiza el status en los registros de los capítulos
+		// 2. Si es una colección, actualiza el status en los registros de los capítulos
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
-		// Si es un RCLV, actualiza la tabla de edics aprob/rech
+		// 3. Si es un RCLV, actualiza la tabla de edics aprob/rech
 		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, userID);
 
-		// Agrega el registro en el historial_cambios_de_status
+		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
 		let datosHist = {
 			entidad_id: id,
@@ -330,10 +330,10 @@ module.exports = {
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
-		// Aumenta el valor de regs_aprob/rech en el registro del usuario
+		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
-		// Penaliza al usuario si corresponde
+		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
 
 		// Fin

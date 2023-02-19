@@ -167,17 +167,17 @@ module.exports = {
 
 		// Usamos el await sólo cuando hay 1 función
 		// Rutina por producto
-		if (variables.entidadesProd.includes(entidad)) this.rclvConProd(registro);
+		if (variables.entidadesProd.includes(entidad)) this.prodEnRCLV(registro);
 
 		// Rutinas por links
 		if (entidad == "links") {
-			await this.prodConLink(registro);
-			this.prodConLinkCast(registro);
+			await this.linkEnProd(registro);
+			this.linkCastEnProd(registro);
 		}
 	},
 
 	// Actualiza los campos de 'producto' en el RCLV
-	rclvConProd: async function (producto) {
+	prodEnRCLV: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
@@ -225,7 +225,7 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'links' en el producto
-	prodConLink: async function (link) {
+	linkEnProd: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
@@ -260,14 +260,14 @@ module.exports = {
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (producto_ent == "capitulos") {
-			this.actualizaColeccion(prodID, "links_general");
-			this.actualizaColeccion(prodID, "links_gratuitos");
+			this.colecComoCap(prodID, "links_general");
+			this.colecComoCap(prodID, "links_gratuitos");
 		}
 
 		// Fin
 		return;
 	},
-	prodConLinkCast: async function (link) {
+	linkCastEnProd: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
@@ -291,12 +291,12 @@ module.exports = {
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
-		if (producto_ent == "capitulos") this.actualizaColeccion(prodID, "castellano");
+		if (producto_ent == "capitulos") this.colecComoCap(prodID, "castellano");
 
 		// Fin
 		return;
 	},
-	actualizaColeccion: async (capID, campo) => {
+	colecComoCap: async (capID, campo) => {
 		// Obtiene los datos para identificar la colección
 		const capitulo = await BD_genericas.obtienePorId("capitulos", capID);
 		const colID = capitulo.coleccion_id;
