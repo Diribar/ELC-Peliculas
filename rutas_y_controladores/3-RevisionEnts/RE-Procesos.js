@@ -402,7 +402,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuarioAumentaPenaliz(regEdic.editado_por_id, motivo, familia);
+		if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
 		if (edicAprob) {
@@ -650,7 +650,7 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	RCLV_EdicAprobRech: async (entidad, original, userID) => {
+	rclvs_edicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
