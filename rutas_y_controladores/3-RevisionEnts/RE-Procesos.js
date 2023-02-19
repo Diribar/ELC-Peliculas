@@ -516,7 +516,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	revisarProblemas: (req, producto) => {
+	revisaProblemas: (req, producto) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
@@ -645,12 +645,13 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	revisarProblemas: (req, producto) => {
+	revisaProblemas: (req, registro) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
 		let informacion;
-		// Rechazado sin motivo => Recarga la vista
+
+		// 1. Rechazado sin motivo => Recarga la vista
 		if (rechazado && !motivo_id) {
 			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 			informacion = {
@@ -658,18 +659,19 @@ module.exports = {
 				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
 			};
 		}
-		// El producto no está en status 'creado' => Vuelve al tablero
-		if (!producto.status_registro.creado) {
+
+		// 2. El registro no está en status 'creado' => Vuelve al tablero
+		if (!informacion && !registro.status_registro_id == creado_id) {
 			const vistaInactivar = variables.vistaInactivar(req);
 			informacion = {
-				mensajes: ["El producto ya fue procesado anteriormente"],
+				mensajes: ["El registro ya fue procesado anteriormente"],
 				iconos: [vistaInactivar],
 			};
 		}
+
 		// Fin
 		return informacion;
 	},
-
 
 	RCLV_EdicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
