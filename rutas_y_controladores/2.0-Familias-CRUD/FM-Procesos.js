@@ -10,7 +10,7 @@ module.exports = {
 	puleEdicion: async (original, edicion, entidad) => {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 		let edicion_id = edicion.id;
 		let camposNull = {};
 
@@ -76,7 +76,7 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
@@ -93,7 +93,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({original, edicion, entidad, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 		let camposNull;
 
 		// Quita la info que no agrega valor
