@@ -237,7 +237,6 @@ module.exports = {
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 		let objeto = {[producto_id]: prodID, tipo_id};
-		console.log(240, objeto);
 
 		// Averigua si existe algún link gratuito, para ese producto
 		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
@@ -256,7 +255,6 @@ module.exports = {
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
-		console.log(259, producto_ent, prodID, {links_general, links_gratuitos});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (producto_ent == "capitulos") {
