@@ -220,9 +220,9 @@ module.exports = {
 
 		// Fin
 		return rclvs;
-	},	
+	},
 
-	// Producto y RCLV 
+	// Producto y RCLV
 	// Edición Form
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
@@ -680,18 +680,21 @@ module.exports = {
 					: ""
 				: RCLV[campo];
 		};
+
 		// Variables
 		let ahora = comp.ahora();
 		let camposComparar = variables.camposRevisar.rclvs.filter((n) => n[entidad]);
+
 		// Obtiene RCLV actual
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("proc_canon", "rol_iglesia");
+		let includes = ["dia_del_ano"];
+		if (entidad == "personajes") includes.push("categoria", "rol_iglesia", "proc_canon", "ap_mar");
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+
 		// Obtiene los motivos posibles
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let motivoVersionActual = motivos.find((n) => n.version_actual);
 		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+
 		// Prepara la información
 		let datos = {
 			entidad,
@@ -728,6 +731,7 @@ module.exports = {
 			// Guarda los registros
 			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
 		}
+
 		// Fin
 		return;
 	},
