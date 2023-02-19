@@ -12,7 +12,7 @@ const stMailValidado = require("../../middlewares/usuarios/filtro-usSt2-MailVal"
 const stEditables = require("../../middlewares/usuarios/filtro-usSt3-Editables");
 const stIdentValidar = require("../../middlewares/usuarios/filtro-usSt4-IdentValidar");
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -33,8 +33,8 @@ router.post("/editables", stMailValidado, multer.single("avatar"), vista.editabl
 // 3. Solo usuarios con status 'editables'
 router.get("/bienvenido", stEditables, vista.bienvenido);
 // 4. Solo usuarios con status 'editables' y no penalizadas
-router.get("/identidad", stEditables, penalizaciones, vista.identidadForm);
-router.post("identidad", stEditables, penalizaciones, multer.single("avatar"), vista.identidadGuardar);
+router.get("/identidad", stEditables, usPenalizaciones, vista.identidadForm);
+router.post("identidad", stEditables, usPenalizaciones, multer.single("avatar"), vista.identidadGuardar);
 // 5. Solo usuarios con status 'ident_a_validar'
 router.get("/validacion-en-proceso", stIdentValidar, vista.validacionEnProceso);
 
