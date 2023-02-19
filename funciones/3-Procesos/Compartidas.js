@@ -571,7 +571,7 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuarioPenalizAcum: (userID, motivo, familia) => {
+	usuarioPenalizAcum: (userID, motivo, petitFamilia) => {
 		// Variables
 		let duracion = motivo.duracion;
 		let objeto = {};
@@ -580,8 +580,8 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
-		if (duracion > 1 && familia) {
-			let cartel = "cartel_resp_" + (familia == "productos" ? "prods" : familia);
+		if (duracion > 1 && petitFamilia) {
+			let cartel = "cartel_resp_" + petitFamilia;
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'
