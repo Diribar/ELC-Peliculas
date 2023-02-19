@@ -89,11 +89,7 @@ module.exports = {
 		links.map((n) => {
 			let entidad = comp.obtieneProdDesdeProducto_id(n);
 			let asociacion = comp.obtieneAsociacion(entidad);
-			let campoFechaRef = !n.status_registro_id
-				? "editado_en"
-				: n.status_registro.creado
-				? "creado_en"
-				: "sugerido_en";
+			let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
 			productos.push({
 				...n[asociacion],
 				entidad,
@@ -244,10 +240,7 @@ module.exports = {
 			],
 		};
 		let mensajeSinEsaEdicion = {
-			mensajes: [
-				"No encontramos esa edición.",
-				"Te sugerimos que regreses al tablero y lo vuelvas a intentar",
-			],
+			mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
 			iconos: [
 				{
 					nombre: "fa-spell-check ",
@@ -260,11 +253,7 @@ module.exports = {
 		let includes = comp.obtieneTodosLosCamposInclude(entidad);
 		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 		// Obtiene las ediciones del producto
-		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
-			nombreEdic,
-			{entidad_id, entID: rclvID, userID},
-			includes
-		);
+		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(nombreEdic, {entidad_id, entID: rclvID, userID}, includes);
 		// Si no existe ninguna edición => informa el error
 		if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
 		// Obtiene la prodEdic
@@ -500,8 +489,7 @@ module.exports = {
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 		// Bloque 1
 		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOrig.idioma_original)
-			bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
+		if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
 		// Bloque 2
 		if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
 		if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
@@ -609,10 +597,7 @@ module.exports = {
 			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (
-				avatarOrig &&
-				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig)
-			)
+			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
 				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
@@ -645,13 +630,13 @@ module.exports = {
 				? RCLV.dia_del_ano
 					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
 					: "Sin fecha conocida"
-				: campo == "proceso_id"
-				? RCLV.proc_canon
-					? RCLV.proc_canon.nombre
-					: ""
 				: campo == "rol_iglesia_id"
 				? RCLV.rol_iglesia
 					? RCLV.rol_iglesia.nombre
+					: ""
+				: campo == "proceso_id"
+				? RCLV.proc_canon
+					? RCLV.proc_canon.nombre
 					: ""
 				: RCLV[campo];
 		};
@@ -696,9 +681,7 @@ module.exports = {
 				entidadAprobRech = "edics_rech";
 				datos.valor_rech = valor_rech;
 				let motivo =
-					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo"
-						? motivoVersionActual
-						: motivoInfoErronea;
+					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo" ? motivoVersionActual : motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;
 			} else entidadAprobRech = "edics_aprob";
@@ -775,10 +758,7 @@ module.exports = {
 		// El producto no está en status 'aprobado'
 		if (!informacion && !producto.status_registro.aprobado)
 			informacion = {
-				mensajes: [
-					"El producto no está en status 'Aprobado'",
-					"Su status es " + producto.status_registro.nombre,
-				],
+				mensajes: ["El producto no está en status 'Aprobado'", "Su status es " + producto.status_registro.nombre],
 			};
 
 		// El producto no posee links
@@ -799,14 +779,12 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of entidades)
-		resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
+	for (let entidad of entidades) resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
-				resultados.splice(i, 1);
+			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID) resultados.splice(i, 1);
 	// Agrega el campo 'fecha-ref'
 	resultados = resultados.map((n) => {
 		return {

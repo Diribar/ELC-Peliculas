@@ -159,13 +159,6 @@ module.exports = {
 				? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
 				: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
 		}
-		// Tareas para revisión
-		else if (codigo == "/revision/rclv/alta/") {
-			// Obtiene el registro original
-			let id = req.query.id;
-			// Actualiza el registro o crea una edición
-			await BD_genericas.actualizaPorId(entidad, id, DE); // Actualizar el registro original
-		}
 		// Fin
 		return;
 	},
