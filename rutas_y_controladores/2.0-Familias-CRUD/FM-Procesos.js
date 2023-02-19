@@ -305,18 +305,15 @@ module.exports = {
 		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 2});
 		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 1});
 		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-		console.log(310, campo, OK, potencial, no);
 
 		// Averigua los porcentajes de OK y Potencial
 		let total = OK + potencial + no;
 		let resultadoOK = OK / total;
 		let resultadoPot = (OK + potencial) / total;
-		console.log(316, campo, OK / total, potencial / total, no / total);
 
 		// En función de los resultados, actualiza la colección
 		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 3});
 		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
 		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
-		console.log(311, campo);
 	},
 };
