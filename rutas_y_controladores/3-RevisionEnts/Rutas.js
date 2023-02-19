@@ -34,13 +34,13 @@ router.get("/api/link-edicion", ...aptoRevisor, API.edic_AprobRech);
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...aptoRevMasEnt, vista.prodAltaForm);
-router.post("/producto/alta", ...aptoRevMasEnt, vista.prodAltaGuardar);
+router.post("/producto/alta", ...aptoRevMasEnt, vista.registoAltaGuardar);
 router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
 // RCLV
 router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoRevMasEnt, vista.rclvAltaGuardar);
+router.post("/rclv/alta", ...aptoRevMasEnt, vista.registoAltaGuardar);
 router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
 
 // Links

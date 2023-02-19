@@ -104,70 +104,6 @@ module.exports = {
 			rutaSalir,
 		});
 	},
-	prodAltaGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-
-		// REVISA POSIBLES PROBLEMAS
-		let original = await BD_genericas.obtienePorId(entidad, id);
-		const informacion = procesos.revisaProblemas(req, original);
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Más variables
-		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
-		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
-		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
-		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
-		let datosCompletos = {
-			status_registro_id,
-			alta_analizada_por_id: userID,
-			alta_analizada_en: ahora,
-			lead_time_creacion,
-			captura_activa: false,
-		};
-
-		// Actualiza el status en el registro original y en la variable
-		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
-		original = {...original, ...datosCompletos};
-		// Actualiza el status en los registros de los capítulos
-		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
-
-		// Agrega el registro en el historial_cambios_de_status
-		let creado_por_id = original.creado_por_id;
-		let datosHistorial = {
-			entidad_id: id,
-			entidad,
-			sugerido_por_id: creado_por_id,
-			sugerido_en: original.creado_en,
-			analizado_por_id: userID,
-			analizado_en: ahora,
-			status_original_id: creado_id,
-			status_final_id: status_registro_id,
-			aprobado: !rechazado,
-		};
-		if (rechazado) {
-			let motivo_id = req.body.motivo_id;
-			datosHistorial.motivo_id = motivo_id;
-			let motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
-			datosHistorial.duracion = Number(motivo.duracion);
-		}
-		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
-		
-		// Aumenta el valor de prod_aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
-		
-		// Penaliza al usuario si corresponde
-		if (duracion) comp.usuarioAumentaPenaliz(creado_por_id, duracion, "prods");
-		
-		// Obtiene el edicID
-		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
-		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-		if (edicID) urlEdicion += "&edicion_id=" + edicID;
-		
-		// Fin
-		return res.redirect(urlEdicion);
-	},
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
@@ -270,7 +206,7 @@ module.exports = {
 		});
 	},
 
-	// rclvs
+	// RCLVs
 	rclvAltaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
@@ -429,5 +365,71 @@ module.exports = {
 			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
 			cartelEscondido: true,
 		});
+	},
+
+	// Productos y Links
+	registoAltaGuardar: async (req, res) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+
+		// REVISA POSIBLES PROBLEMAS
+		let original = await BD_genericas.obtienePorId(entidad, id);
+		const informacion = procesos.revisaProblemas(req, original);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Más variables
+		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
+		const userID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
+		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
+		let datosCompletos = {
+			status_registro_id,
+			alta_analizada_por_id: userID,
+			alta_analizada_en: ahora,
+			lead_time_creacion,
+			captura_activa: false,
+		};
+
+		// Actualiza el status en el registro original y en la variable
+		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
+		original = {...original, ...datosCompletos};
+		// Actualiza el status en los registros de los capítulos
+		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
+
+		// Agrega el registro en el historial_cambios_de_status
+		let creado_por_id = original.creado_por_id;
+		let datosHistorial = {
+			entidad_id: id,
+			entidad,
+			sugerido_por_id: creado_por_id,
+			sugerido_en: original.creado_en,
+			analizado_por_id: userID,
+			analizado_en: ahora,
+			status_original_id: creado_id,
+			status_final_id: status_registro_id,
+			aprobado: !rechazado,
+		};
+		if (rechazado) {
+			let motivo_id = req.body.motivo_id;
+			datosHistorial.motivo_id = motivo_id;
+			let motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			datosHistorial.duracion = Number(motivo.duracion);
+		}
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
+		
+		// Aumenta el valor de prod_aprob/rech en el registro del usuario
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
+		
+		// Penaliza al usuario si corresponde
+		if (duracion) comp.usuarioAumentaPenaliz(creado_por_id, duracion, "prods");
+		
+		// Obtiene el edicID
+		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
+		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+		if (edicID) urlEdicion += "&edicion_id=" + edicID;
+		
+		// Fin
+		return res.redirect(urlEdicion);
 	},
 };
