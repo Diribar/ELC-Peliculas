@@ -220,9 +220,10 @@ module.exports = {
 
 		// Fin
 		return rclvs;
-	},
+	},	
 
-	// Producto y RCLV - Edición Form
+	// Producto y RCLV 
+	// Edición Form
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
@@ -317,7 +318,7 @@ module.exports = {
 		// Fin
 		return derecha;
 	},
-	// Producto y RCLV - API/Vista
+	// API/Vista
 	guardaEdicRev: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
@@ -460,6 +461,34 @@ module.exports = {
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
 	},
+	// Alta Guardar
+	revisaProblemas: (req, registro) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		let informacion;
+
+		// 1. Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+		}
+
+		// 2. El registro no está en status 'creado' => Vuelve al tablero
+		if (!informacion && !registro.status_registro_id == creado_id) {
+			const vistaInactivar = variables.vistaInactivar(req);
+			informacion = {
+				mensajes: ["El registro ya fue procesado anteriormente"],
+				iconos: [vistaInactivar],
+			};
+		}
+
+		// Fin
+		return informacion;
+	},
 
 	// Productos Alta
 	prodAltaForm_ficha: async (prodOrig, paises) => {
@@ -515,30 +544,6 @@ module.exports = {
 		// Bloque derecho consolidado
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
-	},
-	revisaProblemas: (req, producto) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		let informacion;
-		// Rechazado sin motivo => Recarga la vista
-		if (rechazado && !motivo_id) {
-			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-			informacion = {
-				mensajes: ["Se rechazó sin decirnos el motivo"],
-				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
-			};
-		}
-		// El producto no está en status 'creado' => Vuelve al tablero
-		if (!producto.status_registro.creado) {
-			const vistaInactivar = variables.vistaInactivar(req);
-			informacion = {
-				mensajes: ["El producto ya fue procesado anteriormente"],
-				iconos: [vistaInactivar],
-			};
-		}
-		// Fin
-		return informacion;
 	},
 	prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
 		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
@@ -645,34 +650,6 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	revisaProblemas: (req, registro) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		let informacion;
-
-		// 1. Rechazado sin motivo => Recarga la vista
-		if (rechazado && !motivo_id) {
-			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-			informacion = {
-				mensajes: ["Se rechazó sin decirnos el motivo"],
-				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
-			};
-		}
-
-		// 2. El registro no está en status 'creado' => Vuelve al tablero
-		if (!informacion && !registro.status_registro_id == creado_id) {
-			const vistaInactivar = variables.vistaInactivar(req);
-			informacion = {
-				mensajes: ["El registro ya fue procesado anteriormente"],
-				iconos: [vistaInactivar],
-			};
-		}
-
-		// Fin
-		return informacion;
-	},
-
 	RCLV_EdicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
@@ -684,6 +661,10 @@ module.exports = {
 				: campo == "epoca_id"
 				? RCLV.epoca
 					? RCLV.epoca.nombre
+					: ""
+				: campo == "categoria_id"
+				? RCLV.categoria
+					? RCLV.categoria.nombre
 					: ""
 				: campo == "rol_iglesia_id"
 				? RCLV.rol_iglesia
