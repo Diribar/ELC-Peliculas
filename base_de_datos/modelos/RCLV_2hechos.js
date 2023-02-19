@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		pst: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 		
-		prods_aprob: {type: dt.BOOLEAN},
+		prods_aprob: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},

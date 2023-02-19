@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		proceso_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 
-		prods_aprob: {type: dt.BOOLEAN},
+		prods_aprob: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},

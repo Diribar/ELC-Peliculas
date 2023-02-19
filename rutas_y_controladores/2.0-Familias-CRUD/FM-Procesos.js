@@ -199,7 +199,7 @@ module.exports = {
 					if (prods_aprob) break;
 				}
 
-				if (prods_aprob) prods_aprob = true;
+				if (prods_aprob) prods_aprob = 3;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
 					for (let entidadProd of entidadesProds) {
@@ -208,13 +208,13 @@ module.exports = {
 						if (prods_aprob) break;
 					}
 
-				if (prods_aprob) prods_aprob = false;
+				if (prods_aprob) prods_aprob = 2;
 				// 3. Averigua si existe alguna edición
 				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
-				if (prods_aprob) prods_aprob = false;
+				if (prods_aprob) prods_aprob = 2;
 				// 4. No encontró ningún caso
-				else prods_aprob = null;
+				else prods_aprob = 1;
 
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
