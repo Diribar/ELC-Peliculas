@@ -76,13 +76,13 @@ module.exports = {
 			? "usuarios"
 			: "";
 	},
-	obtieneNombreEdicionDesdeEntidad: (entidad) => {
+	obtienePetitFamiliaDesdeEntidad: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
-			? "prods_edicion"
+			? "prods"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
-			? "rclvs_edicion"
+			? "rclvs"
 			: entidad == "links"
-			? "links_edicion"
+			? "links"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {
@@ -571,7 +571,7 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuarioAumentaPenaliz: (userID, motivo, familia) => {
+	usuarioPenalizAcum: (userID, motivo, familia) => {
 		// Variables
 		let duracion = motivo.duracion;
 		let objeto = {};
