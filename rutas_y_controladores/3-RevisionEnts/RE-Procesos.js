@@ -456,7 +456,7 @@ module.exports = {
 
 		// Actualiza RCLV si corresponde
 		if (producto && !statusAprobInicial && statusAprobFinal)
-			this.RCLV_prodsAprob(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
+			this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
 	},
@@ -516,7 +516,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	prodAltaGuardar_informacion: (req, producto) => {
+	revisarProblemas: (req, producto) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
@@ -539,6 +539,29 @@ module.exports = {
 		}
 		// Fin
 		return informacion;
+	},
+	prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
+		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
+		// 1. Se aprobó un cambio y el producto está aprobado
+		// 2. El cambio es un campo RCLV con valor distinto de 1
+		// 3. El registro no estaba aprobado
+		const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
+		if (
+			edicAprob && // Se aprobó un cambio
+			statusAprob && // El producto está aprobado
+			((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
+				!statusAprobOrig) // El registro no estaba aprobado
+		)
+			entidades_id.forEach((entidad_id) => {
+				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
+				if (RCLV_id) {
+					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
+					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
+				}
+			});
+
+		// Fin
+		return;
 	},
 	// Prod-Edición Form
 	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
@@ -622,7 +645,33 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	RCLV_AltasGuardar_EdicAprobRech: async (entidad, original, userID) => {
+	revisarProblemas: (req, producto) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		let informacion;
+		// Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+		}
+		// El producto no está en status 'creado' => Vuelve al tablero
+		if (!producto.status_registro.creado) {
+			const vistaInactivar = variables.vistaInactivar(req);
+			informacion = {
+				mensajes: ["El producto ya fue procesado anteriormente"],
+				iconos: [vistaInactivar],
+			};
+		}
+		// Fin
+		return informacion;
+	},
+
+
+	RCLV_EdicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
@@ -630,6 +679,10 @@ module.exports = {
 				? RCLV.dia_del_ano
 					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
 					: "Sin fecha conocida"
+				: campo == "epoca_id"
+				? RCLV.epoca
+					? RCLV.epoca.nombre
+					: ""
 				: campo == "rol_iglesia_id"
 				? RCLV.rol_iglesia
 					? RCLV.rol_iglesia.nombre
@@ -637,6 +690,10 @@ module.exports = {
 				: campo == "proceso_id"
 				? RCLV.proc_canon
 					? RCLV.proc_canon.nombre
+					: ""
+				: campo == "ap_mar_id"
+				? RCLV.ap_mar
+					? RCLV.ap_mar.nombre
 					: ""
 				: RCLV[campo];
 		};
@@ -688,29 +745,6 @@ module.exports = {
 			// Guarda los registros
 			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
 		}
-		// Fin
-		return;
-	},
-	RCLV_prodsAprob: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
-		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
-		// 1. Se aprobó un cambio y el producto está aprobado
-		// 2. El cambio es un campo RCLV con valor distinto de 1
-		// 3. El registro no estaba aprobado
-		const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
-		if (
-			edicAprob && // Se aprobó un cambio
-			statusAprob && // El producto está aprobado
-			((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
-				!statusAprobOrig) // El registro no estaba aprobado
-		)
-			entidades_id.forEach((entidad_id) => {
-				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
-				if (RCLV_id) {
-					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
-					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
-				}
-			});
-
 		// Fin
 		return;
 	},

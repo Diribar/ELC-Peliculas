@@ -80,9 +80,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
-		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) =>
-			n.filter((m) => m.prod)
-		);
+		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) => n.filter((m) => m.prod));
 		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
@@ -110,9 +108,10 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
-		// En caso de error, lo muestra
-		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
+
+		// PROBLEMAS
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const informacion = procesos.revisarProblemas(req, original);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Más variables
@@ -124,18 +123,17 @@ module.exports = {
 
 		// Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
-		producto = {...producto, ...datosEntidad};
+		original = {...original, ...datosEntidad};
 		// Actualiza el status en los registros de los capítulos
-		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
+		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
 
 		// Agrega el registro en el historial_cambios_de_status
-		let creador_ID = producto.creado_por_id;
+		let creador_ID = original.creado_por_id;
 		let datosHistorial = {
 			entidad_id: id,
 			entidad,
 			sugerido_por_id: creador_ID,
-			sugerido_en: producto.creado_en,
+			sugerido_en: original.creado_en,
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: status_registro.find((n) => n.creado).id,
@@ -165,11 +163,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
-		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(
-			req,
-			"productos",
-			"prods_edicion"
-		);
+		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
@@ -202,21 +196,15 @@ module.exports = {
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
 				let statusAprob;
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(
-					req,
-					prodOrig,
-					prodEdic
-				);
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, prodOrig, prodEdic);
 				// Fin, si no quedan campos
-				if (!quedanCampos)
-					return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+				if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			} else {
 				// Variables
 				codigo += "/avatar";
 				avatar = {
 					original: prodOrig.avatar
-						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") +
-						  prodOrig.avatar
+						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + prodOrig.avatar
 						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
 					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
 				};
@@ -275,7 +263,7 @@ module.exports = {
 	// rclvs
 	rclvAltaGuardar: async (req, res) => {
 		// 1. Variables
-		const {entidad, id} = req.query;
+		const {entidad, id, rechazado} = req.query;
 		let datos = {...req.body, ...req.query};
 		let userID = req.session.usuario.id;
 
@@ -286,6 +274,11 @@ module.exports = {
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
+
+		// PROBLEMAS
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const informacion = procesos.revisarProblemas(req, producto);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// PROBLEMA: El registro no está en status creado
 		let includes = [];
@@ -309,9 +302,9 @@ module.exports = {
 			status_registro_id: aprobado_id,
 		};
 		// 5. Guarda los cambios
-		await BD_genericas.actualizaPorId(entidad, id, dataEntry); 
+		await BD_genericas.actualizaPorId(entidad, id, dataEntry);
 		// 6. Actualiza la tabla de edics aprob/rech
-		procesos.RCLV_AltasGuardar_EdicAprobRech(entidad, original, userID);
+		procesos.RCLV_EdicAprobRech(entidad, original, userID);
 		// 7. Redirecciona a la siguiente instancia
 		return res.redirect("/revision/tablero-de-control");
 	},
@@ -320,11 +313,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "rclvEdicion";
 		// Validaciones y obtiene rclvEdic
-		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(
-			req,
-			"rclvs",
-			"rclvs_edicion"
-		);
+		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "rclvs", "rclvs_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
