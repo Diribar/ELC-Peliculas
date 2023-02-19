@@ -10,7 +10,6 @@ const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 const revisorEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
 // Específicos de entidades
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
