@@ -278,6 +278,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		let datos = {...req.body, ...req.query};
 		let userID = req.session.usuario.id;
+
 		// 2. Averigua si hay errores de validación y toma acciones
 		let errores = await validaRCLV.consolidado(datos);
 		if (errores.hay) {
@@ -285,14 +286,17 @@ module.exports = {
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
+
 		// PROBLEMA: El registro no está en status creado
 		let includes = [];
 		if (entidad != "valores") includes.push("dia_del_ano");
 		if (entidad == "personajes") includes.push("proc_canon", "rol_iglesia");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
+
 		// 3. Procesa el data-entry
 		let dataEntry = procsRCLV.procesaLosDatos(datos);
+
 		// 4. Genera la información para guardar
 		let alta_analizada_en = comp.ahora();
 		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
@@ -305,7 +309,7 @@ module.exports = {
 			status_registro_id: aprobado_id,
 		};
 		// 5. Guarda los cambios
-		await procsRCLV.guardaLosCambios(req, res, dataEntry);
+		await BD_genericas.actualizaPorId(entidad, id, dataEntry); 
 		// 6. Actualiza la tabla de edics aprob/rech
 		procesos.RCLV_AltasGuardar_EdicAprobRech(entidad, original, userID);
 		// 7. Redirecciona a la siguiente instancia
