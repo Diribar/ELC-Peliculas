@@ -706,6 +706,7 @@ module.exports = {
 		};
 
 		// Rutina para comparar los campos
+		let ediciones = {edics_aprob: 0, edics_rech: 0};
 		for (let campoComparar of camposComparar) {
 			// Valor aprobado
 			let valor_aprob = RCLV_valorVinculo(RCLV_actual, campoComparar.nombre);
@@ -736,9 +737,13 @@ module.exports = {
 
 			// Guarda los registros en edics_aprob / edics_rech
 			BD_genericas.agregaRegistro(entidadAprobRech, datos);
-			// Aumenta en el usuario la cantidad de edics_aprob / edics_rech
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, entidadAprobRech, 1);
+			// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
+			ediciones[entidadAprobRech]++;
 		}
+		
+		// Actualiza en el usuario los campos edics_aprob / edics_rech
+		if (ediciones.edics_aprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_aprob", ediciones.edics_aprob);
+		if (ediciones.edics_rech) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_rech", ediciones.edics_rech);
 
 		// Fin
 		return;
