@@ -461,34 +461,6 @@ module.exports = {
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
 	},
-	// Alta Guardar
-	revisaProblemas: (req, registro) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		let informacion;
-
-		// 1. Rechazado sin motivo => Recarga la vista
-		if (rechazado && !motivo_id) {
-			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-			informacion = {
-				mensajes: ["Se rechazó sin decirnos el motivo"],
-				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
-			};
-		}
-
-		// 2. El registro no está en status 'creado' => Vuelve al tablero
-		if (!informacion && !registro.status_registro_id == creado_id) {
-			const vistaInactivar = variables.vistaInactivar(req);
-			informacion = {
-				mensajes: ["El registro ya fue procesado anteriormente"],
-				iconos: [vistaInactivar],
-			};
-		}
-
-		// Fin
-		return informacion;
-	},
 
 	// Productos Alta
 	prodAltaForm_ficha: async (prodOrig, paises) => {
@@ -735,12 +707,12 @@ module.exports = {
 			// Obtiene la entidad
 			else entidadAprobRech = "edics_aprob";
 
-			// Guarda los registros en edics_aprob / edics_rech
-			BD_genericas.agregaRegistro(entidadAprobRech, datos);
+			// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
+			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
 			// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
 			ediciones[entidadAprobRech]++;
 		}
-		
+
 		// Actualiza en el usuario los campos edics_aprob / edics_rech
 		if (ediciones.edics_aprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_aprob", ediciones.edics_aprob);
 		if (ediciones.edics_rech) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_rech", ediciones.edics_rech);

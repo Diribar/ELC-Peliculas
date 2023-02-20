@@ -266,16 +266,6 @@ module.exports = {
 		const rclvs = comp.obtieneFamiliaEnPlural(entidad) == "rclvs";
 		let datosCompletos = {};
 
-		// PROBLEMAS
-		// 1. Rechazado sin motivo => Recarga la vista
-		if (rechazado && !motivo_id) {
-			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-			let informacion = {
-				mensajes: ["Se rechazó sin decirnos el motivo"],
-				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
-			};
-			return res.render("CMP-0Estructura", {informacion});
-		}
 		// 2. Acciones específicas para RCLVs
 		if (rclvs) {
 			// Averigua si hay errores de validación y toma acciones
