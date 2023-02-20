@@ -342,12 +342,6 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
 
-		// 7. Si es un RCLV y fue rechazado, elimina el valor rclv_id de las 'prods_edicion' vinculadas a él
-		if (rclvs && rechazado) {
-			let RCLV_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[RCLV_id]: id}, {[RCLV_id]: null});
-		}
-
 		// Fin
 		if (rclvs) return res.redirect("/revision/tablero-de-control");
 		else {
