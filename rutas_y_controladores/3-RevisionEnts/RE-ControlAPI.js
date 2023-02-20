@@ -9,7 +9,7 @@ const procesos = require("./RE-Procesos");
 // *********** Controlador ***********
 module.exports = {
 	// Productos
-	edic_AprobRech: async (req, res) => {
+	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, id: entID, edicion_id: edicID, campo} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);

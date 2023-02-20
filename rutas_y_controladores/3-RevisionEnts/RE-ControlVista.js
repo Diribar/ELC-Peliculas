@@ -141,7 +141,7 @@ module.exports = {
 				req.query.campo = "avatar";
 				// Avatar: impacto en los archivos, y en el registro de edicion
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
+				// Impactos en: usuario, edicAprob/Rech, RCLV, producto_original, prod_edicion
 				let statusAprob;
 				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, prodOrig, prodEdic);
 				// Fin, si no quedan campos

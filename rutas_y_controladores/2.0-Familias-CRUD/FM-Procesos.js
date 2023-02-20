@@ -20,7 +20,7 @@ module.exports = {
 			let camposRevisar = [];
 			for (let campo of variables.camposRevisar[familia]) {
 				camposRevisar.push(campo.nombre);
-				if (campo.relac_include) camposRevisar.push(campo.relac_include);
+				if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
 			}
 			// Quita de edicion los campos que no se comparan
 			for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];

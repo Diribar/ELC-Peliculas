@@ -214,7 +214,7 @@ module.exports = {
 		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 		// RCLV actual
-		let includes = comp.obtieneTodosLosCamposInclude(entidad)
+		let includes = comp.obtieneTodosLosCamposInclude(entidad);
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 
 		// Motivos posibles
@@ -226,34 +226,33 @@ module.exports = {
 		for (let campoRevisar of camposRevisar) {
 			// Variables
 			let campo = campoRevisar.nombre;
-			let relac_include = campoRevisar.relac_include;
+			let relacInclude = campoRevisar.relacInclude;
 
 			// Valor aprobado
-			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
-			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
+			let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
+			let valorRech = relacInclude ? original[relacInclude].nombre : original[campo];
 
 			// Casos especiales
 			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
-				valor_aprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-				valor_rech = original[campo] == 1 ? "SI" : "NO";
+				valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+				valorRech = original[campo] == 1 ? "SI" : "NO";
+			}
+			if (campo == "epoca_id") {
+				valorAprob = RCLV_actual[relacInclude].nombre_pers;
+				valorRech = original[relacInclude].nombre_pers;
 			}
 
-			if (!valor_aprob && !valor_rech) continue;
+			if (!valorAprob && !valorRech) continue;
 			// Genera la información
-			datos = {
-				...datos,
-				campo: campoRevisar.nombre,
-				titulo: campoRevisar.titulo,
-				valor_aprob,
-			};
+			datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
 
 			// Obtiene la entidad y completa los datos
 			let edicsAprobRech;
-			if (valor_aprob != valor_rech) {
+			if (valorAprob != valorRech) {
 				// Obtiene la entidad
 				edicsAprobRech = "edics_rech";
 				// Completa los datos
-				datos.valor_rech = valor_rech;
+				datos.valorRech = valorRech;
 				let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;
@@ -281,7 +280,7 @@ module.exports = {
 		return;
 	},
 	// Edición
-	edicion:{
+	edicion: {
 		// Form
 		obtieneEdicAjena: async (req, familia, nombreEdic) => {
 			// Variables
@@ -313,7 +312,11 @@ module.exports = {
 			let includes = comp.obtieneTodosLosCamposInclude(entidad);
 			if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 			// Obtiene las ediciones del producto
-			let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(nombreEdic, {entidad_id, entID: rclvID, userID}, includes);
+			let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
+				nombreEdic,
+				{entidad_id, entID: rclvID, userID},
+				includes
+			);
 			// Si no existe ninguna edición => informa el error
 			if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
 			// Obtiene la prodEdic
@@ -344,7 +347,7 @@ module.exports = {
 				// Fin
 				return enviar;
 			};
-	
+
 			// Definir el 'ahora'
 			let ahora = comp.ahora().getTime();
 			// Bloque derecho
@@ -422,10 +425,10 @@ module.exports = {
 				let obtieneElValorDeUnCampo = (registro, campo) => {
 					// Variables
 					let camposConVinculo = [...variables.camposRevisar[familia]]; // Hay que desconectarse del original
-					camposConVinculo = camposConVinculo.filter((n) => n.relac_include);
+					camposConVinculo = camposConVinculo.filter((n) => n.relacInclude);
 					let campos = camposConVinculo.map((n) => n.nombre);
 					let indice = campos.indexOf(campo);
-					let vinculo = indice >= 0 ? camposConVinculo[indice].relac_include : "";
+					let vinculo = indice >= 0 ? camposConVinculo[indice].relacInclude : "";
 					let respuesta;
 					// Resultado
 					if (indice >= 0)
@@ -444,10 +447,10 @@ module.exports = {
 				let valorOrig = obtieneElValorDeUnCampo(regOrig, campo);
 				let valorEdic = obtieneElValorDeUnCampo(regEdic, campo);
 				// Obtiene los valores 'aprobado' y 'rechazado'
-				let valor_aprob = edicAprob ? valorEdic : valorOrig;
-				let valor_rech = !edicAprob ? valorEdic : valorOrig;
+				let valorAprob = edicAprob ? valorEdic : valorOrig;
+				let valorRech = !edicAprob ? valorEdic : valorOrig;
 				// Fin
-				return {valor_aprob, valor_rech};
+				return {valorAprob, valorRech};
 			};
 			let valoresAprobRech = fn_valoresAprobRech();
 			// Obtiene datos adicionales
@@ -613,16 +616,16 @@ module.exports = {
 			// Si el campo no existe en los campos a revisar, saltea la rutina
 			if (!campo) continue;
 			// Obtiene las variables de include
-			let relac_include = campo.relac_include;
+			let relacInclude = campo.relacInclude;
 			// Criterio para determinar qué valores originales mostrar
 			campo.mostrarOrig =
-				relac_include && prodOrig[relac_include] // El producto original tiene un valor 'include'
-					? prodOrig[relac_include].nombre // Muestra el valor 'include'
+				relacInclude && prodOrig[relacInclude] // El producto original tiene un valor 'include'
+					? prodOrig[relacInclude].nombre // Muestra el valor 'include'
 					: prodOrig[nombre]; // Muestra el valor 'simple'
 			// Criterio para determinar qué valores editados mostrar
 			campo.mostrarEdic =
-				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
-					? edicion[relac_include].nombre // Muestra el valor 'include'
+				relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
+					? edicion[relacInclude].nombre // Muestra el valor 'include'
 					: edicion[nombre]; // Muestra el valor 'simple'
 			// Consolidar los resultados
 			resultado.push(campo);
@@ -694,16 +697,16 @@ module.exports = {
 			// Si el campo no existe en los campos a revisar, saltea la rutina
 			if (!campo) continue;
 			// Obtiene las variables de include
-			let relac_include = campo.relac_include;
+			let relacInclude = campo.relacInclude;
 			// Criterio para determinar qué valores originales mostrar
 			campo.mostrarOrig =
-				relac_include && rclvOrig[relac_include] // El producto original tiene un valor 'include'
-					? rclvOrig[relac_include].nombre // Muestra el valor 'include'
+				relacInclude && rclvOrig[relacInclude] // El producto original tiene un valor 'include'
+					? rclvOrig[relacInclude].nombre // Muestra el valor 'include'
 					: rclvOrig[nombre]; // Muestra el valor 'simple'
 			// Criterio para determinar qué valores editados mostrar
 			campo.mostrarEdic =
-				relac_include && edicion[relac_include] // El producto editado tiene un valor 'include'
-					? edicion[relac_include].nombre // Muestra el valor 'include'
+				relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
+					? edicion[relacInclude].nombre // Muestra el valor 'include'
 					: edicion[nombre]; // Muestra el valor 'simple'
 			// Consolidar los resultados
 			resultado.push(campo);

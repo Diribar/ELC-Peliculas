@@ -46,10 +46,10 @@ module.exports = {
 		let camposEntidad = campos.filter((n) => n[entidad] || n[familia]);
 
 		// Deja solamente los campos con vínculo
-		let camposConVinculo = camposEntidad.filter((n) => n.relac_include);
+		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
 
 		// Obtiene una matriz con los vínculos
-		let includes = camposConVinculo.map((n) => n.relac_include);
+		let includes = camposConVinculo.map((n) => n.relacInclude);
 
 		// Fin
 		return includes;
