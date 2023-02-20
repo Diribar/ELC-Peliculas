@@ -175,7 +175,6 @@ module.exports = {
 			this.linkCastEnProd(registro);
 		}
 	},
-
 	// Actualiza los campos de 'producto' en el RCLV
 	prodEnRCLV: async function (producto) {
 		// Variables
@@ -316,4 +315,53 @@ module.exports = {
 		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
 		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
 	},
+
+	// Revisión y Mantenimiento
+	obtieneProdsDeLinks: function (links, ahora, userID) {
+		// 1. Variables
+		let productos = [];
+		// 2. Obtiene los productos
+		links.map((n) => {
+			let entidad = comp.obtieneProdDesdeProducto_id(n);
+			let asociacion = comp.obtieneAsociacion(entidad);
+			let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
+			productos.push({
+				...n[asociacion],
+				entidad,
+				fechaRef: n[campoFechaRef],
+				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+			});
+		});
+		// 3. Ordena por la fecha más antigua
+		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+		// 4. Elimina repetidos
+		productos = comp.eliminaRepetidos(productos);
+		// 5. Deja solamente los productos aprobados
+		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+		// 6. Deja solamente los sin problemas de captura
+		if (productos.length) productos = this.sinProblemasDeCaptura(productos, userID, ahora);
+
+		// Fin
+		return productos;
+	},
+	sinProblemasDeCaptura: (familia, userID, ahora) => {
+		// Variables
+		const haceUnaHora = comp.nuevoHorario(-1, ahora);
+		const haceDosHoras = comp.nuevoHorario(-2, ahora);
+		// Fin
+		return familia.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturado_en ||
+				// Que esté capturado hace más de dos horas
+				n.capturado_en < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturado_por_id != userID && !n.captura_activa) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+		);
+	},
+	
 };
