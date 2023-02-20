@@ -10,216 +10,218 @@ const validaRCLVs = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
 	// Tablero
-	TC_obtieneProds: async (ahora, userID) => {
-		// Obtiene productos en situaciones particulares
-		// Variables
-		let entidades = ["peliculas", "colecciones"];
-		let campos;
-		// SE: Sin Edición (en status creado_aprob)
-		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
-		let SE = await TC_obtieneRegs(...campos);
-		SE = SE.filter((n) => !n.ediciones.length);
-		// IN: En staus 'inactivar'
-		campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let IN = await TC_obtieneRegs(...campos);
-		// RC: En status 'recuperar'
-		campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let RC = await TC_obtieneRegs(...campos);
+	TC: {
+		obtieneProds: async (ahora, userID) => {
+			// Obtiene productos en situaciones particulares
+			// Variables
+			let entidades = ["peliculas", "colecciones"];
+			let campos;
+			// SE: Sin Edición (en status creado_aprob)
+			campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+			let SE = await TC_obtieneRegs(...campos);
+			SE = SE.filter((n) => !n.ediciones.length);
+			// IN: En staus 'inactivar'
+			campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			let IN = await TC_obtieneRegs(...campos);
+			// RC: En status 'recuperar'
+			campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			let RC = await TC_obtieneRegs(...campos);
 
-		// Fin
-		return {IN, RC, SE};
-	},
-	TC_obtieneProdsConEdicAjena: async (ahora, userID) => {
-		// 1. Variables
-		const campoFechaRef = "editado_en";
-		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
-		let productos = [];
+			// Fin
+			return {IN, RC, SE};
+		},
+		obtieneProdsConEdicAjena: async (ahora, userID) => {
+			// 1. Variables
+			const campoFechaRef = "editado_en";
+			let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
+			let productos = [];
 
-		// 2. Obtiene todas las ediciones ajenas
-		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
+			// 2. Obtiene todas las ediciones ajenas
+			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
 
-		// 3.Elimina las edicionesProd con RCLV no aprobado
-		if (ediciones.length)
-			for (let i = ediciones.length - 1; i >= 0; i--)
-				if (
-					(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
-					(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
-					(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
-				)
-					ediciones.splice(i, 1);
+			// 3.Elimina las edicionesProd con RCLV no aprobado
+			if (ediciones.length)
+				for (let i = ediciones.length - 1; i >= 0; i--)
+					if (
+						(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
+						(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
+						(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
+					)
+						ediciones.splice(i, 1);
 
-		// 4. Obtiene los productos originales
-		if (ediciones.length)
-			ediciones.map((n) => {
+			// 4. Obtiene los productos originales
+			if (ediciones.length)
+				ediciones.map((n) => {
+					let entidad = comp.obtieneProdDesdeProducto_id(n);
+					let asociacion = comp.obtieneAsociacion(entidad);
+					productos.push({
+						...n[asociacion],
+						entidad,
+						edicion_id: n.id,
+						fechaRef: n[campoFechaRef],
+						fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+					});
+				});
+
+			// 5. Elimina los repetidos más recientes
+			productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+			productos = comp.eliminaRepetidos(productos);
+
+			// 6. Deja solamente los sin problemas de captura
+			if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
+
+			// Fin
+			return productos;
+		},
+		obtieneProdsConLink: async function (ahora, userID) {
+			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
+			// Obtiene los links 'a revisar'
+			let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
+			// Obtiene los productos
+			let productos = links.length ? this.TC_obtieneProdsDeLinks(links, ahora, userID) : [];
+
+			// Fin
+			return productos;
+		},
+		obtieneProdsDeLinks: function (links, ahora, userID) {
+			// 1. Variables
+			let productos = [];
+			// 2. Obtiene los productos
+			links.map((n) => {
 				let entidad = comp.obtieneProdDesdeProducto_id(n);
 				let asociacion = comp.obtieneAsociacion(entidad);
+				let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
 				productos.push({
 					...n[asociacion],
 					entidad,
-					edicion_id: n.id,
 					fechaRef: n[campoFechaRef],
 					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
 				});
 			});
+			// 3. Ordena por la fecha más antigua
+			productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+			// 4. Elimina repetidos
+			productos = comp.eliminaRepetidos(productos);
+			// 5. Deja solamente los productos aprobados
+			if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+			// 6. Deja solamente los sin problemas de captura
+			if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
-		// 5. Elimina los repetidos más recientes
-		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-		productos = comp.eliminaRepetidos(productos);
-
-		// 6. Deja solamente los sin problemas de captura
-		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
-
-		// Fin
-		return productos;
-	},
-	TC_obtieneProdsConLink: async function (ahora, userID) {
-		// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
-		// Obtiene los links 'a revisar'
-		let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
-		// Obtiene los productos
-		let productos = links.length ? this.TC_obtieneProdsDeLinks(links, ahora, userID) : [];
-
-		// Fin
-		return productos;
-	},
-	TC_obtieneProdsDeLinks: function (links, ahora, userID) {
-		// 1. Variables
-		let productos = [];
-		// 2. Obtiene los productos
-		links.map((n) => {
-			let entidad = comp.obtieneProdDesdeProducto_id(n);
-			let asociacion = comp.obtieneAsociacion(entidad);
-			let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
-			productos.push({
-				...n[asociacion],
-				entidad,
-				fechaRef: n[campoFechaRef],
-				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
-			});
-		});
-		// 3. Ordena por la fecha más antigua
-		productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-		// 4. Elimina repetidos
-		productos = comp.eliminaRepetidos(productos);
-		// 5. Deja solamente los productos aprobados
-		if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-		// 6. Deja solamente los sin problemas de captura
-		if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
-
-		// Fin
-		return productos;
-	},
-	TC_obtieneRCLVs: async (ahora, userID) => {
-		// Obtiene rclvs en situaciones particulares
-		// Variables
-		let entidades = variables.entidadesRCLV;
-		let campos, includes;
-		//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
-		includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
-		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
-		let registros = await TC_obtieneRegs(...campos);
-		let PA = registros.filter(
-			(n) => n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_edicion.length
-		);
-		let SP = registros.filter(
-			(n) =>
-				!n.peliculas.length &&
-				!n.colecciones.length &&
-				!n.capitulos.length &&
-				!n.prods_edicion.length &&
-				n.creado_en < ahora - unDia &&
-				n.creado_en > ahora - unDia * 2
-		);
-		// Fin
-		return {PA, SP};
-	},
-	TC_obtieneRCLVsConEdicAjena: async function (ahora, userID) {
-		// 1. Variables
-		const campoFechaRef = "editado_en";
-		let includes = ["personaje", "hecho", "valor"];
-		let rclvs = [];
-		// 2. Obtiene todas las ediciones ajenas
-		let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", userID, includes);
-		// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
-		if (ediciones.length) {
-			// Obtiene los rclvs originales
-			ediciones.map((n) => {
-				let entidad = comp.obtieneRCLVdesdeRCLV_id(n);
-				let asociacion = comp.obtieneAsociacion(entidad);
-				rclvs.push({
-					...n[asociacion],
-					entidad,
-					editado_en: n.editado_en,
-					edicion_id: n.id,
-					fechaRef: n[campoFechaRef],
-					fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+			// Fin
+			return productos;
+		},
+		obtieneRCLVs: async (ahora, userID) => {
+			// Obtiene rclvs en situaciones particulares
+			// Variables
+			let entidades = variables.entidadesRCLV;
+			let campos, includes;
+			//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
+			includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
+			campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
+			let registros = await TC_obtieneRegs(...campos);
+			let PA = registros.filter(
+				(n) => n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_edicion.length
+			);
+			let SP = registros.filter(
+				(n) =>
+					!n.peliculas.length &&
+					!n.colecciones.length &&
+					!n.capitulos.length &&
+					!n.prods_edicion.length &&
+					n.creado_en < ahora - unDia &&
+					n.creado_en > ahora - unDia * 2
+			);
+			// Fin
+			return {PA, SP};
+		},
+		obtieneRCLVsConEdicAjena: async function (ahora, userID) {
+			// 1. Variables
+			const campoFechaRef = "editado_en";
+			let includes = ["personaje", "hecho", "valor"];
+			let rclvs = [];
+			// 2. Obtiene todas las ediciones ajenas
+			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", userID, includes);
+			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
+			if (ediciones.length) {
+				// Obtiene los rclvs originales
+				ediciones.map((n) => {
+					let entidad = comp.obtieneRCLVdesdeRCLV_id(n);
+					let asociacion = comp.obtieneAsociacion(entidad);
+					rclvs.push({
+						...n[asociacion],
+						entidad,
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+						fechaRef: n[campoFechaRef],
+						fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+					});
 				});
-			});
-			// Deja solamente los rclvs aprobados
-			rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
-		}
-		// 4. Elimina los repetidos
-		if (rclvs.length) {
-			rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-			rclvs = comp.eliminaRepetidos(rclvs);
-		}
-		// 5. Deja solamente los sin problemas de captura
-		if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, userID, ahora);
-		// Fin
-		return rclvs;
-	},
-	TC_prod_ProcesarCampos: (productos) => {
-		// Procesar los registros
-		// Variables
-		const anchoMax = 40;
-		const rubros = Object.keys(productos);
+				// Deja solamente los rclvs aprobados
+				rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
+			}
+			// 4. Elimina los repetidos
+			if (rclvs.length) {
+				rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+				rclvs = comp.eliminaRepetidos(rclvs);
+			}
+			// 5. Deja solamente los sin problemas de captura
+			if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, userID, ahora);
+			// Fin
+			return rclvs;
+		},
+		prod_ProcesarCampos: (productos) => {
+			// Procesar los registros
+			// Variables
+			const anchoMax = 40;
+			const rubros = Object.keys(productos);
 
-		// Reconvierte los elementos
-		for (let rubro of rubros)
-			productos[rubro] = productos[rubro].map((n) => {
-				let nombre =
-					(n.nombre_castellano.length > anchoMax
-						? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
-						: n.nombre_castellano) +
-					" (" +
-					n.ano_estreno +
-					")";
-				let datos = {
-					id: n.id,
-					entidad: n.entidad,
-					nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					fechaRefTexto: n.fechaRefTexto,
-				};
-				if (rubro == "ED") datos.edicion_id = n.edicion_id;
-				return datos;
-			});
+			// Reconvierte los elementos
+			for (let rubro of rubros)
+				productos[rubro] = productos[rubro].map((n) => {
+					let nombre =
+						(n.nombre_castellano.length > anchoMax
+							? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
+							: n.nombre_castellano) +
+						" (" +
+						n.ano_estreno +
+						")";
+					let datos = {
+						id: n.id,
+						entidad: n.entidad,
+						nombre,
+						abrev: n.entidad.slice(0, 3).toUpperCase(),
+						fechaRefTexto: n.fechaRefTexto,
+					};
+					if (rubro == "ED") datos.edicion_id = n.edicion_id;
+					return datos;
+				});
 
-		// Fin
-		return productos;
-	},
-	TC_RCLV_ProcesarCampos: (rclvs) => {
-		// Procesar los registros
-		let anchoMax = 30;
-		const rubros = Object.keys(rclvs);
+			// Fin
+			return productos;
+		},
+		RCLV_ProcesarCampos: (rclvs) => {
+			// Procesar los registros
+			let anchoMax = 30;
+			const rubros = Object.keys(rclvs);
 
-		// Reconvierte los elementos
-		for (let rubro of rubros)
-			rclvs[rubro] = rclvs[rubro].map((n) => {
-				let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-				let datos = {
-					id: n.id,
-					entidad: n.entidad,
-					nombre,
-					abrev: n.entidad.slice(0, 3).toUpperCase(),
-					fechaRefTexto: n.fechaRefTexto,
-				};
-				if (rubro == "ED") datos.edicion_id = n.edicion_id;
-				return datos;
-			});
+			// Reconvierte los elementos
+			for (let rubro of rubros)
+				rclvs[rubro] = rclvs[rubro].map((n) => {
+					let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+					let datos = {
+						id: n.id,
+						entidad: n.entidad,
+						nombre,
+						abrev: n.entidad.slice(0, 3).toUpperCase(),
+						fechaRefTexto: n.fechaRefTexto,
+					};
+					if (rubro == "ED") datos.edicion_id = n.edicion_id;
+					return datos;
+				});
 
-		// Fin
-		return rclvs;
+			// Fin
+			return rclvs;
+		},
 	},
 
 	// Producto y RCLV
@@ -317,6 +319,91 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		// Fin
 		return derecha;
+	},
+	// Alta Guardar
+	edicAprobRech: async (entidad, original, revID) => {
+		// Variables
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+
+		// Obtiene RCLV actual
+		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
+		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+
+		// Obtiene los motivos posibles
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		let motivoVersionActual = motivos.find((n) => n.version_actual);
+		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+
+		// Prepara la información
+		let datos = {
+			entidad,
+			entidad_id: original.id,
+			editado_por_id: original.creado_por_id,
+			editado_en: original.creado_en,
+			edic_analizada_por_id: revID,
+			edic_analizada_en: comp.ahora(),
+		};
+
+		// Rutina para comparar los campos
+		let ediciones = {edics_aprob: 0, edics_rech: 0};
+		// console.log(491, RCLV_actual);
+		for (let campoRevisar of camposRevisar) {
+			// Variables
+			let campo = campoRevisar.nombre;
+			let relac_include = campoRevisar.relac_include;
+
+			// Valor aprobado
+			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
+			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
+
+			// Casos especiales
+			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
+				valor_aprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+				valor_rech = original[campo] == 1 ? "SI" : "NO";
+			}
+
+			if (!valor_aprob && !valor_rech) continue;
+			// Genera la información
+			datos = {
+				...datos,
+				campo: campoRevisar.nombre,
+				titulo: campoRevisar.titulo,
+				valor_aprob,
+			};
+
+			// Obtiene la entidad y completa los datos
+			let edicsAprobRech;
+			if (valor_aprob != valor_rech) {
+				// Obtiene la entidad
+				edicsAprobRech = "edics_rech";
+				// Completa los datos
+				datos.valor_rech = valor_rech;
+				let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
+				datos.motivo_id = motivo.id;
+				datos.duracion = motivo.duracion;
+			}
+			// Obtiene la entidad
+			else edicsAprobRech = "edics_aprob";
+
+			// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
+			await BD_genericas.agregaRegistro(edicsAprobRech, datos);
+			// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
+			ediciones[edicsAprobRech]++;
+		}
+
+		// Actualiza en el usuario los campos edics_aprob / edics_rech
+		let creaID = original.creado_por_id;
+		let campoEdic =
+			ediciones.edics_aprob > ediciones.edics_rech
+				? "edics_aprob"
+				: ediciones.edics_aprob < ediciones.edics_rech
+				? "edics_rech"
+				: "";
+		if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
+
+		// Fin
+		return;
 	},
 	// API/Vista
 	guardaEdicRev: async function (req, regOrig, regEdic) {
@@ -460,91 +547,6 @@ module.exports = {
 			this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
-	},
-	// Alta Guardar
-	edicAprobRech: async (entidad, original, revID) => {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-
-		// Obtiene RCLV actual
-		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
-		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
-
-		// Obtiene los motivos posibles
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let motivoVersionActual = motivos.find((n) => n.version_actual);
-		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
-
-		// Prepara la información
-		let datos = {
-			entidad,
-			entidad_id: original.id,
-			editado_por_id: original.creado_por_id,
-			editado_en: original.creado_en,
-			edic_analizada_por_id: revID,
-			edic_analizada_en: comp.ahora(),
-		};
-
-		// Rutina para comparar los campos
-		let ediciones = {edics_aprob: 0, edics_rech: 0};
-		// console.log(491, RCLV_actual);
-		for (let campoRevisar of camposRevisar) {
-			// Variables
-			let campo = campoRevisar.nombre;
-			let relac_include = campoRevisar.relac_include;
-
-			// Valor aprobado
-			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
-			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
-
-			// Casos especiales
-			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
-				valor_aprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-				valor_rech = original[campo] == 1 ? "SI" : "NO";
-			}
-
-			if (!valor_aprob && !valor_rech) continue;
-			// Genera la información
-			datos = {
-				...datos,
-				campo: campoRevisar.nombre,
-				titulo: campoRevisar.titulo,
-				valor_aprob,
-			};
-
-			// Obtiene la entidad y completa los datos
-			let edicsAprobRech;
-			if (valor_aprob != valor_rech) {
-				// Obtiene la entidad
-				edicsAprobRech = "edics_rech";
-				// Completa los datos
-				datos.valor_rech = valor_rech;
-				let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
-				datos.motivo_id = motivo.id;
-				datos.duracion = motivo.duracion;
-			}
-			// Obtiene la entidad
-			else edicsAprobRech = "edics_aprob";
-
-			// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
-			await BD_genericas.agregaRegistro(edicsAprobRech, datos);
-			// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
-			ediciones[edicsAprobRech]++;
-		}
-
-		// Actualiza en el usuario los campos edics_aprob / edics_rech
-		let creaID = original.creado_por_id;
-		let campoEdic =
-			ediciones.edics_aprob > ediciones.edics_rech
-				? "edics_aprob"
-				: ediciones.edics_aprob < ediciones.edics_rech
-				? "edics_rech"
-				: "";
-		if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
-
-		// Fin
-		return;
 	},
 
 	// Productos Alta

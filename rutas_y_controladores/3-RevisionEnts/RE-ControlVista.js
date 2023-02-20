@@ -18,8 +18,8 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
-		let prodsConEdic = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
-		let productos = await procesos.TC_obtieneProds(ahora, userID);
+		let prodsConEdic = await procesos.TC.obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
+		let productos = await procesos.TC.obtieneProds(ahora, userID);
 		if (prodsConEdic.length) {
 			// Deja solamente los productos en status creado
 			productos.PA = prodsConEdic.filter((n) => n.status_registro_id == creado_id);
@@ -29,14 +29,14 @@ module.exports = {
 		}
 
 		// RCLV
-		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
-		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
+		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
+		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 		// Obtiene Links
-		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
+		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
 		// return res.send(productos.CL)
 		// Procesa los campos de las 2 familias de entidades
-		productos = procesos.TC_prod_ProcesarCampos(productos);
-		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
+		productos = procesos.TC.prod_ProcesarCampos(productos);
+		rclvs = procesos.TC.RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
