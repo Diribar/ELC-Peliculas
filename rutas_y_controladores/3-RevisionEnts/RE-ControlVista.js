@@ -293,9 +293,7 @@ module.exports = {
 		// Obtiene el registro original
 		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
-		// console.log(296, includes);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		// console.log(298,original);
 
 		// Completa los datos
 		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
