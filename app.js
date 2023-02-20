@@ -29,10 +29,10 @@ app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false
 const cookies = require("cookie-parser");
 app.use(cookies());
 // Para estar siempre logueado, si existe el cookie
-const loginConCookie = require("./middlewares/usuarios/loginConCookie");
+const loginConCookie = require("./middlewares/varios/loginConCookie");
 app.use(loginConCookie);
 // Para tener el rastro de los últimos url
-const urlsUsadas = require("./middlewares/usuarios/urlsUsadas");
+const urlsUsadas = require("./middlewares/urls/urlsUsadas");
 app.use(urlsUsadas);
 
 // Para saber el recorrido del proyecto
@@ -156,6 +156,6 @@ app.set("views", [
 
 	// Middleware que se debe informar después de los urls anteriores
 	// Mensaje si un usuario usa un url desconocido
-	const urlDescon = require("./middlewares/varios/urlDescon");
+	const urlDescon = require("./middlewares/urls/urlDescon");
 	app.use(urlDescon);
 })();

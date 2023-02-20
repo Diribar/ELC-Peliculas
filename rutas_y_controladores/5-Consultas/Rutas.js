@@ -5,7 +5,7 @@ const router = express.Router();
 const vista = require("./CN-ControlVista");
 
 // Middlewares
-let consDescon = require("../../middlewares/varios/filtro-consDescon");
+let consDescon = require("../../middlewares/urls/urlConsultaDescon");
 
 // Home
 router.get("/", vista.consultasSinLayout);

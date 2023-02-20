@@ -3,6 +3,8 @@
 const procesos = require("../../rutas_y_controladores/2.1-Prod-Agregar/PA-FN-Procesos");
 
 module.exports = (req, res, next) => {
+	// Acciones comunes entre los pasos de 'producto agregar'
+
 	// Variables
 	let urlActual = req.url.slice(1);
 	let variables = [
