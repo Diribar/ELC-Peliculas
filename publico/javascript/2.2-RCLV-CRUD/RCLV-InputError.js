@@ -123,13 +123,18 @@ window.addEventListener("load", async () => {
 				}
 			},
 			muestraPosiblesRepetidos: async () => {
-				// Obtiene los casos con esa fecha
-				// 1. Obtiene los parámetros
-				let params = "?entidad=" + v.entidad;
-				if (v.id) params += "&id=" + v.id;
-				params += v.desconocida.checked ? "&dia=0" : "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
-				// 2. Busca otros casos con esa fecha
-				let casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
+				// Variables
+				let casos = [];
+
+				if (!v.desconocida.checked) {
+					// Obtiene los casos con esa fecha
+					// 1. Obtiene los parámetros
+					let params = "?entidad=" + v.entidad;
+					if (v.id) params += "&id=" + v.id;
+					params += "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
+					// 2. Busca otros casos con esa fecha
+					casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
+				}
 
 				// Si no hay otros casos, mensaje de "No hay otros casos"
 				if (!casos.length) {
