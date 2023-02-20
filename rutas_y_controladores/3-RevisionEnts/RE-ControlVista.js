@@ -307,15 +307,14 @@ module.exports = {
 		};
 
 		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original y en la variable
+		// 1. Actualiza el status en el registro original
 		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
-		original = {...original, ...datosCompletos};
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
-		// 3. Si es un RCLV, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, revID);
+		// 3. Si es un RCLV aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
+		if (rclvs && !rechazado) procesos.edicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
