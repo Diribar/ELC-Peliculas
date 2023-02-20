@@ -86,25 +86,22 @@ module.exports = {
 			// Obtiene rclvs en situaciones particulares
 			// Variables
 			let entidades = variables.entidadesRCLV;
-			let campos, includes;
-			//	PA: Pendientes de Aprobar (c/producto o c/edicProd)
-			includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
-			campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
+			let includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
+			let campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
 			let registros = await TC_obtieneRegs(...campos);
-			let PA = registros.filter(
-				(n) => n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_edicion.length
-			);
-			let SP = registros.filter(
-				(n) =>
-					!n.peliculas.length &&
-					!n.colecciones.length &&
-					!n.capitulos.length &&
-					!n.prods_edicion.length &&
-					n.creado_en < ahora - unDia &&
-					n.creado_en > ahora - unDia * 2
-			);
+
+			// Distribuir entre PA y SP
+			let respuesta = {PA: [], SP: []};
+			for (let reg of registros) {
+				// PA: Pendientes de Aprobar (c/producto o c/edicProd)
+				if (reg.peliculas.length || reg.colecciones.length || reg.capitulos.length || reg.prods_edicion.length)
+					respuesta.PA.push(reg);
+				// SP: con una antiguedad mayor a una hora
+				else if (reg.creado_en < ahora - unaHora) respuesta.SP.push(reg);
+			}
+
 			// Fin
-			return {PA, SP};
+			return respuesta;
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 			// 1. Variables
