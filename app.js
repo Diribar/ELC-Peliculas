@@ -69,20 +69,6 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/7-Institucional"),
 ]);
 
-// ************************* Rutas ********************************
-// Requires
-const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
-const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
-const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
-const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
-const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
-const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
-const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
-const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
-const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
-const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
-
 // Procesos que requieren de 'async' y 'await'
 (async () => {
 	// Lectura de la base de datos
@@ -133,7 +119,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
 	link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 
-	// Procesos que dependen de las lecturas de BD
+	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
 	global.tituloImgDerAyer = null;
 	global.tituloImgDerHoy = null;
@@ -142,7 +128,20 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 	const cron = require("node-cron");
 	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
-	// Urls que dependen de las lecturas de BD
+	// Rutas que dependen de la variable 'global'
+	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
+	const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
+	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
+	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
+	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
+	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
+	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
+	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
+	const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
+	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
+	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
+
+	// Urls que dependen de la variable 'global'
 	app.use("/crud/api", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
