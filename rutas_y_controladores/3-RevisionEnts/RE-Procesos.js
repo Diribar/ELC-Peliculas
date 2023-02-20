@@ -622,10 +622,10 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	rclvs_edicAprobRech: async (entidad, original, revID) => {
+	edicAprobRech: async (entidad, original, revID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
-		let RCLV_valorVinculo = (RCLV, campo) => {
+		let valorVinculo = (RCLV, campo) => {
 			return campo == "dia_del_ano_id"
 				? RCLV.dia_del_ano
 					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
@@ -654,8 +654,8 @@ module.exports = {
 		};
 
 		// Variables
-		let ahora = comp.ahora();
-		let camposComparar = variables.camposRevisar.rclvs.filter((n) => n[entidad]);
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let camposComparar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 		// Obtiene RCLV actual
 		let includes = ["dia_del_ano"];
@@ -674,15 +674,16 @@ module.exports = {
 			editado_por_id: original.creado_por_id,
 			editado_en: original.creado_en,
 			edic_analizada_por_id: revID,
-			edic_analizada_en: ahora,
+			edic_analizada_en: comp.ahora(),
 		};
 
 		// Rutina para comparar los campos
 		let ediciones = {edics_aprob: 0, edics_rech: 0};
 		for (let campoComparar of camposComparar) {
 			// Valor aprobado
-			let valor_aprob = RCLV_valorVinculo(RCLV_actual, campoComparar.nombre);
-			let valor_rech = RCLV_valorVinculo(original, campoComparar.nombre);
+			let valor_aprob = valorVinculo(RCLV_actual, campoComparar.nombre);
+			let valor_rech = valorVinculo(original, campoComparar.nombre);
+
 			if (!valor_aprob && !valor_rech) continue;
 			// Genera la información
 			datos = {
@@ -694,6 +695,13 @@ module.exports = {
 
 			// Obtiene la entidad y completa los datos
 			let entidadAprobRech;
+			console.log(
+				698,
+				campoComparar.nombre,
+				original[campoComparar.nombre],
+				RCLV_actual[campoComparar.nombre],
+				original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]
+			);
 			if (original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]) {
 				// Obtiene la entidad
 				entidadAprobRech = "edics_rech";
@@ -715,8 +723,13 @@ module.exports = {
 
 		// Actualiza en el usuario los campos edics_aprob / edics_rech
 		let creaID = original.creado_por_id;
-		if (ediciones.edics_aprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, "edics_aprob", ediciones.edics_aprob);
-		if (ediciones.edics_rech) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, "edics_rech", ediciones.edics_rech);
+		let campoEdic =
+			ediciones.edics_aprob > ediciones.edics_rech
+				? "edics_aprob"
+				: ediciones.edics_aprob < ediciones.edics_rech
+				? "edics_rech"
+				: "";
+		if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
 
 		// Fin
 		return;
