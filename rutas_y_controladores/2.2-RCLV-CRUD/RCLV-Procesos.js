@@ -7,11 +7,22 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	detalle: {
-		prodsDelRCLV: async function (RCLV, userID) {
+		prodsDelRCLV: async function (RCLV, usuario) {
+			// Variables
+			let userID = usuario ? usuario.id : "";
 			// Convierte las ediciones propias de productos en productos
-			if (userID) {
-				// Obtiene las ediciones propias
-				let edicionesPropias = RCLV.prods_edicion ? RCLV.prods_edicion.filter((n) => n.editado_por_id == userID) : [];
+			if (usuario) {
+				// Obtiene las ediciones
+				let ediciones = RCLV.prods_edicion ? RCLV.prods_edicion : [];
+
+				let edicionesPropias =
+					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
+					!RCLV.status_registro.aprobado && usuario.rol_usuario.revisor_ents
+						? ediciones
+						: // Obtiene las ediciones propias
+						ediciones
+						? ediciones.filter((n) => n.editado_por_id == userID)
+						: [];
 
 				// Configura RCLV
 				for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];

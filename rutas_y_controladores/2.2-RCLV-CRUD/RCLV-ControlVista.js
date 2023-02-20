@@ -116,7 +116,7 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 
 		// Obtiene RCLV con productos
@@ -125,7 +125,7 @@ module.exports = {
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 
 		// Productos
-		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, userID);
+		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, usuario);
 		let cantProds = prodsDelRCLV.length;
 
 		// Ir a la vista
