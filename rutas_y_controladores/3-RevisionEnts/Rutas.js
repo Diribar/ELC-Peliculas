@@ -14,14 +14,14 @@ const usRolRevEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
 // Específicos de entidades
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
-const msc = require("../../middlewares/producto/filtro-statusCorrecto");
+const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 const rechazoSinMotivo = require("../../middlewares/producto/filtro-rechazoSinMotivo");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, usRolRevEnts];
-const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, rechazoSinMotivo, capturaActivar];
+const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
@@ -35,15 +35,15 @@ router.get("/api/link-edicion", ...aptoRevisor, API.edic_AprobRech);
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Producto
-router.get("/producto/alta", ...aptoRevMasEnt, msc.statusCorrecto(creado_id), vista.prodAltaForm);
-router.post("/producto/alta", ...aptoRevMasEnt, msc.statusCorrecto(creado_id), vista.registoAltaGuardar);
-router.get("/producto/edicion", ...aptoRevMasEnt, msc.statusCorrecto(aprobado_id), vista.prodEdicForm);
-router.get("/producto/inactivar", msc.statusCorrecto(inactivar_id));
-router.get("/producto/recuperar", msc.statusCorrecto(recuperar_id));
+router.get("/producto/alta", ...aptoRevMasEnt, statusCorrecto, vista.prodAltaForm);
+router.post("/producto/alta", ...aptoRevMasEnt, statusCorrecto, rechazoSinMotivo, vista.registoAltaGuardar);
+router.get("/producto/edicion", ...aptoRevMasEnt, statusCorrecto, vista.prodEdicForm);
+router.get("/producto/inactivar", statusCorrecto);
+router.get("/producto/recuperar", statusCorrecto);
 // RCLV
-router.get("/rclv/alta", ...aptoRevMasEnt, msc.statusCorrecto(creado_id), vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoRevMasEnt, msc.statusCorrecto(creado_id), vista.registoAltaGuardar);
-router.get("/rclv/edicion", ...aptoRevMasEnt, msc.statusCorrecto(aprobado_id), vista.rclvEdicForm);
+router.get("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, vistaAltaRCLV.altaEdicForm);
+router.post("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, rechazoSinMotivo, vista.registoAltaGuardar);
+router.get("/rclv/edicion", ...aptoRevMasEnt, statusCorrecto, vista.rclvEdicForm);
 
 // Links
 router.get("/links", ...aptoRevMasEnt, vista.linksForm);
