@@ -262,45 +262,61 @@ module.exports = {
 	registoAltaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
+		let motivo_id = req.body.motivo_id;
 		const rclvs = comp.obtieneFamiliaEnPlural(entidad) == "rclvs";
+		let datosCompletos = {};
 
-		// RCLVs - Averigua si hay errores de validación y toma acciones
-		const datos = rclvs ? {...req.body, ...req.query} : {};
+		// PROBLEMAS
+		// 1. Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			let informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
+		// 2. Acciones específicas para RCLVs
 		if (rclvs) {
+			// Averigua si hay errores de validación y toma acciones
+			const datos = {...req.body, ...req.query};
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
 				return res.redirect(req.originalUrl);
 			}
+			// Procesa los datos del Data Entry
+			datosCompletos = procsRCLV.procesaLosDatos(datos);
 		}
 
-		// REVISA POSIBLES PROBLEMAS
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("epoca", "categoria", "rol_iglesia", "proc_canon", "ap_mar");
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		const informacion = procesos.revisaProblemas(req, original);
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
+		// PROCESOS INTERMEDIOS
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_analizada_en = ahora;
-		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
-		let datosCompletos = {
+
+		// Obtiene el registro original
+		let includes = [];
+		if (entidad != "valores") includes.push("dia_del_ano");
+		if (entidad == "personajes") includes.push("epoca", "categoria", "rol_iglesia", "proc_canon", "ap_mar");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+
+		// Completa los datos
+		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
+		datosCompletos = {
+			...datosCompletos,
 			status_registro_id,
 			alta_analizada_por_id: userID,
 			alta_analizada_en,
 			lead_time_creacion,
 			captura_activa: false,
 		};
-		if (rclvs) datosCompletos = {...datosCompletos, ...procsRCLV.procesaLosDatos(datos)};
-		// return res.send(datosCompletos);
 
+		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original y en la variable
 		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
 		original = {...original, ...datosCompletos};
@@ -325,7 +341,6 @@ module.exports = {
 			aprobado: !rechazado,
 		};
 		if (rechazado) {
-			let motivo_id = req.body.motivo_id;
 			datosHist.motivo_id = motivo_id;
 			let motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(motivo.duracion);
