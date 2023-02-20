@@ -263,7 +263,8 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		let motivo_id = req.body.motivo_id;
-		const rclvs = comp.obtieneFamiliaEnPlural(entidad) == "rclvs";
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const rclvs = familia == "rclvs";
 		let datosCompletos = {};
 
 		// 2. Acciones específicas para RCLVs
@@ -290,10 +291,11 @@ module.exports = {
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 
 		// Obtiene el registro original
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("epoca", "categoria", "rol_iglesia", "proc_canon", "ap_mar");
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
+		// console.log(296, includes);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		// console.log(298,original);
 
 		// Completa los datos
 		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);

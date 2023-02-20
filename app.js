@@ -116,7 +116,6 @@ app.set("views", [
 	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
-	global.dias_del_ano = global.dias_del_ano.filter((n) => n.id < 400);
 	link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 
 	// Procesos que dependen de la variable 'global'

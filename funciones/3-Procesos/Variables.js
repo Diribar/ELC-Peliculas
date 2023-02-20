@@ -419,7 +419,7 @@ module.exports = {
 		rclvs: [
 			// Todos
 			{nombre: "nombre", titulo: "Nombre Formal", rclvs: true},
-			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relac_include: "dia_del_ano"},
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			// Personajes

@@ -463,9 +463,12 @@ module.exports = {
 	},
 	// Alta Guardar
 	edicAprobRech: async (entidad, original, revID) => {
+		// Variables
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+
 		// Obtiene RCLV actual
-		let includes = ["dia_del_ano"];
-		if (entidad == "personajes") includes.push("categoria", "rol_iglesia", "proc_canon", "ap_mar");
+		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 
 		// Obtiene los motivos posibles
@@ -483,32 +486,20 @@ module.exports = {
 			edic_analizada_en: comp.ahora(),
 		};
 
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-		let ediciones = {edics_aprob: 0, edics_rech: 0};
 		// Rutina para comparar los campos
+		let ediciones = {edics_aprob: 0, edics_rech: 0};
+		// console.log(491, RCLV_actual);
 		for (let campoRevisar of camposRevisar) {
 			// Variables
 			let campo = campoRevisar.nombre;
 			let relac_include = campoRevisar.relac_include;
+			console.log(campo,relac_include);
 
 			// Valor aprobado
-			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
-			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
+			let valor_aprob = RCLV_actual.relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
+			let valor_rech = original.relac_include ? original[relac_include].nombre : original[campo];
 
 			// Casos especiales
-			if (campo == "dia_del_ano_id") {
-				valor_aprob =
-					valor_aprob < 400
-						? RCLV_actual.dia_del_ano.dia + "/" + mesesAbrev[RCLV_actual.dia_del_ano.mes_id - 1]
-						: "Sin fecha conocida";
-				valor_rech =
-					valor_rech < 400
-						? original.dia_del_ano.dia + "/" + mesesAbrev[original.dia_del_ano.mes_id - 1]
-						: "Sin fecha conocida";
-			}
-
 			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
 				valor_aprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
 				valor_rech = original[campo] == 1 ? "SI" : "NO";
