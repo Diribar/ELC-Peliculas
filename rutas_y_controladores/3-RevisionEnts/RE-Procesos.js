@@ -280,6 +280,7 @@ module.exports = {
 	},
 	// Edición
 	edicion:{
+		// Form
 		obtieneEdicAjena: async (req, familia, nombreEdic) => {
 			// Variables
 			const {entidad, id: rclvID, edicion_id: edicID} = req.query;
