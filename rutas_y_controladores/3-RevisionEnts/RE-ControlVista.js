@@ -46,7 +46,8 @@ module.exports = {
 			rclvs,
 		});
 	},
-	// Productos
+
+	// Productos y Links
 	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
@@ -80,9 +81,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
-		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) =>
-			n.filter((m) => m.prod)
-		);
+		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) => n.filter((m) => m.prod));
 		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
@@ -106,70 +105,12 @@ module.exports = {
 			rutaSalir,
 		});
 	},
-	prodAltaGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		// En caso de error, lo muestra
-		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		const informacion = procesos.prodAltaGuardar_informacion(req, producto);
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Más variables
-		const campoDecision = rechazado ? "prods_rech" : "prods_aprob";
-		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
-		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
-		let datosEntidad = {status_registro_id, alta_analizada_por_id: userID, alta_analizada_en: ahora};
-
-		// Actualiza el status en el registro original y en la variable
-		await BD_genericas.actualizaPorId(entidad, id, datosEntidad);
-		producto = {...producto, ...datosEntidad};
-		// Actualiza el status en los registros de los capítulos
-		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosEntidad);
-
-		// Agrega el registro en el historial_cambios_de_status
-		let creador_ID = producto.creado_por_id;
-		let datosHistorial = {
-			entidad_id: id,
-			entidad,
-			sugerido_por_id: creador_ID,
-			sugerido_en: producto.creado_en,
-			analizado_por_id: userID,
-			analizado_en: ahora,
-			status_original_id: status_registro.find((n) => n.creado).id,
-			status_final_id: status_registro_id,
-			aprobado: !rechazado,
-		};
-		if (rechazado) {
-			var motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
-			datosHistorial.motivo_id = motivo.id;
-			duracion = Number(motivo.duracion);
-			datosHistorial.duracion = duracion;
-		}
-		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHistorial);
-		// Aumenta el valor de prod_aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", creador_ID, campoDecision, 1);
-		// Penaliza al usuario si corresponde
-		if (duracion) comp.usuarioAumentaPenaliz(creador_ID, duracion, "prods");
-		// Obtiene el edicID
-		let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
-		let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-		if (edicID) urlEdicion += "&edicion_id=" + edicID;
-		// Fin
-		return res.redirect(urlEdicion);
-	},
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
-		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(
-			req,
-			"productos",
-			"prods_edicion"
-		);
+		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
@@ -202,21 +143,15 @@ module.exports = {
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edic_aprob/rech, RCLV, producto_original, prod_edicion
 				let statusAprob;
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(
-					req,
-					prodOrig,
-					prodEdic
-				);
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, prodOrig, prodEdic);
 				// Fin, si no quedan campos
-				if (!quedanCampos)
-					return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+				if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			} else {
 				// Variables
 				codigo += "/avatar";
 				avatar = {
 					original: prodOrig.avatar
-						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") +
-						  prodOrig.avatar
+						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + prodOrig.avatar
 						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
 					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
 				};
@@ -271,56 +206,12 @@ module.exports = {
 			cartelEscondido: true,
 		});
 	},
-
-	// rclvs
-	rclvAltaGuardar: async (req, res) => {
-		// 1. Variables
-		const {entidad, id} = req.query;
-		let datos = {...req.body, ...req.query};
-		let userID = req.session.usuario.id;
-		// 2. Averigua si hay errores de validación y toma acciones
-		let errores = await validaRCLV.consolidado(datos);
-		if (errores.hay) {
-			req.session[entidad] = datos;
-			res.cookie(entidad, datos, {maxAge: unDia});
-			return res.redirect(req.originalUrl);
-		}
-		// PROBLEMA: El registro no está en status creado
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("proc_canon", "rol_iglesia");
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		if (original.status_registro_id != creado_id) return res.redirect("/revision/tablero-de-control");
-		// 3. Procesa el data-entry
-		let dataEntry = procsRCLV.procesaLosDatos(datos);
-		// 4. Genera la información para guardar
-		let alta_analizada_en = comp.ahora();
-		let lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
-		dataEntry = {
-			...dataEntry,
-			alta_analizada_por_id: userID,
-			alta_analizada_en,
-			lead_time_creacion,
-			captura_activa: false,
-			status_registro_id: aprobado_id,
-		};
-		// 5. Guarda los cambios
-		await procsRCLV.guardaLosCambios(req, res, dataEntry);
-		// 6. Actualiza la tabla de edics aprob/rech
-		procesos.RCLV_AltasGuardar_EdicAprobRech(entidad, original, userID);
-		// 7. Redirecciona a la siguiente instancia
-		return res.redirect("/revision/tablero-de-control");
-	},
 	rclvEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "rclvEdicion";
 		// Validaciones y obtiene rclvEdic
-		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(
-			req,
-			"rclvs",
-			"rclvs_edicion"
-		);
+		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "rclvs", "rclvs_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
@@ -367,6 +258,93 @@ module.exports = {
 			title: rclvOrig.nombre_castellano,
 			cartelEscondido: true,
 		});
+	},
+	registoAltaGuardar: async (req, res) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const rclvs = comp.obtieneFamiliaEnPlural(entidad) == "rclvs";
+
+		// RCLVs - Averigua si hay errores de validación y toma acciones
+		const datos = rclvs ? {...req.body, ...req.query} : {};
+		if (rclvs) {
+			let errores = await validaRCLV.consolidado(datos);
+			if (errores.hay) {
+				req.session[entidad] = datos;
+				res.cookie(entidad, datos, {maxAge: unDia});
+				return res.redirect(req.originalUrl);
+			}
+		}
+
+		// REVISA POSIBLES PROBLEMAS
+		let includes = [];
+		if (entidad != "valores") includes.push("dia_del_ano");
+		if (entidad == "personajes") includes.push("epoca", "categoria", "rol_iglesia", "proc_canon", "ap_mar");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		const informacion = procesos.revisaProblemas(req, original);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Más variables
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const campoDecision = petitFamilia + (rechazado ? "rech" : "aprob");
+		const userID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		const lead_time_creacion = (alta_analizada_en - original.creado_en) / unaHora;
+		const status_registro_id = rechazado ? inactivo_id : creado_aprob_id;
+		let datosCompletos = {
+			status_registro_id,
+			alta_analizada_por_id: userID,
+			alta_analizada_en: ahora,
+			lead_time_creacion,
+			captura_activa: false,
+		};
+		if (rclvs) datosCompletos = {...datosCompletos, ...procsRCLV.procesaLosDatos(datos)};
+
+		// 1. Actualiza el status en el registro original y en la variable
+		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
+		original = {...original, ...datosCompletos};
+
+		// 2. Si es una colección, actualiza el status en los registros de los capítulos
+		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
+
+		// 3. Si es un RCLV, actualiza la tabla de edics aprob/rech
+		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, userID);
+
+		// 4. Agrega un registro en el historial_cambios_de_status
+		let creado_por_id = original.creado_por_id;
+		let datosHist = {
+			entidad_id: id,
+			entidad,
+			sugerido_por_id: creado_por_id,
+			sugerido_en: original.creado_en,
+			analizado_por_id: userID,
+			analizado_en: ahora,
+			status_original_id: creado_id,
+			status_final_id: status_registro_id,
+			aprobado: !rechazado,
+		};
+		if (rechazado) {
+			let motivo_id = req.body.motivo_id;
+			datosHist.motivo_id = motivo_id;
+			let motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			datosHist.duracion = Number(motivo.duracion);
+		}
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
+
+		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
+
+		// 6. Penaliza al usuario si corresponde
+		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
+
+		// Fin
+		if (rclvs) return res.redirect("/revision/tablero-de-control");
+		else {
+			// Obtiene el edicID
+			let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
+			let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+			if (edicID) urlEdicion += "&edicion_id=" + edicID;
+			return res.redirect(urlEdicion);
+		}
 	},
 
 	// Links

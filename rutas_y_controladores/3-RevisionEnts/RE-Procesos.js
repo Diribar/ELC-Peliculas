@@ -89,11 +89,7 @@ module.exports = {
 		links.map((n) => {
 			let entidad = comp.obtieneProdDesdeProducto_id(n);
 			let asociacion = comp.obtieneAsociacion(entidad);
-			let campoFechaRef = !n.status_registro_id
-				? "editado_en"
-				: n.status_registro.creado
-				? "creado_en"
-				: "sugerido_en";
+			let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
 			productos.push({
 				...n[asociacion],
 				entidad,
@@ -226,7 +222,8 @@ module.exports = {
 		return rclvs;
 	},
 
-	// Producto y RCLV - Edición Form
+	// Producto y RCLV
+	// Edición Form
 	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
 		// Variables
 		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
@@ -244,10 +241,7 @@ module.exports = {
 			],
 		};
 		let mensajeSinEsaEdicion = {
-			mensajes: [
-				"No encontramos esa edición.",
-				"Te sugerimos que regreses al tablero y lo vuelvas a intentar",
-			],
+			mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
 			iconos: [
 				{
 					nombre: "fa-spell-check ",
@@ -260,11 +254,7 @@ module.exports = {
 		let includes = comp.obtieneTodosLosCamposInclude(entidad);
 		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
 		// Obtiene las ediciones del producto
-		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
-			nombreEdic,
-			{entidad_id, entID: rclvID, userID},
-			includes
-		);
+		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(nombreEdic, {entidad_id, entID: rclvID, userID}, includes);
 		// Si no existe ninguna edición => informa el error
 		if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
 		// Obtiene la prodEdic
@@ -328,7 +318,7 @@ module.exports = {
 		// Fin
 		return derecha;
 	},
-	// Producto y RCLV - API/Vista
+	// API/Vista
 	guardaEdicRev: async function (req, regOrig, regEdic) {
 		// Variables
 		const {entidad, campo, aprob} = req.query;
@@ -412,7 +402,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
 
 		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuarioAumentaPenaliz(regEdic.editado_por_id, motivo, familia);
+		if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
 
 		// Si se aprobó, actualiza el registro y la variable de 'original'
 		if (edicAprob) {
@@ -467,9 +457,37 @@ module.exports = {
 
 		// Actualiza RCLV si corresponde
 		if (producto && !statusAprobInicial && statusAprobFinal)
-			this.RCLV_prodsAprob(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
+			this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
+	},
+	// Alta Guardar
+	revisaProblemas: (req, registro) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		let informacion;
+
+		// 1. Rechazado sin motivo => Recarga la vista
+		if (rechazado && !motivo_id) {
+			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+			informacion = {
+				mensajes: ["Se rechazó sin decirnos el motivo"],
+				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			};
+		}
+
+		// 2. El registro no está en status 'creado' => Vuelve al tablero
+		if (!informacion && !registro.status_registro_id == creado_id) {
+			const vistaInactivar = variables.vistaInactivar(req);
+			informacion = {
+				mensajes: ["El registro ya fue procesado anteriormente"],
+				iconos: [vistaInactivar],
+			};
+		}
+
+		// Fin
+		return informacion;
 	},
 
 	// Productos Alta
@@ -500,8 +518,7 @@ module.exports = {
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 		// Bloque 1
 		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOrig.idioma_original)
-			bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
+		if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
 		// Bloque 2
 		if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
 		if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
@@ -528,29 +545,28 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	prodAltaGuardar_informacion: (req, producto) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		let informacion;
-		// Rechazado sin motivo => Recarga la vista
-		if (rechazado && !motivo_id) {
-			let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
-			informacion = {
-				mensajes: ["Se rechazó sin decirnos el motivo"],
-				iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
-			};
-		}
-		// El producto no está en status 'creado' => Vuelve al tablero
-		if (!producto.status_registro.creado) {
-			const vistaInactivar = variables.vistaInactivar(req);
-			informacion = {
-				mensajes: ["El producto ya fue procesado anteriormente"],
-				iconos: [vistaInactivar],
-			};
-		}
+	prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
+		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
+		// 1. Se aprobó un cambio y el producto está aprobado
+		// 2. El cambio es un campo RCLV con valor distinto de 1
+		// 3. El registro no estaba aprobado
+		const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
+		if (
+			edicAprob && // Se aprobó un cambio
+			statusAprob && // El producto está aprobado
+			((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
+				!statusAprobOrig) // El registro no estaba aprobado
+		)
+			entidades_id.forEach((entidad_id) => {
+				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
+				if (RCLV_id) {
+					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
+					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
+				}
+			});
+
 		// Fin
-		return informacion;
+		return;
 	},
 	// Prod-Edición Form
 	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
@@ -609,10 +625,7 @@ module.exports = {
 			// Mueve el archivo de edición a la carpeta definitiva
 			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
 			// Si el 'avatar original' es un archivo, lo elimina
-			if (
-				avatarOrig &&
-				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig)
-			)
+			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
 				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
 		}
 		// Elimina el archivo de edicion
@@ -637,7 +650,7 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	RCLV_AltasGuardar_EdicAprobRech: async (entidad, original, userID) => {
+	rclvs_edicAprobRech: async (entidad, original, userID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
@@ -645,28 +658,43 @@ module.exports = {
 				? RCLV.dia_del_ano
 					? RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
 					: "Sin fecha conocida"
-				: campo == "proceso_id"
-				? RCLV.proc_canon
-					? RCLV.proc_canon.nombre
+				: campo == "epoca_id"
+				? RCLV.epoca
+					? RCLV.epoca.nombre
+					: ""
+				: campo == "categoria_id"
+				? RCLV.categoria
+					? RCLV.categoria.nombre
 					: ""
 				: campo == "rol_iglesia_id"
 				? RCLV.rol_iglesia
 					? RCLV.rol_iglesia.nombre
 					: ""
+				: campo == "proceso_id"
+				? RCLV.proc_canon
+					? RCLV.proc_canon.nombre
+					: ""
+				: campo == "ap_mar_id"
+				? RCLV.ap_mar
+					? RCLV.ap_mar.nombre
+					: ""
 				: RCLV[campo];
 		};
+
 		// Variables
 		let ahora = comp.ahora();
 		let camposComparar = variables.camposRevisar.rclvs.filter((n) => n[entidad]);
+
 		// Obtiene RCLV actual
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("proc_canon", "rol_iglesia");
+		let includes = ["dia_del_ano"];
+		if (entidad == "personajes") includes.push("categoria", "rol_iglesia", "proc_canon", "ap_mar");
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+
 		// Obtiene los motivos posibles
 		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let motivoVersionActual = motivos.find((n) => n.version_actual);
 		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+
 		// Prepara la información
 		let datos = {
 			entidad,
@@ -696,37 +724,13 @@ module.exports = {
 				entidadAprobRech = "edics_rech";
 				datos.valor_rech = valor_rech;
 				let motivo =
-					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo"
-						? motivoVersionActual
-						: motivoInfoErronea;
+					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo" ? motivoVersionActual : motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;
 			} else entidadAprobRech = "edics_aprob";
 			// Guarda los registros
 			await BD_genericas.agregaRegistro(entidadAprobRech, datos);
 		}
-		// Fin
-		return;
-	},
-	RCLV_prodsAprob: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
-		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
-		// 1. Se aprobó un cambio y el producto está aprobado
-		// 2. El cambio es un campo RCLV con valor distinto de 1
-		// 3. El registro no estaba aprobado
-		const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
-		if (
-			edicAprob && // Se aprobó un cambio
-			statusAprob && // El producto está aprobado
-			((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
-				!statusAprobOrig) // El registro no estaba aprobado
-		)
-			entidades_id.forEach((entidad_id) => {
-				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
-				if (RCLV_id) {
-					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
-					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
-				}
-			});
 
 		// Fin
 		return;
@@ -775,10 +779,7 @@ module.exports = {
 		// El producto no está en status 'aprobado'
 		if (!informacion && !producto.status_registro.aprobado)
 			informacion = {
-				mensajes: [
-					"El producto no está en status 'Aprobado'",
-					"Su status es " + producto.status_registro.nombre,
-				],
+				mensajes: ["El producto no está en status 'Aprobado'", "Su status es " + producto.status_registro.nombre],
 			};
 
 		// El producto no posee links
@@ -799,14 +800,12 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of entidades)
-		resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
+	for (let entidad of entidades) resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
 	const haceUnaHora = comp.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
-				resultados.splice(i, 1);
+			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID) resultados.splice(i, 1);
 	// Agrega el campo 'fecha-ref'
 	resultados = resultados.map((n) => {
 		return {

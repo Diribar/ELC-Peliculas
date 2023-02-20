@@ -86,7 +86,7 @@ module.exports = {
 		if (!decisAprob && (creado || recuperar)) {
 			motivo_id = req.query.motivo_id;
 			motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
-			comp.usuarioAumentaPenaliz(sugerido_por_id, motivo, "links");
+			comp.usuarioPenalizAcum(sugerido_por_id, motivo, "links");
 		}
 
 		// LINK - Pasa a status aprobado/rechazado

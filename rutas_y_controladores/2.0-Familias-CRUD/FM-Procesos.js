@@ -10,7 +10,7 @@ module.exports = {
 	puleEdicion: async (original, edicion, entidad) => {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 		let edicion_id = edicion.id;
 		let camposNull = {};
 
@@ -76,7 +76,7 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
@@ -93,7 +93,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({original, edicion, entidad, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 		let camposNull;
 
 		// Quita la info que no agrega valor
@@ -167,17 +167,17 @@ module.exports = {
 
 		// Usamos el await sólo cuando hay 1 función
 		// Rutina por producto
-		if (variables.entidadesProd.includes(entidad)) this.rclvConProd(registro);
+		if (variables.entidadesProd.includes(entidad)) this.prodEnRCLV(registro);
 
 		// Rutinas por links
 		if (entidad == "links") {
-			await this.prodConLink(registro);
-			this.prodConLinkCast(registro);
+			await this.linkEnProd(registro);
+			this.linkCastEnProd(registro);
 		}
 	},
 
 	// Actualiza los campos de 'producto' en el RCLV
-	rclvConProd: async function (producto) {
+	prodEnRCLV: async function (producto) {
 		// Variables
 		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
@@ -199,7 +199,7 @@ module.exports = {
 					if (prods_aprob) break;
 				}
 
-				if (prods_aprob) prods_aprob = true;
+				if (prods_aprob) prods_aprob = 3;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
 					for (let entidadProd of entidadesProds) {
@@ -208,13 +208,13 @@ module.exports = {
 						if (prods_aprob) break;
 					}
 
-				if (prods_aprob) prods_aprob = false;
+				if (prods_aprob) prods_aprob = 2;
 				// 3. Averigua si existe alguna edición
 				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
-				if (prods_aprob) prods_aprob = false;
+				if (prods_aprob) prods_aprob = 2;
 				// 4. No encontró ningún caso
-				else prods_aprob = null;
+				else prods_aprob = 1;
 
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
@@ -225,7 +225,7 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'links' en el producto
-	prodConLink: async function (link) {
+	linkEnProd: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
@@ -240,33 +240,32 @@ module.exports = {
 
 		// Averigua si existe algún link gratuito, para ese producto
 		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
-			? true // Tiene
+			? 3 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}))
-			? false // Tiene en potencia
-			: null; // No tiene
+			? 2 // Tiene en potencia
+			: 1; // No tiene
 
 		// Averigua si existe algún link, para ese producto
 		let links_general =
-			links_gratuitos || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-				? true // Tiene
-				: links_gratuitos === false || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-				? false // Tiene en potencia
-				: null; // No tiene
+			links_gratuitos == 3 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+				? 3 // Tiene
+				: links_gratuitos === 2 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
+				? 2 // Tiene en potencia
+				: 1; // No tiene
 
-		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
-		console.log(256, producto_ent, prodID, {links_general, links_gratuitos});
+		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
+		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (producto_ent == "capitulos") {
-			this.actualizaColeccion(prodID, "links_general");
-			this.actualizaColeccion(prodID, "links_gratuitos");
+			this.colecComoCap(prodID, "links_general");
+			this.colecComoCap(prodID, "links_gratuitos");
 		}
 
 		// Fin
 		return;
 	},
-	prodConLinkCast: async function (link) {
+	linkCastEnProd: async function (link) {
 		// Variables
 		const producto_id = comp.obtieneProducto_id(link);
 		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
@@ -281,32 +280,31 @@ module.exports = {
 
 		// Averigua si existe algún link en castellano, para ese producto
 		let castellano = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? true // Tiene
+			? 3 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-			? false // No tiene
-			: null; // No sabemos
+			? 2 // No tiene
+			: 1; // No sabemos
 
-		// Actualiza el registro
-		BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
+		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
+		await BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
-		if (producto_ent == "capitulos") this.actualizaColeccion(prodID, "castellano");
+		if (producto_ent == "capitulos") this.colecComoCap(prodID, "castellano");
 
 		// Fin
 		return;
 	},
-	actualizaColeccion: async (capID, campo) => {
+	colecComoCap: async (capID, campo) => {
 		// Obtiene los datos para identificar la colección
 		const capitulo = await BD_genericas.obtienePorId("capitulos", capID);
 		const colID = capitulo.coleccion_id;
 		let objeto = {coleccion_id: colID};
 
 		// Cuenta la cantidad de casos true, false y null
-		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: true});
-		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: false});
-		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: null});
+		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 3});
+		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 2});
+		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 1});
 		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-		console.log(300, campo, OK, potencial, no);
 
 		// Averigua los porcentajes de OK y Potencial
 		let total = OK + potencial + no;
@@ -314,9 +312,8 @@ module.exports = {
 		let resultadoPot = (OK + potencial) / total;
 
 		// En función de los resultados, actualiza la colección
-		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: true});
-		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: false});
-		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: null});
-		console.log(311, campo);
+		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 3});
+		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
+		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
 	},
 };

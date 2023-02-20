@@ -30,14 +30,14 @@ module.exports = (sequelize, dt) => {
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
 
+		castellano: {type: dt.INTEGER},
+		links_general: {type: dt.INTEGER},
+		links_gratuitos: {type: dt.INTEGER},
+
 		fe_valores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
-
-		links_general: {type: dt.BOOLEAN},
-		links_gratuitos: {type: dt.BOOLEAN},
-		castellano: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},

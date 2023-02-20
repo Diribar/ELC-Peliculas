@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		
-		prods_aprob: {type: dt.BOOLEAN},
+		prods_aprob: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},

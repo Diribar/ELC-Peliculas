@@ -76,13 +76,13 @@ module.exports = {
 			? "usuarios"
 			: "";
 	},
-	obtieneNombreEdicionDesdeEntidad: (entidad) => {
+	obtienePetitFamiliaDesdeEntidad: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
-			? "prods_edicion"
+			? "prods"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
-			? "rclvs_edicion"
+			? "rclvs"
 			: entidad == "links"
-			? "links_edicion"
+			? "links"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {
@@ -571,7 +571,7 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuarioAumentaPenaliz: (userID, motivo, familia) => {
+	usuarioPenalizAcum: (userID, motivo, petitFamilia) => {
 		// Variables
 		let duracion = motivo.duracion;
 		let objeto = {};
@@ -580,8 +580,8 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
-		if (duracion > 1 && familia) {
-			let cartel = "cartel_resp_" + (familia == "productos" ? "prods" : familia);
+		if (duracion > 1 && petitFamilia) {
+			let cartel = "cartel_resp_" + petitFamilia;
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'

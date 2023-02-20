@@ -112,6 +112,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
+		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
