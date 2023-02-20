@@ -167,7 +167,10 @@ module.exports = async (req, res, next) => {
 			};
 			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
-			const terminacion = pc_entidad == "capitulos" ? {entidad: "el ", reservado: "o"} : {entidad: "la ", reservado: "a"};
+			const terminacion =
+				pc_entidad == "peliculas" || pc_entidad == "colecciones"
+					? {entidad: "la ", reservado: "a"}
+					: {entidad: "el ", reservado: "o"};
 			const nombre = prodCapturado.nombre
 				? "nombre"
 				: prodCapturado.nombre_castellano
