@@ -43,9 +43,9 @@ router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
 router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
-router.get("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, rechazoSinMotivo, vista.registoAltaGuardar);
-router.get("/rclv/edicion", ...aptoRevMasEnt, statusCorrecto, vista.rclvEdicForm);
+router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
+router.post("/rclv/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registoAltaGuardar);
+router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
 router.get("/rclv/inactivar-o-recuperar");
 
 // Links
