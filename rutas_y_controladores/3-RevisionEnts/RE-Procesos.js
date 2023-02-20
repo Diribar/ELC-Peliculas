@@ -493,11 +493,10 @@ module.exports = {
 			// Variables
 			let campo = campoRevisar.nombre;
 			let relac_include = campoRevisar.relac_include;
-			console.log(campo,relac_include);
 
 			// Valor aprobado
-			let valor_aprob = RCLV_actual.relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
-			let valor_rech = original.relac_include ? original[relac_include].nombre : original[campo];
+			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
+			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
 
 			// Casos especiales
 			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
