@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 		haceUnaHora: comp.nuevoHorario(-1),
 		haceDosHoras: comp.nuevoHorario(-2),
 		usuario: req.session.usuario,
-		userID: req.session.id,
+		userID: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		// url
 		urlBase: req.baseUrl,
@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
 		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
 		// Rutina por cada asociación
-		for (entidad of entidades) {
+		for (let entidad of entidades) {
 			let registros = await BD_genericas.obtieneTodosPorCampos(entidad, {capturado_por_id: v.userID});
 			for (let registro of registros) {
 				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
@@ -138,7 +138,7 @@ module.exports = async (req, res, next) => {
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	if (!informacion) {
 		informacion =
-			v.capturado_en < haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID
+			v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID
 				? {
 						mensajes: [
 							"Esta captura terminó el " + v.capturado_en,
