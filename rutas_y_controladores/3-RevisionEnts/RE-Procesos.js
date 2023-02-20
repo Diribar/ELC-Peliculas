@@ -224,110 +224,10 @@ module.exports = {
 		},
 	},
 
-	// Producto y RCLV
-	// Edición Form
-	form_obtieneEdicAjena: async (req, familia, nombreEdic) => {
-		// Variables
-		const {entidad, id: rclvID, edicion_id: edicID} = req.query;
-		const userID = req.session.usuario.id;
-		const entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-		// Mensajes
-		let mensajeSinEdicion = {
-			mensajes: ["No encontramos ninguna edición ajena para revisar"],
-			iconos: [
-				{
-					nombre: "fa-spell-check ",
-					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
-					titulo: "Regresar al Tablero de Control",
-				},
-			],
-		};
-		let mensajeSinEsaEdicion = {
-			mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
-			iconos: [
-				{
-					nombre: "fa-spell-check ",
-					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
-					titulo: "Regresar al Tablero de Control",
-				},
-			],
-		};
-		// Genera la variable 'includes'
-		let includes = comp.obtieneTodosLosCamposInclude(entidad);
-		if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
-		// Obtiene las ediciones del producto
-		let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(nombreEdic, {entidad_id, entID: rclvID, userID}, includes);
-		// Si no existe ninguna edición => informa el error
-		if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
-		// Obtiene la prodEdic
-		let edicAjena = edicID ? edicsAjenas.find((n) => n.id == edicID) : edicsAjenas[0];
-		// Si no existe la edicAjena => informa el error
-		if (!edicAjena) return {informacion: mensajeSinEsaEdicion};
-		// Si no existe el edicID, lo asigna para el final del 'alta'
-		if (!edicID) return {edicID: edicAjena.id};
-		// Fin - Envía la edición
-		return {edicAjena};
-	},
-	form_edicFicha: async (entidadOrig, entidadEdic) => {
-		// Funciones
-		let usuario_CalidadEdic = async (userID) => {
-			// 1. Obtiene los datos del usuario
-			let usuario = await BD_genericas.obtienePorId("usuarios", userID);
-			// 2. Contar los casos aprobados y rechazados
-			let cantAprob = usuario.edics_aprob;
-			let cantRech = usuario.edics_rech;
-			// 3. Precisión de ediciones
-			let cantEdics = cantAprob + cantRech;
-			let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-			// Datos a enviar
-			let enviar = {
-				calidadEdiciones: ["Calidad Edición", calidadInputs],
-				cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-			};
-			// Fin
-			return enviar;
-		};
-
-		// Definir el 'ahora'
-		let ahora = comp.ahora().getTime();
-		// Bloque derecho
-		let bloque1 = [];
-		let fecha;
-		// Bloque 1 ---------------------------------------------
-		if (entidadOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: entidadOrig.ano_estreno});
-		if (entidadOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: entidadOrig.ano_fin});
-		if (entidadOrig.duracion) bloque1.push({titulo: "Duracion", valor: entidadOrig.duracion + " min."});
-		// Obtiene la fecha de alta
-		fecha = comp.fechaTexto(entidadOrig.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// Obtiene la fecha de edicion
-		fecha = comp.fechaTexto(entidadEdic.editado_en);
-		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-		// Obtiene el status del producto
-		let statusResumido = entidadOrig.status_registro.gr_creado
-			? {id: 1, valor: "Pend. Aprobac."}
-			: entidadOrig.status_registro.aprobado
-			? {id: 2, valor: "Aprobado"}
-			: {id: 3, valor: "Inactivado"};
-		bloque1.push({titulo: "Status", ...statusResumido});
-		// Bloque 2 ---------------------------------------------
-		// Obtiene los datos del usuario
-		let fichaDelUsuario = await comp.usuarioFicha(entidadEdic.editado_por_id, ahora);
-		// Obtiene la calidad de las altas
-		let calidadEdic = await usuario_CalidadEdic(entidadEdic.editado_por_id);
-		// Bloque consolidado -----------------------------------
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-		// Fin
-		return derecha;
-	},
 	// Alta Guardar
-	edicAprobRech: async (entidad, original, revID) => {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-
+	rclvEdicAprobRech: async (entidad, original, revID) => {
 		// Obtiene RCLV actual
-		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
+		let includes = comp.obtieneTodosLosCamposInclude(entidad)
 		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 
 		// Obtiene los motivos posibles
@@ -347,7 +247,8 @@ module.exports = {
 
 		// Rutina para comparar los campos
 		let ediciones = {edics_aprob: 0, edics_rech: 0};
-		// console.log(491, RCLV_actual);
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 		for (let campoRevisar of camposRevisar) {
 			// Variables
 			let campo = campoRevisar.nombre;
@@ -404,6 +305,103 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	// Edición
+	edicion:{
+		obtieneEdicAjena: async (req, familia, nombreEdic) => {
+			// Variables
+			const {entidad, id: rclvID, edicion_id: edicID} = req.query;
+			const userID = req.session.usuario.id;
+			const entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			// Mensajes
+			let mensajeSinEdicion = {
+				mensajes: ["No encontramos ninguna edición ajena para revisar"],
+				iconos: [
+					{
+						nombre: "fa-spell-check ",
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
+						titulo: "Regresar al Tablero de Control",
+					},
+				],
+			};
+			let mensajeSinEsaEdicion = {
+				mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
+				iconos: [
+					{
+						nombre: "fa-spell-check ",
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
+						titulo: "Regresar al Tablero de Control",
+					},
+				],
+			};
+			// Genera la variable 'includes'
+			let includes = comp.obtieneTodosLosCamposInclude(entidad);
+			if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
+			// Obtiene las ediciones del producto
+			let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(nombreEdic, {entidad_id, entID: rclvID, userID}, includes);
+			// Si no existe ninguna edición => informa el error
+			if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
+			// Obtiene la prodEdic
+			let edicAjena = edicID ? edicsAjenas.find((n) => n.id == edicID) : edicsAjenas[0];
+			// Si no existe la edicAjena => informa el error
+			if (!edicAjena) return {informacion: mensajeSinEsaEdicion};
+			// Si no existe el edicID, lo asigna para el final del 'alta'
+			if (!edicID) return {edicID: edicAjena.id};
+			// Fin - Envía la edición
+			return {edicAjena};
+		},
+		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
+			// Funciones
+			let usuario_CalidadEdic = async (userID) => {
+				// 1. Obtiene los datos del usuario
+				let usuario = await BD_genericas.obtienePorId("usuarios", userID);
+				// 2. Contar los casos aprobados y rechazados
+				let cantAprob = usuario.edics_aprob;
+				let cantRech = usuario.edics_rech;
+				// 3. Precisión de ediciones
+				let cantEdics = cantAprob + cantRech;
+				let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
+				// Datos a enviar
+				let enviar = {
+					calidadEdiciones: ["Calidad Edición", calidadInputs],
+					cantEdiciones: ["Cant. Campos Proces.", cantEdics],
+				};
+				// Fin
+				return enviar;
+			};
+	
+			// Definir el 'ahora'
+			let ahora = comp.ahora().getTime();
+			// Bloque derecho
+			let bloque1 = [];
+			let fecha;
+			// Bloque 1 ---------------------------------------------
+			if (entidadOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: entidadOrig.ano_estreno});
+			if (entidadOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: entidadOrig.ano_fin});
+			if (entidadOrig.duracion) bloque1.push({titulo: "Duracion", valor: entidadOrig.duracion + " min."});
+			// Obtiene la fecha de alta
+			fecha = comp.fechaTexto(entidadOrig.creado_en);
+			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+			// Obtiene la fecha de edicion
+			fecha = comp.fechaTexto(entidadEdic.editado_en);
+			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
+			// Obtiene el status del producto
+			let statusResumido = entidadOrig.status_registro.gr_creado
+				? {id: 1, valor: "Pend. Aprobac."}
+				: entidadOrig.status_registro.aprobado
+				? {id: 2, valor: "Aprobado"}
+				: {id: 3, valor: "Inactivado"};
+			bloque1.push({titulo: "Status", ...statusResumido});
+			// Bloque 2 ---------------------------------------------
+			// Obtiene los datos del usuario
+			let fichaDelUsuario = await comp.usuarioFicha(entidadEdic.editado_por_id, ahora);
+			// Obtiene la calidad de las altas
+			let calidadEdic = await usuario_CalidadEdic(entidadEdic.editado_por_id);
+			// Bloque consolidado -----------------------------------
+			let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
+			// Fin
+			return derecha;
+		},
 	},
 	// API/Vista
 	guardaEdicRev: async function (req, regOrig, regEdic) {
@@ -764,7 +762,6 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	// Links - API
 };
 
 // Funciones

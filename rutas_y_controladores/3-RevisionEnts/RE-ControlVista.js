@@ -110,7 +110,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 		// Validaciones y obtiene prodEdic
-		let {edicAjena: prodEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
+		let {edicAjena: prodEdic, informacion} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
@@ -174,7 +174,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			infoErronea_id = motivos.find((n) => n.info_erronea).id;
-			bloqueDer = await procesos.form_edicFicha(prodOrig, prodEdic);
+			bloqueDer = await procesos.edicion.fichaDelRegistro(prodOrig, prodEdic);
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
@@ -211,7 +211,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "rclvEdicion";
 		// Validaciones y obtiene rclvEdic
-		let {edicAjena: rclvEdic, informacion} = await procesos.form_obtieneEdicAjena(req, "rclvs", "rclvs_edicion");
+		let {edicAjena: rclvEdic, informacion} = await procesos.edicion.obtieneEdicAjena(req, "rclvs", "rclvs_edicion");
 		// Si no pasa los filtros => informa el error
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
@@ -233,7 +233,7 @@ module.exports = {
 		// Variables
 		motivos = motivos.filter((m) => m.rclv);
 		infoErronea_id = motivos.find((n) => n.info_erronea).id;
-		bloqueDer = await procesos.form_edicFicha(rclvOrig, rclvEdic);
+		bloqueDer = await procesos.edicion.fichaDelRegistro(rclvOrig, rclvEdic);
 		// return res.send([edicion, ingresos, reemplazos]);
 
 		// Variables para la vista
@@ -291,8 +291,7 @@ module.exports = {
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 
 		// Obtiene el registro original
-		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
+		let includes = comp.obtieneTodosLosCamposInclude(entidad)
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 
 		// Completa los datos
@@ -314,7 +313,7 @@ module.exports = {
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
 		// 3. Si es un RCLV aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs && !rechazado) procesos.edicAprobRech(entidad, original, revID);
+		if (rclvs && !rechazado) procesos.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
@@ -346,7 +345,7 @@ module.exports = {
 		if (rclvs) return res.redirect("/revision/tablero-de-control");
 		else {
 			// Obtiene el edicID
-			let {edicID} = await procesos.form_obtieneEdicAjena(req, "productos", "prods_edicion");
+			let {edicID} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
 			let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
 			if (edicID) urlEdicion += "&edicion_id=" + edicID;
 			return res.redirect(urlEdicion);
