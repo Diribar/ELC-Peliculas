@@ -52,46 +52,37 @@ module.exports = async (req, res, next) => {
 	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmula
-	let buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia = async () => {
+	let buscaOtrasCapturasActivasDelUsuario = async () => {
 		// Se revisa solamente en esa familia de entidades
 		// Asociaciones
 		let entidades = variables.entidadesProd.includes(v.entidad) ? variables.entidadesProd : variables.entidadesRCLV;
-		let asociaciones = [];
-		entidades.forEach((entidad) => asociaciones.push("captura_" + entidad));
 		// Variables
 		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
-		// Obtiene el usuario con los includes
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, asociaciones);
 		// Rutina por cada asociación
-		let i = 0;
-		for (let asociacion of asociaciones) {
-			if (usuario[asociacion].length) {
-				// Rutina por cada entidad dentro de la asociación
-				for (let registro of usuario[asociacion]) {
-					// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
-					if (registro.capturado_en < haceDosHoras && registro.id != entidadID) {
-						BD_genericas.actualizaPorId(entidades[i], registro.id, objetoNull);
-						// Si fue capturado hace menos de 1 hora, informar el caso
-					} else if (
-						registro.capturado_en > haceUnaHora &&
-						registro.captura_activa &&
-						(entidades[i] != v.entidad || registro.id != entidadID)
-					) {
-						resultado = {
-							entidad: entidades[i],
-							id: registro.id,
-							capturado_en: registro.capturado_en,
-							nombre: registro.nombre,
-							nombre_castellano: registro.nombre_castellano,
-							nombre_original: registro.nombre_original,
-						};
-						break;
-					}
+		for (entidad of entidades) {
+			let registros = await BD_genericas.obtieneTodosPorCampos(entidad, {capturado_por_id: v.userID});
+			for (let registro of registros) {
+				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
+				if (registro.capturado_en < haceDosHoras && registro.id != entidadID)
+					BD_genericas.actualizaPorId(entidad, registro.id, objetoNull);
+				// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
+				else if (
+					registro.capturado_en > haceUnaHora &&
+					registro.captura_activa &&
+					(entidad != v.entidad || registro.id != v.entidadID)
+				) {
+					resultado = {
+						entidad,
+						id: registro.id,
+						capturado_en: registro.capturado_en,
+						nombre: registro.nombre,
+						nombre_castellano: registro.nombre_castellano,
+						nombre_original: registro.nombre_original,
+					};
+					break;
 				}
 			}
-			if (resultado) break;
-			else i++;
 		}
 		// Fin
 		return resultado;
@@ -161,7 +152,7 @@ module.exports = async (req, res, next) => {
 	}
 	// 5. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) {
-		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia();
+		let prodCapturado = await buscaOtrasCapturasActivasDelUsuario();
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidad = prodCapturado.entidad;
