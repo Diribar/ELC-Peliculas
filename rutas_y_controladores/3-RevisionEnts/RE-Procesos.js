@@ -461,11 +461,8 @@ module.exports = {
 		// Fin
 		return [regOrig, edicion, quedanCampos, statusAprobFinal];
 	},
+	// Alta Guardar
 	edicAprobRech: async (entidad, original, revID) => {
-		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposComparar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-
 		// Obtiene RCLV actual
 		let includes = ["dia_del_ano"];
 		if (entidad == "personajes") includes.push("categoria", "rol_iglesia", "proc_canon", "ap_mar");
@@ -486,31 +483,54 @@ module.exports = {
 			edic_analizada_en: comp.ahora(),
 		};
 
-		// Rutina para comparar los campos
+		// Variables
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 		let ediciones = {edics_aprob: 0, edics_rech: 0};
-		for (let campoComparar of camposComparar) {
+		// Rutina para comparar los campos
+		for (let campoRevisar of camposRevisar) {
+			// Variables
+			let campo = campoRevisar.nombre;
+			let relac_include = campoRevisar.relac_include;
+
 			// Valor aprobado
-			let valor_aprob = valorVinculo(RCLV_actual, campoComparar.nombre);
-			let valor_rech = valorVinculo(original, campoComparar.nombre);
+			let valor_aprob = relac_include ? RCLV_actual[relac_include].nombre : RCLV_actual[campo];
+			let valor_rech = relac_include ? original[relac_include].nombre : original[campo];
+
+			// Casos especiales
+			if (campo == "dia_del_ano_id") {
+				valor_aprob =
+					valor_aprob < 400
+						? RCLV_actual.dia_del_ano.dia + "/" + mesesAbrev[RCLV_actual.dia_del_ano.mes_id - 1]
+						: "Sin fecha conocida";
+				valor_rech =
+					valor_rech < 400
+						? original.dia_del_ano.dia + "/" + mesesAbrev[original.dia_del_ano.mes_id - 1]
+						: "Sin fecha conocida";
+			}
+
+			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
+				valor_aprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+				valor_rech = original[campo] == 1 ? "SI" : "NO";
+			}
 
 			if (!valor_aprob && !valor_rech) continue;
 			// Genera la información
 			datos = {
 				...datos,
-				campo: campoComparar.nombre,
-				titulo: campoComparar.titulo,
+				campo: campoRevisar.nombre,
+				titulo: campoRevisar.titulo,
 				valor_aprob,
 			};
 
 			// Obtiene la entidad y completa los datos
 			let edicsAprobRech;
-			if (original[campoComparar.nombre] != RCLV_actual[campoComparar.nombre]) {
+			if (valor_aprob != valor_rech) {
 				// Obtiene la entidad
 				edicsAprobRech = "edics_rech";
 				// Completa los datos
 				datos.valor_rech = valor_rech;
-				let motivo =
-					campoComparar.nombre == "nombre" || campoComparar.nombre == "apodo" ? motivoVersionActual : motivoInfoErronea;
+				let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
 				datos.motivo_id = motivo.id;
 				datos.duracion = motivo.duracion;
 			}
@@ -536,9 +556,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-
-
-
 
 	// Productos Alta
 	prodAltaForm_ficha: async (prodOrig, paises) => {
@@ -801,35 +818,4 @@ let sinProblemasDeCaptura = (familia, userID, ahora) => {
 			// Que esté capturado por este usuario hace menos de una hora
 			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 	);
-};
-// Actualiza la info de aprobados/rechazados
-// Funcion
-let valorVinculo = (RCLV, campo) => {
-	return campo == "dia_del_ano_id"
-		? // Campo para los 3 RCLVs
-		  RCLV.dia_del_ano_id >= 400
-			? "Sin fecha conocida"
-			: RCLV.dia_del_ano.dia + "/" + mesesAbrev[RCLV.dia_del_ano.mes_id - 1]
-		: // Campos de Personajes
-		campo == "epoca_id"
-		? RCLV.epoca
-			? RCLV.epoca.nombre
-			: ""
-		: campo == "categoria_id"
-		? RCLV.categoria
-			? RCLV.categoria.nombre
-			: ""
-		: campo == "rol_iglesia_id"
-		? RCLV.rol_iglesia
-			? RCLV.rol_iglesia.nombre
-			: ""
-		: campo == "proceso_id"
-		? RCLV.proc_canon
-			? RCLV.proc_canon.nombre
-			: ""
-		: campo == "ap_mar_id"
-		? RCLV.ap_mar
-			? RCLV.ap_mar.nombre
-			: ""
-		: RCLV[campo];
 };
