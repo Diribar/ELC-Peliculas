@@ -1,6 +1,5 @@
 "use strict";
 // Requires
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
@@ -14,7 +13,7 @@ module.exports = async (req, res, next) => {
 		let link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		informacion = {
 			mensajes: ["Se rechazó sin decirnos el motivo"],
-			iconos: [{nombre: "fa-circle-left", link, titulo: "Volver a la vista anterior"}],
+			iconos: [comp.vistaEntendido(link)],
 		};
 	}
 
