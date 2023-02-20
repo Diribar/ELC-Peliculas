@@ -198,15 +198,6 @@ module.exports = {
 
 	// Alta Guardar
 	rclvEdicAprobRech: async (entidad, original, revID) => {
-		// Obtiene RCLV actual
-		let includes = comp.obtieneTodosLosCamposInclude(entidad)
-		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
-
-		// Obtiene los motivos posibles
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let motivoVersionActual = motivos.find((n) => n.version_actual);
-		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
-
 		// Prepara la información
 		let datos = {
 			entidad,
@@ -217,10 +208,21 @@ module.exports = {
 			edic_analizada_en: comp.ahora(),
 		};
 
-		// Rutina para comparar los campos
+		// Campos a revisar
 		let ediciones = {edics_aprob: 0, edics_rech: 0};
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+
+		// RCLV actual
+		let includes = comp.obtieneTodosLosCamposInclude(entidad)
+		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+
+		// Motivos posibles
+		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+		let motivoVersionActual = motivos.find((n) => n.version_actual);
+		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+
+		// Rutina para comparar los campos
 		for (let campoRevisar of camposRevisar) {
 			// Variables
 			let campo = campoRevisar.nombre;
