@@ -284,7 +284,7 @@ module.exports = {
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
-		const userID = req.session.usuario.id;
+		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_analizada_en = ahora;
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
@@ -300,7 +300,7 @@ module.exports = {
 		datosCompletos = {
 			...datosCompletos,
 			status_registro_id,
-			alta_analizada_por_id: userID,
+			alta_analizada_por_id: revID,
 			alta_analizada_en,
 			lead_time_creacion,
 			captura_activa: false,
@@ -315,7 +315,7 @@ module.exports = {
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
 		// 3. Si es un RCLV, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, userID);
+		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
@@ -324,7 +324,7 @@ module.exports = {
 			entidad,
 			sugerido_por_id: creado_por_id,
 			sugerido_en: original.creado_en,
-			analizado_por_id: userID,
+			analizado_por_id: revID,
 			analizado_en: ahora,
 			status_original_id: creado_id,
 			status_final_id: status_registro_id,
