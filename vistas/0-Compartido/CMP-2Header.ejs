@@ -19,13 +19,13 @@
 			</div>
 		</a>
 		<!-- Mantenimiento -->
-		<% if (locals.usuario && !locals.usuario.rol_usuario.revisor_ents) { %>
+		<% if (locals.usuario) { %>
 			<a href="/revision/mantenimiento" tabindex="-1" class="grupos">
 				<i class="fa-solid fa-tools scale iconoHeader revision" title="Mantenimiento de Entidades"></i>
 			</a>
 		<% } %>
 		<!-- Revisar Entidades -->
-		<% if (locals.usuario && locals.usuario.rol_usuario.revisor_ents) { %>
+		<% if (locals.usuario && usuario.rol_usuario.revisor_ents) { %>
 			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
 				<div class="scale iconoComb" title="Revisar Entidades">
 					<i class="fa-solid fa-video iconoHeader revision"></i>

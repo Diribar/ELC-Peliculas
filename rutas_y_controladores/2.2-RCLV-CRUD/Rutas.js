@@ -8,7 +8,7 @@ const vista = require("./RCLV-ControlVista");
 //************************ Middlewares ******************************
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 // Específicos de RCLVs
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
@@ -19,7 +19,7 @@ const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
-const DE_agregar = [usAltaTerm, penalizaciones, usAptoInput, entValida];
+const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
 const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq];
 const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
 

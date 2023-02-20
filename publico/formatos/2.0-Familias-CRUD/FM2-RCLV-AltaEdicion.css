@@ -37,7 +37,7 @@
 #inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
 #repetidos #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden; height: 100%;}
 #repetidos #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
-#repetidos #posiblesRepetidos li input {margin-right: 5px;}
+#repetidos #posiblesRepetidos li input {padding-right: 5px;}
 #repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* Sexo */

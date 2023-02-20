@@ -8,7 +8,7 @@ const vista = require("./PR-ControlVista");
 //************************ Middlewares ******************************
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const penalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 // Específicos de productos
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
@@ -19,7 +19,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const dataEntry = [usAltaTerm, penalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
+const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs

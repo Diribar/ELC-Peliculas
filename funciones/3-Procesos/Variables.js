@@ -473,7 +473,7 @@ module.exports = {
 		];
 	},
 
-	// Carteles
+	// Mensajes
 	inputVacio: "Necesitamos que completes este campo",
 	selectVacio: "Necesitamos que elijas un valor",
 	radioVacio: "Necesitamos que elijas alguna opción",

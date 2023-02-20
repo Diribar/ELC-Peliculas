@@ -14,6 +14,7 @@ module.exports = {
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1);
 		const datos = req.query;
+
 		// Variables
 		let entidad = req.query.entidad;
 		let rclvID = req.query.id;
@@ -28,6 +29,7 @@ module.exports = {
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
 		let ap_mars, roles_igl, procesos_canon;
+
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
@@ -35,6 +37,7 @@ module.exports = {
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
 			ap_mars = ap_mars.filter((n) => n.ama);
 		}
+
 		// Pasos exclusivos para edición y revisión
 		if (codigo != "agregar") {
 			// Obtiene el rclvOrig y rclvEdic
@@ -46,8 +49,10 @@ module.exports = {
 			// Obtiene el día y el mes
 			dataEntry = comp.diaDelAno(dataEntry);
 		}
+
 		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
+		
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,

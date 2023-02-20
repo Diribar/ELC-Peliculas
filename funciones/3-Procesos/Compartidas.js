@@ -104,6 +104,23 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
+	obtieneEntidad_idDesdeEntidad: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula_id"
+			: entidad == "colecciones"
+			? "coleccion_id"
+			: entidad == "capitulos"
+			? "capitulo_id"
+			: entidad == "personajes"
+			? "personaje_id"
+			: entidad == "hechos"
+			? "hecho_id"
+			: entidad == "valores"
+			? "valor_id"
+			: entidad == "links"
+			? "link_id"
+			: "";
+	},
 	obtieneAsociacion: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
@@ -143,23 +160,6 @@ module.exports = {
 	},
 	obtieneRCLV_id: (edicion) => {
 		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.valor_id ? "valor_id" : "";
-	},
-	obtieneEntidad_idDesdeEntidad: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula_id"
-			: entidad == "colecciones"
-			? "coleccion_id"
-			: entidad == "capitulos"
-			? "capitulo_id"
-			: entidad == "personajes"
-			? "personaje_id"
-			: entidad == "hechos"
-			? "hecho_id"
-			: entidad == "valores"
-			? "valor_id"
-			: entidad == "links"
-			? "link_id"
-			: "";
 	},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado

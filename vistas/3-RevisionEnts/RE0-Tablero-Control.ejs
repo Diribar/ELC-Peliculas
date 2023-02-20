@@ -33,11 +33,10 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rp = "revision/producto/" %>
-				<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
-				<%- include("RE0-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
+				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: productos.IN, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
+				<%- include("RE0-Registros", {titulo: "Ediciones", regs: productos.ED, url: rp + "edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas", regs: productos.PA, url: rp + "alta"}) %>
 			</div>
 		</div>
 	</div>
@@ -64,8 +63,8 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rr = "revision/rclv/" %>
-				<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: rclvs.ED, url: rr + "edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: rclvs.PA, url: rr + "alta"}) %>
+				<%- include("RE0-Registros", {titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas", regs: rclvs.PA, url: rr + "alta"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas Sin Producto", regs: rclvs.SP, url: rr + "alta"}) %>
 			</div>
 		</div>
