@@ -21,7 +21,7 @@ const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, usRolRevEnts];
-const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
+const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
@@ -33,17 +33,20 @@ router.get("/api/link-eliminar", ...aptoRevisor, API.linkAltaBaja);
 router.get("/api/link-edicion", ...aptoRevisor, API.edic_AprobRech);
 
 // VISTAS --------------------------------------------------
+// Tablero de Control
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
+
 // Producto
-router.get("/producto/alta", ...aptoRevMasEnt, statusCorrecto, vista.prodAltaForm);
-router.post("/producto/alta", ...aptoRevMasEnt, statusCorrecto, rechazoSinMotivo, vista.registoAltaGuardar);
-router.get("/producto/edicion", ...aptoRevMasEnt, statusCorrecto, vista.prodEdicForm);
-router.get("/producto/inactivar", statusCorrecto);
-router.get("/producto/recuperar", statusCorrecto);
+router.get("/producto/alta", ...aptoRevMasEnt, vista.prodAltaForm);
+router.post("/producto/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registoAltaGuardar);
+router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
+router.get("/producto/inactivar-o-recuperar");
+
 // RCLV
 router.get("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, vistaAltaRCLV.altaEdicForm);
 router.post("/rclv/alta", ...aptoRevMasEnt, statusCorrecto, rechazoSinMotivo, vista.registoAltaGuardar);
 router.get("/rclv/edicion", ...aptoRevMasEnt, statusCorrecto, vista.rclvEdicForm);
+router.get("/rclv/inactivar-o-recuperar");
 
 // Links
 router.get("/links", ...aptoRevMasEnt, vista.linksForm);
