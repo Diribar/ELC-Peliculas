@@ -12,6 +12,7 @@ input[type="radio"], input[type="checkbox"] {scale: .8; cursor: pointer;}
 input[type="radio"] {align-self: end;}
 ::placeholder, select:has(option[value=""]:checked) {font-style: italic;}
 :disabled {cursor: default;}
+label[for] {cursor: pointer;}
 
 /* Varios */
 button, span, em, strong, u ,a, i {font-size: inherit; color: inherit; line-height: inherit;}

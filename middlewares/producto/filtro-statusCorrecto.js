@@ -24,9 +24,9 @@ module.exports = {
 				// Información a mostrar
 				informacion = {
 					mensajes: [
-						"El registro no está en el status esperado",
-						"Se esperaba que estuviera en el status " + statusEsperadoNombre,
-						"Está en el status " + statusActualNombre,
+						"El registro no está en el status esperado.",
+						"Se esperaba que estuviera en el status '" + statusEsperadoNombre + "'.",
+						"Está en el status '" + statusActualNombre + "'.",
 					],
 					iconos: [vistaInactivar],
 				};
