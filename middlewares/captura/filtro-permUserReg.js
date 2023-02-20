@@ -9,46 +9,45 @@ module.exports = async (req, res, next) => {
 	let v = {
 		// Generales
 		entidad: req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "",
-		entidadID: req.query.id,
+		entID: req.query.id,
 		haceUnaHora: comp.nuevoHorario(-1),
 		haceDosHoras: comp.nuevoHorario(-2),
 		usuario: req.session.usuario,
-		userID: usuario.id,
+		userID: req.session.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		// url
 		urlBase: req.baseUrl,
 		url: req.url,
 		// Registro
 		includes: ["status_registro", "capturado_por"],
-		horarioFinalCreado: comp.fechaHorarioTexto(comp.nuevoHorario(1, creado_en)),
-		capturado_en: registro.capturado_en,
-		horarioFinalCaptura: comp.fechaHorarioTexto(comp.nuevoHorario(1, capturado_en)),
 		// Vistas
 		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
 		vistaInactivar: variables.vistaInactivar(req),
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
-		vistaAnteriorInactivar: [vistaAnterior, vistaInactivar],
-		vistaAnteriorTablero: (() => {
-			let vista = [vistaAnterior];
-			let usuario = req.session.usuario;
-			if (usuario.rol_usuario.revisor_ents) vista.push(vistaTablero);
-			return vista;
-		})(),
 	};
 
-	// Otras variables
-	let informacion;
 	// Variables - Registro
-	if (v.entidad != "usuarios") includes.push("ediciones");
-	if (v.entidad == "capitulos") includes.push("coleccion");
-	let creado_en = registro.creado_en;
-	if (creado_en) creado_en.setSeconds(0);
-	let registro = await BD_genericas.obtienePorIdConInclude(v.entidad, entidadID, includes);
+	if (v.entidad != "usuarios") v.includes.push("ediciones");
+	if (v.entidad == "capitulos") v.includes.push("coleccion");
+	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.includes);
+	v.capturado_en = v.registro.capturado_en;
+	v.horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.registro.capturado_en));
+	v.creado_en = v.registro.creado_en;
+	v.horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.creado_en));
+	if (v.creado_en) v.creado_en.setSeconds(0);
+	v.vistaAnteriorTablero = (() => {
+		let vista = [v.vistaAnterior];
+		if (v.usuario.rol_usuario.revisor_ents) vista.push(v.vistaTablero);
+		return vista;
+	})();
+	// Otras variables
+	v.vistaAnteriorInactivar = [v.vistaAnterior, v.vistaInactivar];
+	let informacion;
 
 	// Creado por el usuario
-	let creadoPorElUsuario1 = registro.creado_por_id == userID;
-	let creadoPorElUsuario2 = v.entidad == "capitulos" && registro.coleccion.creado_por_id == userID;
+	let creadoPorElUsuario1 = v.registro.creado_por_id == v.userID;
+	let creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creado_por_id == v.userID;
 	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmula
@@ -64,13 +63,13 @@ module.exports = async (req, res, next) => {
 			let registros = await BD_genericas.obtieneTodosPorCampos(entidad, {capturado_por_id: v.userID});
 			for (let registro of registros) {
 				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
-				if (registro.capturado_en < haceDosHoras && registro.id != entidadID)
+				if (registro.capturado_en < v.haceDosHoras && registro.id != v.entID)
 					BD_genericas.actualizaPorId(entidad, registro.id, objetoNull);
 				// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
 				else if (
-					registro.capturado_en > haceUnaHora &&
+					registro.capturado_en > v.haceUnaHora &&
 					registro.captura_activa &&
-					(entidad != v.entidad || registro.id != v.entidadID)
+					(entidad != v.entidad || registro.id != v.entID)
 				) {
 					resultado = {
 						entidad,
@@ -92,13 +91,13 @@ module.exports = async (req, res, next) => {
 	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder como escritura
 	if (!informacion && v.entidad != "usuarios") {
 		informacion =
-			creado_en > haceUnaHora && !creadoPorElUsuario
+			v.creado_en > v.haceUnaHora && !creadoPorElUsuario
 				? {
 						mensajes: [
 							"Por ahora, el registro sólo está accesible para su creador",
-							"Estará disponible para su revisión el " + horarioFinalCreado,
+							"Estará disponible para su revisión el " + v.horarioFinalCreado,
 						],
-						iconos: [vistaAnterior],
+						iconos: [v.vistaAnterior],
 				  }
 				: "";
 	}
@@ -107,9 +106,9 @@ module.exports = async (req, res, next) => {
 	//    El registro está en status creadoAprob y el usuario no es revisor
 	if (!informacion) {
 		if (
-			creado_en < haceUnaHora && // creado hace más de una hora
-			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión
-				(registro.status_registro.creado_aprob && !usuario.rol_usuario.revisor_ents)) // en status creadoAprob y no es un usuario revisor
+			v.creado_en < v.haceUnaHora && // creado hace más de una hora
+			((v.registro.status_registro.creado && v.urlBase != "/revision") || // en status creado y la ruta no es de revisión
+				(v.registro.status_registro.creado_aprob && !v.usuario.rol_usuario.revisor_ents)) // en status creadoAprob y no es un usuario revisor
 		) {
 			let mensajes = creadoPorElUsuario
 				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
@@ -117,36 +116,36 @@ module.exports = async (req, res, next) => {
 			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.");
 			informacion = {
 				mensajes,
-				iconos: [vistaAnterior],
+				iconos: [v.vistaAnterior],
 			};
 		}
 	}
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
 	if (!informacion) {
 		informacion =
-			capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa
+			v.capturado_en > v.haceUnaHora && v.registro.capturado_por_id != v.userID && v.registro.captura_activa
 				? {
 						mensajes: [
 							"El registro está capturado por " +
-								(registro.capturado_por ? registro.capturado_por.apodo : "") +
+								(v.registro.capturado_por ? v.registro.capturado_por.apodo : "") +
 								".",
-							"Estará liberado a más tardar el " + horarioFinalCaptura,
+							"Estará liberado a más tardar el " + v.capturado_en,
 						],
-						iconos: vistaAnteriorInactivar,
+						iconos: v.vistaAnteriorInactivar,
 				  }
 				: "";
 	}
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	if (!informacion) {
 		informacion =
-			capturado_en < haceUnaHora && capturado_en > haceDosHoras && registro.capturado_por_id == userID
+			v.capturado_en < haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID
 				? {
 						mensajes: [
-							"Esta captura terminó el " + horarioFinalCaptura,
-							"Quedó a disposición de los demás " + tipoUsuario + ".",
+							"Esta captura terminó el " + v.capturado_en,
+							"Quedó a disposición de los demás " + v.tipoUsuario + ".",
 							"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 						],
-						iconos: [vistaEntendido],
+						iconos: [v.vistaEntendido],
 				  }
 				: "";
 	}
@@ -186,35 +185,35 @@ module.exports = async (req, res, next) => {
 						" desde el " +
 						horario,
 				],
-				iconos: [vistaAnterior, liberar],
+				iconos: [v.vistaAnterior, liberar],
 			};
 		}
 	}
 	// 6. Verificaciones exclusivas de las vistas de Revisión
-	if (!informacion && urlBase == "/revision" && !url.startsWith("/tablero-de-control")) {
+	if (!informacion && v.urlBase == "/revision" && !v.url.startsWith("/tablero-de-control")) {
 		// 1. El registro está en un status gr_creado, creado por el Revisor
-		if (registro.status_registro.gr_creado && creadoPorElUsuario)
+		if (v.registro.status_registro.gr_creado && creadoPorElUsuario)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
-				iconos: vistaAnteriorTablero,
+				iconos: v.vistaAnteriorTablero,
 			};
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
-		else if (registro.status_registro.gr_provisorios && registro.sugerido_por_id == userID)
+		else if (v.registro.status_registro.gr_provisorios && v.registro.sugerido_por_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
-				iconos: vistaAnteriorTablero,
+				iconos: v.vistaAnteriorTablero,
 			};
 		// 3. El registro sólo tiene una edición y es del Revisor
 		else if (
-			registro.ediciones &&
-			registro.ediciones.length == 1 &&
-			registro.ediciones[0].editado_por_id == userID &&
-			!url.startsWith("links/") &&
-			!url.startsWith("/producto/alta/")
+			v.registro.ediciones &&
+			v.registro.ediciones.length == 1 &&
+			v.registro.ediciones[0].editado_por_id == v.userID &&
+			!v.url.startsWith("links/") &&
+			!v.url.startsWith("/producto/alta/")
 		) {
 			informacion = {
 				mensajes: ["El registro tiene una sola edición y fue realizada por vos.", "La tiene que revisar otra persona"],
-				iconos: vistaAnteriorTablero,
+				iconos: v.vistaAnteriorTablero,
 			};
 		}
 	}
