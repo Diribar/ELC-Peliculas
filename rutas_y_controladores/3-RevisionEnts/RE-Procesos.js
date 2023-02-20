@@ -622,7 +622,7 @@ module.exports = {
 	},
 
 	// RCLV Alta
-	rclvs_edicAprobRech: async (entidad, original, userID) => {
+	rclvs_edicAprobRech: async (entidad, original, revID) => {
 		// Actualiza la info de aprobados/rechazados
 		// Funcion
 		let RCLV_valorVinculo = (RCLV, campo) => {
@@ -673,7 +673,7 @@ module.exports = {
 			entidad_id: original.id,
 			editado_por_id: original.creado_por_id,
 			editado_en: original.creado_en,
-			edic_analizada_por_id: userID,
+			edic_analizada_por_id: revID,
 			edic_analizada_en: ahora,
 		};
 
@@ -714,8 +714,9 @@ module.exports = {
 		}
 
 		// Actualiza en el usuario los campos edics_aprob / edics_rech
-		if (ediciones.edics_aprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_aprob", ediciones.edics_aprob);
-		if (ediciones.edics_rech) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "edics_rech", ediciones.edics_rech);
+		let creaID = original.creado_por_id;
+		if (ediciones.edics_aprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, "edics_aprob", ediciones.edics_aprob);
+		if (ediciones.edics_rech) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, "edics_rech", ediciones.edics_rech);
 
 		// Fin
 		return;
