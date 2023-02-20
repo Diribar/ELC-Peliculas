@@ -2,7 +2,7 @@
 
 // *********** Controlador ***********
 module.exports = {
-	redireccionarInicio:(req,res)=>{
+	redireccionarInicio: (req, res) => {
 		return res.redirect("/institucional/inicio");
 	},
 
@@ -17,13 +17,21 @@ module.exports = {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id} = req.query;
 		// Si es 'tablero', ir a tablero
-		if (origen == "DA") origen = "/producto/agregar/datos-adicionales";
-		if (origen == "ED") origen = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
-		if (origen == "DT_RCLV") origen = "/rclv/detalle/?entidad=" + entidad + "&id=" + id;
-		if (origen == "tableroUs") origen = "/revision/usuarios/tablero-de-control";
-		if (origen == "tableroEnts") origen = "/revision/tablero-de-control";
-		if (!origen) origen = "/";
+		let destino =
+			origen == "DA"
+				? "/producto/agregar/datos-adicionales"
+				: origen == "ED"
+				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
+				: origen == "DT_prod"
+				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
+				: origen == "DT_RCLV"
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				: origen == "tableroUs"
+				? "/revision/usuarios/tablero-de-control"
+				: origen == "tableroEnts"
+				? "/revision/tablero-de-control"
+				: "/";
 		// Redireccionar a la vista que corresponda
-		return res.redirect(origen);
+		return res.redirect(destino);
 	},
 };
