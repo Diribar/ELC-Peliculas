@@ -419,7 +419,7 @@ module.exports = {
 		rclvs: [
 			// Todos
 			{nombre: "nombre", titulo: "Nombre Formal", rclvs: true},
-			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relac_include: "dia_del_ano"},
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			// Personajes
@@ -427,9 +427,9 @@ module.exports = {
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
 			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relac_include: "epoca"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
-			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
-			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},
 			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true, relac_include: "rol_iglesia"},
+			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},
+			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ant", titulo: "Anterior a Jesús", hechos: true},

@@ -18,8 +18,8 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
-		let prodsConEdic = await procesos.TC_obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
-		let productos = await procesos.TC_obtieneProds(ahora, userID);
+		let prodsConEdic = await procesos.TC.obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
+		let productos = await procesos.TC.obtieneProds(ahora, userID);
 		if (prodsConEdic.length) {
 			// Deja solamente los productos en status creado
 			productos.PA = prodsConEdic.filter((n) => n.status_registro_id == creado_id);
@@ -29,14 +29,14 @@ module.exports = {
 		}
 
 		// RCLV
-		let rclvs = await procesos.TC_obtieneRCLVs(ahora, userID);
-		rclvs.ED = await procesos.TC_obtieneRCLVsConEdicAjena(ahora, userID);
+		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
+		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 		// Obtiene Links
-		productos.CL = await procesos.TC_obtieneProdsConLink(ahora, userID);
+		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
 		// return res.send(productos.CL)
 		// Procesa los campos de las 2 familias de entidades
-		productos = procesos.TC_prod_ProcesarCampos(productos);
-		rclvs = procesos.TC_RCLV_ProcesarCampos(rclvs);
+		productos = procesos.TC.prod_ProcesarCampos(productos);
+		rclvs = procesos.TC.RCLV_ProcesarCampos(rclvs);
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -263,7 +263,8 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		let motivo_id = req.body.motivo_id;
-		const rclvs = comp.obtieneFamiliaEnPlural(entidad) == "rclvs";
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const rclvs = familia == "rclvs";
 		let datosCompletos = {};
 
 		// 2. Acciones específicas para RCLVs
@@ -284,15 +285,14 @@ module.exports = {
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
-		const userID = req.session.usuario.id;
+		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_analizada_en = ahora;
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 
 		// Obtiene el registro original
-		let includes = [];
-		if (entidad != "valores") includes.push("dia_del_ano");
-		if (entidad == "personajes") includes.push("epoca", "categoria", "rol_iglesia", "proc_canon", "ap_mar");
+		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+		let includes = camposRevisar.filter((n) => n.relac_include).map((n) => n.relac_include);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 
 		// Completa los datos
@@ -300,22 +300,21 @@ module.exports = {
 		datosCompletos = {
 			...datosCompletos,
 			status_registro_id,
-			alta_analizada_por_id: userID,
+			alta_analizada_por_id: revID,
 			alta_analizada_en,
 			lead_time_creacion,
 			captura_activa: false,
 		};
 
 		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original y en la variable
+		// 1. Actualiza el status en el registro original
 		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
-		original = {...original, ...datosCompletos};
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
-		// 3. Si es un RCLV, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs) procesos.rclvs_edicAprobRech(entidad, original, userID);
+		// 3. Si es un RCLV aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
+		if (rclvs && !rechazado) procesos.edicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
@@ -324,7 +323,7 @@ module.exports = {
 			entidad,
 			sugerido_por_id: creado_por_id,
 			sugerido_en: original.creado_en,
-			analizado_por_id: userID,
+			analizado_por_id: revID,
 			analizado_en: ahora,
 			status_original_id: creado_id,
 			status_final_id: status_registro_id,
@@ -342,12 +341,6 @@ module.exports = {
 
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
-
-		// 7. Si es un RCLV y fue rechazado, elimina el valor rclv_id de las 'prods_edicion' vinculadas a él
-		if (rclvs && rechazado) {
-			let RCLV_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[RCLV_id]: id}, {[RCLV_id]: null});
-		}
 
 		// Fin
 		if (rclvs) return res.redirect("/revision/tablero-de-control");

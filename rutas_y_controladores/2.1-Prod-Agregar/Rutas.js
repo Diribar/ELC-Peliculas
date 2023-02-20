@@ -10,7 +10,7 @@ const vista = require("./PA-ControlVista");
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
-const prodAgregar = require("../../middlewares/varios/filtro-prodAgregar");
+const prodAgregar = require("../../middlewares/varios/prodAgregar");
 const usAutorizFA = require("../../middlewares/usuarios/filtro-usAutorizFA");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/producto/filtro-prodYaEnBD");
