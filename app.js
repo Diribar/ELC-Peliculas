@@ -87,7 +87,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 (async () => {
 	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/2-BD/Genericas");
-	const BD_especificas = require("./funciones/2-BD/Especificas");
+	let no_presencio_ninguna = {solo_cfc: true, ant: false, jss: false, cnt: false, pst: false, ama: true};
 	let campos = {
 		// Variables de usuario
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
@@ -113,6 +113,7 @@ const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
 		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
+		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
