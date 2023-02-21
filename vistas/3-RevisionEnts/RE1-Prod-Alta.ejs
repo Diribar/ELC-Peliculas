@@ -46,7 +46,7 @@
 				<button type="submit" autofocus tabindex="2">
 					<i class="fa-solid fa-circle-check" title="Aprobado"></i>
 				</button>
-				<i class="fa-solid fa-circle-xmark" tabindex="3" title="Rechazado"></i>
+				<i id="mostrarMotivos" class="fa-solid fa-circle-xmark" tabindex="3" title="Rechazado"></i>
 			</div>
 			<div class="flechas inactivo">
 				<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
@@ -55,22 +55,8 @@
 				<% } %>
 			</div>
 		</div>
-		<!-- Rechazo -->
-		<div id="cartelMotivosRechazo" class="ocultar">
-			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
-			<select name="motivo_id">
-				<option value="" selected>Elegí una opción</option>	
-				<% for (motivo of motivosRechazo) { %>
-					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
-				<% } %>
-			</select>
-			<div class="flechas">
-				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-				<button type="submit" formaction="<%= urlActual %>&rechazado=true" class="inactivo">
-					<i class="fa-solid fa-circle-right" title="Continuar"></i>
-				</button>
-			</div>
-		</div>
+		<!-- Cartel de Rechazo -->
+		<%- include('CMP-CartelRechazo') %>
 	</section>
 	<section id="segundaCol">
 		<!-- Links a otras páginas de consulta -->
