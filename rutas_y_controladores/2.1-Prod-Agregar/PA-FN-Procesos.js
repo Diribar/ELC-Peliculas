@@ -287,15 +287,22 @@ module.exports = {
 			? "Documental"
 			: "Desconocido";
 	},
-	gruposPers: (camposDA) => {
+	gruposPers: (camposDA, userID) => {
 		// Variables
 		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
+
+		// Deja solamente los aprobados o creados por el usuario
+		personajes = personajes.filter(
+			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
+		);
+
+		// Deja los valores necesarios
 		personajes = personajes.map((n) => {
 			return {
 				id: n.id,
 				nombre: n.nombre,
-				rol_iglesia_id: n.rol_iglesia_id,
 				categoria_id: n.categoria_id,
+				rol_iglesia_id: n.rol_iglesia_id,
 				ap_mar_id: n.ap_mar_id,
 			};
 		});
@@ -351,6 +358,11 @@ module.exports = {
 	gruposHechos: (camposDA) => {
 		// Variables
 		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
+
+		// Deja solamente los aprobados o creados por el usuario
+		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID));
+
+		// Deja los valores necesarios
 		hechos = hechos.map((n) => {
 			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
 			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
