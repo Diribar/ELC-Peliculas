@@ -293,7 +293,7 @@ module.exports = {
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 
 		// Obtiene el registro original
-		let includes = comp.obtieneTodosLosCamposInclude(entidad)
+		let includes = comp.obtieneTodosLosCamposInclude(entidad);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 
 		// Completa los datos
@@ -342,6 +342,12 @@ module.exports = {
 
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
+
+		// 7. Si es un RCLV y es eliminado, se borra su id de los campos rclv_id de las ediciones de producto
+		if (rclvs && rechazado) {
+			let rclv_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[rclv_id]: id}, {[rclv_id]: null});
+		}
 
 		// Fin
 		if (rclvs) return res.redirect("/revision/tablero-de-control");
