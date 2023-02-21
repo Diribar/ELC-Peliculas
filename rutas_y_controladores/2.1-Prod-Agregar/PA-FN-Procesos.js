@@ -355,7 +355,7 @@ module.exports = {
 		// Fin
 		return grupos;
 	},
-	gruposHechos: (camposDA) => {
+	gruposHechos: (camposDA, userID) => {
 		// Variables
 		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
 
