@@ -251,6 +251,7 @@ module.exports = {
 	camposDA: [
 		{nombre: "cfc"},
 		{nombre: "ocurrio"},
+		{nombre: "color"},
 		{nombre: "musical"},
 		{nombre: "tipo_actuacion_id"},
 		{nombre: "publico_id"},
@@ -288,8 +289,8 @@ module.exports = {
 		return [
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
-			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Es a color", nombre: "color", siNo: true},
+			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{
 				titulo: "Tipo de Actuación",
 				nombre: "tipo_actuacion_id",
