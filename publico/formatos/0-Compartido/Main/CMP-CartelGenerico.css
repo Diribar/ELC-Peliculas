@@ -1,3 +1,7 @@
+/* Tapar el fondo */
+main #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
+main #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+
 /* Formato general del cartel */
 #cartel {position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 12;}
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
@@ -32,7 +36,3 @@
 /* Íconos especiales */
 #cartel #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
 #cartel #flechasCartel :where(.fa-circle-info, .fa-thumbs-up) {color: var(--amarillo-oscuro);}
-
-/* Tapar el fondo */
-main #cuerpoFooter #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
-main #cuerpoFooter #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}

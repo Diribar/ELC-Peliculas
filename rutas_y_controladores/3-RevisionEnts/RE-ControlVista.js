@@ -84,7 +84,7 @@ module.exports = {
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) => n.filter((m) => m.prod));
-		let url = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
+		let urlActual = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
@@ -103,7 +103,7 @@ module.exports = {
 			prodNombre,
 			title: prodOrig.nombre_castellano,
 			cartelEscondido: true,
-			url,
+			urlActual,
 			rutaSalir,
 		});
 	},
