@@ -30,6 +30,8 @@ module.exports = {
 
 		// RCLV
 		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
+
+		// Links
 		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 		// Obtiene Links
 		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
@@ -278,7 +280,7 @@ module.exports = {
 				return res.redirect(req.originalUrl);
 			}
 			// Procesa los datos del Data Entry
-			datosCompletos = procsRCLV.procesaLosDatos(datos);
+			datosCompletos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
 
 		// PROCESOS INTERMEDIOS
