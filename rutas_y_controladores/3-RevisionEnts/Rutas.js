@@ -25,12 +25,12 @@ const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, statusCorrecto, perm
 
 // APIs -------------------------------------------------
 // Producto
-router.get("/api/edicion-aprob-rech", ...aptoRevisor, API.edic_AprobRech);
+router.get("/api/edicion-aprob-rech", ...aptoRevisor, API.edicAprobRech);
 router.get("/api/producto-guarda-avatar", ...aptoRevisor, API.prodEdic_ConvierteUrlEnArchivo);
 // Links
 router.get("/api/link-alta", ...aptoRevisor, API.linkAltaBaja);
 router.get("/api/link-eliminar", ...aptoRevisor, API.linkAltaBaja);
-router.get("/api/link-edicion", ...aptoRevisor, API.edic_AprobRech);
+router.get("/api/link-edicion", ...aptoRevisor, API.edicAprobRech);
 
 // VISTAS --------------------------------------------------
 // Tablero de Control

@@ -393,7 +393,7 @@ module.exports = {
 			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true, productos: true},
 			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true, productos: true},
 			{titulo: "País/es", nombre: "paises_id", productos: true},
-			{titulo: "Idioma Original", nombre: "idioma_original_id", relac_include: "idioma_original", productos: true},
+			{titulo: "Idioma Original", nombre: "idioma_original_id", relacInclude: "idioma_original", productos: true},
 			{titulo: "Dirección", nombre: "direccion", input: true, productos: true},
 			{titulo: "Guión", nombre: "guion", input: true, productos: true},
 			{titulo: "Música", nombre: "musica", input: true, productos: true},
@@ -406,11 +406,11 @@ module.exports = {
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
 			{titulo: "Es a color", nombre: "color", productos: true},
-			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relac_include: "tipo_actuacion", productos: true},
-			{titulo: "Público sugerido", nombre: "publico_id", relac_include: "publico", productos: true},
-			{titulo: "Personaje histórico", nombre: "personaje_id", relac_include: "personaje", rclv: true, productos: true},
-			{titulo: "Hecho histórico", nombre: "hecho_id", relac_include: "hecho", rclv: true, productos: true},
-			{titulo: "Valor principal", nombre: "valor_id", relac_include: "valor", rclv: true, productos: true},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", relacInclude: "tipo_actuacion", productos: true},
+			{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", productos: true},
+			{titulo: "Personaje histórico", nombre: "personaje_id", relacInclude: "personaje", rclv: true, productos: true},
+			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", rclv: true, productos: true},
+			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "valor", rclv: true, productos: true},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones
@@ -419,17 +419,17 @@ module.exports = {
 		rclvs: [
 			// Todos
 			{nombre: "nombre", titulo: "Nombre Formal", rclvs: true},
-			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relac_include: "dia_del_ano"},
+			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano"},
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
-			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relac_include: "sexo"},
-			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relac_include: "epoca"},
-			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relac_include: "categoria"},
-			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true, relac_include: "rol_iglesia"},
-			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relac_include: "proc_canon"},
-			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relac_include: "ap_mar"},
+			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo"},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca"},
+			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria"},
+			{nombre: "rol_iglesia_id", titulo: "Rol en la Iglesia", personajes: true, relacInclude: "rol_iglesia"},
+			{nombre: "proceso_id", titulo: "Proceso de Canonizac.", personajes: true, relacInclude: "proc_canon"},
+			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ant", titulo: "Anterior a Jesús", hechos: true},

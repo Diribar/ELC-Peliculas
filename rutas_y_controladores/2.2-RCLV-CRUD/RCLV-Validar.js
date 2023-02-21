@@ -216,6 +216,5 @@ let epocaHechos = (datos) => {
 	if (contador == 1 && datos.pst) anoNecesario = true;
 
 	// Fin
-	console.log(220);
 	return [respuesta, anoNecesario];
 };
