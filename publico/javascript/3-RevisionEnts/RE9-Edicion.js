@@ -179,7 +179,7 @@ window.addEventListener("load", () => {
 			consecuencias(resultado, campo);
 		});
 
-		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
+		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de terminarlos, se muestra el motivo
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
 			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
@@ -192,13 +192,6 @@ window.addEventListener("load", () => {
 				else v.rechazar[indice].classList.add("inactivo");
 			});
 		}
-
-		// Cancelar menú motivos para borrar
-		if (campo == "avatar")
-			v.cancelar.addEventListener("click", () => {
-				v.cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
-				v.tapaElFondo.classList.add("ocultar");
-			});
 
 		// Rechaza el nuevo valor
 		v.rechazar[indice].addEventListener("click", async () => {
