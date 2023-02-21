@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 	let menuMotivosBorrar = document.querySelector("#cartelMotivosRechazo");
 	let motivoRechazo = document.querySelector("#cartelMotivosRechazo select");
 	let cancelar = document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left");
-	let inactivar = document.querySelector("#cartelMotivosRechazo .flechas button");
+	let rechazar = document.querySelector("#cartelMotivosRechazo .flechas button");
 
 	// Muestra el menú "motivos para borrar"
 	mostrarMenuMotivos.addEventListener("click", () => {
@@ -24,12 +24,12 @@ window.addEventListener("load", () => {
 
 	// Elegi motivo rechazo
 	motivoRechazo.addEventListener("change", () => {
-		if (motivoRechazo.value) inactivar.classList.remove("inactivo")
-		else inactivar.classList.add("inactivo")
+		if (motivoRechazo.value) rechazar.classList.remove("inactivo")
+		else rechazar.classList.add("inactivo")
 	});
 
-	// Inactivar
-	inactivar.addEventListener("click", (e) => {
+	// Rechazar
+	rechazar.addEventListener("click", (e) => {
 		if (!motivoRechazo.value) e.preventDefault();
 	});
 });
