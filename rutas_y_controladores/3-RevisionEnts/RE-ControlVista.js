@@ -49,7 +49,7 @@ module.exports = {
 		});
 	},
 
-	// Productos y Links
+	// Productos y RCLVs
 	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
@@ -261,7 +261,7 @@ module.exports = {
 			cartelEscondido: true,
 		});
 	},
-	registoAltaGuardar: async (req, res) => {
+	registroAltaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		let motivo_id = req.body.motivo_id;
