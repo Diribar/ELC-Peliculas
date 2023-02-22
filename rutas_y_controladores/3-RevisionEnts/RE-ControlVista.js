@@ -102,9 +102,9 @@ module.exports = {
 			motivosRechazo,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
-			cartelEscondido: true,
 			urlActual,
 			rutaSalir,
+			cartelEscondido: true,
 		});
 	},
 	prodEdicForm: async (req, res) => {
