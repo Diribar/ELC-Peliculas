@@ -3,7 +3,7 @@
 	<p><strong>Por favor explicanos por qué sugerís el rechazo</strong></p>
 	<select name="motivo_id">
 		<option value="" selected>Elegí una opción</option>
-		<% for (motivo of motivosRechazo) { %>
+		<% for (motivo of motivos) { %>
 		<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 		<% } %>
 	</select>
