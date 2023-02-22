@@ -4,8 +4,8 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},
 		bloqueo_perm_inputs: {type: dt.BOOLEAN},
-		prod: {type: dt.BOOLEAN},
-		rclv: {type: dt.BOOLEAN},
+		prods: {type: dt.BOOLEAN},
+		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
 		};
