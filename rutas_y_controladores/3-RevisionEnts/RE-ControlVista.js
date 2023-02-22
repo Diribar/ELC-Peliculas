@@ -9,7 +9,7 @@ const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
 const validaRCLV = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
-	// Uso general
+	// TABLERO
 	tableroControl: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
@@ -51,7 +51,7 @@ module.exports = {
 		});
 	},
 
-	// Productos y RCLVs
+	// FORMS
 	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
@@ -262,6 +262,64 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
+	linksForm: async (req, res) => {
+		// 1. Tema y Código
+		const tema = "revisionEnts";
+		const codigo = "abmLinks";
+		// Otras variables
+		let includes;
+		let entidad = req.query.entidad;
+		let id = req.query.id;
+		let userID = req.session.usuario.id;
+		// Configurar el título
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		// Obtiene el prodOrig con sus links originales para verificar que los tenga
+		includes = ["links", "status_registro"];
+		if (entidad == "capitulos") includes.push("coleccion");
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
+		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+		// Obtiene todos los links
+		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
+		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+		// return res.send(links)
+		// Información para la vista
+		let avatar = producto.avatar;
+		avatar = avatar
+			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
+			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
+		let motivos = altas_motivos_rech.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
+
+		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
+		// Va a la vista
+		//return res.send(links)
+		return res.render("CMP-0Estructura", {
+			tema,
+			codigo,
+			titulo,
+			entidad,
+			id,
+			producto,
+			prodOrig: producto,
+			links,
+			links_provs,
+			links_tipos,
+			avatar,
+			motivos,
+			calidades: variables.calidades,
+			userID,
+			camposARevisar,
+			title: producto.nombre_castellano,
+			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
+			cartelGenerico: true,
+		});
+	},
+
+	// GUARDAR
 	registroAltaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
@@ -360,63 +418,5 @@ module.exports = {
 			if (edicID) urlEdicion += "&edicion_id=" + edicID;
 			return res.redirect(urlEdicion);
 		}
-	},
-
-	// Links
-	linksForm: async (req, res) => {
-		// 1. Tema y Código
-		const tema = "revisionEnts";
-		const codigo = "abmLinks";
-		// Otras variables
-		let includes;
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario.id;
-		// Configurar el título
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtiene el prodOrig con sus links originales para verificar que los tenga
-		includes = ["links", "status_registro"];
-		if (entidad == "capitulos") includes.push("coleccion");
-		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-		// Obtiene todos los links
-		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
-		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-		// return res.send(links)
-		// Información para la vista
-		let avatar = producto.avatar;
-		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
-			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let motivos = altas_motivos_rech.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
-
-		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
-		// Va a la vista
-		//return res.send(links)
-		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo,
-			entidad,
-			id,
-			producto,
-			prodOrig: producto,
-			links,
-			links_provs,
-			links_tipos,
-			avatar,
-			motivos,
-			calidades: variables.calidades,
-			userID,
-			camposARevisar,
-			title: producto.nombre_castellano,
-			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
-			cartelGenerico: true,
-		});
 	},
 };
