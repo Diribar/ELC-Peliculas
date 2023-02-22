@@ -33,12 +33,14 @@ module.exports = {
 		if (!link) {
 			datos.creado_por_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
-			procsCRUD.cambioDeStatus("links", link.id); // No hace falta el 'await', el proceso no espera un resultado
+			procsCRUD.cambioDeStatus("links", link.id, link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creado_por_id == userID && link.status_registro.creado) {
-			await procsCRUD.cambioDeStatus("links", link.id, datos);
+			await BD_genericas.actualizaPorId("links", link.id, datos);
+			link = {...link, ...datos};
+			procsCRUD.cambioDeStatus("links", link.id, link);
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
@@ -66,14 +68,15 @@ module.exports = {
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				await BD_genericas.eliminaPorId("links", link.id);
+				link = {...link, status_registro_id: inactivo_id};
 				procsCRUD.cambioDeStatus("links", link.id, link); // No hace falta el 'await', el proceso no espera un resultado
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 			}
 			// El link existe y no tiene status 'aprobado'
 			else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
-			// El link existe y tiene status 'aprobado'
 			// No existe el motivo
 			else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
+			// El link existe y tiene status 'aprobado'
 			else {
 				// Inactivar
 				let datos = {
@@ -82,7 +85,9 @@ module.exports = {
 					motivo_id,
 					status_registro_id: inactivar_id,
 				};
-				await procsCRUD.cambioDeStatus("links", link.id, datos);
+				await BD_genericas.actualizaPorId("links", link.id, datos);
+				link = {...link, ...datos};
+				procsCRUD.cambioDeStatus("links", link.id, link);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
@@ -103,7 +108,10 @@ module.exports = {
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			await procsCRUD.cambioDeStatus("links", link.id, {status_registro_id: recuperar_id, sugerido_por_id: userID});
+			datos = {status_registro_id: recuperar_id, sugerido_por_id: userID};
+			await BD_genericas.actualizaPorId("links", link.id, datos);
+			link = {...link, ...datos};
+			procsCRUD.cambioDeStatus("links", link.id, link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 		// Fin
@@ -130,10 +138,20 @@ module.exports = {
 			: respuesta;
 		if (!respuesta.mensaje) {
 			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
-			if (link.status_registro.inactivar)
-				await procsCRUD.cambioDeStatus("links", link.id, {...objeto, status_registro_id: aprobado_id});
-			if (link.status_registro.recuperar)
-				await procsCRUD.cambioDeStatus("links", link.id, {...objeto, status_registro_id: inactivo_id});
+			// Si estaba en inactivar, lo lleva a aprobado
+			if (link.status_registro.inactivar) {
+				let datos = {...objeto, status_registro_id: aprobado_id};
+				await BD_genericas.actualizaPorId("links", link.id, datos);
+				link = {...link, ...datos};
+				procsCRUD.cambioDeStatus("links", link.id, link);
+			}
+			// Si estaba en recuperar, lo lleva a inactivo
+			else if (link.status_registro.recuperar) {
+				let datos = {...objeto, status_registro_id: inactivo_id};
+				await BD_genericas.actualizaPorId("links", link.id, datos);
+				link = {...link, ...datos};
+				procsCRUD.cambioDeStatus("links", link.id, link);
+			}
 			respuesta = {
 				mensaje: "Link llevado a su status anterior",
 				activos: true,

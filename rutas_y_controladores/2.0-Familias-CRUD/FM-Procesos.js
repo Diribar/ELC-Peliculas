@@ -153,24 +153,15 @@ module.exports = {
 
 	// CAMBIOS DE STATUS
 	// Cambia el status de un registro
-	cambioDeStatus: async function (entidad, id, datos) {
-		// Averigua si el registro existe en la BD
-		let registro = await BD_genericas.obtienePorId(entidad, id);
+	cambioDeStatus: async function (entidad, id, datos, registro) {
+		// Variables
+		let familia = comp.obtieneFamiliaEnPlural(entidad);
 
-		// Actualiza el registro con los datos
-		if (datos) {
-			if (registro) {
-				await BD_genericas.actualizaPorId(entidad, id, datos);
-				registro = await BD_genericas.obtienePorId(entidad, id);
-			} else registro = datos;
-		}
-
-		// Usamos el await sólo cuando hay 1 función
 		// Rutina por producto
-		if (variables.entidadesProd.includes(entidad)) this.prodEnRCLV(registro);
+		if (familia == "productos") this.prodEnRCLV(registro);
 
 		// Rutinas por links
-		if (entidad == "links") {
+		if (familia == "links") {
 			await this.linkEnProd(registro);
 			this.linkCastEnProd(registro);
 		}
@@ -363,5 +354,4 @@ module.exports = {
 				(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 		);
 	},
-	
 };
