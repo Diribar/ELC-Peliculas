@@ -150,8 +150,6 @@ module.exports = {
 			// Reconvierte los elementos
 			for (let rubro of rubros)
 				productos[rubro] = productos[rubro].map((n) => {
-					console.log(rubro,n);
-					// console.log(153,n.nombre_castellano,n.id,n.entidad);
 					let nombre =
 						(n.nombre_castellano.length > anchoMax
 							? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
