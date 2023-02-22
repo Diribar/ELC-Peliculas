@@ -2,7 +2,7 @@
 	<!-- Rechazo -->
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-CartelRechazo.css">
 	<form method="POST" id="cartelRechazo" class="ocultar" action="<%= urlActual %>&rechazado=true">
-		<p><strong>Por favor explicanos por qué sugerís el rechazo</strong></p>
+		<p><strong>Por favor explicanos por qué<br>sugerís el rechazo</strong></p>
 		<select name="motivo_id">
 			<option value="" selected>Elegí una opción</option>
 			<% for (motivo of motivos) { %>
@@ -12,7 +12,7 @@
 		<div class="flechas">
 			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
 			<button type="submit" class="inactivo">
-				<i class="fa-solid fa-circle-right" title="Rechazar"></i>
+				<i class="fa-solid fa-circle-right rechazar" title="Rechazar"></i>
 			</button>
 		</div>
 	</form>
