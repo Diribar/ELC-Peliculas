@@ -260,6 +260,7 @@ module.exports = {
 		});
 	},
 	registroAltaGuardar: async (req, res) => {
+		return res.send([req.query,req.body])
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		let motivo_id = req.body.motivo_id;

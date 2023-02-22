@@ -72,8 +72,7 @@ module.exports = {
 		const inactivar = link.status_registro.inactivar;
 		const recuperar = link.status_registro.recuperar;
 		const gr_provisorios = inactivar || recuperar;
-		if (!creado && !gr_provisorios)
-			return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		if (!creado && !gr_provisorios) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
 		// Decisión sobre el sugerido
 		const decisAprob = (prodAprob && (creado || recuperar)) || (!prodAprob && inactivar);
@@ -85,7 +84,7 @@ module.exports = {
 		// USUARIO - Verifica la penalidad cuando se rechaza el link sugerido
 		if (!decisAprob && (creado || recuperar)) {
 			motivo_id = req.query.motivo_id;
-			motivo = await BD_genericas.obtienePorId("altas_motivos_rech", motivo_id);
+			motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
 			comp.usuarioPenalizAcum(sugerido_por_id, motivo, "links");
 		}
 

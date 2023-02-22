@@ -1,17 +1,20 @@
-<!-- Rechazo -->
-<div id="cartelMotivosRechazo" class="ocultar">
-	<p><strong>Por favor explicanos por qué sugerís el rechazo</strong></p>
-	<select name="motivo_id">
-		<option value="" selected>Elegí una opción</option>
-		<% for (motivo of motivos) { %>
-		<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
-		<% } %>
-	</select>
-	<div class="flechas">
-		<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-		<button type="submit" formaction="<%= locals.urlActual %>&rechazado=true" class="inactivo">
-			<i class="fa-solid fa-circle-right" title="Rechazar"></i>
-		</button>
-	</div>
+<% if (locals.mostrar) { %>
+	<!-- Rechazo -->
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-CartelRechazo.css">
+	<form id="cartelRechazo" class="ocultar">
+		<p><strong>Por favor explicanos por qué sugerís el rechazo</strong></p>
+		<select name="motivo_id">
+			<option value="" selected>Elegí una opción</option>
+			<% for (motivo of motivos) { %>
+			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+			<% } %>
+		</select>
+		<div class="flechas">
+			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
+			<button type="submit" formaction="<%= urlActual %>&rechazado=true" class="inactivo">
+				<i class="fa-solid fa-circle-right" title="Rechazar"></i>
+			</button>
+		</div>
+	</form>
 	<script src="/javascript/3-RevisionEnts/RE0-CartelRechazo.js"></script>
-</div>
+<% } %>

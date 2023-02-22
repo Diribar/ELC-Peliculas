@@ -9,9 +9,9 @@ window.addEventListener("load", () => {
 		// Motivos para borrar
 		aprobar: document.querySelectorAll(".contenido .fa-circle-check"),
 		muestraCartelMotivos: document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos"),
-		cartelMotivosRechazo: document.querySelectorAll(".contenido #cartelMotivosRechazo"),
-		motivoRechazos: document.querySelectorAll(".contenido #cartelMotivosRechazo select"),
-		cancelar: document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left"),
+		cartelRechazo: document.querySelectorAll(".contenido #cartelRechazo"),
+		motivoRechazos: document.querySelectorAll(".contenido #cartelRechazo select"),
+		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
 		rechazar: document.querySelectorAll(".contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
 		versionActual: document.querySelector("#versionActual"),
@@ -165,7 +165,7 @@ window.addEventListener("load", () => {
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
 			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
-				v.cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
+				v.cartelRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 			// Activa la opción para rechazar
 			v.motivoRechazos[indiceMotivo].addEventListener("change", () => {
