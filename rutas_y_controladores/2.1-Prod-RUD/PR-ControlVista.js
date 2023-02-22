@@ -101,11 +101,11 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
-			cartel: codigo == "edicion",
 			dataEntry: {},
 			avatarLinksExternos,
 			omitirImagenDerecha: codigo == "edicion",
 			omitirFooter: codigo == "edicion",
+			cartelGenerico: codigo == "edicion",
 		});
 	},
 	prodEdic_Guardar: async (req, res) => {

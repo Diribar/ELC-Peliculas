@@ -16,13 +16,14 @@
 <body>
 	<!-- Header genérico -->
 	<%- include('CMP-2Header') %>
-	<main class="flexRowReverse">
+	<main class="flexRowReverse relative">
 		<%- include('CMP-ImagenDerecha', {mostrar: !locals.omitirImagenDerecha}) %>
+		<%- include('CMP-CartelGenerico', {mostrar: locals.cartelGenerico || locals.cartelRechazo}) %>
+		<%- include('RE0-CartelRechazo', {mostrar: locals.cartelRechazo}) %>
 		<!-- Cuerpo y Footer -->
 		<section id="cuerpoFooter">
 			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
-				<%- include('CMP-CartelGenerico', {mostrar: locals.cartelEscondido}) %>
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 				<% } else if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %>
 				<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>

@@ -5,10 +5,10 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#cartelMotivosRechazo");
-	let motivoRechazo = document.querySelector("#cartelMotivosRechazo select");
-	let cancelar = document.querySelector("#cartelMotivosRechazo .flechas .fa-circle-left");
-	let rechazar = document.querySelector("#cartelMotivosRechazo .flechas button");
+	let menuMotivosBorrar = document.querySelector("#cartelRechazo");
+	let motivoRechazo = document.querySelector("#cartelRechazo select");
+	let cancelar = document.querySelector("#cartelRechazo .flechas .fa-circle-left");
+	let rechazar = document.querySelector("#cartelRechazo .flechas button");
 
 	// Muestra el menú "motivos para borrar"
 	mostrarMenuMotivos.addEventListener("click", () => {

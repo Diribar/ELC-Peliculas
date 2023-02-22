@@ -82,6 +82,9 @@ app.set("views", [
 		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
 		links_provs: BD_genericas.obtieneTodos("links_provs", "nombre"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
+		edic_motivos_rech: BD_genericas.obtieneTodos("edic_motivos_rech", "orden"),
+		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
 
 		// Consultas - Filtro Personalizado
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
@@ -98,8 +101,6 @@ app.set("views", [
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		banco_de_imagenes: BD_genericas.obtieneTodos("banco_imagenes", "dia_del_ano_id"),
-		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
-		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
