@@ -1,21 +1,3 @@
-#cuerpoFooter {width: 70vw;}
-
-/* Datos */
-#datos {display: flex; flex-direction: row; flex-grow: 1;}
-
-/* Datos Largos */
-#datosLargos {display: flex; flex-direction: column; justify-content: space-around; padding: 40px 40px 20px; position: relative; flex-grow: 1;}
-#datosLargos #contenido h1 {font-size: 1.5rem;}
-#datosLargos #contenido h1 em {font-size: 1.1rem;}
-#datosLargos #contenido .datosAdicionales {margin-top: 10px;}
-
-/* Sinopsis - General y Texto*/
-#datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; background: var(--amarillo-claro);}
-#datosLargos #contenido #sinopsis {border-radius: 15px; border: var(--gris-oscuro) 5px solid;}
-#datosLargos #contenido #sinopsis #sinopsisContenido {font-size: 1.1rem;}
-/* Sinopsis - Ayuda */
-#datosLargos #contenido #sinopsis .ayuda .ayudaMostrar {max-width: 300px;}
-
 /* Segunda Columna */
 #segundaCol {margin: auto 15px;}
 #segundaCol #links {margin-bottom: 15px;}

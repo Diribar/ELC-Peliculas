@@ -478,7 +478,7 @@ module.exports = {
 		delete regEdic[campo];
 
 		// Averigua si quedan campos por procesar
-		let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, familia);
+		let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, entidad);
 
 		// Acciones para productos si no quedan campos
 		if (!edicion && producto) {

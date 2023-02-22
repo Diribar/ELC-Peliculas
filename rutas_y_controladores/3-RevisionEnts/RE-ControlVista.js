@@ -103,6 +103,7 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			// urlActual: req.session.urlActual,
 			rutaSalir,
+			urlActual: req.session.urlActual,
 			cartelRechazo: true,
 		});
 	},
@@ -118,7 +119,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: prodID} = req.query;
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let ingresos, reemplazos, bloqueDer, infoErronea_id;
+		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
 
 		// Obtiene la versión original con includes
 		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
@@ -155,7 +156,7 @@ module.exports = {
 						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
 					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
 				};
-				motivos = motivos.filter((m) => m.avatar);
+				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.original.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
@@ -163,7 +164,7 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		if (!codigo.includes("/avatar")) {
 			// Achica la edición a su mínima expresión
-			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, "productos");
+			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
@@ -225,7 +226,7 @@ module.exports = {
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, "rclvs");
+		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, entidad);
 		// Fin, si no quedan campos
 		if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos
@@ -282,7 +283,7 @@ module.exports = {
 		}
 
 		// PROCESOS INTERMEDIOS
-		
+
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");

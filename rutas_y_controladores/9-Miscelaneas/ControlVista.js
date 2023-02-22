@@ -15,7 +15,7 @@ module.exports = {
 
 	redireccionar: async (req, res) => {
 		// Variables
-		let {origen, prodEntidad, prodID, entidad, id} = req.query;
+		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
 		// Si es 'tablero', ir a tablero
 		let destino =
 			origen == "DA"
@@ -30,6 +30,8 @@ module.exports = {
 				? "/revision/usuarios/tablero-de-control"
 				: origen == "tableroEnts"
 				? "/revision/tablero-de-control"
+				: urlDestino
+				? urlDestino
 				: "/";
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);

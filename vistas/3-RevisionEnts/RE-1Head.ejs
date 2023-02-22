@@ -11,9 +11,22 @@
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
 <% } %>
 
-<!-- Prod-Altas -->
-<% if (codigo == "producto/alta") { %>
+<!-- RCLV-Altas -->
+<% if (codigo == "rclv/alta") { %>
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM2-RCLV-AltaEdicion.css">
+	<script src="/javascript/2.2-RCLV-CRUD/RCLV-InputError.js"></script>
+
+<!-- RCLV-Edición -->
+<% } else if (codigo == "rclvEdicion") { %>
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+	<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
+
+<!-- Prod-Altas -->
+<% } else if (codigo == "producto/alta") { %>
+	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-1Detalle.css">
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Alta.css">
 
 <!-- Prod-Edicion-Avatar -->
@@ -27,17 +40,6 @@
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 	<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
 
-<!-- RCLV-Altas -->
-<% } else if (codigo == "rclv/alta") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM2-RCLV-AltaEdicion.css">
-	<script src="/javascript/2.2-RCLV-CRUD/RCLV-InputError.js"></script>
-
-<!-- RCLV-Edición -->
-<% } else if (codigo == "rclvEdicion") { %>
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
-	<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
-	
 <!-- Links -->
 <% } else if (codigo == "abmLinks") { %>
 	<!-- Uso compartido -->
