@@ -260,16 +260,15 @@ module.exports = {
 		});
 	},
 	registroAltaGuardar: async (req, res) => {
-		return res.send([req.query,req.body])
 		// Variables
 		const {entidad, id, rechazado} = req.query;
-		let motivo_id = req.body.motivo_id;
+		const motivo_id = req.body.motivo_id;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
 		const rclvs = familia == "rclvs";
 		let datosCompletos = {};
 
-		// 2. Acciones específicas para RCLVs
-		if (rclvs) {
+		// Si es un RCLV y es aprobado, se realizan acciones específicas
+		if (rclvs && !rechazado) {
 			// Averigua si hay errores de validación y toma acciones
 			const datos = {...req.body, ...req.query};
 			let errores = await validaRCLV.consolidado(datos);
@@ -283,6 +282,7 @@ module.exports = {
 		}
 
 		// PROCESOS INTERMEDIOS
+		
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
@@ -313,7 +313,7 @@ module.exports = {
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
 
-		// 3. Si es un RCLV aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
+		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
 		if (rclvs && !rechazado) procesos.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
@@ -331,7 +331,7 @@ module.exports = {
 		};
 		if (rechazado) {
 			datosHist.motivo_id = motivo_id;
-			let motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			var motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(motivo.duracion);
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
@@ -340,9 +340,9 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
-		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.duracion, petitFamilia);
+		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, motivo, petitFamilia);
 
-		// 7. Si es un RCLV y es eliminado, se borra su id de los campos rclv_id de las ediciones de producto
+		// 7. Si es un RCLV y es rechazado, se borra su id de los campos rclv_id de las ediciones de producto
 		if (rclvs && rechazado) {
 			let rclv_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[rclv_id]: id}, {[rclv_id]: null});
