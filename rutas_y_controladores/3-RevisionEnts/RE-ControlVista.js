@@ -22,10 +22,12 @@ module.exports = {
 		let productos = await procesos.TC.obtieneProds(ahora, userID);
 		if (prodsConEdic.length) {
 			// Deja solamente los productos en status creado
-			productos.PA = prodsConEdic.filter((n) => n.status_registro_id == creado_id);
-			// Deja solamente los productos en status creado_aprob y aprobado
-			const gr_aprobado_id = [creado_aprob_id, aprobado_id];
-			productos.ED = prodsConEdic.filter((n) => gr_aprobado_id.includes(n.status_registro_id));
+			productos.AL = prodsConEdic.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
+			// Deja solamente la suma de los productos:
+			// 1. En status 'creado_aprob' y que no sean 'capítulos'
+			// 2. En status 'aprobado'
+			productos.ED = prodsConEdic.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos");
+			productos.ED.push(...prodsConEdic.filter((n) => n.status_registro_id == aprobado_id));
 		}
 
 		// RCLV
