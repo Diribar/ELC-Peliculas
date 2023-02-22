@@ -52,7 +52,7 @@ module.exports = {
 
 		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
-		
+		let motivos = codigo == "revisionEnts" ? altas_motivos_rech.filter((n) => n.rclvs) : "";
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -73,6 +73,7 @@ module.exports = {
 			rutaSalir,
 			institucional: true,
 			cartelEscondido: codigo != "agregar",
+			motivos,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
@@ -121,7 +122,7 @@ module.exports = {
 
 		// Obtiene RCLV con productos
 		let includes = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		includes.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por")
+		includes.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
 
 		// Productos

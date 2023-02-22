@@ -32,18 +32,12 @@ module.exports = {
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene datos para la vista
 		if (prodEntidad == "capitulos") {
-			let coleccion_id =
-				prodEdic && prodEdic.coleccion_id ? prodEdic.coleccion_id : prodOrig.coleccion_id;
+			let coleccion_id = prodEdic && prodEdic.coleccion_id ? prodEdic.coleccion_id : prodOrig.coleccion_id;
 			let temporada = prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")
-			.then((n) => n.filter((m) => m.links))
-			.then((n) =>
-				n.map((m) => {
-					return {id: m.id, comentario: m.comentario};
-				})
-			);
+		let motivos = altas_motivos_rech.filter((n) => n.links).map((n) => ({id: n.id, comentario: n.comentario}));
+
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {

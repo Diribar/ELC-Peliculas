@@ -83,7 +83,7 @@ module.exports = {
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
-		let motivosRechazo = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden").then((n) => n.filter((m) => m.prod));
+		let motivos = altas_motivos_rech.filter((n) => n.prods);
 		let urlActual = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
@@ -99,7 +99,7 @@ module.exports = {
 			imgDerPers,
 			bloqueIzq,
 			bloqueDer,
-			motivosRechazo,
+			motivos,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
 			urlActual,
@@ -118,7 +118,6 @@ module.exports = {
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
@@ -174,7 +173,7 @@ module.exports = {
 			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/2-Avatar-Prods-Final/" + avatar;
 			// Variables
-			motivos = motivos.filter((m) => m.prod);
+			motivos = edic_motivos_rech.filter((m) => m.prods);
 			infoErronea_id = motivos.find((n) => n.info_erronea).id;
 			bloqueDer = await procesos.edicion.fichaDelRegistro(prodOrig, prodEdic);
 			imgDerPers = avatar;
@@ -219,7 +218,6 @@ module.exports = {
 
 		// Variables
 		const {entidad, id: prodID} = req.query;
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con includes
@@ -233,7 +231,7 @@ module.exports = {
 		// Obtiene los ingresos y reemplazos
 		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
 		// Variables
-		motivos = motivos.filter((m) => m.rclv);
+		let motivos = edic_motivos_rech.filter((m) => m.rclvs);
 		infoErronea_id = motivos.find((n) => n.info_erronea).id;
 		bloqueDer = await procesos.edicion.fichaDelRegistro(rclvOrig, rclvEdic);
 		// return res.send([edicion, ingresos, reemplazos]);
@@ -391,13 +389,8 @@ module.exports = {
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let motivos = await BD_genericas.obtieneTodos("altas_motivos_rech", "orden")
-			.then((n) => n.filter((m) => m.links))
-			.then((n) =>
-				n.map((m) => {
-					return {id: m.id, comentario: m.comentario};
-				})
-			);
+		let motivos = altas_motivos_rech.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
+
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
