@@ -1,25 +1,25 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Flechas
-	let mostrarMenuMotivos = document.querySelector(".flechas .fa-circle-xmark");
+	let accesoAlCartelRechazo = document.querySelector(".flechas .fa-circle-xmark");
 
 	// Motivos para borrar
-	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#cartelRechazo");
+	let tapaElFondo = document.querySelector("#tapar-el-fondo");
+	let cartelRechazo = document.querySelector("#cartelRechazo");
 	let motivoRechazo = document.querySelector("#cartelRechazo select");
 	let cancelar = document.querySelector("#cartelRechazo .flechas .fa-circle-left");
 	let rechazar = document.querySelector("#cartelRechazo .flechas button");
 
 	// Muestra el menú "motivos para borrar"
-	mostrarMenuMotivos.addEventListener("click", () => {
-		menuMotivosBorrar.classList.remove("ocultar");
-		taparElFondo.classList.remove("ocultar");
+	accesoAlCartelRechazo.addEventListener("click", () => {
+		tapaElFondo.classList.remove("ocultar");
+		cartelRechazo.classList.remove("ocultar");
 	});
 
 	// Oculta el menú "motivos para borrar"
 	cancelar.addEventListener("click", () => {
-		menuMotivosBorrar.classList.add("ocultar");
-		taparElFondo.classList.add("ocultar");
+		cartelRechazo.classList.add("ocultar");
+		tapaElFondo.classList.add("ocultar");
 	});
 
 	// Elegi motivo rechazo
