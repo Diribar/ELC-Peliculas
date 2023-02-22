@@ -89,9 +89,9 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// Obtiene el dataEntry
-		let DE = procesos.procesaLosDatos(datos);
+		let DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
-		await procesos.guardaLosCambios(req, res, DE);
+		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
@@ -116,26 +116,29 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let RCLV_id = req.query.id;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
+
 		// Obtiene RCLV con productos
-		let includes = [...variables.entidadesProd, "prods_edicion", "status_registro", "creado_por", "alta_analizada_por"];
-		if (entidad == "personajes") includes.push("ap_mar", "proc_canon", "rol_iglesia");
+		let includes = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
+		includes.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por")
 		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
+
 		// Productos
-		let prodsDelRCLV = await procesos.prodsDelRCLV(RCLV, userID);
+		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, usuario);
 		let cantProds = prodsDelRCLV.length;
+
 		// Ir a la vista
 		// return res.send(prodsDelRCLV);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Detalle de un " + entidadNombre,
-			bloqueDerecha: await procesos.bloqueDerecha({...RCLV, entidad}, cantProds),
+			bloqueDerecha: await procesos.detalle.bloqueDerecha({...RCLV, entidad}, cantProds),
 			omitirImagenDerecha: true,
 			omitirFooter: false,
 			prodsDelRCLV,
-			procCanoniz: await procesos.procCanoniz(RCLV),
+			procCanoniz: await procesos.detalle.procCanoniz(RCLV),
 			RCLVnombre: RCLV.nombre,
 			entidad,
 			RCLV_id,

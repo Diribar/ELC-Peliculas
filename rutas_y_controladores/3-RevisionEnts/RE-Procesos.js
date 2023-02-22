@@ -36,7 +36,7 @@ module.exports = {
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", userID, includes);
+			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("prods_edicion", includes);
 
 			// 3.Elimina las edicionesProd con RCLV no aprobado
 			if (ediciones.length)
@@ -53,13 +53,15 @@ module.exports = {
 				ediciones.map((n) => {
 					let entidad = comp.obtieneProdDesdeProducto_id(n);
 					let asociacion = comp.obtieneAsociacion(entidad);
-					productos.push({
-						...n[asociacion],
-						entidad,
-						edicion_id: n.id,
-						fechaRef: n[campoFechaRef],
-						fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
-					});
+					// Carga los productos excepto los aprobados y editados por el revisor
+					if (n[asociacion].status_registro_id != aprobado_id || n.editado_por_id != userID)
+						productos.push({
+							...n[asociacion],
+							entidad,
+							edicion_id: n.id,
+							fechaRef: n[campoFechaRef],
+							fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+						});
 				});
 
 			// 5. Elimina los repetidos más recientes
@@ -109,7 +111,8 @@ module.exports = {
 			let includes = ["personaje", "hecho", "valor"];
 			let rclvs = [];
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", userID, includes);
+			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", includes);
+			ediciones.filter((n) => n.editado_por_id != userID);
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
 				// Obtiene los rclvs originales

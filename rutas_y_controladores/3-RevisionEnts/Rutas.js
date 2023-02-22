@@ -38,13 +38,13 @@ router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 
 // Producto
 router.get("/producto/alta", ...aptoRevMasEnt, vista.prodAltaForm);
-router.post("/producto/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registoAltaGuardar);
+router.post("/producto/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registroAltaGuardar);
 router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
 router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
 router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registoAltaGuardar);
+router.post("/rclv/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registroAltaGuardar);
 router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
 router.get("/rclv/inactivar-o-recuperar");
 

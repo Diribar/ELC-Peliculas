@@ -67,11 +67,7 @@ window.addEventListener("load", async () => {
 
 		// Muestra el cartel
 		let titulo = "En proceso...";
-		let contenido = [
-			"Buscando productos",
-			"Reemplazando películas por su colección",
-			"Completando la información",
-		];
+		let contenido = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
 		armadoDelCartel(titulo, contenido);
 
 		// Busca los productos
@@ -115,19 +111,11 @@ window.addEventListener("load", async () => {
 			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
 			// Completa los años
 			if (prod.entidad == "colecciones") {
-				li.children[0][4].children[1].children[3].innerHTML = prod.prodNombre;
-				let br = document.createElement("br");
-				li.children[0][4].children[1].children[3].append(br);
-				let ano =
-					prod.ano_fin > prod.ano_estreno
-						? "(" + prod.ano_fin + "-" + prod.ano_estreno + ")"
-						: "(" + prod.ano_estreno + ")";
-				li.children[0][4].children[1].children[3].innerHTML += ano;
+				let ano = prod.ano_fin > prod.ano_estreno ? prod.ano_fin + "-" + prod.ano_estreno : prod.ano_estreno;
+				li.children[0][4].children[1].children[3].innerHTML = ano;
 				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
-			} else {
-				let ano = " (" + prod.ano_estreno + ")";
-				li.children[0][4].children[1].children[3].innerHTML = prod.prodNombre + ano;
-			}
+			} else li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno
+			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.prodNombre;
 
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
@@ -146,17 +134,14 @@ window.addEventListener("load", async () => {
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
 			// Imagen
-			let avatar = prod.avatar.startsWith("http")
-				? prod.avatar
-				: "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
+			let avatar = prod.avatar.startsWith("http") ? prod.avatar : "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
 			li.children[0].children[0].children[0].alt = prod.nombre_original;
 			li.children[0].children[0].children[0].title = prod.nombre_original;
 			// Información a mostrar
 			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombre_original;
 			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
-			li.children[0].children[0].children[1].children[3].innerHTML =
-				prod.ano_estreno + " - " + prod.prodNombre;
+			li.children[0].children[0].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 
@@ -204,10 +189,7 @@ window.addEventListener("load", async () => {
 			};
 			// Muestra el cartel
 			let titulo = "Estamos procesando la información...";
-			let contenido = [
-				"Obteniendo más información del producto",
-				"Revisando la información disponible",
-			];
+			let contenido = ["Obteniendo más información del producto", "Revisando la información disponible"];
 			armadoDelCartel(titulo, contenido);
 
 			// 1. Obtiene más información del producto
@@ -218,7 +200,7 @@ window.addEventListener("load", async () => {
 
 			// 2. Revisa la información disponible, para determinar los próximos pasos
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar2"
+			ruta = "api/desambiguar-guardar2";
 			errores = await fetch(ruta).then((n) => n.json());
 			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 

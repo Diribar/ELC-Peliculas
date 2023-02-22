@@ -25,7 +25,6 @@ window.addEventListener("load", () => {
 		// Otras variables
 		filas: document.querySelectorAll(".contenido .fila"),
 		campoNombres: document.querySelectorAll(".contenido .campoNombre"),
-		avatarActual: document.querySelector("#derecha img"),
 		rutaEdicion: "",
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion-aprob-rech/?entidad=",
@@ -137,27 +136,12 @@ window.addEventListener("load", () => {
 		// Averigua si está todo procesado
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos,
-		if (todoProcesado == resultado.quedanCampos) {
-			// Publica el cartel de avatar
-			if (campo == "avatar") cartel(mensajeAvatar());
-			// Mensaje de error
-			else console.log(todoProcesado, resultado.quedanCampos);
-		}
+		if (todoProcesado == resultado.quedanCampos) console.log(todoProcesado, resultado.quedanCampos);
+		
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado) cartel(mensajeFin());
 		// Fin
 		return;
-	};
-	let convierteUrlEnArchivo = async () => {
-		// Obtiene la ruta
-		let rutaConvertirEnArchivo = "/revision/api/producto-guarda-avatar/?entidad=";
-		rutaConvertirEnArchivo += v.entidad + "&id=" + v.entID + "&url=";
-		// Obtiene el url
-		let url = encodeURIComponent(v.avatarActual.src);
-		// Gestiona la descarga y obtiene el resultado
-		let [resultado, rutaYnombre] = await fetch(rutaConvertirEnArchivo + url).then((n) => n.json());
-		// Cambia el 'src' de la imagen
-		if (resultado == "OK") v.avatarActual.src = rutaYnombre;
 	};
 
 	// LISTENERS --------------------------------------------------------------------
@@ -168,8 +152,6 @@ window.addEventListener("load", () => {
 
 		// Aprobar el nuevo valor
 		v.aprobar[indice].addEventListener("click", async () => {
-			// Stopper
-			if (campo == "avatar") v.tapaElFondo.classList.remove("ocultar");
 			// Ocultar la fila
 			if (v.filas.length) v.filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
@@ -179,11 +161,10 @@ window.addEventListener("load", () => {
 			consecuencias(resultado, campo);
 		});
 
-		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de superarlos, se los muestra
+		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de terminarlos, se muestra el motivo
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
 			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
-				if (campo == "avatar") v.tapaElFondo.classList.remove("ocultar");
 				v.cartelMotivosRechazo[indiceMotivo].classList.remove("ocultar");
 			});
 			// Activa la opción para rechazar
@@ -193,24 +174,14 @@ window.addEventListener("load", () => {
 			});
 		}
 
-		// Cancelar menú motivos para borrar
-		if (campo == "avatar")
-			v.cancelar.addEventListener("click", () => {
-				v.cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
-				v.tapaElFondo.classList.add("ocultar");
-			});
-
 		// Rechaza el nuevo valor
 		v.rechazar[indice].addEventListener("click", async () => {
 			// Variables
 			let motivo_id = indiceMotivo >= 0 ? v.motivoRechazos[indiceMotivo].value : v.motivoGenerico_id;
 			// Stopper
 			if (!motivo_id) return;
-			if (campo == "avatar") v.cartelMotivosRechazo[indiceMotivo].classList.add("ocultar");
 			// Oculta la fila
 			if (v.filas.length) v.filas[indice].classList.add("ocultar");
-			// Si el campo es avatar y la imagen actual es un 'url', lo descarga
-			if (campo == "avatar" && v.avatarActual.src.startsWith("http")) convierteUrlEnArchivo();
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			let resultado = await fetch(ruta).then((n) => n.json());
