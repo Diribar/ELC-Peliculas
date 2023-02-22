@@ -1,7 +1,7 @@
 <% if (locals.mostrar) { %>
 	<!-- Rechazo -->
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-CartelRechazo.css">
-	<form id="cartelRechazo" class="ocultar">
+	<form method="POST" id="cartelRechazo" class="ocultar" action="<%= urlActual %>&rechazado=true">
 		<p><strong>Por favor explicanos por qué sugerís el rechazo</strong></p>
 		<select name="motivo_id">
 			<option value="" selected>Elegí una opción</option>
@@ -11,7 +11,7 @@
 		</select>
 		<div class="flechas">
 			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-			<button type="submit" formaction="<%= urlActual %>&rechazado=true" class="inactivo">
+			<button type="submit" class="inactivo">
 				<i class="fa-solid fa-circle-right" title="Rechazar"></i>
 			</button>
 		</div>

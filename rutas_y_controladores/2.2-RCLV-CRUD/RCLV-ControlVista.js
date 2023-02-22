@@ -28,12 +28,11 @@ module.exports = {
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
-		let ap_mars, roles_igl, procesos_canon;
+		let ap_mars, roles_igl;
 
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
-			procesos_canon = procs_canon.filter((m) => m.id.length == 3);
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
 			ap_mars = ap_mars.filter((n) => n.ama);
 		}
@@ -52,7 +51,7 @@ module.exports = {
 
 		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
-		let motivos = codigo == "revisionEnts" ? altas_motivos_rech.filter((n) => n.rclvs) : "";
+		let motivos = tema == "revisionEnts" ? altas_motivos_rech.filter((n) => n.rclvs) : "";
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -64,17 +63,14 @@ module.exports = {
 			tituloCuerpo,
 			dataEntry,
 			DE: !!Object.keys(dataEntry).length,
-			// meses,
-			// epocas,
 			roles_igl,
-			procesos_canon,
 			ap_mars,
-			sexos,
 			rutaSalir,
 			institucional: true,
 			cartelGenerico: codigo == "edicion",
 			cartelRechazo: tema == "revisionEnts",
 			motivos,
+			urlActual: req.session.urlActual,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
