@@ -68,7 +68,7 @@ module.exports = {
 			campos,
 			userID,
 			motivos_docum,
-			cartelEscondido: true,
+			cartelGenerico: true,
 		});
 	},
 	identidadGuardar: async (req, res) => {

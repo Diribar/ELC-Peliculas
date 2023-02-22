@@ -72,7 +72,8 @@ module.exports = {
 			sexos,
 			rutaSalir,
 			institucional: true,
-			cartelEscondido: codigo != "agregar",
+			cartelGenerico: codigo == "edicion",
+			cartelRechazo: tema == "revisionEnts",
 			motivos,
 		});
 	},

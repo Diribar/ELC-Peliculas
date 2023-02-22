@@ -105,7 +105,7 @@ module.exports = {
 			avatarLinksExternos,
 			omitirImagenDerecha: codigo == "edicion",
 			omitirFooter: codigo == "edicion",
-			cartelEscondido: codigo == "edicion",
+			cartelGenerico: codigo == "edicion",
 		});
 	},
 	prodEdic_Guardar: async (req, res) => {

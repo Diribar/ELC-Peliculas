@@ -50,7 +50,7 @@ module.exports = {
 			titulo: "Agregar - Desambiguar",
 			palabrasClave,
 			omitirImagenDerecha: true,
-			cartelEscondido: true,
+			cartelGenerico: true,
 		});
 	},
 	datosDurosForm: async (req, res) => {

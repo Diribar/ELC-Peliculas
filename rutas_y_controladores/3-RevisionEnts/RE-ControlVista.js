@@ -84,7 +84,6 @@ module.exports = {
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
 		let motivos = altas_motivos_rech.filter((n) => n.prods);
-		let urlActual = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
@@ -102,9 +101,9 @@ module.exports = {
 			motivos,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
-			urlActual,
+			// urlActual: req.session.urlActual,
 			rutaSalir,
-			cartelEscondido: true,
+			cartelRechazo: true,
 		});
 	},
 	prodEdicForm: async (req, res) => {
@@ -204,7 +203,8 @@ module.exports = {
 			imgDerPers,
 			omitirImagenDerecha: codigo.includes("avatar"),
 			omitirFooter: codigo.includes("avatar"),
-			cartelEscondido: true,
+			cartelGenerico: true,
+			cartelRechazo: codigo.includes("avatar"),
 		});
 	},
 	rclvEdicForm: async (req, res) => {
@@ -256,7 +256,7 @@ module.exports = {
 			id: prodID,
 			bloqueDer,
 			title: rclvOrig.nombre_castellano,
-			cartelEscondido: true,
+			cartelGenerico: true,
 		});
 	},
 	registroAltaGuardar: async (req, res) => {
@@ -412,7 +412,7 @@ module.exports = {
 			camposARevisar,
 			title: producto.nombre_castellano,
 			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
-			cartelEscondido: true,
+			cartelGenerico: true,
 		});
 	},
 };
