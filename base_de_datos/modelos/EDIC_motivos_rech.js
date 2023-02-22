@@ -3,8 +3,8 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(40)},
-		avatar_prod: {type: dt.BOOLEAN},
-		avatar_rclv: {type: dt.BOOLEAN},
+		avatar_prods: {type: dt.BOOLEAN},
+		avatar_rclvs: {type: dt.BOOLEAN},
 		avatar_us: {type: dt.BOOLEAN},
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},

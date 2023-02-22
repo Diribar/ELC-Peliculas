@@ -119,7 +119,7 @@ module.exports = {
 		// Variables
 		const {entidad, id: prodID} = req.query;
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let ingresos, reemplazos, bloqueDer, infoErronea_id;
+		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
 
 		// Obtiene la versión original con includes
 		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
@@ -156,7 +156,7 @@ module.exports = {
 						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
 					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
 				};
-				motivos = motivos.filter((m) => m.avatar);
+				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.original.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
