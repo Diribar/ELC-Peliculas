@@ -17,14 +17,6 @@
 			<!-- Sinopsis -->
 			<div id="sinopsis" class="bordeConSombra">
 				<div id="contenidoSinopsis"><%= producto.sinopsis %></div>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-							<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
-						</ul>
-					</i>
-				</div>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
@@ -35,7 +27,6 @@
 				</div>				
 			<% } %>
 		</div>
-		<!-- Comandos -->
 		<!-- Botones -->
 		<div class="flexRow">
 			<%- include("CR-Flechas") %>
@@ -52,7 +43,8 @@
 	</div>
 </section>
 <section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-	<nav>
+	<!-- Contenido que se desplaza -->
+	<nav> 
 		<!-- Calificaciones -->
 		<h3>Calificaciones</h3>
 		<% if (producto.calificacion) { %>

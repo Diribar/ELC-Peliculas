@@ -103,6 +103,7 @@ module.exports = {
 			title: prodOrig.nombre_castellano,
 			// urlActual: req.session.urlActual,
 			rutaSalir,
+			urlActual: req.session.urlActual,
 			cartelRechazo: true,
 		});
 	},
@@ -282,7 +283,7 @@ module.exports = {
 		}
 
 		// PROCESOS INTERMEDIOS
-		
+
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
