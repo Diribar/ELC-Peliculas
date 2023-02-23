@@ -196,89 +196,160 @@ module.exports = {
 		},
 	},
 
-	// Alta Guardar
-	rclvEdicAprobRech: async (entidad, original, revID) => {
-		// Prepara la información
-		let datos = {
-			entidad,
-			entidad_id: original.id,
-			editado_por_id: original.creado_por_id,
-			editado_en: original.creado_en,
-			edic_analizada_por_id: revID,
-			edic_analizada_en: comp.ahora(),
-		};
+	// Alta
+	alta: {
+		// Alta Guardar
+		rclvEdicAprobRech: async (entidad, original, revID) => {
+			// Prepara la información
+			let datos = {
+				entidad,
+				entidad_id: original.id,
+				editado_por_id: original.creado_por_id,
+				editado_en: original.creado_en,
+				edic_analizada_por_id: revID,
+				edic_analizada_en: comp.ahora(),
+			};
 
-		// Campos a revisar
-		let ediciones = {edics_aprob: 0, edics_rech: 0};
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+			// Campos a revisar
+			let ediciones = {edics_aprob: 0, edics_rech: 0};
+			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
-		// RCLV actual
-		let includes = comp.obtieneTodosLosCamposInclude(entidad);
-		let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+			// RCLV actual
+			let includes = comp.obtieneTodosLosCamposInclude(entidad);
+			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 
-		// Motivos posibles
-		let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-		let motivoVersionActual = motivos.find((n) => n.version_actual);
-		let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+			// Motivos posibles
+			let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
+			let motivoVersionActual = motivos.find((n) => n.version_actual);
+			let motivoInfoErronea = motivos.find((n) => n.info_erronea);
 
-		// Rutina para comparar los campos
-		for (let campoRevisar of camposRevisar) {
-			// Variables
-			let campo = campoRevisar.nombre;
-			let relacInclude = campoRevisar.relacInclude;
+			// Rutina para comparar los campos
+			for (let campoRevisar of camposRevisar) {
+				// Variables
+				let campo = campoRevisar.nombre;
+				let relacInclude = campoRevisar.relacInclude;
 
-			// Valor aprobado
-			let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
-			let valorRech = relacInclude ? original[relacInclude].nombre : original[campo];
+				// Valor aprobado
+				let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
+				let valorRech = relacInclude ? original[relacInclude].nombre : original[campo];
 
-			// Casos especiales
-			if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
-				valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-				valorRech = original[campo] == 1 ? "SI" : "NO";
-			}
-			if (campo == "epoca_id") {
-				valorAprob = RCLV_actual[relacInclude].nombre_pers;
-				valorRech = original[relacInclude].nombre_pers;
-			}
+				// Casos especiales
+				if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
+					valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+					valorRech = original[campo] == 1 ? "SI" : "NO";
+				}
+				if (campo == "epoca_id") {
+					valorAprob = RCLV_actual[relacInclude].nombre_pers;
+					valorRech = original[relacInclude].nombre_pers;
+				}
 
-			if (!valorAprob && !valorRech) continue;
-			// Genera la información
-			datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
+				if (!valorAprob && !valorRech) continue;
+				// Genera la información
+				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
 
-			// Obtiene la entidad y completa los datos
-			let edicsAprobRech;
-			if (valorAprob != valorRech) {
+				// Obtiene la entidad y completa los datos
+				let edicsAprobRech;
+				if (valorAprob != valorRech) {
+					// Obtiene la entidad
+					edicsAprobRech = "edics_rech";
+					// Completa los datos
+					datos.valorRech = valorRech;
+					let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
+					datos.motivo_id = motivo.id;
+					datos.duracion = motivo.duracion;
+				}
 				// Obtiene la entidad
-				edicsAprobRech = "edics_rech";
-				// Completa los datos
-				datos.valorRech = valorRech;
-				let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
-				datos.motivo_id = motivo.id;
-				datos.duracion = motivo.duracion;
+				else edicsAprobRech = "edics_aprob";
+
+				// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
+				await BD_genericas.agregaRegistro(edicsAprobRech, datos);
+				// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
+				ediciones[edicsAprobRech]++;
 			}
-			// Obtiene la entidad
-			else edicsAprobRech = "edics_aprob";
 
-			// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
-			await BD_genericas.agregaRegistro(edicsAprobRech, datos);
-			// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
-			ediciones[edicsAprobRech]++;
-		}
+			// Actualiza en el usuario los campos edics_aprob / edics_rech
+			let creaID = original.creado_por_id;
+			let campoEdic =
+				ediciones.edics_aprob > ediciones.edics_rech
+					? "edics_aprob"
+					: ediciones.edics_aprob < ediciones.edics_rech
+					? "edics_rech"
+					: "";
+			if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
 
-		// Actualiza en el usuario los campos edics_aprob / edics_rech
-		let creaID = original.creado_por_id;
-		let campoEdic =
-			ediciones.edics_aprob > ediciones.edics_rech
-				? "edics_aprob"
-				: ediciones.edics_aprob < ediciones.edics_rech
-				? "edics_rech"
-				: "";
-		if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
+			// Fin
+			return;
+		},
+		// Productos Alta
+		prodAltaForm_ficha: async (prodOrig, paises) => {
+			// Funciones
+			let usuario_CalidadAltas = async (userID) => {
+				// 1. Obtiene los datos del usuario
+				let usuario = await BD_genericas.obtienePorId("usuarios", userID);
+				// 2. Contar los casos aprobados y rechazados
+				let cantAprob = usuario.prods_aprob;
+				let cantRech = usuario.prods_rech;
+				// 3. Precisión de altas
+				let cantAltas = cantAprob + cantRech;
+				let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
+				// let diasPenalizacion = usuario.dias_penalizacion
+				// Datos a enviar
+				let enviar = {
+					calidadAltas: ["Calidad Altas", calidadInputs],
+					cantAltas: ["Cant. Prod. Agregados", cantAltas],
+					// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+				};
+				// Fin
+				return enviar;
+			};
+			// Definir el 'ahora'
+			let ahora = comp.ahora().getTime();
+			// Bloque izquierdo
+			let [bloque1, bloque2, bloque3] = [[], [], []];
+			// Bloque 1
+			if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
+			if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
+			// Bloque 2
+			if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
+			if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
+			if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
+			if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
+			// Bloque 3
+			if (prodOrig.actores) bloque3.push({titulo: "Actores", valor: prodOrig.actores});
+			// Bloque izquierdo consolidado
+			let izquierda = [bloque1, bloque2, bloque3];
+			// Bloque derecho
+			[bloque1, bloque2] = [[], []];
+			// Bloque 1
+			if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
+			if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
+			if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
+			// Obtiene la fecha de alta
+			let fecha = comp.fechaTexto(prodOrig.creado_en);
+			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+			// 5. Obtiene los datos del usuario
+			let fichaDelUsuario = await comp.usuarioFicha(prodOrig.creado_por_id, ahora);
+			// 6. Obtiene la calidad de las altas
+			let calidadAltas = await usuario_CalidadAltas(prodOrig.creado_por_id);
+			// Bloque derecho consolidado
+			let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
+			return [izquierda, derecha];
+		},
+		prodRech: async (entidad, id, editado_por_id) => {
+			// Obtiene la edicion
+			let campo_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			let objeto = {[campo_id]: id, editado_por_id};
+			console.log(343, objeto);
+			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+			// 8.A. Elimina las ediciones que tenga
+			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
 
-		// Fin
-		return;
+			// 8.B. Actualiza los RCLV, en el campo 'prods_aprob'
+			procsCRUD.cambioDeStatus(entidad, edicion);
+		},
 	},
+
 	// Edición
 	edicion: {
 		// Form
@@ -380,342 +451,284 @@ module.exports = {
 			// Fin
 			return derecha;
 		},
-	},
-	// API/Vista
-	guardaEdicRev: async function (req, regOrig, regEdic) {
-		// Variables
-		const {entidad, campo, aprob} = req.query;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const producto = familia == "productos";
-		const nombreEdic = (producto ? "prods" : "rclvs") + "_edicion";
-		const edicAprob = aprob == "true";
-		const decision = "edics_" + (edicAprob ? "aprob" : "rech");
-		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
-		const statusAprobInicial = regOrig.status_registro.aprobado;
-		const datosEdicion = {
-			id: regEdic.id,
-			editado_por_id: regEdic.editado_por_id,
-			editado_en: regEdic.editado_en,
-		};
-		let motivo, statusAprobFinal;
+		guardaEdicRev: async function (req, regOrig, regEdic) {
+			// Variables
+			const {entidad, campo, aprob} = req.query;
+			const familia = comp.obtieneFamiliaEnPlural(entidad);
+			const producto = familia == "productos";
+			const nombreEdic = (producto ? "prods" : "rclvs") + "_edicion";
+			const edicAprob = aprob == "true";
+			const decision = "edics_" + (edicAprob ? "aprob" : "rech");
+			const userID = req.session.usuario.id;
+			const ahora = comp.ahora();
+			const statusAprobInicial = regOrig.status_registro.aprobado;
+			const datosEdicion = {
+				id: regEdic.id,
+				editado_por_id: regEdic.editado_por_id,
+				editado_en: regEdic.editado_en,
+			};
+			let motivo, statusAprobFinal;
 
-		// Genera la información a actualizar
-		let datos = {
-			[campo]: regEdic[campo],
-			editado_por_id: regEdic.editado_por_id,
-			editado_en: regEdic.editado_en,
-			edic_analizada_por_id: userID,
-			edic_analizada_en: ahora,
-			lead_time_edicion: comp.obtieneLeadTime(regEdic.editado_en, ahora),
-		};
+			// Genera la información a actualizar
+			let datos = {
+				[campo]: regEdic[campo],
+				editado_por_id: regEdic.editado_por_id,
+				editado_en: regEdic.editado_en,
+				edic_analizada_por_id: userID,
+				edic_analizada_en: ahora,
+				lead_time_edicion: comp.obtieneLeadTime(regEdic.editado_en, ahora),
+			};
 
-		// Agrega un registro en la tabla 'edics_aprob/edics_rech', según corresponda
-		await (async () => {
-			// Si fue rechazado, amplía la información
-			if (!edicAprob) {
-				let {motivo_id} = req.query;
-				let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
-				motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-			}
-			// Obtiene los valores aprob/rech
-			let fn_valoresAprobRech = () => {
-				// Fórmulas
-				let obtieneElValorDeUnCampo = (registro, campo) => {
-					// Variables
-					let camposConVinculo = [...variables.camposRevisar[familia]]; // Hay que desconectarse del original
-					camposConVinculo = camposConVinculo.filter((n) => n.relacInclude);
-					let campos = camposConVinculo.map((n) => n.nombre);
-					let indice = campos.indexOf(campo);
-					let vinculo = indice >= 0 ? camposConVinculo[indice].relacInclude : "";
-					let respuesta;
-					// Resultado
-					if (indice >= 0)
-						respuesta = registro[vinculo]
-							? registro[vinculo].productos
+			// Agrega un registro en la tabla 'edics_aprob/edics_rech', según corresponda
+			await (async () => {
+				// Si fue rechazado, amplía la información
+				if (!edicAprob) {
+					let {motivo_id} = req.query;
+					let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
+					motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
+					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+				}
+				// Obtiene los valores aprob/rech
+				let fn_valoresAprobRech = () => {
+					// Fórmulas
+					let obtieneElValorDeUnCampo = (registro, campo) => {
+						// Variables
+						let camposConVinculo = [...variables.camposRevisar[familia]]; // Hay que desconectarse del original
+						camposConVinculo = camposConVinculo.filter((n) => n.relacInclude);
+						let campos = camposConVinculo.map((n) => n.nombre);
+						let indice = campos.indexOf(campo);
+						let vinculo = indice >= 0 ? camposConVinculo[indice].relacInclude : "";
+						let respuesta;
+						// Resultado
+						if (indice >= 0)
+							respuesta = registro[vinculo]
 								? registro[vinculo].productos
-								: registro[vinculo].nombre
-							: "-";
-					else respuesta = registro[campo];
+									? registro[vinculo].productos
+									: registro[vinculo].nombre
+								: "-";
+						else respuesta = registro[campo];
 
-					// Fin
-					if (respuesta === null) respuesta = "-";
-					return respuesta;
-				};
-				// Amplía la información con los valores aprob/rech de edición
-				let valorOrig = obtieneElValorDeUnCampo(regOrig, campo);
-				let valorEdic = obtieneElValorDeUnCampo(regEdic, campo);
-				// Obtiene los valores 'aprobado' y 'rechazado'
-				let valorAprob = edicAprob ? valorEdic : valorOrig;
-				let valorRech = !edicAprob ? valorEdic : valorOrig;
-				// Fin
-				return {valorAprob, valorRech};
-			};
-			let valoresAprobRech = fn_valoresAprobRech();
-			// Obtiene datos adicionales
-			const titulo = variables.camposRevisar[familia].find((n) => n.nombre == campo).titulo;
-			let datosAdicionales = {entidad, entidad_id: regOrig.id, campo, titulo};
-			// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
-			datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
-			BD_genericas.agregaRegistro(decision, datos);
-		})();
-
-		// Aumenta el campo aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
-
-		// Si corresponde, penaliza al usuario
-		if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
-
-		// Si se aprobó, actualiza el registro y la variable de 'original'
-		if (edicAprob) {
-			await BD_genericas.actualizaPorId(entidad, regOrig.id, datos);
-			regOrig = {...regOrig, [campo]: regEdic[campo]};
-		}
-
-		// Actualiza el registro y la variable de 'edición'
-		await BD_genericas.actualizaPorId(nombreEdic, regEdic.id, {[campo]: null});
-		delete regEdic[campo];
-
-		// Averigua si quedan campos por procesar
-		let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, entidad);
-
-		// Acciones para productos si no quedan campos
-		if (!edicion && producto) {
-			// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
-			// 2. Informa si el status pasó a aprobado
-			statusAprobFinal = await (async () => {
-				// Variables
-				let statusAprob;
-				// Averigua si tiene errores
-				let errores = await validaProds.consolidado(null, {...regOrig, entidad});
-				// Acciones si el original no tiene errores y está en status 'gr_creado'
-				if (!errores.hay && regOrig.status_registro.gr_creado) {
-					// Genera la información a actualizar en el registro original
-					let datosCambioStatus = {
-						alta_terminada_en: ahora,
-						lead_time_creacion: comp.obtieneLeadTime(regOrig.creado_en, ahora),
-						status_registro_id: status_registro.find((n) => n.aprobado).id,
-						captura_activa: 0,
+						// Fin
+						if (respuesta === null) respuesta = "-";
+						return respuesta;
 					};
-					// Cambia el status del registro e inactiva la captura
-					await BD_genericas.actualizaPorId(entidad, regOrig.id, datosCambioStatus);
-					// Si es una colección, le cambia el status también a los capítulos
-					if (entidad == "colecciones") {
-						// Amplía los datos
-						datosCambioStatus = {
-							...datosCambioStatus,
-							alta_analizada_por_id: 2,
-							alta_analizada_en: ahora,
-						};
-						// Actualiza el status de todos los capítulos a la vez
-						BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: regOrig.id}, datos);
-					}
-					// Cambia el valor de la variable que se informará
-					statusAprob = true;
-				}
-				return statusAprob;
+					// Amplía la información con los valores aprob/rech de edición
+					let valorOrig = obtieneElValorDeUnCampo(regOrig, campo);
+					let valorEdic = obtieneElValorDeUnCampo(regEdic, campo);
+					// Obtiene los valores 'aprobado' y 'rechazado'
+					let valorAprob = edicAprob ? valorEdic : valorOrig;
+					let valorRech = !edicAprob ? valorEdic : valorOrig;
+					// Fin
+					return {valorAprob, valorRech};
+				};
+				let valoresAprobRech = fn_valoresAprobRech();
+				// Obtiene datos adicionales
+				const titulo = variables.camposRevisar[familia].find((n) => n.nombre == campo).titulo;
+				let datosAdicionales = {entidad, entidad_id: regOrig.id, campo, titulo};
+				// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
+				datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
+				BD_genericas.agregaRegistro(decision, datos);
 			})();
-		} else edicion = {...datosEdicion, ...edicion};
 
-		// Actualiza RCLV si corresponde
-		if (producto && !statusAprobInicial && statusAprobFinal)
-			this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
-		// Fin
-		return [regOrig, edicion, quedanCampos, statusAprobFinal];
-	},
+			// Aumenta el campo aprob/rech en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
 
-	// Productos Alta
-	prodAltaForm_ficha: async (prodOrig, paises) => {
-		// Funciones
-		let usuario_CalidadAltas = async (userID) => {
-			// 1. Obtiene los datos del usuario
-			let usuario = await BD_genericas.obtienePorId("usuarios", userID);
-			// 2. Contar los casos aprobados y rechazados
-			let cantAprob = usuario.prods_aprob;
-			let cantRech = usuario.prods_rech;
-			// 3. Precisión de altas
-			let cantAltas = cantAprob + cantRech;
-			let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-			// let diasPenalizacion = usuario.dias_penalizacion
-			// Datos a enviar
-			let enviar = {
-				calidadAltas: ["Calidad Altas", calidadInputs],
-				cantAltas: ["Cant. Prod. Agregados", cantAltas],
-				// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-			};
+			// Si corresponde, penaliza al usuario
+			if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
+
+			// Si se aprobó, actualiza el registro y la variable de 'original'
+			if (edicAprob) {
+				await BD_genericas.actualizaPorId(entidad, regOrig.id, datos);
+				regOrig = {...regOrig, [campo]: regEdic[campo]};
+			}
+
+			// Actualiza el registro y la variable de 'edición'
+			await BD_genericas.actualizaPorId(nombreEdic, regEdic.id, {[campo]: null});
+			delete regEdic[campo];
+
+			// Averigua si quedan campos por procesar
+			let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, entidad);
+
+			// Acciones para productos si no quedan campos
+			if (!edicion && producto) {
+				// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
+				// 2. Informa si el status pasó a aprobado
+				statusAprobFinal = await (async () => {
+					// Variables
+					let statusAprob;
+					// Averigua si tiene errores
+					let errores = await validaProds.consolidado(null, {...regOrig, entidad});
+					// Acciones si el original no tiene errores y está en status 'gr_creado'
+					if (!errores.hay && regOrig.status_registro.gr_creado) {
+						// Genera la información a actualizar en el registro original
+						let datosCambioStatus = {
+							alta_terminada_en: ahora,
+							lead_time_creacion: comp.obtieneLeadTime(regOrig.creado_en, ahora),
+							status_registro_id: status_registro.find((n) => n.aprobado).id,
+							captura_activa: 0,
+						};
+						// Cambia el status del registro e inactiva la captura
+						await BD_genericas.actualizaPorId(entidad, regOrig.id, datosCambioStatus);
+						// Si es una colección, le cambia el status también a los capítulos
+						if (entidad == "colecciones") {
+							// Amplía los datos
+							datosCambioStatus = {
+								...datosCambioStatus,
+								alta_analizada_por_id: 2,
+								alta_analizada_en: ahora,
+							};
+							// Actualiza el status de todos los capítulos a la vez
+							BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: regOrig.id}, datos);
+						}
+						// Cambia el valor de la variable que se informará
+						statusAprob = true;
+					}
+					return statusAprob;
+				})();
+			} else edicion = {...datosEdicion, ...edicion};
+
+			// Actualiza RCLV si corresponde
+			if (producto && !statusAprobInicial && statusAprobFinal)
+				this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
 			// Fin
-			return enviar;
-		};
-		// Definir el 'ahora'
-		let ahora = comp.ahora().getTime();
-		// Bloque izquierdo
-		let [bloque1, bloque2, bloque3] = [[], [], []];
-		// Bloque 1
-		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
-		// Bloque 2
-		if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
-		if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
-		if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
-		if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
-		// Bloque 3
-		if (prodOrig.actores) bloque3.push({titulo: "Actores", valor: prodOrig.actores});
-		// Bloque izquierdo consolidado
-		let izquierda = [bloque1, bloque2, bloque3];
-		// Bloque derecho
-		[bloque1, bloque2] = [[], []];
-		// Bloque 1
-		if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
-		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
-		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
-		// Obtiene la fecha de alta
-		let fecha = comp.fechaTexto(prodOrig.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// 5. Obtiene los datos del usuario
-		let fichaDelUsuario = await comp.usuarioFicha(prodOrig.creado_por_id, ahora);
-		// 6. Obtiene la calidad de las altas
-		let calidadAltas = await usuario_CalidadAltas(prodOrig.creado_por_id);
-		// Bloque derecho consolidado
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
-		return [izquierda, derecha];
-	},
-	prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
-		// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
-		// 1. Se aprobó un cambio y el producto está aprobado
-		// 2. El cambio es un campo RCLV con valor distinto de 1
-		// 3. El registro no estaba aprobado
-		const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
-		if (
-			edicAprob && // Se aprobó un cambio
-			statusAprob && // El producto está aprobado
-			((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
-				!statusAprobOrig) // El registro no estaba aprobado
-		)
-			entidades_id.forEach((entidad_id) => {
-				let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
-				if (RCLV_id) {
-					let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
-					BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
-				}
-			});
+			return [regOrig, edicion, quedanCampos, statusAprobFinal];
+		},
+		prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
+			// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
+			// 1. Se aprobó un cambio y el producto está aprobado
+			// 2. El cambio es un campo RCLV con valor distinto de 1
+			// 3. El registro no estaba aprobado
+			const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
+			if (
+				edicAprob && // Se aprobó un cambio
+				statusAprob && // El producto está aprobado
+				((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
+					!statusAprobOrig) // El registro no estaba aprobado
+			)
+				entidades_id.forEach((entidad_id) => {
+					let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
+					if (RCLV_id) {
+						let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
+						BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
+					}
+				});
 
-		// Fin
-		return;
-	},
-	// Prod-Edición Form
-	prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
-		// Obtiene todos los campos a revisar
-		let campos = [...variables.camposRevisar.productos];
-		let resultado = [];
-
-		// Deja solamente los campos presentes en edicion
-		for (let nombre in edicion) {
-			// Obtiene el campo con varios datos
-			let campo = campos.find((n) => n.nombre == nombre);
-			// Si el campo no existe en los campos a revisar, saltea la rutina
-			if (!campo) continue;
-			// Obtiene las variables de include
-			let relacInclude = campo.relacInclude;
-			// Criterio para determinar qué valores originales mostrar
-			campo.mostrarOrig =
-				relacInclude && prodOrig[relacInclude] // El producto original tiene un valor 'include'
-					? prodOrig[relacInclude].nombre // Muestra el valor 'include'
-					: prodOrig[nombre]; // Muestra el valor 'simple'
-			// Criterio para determinar qué valores editados mostrar
-			campo.mostrarEdic =
-				relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
-					? edicion[relacInclude].nombre // Muestra el valor 'include'
-					: edicion[nombre]; // Muestra el valor 'simple'
-			// Consolidar los resultados
-			resultado.push(campo);
-		}
-		// Paises
-		let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
-		if (indicePais >= 0) {
-			let mostrarOrig, mostrarEdic, paises_id;
-			// Países original
-			paises_id = resultado[indicePais].mostrarOrig;
-			mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
-			// Países edición
-			paises_id = resultado[indicePais].mostrarEdic;
-			mostrarEdic = await comp.paises_idToNombre(paises_id);
 			// Fin
-			resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
-		}
-		// Separa los resultados entre ingresos y reemplazos
-		let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-		let reemplazos = resultado.filter((n) => n.mostrarOrig);
-		// Fin
-		return [ingresos, reemplazos];
-	},
-	prodEdicGuardar_Avatar: async (req, prodOrig, prodEdic) => {
-		// Variables
-		const edicAprob = req.query.aprob == "true";
-		const avatarOrig = prodOrig.avatar;
-		const avatarEdic = prodEdic.avatar;
+			return;
+		},
+		// Prod-Edición Form
+		prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
+			// Obtiene todos los campos a revisar
+			let campos = [...variables.camposRevisar.productos];
+			let resultado = [];
 
-		// Gestión de archivos
-		if (edicAprob) {
-			// Mueve el archivo de edición a la carpeta definitiva
-			comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-			// Si el 'avatar original' es un archivo, lo elimina
-			if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
-				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
-		}
-		// Elimina el archivo de edicion
-		else comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+			// Deja solamente los campos presentes en edicion
+			for (let nombre in edicion) {
+				// Obtiene el campo con varios datos
+				let campo = campos.find((n) => n.nombre == nombre);
+				// Si el campo no existe en los campos a revisar, saltea la rutina
+				if (!campo) continue;
+				// Obtiene las variables de include
+				let relacInclude = campo.relacInclude;
+				// Criterio para determinar qué valores originales mostrar
+				campo.mostrarOrig =
+					relacInclude && prodOrig[relacInclude] // El producto original tiene un valor 'include'
+						? prodOrig[relacInclude].nombre // Muestra el valor 'include'
+						: prodOrig[nombre]; // Muestra el valor 'simple'
+				// Criterio para determinar qué valores editados mostrar
+				campo.mostrarEdic =
+					relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
+						? edicion[relacInclude].nombre // Muestra el valor 'include'
+						: edicion[nombre]; // Muestra el valor 'simple'
+				// Consolidar los resultados
+				resultado.push(campo);
+			}
+			// Paises
+			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
+			if (indicePais >= 0) {
+				let mostrarOrig, mostrarEdic, paises_id;
+				// Países original
+				paises_id = resultado[indicePais].mostrarOrig;
+				mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
+				// Países edición
+				paises_id = resultado[indicePais].mostrarEdic;
+				mostrarEdic = await comp.paises_idToNombre(paises_id);
+				// Fin
+				resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
+			}
+			// Separa los resultados entre ingresos y reemplazos
+			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+			let reemplazos = resultado.filter((n) => n.mostrarOrig);
+			// Fin
+			return [ingresos, reemplazos];
+		},
+		prodEdicGuardar_Avatar: async (req, prodOrig, prodEdic) => {
+			// Variables
+			const edicAprob = req.query.aprob == "true";
+			const avatarOrig = prodOrig.avatar;
+			const avatarEdic = prodEdic.avatar;
 
-		// Borra el campo 'avatar_url' en el registro de edicion y la variable
-		await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});
-		delete prodEdic.avatar_url;
+			// Gestión de archivos
+			if (edicAprob) {
+				// Mueve el archivo de edición a la carpeta definitiva
+				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+				// Si el 'avatar original' es un archivo, lo elimina
+				if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
+					comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
+			}
+			// Elimina el archivo de edicion
+			else comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
 
-		// Fin
-		return prodEdic;
-	},
-	cartelNoQuedanCampos: {
-		mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
-		iconos: [
-			{
-				nombre: "fa-spell-check",
-				link: "/revision/tablero-de-control",
-				titulo: "Ir al 'Tablero de Control' de Revisiones",
-			},
-		],
-	},
+			// Borra el campo 'avatar_url' en el registro de edicion y la variable
+			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});
+			delete prodEdic.avatar_url;
 
-	// RCLV-Edición Form
-	RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
-		// Obtiene todos los campos a revisar
-		let campos = [...variables.camposRevisar.rclvs];
-		let resultado = [];
+			// Fin
+			return prodEdic;
+		},
+		cartelNoQuedanCampos: {
+			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
+			iconos: [
+				{
+					nombre: "fa-spell-check",
+					link: "/revision/tablero-de-control",
+					titulo: "Ir al 'Tablero de Control' de Revisiones",
+				},
+			],
+		},
+		// RCLV-Edición Form
+		RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
+			// Obtiene todos los campos a revisar
+			let campos = [...variables.camposRevisar.rclvs];
+			let resultado = [];
 
-		// Deja solamente los campos presentes en edicion
-		for (let nombre in edicion) {
-			// Obtiene el campo con varios datos
-			let campo = campos.find((n) => n.nombre == nombre);
-			// Si el campo no existe en los campos a revisar, saltea la rutina
-			if (!campo) continue;
-			// Obtiene las variables de include
-			let relacInclude = campo.relacInclude;
-			// Criterio para determinar qué valores originales mostrar
-			campo.mostrarOrig =
-				relacInclude && rclvOrig[relacInclude] // El producto original tiene un valor 'include'
-					? rclvOrig[relacInclude].nombre // Muestra el valor 'include'
-					: rclvOrig[nombre]; // Muestra el valor 'simple'
-			// Criterio para determinar qué valores editados mostrar
-			campo.mostrarEdic =
-				relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
-					? edicion[relacInclude].nombre // Muestra el valor 'include'
-					: edicion[nombre]; // Muestra el valor 'simple'
-			// Consolidar los resultados
-			resultado.push(campo);
-		}
-		// Separa los resultados entre ingresos y reemplazos
-		let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-		let reemplazos = resultado.filter((n) => n.mostrarOrig);
-		// Fin
-		return [ingresos, reemplazos];
+			// Deja solamente los campos presentes en edicion
+			for (let nombre in edicion) {
+				// Obtiene el campo con varios datos
+				let campo = campos.find((n) => n.nombre == nombre);
+				// Si el campo no existe en los campos a revisar, saltea la rutina
+				if (!campo) continue;
+				// Obtiene las variables de include
+				let relacInclude = campo.relacInclude;
+				// Criterio para determinar qué valores originales mostrar
+				campo.mostrarOrig =
+					relacInclude && rclvOrig[relacInclude] // El producto original tiene un valor 'include'
+						? rclvOrig[relacInclude].nombre // Muestra el valor 'include'
+						: rclvOrig[nombre]; // Muestra el valor 'simple'
+				// Criterio para determinar qué valores editados mostrar
+				campo.mostrarEdic =
+					relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
+						? edicion[relacInclude].nombre // Muestra el valor 'include'
+						: edicion[nombre]; // Muestra el valor 'simple'
+				// Consolidar los resultados
+				resultado.push(campo);
+			}
+			// Separa los resultados entre ingresos y reemplazos
+			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+			let reemplazos = resultado.filter((n) => n.mostrarOrig);
+			// Fin
+			return [ingresos, reemplazos];
+		},
 	},
 
 	// Links - Vista

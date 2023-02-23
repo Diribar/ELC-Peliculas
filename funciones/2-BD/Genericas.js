@@ -38,16 +38,19 @@ module.exports = {
 		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
 	actualizaPorId: (entidad, id, datos) => {
-		return db[entidad].update(datos, {where: {id: id}});
+		return db[entidad].update(datos, {where: {id}});
 	},
 	actualizaTodosPorCampos: (entidad, objeto, datos) => {
 		return db[entidad].update(datos, {where: objeto});
 	},
 	eliminaPorId: (entidad, id) => {
-		return db[entidad].destroy({where: {id: id}});
+		return db[entidad].destroy({where: {id}});
+	},
+	eliminaTodosPorCampos: (entidad, objeto) => {
+		return db[entidad].destroy({where: objeto});
 	},
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {
-		return db[entidad].increment(campo, {by: aumento, where: {id: id}});
+		return db[entidad].increment(campo, {by: aumento, where: {id}});
 	},
 	contarCasos: (entidad, objeto) => {
 		return db[entidad].count({where: objeto});

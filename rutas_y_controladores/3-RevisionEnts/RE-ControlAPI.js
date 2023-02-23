@@ -32,7 +32,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.edicion.guardaEdicRev(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
@@ -71,8 +71,8 @@ module.exports = {
 		const creado = link.status_registro.creado;
 		const inactivar = link.status_registro.inactivar;
 		const recuperar = link.status_registro.recuperar;
-		const gr_provisorios = inactivar || recuperar;
-		if (!creado && !gr_provisorios) return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		const gr_provisorios = creado || inactivar || recuperar;
+		if (!gr_provisorios) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
 		// Decisión sobre el sugerido
 		const decisAprob = (prodAprob && (creado || recuperar)) || (!prodAprob && inactivar);
@@ -97,7 +97,9 @@ module.exports = {
 			datos.lead_time_creacion = comp.obtieneLeadTime(link.creado_en, ahora);
 			if (!prodAprob) datos.motivo_id = motivo_id;
 		}
-		await procsCRUD.cambioDeStatus("links", link.id, datos);
+		await BD_genericas.actualizaPorId("links", link.id, datos);
+		link = {...link, ...datos};
+		procsCRUD.cambioDeStatus("links", link);
 
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = !prodAprob ? motivo.duracion : 0;
