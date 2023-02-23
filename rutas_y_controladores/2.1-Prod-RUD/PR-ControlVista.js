@@ -125,7 +125,7 @@ module.exports = {
 
 		// Averigua si hay errores de validación
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID}; // se debe agregar el prodID, para verificar que no esté repetido
-		let errores = await valida.consolidado("", {...prodComb, entidad});
+		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {

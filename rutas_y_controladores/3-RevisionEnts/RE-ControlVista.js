@@ -6,6 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 const validaRCLV = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
@@ -347,6 +348,13 @@ module.exports = {
 		// Pule la edición
 		// Averigua si quedan campos, y en caso que no queden, elimina el registro de la tabla
 		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
+
+		// Se fija si el registro original supera el control de errores
+		let errores = await validaPR.consolidado({datos:{...prodComb, entidad}});
+
+		// Si no hay errores, activa procesos
+		if (!errores.hay) {
+		}
 
 		// Si a la edición le quedan campos, recarga el url
 		if (edicion) return res.redirect(req.originalUrl);

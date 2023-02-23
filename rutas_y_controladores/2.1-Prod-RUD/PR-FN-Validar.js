@@ -6,7 +6,7 @@ const validaProd = require("../2.1-Prod-Agregar/PA-FN-Validar");
 module.exports = {
 	// ControllerAPI (validaEdicion_changes)
 	// ControllerVista (Edicion - Form + Grabar)
-	consolidado: async (campos, datos) => {
+	consolidado: async ({campos, datos}) => {
 		// Obtiene la entidad
 		let entidad = datos.entidad;
 		// Obtiene los campos
