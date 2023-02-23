@@ -25,19 +25,16 @@
 			</div>
 		</div>
 		<%- include('CMP-TimerContador') %>
-		<div id="fichaTecnica">
-			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
-			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
-			<p>Dirección: <%= prodOrig.direccion %></p>
-		</div>
 	</div>
 	<div id="medio">
 		<div id="info">
 			<h2 >¿Es mejor la imagen de la <u>izquierda</u>?</h2>
 			<!-- Aceptar -->
-			<div id="titulo">
-				<i class="fa-solid fa-circle-check scale" title="Aceptar"></i>
-			</div>
+			<form method="POST" id="titulo">
+				<button type="submit" autofocus tabindex="2">
+					<i class="fa-solid fa-circle-check scale" title="Aprobar"></i>
+				</button>
+			</form>
 			<ul id="beneficios"></ul>
 			<!-- Rechazar -->
 			<div id="titulo">
@@ -45,13 +42,18 @@
 			</div>
 			<ul id="perjuicios"></ul>
 		</div>
+		<div id="fichaTecnica">
+			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
+			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
+			<p>Dirección: <%= prodOrig.direccion %></p>
+		</div>
 		<div class="flechas">
 			<!-- Liberar y salir -->
 			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
 				<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 			</a>
-			<a href="/producto/edicion/?entidad=<%= entidad %>&id=<%= id %>" target="_blank">
-				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= id %>" target="_blank">
+				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
 		</div>
 	</div>
