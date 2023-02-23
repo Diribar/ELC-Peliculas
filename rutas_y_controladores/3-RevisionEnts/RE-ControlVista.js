@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	// ALTAS
-	prodAltaForm: async (req, res) => {
+	prod_altaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
@@ -108,7 +108,7 @@ module.exports = {
 			cartelRechazo: true,
 		});
 	},
-	registroAltaGuardar: async (req, res) => {
+	prodRCLV_altaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
@@ -209,7 +209,7 @@ module.exports = {
 	},
 
 	// EDICION
-	prodEdicForm: async (req, res) => {
+	prod_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
@@ -231,40 +231,31 @@ module.exports = {
 
 		// Acciones si está presente el avatar
 		if (prodEdic.avatar) {
-			// Acciones iniciales
+			// Averigua si se debe reemplazar el avatar en forma automática
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar && // Que exista el archivo 'avatar'
-				prodOrig.avatar && // Que exista un avatar en original
+				prodEdic.avatar && // Que en la edición, el campo 'avatar' tenga un valor
+				prodOrig.avatar && // Que en el original, el campo 'avatar' tenga un valor
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
-			delete prodEdic.avatar_url;
-			// Acciones si se reemplaza en forma automática
+			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
-				// Variables
+				// Avatar: impacto en los archivos, y en los registros original y edicion
 				req.query.aprob = "true";
-				req.query.campo = "avatar";
-				// Avatar: impacto en los archivos, y en el registro de edicion
-				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
-				// Impactos en: usuario, edicAprob/Rech, RCLV, producto_original, prod_edicion
-				let statusAprob;
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.edicion.guardaEdicRev(req, prodOrig, prodEdic);
-				// Fin, si no quedan campos
-				if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
-			} else {
+				prodEdic = await procesos.edicion.prodEdic_actualizaAvatar(req, prodOrig, prodEdic);
+				// Recarga la ruta
+				return res.send(req.originalUrl);
+			}
+			// Reemplazo manual
+			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = {
-					original: prodOrig.avatar
-						? (!prodOrig.avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + prodOrig.avatar
-						: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg",
-					edicion: "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar,
-				};
+				avatar = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
 				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.original.includes("/imagenes/");
+				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			}
 		}
 		// Acciones si no está presente el avatar
-		if (!codigo.includes("/avatar")) {
+		else if (!prodEdic.avatar) {
 			// Achica la edición a su mínima expresión
 			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
 			// Fin, si no quedan campos
@@ -284,7 +275,6 @@ module.exports = {
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
-		// return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -311,7 +301,8 @@ module.exports = {
 			urlActual: req.session.urlActual,
 		});
 	},
-	rclvEdicForm: async (req, res) => {
+	prod_edicGuardar: (req, res) => {},
+	rclv_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "rclvEdicion";
