@@ -616,7 +616,7 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		prodEdicGuardar_Avatar: async (req, prodOrig, prodEdic) => {
+		prodEdic_actualizaAvatar: async (req, prodOrig, prodEdic) => {
 			// Variables
 			const edicAprob = req.query.aprob == "true";
 			const avatarOrig = prodOrig.avatar;
@@ -624,21 +624,26 @@ module.exports = {
 
 			// Gestión de archivos
 			if (edicAprob) {
-				// Mueve el archivo de edición a la carpeta definitiva
-				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-				// Si el 'avatar original' es un archivo, lo elimina
-				if (avatarOrig && comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig))
-					comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", avatarOrig);
-			}
-			// Elimina el archivo de edicion
-			else comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
+				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
 
-			// Borra el campo 'avatar_url' en el registro de edicion y la variable
-			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar_url: null});
-			delete prodEdic.avatar_url;
+				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+
+				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
+				const {entidad, id} = req.query;
+				await BD_genericas.actualizaPorId(entidad, id, {avatar: avatarEdic});
+			}
+
+			// ARCHIVO NUEVO: elimina el archivo de edicion
+			else if (!edicAprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+
+			// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
+			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
 
 			// Fin
-			return prodEdic;
+			return;
 		},
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
