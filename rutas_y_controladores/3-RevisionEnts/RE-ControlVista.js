@@ -373,6 +373,7 @@ module.exports = {
 			}
 
 			// Actualiza prodEnRCLV
+			procsCRUD.cambioDeStatus(entidad,{...original,...datosCambioSatus})
 		}
 
 		// Si a la edición le quedan campos, recarga el url

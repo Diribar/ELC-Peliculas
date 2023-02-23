@@ -10,7 +10,7 @@ module.exports = {
 	puleEdicion: async (original, edicion, entidad) => {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad)
+		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		let edicion_id = edicion.id;
 		let camposNull = {};
 
@@ -158,7 +158,13 @@ module.exports = {
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 
 		// Rutina por producto
-		if (familia == "productos") this.prodEnRCLV(registro);
+		if (familia == "productos") {
+			if (registro.status_registro_id == aprobado_id) {
+				if (registro.personaje_id) BD_genericas.actualizaPorId("personajes", registro.personaje_id, {prods_aprob: 3});
+				if (registro.hecho_id) BD_genericas.actualizaPorId("hechos", registro.hecho_id, {prods_aprob: 3});
+				if (registro.valor_id) BD_genericas.actualizaPorId("valores", registro.valor_id, {prods_aprob: 3});
+			} else this.prodEnRCLV(registro);
+		}
 
 		// Rutinas por links
 		if (familia == "links") {
