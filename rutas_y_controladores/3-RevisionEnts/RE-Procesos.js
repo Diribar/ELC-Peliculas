@@ -355,12 +355,11 @@ module.exports = {
 
 	// Edición
 	edicion: {
-		// Form
 		// Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// Variables
 			const familia = comp.obtieneFamiliaEnPlural(entidad);
-			const nombreEdic = comp.obtieneEdicionDesdeEntidad(entidad);
+			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);

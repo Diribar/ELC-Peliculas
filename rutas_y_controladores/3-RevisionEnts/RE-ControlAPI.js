@@ -28,30 +28,10 @@ module.exports = {
 		let includesOrig = [...includesEdic, "status_registro"];
 		let regOrig = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
 
-		// Acciones si el campo es avatar
-		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.edicion.edicAprobRech(req, regOrig, regEdic);
 
-		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.edicion.guardaEdicRev(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
-	},
-	prodEdic_ConvierteUrlEnArchivo: async (req, res) => {
-		// Variables
-		let {entidad, id, url} = req.query;
-		let avatar = Date.now() + path.extname(url);
-		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
-		// Realiza y obtiene el resultado de la descarga
-		let resultado = await comp.descarga(url, rutaYnombre);
-		// Acciones si el resultado es OK
-		if (resultado == "OK") {
-			// Actualiza el campo avatar en el registro original
-			BD_genericas.actualizaPorId(entidad, id, {avatar});
-			// Actualiza la ruta para actualizar el 'src' en la vista
-			rutaYnombre = rutaYnombre.slice(rutaYnombre.indexOf("/imagenes"));
-		}
-		// Fin
-		return res.json([resultado, rutaYnombre]);
 	},
 	// Links
 	linkAltaBaja: async (req, res) => {

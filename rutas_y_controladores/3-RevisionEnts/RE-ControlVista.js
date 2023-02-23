@@ -251,7 +251,7 @@ module.exports = {
 			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
+				avatar = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic);
 				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
@@ -310,9 +310,9 @@ module.exports = {
 		const {entidad, id: prodID, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
+		let revID = req.session.usuario.id;
 		let original = await BD_genericas.obtienePorId(entidad, prodID);
 		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
-		let revID = req.session.usuario.id;
 		let campo = "avatar";
 		let aprob = !rechazado;
 
@@ -334,14 +334,24 @@ module.exports = {
 		// Particularidad
 		// REGISTRO EDICION: borra el campo 'avatar_url' en el registro de edicion
 		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
-		delete edicion.avatar_url
+		delete edicion.avatar_url;
 
-		// PROCESOS DE edicAprobRech
-		procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob,motivo_id});
-		
+		// PROCESOS DE edicAprobRech:
+		// 1. Si se aprobó, actualiza el registro de 'original'
+		// 5. Actualiza el registro de 'edición'
+		// 2. Actualiza la tabla de edics_aprob/rech
+		// 3. Aumenta el campo aprob/rech en el registro del usuario
+		// 4. Si corresponde, penaliza al usuario
+		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+
 		// Pule la edición
+		// Averigua si quedan campos, y en caso que no queden, elimina el registro de la tabla
+		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
 
 		// Si a la edición le quedan campos, recarga el url
+		if (edicion) return res.redirect(req.originalUrl);
+		// De lo contrario, regresa al tablero
+		else return res.redirect("recivision/tablero-de-control");
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código
@@ -449,7 +459,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
-			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
+			imgDerPers: procsCRUD.obtieneAvatarOrigEdic(producto, "").orig,
 			cartelGenerico: true,
 		});
 	},
