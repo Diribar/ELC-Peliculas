@@ -1,14 +1,2 @@
 /* Cuerpo */
 #cuerpo {background: var(--gris-claro); flex-direction: column;}
-
-/* Encabezado */
-#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background: var(--celeste-claro);}
-#cuerpo #encabezado #nombres a h1 {margin: 0;}
-#cuerpo #encabezado #colCap {text-align: right;}
-#cuerpo #encabezado #colCap #colecciones {display: flex; flex-direction: column; justify-content: center; align-items: flex-end; line-height: 1;}
-#cuerpo #encabezado #colCap #tempCapI,
-#cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center; line-height: 1;}
-#cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
-#cuerpo #encabezado #colCap #tempCapI strong {margin-right: 5px;}
-#cuerpo #encabezado #colCap #tempCapS #capitulo {margin-left: 5px;}

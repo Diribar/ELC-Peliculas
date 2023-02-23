@@ -5,50 +5,46 @@
 <% if (codigo == "tableroControl") { %>
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
 	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-TableroControl.css">
-<% } else { %>
 
+<% } else { %>
 	<!-- DEMAS VISTAS -->
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+
+	<!-- RCLV-Altas -->
+	<% if (codigo == "rclv/alta") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM2-RCLV-AltaEdicion.css">
+		<script src="/javascript/2.2-RCLV-CRUD/RCLV-InputError.js"></script>
+	
+	<!-- Prod-Altas -->
+	<% } else if (codigo == "producto/alta") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
+		<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-1Detalle.css">
+		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Alta.css">
+	
+	<!-- Prod-Edicion-Avatar -->
+	<% } else if (codigo == "producto/edicion/avatar") { %>
+		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-EdicAvatar.css">
+		<script src="/javascript/3-RevisionEnts/RE1-Prod2_Avatar.js"></script>
+	
+	<!-- Demás ediciones -->
+	<% } else if (codigo == "rclvEdicion" || codigo == "producto/edicion") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
+		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
+		<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+		<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
+	
+	<!-- Links -->
+	<% } else if (codigo == "abmLinks") { %>
+		<!-- Uso compartido -->
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM3-Links.css">
+		<script src="/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>
+		<script src="/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
+		<script src="/javascript/2.3-Links-CRUD/LK2-Eliminar.js"></script>
+		<!-- Específico -->
+		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE3-Links.css">
+		<script src="/javascript/3-RevisionEnts/RE3-Link1-Altas.js"></script>
+		<script src="/javascript/3-RevisionEnts/RE3-Link2-Ediciones.js"></script>
+	<% } %>
 <% } %>
 
-<!-- RCLV-Altas -->
-<% if (codigo == "rclv/alta") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM2-RCLV-AltaEdicion.css">
-	<script src="/javascript/2.2-RCLV-CRUD/RCLV-InputError.js"></script>
-
-<!-- RCLV-Edición -->
-<% } else if (codigo == "rclvEdicion") { %>
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
-	<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
-
-<!-- Prod-Altas -->
-<% } else if (codigo == "producto/alta") { %>
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-RUD.css">
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-1Detalle.css">
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Alta.css">
-
-<!-- Prod-Edicion-Avatar -->
-<% } else if (codigo == "producto/edicion/avatar") { %>
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-EdicAvatar.css">
-	<script src="/javascript/3-RevisionEnts/RE1-Prod2_Avatar.js"></script>
-
-<!-- Prod-Edicion-Demás -->
-<% } else if (codigo == "producto/edicion") { %>
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
-	<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
-
-<!-- Links -->
-<% } else if (codigo == "abmLinks") { %>
-	<!-- Uso compartido -->
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM3-Links.css">
-	<script src="/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>
-	<script src="/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
-	<script src="/javascript/2.3-Links-CRUD/LK2-Eliminar.js"></script>
-	<!-- Específico -->
-	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE3-Links.css">
-	<script src="/javascript/3-RevisionEnts/RE3-Link1-Altas.js"></script>
-	<script src="/javascript/3-RevisionEnts/RE3-Link2-Ediciones.js"></script>
-<% } %>

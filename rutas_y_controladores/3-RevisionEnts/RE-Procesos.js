@@ -92,12 +92,12 @@ module.exports = {
 			let campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
 			let registros = await TC_obtieneRegs(...campos);
 
-			// Distribuir entre PA y SP
-			let respuesta = {PA: [], SP: []};
+			// Distribuir entre AL y SP
+			let respuesta = {AL: [], SP: []};
 			for (let reg of registros) {
-				// PA: Pendientes de Aprobar (c/producto o c/edicProd)
+				// AL: Altas Pendientes de Aprobar (c/producto o c/edicProd)
 				if (reg.peliculas.length || reg.colecciones.length || reg.capitulos.length || reg.prods_edicion.length)
-					respuesta.PA.push(reg);
+					respuesta.AL.push(reg);
 				// SP: con una antiguedad mayor a una hora
 				else if (reg.creado_en < ahora - unaHora) respuesta.SP.push(reg);
 			}

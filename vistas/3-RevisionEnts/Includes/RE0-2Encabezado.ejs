@@ -11,18 +11,21 @@
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<p><strong>Cant. de Temporadas:</strong> <%= prodOrig.cant_temporadas ? prodOrig.cant_temporadas : "Sin temporada" %></p>
-				<p><strong>Cant. de Capítulos:</strong> <%= prodOrig.capitulos.length %></p>
+				<div>
+					<p><strong>Cant. de Temporadas:</strong> <%= prodOrig.cant_temporadas ? prodOrig.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cant. de Capítulos:</strong> <%= prodOrig.capitulos.length %></p>
+				</div>
 			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
-			<p id="tempCapI">
-				<strong>De la colección:</strong>
-				<a href="/producto/detalle/?entidad=colecciones&id=<%= prodOrig.coleccion.id %>" target="_blank">
-					<span><%= prodOrig.coleccion.nombre_castellano %></span>
-				</a>
-			</p>
+			<div id="tempCapI">
+				<p><strong>De la colección:</strong>
+					<a href="/producto/detalle/?entidad=colecciones&id=<%= prodOrig.coleccion.id %>" target="_blank">
+						<span><%= prodOrig.coleccion.nombre_castellano %></span>
+					</a>
+				</p>
+			</div>
 			<div id="tempCapS">
 				<p id="temporada">Temporada: <%= prodOrig.temporada %></p>
 				<p id="capitulo">Capítulo: <%= prodOrig.capitulo %></p>

@@ -1,5 +1,5 @@
 <% if (regs.length) { %>
-	<h3><%= titulo %> </h3>
+	<h3><%= titulo %> (<%= regs.length %>)</h3>
 	<% for (let reg of regs) { %>
 		<a href="/<%= url %>/?entidad=<%= reg.entidad %>&id=<%= reg.id + (reg.edicion_id ? ('&edicion_id=' + reg.edicion_id) : '') %>">
 			<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
