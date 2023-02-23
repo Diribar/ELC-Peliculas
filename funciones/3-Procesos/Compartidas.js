@@ -307,7 +307,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	mueveUnArchivoImagen: function (nombre, origen, destino) {
+	mueveUnArchivoImagen: function (nombre, origen, destino, output) {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";
 		let archivoDestino = carpetaDestino + nombre;
@@ -316,8 +316,9 @@ module.exports = {
 			console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
 		else
 			fs.rename(archivoOrigen, archivoDestino, (error) => {
-				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-				else throw error;
+				if (!error) {
+					if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+				} else throw error;
 			});
 	},
 	cambiaElNombreDeUnArchivo: function (ruta, nombreOrig, nombreFinal, output) {
