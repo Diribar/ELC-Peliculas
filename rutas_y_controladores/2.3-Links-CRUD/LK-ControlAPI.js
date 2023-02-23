@@ -33,14 +33,14 @@ module.exports = {
 		if (!link) {
 			datos.creado_por_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
-			procsCRUD.cambioDeStatus("links", link.id, link);
+			procsCRUD.cambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creado_por_id == userID && link.status_registro.creado) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			procsCRUD.cambioDeStatus("links", link.id, link);
+			procsCRUD.cambioDeStatus("links", link);
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
@@ -69,7 +69,7 @@ module.exports = {
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				await BD_genericas.eliminaPorId("links", link.id);
 				link = {...link, status_registro_id: inactivo_id};
-				procsCRUD.cambioDeStatus("links", link.id, link); // No hace falta el 'await', el proceso no espera un resultado
+				procsCRUD.cambioDeStatus("links", link);
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 			}
 			// El link existe y no tiene status 'aprobado'
@@ -87,7 +87,7 @@ module.exports = {
 				};
 				await BD_genericas.actualizaPorId("links", link.id, datos);
 				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link.id, link);
+				procsCRUD.cambioDeStatus("links", link);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
@@ -111,7 +111,7 @@ module.exports = {
 			datos = {status_registro_id: recuperar_id, sugerido_por_id: userID};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			procsCRUD.cambioDeStatus("links", link.id, link);
+			procsCRUD.cambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 		// Fin
@@ -143,14 +143,14 @@ module.exports = {
 				let datos = {...objeto, status_registro_id: aprobado_id};
 				await BD_genericas.actualizaPorId("links", link.id, datos);
 				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link.id, link);
+				procsCRUD.cambioDeStatus("links", link);
 			}
 			// Si estaba en recuperar, lo lleva a inactivo
 			else if (link.status_registro.recuperar) {
 				let datos = {...objeto, status_registro_id: inactivo_id};
 				await BD_genericas.actualizaPorId("links", link.id, datos);
 				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link.id, link);
+				procsCRUD.cambioDeStatus("links", link);
 			}
 			respuesta = {
 				mensaje: "Link llevado a su status anterior",

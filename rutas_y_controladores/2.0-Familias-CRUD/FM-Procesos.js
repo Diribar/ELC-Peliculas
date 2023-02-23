@@ -153,7 +153,7 @@ module.exports = {
 
 	// CAMBIOS DE STATUS
 	// Cambia el status de un registro
-	cambioDeStatus: async function (entidad, id, datos, registro) {
+	cambioDeStatus: async function (entidad, registro) {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
 

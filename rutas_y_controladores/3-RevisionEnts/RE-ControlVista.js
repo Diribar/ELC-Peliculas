@@ -51,7 +51,7 @@ module.exports = {
 		});
 	},
 
-	// FORMS
+	// ALTAS
 	prodAltaForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
@@ -84,7 +84,7 @@ module.exports = {
 		// 7. Obtiene los países
 		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.prodAltaForm_ficha(prodOrig, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(prodOrig, paises);
 		let motivos = altas_motivos_rech.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
@@ -109,6 +109,114 @@ module.exports = {
 			cartelRechazo: true,
 		});
 	},
+	registroAltaGuardar: async (req, res) => {
+		// Variables
+		const {entidad, id, rechazado} = req.query;
+		const motivo_id = req.body.motivo_id;
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const rclvs = familia == "rclvs";
+		let datos = {};
+
+		// Si es un RCLV y es aprobado, se realizan acciones específicas
+		if (rclvs && !rechazado) {
+			// Averigua si hay errores de validación y toma acciones
+			datos = {...req.body, ...req.query};
+			let errores = await validaRCLV.consolidado(datos);
+			if (errores.hay) {
+				req.session[entidad] = datos;
+				res.cookie(entidad, datos, {maxAge: unDia});
+				return res.redirect(req.originalUrl);
+			}
+			// Procesa los datos del Data Entry
+			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+		}
+
+		// PROCESOS INTERMEDIOS
+
+		// Más variables
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
+		const revID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		const alta_analizada_en = ahora;
+		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
+
+		// Obtiene el registro original
+		let includes = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+
+		// Completa los datos
+		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
+		datos = {
+			...datos,
+			status_registro_id,
+			alta_analizada_por_id: revID,
+			alta_analizada_en,
+			lead_time_creacion,
+			captura_activa: false,
+		};
+
+		// CONSECUENCIAS
+		// 1. Actualiza el status en el registro original
+		await BD_genericas.actualizaPorId(entidad, id, datos);
+
+		// 2. Si es una colección, actualiza sus capítulos con el mismo status
+		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datos);
+
+		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
+		if (rclvs && !rechazado) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+
+		// 4. Agrega un registro en el historial_cambios_de_status
+		let creado_por_id = original.creado_por_id;
+		let datosHist = {
+			entidad_id: id,
+			entidad,
+			sugerido_por_id: creado_por_id,
+			sugerido_en: original.creado_en,
+			analizado_por_id: revID,
+			analizado_en: ahora,
+			status_original_id: creado_id,
+			status_final_id: status_registro_id,
+			aprobado: !rechazado,
+		};
+		if (rechazado) {
+			datosHist.motivo_id = motivo_id;
+			var motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			datosHist.duracion = Number(motivo.duracion);
+		}
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
+
+		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
+
+		// 7. Acciones por rechazos
+		if (rechazado) {
+			// Variables
+			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+
+			// 7.1. Penaliza al usuario si corresponde
+			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, motivo, petitFamilia);
+
+			// 7.2 Si es un RCLV, borra su id de los campos rclv_id de las ediciones de producto
+			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[entidad_id]: id}, {[entidad_id]: null});
+
+			// 7.3. Acciones si es un producto
+			if (!rclvs) procesos.alta.prodRech(entidad,id,creado_por_id)
+		}
+
+		// Fin
+		return res.redirect("/revision/tablero-de-control");
+		if (rclvs) return res.redirect("/revision/tablero-de-control");
+		else {
+			// Obtiene el edicID
+			let {edicID} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
+			let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
+			if (edicID) urlEdicion += "&edicion_id=" + edicID;
+			return res.redirect(urlEdicion);
+		}
+	},
+
+	// EDICION
 	prodEdicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
@@ -146,7 +254,7 @@ module.exports = {
 				prodEdic = await procesos.prodEdicGuardar_Avatar(req, prodOrig, prodEdic);
 				// Impactos en: usuario, edicAprob/Rech, RCLV, producto_original, prod_edicion
 				let statusAprob;
-				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, prodOrig, prodEdic);
+				[prodOrig, prodEdic, quedanCampos, statusAprob] = await procesos.edicion.guardaEdicRev(req, prodOrig, prodEdic);
 				// Fin, si no quedan campos
 				if (!quedanCampos) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			} else {
@@ -262,6 +370,8 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
+
+	// LINKS
 	linksForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionEnts";
@@ -319,104 +429,4 @@ module.exports = {
 		});
 	},
 
-	// GUARDAR
-	registroAltaGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const rclvs = familia == "rclvs";
-		let datosCompletos = {};
-
-		// Si es un RCLV y es aprobado, se realizan acciones específicas
-		if (rclvs && !rechazado) {
-			// Averigua si hay errores de validación y toma acciones
-			const datos = {...req.body, ...req.query};
-			let errores = await validaRCLV.consolidado(datos);
-			if (errores.hay) {
-				req.session[entidad] = datos;
-				res.cookie(entidad, datos, {maxAge: unDia});
-				return res.redirect(req.originalUrl);
-			}
-			// Procesa los datos del Data Entry
-			datosCompletos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
-		}
-
-		// PROCESOS INTERMEDIOS
-
-		// Más variables
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
-		const revID = req.session.usuario.id;
-		const ahora = comp.ahora();
-		const alta_analizada_en = ahora;
-		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
-
-		// Obtiene el registro original
-		let includes = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
-
-		// Completa los datos
-		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
-		datosCompletos = {
-			...datosCompletos,
-			status_registro_id,
-			alta_analizada_por_id: revID,
-			alta_analizada_en,
-			lead_time_creacion,
-			captura_activa: false,
-		};
-
-		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original
-		await BD_genericas.actualizaPorId(entidad, id, datosCompletos);
-
-		// 2. Si es una colección, actualiza sus capítulos con el mismo status
-		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datosCompletos);
-
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs && !rechazado) procesos.rclvEdicAprobRech(entidad, original, revID);
-
-		// 4. Agrega un registro en el historial_cambios_de_status
-		let creado_por_id = original.creado_por_id;
-		let datosHist = {
-			entidad_id: id,
-			entidad,
-			sugerido_por_id: creado_por_id,
-			sugerido_en: original.creado_en,
-			analizado_por_id: revID,
-			analizado_en: ahora,
-			status_original_id: creado_id,
-			status_final_id: status_registro_id,
-			aprobado: !rechazado,
-		};
-		if (rechazado) {
-			datosHist.motivo_id = motivo_id;
-			var motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
-			datosHist.duracion = Number(motivo.duracion);
-		}
-		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
-
-		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
-
-		// 6. Penaliza al usuario si corresponde
-		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, motivo, petitFamilia);
-
-		// 7. Si es un RCLV y es rechazado, se borra su id de los campos rclv_id de las ediciones de producto
-		if (rclvs && rechazado) {
-			let rclv_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[rclv_id]: id}, {[rclv_id]: null});
-		}
-
-		// Fin
-		if (rclvs) return res.redirect("/revision/tablero-de-control");
-		else {
-			// Obtiene el edicID
-			let {edicID} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
-			let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-			if (edicID) urlEdicion += "&edicion_id=" + edicID;
-			return res.redirect(urlEdicion);
-		}
-	},
 };

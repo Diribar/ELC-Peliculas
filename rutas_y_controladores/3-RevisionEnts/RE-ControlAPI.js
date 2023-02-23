@@ -32,7 +32,7 @@ module.exports = {
 		if (campo == "avatar") regEdic = await procesos.prodEdicGuardar_Avatar(req, regOrig, regEdic);
 
 		// Tareas adicionales
-		[, , quedanCampos, statusAprob] = await procesos.guardaEdicRev(req, regOrig, regEdic);
+		[, , quedanCampos, statusAprob] = await procesos.edicion.guardaEdicRev(req, regOrig, regEdic);
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
 	},
@@ -99,7 +99,7 @@ module.exports = {
 		}
 		await BD_genericas.actualizaPorId("links", link.id, datos);
 		link = {...link, ...datos};
-		procsCRUD.cambioDeStatus("links", link.id, link);
+		procsCRUD.cambioDeStatus("links", link);
 
 		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
 		let duracion = !prodAprob ? motivo.duracion : 0;
