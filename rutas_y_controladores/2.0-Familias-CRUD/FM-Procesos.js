@@ -10,7 +10,7 @@ module.exports = {
 	puleEdicion: async (original, edicion, entidad) => {
 		// Variables
 		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
+		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad)
 		let edicion_id = edicion.id;
 		let camposNull = {};
 
@@ -91,7 +91,7 @@ module.exports = {
 		return [original, edicion];
 	},
 	// Guardado de edición
-	guardaActEdicCRUD: async function ({original, edicion, entidad, userID}) {
+	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
 		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
 		let camposNull;
@@ -125,7 +125,7 @@ module.exports = {
 		return edicion ? "Edición guardada" : "Edición sin novedades respecto al original";
 	},
 	// Avatar
-	avatarOrigEdic: (prodOrig, prodEdic) => {
+	obtieneAvatarOrigEdic: (prodOrig, prodEdic) => {
 		let avatarOrig =
 			// Si es un url
 			prodOrig.avatar.startsWith("http")

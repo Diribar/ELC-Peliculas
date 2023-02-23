@@ -144,7 +144,7 @@ module.exports = {
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
 	},
-	obtieneEdicionDesdeEntidad: (entidad) => {
+	obtieneNombreEdicionDesdeEntidad: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "prods_edicion"
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
