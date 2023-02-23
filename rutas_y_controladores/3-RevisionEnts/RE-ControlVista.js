@@ -301,8 +301,18 @@ module.exports = {
 			urlActual: req.session.urlActual,
 		});
 	},
-	prod_edicGuardar: (req, res) => {
+	prod_AvatarGuardar: (req, res) => {
 		return res.send({...req.query, ...req.body});
+		// Obtiene la respuesta del usuario
+		const {entidad, id: prodID, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
+
+		// Acciones si aprueba el avatar sugerido
+
+		// Acciones si rechaza el avatar sugerido
+
+		// Pule la edición
+
+		// Si a la edición le quedan campos, recarga el url
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código

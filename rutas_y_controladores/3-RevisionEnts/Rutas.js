@@ -42,7 +42,7 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 router.get("/producto/alta", ...aptoStatus, vista.prod_altaForm);
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, vista.prodRCLV_altaGuardar);
 router.get("/producto/edicion", ...aptoEdicion, vista.prod_edicForm);
-router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, vista.prod_edicGuardar);
+router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, vista.prod_AvatarGuardar);
 router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
