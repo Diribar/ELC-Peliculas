@@ -66,11 +66,10 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 		// Le agrega datos de la edición cuando no proviene de TMDB
 		if (prodOrig.fuente != "TMDB") {
-			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[entidad_id]: id});
+			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[campo_id]: id});
 			prodEdic = procsCRUD.quitaCamposSinContenido(prodEdic);
 			prodOrig = {...prodOrig, ...prodEdic, id};
-			// return res.send([entidad_id, prodOrig, prodEdic]);
 		}
 		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtiene avatar original
@@ -131,8 +130,6 @@ module.exports = {
 			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
 
-		// PROCESOS INTERMEDIOS
-
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
@@ -140,6 +137,7 @@ module.exports = {
 		const ahora = comp.ahora();
 		const alta_analizada_en = ahora;
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
+		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
 		// Obtiene el registro original
 		let includes = comp.obtieneTodosLosCamposInclude(entidad);
@@ -191,29 +189,23 @@ module.exports = {
 
 		// 7. Acciones por rechazos
 		if (rechazado) {
-			// Variables
-			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-
 			// 7.1. Penaliza al usuario si corresponde
 			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, motivo, petitFamilia);
 
 			// 7.2 Si es un RCLV, borra su id de los campos rclv_id de las ediciones de producto
-			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[entidad_id]: id}, {[entidad_id]: null});
+			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
 			// 7.3. Acciones si es un producto
-			if (!rclvs) procesos.alta.prodRech(entidad,id,creado_por_id)
+			if (!rclvs) procesos.alta.prodRech(entidad, id, creado_por_id);
 		}
 
 		// Fin
-		return res.redirect("/revision/tablero-de-control");
+		// return res.redirect("/revision/tablero-de-control");
+
+		// Si es un RCLV, redirecciona al tablero
 		if (rclvs) return res.redirect("/revision/tablero-de-control");
-		else {
-			// Obtiene el edicID
-			let {edicID} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
-			let urlEdicion = req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id;
-			if (edicID) urlEdicion += "&edicion_id=" + edicID;
-			return res.redirect(urlEdicion);
-		}
+		// Si es un producto, redirecciona a una edición
+		else return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 	},
 
 	// EDICION
@@ -221,13 +213,9 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
-		// Validaciones y obtiene prodEdic
-		let {edicAjena: prodEdic, informacion} = await procesos.edicion.obtieneEdicAjena(req, "productos", "prods_edicion");
-		// Si no pasa los filtros => informa el error
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Variables
-		const {entidad, id: prodID} = req.query;
+		const {entidad, id: prodID, edicion_id: edicID} = req.query;
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
 
@@ -236,6 +224,10 @@ module.exports = {
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+
+		// Obtiene la edición
+		let prodEdic = await BD_genericas.obtienePorId("prods_edicion", edicID);
+		// return res.send([prodOrig,prodEdic])
 
 		// Acciones si está presente el avatar
 		if (prodEdic.avatar) {
@@ -278,7 +270,7 @@ module.exports = {
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = await procesos.prodEdicForm_ingrReempl(prodOrig, edicion);
+			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(prodOrig, edicion);
 			// Obtiene el avatar
 			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 			if (!avatar.startsWith("http")) avatar = "/imagenes/2-Avatar-Prods-Final/" + avatar;
@@ -316,6 +308,7 @@ module.exports = {
 			omitirFooter: codigo.includes("avatar"),
 			cartelGenerico: true,
 			cartelRechazo: codigo.includes("avatar"),
+			urlActual: req.session.urlActual,
 		});
 	},
 	rclvEdicForm: async (req, res) => {
@@ -392,9 +385,9 @@ module.exports = {
 		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
-		let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[entidad_id]: id}, includes);
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, includes);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
@@ -428,5 +421,4 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-
 };

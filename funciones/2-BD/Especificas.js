@@ -148,9 +148,9 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicsAjenasDeUnProd: async (entidad, condiciones, include) => {
+	obtieneEdicsAjenasDeUnProd: async (entidad, datos, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
-		const {campo_id, entID, userID} = condiciones;
+		const {campo_id, entID, userID} = datos;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entidad]
 			.findAll({
