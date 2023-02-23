@@ -27,14 +27,10 @@
 #centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
 
 #centro #medio #info {padding: 15px 20px; width: fit-content;}
-#centro #medio #info h2 {text-align: center;}
-#centro #medio #info #titulo {margin-top: 10px; display: flex; flex-direction: row; align-items: center; line-height: 1;}
-#centro #medio #info #titulo * {font-size: 1.2rem;}
-#centro #medio #info #titulo .fa-solid {font-size: 1.5rem;}
-#centro #medio #info #titulo h3 {margin: 0 5px;}
-#centro #medio #info #titulo h3:first-letter {text-transform:capitalize;}
-#centro #medio #info ul {list-style-position: inside;}
-#centro #medio #info ul li {margin-left: 25px;}
+#centro #medio #info h2 {text-align: left; margin-bottom: 5px;}
+#centro #medio #info ul {list-style-position: outside;}
+#centro #medio #info ul {text-align: left;}
+#centro #medio #info ul li {font-size: 1.1rem; margin-left: 15px;}
 
 /* Sección central - Medio - Ficha Técnica */
 #centro #medio #fichaTecnica {margin: 20px auto 0; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
