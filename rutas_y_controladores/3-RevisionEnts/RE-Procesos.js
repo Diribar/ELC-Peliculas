@@ -244,7 +244,9 @@ module.exports = {
 					valorRech = original[relacInclude].nombre_pers;
 				}
 
+				// Si ninguna de las variables tiene un valor, saltea la rutina
 				if (!valorAprob && !valorRech) continue;
+
 				// Genera la información
 				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
 
@@ -405,41 +407,34 @@ module.exports = {
 			// Fin
 			return derecha;
 		},
-		guardaEdicRev: async function (req, regOrig, regEdic) {
+		// edicAprobRech: async function (req, regOrig, regEdic) {
+		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// Variables
-			const {entidad, campo, aprob} = req.query;
 			const familia = comp.obtieneFamiliaEnPlural(entidad);
 			const producto = familia == "productos";
-			const nombreEdic = (producto ? "prods" : "rclvs") + "_edicion";
-			const edicAprob = aprob == "true";
-			const decision = "edics_" + (edicAprob ? "aprob" : "rech");
-			const userID = req.session.usuario.id;
+			const rclv = familia == "rclvs";
+			const nombreEdic = comp.obtieneEdicionDesdeEntidad(entidad);
+			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
-			const statusAprobInicial = regOrig.status_registro.aprobado;
-			const datosEdicion = {
-				id: regEdic.id,
-				editado_por_id: regEdic.editado_por_id,
-				editado_en: regEdic.editado_en,
-			};
+			const statusAprobInicial = original.status_registro_id == aprobado_id;
+			const datosEdicion = {id: edicion.id, editado_por_id: edicion.editado_por_id, editado_en: edicion.editado_en};
 			let motivo, statusAprobFinal;
 
 			// Genera la información a actualizar
 			let datos = {
-				[campo]: regEdic[campo],
-				editado_por_id: regEdic.editado_por_id,
-				editado_en: regEdic.editado_en,
-				edic_analizada_por_id: userID,
+				[campo]: edicion[campo],
+				editado_por_id: edicion.editado_por_id,
+				editado_en: edicion.editado_en,
+				edic_analizada_por_id: revID,
 				edic_analizada_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(regEdic.editado_en, ahora),
+				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
 			};
 
 			// Agrega un registro en la tabla 'edics_aprob/edics_rech', según corresponda
-			await (async () => {
+			(() => {
 				// Si fue rechazado, amplía la información
-				if (!edicAprob) {
-					let {motivo_id} = req.query;
-					let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
-					motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
+				if (!aprob) {
+					motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 				}
 				// Obtiene los valores aprob/rech
@@ -468,10 +463,10 @@ module.exports = {
 					};
 					// Amplía la información con los valores aprob/rech de edición
 					let valorOrig = obtieneElValorDeUnCampo(regOrig, campo);
-					let valorEdic = obtieneElValorDeUnCampo(regEdic, campo);
+					let valorEdic = obtieneElValorDeUnCampo(edicion, campo);
 					// Obtiene los valores 'aprobado' y 'rechazado'
-					let valorAprob = edicAprob ? valorEdic : valorOrig;
-					let valorRech = !edicAprob ? valorEdic : valorOrig;
+					let valorAprob = aprob ? valorEdic : valorOrig;
+					let valorRech = !aprob ? valorEdic : valorOrig;
 					// Fin
 					return {valorAprob, valorRech};
 				};
@@ -485,23 +480,23 @@ module.exports = {
 			})();
 
 			// Aumenta el campo aprob/rech en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// Si corresponde, penaliza al usuario
-			if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
+			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
 
 			// Si se aprobó, actualiza el registro y la variable de 'original'
-			if (edicAprob) {
+			if (aprob) {
 				await BD_genericas.actualizaPorId(entidad, regOrig.id, datos);
-				regOrig = {...regOrig, [campo]: regEdic[campo]};
+				regOrig = {...regOrig, [campo]: edicion[campo]};
 			}
 
 			// Actualiza el registro y la variable de 'edición'
-			await BD_genericas.actualizaPorId(nombreEdic, regEdic.id, {[campo]: null});
-			delete regEdic[campo];
+			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+			delete edicion[campo];
 
 			// Averigua si quedan campos por procesar
-			let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, entidad);
+			let edicion = await procsCRUD.puleEdicion(original, edicion, entidad);
 
 			// Acciones para productos si no quedan campos
 			if (!edicion && producto) {
@@ -511,18 +506,18 @@ module.exports = {
 					// Variables
 					let statusAprob;
 					// Averigua si tiene errores
-					let errores = await validaProds.consolidado(null, {...regOrig, entidad});
+					let errores = await validaProds.consolidado(null, {...original, entidad});
 					// Acciones si el original no tiene errores y está en status 'gr_creado'
-					if (!errores.hay && regOrig.status_registro.gr_creado) {
+					if (!errores.hay && original.status_registro.gr_creado) {
 						// Genera la información a actualizar en el registro original
 						let datosCambioStatus = {
 							alta_terminada_en: ahora,
-							lead_time_creacion: comp.obtieneLeadTime(regOrig.creado_en, ahora),
+							lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
 							status_registro_id: status_registro.find((n) => n.aprobado).id,
 							captura_activa: 0,
 						};
 						// Cambia el status del registro e inactiva la captura
-						await BD_genericas.actualizaPorId(entidad, regOrig.id, datosCambioStatus);
+						await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
 						// Si es una colección, le cambia el status también a los capítulos
 						if (entidad == "colecciones") {
 							// Amplía los datos
@@ -532,7 +527,7 @@ module.exports = {
 								alta_analizada_en: ahora,
 							};
 							// Actualiza el status de todos los capítulos a la vez
-							BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: regOrig.id}, datos);
+							BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
 						}
 						// Cambia el valor de la variable que se informará
 						statusAprob = true;
@@ -543,9 +538,9 @@ module.exports = {
 
 			// Actualiza RCLV si corresponde
 			if (producto && !statusAprobInicial && statusAprobFinal)
-				this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
+				this.prodsAprobEnRCLV(original, campo, aprob, statusAprobInicial, statusAprobFinal);
 			// Fin
-			return [regOrig, edicion, quedanCampos, statusAprobFinal];
+			return [original, edicion, quedanCampos, statusAprobFinal];
 		},
 		prodsAprobEnRCLV: function (prodOrig, campo_id, edicAprob, statusAprobOrig, statusAprob) {
 			// Actualiza 'prods_aprob' en rclvs, si ocurre 1 y (2 ó 3)
@@ -616,31 +611,23 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		prodEdic_actualizaAvatar: async (req, prodOrig, prodEdic) => {
+		prodEdic_actualizaAvatar: async (prodOrig, prodEdic, reemplazar) => {
 			// Variables
-			const edicAprob = req.query.aprob == "true";
 			const avatarOrig = prodOrig.avatar;
 			const avatarEdic = prodEdic.avatar;
 
 			// Gestión de archivos
-			if (edicAprob) {
+			if (reemplazar) {
 				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
 				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
 
 				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
 				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-
-				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
-				const {entidad, id} = req.query;
-				await BD_genericas.actualizaPorId(entidad, id, {avatar: avatarEdic});
 			}
 
 			// ARCHIVO NUEVO: elimina el archivo de edicion
-			else if (!edicAprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
-
-			// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
+			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
 
 			// Fin
 			return;

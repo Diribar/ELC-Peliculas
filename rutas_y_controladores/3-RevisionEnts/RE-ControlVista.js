@@ -238,9 +238,12 @@ module.exports = {
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
-				// Avatar: impacto en los archivos, y en los registros original y edicion
-				req.query.aprob = "true";
-				prodEdic = await procesos.edicion.prodEdic_actualizaAvatar(req, prodOrig, prodEdic);
+				// Avatar: impacto en los archivos de avatar (original y edicion)
+				await procesos.edicion.prodEdic_actualizaAvatar(prodOrig, prodEdic, true);
+				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
+				await BD_genericas.actualizaPorId(entidad, prodOrig.id, {avatar: prodEdic.avatar});
+				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
+				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
 				// Recarga la ruta
 				return res.send(req.originalUrl);
 			}
@@ -301,15 +304,41 @@ module.exports = {
 			urlActual: req.session.urlActual,
 		});
 	},
-	prod_AvatarGuardar: (req, res) => {
-		return res.send({...req.query, ...req.body});
+	prod_AvatarGuardar: async (req, res) => {
+		// return res.send({...req.query, ...req.body});
 		// Obtiene la respuesta del usuario
 		const {entidad, id: prodID, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
 
-		// Acciones si aprueba el avatar sugerido
+		// Variables
+		let original = await BD_genericas.obtienePorId(entidad, prodID);
+		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
+		let revID = req.session.usuario.id;
+		let campo = "avatar";
+		let aprob = !rechazado;
 
-		// Acciones si rechaza el avatar sugerido
+		// RECHAZO - Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
+		if (rechazado) {
+			let url = original.avatar;
+			if (url.startsWith("http")) {
+				// Asigna un nombre al archivo a descargar
+				let avatar = Date.now() + path.extname(url);
+				// Descarga el url
+				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
+				await comp.descarga(url, rutaYnombre, true);
+			}
+		}
 
+		// AMBOS - Impacto en los archivos de avatar (original y edicion)
+		await procesos.edicion.prodEdic_actualizaAvatar(original, edicion, aprob);
+
+		// Particularidad
+		// REGISTRO EDICION: borra el campo 'avatar_url' en el registro de edicion
+		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
+		delete edicion.avatar_url
+
+		// PROCESOS DE edicAprobRech
+		procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob,motivo_id});
+		
 		// Pule la edición
 
 		// Si a la edición le quedan campos, recarga el url
