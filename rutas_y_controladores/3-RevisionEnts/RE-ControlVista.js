@@ -302,7 +302,7 @@ module.exports = {
 		});
 	},
 	prod_edicGuardar: (req, res) => {
-		return res.send(req.query);
+		return res.send({...req.query, ...req.body});
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código

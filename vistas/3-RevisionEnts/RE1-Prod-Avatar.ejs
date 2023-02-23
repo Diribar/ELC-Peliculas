@@ -1,6 +1,6 @@
 <div id="izquierda" class="imagenes">
 	<!-- Imagen sugerida -->
-	<img src="<%= avatar.edic %>" title="Imagen propuesta">
+	<img src="<%= avatar.edic %>" title="Imagen sugerida">
 	<nav class="agregados">
 		<% for (let registro of avatarLinksExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
@@ -9,8 +9,7 @@
 		<% } %>
 	</nav>
 </div>
-<div id="centro" class="contenido">
-	<div class="campoNombre ocultar">avatar</div>
+<div id="centro" class="contenido flexCol grow spaceBetween alignCenter">
 	<div id="arriba">
 		<div id="tituloPrincipal">
 			<h1 id="titulo"><%= titulo %></h1>
@@ -27,20 +26,17 @@
 		<%- include('CMP-TimerContador') %>
 	</div>
 	<div id="medio">
-		<div id="info">
-			<h2 >¿Es mejor la imagen de la <u>izquierda</u>?</h2>
-			<!-- Aceptar -->
-			<form method="POST" id="titulo">
+		<div class="flexRow spaceBetween">
+			<!-- Aceptar la imagen sugerida -->
+			<form id="aprobar" method="POST" class="contenedorOpcionAvatar scale">
 				<button type="submit" autofocus tabindex="2">
-					<i class="fa-solid fa-circle-check scale" title="Aprobar"></i>
+					<%- include("RE1-ProdAvatarComps") %>
 				</button>
 			</form>
-			<ul id="beneficios"></ul>
-			<!-- Rechazar -->
-			<div id="titulo">
-				<i id="mostrarMotivos" class="fa-solid fa-circle-xmark scale" title="Rechazar"></i>
+			<!-- Preservar la imagen actual -->
+			<div id="mostrarMotivos" class="contenedorOpcionAvatar scale">
+				<%- include("RE1-ProdAvatarComps") %>
 			</div>
-			<ul id="perjuicios"></ul>
 		</div>
 		<div id="fichaTecnica">
 			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
@@ -53,7 +49,7 @@
 				<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 			</a>
 			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= id %>" target="_blank">
-				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 			</a>
 		</div>
 	</div>
