@@ -1,0 +1,63 @@
+<div id="izquierda" class="imagenes">
+	<!-- Imagen sugerida -->
+	<img src="<%= avatar.edic %>" title="Imagen sugerida">
+	<nav class="agregados">
+		<% for (let registro of avatarLinksExternos) { %>
+			<a href="<%= registro.href %>" target="_blank">
+				<img src="<%= localhost %><%= registro.src %>" alt="<%= registro.alt %>" class="scale">
+			</a>
+		<% } %>
+	</nav>
+</div>
+<div id="centro" class="contenido flexCol grow spaceBetween alignCenter">
+	<div id="arriba">
+		<div id="tituloPrincipal">
+			<h1 id="titulo"><%= titulo %></h1>
+			<!-- Ayuda -->
+			<div class="ayuda">
+				<i class="fa-solid fa-circle-question ayudaClick desplClick">
+					<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+						<li>Necesitamos que nos digas si estás de acuerdo con la imagen a evaluar.</li>
+						<li>En caso que no, te vamos a pedir que nos digas el motivo.</li>
+					</ul>
+				</i>
+			</div>
+		</div>
+		<%- include('CMP-TimerContador') %>
+	</div>
+	<div id="medio">
+		<div class="flexRow spaceBetween flexRowAlign">
+			<!-- Aceptar la imagen sugerida -->
+			<form id="aprobar" method="POST" class="contenedorOpcionAvatar scale">
+				<button type="submit" autofocus tabindex="2">
+					<%- include("RE1-ProdAvatarComps") %>
+				</button>
+			</form>
+			<!-- Preservar la imagen actual -->
+			<div id="mostrarMotivos" class="contenedorOpcionAvatar scale">
+				<%- include("RE1-ProdAvatarComps") %>
+			</div>
+		</div>
+		<div id="fichaTecnica">
+			<p><%= prodNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
+			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
+			<p>Dirección: <%= prodOrig.direccion %></p>
+		</div>
+		<div class="flechas">
+			<!-- Liberar y salir -->
+			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=tableroEnts" target="_self">
+				<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+			</a>
+			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= id %>" target="_blank">
+				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+			</a>
+		</div>
+	</div>
+	<div id="abajo">
+		<%- include('CMP-3Footer', {mostrar: true}) %>
+	</div>
+</div>
+<div id="derecha" class="imagenes">
+	<!-- Imagen actual -->
+	<img src="<%= avatar.orig %>" title="Imagen actual">
+</div>

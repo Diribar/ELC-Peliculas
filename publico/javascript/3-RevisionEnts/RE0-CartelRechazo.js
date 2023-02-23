@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Flechas
-	let accesoAlCartelRechazo = document.querySelector(".flechas .fa-circle-xmark");
+	let accesoAlCartelRechazo = document.querySelector("#mostrarMotivos");
 
 	// Motivos para borrar
 	let tapaElFondo = document.querySelector("#tapar-el-fondo");

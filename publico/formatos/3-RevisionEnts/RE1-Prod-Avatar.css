@@ -1,0 +1,44 @@
+/* General */
+#cuerpoFooter {display: flex; flex-direction: column-reverse;}
+#cuerpoFooter #cuerpo {background: transparent; flex-direction: row; justify-content: space-between;}
+
+/* Secciones de Imagen */
+#cuerpo .imagenes {position: relative;}
+#cuerpo .imagenes {display: flex; flex-direction: column; justify-content: center;}
+#cuerpo .imagenes img {max-width: 30vw; max-height: 91vh; }
+#cuerpo .imagenes .agregados {position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);}
+#cuerpo .imagenes .agregados {background: var(--verde-claro); border: var(--verde-oscuro) 1px solid;}
+#cuerpo .imagenes .agregados {margin: 0 auto; padding: 5px 10px; border-radius: 10px; width: max-content;}
+/* Secciones de Imagen - Izquierda */
+#cuerpo .imagenes .agregados img {max-width: 25px; max-height: 25px; border-radius: 8px; margin: 2px 3px 0;}
+
+/* Sección central - Arriba */
+#centro #arriba {display: flex; flex-direction: column;}
+#centro #arriba #tituloPrincipal {text-align: center; align-self: stretch;}
+#centro #arriba #tituloPrincipal #titulo {border-left-color: var(--bordeTitulo); border-bottom-right-radius: 0;}
+#centro #arriba #tituloPrincipal .ayuda {translate: 0 -50%; right: 10px;}
+#centro #arriba #timer {position: static; margin-left: auto;}
+
+/* Sección central - Medio - Info */
+#centro #medio .contenedorOpcionAvatar {max-width: 40%; border-radius: 20px; background: var(--gris-claro); }
+#centro #medio .contenedorOpcionAvatar {border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio .contenedorOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
+#centro #medio .contenedorOpcionAvatar#aprobar {transform-origin: left;}
+#centro #medio .contenedorOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
+#centro #medio .contenedorOpcionAvatar#mostrarMotivos {transform-origin: right;}
+#centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
+
+#centro #medio #info {padding: 15px 20px; width: fit-content;}
+#centro #medio #info h2 {text-align: left; margin-bottom: 5px;}
+#centro #medio #info ul {list-style-position: outside;}
+#centro #medio #info ul {text-align: left;}
+#centro #medio #info ul li {font-size: 1.1rem; margin-left: 15px;}
+
+/* Sección central - Medio - Ficha Técnica */
+#centro #medio #fichaTecnica {margin: 20px auto 0; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
+#centro #medio #fichaTecnica {background: var(--verde-claro); border: var(--verde-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio #fichaTecnica p {line-height: 1.5; font-size: 1.15rem;}
+#centro #medio {display: flex; flex-direction: column; width: 100%; flex-grow: 1; justify-content: space-evenly; z-index: 1;}
+
+/* Sección central - Flechas */
+.flechas {width: fit-content;}

@@ -15,7 +15,8 @@ input[type="radio"] {align-self: end;}
 label[for] {cursor: pointer;}
 
 /* Varios */
-button, span, em, strong, u ,a, i {font-size: inherit; color: inherit; line-height: inherit;}
+button, span, em, strong, u, a, i {font-size: inherit; color: inherit; line-height: inherit;}
+button:has(i) {border: none; outline: none;}
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 a {text-decoration: none;}
 
