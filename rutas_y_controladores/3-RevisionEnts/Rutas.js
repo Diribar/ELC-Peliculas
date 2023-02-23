@@ -28,7 +28,7 @@ const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...apto
 // APIs -------------------------------------------------
 // Producto
 router.get("/api/edicion-aprob-rech", API.edicAprobRech);
-router.get("/api/producto-guarda-avatar",  API.prodEdic_ConvierteUrlEnArchivo);
+// router.get("/api/producto-guarda-avatar", API.prodEdic_ConvierteUrlEnArchivo);
 // Links
 router.get("/api/link-alta", API.linkAltaBaja);
 router.get("/api/link-eliminar", API.linkAltaBaja);
@@ -39,15 +39,16 @@ router.get("/api/link-edicion", API.edicAprobRech);
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
 // Producto
-router.get("/producto/alta", ...aptoStatus, vista.prodAltaForm);
-router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, vista.registroAltaGuardar);
-router.get("/producto/edicion", ...aptoEdicion, vista.prodEdicForm);
+router.get("/producto/alta", ...aptoStatus, vista.prod_altaForm);
+router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, vista.prodRCLV_altaGuardar);
+router.get("/producto/edicion", ...aptoEdicion, vista.prod_edicForm);
+router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, vista.prod_edicGuardar);
 router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
 router.get("/rclv/alta", ...aptoStatus, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, vista.registroAltaGuardar);
-router.get("/rclv/edicion", ...aptoEdicion, vista.rclvEdicForm);
+router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, vista.prodRCLV_altaGuardar);
+router.get("/rclv/edicion", ...aptoEdicion, vista.rclv_edicForm);
 router.get("/rclv/inactivar-o-recuperar");
 
 // Links
