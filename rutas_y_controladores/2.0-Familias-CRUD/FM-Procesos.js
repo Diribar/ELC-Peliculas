@@ -106,10 +106,10 @@ module.exports = {
 			// Si no existe edicion.id --> se agrega el registro
 			else
 				await (async () => {
-					// Se le agregan los campos necesarios: entidad_id, editado_por_id, producto_id (links)
-					// 1. entidad_id, editado_por_id
-					let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-					edicion[entidad_id] = original.id;
+					// Se le agregan los campos necesarios: campo_id, editado_por_id, producto_id (links)
+					// 1. campo_id, editado_por_id
+					let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+					edicion[campo_id] = original.id;
 					edicion.editado_por_id = userID;
 					// 2. producto_id (links)
 					if (entidad == "links") {
@@ -177,11 +177,11 @@ module.exports = {
 		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
 		for (let entidadRCLV of entidadesRCLV) {
 			// Variables
-			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidadRCLV);
-			let RCLV_id = producto[entidad_id];
+			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidadRCLV);
+			let RCLV_id = producto[campo_id];
 			// Acciones si el producto tiene ese 'campo_id'
 			if (RCLV_id > 10) {
-				let objeto = {[entidad_id]: RCLV_id};
+				let objeto = {[campo_id]: RCLV_id};
 				let prods_aprob;
 				// Averigua si existe algún producto, con ese RCLV
 				for (let entidadProd of entidadesProds) {
