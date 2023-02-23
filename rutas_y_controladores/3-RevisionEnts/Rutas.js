@@ -15,41 +15,43 @@ const usRolRevEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
+const existeEdicion = require("../../middlewares/producto/filtro-existeEdicion");
 const rechazoSinMotivo = require("../../middlewares/producto/filtro-rechazoSinMotivo");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
-const aptoRevisor = [usAltaTerm, usPenalizaciones, usRolRevEnts];
-const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
+const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg, capturaActivar];
+const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...aptoUsuario, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
-router.get("/api/edicion-aprob-rech", ...aptoRevisor, API.edicAprobRech);
-router.get("/api/producto-guarda-avatar", ...aptoRevisor, API.prodEdic_ConvierteUrlEnArchivo);
+router.get("/api/edicion-aprob-rech", API.edicAprobRech);
+router.get("/api/producto-guarda-avatar",  API.prodEdic_ConvierteUrlEnArchivo);
 // Links
-router.get("/api/link-alta", ...aptoRevisor, API.linkAltaBaja);
-router.get("/api/link-eliminar", ...aptoRevisor, API.linkAltaBaja);
-router.get("/api/link-edicion", ...aptoRevisor, API.edicAprobRech);
+router.get("/api/link-alta", API.linkAltaBaja);
+router.get("/api/link-eliminar", API.linkAltaBaja);
+router.get("/api/link-edicion", API.edicAprobRech);
 
 // VISTAS --------------------------------------------------
 // Tablero de Control
-router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
+router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
 // Producto
-router.get("/producto/alta", ...aptoRevMasEnt, vista.prodAltaForm);
-router.post("/producto/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registroAltaGuardar);
-router.get("/producto/edicion", ...aptoRevMasEnt, vista.prodEdicForm);
+router.get("/producto/alta", ...aptoStatus, vista.prodAltaForm);
+router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, vista.registroAltaGuardar);
+router.get("/producto/edicion", ...aptoEdicion, vista.prodEdicForm);
 router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
-router.get("/rclv/alta", ...aptoRevMasEnt, vistaAltaRCLV.altaEdicForm);
-router.post("/rclv/alta", ...aptoRevMasEnt, rechazoSinMotivo, vista.registroAltaGuardar);
-router.get("/rclv/edicion", ...aptoRevMasEnt, vista.rclvEdicForm);
+router.get("/rclv/alta", ...aptoStatus, vistaAltaRCLV.altaEdicForm);
+router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, vista.registroAltaGuardar);
+router.get("/rclv/edicion", ...aptoEdicion, vista.rclvEdicForm);
 router.get("/rclv/inactivar-o-recuperar");
 
 // Links
-router.get("/links", ...aptoRevMasEnt, vista.linksForm);
+router.get("/links", ...aptoStatus, vista.linksForm);
 
 // Exportarlo **********************************************
 module.exports = router;

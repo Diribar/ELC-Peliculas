@@ -33,8 +33,8 @@ module.exports = {
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
 						let entProd = comp.obtieneProdDesdeProducto_id(edicion);
-						let producto_id = comp.obtieneEntidad_idDesdeEntidad(entProd);
-						let entID = edicion[producto_id];
+						let campo_id = comp.obtieneCampo_idDesdeEntidad(entProd);
+						let entID = edicion[campo_id];
 						// Obtiene los registros del producto original y su edición por el usuario
 						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
 						// Actualiza la variable del registro original
@@ -192,14 +192,14 @@ module.exports = {
 				DE.creado_por_id = userID;
 				let id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
 				// Les agrega el 'rclv_id' a session y cookie de origen
-				let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 				if (origen == "DA") {
 					req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
-					req.session.datosAdics = {...req.session.datosAdics, [entidad_id]: id};
+					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: id};
 					res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
 				} else if (origen == "ED") {
 					req.session.edicProd = req.session.edicProd ? req.session.edicProd : req.cookies.edicProd;
-					req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
+					req.session.edicProd = {...req.session.edicProd, [campo_id]: id};
 					res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 				}
 			}

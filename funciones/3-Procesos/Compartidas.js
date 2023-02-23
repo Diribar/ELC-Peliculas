@@ -104,7 +104,7 @@ module.exports = {
 			? "Usuarios"
 			: "";
 	},
-	obtieneEntidad_idDesdeEntidad: (entidad) => {
+	obtieneCampo_idDesdeEntidad: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -144,7 +144,7 @@ module.exports = {
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
 	},
-	obtieneEntidadDesdeEntidad_id: function (edicion) {
+	obtieneEntidadDesdeCampo_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
 		let RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);
 		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";

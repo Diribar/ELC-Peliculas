@@ -427,10 +427,10 @@ module.exports = {
 		let resultado = true;
 		// Revisa que exista el RCLV
 		for (let entidad of entidadesRCLV) {
-			let entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			// Averigua si existe, para los RCLV_id que existan y no sean 'ninguno' ni 'varios'
-			if (confirma[entidad_id] && confirma[entidad_id] > 2) {
-				let existe = await BD_genericas.obtienePorId(entidad, confirma[entidad_id]);
+			if (confirma[campo_id] && confirma[campo_id] > 2) {
+				let existe = await BD_genericas.obtienePorId(entidad, confirma[campo_id]);
 				if (!existe) {
 					resultado = false;
 					break;

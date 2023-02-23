@@ -10,11 +10,11 @@ module.exports = {
 	obtieneLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
-		let producto_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[producto_id]: prodID}, includes);
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: prodID}, includes);
 		// Ordenar por ID
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// Los combina con la edición, si existe
@@ -31,8 +31,8 @@ module.exports = {
 	},
 	datosLink: (datos) => {
 		// Datos del producto
-		let producto_id = comp.obtieneEntidad_idDesdeEntidad(datos.prodEntidad);
-		datos[producto_id] = datos.prodID;
+		let campo_id = comp.obtieneCampo_idDesdeEntidad(datos.prodEntidad);
+		datos[campo_id] = datos.prodID;
 
 		// Obtiene el proveedor
 		let proveedor = links_provs.find((n) => n.url_distintivo && datos.url.includes(n.url_distintivo));

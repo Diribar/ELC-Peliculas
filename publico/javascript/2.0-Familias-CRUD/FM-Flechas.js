@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let vista = window.location.pathname;
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let producto_id = new URL(window.location.href).searchParams.get("id");
+	let entID = new URL(window.location.href).searchParams.get("id");
 
 	// Acción si se elige 'detalle'
 	if (vista != "/producto/detalle/") {
@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 			if (!detalle.classList.contains("inactivo")) {
 				// Va a la vista 'detalle'
 				window.location.href =
-					"/producto/detalle/?entidad=" + entidad + "&id=" + producto_id;
+					"/producto/detalle/?entidad=" + entidad + "&id=" + entID;
 			}
 		});
 	}
@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 			if (!edicion.classList.contains("inactivo")) {
 				// Va a la vista 'edicion'
 				window.location.href =
-					"/producto/edicion/?entidad=" + entidad + "&id=" + producto_id;
+					"/producto/edicion/?entidad=" + entidad + "&id=" + entID;
 			}
 		});
 	}
@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 		links.addEventListener("click", () => {
 			if (!links.classList.contains("inactivo")) {
 				// Va a la vista 'links'
-				window.location.href = "/links/abm/?entidad=" + entidad + "&id=" + producto_id;
+				window.location.href = "/links/abm/?entidad=" + entidad + "&id=" + entID;
 			}
 		});
 	}

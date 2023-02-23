@@ -338,7 +338,7 @@ module.exports = {
 		},
 		prodRech: async (entidad, id, editado_por_id) => {
 			// Obtiene la edicion
-			let campo_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
+			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			let objeto = {[campo_id]: id, editado_por_id};
 			console.log(343, objeto);
 			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
@@ -353,52 +353,6 @@ module.exports = {
 	// Edición
 	edicion: {
 		// Form
-		obtieneEdicAjena: async (req, familia, nombreEdic) => {
-			// Variables
-			const {entidad, id: rclvID, edicion_id: edicID} = req.query;
-			const userID = req.session.usuario.id;
-			const entidad_id = comp.obtieneEntidad_idDesdeEntidad(entidad);
-			// Mensajes
-			let mensajeSinEdicion = {
-				mensajes: ["No encontramos ninguna edición ajena para revisar"],
-				iconos: [
-					{
-						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
-						titulo: "Regresar al Tablero de Control",
-					},
-				],
-			};
-			let mensajeSinEsaEdicion = {
-				mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
-				iconos: [
-					{
-						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + rclvID + "&origen=tableroEnts",
-						titulo: "Regresar al Tablero de Control",
-					},
-				],
-			};
-			// Genera la variable 'includes'
-			let includes = comp.obtieneTodosLosCamposInclude(entidad);
-			if (familia == "rclvs") includes = includes.filter((n) => n.entidad);
-			// Obtiene las ediciones del producto
-			let edicsAjenas = await BD_especificas.edicForm_EdicsAjenas(
-				nombreEdic,
-				{entidad_id, entID: rclvID, userID},
-				includes
-			);
-			// Si no existe ninguna edición => informa el error
-			if (!edicsAjenas.length) return {informacion: mensajeSinEdicion};
-			// Obtiene la prodEdic
-			let edicAjena = edicID ? edicsAjenas.find((n) => n.id == edicID) : edicsAjenas[0];
-			// Si no existe la edicAjena => informa el error
-			if (!edicAjena) return {informacion: mensajeSinEsaEdicion};
-			// Si no existe el edicID, lo asigna para el final del 'alta'
-			if (!edicID) return {edicID: edicAjena.id};
-			// Fin - Envía la edición
-			return {edicAjena};
-		},
 		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
 			// Funciones
 			let usuario_CalidadEdic = async (userID) => {
@@ -593,22 +547,22 @@ module.exports = {
 			// Fin
 			return [regOrig, edicion, quedanCampos, statusAprobFinal];
 		},
-		prodsAprobEnRCLV: function (prodOrig, campo, edicAprob, statusAprobOrig, statusAprob) {
-			// Actualiza en rclvs el campo 'prods_aprob', si ocurre 1 y (2 ó 3)
+		prodsAprobEnRCLV: function (prodOrig, campo_id, edicAprob, statusAprobOrig, statusAprob) {
+			// Actualiza 'prods_aprob' en rclvs, si ocurre 1 y (2 ó 3)
 			// 1. Se aprobó un cambio y el producto está aprobado
-			// 2. El cambio es un campo RCLV con valor distinto de 1
+			// 2. El cambio es un campo_id  con id distinto de 1
 			// 3. El registro no estaba aprobado
-			const entidades_id = ["personaje_id", "hecho_id", "valor_id"];
+			const campos_id = ["personaje_id", "hecho_id", "valor_id"];
 			if (
 				edicAprob && // Se aprobó un cambio
 				statusAprob && // El producto está aprobado
-				((entidades_id.includes(campo) && prodOrig[campo] != 1) || // El cambio es un campo RCLV con valor distinto de 1
+				((campos_id.includes(campo_id) && prodOrig[campo_id] != 1) || // El cambio es un campo RCLV con valor distinto de 1
 					!statusAprobOrig) // El registro no estaba aprobado
 			)
-				entidades_id.forEach((entidad_id) => {
-					let RCLV_id = prodOrig[entidad_id]; // Obtiene el RCLV_id
+				campos_id.forEach((campo_id) => {
+					let RCLV_id = prodOrig[campo_id]; // Obtiene el RCLV_id
 					if (RCLV_id) {
-						let entidad = comp.obtieneRCLVdesdeRCLV_id({[entidad_id]: true});
+						let entidad = comp.obtieneRCLVdesdeRCLV_id({[campo_id]: true});
 						BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
 					}
 				});
