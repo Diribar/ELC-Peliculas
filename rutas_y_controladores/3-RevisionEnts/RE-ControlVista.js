@@ -350,16 +350,40 @@ module.exports = {
 		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
 
 		// Se fija si el registro original supera el control de errores
-		let errores = await validaPR.consolidado({datos:{...prodComb, entidad}});
+		let errores = await validaPR.consolidado({datos: {...prodComb, entidad}});
 
-		// Si no hay errores, activa procesos
-		if (!errores.hay) {
+		// Si el registro estaba pendiente de pasar a aprobado y no hay errores, activa procesos
+		if ([creado_id, creado_aprob_id].includes(original.status_registro_id) && !errores.hay) {
+			// Variables
+			let ahora = comp.ahora();
+
+			// Cambia el status del registro
+			let datosCambioStatus = {
+				alta_terminada_en: ahora,
+				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+				status_registro_id: aprobado.id,
+			};
+			await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
+
+			// Si es una colección, le cambia el status también a los capítulos
+			if (entidad == "colecciones") {
+				datosCambioStatus.alta_analizada_por_id = 2;
+				datosCambioStatus.alta_analizada_en = ahora;
+				BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+			}
+
+			// Actualiza prodEnRCLV
 		}
 
 		// Si a la edición le quedan campos, recarga el url
 		if (edicion) return res.redirect(req.originalUrl);
-		// De lo contrario, regresa al tablero
-		else return res.redirect("recivision/tablero-de-control");
+		// De lo contrario...
+		else {
+			// Libera el producto
+			BD_genericas.actualizaPorId(entidad, prodID, {captura_activa: 0});
+			// Avisa que no quedan campos y permite regresar al tablero
+			return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+		}
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código
