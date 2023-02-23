@@ -301,7 +301,9 @@ module.exports = {
 			urlActual: req.session.urlActual,
 		});
 	},
-	prod_edicGuardar: (req, res) => {},
+	prod_edicGuardar: (req, res) => {
+		return res.send(req.query);
+	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
