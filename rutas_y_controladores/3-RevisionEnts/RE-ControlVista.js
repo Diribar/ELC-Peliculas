@@ -32,12 +32,12 @@ module.exports = {
 
 		// RCLV
 		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
+		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 
 		// Links
-		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
-		// Obtiene Links
 		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
 		// return res.send(productos.CL)
+
 		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC.prod_ProcesarCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesarCampos(rclvs);
@@ -202,10 +202,10 @@ module.exports = {
 		// Fin
 		// return res.redirect("/revision/tablero-de-control");
 
-		// Si es un RCLV, redirecciona al tablero
-		if (rclvs) return res.redirect("/revision/tablero-de-control");
-		// Si es un producto, redirecciona a una edición
-		else return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		// Si es un producto y fue aprobado, redirecciona a una edición
+		if (!rclvs && !rechazado) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		// En los demás casos, redirecciona al tablero
+		else return res.redirect("/revision/tablero-de-control");
 	},
 
 	// EDICION
