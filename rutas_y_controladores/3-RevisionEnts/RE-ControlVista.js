@@ -336,7 +336,7 @@ module.exports = {
 		// - Decide cuáles son los próximos pasos
 		let proximosPasos = await procesos.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
 		if (proximosPasos=="redirect") return res.redirect(req.originalUrl);
-		else return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+		else return res.render("CMP-0Estructura", {informacion: procesos.edicion.cartelNoQuedanCampos});
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código
