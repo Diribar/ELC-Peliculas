@@ -344,12 +344,15 @@ module.exports = {
 			// Obtiene la edicion
 			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			let objeto = {[campo_id]: id, editado_por_id};
-			console.log(343, objeto);
 			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
-			// 8.A. Elimina las ediciones que tenga
+
+			// 8.A. Elimina el archivo de avatar de la edicion
+			if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
+
+			// 8.B. Elimina las ediciones que tenga
 			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
 
-			// 8.B. Actualiza los RCLV, en el campo 'prods_aprob'
+			// 8.C. Actualiza los RCLV, en el campo 'prods_aprob'
 			procsCRUD.cambioDeStatus(entidad, edicion);
 		},
 	},
