@@ -144,7 +144,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 
 		// Completa los datos
-		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
+		const lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
 		datos = {
 			...datos,
 			status_registro_id,
