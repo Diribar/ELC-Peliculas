@@ -471,19 +471,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	descargaMueveElAvatar: async (datos) => {
-		// Obtiene el nombre
-		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
-
-		// Descarga la imagen del url
-		await comp.descarga(datos.avatar_url, rutaYnombre);
-
-		// Mueve el avatar de 'provisorio' a 'revisar'
-		await comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
-
-		// Fin
-		return;
-	},
 	// Terminaste
 	imagenMuchasGracias: () => {
 		// Obtiene el listado de archivos

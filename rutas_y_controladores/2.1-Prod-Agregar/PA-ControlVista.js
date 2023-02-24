@@ -247,7 +247,8 @@ module.exports = {
 		// EDICION -------------------------------------
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
 		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-		procesos.descargaMueveElAvatar(confirma); // No hace falta el 'await', el proceso no espera un resultado
+		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar
+		comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		// Guarda los datos de 'edición'
 		await procsCRUD.guardaActEdicCRUD({
 			original: {...registro},
