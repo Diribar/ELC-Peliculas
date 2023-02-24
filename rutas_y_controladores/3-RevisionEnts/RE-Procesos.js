@@ -446,8 +446,6 @@ module.exports = {
 				let errores = await validaPR.consolidado({datos: {...original, entidad}});
 				if (!errores.hay) {
 					// Variables
-
-					// 1.A. Cambia el status del registro
 					let ahora = comp.ahora();
 					let datosCambioStatus = {
 						alta_terminada_en: ahora,
@@ -455,7 +453,7 @@ module.exports = {
 						status_registro_id: aprobado.id,
 					};
 
-					// Le cambia el status a la entidad
+					// Le cambia el status del registro
 					await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
 
 					// Si es una colección, le cambia el status también a los capítulos
