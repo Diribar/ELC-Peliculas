@@ -32,10 +32,10 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...includes, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+		edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
 
 		// Fin
-		return res.json({OK: true, quedanCampos, statusAprob});
+		return res.json({quedanCampos: !!edicion});
 	},
 	// Links
 	linkAltaBaja: async (req, res) => {
