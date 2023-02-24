@@ -453,7 +453,7 @@ module.exports = {
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			if (aprob) await posibleAprobado(entidad, {...original, [campo]: edicion[campo]});
+			if (aprob) await posibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return edicion;
