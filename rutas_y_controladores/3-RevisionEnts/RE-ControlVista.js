@@ -336,7 +336,7 @@ module.exports = {
 		// 3. PROCESOS DE CIERRE
 		// - Si corresponde: cambia de status, también las colecciones, 
 		// - Actualiza 'prodsEnRCLV'
-		await procesos.edicion.posibleAprobado(entidad, {...original, avatar});
+		if (aprob) await procesos.edicion.posibleAprobado(entidad, {...original, avatar});
 
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);
