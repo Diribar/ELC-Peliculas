@@ -215,7 +215,7 @@ module.exports = {
 				editado_en: original.creado_en,
 				edic_analizada_por_id: revID,
 				edic_analizada_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
+				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
 			};
 
 			// RCLV actual
