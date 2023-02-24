@@ -32,16 +32,17 @@ module.exports = {
 			// Corrige errores de data-entry
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-			// Condiciones
-			// 1. La edición no es 'null'
+			// CONDICION 1: La edición no es 'null'
 			let condicion1 = edicion[campo] === null;
-			// 2. El original y la edición no son 'null' ni 'undefined' y son 'iguales'
+
+			// CONDICION 2: El original y la edición no son 'null' ni 'undefined' y son 'iguales'
 			// El original no puede ser 'null', porque ya habría sido eliminado
 			// El original no puede ser 'undefined', porque ya lo estamos preguntando
 			// La edición no puede ser 'null', porque ya habría sido eliminada
 			// La edición no puede ser 'undefined', porque existe el método
 			let condicion2 = original[campo] !== undefined && edicion[campo] !== undefined && edicion[campo] == original[campo];
-			// 3. El objeto vinculado tiene el mismo ID
+
+			// CONDICION 3: El objeto vinculado tiene el mismo ID
 			let condicion3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
