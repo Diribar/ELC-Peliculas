@@ -19,26 +19,28 @@
 #centro #arriba #tituloPrincipal .ayuda {translate: 0 -50%; right: 10px;}
 #centro #arriba #timer {position: static; margin-left: auto;}
 
-/* Sección central - Medio - Info */
-#centro #medio .contenedorOpcionAvatar {max-width: 40%; border-radius: 20px; background: var(--gris-claro); }
-#centro #medio .contenedorOpcionAvatar {border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-#centro #medio .contenedorOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
-#centro #medio .contenedorOpcionAvatar#aprobar {transform-origin: left;}
-#centro #medio .contenedorOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
-#centro #medio .contenedorOpcionAvatar#mostrarMotivos {transform-origin: right;}
-#centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
+/* Sección central - Medio */
+#centro #medio {display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;}
+#centro #medio {width: 100%; z-index: 1;}
 
+/* Sección central - Medio - Info */
+#centro #medio .contenedorOpcionAvatar {max-width: 40%; border-radius: 20px; }
+#centro #medio .contenedorOpcionAvatar {border: 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio .contenedorOpcionAvatar#aprobar {border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none;}
+#centro #medio .contenedorOpcionAvatar#aprobar {transform-origin: left; background: var(--verde-claro); border-color: var(--verde-oscuro);}
+#centro #medio .contenedorOpcionAvatar#mostrarMotivos {border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;}
+#centro #medio .contenedorOpcionAvatar#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
+#centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
 #centro #medio #info {padding: 15px 20px; width: fit-content;}
-#centro #medio #info h2 {text-align: left; margin-bottom: 5px;}
-#centro #medio #info ul {list-style-position: outside;}
-#centro #medio #info ul {text-align: left;}
+#centro #medio #info h2 {text-align: left;}
+#centro #medio #info ul {list-style-position: outside; text-align: left;}
+#centro #medio #info ul:has(li) {margin-top: 5px;}
 #centro #medio #info ul li {font-size: 1.1rem; margin-left: 15px;}
 
 /* Sección central - Medio - Ficha Técnica */
-#centro #medio #fichaTecnica {margin: 20px auto 0; padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw;}
-#centro #medio #fichaTecnica {background: var(--verde-claro); border: var(--verde-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#centro #medio #fichaTecnica {padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw; align-self: center;}
+#centro #medio #fichaTecnica {background: var(--gris-claro); border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #centro #medio #fichaTecnica p {line-height: 1.5; font-size: 1.15rem;}
-#centro #medio {display: flex; flex-direction: column; width: 100%; flex-grow: 1; justify-content: space-evenly; z-index: 1;}
 
 /* Sección central - Flechas */
 .flechas {width: fit-content;}

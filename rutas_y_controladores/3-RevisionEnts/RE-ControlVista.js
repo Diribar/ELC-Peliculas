@@ -6,7 +6,6 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
-const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 const validaRCLV = require("../2.2-RCLV-CRUD/RCLV-Validar");
 
 module.exports = {
@@ -240,7 +239,7 @@ module.exports = {
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
-				await procesos.edicion.prodEdic_actualizaAvatar(prodOrig, prodEdic, true);
+				await procesos.edicion.actualizaArchivoAvatar(prodOrig, prodEdic, true);
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 				await BD_genericas.actualizaPorId(entidad, prodOrig.id, {avatar: prodEdic.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
@@ -317,74 +316,27 @@ module.exports = {
 		let campo = "avatar";
 		let aprob = !rechazado;
 
-		// RECHAZO - Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
-		if (rechazado) {
-			let url = original.avatar;
-			if (url.startsWith("http")) {
-				// Asigna un nombre al archivo a descargar
-				let avatar = Date.now() + path.extname(url);
-				// Descarga el url
-				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
-				await comp.descarga(url, rutaYnombre, true);
-			}
-		}
+		// CONSECUENCIAS
+		// 1. PROCESOS PARTICULARES PARA AVATAR
+		let avatar;
+		[edicion, avatar] = await procesos.particsRevisionAvatar(entidad, original, edicion, rechazado);
 
-		// AMBOS - Impacto en los archivos de avatar (original y edicion)
-		await procesos.edicion.prodEdic_actualizaAvatar(original, edicion, aprob);
-
-		// Particularidad
-		// REGISTRO EDICION: borra el campo 'avatar_url' en el registro de edicion
-		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
-		delete edicion.avatar_url;
-
-		// PROCESOS DE edicAprobRech:
-		// 1. Si se aprobó, actualiza el registro de 'original'
-		// 5. Actualiza el registro de 'edición'
-		// 2. Actualiza la tabla de edics_aprob/rech
-		// 3. Aumenta el campo aprob/rech en el registro del usuario
-		// 4. Si corresponde, penaliza al usuario
+		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
+		// - Si se aprobó, actualiza el registro de 'original'
+		// - Actualiza el registro de 'edición'
+		// - Actualiza la tabla de edics_aprob/rech
+		// - Aumenta el campo aprob/rech en el registro del usuario
+		// - Si corresponde, penaliza al usuario
+		// - Pule la edición, y si no quedan campos, elimina el registro de la tabla
 		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
-
-		// Pule la edición
-		// Averigua si quedan campos, y en caso que no queden, elimina el registro de la tabla
 		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
 
-		// Se fija si el registro original supera el control de errores
-		let errores = await validaPR.consolidado({datos: {...prodComb, entidad}});
-
-		// Si el registro estaba pendiente de pasar a aprobado y no hay errores, activa procesos
-		if ([creado_id, creado_aprob_id].includes(original.status_registro_id) && !errores.hay) {
-			// Variables
-			let ahora = comp.ahora();
-
-			// Cambia el status del registro
-			let datosCambioStatus = {
-				alta_terminada_en: ahora,
-				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
-				status_registro_id: aprobado.id,
-			};
-			await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
-
-			// Si es una colección, le cambia el status también a los capítulos
-			if (entidad == "colecciones") {
-				datosCambioStatus.alta_analizada_por_id = 2;
-				datosCambioStatus.alta_analizada_en = ahora;
-				BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
-			}
-
-			// Actualiza prodEnRCLV
-			procsCRUD.cambioDeStatus(entidad,{...original,...datosCambioSatus})
-		}
-
-		// Si a la edición le quedan campos, recarga el url
-		if (edicion) return res.redirect(req.originalUrl);
-		// De lo contrario...
-		else {
-			// Libera el producto
-			BD_genericas.actualizaPorId(entidad, prodID, {captura_activa: 0});
-			// Avisa que no quedan campos y permite regresar al tablero
-			return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
-		}
+		// 3. PROCESOS DE CIERRE
+		// - Si corresponde: cambia de status, también las colecciones, prodsEnRCLV
+		// - Decide cuáles son los próximos pasos
+		let proximosPasos = await procesos.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
+		if (proximosPasos=="redirect") return res.redirect(req.originalUrl);
+		else return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código

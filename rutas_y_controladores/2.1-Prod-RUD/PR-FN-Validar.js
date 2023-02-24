@@ -12,12 +12,12 @@ module.exports = {
 		// Obtiene los campos
 		if (!campos) {
 			let camposDD = variables.camposDD.filter((n) => n[entidad]);
-			let camposDA = variables.camposDA
+			let camposDA = variables.camposDA;
 			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
 		// Averigua si hay errores de validación DD y DA
 		let erroresDD = await validaProd.datosDuros(campos, datos);
-		let erroresDA = await validaProd.datosAdics(campos, datos);
+		let erroresDA = validaProd.datosAdics(campos, datos);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDA};
 		errores.hay = erroresDD.hay || erroresDA.hay;

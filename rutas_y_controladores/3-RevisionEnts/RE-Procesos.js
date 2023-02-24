@@ -1,11 +1,12 @@
 "use strict";
 // Definir variables
+const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -409,7 +410,63 @@ module.exports = {
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 
 			// Fin
-			return
+			return;
+		},
+		// Cada vez que se aprueba/rechaza un avatar sugerido
+		actualizaArchivoAvatar: async (prodOrig, prodEdic, reemplazar) => {
+			// Variables
+			const avatarOrig = prodOrig.avatar;
+			const avatarEdic = prodEdic.avatar;
+
+			// Reemplazo
+			if (reemplazar) {
+				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
+				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
+
+				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+			}
+
+			// Elimina el archivo de edicion
+			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+
+			// Fin
+			return;
+		},
+		prodsEdicGuardar_procsDeCierre: async (entidad, original, edicion, avatar) => {
+			// 1. POTENCIAL CAMBIO DE STATUS
+			// - Averigua si el registro está en un status previo a 'aprobado'
+			if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
+				// Averigua si hay errores
+				let errores = await validaPR.consolidado({datos: {...original, avatar, entidad}});
+				if (!errores.hay) {
+					// Se activan los procesos
+
+					// 1.A. Cambia el status del registro
+					let ahora = comp.ahora();
+					let datosCambioStatus = {
+						alta_terminada_en: ahora,
+						lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+						status_registro_id: aprobado.id,
+					};
+					await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
+
+					// 1.B. Si es una colección, le cambia el status también a los capítulos
+					if (entidad == "colecciones") {
+						datosCambioStatus.alta_analizada_por_id = 2;
+						datosCambioStatus.alta_analizada_en = ahora;
+						await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+					}
+
+					// 1.C. Actualiza prodEnRCLV
+					procsCRUD.cambioDeStatus(entidad, {...original, ...datosCambioSatus});
+				}
+			}
+
+			// 2. PROXIMOS PASOS
+			// Si a la edición le quedan campos, recarga el url
+			return edicion ? "redirect" : "render";
 		},
 		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
 			// Funciones
@@ -463,29 +520,6 @@ module.exports = {
 			// Fin
 			return derecha;
 		},
-		prodsAprobEnRCLV: function (prodOrig, campo_id, edicAprob, statusAprobOrig, statusAprob) {
-			// Actualiza 'prods_aprob' en rclvs, si ocurre 1 y (2 ó 3)
-			// 1. Se aprobó un cambio y el producto está aprobado
-			// 2. El cambio es un campo_id  con id distinto de 1
-			// 3. El registro no estaba aprobado
-			const campos_id = ["personaje_id", "hecho_id", "valor_id"];
-			if (
-				edicAprob && // Se aprobó un cambio
-				statusAprob && // El producto está aprobado
-				((campos_id.includes(campo_id) && prodOrig[campo_id] != 1) || // El cambio es un campo RCLV con valor distinto de 1
-					!statusAprobOrig) // El registro no estaba aprobado
-			)
-				campos_id.forEach((campo_id) => {
-					let RCLV_id = prodOrig[campo_id]; // Obtiene el RCLV_id
-					if (RCLV_id) {
-						let entidad = comp.obtieneRCLVdesdeRCLV_id({[campo_id]: true});
-						BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
-					}
-				});
-
-			// Fin
-			return;
-		},
 		// Prod-Edición Form
 		prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
 			// Obtiene todos los campos a revisar
@@ -532,27 +566,6 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		prodEdic_actualizaAvatar: async (prodOrig, prodEdic, reemplazar) => {
-			// Variables
-			const avatarOrig = prodOrig.avatar;
-			const avatarEdic = prodEdic.avatar;
-
-			// Gestión de archivos
-			if (reemplazar) {
-				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
-				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
-
-				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-			}
-
-			// ARCHIVO NUEVO: elimina el archivo de edicion
-			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
-
-			// Fin
-			return;
-		},
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 			iconos: [
@@ -596,6 +609,35 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
+	},
+	// Cada vez que se aprueba/rechaza un avatar sugerido
+	particsRevisionAvatar: async function (entidad, original, edicion, rechazado) {
+		// Variables
+		let avatar;
+
+		// 1. Actualiza la variable 'avatar' y eventualmente descarga el archivo
+		if (rechazado) {
+			// Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
+			let url = original.avatar;
+			if (url.startsWith("http") && entidad != "capitulos") {
+				// Asigna un nombre al archivo a descargar
+				avatar = Date.now() + path.extname(url);
+				// Descarga el url
+				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
+				await comp.descarga(url, rutaYnombre, true);
+			} else avatar = original.avatar;
+		} else avatar = edicion.avatar;
+
+		// 2. Borra el campo 'avatar_url' en el registro de edicion y en la variable
+		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
+		delete edicion.avatar_url;
+
+		// 3. Impacto en los archivos de avatar (original y edicion)
+		await this.edicion.actualizaArchivoAvatar(original, edicion, !rechazado);
+
+		// Fin - Devuelve edicion sin 'avatar_url' y avatar con su valor vigente
+
+		return [edicion, avatar];
 	},
 
 	// Links - Vista
