@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id, edicion_id: edicID} = req.query;
 	let entEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-	let informacion
+	let informacion;
 
 	// 1. Acciones en caso de que exista el 'edicID'
 	if (edicID) {
@@ -38,7 +38,6 @@ module.exports = async (req, res, next) => {
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url
 		if (ediciones.length) return res.redirect(req.originalUrl + "&edicion_id=" + ediciones[0].id);
-		
 		// 2.2. En caso que no exista, mensaje de error
 		else
 			informacion = {
