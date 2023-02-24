@@ -14,11 +14,8 @@ module.exports = {
 		return res.json(motivoGenerico_id);
 	},
 	edicAprobRech: async (req, res) => {
-		console.log(13, req.query);
-		return res.json();
 		// Variables
 		const {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
 		let quedanCampos, statusAprob;
