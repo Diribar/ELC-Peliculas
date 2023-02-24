@@ -239,7 +239,7 @@ module.exports = {
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
-				await procesos.edicion.actualizaArchivoAvatar(original, edicion, true);
+				await procesos.edicion.procsParticsAvatar({original, edicion, aprob:true});
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 				await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
@@ -267,7 +267,7 @@ module.exports = {
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(original, edicion);
 			// Obtiene el avatar
-			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig
+			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig;
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
 			bloqueDer = await procesos.edicion.fichaDelRegistro(original, edicion);
@@ -286,7 +286,6 @@ module.exports = {
 			prodNombre,
 			ingresos,
 			reemplazos,
-			avatar,
 			motivos,
 			entidad,
 			id: prodID,
@@ -315,26 +314,11 @@ module.exports = {
 		let aprob = !rechazado;
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
-		// - Actualiza la variable 'avatar' y eventualmente descarga el archivo
-		// - Borra el campo 'avatar_url' en el registro de edicion y en la variable
-		// - Impacto en los archivos de avatar (original y edicion)
-		let avatar;
-		[edicion, avatar] = await procesos.procsParticsAvatar(entidad, original, edicion, rechazado);
+		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
+		delete edicion.avatar_url;
 
 		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
-		// - Si se aprobó, actualiza el registro de 'original'
-		// - Actualiza el registro de 'edición'
-		// - Actualiza la tabla de edics_aprob/rech
-		// - Aumenta el campo aprob/rech en el registro del usuario
-		// - Si corresponde, penaliza al usuario
-		// - Pule la edición, y si no quedan campos, elimina el registro de la tabla
-		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
-		[edicion] = await procsCRUD.puleEdicion(original, edicion);
-
-		// 3. PROCESOS DE CIERRE
-		// - Si corresponde: cambia de status, también las colecciones, 
-		// - Actualiza 'prodsEnRCLV'
-		if (aprob) await procesos.edicion.posibleAprobado(entidad, {...original, avatar});
+		edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
 
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);

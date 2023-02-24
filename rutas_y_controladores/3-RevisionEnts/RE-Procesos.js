@@ -359,31 +359,44 @@ module.exports = {
 
 	// Edición
 	edicion: {
-		// VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
-		actualizaArchivoAvatar: async (original, edicion, reemplazar) => {
-			// Variables
-			const avatarOrig = original.avatar;
-			const avatarEdic = edicion.avatar;
+		// Cada vez que se revisa un avatar
+		procsParticsAvatar: async ({entidad, original, edicion, aprob}) => {
+			// TAREAS:
+			// - Eventualmente descarga el archivo
+			// - Borra el campo 'avatar_url' en el registro de edicion
+			// - Impacto en los archivos de avatar (original y edicion)
 
-			// Reemplazo
-			if (reemplazar) {
-				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
-				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
-
-				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+			// 1. Eventualmente descarga el archivo
+			if (!aprob) {
+				// Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
+				let url = original.avatar;
+				if (url.startsWith("http") && entidad != "capitulos") {
+					// Asigna un nombre al archivo a descargar
+					original.avatar = Date.now() + path.extname(url);
+					// Descarga el url
+					let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar;
+					await comp.descarga(url, rutaYnombre);
+				}
 			}
 
-			// Elimina el archivo de edicion
-			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+			// 2. Borra el campo 'avatar_url' en el registro de edicion
+			await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
+
+			// 3. Impacto en los archivos de avatar (original y edicion)
+			await actualizaArchivoAvatar(original, edicion, aprob);
 
 			// Fin
 			return;
 		},
-
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
+			// TAREAS:
+			// - Si se aprobó, actualiza el registro de 'original'
+			// - Actualiza la tabla de edics_aprob/rech
+			// - Aumenta el campo aprob/rech en el registro del usuario
+			// - Si corresponde, penaliza al usuario
+			// - Actualiza el registro de 'edición'
+
 			// Variables
 			const familia = comp.obtieneFamiliaEnPlural(entidad);
 			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
@@ -411,10 +424,8 @@ module.exports = {
 				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
-			let valorOrig = relacInclude ? original[relacInclude].nombre : original[campo];
-			let valorEdic = relacInclude ? edicion[relacInclude].nombre : edicion[campo];
-			datos.valorAprob = aprob ? valorEdic : valorOrig;
-			datos.valorRech = aprob ? valorOrig : valorEdic;
+			datos.valorAprob = aprob ? edicion[campo] : original[campo];
+			datos.valorRech = aprob ? original[campo] : edicion[campo];
 
 			// CONSECUENCIAS
 			// 1. Si se aprobó, actualiza el registro de 'original'
@@ -435,42 +446,17 @@ module.exports = {
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 
-			// Fin
-			return;
-		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
-		posibleAprobado: async (entidad, original) => {
-			// - Averigua si el registro está en un status previo a 'aprobado'
-			if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
-				// Averigua si hay errores
-				let errores = await validaPR.consolidado({datos: {...original, entidad}});
-				if (!errores.hay) {
-					// Variables
-					let ahora = comp.ahora();
-					let datosCambioStatus = {
-						alta_terminada_en: ahora,
-						lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
-						status_registro_id: aprobado.id,
-					};
+			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
+			[edicion] = await procsCRUD.puleEdicion(originalGuardado, edicion);
 
-					// Le cambia el status del registro
-					await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
-
-					// Si es una colección, le cambia el status también a los capítulos
-					if (entidad == "colecciones") {
-						datosCambioStatus.alta_analizada_por_id = 2;
-						datosCambioStatus.alta_analizada_en = ahora;
-						await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
-					}
-
-					// Actualiza prodEnRCLV
-					procsCRUD.cambioDeStatus(entidad, {...original, ...datosCambioSatus});
-				}
-			}
+			// 7. PROCESOS DE CIERRE
+			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
+			// - Actualiza 'prodsEnRCLV'
+			if (aprob) await posibleAprobado(entidad, {...original, [campo]: edicion[campo]});
 
 			// Fin
-			// Si a la edición le quedan campos, recarga el url
-			return;
+			return edicion;
 		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
@@ -626,35 +612,6 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 	},
-	// Cada vez que se aprueba/rechaza un avatar sugerido
-	procsParticsAvatar: async function (entidad, original, edicion, rechazado) {
-		// Variables
-		let avatar;
-
-		// 1. Actualiza la variable 'avatar' y eventualmente descarga el archivo
-		if (rechazado) {
-			// Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
-			let url = original.avatar;
-			if (url.startsWith("http") && entidad != "capitulos") {
-				// Asigna un nombre al archivo a descargar
-				avatar = Date.now() + path.extname(url);
-				// Descarga el url
-				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
-				await comp.descarga(url, rutaYnombre);
-			} else avatar = original.avatar;
-		} else avatar = edicion.avatar;
-
-		// 2. Borra el campo 'avatar_url' en el registro de edicion y en la variable
-		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
-		delete edicion.avatar_url;
-
-		// 3. Impacto en los archivos de avatar (original y edicion)
-		await this.edicion.actualizaArchivoAvatar(original, edicion, !rechazado);
-
-		// Fin - Devuelve edicion sin 'avatar_url' y avatar con su valor vigente
-
-		return [edicion, avatar];
-	},
 
 	// Links - Vista
 	problemasProd: (producto, urlAnterior) => {
@@ -704,4 +661,61 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// Fin
 	return resultados;
+};
+
+// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
+let posibleAprobado = async (entidad, original) => {
+	// - Averigua si el registro está en un status previo a 'aprobado'
+	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
+		// Averigua si hay errores
+		let errores = await validaPR.consolidado({datos: {...original, entidad}});
+		if (!errores.hay) {
+			// Variables
+			let ahora = comp.ahora();
+			let datos = {
+				alta_terminada_en: ahora,
+				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+				status_registro_id: aprobado.id,
+			};
+
+			// Cambia el status del registro
+			await BD_genericas.actualizaPorId(entidad, original.id, datos);
+
+			// Si es una colección, le cambia el status también a los capítulos
+			if (entidad == "colecciones") {
+				datos.alta_analizada_por_id = 2;
+				datos.alta_analizada_en = ahora;
+				await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+			}
+
+			// Actualiza prodEnRCLV
+			procsCRUD.cambioDeStatus(entidad, {...original, ...datos});
+		}
+	}
+
+	// Fin
+	// Si a la edición le quedan campos, recarga el url
+	return;
+};
+// VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
+let actualizaArchivoAvatar = async (original, edicion, aprob) => {
+	// Variables
+	const avatarOrig = original.avatar;
+	const avatarEdic = edicion.avatar;
+
+	// Reemplazo
+	if (aprob) {
+		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+		let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
+		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
+
+		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+		comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+	}
+
+	// Elimina el archivo de edicion
+	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+
+	// Fin
+	return;
 };
