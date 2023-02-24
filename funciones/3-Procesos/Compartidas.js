@@ -138,12 +138,6 @@ module.exports = {
 			? "link"
 			: "";
 	},
-	obtieneProdDesdeProducto_id: (edicion) => {
-		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
-	},
-	obtieneRCLVdesdeRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
-	},
 	obtieneNombreEdicionDesdeEntidad: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "prods_edicion"
@@ -152,6 +146,12 @@ module.exports = {
 			: entidad == "links"
 			? "links_edicion"
 			: "";
+	},
+	obtieneProdDesdeProducto_id: (edicion) => {
+		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
+	},
+	obtieneRCLVdesdeRCLV_id: (edicion) => {
+		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
 	},
 	obtieneEntidadDesdeCampo_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
