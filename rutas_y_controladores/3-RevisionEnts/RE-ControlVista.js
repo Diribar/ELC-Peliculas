@@ -245,7 +245,7 @@ module.exports = {
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
 				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
 				// Recarga la ruta
-				return res.send(req.originalUrl);
+				return res.redirect(req.originalUrl);
 			}
 			// Reemplazo manual
 			else if (!reemplAvatarAutomaticam) {
