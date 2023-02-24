@@ -525,7 +525,7 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 		// Prod-Edición Form
-		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
+		fichaDelRegistro: async (original, edicion) => {
 			// Funciones
 			let usuario_CalidadEdic = async (userID) => {
 				// 1. Obtiene los datos del usuario
@@ -551,27 +551,27 @@ module.exports = {
 			let bloque1 = [];
 			let fecha;
 			// Bloque 1 ---------------------------------------------
-			if (entidadOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: entidadOrig.ano_estreno});
-			if (entidadOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: entidadOrig.ano_fin});
-			if (entidadOrig.duracion) bloque1.push({titulo: "Duracion", valor: entidadOrig.duracion + " min."});
+			if (original.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: original.ano_estreno});
+			if (original.ano_fin) bloque1.push({titulo: "Año de fin", valor: original.ano_fin});
+			if (original.duracion) bloque1.push({titulo: "Duracion", valor: original.duracion + " min."});
 			// Obtiene la fecha de alta
-			fecha = comp.fechaTexto(entidadOrig.creado_en);
+			fecha = comp.fechaTexto(original.creado_en);
 			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 			// Obtiene la fecha de edicion
-			fecha = comp.fechaTexto(entidadEdic.editado_en);
+			fecha = comp.fechaTexto(edicion.editado_en);
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
-			let statusResumido = entidadOrig.status_registro.gr_creado
+			let statusResumido = original.status_registro.gr_creado
 				? {id: 1, valor: "Pend. Aprobac."}
-				: entidadOrig.status_registro.aprobado
+				: original.status_registro.aprobado
 				? {id: 2, valor: "Aprobado"}
 				: {id: 3, valor: "Inactivado"};
 			bloque1.push({titulo: "Status", ...statusResumido});
 			// Bloque 2 ---------------------------------------------
 			// Obtiene los datos del usuario
-			let fichaDelUsuario = await comp.usuarioFicha(entidadEdic.editado_por_id, ahora);
+			let fichaDelUsuario = await comp.usuarioFicha(edicion.editado_por_id, ahora);
 			// Obtiene la calidad de las altas
-			let calidadEdic = await usuario_CalidadEdic(entidadEdic.editado_por_id);
+			let calidadEdic = await usuario_CalidadEdic(edicion.editado_por_id);
 			// Bloque consolidado -----------------------------------
 			let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 			// Fin

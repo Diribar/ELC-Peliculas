@@ -239,7 +239,7 @@ module.exports = {
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
-				await procesos.edicion.procsParticsAvatar({original, edicion, aprob:true});
+				await procesos.edicion.procsParticsAvatar({original, edicion, aprob: true});
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 				await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
@@ -259,6 +259,8 @@ module.exports = {
 		}
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
+			// Variables
+			let userID = edicion.editado_por_id;
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// for (let campo in edicion) if (edicion[campo]===null) delete edicion[campo]
@@ -270,7 +272,7 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig;
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
-			bloqueDer = await procesos.edicion.fichaDelRegistro(original, edicion);
+			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id: userID});
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
