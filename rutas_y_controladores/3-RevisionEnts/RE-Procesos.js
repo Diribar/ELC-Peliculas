@@ -611,7 +611,7 @@ module.exports = {
 		},
 	},
 	// Cada vez que se aprueba/rechaza un avatar sugerido
-	particsRevisionAvatar: async function (entidad, original, edicion, rechazado) {
+	procsParticsAvatar: async function (entidad, original, edicion, rechazado) {
 		// Variables
 		let avatar;
 
@@ -624,7 +624,7 @@ module.exports = {
 				avatar = Date.now() + path.extname(url);
 				// Descarga el url
 				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
-				await comp.descarga(url, rutaYnombre, true);
+				await comp.descarga(url, rutaYnombre);
 			} else avatar = original.avatar;
 		} else avatar = edicion.avatar;
 

@@ -316,10 +316,12 @@ module.exports = {
 		let campo = "avatar";
 		let aprob = !rechazado;
 
-		// CONSECUENCIAS
 		// 1. PROCESOS PARTICULARES PARA AVATAR
+		// - Actualiza la variable 'avatar' y eventualmente descarga el archivo
+		// - Borra el campo 'avatar_url' en el registro de edicion y en la variable
+		// - Impacto en los archivos de avatar (original y edicion)
 		let avatar;
-		[edicion, avatar] = await procesos.particsRevisionAvatar(entidad, original, edicion, rechazado);
+		[edicion, avatar] = await procesos.procsParticsAvatar(entidad, original, edicion, rechazado);
 
 		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
 		// - Si se aprobó, actualiza el registro de 'original'
@@ -334,8 +336,8 @@ module.exports = {
 		// 3. PROCESOS DE CIERRE
 		// - Si corresponde: cambia de status, también las colecciones, prodsEnRCLV
 		// - Decide cuáles son los próximos pasos
-		let proximosPasos = await procesos.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
-		if (proximosPasos=="redirect") return res.redirect(req.originalUrl);
+		let proximosPasos = await procesos.edicion.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
+		if (proximosPasos == "redirect") return res.redirect(req.originalUrl);
 		else return res.render("CMP-0Estructura", {informacion: procesos.edicion.cartelNoQuedanCampos});
 	},
 	rclv_edicForm: async (req, res) => {
