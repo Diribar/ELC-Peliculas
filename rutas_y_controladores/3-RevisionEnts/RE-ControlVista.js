@@ -270,7 +270,6 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
-			infoErronea_id = motivos.find((n) => n.info_erronea).id;
 			bloqueDer = await procesos.edicion.fichaDelRegistro(original, edicion);
 			imgDerPers = avatar;
 		}
@@ -289,7 +288,6 @@ module.exports = {
 			reemplazos,
 			avatar,
 			motivos,
-			infoErronea_id,
 			entidad,
 			id: prodID,
 			bloqueDer,
