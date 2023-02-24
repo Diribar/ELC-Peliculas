@@ -7,9 +7,8 @@ const variables = require("../../funciones/3-Procesos/Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Soporte para lectura y guardado de edición
-	puleEdicion: async (original, edicion) => {
+	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const entidad = comp.obtieneEntidadDesdeCampo_id(edicion);
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
 		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const edicion_id = edicion.id;
@@ -84,7 +83,7 @@ module.exports = {
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			let camposNull;
-			[edicion, camposNull] = await this.puleEdicion(original, edicion);
+			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
 				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, camposNull);
@@ -100,7 +99,7 @@ module.exports = {
 		let camposNull;
 
 		// Quita la info que no agrega valor
-		[edicion, camposNull] = await this.puleEdicion(original, edicion);
+		[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 
 		// Acciones si quedan campos
 		if (edicion) {

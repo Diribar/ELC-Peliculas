@@ -448,7 +448,7 @@ module.exports = {
 
 			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
-			[edicion] = await procsCRUD.puleEdicion(originalGuardado, edicion);
+			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
