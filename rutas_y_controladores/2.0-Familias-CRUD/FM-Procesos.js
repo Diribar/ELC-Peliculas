@@ -7,11 +7,12 @@ const variables = require("../../funciones/3-Procesos/Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Soporte para lectura y guardado de edición
-	puleEdicion: async (original, edicion, entidad) => {
+	puleEdicion: async (original, edicion) => {
 		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-		let edicion_id = edicion.id;
+		const entidad = comp.obtieneEntidadDesdeCampo_id(edicion);
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const edicion_id = edicion.id;
 		let camposNull = {};
 
 		// 1. Quita de edición los campos que no se comparan
@@ -32,19 +33,20 @@ module.exports = {
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
 			// Condiciones
-			let condicion1 =
-				// 1. El original y la edición no son 'null' ni 'undefined' y son 'iguales'
-				// El original no puede ser 'null', porque ya habría sido eliminado
-				// El original no puede ser 'undefined', porque ya lo estamos preguntando
-				// La edición no puede ser 'null', porque ya habría sido eliminada
-				// La edición no puede ser 'undefined', porque existe el método
-				original[campo] !== undefined && edicion[campo] == original[campo];
-			// 2. El objeto vinculado tiene el mismo ID
-			let condicion2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
+			// 1. La edición no es 'null'
+			let condicion1 = edicion[campo] === null;
+			// 2. El original y la edición no son 'null' ni 'undefined' y son 'iguales'
+			// El original no puede ser 'null', porque ya habría sido eliminado
+			// El original no puede ser 'undefined', porque ya lo estamos preguntando
+			// La edición no puede ser 'null', porque ya habría sido eliminada
+			// La edición no puede ser 'undefined', porque existe el método
+			let condicion2 = original[campo] !== undefined && edicion[campo] !== undefined && edicion[campo] == original[campo];
+			// 3. El objeto vinculado tiene el mismo ID
+			let condicion3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
-			if (condicion1 || condicion2) delete edicion[campo];
-			if (condicion1) camposNull[campo] = null;
+			if (condicion1 || condicion2 || condicion3) delete edicion[campo];
+			if (condicion2 || condicion2) camposNull[campo] = null;
 		}
 
 		// 3. Acciones en función de si quedan campos
@@ -81,7 +83,7 @@ module.exports = {
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			let camposNull;
-			[edicion, camposNull] = await this.puleEdicion(original, edicion, entidad);
+			[edicion, camposNull] = await this.puleEdicion(original, edicion);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
 				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, camposNull);
@@ -97,7 +99,7 @@ module.exports = {
 		let camposNull;
 
 		// Quita la info que no agrega valor
-		[edicion, camposNull] = await this.puleEdicion(original, edicion, entidad);
+		[edicion, camposNull] = await this.puleEdicion(original, edicion);
 
 		// Acciones si quedan campos
 		if (edicion) {
@@ -125,27 +127,27 @@ module.exports = {
 		return edicion ? "Edición guardada" : "Edición sin novedades respecto al original";
 	},
 	// Avatar
-	obtieneAvatarOrigEdic: (prodOrig, prodEdic) => {
+	obtieneAvatarOrigEdic: (original, edicion) => {
 		let avatarOrig =
 			// Si es un url
-			prodOrig.avatar.startsWith("http")
-				? prodOrig.avatar
+			original.avatar.startsWith("http")
+				? original.avatar
 				: // Si no existe avatarOrig
 				  localhost +
 				  "/imagenes/" +
-				  (!prodOrig || !prodOrig.avatar
+				  (!original || !original.avatar
 						? "0-Base/Avatar/Prod-Sin-Avatar.jpg"
 						: // Si el avatar está 'aprobado'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + prodOrig.avatar)
-						? "2-Avatar-Prods-Final/" + prodOrig.avatar
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
+						? "2-Avatar-Prods-Final/" + original.avatar
 						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + prodOrig.avatar)
-						? "2-Avatar-Prods-Revisar/" + prodOrig.avatar
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
+						? "2-Avatar-Prods-Revisar/" + original.avatar
 						: "");
 
 		// avatarEdic
 		let avatarEdic =
-			prodEdic && prodEdic.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + prodEdic.avatar : avatarOrig;
+			edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
