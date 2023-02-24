@@ -8,27 +8,34 @@ const procesos = require("./RE-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	// Productos
+	// Productos y RCLV
+	motivoGenerico: (req, res) => {
+		let motivoGenerico_id = edic_motivos_rech.find((n) => n.info_erronea).id;
+		return res.json(motivoGenerico_id);
+	},
 	edicAprobRech: async (req, res) => {
+		console.log(13, req.query);
+		return res.json();
 		// Variables
-		const {entidad, id: entID, edicion_id: edicID, campo} = req.query;
+		const {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const nombreEdic = (familia == "productos" ? "prods" : familia) + "_edicion";
+		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const revID = req.session.usuario.id;
 		let quedanCampos, statusAprob;
 
 		// Obtiene el registro editado
-		let includesEdic = comp.obtieneTodosLosCamposInclude(entidad);
-		let regEdic = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includesEdic);
+		let includes = comp.obtieneTodosLosCamposInclude(entidad);
+		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includes);
 		// Si no existe la edición, interrumpe el flujo
-		if (!regEdic) return res.json({OK: false, mensaje: "No se encuentra la edición"});
+		if (!edicion) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
-		if (!regEdic[campo]) return res.json({OK: false, mensaje: "El campo ya se había procesado"});
+		if (!edicion[campo]) return res.json({OK: false, mensaje: "El campo no está pendiente para procesar"});
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...includesEdic, "status_registro"];
-		let regOrig = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...includes, "status_registro"]);
 
-		[, , quedanCampos, statusAprob] = await procesos.edicion.edicAprobRech(req, regOrig, regEdic);
+		// PROCESOS COMUNES A TODOS LOS CAMPOS
+		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
 
 		// Fin
 		return res.json({OK: true, quedanCampos, statusAprob});
