@@ -66,7 +66,7 @@ module.exports = {
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic);
 			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
@@ -74,7 +74,7 @@ module.exports = {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
 			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
-			imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic).edic;
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -125,7 +125,7 @@ module.exports = {
 
 		// Averigua si hay errores de validación
 		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID}; // se debe agregar el prodID, para verificar que no esté repetido
-		let errores = await valida.consolidado("", {...prodComb, entidad});
+		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {

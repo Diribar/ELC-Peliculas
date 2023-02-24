@@ -15,10 +15,7 @@ module.exports = {
 		let calificaciones = [];
 		// Datos generales
 		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) =>
-			n.fe_valores != null &&
-			n.entretiene != null &&
-			n.calidad_tecnica != null &&
-			n.calificacion != null
+			n.fe_valores != null && n.entretiene != null && n.calidad_tecnica != null && n.calificacion != null
 				? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
 				: ""
 		);
@@ -32,11 +29,7 @@ module.exports = {
 			datos = await BD_genericas.obtienePorCampos("cal_registros", {
 				usuario_id: userID,
 				[campo_id]: prodID,
-			}).then((n) =>
-				n
-					? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
-					: ""
-			);
+			}).then((n) => (n ? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100] : ""));
 			if (datos) {
 				let calificacionUsuario = {encabezado: "Tuya", valores: datos};
 				calificaciones.push(calificacionUsuario);
@@ -50,7 +43,7 @@ module.exports = {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await valida.consolidado(campos, req.query);
+		let errores = await valida.consolidado({campos, datos: req.query});
 		// Devuelve el resultado
 		return res.json(errores);
 	},
@@ -74,8 +67,7 @@ module.exports = {
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
 
 		if (condicion && prodEdic) {
-			if (prodEdic.avatar)
-				comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
+			if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
 			BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
 		}
 		// Terminar

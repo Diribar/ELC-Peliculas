@@ -1,11 +1,12 @@
 "use strict";
 // Definir variables
+const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaProds = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -200,6 +201,12 @@ module.exports = {
 	alta: {
 		// Alta Guardar
 		rclvEdicAprobRech: async (entidad, original, revID) => {
+			// Variables
+			const ahora = comp.ahora();
+			let ediciones = {edics_aprob: 0, edics_rech: 0};
+			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+
 			// Prepara la información
 			let datos = {
 				entidad,
@@ -207,22 +214,17 @@ module.exports = {
 				editado_por_id: original.creado_por_id,
 				editado_en: original.creado_en,
 				edic_analizada_por_id: revID,
-				edic_analizada_en: comp.ahora(),
+				edic_analizada_en: ahora,
+				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
 			};
-
-			// Campos a revisar
-			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamiliaEnPlural(entidad);
-			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// RCLV actual
 			let includes = comp.obtieneTodosLosCamposInclude(entidad);
 			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
 
 			// Motivos posibles
-			let motivos = await BD_genericas.obtieneTodos("edic_motivos_rech", "orden");
-			let motivoVersionActual = motivos.find((n) => n.version_actual);
-			let motivoInfoErronea = motivos.find((n) => n.info_erronea);
+			let motivoVersionActual = edic_motivos_rech.find((n) => n.version_actual);
+			let motivoInfoErronea = edic_motivos_rech.find((n) => n.info_erronea);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -244,7 +246,9 @@ module.exports = {
 					valorRech = original[relacInclude].nombre_pers;
 				}
 
+				// Si ninguna de las variables tiene un valor, saltea la rutina
 				if (!valorAprob && !valorRech) continue;
+
 				// Genera la información
 				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
 
@@ -352,7 +356,118 @@ module.exports = {
 
 	// Edición
 	edicion: {
-		// Form
+		// Cada vez que se aprueba/rechaza un valor editado
+		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
+			// Variables
+			const familia = comp.obtieneFamiliaEnPlural(entidad);
+			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const decision = "edics_" + (aprob ? "aprob" : "rech");
+			const ahora = comp.ahora();
+			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
+			const relacInclude = campoRevisar.relacInclude;
+			const titulo = campoRevisar.titulo;
+			let motivo;
+
+			// Genera la información a actualizar
+			let datos = {
+				entidad,
+				entidad_id: original.id,
+				editado_por_id: edicion.editado_por_id,
+				editado_en: edicion.editado_en,
+				edic_analizada_por_id: revID,
+				edic_analizada_en: ahora,
+				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
+				titulo,
+				campo,
+			};
+			if (!aprob) {
+				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+			}
+			let valorOrig = relacInclude ? original[relacInclude].nombre : original[campo];
+			let valorEdic = relacInclude ? edicion[relacInclude].nombre : edicion[campo];
+			datos.valorAprob = aprob ? valorEdic : valorOrig;
+			datos.valorRech = aprob ? valorOrig : valorEdic;
+
+			// CONSECUENCIAS
+			// 1. Si se aprobó, actualiza el registro de 'original'
+			if (aprob) {
+				datos[campo] = edicion[campo];
+				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+			}
+
+			// 2. Actualiza la tabla de edics_aprob/rech
+			BD_genericas.agregaRegistro(decision, datos);
+
+			// 3. Aumenta el campo aprob/rech en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
+
+			// 4. Si corresponde, penaliza al usuario
+			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+
+			// 5. Actualiza el registro de 'edición'
+			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+
+			// Fin
+			return;
+		},
+		// Cada vez que se aprueba/rechaza un avatar sugerido
+		actualizaArchivoAvatar: async (prodOrig, prodEdic, reemplazar) => {
+			// Variables
+			const avatarOrig = prodOrig.avatar;
+			const avatarEdic = prodEdic.avatar;
+
+			// Reemplazo
+			if (reemplazar) {
+				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
+				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
+
+				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+			}
+
+			// Elimina el archivo de edicion
+			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+
+			// Fin
+			return;
+		},
+		prodsEdicGuardar_procsDeCierre: async (entidad, original, edicion, avatar) => {
+			// 1. POTENCIAL CAMBIO DE STATUS
+			// - Averigua si el registro está en un status previo a 'aprobado'
+			if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
+				// Averigua si hay errores
+				let errores = await validaPR.consolidado({datos: {...original, avatar, entidad}});
+				if (!errores.hay) {
+					// Se activan los procesos
+
+					// 1.A. Cambia el status del registro
+					let ahora = comp.ahora();
+					let datosCambioStatus = {
+						alta_terminada_en: ahora,
+						lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+						status_registro_id: aprobado.id,
+					};
+					await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
+
+					// 1.B. Si es una colección, le cambia el status también a los capítulos
+					if (entidad == "colecciones") {
+						datosCambioStatus.alta_analizada_por_id = 2;
+						datosCambioStatus.alta_analizada_en = ahora;
+						await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+					}
+
+					// 1.C. Actualiza prodEnRCLV
+					procsCRUD.cambioDeStatus(entidad, {...original, ...datosCambioSatus});
+				}
+			}
+
+			// 2. PROXIMOS PASOS
+			// Si a la edición le quedan campos, recarga el url
+			return edicion ? "redirect" : "render";
+		},
 		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
 			// Funciones
 			let usuario_CalidadEdic = async (userID) => {
@@ -405,171 +520,6 @@ module.exports = {
 			// Fin
 			return derecha;
 		},
-		guardaEdicRev: async function (req, regOrig, regEdic) {
-			// Variables
-			const {entidad, campo, aprob} = req.query;
-			const familia = comp.obtieneFamiliaEnPlural(entidad);
-			const producto = familia == "productos";
-			const nombreEdic = (producto ? "prods" : "rclvs") + "_edicion";
-			const edicAprob = aprob == "true";
-			const decision = "edics_" + (edicAprob ? "aprob" : "rech");
-			const userID = req.session.usuario.id;
-			const ahora = comp.ahora();
-			const statusAprobInicial = regOrig.status_registro.aprobado;
-			const datosEdicion = {
-				id: regEdic.id,
-				editado_por_id: regEdic.editado_por_id,
-				editado_en: regEdic.editado_en,
-			};
-			let motivo, statusAprobFinal;
-
-			// Genera la información a actualizar
-			let datos = {
-				[campo]: regEdic[campo],
-				editado_por_id: regEdic.editado_por_id,
-				editado_en: regEdic.editado_en,
-				edic_analizada_por_id: userID,
-				edic_analizada_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(regEdic.editado_en, ahora),
-			};
-
-			// Agrega un registro en la tabla 'edics_aprob/edics_rech', según corresponda
-			await (async () => {
-				// Si fue rechazado, amplía la información
-				if (!edicAprob) {
-					let {motivo_id} = req.query;
-					let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
-					motivo = await BD_genericas.obtienePorCampos("edic_motivos_rech", condicion);
-					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-				}
-				// Obtiene los valores aprob/rech
-				let fn_valoresAprobRech = () => {
-					// Fórmulas
-					let obtieneElValorDeUnCampo = (registro, campo) => {
-						// Variables
-						let camposConVinculo = [...variables.camposRevisar[familia]]; // Hay que desconectarse del original
-						camposConVinculo = camposConVinculo.filter((n) => n.relacInclude);
-						let campos = camposConVinculo.map((n) => n.nombre);
-						let indice = campos.indexOf(campo);
-						let vinculo = indice >= 0 ? camposConVinculo[indice].relacInclude : "";
-						let respuesta;
-						// Resultado
-						if (indice >= 0)
-							respuesta = registro[vinculo]
-								? registro[vinculo].productos
-									? registro[vinculo].productos
-									: registro[vinculo].nombre
-								: "-";
-						else respuesta = registro[campo];
-
-						// Fin
-						if (respuesta === null) respuesta = "-";
-						return respuesta;
-					};
-					// Amplía la información con los valores aprob/rech de edición
-					let valorOrig = obtieneElValorDeUnCampo(regOrig, campo);
-					let valorEdic = obtieneElValorDeUnCampo(regEdic, campo);
-					// Obtiene los valores 'aprobado' y 'rechazado'
-					let valorAprob = edicAprob ? valorEdic : valorOrig;
-					let valorRech = !edicAprob ? valorEdic : valorOrig;
-					// Fin
-					return {valorAprob, valorRech};
-				};
-				let valoresAprobRech = fn_valoresAprobRech();
-				// Obtiene datos adicionales
-				const titulo = variables.camposRevisar[familia].find((n) => n.nombre == campo).titulo;
-				let datosAdicionales = {entidad, entidad_id: regOrig.id, campo, titulo};
-				// Agrega un registro a la tabla 'edics_aprob' / 'edics_rech'
-				datos = {...datos, ...valoresAprobRech, ...datosAdicionales};
-				BD_genericas.agregaRegistro(decision, datos);
-			})();
-
-			// Aumenta el campo aprob/rech en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", regEdic.editado_por_id, decision, 1);
-
-			// Si corresponde, penaliza al usuario
-			if (datos.duracion) comp.usuarioPenalizAcum(regEdic.editado_por_id, motivo, familia);
-
-			// Si se aprobó, actualiza el registro y la variable de 'original'
-			if (edicAprob) {
-				await BD_genericas.actualizaPorId(entidad, regOrig.id, datos);
-				regOrig = {...regOrig, [campo]: regEdic[campo]};
-			}
-
-			// Actualiza el registro y la variable de 'edición'
-			await BD_genericas.actualizaPorId(nombreEdic, regEdic.id, {[campo]: null});
-			delete regEdic[campo];
-
-			// Averigua si quedan campos por procesar
-			let edicion = await procsCRUD.puleEdicion(regOrig, regEdic, entidad);
-
-			// Acciones para productos si no quedan campos
-			if (!edicion && producto) {
-				// 1. Si corresponde, actualiza el status del registro original (y eventualmente capítulos)
-				// 2. Informa si el status pasó a aprobado
-				statusAprobFinal = await (async () => {
-					// Variables
-					let statusAprob;
-					// Averigua si tiene errores
-					let errores = await validaProds.consolidado(null, {...regOrig, entidad});
-					// Acciones si el original no tiene errores y está en status 'gr_creado'
-					if (!errores.hay && regOrig.status_registro.gr_creado) {
-						// Genera la información a actualizar en el registro original
-						let datosCambioStatus = {
-							alta_terminada_en: ahora,
-							lead_time_creacion: comp.obtieneLeadTime(regOrig.creado_en, ahora),
-							status_registro_id: status_registro.find((n) => n.aprobado).id,
-							captura_activa: 0,
-						};
-						// Cambia el status del registro e inactiva la captura
-						await BD_genericas.actualizaPorId(entidad, regOrig.id, datosCambioStatus);
-						// Si es una colección, le cambia el status también a los capítulos
-						if (entidad == "colecciones") {
-							// Amplía los datos
-							datosCambioStatus = {
-								...datosCambioStatus,
-								alta_analizada_por_id: 2,
-								alta_analizada_en: ahora,
-							};
-							// Actualiza el status de todos los capítulos a la vez
-							BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: regOrig.id}, datos);
-						}
-						// Cambia el valor de la variable que se informará
-						statusAprob = true;
-					}
-					return statusAprob;
-				})();
-			} else edicion = {...datosEdicion, ...edicion};
-
-			// Actualiza RCLV si corresponde
-			if (producto && !statusAprobInicial && statusAprobFinal)
-				this.prodsAprobEnRCLV(regOrig, campo, edicAprob, statusAprobInicial, statusAprobFinal);
-			// Fin
-			return [regOrig, edicion, quedanCampos, statusAprobFinal];
-		},
-		prodsAprobEnRCLV: function (prodOrig, campo_id, edicAprob, statusAprobOrig, statusAprob) {
-			// Actualiza 'prods_aprob' en rclvs, si ocurre 1 y (2 ó 3)
-			// 1. Se aprobó un cambio y el producto está aprobado
-			// 2. El cambio es un campo_id  con id distinto de 1
-			// 3. El registro no estaba aprobado
-			const campos_id = ["personaje_id", "hecho_id", "valor_id"];
-			if (
-				edicAprob && // Se aprobó un cambio
-				statusAprob && // El producto está aprobado
-				((campos_id.includes(campo_id) && prodOrig[campo_id] != 1) || // El cambio es un campo RCLV con valor distinto de 1
-					!statusAprobOrig) // El registro no estaba aprobado
-			)
-				campos_id.forEach((campo_id) => {
-					let RCLV_id = prodOrig[campo_id]; // Obtiene el RCLV_id
-					if (RCLV_id) {
-						let entidad = comp.obtieneRCLVdesdeRCLV_id({[campo_id]: true});
-						BD_genericas.actualizaPorId(entidad, RCLV_id, {prods_aprob: true});
-					}
-				});
-
-			// Fin
-			return;
-		},
 		// Prod-Edición Form
 		prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
 			// Obtiene todos los campos a revisar
@@ -616,35 +566,6 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		prodEdic_actualizaAvatar: async (req, prodOrig, prodEdic) => {
-			// Variables
-			const edicAprob = req.query.aprob == "true";
-			const avatarOrig = prodOrig.avatar;
-			const avatarEdic = prodEdic.avatar;
-
-			// Gestión de archivos
-			if (edicAprob) {
-				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
-				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
-
-				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-
-				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
-				const {entidad, id} = req.query;
-				await BD_genericas.actualizaPorId(entidad, id, {avatar: avatarEdic});
-			}
-
-			// ARCHIVO NUEVO: elimina el archivo de edicion
-			else if (!edicAprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
-
-			// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-			await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
-
-			// Fin
-			return;
-		},
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 			iconos: [
@@ -688,6 +609,35 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
+	},
+	// Cada vez que se aprueba/rechaza un avatar sugerido
+	procsParticsAvatar: async function (entidad, original, edicion, rechazado) {
+		// Variables
+		let avatar;
+
+		// 1. Actualiza la variable 'avatar' y eventualmente descarga el archivo
+		if (rechazado) {
+			// Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
+			let url = original.avatar;
+			if (url.startsWith("http") && entidad != "capitulos") {
+				// Asigna un nombre al archivo a descargar
+				avatar = Date.now() + path.extname(url);
+				// Descarga el url
+				let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + avatar;
+				await comp.descarga(url, rutaYnombre);
+			} else avatar = original.avatar;
+		} else avatar = edicion.avatar;
+
+		// 2. Borra el campo 'avatar_url' en el registro de edicion y en la variable
+		await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
+		delete edicion.avatar_url;
+
+		// 3. Impacto en los archivos de avatar (original y edicion)
+		await this.edicion.actualizaArchivoAvatar(original, edicion, !rechazado);
+
+		// Fin - Devuelve edicion sin 'avatar_url' y avatar con su valor vigente
+
+		return [edicion, avatar];
 	},
 
 	// Links - Vista

@@ -144,7 +144,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
 
 		// Completa los datos
-		const lead_time_creacion = Math.min(99.99, (alta_analizada_en - original.creado_en) / unaHora);
+		const lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
 		datos = {
 			...datos,
 			status_registro_id,
@@ -238,17 +238,20 @@ module.exports = {
 				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
-				// Avatar: impacto en los archivos, y en los registros original y edicion
-				req.query.aprob = "true";
-				prodEdic = await procesos.edicion.prodEdic_actualizaAvatar(req, prodOrig, prodEdic);
+				// Avatar: impacto en los archivos de avatar (original y edicion)
+				await procesos.edicion.actualizaArchivoAvatar(prodOrig, prodEdic, true);
+				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
+				await BD_genericas.actualizaPorId(entidad, prodOrig.id, {avatar: prodEdic.avatar});
+				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
+				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
 				// Recarga la ruta
-				return res.send(req.originalUrl);
+				return res.redirect(req.originalUrl);
 			}
 			// Reemplazo manual
 			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = procsCRUD.avatarOrigEdic(prodOrig, prodEdic);
+				avatar = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic);
 				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
@@ -301,8 +304,41 @@ module.exports = {
 			urlActual: req.session.urlActual,
 		});
 	},
-	prod_edicGuardar: (req, res) => {
-		return res.send({...req.query, ...req.body});
+	prod_AvatarGuardar: async (req, res) => {
+		// return res.send({...req.query, ...req.body});
+		// Obtiene la respuesta del usuario
+		const {entidad, id: prodID, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
+
+		// Variables
+		let revID = req.session.usuario.id;
+		let original = await BD_genericas.obtienePorId(entidad, prodID);
+		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
+		let campo = "avatar";
+		let aprob = !rechazado;
+
+		// 1. PROCESOS PARTICULARES PARA AVATAR
+		// - Actualiza la variable 'avatar' y eventualmente descarga el archivo
+		// - Borra el campo 'avatar_url' en el registro de edicion y en la variable
+		// - Impacto en los archivos de avatar (original y edicion)
+		let avatar;
+		[edicion, avatar] = await procesos.procsParticsAvatar(entidad, original, edicion, rechazado);
+
+		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
+		// - Si se aprobó, actualiza el registro de 'original'
+		// - Actualiza el registro de 'edición'
+		// - Actualiza la tabla de edics_aprob/rech
+		// - Aumenta el campo aprob/rech en el registro del usuario
+		// - Si corresponde, penaliza al usuario
+		// - Pule la edición, y si no quedan campos, elimina el registro de la tabla
+		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
+
+		// 3. PROCESOS DE CIERRE
+		// - Si corresponde: cambia de status, también las colecciones, prodsEnRCLV
+		// - Decide cuáles son los próximos pasos
+		let proximosPasos = await procesos.edicion.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
+		if (proximosPasos == "redirect") return res.redirect(req.originalUrl);
+		else return res.render("CMP-0Estructura", {informacion: procesos.edicion.cartelNoQuedanCampos});
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código
@@ -410,7 +446,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
-			imgDerPers: procsCRUD.avatarOrigEdic(producto, "").orig,
+			imgDerPers: procsCRUD.obtieneAvatarOrigEdic(producto, "").orig,
 			cartelGenerico: true,
 		});
 	},

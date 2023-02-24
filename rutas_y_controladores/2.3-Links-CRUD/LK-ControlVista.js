@@ -21,7 +21,7 @@ module.exports = {
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(prodEntidad, prodID, userID);
 		// Obtiene el avatar
-		let imgDerPers = procsCRUD.avatarOrigEdic(prodOrig, prodEdic).edic;
+		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic).edic;
 		// Combina los datos Editados con la versión Original
 		let producto = {...prodOrig, ...prodEdic, id: prodID};
 		// Obtiene información de BD

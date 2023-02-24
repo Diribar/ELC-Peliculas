@@ -144,6 +144,15 @@ module.exports = {
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
 	},
+	obtieneNombreEdicionDesdeEntidad: (entidad) => {
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+			? "prods_edicion"
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			? "rclvs_edicion"
+			: entidad == "links"
+			? "links_edicion"
+			: "";
+	},
 	obtieneEntidadDesdeCampo_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
 		let RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);

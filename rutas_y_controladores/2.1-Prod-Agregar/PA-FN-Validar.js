@@ -120,7 +120,7 @@ module.exports = {
 		return errores;
 	},
 	// ControllerAPI (validaDatosAdics)
-	datosAdics: async (campos, datos) => {
+	datosAdics: (campos, datos) => {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipo_actuacion_id", "publico_id"];
