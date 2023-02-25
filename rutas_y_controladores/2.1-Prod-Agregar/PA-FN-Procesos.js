@@ -197,7 +197,6 @@ module.exports = {
 			// nombre_original, nombre_castellano, duración de capítulos
 			if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
 			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
-			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1) datos.duracion = datosAPI.episode_run_time[0];
 			// Idioma
 			if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
 
@@ -240,7 +239,7 @@ module.exports = {
 			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
 		};
 		datos.coleccion_id = datosCol.id;
-		if (datosCol.duracion) datos.duracion = datosCol.duracion;
+		if (datosCap.runtime) datos.duracion = datosCap.runtime;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
 
 		// Datos de la temporada
@@ -460,9 +459,8 @@ module.exports = {
 		let datosTemp = await Promise.all([
 			detailsTMDB(temporada, datosCol.TMDB_id),
 			creditsTMDB(temporada, datosCol.TMDB_id),
-		]).then(([a, b]) => {
-			return {...a, ...b};
-		});
+		]).then(([a, b]) => ({...a, ...b}));
+
 		// Loop de CAPITULOS ********************************************
 		for (let episode of datosTemp.episodes) {
 			let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);

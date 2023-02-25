@@ -85,6 +85,7 @@ window.addEventListener("load", async () => {
 			check.classList.remove("ocultar");
 
 			// Cambia el contenido del mensaje y las flechas
+			mensajes.style.listStyle = "none"
 			mensajes.innerHTML = "";
 			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 			flechas.innerHTML = "";
@@ -96,6 +97,9 @@ window.addEventListener("load", async () => {
 		}
 		
 		// Fin
+		console.log(resultado,todoProcesado);
+		// Acciones si el status no está aprobado, a pesar de que no quedan campos
+		console.log(!resultado.statusAprob&&!resultado.quedanCampos);
 		return;
 	};
 
