@@ -36,57 +36,42 @@ window.addEventListener("load", async () => {
 	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuencias = (resultado, campo) => {
+	let consecuencias = (resultado) => {
 		// Fórmulas
-		let ocultaBloques = () => {
-			// Fórmulas
-			let todasLasFilasOcultas = (filas) => {
-				let todasLasFilasOcultas = Array.from(filas)
+		let ocultaBloque = (bloque, filas) => {
+			return (
+				bloque &&
+				!bloque.className.includes("ocultar") &&
+				filas.length &&
+				Array.from(filas)
 					.map((n) => n.className)
-					.every((n) => n.includes("ocultar"));
-				// Fin
-				return todasLasFilasOcultas;
-			};
-			// Oculta bloque de Ingresos
-			if (
-				v.filasIngrs.length &&
-				v.bloqueIngrs &&
-				!v.bloqueIngrs.className.includes("ocultar") &&
-				todasLasFilasOcultas(v.filasIngrs)
-			)
-				v.bloqueIngrs.classList.add("ocultar");
-			// Oculta bloque de Reemplazos
-			if (
-				v.filasReemps.length &&
-				v.bloqueReemps &&
-				!v.bloqueReemps.className.includes("ocultar") &&
-				todasLasFilasOcultas(v.filasReemps)
-			)
-				v.bloqueReemps.classList.add("ocultar");
-			// Fin
-			return;
+					.every((n) => n.includes("ocultar"))
+			);
 		};
-		let FN_todoProcesado = () => {
-			// Averigua cada bloque
-			let bloqueIngrsOculto = !v.bloqueIngrs || v.bloqueIngrs.className.includes("ocultar");
-			let bloqueReempsOculto = !v.bloqueReemps || v.bloqueReemps.className.includes("ocultar");
-			// Averigua si está todo oculto
-			return bloqueIngrsOculto && bloqueReempsOculto;
-		};
-		let mensajeFin = () => {
+
+		// Interrumpe si los resultados fueron insatisfactorios
+		if (!resultado.OK) return;
+		// Verifica si debe ocultar algún bloque
+		if (ocultaBloque(v.bloqueIngrs, v.filasIngrs)) v.bloqueIngrs.classList.add("ocultar");
+		if (ocultaBloque(v.bloqueReemps, v.filasReemps)) v.bloqueReemps.classList.add("ocultar");
+
+		// Averigua si está todo procesado
+		let bloqueIngrsOculto = !v.bloqueIngrs || v.bloqueIngrs.className.includes("ocultar");
+		let bloqueReempsOculto = !v.bloqueReemps || v.bloqueReemps.className.includes("ocultar");
+		let todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
+
+		// Si está todo procesado y quedan campos,
+		if (todoProcesado == resultado.quedanCampos) console.log("Error", todoProcesado, resultado.quedanCampos);
+		
+		// Si está todo procesado, publica el cartel de fin
+		else if (todoProcesado && !resultado.quedanCampos) {
 			// Mensajes
-			let arrayMensajes = ["Se completó la revisión", "Muchas gracias"];
+			let arrayMensajes = ["Se completó la revisión, muchas gracias"];
 			// Flechas
 			let icono = {
 				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
 				link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts",
 			};
-			// Fin
-			return {arrayMensajes, icono};
-		};
-		let cartel = (datos) => {
-			// Variables
-			let {arrayMensajes, icono} = datos;
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");
 			let alerta = document.querySelector("#cartel #alerta");
@@ -105,24 +90,11 @@ window.addEventListener("load", async () => {
 			flechas.innerHTML = "";
 			flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
 
-			// Mostrar el cartel
+			// Muestra el cartel
 			v.tapaElFondo.classList.remove("ocultar");
 			cartel.classList.remove("ocultar");
-
-			// Fin
-			return;
-		};
-
-		// Interrumpe si los resultados fueron insatisfactorios
-		if (!resultado.OK) return;
-		// Verifica si debe ocultar algún bloque
-		if (v.bloqueIngrs || v.bloqueReemps) ocultaBloques();
-		// Averigua si está todo procesado
-		let todoProcesado = FN_todoProcesado();
-		// Si está todo procesado y quedan campos,
-		if (todoProcesado == resultado.quedanCampos) console.log(todoProcesado, resultado.quedanCampos);
-		// Si está todo procesado, publica el cartel de fin
-		else if (todoProcesado) cartel(mensajeFin());
+		}
+		
 		// Fin
 		return;
 	};
@@ -140,8 +112,12 @@ window.addEventListener("load", async () => {
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
+
 			// Consecuencias
 			consecuencias(resultado, campo);
+
+			// Fin
+			return;
 		});
 
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de terminarlos, se muestra el motivo
@@ -149,11 +125,13 @@ window.addEventListener("load", async () => {
 			// Muestra cartel de motivos
 			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
 				v.cartelRechazo[indiceMotivo].classList.remove("ocultar");
+				return;
 			});
 			// Activa la opción para rechazar
 			v.motivoRechazos[indiceMotivo].addEventListener("change", () => {
 				if (v.motivoRechazos[indiceMotivo].value) v.rechazar[indice].classList.remove("inactivo");
 				else v.rechazar[indice].classList.add("inactivo");
+				return;
 			});
 		}
 
@@ -168,8 +146,12 @@ window.addEventListener("load", async () => {
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			let resultado = await fetch(ruta).then((n) => n.json());
+
 			// Consecuencias
 			consecuencias(resultado, campo);
+
+			// Fin
+			return;
 		});
 	}
 });

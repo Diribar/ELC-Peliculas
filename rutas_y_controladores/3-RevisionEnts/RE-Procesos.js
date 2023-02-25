@@ -517,8 +517,11 @@ module.exports = {
 				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
-			datos.valorAprob = aprob ? edicion[campo] : original[campo];
-			datos.valorRech = aprob ? original[campo] : edicion[campo];
+			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+
+			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
+			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
 
 			// CONSECUENCIAS
 			// 1. Si se aprobó, actualiza el registro de 'original'
@@ -541,19 +544,17 @@ module.exports = {
 
 			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
+			if (relacInclude) delete edicion[relacInclude];
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
-
-			// 7. Elimina todos los campos de 'include'
-			let camposInclude = comp.obtieneTodosLosCamposInclude(entidad);
-			console.log(453, edicion);
 
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			if (aprob) await posibleAprobado(entidad, originalGuardado);
+			let statusAprob = false;
+			if (aprob) statusAprob = await posibleAprobado(entidad, originalGuardado);
 
 			// Fin
-			return edicion;
+			return [edicion, statusAprob];
 		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
@@ -651,15 +652,16 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	// Fin
 	return resultados;
 };
-
 // API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 let posibleAprobado = async (entidad, original) => {
+	let statusAprob = false;
 	// - Averigua si el registro está en un status previo a 'aprobado'
 	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 		// Averigua si hay errores
 		let errores = await validaPR.consolidado({datos: {...original, entidad}});
 		if (!errores.hay) {
 			// Variables
+			statusAprob = true;
 			let ahora = comp.ahora();
 			let datos = {
 				alta_terminada_en: ahora,
@@ -683,8 +685,7 @@ let posibleAprobado = async (entidad, original) => {
 	}
 
 	// Fin
-	// Si a la edición le quedan campos, recarga el url
-	return;
+	return statusAprob;
 };
 // VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async (original, edicion, aprob) => {
@@ -708,7 +709,7 @@ let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 	// Fin
 	return;
 };
-let valoresParaMostrar = async (registro, relacInclude,campoRevisar) => {
+let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Obtiene una primera respuesta
 	let resultado = relacInclude
 		? registro[relacInclude] // El registro tiene un valor 'include'
