@@ -62,16 +62,20 @@ window.addEventListener("load", async () => {
 
 		// Si está todo procesado y quedan campos,
 		if (todoProcesado == resultado.quedanCampos) console.log("Error", todoProcesado, resultado.quedanCampos);
-		
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado && !resultado.quedanCampos) {
+			// Variables
+			let irEdicion = !resultado.statusAprob && !resultado.quedanCampos;
 			// Mensajes
-			let arrayMensajes = ["Se completó la revisión, muchas gracias"];
+			let arrayMensajes = ["Se completó la revisión, muchas gracias."];
+			if (irEdicion) arrayMensajes.push("Te pedimos que nos ayudes a completar la edición.");
 			// Flechas
-			let icono = {
-				HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
-				link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts",
-			};
+			let icono = {};
+			icono.HTML = irEdicion
+				? '<i class="fa-solid fa-circle-left"  title="Volver al Tablero"></i>'
+				: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>';
+			icono.link = "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts";
+
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");
 			let alerta = document.querySelector("#cartel #alerta");
@@ -85,21 +89,24 @@ window.addEventListener("load", async () => {
 			check.classList.remove("ocultar");
 
 			// Cambia el contenido del mensaje y las flechas
-			mensajes.style.listStyle = "none"
+			if (!irEdicion) mensajes.style.listStyle = "none";
 			mensajes.innerHTML = "";
 			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 			flechas.innerHTML = "";
 			flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
-
+			if (irEdicion) {
+				icono = {
+					HTML: '<i class="fa-solid fa-pen" autofocus title="Ir a Edición"></i>',
+					link: "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID,
+				};
+				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
+			}
 			// Muestra el cartel
 			v.tapaElFondo.classList.remove("ocultar");
 			cartel.classList.remove("ocultar");
 		}
-		
+
 		// Fin
-		console.log(resultado,todoProcesado);
-		// Acciones si el status no está aprobado, a pesar de que no quedan campos
-		console.log(!resultado.statusAprob&&!resultado.quedanCampos);
 		return;
 	};
 
