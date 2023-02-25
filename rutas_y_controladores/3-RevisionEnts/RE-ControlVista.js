@@ -292,6 +292,7 @@ module.exports = {
 			motivos,
 			entidad,
 			id: prodID,
+			avatar,
 			bloqueDer,
 			title: original.nombre_castellano,
 			avatarExterno,
