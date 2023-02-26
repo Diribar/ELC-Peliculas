@@ -388,122 +388,25 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
-			// TAREAS:
-			// - Si se aprobó, actualiza el registro de 'original'
-			// - Actualiza la tabla de edics_aprob/rech
-			// - Aumenta el campo aprob/rech en el registro del usuario
-			// - Si corresponde, penaliza al usuario
-			// - Actualiza el registro de 'edición'
-
-			// Variables
-			const familia = comp.obtieneFamiliaEnPlural(entidad);
-			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-			const decision = "edics_" + (aprob ? "aprob" : "rech");
-			const ahora = comp.ahora();
-			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
-			const relacInclude = campoRevisar.relacInclude;
-			const titulo = campoRevisar.titulo;
-			let motivo;
-
-			// Genera la información a actualizar
-			let datos = {
-				entidad,
-				entidad_id: original.id,
-				editado_por_id: edicion.editado_por_id,
-				editado_en: edicion.editado_en,
-				edic_analizada_por_id: revID,
-				edic_analizada_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
-				titulo,
-				campo,
-			};
-			if (!aprob) {
-				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-			}
-			datos.valorAprob = aprob ? edicion[campo] : original[campo];
-			datos.valorRech = aprob ? original[campo] : edicion[campo];
-
-			// CONSECUENCIAS
-			// 1. Si se aprobó, actualiza el registro de 'original'
-			if (aprob) {
-				datos[campo] = edicion[campo];
-				await BD_genericas.actualizaPorId(entidad, original.id, datos);
-			}
-
-			// 2. Actualiza la tabla de edics_aprob/rech
-			BD_genericas.agregaRegistro(decision, datos);
-
-			// 3. Aumenta el campo aprob/rech en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
-
-			// 4. Si corresponde, penaliza al usuario
-			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
-
-			// 5. Actualiza el registro de 'edición'
-			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
-
-			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
-			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
-			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
-
-			// 7. PROCESOS DE CIERRE
-			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
-			// - Actualiza 'prodsEnRCLV'
-			if (aprob) await posibleAprobado(entidad, originalGuardado);
-
-			// Fin
-			return edicion;
-		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
-		cartelNoQuedanCampos: {
-			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
-			iconos: [
-				{
-					nombre: "fa-spell-check",
-					link: "/revision/tablero-de-control",
-					titulo: "Ir al 'Tablero de Control' de Revisiones",
-				},
-			],
-		},
-
 		// Prod-Edición Form
 		prodEdicForm_ingrReempl: async (original, edicion) => {
 			// Obtiene todos los campos a revisar
 			let camposRevisar = [...variables.camposRevisar.productos]; // Escrito así para desligarlos
 			let resultado = [];
 
-			// Deja solamente los campos presentes en edicion
-			for (let nombre in edicion) {
+			// Deja solamente la intersección entre: los campos presentes en edición y los que se comparan
+			for (let campoEdicion in edicion) {
 				// Obtiene el campo con varios datos
-				let campo = camposRevisar.find((n) => n.nombre == nombre);
-				// Si el campo no existe en los campos a revisar, saltea la rutina
-				if (!campo) continue;
+				let campoRevisar = camposRevisar.find((n) => n.nombre == campoEdicion);
+				// Si el campoRevisar no existe en los campos a revisar, saltea la rutina
+				if (!campoRevisar) continue;
 				// Obtiene las variables de include
-				let relacInclude = campo.relacInclude;
+				let relacInclude = campoRevisar.relacInclude;
 				// Criterio para determinar qué valores originales mostrar
-				let FN = async (registro) => {
-					// Obtiene una primera respuesta
-					let resultado = relacInclude
-						? registro[relacInclude] // El registro tiene un valor 'include'
-							? registro[relacInclude].nombre // Muestra el valor 'include'
-							: await BD_genericas.obtienePorId(campo.tabla, registro[nombre]).then((n) => n.nombre) // Busca el valor include
-						: registro[nombre]; // Muestra el valor 'simple'
-
-					// Casos especiales
-					if (["cfc", "ocurrio", "musical", "color"].includes(campo.nombre))
-						resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-
-					// Fin
-					return resultado;
-				};
-				campo.mostrarOrig = await FN(original);
-				campo.mostrarEdic = await FN(edicion);
+				campoRevisar.mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
 				// Consolidar los resultados
-				resultado.push(campo);
+				resultado.push(campoRevisar);
 			}
 			// Paises
 			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
@@ -576,6 +479,93 @@ module.exports = {
 			let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 			// Fin
 			return derecha;
+		},
+		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
+			// TAREAS:
+			// - Si se aprobó, actualiza el registro de 'original'
+			// - Actualiza la tabla de edics_aprob/rech
+			// - Aumenta el campo aprob/rech en el registro del usuario
+			// - Si corresponde, penaliza al usuario
+			// - Actualiza el registro de 'edición'
+			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+
+			// Variables
+			const familia = comp.obtieneFamiliaEnPlural(entidad);
+			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const decision = "edics_" + (aprob ? "aprob" : "rech");
+			const ahora = comp.ahora();
+			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
+			const relacInclude = campoRevisar.relacInclude;
+			const titulo = campoRevisar.titulo;
+			let motivo;
+
+			// Genera la información a actualizar
+			let datos = {
+				entidad,
+				entidad_id: original.id,
+				editado_por_id: edicion.editado_por_id,
+				editado_en: edicion.editado_en,
+				edic_analizada_por_id: revID,
+				edic_analizada_en: ahora,
+				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
+				titulo,
+				campo,
+			};
+			if (!aprob) {
+				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+			}
+			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+
+			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
+			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
+
+			// CONSECUENCIAS
+			// 1. Si se aprobó, actualiza el registro de 'original'
+			if (aprob) {
+				datos[campo] = edicion[campo];
+				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+			}
+
+			// 2. Actualiza la tabla de edics_aprob/rech
+			BD_genericas.agregaRegistro(decision, datos);
+
+			// 3. Aumenta el campo aprob/rech en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
+
+			// 4. Si corresponde, penaliza al usuario
+			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+
+			// 5. Actualiza el registro de 'edición'
+			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+
+			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
+			if (relacInclude) delete edicion[relacInclude];
+			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
+
+			// 7. PROCESOS DE CIERRE
+			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
+			// - Actualiza 'prodsEnRCLV'
+			let statusAprob = false;
+			if (aprob) statusAprob = await posibleAprobado(entidad, originalGuardado);
+
+			// Fin
+			return [edicion, statusAprob];
+		},
+		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		cartelNoQuedanCampos: {
+			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
+			iconos: [
+				{
+					nombre: "fa-spell-check",
+					link: "/revision/tablero-de-control",
+					titulo: "Ir al 'Tablero de Control' de Revisiones",
+				},
+			],
 		},
 
 		// RCLV-Edición Form
@@ -662,15 +652,16 @@ let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, aut
 	// Fin
 	return resultados;
 };
-
 // API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 let posibleAprobado = async (entidad, original) => {
+	let statusAprob = false;
 	// - Averigua si el registro está en un status previo a 'aprobado'
 	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 		// Averigua si hay errores
 		let errores = await validaPR.consolidado({datos: {...original, entidad}});
 		if (!errores.hay) {
 			// Variables
+			statusAprob = true;
 			let ahora = comp.ahora();
 			let datos = {
 				alta_terminada_en: ahora,
@@ -694,8 +685,7 @@ let posibleAprobado = async (entidad, original) => {
 	}
 
 	// Fin
-	// Si a la edición le quedan campos, recarga el url
-	return;
+	return statusAprob;
 };
 // VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async (original, edicion, aprob) => {
@@ -718,4 +708,19 @@ let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 
 	// Fin
 	return;
+};
+let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
+	// Obtiene una primera respuesta
+	let resultado = relacInclude
+		? registro[relacInclude] // El registro tiene un valor 'include'
+			? registro[relacInclude].nombre // Muestra el valor 'include'
+			: await BD_genericas.obtienePorId(campoRevisar.tabla, registro[campoRevisar.nombre]).then((n) => n.nombre) // Busca el valor include
+		: registro[campoRevisar.nombre]; // Muestra el valor 'simple'
+
+	// Casos especiales
+	if (["cfc", "ocurrio", "musical", "color"].includes(campoRevisar.nombre))
+		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+
+	// Fin
+	return resultado;
 };

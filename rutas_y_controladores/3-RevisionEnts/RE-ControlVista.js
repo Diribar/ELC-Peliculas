@@ -260,7 +260,8 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
 			// Variables
-			let userID = edicion.editado_por_id;
+			let editado_por_id = edicion.editado_por_id;
+			let editado_en = edicion.editado_en;
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// for (let campo in edicion) if (edicion[campo]===null) delete edicion[campo]
@@ -272,7 +273,7 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig;
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
-			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id: userID});
+			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id, editado_en});
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
@@ -291,6 +292,7 @@ module.exports = {
 			motivos,
 			entidad,
 			id: prodID,
+			avatar,
 			bloqueDer,
 			title: original.nombre_castellano,
 			avatarExterno,

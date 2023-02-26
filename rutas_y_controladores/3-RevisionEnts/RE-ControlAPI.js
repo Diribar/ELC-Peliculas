@@ -18,7 +18,6 @@ module.exports = {
 		const {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
-		let quedanCampos, statusAprob;
 
 		// Obtiene el registro editado
 		let includes = comp.obtieneTodosLosCamposInclude(entidad);
@@ -26,16 +25,25 @@ module.exports = {
 		// Si no existe la edición, interrumpe el flujo
 		if (!edicion) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
-		if (!edicion[campo]) return res.json({OK: false, mensaje: "El campo no está pendiente para procesar"});
+		if (edicion[campo] === null) return res.json({OK: false, mensaje: "El campo no está pendiente para procesar"});
 
 		// Obtiene la versión original con includes
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...includes, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+		let statusAprob = false;
+		[edicion, statusAprob] = await procesos.edicion.edicAprobRech({
+			entidad,
+			original,
+			edicion,
+			revID,
+			campo,
+			aprob,
+			motivo_id,
+		});
 
 		// Fin
-		return res.json({quedanCampos: !!edicion});
+		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
 	},
 	// Links
 	linkAltaBaja: async (req, res) => {

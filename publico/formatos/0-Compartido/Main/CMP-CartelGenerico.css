@@ -35,4 +35,4 @@ main #tapar-el-fondo {background: var(--gris-claro); opacity: 70%; height: 100%;
 #cartel #flechasCartel :where(.fa-circle-right) {color: var(--verde-oscuro);}
 /* Íconos especiales */
 #cartel #flechasCartel :where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
-#cartel #flechasCartel :where(.fa-circle-info, .fa-thumbs-up) {color: var(--amarillo-oscuro);}
+#cartel #flechasCartel :where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
