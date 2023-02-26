@@ -359,7 +359,30 @@ module.exports = {
 
 	// Edición
 	edicion: {
-		// Cada vez que se aprueba/rechaza un valor editado
+		// VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
+		actualizaArchivoAvatar: async (original, edicion, reemplazar) => {
+			// Variables
+			const avatarOrig = original.avatar;
+			const avatarEdic = edicion.avatar;
+
+			// Reemplazo
+			if (reemplazar) {
+				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
+				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
+				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
+
+				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
+				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+			}
+
+			// Elimina el archivo de edicion
+			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+
+			// Fin
+			return;
+		},
+
+		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// Variables
 			const familia = comp.obtieneFamiliaEnPlural(entidad);
@@ -415,62 +438,107 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// Cada vez que se aprueba/rechaza un avatar sugerido
-		actualizaArchivoAvatar: async (prodOrig, prodEdic, reemplazar) => {
-			// Variables
-			const avatarOrig = prodOrig.avatar;
-			const avatarEdic = prodEdic.avatar;
-
-			// Reemplazo
-			if (reemplazar) {
-				// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-				let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
-				if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
-
-				// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-				comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
-			}
-
-			// Elimina el archivo de edicion
-			else if (!reemplazar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
-
-			// Fin
-			return;
-		},
-		prodsEdicGuardar_procsDeCierre: async (entidad, original, edicion, avatar) => {
-			// 1. POTENCIAL CAMBIO DE STATUS
+		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
+		posibleAprobado: async (entidad, original) => {
 			// - Averigua si el registro está en un status previo a 'aprobado'
 			if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 				// Averigua si hay errores
-				let errores = await validaPR.consolidado({datos: {...original, avatar, entidad}});
+				let errores = await validaPR.consolidado({datos: {...original, entidad}});
 				if (!errores.hay) {
-					// Se activan los procesos
-
-					// 1.A. Cambia el status del registro
+					// Variables
 					let ahora = comp.ahora();
 					let datosCambioStatus = {
 						alta_terminada_en: ahora,
 						lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
 						status_registro_id: aprobado.id,
 					};
+
+					// Le cambia el status del registro
 					await BD_genericas.actualizaPorId(entidad, original.id, datosCambioStatus);
 
-					// 1.B. Si es una colección, le cambia el status también a los capítulos
+					// Si es una colección, le cambia el status también a los capítulos
 					if (entidad == "colecciones") {
 						datosCambioStatus.alta_analizada_por_id = 2;
 						datosCambioStatus.alta_analizada_en = ahora;
 						await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
 					}
 
-					// 1.C. Actualiza prodEnRCLV
+					// Actualiza prodEnRCLV
 					procsCRUD.cambioDeStatus(entidad, {...original, ...datosCambioSatus});
 				}
 			}
 
-			// 2. PROXIMOS PASOS
+			// Fin
 			// Si a la edición le quedan campos, recarga el url
-			return edicion ? "redirect" : "render";
+			return;
 		},
+		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		cartelNoQuedanCampos: {
+			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
+			iconos: [
+				{
+					nombre: "fa-spell-check",
+					link: "/revision/tablero-de-control",
+					titulo: "Ir al 'Tablero de Control' de Revisiones",
+				},
+			],
+		},
+
+		// Prod-Edición Form
+		prodEdicForm_ingrReempl: async (original, edicion) => {
+			// Obtiene todos los campos a revisar
+			let camposRevisar = [...variables.camposRevisar.productos]; // Escrito así para desligarlos
+			let resultado = [];
+
+			// Deja solamente los campos presentes en edicion
+			for (let nombre in edicion) {
+				// Obtiene el campo con varios datos
+				let campo = camposRevisar.find((n) => n.nombre == nombre);
+				// Si el campo no existe en los campos a revisar, saltea la rutina
+				if (!campo) continue;
+				// Obtiene las variables de include
+				let relacInclude = campo.relacInclude;
+				// Criterio para determinar qué valores originales mostrar
+				let FN = async (registro) => {
+					// Obtiene una primera respuesta
+					let resultado = relacInclude
+						? registro[relacInclude] // El registro tiene un valor 'include'
+							? registro[relacInclude].nombre // Muestra el valor 'include'
+							: await BD_genericas.obtienePorId(campo.tabla, registro[nombre]).then((n) => n.nombre) // Busca el valor include
+						: registro[nombre]; // Muestra el valor 'simple'
+
+					// Casos especiales
+					if (["cfc", "ocurrio", "musical", "color"].includes(campo.nombre))
+						resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+
+					// Fin
+					return resultado;
+				};
+				campo.mostrarOrig = await FN(original);
+				campo.mostrarEdic = await FN(edicion);
+				// Consolidar los resultados
+				resultado.push(campo);
+			}
+			// Paises
+			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
+			if (indicePais >= 0) {
+				let mostrarOrig, mostrarEdic, paises_id;
+				// Países original
+				paises_id = resultado[indicePais].mostrarOrig;
+				mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
+				// Países edición
+				paises_id = resultado[indicePais].mostrarEdic;
+				mostrarEdic = await comp.paises_idToNombre(paises_id);
+				// Fin
+				resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
+			}
+			// Separa los resultados entre ingresos y reemplazos
+			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+			let reemplazos = resultado.filter((n) => n.mostrarOrig);
+			// Fin
+			return [ingresos, reemplazos];
+		},
+		// Prod-Edición Form
 		fichaDelRegistro: async (entidadOrig, entidadEdic) => {
 			// Funciones
 			let usuario_CalidadEdic = async (userID) => {
@@ -523,62 +591,7 @@ module.exports = {
 			// Fin
 			return derecha;
 		},
-		// Prod-Edición Form
-		prodEdicForm_ingrReempl: async (prodOrig, edicion) => {
-			// Obtiene todos los campos a revisar
-			let campos = [...variables.camposRevisar.productos];
-			let resultado = [];
 
-			// Deja solamente los campos presentes en edicion
-			for (let nombre in edicion) {
-				// Obtiene el campo con varios datos
-				let campo = campos.find((n) => n.nombre == nombre);
-				// Si el campo no existe en los campos a revisar, saltea la rutina
-				if (!campo) continue;
-				// Obtiene las variables de include
-				let relacInclude = campo.relacInclude;
-				// Criterio para determinar qué valores originales mostrar
-				campo.mostrarOrig =
-					relacInclude && prodOrig[relacInclude] // El producto original tiene un valor 'include'
-						? prodOrig[relacInclude].nombre // Muestra el valor 'include'
-						: prodOrig[nombre]; // Muestra el valor 'simple'
-				// Criterio para determinar qué valores editados mostrar
-				campo.mostrarEdic =
-					relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
-						? edicion[relacInclude].nombre // Muestra el valor 'include'
-						: edicion[nombre]; // Muestra el valor 'simple'
-				// Consolidar los resultados
-				resultado.push(campo);
-			}
-			// Paises
-			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
-			if (indicePais >= 0) {
-				let mostrarOrig, mostrarEdic, paises_id;
-				// Países original
-				paises_id = resultado[indicePais].mostrarOrig;
-				mostrarOrig = paises_id ? await comp.paises_idToNombre(paises_id) : "";
-				// Países edición
-				paises_id = resultado[indicePais].mostrarEdic;
-				mostrarEdic = await comp.paises_idToNombre(paises_id);
-				// Fin
-				resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
-			}
-			// Separa los resultados entre ingresos y reemplazos
-			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-			let reemplazos = resultado.filter((n) => n.mostrarOrig);
-			// Fin
-			return [ingresos, reemplazos];
-		},
-		cartelNoQuedanCampos: {
-			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
-			iconos: [
-				{
-					nombre: "fa-spell-check",
-					link: "/revision/tablero-de-control",
-					titulo: "Ir al 'Tablero de Control' de Revisiones",
-				},
-			],
-		},
 		// RCLV-Edición Form
 		RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
 			// Obtiene todos los campos a revisar

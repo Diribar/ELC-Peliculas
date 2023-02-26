@@ -32,12 +32,12 @@ module.exports = {
 
 		// RCLV
 		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
+		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 
 		// Links
-		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
-		// Obtiene Links
 		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
 		// return res.send(productos.CL)
+
 		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC.prod_ProcesarCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesarCampos(rclvs);
@@ -202,10 +202,10 @@ module.exports = {
 		// Fin
 		// return res.redirect("/revision/tablero-de-control");
 
-		// Si es un RCLV, redirecciona al tablero
-		if (rclvs) return res.redirect("/revision/tablero-de-control");
-		// Si es un producto, redirecciona a una edición
-		else return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		// Si es un producto y fue aprobado, redirecciona a una edición
+		if (!rclvs && !rechazado) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		// En los demás casos, redirecciona al tablero
+		else return res.redirect("/revision/tablero-de-control");
 	},
 
 	// EDICION
@@ -220,30 +220,30 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
 
 		// Obtiene la versión original con includes
-		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
-		if (entidad == "capitulos") includesOrig.push("coleccion");
-		if (entidad == "colecciones") includesOrig.push("capitulos");
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+		let includes = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
+		if (entidad == "capitulos") includes.push("coleccion");
+		if (entidad == "colecciones") includes.push("capitulos");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includes);
 
 		// Obtiene la edición
-		let prodEdic = await BD_genericas.obtienePorId("prods_edicion", edicID);
-		// return res.send([prodOrig,prodEdic])
+		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
+		// return res.send([original,edicion])
 
 		// Acciones si está presente el avatar
-		if (prodEdic.avatar) {
+		if (edicion.avatar) {
 			// Averigua si se debe reemplazar el avatar en forma automática
 			let reemplAvatarAutomaticam =
-				prodEdic.avatar && // Que en la edición, el campo 'avatar' tenga un valor
-				prodOrig.avatar && // Que en el original, el campo 'avatar' tenga un valor
-				prodOrig.avatar == prodEdic.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
+				edicion.avatar && // Que en la edición, el campo 'avatar' tenga un valor
+				original.avatar && // Que en el original, el campo 'avatar' tenga un valor
+				original.avatar == edicion.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
-				await procesos.edicion.actualizaArchivoAvatar(prodOrig, prodEdic, true);
+				await procesos.edicion.actualizaArchivoAvatar(original, edicion, true);
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
-				await BD_genericas.actualizaPorId(entidad, prodOrig.id, {avatar: prodEdic.avatar});
+				await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-				await BD_genericas.actualizaPorId("prods_edicion", prodEdic.id, {avatar: null, avatar_url: null});
+				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar: null, avatar_url: null});
 				// Recarga la ruta
 				return res.redirect(req.originalUrl);
 			}
@@ -251,27 +251,27 @@ module.exports = {
 			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic);
+				avatar = procsCRUD.obtieneAvatarOrigEdic(original, edicion);
 				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
-				avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
+				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			}
 		}
 		// Acciones si no está presente el avatar
-		else if (!prodEdic.avatar) {
+		else if (!edicion.avatar) {
 			// Achica la edición a su mínima expresión
-			let edicion = await procsCRUD.puleEdicion(prodOrig, prodEdic, entidad);
+			[edicion] = await procsCRUD.puleEdicion(original, edicion);
+			// for (let campo in edicion) if (edicion[campo]===null) delete edicion[campo]
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(prodOrig, edicion);
+			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(original, edicion);
 			// Obtiene el avatar
-			avatar = prodOrig.avatar ? prodOrig.avatar : "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-			if (!avatar.startsWith("http")) avatar = "/imagenes/2-Avatar-Prods-Final/" + avatar;
+			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
 			infoErronea_id = motivos.find((n) => n.info_erronea).id;
-			bloqueDer = await procesos.edicion.fichaDelRegistro(prodOrig, prodEdic);
+			bloqueDer = await procesos.edicion.fichaDelRegistro(original, edicion);
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
@@ -282,8 +282,8 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			prodOrig,
-			prodEdic,
+			prodOrig: original,
+			prodEdic: edicion,
 			prodNombre,
 			ingresos,
 			reemplazos,
@@ -293,7 +293,7 @@ module.exports = {
 			entidad,
 			id: prodID,
 			bloqueDer,
-			title: prodOrig.nombre_castellano,
+			title: original.nombre_castellano,
 			avatarExterno,
 			avatarLinksExternos,
 			imgDerPers,
@@ -331,13 +331,15 @@ module.exports = {
 		// - Si corresponde, penaliza al usuario
 		// - Pule la edición, y si no quedan campos, elimina el registro de la tabla
 		await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
-		[edicion] = await procsCRUD.puleEdicion(original, edicion, entidad);
+		[edicion] = await procsCRUD.puleEdicion(original, edicion);
 
 		// 3. PROCESOS DE CIERRE
-		// - Si corresponde: cambia de status, también las colecciones, prodsEnRCLV
-		// - Decide cuáles son los próximos pasos
-		let proximosPasos = await procesos.edicion.prodsEdicGuardar_procsDeCierre(entidad, original, edicion, avatar);
-		if (proximosPasos == "redirect") return res.redirect(req.originalUrl);
+		// - Si corresponde: cambia de status, también las colecciones, 
+		// - Actualiza 'prodsEnRCLV'
+		await procesos.edicion.posibleAprobado(entidad, {...original, avatar});
+
+		// Fin
+		if (edicion) return res.redirect(req.originalUrl);
 		else return res.render("CMP-0Estructura", {informacion: procesos.edicion.cartelNoQuedanCampos});
 	},
 	rclv_edicForm: async (req, res) => {
@@ -358,7 +360,7 @@ module.exports = {
 		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
 
 		// Acciones si no está presente el avatar
-		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic, entidad);
+		let edicion = await procsCRUD.puleEdicion(rclvOrig, rclvEdic);
 		// Fin, si no quedan campos
 		if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 		// Obtiene los ingresos y reemplazos
