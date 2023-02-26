@@ -7,9 +7,8 @@ const variables = require("../../funciones/3-Procesos/Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Soporte para lectura y guardado de edición
-	puleEdicion: async (original, edicion) => {
+	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const entidad = comp.obtieneEntidadDesdeCampo_id(edicion);
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
 		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const edicion_id = edicion.id;
@@ -32,16 +31,17 @@ module.exports = {
 			// Corrige errores de data-entry
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-			// Condiciones
-			// 1. La edición no es 'null'
+			// CONDICION 1: La edición no es 'null'
 			let condicion1 = edicion[campo] === null;
-			// 2. El original y la edición no son 'null' ni 'undefined' y son 'iguales'
+
+			// CONDICION 2: El original y la edición no son 'null' ni 'undefined' y son 'iguales'
 			// El original no puede ser 'null', porque ya habría sido eliminado
 			// El original no puede ser 'undefined', porque ya lo estamos preguntando
 			// La edición no puede ser 'null', porque ya habría sido eliminada
 			// La edición no puede ser 'undefined', porque existe el método
 			let condicion2 = original[campo] !== undefined && edicion[campo] !== undefined && edicion[campo] == original[campo];
-			// 3. El objeto vinculado tiene el mismo ID
+
+			// CONDICION 3: El objeto vinculado tiene el mismo ID
 			let condicion3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
@@ -83,7 +83,7 @@ module.exports = {
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			let camposNull;
-			[edicion, camposNull] = await this.puleEdicion(original, edicion);
+			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
 				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, camposNull);
@@ -99,7 +99,7 @@ module.exports = {
 		let camposNull;
 
 		// Quita la info que no agrega valor
-		[edicion, camposNull] = await this.puleEdicion(original, edicion);
+		[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 
 		// Acciones si quedan campos
 		if (edicion) {

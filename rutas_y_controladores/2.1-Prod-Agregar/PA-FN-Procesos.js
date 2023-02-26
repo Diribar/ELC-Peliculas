@@ -271,7 +271,8 @@ module.exports = {
 		// Variables
 		let camposDA = variables.camposDA;
 		let camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
-		if (datos.sinRCLV) for (let campo of camposRCLV) delete datos[campo];
+		for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
+
 		// Fin
 		return datos;
 	},
@@ -468,19 +469,6 @@ module.exports = {
 			// Obtiene las API
 			await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 		}
-		// Fin
-		return;
-	},
-	descargaMueveElAvatar: async (datos) => {
-		// Obtiene el nombre
-		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
-
-		// Descarga la imagen del url
-		await comp.descarga(datos.avatar_url, rutaYnombre);
-
-		// Mueve el avatar de 'provisorio' a 'revisar'
-		await comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
-
 		// Fin
 		return;
 	},

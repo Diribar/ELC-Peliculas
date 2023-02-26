@@ -27,13 +27,14 @@ const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUse
 const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...aptoUsuario, permUserReg];
 
 // APIs -------------------------------------------------
-// Producto
-router.get("/api/edicion-aprob-rech", API.edicAprobRech);
-// router.get("/api/producto-guarda-avatar", API.prodEdic_ConvierteUrlEnArchivo);
+// Producto y RCLV
+router.get("/api/edicion/motivo-generico", API.motivoGenerico);
+router.get("/api/edicion/aprob-rech", API.edicAprobRech);
+
 // Links
-router.get("/api/link-alta", API.linkAltaBaja);
-router.get("/api/link-eliminar", API.linkAltaBaja);
-router.get("/api/link-edicion", API.edicAprobRech);
+router.get("/api/link/alta", API.linkAltaBaja);
+router.get("/api/link/eliminar", API.linkAltaBaja);
+router.get("/api/link/edicion", API.edicAprobRech);
 
 // VISTAS --------------------------------------------------
 // Tablero de Control

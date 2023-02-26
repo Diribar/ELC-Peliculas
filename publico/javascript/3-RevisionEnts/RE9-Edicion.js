@@ -1,5 +1,5 @@
 "use strict";
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Variables
 	let v = {
 		// Datos del registro
@@ -14,8 +14,7 @@ window.addEventListener("load", () => {
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
 		rechazar: document.querySelectorAll(".contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
-		versionActual: document.querySelector("#versionActual"),
-		motivoGenerico_id: "",
+		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector(".contenido #ingrs"),
 		filasIngrs: document.querySelectorAll(".contenido #ingrs .fila"),
@@ -27,13 +26,12 @@ window.addEventListener("load", () => {
 		campoNombres: document.querySelectorAll(".contenido .campoNombre"),
 		rutaEdicion: "",
 		familia: location.pathname.slice(1),
-		rutaEdicion: "/revision/api/edicion-aprob-rech/?entidad=",
+		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
 
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
-	let sinMotivo = v.rechazar.length - v.motivoRechazos.length;
-	if (v.versionActual) v.motivoGenerico_id = v.versionActual.innerHTML;
+	let sinMotivo = v.rechazar.length - v.motivoRechazos.length; // Son los reemplazos, donde no se le pregunta un motivo al usuario
 	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
 	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);
 
@@ -74,20 +72,6 @@ window.addEventListener("load", () => {
 			let bloqueReempsOculto = !v.bloqueReemps || v.bloqueReemps.className.includes("ocultar");
 			// Averigua si está todo oculto
 			return bloqueIngrsOculto && bloqueReempsOculto;
-		};
-		let mensajeAvatar = () => {
-			// Mensajes
-			let arrayMensajes = [
-				"Gracias por responder sobre la imagen",
-				"A continuación te pedimos que valides otros campos",
-			];
-			// Flechas
-			let icono = {
-				HTML: '<i class="fa-solid fa-circle-right" title="Continuar"></i>',
-				link: location.href,
-			};
-			// Fin
-			return {arrayMensajes, icono};
 		};
 		let mensajeFin = () => {
 			// Mensajes
@@ -137,7 +121,6 @@ window.addEventListener("load", () => {
 		let todoProcesado = FN_todoProcesado();
 		// Si está todo procesado y quedan campos,
 		if (todoProcesado == resultado.quedanCampos) console.log(todoProcesado, resultado.quedanCampos);
-		
 		// Si está todo procesado, publica el cartel de fin
 		else if (todoProcesado) cartel(mensajeFin());
 		// Fin
