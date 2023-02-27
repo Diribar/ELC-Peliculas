@@ -68,12 +68,12 @@ module.exports = async (req, res, next) => {
 // Funciones
 let FN_origen = (baseUrl) => {
 	return baseUrl == "/revision/usuarios"
-		? "tableroUs"
+		? "TU"
 		: baseUrl == "/revision"
-		? "tableroEnts"
+		? "TE"
 		: baseUrl == "/producto"
-		? "DT_prod"
+		? "DTP"
 		: baseUrl == "/rclv"
-		? "DT_RCLV"
+		? "DTR"
 		: "";
 };

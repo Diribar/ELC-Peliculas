@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 				iconos: [
 					{
 						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=tableroEnts",
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
 						titulo: "Regresar al Tablero de Control",
 					},
 				],
@@ -45,7 +45,7 @@ module.exports = async (req, res, next) => {
 				iconos: [
 					{
 						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=tableroEnts",
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
 						titulo: "Regresar al Tablero de Control",
 					},
 				],
