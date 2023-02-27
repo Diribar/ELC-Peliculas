@@ -17,14 +17,14 @@ module.exports = {
 			let entidades = ["peliculas", "colecciones"];
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
-			campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+			campos = [entidades, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 			let SE = await TC_obtieneRegs(...campos);
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
-			campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
 			let IN = await TC_obtieneRegs(...campos);
 			// RC: En status 'recuperar'
-			campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
 			let RC = await TC_obtieneRegs(...campos);
 
 			// Fin
@@ -32,12 +32,12 @@ module.exports = {
 		},
 		obtieneProdsConEdicAjena: async (ahora, userID) => {
 			// 1. Variables
-			const campoFechaRef = "editado_en";
-			let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
+			const campoFecha = "editado_en";
+			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("prods_edicion", includes);
+			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("prods_edicion", include);
 
 			// 3.Elimina las edicionesProd con RCLV no aprobado
 			if (ediciones.length)
@@ -60,8 +60,8 @@ module.exports = {
 							...n[asociacion],
 							entidad,
 							edicion_id: n.id,
-							fechaRef: n[campoFechaRef],
-							fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+							fechaRef: n[campoFecha],
+							fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
 						});
 				});
 
@@ -89,8 +89,8 @@ module.exports = {
 			// Obtiene rclvs en situaciones particulares
 			// Variables
 			let entidades = variables.entidadesRCLV;
-			let includes = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
-			let campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
+			let include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
+			let campos = [entidades, creado_id, userID, "creado_en", "creado_por_id", include];
 			let registros = await TC_obtieneRegs(...campos);
 
 			// Distribuir entre AL y SP
@@ -108,11 +108,11 @@ module.exports = {
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 			// 1. Variables
-			const campoFechaRef = "editado_en";
-			let includes = ["personaje", "hecho", "valor"];
+			const campoFecha = "editado_en";
+			let include = ["personaje", "hecho", "valor"];
 			let rclvs = [];
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", includes);
+			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", include);
 			ediciones.filter((n) => n.editado_por_id != userID);
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -125,8 +125,8 @@ module.exports = {
 						entidad,
 						editado_en: n.editado_en,
 						edicion_id: n.id,
-						fechaRef: n[campoFechaRef],
-						fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+						fechaRef: n[campoFecha],
+						fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -142,7 +142,7 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		prod_ProcesarCampos: (productos) => {
+		prod_ProcesaCampos: (productos) => {
 			// Procesar los registros
 			// Variables
 			const anchoMax = 40;
@@ -172,7 +172,7 @@ module.exports = {
 			// Fin
 			return productos;
 		},
-		RCLV_ProcesarCampos: (rclvs) => {
+		RCLV_ProcesaCampos: (rclvs) => {
 			// Procesar los registros
 			let anchoMax = 30;
 			const rubros = Object.keys(rclvs);
@@ -219,8 +219,8 @@ module.exports = {
 			};
 
 			// RCLV actual
-			let includes = comp.obtieneTodosLosCamposInclude(entidad);
-			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, includes);
+			let include = comp.obtieneTodosLosCamposInclude(entidad);
+			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
 
 			// Motivos posibles
 			let motivoVersionActual = edic_motivos_rech.find((n) => n.version_actual);
@@ -628,23 +628,23 @@ module.exports = {
 };
 
 // Funciones
-let TC_obtieneRegs = async (entidades, ahora, status, userID, campoFechaRef, autor_id, include) => {
+let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, include) => {
 	// Variables
-	let campos = {ahora, status, userID, include, campoFechaRef, autor_id};
+	let campos = {status_id, userID, include, campoFecha, autor_id};
 	let resultados = [];
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades) resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
 	// Elimina los propuestos hace menos de una hora, o por el Revisor
-	const haceUnaHora = comp.nuevoHorario(-1, ahora);
+	const haceUnaHora = comp.nuevoHorario(-1);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][campoFechaRef] > haceUnaHora || resultados[i][autor_id] == userID) resultados.splice(i, 1);
+			if (resultados[i][campoFecha] > haceUnaHora || resultados[i][autor_id] == userID) resultados.splice(i, 1);
 	// Agrega el campo 'fecha-ref'
 	resultados = resultados.map((n) => {
 		return {
 			...n,
-			fechaRef: n[campoFechaRef],
-			fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+			fechaRef: n[campoFecha],
+			fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
 		};
 	});
 	// Ordena los resultados
@@ -664,7 +664,7 @@ let posibleAprobado = async (entidad, original) => {
 			statusAprob = true;
 			let ahora = comp.ahora();
 			let datos = {
-				alta_terminada_en: ahora,
+				alta_term_en: ahora,
 				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
 				status_registro_id: aprobado.id,
 			};

@@ -4,8 +4,7 @@
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
-				<li>Estos registros están pendientes de revisar.</li>
-				<li>Se necesita revisarlos a todos.</li>
+				<li>Estos registros están pendientes de información.</li>
 				<li>Las tareas figuran por orden de prioridad.</li>
 			</ul>
 		</i>
@@ -33,10 +32,11 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rp = "revision/producto/" %>
-				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: productos.IN, url: rp + "inactivar-o-recuperar"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Ediciones", regs: productos.ED, url: rp + "edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas", regs: productos.AL, url: rp + "alta"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas sin edición", regs: productos.SE, url: rp + "inactivar-o-recuperar"}) %>
+				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin links", regs: productos.SL, url: rp + "edicion"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin links gratuitos", regs: productos.SLG, url: rp + "alta"}) %>
+				<%- include("RE0-Registros", {titulo: "Productos Inactivos", regs: productos.IN, url: rp + "alta"}) %>
 			</div>
 		</div>
 	</div>
