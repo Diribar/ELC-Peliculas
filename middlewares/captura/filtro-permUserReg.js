@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 		urlBase: req.baseUrl,
 		url: req.url,
 		// Registro
-		includes: ["status_registro", "capturado_por"],
+		include: ["status_registro", "capturado_por"],
 		// Vistas
 		vistaAnterior: variables.vistaAnterior(req.session.urlSinCaptura),
 		vistaInactivar: variables.vistaInactivar(req),
@@ -28,9 +28,9 @@ module.exports = async (req, res, next) => {
 	};
 
 	// Variables - Registro
-	if (v.entidad != "usuarios") v.includes.push("ediciones");
-	if (v.entidad == "capitulos") v.includes.push("coleccion");
-	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.includes);
+	if (v.entidad != "usuarios") v.include.push("ediciones");
+	if (v.entidad == "capitulos") v.include.push("coleccion");
+	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = comp.fechaHorarioTexto(v.registro.capturado_en)
 	v.horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;

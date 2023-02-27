@@ -49,10 +49,10 @@ module.exports = {
 		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
 
 		// Obtiene una matriz con los vínculos
-		let includes = camposConVinculo.map((n) => n.relacInclude);
+		let include = camposConVinculo.map((n) => n.relacInclude);
 
 		// Fin
-		return includes;
+		return include;
 	},
 
 	// Conversiones
@@ -605,8 +605,8 @@ module.exports = {
 	},
 	usuarioFicha: async (userID, ahora) => {
 		// Obtiene los datos del usuario
-		let includes = "rol_iglesia";
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, includes);
+		let include = "rol_iglesia";
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		// Variables
 		let unAno = unDia * 365;
 		let enviar = {apodo: ["Apodo", usuario.apodo]};
