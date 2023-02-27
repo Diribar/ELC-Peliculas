@@ -17,13 +17,13 @@ module.exports = {
 		const codigo = req.path.slice(1, -1);
 		// 2. Variables
 		let entidad = req.query.entidad;
-		let prodID = req.query.id;
+		let id = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 4. Obtiene la versión más completa posible del producto
-		let prodComb = {...prodOrig, ...prodEdic, id: prodID};
+		let prodComb = {...original, ...edicion, id};
 		// 5. Configura el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo =
@@ -32,7 +32,7 @@ module.exports = {
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
 		// 6. Obtiene los países
-		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
+		let paises = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
 		let camposInput1, camposInput2, produccion, camposDA, BD_paises, BD_idiomas;
@@ -41,7 +41,7 @@ module.exports = {
 			let edicion = (() => {
 				// Función
 				let verificaReq = (dato) => {
-					return req[dato] && req[dato].entidad == entidad && req[dato].id == prodID;
+					return req[dato] && req[dato].entidad == entidad && req[dato].id == id;
 				};
 				// Obtiene la información
 				let resultado = verificaReq("session.edicProd")
@@ -66,15 +66,15 @@ module.exports = {
 			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic);
-			avatarLinksExternos = variables.avatarLinksExternos(prodOrig.nombre_castellano);
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion);
+			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
 			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic).edic;
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion).edic;
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -86,7 +86,8 @@ module.exports = {
 			codigo,
 			titulo,
 			entidad,
-			prodID,
+			id,
+			origen: req.query.origen,
 			producto: prodComb,
 			imgDerPers,
 			tituloImgDerPers: prodComb.nombre_castellano,
@@ -111,10 +112,10 @@ module.exports = {
 	prodEdic_Guardar: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
-		let prodID = req.query.id;
+		let id = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene el producto 'Original' y 'Editado'
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, prodID, userID);
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;
@@ -124,7 +125,7 @@ module.exports = {
 		}
 
 		// Averigua si hay errores de validación
-		let prodComb = {...prodOrig, ...prodEdic, ...req.body, id: prodID}; // se debe agregar el prodID, para verificar que no esté repetido
+		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id, para verificar que no esté repetido
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si recibimos un archivo avatar
@@ -134,7 +135,7 @@ module.exports = {
 				// Mueve el archivo actual a su ubicación para ser revisado
 				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
 				// Elimina el anterior archivo de imagen
-				if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
+				if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", edicion.avatar);
 			}
 			// Si hay errores, borra el archivo avatar
 			else {
@@ -146,12 +147,12 @@ module.exports = {
 		// Si no hay errores, actualiza la edición
 		if (!errores.hay) {
 			let edicion = {...req.body};
-			if (prodEdic.id) edicion.id = prodEdic.id;
-			await procsCRUD.guardaActEdicCRUD({original: prodOrig, edicion, entidad, userID});
+			if (edicion.id) edicion.id = edicion.id;
+			await procsCRUD.guardaActEdicCRUD({original: original, edicion, entidad, userID});
 		}
 
 		// Fin
-		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
+		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + id);
 	},
 
 	calificala: (req, res) => {

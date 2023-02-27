@@ -17,7 +17,7 @@ module.exports = {
 
 		// Variables
 		let entidad = req.query.entidad;
-		let rclvID = req.query.id;
+		let id = req.query.id;
 		let userID = req.session.usuario.id;
 		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
 		let nombre = comp.obtieneEntidadNombre(entidad);
@@ -39,10 +39,10 @@ module.exports = {
 
 		// Pasos exclusivos para edición y revisión
 		if (codigo != "agregar") {
-			// Obtiene el rclvOrig y rclvEdic
-			let [rclvOrig, rclvEdic] = await procsCRUD.obtieneOriginalEdicion(entidad, rclvID, userID);
+			// Obtiene el original y edicion
+			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			// Pisa el data entry de session
-			dataEntry = {...rclvOrig, ...rclvEdic, id: rclvID};
+			dataEntry = {...original, ...edicion, id};
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado) res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
@@ -57,6 +57,8 @@ module.exports = {
 			tema,
 			codigo,
 			entidad,
+			id,
+			origen: req.query.origen,
 			personajes: entidad == "personajes",
 			hechos: entidad == "hechos",
 			titulo,
@@ -77,7 +79,7 @@ module.exports = {
 		// Puede venir de agregarProd o edicionProd
 
 		// Variables
-		let {entidad, id: rclvID, origen, prodEntidad, prodID} = req.query;
+		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
@@ -102,7 +104,7 @@ module.exports = {
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTR"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
 				: "/";
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
@@ -113,14 +115,14 @@ module.exports = {
 		const codigo = "detalle";
 		// 2. Variables
 		let entidad = req.query.entidad;
-		let RCLV_id = req.query.id;
+		let id = req.query.id;
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
-		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, include);
+		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Productos
 		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, usuario);
@@ -139,7 +141,8 @@ module.exports = {
 			procCanoniz: await procesos.detalle.procCanoniz(RCLV),
 			RCLVnombre: RCLV.nombre,
 			entidad,
-			RCLV_id,
+			id,
+			origen: req.query.origen,
 			entidadNombre,
 		});
 	},
