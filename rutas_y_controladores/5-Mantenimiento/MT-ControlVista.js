@@ -15,15 +15,12 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// Productos
-		let productos = await procesos.TC_obtieneProductos(userID);
+		let productos = await procesos.TC_obtieneProds(userID);
 		productos = procesosRE.TC.prod_ProcesaCampos(productos);
-		// return res.send(productos)
 
 		// RCLVs Inactivos
-		let rclvs = {};
-
-		// Links Inactivos
-		let links = {};
+		let rclvs =  await procesos.TC_obtieneRCLVs(userID);
+		rclvs = procesosRE.TC.RCLV_ProcesaCampos(rclvs);
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
@@ -32,7 +29,6 @@ module.exports = {
 			titulo: "Mantenimiento",
 			productos,
 			rclvs,
-			links,
 		});
 	},
 };

@@ -86,14 +86,14 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: ({entidad, status, ahora, userID, campoFechaRef, autor_id, include}) => {
-		const haceUnaHora = comp.nuevoHorario(-1, ahora);
-		const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	TC_obtieneRegs: ({entidad, status_id, userID, campoFecha, autor_id, include}) => {
+		const haceUnaHora = comp.nuevoHorario(-1);
+		const haceDosHoras = comp.nuevoHorario(-2);
 		return db[entidad]
 			.findAll({
 				where: {
 					// Con status según parámetro
-					status_registro_id: status,
+					status_registro_id: status_id,
 					// Que cumpla alguno de los siguientes sobre la 'captura':
 					[Op.or]: [
 						// Que no esté capturado
@@ -108,21 +108,35 @@ module.exports = {
 						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 					],
 					// Que esté propuesto hace más de una hora
-					[campoFechaRef]: {[Op.lt]: haceUnaHora},
+					[campoFecha]: {[Op.lt]: haceUnaHora},
 					// Que esté propuesto por otro usuario
 					[autor_id]: {[Op.ne]: userID},
 				},
 				include,
 			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
+			.then((n) =>
+				n
+					? n
+							.map((m) => m.toJSON())
+							.map(
+								(m) =>
+									(m = {
+										...m,
+										entidad,
+										fechaRef: m[campoFecha],
+										fechaRefTexto: comp.fechaTextoCorta(m[campoFecha]),
+									})
+							)
+					: []
+			);
 	},
-	TC_obtieneEdicsAptas: (entidad, includes) => {
+	TC_obtieneEdicsAptas: (entidad, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
 		// Obtiene las ediciones que cumplan ciertas condiciones
 		return (
 			db[entidad]
 				// Que esté editado desde hace más de 1 hora
-				.findAll({where: {editado_en: {[Op.lt]: haceUnaHora}}, include: includes})
+				.findAll({where: {editado_en: {[Op.lt]: haceUnaHora}}, include})
 				.then((n) => (n ? n.map((m) => m.toJSON()) : []))
 		);
 	},
