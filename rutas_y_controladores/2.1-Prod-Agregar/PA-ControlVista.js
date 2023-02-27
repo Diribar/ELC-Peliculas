@@ -170,7 +170,7 @@ module.exports = {
 		// Obtiene los DatosAdics y elimina los campos sin datos
 		delete datosAdics.sinRCLV;
 		datosAdics = {...datosAdics, ...req.body};
-		if (datos.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
+		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
 		// Valor para actores
 		if (!datosAdics.actores) datosAdics.actores = procesos.valorParaActores(datosAdics);
