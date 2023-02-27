@@ -724,7 +724,7 @@ module.exports = {
 			let rutaOrigen = "/inactivar-captura/";
 
 			// Obtiene la vista de origen
-			let vistaOrigen = "?origen=" + (datos.origen ? datos.origen : "tableroEnts");
+			let vistaOrigen = "?origen=" + (datos.origen ? datos.origen : "TE");
 
 			// Obtiene los parámetros de entidad + ID, a inactivar
 			let entidadId_inactivar = "&entidad=" + datos.entidad + "&id=" + datos.id;

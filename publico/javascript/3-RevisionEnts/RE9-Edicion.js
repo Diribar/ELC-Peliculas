@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 			icono.HTML = irEdicion
 				? '<i class="fa-solid fa-circle-left"  title="Volver al Tablero"></i>'
 				: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>';
-			icono.link = "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=tableroEnts";
+			icono.link = "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";
 
 			// Partes del cartel
 			let cartel = document.querySelector("#cartel");

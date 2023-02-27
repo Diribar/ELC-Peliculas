@@ -149,6 +149,6 @@ module.exports = {
 		if (durac_penalidad)
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
 		// Libera y vuelve al tablero
-		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
+		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=TU");
 	},
 };

@@ -31,9 +31,9 @@
 			</div>
 			<!-- Registros -->
 			<div class="registros">
-				<%- include("RE0-Registros", {titulo: "Altas sin edición", regs: productos.SE, url: "producto/edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle"}) %>
-				<%- include("RE0-Registros", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle"}) %>
+				<%- include("RE0-Registros", {titulo: "Altas sin edición", regs: productos.SE, url: "producto/edicion", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", origen: "MT"}) %>
 			</div>
 		</div>
 	</div>
@@ -59,7 +59,7 @@
 			</div>
 			<!-- Registros -->
 			<div class="registros">
-				<%- include("RE0-Registros", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle"}) %>
+				<%- include("RE0-Registros", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
 			</div>
 		</div>
 		<!-- Links -->
@@ -78,8 +78,9 @@
 				</div>
 			</div>
 			<div class="registros">
-				<%- include("RE0-Registros", {titulo: "Sin links", regs: productos.SL, url: "links/abm"}) %>
-				<%- include("RE0-Registros", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin links", regs: productos.SL, url: "links/abm", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin links en castellano", regs: productos.SLC, url: "links/abm", origen: "MT"}) %>
 			</div>
 		</div>
 	</div>

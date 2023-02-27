@@ -101,7 +101,7 @@ module.exports = {
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
-				: origen == "DT_RCLV"
+				: origen == "DTR"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + rclvID
 				: "/";
 		// Redirecciona a la siguiente instancia
