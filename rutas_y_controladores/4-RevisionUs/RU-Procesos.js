@@ -19,7 +19,7 @@ module.exports = {
 			status_registro_id: st_ident_a_validar,
 		};
 		// Obtiene el usuario
-		// let includes = [];
+		// let include = [];
 		let usuarios = await BD_especificas.obtieneUsuarioDistintoIdMasFiltros(userID, campos);
 		// Quita los usuarios incompletos
 		campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];

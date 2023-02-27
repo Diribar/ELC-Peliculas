@@ -118,9 +118,9 @@ module.exports = {
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 
 		// Obtiene RCLV con productos
-		let includes = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		includes.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
-		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, includes);
+		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
+		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, RCLV_id, include);
 
 		// Productos
 		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, usuario);

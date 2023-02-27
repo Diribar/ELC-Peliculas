@@ -39,8 +39,8 @@ module.exports = {
 		// return res.send(productos.CL)
 
 		// Procesa los campos de las 2 familias de entidades
-		productos = procesos.TC.prod_ProcesarCampos(productos);
-		rclvs = procesos.TC.RCLV_ProcesarCampos(rclvs);
+		productos = procesos.TC.prod_ProcesaCampos(productos);
+		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -60,10 +60,10 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		// 4. Obtiene los datos ORIGINALES del producto
-		let includes = ["status_registro"];
-		if (entidad == "colecciones") includes.push("capitulos");
+		let include = ["status_registro"];
+		if (entidad == "colecciones") include.push("capitulos");
 		// Detecta si el registro no está en status creado
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// Le agrega datos de la edición cuando no proviene de TMDB
 		if (prodOrig.fuente != "TMDB") {
 			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
@@ -140,8 +140,8 @@ module.exports = {
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
 		// Obtiene el registro original
-		let includes = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Completa los datos
 		const lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
@@ -219,11 +219,11 @@ module.exports = {
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
 
-		// Obtiene la versión original con includes
-		let includes = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
-		if (entidad == "capitulos") includes.push("coleccion");
-		if (entidad == "colecciones") includes.push("capitulos");
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includes);
+		// Obtiene la versión original con include
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, prodID, include);
 
 		// Obtiene la edición
 		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
@@ -341,9 +341,9 @@ module.exports = {
 		const {entidad, id: prodID} = req.query;
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
-		// Obtiene la versión original con includes
-		let includesOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
-		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includesOrig);
+		// Obtiene la versión original con include
+		let includeOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
+		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includeOrig);
 
 		// Acciones si no está presente el avatar
 		let edicion = await procsCRUD.puleEdicion(entidad, rclvOrig, rclvEdic);
@@ -387,7 +387,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
 		// Otras variables
-		let includes;
+		let include;
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		let userID = req.session.usuario.id;
@@ -395,16 +395,16 @@ module.exports = {
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
-		includes = ["links", "status_registro"];
-		if (entidad == "capitulos") includes.push("coleccion");
-		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, includes);
+		include = ["links", "status_registro"];
+		if (entidad == "capitulos") include.push("coleccion");
+		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
 		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 		// Obtiene todos los links
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, includes);
+		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista

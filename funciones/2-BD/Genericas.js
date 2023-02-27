@@ -23,14 +23,14 @@ module.exports = {
 	obtienePorId: (entidad, id) => {
 		return db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtienePorIdConInclude: (entidad, id, includes) => {
-		return db[entidad].findByPk(id, {include: includes}).then((n) => (n ? n.toJSON() : ""));
+	obtienePorIdConInclude: (entidad, id, include) => {
+		return db[entidad].findByPk(id, {include: include}).then((n) => (n ? n.toJSON() : ""));
 	},
 	obtienePorCampos: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtienePorCamposConInclude: (entidad, objeto, includes) => {
-		return db[entidad].findOne({where: objeto, include: includes}).then((n) => (n ? n.toJSON() : ""));
+	obtienePorCamposConInclude: (entidad, objeto, include) => {
+		return db[entidad].findOne({where: objeto, include: include}).then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// Otras
