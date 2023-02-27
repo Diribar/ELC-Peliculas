@@ -64,7 +64,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/5-Mantenimiento"),	
+	path.resolve(__dirname, "./vistas/5-Mantenimiento"),
 	path.resolve(__dirname, "./vistas/6-Consultas"),
 	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/7-Institucional"),
