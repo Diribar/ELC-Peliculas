@@ -1,13 +1,15 @@
 "use strict";
-// ************ Requires ************
+// Definir variables
+const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./FN-Procesos");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
-	TC_obtieneProdsSinLink: async (ahora, userID) => {
+    TC_obtieneProdsSinLink: async (ahora, userID) => {
 		// Obtiene todos los productos aprobados, sin ningún link
 		return [];
 		// Obtiene los links 'a revisar'
@@ -28,4 +30,5 @@ module.exports = {
 		// Fin
 		return productos;
 	},
+
 };
