@@ -11,10 +11,10 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
+		let include = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: prodID}, includes);
+		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: prodID}, include);
 		// Ordenar por ID
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// Los combina con la edición, si existe

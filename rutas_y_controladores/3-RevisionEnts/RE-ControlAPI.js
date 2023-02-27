@@ -20,15 +20,15 @@ module.exports = {
 		const revID = req.session.usuario.id;
 
 		// Obtiene el registro editado
-		let includes = comp.obtieneTodosLosCamposInclude(entidad);
-		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, includes);
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
 		// Si no existe la edición, interrumpe el flujo
 		if (!edicion) return res.json({OK: false, mensaje: "No se encuentra la edición"});
 		// Si no existe el campo a analizar, interrumpe el flujo
 		if (edicion[campo] === null) return res.json({OK: false, mensaje: "El campo no está pendiente para procesar"});
 
-		// Obtiene la versión original con includes
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...includes, "status_registro"]);
+		// Obtiene la versión original con include
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
 		let statusAprob = false;

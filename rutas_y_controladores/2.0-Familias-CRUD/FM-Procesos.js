@@ -323,12 +323,12 @@ module.exports = {
 		links.map((n) => {
 			let entidad = comp.obtieneProdDesdeProducto_id(n);
 			let asociacion = comp.obtieneAsociacion(entidad);
-			let campoFechaRef = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
+			let campoFecha = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
 			productos.push({
 				...n[asociacion],
 				entidad,
-				fechaRef: n[campoFechaRef],
-				fechaRefTexto: comp.fechaTextoCorta(n[campoFechaRef]),
+				fechaRef: n[campoFecha],
+				fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
 			});
 		});
 		// 3. Ordena por la fecha más antigua
