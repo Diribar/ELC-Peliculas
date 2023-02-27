@@ -130,10 +130,6 @@ module.exports = {
 		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id, para verificar que no esté repetido
 		prodComb.publico = req.session.usuario.rol_usuario.revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
-		// Si el usuario es un revisor, agrega publico_id
-		let userRevisor = req.session.usuario.rol_usuario.revisor_ents;
-		if (userRevisor) errores.publico_id = !req.query.publico_id ? variables.selectVacio : "";
-		if (errores.publico_id) errores.hay = true;
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {
