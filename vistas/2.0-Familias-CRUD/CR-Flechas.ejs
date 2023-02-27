@@ -4,7 +4,19 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
 	<% } %>
-	<i class="fa-solid fa-circle-info <%- vista == "/producto/detalle/" ? "inactivo" : "" %>" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-	<i class="fa-solid fa-pen <%- vista == "/producto/edicion/" ? "inactivo" : ""%>" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-	<i class="fa-solid fa-link <%- vista == "/links/abm/" ? "inactivo" : "" %>" tabindex="-1" title="Ir a la vista 'Links'"></i>
+	<% if (!vista.includes("/detalle/")) { %>
+		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+		</a>
+	<% } %>
+	<% if (!vista.includes("/edicion/")) { %>
+		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+		</a>
+	<% } %>
+	<% if (vista.includes("/producto/")) { %>
+		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+		</a>
+	<% } %>
 </div>

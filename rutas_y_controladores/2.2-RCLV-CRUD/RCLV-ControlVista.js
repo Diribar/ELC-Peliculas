@@ -59,6 +59,8 @@ module.exports = {
 			entidad,
 			id,
 			origen: req.query.origen,
+			familia: comp.obtieneFamiliaEnSingular(entidad),
+			vista: req.baseUrl + req.path,
 			personajes: entidad == "personajes",
 			hechos: entidad == "hechos",
 			titulo,
@@ -122,10 +124,10 @@ module.exports = {
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
-		let RCLV = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Productos
-		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(RCLV, usuario);
+		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
 		let cantProds = prodsDelRCLV.length;
 
 		// Ir a la vista
@@ -134,15 +136,17 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Detalle de un " + entidadNombre,
-			bloqueDerecha: await procesos.detalle.bloqueDerecha({...RCLV, entidad}, cantProds),
-			omitirImagenDerecha: true,
-			omitirFooter: false,
-			prodsDelRCLV,
-			procCanoniz: await procesos.detalle.procCanoniz(RCLV),
-			RCLVnombre: RCLV.nombre,
 			entidad,
 			id,
 			origen: req.query.origen,
+			familia: comp.obtieneFamiliaEnSingular(entidad),
+			vista: req.baseUrl + req.path,
+			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
+			omitirImagenDerecha: true,
+			omitirFooter: false,
+			prodsDelRCLV,
+			procCanoniz: await procesos.detalle.procCanoniz(original),
+			RCLVnombre: original.nombre,
 			entidadNombre,
 		});
 	},

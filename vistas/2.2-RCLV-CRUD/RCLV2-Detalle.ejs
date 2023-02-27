@@ -35,11 +35,7 @@
 			<i class="fa-solid fa-caret-right mover inactivo"></i>
 		</div>
 		<!-- Flechas -->
-		<div class="flechas">
-			<a href="/rclv/edicion/?origen=DTR&entidad=<%= entidad %>&id=<%= id %>" target="_self">
-				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-			</a>
-		</div>
+		<%- include("CR-Flechas") %>
 	</div>
 	<div id="datosBreves">
 		<h3>Datos del <%= entidadNombre %></h3>

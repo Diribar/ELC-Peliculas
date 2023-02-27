@@ -59,14 +59,19 @@ module.exports = {
 		let autor_id = "nombre";
 		let entidades = variables.entidadesRCLV;
 
-		// 1. RCLVs Inactivos
+		// 1. RCLVs inactivos
 		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", autor_id, status_id: inactivo_id, userID}).then((n) =>
 			n.sort((a, b) => a.fechaRef - b.fechaRef)
 		);
+		// 2. Aprobado sin producto
+		let campoFecha = "alta_analizada_en";
+		let SP = obtienePorEntidad({entidades, campoFecha, autor_id: "creado_por_id", status_id: aprobado_id, userID: 1})
+			.then((n) => n.filter((m) => !m.prods_aprob))
+			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
 
 		// Fin
-		[IN] = await Promise.all([IN]);
-		return {IN};
+		[IN, SP] = await Promise.all([IN, SP]);
+		return {IN, SP};
 	},
 };
 
