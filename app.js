@@ -3,6 +3,9 @@
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
+global.SI = 2;
+global.talVez = 1;
+global.NO = null;
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Para usar el archivo '.env' --> se debe colocar al principio

@@ -197,7 +197,7 @@ module.exports = {
 					if (prods_aprob) break;
 				}
 
-				if (prods_aprob) prods_aprob = 2;
+				if (prods_aprob) prods_aprob = SI;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
 					for (let entidadProd of entidadesProds) {
@@ -206,13 +206,13 @@ module.exports = {
 						if (prods_aprob) break;
 					}
 
-				if (prods_aprob) prods_aprob = 1;
+				if (prods_aprob) prods_aprob = talVez;
 				// 3. Averigua si existe alguna edición
 				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
-				if (prods_aprob) prods_aprob = 1;
+				if (prods_aprob) prods_aprob = talVez;
 				// 4. No encontró ningún caso
-				else prods_aprob = mull;
+				else prods_aprob = NO;
 
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
@@ -236,20 +236,20 @@ module.exports = {
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 		let objeto = {[producto_id]: prodID, tipo_id};
 
-		// Averigua si existe algún link gratuito, para ese producto
+		// 1. Averigua si existe algún link gratuito, para ese producto
 		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
-			? 2 // Tiene
+			? SI
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}))
-			? 1 // Tiene en potencia
-			: null; // No tiene
+			? talVez
+			: NO;
 
-		// Averigua si existe algún link, para ese producto
+		// 2. Averigua si existe algún link, para ese producto
 		let links_general =
-			links_gratuitos == 2 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-				? 2 // Tiene
+			links_gratuitos == SI || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+				? SI
 				: links_gratuitos === 1 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-				? 1 // Tiene en potencia
-				: null; // No tiene
+				? talVez
+				: NO;
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
@@ -278,10 +278,10 @@ module.exports = {
 
 		// Averigua si existe algún link en castellano, para ese producto
 		let castellano = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? 2 // Tiene
+			? SI
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-			? 1 // No tiene
-			: null; // No sabemos
+			? talVez
+			: NO;
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
