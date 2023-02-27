@@ -23,7 +23,7 @@ module.exports = {
 		// Obtiene el avatar
 		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion).edic;
 		// Combina los datos Editados con la versión Original
-		let producto = {...original, ...edicion, id: id};
+		let producto = {...original, ...edicion, id};
 		// Obtiene información de BD
 		let links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		// Separar entre 'gr_activos' y 'gr_inactivos'
@@ -46,7 +46,8 @@ module.exports = {
 			tema,
 			codigo,
 			entidad,
-			prodID: id,
+			id,
+			origen: req.query.origen,
 			userID,
 			titulo,
 			producto,

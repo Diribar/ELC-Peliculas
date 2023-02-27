@@ -181,9 +181,9 @@ module.exports = async (req, res, next) => {
 					"Tenés que liberar " +
 						terminacion.entidad +
 						pc_entidadNombre.toLowerCase() +
-						" " +
+						" '" +
 						prodCapturado[nombre] +
-						", que está reservad" +
+						"', que está reservad" +
 						terminacion.reservado +
 						" desde el " +
 						horario,

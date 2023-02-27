@@ -15,55 +15,66 @@ module.exports = {
 		let include = "ediciones";
 		let entidades = variables.entidadesProd;
 
+		// PRODUCTOS
 		// 1. Altas sin edición (peliculas y colecciones)
 		let SE = obtienePorEntidad({entidades, campoFecha: "creado_en", autor_id, status_id: creado_aprob_id, userID, include})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
-
 		// 2. Aprobados sin calificar (peliculas y colecciones)
 		let SC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", autor_id, status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
 			.then((n) => n.filter((m) => !m.calificacion))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
+		// 3. Productos Inactivos (peliculas y colecciones)
+		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", autor_id, status_id: inactivo_id, userID})
+			.then((n) => n.filter((m) => m.entidad != "capitulos"))
+			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
 
-		// 3. Sin links (peliculas y capítulos)
+		// LINKS
+		// 1. Sin links (peliculas y capítulos)
 		let SL = obtienePorEntidad({entidades, campoFecha: "alta_term_en", autor_id, status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "colecciones"))
 			.then((n) => n.filter((m) => !m.links_general))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
-
-		// 4. Sin links gratuitos (peliculas y capítulos)
+		// 2. Sin links gratuitos (peliculas y capítulos)
 		let SLG = obtienePorEntidad({entidades, campoFecha: "alta_term_en", autor_id, status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "colecciones"))
 			.then((n) => n.filter((m) => m.links_general))
 			.then((n) => n.filter((m) => !m.links_gratuitos))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
-
-		// 5. Productos Inactivos (peliculas y colecciones)
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", autor_id, status_id: inactivo_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "capitulos"))
+		// 3. Sin links en castellano (peliculas y capítulos)
+		let SLC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", autor_id, status_id: aprobado_id, userID})
+			.then((n) => n.filter((m) => m.entidad != "colecciones"))
+			.then((n) => n.filter((m) => m.links_general))
+			.then((n) => n.filter((m) => !m.castellano))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
 
 		// Fin
-		[SE, SC, SL, SLG, IN] = await Promise.all([SE, SC, SL, SLG, IN]);
-		return {SE, SC, SL, SLG, IN};
+		[SE, SC, IN, SL, SLG, SLC] = await Promise.all([SE, SC, IN, SL, SLG, SLC]);
+		return {SE, SC, IN, SL, SLG, SLC};
 	},
 	TC_obtieneRCLVs: async (userID) => {
 		// Variables
 		let autor_id = "nombre";
 		let entidades = variables.entidadesRCLV;
 
-		// 1. RCLVs Inactivos
+		// 1. RCLVs inactivos
 		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", autor_id, status_id: inactivo_id, userID}).then((n) =>
 			n.sort((a, b) => a.fechaRef - b.fechaRef)
 		);
+		// 2. Aprobado sin producto
+		let campoFecha = "alta_analizada_en";
+		let SP = obtienePorEntidad({entidades, campoFecha, autor_id: "creado_por_id", status_id: aprobado_id, userID: 1})
+			.then((n) => n.filter((m) => !m.prods_aprob))
+			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
 
 		// Fin
-		[IN] = await Promise.all([IN]);
-		return {IN};
+		[IN, SP] = await Promise.all([IN, SP]);
+		return {IN, SP};
 	},
 };
+
 let obtienePorEntidad = async ({entidades, status_id, userID, include, campoFecha, autor_id}) => {
 	// Variables
 	let campos = {status_id, userID, include, campoFecha, autor_id, include};
