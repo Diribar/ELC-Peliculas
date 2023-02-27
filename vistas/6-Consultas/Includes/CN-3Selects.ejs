@@ -1,0 +1,23 @@
+<% if (tema) { %>
+	<div id="<%= tema.codigo %>" class="filtro select flexCol">
+		<select name="<%= tema.codigo %>">
+			<option value="" class="sinFiltro"><%= tema.titulo %></option>
+			<% let label %>
+			<% let grupo = tema["grupo_" + tema.codigo] %>
+			<% let opciones = grupo ? grupo : tema.opciones %>
+			<% for (let opcion of opciones) { %>
+				<!-- Acciones si es un cambio de 'rubro' -->
+				<% if (!opcion.id) { %>
+					<% if (label) { %></optgroup><% } %>
+					<% label = true %>
+					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
+				<% } else { %>
+					<!-- Acciones si es una opción dentro del mismo rubro -->
+					<option value="<%= opcion.id %>" class="<%= opcion.clase %>"><%= opcion.nombre %></option>
+				<% } %>
+			<% } %>
+			<!-- Si se había abierto un rubro, lo cierra -->
+			<% if (label) { %></optgroup><% } %>
+		</select>
+	</div>
+<% } %>

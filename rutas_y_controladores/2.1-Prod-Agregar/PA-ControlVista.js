@@ -170,7 +170,7 @@ module.exports = {
 		// Obtiene los DatosAdics y elimina los campos sin datos
 		delete datosAdics.sinRCLV;
 		datosAdics = {...datosAdics, ...req.body};
-		datosAdics = procesos.quitaCamposRCLV(datosAdics);
+		if (datos.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
 		// Valor para actores
 		if (!datosAdics.actores) datosAdics.actores = procesos.valorParaActores(datosAdics);
@@ -247,7 +247,7 @@ module.exports = {
 		// EDICION -------------------------------------
 		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
 		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar
+		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar;
 		comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		// Guarda los datos de 'edición'
 		await procsCRUD.guardaActEdicCRUD({

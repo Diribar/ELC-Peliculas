@@ -1,0 +1,13 @@
+/* Temas generales */
+#cuerpo {flex-direction: row;}
+form {display: flex; flex-direction: row; flex-grow: 1;}
+
+/* Zona de Filtros */
+#cuerpo #zona-de-filtros {width: 220px; display: flex; flex-direction: column; justify-content: flex-start;}
+
+/* Zona de productos */
+#cuerpo #zona-de-prods {align-items: flex-start; height: 100%;}
+#cuerpo #zona-de-prods #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+
+/* Películas */
+#zona-de-prods #vistaProds {display: flex; flex-direction: column; align-self: center; justify-content: center; align-items: center; flex-grow: 1;}

@@ -1,0 +1,10 @@
+/* Izquierda */
+#encabezado #izquierda {display: flex; flex-direction: row;}
+#encabezado #izquierda select {padding: 3px 6px; font-size: 1rem; font-weight: bold;}
+#encabezado #izquierda select:invalid {background: var(--rojo-oscuro); color: snow; font-style: italic;}
+#encabezado #izquierda select:valid {background: var(--verde-oscuro); color: snow;}
+#encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
+
+/* Contador */
+#cuerpo #contador-de-prods {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}
+#cuerpo #contador-de-prods {font-size: 1.1rem; font-weight: bold;}
