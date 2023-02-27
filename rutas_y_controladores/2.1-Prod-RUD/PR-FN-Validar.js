@@ -18,9 +18,10 @@ module.exports = {
 		// Averigua si hay errores de validación DD y DA
 		let erroresDD = await validaProd.datosDuros(campos, datos);
 		let erroresDA = validaProd.datosAdics(campos, datos);
-		let error_publico_id = (errores.publico_id = !datos.publico_id ? variables.selectVacio : "");
+		let errores = {...erroresDD, ...erroresDA};
+		errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
+
 		// Terminar
-		let errores = {...erroresDD, ...erroresDA, error_publico_id};
 		errores.hay = erroresDD.hay || erroresDA.hay;
 		return errores;
 	},
