@@ -2,6 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -42,8 +43,15 @@ module.exports = {
 	validaEdicion: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
+
 		// Averigua los errores solamente para esos campos
 		let errores = await valida.consolidado({campos, datos: req.query});
+
+		// Si el usuario es un revisor, agrega 'publico_id'
+		let userRevisor = req.session.usuario.rol_usuario.revisor_ents;
+		if (userRevisor) errores.publico_id = !req.query.publico_id ? variables.selectVacio : "";
+		if (errores.publico_id) errores.hay = true;
+
 		// Devuelve el resultado
 		return res.json(errores);
 	},

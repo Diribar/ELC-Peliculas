@@ -10,14 +10,13 @@ module.exports = (req, res, next) => {
 	if (!entidad)
 		informacion = {
 			mensajes: ["Falta el dato de la 'entidad'"],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			],
+			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"}],
 		};
 	else {
 		// Entidad inexistente
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		if (!prodNombre)
+		let familia1 = comp.obtieneFamiliaEnSingular(entidad);
+		let familia2 = req.baseUrl.slice(1);
+		if (!familia1 || familia1 != familia2)
 			informacion = {
 				mensajes: ["La entidad ingresada es inválida"],
 				iconos: [

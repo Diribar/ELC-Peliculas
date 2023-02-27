@@ -90,6 +90,7 @@ module.exports = {
 			origen: req.query.origen,
 			familia: comp.obtieneFamiliaEnSingular(entidad),
 			vista: req.baseUrl + req.path,
+			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
 			producto: prodComb,
 			imgDerPers,
 			tituloImgDerPers: prodComb.nombre_castellano,
