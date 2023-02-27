@@ -70,17 +70,17 @@ module.exports = {
 			productos = comp.eliminaRepetidos(productos);
 
 			// 6. Deja solamente los sin problemas de captura
-			if (productos.length) productos = procsCRUD.sinProblemasDeCaptura(productos, userID, ahora);
+			if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
 			// Fin
 			return productos;
 		},
-		obtieneProdsConLink: async function (ahora, userID) {
+		obtieneProdsConLink: async (ahora, userID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
 			// Obtiene los links 'a revisar'
 			let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
 			// Obtiene los productos
-			let productos = links.length ? procsCRUD.obtieneProdsDeLinks(links, ahora, userID) : [];
+			let productos = links.length ? obtieneProdsDeLinks(links, ahora, userID) : [];
 
 			// Fin
 			return productos;
@@ -138,7 +138,7 @@ module.exports = {
 				rclvs = comp.eliminaRepetidos(rclvs);
 			}
 			// 5. Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = procsCRUD.sinProblemasDeCaptura(rclvs, userID, ahora);
+			if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, userID, ahora);
 			// Fin
 			return rclvs;
 		},
@@ -723,4 +723,50 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 
 	// Fin
 	return resultado;
+};
+let obtieneProdsDeLinks = function (links, ahora, userID) {
+	// 1. Variables
+	let productos = [];
+	// 2. Obtiene los productos
+	links.map((n) => {
+		let entidad = comp.obtieneProdDesdeProducto_id(n);
+		let asociacion = comp.obtieneAsociacion(entidad);
+		let campoFecha = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
+		productos.push({
+			...n[asociacion],
+			entidad,
+			fechaRef: n[campoFecha],
+			fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
+		});
+	});
+	// 3. Ordena por la fecha más antigua
+	productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+	// 4. Elimina repetidos
+	productos = comp.eliminaRepetidos(productos);
+	// 5. Deja solamente los productos aprobados
+	if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+	// 6. Deja solamente los sin problemas de captura
+	if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
+
+	// Fin
+	return productos;
+};
+let sinProblemasDeCaptura = (familia, userID, ahora) => {
+	// Variables
+	const haceUnaHora = comp.nuevoHorario(-1, ahora);
+	const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	// Fin
+	return familia.filter(
+		(n) =>
+			// Que no esté capturado
+			!n.capturado_en ||
+			// Que esté capturado hace más de dos horas
+			n.capturado_en < haceDosHoras ||
+			// Que la captura haya sido por otro usuario y hace más de una hora
+			(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+			// Que la captura haya sido por otro usuario y esté inactiva
+			(n.capturado_por_id != userID && !n.captura_activa) ||
+			// Que esté capturado por este usuario hace menos de una hora
+			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
+	);
 };

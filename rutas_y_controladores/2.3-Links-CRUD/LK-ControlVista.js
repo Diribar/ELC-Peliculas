@@ -15,36 +15,38 @@ module.exports = {
 		const tema = "links_crud";
 		const codigo = "abmLinks";
 		// Obtiene los datos identificatorios del producto y del usuario
-		let prodEntidad = req.query.entidad;
-		let prodID = req.query.id;
+		let entidad = req.query.entidad;
+		let id = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(prodEntidad, prodID, userID);
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// Obtiene el avatar
-		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(prodOrig, prodEdic).edic;
+		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion).edic;
 		// Combina los datos Editados con la versión Original
-		let producto = {...prodOrig, ...prodEdic, id: prodID};
+		let producto = {...original, ...edicion, id: id};
 		// Obtiene información de BD
-		let links = await procesos.obtieneLinksActualizados(prodEntidad, prodID, userID);
+		let links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = comp.obtieneEntidadNombre(prodEntidad);
-		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		// Actualiza linksEnProd
+		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		procsCRUD.linksEnProd({[campo_id]: id});
 		// Obtiene datos para la vista
-		if (prodEntidad == "capitulos") {
-			let coleccion_id = prodEdic && prodEdic.coleccion_id ? prodEdic.coleccion_id : prodOrig.coleccion_id;
-			let temporada = prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
+		if (entidad == "capitulos") {
+			let coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
+			let temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
 		let motivos = altas_motivos_rech.filter((n) => n.links).map((n) => ({id: n.id, comentario: n.comentario}));
-
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
-			entidad: prodEntidad,
-			prodID,
+			entidad,
+			prodID: id,
 			userID,
 			titulo,
 			producto,
