@@ -9,7 +9,7 @@ const procesos = require("./RE-Procesos");
 // *********** Controlador ***********
 module.exports = {
 	// Productos y RCLV
-	motivoGenerico: (req, res) => {
+	obtieneMotivoGenerico: (req, res) => {
 		let motivoGenerico_id = edic_motivos_rech.find((n) => n.info_erronea).id;
 		return res.json(motivoGenerico_id);
 	},

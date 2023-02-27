@@ -7,8 +7,16 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./MT-Procesos");
 
 module.exports = {
-	mantenimiento: (req, res) => {
-		return res.send("Mantenimiento")
+	mantenimiento:async (req, res) => {
+		// Productos sin link gratuito
+		// Productos sin link
+		// Productos sin calificar
+		// Productos Inactivos
+		let prods=await procesos.TC_obtieneProductos()
+
+		// RCLVs Inactivos
+
+		return res.send(prods)
 	},
 
 };

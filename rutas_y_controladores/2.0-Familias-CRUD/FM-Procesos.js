@@ -162,9 +162,9 @@ module.exports = {
 		// Rutina por producto
 		if (familia == "productos") {
 			if (registro.status_registro_id == aprobado_id) {
-				if (registro.personaje_id) BD_genericas.actualizaPorId("personajes", registro.personaje_id, {prods_aprob: 3});
-				if (registro.hecho_id) BD_genericas.actualizaPorId("hechos", registro.hecho_id, {prods_aprob: 3});
-				if (registro.valor_id) BD_genericas.actualizaPorId("valores", registro.valor_id, {prods_aprob: 3});
+				if (registro.personaje_id) BD_genericas.actualizaPorId("personajes", registro.personaje_id, {prods_aprob: 2});
+				if (registro.hecho_id) BD_genericas.actualizaPorId("hechos", registro.hecho_id, {prods_aprob: 2});
+				if (registro.valor_id) BD_genericas.actualizaPorId("valores", registro.valor_id, {prods_aprob: 2});
 			} else this.prodEnRCLV(registro);
 		}
 
@@ -197,7 +197,7 @@ module.exports = {
 					if (prods_aprob) break;
 				}
 
-				if (prods_aprob) prods_aprob = 3;
+				if (prods_aprob) prods_aprob = 2;
 				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
 				else
 					for (let entidadProd of entidadesProds) {
@@ -206,13 +206,13 @@ module.exports = {
 						if (prods_aprob) break;
 					}
 
-				if (prods_aprob) prods_aprob = 2;
+				if (prods_aprob) prods_aprob = 1;
 				// 3. Averigua si existe alguna edición
 				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
-				if (prods_aprob) prods_aprob = 2;
+				if (prods_aprob) prods_aprob = 1;
 				// 4. No encontró ningún caso
-				else prods_aprob = 1;
+				else prods_aprob = mull;
 
 				// Actualiza el campo en el RCLV
 				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
@@ -238,18 +238,18 @@ module.exports = {
 
 		// Averigua si existe algún link gratuito, para ese producto
 		let links_gratuitos = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}))
-			? 3 // Tiene
+			? 2 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}))
-			? 2 // Tiene en potencia
-			: 1; // No tiene
+			? 1 // Tiene en potencia
+			: null; // No tiene
 
 		// Averigua si existe algún link, para ese producto
 		let links_general =
-			links_gratuitos == 3 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-				? 3 // Tiene
-				: links_gratuitos === 2 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-				? 2 // Tiene en potencia
-				: 1; // No tiene
+			links_gratuitos == 2 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
+				? 2 // Tiene
+				: links_gratuitos === 1 || (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
+				? 1 // Tiene en potencia
+				: null; // No tiene
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos});
@@ -278,10 +278,10 @@ module.exports = {
 
 		// Averigua si existe algún link en castellano, para ese producto
 		let castellano = (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}))
-			? 3 // Tiene
+			? 2 // Tiene
 			: (await BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}))
-			? 2 // No tiene
-			: 1; // No sabemos
+			? 1 // No tiene
+			: null; // No sabemos
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 		await BD_genericas.actualizaPorId(producto_ent, prodID, {castellano});
@@ -299,9 +299,9 @@ module.exports = {
 		let objeto = {coleccion_id: colID};
 
 		// Cuenta la cantidad de casos true, false y null
-		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 3});
-		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 2});
-		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 1});
+		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 2});
+		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: 1});
+		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: null});
 		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
 
 		// Averigua los porcentajes de OK y Potencial
@@ -310,9 +310,9 @@ module.exports = {
 		let resultadoPot = (OK + potencial) / total;
 
 		// En función de los resultados, actualiza la colección
-		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 3});
-		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
-		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
+		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 2});
+		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: 1});
+		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: null});
 	},
 
 	// Revisión y Mantenimiento

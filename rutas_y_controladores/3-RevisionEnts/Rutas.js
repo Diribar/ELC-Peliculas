@@ -28,7 +28,7 @@ const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...apto
 
 // APIs -------------------------------------------------
 // Producto y RCLV
-router.get("/api/edicion/motivo-generico", API.motivoGenerico);
+router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", API.edicAprobRech);
 
 // Links
