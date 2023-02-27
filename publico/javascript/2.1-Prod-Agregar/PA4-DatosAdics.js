@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 	};
 	(() => {
 		// Campos de error
-		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "publico_id", "RCLV"]];
+		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
 
 		// Opciones para personajes
 		v.opcionesPers = (() => {

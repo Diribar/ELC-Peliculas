@@ -1,20 +1,20 @@
 <div class="flechas">
 	<% if (locals.origen) { %>
-		<a href="<%= '/inactivar-captura/?entidad=' + entidad + '&id=' + id + '&origen=' + origen %>">
+		<a href="<%= '/inactivar-captura/?entidad=' + entidad + (locals.id ? ('&id=' + id) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
 	<% } %>
-	<% if (!vista.includes("/detalle/")) { %>
+	<% if (!vista.includes("/detalle/") && locals.id) { %>
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if (!vista.includes("/edicion/")) { %>
+	<% if (!vista.includes("/edicion/") && locals.id) { %>
 		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</a>
 	<% } %>
-	<% if (vista.includes("/producto/")) { %>
+	<% if (vista.includes("/producto/") && locals.id) { %>
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
