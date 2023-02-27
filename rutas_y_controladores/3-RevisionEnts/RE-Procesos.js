@@ -658,7 +658,7 @@ let posibleAprobado = async (entidad, original) => {
 	// - Averigua si el registro está en un status previo a 'aprobado'
 	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 		// Averigua si hay errores
-		let errores = await validaPR.consolidado({datos: {...original, entidad}});
+		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
 		if (!errores.hay) {
 			// Variables
 			statusAprob = true;

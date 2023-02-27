@@ -45,12 +45,8 @@ module.exports = {
 		let campos = Object.keys(req.query);
 
 		// Averigua los errores solamente para esos campos
+		req.query.publico = req.session.usuario.rol_usuario.revisor_ents;
 		let errores = await valida.consolidado({campos, datos: req.query});
-
-		// Si el usuario es un revisor, agrega 'publico_id'
-		let userRevisor = req.session.usuario.rol_usuario.revisor_ents;
-		if (userRevisor) errores.publico_id = !req.query.publico_id ? variables.selectVacio : "";
-		if (errores.publico_id) errores.hay = true;
 
 		// Devuelve el resultado
 		return res.json(errores);

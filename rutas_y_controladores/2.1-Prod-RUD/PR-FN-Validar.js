@@ -20,8 +20,11 @@ module.exports = {
 		let erroresDA = validaProd.datosAdics(campos, datos);
 		let errores = {...erroresDD, ...erroresDA};
 
+		// Si corresponde, agrega 'publico_id'
+		if (datos.publico) errores.publico_id = !req.query.publico_id ? variables.selectVacio : "";
+
 		// Terminar
-		errores.hay = erroresDD.hay || erroresDA.hay;
+		errores.hay = erroresDD.hay || erroresDA.hay || errores.publico_id;
 		return errores;
 	},
 };
