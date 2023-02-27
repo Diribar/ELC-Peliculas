@@ -22,14 +22,16 @@ module.exports = {
 				? "/producto/agregar/datos-adicionales"
 				: origen == "ED"
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
-				: origen == "DT_prod"
+				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
-				: origen == "DT_RCLV"
+				: origen == "DTR"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
-				: origen == "tableroUs"
+				: origen == "TU"
 				? "/revision/usuarios/tablero-de-control"
-				: origen == "tableroEnts"
+				: origen == "TE"
 				? "/revision/tablero-de-control"
+				: origen == "MT"
+				? "/mantenimiento"
 				: urlDestino
 				? urlDestino
 				: "/";
