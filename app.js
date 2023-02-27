@@ -64,9 +64,9 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/5-Consultas"),
-	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
-	path.resolve(__dirname, "./vistas/6-Mantenimiento"),	
+	path.resolve(__dirname, "./vistas/5-Mantenimiento"),	
+	path.resolve(__dirname, "./vistas/6-Consultas"),
+	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/7-Institucional"),
 ]);
 
@@ -138,8 +138,8 @@ app.set("views", [
 	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
 	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
-	const rutaConsultas = require("./rutas_y_controladores/5-Consultas/Rutas");
-	const rutaMantenimiento = require("./rutas_y_controladores/6-Mantenimiento/Rutas");
+	const rutaMantenimiento = require("./rutas_y_controladores/5-Mantenimiento/Rutas");
+	const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
 	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
 	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
@@ -152,8 +152,8 @@ app.set("views", [
 	app.use("/usuarios", rutaUsuarios);
 	app.use("/revision/usuarios", rutaRevisarUs);
 	app.use("/revision", rutaRevisarEnts);
-	app.use("/consultas", rutaConsultas);
 	app.use("/mantenimiento", rutaMantenimiento);
+	app.use("/consultas", rutaConsultas);
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
 
