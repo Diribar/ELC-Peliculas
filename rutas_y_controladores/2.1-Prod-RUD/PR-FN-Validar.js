@@ -19,7 +19,6 @@ module.exports = {
 		let erroresDD = await validaProd.datosDuros(campos, datos);
 		let erroresDA = validaProd.datosAdics(campos, datos);
 		let errores = {...erroresDD, ...erroresDA};
-		errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 
 		// Terminar
 		errores.hay = erroresDD.hay || erroresDA.hay;
