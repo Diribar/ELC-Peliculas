@@ -19,7 +19,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
-		let imgDerPers, avatarLinksExternos;
+		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 4. Obtiene la versión más completa posible del producto
@@ -70,6 +70,8 @@ module.exports = {
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
+			gruposPers = procsCRUD.gruposPers(camposDA, userID);
+			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
@@ -102,6 +104,8 @@ module.exports = {
 			BD_paises,
 			BD_idiomas,
 			camposDA,
+			gruposPers,
+			gruposHechos,
 			paises,
 			prodNombre,
 			dataEntry: {},
@@ -132,7 +136,7 @@ module.exports = {
 		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id del original, para verificar que no esté repetido
 		prodComb.publico = revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
-		console.log(135,errores);
+		console.log(135, errores);
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {
