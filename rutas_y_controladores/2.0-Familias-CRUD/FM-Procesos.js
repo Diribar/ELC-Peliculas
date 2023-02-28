@@ -154,6 +154,140 @@ module.exports = {
 		return {orig: avatarOrig, edic: avatarEdic};
 	},
 
+	// Listados de RCLV
+	gruposPers: (camposDA, userID) => {
+		// Variables
+		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
+
+		// Deja solamente los aprobados o creados por el usuario
+		personajes = personajes.filter(
+			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
+		);
+
+		// Deja los valores necesarios
+		personajes = personajes.map((n) => {
+			return {
+				id: n.id,
+				nombre: n.nombre,
+				categoria_id: n.categoria_id,
+				rol_iglesia_id: n.rol_iglesia_id,
+				ap_mar_id: n.ap_mar_id,
+			};
+		});
+		let roles = roles_iglesia.filter((m) => m.plural);
+		let listadoGral = [];
+		let casosPuntuales = [];
+		// Grupos Estándar
+		let grupos = [
+			{codigo: "SF", orden: 2},
+			{codigo: "AL", orden: 3},
+			{codigo: "PP", orden: 4},
+			{codigo: "AP", orden: 15},
+		];
+		for (let grupo of grupos) {
+			grupo.label = roles.find((n) => n.id.startsWith(grupo.codigo)).plural;
+			grupo.valores = [];
+			grupo.clase = "CFC";
+		}
+		// Valores para los grupos
+		for (let personaje of personajes) {
+			// Clase
+			personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
+			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id;
+
+			// Si tiene 'rol_iglesia_id'
+			if (personaje.rol_iglesia_id) {
+				let OK = false;
+				// Si es alguno de los 'grupos'
+				for (let grupo of grupos)
+					if (personaje.rol_iglesia_id.startsWith(grupo.codigo)) {
+						grupo.valores.push(personaje);
+						OK = true;
+						break;
+					}
+
+				// Si no es ninguno de los 'grupos'
+				if (!OK) listadoGral.push(personaje);
+			}
+			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
+			else casosPuntuales.push(personaje);
+		}
+		// Grupo 'Listado General'
+		grupos.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
+		// Grupo 'Casos Puntuales'
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
+
+		// Ordena los grupos
+		grupos.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return grupos;
+	},
+	gruposHechos: (camposDA, userID) => {
+		// Variables
+		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
+
+		// Deja solamente los aprobados o creados por el usuario
+		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID));
+
+		// Deja los valores necesarios
+		hechos = hechos.map((n) => {
+			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
+			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
+		});
+		let apMar = [];
+		let casosPuntuales = [];
+
+		// Grupos estándar
+		let grupos = [
+			{codigo: "jss", orden: 2, label: "Durante la vida de Cristo"},
+			{codigo: "cnt", orden: 3, label: "Durante los Apóstoles"},
+			{codigo: "pst", orden: 5, label: "Posterior a Cristo"},
+			{codigo: "ant", orden: 6, label: "Anterior a Cristo"},
+		];
+		for (let grupo of grupos) {
+			grupo.clase = "CFC VPC";
+			grupo.valores = [];
+		}
+		// Valores para los grupos
+		for (let hecho of hechos) {
+			// Si es un caso que no se debe mostrar, lo saltea
+			if (hecho.id == 10) continue;
+			// Variables
+			let OK = false;
+			hecho.clase = "CFC ";
+			if (!hecho.solo_cfc) hecho.clase += "VPC ";
+
+			// Apariciones Marianas
+			if (hecho.ama) {
+				hecho.clase += "ama";
+				apMar.push(hecho);
+				OK = true;
+			}
+
+			// Si es alguno de los 'grupos'
+			if (!OK)
+				for (let grupo of grupos)
+					if (hecho[grupo.codigo]) {
+						hecho.clase += grupo.codigo;
+						grupo.valores.push(hecho);
+						OK = true;
+						break;
+					}
+			// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
+			if (!OK) casosPuntuales.push(hecho);
+		}
+		// Grupo Apariciones Marianas
+		grupos.push({codigo: "ama", orden: 4, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
+		// Grupo 'Casos Puntuales'
+		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
+		// Ordena los grupos
+		grupos.sort((a, b) => a.orden - b.orden);
+
+		// Fin
+		return grupos;
+	},
+
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
