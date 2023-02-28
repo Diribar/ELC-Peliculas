@@ -116,20 +116,23 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		let userID = req.session.usuario.id;
+		let revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+
 		// Adecuaciones para el avatar
 		if (req.file) {
 			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
-			req.body.avatar = req.file.filename;
 			req.body.tamano = req.file.size;
 		}
 
 		// Averigua si hay errores de validación
-		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id, para verificar que no esté repetido
-		prodComb.publico = req.session.usuario.rol_usuario.revisor_ents;
+		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id del original, para verificar que no esté repetido
+		prodComb.publico = revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
+		console.log(135,errores);
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {
@@ -147,15 +150,27 @@ module.exports = {
 			}
 		}
 
-		// Si no hay errores, actualiza la edición
+		// Acciones si no hay errores
 		if (!errores.hay) {
-			let edicion = {...req.body};
-			if (edicion.id) edicion.id = edicion.id;
-			await procsCRUD.guardaActEdicCRUD({original: original, edicion, entidad, userID});
+			console.log(154);
+			// 1. Actualiza el original
+			if (revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length) {
+				prodComb.alta_analizada_por_id = userID;
+				prodComb.alta_analizada_en = comp.ahora();
+				await BD_genericas.actualizaPorId(entidad, id, prodComb);
+				await procsCRUD.posibleAprobado(entidad, prodComb);
+				let origen = req.query.origen;
+				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
+			} else {
+				console.log(164);
+				// 2. Actualiza la edición
+				let edicion = {...req.body};
+				await procsCRUD.guardaActEdicCRUD({original: original, edicion, entidad, userID});
+			}
 		}
 
 		// Fin
-		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		return res.redirect(req.originalUrl);
 	},
 
 	calificala: (req, res) => {

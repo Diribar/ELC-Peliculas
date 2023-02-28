@@ -35,7 +35,7 @@ module.exports = {
 		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
 
 		// Links
-		productos.CL = await procesos.TC.obtieneProdsConLink(ahora, userID);
+		productos = {...productos, ...(await procesos.TC.obtieneProdsConLink(ahora, userID))};
 		// return res.send(productos.CL)
 
 		// Procesa los campos de las 2 familias de entidades
@@ -48,6 +48,7 @@ module.exports = {
 			titulo: "Revisión - Tablero de Entidades",
 			productos,
 			rclvs,
+			origen: "TE",
 		});
 	},
 

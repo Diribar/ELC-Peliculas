@@ -3,6 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -154,6 +155,42 @@ module.exports = {
 	},
 
 	// CAMBIOS DE STATUS
+	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
+	// Prod-RUD: Edición - Cuando la realiza un revisor
+	posibleAprobado: async function (entidad, original) {
+		let statusAprob = false;
+		// - Averigua si el registro está en un status previo a 'aprobado'
+		if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
+			// Averigua si hay errores
+			let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
+			if (!errores.hay) {
+				// Variables
+				statusAprob = true;
+				let ahora = comp.ahora();
+				let datos = {
+					alta_term_en: ahora,
+					lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+					status_registro_id: aprobado_id,
+				};
+
+				// Cambia el status del registro
+				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+
+				// Si es una colección, le cambia el status también a los capítulos
+				if (entidad == "colecciones") {
+					datos.alta_analizada_por_id = 2;
+					datos.alta_analizada_en = ahora;
+					await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+				}
+
+				// Actualiza prodEnRCLV
+				this.cambioDeStatus(entidad, {...original, ...datos});
+			}
+		}
+
+		// Fin
+		return statusAprob;
+	},
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables

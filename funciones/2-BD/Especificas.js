@@ -140,13 +140,15 @@ module.exports = {
 				.then((n) => (n ? n.map((m) => m.toJSON()) : []))
 		);
 	},
-	TC_obtieneLinks_y_EdicsAjenas: async (userID) => {
+	TC_obtieneLinksAjenos: async (userID) => {
 		// Variables
 		let include = ["pelicula", "coleccion", "capitulo"];
+
 		// Obtiene los links en status 'a revisar'
 		let condiciones = {
 			[Op.or]: [
 				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: userID}}]},
+				{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: userID}}]},
 				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
 				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
 			],
@@ -154,10 +156,12 @@ module.exports = {
 		let originales = db.links
 			.findAll({where: condiciones, include: [...include, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
+
 		// Obtiene todas las ediciones ajenas
 		let condicion = {editado_por_id: {[Op.ne]: userID}};
 		let ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
-		// Consolidarlos
+
+		// Los consolida
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;
 	},

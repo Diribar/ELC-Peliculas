@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
@@ -12,21 +11,15 @@ module.exports = {
 	TC_obtieneProds: async (userID) => {
 		// Variables
 		let autor_id = "fuente";
-		let include = "ediciones";
 		let entidades = variables.entidadesProd;
 
 		// PRODUCTOS
-		// 1. Altas sin edición (peliculas y colecciones)
-		let SE = obtienePorEntidad({entidades, campoFecha: "creado_en", autor_id, status_id: creado_aprob_id, userID, include})
-			.then((n) => n.filter((m) => m.entidad != "capitulos"))
-			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
-		// 2. Aprobados sin calificar (peliculas y colecciones)
+		// 1. Aprobados sin calificar (peliculas y colecciones)
 		let SC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", autor_id, status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
 			.then((n) => n.filter((m) => !m.calificacion))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
-		// 3. Productos Inactivos (peliculas y colecciones)
+		// 2. Productos Inactivos (peliculas y colecciones)
 		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", autor_id, status_id: inactivo_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
@@ -51,8 +44,8 @@ module.exports = {
 			.then((n) => n.sort((a, b) => a.fechaRef - b.fechaRef));
 
 		// Fin
-		[SE, SC, IN, SL, SLG, SLC] = await Promise.all([SE, SC, IN, SL, SLG, SLC]);
-		return {SE, SC, IN, SL, SLG, SLC};
+		[SC, IN, SL, SLG, SLC] = await Promise.all([SC, IN, SL, SLG, SLC]);
+		return {SC, IN, SL, SLG, SLC};
 	},
 	TC_obtieneRCLVs: async (userID) => {
 		// Variables

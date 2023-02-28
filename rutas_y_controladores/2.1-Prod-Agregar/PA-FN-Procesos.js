@@ -1,7 +1,6 @@
 "use strict";
 // Definir variables
 const fs = require("fs");
-const path = require("path");
 const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");

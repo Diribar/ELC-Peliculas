@@ -1,12 +1,11 @@
 "use strict";
 // Definir variables
-const path = require("path");
+//const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -72,13 +71,16 @@ module.exports = {
 			// 6. Deja solamente los sin problemas de captura
 			if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
 
+			// 7. Ordena según tengan links
+			productos.sort((a, b) => b.links_general - a.links_general);
+
 			// Fin
 			return productos;
 		},
 		obtieneProdsConLink: async (ahora, userID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
 			// Obtiene los links 'a revisar'
-			let links = await BD_especificas.TC_obtieneLinks_y_EdicsAjenas(userID);
+			let links = await BD_especificas.TC_obtieneLinksAjenos(userID);
 			// Obtiene los productos
 			let productos = links.length ? obtieneProdsDeLinks(links, ahora, userID) : [];
 
@@ -551,7 +553,7 @@ module.exports = {
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
 			let statusAprob = false;
-			if (aprob) statusAprob = await posibleAprobado(entidad, originalGuardado);
+			if (aprob) statusAprob = await procsCRUD.posibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return [edicion, statusAprob];
@@ -652,41 +654,6 @@ let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, 
 	// Fin
 	return resultados;
 };
-// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
-let posibleAprobado = async (entidad, original) => {
-	let statusAprob = false;
-	// - Averigua si el registro está en un status previo a 'aprobado'
-	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
-		// Averigua si hay errores
-		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
-		if (!errores.hay) {
-			// Variables
-			statusAprob = true;
-			let ahora = comp.ahora();
-			let datos = {
-				alta_term_en: ahora,
-				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
-				status_registro_id: aprobado.id,
-			};
-
-			// Cambia el status del registro
-			await BD_genericas.actualizaPorId(entidad, original.id, datos);
-
-			// Si es una colección, le cambia el status también a los capítulos
-			if (entidad == "colecciones") {
-				datos.alta_analizada_por_id = 2;
-				datos.alta_analizada_en = ahora;
-				await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
-			}
-
-			// Actualiza prodEnRCLV
-			procsCRUD.cambioDeStatus(entidad, {...original, ...datos});
-		}
-	}
-
-	// Fin
-	return statusAprob;
-};
 // VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 	// Variables
@@ -726,30 +693,41 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 };
 let obtieneProdsDeLinks = function (links, ahora, userID) {
 	// 1. Variables
-	let productos = [];
-	// 2. Obtiene los productos
-	links.map((n) => {
-		let entidad = comp.obtieneProdDesdeProducto_id(n);
+	let prods = {VN: [], OT: []};
+
+	// 2. Obtiene los prods
+	links.map((link) => {
+		// Variables
+		let entidad = comp.obtieneProdDesdeProducto_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
-		let campoFecha = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
-		productos.push({
-			...n[asociacion],
-			entidad,
-			fechaRef: n[campoFecha],
-			fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
-		});
+		let campoFecha = !link.status_registro_id ? "editado_en" : link.status_registro.creado ? "creado_en" : "sugerido_en";
+		let fechaRef = link[campoFecha];
+		let fechaRefTexto = comp.fechaTextoCorta(link[campoFecha]);
+		if (link.status_registro && link.status_registro.creado_aprob)
+			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
+		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
+
 	// 3. Ordena por la fecha más antigua
-	productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+	prods.VN.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+	prods.OT.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// 4. Elimina repetidos
-	productos = comp.eliminaRepetidos(productos);
-	// 5. Deja solamente los productos aprobados
-	if (productos.length) productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+	prods.VN = comp.eliminaRepetidos(prods.VN);
+	prods.OT = comp.eliminaRepetidos(prods.OT);
+	// Elimina repetidos entre grupos
+	if (prods.VN.length && prods.OT)
+		for (let i = prods.VN.length - 1; i >= 0; i--)
+			if (prods.OT.find((n) => n.id == prods.VN[i].id && n.entidad == prods.VN[i].entidad)) prods.VN.splice(i, 1);
+
+	// 5. Deja solamente los prods aprobados
+	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.status_registro_id == aprobado_id);
+	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.status_registro_id == aprobado_id);
 	// 6. Deja solamente los sin problemas de captura
-	if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
+	if (prods.VN.length) prods.VN = sinProblemasDeCaptura(prods.VN, userID, ahora);
+	if (prods.OT.length) prods.OT = sinProblemasDeCaptura(prods.OT, userID, ahora);
 
 	// Fin
-	return productos;
+	return prods;
 };
 let sinProblemasDeCaptura = (familia, userID, ahora) => {
 	// Variables
