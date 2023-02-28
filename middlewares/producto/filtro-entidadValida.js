@@ -15,8 +15,8 @@ module.exports = (req, res, next) => {
 	else {
 		// Entidad inexistente
 		let familia1 = comp.obtieneFamiliaEnSingular(entidad);
-		let familia2 = req.baseUrl.slice(1);
-		if (!familia1 || familia1 != familia2)
+		let familia2 = req.baseUrl + req.path;
+		if (!familia1 || !familia2.includes(familia1))
 			informacion = {
 				mensajes: ["La entidad ingresada es inválida"],
 				iconos: [
