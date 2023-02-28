@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
 			if (irEdicion) {
 				icono = {
 					HTML: '<i class="fa-solid fa-pen" autofocus title="Ir a Edición"></i>',
-					link: "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID+"&origen=RE",
+					link: "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=RE",
 				};
 				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
 			}
