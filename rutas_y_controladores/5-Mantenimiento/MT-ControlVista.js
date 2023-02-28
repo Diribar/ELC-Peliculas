@@ -19,16 +19,14 @@ module.exports = {
 		productos = procesosRE.TC.prod_ProcesaCampos(productos);
 
 		// RCLVs Inactivos
-		let rclvs =  await procesos.TC_obtieneRCLVs(userID);
+		let rclvs = await procesos.TC_obtieneRCLVs(userID);
 		rclvs = procesosRE.TC.RCLV_ProcesaCampos(rclvs);
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Mantenimiento",
-			productos,
-			rclvs,
+			...{tema, codigo, titulo: "Mantenimiento"},
+			...{productos, rclvs},
+			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
 		});
 	},
 };
