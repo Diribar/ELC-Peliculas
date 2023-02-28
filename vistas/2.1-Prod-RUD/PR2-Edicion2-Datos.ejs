@@ -33,11 +33,11 @@
 				</div>
 			</div>
 			<!--Personaje histórico-->
-			<%- include("PR-Edic-RCLV_ph", {campo: "personaje_id", grupos: gruposPers}) %>
+			<%- include("PR-Edic-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
 			<!--Hecho histórico-->
-			<%- include("PR-Edic-RCLV_ph", {campo: "hecho_id", grupos: gruposHechos}) %>
+			<%- include("PR-Edic-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
 			<!--Valor-->
-			<%- include("PR-Edic-RCLV_val", {campo: "valor_id"}) %>
+			<%- include("PR-Edic-RCLV_val", {nombre: "valor_id"}) %>
 			<h3>Sinopsis</h3>
 			<!--Sinopsis-->
 			<%- include("PR-Edic-Sinopsis") %>
