@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
 	// Otras variables
-	v.camposError = Array.from(document.querySelectorAll(".errores")).map(n=>n.id)
+	v.camposError = Array.from(document.querySelectorAll(".errores")).map((n) => n.id);
 	v.camposTodos = [...new Set(Array.from(v.inputsTodos).map((n) => n.name))];
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
 
@@ -65,10 +65,7 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else
-					version.edicN.avatar = v.inputAvatarEdicN.files[0]
-						? v.inputAvatarEdicN.files[0].name
-						: version.edicG.avatar;
+				else version.edicN.avatar = v.inputAvatarEdicN.files[0] ? v.inputAvatarEdicN.files[0].name : version.edicG.avatar;
 			}
 
 			// Fin
@@ -176,8 +173,7 @@ window.addEventListener("load", async () => {
 								version[v.versionActual][input.name] !== null
 									? version[v.versionActual][input.name]
 									: "";
-						else if (input.type == "radio")
-							input.checked = input.value == version[v.versionActual][input.name];
+						else if (input.type == "radio") input.checked = input.value == version[v.versionActual][input.name];
 					}
 					// Oculta y muestra los avatar que correspondan
 					else
@@ -205,14 +201,10 @@ window.addEventListener("load", async () => {
 					v.estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
 				// Muestra/oculta los íconos de ayuda
 				for (let iconoAyuda of v.iconosAyuda)
-					v.estamosEnEdicNueva
-						? iconoAyuda.classList.remove("inactivo")
-						: iconoAyuda.classList.add("inactivo");
+					v.estamosEnEdicNueva ? iconoAyuda.classList.remove("inactivo") : iconoAyuda.classList.add("inactivo");
 				// Muestra/oculta los íconos de error
 				for (let iconoError of v.iconosError)
-					v.estamosEnEdicNueva
-						? iconoError.classList.remove("inactivo")
-						: iconoError.classList.add("inactivo");
+					v.estamosEnEdicNueva ? iconoError.classList.remove("inactivo") : iconoError.classList.add("inactivo");
 				// Fin
 				return;
 			})();
