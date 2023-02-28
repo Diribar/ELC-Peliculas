@@ -40,13 +40,15 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos #segundaColumna .label-input .inputError {max-width: 240px;}
 
 /* Partes específicas del formulario */
-#datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
-#datos .columna > h3:first-child {margin-top: 0;}
-#datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
+#datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
+#datos .columna h3:first-child {margin-top: 0;}
+#datos .columna .label-input:has(h3) {margin-top: 15px;}
+
+#datos .label-input {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 3px;}
+#datos .label-input label {margin-right: 20px; font-weight: bold;}
 #datos .label-input .inputError {display: flex; flex-direction: row; margin-left: 5px;}
 #datos .label-input .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
 #datos .label-input .inputError .ayuda {right: -5px;}
-#datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input .inputError .input {align-self: center;}
 #datos .label-input .inputError .input.numero {text-align: right;}
 #datos .label-input .inputError input {padding: 0px 5px;}

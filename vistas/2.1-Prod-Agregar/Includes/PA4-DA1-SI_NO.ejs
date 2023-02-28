@@ -1,16 +1,16 @@
-<% const campo = tema.nombre %>
-<% if (campo=="color") { %><hr><% } %>
+<% const {titulo, nombre} = campo %>
+<% if (nombre=="color") { %><hr><% } %>
 <div class="inputError flexRowAlign altoFila">
-	<label id="siNoTitulo" class="negrita"><%= tema.titulo %></label>
+	<label id="siNoTitulo" class="negrita"><%= titulo %></label>
 	<div id="siNoOpciones" class="flexRowAlign">
 		<div class="flexRowAlign">
-			<input id="<%= campo %>SI" type="radio" name="<%= campo %>" value="1" <% if (!camposDE.includes(campo)&&campo=="color" || dataEntry[campo]==1) { %>checked<% } %> class="radioSI">
-			<label for="<%= campo %>SI">SI</label>
+			<input id="<%= nombre %>SI" type="radio" name="<%= nombre %>" value="1" <% if (!camposDE.includes(nombre)&&nombre=="color" || dataEntry[nombre]==1) { %>checked<% } %> class="radioSI">
+			<label for="<%= nombre %>SI">SI</label>
 		</div>
 		<div class="flexRowAlign">
-			<input id="<%= campo %>NO" type="radio" name="<%= campo %>" value="0" <% if (!camposDE.includes(campo)&&campo=="musical" || camposDE.includes(campo)&&(dataEntry[campo]==0)) { %>checked<% } %> class="radioNO">
-			<label for="<%= campo %>NO">NO</label>
+			<input id="<%= nombre %>NO" type="radio" name="<%= nombre %>" value="0" <% if (!camposDE.includes(nombre)&&nombre=="musical" || camposDE.includes(nombre)&&(dataEntry[nombre]==0)) { %>checked<% } %> class="radioNO">
+			<label for="<%= nombre %>NO">NO</label>
 		</div>
 	</div>
-	<%- include("CMP-Errores", {display: true, campo}) %>
+	<%- include("CMP-Errores", {nombre, display: true}) %>
 </div>

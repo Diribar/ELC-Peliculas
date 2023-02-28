@@ -1,14 +1,14 @@
-<% registro = camposDA.find(n => n.nombre == campo) %>
+<% registro = camposDA.find(n => n.nombre == nombre) %>
 <% let {titulo, valores, grupo} = registro %>
-<section id="<%= campo %>" class="label-select">
+<section id="<%= nombre %>" class="label-select">
 	<label><%= titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input" autofocus>
+		<select name="<%= nombre %>" class="input" autofocus>
 			<% for (let grupo of grupos) { %>
 				<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
 					<% for (let valor of grupo.valores) { %>
-						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 					<% } %>
 				</optgroup>
 			<% } %>
@@ -17,8 +17,8 @@
 		<%- include("PA4-DA9-Ayuda") %>
 		<!-- Link a Relación con la vida -->
 		<% if (grupo=="RCLV") { %>
-			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-circle-plus alta <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 		<% } %>
 	</div>
 </section>

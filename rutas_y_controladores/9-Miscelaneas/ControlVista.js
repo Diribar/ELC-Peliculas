@@ -21,9 +21,9 @@ module.exports = {
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
 				: origen == "ED"
-				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
+				? "/producto/edicion/?entidad=" + entidad + "&id=" + id
 				: origen == "DTP"
-				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
+				? "/producto/detalle/?entidad=" + entidad + "&id=" + id
 				: origen == "DTR"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
 				: origen == "TU"

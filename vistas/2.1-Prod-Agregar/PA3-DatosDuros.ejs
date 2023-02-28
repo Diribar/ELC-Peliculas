@@ -57,13 +57,13 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Primeros campos -->
-			<% for (let registro of camposInput1) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombre}) %><% } %>
+			<% for (let registro of camposInput1) { %><%- include("PA3-DD1-Input", {registro, nombre: registro.nombre}) %><% } %>
 			<!-- País -->
 			<%- include("PA3-DD2-Pais") %>
 			<!-- Idioma original -->
 			<%- include("PA3-DD3-Idioma", {idioma_id: dataEntry.idioma_original_id}) %>
 			<!-- Siguientes campos -->
-			<% for (let registro of camposInput2) { %><%- include("PA3-DD1-Input", {registro, campo: registro.nombre}) %><% } %>
+			<% for (let registro of camposInput2) { %><%- include("PA3-DD1-Input", {registro, nombre: registro.nombre}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("PA3-DD4-Sinopsis") %>
 		</div>
@@ -76,7 +76,7 @@
 					<img src="<%= localhost %>/imagenes/0-Base/Avatar/Prod-Agrega-una-imagen.jpg">
 				</label>
 				<input name="avatar" id="inputImagen" type="file" accept="image/*" class="ocultar input">
-				<%- include("CMP-Errores", {campo: "avatar"}) %>
+				<%- include("CMP-Errores", {nombre: "avatar"}) %>
 			<% } %>
 		</div>	
 	</section>

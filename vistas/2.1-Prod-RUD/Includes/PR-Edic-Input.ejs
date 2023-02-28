@@ -1,13 +1,14 @@
+<% const {titulo, nombre, numero} = campo %>
 <section class="label-input">
-	<label><%= campo.titulo %></label>
+	<label><%= titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="text" name="<%= campo.nombre %>" value="<%= producto[campo.nombre] %>" autofocus autocomplete="off" 
-			class="input <% if (campo.numero) { %>numero<% } %>"
-			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
+		<input type="text" name="<%= nombre %>" value="<%= producto[nombre] %>" autofocus autocomplete="off" 
+			class="input <% if (numero) { %>numero<% } %>"
+			<% if (numero) { %>placeholder="sólo números"<% } %>
 			placeholder="Ingresá el texto"
 		>
-		<%- include("CMP-Errores") %>
+		<%- include("CMP-Errores", {nombre}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

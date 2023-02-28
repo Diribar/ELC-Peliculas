@@ -687,6 +687,8 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Casos especiales
 	if (["cfc", "ocurrio", "musical", "color"].includes(campoRevisar.nombre))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
+	else if (["personaje_id", "hecho_id", "valor_id"].includes(campoRevisar.nombre) && registro[campoRevisar.nombre] == 1)
+		resultado = null;
 
 	// Fin
 	return resultado;

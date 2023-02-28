@@ -1,13 +1,13 @@
-<% let campo = camposDA.find(n => n.nombre == nombreDelCampo) %>
+<% let campo = camposDA.find(n => n.nombre == nombre) %>
 <section class="label-input">
 	<label><%= campo.titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
-			<option value="" <% if (!producto[nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
+		<select name="<%= nombre %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
+			<option value="" <% if (!producto[nombre]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
-					<% if (producto[nombreDelCampo] == valor.id) { %>selected<% } %>
+					<% if (producto[nombre] == valor.id) { %>selected<% } %>
 				>
 					<%= valor.nombre %>
 				</option>
@@ -22,7 +22,7 @@
 				</ul>
 			</i>
 		</div>
-		<%- include("CMP-Errores") %>
+		<%- include("CMP-Errores", {nombre}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
