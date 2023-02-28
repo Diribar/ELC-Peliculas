@@ -47,8 +47,7 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
 	// Otras variables
-	v.camposError = Array.from(document.querySelectorAll(".errores"))
-	console.dir(v.camposError)
+	v.camposError = Array.from(document.querySelectorAll(".errores")).map(n=>n.id)
 	v.camposTodos = [...new Set(Array.from(v.inputsTodos).map((n) => n.name))];
 	v.rutaVersiones += "?entidad=" + v.entidad + "&id=" + v.prodID;
 
@@ -78,8 +77,6 @@ window.addEventListener("load", async () => {
 		senalaLasDiferencias: () => {
 			// Marca dónde están las diferencias con la versión original
 			let referencia = v.versionActual == "edicN" ? "edicG" : "orig";
-			console.log(v.camposTodos.length);
-			console.log(v.flechasDiferencia.length);
 			v.camposTodos.forEach((campo, i) => {
 				v.versionActual != "orig" &&
 				version[v.versionActual][campo] != version[referencia][campo] &&
@@ -96,7 +93,6 @@ window.addEventListener("load", async () => {
 
 			// Prepara la información
 			let objeto = "entidad=" + v.entidad + "&id=" + v.prodID;
-
 			for (let campo of v.camposTodos) {
 				let indice = camposResp.indexOf(campo);
 				let valor = indice > -1 ? inputsResp[indice].value : "";
@@ -110,22 +106,18 @@ window.addEventListener("load", async () => {
 
 			// Averigua los errores
 			errores = await fetch(v.rutaValidar + objeto).then((n) => n.json());
-			console.log(errores);
 			// Actualiza los errores
-			console.log(v.camposTodos.length);
-			console.log(v.mensajesError.length);
-			v.camposTodos.forEach((campo, indice) => {
+			v.camposError.forEach((campo, indice) => {
 				// Variables
 				let mensaje = errores[campo];
 				v.mensajesError[indice].innerHTML = mensaje;
 				// Acciones en función de si hay o no mensajes de error
 				errores[campo]
-					? v.iconosError[indice].classList.add("error")
-					: v.iconosError[indice].classList.remove("error");
-				errores[campo]
 					? v.iconosError[indice].classList.remove("ocultar")
 					: v.iconosError[indice].classList.add("ocultar");
 			});
+
+			// Fin
 			return errores;
 		},
 		actualizaBotones: () => {

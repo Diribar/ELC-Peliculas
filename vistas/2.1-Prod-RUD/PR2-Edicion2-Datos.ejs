@@ -26,9 +26,9 @@
 			<h3>Personas</h3>
 			<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
 			<!-- Relación con la vida -->
-			<div>
+			<div class="label-input">
 				<h3>Relación con la vida</h3>
-				<div id="errorRCLV" class="ocultar">
+				<div id="errorRCLV" class="inputError">
 					<%- include("CMP-Errores", {nombre: "RCLV"}) %>
 				</div>
 			</div>
