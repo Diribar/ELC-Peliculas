@@ -48,6 +48,7 @@ module.exports = {
 			titulo: "Revisión - Tablero de Entidades",
 			productos,
 			rclvs,
+			origen: "TE",
 		});
 	},
 
