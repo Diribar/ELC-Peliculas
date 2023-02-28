@@ -154,6 +154,10 @@ module.exports = {
 			lead_time_creacion,
 			captura_activa: false,
 		};
+		if (rechazado) {
+			datos.sugerido_por_id = revID;
+			datos.sugerido_en = alta_analizada_en;
+		}
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original

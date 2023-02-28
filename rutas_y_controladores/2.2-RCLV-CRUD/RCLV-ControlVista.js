@@ -57,13 +57,12 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
-			...{entidad, id, prodEntidad, prodID, origen: req.query.origen},
+			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			familia: comp.obtieneFamiliaEnSingular(entidad),
 			vista: req.baseUrl + req.path,
 			rutaSalir,
 			motivos,
