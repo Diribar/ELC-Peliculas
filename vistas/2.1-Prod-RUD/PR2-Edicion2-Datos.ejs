@@ -4,7 +4,7 @@
 	<!-- Datos -->
 	<div id="datos">
 		<!-- Datos generales -->
-		<div id="primeraColumna">
+		<div id="primeraColumna" class="columna">
 			<h3>Datos Generales</h3>
 			<!-- Primeros campos -->
 			<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
@@ -13,26 +13,31 @@
 			<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
 			<%- include("PR-Edic-Input", {campo: produccion}) %>
 			<% if (userRevisor) { %>
-				<%- include("PR-Edic-Select", {nombreDelCampo: "publico_id"}) %>
+				<%- include("PR-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
 			<h3>Datos Adicionales</h3>
 			<!-- Campos SI / NO -->
-			<% for (let tema of camposDA.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {tema}) %><% } %>
+			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
-			<%- include("PR-Edic-TipoActuac") %>
+			<%- include("PR-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
 		</div>
-		<div id="segundaColumna">
+		<div id="segundaColumna" class="columna">
 			<!-- Cast/Crew -->
 			<h3>Personas</h3>
 			<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
 			<!-- Relación con la vida -->
-			<h3>Relación con la vida</h3>
+			<div>
+				<h3>Relación con la vida</h3>
+				<div id="errorRCLV" class="ocultar">
+					<%- include("CMP-Errores", {nombre: "RCLV"}) %>
+				</div>
+			</div>
 			<!--Personaje histórico-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "personaje_id"}) %>
+			<%- include("PR-Edic-RCLV_ph", {campo: "personaje_id", grupos: gruposPers}) %>
 			<!--Hecho histórico-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "hecho_id"}) %>
+			<%- include("PR-Edic-RCLV_ph", {campo: "hecho_id", grupos: gruposHechos}) %>
 			<!--Valor-->
-			<%- include("PR-Edic-RCLV", {nombreDelCampo: "valor_id"}) %>
+			<%- include("PR-Edic-RCLV_val", {campo: "valor_id"}) %>
 			<h3>Sinopsis</h3>
 			<!--Sinopsis-->
 			<%- include("PR-Edic-Sinopsis") %>

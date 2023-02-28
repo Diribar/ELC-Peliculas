@@ -1,15 +1,15 @@
 <section class="label-input">
-	<% let inputOK = !errores[campo] %>
+	<% let inputOK = !errores[nombre] %>
 	<label><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="inputError">
-		<input type="text" class="input<% if (inputOK) { %> desplClick<% } %>" name="<%= campo %>" autocomplete="off"
-			value="<%= dataEntry[campo] %>"
+		<input type="text" class="input<% if (inputOK) { %> desplClick<% } %>" name="<%= nombre %>" autocomplete="off"
+			value="<%= dataEntry[nombre] %>"
 			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
 			<% if (inputOK) { %>disabled<% } else { %>autofocus<% } %>
 			placeholder="Ingresá el texto"
 		>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
-		<%- include("CMP-Errores") %>
+		<%- include("CMP-Errores", {nombre}) %>
 	</div>
 </section>

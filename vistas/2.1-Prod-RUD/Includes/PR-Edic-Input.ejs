@@ -7,7 +7,7 @@
 			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
 			placeholder="Ingresá el texto"
 		>
-		<%- include("CMP-Errores") %>
+		<%- include("CMP-Errores", {nombre: campo.nombre}) %>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

@@ -25,12 +25,12 @@
 			<h3 id="tituloRCLV" class="">Datos Generales</h3>
 			<div class="flexCol">
 				<!-- Centrada en la Fe Católica, Ocurrió, Musical -->
-				<% for (tema of camposDA.filter(n => n.siNo)) { %>
-					<%- include("PA4-DA1-SI_NO", {tema}) %>
+				<% for (campo of camposDA.filter(n => n.siNo)) { %>
+					<%- include("PA4-DA1-SI_NO", {campo}) %>
 				<% } %>
 				<hr>
 				<!-- Tipo de Actuación -->
-				<%- include("PA4-DA2-TipoActuac") %>
+				<%- include("PA4-DA2-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
@@ -53,11 +53,11 @@
 						</p>
 					</i>
 					<div id="errorRCLV" class="ocultar">
-						<%- include("CMP-Errores", {display: true, campo: "RCLV"}) %>
+						<%- include("CMP-Errores", {display: true, nombre: "RCLV"}) %>
 					</div>
 				</div>
 				<!--No lo voy a responder ahora-->
-				<%- include("PA4-DA8-Checkbox", {campo: "sinRCLV", }) %>
+				<%- include("PA4-DA8-Checkbox", {nombre: "sinRCLV", }) %>
 				<!-- Opciones -->
 				<div id="selectsRCLV" class="flexCol">
 					<!--Personaje histórico-->

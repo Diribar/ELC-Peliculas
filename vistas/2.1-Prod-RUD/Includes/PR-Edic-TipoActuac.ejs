@@ -1,5 +1,4 @@
-<% const campo = "tipo_actuacion_id" %>
-<% let {titulo, valores} = camposDA.find(n => n.nombre == campo) %>
+<% let {titulo, valores} = camposDA.find(n => n.nombre == nombre) %>
 <div id="tipoActuacion" class="inputError flexRowAlign altoFila">
 	<label class="negrita"><%= titulo %></label>
 	<div id="tipos" class="flexRowAlign relative altoFila grow spaceBetween">
@@ -12,5 +11,5 @@
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
-	<%- include("CMP-Errores", {display: true, campo}) %>
+	<%- include("CMP-Errores", {nombre}) %>
 </div>

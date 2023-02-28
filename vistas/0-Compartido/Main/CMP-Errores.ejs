@@ -1,5 +1,6 @@
 <!-- Errores -->
-<div class="errores">
+<div id="<%= locals.nombre %>" class="errores" >
+	<% console.log(3, locals.nombre) %>
 	<i 
 		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.campo && !errores[campo] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
