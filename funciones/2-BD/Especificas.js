@@ -185,6 +185,48 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
 
+	// Mantenimiento
+	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, autor_id, include}) => {
+		const haceUnaHora = comp.nuevoHorario(-1);
+		const haceDosHoras = comp.nuevoHorario(-2);
+		return db[entidad]
+			.findAll({
+				where: {
+					// Con status según parámetro
+					status_registro_id: status_id,
+					// Que cumpla alguno de los siguientes sobre la 'captura':
+					[Op.or]: [
+						// Que no esté capturado
+						{capturado_en: null},
+						// Que esté capturado hace más de dos horas
+						{capturado_en: {[Op.lt]: haceDosHoras}},
+						// Que la captura haya sido por otro usuario y hace más de una hora
+						{capturado_por_id: {[Op.ne]: userID}, capturado_en: {[Op.lt]: haceUnaHora}},
+						// Que la captura haya sido por otro usuario y esté inactiva
+						{capturado_por_id: {[Op.ne]: userID}, captura_activa: {[Op.ne]: 1}},
+						// Que esté capturado por este usuario hace menos de una hora
+						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
+					],
+				},
+				include,
+			})
+			.then((n) =>
+				n
+					? n
+							.map((m) => m.toJSON())
+							.map(
+								(m) =>
+									(m = {
+										...m,
+										entidad,
+										fechaRef: m[campoFecha],
+										fechaRefTexto: comp.fechaTextoCorta(m[campoFecha]),
+									})
+							)
+					: []
+			);
+	},
+
 	// USUARIOS ---------------------------------------------------------
 	// Controlador/Usuario/Login
 	obtieneUsuarioDistintoIdMasFiltros: (userID, filtros) => {
