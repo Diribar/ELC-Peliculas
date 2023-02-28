@@ -16,18 +16,20 @@ module.exports = {
 		const datos = req.query;
 
 		// Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario.id;
-		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
-		let nombre = comp.obtieneEntidadNombre(entidad);
-		let titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
-		let tituloCuerpo =
+		const entidad = req.query.entidad;
+		const id = req.query.id;
+		const prodEntidad = req.query.prodEntidad;
+		const prodID = req.query.prodID;
+		const userID = req.session.usuario.id;
+		const nombre = comp.obtieneEntidadNombre(entidad);
+		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
+		const tituloCuerpo =
 			(codigo == "agregar"
 				? "Agregá un " + nombre + " a"
 				: codigo == "edicion"
 				? "Editá el " + nombre + " de"
 				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
+		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
 		let ap_mars, roles_igl;
 
 		// Variables específicas para personajes
@@ -54,27 +56,19 @@ module.exports = {
 		let motivos = tema == "revisionEnts" ? altas_motivos_rech.filter((n) => n.rclvs) : "";
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			entidad,
-			id,
-			origen: req.query.origen,
+			...{tema, codigo},
+			...{entidad, id, prodEntidad, prodID, origen: req.query.origen},
+			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
+			...{titulo, tituloCuerpo},
+			...{dataEntry, DE: !!Object.keys(dataEntry).length},
+			...{roles_igl, ap_mars},
+			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			familia: comp.obtieneFamiliaEnSingular(entidad),
 			vista: req.baseUrl + req.path,
-			personajes: entidad == "personajes",
-			hechos: entidad == "hechos",
-			titulo,
-			tituloCuerpo,
-			dataEntry,
-			DE: !!Object.keys(dataEntry).length,
-			roles_igl,
-			ap_mars,
 			rutaSalir,
-			institucional: true,
-			cartelGenerico: codigo == "edicion",
-			cartelRechazo: tema == "revisionEnts",
 			motivos,
 			urlActual: req.session.urlActual,
+			institucional: true,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {

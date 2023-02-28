@@ -136,7 +136,6 @@ module.exports = {
 		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id del original, para verificar que no esté repetido
 		prodComb.publico = revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
-		console.log(135, errores);
 
 		// Acciones si recibimos un archivo avatar
 		if (req.file) {
@@ -156,7 +155,6 @@ module.exports = {
 
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			console.log(154);
 			// 1. Actualiza el original
 			if (revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length) {
 				prodComb.alta_analizada_por_id = userID;

@@ -8,7 +8,7 @@
 			<% for (let grupo of grupos) { %>
 				<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
 					<% for (let valor of grupo.valores) { %>
-						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (producto[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 					<% } %>
 				</optgroup>
 			<% } %>
