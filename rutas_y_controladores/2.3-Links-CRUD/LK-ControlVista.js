@@ -43,21 +43,12 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			entidad,
-			id,
-			origen: req.query.origen,
+			...{tema, codigo, titulo, title: producto.nombre_castellano},
+			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{producto, links},
+			...{links_provs, links_tipos, calidades: variables.calidades, motivos},
 			userID,
-			titulo,
-			producto,
-			links,
-			links_provs,
-			links_tipos,
 			vista: req.baseUrl + req.path,
-			title: producto.nombre_castellano,
-			calidades: variables.calidades,
-			motivos,
 			imgDerPers,
 			cartelGenerico: true,
 		});
