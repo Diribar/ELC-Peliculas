@@ -65,7 +65,7 @@ module.exports = {
 				});
 
 			// 5. Elimina los repetidos más recientes
-			productos.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+			productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 			productos = comp.eliminaRepetidos(productos);
 
 			// 6. Deja solamente los sin problemas de captura

@@ -131,7 +131,7 @@ module.exports = {
 	obtieneAvatarOrigEdic: (original, edicion) => {
 		let avatarOrig =
 			// Si es un url
-			original.avatar.startsWith("http")
+			original.avatar && original.avatar.startsWith("http")
 				? original.avatar
 				: // Si no existe avatarOrig
 				  localhost +
