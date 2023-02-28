@@ -147,21 +147,13 @@ module.exports = {
 				let origen = req.query.origen;
 				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
 			} else {
-				console.log(164);
 				// 2. Actualiza la edición
 				let edicion = {...req.body};
-				await procsCRUD.guardaActEdicCRUD({original: original, edicion, entidad, userID});
+				await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
 		}
 
 		// Fin
 		return res.redirect(req.originalUrl);
-	},
-
-	calificala: (req, res) => {
-		return res.send("Estoy en calificala");
-	},
-	eliminar: (req, res) => {
-		return res.send("Estoy en eliminar");
 	},
 };

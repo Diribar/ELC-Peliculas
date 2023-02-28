@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	let entEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 	let informacion;
 
-	// 1. Acciones en caso de que exista el 'edicID'
+	// 1. Acciones en caso de que exista el 'edicID' en el url
 	if (edicID) {
 		// Averigua si existe la edicID en la base de datos
 		let edicion = await BD_genericas.obtienePorId(entEdicion, edicID);
@@ -29,17 +29,27 @@ module.exports = async (req, res, next) => {
 			};
 	}
 
-	// 2. Acciones en caso de que no exista el 'edicID'
+	// 2. Acciones en caso de que no exista el 'edicID' en el url
 	else {
-		// Averigua si existe una edicion ajena
+		// Variables
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-		let datos = {campo_id, entID: id, userID: req.session.usuario.id};
-		let ediciones = await BD_especificas.obtieneEdicsAjenasDeUnProd(entEdicion, datos);
+		let revision = req.baseUrl == "/revision";
+		let edicion;
+
+		if (revision) {
+			// Averigua si existe una edicion ajena
+			let datos = {campo_id, entID: id, userID: req.session.usuario.id};
+			edicion = await BD_especificas.obtieneEdicAjenaDeUnProd(entEdicion, datos);
+		} else {
+			// Averigua si existe una edicion propia
+			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};
+			edicion = await BD_genericas.obtienePorCampos(entEdicion, objeto);
+		}
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url
-		if (ediciones.length) return res.redirect(req.originalUrl + "&edicion_id=" + ediciones[0].id);
-		// 2.2. En caso que no exista, mensaje de error
-		else
+		if (edicion) return res.redirect(req.originalUrl + "&edicion_id=" + edicion.id);
+		// 2.2. En caso que no exista, mensaje de error para revisión
+		else if (revision)
 			informacion = {
 				mensajes: ["No encontramos ninguna edición ajena para revisar"],
 				iconos: [

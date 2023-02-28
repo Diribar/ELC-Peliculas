@@ -166,12 +166,12 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicsAjenasDeUnProd: async (entEdicion, datos, include) => {
+	obtieneEdicAjenaDeUnProd: async (entEdicion, datos, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
 		const {campo_id, entID, userID} = datos;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entEdicion]
-			.findAll({
+			.findOne({
 				where: {
 					// Que pertenezca a la entidad que nos interesa
 					[campo_id]: entID,
@@ -182,7 +182,7 @@ module.exports = {
 				},
 				include,
 			})
-			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// Mantenimiento
