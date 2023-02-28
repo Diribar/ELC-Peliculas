@@ -90,6 +90,7 @@ module.exports = {
 			origen: req.query.origen,
 			familia: comp.obtieneFamiliaEnSingular(entidad),
 			vista: req.baseUrl + req.path,
+			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
 			producto: prodComb,
 			imgDerPers,
 			tituloImgDerPers: prodComb.nombre_castellano,
@@ -127,6 +128,7 @@ module.exports = {
 
 		// Averigua si hay errores de validación
 		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id, para verificar que no esté repetido
+		prodComb.publico = req.session.usuario.rol_usuario.revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si recibimos un archivo avatar
