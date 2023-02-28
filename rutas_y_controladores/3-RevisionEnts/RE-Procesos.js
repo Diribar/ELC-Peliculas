@@ -6,7 +6,6 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -554,7 +553,7 @@ module.exports = {
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
 			let statusAprob = false;
-			if (aprob) statusAprob = await posibleAprobado(entidad, originalGuardado);
+			if (aprob) statusAprob = await procsCRUD.posibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return [edicion, statusAprob];
@@ -654,41 +653,6 @@ let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, 
 	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// Fin
 	return resultados;
-};
-// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
-let posibleAprobado = async (entidad, original) => {
-	let statusAprob = false;
-	// - Averigua si el registro está en un status previo a 'aprobado'
-	if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
-		// Averigua si hay errores
-		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
-		if (!errores.hay) {
-			// Variables
-			statusAprob = true;
-			let ahora = comp.ahora();
-			let datos = {
-				alta_term_en: ahora,
-				lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
-				status_registro_id: aprobado.id,
-			};
-
-			// Cambia el status del registro
-			await BD_genericas.actualizaPorId(entidad, original.id, datos);
-
-			// Si es una colección, le cambia el status también a los capítulos
-			if (entidad == "colecciones") {
-				datos.alta_analizada_por_id = 2;
-				datos.alta_analizada_en = ahora;
-				await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
-			}
-
-			// Actualiza prodEnRCLV
-			procsCRUD.cambioDeStatus(entidad, {...original, ...datos});
-		}
-	}
-
-	// Fin
-	return statusAprob;
 };
 // VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async (original, edicion, aprob) => {
