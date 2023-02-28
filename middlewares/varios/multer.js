@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const path = require("path");
+//const path = require("path");
 const multer = require("multer");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 

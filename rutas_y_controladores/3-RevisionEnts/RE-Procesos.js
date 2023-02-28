@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const path = require("path");
+//const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
@@ -736,10 +736,10 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		// Variables
 		let entidad = comp.obtieneProdDesdeProducto_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
-		let campoFecha = !n.status_registro_id ? "editado_en" : n.status_registro.creado ? "creado_en" : "sugerido_en";
+		let campoFecha = !link.status_registro_id ? "editado_en" : link.status_registro.creado ? "creado_en" : "sugerido_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaTextoCorta(link[campoFecha]);
-		if (link.status_registro.creado_aprob)
+		if (link.status_registro && link.status_registro.creado_aprob)
 			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});

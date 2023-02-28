@@ -1,6 +1,5 @@
 "use strict";
 // ************ Requires *************
-const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");

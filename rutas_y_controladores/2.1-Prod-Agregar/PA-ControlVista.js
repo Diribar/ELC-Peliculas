@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./PA-FN-Procesos");
 const valida = require("./PA-FN-Validar");
-const path = require("path");
+//const path = require("path");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
