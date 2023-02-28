@@ -1,7 +1,6 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 main form #cuerpo {flex-direction: column;}
-main form #cuerpo .inputError {display: flex; flex-direction: row;}
 
 /* Zona del formulario */
 main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
@@ -34,33 +33,35 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 #datos #primeraColumna {width: 42%;}
 #datos #segundaColumna {width: 45%;}
-#datos #primeraColumna .label-input .inputError .input {width: 200px;}
-#datos #primeraColumna .label-input .inputError .input.angosto {width: 70px}
-#datos #primeraColumna .label-input .inputError .input.numero {width: 70px; text-align: right;}
-#datos #segundaColumna .label-input .inputError .input {width: 240px;}
+
+#datos .label-input :is(.inputError, .inputError .input) {width: 100%;}
+#datos #primeraColumna .label-input .inputError {max-width: 200px;}
+#datos #primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
+#datos #segundaColumna .label-input .inputError {max-width: 240px;}
 
 /* Partes específicas del formulario */
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
-#datos h3:first-child {margin-top: 0;}
+#datos .columna > h3:first-child {margin-top: 0;}
+#datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
+#datos .label-input .inputError {display: flex; flex-direction: row; margin-left: 5px;}
 #datos .label-input .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
-#datos .label-input .inputError {margin-left: 5px;}
 #datos .label-input .inputError .ayuda {right: -5px;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
-#datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
 #datos .label-input .inputError .input {align-self: center;}
+#datos .label-input .inputError .input.numero {text-align: right;}
 #datos .label-input .inputError input {padding: 0px 5px;}
 #datos .label-input .inputError select {padding: 0;}
 #datos .label-input .inputError .input:disabled, #datos .label-input#paises_id 
 #datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 #datos .flexRowAlign #siNoTitulo {width: 180px;}
-#datos #tipoActuacion #tipos {margin-left: 35px;}
+#datos #tipoActuacion #tipos {margin-left: 35px; flex-wrap: wrap;}
 
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .inputError {width: 200px;}
 #datos #paises_id .inputError 
 :is(input#mostrarPaises, select) {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-#datos #paises_id .inputError #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
+#datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; z-index: 1; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
 /* RCLV */
@@ -71,7 +72,7 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 
 /* Sinopsis */
 #datos .label-input#sinopsis .inputError {width: 100%; margin-left: 0;} 
-#datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
+#datos #segundaColumna #sinopsis textarea {height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
 /* Mensajes de aviso de cambio de data-entry */
