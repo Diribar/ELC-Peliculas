@@ -286,33 +286,30 @@ module.exports = {
 			// Fin
 			return registros;
 		})();
+		// Mensajes
+		const mensajes = {
+			publico: [
+				"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
+				"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
+				"Familia: ideal para compartir en familia y que todos la disfruten.",
+				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
+				"Menores solamente: apuntado a un público solamente infantil.",
+			],
+			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
+			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
+		};
 		return [
 			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es a color", nombre: "color", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
-			{
-				titulo: "Tipo de Actuación",
-				nombre: "tipo_actuacion_id",
-				valores: await BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
-			},
-			{
-				titulo: "Público sugerido",
-				nombre: "publico_id",
-				valores: await BD_genericas.obtieneTodos("publicos", "orden"),
-				mensajes: [
-					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
-					"Mayores apto familia: no se cumple lo anterior, pero es de poco interés para un menor de hasta 12-14 años.",
-					"Familia: ideal para compartir en familia y que todos la disfruten.",
-					"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
-					"Menores solamente: apuntado a un público solamente infantil.",
-				],
-			},
+			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", valores: tipos_actuacion},
+			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{
 				titulo: "Personaje histórico",
 				nombre: "personaje_id",
 				valores: registrosRCLV.personajes,
-				mensajes: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
+				mensajes: mensajes.personaje,
 				link: "personajes",
 				grupo: "RCLV",
 			},
@@ -320,9 +317,7 @@ module.exports = {
 				titulo: "Hecho histórico",
 				nombre: "hecho_id",
 				valores: registrosRCLV.hechos,
-				mensajes: [
-					"Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos.",
-				],
+				mensajes: mensajes.hecho,
 				link: "hechos",
 				grupo: "RCLV",
 			},

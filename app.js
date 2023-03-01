@@ -100,6 +100,8 @@ app.set("views", [
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 		interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
 		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
+		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),

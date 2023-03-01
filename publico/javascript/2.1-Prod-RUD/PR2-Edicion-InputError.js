@@ -127,24 +127,14 @@ window.addEventListener("load", async () => {
 				v.botonesActivarVersion[1].classList.add("inactivoVersion");
 				v.botonEliminar.classList.add("inactivoVersion");
 			}
-			// Acciones sobre la edición nueva
-			// 1. Funciones
-			let detectaSiHayErrores = () => {
-				// Detectar la cantidad de 'errores' ocultos
-				let hayErrores = Array.from(v.iconosError)
-					.map((n) => n.className)
-					.some((n) => n.includes("error"));
-				// Fin
-				return hayErrores;
-			};
-			let averiguaSiLaEdicionTieneNovedades = () => {
-				for (let campo of v.camposTodos) if (version.edicN[campo] != version.edicG[campo]) return "";
-				return "Iguales";
-			};
-			// 2. Averigua si hay errores
-			let hayErrores = detectaSiHayErrores();
-			// 3. Averigua si es igual a la edicion
-			let sonIguales = averiguaSiLaEdicionTieneNovedades();
+			// Averiguaciones sobre la edición nueva
+			// 1. Averigua si hay errores
+			let hayErrores = Array.from(v.iconosError)
+				.map((n) => n.className)
+				.some((n) => !n.includes("ocultar"));
+			// 2. Averigua si es igual a la edicion
+			let sonIguales = true;
+			for (let campo of v.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
 			// Si se cumple alguna de las anteriores -> inactiva
 			// Else -> activa
 			if (hayErrores || sonIguales) v.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
