@@ -123,7 +123,9 @@ app.set("views", [
 	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
-	link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
+	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
+	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
