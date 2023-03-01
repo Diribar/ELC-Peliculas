@@ -141,23 +141,28 @@ module.exports = {
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length) {
+				// Completa los datos a guardar
 				prodComb.alta_analizada_por_id = userID;
 				prodComb.alta_analizada_en = comp.ahora();
+				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
+				// Se fija si corresponde cambiar el status
 				await procsCRUD.posibleAprobado(entidad, prodComb);
-				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
+				// Limpia el valor de la edicion, para que no se recargue el url
+				edicion = null;
 			} else {
-				// 2. Guarda o actualiza la edición
+				// Combina la información
 				edicion = {...edicion, ...req.body};
+				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
 		}
 
 		// Fin
 		return edicion
-			? res.redirect(req.originalUrl)
-			: origen
-			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen)
-			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id);
+			? res.redirect(req.originalUrl) // Recarga la vista
+			: origen && origen == "TE"
+			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresar a Revisión
+			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
 	},
 };

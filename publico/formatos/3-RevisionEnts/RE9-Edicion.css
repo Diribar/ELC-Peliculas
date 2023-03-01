@@ -1,5 +1,6 @@
 /* Datos */
 #datos {display: flex; flex-direction: row; flex-grow: 1;}
+#datos #datosBreves {min-width: 210px;}
 
 /* Datos Largos */
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
@@ -10,8 +11,6 @@
 #datosLargos .contenido h2 {margin-top: 15px; font-variant: small-caps}
 #datosLargos .contenido #ingrs {margin-top: 5px;}
 #datosLargos .contenido p {line-height: 1;}
-#datosLargos .contenido #reemps .infoMostrar .orig, 
-#datosLargos .contenido #reemps .infoMostrar .edic {padding: 2px 4px; border-radius: 5px;}
 /* Ocultar la 'side-bar' */
 #datosLargos .contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
 #datosLargos .contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
@@ -23,11 +22,13 @@
 #datosLargos .contenido #ingrs tr #cartelRechazo select {background: inherit;}
 
 /* Datos Largos - Reemplazos */
-#datosLargos .contenido #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
-#datosLargos .contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
-#datosLargos .contenido #reemps .infoMostrar.ocultar {display: block;}
-#datosLargos .contenido #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
-#datosLargos .contenido #reemps #cartelRechazo select {margin: 0;}
+#datosLargos #reemps .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px; font-style: italic;}
+#datosLargos #reemps .infoMostrar .orig {background: var(--amarillo-claro);}
+#datosLargos #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
+#datosLargos #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
+#datosLargos #reemps .infoMostrar.ocultar {display: block;}
+#datosLargos #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
+#datosLargos #reemps #cartelRechazo select {margin: 0;}
 
 /* Comandos - Particularidades */
 #cuerpo .flechas i {font-size: 2rem;}
