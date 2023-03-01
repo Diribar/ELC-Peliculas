@@ -20,6 +20,9 @@ module.exports = {
 		let id = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
+		let bloquesIzquierda, bloquesDerecha;
+		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
+
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 4. Obtiene la versión más completa posible del producto
@@ -32,10 +35,8 @@ module.exports = {
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
 		// 6. Obtiene los países
-		let paises = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
+		let paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
-		let bloquesIzquierda, bloquesDerecha;
-		let camposInput1, camposInput2, produccion, camposDA, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let edicion = (() => {
@@ -63,8 +64,7 @@ module.exports = {
 			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
 			produccion = camposInput.find((n) => n.nombre == "produccion");
 			// Datos Duros - Bases de Datos
-			BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
-			BD_idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
+			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion);
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
@@ -74,7 +74,7 @@ module.exports = {
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
-			bloquesIzquierda = procesos.bloquesIzquierda(paises, prodComb);
+			bloquesIzquierda = procesos.bloquesIzquierda(paisesNombre, prodComb);
 			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion).edic;
 		}
@@ -82,7 +82,6 @@ module.exports = {
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		// Va a la vista
-		// return res.send(prodComb)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{titulo, prodNombre, producto: prodComb},
@@ -90,7 +89,7 @@ module.exports = {
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloquesIzquierda, bloquesDerecha},
 			...{camposInput1, camposInput2, produccion},
-			...{BD_paises, BD_idiomas, paises, camposDA, gruposPers, gruposHechos},
+			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			vista: req.baseUrl + req.path,
 			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
 			dataEntry: {},
@@ -132,7 +131,7 @@ module.exports = {
 			// Si hay errores, borra el archivo avatar
 			else {
 				comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", req.file.filename);
-				return res.send(errores);
+				return res.send([{errores}, {...prodComb, entidad}]);
 			}
 		}
 

@@ -243,15 +243,14 @@ module.exports = {
 		}
 		return resultado;
 	},
-	paises_idToNombre: async (paises_id) => {
+	paises_idToNombre: (paises_id) => {
 		// Función para convertir 'string de ID' en 'string de nombres'
 		let paisesNombre = [];
 		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 			let paises_idArray = paises_id.split(" ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
-				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				let paisNombre = paises.find((n) => n.id == pais_id).nombre;
 				if (paisNombre) paisesNombre.push(paisNombre);
 			}
 		}

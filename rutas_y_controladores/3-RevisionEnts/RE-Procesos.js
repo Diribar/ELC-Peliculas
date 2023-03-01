@@ -288,7 +288,7 @@ module.exports = {
 			return;
 		},
 		// Productos Alta
-		prodAltaForm_ficha: async (prodOrig, paises) => {
+		prodAltaForm_ficha: async (prodOrig, paisesNombre) => {
 			// Funciones
 			let usuario_CalidadAltas = async (userID) => {
 				// 1. Obtiene los datos del usuario
@@ -314,7 +314,7 @@ module.exports = {
 			// Bloque izquierdo
 			let [bloque1, bloque2, bloque3] = [[], [], []];
 			// Bloque 1
-			if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
+			if (paisesNombre) bloque1.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
 			if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
 			// Bloque 2
 			if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});

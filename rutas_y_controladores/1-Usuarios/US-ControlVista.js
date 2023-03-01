@@ -44,11 +44,6 @@ module.exports = {
 				? {...req.session.erroresOC}
 				: false;
 		// Generar la info para la vista 'olvido de contraseña'
-		if (errores.documento) {
-			let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-			var hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-			var hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		}
 		// Vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -101,9 +96,6 @@ module.exports = {
 		let usuario = req.session.usuario;
 		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
 		sexos = sexos.filter((m) => m.letra_final);
-		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
-		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
@@ -181,10 +173,7 @@ module.exports = {
 		const tema = "usuario";
 		const codigo = "identidad";
 		let usuario = req.session.usuario;
-		let paises = await BD_genericas.obtieneTodos("paises", "nombre");
 		// Genera la info para la vista
-		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 		// Roles de Iglesia

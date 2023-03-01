@@ -82,9 +82,9 @@ module.exports = {
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtiene los países
-		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
+		let paisesNombre = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(prodOrig, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(prodOrig, paisesNombre);
 		let motivos = altas_motivos_rech.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});

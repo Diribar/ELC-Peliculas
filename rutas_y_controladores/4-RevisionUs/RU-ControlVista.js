@@ -31,19 +31,12 @@ module.exports = {
 		const codigo = "validaIdentidad";
 		// Temas del usuario
 		let userID = req.query.id;
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, [
-			"sexo",
-			"rol_usuario",
-			"status_registro",
-		]);
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rol_usuario", "status_registro"]);
 		// Redireccionar si no existe el usuario o el avatar
-		let docum_avatar = usuario
-			? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar
-			: false;
-		if (procesos.validaContenidoIF(usuario, docum_avatar))
-			return res.redirect("/revision/usuarios/tablero-de-control");
+		let docum_avatar = usuario ? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar : false;
+		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
-		let pais = await BD_genericas.obtienePorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
+		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
 		let fecha_nacimiento = comp.fechaTexto(usuario.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
@@ -77,14 +70,7 @@ module.exports = {
 		// Si no se respondió algún campo necesario, avisa que se debe reenviar el formulario
 		let redireccionar;
 		if (datos.motivo_docum_id == "0") {
-			let campos = [
-				"docum_pais_id",
-				"apellido",
-				"nombre",
-				"sexo_id",
-				"fecha_nacimiento",
-				"docum_numero",
-			];
+			let campos = ["docum_pais_id", "apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero"];
 			for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
 		}
 		// Si no se respondió el motivo, avisa que se debe reenviar el formulario
@@ -108,14 +94,7 @@ module.exports = {
 		// Acciones si la imagen del documento fue aprobada
 		if (datos.motivo_docum_id == "0") {
 			// Rutinas para los demás campos --> lleva al status 'editables'
-			let campos = [
-				"docum_pais_id",
-				"docum_numero",
-				"nombre",
-				"apellido",
-				"sexo_id",
-				"fecha_nacimiento",
-			];
+			let campos = ["docum_pais_id", "docum_numero", "nombre", "apellido", "sexo_id", "fecha_nacimiento"];
 			// Motivo genérico
 			let motivo = motivos.find((n) => n.info_erronea);
 			for (let campo of campos)
@@ -146,8 +125,7 @@ module.exports = {
 		objeto = {...objeto, status_registro_id};
 		BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 		// Aplica la durac_penalidad
-		if (durac_penalidad)
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
+		if (durac_penalidad) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
 		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=TU");
 	},
