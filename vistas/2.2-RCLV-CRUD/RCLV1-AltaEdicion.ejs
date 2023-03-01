@@ -125,7 +125,7 @@
 					<!-- Fecha desconocida -->
 					<div class="flexRowAlign altoFila">
 						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && dataEntry.dia_del_ano_id>=400) { %>checked<% } %>>
-						<label for="desconocida">Sin fecha representativa</label>
+						<label for="desconocida">Desconocida o sin fecha</label>
 					</div>
 				</div>
 			</div>
@@ -242,8 +242,7 @@
 						<i class="fa-solid fa-circle-question ayudaClick desplClick">
 							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 								<li>Se refiere al año en que <%= personajes ? "nació" : "ocurrió, o comenzó a ocurrir" %>.</li>
-								<li>Solo se necesita si la época es <u><em>posterior</em></u>.</li>
-								<li>Asumimos que Jesús vivió entre los años 1 y 33</li>
+								<li>Si no lo sabés, poné un valor estimado.</li>
 								<% if (hechos) { %><li>Asumimos que los Apóstoles vivieron entre los años 1 y 100</li><% } %>
 							</ul>
 						</i>
