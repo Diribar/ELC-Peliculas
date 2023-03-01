@@ -61,15 +61,13 @@ module.exports = {
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		// Variables
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
+		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Obtiene los errores
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = req.session.erroresDD ? req.session.erroresDD : await valida.datosDuros(camposDD_nombre, datosDuros);
-		// Preparar variables para la vista
-		let paises = datosDuros.paises_id ? await comp.paises_idToNombre(datosDuros.paises_id) : "";
-		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtieneTodos("paises", "nombre") : [];
-		let paisesTop5 = BD_paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
-		let idiomas = await BD_genericas.obtieneTodos("idiomas", "nombre");
-		let camposInput = camposDD.filter((n) => n.campoInput);
+		// Obtiene los países
+		let paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
+		let paisesTop5 = datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
 		// Imagen derecha
 		let imgDerPers = datosDuros.avatar
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
@@ -87,8 +85,8 @@ module.exports = {
 			dataEntry: datosDuros,
 			camposInput1: camposInput.filter((n) => n.antesDePais),
 			camposInput2: camposInput.filter((n) => !n.antesDePais),
+			paisesNombre,
 			paises,
-			BD_paises,
 			paisesTop5,
 			idiomas,
 			origen,

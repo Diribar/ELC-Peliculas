@@ -364,11 +364,10 @@ module.exports = {
 				// Función para convertir 'string de nombre' en  'string de ID'
 				let resultado = [];
 				if (pais_nombre.length) {
-					let BD_paises = await BD_genericas.obtieneTodos("paises", "nombre");
 					pais_nombreArray = pais_nombre.split(", ");
 					// Convertir 'array de nombres' en 'string de ID"
 					for (let pais_nombre of pais_nombreArray) {
-						let aux = BD_paises.find((n) => n.nombre == pais_nombre);
+						let aux = paises.find((n) => n.nombre == pais_nombre);
 						aux ? resultado.push(aux.id) : "";
 					}
 				}

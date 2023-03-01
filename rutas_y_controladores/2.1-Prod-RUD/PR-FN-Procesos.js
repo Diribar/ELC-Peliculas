@@ -4,10 +4,13 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// Producto
-	bloquesIzquierda: (paises, prodComb) => {
+	bloquesIzquierda: (paisesNombre, prodComb) => {
 		let bloque1 = [
 			{titulo: "Tipo de Actuación", valor: prodComb.tipo_actuacion ? prodComb.tipo_actuacion.nombre : "Sin datos"},
-			{titulo: "País" + (paises && paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
+			{
+				titulo: "País" + (paisesNombre && paisesNombre.includes(",") ? "es" : ""),
+				valor: paisesNombre ? paisesNombre : "Sin datos",
+			},
 			{titulo: "Idioma original", valor: prodComb.idioma_original ? prodComb.idioma_original.nombre : "Sin datos"},
 			{titulo: "En castellano", valor: prodComb.en_castellano ? "SI" : prodComb.en_castellano === 0 ? "NO" : "Sin datos"},
 			{titulo: "Es a color", valor: prodComb.en_color ? "SI" : prodComb.en_color === 0 ? "NO" : "Sin datos"},
