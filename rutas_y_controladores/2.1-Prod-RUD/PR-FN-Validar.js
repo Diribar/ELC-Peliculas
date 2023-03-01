@@ -24,7 +24,7 @@ module.exports = {
 		if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 
 		// Terminar
-		errores.hay = erroresDD.hay || erroresDA.hay || errores.publico_id;
+		errores.hay = erroresDD.hay || erroresDA.hay || !!errores.publico_id;
 		return errores;
 	},
 };

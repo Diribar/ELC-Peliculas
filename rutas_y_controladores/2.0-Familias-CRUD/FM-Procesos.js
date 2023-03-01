@@ -125,7 +125,7 @@ module.exports = {
 		}
 
 		// Fin
-		return edicion
+		return edicion;
 	},
 	// Avatar
 	obtieneAvatarOrigEdic: (original, edicion) => {

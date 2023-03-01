@@ -125,7 +125,9 @@ module.exports = {
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipo_actuacion_id"];
 		// Datos generales + calificación
-		for (let campo of camposPosibles) if (campos.includes(campo)) errores[campo] = !datos[campo] ? variables.selectVacio : "";
+		for (let campo of camposPosibles)
+			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
+			// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLV - Combinados
 		if (datos.ocurrio) {
