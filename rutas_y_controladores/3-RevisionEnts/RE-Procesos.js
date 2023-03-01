@@ -663,8 +663,8 @@ let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/" + avatarOrig;
-		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal)) comp.borraUnArchivo(rutaFinal);
+		let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/";
+		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
 		comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");

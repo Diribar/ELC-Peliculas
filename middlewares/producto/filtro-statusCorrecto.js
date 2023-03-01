@@ -17,14 +17,13 @@ module.exports = async (req, res, next) => {
 
 	// Status Esperado
 	(() => {
-		const path = req.path;
 		statusEsperados_id =
 			baseUrl == "/revision"
-				? path.includes("/alta/")
+				? req.path.includes("/alta/")
 					? [creado_id]
-					: path.includes("/edicion/")
+					: req.path.includes("/edicion/")
 					? [creado_aprob_id, aprobado_id]
-					: path.includes("/inactivar-o-recuperar/")
+					: req.path.includes("/inactivar-o-recuperar/")
 					? [inactivar_id, recuperar_id]
 					: [99]
 				: [99];
