@@ -25,6 +25,7 @@ module.exports = {
 
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		// return res.send(edicion)
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// 5. Configura el título de la vista
@@ -34,12 +35,12 @@ module.exports = {
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
-		// 6. Obtiene los países
+		// 6. Obtiene el nombre de los países
 		let paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
-			let edicion = (() => {
+			let edicSession = (() => {
 				// Función
 				let verificaReq = (dato) => {
 					return req[dato] && req[dato].entidad == entidad && req[dato].id == id;
@@ -57,7 +58,7 @@ module.exports = {
 				return resultado;
 			})();
 			// Actualiza el producto prodComb
-			prodComb = {...prodComb, ...edicion};
+			prodComb = {...prodComb, ...edicSession};
 			// Datos Duros - Campos Input
 			let camposInput = variables.camposDD.filter((n) => n[entidad]).filter((n) => n.campoInput);
 			camposInput1 = camposInput.filter((n) => n.antesDePais);
@@ -66,7 +67,7 @@ module.exports = {
 			// Datos Duros - Bases de Datos
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion);
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, {...edicion,...edicSession});
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
