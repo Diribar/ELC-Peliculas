@@ -67,7 +67,7 @@ module.exports = {
 			// Datos Duros - Bases de Datos
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, {...edicion,...edicSession});
+			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, {...edicion, ...edicSession});
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
@@ -147,8 +147,8 @@ module.exports = {
 				let origen = req.query.origen;
 				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
 			} else {
-				// 2. Actualiza la edición
-				let edicion = {...req.body};
+				// 2. Guarda o actualiza la edición
+				edicion = {...edicion, ...req.body};
 				await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
 		}
