@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Averigua el 'paso'
-	let url = window.location.pathname;
+	let url = location.pathname;
 	let paso = url.slice(url.lastIndexOf("/") + 1);
 	paso = {paso, PC: paso == "palabras-clave", DD: paso == "datos-duros"};
 	// Variables

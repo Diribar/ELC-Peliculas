@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let prodEntidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
 	let iconosOK = document.querySelectorAll(".yaExistentes .in");
 	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
 	let ruta = "/revision/api/link-alta/";
@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 			url += "&url=" + encodeURIComponent(links_url[indice].value);
 			url += "&aprob=SI";
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
-			if (respuesta.reload) window.location.reload();
+			if (respuesta.reload) location.reload();
 		});
 	});
 });

@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	let errores;
 	let v = {
 		// Pointer del producto
-		entidad: new URL(window.location.href).searchParams.get("entidad"),
-		prodID: new URL(window.location.href).searchParams.get("id"),
+		entidad: new URL(location.href).searchParams.get("entidad"),
+		prodID: new URL(location.href).searchParams.get("id"),
 		// Datos del formulario
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),

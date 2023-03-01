@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let detalle = window.location.pathname == "/producto/detalle/";
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let detalle = location.pathname == "/producto/detalle/";
+	let entidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
 
 	// Obtiene las calificaciones
 	let ruta = "/producto/api/detalle/obtiene-calificaciones/";

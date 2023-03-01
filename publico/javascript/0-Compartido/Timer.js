@@ -2,12 +2,12 @@
 window.addEventListener("load", async () => {
 	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let entID = new URL(window.location.href).searchParams.get("id");
+	let entidad = new URL(location.href).searchParams.get("entidad");
+	let entID = new URL(location.href).searchParams.get("id");
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
-	const tipoUsuario = window.location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
+	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 	// Otras variables
-	const codigo = new URL(window.location.href).pathname;
+	const codigo = new URL(location.href).pathname;
 	let timer = document.querySelector("#timer");
 	// Temas de horario y fechas
 	let unMinuto = 60 * 1000;

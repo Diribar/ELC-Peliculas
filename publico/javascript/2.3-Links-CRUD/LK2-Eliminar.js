@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Producto y ID
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let prodEntidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
 	let condiciones = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables
 	let filas_yaExistentes = document.querySelectorAll(".yaExistentes");
@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
 	let pasivos = document.querySelector("#tabla #tags #inactivo");
 	// Ruta
-	let entorno = window.location.pathname;
+	let entorno = location.pathname;
 	let ruta = entorno.startsWith("/links/")
 		? "/links/api/eliminar/"
 		: entorno.startsWith("/revision/")
@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
 				url += "&motivo_id=" + motivo_id;
 				let respuesta = await fetch(ruta + url).then((n) => n.json());
 				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
-				if (respuesta.reload) window.location.reload();
+				if (respuesta.reload) location.reload();
 				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
 			}
 		});

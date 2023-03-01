@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Tareas
-	let tarea = window.location.pathname;
+	let tarea = location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
 	let tareas = {login: "login", editables: "editables", documento: "documento"};
 	if (!tareas[tarea]) return;

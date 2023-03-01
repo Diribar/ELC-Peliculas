@@ -3,9 +3,9 @@ window.addEventListener("load", async () => {
 	// Variables
 	let v = {
 		// Datos del registro
-		entidad: new URL(window.location.href).searchParams.get("entidad"),
-		entID: new URL(window.location.href).searchParams.get("id"),
-		edicID: new URL(window.location.href).searchParams.get("edicion_id"),
+		entidad: new URL(location.href).searchParams.get("entidad"),
+		entID: new URL(location.href).searchParams.get("id"),
+		edicID: new URL(location.href).searchParams.get("edicion_id"),
 		// Motivos para borrar
 		aprobar: document.querySelectorAll(".contenido .fa-circle-check"),
 		muestraCartelMotivos: document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos"),
@@ -62,48 +62,41 @@ window.addEventListener("load", async () => {
 
 		// Si está todo procesado y quedan campos,
 		if (todoProcesado == resultado.quedanCampos) console.log("Error", todoProcesado, resultado.quedanCampos);
-		// Si está todo procesado, publica el cartel de fin
+		// Acciones si está todo procesado
 		else if (todoProcesado && !resultado.quedanCampos) {
-			// Variables
-			let irEdicion = !resultado.statusAprob && !resultado.quedanCampos;
-			// Mensajes
-			let arrayMensajes = ["Se completó la revisión, muchas gracias."];
-			if (irEdicion) arrayMensajes.push("Te pedimos que nos ayudes a completar la edición.");
-			// Flechas
-			let icono = {};
-			icono.HTML = irEdicion
-				? '<i class="fa-solid fa-circle-left"  title="Volver al Tablero"></i>'
-				: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>';
-			icono.link = "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";
-
-			// Partes del cartel
-			let cartel = document.querySelector("#cartel");
-			let alerta = document.querySelector("#cartel #alerta");
-			let check = document.querySelector("#cartel #check");
-			let mensajes = document.querySelector("#cartel ul#mensajes");
-			let flechas = document.querySelector("#cartel #flechasCartel");
-
-			// Formatos
-			cartel.style.backgroundColor = "var(--verde-oscuro)";
-			alerta.classList.add("ocultar");
-			check.classList.remove("ocultar");
-
-			// Cambia el contenido del mensaje y las flechas
-			if (!irEdicion) mensajes.style.listStyle = "none";
-			mensajes.innerHTML = "";
-			for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
-			flechas.innerHTML = "";
-			flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
-			if (irEdicion) {
-				icono = {
-					HTML: '<i class="fa-solid fa-pen" autofocus title="Ir a Edición"></i>',
-					link: "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE",
+			// 1. Si el registro pasó al status 'aprobado', publica el cartel
+			if (resultado.statusAprob) {
+				// Mensajes
+				let arrayMensajes = ["Se completó la revisión, muchas gracias."];
+				// Flechas
+				let icono = {
+					HTML: '<i class="fa-solid fa-thumbs-up" autofocus title="Entendido"></i>',
+					link: "/inactivar-captura/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE",
 				};
+				// Partes del cartel
+				let cartel = document.querySelector("#cartel");
+				let alerta = document.querySelector("#cartel #alerta");
+				let check = document.querySelector("#cartel #check");
+				let mensajes = document.querySelector("#cartel ul#mensajes");
+				let flechas = document.querySelector("#cartel #flechasCartel");
+
+				// Formatos
+				cartel.style.backgroundColor = "var(--verde-oscuro)";
+				alerta.classList.add("ocultar");
+				check.classList.remove("ocultar");
+
+				// Cambia el contenido del mensaje y las flechas
+				mensajes.innerHTML = "";
+				for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+				flechas.innerHTML = "";
 				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
+
+				// Muestra el cartel
+				v.tapaElFondo.classList.remove("ocultar");
+				cartel.classList.remove("ocultar");
 			}
-			// Muestra el cartel
-			v.tapaElFondo.classList.remove("ocultar");
-			cartel.classList.remove("ocultar");
+			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
+			else location.href = "/producto/edicion/?entidad=" + v.entidad + "&id=" + v.entID + "&origen=TE";
 		}
 
 		// Fin
