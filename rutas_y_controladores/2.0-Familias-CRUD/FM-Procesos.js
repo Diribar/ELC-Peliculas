@@ -96,7 +96,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
+		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad)
 		let camposNull;
 
 		// Quita la info que no agrega valor
