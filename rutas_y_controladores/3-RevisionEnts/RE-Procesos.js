@@ -348,13 +348,13 @@ module.exports = {
 			let objeto = {[campo_id]: id, editado_por_id};
 			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
-			// 8.A. Elimina el archivo de avatar de la edicion
+			// 1. Elimina el archivo de avatar de la edicion
 			if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
 
-			// 8.B. Elimina las ediciones que tenga
+			// 2. Elimina las ediciones que tenga
 			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
 
-			// 8.C. Actualiza los RCLV, en el campo 'prods_aprob'
+			// 3. Actualiza los RCLV, en el campo 'prods_aprob'
 			procsCRUD.cambioDeStatus(entidad, edicion);
 		},
 	},
@@ -515,13 +515,15 @@ module.exports = {
 				titulo,
 				campo,
 			};
+			// Agrega el motivo del rechazo
 			if (!aprob) {
 				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
+
+			// Asigna los valores 'aprob' y 'rech'
 			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
 			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
 
@@ -545,15 +547,18 @@ module.exports = {
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 
 			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+			// Actualiza la información del original guardado
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
+			// Actualiza la información de la edición
+			if (!aprob) edicion[campo] = null;
 			if (relacInclude) delete edicion[relacInclude];
+			// Completa el proceso
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			let statusAprob = false;
-			if (aprob) statusAprob = await procsCRUD.posibleAprobado(entidad, originalGuardado);
+			let statusAprob = await procsCRUD.posibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return [edicion, statusAprob];

@@ -30,7 +30,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		let statusAprob = false;
+		let statusAprob 
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech({
 			entidad,
 			original,

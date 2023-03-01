@@ -201,12 +201,13 @@ module.exports = {
 			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
 			// 7.3. Acciones si es un producto
+			// Elimina el archivo de avatar de la edicion
+			// Elimina las ediciones que tenga
+			// Actualiza los RCLV, en el campo 'prods_aprob'
 			if (!rclvs) procesos.alta.prodRech(entidad, id, creado_por_id);
 		}
 
 		// Fin
-		// return res.redirect("/revision/tablero-de-control");
-
 		// Si es un producto y fue aprobado, redirecciona a una edición
 		if (!rclvs && !rechazado) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
