@@ -2,8 +2,8 @@
 window.addEventListener("load", async () => {
 	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
-	const entidad = new URL(location.href).searchParams.get("entidad");
 	const entID = new URL(location.href).searchParams.get("id");
+	let entidad = new URL(location.href).searchParams.get("entidad")
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 	// Temas de horario y fechas
 	const unMinuto = 60 * 1000;
