@@ -64,7 +64,7 @@ module.exports = {
 						});
 				});
 
-			// 5. Elimina los repetidos más recientes
+			// 5. Elimina los repetidos
 			productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 			productos = comp.eliminaRepetidos(productos);
 
