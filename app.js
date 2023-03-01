@@ -84,7 +84,7 @@ app.set("views", [
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
 		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
-		links_provs: BD_genericas.obtieneTodos("links_provs", "nombre"),
+		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
 		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
 		edic_motivos_rech: BD_genericas.obtieneTodos("edic_motivos_rech", "orden"),

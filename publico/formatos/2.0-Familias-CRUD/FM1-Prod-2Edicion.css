@@ -37,7 +37,7 @@ form #imgDerecha.inputError .agregados img {max-width: 25px; max-height: 25px; b
 #datos .label-input :is(.inputError, .inputError .input) {width: 100%;}
 #datos #primeraColumna .label-input .inputError {max-width: 200px;}
 #datos #primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
-#datos #segundaColumna .label-input .inputError {max-width: 240px;}
+#datos #segundaColumna .label-input .inputError:not(:has(textarea)) {max-width: 240px;}
 
 /* Partes específicas del formulario */
 #datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
