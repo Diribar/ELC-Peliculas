@@ -4,14 +4,19 @@
 		<!-- Lugar donde almacenar los ID -->
 		<input name="paises_id" type="text" value="<%= producto.paises_id %>" class="ocultar input">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" value="<%= paises %>" readonly tabindex="-1" placeholder="Elegí un país">
+		<input id="mostrarPaises" type="text" value="<%= paisesNombre %>" readonly tabindex="-1" placeholder="Elegí un país">
 		<!-- Opciones de países -->
 		<select>
 			<option value="borrar">Borrar todo/s</option>
+			<optgroup label="Más Frecuentes">
+				<% for (let pais of paisesTop5) { %>
+					<option value="<%= pais.id %>"><%= pais.nombre %></option>
+				<% } %>	
+			</optgroup>
 			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 			<% for (let continente of continentes) { %>
 				<optgroup label="<%= continente %>">
-					<% for (let pais of BD_paises.filter(n => n.continente == continente)) { %>
+					<% for (let pais of paises.filter(n => n.continente == continente)) { %>
 						<option value="<%= pais.id %>"><%= pais.nombre %></option>
 					<% } %>	
 				</optgroup>

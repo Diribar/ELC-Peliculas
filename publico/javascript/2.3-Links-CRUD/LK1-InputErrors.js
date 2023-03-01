@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let v = {
 		// Generales
-		colecciones: new URL(window.location.href).searchParams.get("entidad") == "colecciones",
+		colecciones: new URL(location.href).searchParams.get("entidad") == "colecciones",
 		form: document.querySelector("#datos form"),
 		guardar: document.querySelectorAll("tbody tr button"),
 

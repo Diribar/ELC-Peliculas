@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	let botonInactivo = document.querySelector("#datos #filtros #inactivo");
 	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
 	let filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
-	let pasivos = new URL(window.location.href).searchParams.get("pasivos");
+	let pasivos = new URL(location.href).searchParams.get("pasivos");
 
 	// Fórmulas
 	let mostrarPasivos = () => {
@@ -24,9 +24,9 @@ window.addEventListener("load", () => {
 	// Activos
 	botonActivo.addEventListener("click", () => {
 		if (botonActivo.innerHTML.startsWith("*")) {
-			let ruta = window.location.href;
+			let ruta = location.href;
 			ruta = ruta.slice(0, ruta.indexOf("&pasivos"));			
-			window.location.href = ruta;
+			location.href = ruta;
 			return
 		}
 		filasConStatusActivo.forEach((fila) => {
@@ -41,7 +41,7 @@ window.addEventListener("load", () => {
 	// Inactivos
 	botonInactivo.addEventListener("click", () => {
 		if (botonInactivo.innerHTML.startsWith("*")) {
-			window.location.href = window.location.href + (pasivos === null ? "&pasivos" : "");
+			location.href = location.href + (pasivos === null ? "&pasivos" : "");
 			return
 		}
 		mostrarPasivos();

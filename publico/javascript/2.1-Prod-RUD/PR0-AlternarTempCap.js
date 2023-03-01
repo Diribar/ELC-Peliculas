@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
-	let vista = window.location.pathname;
+	let entidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
+	let vista = location.pathname;
 	let ruta
 
 	// Obtiene el ID de la colección
@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 		let capID = await fetch(
 			ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum
 		).then((n) => n.json());
-		window.location.href = vista + "?entidad=capitulos&id=" + capID;
+		location.href = vista + "?entidad=capitulos&id=" + capID;
 	});	
 	
 	// CAPÍTULOS ANTERIOR O POSTERIOR
@@ -53,7 +53,7 @@ window.addEventListener("load", async () => {
 	if (capAntID) {
 		botonCapAnt.classList.remove("inactivo");
 		botonCapAnt.addEventListener("click", () => {
-			window.location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
+			location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
 		});
 	} else botonCapAnt.classList.add("inactivo");
 	// Acción si se elije "capítulo posterior"
@@ -61,7 +61,7 @@ window.addEventListener("load", async () => {
 	if (capPostID) {
 		botonCapPost.classList.remove("inactivo");
 		botonCapPost.addEventListener("click", () => {
-			window.location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
+			location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
 		});
 	} else botonCapPost.classList.add("inactivo");
 });

@@ -5,8 +5,8 @@ window.addEventListener("load", async () => {
 	let linksEdicion = document.querySelectorAll(".inputError i.linkRCLV#edicion");
 	let inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
 	// Variables para el ruteo del origen
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let prodEntidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
 	let paramsOrigen = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables para guardar los datos
 	let inputs = document.querySelectorAll(".inputError .input");
@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/agregar/" + entidad + paramsOrigen;
+			location.href = "/rclv/agregar/" + entidad + paramsOrigen;
 		});
 	});
 
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el RCLV_id
 			let id = "&id=" + inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
+			location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
 		});
 	});
 

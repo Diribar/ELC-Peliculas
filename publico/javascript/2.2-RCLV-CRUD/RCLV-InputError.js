@@ -3,8 +3,8 @@ window.addEventListener("load", async () => {
 	// Variables
 	let v = {
 		// Variables que se obtienen del url
-		entidad: new URL(window.location.href).searchParams.get("entidad"),
-		id: new URL(window.location.href).searchParams.get("id"),
+		entidad: new URL(location.href).searchParams.get("entidad"),
+		id: new URL(location.href).searchParams.get("id"),
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas #submit"),

@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let prodEntidad = new URL(location.href).searchParams.get("entidad");
+	let prodID = new URL(location.href).searchParams.get("id");
 	let inputs = document.querySelectorAll(".edicion .inputs");
 	let iconosDecision = document.querySelectorAll(".edicion .decision");
 	let ediciones_id = document.querySelectorAll(".edicion .edicion_id");
@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 			url += "&campo=" + inputs[indiceEdicion].name;
 			url += "&aprob=" + aprobado;
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
-			if (respuesta.reload) window.location.reload();
+			if (respuesta.reload) location.reload();
 		});
 	});
 });
