@@ -127,10 +127,10 @@ module.exports = {
 		// Datos generales + calificación
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
-			// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
+		// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLV - Combinados
-		if (datos.ocurrio) {
+		if (datos.ocurrio || datos.ocurrio === false) {
 			// Variables
 			let sinResponder = (!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
 			// Resultado
