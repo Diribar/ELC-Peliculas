@@ -2,16 +2,16 @@
 window.addEventListener("load", async () => {
 	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
-	let entidad = new URL(location.href).searchParams.get("entidad");
-	let entID = new URL(location.href).searchParams.get("id");
+	const entidad = new URL(location.href).searchParams.get("entidad");
+	const entID = new URL(location.href).searchParams.get("id");
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
-	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
+	// Temas de horario y fechas
+	const unMinuto = 60 * 1000;
+	const mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Otras variables
+	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 	const codigo = new URL(location.href).pathname;
 	let timer = document.querySelector("#timer");
-	// Temas de horario y fechas
-	let unMinuto = 60 * 1000;
-	let mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Horario Inicial
 	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) =>
 		n.json()
