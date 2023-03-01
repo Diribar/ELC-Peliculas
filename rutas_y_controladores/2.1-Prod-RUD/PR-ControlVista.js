@@ -100,10 +100,11 @@ module.exports = {
 	},
 	prodEdic_Guardar: async (req, res) => {
 		// Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario.id;
-		let revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const entidad = req.query.entidad;
+		const id = req.query.id;
+		const userID = req.session.usuario.id;
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const origen = req.query.origen;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -144,16 +145,19 @@ module.exports = {
 				prodComb.alta_analizada_en = comp.ahora();
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 				await procsCRUD.posibleAprobado(entidad, prodComb);
-				let origen = req.query.origen;
 				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
 			} else {
 				// 2. Guarda o actualiza la edición
 				edicion = {...edicion, ...req.body};
-				await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
+				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
 		}
 
 		// Fin
-		return res.redirect(req.originalUrl);
+		return edicion
+			? res.redirect(req.originalUrl)
+			: origen
+			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen)
+			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id);
 	},
 };

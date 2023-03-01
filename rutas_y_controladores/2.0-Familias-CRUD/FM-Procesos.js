@@ -125,7 +125,7 @@ module.exports = {
 		}
 
 		// Fin
-		return edicion ? "Edición guardada" : "Edición sin novedades respecto al original";
+		return edicion
 	},
 	// Avatar
 	obtieneAvatarOrigEdic: (original, edicion) => {
