@@ -48,6 +48,7 @@ module.exports = async (req, res, next) => {
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url
 		if (edicion) return res.redirect(req.originalUrl + "&edicion_id=" + edicion.id);
+		
 		// 2.2. En caso que no exista, mensaje de error para revisión
 		else if (revision)
 			informacion = {

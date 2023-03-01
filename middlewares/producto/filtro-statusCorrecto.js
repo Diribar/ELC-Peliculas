@@ -16,7 +16,6 @@ module.exports = async (req, res, next) => {
 	const statusActual = status_registro.find((n) => n.id == registro.status_registro_id);
 
 	// Status Esperado
-	// console.log(17, req.baseUrl, req.path);
 	(() => {
 		const path = req.path;
 		statusEsperados_id =

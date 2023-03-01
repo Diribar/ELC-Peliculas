@@ -273,8 +273,10 @@ module.exports = {
 				if (coleccion.parts) {
 					// Variables para colecciones
 					let anos_estreno = coleccion.parts.map((n) => (n.release_date ? n.release_date : "-"));
-					let ano_estreno = anos_estreno.reduce((a, b) => ((a < b && a != "-") || b == "-" ? a : b));
-					let ano_fin = anos_estreno.reduce((a, b) => (a > b  ? a : b));
+					let ano_estreno = anos_estreno.length
+						? anos_estreno.reduce((a, b) => ((a < b && a != "-") || b == "-" ? a : b))
+						: "-";
+					let ano_fin = anos_estreno.length ? anos_estreno.reduce((a, b) => (a > b ? a : b)) : "-";
 					let capitulosID_TMDB = coleccion.parts.map((n) => n.id);
 					// Agrega información
 					resultados.productos[indice] = {

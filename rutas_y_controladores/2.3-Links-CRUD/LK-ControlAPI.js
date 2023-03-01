@@ -1,6 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
@@ -28,6 +29,10 @@ module.exports = {
 
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
+		let edicion_id = link
+			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
+			: "";
+		
 
 		// Si el link no existía, lo crea
 		if (!link) {
@@ -44,7 +49,10 @@ module.exports = {
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
-		else mensaje = await procsCRUD.guardaActEdicCRUD({original: link, edicion: datos, entidad: "links", userID});
+		else {
+			if (edicion_id) datos.id = edicion_id;
+			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
+		}
 
 		// Fin
 		return res.json(mensaje);
