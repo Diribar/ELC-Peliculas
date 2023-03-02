@@ -17,7 +17,7 @@
 				<% campo = "direccion" %>
 				<!-- Data Entry -->
 				<input name="<%= campo %>" type="text" class="input"
-					value="<%= dataEntry ? dataEntry.direccion : null %>"
+					value="<%= dataEntry ? dataEntry[campo] : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 					autofocus
@@ -44,7 +44,7 @@
 				<% campo = "avatar_url" %>
 				<!-- Data Entry -->
 				<input name="<%= campo %>" type="text" class="input"
-					value="<%= dataEntry ? dataEntry.avatar : null %>"
+					value="<%= dataEntry ? dataEntry[campo] : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 				>
@@ -65,7 +65,7 @@
 			<div class="inputError">
 				<% campo = "contenido" %>
 				<!-- Data Entry -->
-				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
+				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry[campo] : "" %></textarea>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">

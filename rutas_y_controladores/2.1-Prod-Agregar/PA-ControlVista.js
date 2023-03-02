@@ -243,10 +243,16 @@ module.exports = {
 		}
 
 		// EDICION -------------------------------------
-		// Descarga el avatar y lo mueve de 'provisorio' a 'revisar'
-		if (!confirma.avatar) confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-		let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar;
-		comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+		// Acciones para el avatar
+		if (!confirma.avatar) {
+			// Descarga el avatar en la carpeta 'Prods-Revisar'
+			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+			let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar;
+			comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+		}
+		// Mueve el avatar de 'provisorio' a 'revisar'
+		else comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+
 		// Guarda los datos de 'edición'
 		await procsCRUD.guardaActEdicCRUD({
 			original: {...registro},
@@ -400,13 +406,20 @@ module.exports = {
 		}
 		// Si hay errores de validación, redirecciona
 		if (errores.hay) return res.redirect(req.path.slice(1));
-		// Si NO hay errores, genera la session para la siguiente instancia
-		let datosDuros = await procesos.infoFAparaDD(FA);
-		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		// Completa la cookie datosOriginales con el FA_id
-		let cookie = {...req.cookies.datosOriginales, FA_id};
-		res.cookie("datosOriginales", cookie, {maxAge: unDia});
+		// Si NO hay errores...
+		// 1. Obtiene los datos procesados
+		let datos = await procesos.infoFAparaDD(FA);
+		datos.FA_id = FA_id;
+		// 1. Descarga la imagen
+		datos.avatar = Date.now() + path.extname(FA.avatar_url);
+		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
+		await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
+		// 2. Genera la session para la siguiente instancia
+		req.session.datosDuros = datos;
+		res.cookie("datosDuros", datos, {maxAge: unDia});
+		// 3. Actualiza la cookie 'datosOriginales'
+		res.cookie("datosOriginales", datos, {maxAge: unDia});
+
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
 	},

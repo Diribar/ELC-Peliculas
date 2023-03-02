@@ -395,8 +395,7 @@ module.exports = {
 		// Convierte en array
 		let contenidos = typeof texto == "string" ? texto.split("\n") : texto;
 		// Limpia espacios innecesarios
-		// for (let contenido of contenidos) contenido = contenido.trim();
-		for (let i = 0; i < contenidos.length; i++) contenidos[i].trim();
+		for (let contenido of contenidos) contenido = contenido.trim();
 
 		// Arma el objeto literal
 		let resultado = {};
@@ -420,11 +419,13 @@ module.exports = {
 		if (indice("Música") > 0) resultado.musica = contenidos[indice("Música") + 1];
 		if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1];
 		if (indice("Productora") > 0) resultado.produccion = contenidos[indice("Productora") + 1];
+		else if (indice("Compañías") > 0) resultado.produccion = contenidos[indice("Compañías") + 1];
 		if (indice("Sinopsis") > 0) {
 			let aux = contenidos[contenidos.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
+		// Fin
 		return resultado;
 	},
 	// ControllerVista (copiarFA_Guardar)
