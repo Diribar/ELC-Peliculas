@@ -61,19 +61,20 @@ module.exports = {
 		// El link existe y tiene un status 'estable'
 		if (original.status_registro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
-		// Más variables
+		// Variables de status
 		const creado = original.status_registro.creado;
 		const creadoAprob = original.status_registro.creado_aprob;
 		const inactivar = original.status_registro.inactivar;
 		const recuperar = original.status_registro.recuperar;
-
+		
+		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_analizada_en = ahora;
 		const status_registro_id = aprob ? aprobado_id : inactivo_id;
 		const decisAprob = !creadoAprob ? (aprob && (creado || recuperar)) || (!aprob && inactivar) : "";
+		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
 		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en, captura_activa: false};
@@ -105,7 +106,8 @@ module.exports = {
 				status_final_id: status_registro_id,
 				aprobado: prodAprob,
 			};
-			if (!aprob) {
+			// Agrega info si se rechaza el link desde 'creado' o 'recuperar'
+			if (!aprob && !inactivar) {
 				datosHist.motivo_id = motivo_id;
 				datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
