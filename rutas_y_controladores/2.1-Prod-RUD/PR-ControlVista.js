@@ -40,23 +40,17 @@ module.exports = {
 		// 7. Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
-			let edicSession = (() => {
-				// Función
-				let verificaReq = (dato) => {
-					return req[dato] && req[dato].entidad == entidad && req[dato].id == id;
-				};
-				// Obtiene la información
-				let resultado = verificaReq("session.edicProd")
-					? req.session.edicProd
-					: verificaReq("cookies.edicProd")
-					? req.cookies.edicProd
-					: "";
-				// Borra 'session' y 'cookie'
-				req.session.edicProd = "";
-				res.clearCookie("edicProd");
-				// Fin
-				return resultado;
-			})();
+			let edicSession;
+			// Session
+			if (req.session.edicProd) {
+				if (req.session.edicProd.entidad == entidad && req.session.edicProd.id == id) edicSession = req.session.edicProd;
+				else delete req.session.edicProd;
+			}
+			// Cookies
+			if (req.cookies.edicProd && !edicSession) {
+				if (req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id) edicSession = req.cookies.edicProd;
+				else res.clearCookie("edicProd");
+			}
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicSession};
 			// Datos Duros - Campos Input
@@ -100,10 +94,11 @@ module.exports = {
 	},
 	prodEdic_Guardar: async (req, res) => {
 		// Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario.id;
-		let revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const entidad = req.query.entidad;
+		const id = req.query.id;
+		const userID = req.session.usuario.id;
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const origen = req.query.origen;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -140,20 +135,28 @@ module.exports = {
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length) {
+				// Completa los datos a guardar
 				prodComb.alta_analizada_por_id = userID;
 				prodComb.alta_analizada_en = comp.ahora();
+				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
+				// Se fija si corresponde cambiar el status
 				await procsCRUD.posibleAprobado(entidad, prodComb);
-				let origen = req.query.origen;
-				if (origen) return res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen);
+				// Limpia el valor de la edicion, para que no se recargue el url
+				edicion = null;
 			} else {
-				// 2. Guarda o actualiza la edición
+				// Combina la información
 				edicion = {...edicion, ...req.body};
-				await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
+				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
+				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
 		}
 
 		// Fin
-		return res.redirect(req.originalUrl);
+		return edicion
+			? res.redirect(req.originalUrl) // Recarga la vista
+			: origen && origen == "TE"
+			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresar a Revisión
+			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
 	},
 };

@@ -78,6 +78,7 @@ window.addEventListener("load", async () => {
 				let alerta = document.querySelector("#cartel #alerta");
 				let check = document.querySelector("#cartel #check");
 				let mensajes = document.querySelector("#cartel ul#mensajes");
+				mensajes.style.listStyle ="none"
 				let flechas = document.querySelector("#cartel #flechasCartel");
 
 				// Formatos

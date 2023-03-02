@@ -96,7 +96,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad)
+		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		let camposNull;
 
 		// Quita la info que no agrega valor
@@ -125,7 +125,7 @@ module.exports = {
 		}
 
 		// Fin
-		return edicion ? "Edición guardada" : "Edición sin novedades respecto al original";
+		return edicion;
 	},
 	// Avatar
 	obtieneAvatarOrigEdic: (original, edicion) => {
@@ -292,7 +292,7 @@ module.exports = {
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	posibleAprobado: async function (entidad, original) {
-		let statusAprob = false;
+		let statusAprob = original.status_registro && original.status_registro.aprobado;
 		// - Averigua si el registro está en un status previo a 'aprobado'
 		if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 			// Averigua si hay errores
