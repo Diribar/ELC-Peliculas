@@ -34,9 +34,9 @@ window.addEventListener("load", async () => {
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 		esImagen: true,
 		// Botones
-		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activarVersion"),
+		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
 		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
-		botonEliminar: document.querySelector("#cuerpo .flechas #eliminar"),
+		botonesEliminar: document.querySelectorAll("#cuerpo .flechas .elimina"),
 		botones: {
 			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
 			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
@@ -121,11 +121,11 @@ window.addEventListener("load", async () => {
 			// Acciones sobre la edición guardada
 			if (version.edicG_existe) {
 				v.botonesActivarVersion[1].classList.remove("inactivoVersion");
-				if (!version.origPendAprobar) v.botonEliminar.classList.remove("inactivoVersion");
-				else v.botonEliminar.classList.add("inactivoVersion");
+				if (!version.origPendAprobar) v.botonesEliminar[1].classList.remove("inactivoVersion");
+				else v.botonesEliminar[1].classList.add("inactivoVersion");
 			} else {
 				v.botonesActivarVersion[1].classList.add("inactivoVersion");
-				v.botonEliminar.classList.add("inactivoVersion");
+				v.botonesEliminar[1].classList.add("inactivoVersion");
 			}
 			// Averiguaciones sobre la edición nueva
 			// 1. Averigua si hay errores
@@ -135,9 +135,10 @@ window.addEventListener("load", async () => {
 			// 2. Averigua si es igual a la edicion
 			let sonIguales = true;
 			for (let campo of v.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
+
 			// Si se cumple alguna de las anteriores -> inactiva
-			// Else -> activa
 			if (hayErrores || sonIguales) v.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
+			// Else -> activa
 			else v.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
 			// Fin
 			return;
@@ -336,26 +337,30 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo, impide el 'submit'
 		if (v.botonGuardar.className.includes("inactivo")) e.preventDefault();
 	});
-	// Botones - 3. Elimina la edición guardada
-	v.botonEliminar.addEventListener("click", () => {
-		// Si está inactivo aborta la operación
-		if (botonEliminar.className.includes("inactivo")) return;
-		// Elimina los datos de edicG en la BD
-		fetch("/producto/api/edicion/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID);
-		// Actualiza los datos de edicG con los originales
-		version.edicG = {...version.orig};
-		// Actualiza el avatar de edicG
-		v.imgsAvatar[1].src = v.imgsAvatar[2].src;
-		// Si corresponde, actualiza el avatar de edicN
-		if (!v.inputAvatarEdicN.value && v.esImagen) {
-			version.edicN.avatar = version.orig.avatar;
-			v.imgsAvatar[0].src = v.imgsAvatar[2].src;
-		}
-		// Avisa que ya no existe la edicG
-		version.edicG_existe = false;
-		// Tareas finales
-		FN.accionesPorCambioDeVersion();
-		FN.actualizaBotones();
+	// Botones - 3. Elimina la edición
+	v.botonesEliminar.forEach((boton, indice) => {
+		boton.addEventListener("click", () => {
+			// Si está inactivo aborta la operación
+			if (boton.className.includes("inactivo")) return;
+			// Elimina los datos de edicG en la BD
+			indice
+				? fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID)
+				: fetch("/producto/api/edicion-nueva/eliminar");
+				// Actualiza los datos de edición
+				version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
+			// Actualiza el avatar de la edición
+			v.imgsAvatar[indice].src = v.imgsAvatar[indice + 1].src;
+			// Si corresponde, actualiza el avatar de edicN
+			if (indice && !v.inputAvatarEdicN.value && v.esImagen) {
+				version.edicN.avatar = version.orig.avatar;
+				v.imgsAvatar[0].src = v.imgsAvatar[2].src;
+			}
+			// Avisa que ya no existe la edicG
+			if (indice) version.edicG_existe = false;
+			// Tareas finales
+			FN.accionesPorCambioDeVersion();
+			FN.actualizaBotones();
+		});
 	});
 
 	// Startup
@@ -371,10 +376,8 @@ let versiones = async (rutaVersiones) => {
 	// Procesa la versión de edición guardada
 	let edicG_existe = !!edicG.id;
 	edicG = {...orig, ...edicG};
-	// Obtiene la versión de edición nueva
-	let edicN = {...edicG};
 	// Averigua si el original está pendiente de ser aprobado
 	let origPendAprobar = orig.status_registro.gr_creado;
 	// Fin
-	return {orig, edicG, edicN, edicG_existe, origPendAprobar};
+	return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
 };
