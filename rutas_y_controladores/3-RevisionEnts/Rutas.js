@@ -32,7 +32,7 @@ router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", API.edicAprobRech);
 
 // Links
-router.get("/api/link/alta", API.linkAltaBaja);
+router.get("/api/link/alta-baja", API.linkAltaBaja);
 router.get("/api/link/eliminar", API.linkAltaBaja);
 router.get("/api/link/edicion", API.edicAprobRech);
 
