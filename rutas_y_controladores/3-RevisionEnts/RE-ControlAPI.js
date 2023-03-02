@@ -78,7 +78,7 @@ module.exports = {
 
 		// Arma los datos
 		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en};
-		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
+		if (creado) datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
 		if (!aprob) {
 			datos.sugerido_por_id = revID;
 			datos.sugerido_en = alta_analizada_en;
