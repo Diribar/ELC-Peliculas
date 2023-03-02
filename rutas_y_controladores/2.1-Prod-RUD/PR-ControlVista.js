@@ -86,7 +86,7 @@ module.exports = {
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			vista: req.baseUrl + req.path,
-			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
+			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			dataEntry: {},
 			avatarLinksExternos,
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},
@@ -114,7 +114,7 @@ module.exports = {
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
-		let prodComb = {...original, ...edicion, ...req.body, id}; 
+		let prodComb = {...original, ...edicion, ...req.body, id};
 		prodComb.publico = revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
@@ -122,7 +122,7 @@ module.exports = {
 		if (req.file) {
 			// Si no hay errores, actualiza el archivo avatar
 			if (!errores.hay) {
-				if (actualizaOrig){
+				if (actualizaOrig) {
 					// Mueve el archivo de la edición para reemplazar el original
 					comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Final");
 					// Elimina el anterior archivo de imagen original
@@ -163,11 +163,10 @@ module.exports = {
 		}
 
 		// Fin
-		return res.send(edicion)
 		return edicion
 			? res.redirect(req.originalUrl) // Recarga la vista
 			: origen && origen == "TE"
-			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresar a Revisión
+			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresa a Revisión
 			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
 	},
 };
