@@ -58,6 +58,14 @@ module.exports = {
 		// Enviar los datos
 		return res.json([prodOrig, prodEdic]);
 	},
+	eliminaEdicN: async (req, res) => {
+		// Elimina Session y Cookies
+		if (req.session.edicProd) delete req.session.edicProd;
+		if (req.cookies.edicProd) res.clearCookie("edicProd");
+
+		// Terminar
+		return res.json();
+	},
 	eliminaEdicG: async (req, res) => {
 		// Obtiene los datos identificatorios del producto
 		let producto = req.query.entidad;

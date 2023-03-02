@@ -30,7 +30,8 @@ router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
 router.get("/api/edicion/valida", API.validaEdicion);
 router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesProd);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
-router.get("/api/edicion/eliminar", API.eliminaEdicG);
+router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
+router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
 // Producto
