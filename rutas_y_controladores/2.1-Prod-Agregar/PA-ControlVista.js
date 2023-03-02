@@ -119,8 +119,8 @@ module.exports = {
 			return res.redirect(req.path.slice(1));
 		} else delete req.session.erroresDD;
 		// Guarda el data entry en session y cookie de Datos Originales
-		if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
-			let fuente = datosDuros.fuente == "IM" ? "IM" : "FA";
+		if (datosDuros.fuente == "IM") {
+			let fuente = "IM" 
 			let sessionCookie = req.session[fuente] ? req.session[fuente] : req.cookies[fuente];
 			let {nombre_castellano, ano_estreno} = datosDuros;
 			sessionCookie = {...sessionCookie, nombre_castellano, ano_estreno};
@@ -414,6 +414,7 @@ module.exports = {
 		datos.avatar = Date.now() + path.extname(FA.avatar_url);
 		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
 		await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
+		delete datos.avatar_url // Es necesario porque no se necesita, y es la única instancia donde hacerlo sin equivocarse
 		// 2. Genera la session para la siguiente instancia
 		req.session.datosDuros = datos;
 		res.cookie("datosDuros", datos, {maxAge: unDia});

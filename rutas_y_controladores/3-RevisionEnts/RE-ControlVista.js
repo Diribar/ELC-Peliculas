@@ -64,17 +64,9 @@ module.exports = {
 		let include = ["status_registro"];
 		if (entidad == "colecciones") include.push("capitulos");
 		// Detecta si el registro no está en status creado
-		let prodOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		// Le agrega datos de la edición cuando no proviene de TMDB
-		if (prodOrig.fuente != "TMDB") {
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-			let prodEdic = await BD_genericas.obtienePorCampos("prods_edicion", {[campo_id]: id});
-			prodEdic = procsCRUD.quitaCamposSinContenido(prodEdic);
-			prodOrig = {...prodOrig, ...prodEdic, id};
-		}
-		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// 5. Obtiene avatar original
-		let imgDerPers = prodOrig.avatar;
+		let imgDerPers = original.avatar;
 		imgDerPers = imgDerPers
 			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
@@ -82,27 +74,27 @@ module.exports = {
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtiene los países
-		let paisesNombre = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
+		let paisesNombre = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(prodOrig, paisesNombre);
+		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(original, paisesNombre);
 		let motivos = altas_motivos_rech.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
-		//return res.send(prodOrig)
+		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
 			id,
-			prodOrig,
+			prodOrig: original,
 			imgDerPers,
 			bloqueIzq,
 			bloqueDer,
 			motivos,
 			prodNombre,
-			title: prodOrig.nombre_castellano,
+			title: original.nombre_castellano,
 			// urlActual: req.session.urlActual,
 			rutaSalir,
 			urlActual: req.session.urlActual,
