@@ -27,7 +27,7 @@ module.exports = {
 			for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
 		})();
 
-		// 2. Quita de edición las coincidencias con el original
+		// 2. Quita de edición las coincidencias con el original y los campos 'null'
 		for (let campo in edicion) {
 			// Corrige errores de data-entry
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
