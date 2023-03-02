@@ -40,23 +40,17 @@ module.exports = {
 		// 7. Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
-			let edicSession = (() => {
-				// Función
-				let verificaReq = (dato) => {
-					return req[dato] && req[dato].entidad == entidad && req[dato].id == id;
-				};
-				// Obtiene la información
-				let resultado = verificaReq("session.edicProd")
-					? req.session.edicProd
-					: verificaReq("cookies.edicProd")
-					? req.cookies.edicProd
-					: "";
-				// Borra 'session' y 'cookie'
-				req.session.edicProd = "";
-				res.clearCookie("edicProd");
-				// Fin
-				return resultado;
-			})();
+			let edicSession;
+			// Session
+			if (req.session.edicProd) {
+				if (req.session.edicProd.entidad == entidad && req.session.edicProd.id == id) edicSession = req.session.edicProd;
+				else delete req.session.edicProd;
+			}
+			// Cookies
+			if (req.cookies.edicProd && !edicSession) {
+				if (req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id) edicSession = req.cookies.edicProd;
+				else res.clearCookie("edicProd");
+			}
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicSession};
 			// Datos Duros - Campos Input
