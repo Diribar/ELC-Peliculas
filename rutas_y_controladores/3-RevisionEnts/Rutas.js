@@ -24,7 +24,7 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, existeEdicion, permUserReg];
 
 // APIs -------------------------------------------------
 // Producto y RCLV
