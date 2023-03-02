@@ -351,7 +351,7 @@ module.exports = {
 			// 1. Elimina el archivo de avatar de la edicion
 			if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
 
-			// 2. Elimina las ediciones que tenga
+			// 2. Elimina las ediciones de producto que tenga
 			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
 
 			// 3. Actualiza los RCLV, en el campo 'prods_aprob'

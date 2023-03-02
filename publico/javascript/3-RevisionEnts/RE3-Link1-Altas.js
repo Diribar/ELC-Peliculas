@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	let prodID = new URL(location.href).searchParams.get("id");
 	let iconosOK = document.querySelectorAll(".yaExistentes .in");
 	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
-	let ruta = "/revision/api/link/alta/";
+	let ruta = "/revision/api/link/alta-baja/";
 	let condiciones = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 	// Decisión tomada

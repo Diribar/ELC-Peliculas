@@ -30,7 +30,7 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		let statusAprob 
+		let statusAprob;
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech({
 			entidad,
 			original,
@@ -47,67 +47,81 @@ module.exports = {
 	// Links
 	linkAltaBaja: async (req, res) => {
 		// Variables
-		const {url} = req.query;
-		const prodAprob = req.query.aprob == "SI";
-		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
-		let datos, motivo, motivo_id;
+		const {entidad: prodEntidad, id: prodID, url, aprob, motivo_id} = req.query;
+		const entidad = "links";
+
+		// PROBLEMAS
 		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url}, ["status_registro", "tipo"]);
+		let original = await BD_genericas.obtienePorCamposConInclude(entidad, {url}, ["status_registro", "tipo"]);
+		const id = original.id;
 		// El link no existe en la BD
-		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
-		// El link existe y no tiene status 'creado' o 'provisorio'
-		const creado = link.status_registro.creado;
-		const inactivar = link.status_registro.inactivar;
-		const recuperar = link.status_registro.recuperar;
-		const gr_provisorios = creado || inactivar || recuperar;
-		if (!gr_provisorios) return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
+		// El link existe y tiene un status 'estable'
+		if (original.status_registro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
-		// Decisión sobre el sugerido
-		const decisAprob = (prodAprob && (creado || recuperar)) || (!prodAprob && inactivar);
+		// Más variables
+		const creado = original.status_registro.creado;
+		const creadoAprob = original.status_registro.creado_aprob;
+		const inactivar = original.status_registro.inactivar;
+		const recuperar = original.status_registro.recuperar;
 
-		// USUARIO - Actualización de links_aprob / links_rech
-		let campo = "links_" + (decisAprob ? "aprob" : "rech");
-		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
-		// USUARIO - Verifica la penalidad cuando se rechaza el link sugerido
-		if (!decisAprob && (creado || recuperar)) {
-			motivo_id = req.query.motivo_id;
-			motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
-			comp.usuarioPenalizAcum(sugerido_por_id, motivo, "links");
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
+		const revID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		const alta_analizada_en = ahora;
+		const status_registro_id = aprob ? aprobado_id : inactivo_id;
+		const decisAprob = !creadoAprob ? (aprob && (creado || recuperar)) || (!aprob && inactivar) : "";
+
+		// Arma los datos
+		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en, captura_activa: false};
+		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
+		if (!aprob) {
+			datos.sugerido_por_id = revID;
+			datos.sugerido_en = alta_analizada_en;
+			datos.motivo_id = motivo_id;
+		}
+		// return res.json({});
+
+		// CONSECUENCIAS
+		// 1. Actualiza el status en el registro original
+		await BD_genericas.actualizaPorId(entidad, id, datos);
+
+		// Acciones si el link está en un status distinto a 'creadoAprob'
+		if (!creadoAprob) {
+			// 2. Agrega un registro en el historial_cambios_de_status
+			let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
+			let sugerido_en = creado ? original.creado_en : original.sugerido_en;
+			let datosHist = {
+				entidad_id: id,
+				entidad,
+				sugerido_por_id,
+				sugerido_en,
+				analizado_por_id: revID,
+				analizado_en: ahora,
+				status_original_id: original.status_registro_id,
+				status_final_id: status_registro_id,
+				aprobado: prodAprob,
+			};
+			if (!aprob) {
+				datosHist.motivo_id = motivo_id;
+				datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+				datosHist.duracion = Number(datosHist.motivo.duracion);
+			}
+			// Agrega el registro
+			BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
+
+			// 3. Aumenta el valor de regs_aprob/rech en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
+
+			// 4. Penaliza al usuario si corresponde
+			if (datosHist.duracion) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
 		}
 
-		// LINK - Pasa a status aprobado/rechazado
-		datos = {status_registro_id: prodAprob ? aprobado_id : inactivo_id};
-		if (creado) {
-			// Datos para el link
-			datos.alta_analizada_por_id = userID;
-			datos.alta_analizada_en = ahora;
-			datos.lead_time_creacion = comp.obtieneLeadTime(link.creado_en, ahora);
-			if (!prodAprob) datos.motivo_id = motivo_id;
-		}
-		await BD_genericas.actualizaPorId("links", link.id, datos);
-		link = {...link, ...datos};
-		procsCRUD.cambioDeStatus("links", link);
-
-		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
-		let duracion = !prodAprob ? motivo.duracion : 0;
-		datos = {
-			entidad_id: link.id,
-			entidad: "links",
-			motivo_id,
-			sugerido_por_id,
-			sugerido_en: creado ? link.creado_en : link.sugerido_en,
-			analizado_por_id: userID,
-			analizado_en: ahora,
-			status_original_id: link.status_registro_id,
-			status_final_id: prodAprob ? aprobado_id : inactivo_id,
-			aprobado: prodAprob,
-			duracion,
-		};
-		BD_genericas.agregaRegistro("historial_cambios_de_status", datos);
+		// 5. Actualiza los productos, en los campos 'links_gratuitos' y 'links_general'
+		procsCRUD.cambioDeStatus(entidad, {...original, status_registro_id});
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
