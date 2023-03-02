@@ -145,13 +145,17 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Completa los datos
-		datos = {...datos, status_registro_id, alta_analizada_por_id: revID, alta_analizada_en, captura_activa: false};
+		datos = {
+			...datos,
+			status_registro_id,
+			alta_analizada_por_id: revID,
+			alta_analizada_en,
+			sugerido_por_id: revID,
+			sugerido_en: alta_analizada_en,
+		};
+
 		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
-		if (rechazado) {
-			datos.sugerido_por_id = revID;
-			datos.sugerido_en = alta_analizada_en;
-			datos.motivo_id = motivo_id;
-		}
+		if (rechazado) datos.motivo_id = motivo_id;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original

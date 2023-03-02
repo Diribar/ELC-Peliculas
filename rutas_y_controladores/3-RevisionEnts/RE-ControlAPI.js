@@ -66,7 +66,7 @@ module.exports = {
 		const creadoAprob = original.status_registro.creado_aprob;
 		const inactivar = original.status_registro.inactivar;
 		const recuperar = original.status_registro.recuperar;
-		
+
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
@@ -77,13 +77,15 @@ module.exports = {
 		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
-		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en};
+		let datos = {
+			status_registro_id,
+			alta_analizada_por_id: revID,
+			alta_analizada_en,
+			sugerido_por_id: revID,
+			sugerido_en: alta_analizada_en,
+		};
 		if (creado) datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
-		if (!aprob) {
-			datos.sugerido_por_id = revID;
-			datos.sugerido_en = alta_analizada_en;
-			datos.motivo_id = motivo_id;
-		}
+		if (!aprob) datos.motivo_id = motivo_id;
 		// return res.json({});
 
 		// CONSECUENCIAS
@@ -104,7 +106,7 @@ module.exports = {
 				analizado_en: ahora,
 				status_original_id: original.status_registro_id,
 				status_final_id: status_registro_id,
-				aprobado: prodAprob,
+				aprobado: decisAprob,
 			};
 			// Agrega info si se rechaza el link desde 'creado' o 'recuperar'
 			if (!aprob && !inactivar) {
@@ -115,7 +117,7 @@ module.exports = {
 			// Agrega el registro
 			BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
-			// 3. Aumenta el valor de regs_aprob/rech en el registro del usuario
+			// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
 
 			// 4. Penaliza al usuario si corresponde
