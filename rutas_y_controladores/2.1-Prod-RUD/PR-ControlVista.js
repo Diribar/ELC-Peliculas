@@ -86,7 +86,7 @@ module.exports = {
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			vista: req.baseUrl + req.path,
-			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
+			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			dataEntry: {},
 			avatarLinksExternos,
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},
@@ -97,13 +97,14 @@ module.exports = {
 		const entidad = req.query.entidad;
 		const id = req.query.id;
 		const userID = req.session.usuario.id;
-		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 		const origen = req.query.origen;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const actualizaOrig = revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length;
 
-		// Adecuaciones para el avatar
+		// Si recibimos un avatar, se completa la información
 		if (req.file) {
 			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
@@ -111,30 +112,39 @@ module.exports = {
 		}
 
 		// Averigua si hay errores de validación
-		let prodComb = {...original, ...edicion, ...req.body, id}; // se debe agregar el id del original, para verificar que no esté repetido
+		// 1. Se debe agregar el id del original, para verificar que no esté repetido
+		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
+		let prodComb = {...original, ...edicion, ...req.body, id};
 		prodComb.publico = revisor_ents;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
-		// Acciones si recibimos un archivo avatar
+		// Acciones sobre el archivo avatar, si recibimos uno
 		if (req.file) {
 			// Si no hay errores, actualiza el archivo avatar
 			if (!errores.hay) {
-				// Mueve el archivo actual a su ubicación para ser revisado
-				comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
-				// Elimina el anterior archivo de imagen
-				if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", edicion.avatar);
+				if (actualizaOrig) {
+					// Mueve el archivo de la edición para reemplazar el original
+					comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Final");
+					// Elimina el anterior archivo de imagen original
+					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/", original.avatar);
+				} else {
+					// Mueve el archivo de la edición para su revisión
+					comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+					// Elimina el anterior archivo de imagen editada
+					if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", edicion.avatar);
+				}
 			}
-			// Si hay errores, borra el archivo avatar
+			// Si hay errores, borra el archivo avatar editado
 			else {
 				comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", req.file.filename);
-				return res.send([{errores}, {...prodComb, entidad}]);
+				// return res.send([{errores}, {...prodComb, entidad}]);
 			}
 		}
 
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Actualiza el original
-			if (revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length) {
+			if (actualizaOrig) {
 				// Completa los datos a guardar
 				prodComb.alta_analizada_por_id = userID;
 				prodComb.alta_analizada_en = comp.ahora();
@@ -156,7 +166,7 @@ module.exports = {
 		return edicion
 			? res.redirect(req.originalUrl) // Recarga la vista
 			: origen && origen == "TE"
-			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresar a Revisión
+			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresa a Revisión
 			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
 	},
 };

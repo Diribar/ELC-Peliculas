@@ -13,24 +13,23 @@ module.exports = {
 	// Temas de Entidades
 	obtieneLeadTime: (desdeOrig, hastaOrig) => {
 		// Variables
-		let desdeFinal, hastaFinal;
-		// Corregir sábado
-		if (desdeOrig.getDay() == 6) desdeFinal = (parseInt(desdeOrig / unDia) + 2) * unDia;
-		else if (desdeOrig.getDay() == 0) desdeFinal = (parseInt(desdeOrig / unDia) + 1) * unDia;
-		// Corregir domingo
-		if (hastaOrig.getDay() == 6) hastaFinal = (parseInt(hastaOrig / unDia) - 0) * unDia;
-		else if (hastaOrig.getDay() == 0) hastaFinal = (parseInt(hastaOrig / unDia) - 1) * unDia;
-		// Calcular la cantidad de horas
+		let desdeFinal = desdeOrig;
+		let hastaFinal = hastaOrig;
+		// Pasa el 'desde' del sábado/domingo al lunes siguiente
+		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
+		// Pasa el 'hasta' del sábado/domingo al viernes anterior
+		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
+		// Calcula la cantidad de horas
 		let diferencia = hastaFinal - desdeFinal;
 		if (diferencia < 0) diferencia = 0;
 		let horasDif = diferencia / unaHora;
-		// Averigua la cantidad de horas por fines de semana
+		// Averigua la cantidad de fines de semana
 		let semanas = parseInt(horasDif / (7 * 24));
-		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desdeOrig.getDay() >= hastaOrig.getDay() ? 2 * 24 : 0;
-		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
+		horasDif -= semanas * 2 * 24;
 		// Resultado
-		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
+		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
 		leadTime = Math.min(96, leadTime);
 		// Fin
 		return leadTime;

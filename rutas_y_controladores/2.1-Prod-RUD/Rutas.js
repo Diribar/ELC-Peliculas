@@ -20,7 +20,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const edicion = [entValida, IDvalido, existeEdicion, usAltaTerm, usPenalizaciones, usAptoInput, permUserReg, capturaActivar];
+const edicion = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, existeEdicion, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
