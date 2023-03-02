@@ -393,7 +393,7 @@ module.exports = {
 	// Función validar (FA)
 	contenidoFA: (texto) => {
 		// Convierte en array
-		let contenidos = texto.split("\n");
+		let contenidos = typeof texto == "string" ? texto.split("\n") : texto;
 		// Limpia espacios innecesarios
 		// for (let contenido of contenidos) contenido = contenido.trim();
 		for (let i = 0; i < contenidos.length; i++) contenidos[i].trim();
@@ -403,7 +403,7 @@ module.exports = {
 		let indice = (queBuscar) => {
 			return contenidos.findIndex((n) => n.startsWith(queBuscar));
 		};
-		if (indice("Ficha")>0) resultado.nombre_castellano = eliminaParentesis(contenidos[indice("Ficha") - 1]);
+		if (indice("Ficha") > 0) resultado.nombre_castellano = eliminaParentesis(contenidos[indice("Ficha") - 1]);
 		if (indice("Título original") > 0)
 			resultado.nombre_original = eliminaParentesis(contenidos[indice("Título original") + 1]);
 		if (indice("Año") > 0) resultado.ano_estreno = parseInt(contenidos[indice("Año") + 1]);
