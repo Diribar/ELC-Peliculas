@@ -77,7 +77,7 @@ module.exports = {
 		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
-		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en, captura_activa: false};
+		let datos = {status_registro_id, alta_analizada_por_id: revID, alta_analizada_en};
 		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
 		if (!aprob) {
 			datos.sugerido_por_id = revID;
