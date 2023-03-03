@@ -431,14 +431,21 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerAPI (obtieneFA_id)
 	obtieneFA_id: (url) => {
-		// Output para FE y BE
-		let aux = url.indexOf("www.filmaffinity.com/");
-		url = url.slice(aux + 21);
-		aux = url.indexOf("/film");
-		url = url.slice(aux + 5);
-		aux = url.indexOf(".html");
-		let FA_id = url.slice(0, aux);
-		return FA_id;
+		// Protección
+		if (!url) return;
+
+		// Quita "/film" y lo previo
+		indice = url.indexOf("/film");
+		if (indice) url = url.slice(indice + 5);
+		else return;
+
+		// Quita la terminación
+		indice = url.indexOf(".html");
+		if (indice) url = url.slice(0, indice);
+		else return
+
+		// Fin
+		return url;
 	},
 };
 

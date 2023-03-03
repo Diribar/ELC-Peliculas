@@ -12,9 +12,9 @@
 		<!-- Datos a completar -->
 		<section id="datos">
 			<% let campo; let display = true %>
-			<h3>Ingresá la dirección de la página</h3>
+			<h3>Ingresá la dirección url de la página</h3>
 			<div class="inputError">
-				<% campo = "direccion" %>
+				<% campo = "url" %>
 				<!-- Data Entry -->
 				<input name="<%= campo %>" type="text" class="input"
 					value="<%= dataEntry ? dataEntry[campo] : null %>"

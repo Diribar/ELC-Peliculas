@@ -13,26 +13,42 @@ module.exports = async (req, res, next) => {
 	let usuario = req.session.usuario;
 	let informacion;
 
-	// Penalidad acumulada. Debe ser await para que primero se bloquee y después se fije si está bloqueado
+	// Penalidad acumulada. Transforma una penalidad acumulada en penalidad con fecha.
+	// Debe ser await para que primero se bloquee y después se fije si está bloqueado
 	await (async () => {
+		// Variables
 		let datos = {};
-		let penalizac_acum = parseInt(usuario.penalizac_acum);
-		if (penalizac_acum) {
+		let diasPenalizacion = parseInt(usuario.penalizac_acum);
+
+		// Actualiza la penalizacion acumulada
+		datos.penalizac_acum = usuario.penalizac_acum - diasPenalizacion;
+
+		// Si la penalización es de 1 día y es un usuario con buen desempeño, se lo perdona
+		if (diasPenalizacion == 1) {
+			let desempeno = 1 - usuario.edics_rech / (usuario.edics_rech + usuario.edics_aprob);
+			if (desempeno >= 0.9) diasPenalizacion--;
+		}
+
+		if (diasPenalizacion) {
 			// Variables
 			let ahora = comp.ahora().setHours(0, 0, 0);
 			// Agregar valores en datos
 			let penalizadoDesde = Math.max(ahora, usuario.penalizado_hasta);
-			datos.penalizado_hasta = penalizadoDesde + penalizac_acum * unDia;
-			datos.penalizac_acum = usuario.penalizac_acum - penalizac_acum;
+			datos.penalizado_hasta = penalizadoDesde + diasPenalizacion * unDia;
+
 			// Si el usuario no tenía una penalización vigente, se actualiza la fecha 'penalizado_en'
 			if (usuario.penalizado_hasta <= ahora) datos.penalizado_en = ahora;
 			// Activa el cartel de "Fin de la Penalización", para cuando ésta termine
 			datos.cartel_fin_penaliz = true;
 		}
+
 		// Actualiza el usuario
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, datos);
 		usuario = {...usuario, ...datos};
 		req.session.usuario = usuario;
+
+		// Fin
+		return;
 	})();
 
 	// VERIFICACIÓN 1: Se fija si el usuario está penalizado
@@ -59,10 +75,7 @@ module.exports = async (req, res, next) => {
 		// Cartel de "Fin de la Penalización"
 		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
 		informacion = {
-			mensajes: [
-				"La penalización concluyó el día " + fecha + ".",
-				"Ya podés ingresar información en nuestro sistema.",
-			],
+			mensajes: ["La penalización concluyó el día " + fecha + ".", "Ya podés ingresar información en nuestro sistema."],
 			iconos: [vistaEntendido],
 			check: true,
 		};
