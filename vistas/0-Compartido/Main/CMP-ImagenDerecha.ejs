@@ -14,11 +14,12 @@
 			<!-- 3. Imagen Diaria -->
 			<!-- Averigua qué datos usar -->
 			<% let ahora = new Date() %>
-			<% let horalLocal = ahora.getHours() - ahora.getTimezoneOffset() / 60 %>
-			<% let horaLCF = ahora.getHours() + 12 %>
-			<% let imagen = horaLocal < 0 ? "imgDerechaAyer.jpg" : horaLocal > 24 || horaLCF < 24 ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
+			<% let horaLocal = ahora.getHours() %>
+			<% let horaLCF = ahora.getHours() + ahora.getTimezoneOffset() / 60 + 12 %>
+			<% let imgHoy = (horaLocal > 0) && (horaLocal >= 24 || horaLCF < 24)  %>
+			<% let imagen = imgHoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
 			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
-			<% tituloImagen = hoy ? tituloImgDerHoy : tituloImgDerAyer %>
+			<% tituloImagen = imgHoy ? tituloImgDerHoy : tituloImgDerAyer %>
 		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>
