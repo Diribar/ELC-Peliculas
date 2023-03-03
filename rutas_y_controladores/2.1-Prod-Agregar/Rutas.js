@@ -51,7 +51,7 @@ router.post("/palabras-clave", ...dataEntry, vista.palabrasClaveGuardar);
 router.get("/desambiguar", ...dataEntry, vista.desambiguarForm);
 // Comienzo de "prodYaEnBD"
 router.get("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDurosForm);
-router.post("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDurosGuardar);
+router.post("/datos-duros", ...dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDurosGuardar);
 router.get("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsForm);
 router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsGuardar);
 router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirmaForm);
