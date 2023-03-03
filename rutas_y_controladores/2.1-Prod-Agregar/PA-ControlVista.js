@@ -98,15 +98,11 @@ module.exports = {
 		// 1. Obtiene el Data Entry de session y cookies
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		// Actualiza datosDuros con la info ingresada
-		if (req.file) {
-			datosDuros.avatar = req.file.filename;
-			datosDuros.tamano = req.file.size;
-		}
 		datosDuros = {...datosDuros, ...req.body};
-		console.log(datosDuros);
 		// Guarda el data entry en session y cookie
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+		return res.send([req.body,req.file]);
 		// Averigua si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
@@ -115,6 +111,7 @@ module.exports = {
 		if (errores.hay) {
 			// Guarda los errores en 'session' porque pueden ser muy específicos
 			req.session.erroresDD = errores;
+			// Si se ingresó un avatar
 			// Redirecciona
 			return res.redirect(req.path.slice(1));
 		} else delete req.session.erroresDD;
