@@ -32,6 +32,8 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
 			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyUsuario});
 		}
+
+		// Fin
 		return;
 	},
 	// ControlVista: altaMail y olvidoContr
