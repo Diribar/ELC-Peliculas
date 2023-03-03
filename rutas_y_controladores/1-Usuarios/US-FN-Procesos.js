@@ -20,12 +20,17 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
-		let hoy = comp.ahora();
-		let fechaUltimoLogin = usuario.fecha_ultimo_login;
-		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		if (hoy != fechaUltimoLogin) {
+		// Variables
+		const ahoraUTC = comp.ahora().getTime();
+		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zona_horaria;
+		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
+		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10)
+		const fechaUltimoLogin = usuario.fecha_ultimo_login;
+
+		// Acciones si el último login fue anterior a hoy
+		if (hoyUsuario != fechaUltimoLogin) {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoy});
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyUsuario});
 		}
 		return;
 	},
