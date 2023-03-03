@@ -20,12 +20,12 @@ module.exports = {
 	},
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
-		let hoyAhora = comp.ahora();
+		let hoy = comp.ahora();
 		let fechaUltimoLogin = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		if (hoyAhora != fechaUltimoLogin) {
+		if (hoy != fechaUltimoLogin) {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoy});
 		}
 		return;
 	},
@@ -78,9 +78,7 @@ module.exports = {
 				informacion = {
 					mensajes: [
 						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tus datos el " +
-							comp.fechaHorarioTexto(usuario.fecha_revisores) +
-							".",
+						"Nos informaste tus datos el " + comp.fechaHorarioTexto(usuario.fecha_revisores) + ".",
 						"Tenés que esperar a que el equipo de Revisores haga la validación.",
 						"Luego de la validación, recibirás un mail de feedback.",
 						"En caso de estar aprobado, podrás ingresarnos información.",
@@ -115,7 +113,7 @@ module.exports = {
 					trabajando: true,
 				};
 		}
-		// Fin 
-		return informacion
+		// Fin
+		return informacion;
 	},
 };
