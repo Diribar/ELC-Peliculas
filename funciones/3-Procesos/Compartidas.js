@@ -407,14 +407,16 @@ module.exports = {
 	},
 	tareasDiarias: async function () {
 		// Variables
-		let rutaNombre = path.join(__dirname, "fecha.json");
-		let info = this.averiguaSiExisteUnArchivo(rutaNombre) ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
-		let fechaGuardada = info.fechaLCF;
-		let fechaReal;
+		const rutaNombre = path.join(__dirname, "fecha.json");
+		const existe = this.averiguaSiExisteUnArchivo(rutaNombre);
+		const info = existe ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
+		const fechaGuardada = existe ? info.fechaLCF : null;
+		tituloImgDerAyer = existe ? info.tituloImgDerAyer : null;
+		tituloImgDerHoy = existe ? info.tituloImgDerHoy : null;
 
 		// Actualiza la fechaReal
 		this.horarioLCF();
-		fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
+		const fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
 
 		// Tareas si cambió la fecha
 		if (fechaReal != fechaGuardada) {
