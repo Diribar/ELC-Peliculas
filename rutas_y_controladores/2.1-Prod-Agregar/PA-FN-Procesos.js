@@ -315,7 +315,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	agregaCapitulosDeTV: async function (datosCol) {
+	agregaCapitulosDeTV:  function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
 		// Fin
@@ -353,14 +353,14 @@ module.exports = {
 
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)
-	infoFAparaDD: async function (datos) {
+	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			let paisNombreToId = async (pais_nombre) => {
+			let paisNombreToId = (pais_nombre) => {
 				// Función para convertir 'string de nombre' en  'string de ID'
 				let resultado = [];
 				if (pais_nombre.length) {
@@ -374,7 +374,7 @@ module.exports = {
 				resultado = resultado.length ? resultado.join(" ") : "";
 				return resultado;
 			};
-			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -442,7 +442,7 @@ module.exports = {
 		// Quita la terminación
 		indice = url.indexOf(".html");
 		if (indice) url = url.slice(0, indice);
-		else return
+		else return;
 
 		// Fin
 		return url;
