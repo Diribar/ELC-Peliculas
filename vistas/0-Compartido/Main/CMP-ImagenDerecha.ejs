@@ -17,9 +17,9 @@
 			<% const horaLocal = ahora.getHours() %>
 			<% const horaLCF = ahora.getHours() + ahora.getTimezoneOffset() / 60 + 12 %>
 			<% const imgHoy = (horaLocal > 0) && (horaLocal >= 24 || horaLCF < 24)  %>
-			<% tituloImagen = imgHoy ? tituloImgDerHoy : tituloImgDerAyer %>
 			<% const imagen = imgHoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
 			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
+			<% tituloImagen = imgHoy ? tituloImgDerHoy : tituloImgDerAyer %>
 		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>
