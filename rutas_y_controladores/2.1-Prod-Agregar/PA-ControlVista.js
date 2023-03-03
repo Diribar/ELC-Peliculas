@@ -59,12 +59,12 @@ module.exports = {
 		const codigo = "datosDuros";
 		// 2. Obtiene el Data Entry de session y cookies
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// Variables
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
-		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Obtiene los errores
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = req.session.erroresDD ? req.session.erroresDD : await valida.datosDuros(camposDD_nombre, datosDuros);
+		// Variables
+		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Obtiene los países
 		let paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
 		let paisesTop5 = datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
@@ -103,14 +103,14 @@ module.exports = {
 			datosDuros.tamano = req.file.size;
 		}
 		datosDuros = {...datosDuros, ...req.body};
+		console.log(datosDuros);
 		// Guarda el data entry en session y cookie
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// Averigua si hay errores de validación
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
-		let camposRevisar = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposRevisar, datosDuros);
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
+		let camposDD_nombre = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
 		// Si hay errores de validación, redirecciona
 		if (errores.hay) {
 			// Guarda los errores en 'session' porque pueden ser muy específicos
@@ -120,14 +120,21 @@ module.exports = {
 		} else delete req.session.erroresDD;
 		// Guarda el data entry en session y cookie de Datos Originales
 		if (datosDuros.fuente == "IM") {
-			let sessionCookie = req.session.IM ? req.session.IM : req.cookies.IM;
+			// 1. Obtiene los datos originales
+			let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
+			// 2. Descarga la imagen
+			let avatar = Date.now() + path.extname(FA.avatar_url);
+			let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
+			await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
+
 			let {nombre_castellano, ano_estreno} = datosDuros;
-			sessionCookie = {...sessionCookie, nombre_castellano, ano_estreno};
-			res.cookie("datosOriginales", sessionCookie, {maxAge: unDia});
+			datosOriginales = {...datosOriginales, nombre_castellano, ano_estreno};
+			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 		}
-		// Guarda el data entry en session y cookie de Datos Adicionales
+		// Guarda el data entry en session y cookie para el siguiente paso
 		req.session.datosAdics = datosDuros;
 		res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-adicionales");
 	},
@@ -178,9 +185,10 @@ module.exports = {
 		let camposDA = variables.camposDA.map((m) => m.nombre);
 		let errores = await valida.datosAdics(camposDA, datosAdics);
 		if (errores.hay) return res.redirect(req.path.slice(1));
-		// Si no hay errores, prepara la info para el siguiente paso
+		// Guarda el data entry en session y cookie para el siguiente paso
 		req.session.confirma = req.session.datosAdics;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// Redirecciona a la siguiente instancia
 		return res.redirect("confirma");
 	},
@@ -402,7 +410,7 @@ module.exports = {
 
 		// Si NO hay errores...
 		// 1. Procesa la información recibida
-		let datos =  procesos.infoFAparaDD(FA);
+		let datos = procesos.infoFAparaDD(FA);
 		datos = {...FA, ...datos};
 		delete datos.url;
 		delete datos.contenido;

@@ -82,7 +82,7 @@ module.exports = {
 		datosDuros.avatar_url = datosDuros.avatar;
 		delete datosDuros.avatar;
 		// Averigua si falta completar algún campo de Datos Duros
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad]);
+		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombres = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombres, datosDuros);
 		// Genera la session y cookie para DatosDuros
@@ -138,9 +138,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguaCantTemps: async (req, res) => {
-		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then(
-			(n) => n.cant_temporadas
-		);
+		let datos = await BD_genericas.obtienePorId("colecciones", req.query.id).then((n) => n.cant_temporadas);
 		return res.json(datos);
 	},
 
