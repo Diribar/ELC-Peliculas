@@ -120,8 +120,7 @@ module.exports = {
 		} else delete req.session.erroresDD;
 		// Guarda el data entry en session y cookie de Datos Originales
 		if (datosDuros.fuente == "IM") {
-			let fuente = "IM" 
-			let sessionCookie = req.session[fuente] ? req.session[fuente] : req.cookies[fuente];
+			let sessionCookie = req.session.IM ? req.session.IM : req.cookies.IM;
 			let {nombre_castellano, ano_estreno} = datosDuros;
 			sessionCookie = {...sessionCookie, nombre_castellano, ano_estreno};
 			res.cookie("datosOriginales", sessionCookie, {maxAge: unDia});
@@ -343,25 +342,23 @@ module.exports = {
 		let IM = {
 			...req.body,
 			...req.query,
-			fuente: "IM",
 			prodNombre: comp.obtieneEntidadNombre(req.body.entidad),
 		};
+		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
 		req.session.IM = IM;
 		res.cookie("IM", IM, {maxAge: unDia});
-		// 2. Averigua si hay errores de validación
+
+		// 2. Si hay errores de validación, redirecciona al Form
 		let errores = await valida.IM(IM);
-		// 3. Si hay errores de validación, redirecciona al Form
-		if (errores.hay) return res.redirect(req.path.slice(1));
-		// Guarda el data entry en session y cookie
-		req.session.IM = IM;
-		res.cookie("IM", req.session.IM, {maxAge: unDia});
-		// Guarda el data entry en datosOriginales
+		if (errores.hay) return res.redirect(req.baseUrl + req.path); // No se puede usar 'req.originalUrl' porque en el query tiene la alusión a FA
+
+		// Guarda en 'cookie' de datosOriginales
 		res.cookie("datosOriginales", IM, {maxAge: unDia});
-		// Averigua cuál es la siguiente instancia
+		// Guarda en 'session' y 'cookie' de la siguiente instancia
 		let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
-		// Genera la session para la siguiente instancia
 		req.session[sigPaso.codigo] = IM;
 		res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
+
 		// Redirecciona a la siguiente instancia
 		return res.redirect(req.baseUrl + sigPaso.url);
 	},
@@ -371,12 +368,7 @@ module.exports = {
 		const codigo = "FA";
 		// 2. Obtiene el Data Entry de session y cookies
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
-		FA.fuente = "FA";
-		req.session.FA = FA;
-		res.cookie("FA", FA, {maxAge: unDia});
-		// 3. Genera la cookie de datosOriginales
-		res.cookie("datosOriginales", FA, {maxAge: unDia});
-		// 5. Render del formulario
+		// 3. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -385,41 +377,48 @@ module.exports = {
 		});
 	},
 	copiarFA_Guardar: async (req, res) => {
-		// 1. Obtiene el Data Entry de session y cookies
+		// 1. Obtiene el Data Entry de session y cookies y actualiza la información
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
-		// Actualiza la información
-		let FA_id = await procesos.obtieneFA_id(req.body.direccion);
-		FA = {...FA, ...req.body, FA_id};
+
 		// Guarda el data entry en session y cookie
+		FA = {...FA, ...req.body};
 		req.session.FA = FA;
 		res.cookie("FA", FA, {maxAge: unDia});
-		// Averigua si hay errores de validación
-		let errores = await valida.FA(FA);
-		if (!errores.direccion) {
+
+		// Si hay errores de validación, redirecciona
+		let errores = valida.FA(FA);
+		if (!errores.url) {
+			// Obtiene el FA_id
+			FA.FA_id = procesos.obtieneFA_id(FA.url);
 			// Averigua si el FA_id ya está en la BD
-			let elc_id = await BD_especificas.obtieneELC_id(FA.entidad, {FA_id});
+			let elc_id = await BD_especificas.obtieneELC_id(FA.entidad, {FA_id: FA.FA_id});
 			if (elc_id) {
-				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
+				errores.url = "Ya la tenemos en nuestra base de datos";
 				errores.elc_id = elc_id;
 				errores.hay = true;
 			}
 		}
-		// Si hay errores de validación, redirecciona
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		if (errores.hay) return res.redirect(req.originalUrl);
+
 		// Si NO hay errores...
-		// 1. Obtiene los datos procesados
-		let datos = await procesos.infoFAparaDD(FA);
-		datos.FA_id = FA_id;
-		// 1. Descarga la imagen
+		// 1. Procesa la información recibida
+		let datos =  procesos.infoFAparaDD(FA);
+		datos = {...FA, ...datos};
+		delete datos.url;
+		delete datos.contenido;
+		// 2. Descarga la imagen
 		datos.avatar = Date.now() + path.extname(FA.avatar_url);
 		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
 		await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
-		delete datos.avatar_url // Es necesario porque no se necesita, y es la única instancia donde hacerlo sin equivocarse
-		// 2. Genera la session para la siguiente instancia
+
+		// 3. Actualiza la cookie 'datosOriginales'
+		let datosOriginales = req.cookies.datosOriginales;
+		datosOriginales = {...datosOriginales, ...datos};
+		delete datosOriginales.avatar_url;
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		// 4. Genera la session para la siguiente instancia
 		req.session.datosDuros = datos;
 		res.cookie("datosDuros", datos, {maxAge: unDia});
-		// 3. Actualiza la cookie 'datosOriginales'
-		res.cookie("datosOriginales", datos, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
