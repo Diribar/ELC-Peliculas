@@ -315,7 +315,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	agregaCapitulosDeTV:  function (datosCol) {
+	agregaCapitulosDeTV: function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
 		// Fin
