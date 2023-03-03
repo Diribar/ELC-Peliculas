@@ -13,13 +13,13 @@
 		<% if (!rutaImagen) { %>
 			<!-- 3. Imagen Diaria -->
 			<!-- Averigua qué datos usar -->
-			<% let ahora = new Date() %>
-			<% let horaLocal = ahora.getHours() %>
-			<% let horaLCF = ahora.getHours() + ahora.getTimezoneOffset() / 60 + 12 %>
-			<% let imgHoy = (horaLocal > 0) && (horaLocal >= 24 || horaLCF < 24)  %>
-			<% let imagen = imgHoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
-			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
+			<% const ahora = new Date() %>
+			<% const horaLocal = ahora.getHours() %>
+			<% const horaLCF = ahora.getHours() + ahora.getTimezoneOffset() / 60 + 12 %>
+			<% const imgHoy = (horaLocal > 0) && (horaLocal >= 24 || horaLCF < 24)  %>
 			<% tituloImagen = imgHoy ? tituloImgDerHoy : tituloImgDerAyer %>
+			<% const imagen = imgHoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
+			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
 		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>
