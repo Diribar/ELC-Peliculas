@@ -435,7 +435,7 @@ module.exports = {
 		if (!url) return;
 
 		// Quita "/film" y lo previo
-		indice = url.indexOf("/film");
+		let indice = url.indexOf("/film");
 		if (indice) url = url.slice(indice + 5);
 		else return;
 
