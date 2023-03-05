@@ -364,13 +364,13 @@ module.exports = {
 		// Cada vez que se revisa un avatar
 		procsParticsAvatar: async ({entidad, original, edicion, aprob}) => {
 			// TAREAS:
-			// - Eventualmente descarga el archivo
+			// - Si se cumplen ciertas condiciones, descarga el avatar del original
 			// - Borra el campo 'avatar_url' en el registro de edicion
 			// - Impacto en los archivos de avatar (original y edicion)
 
-			// 1. Eventualmente descarga el archivo
+			// 1. Si se cumplen ciertas condiciones, descarga el avatar del original
 			if (!aprob) {
-				// Si el avatar original es un url y la edicion es una pelicula o coleccion, descarga el avatar
+				// Si el avatar original es un url y el registro es una pelicula o coleccion, descarga el avatar
 				let url = original.avatar;
 				if (url.startsWith("http") && entidad != "capitulos") {
 					// Asigna un nombre al archivo a descargar

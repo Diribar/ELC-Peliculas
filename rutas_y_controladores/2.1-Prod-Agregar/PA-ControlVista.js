@@ -120,7 +120,6 @@ module.exports = {
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, {...datosDuros, ...avatar});
 		if (errores.hay) return res.redirect(req.path.slice(1));
-		// return res.send([{...datosDuros, ...avatar}, errores]);
 
 		// 4. Guarda data entrys en algunas session y cookie
 		// 4.1. Datos Adicionales
