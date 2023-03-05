@@ -365,7 +365,7 @@ module.exports = {
 			if (output) console.log("Archivo '" + archivo + "' borrado");
 		}
 		// Mensaje si no lo encuentra
-		else console.log("Archivo " + archivo + " no encontrado para borrar");
+		else if (output) console.log("Archivo " + archivo + " no encontrado para borrar");
 		// Fin
 		return;
 	},
@@ -385,7 +385,7 @@ module.exports = {
 				resolve("OK");
 			});
 			writer.on("error", (error) => {
-				console.log(error);
+				console.log(388, error);
 				reject("Error");
 			});
 		});
