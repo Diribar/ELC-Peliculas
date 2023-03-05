@@ -364,7 +364,7 @@ module.exports = {
 				// Función para convertir 'string de nombre' en  'string de ID'
 				let resultado = [];
 				if (pais_nombre.length) {
-					pais_nombreArray = pais_nombre.split(", ");
+					let pais_nombreArray = pais_nombre.split(", ");
 					// Convertir 'array de nombres' en 'string de ID"
 					for (let pais_nombre of pais_nombreArray) {
 						let aux = paises.find((n) => n.nombre == pais_nombre);
@@ -391,35 +391,37 @@ module.exports = {
 		return comp.convierteLetrasAlCastellano(respuesta);
 	},
 	// Función validar (FA)
-	// This (infoFAparaDD)
-	contenidoFA: (contenido) => {
-		// Output para FE y BE
-		// Limpiar espacios innecesarios
-		for (let i = 0; i < contenido.length; i++) {
-			contenido[i] = contenido[i].trim();
-		}
-		// Armar el objeto literal
+	contenidoFA: (texto) => {
+		// Convierte en array
+		let contenidos = typeof texto == "string" ? texto.split("\n") : texto;
+		// Limpia espacios innecesarios
+		// for (let contenido of contenidos) contenido = contenido.trim();
+		for (let i = 0; i < contenidos.length; i++) contenidos[i].trim();
+
+		// Arma el objeto literal
 		let resultado = {};
-		if (contenido.indexOf("Ficha") > 0)
-			resultado.nombre_castellano = funcionParentesis(contenido[contenido.indexOf("Ficha") - 1]);
-		if (contenido.indexOf("Título original") > 0)
-			resultado.nombre_original = funcionParentesis(contenido[contenido.indexOf("Título original") + 1]);
-		if (contenido.indexOf("Año") > 0) resultado.ano_estreno = parseInt(contenido[contenido.indexOf("Año") + 1]);
-		if (contenido.indexOf("Duración") > 0) {
-			let duracion = contenido[contenido.indexOf("Duración") + 1];
+		let indice = (queBuscar) => {
+			return contenidos.findIndex((n) => n.startsWith(queBuscar));
+		};
+		if (indice("Ficha") > 0) resultado.nombre_castellano = eliminaParentesis(contenidos[indice("Ficha") - 1]);
+		if (indice("Título original") > 0)
+			resultado.nombre_original = eliminaParentesis(contenidos[indice("Título original") + 1]);
+		if (indice("Año") > 0) resultado.ano_estreno = parseInt(contenidos[indice("Año") + 1]);
+		if (indice("Duración") > 0) {
+			let duracion = contenidos[indice("Duración") + 1];
 			resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));
 		}
-		if (contenido.indexOf("País") > 0) {
-			let pais_nombre = contenido[contenido.indexOf("País") + 1];
+		if (indice("País") > 0) {
+			let pais_nombre = contenidos[indice("País") + 1];
 			resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
 		}
-		if (contenido.indexOf("Dirección") > 0) resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
-		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
-		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
-		if (contenido.indexOf("Reparto") > 0) resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
-		if (contenido.indexOf("Productora") > 0) resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
-		if (contenido.indexOf("Sinopsis") > 0) {
-			let aux = contenido[contenido.indexOf("Sinopsis") + 1];
+		if (indice("Dirección") > 0) resultado.direccion = contenidos[indice("Dirección") + 1];
+		if (indice("Guion") > 0) resultado.guion = contenidos[indice("Guion") + 1];
+		if (indice("Música") > 0) resultado.musica = contenidos[indice("Música") + 1];
+		if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1];
+		if (indice("Productora") > 0) resultado.produccion = contenidos[indice("Productora") + 1];
+		if (indice("Sinopsis") > 0) {
+			let aux = contenidos[contenidos.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
@@ -444,7 +446,7 @@ let fuenteSinopsisTMDB = (sinopsis) => {
 	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis += " (Fuente: TMDB)";
 	return sinopsis;
 };
-let funcionParentesis = (dato) => {
+let eliminaParentesis = (dato) => {
 	let desde = dato.indexOf(" (");
 	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;

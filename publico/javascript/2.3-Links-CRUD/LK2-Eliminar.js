@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 	let ruta = entorno.startsWith("/links/")
 		? "/links/api/eliminar/"
 		: entorno.startsWith("/revision/")
-		? "/revision/api/link-alta"
+		? "/revision/api/link/alta-baja"
 		: "";
 
 	// Listener de 'inactivar'

@@ -24,7 +24,7 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [entValida, IDvalido, existeEdicion, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, existeEdicion, permUserReg];
 
 // APIs -------------------------------------------------
 // Producto y RCLV
@@ -32,7 +32,7 @@ router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", API.edicAprobRech);
 
 // Links
-router.get("/api/link/alta", API.linkAltaBaja);
+router.get("/api/link/alta-baja", API.linkAltaBaja);
 router.get("/api/link/eliminar", API.linkAltaBaja);
 router.get("/api/link/edicion", API.edicAprobRech);
 

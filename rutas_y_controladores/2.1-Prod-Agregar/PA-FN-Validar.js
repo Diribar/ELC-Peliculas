@@ -181,15 +181,15 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
+		let contenido = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? variables.inputVacio
-			: !Object.keys(cantDatosObtenidos).length
+			: !Object.keys(contenido).length
 			? "No se obtuvo ningún dato"
 			: "";
 		// Final
 		errores.hay = Object.values(errores).some((n) => !!n);
-		errores.campos = Object.keys(cantDatosObtenidos).length;
+		errores.campos = Object.keys(contenido).length;
 		return errores;
 	},
 };

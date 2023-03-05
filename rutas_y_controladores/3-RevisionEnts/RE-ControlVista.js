@@ -128,7 +128,7 @@ module.exports = {
 				return res.redirect(req.originalUrl);
 			}
 			// Procesa los datos del Data Entry
-			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+			else datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
 
 		// Más variables
@@ -145,19 +145,17 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Completa los datos
-		const lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
 		datos = {
 			...datos,
 			status_registro_id,
 			alta_analizada_por_id: revID,
 			alta_analizada_en,
-			lead_time_creacion,
-			captura_activa: false,
+			sugerido_por_id: revID,
+			sugerido_en: alta_analizada_en,
 		};
-		if (rechazado) {
-			datos.sugerido_por_id = revID;
-			datos.sugerido_en = alta_analizada_en;
-		}
+
+		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
+		if (rechazado) datos.motivo_id = motivo_id;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -184,8 +182,8 @@ module.exports = {
 		};
 		if (rechazado) {
 			datosHist.motivo_id = motivo_id;
-			var motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
-			datosHist.duracion = Number(motivo.duracion);
+			datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			datosHist.duracion = Number(datosHist.motivo.duracion);
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
@@ -195,14 +193,14 @@ module.exports = {
 		// 7. Acciones por rechazos
 		if (rechazado) {
 			// 7.1. Penaliza al usuario si corresponde
-			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, motivo, petitFamilia);
+			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);
 
 			// 7.2 Si es un RCLV, borra su id de los campos rclv_id de las ediciones de producto
 			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
 			// 7.3. Acciones si es un producto
 			// Elimina el archivo de avatar de la edicion
-			// Elimina las ediciones que tenga
+			// Elimina las ediciones de producto que tenga
 			// Actualiza los RCLV, en el campo 'prods_aprob'
 			if (!rclvs) procesos.alta.prodRech(entidad, id, creado_por_id);
 		}
@@ -331,7 +329,7 @@ module.exports = {
 
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);
-		else return res.redirect("/revision/tablero-de-control")
+		else return res.redirect("/revision/tablero-de-control");
 	},
 	rclv_edicForm: async (req, res) => {
 		// Tema y Código

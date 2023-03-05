@@ -329,6 +329,7 @@ module.exports = {
 			dataEntry: IM,
 			autorizado_fa: req.session.usuario.autorizado_fa,
 			entidades,
+			urlActual: req.session.urlActual,
 		});
 	},
 	IM_Guardar: async (req, res) => {
@@ -347,16 +348,16 @@ module.exports = {
 		if (errores.hay) return res.redirect(req.path.slice(1));
 		// Guarda el data entry en session y cookie
 		req.session.IM = IM;
-		res.cookie("IM", req.session.datosAdics, {maxAge: unDia});
+		res.cookie("IM", req.session.IM, {maxAge: unDia});
 		// Guarda el data entry en datosOriginales
 		res.cookie("datosOriginales", IM, {maxAge: unDia});
 		// Averigua cuál es la siguiente instancia
-		let siguienteInstancia = IM.ingreso_fa ? {codigo: "FA", url: "ingreso-fa"} : {codigo: "datosDuros", url: "datos-duros"};
+		let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
 		// Genera la session para la siguiente instancia
-		req.session[siguienteInstancia.codigo] = IM;
-		res.cookie(siguienteInstancia.codigo, IM, {maxAge: unDia});
+		req.session[sigPaso.codigo] = IM;
+		res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 		// Redirecciona a la siguiente instancia
-		res.redirect(siguienteInstancia.url);
+		return res.redirect(req.baseUrl + sigPaso.url);
 	},
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código

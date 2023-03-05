@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
 			iconoOK[i].classList.remove("ocultar");
-			sinErrores = true;
+			let sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
 				iconoOK[j].classList.contains("ocultar")
 					? inputs[j].name != "en_coleccion"

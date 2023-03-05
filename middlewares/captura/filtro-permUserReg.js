@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
-	v.capturado_en = comp.fechaHorarioTexto(v.registro.capturado_en)
+	v.capturado_en = comp.fechaHorarioTexto(v.registro.capturado_en);
 	v.horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;
 	v.horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.creado_en));
@@ -89,17 +89,15 @@ module.exports = async (req, res, next) => {
 
 	// CAMINO CRÍTICO
 	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder como escritura
-	if (!informacion && v.entidad != "usuarios") {
-		informacion =
-			v.creado_en > v.haceUnaHora && !creadoPorElUsuario
-				? {
-						mensajes: [
-							"Por ahora, el registro sólo está accesible para su creador",
-							"Estará disponible para su revisión el " + v.horarioFinalCreado,
-						],
-						iconos: [v.vistaAnterior],
-				  }
-				: "";
+	if (!informacion) {
+		if (v.entidad != "usuarios" && v.creado_en > v.haceUnaHora && !creadoPorElUsuario)
+			informacion = {
+				mensajes: [
+					"Por ahora, el registro sólo está accesible para su creador.",
+					"Estará disponible para su revisión el " + v.horarioFinalCreado + ".",
+				],
+				iconos: [v.vistaAnterior],
+			};
 	}
 	// 2. El registro fue creado hace más de una hora
 	//    El registro está en status creado y la vista no es de revisión
@@ -122,32 +120,26 @@ module.exports = async (req, res, next) => {
 	}
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
 	if (!informacion) {
-		informacion =
-			v.capturado_en > v.haceUnaHora && v.registro.capturado_por_id != v.userID && v.registro.captura_activa
-				? {
-						mensajes: [
-							"El registro está capturado por " +
-								(v.registro.capturado_por ? v.registro.capturado_por.apodo : "") +
-								".",
-							"Estará liberado a más tardar el " + v.capturado_en,
-						],
-						iconos: v.vistaAnteriorInactivar,
-				  }
-				: "";
+		if (v.capturado_en > v.haceUnaHora && v.registro.capturado_por_id != v.userID && v.registro.captura_activa)
+			informacion = {
+				mensajes: [
+					"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
+					"Estará liberado a más tardar el " + v.capturado_en,
+				],
+				iconos: v.vistaAnteriorInactivar,
+			};
 	}
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	if (!informacion) {
-		informacion =
-			v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID
-				? {
-						mensajes: [
-							"Esta captura terminó el " + v.capturado_en,
-							"Quedó a disposición de los demás " + v.tipoUsuario + ".",
-							"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
-						],
-						iconos: [v.vistaEntendido],
-				  }
-				: "";
+		if (v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID)
+			informacion = {
+				mensajes: [
+					"Esta captura terminó el " + v.capturado_en,
+					"Quedó a disposición de los demás " + v.tipoUsuario + ".",
+					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
+				],
+				iconos: [v.vistaEntendido],
+			};
 	}
 	// 5. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) {
@@ -158,7 +150,8 @@ module.exports = async (req, res, next) => {
 			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidad);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
-			const linkInactivar = "/inactivar-captura/?entidad=" + pc_entidad + "&id=" + pc_entidadID + "&urlDestino=" + originalUrl;
+			const linkInactivar =
+				"/inactivar-captura/?entidad=" + pc_entidad + "&id=" + pc_entidadID + "&urlDestino=" + originalUrl;
 			const liberar = {
 				nombre: "fa-circle-check",
 				link: linkInactivar,
