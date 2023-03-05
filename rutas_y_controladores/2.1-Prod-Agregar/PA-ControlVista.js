@@ -421,18 +421,18 @@ module.exports = {
 		await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
 
 		// 3. Actualiza algunas session y cookie
-		// 3.1. Film Affinity
-		FA.avatarBorrar = datos.avatar;
-		req.session.FA = FA;
-		res.cookie("FA", FA, {maxAge: unDia});
-		// 3.2. Datos Duros
-		req.session.datosDuros = datos;
-		res.cookie("datosDuros", datos, {maxAge: unDia});
-		// 3.3. Datos Originales
+		// 3.1. Datos Originales
 		let datosOriginales = {...datos};
 		datosOriginales.avatar = datosOriginales.avatar_url;
 		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+		// 3.2. Film Affinity
+		FA.avatarBorrar = datos.avatar;
+		req.session.FA = FA;
+		res.cookie("FA", FA, {maxAge: unDia});
+		// 3.3. Datos Duros
+		req.session.datosDuros = datos;
+		res.cookie("datosDuros", datos, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
