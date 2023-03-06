@@ -315,7 +315,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	agregaCapitulosDeTV: async function (datosCol) {
+	agregaCapitulosDeTV: function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
 		// Fin
@@ -353,14 +353,14 @@ module.exports = {
 
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)
-	infoFAparaDD: async function (datos) {
+	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			let paisNombreToId = async (pais_nombre) => {
+			let paisNombreToId = (pais_nombre) => {
 				// Función para convertir 'string de nombre' en  'string de ID'
 				let resultado = [];
 				if (pais_nombre.length) {
@@ -374,7 +374,7 @@ module.exports = {
 				resultado = resultado.length ? resultado.join(" ") : "";
 				return resultado;
 			};
-			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -395,8 +395,7 @@ module.exports = {
 		// Convierte en array
 		let contenidos = typeof texto == "string" ? texto.split("\n") : texto;
 		// Limpia espacios innecesarios
-		// for (let contenido of contenidos) contenido = contenido.trim();
-		for (let i = 0; i < contenidos.length; i++) contenidos[i].trim();
+		for (let contenido of contenidos) contenido = contenido.trim();
 
 		// Arma el objeto literal
 		let resultado = {};
@@ -420,24 +419,33 @@ module.exports = {
 		if (indice("Música") > 0) resultado.musica = contenidos[indice("Música") + 1];
 		if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1];
 		if (indice("Productora") > 0) resultado.produccion = contenidos[indice("Productora") + 1];
+		else if (indice("Compañías") > 0) resultado.produccion = contenidos[indice("Compañías") + 1];
 		if (indice("Sinopsis") > 0) {
 			let aux = contenidos[contenidos.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
+		// Fin
 		return resultado;
 	},
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerAPI (obtieneFA_id)
 	obtieneFA_id: (url) => {
-		// Output para FE y BE
-		let aux = url.indexOf("www.filmaffinity.com/");
-		url = url.slice(aux + 21);
-		aux = url.indexOf("/film");
-		url = url.slice(aux + 5);
-		aux = url.indexOf(".html");
-		let FA_id = url.slice(0, aux);
-		return FA_id;
+		// Protección
+		if (!url) return;
+
+		// Quita "/film" y lo previo
+		indice = url.indexOf("/film");
+		if (indice) url = url.slice(indice + 5);
+		else return;
+
+		// Quita la terminación
+		indice = url.indexOf(".html");
+		if (indice) url = url.slice(0, indice);
+		else return;
+
+		// Fin
+		return url;
 	},
 };
 

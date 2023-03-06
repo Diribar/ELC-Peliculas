@@ -12,12 +12,12 @@
 		<!-- Datos a completar -->
 		<section id="datos">
 			<% let campo; let display = true %>
-			<h3>Ingresá la dirección de la página</h3>
+			<h3>Ingresá la dirección url de la página</h3>
 			<div class="inputError">
-				<% campo = "direccion" %>
+				<% campo = "url" %>
 				<!-- Data Entry -->
 				<input name="<%= campo %>" type="text" class="input"
-					value="<%= dataEntry ? dataEntry.direccion : null %>"
+					value="<%= dataEntry ? dataEntry[campo] : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 					autofocus
@@ -44,7 +44,7 @@
 				<% campo = "avatar_url" %>
 				<!-- Data Entry -->
 				<input name="<%= campo %>" type="text" class="input"
-					value="<%= dataEntry ? dataEntry.avatar : null %>"
+					value="<%= dataEntry ? dataEntry[campo] : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 				>
@@ -65,7 +65,7 @@
 			<div class="inputError">
 				<% campo = "contenido" %>
 				<!-- Data Entry -->
-				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
+				<textarea name="<%= campo %>" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry[campo] : "" %></textarea>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -87,8 +87,12 @@
 		</section>
 		<!-- Flechas -->
 		<section class="flechas">
-			<a href="/producto/agregar/ingreso-manual" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
-			<button id="submit" class="inactivo" type="submit" title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
+			<a href="/producto/agregar/ingreso-manual" tabindex="-1" title="Volver al paso anterior">
+				<i class="fa-solid fa-circle-left"></i>
+			</a>
+			<button id="submit" class="inactivo" type="submit" title="Avanzar">
+				<i class="fa-solid fa-circle-check"></i>
+			</button>
 		</section>
 	</form>
 </div>

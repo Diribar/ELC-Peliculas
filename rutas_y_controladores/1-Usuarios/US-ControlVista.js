@@ -325,7 +325,7 @@ module.exports = {
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies
 		res.cookie("email", req.body.email, {maxAge: unDia});
-		// 8. Notificar al contador de logins
+		// 8. Notifica al contador de logins
 		procesos.actualizaElContadorDeLogins(usuario);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/garantiza-login-y-completo");

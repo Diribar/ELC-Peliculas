@@ -54,7 +54,7 @@ module.exports = {
 			// Actualiza el producto prodComb
 			prodComb = {...prodComb, ...edicSession};
 			// Datos Duros - Campos Input
-			let camposInput = variables.camposDD.filter((n) => n[entidad]).filter((n) => n.campoInput);
+			let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
 			camposInput1 = camposInput.filter((n) => n.antesDePais);
 			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
 			produccion = camposInput.find((n) => n.nombre == "produccion");

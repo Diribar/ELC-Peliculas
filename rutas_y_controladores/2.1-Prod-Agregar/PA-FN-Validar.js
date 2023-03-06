@@ -162,13 +162,13 @@ module.exports = {
 	FA: (datos) => {
 		let errores = {};
 		// Dirección
-		let url = datos.direccion;
-		errores.direccion = !url
+		let url = datos.url;
+		errores.url = !url
 			? variables.inputVacio
 			: !url.includes("www.filmaffinity.com/") ||
-			  !(
-					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
-					url.indexOf("/film") + 5 < url.indexOf(".html")
+			  (
+					url.indexOf("www.filmaffinity.com/") + 21 >= url.indexOf("/film") ||
+					url.indexOf("/film") + 5 >= url.indexOf(".html")
 			  )
 			? "No parece ser una dirección de Film Affinity"
 			: "";

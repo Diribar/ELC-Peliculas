@@ -31,7 +31,8 @@ module.exports = async (req, res, next) => {
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
-	v.capturado_en = comp.fechaHorarioTexto(v.registro.capturado_en);
+	v.capturado_en = v.registro.capturado_en;
+	v.capturadoTexto = comp.fechaHorarioTexto(v.registro.capturado_en);
 	v.horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;
 	v.horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.creado_en));
@@ -124,7 +125,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: [
 					"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
-					"Estará liberado a más tardar el " + v.capturado_en,
+					"Estará liberado a más tardar el " + v.capturadoTexto,
 				],
 				iconos: v.vistaAnteriorInactivar,
 			};
@@ -134,7 +135,7 @@ module.exports = async (req, res, next) => {
 		if (v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID)
 			informacion = {
 				mensajes: [
-					"Esta captura terminó el " + v.capturado_en,
+					"Esta captura terminó el " + v.capturadoTexto,
 					"Quedó a disposición de los demás " + v.tipoUsuario + ".",
 					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 				],

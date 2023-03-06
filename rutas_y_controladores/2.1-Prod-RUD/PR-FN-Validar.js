@@ -11,7 +11,7 @@ module.exports = {
 		let entidad = datos.entidad;
 		// Obtiene los campos
 		if (!campos) {
-			let camposDD = variables.camposDD.filter((n) => n[entidad]);
+			let camposDD = variables.camposDD.filter((n) => n[entidad] || n.productos);
 			let camposDA = variables.camposDA;
 			campos = [...camposDD, ...camposDA].map((n) => n.nombre);
 		}
