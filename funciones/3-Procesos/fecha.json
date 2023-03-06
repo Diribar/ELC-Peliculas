@@ -1,6 +1,8 @@
 {
-    "fechaLCF":"6/mar",
-    "hora":"5/mar a las 9:00hs",
-    "tituloImgDerAyer":"Mamá Antula",
-    "tituloImgDerHoy":"Mamá Antula"
+    "horario":"6/mar a las 13:54hs",
+    "titulosImgDer": {
+        "05": "Mamá Antula",
+        "06":"Mamá Antula",
+        "07":"Mamá Antula"
+    }
 }
