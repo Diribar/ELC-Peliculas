@@ -199,7 +199,7 @@ module.exports = {
 		return valor
 			.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 			.replace(/[àâãäåāăą]/g, "a")
-			.replace(/á/g, "árrrrr")
+			.replace(/á/g, "á")
 			.replace(/Æ/g, "Ae")
 			.replace(/æ/g, "ae")
 			.replace(/[ÇĆĈĊČ]/g, "C")
