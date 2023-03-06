@@ -246,7 +246,6 @@ window.addEventListener("load", async () => {
 			if (!v.inputAvatarEdicN.value) {
 				// Actualiza el avatar
 				v.imgsAvatar[0].src = v.avatarInicial;
-				// Actualiza lo que será el avatar anterior
 				// Actualiza los errores
 				v.esImagen = true;
 				this.actualizaVarios();
