@@ -44,6 +44,7 @@ router.get("/api/IM-cantTemps", API.averiguaCantTemps);
 router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
 router.get("/api/FA-obtiene-elc-id", API.obtieneELC_id);
 router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
+router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
 
 // VISTAS
 router.get("/palabras-clave", ...dataEntry, vista.palabrasClaveForm);

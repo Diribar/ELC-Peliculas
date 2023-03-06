@@ -2,6 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const buscar_x_PC = require("./PA-FN-Buscar_x_PC");
 const procesos = require("./PA-FN-Procesos");
@@ -78,13 +79,13 @@ module.exports = {
 	desambGuardar2: async (req, res) => {
 		//let datosDuros = JSON.parse(req.query.datos);
 		let datosDuros = req.cookies.datosOriginales;
-		// Para datosDuros, dar de alta el avatar_url y de baja el avatar
+		// Para datosDuros, da de alta el avatar_url y de baja el avatar
 		datosDuros.avatar_url = datosDuros.avatar;
 		delete datosDuros.avatar;
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-		let camposDD_nombres = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombres, datosDuros);
+		let camposDD_nombre = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
 		// Genera la session y cookie para DatosDuros
 		req.session.datosDuros = {...datosDuros};
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
@@ -105,6 +106,14 @@ module.exports = {
 		let errores = await valida.datosDuros(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
+	},
+	convierteLetrasAlCastellano: (req, res) => {
+		// Obtiene el valor
+		let {valor} = req.query;
+		// Lo convierte al castellano
+		let conversion = comp.convierteLetrasAlCastellano_campo(valor);
+		// Devuelve el resultado
+		return res.json(conversion);
 	},
 
 	// Vista (datosAdics)

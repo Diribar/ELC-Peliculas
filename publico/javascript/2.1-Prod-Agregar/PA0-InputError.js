@@ -86,15 +86,16 @@ window.addEventListener("load", async () => {
 		// Imagen derecha
 		v.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
 	}
-	// Ruta
-	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
+	// Rutas
+	let rutaValidar = "./api/valida/" + paso.paso + "/?";
+	let rutaCaracteresCastellano = "./api/convierte-letras-al-castellano/?valor=";
 
 	// FUNCIONES *******************************************
 	let statusInicial = async (mostrarIconoError) => {
-		//Buscar todos los valores
+		//Busca todos los valores
 		let datosUrl = "";
 		v.inputs.forEach((input, i) => {
-			// Caracter de unión para i>0
+			// Caracter de unión para i > 0
 			if (i) datosUrl += "&";
 			// Particularidad para DD
 			if (paso.DD && input.name == "avatar" && !v.sinAvatar) return;
@@ -226,17 +227,17 @@ window.addEventListener("load", async () => {
 			// Borrar las clases anteriores
 			v.resultado.classList.remove(...v.resultado.classList);
 			v.resultado.classList.add("sinResultado");
-			// Prepara el datosUrl con los datos a validar
-			datosUrl = campo + "=" + valor;
 		}
 		if (paso.DD) {
-			// Primera letra en mayúscula (sólo para Datos Duros)
+			// Acciones para campos input texto
 			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
+				// Convierte la primera letra en mayúscula
 				valor = e.target.value;
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+				// Convierte caracteres especiales en caracteres en español
 				valor = encodeURIComponent(e.target.value);
+				e.target.value = await fetch(rutaCaracteresCastellano + valor).then((n) => n.json());
 			}
-
 			// Convierte los ID de los países elegidos, en un texto
 			if (e.target == v.paisesSelect) {
 				DD.actualizaPaises();
@@ -244,8 +245,10 @@ window.addEventListener("load", async () => {
 				campo = v.paisesID.name;
 				valor = v.paisesID.value;
 			}
-			datosUrl = campo + "=" + valor;
 		}
+		// Prepara el datosUrl con los datos a validar
+		valor = encodeURIComponent(e.target.value);
+		datosUrl = campo + "=" + valor;
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
