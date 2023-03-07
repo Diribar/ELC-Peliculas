@@ -21,20 +21,19 @@ module.exports = {
 		// Si la información ya está actualizada. termina
 		const fechaGMT = new Date();
 		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + comp.fechaDiaMes(fechaGMT);
-		// if (info.fechaActual == fechaFormatoPreferido) return;
-		// else info.fechaActual = fechaFormatoPreferido;
+		if (info.fechaActual == fechaFormatoPreferido) return;
+		else info.fechaActual = fechaFormatoPreferido;
 
 		// Actualiza la imagen derecha
-		// info = await this.actualizaImagenDerecha({info, fechaGMT});
+		info = await this.actualizaImagenDerecha({info, fechaGMT});
 
 		// Tareas semanales
 		const comienzoAno = new Date(fechaGMT.getFullYear(), 0, 1).getTime();
 		const semanaActual = parseInt((fechaGMT.getTime() - comienzoAno) / unDia / 7);
 		if (info.semanaActual != semanaActual) {
-			info = await this.tareasSemanales();
-			// info.semanaActual = semanaActual;
+			await this.tareasSemanales();
+			info.semanaActual = semanaActual;
 		}
-		return;
 
 		// Actualiza los valores del archivo
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
@@ -148,8 +147,9 @@ module.exports = {
 
 	// Tareas semanales
 	tareasSemanales: async () => {
+        // Obtiene la condición
+        const condiciones = await BD_especificas.linksVencidos();
 		// Actualiza el status de los links vencidos
-		const condiciones = await BD_especificas.linksVencidos();
 		BD_genericas.actualizaTodosPorCampos("links", condiciones,{status_registro_id: creado_aprob_id})
 
 		// Fin

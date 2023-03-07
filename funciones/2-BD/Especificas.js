@@ -230,6 +230,7 @@ module.exports = {
 		// Obtiene la fecha de corte
 		const vidaUtil = 6 * unMes;
 		const fechaCorte = new Date(comp.ahora().getTime() - vidaUtil);
+
 		// Obtiene la condición
 		let condicion = {
 			sugerido_en: {[Op.lt]: fechaCorte},
