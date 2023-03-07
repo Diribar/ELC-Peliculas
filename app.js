@@ -36,6 +36,9 @@ app.use(loginConCookie);
 // Para tener el rastro de los últimos url
 const urlsUsadas = require("./middlewares/urls/urlsUsadas");
 app.use(urlsUsadas);
+// Para tener en locals las variables necesarias
+const locals = require("./middlewares/varios/locals");
+app.use(locals);
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
