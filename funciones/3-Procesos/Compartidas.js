@@ -3,8 +3,6 @@
 const internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
-const fs = require("fs");
-//const path = require("path");
 const axios = require("axios");
 const variables = require("./Variables");
 

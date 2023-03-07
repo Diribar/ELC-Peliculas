@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const fs = require("fs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
