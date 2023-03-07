@@ -3,8 +3,6 @@
 const internetAvailable = require("internet-available");
 const nodemailer = require("nodemailer");
 const BD_genericas = require("../2-BD/Genericas");
-const fs = require("fs");
-//const path = require("path");
 const axios = require("axios");
 const variables = require("./Variables");
 
@@ -400,7 +398,39 @@ module.exports = {
 
 	// Tareas diarias y horarias
 	tareasDiarias: async function () {
-		// Fórmulas
+		// Obtiene información del archivo 'json'
+		const rutaNombre = path.join(__dirname, "fecha.json");
+		let info = (() => {
+			// Variables
+			const existe = this.averiguaSiExisteUnArchivo(rutaNombre);
+			const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
+			// Fin
+			return json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
+		})();
+
+		// Si la información ya está actualizada. termina
+		const fechaGMT = new Date();
+		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + this.fechaDiaMes(fechaGMT);
+		if (info.fechaActual == fechaFormatoPreferido) return;
+		else info.fechaActual = fechaFormatoPreferido;
+
+		// Actualiza la imagen derecha
+		info = await this.actualizaImagenDerecha({info, fechaGMT});
+
+		// Actualiza los valores del archivo
+		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
+			if (err) return console.log("Tareas Diarias:", err);
+		});
+
+		// Fin
+		return;
+	},
+	actualizaImagenDerecha: async function ({info, fechaGMT}) {
+		// Asigna las nuevas fecha y hora actual
+		info.horaActual = fechaGMT.toLocaleTimeString().slice(0, -3);
+
+		// Obtiene los titulos de imgDerecha
+		const milisegs = fechaGMT.getTime();
 		let fechaTexto = (fecha) => {
 			fecha = new Date(fecha);
 			let dia = ("0" + fecha.getDate()).slice(-2);
@@ -409,25 +439,6 @@ module.exports = {
 			fecha = dia + "-" + mes + "-" + ano;
 			return fecha;
 		};
-
-		// Obtiene información del archivo 'json'
-		const rutaNombre = path.join(__dirname, "fecha.json");
-		const existe = this.averiguaSiExisteUnArchivo(rutaNombre);
-		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-		let info = json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
-		// console.log(416, json,info);
-
-		// Averigua si la información ya está actualizada
-		const fechaGMT = new Date();
-		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + this.fechaDiaMes(fechaGMT);
-		if (info.fechaActual == fechaFormatoPreferido) return;
-
-		// Asigna las nuevas fecha y hora actual
-		info.fechaActual = fechaFormatoPreferido;
-		info.horaActual = fechaGMT.toLocaleTimeString().slice(0, -3);
-
-		// Obtiene los titulos de imgDerecha
-		const milisegs = fechaGMT.getTime();
 		const fechas = [
 			fechaTexto(milisegs - unDia * 2),
 			fechaTexto(milisegs - unDia),
@@ -441,7 +452,7 @@ module.exports = {
 			titulosImgDer[fecha] =
 				info.titulosImgDer && info.titulosImgDer[fecha]
 					? info.titulosImgDer[fecha]
-					: await this.actualizaImagenDerecha(fecha);
+					: await this.obtieneImagenDerecha(fecha);
 
 		// Actualiza los títulos de la imagen derecha
 		info.titulosImgDer = titulosImgDer;
@@ -450,20 +461,12 @@ module.exports = {
 		// Obtiene el listado de archivos
 		let imagenes = fs.readdirSync("./publico/imagenes/4-ImagenDerecha/");
 		for (let imagen of imagenes)
-			if (!fechas.includes(imagen.slice(0,9))) {
-				console.log(("Borra ",imagen.slice(0,9)));
-				await this.borraUnArchivo("./publico/imagenes/4-ImagenDerecha/", imagen);
-			}
-
-		// Actualiza los valores del archivo
-		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
-			if (err) return console.log("Tareas Diarias:", err);
-		});
+			if (!fechas.includes(imagen.slice(0, 9))) await this.borraUnArchivo("./publico/imagenes/4-ImagenDerecha/", imagen);
 
 		// Fin
-		return;
+		return info;
 	},
-	actualizaImagenDerecha: async function (fecha) {
+	obtieneImagenDerecha: async function (fecha) {
 		// Obtiene el dia_del_ano
 		let nombre = fecha.slice(0, 6).replace("-", "/");
 		if (nombre.startsWith("0")) nombre = nombre.slice(1);
@@ -517,7 +520,7 @@ module.exports = {
 			);
 
 			// Fin
-			return
+			return;
 		})();
 
 		// Fin
