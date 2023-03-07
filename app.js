@@ -12,8 +12,6 @@ global.NO = null;
 // Para usar el archivo '.env' --> se debe colocar al principio
 require("dotenv").config();
 global.localhost = process.env.localhost;
-// Variable de fecha de la 'Línea de Cambio de Fecha'
-const comp = require("./funciones/3-Procesos/Compartidas");
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
@@ -131,6 +129,7 @@ app.set("views", [
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
+	const comp = require("./funciones/3-Procesos/Compartidas");
 	global.titulosImgDer = {};
 	await comp.tareasDiarias();
 	// Dispara tareas en cierto horario
