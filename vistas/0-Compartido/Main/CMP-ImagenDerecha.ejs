@@ -4,22 +4,22 @@
 		<% let rutaImagen, tituloImagen %>
 		<% if (locals.tema == "institucional" || locals.institucional) { %>
 			<!-- 1. Imagen Institucional -->
-			<% rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen="ELC-Películas" %>
+			<% rutaImagen = '//localhost/imagenes/0-Base/Institucional-Imagen.jpg'; tituloImagen = "ELC-Películas" %>
 		<% } %>
 		<% if (!rutaImagen && locals.imgDerPers) { %>
 			<!-- 2. Imagen Personalizada -->
-			<% rutaImagen = imgDerPers; tituloImagen=locals.tituloImgDerPers %>
+			<% rutaImagen = imgDerPers; tituloImagen = locals.tituloImgDerPers %>
 		<% } %>
 		<% if (!rutaImagen) { %>
 			<!-- 3. Imagen Diaria -->
 			<!-- Averigua qué datos usar -->
 			<% const ahora = new Date() %>
-			<% const horaLocal = ahora.getHours() %>
-			<% const horaLCF = ahora.getHours() + ahora.getTimezoneOffset() / 60 + 12 %>
-			<% const imgHoy = (horaLocal > 0) && (horaLocal >= 24 || horaLCF < 24)  %>
-			<% const imagen = imgHoy ? "imgDerechaHoy.jpg" : "imgDerechaAyer.jpg" %>
-			<% rutaImagen = localhost + "/imagenes/0-Base/" + imagen %>
-			<% tituloImagen = imgHoy ? tituloImgDerHoy : tituloImgDerAyer %>
+			<% const diaLocal = ("0" + ahora.getDate()).slice(-2) %>
+			<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
+			<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
+			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
+			<% rutaImagen = localhost + "/imagenes/4-ImagenDerecha/" + hoyLocal + ".jpg" %>
+			<% tituloImagen = titulosImgDer[hoyLocal] %>
 		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>

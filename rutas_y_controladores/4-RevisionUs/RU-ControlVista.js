@@ -37,7 +37,7 @@ module.exports = {
 		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
-		let fecha_nacimiento = comp.fechaTexto(usuario.fecha_nacimiento);
+		let fecha_nacimiento = comp.fechaDiaMesAno(usuario.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},

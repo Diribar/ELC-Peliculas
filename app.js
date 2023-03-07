@@ -3,6 +3,7 @@
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
+global.diasSemana = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
@@ -11,10 +12,6 @@ global.NO = null;
 // Para usar el archivo '.env' --> se debe colocar al principio
 require("dotenv").config();
 global.localhost = process.env.localhost;
-// Variable de fecha de la 'Línea de Cambio de Fecha'
-global.horarioLCF = null;
-const comp = require("./funciones/3-Procesos/Compartidas");
-comp.horarioLCF();
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
@@ -37,6 +34,9 @@ app.use(loginConCookie);
 // Para tener el rastro de los últimos url
 const urlsUsadas = require("./middlewares/urls/urlsUsadas");
 app.use(urlsUsadas);
+// Para tener en locals las variables necesarias
+const locals = require("./middlewares/varios/locals");
+app.use(locals);
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
@@ -129,12 +129,12 @@ app.set("views", [
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
-	global.tituloImgDerAyer = null;
-	global.tituloImgDerHoy = null;
+	const comp = require("./funciones/3-Procesos/Compartidas");
+	global.titulosImgDer = {};
 	await comp.tareasDiarias();
 	// Dispara tareas en cierto horario
 	const cron = require("node-cron");
-	cron.schedule("1 0 0 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+	cron.schedule("0 23 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
 	// Rutas que dependen de la variable 'global'
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");

@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 	let capturado_en = registro.capturado_en;
 	capturado_en ? capturado_en.setSeconds(0) : (capturado_en = 0);
 	let horarioFinal = comp.nuevoHorario(1, capturado_en);
-	horarioFinal = comp.fechaHorarioTexto(horarioFinal);
+	horarioFinal = comp.fechaHorario(horarioFinal);
 
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
 	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)

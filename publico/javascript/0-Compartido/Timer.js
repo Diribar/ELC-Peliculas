@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 	let segundosDispon = Math.round((minutosDispon % 1) * 60);
 
 	// FUNCIONES -------------------------------------------------------------
-	let fechaHorarioTexto = (horario) => {
+	let fechaHorario = (horario) => {
 		return (
 			horario.getDate() +
 			"/" +
@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
 		let cartelMensajes = document.querySelector("#cartel #mensajes");
 		let flechas = document.querySelector("#cartel #flechasCartel");
 		// Mensajes
-		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
+		let horarioFinalTexto = fechaHorario(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
 		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
 		let mensajes = datos.capturado_en

@@ -60,7 +60,7 @@ module.exports = {
 							entidad,
 							edicion_id: n.id,
 							fechaRef: n[campoFecha],
-							fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
+							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 						});
 				});
 
@@ -128,7 +128,7 @@ module.exports = {
 						editado_en: n.editado_en,
 						edicion_id: n.id,
 						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
+						fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -332,7 +332,7 @@ module.exports = {
 			if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 			if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 			// Obtiene la fecha de alta
-			let fecha = comp.fechaTexto(prodOrig.creado_en);
+			let fecha = comp.fechaDiaMesAno(prodOrig.creado_en);
 			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 			// 5. Obtiene los datos del usuario
 			let fichaDelUsuario = await comp.usuarioFicha(prodOrig.creado_por_id, ahora);
@@ -460,10 +460,10 @@ module.exports = {
 			if (original.ano_fin) bloque1.push({titulo: "Año de fin", valor: original.ano_fin});
 			if (original.duracion) bloque1.push({titulo: "Duracion", valor: original.duracion + " min."});
 			// Obtiene la fecha de alta
-			fecha = comp.fechaTexto(original.creado_en);
+			fecha = comp.fechaDiaMesAno(original.creado_en);
 			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 			// Obtiene la fecha de edicion
-			fecha = comp.fechaTexto(edicion.editado_en);
+			fecha = comp.fechaDiaMesAno(edicion.editado_en);
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
 			let statusResumido = original.status_registro.gr_creado
@@ -651,7 +651,7 @@ let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, 
 		return {
 			...n,
 			fechaRef: n[campoFecha],
-			fechaRefTexto: comp.fechaTextoCorta(n[campoFecha]),
+			fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 		};
 	});
 	// Ordena los resultados
@@ -709,7 +709,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		let asociacion = comp.obtieneAsociacion(entidad);
 		let campoFecha = !link.status_registro_id ? "editado_en" : link.status_registro.creado ? "creado_en" : "sugerido_en";
 		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaTextoCorta(link[campoFecha]);
+		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
 		if (link.status_registro && link.status_registro.creado_aprob)
 			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
