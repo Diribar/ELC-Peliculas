@@ -130,12 +130,12 @@ app.set("views", [
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
-	const comp = require("./funciones/3-Procesos/Compartidas");
+	const rutinas = require("./funciones/3-Procesos/Rutinas");
 	global.titulosImgDer = {};
-	await comp.tareasDiarias();
+	await rutinas.tareasDiarias();
 	// Dispara tareas en cierto horario
 	const cron = require("node-cron");
-	cron.schedule("0 23 * * *", () => comp.tareasDiarias(), {timezone: "Etc/GMT-12"});
+	cron.schedule("0 23 * * *", () => rutinas.tareasDiarias(), {timezone: "Etc/GMT-12"});
 
 	// Rutas que dependen de la variable 'global'
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
