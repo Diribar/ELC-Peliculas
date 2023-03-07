@@ -417,10 +417,10 @@ module.exports = {
 		let info = json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
 		// console.log(416, json,info);
 
-		// Averigua si no hay que actualizar la información
+		// Averigua si la información ya está actualizada
 		const fechaGMT = new Date();
 		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + this.fechaDiaMes(fechaGMT);
-		// if (info.fechaActual == fechaFormatoPreferido) return;
+		if (info.fechaActual == fechaFormatoPreferido) return;
 
 		// Asigna las nuevas fecha y hora actual
 		info.fechaActual = fechaFormatoPreferido;
