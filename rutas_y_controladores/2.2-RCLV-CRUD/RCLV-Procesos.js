@@ -74,7 +74,7 @@ module.exports = {
 			// Variable ultimaActualizacion
 			let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
 			fechas.push(RCLV.edic_analizada_en, RCLV.sugerido_en);
-			let ultimaActualizacion = comp.fechaTexto(new Date(Math.max(...fechas)));
+			let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
 			// Variable status
 			let creado = RCLV.status_registro.gr_creado;
 			let aprobado = RCLV.status_registro.aprobado;
@@ -101,7 +101,7 @@ module.exports = {
 			let resumenRegistro = [];
 			resumenRegistro.push(
 				{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
-				{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
+				{titulo: "Registro creado en", valor: comp.fechaDiaMesAno(RCLV.creado_en)},
 				{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
 				{titulo: "Última actualizac.", valor: ultimaActualizacion},
 				{titulo: "Productos en BD", valor: cantProds},

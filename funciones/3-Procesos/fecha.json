@@ -1,8 +1,10 @@
 {
-    "horario":"6/mar a las 13:54hs",
-    "titulosImgDer": {
-        "05": "Mamá Antula",
-        "06":"Mamá Antula",
-        "07":"Mamá Antula"
-    }
+	"fechaActual": "Mié. 7/mar",
+	"horaActual": "13:19",
+	"titulosImgDer": {
+		"05-mar-23": "Mamá Antula",
+		"06-mar-23": "Mamá Antula",
+		"07-mar-23": "Mamá Antula",
+		"08-mar-23": "ELC - Películas"
+	}
 }

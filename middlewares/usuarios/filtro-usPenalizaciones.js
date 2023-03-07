@@ -53,7 +53,7 @@ module.exports = async (req, res, next) => {
 
 	// VERIFICACIÓN 1: Se fija si el usuario está penalizado
 	if (!informacion && usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
-		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
+		let fecha = comp.fechaDiaMesAno(usuario.penalizado_hasta);
 		informacion = {
 			mensajes: [
 				"Hemos procesado la información que nos fuiste brindando.",
@@ -73,7 +73,7 @@ module.exports = async (req, res, next) => {
 		req.session.usuario = usuario;
 
 		// Cartel de "Fin de la Penalización"
-		let fecha = comp.fechaTexto(usuario.penalizado_hasta);
+		let fecha = comp.fechaDiaMesAno(usuario.penalizado_hasta);
 		informacion = {
 			mensajes: ["La penalización concluyó el día " + fecha + ".", "Ya podés ingresar información en nuestro sistema."],
 			iconos: [vistaEntendido],

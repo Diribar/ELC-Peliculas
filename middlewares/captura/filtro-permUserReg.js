@@ -32,10 +32,10 @@ module.exports = async (req, res, next) => {
 	if (v.entidad == "capitulos") v.include.push("coleccion");
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = v.registro.capturado_en;
-	v.capturadoTexto = comp.fechaHorarioTexto(v.registro.capturado_en);
-	v.horarioFinalCaptura = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.registro.capturado_en));
+	v.capturadoTexto = comp.fechaHorario(v.registro.capturado_en);
+	v.horarioFinalCaptura = comp.fechaHorario(comp.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;
-	v.horarioFinalCreado = comp.fechaHorarioTexto(comp.nuevoHorario(1, v.creado_en));
+	v.horarioFinalCreado = comp.fechaHorario(comp.nuevoHorario(1, v.creado_en));
 	if (v.creado_en) v.creado_en.setSeconds(0);
 	v.vistaAnteriorTablero = (() => {
 		let vista = [v.vistaAnterior];
@@ -159,7 +159,7 @@ module.exports = async (req, res, next) => {
 				titulo: "Liberar automáticamente",
 				autofocus: true,
 			};
-			const horario = comp.fechaHorarioTexto(prodCapturado.capturado_en);
+			const horario = comp.fechaHorario(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
 				pc_entidad == "peliculas" || pc_entidad == "colecciones"

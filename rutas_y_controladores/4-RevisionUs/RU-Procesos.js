@@ -36,7 +36,7 @@ module.exports = {
 		// Le corrije el formato
 		let TC_formatoUsuarios = (campoFecha) => {
 			return usuarios.map((n) => {
-				let fecha = comp.fechaHorarioTexto(n[campoFecha]).replace("a las", "-");
+				let fecha = comp.fechaHorario(n[campoFecha]).replace("a las", "-");
 				return {id: n.id, apodo: n.apodo, fecha};
 			});
 		};

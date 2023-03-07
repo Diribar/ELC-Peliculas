@@ -124,7 +124,7 @@ module.exports = {
 										...m,
 										entidad,
 										fechaRef: m[campoFecha],
-										fechaRefTexto: comp.fechaTextoCorta(m[campoFecha]),
+										fechaRefTexto: comp.fechaDiaMes(m[campoFecha]),
 									})
 							)
 					: []
@@ -220,7 +220,7 @@ module.exports = {
 										...m,
 										entidad,
 										fechaRef: m[campoFecha],
-										fechaRefTexto: comp.fechaTextoCorta(m[campoFecha]),
+										fechaRefTexto: comp.fechaDiaMes(m[campoFecha]),
 									})
 							)
 					: []

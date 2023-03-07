@@ -159,7 +159,7 @@ module.exports = {
 			let fechaContr = usuario.fecha_contrasena;
 			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
 			if (diferencia < 24) {
-				let fechaContrHorario = comp.fechaHorarioTexto(usuario.fecha_contrasena);
+				let fechaContrHorario = comp.fechaHorario(usuario.fecha_contrasena);
 				informacion = {
 					mensajes: [
 						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",

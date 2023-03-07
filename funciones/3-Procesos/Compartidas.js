@@ -272,22 +272,19 @@ module.exports = {
 	nuevoHorario: (delay, horario) => {
 		return nuevoHorario(delay, horario);
 	},
-	fechaTexto: (fecha) => {
-		fecha = new Date(fecha);
-		let dia = fecha.getDate();
-		let mes = mesesAbrev[fecha.getMonth()];
-		let ano = fecha.getFullYear().toString().slice(-2);
-		fecha = dia + "/" + mes + "/" + ano;
-		return fecha;
-	},
-	fechaTextoCorta: (fecha) => {
+	fechaDiaMes: (fecha) => {
 		fecha = new Date(fecha);
 		let dia = fecha.getDate();
 		let mes = mesesAbrev[fecha.getMonth()];
 		fecha = dia + "/" + mes;
 		return fecha;
 	},
-	fechaHorarioTexto: (horario) => {
+	fechaDiaMesAno: (fecha) => {
+		fecha = new Date(fecha);
+		let ano = fecha.getFullYear().toString().slice(-2);
+		return this.fechaDiaMes(fecha) + "/" + ano;
+	},
+	fechaHorario: (horario) => {
 		horario = horario ? new Date(horario) : FN_ahora();
 		return (
 			horario.getDate() +
@@ -402,69 +399,88 @@ module.exports = {
 	},
 
 	// Tareas diarias y horarias
-	horarioLCF: () => {
-		// Obtiene la fecha actual - es imprescindible el 'getTime' para poder sumarle las 12 horas luego
-		let milisegs = new Date().getTime();
-
-		// Obtiene el horario de la "línea de cambio de fecha"
-		let milisegsLCF = milisegs + unaHora * 12;
-		horarioLCF = new Date(milisegsLCF);
-
-		// Fin
-		return;
-	},
 	tareasDiarias: async function () {
-		// Variables
+		// Fórmulas
+		let fechaTexto = (fecha) => {
+			fecha = new Date(fecha);
+			let dia = ("0" + fecha.getDate()).slice(-2);
+			let mes = mesesAbrev[fecha.getMonth()];
+			let ano = fecha.getFullYear().toString().slice(-2);
+			fecha = dia + "-" + mes + "-" + ano;
+			return fecha;
+		};
+
+		// Obtiene información del archivo 'json'
 		const rutaNombre = path.join(__dirname, "fecha.json");
 		const existe = this.averiguaSiExisteUnArchivo(rutaNombre);
-		const info = existe ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
-		const fechaGuardada = existe ? info.fechaLCF : null;
-		tituloImgDerAyer = existe ? info.tituloImgDerAyer : null;
-		tituloImgDerHoy = existe ? info.tituloImgDerHoy : null;
+		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
+		let info = json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
+		// console.log(416, json,info);
 
-		// Actualiza la fechaReal
-		this.horarioLCF();
-		const fechaReal = horarioLCF.getUTCDate() + "/" + mesesAbrev[horarioLCF.getUTCMonth()];
+		// Averigua si no hay que actualizar la información
+		const fechaGMT = new Date();
+		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + this.fechaDiaMes(fechaGMT);
+		// if (info.fechaActual == fechaFormatoPreferido) return;
 
-		// Tareas si cambió la fecha
-		if (fechaReal != fechaGuardada) {
-			// Actualiza el archivo de la imagen derecha y sus datos
-			await this.actualizaImagenDerecha();
+		// Asigna las nuevas fecha y hora actual
+		info.fechaActual = fechaFormatoPreferido;
+		info.horaActual = fechaGMT.toLocaleTimeString().slice(0, -3);
 
-			// Actualiza los valores del archivo
-			let datos = {
-				fechaLCF: fechaReal,
-				hora: this.fechaHorarioTexto(),
-				tituloImgDerAyer,
-				tituloImgDerHoy,
-			};
-			fs.writeFile(rutaNombre, JSON.stringify(datos), function writeJSON(err) {
-				if (err) return console.log("Tareas Diarias:", err);
-			});
-		}
+		// Obtiene los titulos de imgDerecha
+		const milisegs = fechaGMT.getTime();
+		const fechas = [
+			fechaTexto(milisegs - unDia * 2),
+			fechaTexto(milisegs - unDia),
+			fechaTexto(milisegs),
+			fechaTexto(milisegs + unDia),
+		];
+
+		// Obtiene los titulos de Imagen Derecha
+		titulosImgDer = {};
+		for (let fecha of fechas)
+			titulosImgDer[fecha] =
+				info.titulosImgDer && info.titulosImgDer[fecha]
+					? info.titulosImgDer[fecha]
+					: await this.actualizaImagenDerecha(fecha);
+
+		// Actualiza los títulos de la imagen derecha
+		info.titulosImgDer = titulosImgDer;
+
+		// Borra las imagenes que no se corresponden con los titulos
+		// Obtiene el listado de archivos
+		let imagenes = fs.readdirSync("./publico/imagenes/4-ImagenDerecha/");
+		for (let imagen of imagenes)
+			if (!fechas.includes(imagen.slice(0,9))) {
+				console.log(("Borra ",imagen.slice(0,9)));
+				await this.borraUnArchivo("./publico/imagenes/4-ImagenDerecha/", imagen);
+			}
+
+		// Actualiza los valores del archivo
+		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
+			if (err) return console.log("Tareas Diarias:", err);
+		});
 
 		// Fin
 		return;
 	},
-	actualizaImagenDerecha: async function () {
-		// Variables
-		let imgDerecha;
-
-		// Obtiene el dia_del_ano_id
-		let dia = horarioLCF.getUTCDate();
-		let mes_id = horarioLCF.getUTCMonth() + 1;
-		let dia_del_ano_id = dias_del_ano.find((n) => n.dia == dia && n.mes_id == mes_id).id;
+	actualizaImagenDerecha: async function (fecha) {
+		// Obtiene el dia_del_ano
+		let nombre = fecha.slice(0, 6).replace("-", "/");
+		if (nombre.startsWith("0")) nombre = nombre.slice(1);
+		const dia_del_ano_id = dias_del_ano.find((n) => n.nombre == nombre).id;
 
 		// Obtiene la imagen derecha
+		let imgDerecha;
 		(() => {
 			// Variable de la nueva fecha
 			let nuevaFecha_id;
+			let restaUnAno = 0;
 			// Rutina para encontrar la fecha más cercana a la actual, que tenga una imagen
-			for (let i = 0; i < banco_de_imagenes.length; i++) {
+			for (let i = 0; i < 5; i++) {
 				// Si terminó el año, continúa desde el 1/ene
-				if (dia_del_ano_id + i > 366) i -= 366;
+				if (dia_del_ano_id + i - restaUnAno > 366) restaUnAno = 366;
 				// Busca una imagen con la fecha
-				let imagen = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i);
+				let imagen = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i - restaUnAno);
 				// Si la encuentra, termina de buscar
 				if (imagen) {
 					nuevaFecha_id = imagen.dia_del_ano_id;
@@ -472,29 +488,40 @@ module.exports = {
 				}
 			}
 
-			// Obtiene todos los registros con esa nueva fecha
-			let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
-			let indice = parseInt(Math.random() * registros.length);
-			if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
-			imgDerecha = registros[indice];
+			// Acciones si encontró una imagen para la fecha
+			if (nuevaFecha_id) {
+				// Obtiene todos los registros con esa nueva fecha
+				let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
+				let indice = parseInt(Math.random() * registros.length);
+				if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
+				imgDerecha = registros[indice];
+				imgDerecha.carpeta = "4-Banco-de-imagenes/";
+			}
+			// Acciones si no encontró una imagen para la fecha
+			else
+				imgDerecha = {
+					nombre: "ELC - Películas",
+					nombre_archivo: "Institucional-Imagen.jpg",
+					carpeta: "0-Base/",
+				};
 		})();
 
 		// Guarda la nueva imagen
 		await (async () => {
-			// Actualiza los valores de los títulos de imagenDerecha de ayer y hoy
-			tituloImgDerAyer = tituloImgDerHoy;
-			tituloImgDerHoy = imgDerecha.nombre;
 			// Borra la 'imagenAnterior'
-			await this.borraUnArchivo("./publico/imagenes/0-Base", "imgDerechaAyer.jpg");
-			// Cambia el nombre del archivo 'imgDerecha' por 'imagenAnterior'
-			await this.cambiaElNombreDeUnArchivo("0-Base", "imgDerechaHoy.jpg", "imgDerechaAyer.jpg");
+			await this.borraUnArchivo("./publico/imagenes/4-ImagenDerecha", fecha + ".jpg");
 			// Copia la nueva imagen como 'imgDerecha'
-			await this.copiaUnArchivoDeImagen("4-Banco-de-imagenes/" + imgDerecha.nombre_archivo, "0-Base/imgDerechaHoy.jpg");
-			console.log("Imagen derecha actualizada: " + this.fechaHorarioTexto());
+			await this.copiaUnArchivoDeImagen(
+				imgDerecha.carpeta + imgDerecha.nombre_archivo,
+				"4-ImagenDerecha/" + fecha + ".jpg"
+			);
+
+			// Fin
+			return
 		})();
 
 		// Fin
-		return;
+		return imgDerecha.nombre;
 	},
 
 	// Validaciones
