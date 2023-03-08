@@ -22,15 +22,18 @@
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 		<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
 		<div id="filtros" class="flexRow spaceAround">
-			<!-- Tipo de Link -->
-			<select id="tipoLink">
+			<!-- Película/Trailer -->
+			<select id="peliculaTrailer">
 				<option value="PL">Película</option>
 				<option value="TR">Trailer</option>
 				<option value="TD" selected>Películas y Trailers</option>
 			</select>
 			<!-- Activo/Inactivo -->
-			<div id="activo">Ocultar Links Inactivos</div>
-			<div id="inactivo" class="traslucido">Mostrar Links Inactivos</div>
+			<% let url = "?entidad=" + entidad + "&id=" + id %>
+			<select id="activoInactivo" onchange="location = this.value;">
+				<option value="<%= url %>">Activos</option>
+				<option id="inactivos" value="<%= url + "&grupo=inactivos" %>">Inactivos</option>
+			</select>
 		</div>
 		<form id="tabla"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<!-- Tabla -->
