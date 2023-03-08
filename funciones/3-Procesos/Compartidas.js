@@ -277,7 +277,7 @@ module.exports = {
 		fecha = dia + "/" + mes;
 		return fecha;
 	},
-	fechaDiaMesAno: (fecha) => {
+	fechaDiaMesAno: function (fecha) {
 		fecha = new Date(fecha);
 		let ano = fecha.getFullYear().toString().slice(-2);
 		return this.fechaDiaMes(fecha) + "/" + ano;
