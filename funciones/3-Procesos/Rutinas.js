@@ -147,12 +147,18 @@ module.exports = {
 
 	// Tareas semanales
 	tareasSemanales: async () => {
-        // Obtiene la condición
-        const condiciones = await BD_especificas.linksVencidos();
+		// Obtiene la condición
+		const condiciones = await BD_especificas.linksVencidos();
+		// Prepara la información
+		const objeto = {
+			status_registro_id: creado_aprob_id,
+			sugerido_en: comp.ahora(),
+			sugerido_por_id: 2,
+		};
 		// Actualiza el status de los links vencidos
-		BD_genericas.actualizaTodosPorCampos("links", condiciones,{status_registro_id: creado_aprob_id})
+		BD_genericas.actualizaTodosPorCampos("links", condiciones, objeto);
 
 		// Fin
-        return
+		return;
 	},
 };

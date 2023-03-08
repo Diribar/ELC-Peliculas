@@ -54,7 +54,7 @@ router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm)
 router.get("/rclv/inactivar-o-recuperar");
 
 // Links
-router.get("/links", ...aptoStatus, vista.linksForm);
+router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
 
 // Exportarlo **********************************************
 module.exports = router;
