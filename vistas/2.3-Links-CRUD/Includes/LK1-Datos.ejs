@@ -82,7 +82,7 @@
 			<i class="ocultar out"></i>
 		<% } %>
 		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
-		<% if (link.motivo) { %>
+		<% if (link.motivo && !cond.propio) { %>
 			<i class="fa-solid fa-circle-question ayudaClick desplClick" tabindex="-1" title="Motivo">
 				<span class="ayudaMostrar ocultar desplMostrar"><%= link.motivo.comentario %> </span>
 			</i>

@@ -111,12 +111,17 @@ module.exports = {
 
 			// Acciones si encontró una imagen para la fecha
 			if (nuevaFecha_id) {
-				// Obtiene todos los registros con esa nueva fecha
-				let registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
+				// Variables
+				let registros;
+				imgDerecha.carpeta = "4-Banco-de-imagenes/";
+				// Busca registros dentro de los de fecha 'movil'
+				registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id && n.cuando);
+				// Si no los encuentra, los busca dentro de los de fecha 'fija'
+				if (!registros.length) registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
+				// Elije al azar de entre las opciones
 				let indice = parseInt(Math.random() * registros.length);
 				if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
 				imgDerecha = registros[indice];
-				imgDerecha.carpeta = "4-Banco-de-imagenes/";
 			}
 			// Acciones si no encontró una imagen para la fecha
 			else
