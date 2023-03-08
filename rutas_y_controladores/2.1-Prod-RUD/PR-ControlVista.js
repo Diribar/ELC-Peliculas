@@ -151,7 +151,7 @@ module.exports = {
 				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 				// Se fija si corresponde cambiar el status
-				await procsCRUD.posibleAprobado(entidad, prodComb);
+				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;
 			} else {

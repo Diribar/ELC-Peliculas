@@ -504,39 +504,36 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				entidad,
-				entidad_id: original.id,
 				editado_por_id: edicion.editado_por_id,
 				editado_en: edicion.editado_en,
 				edic_analizada_por_id: revID,
 				edic_analizada_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
-				titulo,
-				campo,
 			};
-			// Agrega el motivo del rechazo
-			if (!aprob) {
-				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-			}
-
-			// Asigna los valores 'aprob' y 'rech'
-			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
-			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
 
 			// CONSECUENCIAS
-			// 1. Si se aprobó, actualiza el registro de 'original'
+			// 1. Si se aprobó, actualiza el registro 'original'
 			if (aprob) {
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 			}
 
-			// 2. Actualiza la tabla de edics_aprob/rech
+			// 2. Actualiza la tabla de edics_aprob o edics_rech
+			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
+			// Agrega el motivo del rechazo
+			if (!aprob) {
+				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+			}
+			// Asigna los valores 'aprob' y 'rech'
+			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
+			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
+			// Agrega el registro
 			BD_genericas.agregaRegistro(decision, datos);
 
-			// 3. Aumenta el campo aprob/rech en el registro del usuario
+			// 3. Aumenta el campo edics_aprob o edics_rech en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
@@ -549,7 +546,7 @@ module.exports = {
 			// Actualiza la información del original guardado
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 			// Actualiza la información de la edición
-			if (!aprob) edicion[campo] = null;
+			edicion[campo] = null;
 			if (relacInclude) delete edicion[relacInclude];
 			// Completa el proceso
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
@@ -557,10 +554,11 @@ module.exports = {
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			let statusAprob = await procsCRUD.posibleAprobado(entidad, originalGuardado);
+			let prodStatusAprob;
+			if (familia == "productos") prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
 
 			// Fin
-			return [edicion, statusAprob];
+			return [edicion, prodStatusAprob];
 		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
