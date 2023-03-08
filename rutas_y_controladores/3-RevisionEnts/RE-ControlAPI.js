@@ -92,39 +92,37 @@ module.exports = {
 		// 1. Actualiza el status en el registro original
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// Acciones si el link está en un status distinto a 'creadoAprob'
-		if (!creadoAprob) {
-			// 2. Agrega un registro en el historial_cambios_de_status
-			let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
-			let sugerido_en = creado ? original.creado_en : original.sugerido_en;
-			let datosHist = {
+		// 2. Agrega un registro en el historial_cambios_de_status
+		let datosHist;
+		let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
+		(() => {
+			datosHist = {
 				entidad_id: id,
 				entidad,
 				sugerido_por_id,
-				sugerido_en,
+				sugerido_en: creado ? original.creado_en : original.sugerido_en,
 				analizado_por_id: revID,
 				analizado_en: ahora,
 				status_original_id: original.status_registro_id,
 				status_final_id: status_registro_id,
 				aprobado: decisAprob,
 			};
-			// Agrega info si se rechaza el link desde 'creado' o 'recuperar'
 			if (!aprob && !inactivar) {
 				datosHist.motivo_id = motivo_id;
 				datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
 			}
-			// Agrega el registro
-			BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
+			return;
+		})();
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
-			// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
+		// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
+		if (!creadoAprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
 
-			// 4. Penaliza al usuario si corresponde
-			if (datosHist.duracion) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
-		}
+		// 4. Penaliza al usuario si corresponde
+		if (!creadoAprob && datosHist.duracion) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
 
-		// 5. Actualiza los productos, en los campos 'links_gratuitos' y 'links_general'
+		// 5. Actualiza los productos, en los campos 'castellano', 'links_gratuitos' y 'links_general'
 		procsCRUD.cambioDeStatus(entidad, {...original, status_registro_id});
 
 		// Se recarga la vista

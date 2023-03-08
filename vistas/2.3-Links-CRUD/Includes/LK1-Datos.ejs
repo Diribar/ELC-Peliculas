@@ -65,7 +65,7 @@
 		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creadoPropio && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- APROBAR -->
 		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
-		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio || link.ediciones.length || cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- DESHACER -->
 		<!-- Solo para RUD y provisorios propios -->
 		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
@@ -74,7 +74,7 @@
 		<% if (cond.rud && cond.creadoPropio) { %>
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 		<!-- A INACTIVO -->
-		<% } else if (cond.rud&&cond.aprobado || cond.revision&&!cond.aprobado) { %>
+		<% } else if (cond.rud && cond.aprobado || cond.revision && !cond.aprobado && !cond.propio) { %>
 			<!-- Sólo para RUD-aprobado o Revisión-noAprobado -->
 			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } else { %>
@@ -82,7 +82,7 @@
 			<i class="ocultar out"></i>
 		<% } %>
 		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
-		<% if (link.motivo) { %>
+		<% if (link.motivo && !cond.propio) { %>
 			<i class="fa-solid fa-circle-question ayudaClick desplClick" tabindex="-1" title="Motivo">
 				<span class="ayudaMostrar ocultar desplMostrar"><%= link.motivo.comentario %> </span>
 			</i>

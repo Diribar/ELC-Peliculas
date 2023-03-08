@@ -135,7 +135,7 @@ module.exports = async (req, res, next) => {
 		if (v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID)
 			informacion = {
 				mensajes: [
-					"Esta captura terminó el " + v.capturadoTexto,
+					"Esta captura terminó el " + v.horarioFinalCaptura,
 					"Quedó a disposición de los demás " + v.tipoUsuario + ".",
 					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 				],

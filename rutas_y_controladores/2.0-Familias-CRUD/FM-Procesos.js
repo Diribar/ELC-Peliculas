@@ -340,7 +340,17 @@ module.exports = {
 		}
 
 		// Rutinas por links
-		if (familia == "links") this.linksEnProd(registro);
+		if (familia == "links") {
+			if (registro.status_registro_id == aprobado_id && registro.tipo_id == link_pelicula_id) {
+				let campo_id = comp.obtieneProducto_id(registro);
+				let producto_ent = comp.obtieneProdDesdeProducto_id(registro);
+				let castellano = registro.castellano;
+				let links_gratuitos = registro.gratuito;
+				let links_general = true;
+				let objeto = {castellano, links_gratuitos, links_general};
+				BD_genericas.actualizaPorId(producto_ent, registro[campo_id], objeto);
+			} else this.linksEnProd(registro);
+		}
 	},
 	// Actualiza los campos de 'producto' en el RCLV
 	prodEnRCLV: async function (producto) {

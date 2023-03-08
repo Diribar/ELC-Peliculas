@@ -32,7 +32,6 @@ module.exports = {
 		let edicion_id = link
 			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
 			: "";
-		
 
 		// Si el link no existía, lo crea
 		if (!link) {
@@ -89,7 +88,7 @@ module.exports = {
 				// Inactivar
 				let datos = {
 					sugerido_por_id: userID,
-					sugerido_en: FN_ahora(),
+					sugerido_en: comp.ahora(),
 					motivo_id,
 					status_registro_id: inactivar_id,
 				};
@@ -145,27 +144,16 @@ module.exports = {
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
-			// Si estaba en inactivar, lo lleva a aprobado
-			if (link.status_registro.inactivar) {
-				let datos = {...objeto, status_registro_id: aprobado_id};
-				await BD_genericas.actualizaPorId("links", link.id, datos);
-				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link);
-			}
-			// Si estaba en recuperar, lo lleva a inactivo
-			else if (link.status_registro.recuperar) {
-				let datos = {...objeto, status_registro_id: inactivo_id};
-				await BD_genericas.actualizaPorId("links", link.id, datos);
-				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link);
-			}
-			respuesta = {
-				mensaje: "Link llevado a su status anterior",
-				activos: true,
-				pasivos: true,
-				ocultar: true,
-			};
+			// Actualiza el status del link
+			let datos = link.status_registro.inactivar
+				? {status_registro_id: aprobado_id, motivo_id: null}
+				: {status_registro_id: inactivo_id};
+			await BD_genericas.actualizaPorId("links", link.id, datos);
+			// Actualiza los campos del producto asociado
+			link = {...link, ...datos};
+			procsCRUD.cambioDeStatus("links", link);
+			// Fin
+			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 		}
 		// Fin
 		return res.json(respuesta);
