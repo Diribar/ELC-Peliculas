@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 			// Detecta errores y aplica consecuencia
 			let error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
 			sinErrores = !error || !error.url;
-			if (sinErrores) col++;
+			if (sinErrores && !col) col++;
 
 			// Obtiene el proveedor
 			if (sinErrores) {
@@ -259,7 +259,7 @@ window.addEventListener("load", async () => {
 		if (col < columnas) v.inputs[celda].focus();
 		else if (!v.guardar[fila].classList.contains("inactivo")) v.guardar[fila].focus();
 		// Fin
-		return
+		return;
 	};
 	let mensajeDeError = async (fila, campo) => {
 		// Obtiene la columna
@@ -273,7 +273,7 @@ window.addEventListener("load", async () => {
 				: ["", ""];
 		// Obtiene los datos de campo y valor
 		let valor = encodeURIComponent(v.inputs[indice].value);
-		// Consolidar la información
+		// Consolida la información
 		let condiciones = campoAnt + valorAnt + campo + "=" + valor;
 		// Averigua si hay algún error
 		let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
