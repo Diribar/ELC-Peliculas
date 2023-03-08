@@ -242,7 +242,7 @@ window.addEventListener("load", async () => {
 		// Barre el contenido de izquierda a derecha
 		col = columna;
 		sinErrores = true;
-		if (!col && sinErrores) await fn.controlesEnUrl(fila);
+		await fn.controlesEnUrl(fila);
 		if (col == 1 && sinErrores) await fn.controlesEnCalidad(fila, prov);
 		if (col == 2 && sinErrores) await fn.controlesEnCastellano(fila, prov);
 		if (col == 3 && sinErrores) await fn.controlesEnSubtitulosCastellano(fila);
@@ -258,6 +258,8 @@ window.addEventListener("load", async () => {
 		let celda = fila * columnas + col;
 		if (col < columnas) v.inputs[celda].focus();
 		else if (!v.guardar[fila].classList.contains("inactivo")) v.guardar[fila].focus();
+		// Fin
+		return
 	};
 	let mensajeDeError = async (fila, campo) => {
 		// Obtiene la columna
@@ -289,7 +291,7 @@ window.addEventListener("load", async () => {
 	v.form.addEventListener("input", async (e) => {
 		// Obtiene la fila y columna
 		let [fila, columna] = fn.obtieneFilaColumna(e);
-		// Si hubo un error (fila=filas), interrumpir
+		// Si hubo un error (fila=filas), interrumpe
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo
 		if (fila == filaAlta && !columna) fn.depuraUrl();
