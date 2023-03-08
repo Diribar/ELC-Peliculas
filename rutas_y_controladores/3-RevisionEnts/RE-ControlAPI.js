@@ -94,14 +94,13 @@ module.exports = {
 
 		// 2. Agrega un registro en el historial_cambios_de_status
 		let datosHist;
+		let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
 		(() => {
-			let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
-			let sugerido_en = creado ? original.creado_en : original.sugerido_en;
 			datosHist = {
 				entidad_id: id,
 				entidad,
 				sugerido_por_id,
-				sugerido_en,
+				sugerido_en: creado ? original.creado_en : original.sugerido_en,
 				analizado_por_id: revID,
 				analizado_en: ahora,
 				status_original_id: original.status_registro_id,
