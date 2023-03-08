@@ -6,7 +6,6 @@ window.addEventListener("load", async () => {
 	let aprobs = document.querySelectorAll(".edicion .inputError .aprob");
 	let rechs = document.querySelectorAll(".edicion .inputError .rech");
 	let ediciones_id = document.querySelectorAll(".edicion .edicion_id");
-	let ruta = "/revision/api/link/edicion/";
 	let condiciones = "?entidad=links";
 	let motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
 
@@ -16,26 +15,24 @@ window.addEventListener("load", async () => {
 		let url = condiciones;
 		url += "&edicion_id=" + ediciones_id[indice].innerHTML;
 		url += "&campo=" + inputs[indice].name;
-		let respuesta;
 
 		// Eventos
 		aprobs[indice].addEventListener("click", async () => {
-			// Completa el url
 			url += "&aprob=SI";
-			respuesta = await fetch(ruta + url).then((n) => n.json());
-			resultado(respuesta);
+			await resultado(url);
 		});
 		rechs[indice].addEventListener("click", async () => {
-			// Completa el url
 			url += "&motivo_id=" + motivoGenerico_id;
-			respuesta = await fetch(ruta + url).then((n) => n.json());
-			resultado(respuesta);
+			await resultado(url);
 		});
 	});
 });
 
 // Fórmulas
-let resultado = (respuesta) => {
+let resultado = async (url) => {
+	let ruta = "/revision/api/link/edicion/";
+	let respuesta = await fetch(ruta + url).then((n) => n.json());
+
 	// Si el resultado es 'OK', recarga la vista
 	if (respuesta.OK) location.reload();
 	// Muestra el mensaje
