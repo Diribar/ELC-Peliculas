@@ -29,15 +29,6 @@ app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false
 // Para usar cookies
 const cookies = require("cookie-parser");
 app.use(cookies());
-// Para estar siempre logueado, si existe el cookie
-const loginConCookie = require("./middlewares/varios/loginConCookie");
-app.use(loginConCookie);
-// Para tener el rastro de los últimos url
-const urlsUsadas = require("./middlewares/urls/urlsUsadas");
-app.use(urlsUsadas);
-// Para tener en locals las variables necesarias
-const locals = require("./middlewares/varios/locals");
-app.use(locals);
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
@@ -107,6 +98,8 @@ app.set("views", [
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
+		imagenes_movil: BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
+		imagenes_fijo: BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
@@ -126,10 +119,9 @@ app.set("views", [
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-	global.banco_de_imagenes = [
-		...await BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
-		...await BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
-	];
+	global.banco_de_imagenes = [...global.imagenes_movil, ...global.imagenes_fijo];
+	delete global.imagenes_movil
+	delete global.imagenes_fijo
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
@@ -139,6 +131,17 @@ app.set("views", [
 	// Dispara tareas en cierto horario
 	const cron = require("node-cron");
 	cron.schedule("0 23 * * *", () => rutinas.tareasDiarias(), {timezone: "Etc/GMT-12"});
+
+	// Middlewares que dependen de procesos anteriores
+	// Para estar siempre logueado, si existe el cookie
+	const loginConCookie = require("./middlewares/varios/loginConCookie");
+	app.use(loginConCookie);
+	// Para tener el rastro de los últimos url
+	const urlsUsadas = require("./middlewares/urls/urlsUsadas");
+	app.use(urlsUsadas);
+	// Para tener en locals las variables necesarias
+	const locals = require("./middlewares/varios/locals");
+	app.use(locals);
 
 	// Rutas que dependen de la variable 'global'
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");

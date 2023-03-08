@@ -60,7 +60,7 @@
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td class="ancho_tipo tipo campo">
+	<td class="ancho_tipo tipo_id campo">
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.tipo_id&&n.editado_por_id!=userID) %> 
 			<select name="tipo_id" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
