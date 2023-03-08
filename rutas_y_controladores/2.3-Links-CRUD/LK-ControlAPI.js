@@ -144,26 +144,16 @@ module.exports = {
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			// Si estaba en inactivar, lo lleva a aprobado
-			if (link.status_registro.inactivar) {
-				let datos = {status_registro_id: aprobado_id, motivo_id: null};
-				await BD_genericas.actualizaPorId("links", link.id, datos);
-				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link);
-			}
-			// Si estaba en recuperar, lo lleva a inactivo
-			else if (link.status_registro.recuperar) {
-				let datos = {status_registro_id: inactivo_id};
-				await BD_genericas.actualizaPorId("links", link.id, datos);
-				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link);
-			}
-			respuesta = {
-				mensaje: "Link llevado a su status anterior",
-				activos: true,
-				pasivos: true,
-				ocultar: true,
-			};
+			// Actualiza el status del link
+			let datos = link.status_registro.inactivar
+				? {status_registro_id: aprobado_id, motivo_id: null}
+				: {status_registro_id: inactivo_id};
+			await BD_genericas.actualizaPorId("links", link.id, datos);
+			// Actualiza los campos del producto asociado
+			link = {...link, ...datos};
+			procsCRUD.cambioDeStatus("links", link);
+			// Fin
+			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 		}
 		// Fin
 		return res.json(respuesta);
