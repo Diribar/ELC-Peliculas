@@ -44,16 +44,27 @@ module.exports = {
 		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: prodComb.ano_fin});
 		else bloques.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
 		// Status resumido
-		let statusResumido = prodComb.status_registro.gr_creado
-			? {id: 1, valor: "Pend. Aprobac."}
-			: prodComb.status_registro.aprobado
+		let statusResumido = prodComb.status_registro.aprobado
 			? {id: 2, valor: "Aprobado"}
-			: {id: 3, valor: "Inactivo"};
+			: prodComb.status_registro.inactivo
+			? {id: 3, valor: "Inactivo"}
+			: {id: 1, valor: "Pend. Aprobac."};
+		// Variable ultimaActualizacion
+		let fechas = [prodComb.creado_en, prodComb.sugerido_en];
+		if (prodComb.alta_analizada_en) fechas.push(prodComb.alta_analizada_en)
+		if (prodComb.editado_en) fechas.push(prodComb.editado_en)
+		if (prodComb.edic_analizada_en) fechas.push(prodComb.edic_analizada_en)
+		let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
+		// Datos del registro
+		let valorNombreApellido = (valor) => {
+			return valor ? (valor.apodo ? valor.apodo : valor.nombre) : "Ninguno";
+		};
 		bloques.push(
-			{titulo: "Creado en", valor: comp.fechaDiaMesAno(prodComb.creado_en)},
-			{titulo: "Última revisión", valor: comp.fechaDiaMesAno(prodComb.sugerido_en)},
+			{titulo: "Creado el", valor: comp.fechaDiaMesAno(prodComb.creado_en)},
+			{titulo: "Creado por", valor: valorNombreApellido(prodComb.creado_por)},
+			{titulo: "Última revisión", valor: ultimaActualizacion},
 			{titulo: "Status", ...statusResumido}
-			);
+		);
 		// Fin
 		return bloques;
 	},

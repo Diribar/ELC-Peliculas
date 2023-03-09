@@ -71,19 +71,12 @@ module.exports = {
 			return prodsDelRCLV;
 		},
 		bloqueDerecha: async (RCLV, cantProds) => {
-			// Variable ultimaActualizacion
-			let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
-			fechas.push(RCLV.edic_analizada_en, RCLV.sugerido_en);
-			let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
 			// Variable status
-			let creado = RCLV.status_registro.gr_creado;
-			let aprobado = RCLV.status_registro.aprobado;
-			let statusResumido = creado
-				? {id: 1, nombre: "Pend. Aprobac."}
-				: aprobado
+			let statusResumido = RCLV.status_registro.aprobado
 				? {id: 2, nombre: "Aprobado"}
-				: {id: 3, nombre: "Inactivado"};
-
+				: RCLV.status_registro.inactivo
+				? {id: 3, nombre: "Inactivo"}
+				: {id: 1, nombre: "Pend. Aprobac."};
 			// Comienza a armar el resumen
 			let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
 			if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
@@ -94,19 +87,26 @@ module.exports = {
 					{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
 					{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
 				);
+			// Variable ultimaActualizacion
+			let fechas = [RCLV.creado_en, RCLV.sugerido_en];
+			if (RCLV.alta_analizada_en) fechas.push(RCLV.alta_analizada_en);
+			if (RCLV.editado_en) fechas.push(RCLV.editado_en);
+			if (RCLV.edic_analizada_en) fechas.push(RCLV.edic_analizada_en);
+			let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
 			// Datos del registro
 			let valorNombreApellido = (valor) => {
 				return valor ? (valor.apodo ? valor.apodo : valor.nombre) : "Ninguno";
 			};
 			let resumenRegistro = [];
 			resumenRegistro.push(
-				{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
-				{titulo: "Registro creado en", valor: comp.fechaDiaMesAno(RCLV.creado_en)},
-				{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
-				{titulo: "Última actualizac.", valor: ultimaActualizacion},
+				{titulo: "Creado el", valor: comp.fechaDiaMesAno(RCLV.creado_en)},
+				{titulo: "Creado por", valor: valorNombreApellido(RCLV.creado_por)},
+				{titulo: "Última revisión", valor: ultimaActualizacion},
 				{titulo: "Productos en BD", valor: cantProds},
-				{titulo: "Status del registro", valor: statusResumido.nombre, id: statusResumido.id}
+				{titulo: "Status", valor: statusResumido.nombre, id: statusResumido.id}
 			);
+			// Si corresponde, se agrega el motivo
+			// if ()
 			// Fin
 			return {resumenRCLV, resumenRegistro};
 		},

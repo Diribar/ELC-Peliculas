@@ -87,6 +87,7 @@ module.exports = {
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			vista: req.baseUrl + req.path,
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
+			userIdentVal:req.session.usuario && req.session.usuario.status_registro.ident_validada,
 			dataEntry: {},
 			avatarLinksExternos,
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},

@@ -132,6 +132,7 @@ module.exports = {
 			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
 			...{omitirImagenDerecha: true, omitirFooter: false},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
+			userIdentVal:req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});
 	},
 };
