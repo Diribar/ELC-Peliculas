@@ -85,11 +85,9 @@ module.exports = {
 			...{bloquesIzquierda, bloquesDerecha},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-			vista: req.baseUrl + req.path,
+			...{vista: req.baseUrl + req.path, dataEntry: {}, avatarLinksExternos},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
-			userIdentVal:req.session.usuario && req.session.usuario.status_registro.ident_validada,
-			dataEntry: {},
-			avatarLinksExternos,
+			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},
 		});
 	},
