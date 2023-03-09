@@ -26,8 +26,8 @@ CREATE TABLE `altas_motivos_rech` (
   `orden` tinyint(3) unsigned NOT NULL,
   `comentario` varchar(41) NOT NULL,
   `bloqueo_perm_inputs` tinyint(1) DEFAULT 0,
-  `prod` tinyint(1) DEFAULT 0,
-  `rclv` tinyint(1) DEFAULT 0,
+  `prods` tinyint(1) DEFAULT 0,
+  `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
   PRIMARY KEY (`id`)
@@ -191,7 +191,7 @@ CREATE TABLE `aux_status_registro` (
   `recuperar` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,11 +278,11 @@ CREATE TABLE `edic_motivos_rech` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `comentario` varchar(40) NOT NULL,
-  `avatar_prod` tinyint(1) DEFAULT 0,
-  `avatar_rclv` tinyint(1) DEFAULT 0,
+  `avatar_prods` tinyint(1) DEFAULT 0,
+  `avatar_rclvs` tinyint(1) DEFAULT 0,
   `avatar_us` tinyint(1) DEFAULT 0,
-  `prod` tinyint(1) DEFAULT 0,
-  `rclv` tinyint(1) DEFAULT 0,
+  `prods` tinyint(1) DEFAULT 0,
+  `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
   `info_erronea` tinyint(1) DEFAULT 0,
   `version_actual` tinyint(1) DEFAULT 0,
@@ -304,7 +304,7 @@ CREATE TABLE `edics_aprob` (
   `entidad_id` int(10) unsigned NOT NULL,
   `campo` varchar(25) NOT NULL,
   `titulo` varchar(35) NOT NULL,
-  `valor_aprob` varchar(100) DEFAULT NULL,
+  `valorAprob` varchar(100) DEFAULT NULL,
   `editado_por_id` int(10) unsigned NOT NULL,
   `editado_en` datetime DEFAULT NULL,
   `edic_analizada_por_id` int(10) unsigned NOT NULL,
@@ -316,7 +316,7 @@ CREATE TABLE `edics_aprob` (
   KEY `edic_analizada_por_id` (`edic_analizada_por_id`),
   CONSTRAINT `edics_aprob_ibfk_1` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `edics_aprob_ibfk_2` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,8 +331,8 @@ CREATE TABLE `edics_rech` (
   `entidad_id` int(10) unsigned NOT NULL,
   `campo` varchar(20) NOT NULL,
   `titulo` varchar(21) NOT NULL,
-  `valor_rech` varchar(100) DEFAULT NULL,
-  `valor_aprob` varchar(100) DEFAULT NULL,
+  `valorRech` varchar(100) DEFAULT NULL,
+  `valorAprob` varchar(100) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned NOT NULL,
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
   `editado_por_id` int(10) unsigned NOT NULL,
@@ -664,7 +664,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `prod_1peliculas_ibfk_7` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_8` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_9` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -857,7 +857,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `prod_3capitulos_ibfk_7` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_8` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_9` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -919,7 +919,7 @@ CREATE TABLE `prod_4edicion` (
   CONSTRAINT `prod_4edicion_ibfk_3` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_6` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_9` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1005,7 +1005,7 @@ CREATE TABLE `rclv_1personajes` (
   `rol_iglesia_id` varchar(3) DEFAULT NULL,
   `proceso_id` varchar(3) DEFAULT NULL,
   `ap_mar_id` smallint(5) unsigned DEFAULT NULL,
-  `prods_aprob` tinyint(1) DEFAULT NULL,
+  `prods_aprob` tinyint(1) DEFAULT 1,
   `creado_por_id` int(10) unsigned NOT NULL,
   `creado_en` datetime DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
@@ -1056,7 +1056,7 @@ CREATE TABLE `rclv_1personajes` (
   CONSTRAINT `rclv_1personajes_ibfk_7` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_8` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_9` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1076,7 +1076,7 @@ CREATE TABLE `rclv_2hechos` (
   `cnt` tinyint(1) DEFAULT 0,
   `pst` tinyint(1) DEFAULT 0,
   `ama` tinyint(1) DEFAULT 0,
-  `prods_aprob` tinyint(1) DEFAULT NULL,
+  `prods_aprob` tinyint(1) DEFAULT 1,
   `creado_por_id` int(10) unsigned NOT NULL,
   `creado_en` datetime DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
@@ -1128,7 +1128,7 @@ CREATE TABLE `rclv_3valores` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) NOT NULL,
   `dia_del_ano_id` smallint(5) unsigned DEFAULT NULL,
-  `prods_aprob` tinyint(1) DEFAULT NULL,
+  `prods_aprob` tinyint(1) DEFAULT 1,
   `creado_por_id` int(10) unsigned NOT NULL,
   `creado_en` datetime DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
@@ -1167,7 +1167,7 @@ CREATE TABLE `rclv_3valores` (
   CONSTRAINT `rclv_3valores_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_8` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_9` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1232,7 +1232,7 @@ CREATE TABLE `rclv_dias` (
   `id` smallint(5) unsigned NOT NULL,
   `dia` tinyint(3) unsigned NOT NULL,
   `mes_id` tinyint(3) unsigned NOT NULL,
-  `nombre` varchar(6) NOT NULL,
+  `nombre` varchar(9) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `mes_id` (`mes_id`),
   CONSTRAINT `rclv_dias_ibfk_1` FOREIGN KEY (`mes_id`) REFERENCES `rclv_meses` (`id`)
@@ -1403,4 +1403,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-19  0:55:43
+-- Dump completed on 2023-02-22 14:27:27

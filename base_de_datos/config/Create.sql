@@ -31,35 +31,7 @@ CREATE TABLE `altas_motivos_rech` (
   `links` tinyint(1) DEFAULT 0,
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `aux_banco_imagenes`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `aux_banco_imagenes` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `dia_del_ano_id` smallint(5) unsigned NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `nombre_archivo` varchar(45) DEFAULT NULL,
-  `personaje_id` smallint(5) unsigned DEFAULT NULL,
-  `hecho_id` smallint(5) unsigned DEFAULT NULL,
-  `valor_id` smallint(5) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `nombre_archivo` (`nombre_archivo`),
-  KEY `dia_del_ano_id` (`dia_del_ano_id`),
-  KEY `aux_banco_fotos_FK` (`personaje_id`),
-  KEY `aux_banco_fotos_FK_1` (`hecho_id`),
-  KEY `aux_banco_fotos_FK_2` (`valor_id`),
-  CONSTRAINT `aux_banco_fotos_FK` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
-  CONSTRAINT `aux_banco_fotos_FK_1` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `aux_banco_fotos_FK_2` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
-  CONSTRAINT `aux_banco_imagenes_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,9 +63,9 @@ CREATE TABLE `aux_historial_cambios_status` (
   CONSTRAINT `aux_historial_cambios_status_ibfk_1` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `aux_historial_cambios_status_ibfk_2` FOREIGN KEY (`analizado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `aux_historial_cambios_status_ibfk_3` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
-  CONSTRAINT `aux_historial_cambios_status_ibfk_4` FOREIGN KEY (`status_original_id`) REFERENCES `aux_status_registro` (`id`),
-  CONSTRAINT `aux_historial_cambios_status_ibfk_5` FOREIGN KEY (`status_final_id`) REFERENCES `aux_status_registro` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `aux_historial_cambios_status_ibfk_4` FOREIGN KEY (`status_original_id`) REFERENCES `aux_status_registros` (`id`),
+  CONSTRAINT `aux_historial_cambios_status_ibfk_5` FOREIGN KEY (`status_final_id`) REFERENCES `aux_status_registros` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +81,63 @@ CREATE TABLE `aux_idiomas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aux_imagenes_fijo`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `aux_imagenes_fijo` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `dia_del_ano_id` smallint(5) unsigned NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `nombre_archivo` varchar(45) DEFAULT NULL,
+  `personaje_id` smallint(5) unsigned DEFAULT NULL,
+  `hecho_id` smallint(5) unsigned DEFAULT NULL,
+  `valor_id` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `nombre_archivo` (`nombre_archivo`),
+  KEY `dia_del_ano_id` (`dia_del_ano_id`),
+  KEY `aux_banco_fotos_FK` (`personaje_id`),
+  KEY `aux_banco_fotos_FK_1` (`hecho_id`),
+  KEY `aux_banco_fotos_FK_2` (`valor_id`),
+  CONSTRAINT `aux_banco_fotos_FK` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
+  CONSTRAINT `aux_banco_fotos_FK_1` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
+  CONSTRAINT `aux_banco_fotos_FK_2` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `aux_imagenes_fijo_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aux_imagenes_movil`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `aux_imagenes_movil` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `dia_del_ano_id` smallint(5) unsigned NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `nombre_archivo` varchar(30) DEFAULT NULL,
+  `cuando` varchar(45) NOT NULL,
+  `personaje_id` smallint(5) unsigned DEFAULT NULL,
+  `hecho_id` smallint(5) unsigned DEFAULT NULL,
+  `valor_id` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `nombre_archivo` (`nombre_archivo`),
+  KEY `aux_banco_fotos_FK` (`personaje_id`) USING BTREE,
+  KEY `aux_banco_fotos_FK_1` (`hecho_id`) USING BTREE,
+  KEY `aux_banco_fotos_FK_2` (`valor_id`) USING BTREE,
+  KEY `dia_del_ano_id` (`dia_del_ano_id`) USING BTREE,
+  CONSTRAINT `aux_banco_fotos_FK_1_copy` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
+  CONSTRAINT `aux_banco_fotos_FK_2_copy` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `aux_banco_fotos_FK_copy` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
+  CONSTRAINT `aux_imagenes_fijo_ibfk_1_copy` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,12 +197,12 @@ CREATE TABLE `aux_sexos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `aux_status_registro`
+-- Table structure for table `aux_status_registros`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `aux_status_registro` (
+CREATE TABLE `aux_status_registros` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(25) NOT NULL,
@@ -191,7 +220,7 @@ CREATE TABLE `aux_status_registro` (
   `recuperar` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,7 +318,7 @@ CREATE TABLE `edic_motivos_rech` (
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
   `bloqueo_perm_inputs` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +345,7 @@ CREATE TABLE `edics_aprob` (
   KEY `edic_analizada_por_id` (`edic_analizada_por_id`),
   CONSTRAINT `edics_aprob_ibfk_1` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `edics_aprob_ibfk_2` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=885 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -348,7 +377,7 @@ CREATE TABLE `edics_rech` (
   CONSTRAINT `edics_rech_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `edic_motivos_rech` (`id`),
   CONSTRAINT `edics_rech_ibfk_2` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `edics_rech_ibfk_3` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,10 +487,9 @@ CREATE TABLE `links` (
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `vigencia_revisada_en` datetime DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
-  `sugerido_por_id` int(10) unsigned DEFAULT NULL,
-  `sugerido_en` datetime DEFAULT NULL,
+  `sugerido_por_id` int(10) unsigned NOT NULL,
+  `sugerido_en` datetime NOT NULL DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`),
   KEY `pelicula_id` (`pelicula_id`),
@@ -477,7 +505,7 @@ CREATE TABLE `links` (
   KEY `sugerido_por_id` (`sugerido_por_id`),
   KEY `motivo_id` (`motivo_id`),
   CONSTRAINT `links_ibfk_1` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
-  CONSTRAINT `links_ibfk_10` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `links_ibfk_10` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `links_ibfk_11` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `links_ibfk_12` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `links_ibfk_2` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
@@ -488,7 +516,7 @@ CREATE TABLE `links` (
   CONSTRAINT `links_ibfk_7` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `links_ibfk_8` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `links_ibfk_9` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +553,7 @@ CREATE TABLE `links_edicion` (
   CONSTRAINT `links_edicion_ibfk_4` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
   CONSTRAINT `links_edicion_ibfk_5` FOREIGN KEY (`tipo_id`) REFERENCES `links_tipos` (`id`),
   CONSTRAINT `links_edicion_ibfk_6` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,15 +574,15 @@ CREATE TABLE `links_provs` (
   `generico` tinyint(1) DEFAULT 0,
   `url_distintivo` varchar(20) NOT NULL,
   `buscador_automatico` tinyint(1) NOT NULL,
-  `url_buscar_pre` varchar(25) DEFAULT '',
+  `url_buscar_pre` varchar(25) DEFAULT NULL,
   `trailer` tinyint(1) NOT NULL,
-  `url_buscar_post_tra` varchar(20) NOT NULL,
+  `url_buscar_post_tra` varchar(20) DEFAULT NULL,
   `pelicula` tinyint(1) NOT NULL,
-  `url_buscar_post_pel` varchar(20) NOT NULL,
+  `url_buscar_post_pel` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
   UNIQUE KEY `url_distintivo` (`url_distintivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -617,7 +645,7 @@ CREATE TABLE `prod_1peliculas` (
   `creado_en` datetime NOT NULL DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
   `alta_analizada_en` datetime DEFAULT NULL,
-  `alta_terminada_en` datetime DEFAULT NULL,
+  `alta_term_en` datetime DEFAULT NULL,
   `lead_time_creacion` decimal(4,2) unsigned DEFAULT NULL,
   `editado_por_id` int(10) unsigned DEFAULT NULL,
   `editado_en` datetime DEFAULT NULL,
@@ -625,7 +653,6 @@ CREATE TABLE `prod_1peliculas` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned NOT NULL DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -656,7 +683,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `prod_1peliculas_ibfk_11` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_12` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_13` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `prod_1peliculas_ibfk_14` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `prod_1peliculas_ibfk_14` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_15` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_16` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_17` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
@@ -664,7 +691,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `prod_1peliculas_ibfk_7` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_8` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_9` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -713,7 +740,7 @@ CREATE TABLE `prod_2colecciones` (
   `creado_en` datetime NOT NULL DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
   `alta_analizada_en` datetime DEFAULT NULL,
-  `alta_terminada_en` datetime DEFAULT NULL,
+  `alta_term_en` datetime DEFAULT NULL,
   `lead_time_creacion` decimal(4,2) unsigned DEFAULT NULL,
   `editado_por_id` int(10) unsigned DEFAULT NULL,
   `editado_en` datetime DEFAULT NULL,
@@ -721,7 +748,6 @@ CREATE TABLE `prod_2colecciones` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned NOT NULL DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -749,7 +775,7 @@ CREATE TABLE `prod_2colecciones` (
   CONSTRAINT `prod_2colecciones_ibfk_10` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_11` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_12` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `prod_2colecciones_ibfk_13` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `prod_2colecciones_ibfk_13` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_14` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_15` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
@@ -757,7 +783,7 @@ CREATE TABLE `prod_2colecciones` (
   CONSTRAINT `prod_2colecciones_ibfk_7` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_8` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_9` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -808,7 +834,7 @@ CREATE TABLE `prod_3capitulos` (
   `creado_en` datetime NOT NULL DEFAULT utc_timestamp(),
   `alta_analizada_por_id` int(10) unsigned DEFAULT NULL,
   `alta_analizada_en` datetime DEFAULT NULL,
-  `alta_terminada_en` datetime DEFAULT NULL,
+  `alta_term_en` datetime DEFAULT NULL,
   `lead_time_creacion` decimal(4,2) unsigned DEFAULT NULL,
   `editado_por_id` int(10) unsigned DEFAULT NULL,
   `editado_en` datetime DEFAULT NULL,
@@ -816,7 +842,6 @@ CREATE TABLE `prod_3capitulos` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned NOT NULL DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -849,7 +874,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `prod_3capitulos_ibfk_12` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_13` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_14` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `prod_3capitulos_ibfk_15` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `prod_3capitulos_ibfk_15` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_16` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_17` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_18` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
@@ -857,7 +882,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `prod_3capitulos_ibfk_7` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_8` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_9` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=452 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -919,7 +944,7 @@ CREATE TABLE `prod_4edicion` (
   CONSTRAINT `prod_4edicion_ibfk_3` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_6` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_9` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1017,7 +1042,6 @@ CREATE TABLE `rclv_1personajes` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -1044,7 +1068,7 @@ CREATE TABLE `rclv_1personajes` (
   CONSTRAINT `rclv_1personajes_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_10` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_11` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `rclv_1personajes_ibfk_11` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_12` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_13` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_14` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
@@ -1056,7 +1080,7 @@ CREATE TABLE `rclv_1personajes` (
   CONSTRAINT `rclv_1personajes_ibfk_7` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_8` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_9` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1088,7 +1112,6 @@ CREATE TABLE `rclv_2hechos` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -1111,7 +1134,7 @@ CREATE TABLE `rclv_2hechos` (
   CONSTRAINT `rclv_2hechos_ibfk_3` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_4` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_5` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_2hechos_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `rclv_2hechos_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_8` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_9` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
@@ -1140,7 +1163,6 @@ CREATE TABLE `rclv_3valores` (
   `edic_analizada_en` datetime DEFAULT NULL,
   `lead_time_edicion` decimal(4,2) unsigned DEFAULT NULL,
   `status_registro_id` tinyint(3) unsigned DEFAULT 1,
-  `perenne` tinyint(1) DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugerido_por_id` int(10) unsigned DEFAULT NULL,
   `sugerido_en` datetime DEFAULT NULL,
@@ -1163,11 +1185,11 @@ CREATE TABLE `rclv_3valores` (
   CONSTRAINT `rclv_3valores_ibfk_3` FOREIGN KEY (`alta_analizada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_4` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_5` FOREIGN KEY (`edic_analizada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registro` (`id`),
+  CONSTRAINT `rclv_3valores_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_8` FOREIGN KEY (`motivo_id`) REFERENCES `altas_motivos_rech` (`id`),
   CONSTRAINT `rclv_3valores_ibfk_9` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1403,4 +1425,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-22 14:27:27
+-- Dump completed on 2023-03-09 12:37:56

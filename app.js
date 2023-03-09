@@ -75,7 +75,7 @@ app.set("views", [
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
-		status_registro: BD_genericas.obtieneTodos("status_registro", "orden"),
+		status_registros: BD_genericas.obtieneTodos("status_registros", "orden"),
 		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
 		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
@@ -108,12 +108,12 @@ app.set("views", [
 
 	// Variables que dependen de las lecturas de BD
 	// Status
-	global.creado_id = global.status_registro.find((n) => n.creado).id;
-	global.creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
-	global.aprobado_id = global.status_registro.find((n) => n.aprobado).id;
-	global.inactivar_id = global.status_registro.find((n) => n.inactivar).id;
-	global.recuperar_id = global.status_registro.find((n) => n.recuperar).id;
-	global.inactivo_id = global.status_registro.find((n) => n.inactivo).id;
+	global.creado_id = global.status_registros.find((n) => n.creado).id;
+	global.creado_aprob_id = status_registros.find((n) => n.creado_aprob).id;
+	global.aprobado_id = global.status_registros.find((n) => n.aprobado).id;
+	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
+	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
+	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
