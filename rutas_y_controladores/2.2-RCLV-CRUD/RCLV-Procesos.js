@@ -190,7 +190,7 @@ module.exports = {
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
 				DE.creado_por_id = userID;
-				DE.sugerido_por_id=userID
+				DE.sugerido_por_id = userID;
 				let id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
 				// Les agrega el 'rclv_id' a session y cookie de origen
 				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
