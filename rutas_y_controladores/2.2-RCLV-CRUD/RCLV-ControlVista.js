@@ -58,7 +58,6 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
-			...{status_id: dataEntry.status_registro_id, aprobado_id, inactivo_id},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length},
@@ -127,21 +126,12 @@ module.exports = {
 		// Ir a la vista
 		// return res.send(prodsDelRCLV);
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Detalle de un " + entidadNombre,
-			entidad,
-			id,
-			origen: req.query.origen,
-			familia: comp.obtieneFamiliaEnSingular(entidad),
-			vista: req.baseUrl + req.path,
+			...{tema, codigo, titulo: "Detalle de un " + entidadNombre, vista: req.baseUrl + req.path},
+			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
-			omitirImagenDerecha: true,
-			omitirFooter: false,
-			prodsDelRCLV,
-			procCanoniz: await procesos.detalle.procCanoniz(original),
-			RCLVnombre: original.nombre,
-			entidadNombre,
+			...{omitirImagenDerecha: true, omitirFooter: false},
+			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
 		});
 	},
 };

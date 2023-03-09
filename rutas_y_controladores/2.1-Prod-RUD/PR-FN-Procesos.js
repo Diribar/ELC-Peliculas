@@ -33,9 +33,10 @@ module.exports = {
 		];
 		// rclvs
 		let rclvs = (titulo, RCLV_entidad, rel) => {
-			if (prodComb[rel]) bloques.push({titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id});
+			if (prodComb[rel].id != 1)
+				bloques.push({titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id});
 		};
-		rclvs("Personaje Histórico", "personajes", "personaje");
+		rclvs("Pers. Histórico", "personajes", "personaje");
 		rclvs("Hecho Histórico", "hechos", "hecho");
 		rclvs("Valor", "valores", "valor");
 		// Otros
@@ -47,8 +48,12 @@ module.exports = {
 			? {id: 1, valor: "Pend. Aprobac."}
 			: prodComb.status_registro.aprobado
 			? {id: 2, valor: "Aprobado"}
-			: {id: 3, valor: "Inactivado"};
-		bloques.push({titulo: "Status", ...statusResumido});
+			: {id: 3, valor: "Inactivo"};
+		bloques.push(
+			{titulo: "Creado en", valor: comp.fechaDiaMesAno(prodComb.creado_en)},
+			{titulo: "Última revisión", valor: comp.fechaDiaMesAno(prodComb.sugerido_en)},
+			{titulo: "Status", ...statusResumido}
+			);
 		// Fin
 		return bloques;
 	},
