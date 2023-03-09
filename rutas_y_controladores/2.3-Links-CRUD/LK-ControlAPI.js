@@ -70,7 +70,7 @@ module.exports = {
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
 			// Obtiene el link
-			link = await BD_genericas.obtienePorCamposConInclude("links", {url: url}, ["status_registro"]);
+			link = await BD_genericas.obtienePorCamposConInclude("links", {url}, "status_registro");
 			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente

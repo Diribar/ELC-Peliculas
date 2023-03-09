@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 
 	// Obtiene el registro
 	const registro = await BD_genericas.obtienePorId(entidad, id);
-	const statusActual = status_registro.find((n) => n.id == registro.status_registro_id);
+	const statusActual = status_registros.find((n) => n.id == registro.status_registro_id);
 
 	// Status Esperado
 	(() => {
@@ -40,7 +40,7 @@ module.exports = async (req, res, next) => {
 			// Si es el segundo status, le antepone la palabra 'o'
 			if (i) statusEsperadoNombres += "' o '";
 			// Le agrega un nombre de status
-			statusEsperadoNombres += status_registro.find((n) => n.id == statusEsperado_id).nombre;
+			statusEsperadoNombres += status_registros.find((n) => n.id == statusEsperado_id).nombre;
 		});
 		let articulo = statusEsperados_id.length == 1 ? "el" : "los";
 

@@ -296,13 +296,14 @@ module.exports = {
 		);
 	},
 	diaDelAno: (dataEntry) => {
+		let datos = {};
 		if (dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id <= 366) {
 			let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
-			dataEntry.dia = dia_del_ano.dia;
-			dataEntry.mes_id = dia_del_ano.mes_id;
+			datos.dia = dia_del_ano.dia;
+			datos.mes_id = dia_del_ano.mes_id;
 		}
 		// Fin
-		return dataEntry;
+		return datos;
 	},
 
 	// Gestión de archivos
@@ -477,7 +478,7 @@ module.exports = {
 		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
 		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
-		let anchor = " <a href='" + link + "' target='_blank'> " + entidadHTML + "</a>";
+		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 		// 3. Final
 		let final = " ya se encuentra en nuestra base de datos";
