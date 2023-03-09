@@ -1,4 +1,4 @@
-<% if (locals.status_id && userIdentVal && (status_id == aprobado_id || status_id == inactivo_id)) { %>
+<% if (locals.userIdentVal && locals.status_id && (status_id == aprobado_id || status_id == inactivo_id)) { %>
 	<div class="flechas">
 		<!-- Inactivar -->
 		<% if (status_id == aprobado_id) { %>
@@ -13,4 +13,8 @@
 			</a>
 		<% } %>
 	</div>
+	<style>
+		.flechas:has(.fa-circle-xmark) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
+		.flechas:has(.fa-circle-check) {border-color: var(--verde-oscuro); background: var(--verde-claro);}
+	</style>
 <% } %>
