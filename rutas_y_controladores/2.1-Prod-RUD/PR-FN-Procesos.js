@@ -33,9 +33,10 @@ module.exports = {
 		];
 		// rclvs
 		let rclvs = (titulo, RCLV_entidad, rel) => {
-			if (prodComb[rel]) bloques.push({titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id});
+			if (prodComb[rel].id != 1)
+				bloques.push({titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id});
 		};
-		rclvs("Personaje Histórico", "personajes", "personaje");
+		rclvs("Pers. Histórico", "personajes", "personaje");
 		rclvs("Hecho Histórico", "hechos", "hecho");
 		rclvs("Valor", "valores", "valor");
 		// Otros
@@ -43,12 +44,27 @@ module.exports = {
 		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: prodComb.ano_fin});
 		else bloques.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
 		// Status resumido
-		let statusResumido = prodComb.status_registro.gr_creado
-			? {id: 1, valor: "Pend. Aprobac."}
-			: prodComb.status_registro.aprobado
+		let statusResumido = prodComb.status_registro.aprobado
 			? {id: 2, valor: "Aprobado"}
-			: {id: 3, valor: "Inactivado"};
-		bloques.push({titulo: "Status", ...statusResumido});
+			: prodComb.status_registro.inactivo
+			? {id: 3, valor: "Inactivo"}
+			: {id: 1, valor: "Pend. Aprobac."};
+		// Variable ultimaActualizacion
+		let fechas = [prodComb.creado_en, prodComb.sugerido_en];
+		if (prodComb.alta_analizada_en) fechas.push(prodComb.alta_analizada_en)
+		if (prodComb.editado_en) fechas.push(prodComb.editado_en)
+		if (prodComb.edic_analizada_en) fechas.push(prodComb.edic_analizada_en)
+		let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
+		// Datos del registro
+		let valorNombreApellido = (valor) => {
+			return valor ? (valor.apodo ? valor.apodo : valor.nombre) : "Ninguno";
+		};
+		bloques.push(
+			{titulo: "Creado el", valor: comp.fechaDiaMesAno(prodComb.creado_en)},
+			{titulo: "Creado por", valor: valorNombreApellido(prodComb.creado_por)},
+			{titulo: "Última revisión", valor: ultimaActualizacion},
+			{titulo: "Status", ...statusResumido}
+		);
 		// Fin
 		return bloques;
 	},

@@ -34,10 +34,8 @@ module.exports = {
 		let {cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id} = datosCol;
 		// Prepara los datos del capítulo
 		let datosCap = {
-			coleccion_id: datosCol.id,
-			temporada: 1,
-			capitulo: indice + 1,
-			creado_por_id: 2,
+			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
+			...{creado_por_id: 2, sugerido_por_id: 2},
 			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
 		};
 		// Guarda los datos del capítulo
@@ -226,7 +224,7 @@ module.exports = {
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
-		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2};
+		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, sugerido_por_id: 2};
 
 		// Datos de la colección
 		let {direccion, guion, musica, produccion} = datosCol;

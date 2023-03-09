@@ -238,6 +238,7 @@ module.exports = {
 		let original = {
 			...req.cookies.datosOriginales,
 			creado_por_id: req.session.usuario.id,
+			sugerido_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)

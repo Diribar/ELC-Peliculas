@@ -48,7 +48,7 @@ module.exports = {
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado) res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
-			dataEntry = comp.diaDelAno(dataEntry);
+			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
 
 		// Info para la vista
@@ -126,21 +126,13 @@ module.exports = {
 		// Ir a la vista
 		// return res.send(prodsDelRCLV);
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Detalle de un " + entidadNombre,
-			entidad,
-			id,
-			origen: req.query.origen,
-			familia: comp.obtieneFamiliaEnSingular(entidad),
-			vista: req.baseUrl + req.path,
+			...{tema, codigo, titulo: "Detalle de un " + entidadNombre, vista: req.baseUrl + req.path},
+			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
-			omitirImagenDerecha: true,
-			omitirFooter: false,
-			prodsDelRCLV,
-			procCanoniz: await procesos.detalle.procCanoniz(original),
-			RCLVnombre: original.nombre,
-			entidadNombre,
+			...{omitirImagenDerecha: true, omitirFooter: false},
+			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
+			userIdentVal:req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});
 	},
 };
