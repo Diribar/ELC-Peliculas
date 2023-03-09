@@ -48,7 +48,7 @@ module.exports = {
 			// 3. Revisar error de revisión
 			if (tema == "revisionEnts" && !dataEntry.status_registro.creado) res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
-			dataEntry = comp.diaDelAno(dataEntry);
+			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
 
 		// Info para la vista
@@ -58,6 +58,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{status: dataEntry.status_registro_id, aprobado_id, inactivo_id},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length},

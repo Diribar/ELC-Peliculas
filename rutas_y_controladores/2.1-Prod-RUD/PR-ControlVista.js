@@ -25,7 +25,6 @@ module.exports = {
 
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		// return res.send(edicion)
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// 5. Configura el título de la vista
@@ -80,6 +79,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{titulo, prodNombre, producto: prodComb},
+			...{status: original.status_registro_id, aprobado_id, inactivo_id},
 			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloquesIzquierda, bloquesDerecha},
