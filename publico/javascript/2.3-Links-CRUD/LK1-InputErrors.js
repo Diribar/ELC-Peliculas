@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 		castellanoInputs: document.querySelectorAll(".castellano .inputError .input"),
 		subtit_castellano: document.querySelectorAll(".subtit_castellano .inputError .input"),
 		gratuitoInputs: document.querySelectorAll(".gratuito .inputError .input"),
-		tipoInputs: document.querySelectorAll(".tipo .inputError .input"),
+		tipoInputs: document.querySelectorAll(".tipo_id .inputError .input"),
 		completoInputs: document.querySelectorAll(".completo .inputError .input"),
 		parteInputs: document.querySelectorAll(".parte .inputError .input"),
 
@@ -235,6 +235,7 @@ window.addEventListener("load", async () => {
 				.map((n) => n.className)
 				.every((n) => n.includes("ocultar"));
 			OK && error ? v.guardar[fila].classList.remove("inactivo") : v.guardar[fila].classList.add("inactivo");
+			OK && error ? v.guardar[fila].setAttribute('tabindex', '0') : v.guardar[fila].setAttribute('tabindex', '-1');
 		},
 	};
 	// Sub-funciones ------------------------------------------------------------

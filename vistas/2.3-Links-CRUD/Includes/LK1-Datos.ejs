@@ -43,7 +43,7 @@
 		<%- link.gratuito ? "SI" : "NO" %>
 	</td>
 	<!-- Tipo -->
-	<td class="ancho_tipo taparMotivo <%- link.ediciones.find(n=>n.tipo_id && n.editado_por_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_tipo_id taparMotivo <%- link.ediciones.find(n=>n.tipo_id && n.editado_por_id!=userID) ? 'rojo' : '' %>">
 		<%- link.tipo_id==1 ? "Trailer" : "Película" %>
 	</td>
 	<!-- Completo -->

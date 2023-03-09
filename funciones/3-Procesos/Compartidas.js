@@ -477,7 +477,7 @@ module.exports = {
 		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
 		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
-		let anchor = " <a href='" + link + "' target='_blank'> " + entidadHTML + "</a>";
+		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 		// 3. Final
 		let final = " ya se encuentra en nuestra base de datos";
