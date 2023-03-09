@@ -14,35 +14,34 @@ module.exports = {
 	},
 	edicAprobRech: async (req, res) => {
 		// Variables
-		const {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
+		let {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query; // Tiene que ser 'let' por el 'entID'
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
 
 		// Obtiene el registro editado
 		let include = comp.obtieneTodosLosCamposInclude(entidad);
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
-		// Si no existe la edición, interrumpe el flujo
-		if (!edicion) return res.json({OK: false, mensaje: "No se encuentra la edición"});
-		// Si no existe el campo a analizar, interrumpe el flujo
-		if (edicion[campo] === null) return res.json({OK: false, mensaje: "El campo no está pendiente para procesar"});
 
+		// PROBLEMAS
+		// 1. No existe la edición
+		if (!edicion) return res.json({mensaje: "No se encuentra la edición"});
+		// 2. No existe el campo a analizar
+		if (edicion[campo] === null) return res.json({mensaje: "El campo no está pendiente para procesar"});
+		// 3. Rechazado sin motivo
+		if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
+
+		// Si la entidad es un link, obtiene su id
+		if (entidad == "links") entID = edicion.link_id;
 		// Obtiene la versión original con include
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		let statusAprob;
-		[edicion, statusAprob] = await procesos.edicion.edicAprobRech({
-			entidad,
-			original,
-			edicion,
-			revID,
-			campo,
-			aprob,
-			motivo_id,
-		});
+		let prodStatusAprob;
+		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
+		[edicion, prodStatusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
 		// Fin
-		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
+		return res.json({OK: true, quedanCampos: !!edicion, statusAprob: prodStatusAprob});
 	},
 	// Links
 	linkAltaBaja: async (req, res) => {

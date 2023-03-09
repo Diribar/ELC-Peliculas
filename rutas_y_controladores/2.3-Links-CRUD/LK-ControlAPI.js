@@ -27,7 +27,7 @@ module.exports = {
 		datos = procesos.datosLink(datos);
 		let mensaje;
 
-		// Obtiene el link
+		// Obtiene el link y el id de la edicion
 		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
 		let edicion_id = link
 			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
@@ -36,6 +36,7 @@ module.exports = {
 		// Si el link no existía, lo crea
 		if (!link) {
 			datos.creado_por_id = userID;
+			datos.sugerido_por_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.cambioDeStatus("links", link);
 			mensaje = "Link creado";

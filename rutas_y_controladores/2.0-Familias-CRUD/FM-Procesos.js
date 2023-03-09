@@ -291,7 +291,7 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
-	posibleAprobado: async function (entidad, original) {
+	prodsPosibleAprobado: async function (entidad, original) {
 		let statusAprob = original.status_registro && original.status_registro.aprobado;
 		// - Averigua si el registro está en un status previo a 'aprobado'
 		if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {

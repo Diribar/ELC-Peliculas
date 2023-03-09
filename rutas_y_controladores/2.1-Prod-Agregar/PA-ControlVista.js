@@ -128,8 +128,8 @@ module.exports = {
 		// 4.2 Datos Originales
 		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 		if (datosDuros.fuente == "IM") {
-			let {nombre_castellano, ano_estreno, sinopsis} = datosDuros;
-			datosOriginales = {...datosOriginales, nombre_castellano, ano_estreno, sinopsis};
+			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
+			datosOriginales = {...datosOriginales, nombre_original, nombre_castellano, ano_estreno, sinopsis};
 		}
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
