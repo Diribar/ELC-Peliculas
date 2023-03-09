@@ -17,9 +17,7 @@ module.exports = {
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		// 3. Render del formulario
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Agregar - Palabras Clave",
+			...{tema, codigo, titulo: "Agregar - Palabras Clave"},
 			dataEntry: {palabrasClave},
 		});
 	},
@@ -305,8 +303,8 @@ module.exports = {
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Imagen derecha
-		let imgDerPers= procsCRUD.obtieneAvatarOrigEdic(registroProd).orig
-		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic
+		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(registroProd).orig;
+		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
