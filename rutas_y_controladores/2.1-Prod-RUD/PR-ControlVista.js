@@ -79,7 +79,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{titulo, prodNombre, producto: prodComb},
-			...{status: original.status_registro_id, aprobado_id, inactivo_id},
+			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloquesIzquierda, bloquesDerecha},
