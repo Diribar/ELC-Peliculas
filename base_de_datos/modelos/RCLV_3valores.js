@@ -2,9 +2,11 @@ module.exports = (sequelize, dt) => {
 	const alias = "valores";
 	const columns = {
 		nombre: {type: dt.STRING(30)},
-		dia_del_ano_id: {type: dt.INTEGER},
-		
 		prods_aprob: {type: dt.INTEGER},
+		avatar_fijo_id: {type: dt.INTEGER},
+		avatar_movil_id: {type: dt.INTEGER},
+
+		dia_del_ano_id: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
@@ -44,6 +46,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
+
+		entidad.belongsTo(n.imagenes_fijo, {as: "avatar_fijo", foreignKey: "avatar_fijo_id"});
+		entidad.belongsTo(n.imagenes_movil, {as: "avatar_movil", foreignKey: "avatar_movil_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "valor_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "valor_id"});
