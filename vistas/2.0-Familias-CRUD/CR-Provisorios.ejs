@@ -2,13 +2,13 @@
 	<div class="flechas">
 		<!-- Inactivar -->
 		<% if (status_id == aprobado_id) { %>
-			<a href="<%= '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/crud/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Inactivar"></i>
 			</a>
 		<% } %>
 		<!-- Recuperar -->
 		<% if (status_id == inactivo_id) { %>
-			<a href="<%= '/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/crud/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Recuperar"></i>
 			</a>
 		<% } %>
