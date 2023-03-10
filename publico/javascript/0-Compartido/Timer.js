@@ -3,7 +3,9 @@ window.addEventListener("load", async () => {
 	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
 	const entID = new URL(location.href).searchParams.get("id");
-	let entidad = new URL(location.href).searchParams.get("entidad")
+	let entidad = new URL(location.href).searchParams.get("entidad");
+	const productos = ["peliculas", "colecciones", "capitulos"].includes(entidad);
+	const rclvs = ["personajes", "hechos", "valores"].includes(entidad);
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 	// Temas de horario y fechas
 	const unMinuto = 60 * 1000;
@@ -13,9 +15,7 @@ window.addEventListener("load", async () => {
 	const codigo = new URL(location.href).pathname;
 	let timer = document.querySelector("#timer");
 	// Horario Inicial
-	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) =>
-		n.json()
-	);
+	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) => n.json());
 	let horarioInicial = datos.capturado_en ? datos.capturado_en : datos.creado_en;
 	// Configurar el horario final
 	let horarioFinal = new Date(horarioInicial);
@@ -92,12 +92,12 @@ window.addEventListener("load", async () => {
 					link: "/revision/tablero-de-control",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
-			: codigo.startsWith("/producto/edicion/") || codigo.startsWith("/links/abm/")
+			: (codigo.includes("/edicion/") || codigo.startsWith("/crud/") || codigo.startsWith("/links/abm/")) && productos
 			? {
 					link: "/producto/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  }
-			: codigo.startsWith("/rclv/edicion/")
+			: (codigo.includes("/edicion/") || codigo.startsWith("/crud/")) && rclvs
 			? {
 					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
