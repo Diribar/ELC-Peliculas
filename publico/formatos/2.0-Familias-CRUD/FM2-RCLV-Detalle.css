@@ -3,5 +3,6 @@
 
 /* Recuadro */
 #recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
-#recuadro #contenido {position: relative; margin: 0 40px 20px;}
+#recuadro #contenido {margin: 0 40px 20px;}
 #contenido #informacion {margin-bottom: 20px;}
+#informacion #cuadroDeResultados {position: relative;}

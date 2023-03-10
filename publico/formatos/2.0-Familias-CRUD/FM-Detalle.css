@@ -1,7 +1,7 @@
 /* Cuerpo */
 #cuerpo {flex-direction: column;}
 #cuerpo {background: transparent;}
-#cuerpo #datos {display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
+#cuerpo #datos {justify-content: space-evenly; align-items: center;}
 
 /* Encabezado */
 #cuerpo #encabezado {border-top-left-radius: 20px; border-top-right-radius: 20px;}
