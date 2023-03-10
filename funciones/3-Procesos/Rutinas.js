@@ -113,7 +113,6 @@ module.exports = {
 			if (nuevaFecha_id) {
 				// Variables
 				let registros;
-				imgDerecha.carpeta = "4-RCLVs-Final/";
 				// Busca registros dentro de los de fecha 'movil'
 				registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id && n.cuando);
 				// Si no los encuentra, los busca dentro de los de fecha 'fija'
@@ -122,6 +121,7 @@ module.exports = {
 				let indice = parseInt(Math.random() * registros.length);
 				if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
 				imgDerecha = registros[indice];
+				imgDerecha.carpeta = "4-RCLVs-Final/";
 			}
 			// Acciones si no encontró una imagen para la fecha
 			else
