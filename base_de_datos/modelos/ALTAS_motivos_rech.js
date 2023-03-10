@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
+		explicacion: {type: dt.BOOLEAN},
 		};
 	const config = {
 		tableName: "altas_motivos_rech",
