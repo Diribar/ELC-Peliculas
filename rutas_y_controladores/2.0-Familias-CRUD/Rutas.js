@@ -13,11 +13,12 @@ const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 // Específicos de productos
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
+const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Varios
-const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
+const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -26,6 +27,7 @@ router.get("/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/averigua-capitulos", API.obtieneCapitulos);
+router.get("/api/averigua-si-se-requiere-explicacion", API.requiereExplicacion);
 
 // Rutas de vistas
 router.get("/inactivar", controles, vista.crudForm);
