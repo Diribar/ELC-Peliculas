@@ -2,6 +2,9 @@ module.exports = (sequelize, dt) => {
 	const alias = "personajes";
 	const columns = {
 		nombre: {type: dt.STRING(30)},
+		prods_aprob: {type: dt.INTEGER},
+		avatar: {type: dt.STRING(15)},
+
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 
@@ -13,8 +16,6 @@ module.exports = (sequelize, dt) => {
 		ap_mar_id: {type: dt.INTEGER},
 		proceso_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
-
-		prods_aprob: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
