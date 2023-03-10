@@ -54,7 +54,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, id, familia, entidadNombre},
-			...{original, imgDerPers, bloquesDerecha, motivosRech},
+			...{registro: original, imgDerPers, bloquesDerecha, motivosRech},
 		});
 	},
 	recuperar: (req, res) => {

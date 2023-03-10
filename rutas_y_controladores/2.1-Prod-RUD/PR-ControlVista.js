@@ -80,7 +80,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{prodNombre, producto: prodComb},
+			...{prodNombre, registro: prodComb},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
