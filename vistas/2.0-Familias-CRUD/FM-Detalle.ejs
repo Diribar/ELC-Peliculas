@@ -19,17 +19,16 @@
 				<% if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
 				<% } else { %>
-					<%- include("FM-21Encabezado") %>
+					<%- include("FM-Encabezado") %>
 				<% } %>
 			</div>
 			<!-- Contenido -->
 			<div id="contenido" class="flexCol grow">
 				<!-- Información -->
 				<div id="informacion">
-					<% if (tema == "rclv_crud") { %>
-						<%- include("RCLV-DT1-Largos") %>
-					<% } else { %>
-						<%- include("PR1-DT1-Largos") %>
+					<% if (tema == "prod_rud") { %><%- include("PR1-DT1-Largos") %>
+					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
+					<% } else if (tema == "crud") { %><%- include("FM1-DT-Largos") %>
 					<% } %>
 				</div>
 				<!-- Botones -->
@@ -42,10 +41,10 @@
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-		<% if (tema == "rclv_crud") { %>
-			<%- include("RCLV-DT2-Breves") %>
-		<% } else { %>
+		<% if (familias == "productos") { %>
 			<%- include("PR1-DT2-Breves") %>
+		<% } else if (familias == "rclvs") { %>
+			<%- include("RCLV-DT2-Breves") %>
 		<% } %>
 	</section>
 </section>
