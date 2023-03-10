@@ -1,11 +1,10 @@
 <!-- Motivos -->
 <section>
-    <h3>Motivo del Rechazo:</h3>
-    <p><em><%= registro.motivo.comentario %></em></p>
+    <h3>Motivo por el que fue Inactivado:</h3>
+    <p><em><%= registro.motivo ? registro.motivo.comentario : "No disponemos de esa información" %></em></p>
 </section>
 <!-- Comentario -->
-<section>
-    <h3>Comentario</h3>
-    <textarea name="comentario" autofocus>
-    </textarea>
+<section id="comentario" class="flexCol">
+    <h3>Comentario <span id="pendiente">170</span><span>/170</span></h3>
+    <textarea name="comentario" autofocus></textarea>
 </section>

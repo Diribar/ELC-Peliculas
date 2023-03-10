@@ -1,6 +1,6 @@
 <!-- Motivos -->
-<section>
-    <h3>Motivos de Rechazo:</h3>
+<section id="motivos">
+    <h3>Elegí un Motivo de Rechazo:</h3>
     <ul type="none">
         <% for (let motivo of motivos) { %>
             <li>
@@ -11,8 +11,7 @@
     </ul>
 </section>
 <!-- Comentario -->
-<section class="flexCol">
-    <h3>Comentario</h3>
-    <textarea name="comentario" autofocus>
-    </textarea>
+<section id="comentario" class="flexCol">
+    <h3>Comentario <span id="pendiente">170</span><span>/170</span></h3>
+    <textarea name="comentario" autofocus autocapitalize="sentences" maxlength="170"></textarea>
 </section>
