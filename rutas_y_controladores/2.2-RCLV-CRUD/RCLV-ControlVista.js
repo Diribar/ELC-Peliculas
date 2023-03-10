@@ -110,12 +110,12 @@ module.exports = {
 		const codigo = "detalle";
 
 		// Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		let {entidad, id, origen} = req.query
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		if (!origen) origen = "DTR"
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -140,8 +140,8 @@ module.exports = {
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo},
-			...{entidad, entidadNombre, id, origen: req.query.origen, familia, familias},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{entidad, entidadNombre, id, familia, familias},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{imgDerPers, bloqueDerecha},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},

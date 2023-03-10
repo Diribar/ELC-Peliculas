@@ -15,10 +15,11 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = req.path.slice(1, -1);
-		const {entidad, id} = req.query;
+		let {entidad, id, origen} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		if (!origen) origen = "DTP"
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let bloqueIzquierda, bloqueDerecha;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
@@ -81,10 +82,10 @@ module.exports = {
 		];
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{prodNombre, registro: prodComb},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			...{entidad, id, origen: req.query.origen, familia, familias},
+			...{entidad, id, familia, familias},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzquierda, bloqueDerecha},
 			...{camposInput1, camposInput2, produccion},

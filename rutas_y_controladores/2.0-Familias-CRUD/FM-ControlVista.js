@@ -14,7 +14,7 @@ module.exports = {
 		const codigo = "inactivar";
 
 		// Más variables
-		const {entidad, id} = req.query;
+		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
 		let imgDerPers, bloqueDerecha, cantProds;
@@ -59,7 +59,7 @@ module.exports = {
 		// Render del formulario
 		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
 			...{registro: original, imgDerPers, bloqueDerecha, motivosRech},
 		});
