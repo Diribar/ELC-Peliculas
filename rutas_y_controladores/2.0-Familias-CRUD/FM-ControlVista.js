@@ -16,8 +16,7 @@ module.exports = {
 		// Más variables
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		const usuario = req.session.usuario ? req.session.usuario : "";
-		let imgDerPers, bloquesDerecha, cantProds;
+		let imgDerPers, bloquesDerecha;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -30,16 +29,11 @@ module.exports = {
 		const titulo = "Inactivar un" + a + entidadNombre;
 
 		// Datos Breves
-		if (familia == "rclvs") {
-			// Productos
-			let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original, usuario);
-			cantProds = prodsDelRCLV.length;
-		}
 		bloquesDerecha =
 			familia == "productos"
 				? procsProd.bloquesDerecha(entidad, original)
 				: familia == "rclvs"
-				? procsRCLV.detalle.bloqueDerecha({...original, entidad}, cantProds)
+				? procsRCLV.detalle.bloqueDerecha({...original, entidad})
 				: [];
 		imgDerPers =
 			familia == "productos"

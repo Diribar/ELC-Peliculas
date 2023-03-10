@@ -7,7 +7,7 @@
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema == "prod_rud" || tema == "rclv_crud" || tema == "links_crud" || tema == "responsabilidad") { %><%- include("FM-1Head") %><% } %>
+	<% if (tema.endsWith("rud") || tema == "responsabilidad") { %><%- include("FM-1Head") %><% } %>
 	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
 	<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
 	<% if (tema == "mantenimiento") { %><%- include("MT-1Head") %><% } %>
@@ -26,6 +26,7 @@
 			<%- include('CMP-3Footer', {mostrar: !locals.omitirFooter}) %>
 			<section id="cuerpo">
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
+				<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
 				<% } else if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %>
 				<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
 				<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
