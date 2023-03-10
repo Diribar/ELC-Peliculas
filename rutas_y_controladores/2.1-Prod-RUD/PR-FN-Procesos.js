@@ -25,43 +25,43 @@ module.exports = {
 		// Fin
 		return [bloque1, bloque2, bloque3];
 	},
-	bloquesDerecha: (entidad, prodComb) => {
+	bloquesDerecha: (entidad, producto) => {
 		// Iniciales
 		let bloques = [
-			{titulo: "Público Sugerido", valor: comp.valorNombre(prodComb.publico, "Sin datos")},
-			{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
+			{titulo: "Público Sugerido", valor: comp.valorNombre(producto.publico, "Sin datos")},
+			{titulo: "Categoría", valor: comp.valorNombre(producto.categoria, "Sin datos")},
 		];
 		// rclvs
 		let rclvs = (titulo, RCLV_entidad, rel) => {
-			if (prodComb[rel].id != 1)
-				bloques.push({titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id});
+			if (producto[rel].id != 1)
+				bloques.push({titulo, RCLV_entidad, valor: producto[rel].nombre, RCLV_id: producto[rel].id});
 		};
 		rclvs("Pers. Histórico", "personajes", "personaje");
 		rclvs("Hecho Histórico", "hechos", "hecho");
 		rclvs("Valor", "valores", "valor");
 		// Otros
-		bloques.push({titulo: "Año de estreno", valor: prodComb.ano_estreno});
-		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: prodComb.ano_fin});
-		else bloques.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
+		bloques.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: producto.ano_fin});
+		else bloques.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		// Status resumido
-		let statusResumido = prodComb.status_registro.aprobado
+		let statusResumido = producto.status_registro.aprobado
 			? {id: 2, valor: "Aprobado"}
-			: prodComb.status_registro.inactivo
+			: producto.status_registro.inactivo
 			? {id: 3, valor: "Inactivo"}
 			: {id: 1, valor: "Pend. Aprobac."};
 		// Variable ultimaActualizacion
-		let fechas = [prodComb.creado_en, prodComb.sugerido_en];
-		if (prodComb.alta_analizada_en) fechas.push(prodComb.alta_analizada_en)
-		if (prodComb.editado_en) fechas.push(prodComb.editado_en)
-		if (prodComb.edic_analizada_en) fechas.push(prodComb.edic_analizada_en)
+		let fechas = [producto.creado_en, producto.sugerido_en];
+		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en)
+		if (producto.editado_en) fechas.push(producto.editado_en)
+		if (producto.edic_analizada_en) fechas.push(producto.edic_analizada_en)
 		let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
 		// Datos del registro
 		let valorNombreApellido = (valor) => {
 			return valor ? (valor.apodo ? valor.apodo : valor.nombre) : "Ninguno";
 		};
 		bloques.push(
-			{titulo: "Creado el", valor: comp.fechaDiaMesAno(prodComb.creado_en)},
-			{titulo: "Creado por", valor: valorNombreApellido(prodComb.creado_por)},
+			{titulo: "Creado el", valor: comp.fechaDiaMesAno(producto.creado_en)},
+			{titulo: "Creado por", valor: valorNombreApellido(producto.creado_por)},
 			{titulo: "Última revisión", valor: ultimaActualizacion},
 			{titulo: "Status", ...statusResumido}
 		);

@@ -15,15 +15,13 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = req.path.slice(1, -1);
-		// 2. Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		const {entidad, id} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let bloquesIzquierda, bloquesDerecha;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
-		// 3. Obtiene el producto 'Original' y 'Editado'
+		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
