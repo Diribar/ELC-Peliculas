@@ -10,7 +10,7 @@
 				<% } else { %>
 					<li>Por favor intentá incluir por lo menos un link gratuito</li>
 					<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-					<li>Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto</li>
+					<li>Al terminar, conviene que vayas a la de 'Detalle' para liberar el registro</li>
 					<li>Si hay datos en rojo, es porque están editados por otro usuario</li>
 				<% } %>
 			</ul>
@@ -79,7 +79,7 @@
 		<div class="flechas img">
 			<% for (let prov of links_provs.filter(n => n.buscador_automatico)) { %>
 				<a 
-					href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+					href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
 					target="_blank"
 					tabindex="-1"
 				>
