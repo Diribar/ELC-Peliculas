@@ -16,10 +16,12 @@
 		<div id="recuadro">
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema == "rclv_crud") { %>
+				<% if (tema == "crud" && familia == "rclvs") { %>
+					<%-  %>
+				<% } else if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
 				<% } else { %>
-					<%- include("FM-Encabezado") %>
+					<%- include("PR-Encabezado") %>
 				<% } %>
 			</div>
 			<!-- Contenido -->
