@@ -72,7 +72,7 @@ module.exports = {
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
-			: localhost + "/imagenes/0-Base/Avatar/Prod-Sin-Avatar.jpg";
+			: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 		// Datos para la vista
 		let origen =
 			req.session.FA || req.cookies.FA ? "ingreso-fa" : req.session.IM || req.cookies.IM ? "ingreso-manual" : "desambiguar";
@@ -303,7 +303,7 @@ module.exports = {
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Imagen derecha
-		let imgDerPers = procsCRUD.obtieneAvatarOrigEdic(registroProd).orig;
+		let imgDerPers = procsCRUD.obtieneAvatarProd(registroProd).orig;
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
 		// Render del formulario
 		return res.render("CMP-0Estructura", {

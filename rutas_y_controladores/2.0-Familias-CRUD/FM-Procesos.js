@@ -128,7 +128,7 @@ module.exports = {
 		return edicion;
 	},
 	// Avatar
-	obtieneAvatarOrigEdic: (original, edicion) => {
+	obtieneAvatarProd: (original, edicion) => {
 		let avatarOrig =
 			// Si es un url
 			original.avatar && original.avatar.startsWith("http")
@@ -136,8 +136,8 @@ module.exports = {
 				: // Si no existe avatarOrig
 				  localhost +
 				  "/imagenes/" +
-				  (!original || !original.avatar
-						? "0-Base/Avatar/Prod-Sin-Avatar.jpg"
+				  (!original.avatar
+						? "0-Base/Avatar/Sin-Avatar.jpg"
 						: // Si el avatar está 'aprobado'
 						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
 						? "2-Avatar-Prods-Final/" + original.avatar
@@ -149,6 +149,31 @@ module.exports = {
 		// avatarEdic
 		let avatarEdic =
 			edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : avatarOrig;
+
+		// Fin
+		return {orig: avatarOrig, edic: avatarEdic};
+	},
+	obtieneAvatarRCLV: (original, edicion) => {
+		let avatarOrig =
+			// Si es un url
+			original.avatar && original.avatar.startsWith("http")
+				? original.avatar
+				: // Si no existe avatarOrig
+				  localhost +
+				  "/imagenes/" +
+				  (!original.avatar
+						? "0-Base/Avatar/Sin-Avatar.jpg"
+						: // Si el avatar está 'aprobado'
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/4-RCLVs-Final/" + original.avatar)
+						? "4-RCLVs-Final/" + original.avatar
+						: // Si el avatar está 'a revisar'
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/4-RCLVs-Revisar/" + original.avatar)
+						? "4-RCLVs-Revisar/" + original.avatar
+						: "");
+
+		// avatarEdic
+		let avatarEdic =
+			edicion && edicion.avatar ? localhost + "/imagenes/4-RCLVs-Revisar/" + edicion.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};

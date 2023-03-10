@@ -131,13 +131,16 @@ module.exports = {
 			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
+		// Imagen Derecha
+		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original, edicion).orig;
+
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo,  ayudasTitulo},
+			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
-			...{omitirImagenDerecha: true, omitirFooter: false},
+			...{imgDerPers},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});

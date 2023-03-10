@@ -247,7 +247,7 @@ module.exports = {
 			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = procsCRUD.obtieneAvatarOrigEdic(original, edicion);
+				avatar = procsCRUD.obtieneAvatarProd(original, edicion);
 				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
@@ -265,7 +265,7 @@ module.exports = {
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(original, edicion);
 			// Obtiene el avatar
-			avatar = procsCRUD.obtieneAvatarOrigEdic(original).orig;
+			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			// Variables
 			motivos = edic_motivos_rech.filter((m) => m.prods);
 			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id, editado_en});
@@ -429,7 +429,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
-			imgDerPers: procsCRUD.obtieneAvatarOrigEdic(producto, "").orig,
+			imgDerPers: procsCRUD.obtieneAvatarProd(producto, "").orig,
 			cartelGenerico: true,
 		});
 	},
