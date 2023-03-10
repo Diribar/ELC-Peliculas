@@ -7,7 +7,7 @@
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
-	<% if (tema.endsWith("rud") || tema == "responsabilidad") { %><%- include("FM-1Head") %><% } %>
+	<% if (tema && (tema.endsWith("rud") || tema == "responsabilidad")) { %><%- include("FM-1Head") %><% } %>
 	<% if (tema == "revisionEnts") { %><%- include("RE-1Head") %><% } %>
 	<% if (tema == "revisionUs") { %><%- include("RU-1Head") %><% } %>
 	<% if (tema == "mantenimiento") { %><%- include("MT-1Head") %><% } %>
