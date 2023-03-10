@@ -1,0 +1,17 @@
+<!-- Motivos -->
+<section>
+    <h3>Motivos de Rechazo:</h3>
+    <ul type="none">
+        <% for (let motivo of motivos) { %>
+            <li>
+                <input type="radio" name="motivo_id" value="<%= motivo.id %>" id="<%= motivo.id %>">
+                <label for="<%= motivo.id %>"><%= motivo.comentario %></label>
+            </li>
+        <% } %>
+    </ul>
+</section>
+<!-- Comentario -->
+<section>
+    <h3>Comentario</h3>
+    <input name="comentario" type="textarea" wrap="hard" cols="20" autofocus>
+</section>

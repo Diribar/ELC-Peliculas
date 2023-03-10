@@ -1,9 +1,0 @@
-<h3>Motivos de Rechazo:</h3>
-<ul type="none">
-    <% for (let motivo of motivos) { %>
-        <li>
-            <input type="radio" name="motivo_id" value="<%= motivo.id %>" id="<%= motivo.id %>">
-            <label for="<%= motivo.id %>"><%= motivo.comentario %></label>
-        </li>
-    <% } %>
-</ul>
