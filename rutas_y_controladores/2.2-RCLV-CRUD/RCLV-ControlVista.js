@@ -132,7 +132,7 @@ module.exports = {
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
 		// Imagen Derecha
-		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original, edicion).orig;
+		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
