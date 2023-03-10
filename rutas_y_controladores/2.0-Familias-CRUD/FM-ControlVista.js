@@ -8,7 +8,7 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inactivar: async (req, res) => {
+	inactivarForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
 		const codigo = "inactivar";
@@ -54,17 +54,20 @@ module.exports = {
 
 		// Motivos de rechazo
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const motivosRech = altas_motivos_rech.filter((n) => n[petitFamilia]);
+		const motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
 
 		// Render del formulario
 		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
-			...{registro: original, imgDerPers, bloqueDerecha, motivosRech},
+			...{registro: original, imgDerPers, bloqueDerecha, motivos},
 		});
 	},
-	recuperar: (req, res) => {
+	inactivarGuardar:async (req, res) => {
+		return res.send("inactivarGuardar")
+	},
+	recuperarForm: (req, res) => {
 		return res.send("recuperar");
 	},
 };
