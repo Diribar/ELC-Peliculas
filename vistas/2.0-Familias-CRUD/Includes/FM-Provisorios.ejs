@@ -13,8 +13,13 @@
 			</a>
 		<% } %>
 	</div>
-	<style>
-		.flechas:has(.fa-circle-xmark) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
-		.flechas:has(.fa-circle-check) {border-color: var(--verde-oscuro); background: var(--verde-claro);}
-	</style>
+<% } else if (tema == "crud") { %>
+	<!-- Confirmar -->
+	<button type="submit" class="flechas">
+		<i class="fa-solid fa-circle-check" tabindex="-1" title="Confirma el cambio de status"></i>
+	</button>
 <% } %>
+<style>
+	.flechas:has(.fa-circle-xmark) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
+	.flechas:has(.fa-circle-check) {border-color: var(--verde-oscuro); background: var(--verde-claro);}
+</style>

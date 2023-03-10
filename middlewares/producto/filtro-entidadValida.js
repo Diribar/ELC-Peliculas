@@ -14,9 +14,13 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		let familia1 = comp.obtieneFamiliaEnSingular(entidad);
-		let familia2 = req.baseUrl + req.path;
-		if (!familia1 || (!familia2.includes(familia1) && (familia1 != "producto" || !familia2.includes("/links/"))))
+		const familia1 = comp.obtieneFamiliaEnSingular(entidad);
+		const familia2 = req.baseUrl + req.path;
+		const rutasPorFamilia = {
+			producto: ["/links/", "/crud/inactivar", "/crud/recuperar", familia1],
+			rclv: ["/crud/inactivar", "/crud/recuperar", familia1],
+		};
+		if (!familia1 || !rutasPorFamilia[familia1].some((n) => familia2.includes(n)))
 			informacion = {
 				mensajes: ["La entidad ingresada es inválida."],
 				iconos: [

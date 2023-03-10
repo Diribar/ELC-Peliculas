@@ -10,6 +10,8 @@ module.exports = {
 		prodsDelRCLV: async function (RCLV, usuario) {
 			// Variables
 			let userID = usuario ? usuario.id : "";
+			for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
+
 			// Convierte las ediciones propias de productos en productos
 			if (usuario) {
 				// Obtiene las ediciones
@@ -23,9 +25,6 @@ module.exports = {
 						ediciones
 						? ediciones.filter((n) => n.editado_por_id == userID)
 						: [];
-
-				// Configura RCLV
-				for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 				// Acciones si hay ediciones propias
 				if (edicionesPropias.length) {

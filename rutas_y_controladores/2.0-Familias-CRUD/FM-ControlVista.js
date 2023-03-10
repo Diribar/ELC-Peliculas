@@ -8,33 +8,41 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inactivar: async (req, res) => {
+	crudForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		const codigo = "inactivar";
+		const codigo = req.path.slice(1, -1);
 
 		// Más variables
-		const {entidad, id} = req.query;
+		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
-		let imgDerPers, bloqueDerecha;
+		let imgDerPers, bloqueDerecha, cantProds, motivos;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("status_registro", "creado_por", "alta_analizada_por");
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = "Inactivar un" + a + entidadNombre;
+		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " un" + a + entidadNombre;
+
+		// Cantidad de productos asociados al RCLV
+		if (familias == "rclvs") {
+			let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			cantProds = prodsDelRCLV.length;
+		}
 
 		// Datos Breves
 		bloqueDerecha =
 			familias == "productos"
 				? procsProd.bloqueDerecha(entidad, original)
 				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDerecha({...original, entidad})
+				? procsRCLV.detalle.bloqueDerecha({...original, entidad}, cantProds)
 				: [];
 		imgDerPers =
 			familias == "productos"
@@ -44,21 +52,27 @@ module.exports = {
 				: "";
 
 		// Ayuda para el titulo
-		const ayudasTitulo = ["Por favor decinos por qué sugerís inactivar este registro."];
+		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad)
-		const motivosRech = altas_motivos_rech.filter(n=>n[petitFamilia])
+		if (codigo == "inactivar") {
+			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
+		}
 
 		// Render del formulario
 		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo},
+			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
-			...{registro: original, imgDerPers, bloqueDerecha, motivosRech},
+			...{registro: original, imgDerPers, bloqueDerecha, motivos},
 		});
 	},
-	recuperar: (req, res) => {
-		return res.send("recuperar");
+	crudGuardar: async (req, res) => {
+		// Tema y Código
+		const tema = "crud";
+		const codigo = req.path.slice(1, -1);
+
+		return res.send({codigo, ...req.query, ...req.body});
 	},
 };

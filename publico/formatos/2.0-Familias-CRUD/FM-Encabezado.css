@@ -1,13 +1,16 @@
 /* Cuerpo */
 #cuerpo {background: var(--gris-claro);}
 
+/* Colores */
+#cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
+
 /* Encabezado */
-#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background: var(--celeste-claro);}
+#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 5px 10px;}
+#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);}
 #cuerpo #encabezado :is(#nombres, #colCap) {max-width: 50%;}
 #cuerpo #encabezado #nombres h2 {margin: 0; }
 #cuerpo #encabezado #nombres h2 {padding-bottom: 3px;}
-#cuerpo #encabezado #nombres h3 {color: var(--gris-oscuro); font-weight: normal; font-size: 1rem;}
+#cuerpo #encabezado #nombres h3 {font-weight: normal; font-size: 1rem;}
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap :is(#colecciones, #tempCapI, #tempCapS) {display: flex; flex-direction: row; justify-content: flex-end; align-items: center; line-height: 1;}
 #cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
@@ -15,6 +18,6 @@
 #cuerpo #encabezado #colCap #colecciones i {padding: 5px; font-size: .9rem;}
 #cuerpo #encabezado #colCap #tempCapI i {padding: 3px 5px 2px; font-size: .9rem;}
 #cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px;}
-#cuerpo #encabezado #colCap #tempCapS .pack i {color: var(--gris-oscuro); font-size: 1.1rem; margin-right: 3px;}
+#cuerpo #encabezado #colCap #tempCapS .pack i {font-size: 1.1rem; margin-right: 3px;}
 #cuerpo #encabezado #colCap #tempCapS #temporada {margin-right: 8px; border-radius: 5px;}
 #cuerpo #encabezado #colCap #tempCapS #capitulo {border-radius: 5px;}
