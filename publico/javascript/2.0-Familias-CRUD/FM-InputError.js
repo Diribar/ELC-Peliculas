@@ -1,6 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	let form = document.querySelector("#recuadro form");
 	let motivos = document.querySelectorAll("#motivos input");
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
@@ -31,5 +32,9 @@ window.addEventListener("load", async () => {
 		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
 		pendiente.innerHTML = 170 - com.length;
 		botonSubmit();
+	});
+
+	form.addEventListener("submit", (e) => {
+		if (submit.className.includes("inactivo")) e.preventDefault();
 	});
 });
