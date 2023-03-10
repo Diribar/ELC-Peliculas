@@ -1,7 +1,7 @@
 <section id="encabezadoDatos" class="flexCol">
 	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 	<div id="encabezado">
-		<%- include("PR-Encabezado") %>
+		<%- include("FM-21Encabezado") %>
 	</div>
 	<!-- Datos -->
 	<div id="datos">
@@ -12,7 +12,7 @@
 			<% for (let campo of camposInput1) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<!-- Otros -->
 			<%- include("PR2-Edic-Pais") %>
-			<%- include("PR2-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
+			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idioma_original_id}) %>
 			<%- include("PR2-Edic-Input", {campo: produccion}) %>
 			<% if (userRevisor) { %>
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
