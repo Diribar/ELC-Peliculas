@@ -15,7 +15,7 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
 		let imgDerPers, bloquesDerecha;
 
 		// Obtiene el registro
@@ -30,15 +30,15 @@ module.exports = {
 
 		// Datos Breves
 		bloquesDerecha =
-			familia == "productos"
+			familias == "productos"
 				? procsProd.bloquesDerecha(entidad, original)
-				: familia == "rclvs"
+				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDerecha({...original, entidad})
 				: [];
 		imgDerPers =
-			familia == "productos"
+			familias == "productos"
 				? procesos.obtieneAvatarProd(original).orig
-				: familia == "rclvs"
+				: familias == "rclvs"
 				? procesos.obtieneAvatarRCLV(original).orig
 				: "";
 
@@ -53,7 +53,7 @@ module.exports = {
 		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{entidad, id, familia, entidadNombre},
+			...{entidad, id, familias, entidadNombre},
 			...{registro: original, imgDerPers, bloquesDerecha, motivosRech},
 		});
 	},

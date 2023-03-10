@@ -114,6 +114,8 @@ module.exports = {
 		let id = req.query.id;
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -139,7 +141,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{entidad, entidadNombre, id, origen: req.query.origen, familia, familias},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{imgDerPers, bloqueDerecha},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},

@@ -17,6 +17,8 @@ module.exports = {
 		const codigo = req.path.slice(1, -1);
 		const {entidad, id} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let bloquesIzquierda, bloquesDerecha;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
@@ -82,7 +84,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{prodNombre, registro: prodComb},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{entidad, id, origen: req.query.origen, familia, familias},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloquesIzquierda, bloquesDerecha},
 			...{camposInput1, camposInput2, produccion},
