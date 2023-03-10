@@ -4,8 +4,10 @@
 		<!-- Ayuda -->
 		<div class="ayuda">
 			<i class="fa-solid fa-circle-question ayudaClick desplClick">
-				<ul class="ayudaMostrar ocultar desplMostrar" type="none">
-					<li>Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.</li>
+				<ul class="ayudaMostrar ocultar desplMostrar" type="<%- ayudasTitulo.length > 1 ? 'dots' : 'none' %>">
+					<% for (let ayuda of ayudasTitulo) { %>
+						<li><%= ayuda %></li>
+					<% } %>
 				</ul>
 			</i>
 		</div>

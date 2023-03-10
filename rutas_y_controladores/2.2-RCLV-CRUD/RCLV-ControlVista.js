@@ -114,6 +114,8 @@ module.exports = {
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 
+		// Titulo
+		const titulo = "Detalle de un " + entidadNombre;
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
@@ -123,16 +125,21 @@ module.exports = {
 		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
 		let cantProds = prodsDelRCLV.length;
 
+		// Ayuda para el titulo
+		const ayudasTitulo = [
+			"El grupo de películas con fondo azul, son las que ya tenemos en nuestra BD.",
+			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
+			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
+		];
 		// Ir a la vista
-		// return res.send(prodsDelRCLV);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Detalle de un " + entidadNombre, vista: req.baseUrl + req.path},
+			...{tema, codigo, titulo,  ayudasTitulo},
 			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
 			...{omitirImagenDerecha: true, omitirFooter: false},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
-			userIdentVal:req.session.usuario && req.session.usuario.status_registro.ident_validada,
+			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});
 	},
 };
