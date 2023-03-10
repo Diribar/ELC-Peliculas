@@ -304,6 +304,9 @@ module.exports = {
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
+		// Imagen derecha
+		let imgDerPers= procsCRUD.obtieneAvatarOrigEdic(registroProd).orig
+		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -315,7 +318,7 @@ module.exports = {
 			prodNombre,
 			imagenMuchasGracias,
 			ruta: "/producto/",
-			imgDerPers: procsCRUD.obtieneAvatarOrigEdic(registroProd).orig,
+			imgDerPers,
 			tituloImgDerPers: registroProd.nombre_castellano,
 		});
 	},
@@ -423,7 +426,6 @@ module.exports = {
 		// 3. Actualiza algunas session y cookie
 		// 3.1. Datos Originales
 		let datosOriginales = {...datos};
-		datosOriginales.avatar = datosOriginales.avatar_url;
 		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 		// 3.2. Film Affinity

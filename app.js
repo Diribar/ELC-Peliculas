@@ -158,7 +158,7 @@ app.set("views", [
 	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 
 	// Urls que dependen de la variable 'global'
-	app.use("/crud/api", rutaCRUD);
+	app.use("/crud", rutaCRUD);
 	app.use("/producto/agregar", rutaProd_Crear);
 	app.use("/producto", rutaProd_RUD);
 	app.use("/rclv", rutaRCLV_CRUD);
