@@ -17,7 +17,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
-		let imgDerPers, bloqueDerecha;
+		let imgDerPers, bloqueDerecha, cantProds;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -29,12 +29,18 @@ module.exports = {
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
 		const titulo = "Inactivar un" + a + entidadNombre;
 
+		// Cantidad de productos asociados al RCLV
+		if (familias == "rclvs") {
+			let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			cantProds = prodsDelRCLV.length;
+		}
+
 		// Datos Breves
 		bloqueDerecha =
 			familias == "productos"
 				? procsProd.bloqueDerecha(entidad, original)
 				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDerecha({...original, entidad})
+				? procsRCLV.detalle.bloqueDerecha({...original, entidad}, cantProds)
 				: [];
 		imgDerPers =
 			familias == "productos"
@@ -47,8 +53,8 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís inactivar este registro."];
 
 		// Motivos de rechazo
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad)
-		const motivosRech = altas_motivos_rech.filter(n=>n[petitFamilia])
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const motivosRech = altas_motivos_rech.filter((n) => n[petitFamilia]);
 
 		// Render del formulario
 		// return res.send(imgDerPers)
