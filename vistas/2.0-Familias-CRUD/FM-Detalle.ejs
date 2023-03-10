@@ -19,7 +19,7 @@
 				<% if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
 				<% } else { %>
-					<%- include("CR-Encabezado") %>
+					<%- include("FM-Encabezado") %>
 				<% } %>
 			</div>
 			<div id="contenido" class="flexCol grow">
@@ -32,7 +32,7 @@
 				</div>
 				<!-- Botones -->
 				<div id="botones" class="flexRow">
-					<%- include("CR-Flechas") %>
+					<%- include("FM-Flechas") %>
 					<div class="flechas inactivo">
 						<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
 						<% if (entidad != "colecciones") { %>
@@ -42,7 +42,7 @@
 						<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
 						<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
 					</div>
-					<%- include("CR-Provisorios") %>
+					<%- include("FM-Provisorios") %>
 				</div>
 			</div>
 		</div>

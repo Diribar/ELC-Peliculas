@@ -21,7 +21,7 @@
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 		<div id="encabezado">
-			<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
+			<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "FM-Encabezado") %>
 		</div>
 		<div id="filtros" class="flexRow spaceAround">
 			<!-- Película/Trailer -->
@@ -74,7 +74,7 @@
 				</a>
 			</div>
 		<% } else { %>
-			<%- include("CR-Flechas") %>
+			<%- include("FM-Flechas") %>
 		<% } %>
 		<div class="flechas img">
 			<% for (let prov of links_provs.filter(n => n.buscador_automatico)) { %>
