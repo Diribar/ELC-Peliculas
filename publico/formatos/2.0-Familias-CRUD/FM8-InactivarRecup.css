@@ -1,18 +1,23 @@
 /* Colores */
 #datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}
-/* Inactivar */
+/* Colores - Inactivar */
 #datosLargos #recuadro:has(.inactivar) #encabezado {background: var(--rojo-oscuro);}
 #datosLargos #recuadro:has(.inactivar) {background: var(--rojo-claro);}
 #datosLargos #recuadro #informacion.inactivar {color: var(--rojo-oscuro);}
-/* Recuperar */
+/* Colores - Recuperar */
 #datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
 #datosLargos #recuadro:has(.recuperar) {background: var(--verde-claro);}
 #datosLargos #recuadro #informacion.recuperar {color: var(--verde-oscuro);}
 
-/* Otros temas */
+/* Sector de información */
 #datosLargos #recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
 #datosLargos #recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
-#datosLargos #recuadro #informacion input[type='textarea'] {width: 200px; height: 100px;}
-#datosLargos #recuadro #informacion input[type='textarea'] {padding: 5px 10px; border-radius: 8px;}
-#datosLargos #recuadro #informacion input[type='textarea'] {align-self: first baseline;}
+
+.inactivar ul li {line-height: 1.5;}
+
+/* Textarea */
+#datosLargos #recuadro #informacion textarea {width: 250px; height: 100%;}
+#datosLargos #recuadro #informacion textarea {padding: 10px; border-radius: 8px;}
+
+/* Botones */
 #contenido #botones {margin: 10px 40px 30px;}

@@ -21,7 +21,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "alta_analizada_por");
+		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
@@ -66,6 +66,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
 			...{registro: original, imgDerPers, bloqueDerecha, motivos},
+			cartelGenerico: true,
 		});
 	},
 	crudGuardar: async (req, res) => {

@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		info_erronea: {type: dt.BOOLEAN},
 		version_actual: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
-		bloqueo_perm_inputs: {type: dt.BOOLEAN},
+		bloqueoInput: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "edic_motivos_rech",
