@@ -1,0 +1,28 @@
+<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+	<!-- Contenido que se desplaza -->
+	<nav> 
+		<!-- Calificaciones -->
+		<h3>Calificaciones</h3>
+		<% if (producto.calificacion) { %>
+			<p id="calificacionesResultados"></p>
+			<div id="calificacionesGrafico"></div>
+		<% } else { %>
+			<p style="text-align: center; margin-top: 10px; font-style: italic;">- Sin calificaciones aún -</p>
+		<% } %>
+		<!-- Texto -->
+		<h3>Datos Adicionales</h3>
+		<div id="texto">
+			<% for (bloque of bloquesDerecha) { %>
+				<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
+					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+					<% if (bloque.RCLV_entidad) { %>
+						<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
+						<a href="/rclv/detalle/?<%= datosRCLV %>">
+							<i class="fa-solid fa-circle-info"></i>
+						</a>
+					<% } %>
+				</p>
+			<% } %>
+		</div>
+	</nav>
+</section>
