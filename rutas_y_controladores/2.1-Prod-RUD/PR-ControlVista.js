@@ -32,7 +32,7 @@ module.exports = {
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
-			(entidad == "capitulos" ? "l " : " la ") +
+			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
 		// 6. Obtiene el nombre de los países
 		let paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
@@ -60,7 +60,7 @@ module.exports = {
 			// Datos Duros - Bases de Datos
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, {...edicion, ...edicSession});
+			imgDerPers = procsCRUD.obtieneAvatarProd(original, {...edicion, ...edicSession});
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
@@ -70,22 +70,26 @@ module.exports = {
 			// Variables de 'Detalle'
 			bloquesIzquierda = procesos.bloquesIzquierda(paisesNombre, prodComb);
 			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
-			imgDerPers = procsCRUD.obtieneAvatarOrigEdic(original, edicion).edic;
+			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+		// Ayuda para el titulo
+		const ayudasTitulo = [
+			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
+		];
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo},
-			...{titulo, prodNombre, producto: prodComb},
+			...{tema, codigo, titulo, ayudasTitulo},
+			...{prodNombre, producto: prodComb},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloquesIzquierda, bloquesDerecha},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-			...{vista: req.baseUrl + req.path, dataEntry: {}, avatarLinksExternos},
+			...{dataEntry: {}, avatarLinksExternos},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},

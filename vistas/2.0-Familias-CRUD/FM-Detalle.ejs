@@ -1,0 +1,51 @@
+<div id="tituloPrincipal">
+	<h1 id="titulo"><%= titulo %></h1>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="<%- ayudasTitulo.length > 1 ? 'dots' : 'none' %>">
+				<% for (let ayuda of ayudasTitulo) { %>
+					<li><%= ayuda %></li>
+				<% } %>
+			</ul>
+		</i>
+	</div>
+</div>
+<section id="datos" class="flexRow grow">
+	<section id="datosLargos">
+		<div id="recuadro">
+			<!-- Encabezado -->
+			<div id="encabezado">
+				<% if (tema == "rclv_crud") { %>
+					<%- include("RCLV-Encabezado") %>
+				<% } else { %>
+					<%- include("FM-Encabezado") %>
+				<% } %>
+			</div>
+			<!-- Contenido -->
+			<div id="contenido" class="flexCol grow">
+				<!-- Información -->
+				<div id="informacion">
+					<% if (tema == "rclv_crud") { %>
+						<%- include("RCLV-DT1-Largos") %>
+					<% } else { %>
+						<%- include("PR1-DT1-Largos") %>
+					<% } %>
+				</div>
+				<!-- Botones -->
+				<div id="botones" class="flexRow">
+					<%- include("FM-Flechas") %>
+					<%- include("PR1-DT3-Miscelaneas") %>
+					<%- include("FM-Provisorios") %>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+		<% if (tema == "rclv_crud") { %>
+			<%- include("RCLV-DT2-Breves") %>
+		<% } else { %>
+			<%- include("PR1-DT2-Breves") %>
+		<% } %>
+	</section>
+</section>

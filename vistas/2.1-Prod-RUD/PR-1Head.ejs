@@ -5,8 +5,9 @@
 
 <!-- Detalle para Producto -->
 <% if (codigo == "detalle") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-1Detalle.css">
+	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Detalle.css">
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
+	<link rel="stylesheet" href="/formatos/2.1-Prod-RUD/PR-1Detalle.css">
 	<% if (producto.calificacion) { %>
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 		<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Grafico.js"></script>
@@ -15,8 +16,8 @@
 
 <!-- Edición -->
 <% if (codigo == "edicion") { %>
-	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-2Edicion.css">
 	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM1-Prod-0Varios.css">
+	<link rel="stylesheet" href="/formatos/2.1-Prod-RUD/PR-2Edicion.css">
 	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-InputError.js"></script>
 	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-vista_RCLV.js"></script>
 <% } %>

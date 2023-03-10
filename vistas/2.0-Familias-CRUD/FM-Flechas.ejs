@@ -6,19 +6,19 @@
 		</a>
 	<% } %>
 	<!-- Detalle -->
-	<% if (!vista.includes("/detalle/") && locals.id) { %>
+	<% if (codigo != "detalle" && locals.id) { %>
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<!-- Edición -->
-	<% if (!vista.includes("/edicion/") && locals.id) { %>
+	<% if (codigo != "edicion" && locals.id) { %>
 		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</a>
 	<% } %>
 	<!-- Links -->
-	<% if (vista.includes("/producto/") && locals.id) { %>
+	<% if (tema == "prod_rud" && locals.id) { %>
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>

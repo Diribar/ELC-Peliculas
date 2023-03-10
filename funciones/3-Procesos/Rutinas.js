@@ -77,9 +77,9 @@ module.exports = {
 
 		// Borra las imagenes que no se corresponden con los titulos
 		// Obtiene el listado de archivos
-		let imagenes = fs.readdirSync("./publico/imagenes/4-ImagenDerecha/");
+		let imagenes = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
 		for (let imagen of imagenes)
-			if (!fechas.includes(imagen.slice(0, 9))) await comp.borraUnArchivo("./publico/imagenes/4-ImagenDerecha/", imagen);
+			if (!fechas.includes(imagen.slice(0, 9))) await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", imagen);
 
 		// Fin
 		return info;
@@ -113,7 +113,6 @@ module.exports = {
 			if (nuevaFecha_id) {
 				// Variables
 				let registros;
-				imgDerecha.carpeta = "4-Banco-de-imagenes/";
 				// Busca registros dentro de los de fecha 'movil'
 				registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id && n.cuando);
 				// Si no los encuentra, los busca dentro de los de fecha 'fija'
@@ -122,6 +121,7 @@ module.exports = {
 				let indice = parseInt(Math.random() * registros.length);
 				if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
 				imgDerecha = registros[indice];
+				imgDerecha.carpeta = "4-RCLVs-Final/";
 			}
 			// Acciones si no encontró una imagen para la fecha
 			else
@@ -135,11 +135,11 @@ module.exports = {
 		// Guarda la nueva imagen
 		await (async () => {
 			// Borra la 'imagenAnterior'
-			await comp.borraUnArchivo("./publico/imagenes/4-ImagenDerecha", fecha + ".jpg");
+			await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha", fecha + ".jpg");
 			// Copia la nueva imagen como 'imgDerecha'
 			await comp.copiaUnArchivoDeImagen(
 				imgDerecha.carpeta + imgDerecha.nombre_archivo,
-				"4-ImagenDerecha/" + fecha + ".jpg"
+				"5-ImagenDerecha/" + fecha + ".jpg"
 			);
 
 			// Fin
