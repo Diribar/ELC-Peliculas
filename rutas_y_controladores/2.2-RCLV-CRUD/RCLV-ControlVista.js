@@ -105,14 +105,17 @@ module.exports = {
 		return res.redirect(destino);
 	},
 	detalle: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "rclv_crud";
 		const codigo = "detalle";
-		// 2. Variables
+
+		// Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -132,15 +135,15 @@ module.exports = {
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
 		// Imagen Derecha
+		const bloqueDerecha = procesos.detalle.bloqueDerecha({...original, entidad}, cantProds);
 		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{entidad, entidadNombre, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{entidad, entidadNombre, id, origen: req.query.origen, familia, familias},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			bloqueDerecha: await procesos.detalle.bloqueDerecha({...original, entidad}, cantProds),
-			...{imgDerPers},
+			...{imgDerPers, bloqueDerecha},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});

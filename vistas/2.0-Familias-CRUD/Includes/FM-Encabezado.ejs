@@ -1,0 +1,47 @@
+<div id="nombres">
+	<h2><%- registro.nombre_castellano ? registro.nombre_castellano : registro.nombre ? registro.nombre : '' %></h2>
+	<% if (registro.nombre_original) { %>
+		<h3><em><%= registro.nombre_original %></em></h3>
+	<% } %>
+</div>
+<% if (entidad == "colecciones" || entidad == "capitulos") { %>
+	<div id="colCap">
+		<!-- Cantidad de Temporadas y de Capítulos -->
+		<% if (entidad == "colecciones") { %>
+			<div id="colecciones">
+				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<div>
+					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
+				</div>
+			</div>
+			<% } %>
+		<!-- Colección a la que pertenece -->
+		<% if (entidad == "capitulos") { %>
+			<div id="tempCapI">
+				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<p><strong>De la colección:</strong>
+					<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>">
+						<span><%= registro.coleccion.nombre_castellano %></span>
+					</a>
+				</p>
+			</div>
+			<div id="tempCapS">
+				<div class="pack">
+					<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>
+					<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
+				</div>
+				<select id="temporada">
+					<% for (let temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
+						<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+					<% } %>
+				</select>
+				<select id="capitulo">
+					<% for (let capitulo of registro.capitulos) { %>
+						<option <% if (registro.capitulo == capitulo) { %>selected<% } %> >Capítulo <%= capitulo %></option>
+					<% } %>
+				</select>
+			</div>
+		<% } %>
+	</div>
+<% } %>

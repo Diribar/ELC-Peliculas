@@ -2,7 +2,7 @@
 <nav> 
 	<!-- Calificaciones -->
 	<h3>Calificaciones</h3>
-	<% if (producto.calificacion) { %>
+	<% if (registro.calificacion) { %>
 		<p id="calificacionesResultados"></p>
 		<div id="calificacionesGrafico"></div>
 	<% } else { %>
@@ -11,7 +11,7 @@
 	<!-- Texto -->
 	<h3>Datos Adicionales</h3>
 	<div id="texto">
-		<% for (bloque of bloquesDerecha) { %>
+		<% for (bloque of bloqueDerecha) { %>
 			<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
 				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 				<% if (bloque.RCLV_entidad) { %>

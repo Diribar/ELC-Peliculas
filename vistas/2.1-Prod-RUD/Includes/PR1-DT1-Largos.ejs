@@ -1,9 +1,9 @@
 <!-- Sinopsis -->
 <div id="sinopsis" class="bordeConSombra">
-	<div id="contenidoSinopsis"><%= producto.sinopsis %></div>
+	<div id="contenidoSinopsis"><%= registro.sinopsis %></div>
 </div>
 <!-- Demás Datos Duros -->
-<% for (bloque of bloquesIzquierda) { %>
+<% for (bloque of bloqueIzquierda) { %>
 	<div class="datosAdicionales">
 		<% for (campo of bloque) { %>
 			<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 

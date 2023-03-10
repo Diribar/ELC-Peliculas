@@ -15,15 +15,15 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = req.path.slice(1, -1);
-		// 2. Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		const {entidad, id} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
-		let bloquesIzquierda, bloquesDerecha;
+		let bloqueIzquierda, bloqueDerecha;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
-		// 3. Obtiene el producto 'Original' y 'Editado'
+		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 4. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
@@ -68,8 +68,8 @@ module.exports = {
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
-			bloquesIzquierda = procesos.bloquesIzquierda(paisesNombre, prodComb);
-			bloquesDerecha = procesos.bloquesDerecha(entidad, prodComb);
+			bloqueIzquierda = procesos.bloqueIzquierda(paisesNombre, prodComb);
+			bloqueDerecha = procesos.bloqueDerecha(entidad, prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista
@@ -82,11 +82,11 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{prodNombre, producto: prodComb},
+			...{prodNombre, registro: prodComb},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			...{entidad, id, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{entidad, id, origen: req.query.origen, familia, familias},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
-			...{bloquesIzquierda, bloquesDerecha},
+			...{bloqueIzquierda, bloqueDerecha},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			...{dataEntry: {}, avatarLinksExternos},
