@@ -14,9 +14,10 @@ router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/averigua-capitulos", API.obtieneCapitulos);
 
 // Rutas de vistas
-router.get("/inactivar", vista.inactivarForm);
-router.post("/inactivar", vista.inactivarGuardar);
-router.get("/recuperar", vista.recuperarForm);
+router.get("/inactivar", vista.crudForm);
+router.post("/inactivar", vista.crudGuardar);
+router.get("/recuperar", vista.crudForm);
+router.post("/recuperar", vista.crudGuardar);
 
 // Fin
 module.exports = router;

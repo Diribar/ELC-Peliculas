@@ -8,26 +8,28 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inactivarForm: async (req, res) => {
+	crudForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		const codigo = "inactivar";
+		const codigo = req.path.slice(1, -1);
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
-		let imgDerPers, bloqueDerecha, cantProds;
+		let imgDerPers, bloqueDerecha, cantProds, motivos;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("status_registro", "creado_por", "alta_analizada_por");
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = "Inactivar un" + a + entidadNombre;
+		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -50,11 +52,13 @@ module.exports = {
 				: "";
 
 		// Ayuda para el titulo
-		const ayudasTitulo = ["Por favor decinos por qué sugerís inactivar este registro."];
+		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
+		if (codigo == "inactivar") {
+			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
+		}
 
 		// Render del formulario
 		// return res.send(imgDerPers)
@@ -64,10 +68,11 @@ module.exports = {
 			...{registro: original, imgDerPers, bloqueDerecha, motivos},
 		});
 	},
-	inactivarGuardar:async (req, res) => {
-		return res.send("inactivarGuardar")
-	},
-	recuperarForm: (req, res) => {
-		return res.send("recuperar");
+	crudGuardar: async (req, res) => {
+		// Tema y Código
+		const tema = "crud";
+		const codigo = req.path.slice(1, -1);
+
+		return res.send({codigo, ...req.query, ...req.body});
 	},
 };
