@@ -1,13 +1,17 @@
+/* Datos Largos */
+#datos #datosLargos {max-width: 700px;}
+
 /* Colores */
 #datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}
 /* Colores - Inactivar */
 #datosLargos #recuadro:has(.inactivar) #encabezado {background: var(--rojo-oscuro);}
 #datosLargos #recuadro:has(.inactivar) {background: var(--rojo-claro);}
-#datosLargos #recuadro #informacion.inactivar {color: var(--rojo-oscuro);}
+#datosLargos #recuadro:has(.inactivar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+
 /* Colores - Recuperar */
 #datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}
 #datosLargos #recuadro:has(.recuperar) {background: var(--verde-claro);}
-#datosLargos #recuadro #informacion.recuperar {color: var(--verde-oscuro);}
+#datosLargos #recuadro:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
 
 /* Sector de información */
 #datosLargos #recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
