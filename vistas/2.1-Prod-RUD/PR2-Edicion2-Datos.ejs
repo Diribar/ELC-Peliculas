@@ -7,24 +7,24 @@
 		<div id="primeraColumna" class="columna">
 			<h3>Datos Generales</h3>
 			<!-- Primeros campos -->
-			<% for (let campo of camposInput1) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<% for (let campo of camposInput1) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<!-- Otros -->
-			<%- include("PR-Edic-Pais") %>
-			<%- include("PR-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
-			<%- include("PR-Edic-Input", {campo: produccion}) %>
+			<%- include("PR2-Edic-Pais") %>
+			<%- include("PR2-Edic-Idioma", {idioma_id: producto.idioma_original_id}) %>
+			<%- include("PR2-Edic-Input", {campo: produccion}) %>
 			<% if (userRevisor) { %>
-				<%- include("PR-Edic-Select", {nombre: "publico_id"}) %>
+				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 			<% } %>
 			<h3>Datos Adicionales</h3>
 			<!-- Campos SI / NO -->
-			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR-Edic-SI_NO", {campo}) %><% } %>
+			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
-			<%- include("PR-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
+			<%- include("PR2-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
 		</div>
 		<div id="segundaColumna" class="columna">
 			<!-- Cast/Crew -->
 			<h3>Personas</h3>
-			<% for (let campo of camposInput2) { %><%- include("PR-Edic-Input", {campo}) %><% } %>
+			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<!-- Relación con la vida -->
 			<div class="label-input">
 				<h3>Relación con la vida</h3>
@@ -33,14 +33,14 @@
 				</div>
 			</div>
 			<!--Personaje histórico-->
-			<%- include("PR-Edic-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
+			<%- include("PR2-Edic-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
 			<!--Hecho histórico-->
-			<%- include("PR-Edic-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
+			<%- include("PR2-Edic-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
 			<!--Valor-->
-			<%- include("PR-Edic-RCLV_val", {nombre: "valor_id"}) %>
+			<%- include("PR2-Edic-RCLV_val", {nombre: "valor_id"}) %>
 			<h3>Sinopsis</h3>
 			<!--Sinopsis-->
-			<%- include("PR-Edic-Sinopsis") %>
+			<%- include("PR2-Edic-Sinopsis") %>
 		</div>
 	</div>
 </section>
