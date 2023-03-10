@@ -1,6 +1,8 @@
-<i class="fa-solid fa-caret-left mover inactivo"></i>
-<ul id="listado">
-	<% if (prodsDelRCLV.length) { %><%- include('RCLV-DT1-prodsDelRCLV') %>
-	<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
-</ul>
-<i class="fa-solid fa-caret-right mover inactivo"></i>
+<div id="cuadroDeResultados">
+	<i class="fa-solid fa-caret-left mover inactivo"></i>
+	<ul id="listado">
+		<% if (prodsDelRCLV.length) { %><%- include('RCLV-DT1-prodsDelRCLV') %>
+		<% } else { %><%- include('RCLV-DT3-SinCasos') %><% } %>
+	</ul>
+	<i class="fa-solid fa-caret-right mover inactivo"></i>
+</div>

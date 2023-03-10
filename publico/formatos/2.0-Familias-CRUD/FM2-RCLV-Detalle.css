@@ -1,12 +1,7 @@
 /* Datos */
-#cuerpo #datos {display: flex; flex-direction: row; align-items: center; justify-content: space-around;}
 #cuerpo #datos {position: absolute; translate: -50% -50%; top: 50%; left: 50%; width: 100%;}
 
-/* Datos Largos */
-#cuerpo #datosLargos {padding: 30px 40px; margin: auto; position: relative;}
-#cuerpo #datosLargos #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
-#cuerpo #datosLargos #contenido {position: relative; margin-bottom: 20px;}
-#cuerpo #datosLargos #contenido #informacion {position: absolute;}
-
-/* Datos Breves */
-#datosBreves {max-height: 88%;}
+/* Recuadro */
+#recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
+#recuadro #contenido {position: relative; margin: 0 40px 20px;}
+#contenido #informacion {margin-bottom: 20px;}
