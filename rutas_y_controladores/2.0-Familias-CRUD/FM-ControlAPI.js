@@ -98,4 +98,9 @@ module.exports = {
 		let datos = await BD_especificas.obtieneCapitulos(req.query.coleccion_id, req.query.temporada);
 		return res.json(datos);
 	},
+	requiereExplicacion: (req, res) => {
+		const {id} = req.query;
+		let explicacion = altas_motivos_rech.find((n) => n.id == id).explicacion;
+		return res.json(explicacion);
+	},
 };
