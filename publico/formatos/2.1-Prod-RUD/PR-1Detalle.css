@@ -1,0 +1,17 @@
+/* #datosLargos #recuadro {min-height: 75%;} */
+
+/* Información */
+#recuadro #contenido {justify-content: space-around;}
+#contenido #informacion {margin: 0 40px;}
+#contenido #botones {margin: 40px 40px 30px;}
+
+/* Información - Sinopsis */
+#contenido #sinopsis {margin: 25px 0; padding: 15px 20px; position: relative;}
+#contenido #sinopsis {border-radius: 15px; border: var(--gris-oscuro) 5px solid; background: var(--amarillo-claro);}
+#contenido #sinopsis #contenidoSinopsis {font-size: 1.1rem;}
+
+/* Información - Datos Adicionales */
+#contenido .datosAdicionales {margin-top: 10px;}
+
+/* Botones */
+#recuadro #botones {justify-content: space-around;}
