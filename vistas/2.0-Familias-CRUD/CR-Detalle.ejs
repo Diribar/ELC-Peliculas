@@ -14,8 +14,14 @@
 	</div>
 	<div id="datos">
 		<div id="contenido">
-			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-			<%- include("CR-Encabezado") %>
+			<div id="encabezado">
+				<!-- Encabezado -->
+				<% if (tema == "rclv_crud") { %>
+					<%- include("RCLV-Encabezado") %>
+				<% } else { %>
+					<%- include("CR-Encabezado") %>
+				<% } %>
+			</div>
 			<!-- Sinopsis -->
 			<div id="sinopsis" class="bordeConSombra">
 				<div id="contenidoSinopsis"><%= producto.sinopsis %></div>

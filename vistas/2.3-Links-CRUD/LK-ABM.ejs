@@ -20,7 +20,9 @@
 <section id="contenido">
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-		<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
+		<div id="encabezado">
+			<%- include(tema == "revisionEnts" ? "RE0-2Encabezado" : "CR-Encabezado") %>
+		</div>
 		<div id="filtros" class="flexRow spaceAround">
 			<!-- Película/Trailer -->
 			<select id="peliculaTrailer">
