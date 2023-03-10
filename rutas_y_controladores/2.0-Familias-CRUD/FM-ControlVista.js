@@ -15,8 +15,9 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
-		let imgDerPers, bloquesDerecha;
+		let imgDerPers, bloqueDerecha;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -29,9 +30,9 @@ module.exports = {
 		const titulo = "Inactivar un" + a + entidadNombre;
 
 		// Datos Breves
-		bloquesDerecha =
+		bloqueDerecha =
 			familias == "productos"
-				? procsProd.bloquesDerecha(entidad, original)
+				? procsProd.bloqueDerecha(entidad, original)
 				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDerecha({...original, entidad})
 				: [];
@@ -53,8 +54,8 @@ module.exports = {
 		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
-			...{entidad, id, familias, entidadNombre},
-			...{registro: original, imgDerPers, bloquesDerecha, motivosRech},
+			...{entidad, id, entidadNombre, familias, familia},
+			...{registro: original, imgDerPers, bloqueDerecha, motivosRech},
 		});
 	},
 	recuperar: (req, res) => {
