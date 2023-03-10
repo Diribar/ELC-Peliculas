@@ -4,6 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
@@ -33,9 +34,9 @@ module.exports = async (req, res, next) => {
 		// Obtiene la tarea
 		const originalUrl = req.originalUrl;
 		const edicion = originalUrl.includes("/edicion/");
-		const producto = originalUrl.startsWith("/producto/agregar/");
-		const rclv = originalUrl.startsWith("/rclv/agregar");
-		const links = originalUrl.startsWith("/links/abm/");
+		let producto = originalUrl.startsWith("/producto/agregar/");
+		let rclv = originalUrl.startsWith("/rclv/agregar");
+		let links = originalUrl.startsWith("/links/abm/");
 
 		// Cuenta los registros pendientes de revisar
 		await (async () => {
@@ -43,10 +44,19 @@ module.exports = async (req, res, next) => {
 			if (edicion) cuentaRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id);
 			// Cuenta registros originales con status 'a revisar'
 			else {
-				let entidades;
-				if (producto) entidades = variables.entidadesProd;
-				else if (rclv) entidades = variables.entidadesRCLV;
-				else if (links) entidades = ["links"];
+				let entidades
+				let FN_entidades = ({producto, rclv, links}) => {
+					if (producto) entidades = variables.entidadesProd;
+					else if (rclv) entidades = variables.entidadesRCLV;
+					else if (links) entidades = ["links"];
+				};
+				FN_entidades({producto, rclv, links});
+				if (!entidades) {
+					let {entidad} = req.query;
+					let familia = comp.obtieneFamiliaEnSingular(entidad);
+					let {producto, rclv, links} = {[familia]: true};
+					FN_entidades({producto, rclv, links});
+				}
 				cuentaRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
 			}
 		})();
@@ -108,11 +118,11 @@ module.exports = async (req, res, next) => {
 		let baseUrl = req.baseUrl.slice(1);
 		let familia = baseUrl.startsWith("producto")
 			? {campo: "prods", vista: "PA"}
-			// : baseUrl.startsWith("rclv")
-			// ? {campo: "rclvs", vista: "RCLV"}
-			// : baseUrl.startsWith("links")
-			// ? {campo: "links", vista: "LK"}
-			: "";
+			: // : baseUrl.startsWith("rclv")
+			  // ? {campo: "rclvs", vista: "RCLV"}
+			  // : baseUrl.startsWith("links")
+			  // ? {campo: "links", vista: "LK"}
+			  "";
 		let cartel = "cartel_resp_" + familia.campo;
 		// Revisa si requiere el cartel de "responsabilidad" de la familia
 		if (familia && usuario[cartel]) {
