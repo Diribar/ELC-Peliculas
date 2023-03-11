@@ -182,7 +182,7 @@ module.exports = {
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
-		// 7. Acciones por rechazos
+		// 6. Acciones por rechazos
 		if (rechazado) {
 			// 7.1. Penaliza al usuario si corresponde
 			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);

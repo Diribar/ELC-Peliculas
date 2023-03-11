@@ -509,22 +509,18 @@ module.exports = {
 	},
 	infoIncompleta: (datos) => {
 		// Variables
-		let {entidad, id, origen, motivo_id, comentario, codigo} = datos;
+		let {motivo_id, comentario, codigo} = datos;
 		let informacion;
 
 		// 1. Falta el motivo
-		if (codigo == "inactivar" && !motivo_id) {
-			let informacion = {
-				mensajes: ["Necesitamos que nos digas el motivo"],
-				iconos: {vista: "vistaEntendido", link: "urlAnterior"},
-			};
-			return informacion
-		}
+		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
 
 		// 2. Falta el comentario
-		motivo=motivos_rech_altas.find(n=>n.id==motivo_id)
-		if (codigo == "inactivar" && motivo.) {
+		motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+		if ((motivo && motivo.req_com && !comentario) || (!motivo && !comentario))
+			informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
 
-		}
+		// Fin
+		return informacion;
 	},
 };

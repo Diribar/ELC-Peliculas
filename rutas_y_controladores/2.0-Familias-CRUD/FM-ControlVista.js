@@ -2,6 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
@@ -79,17 +80,42 @@ module.exports = {
 		const codigo = req.path.slice(1, -1);
 
 		// Variables
-		const datos={...req.query, ...req.body}
-		let {entidad, id, origen, motivo_id, comentario} = datos
-		return res.send(datos);
+		let {entidad, id, origen, motivo_id, comentario} = {...req.query, ...req.body};
 
 		// 1. Revisa problemas
+		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
+		if (informacion) {
+			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
+			return res.render("CMP-0Estructura", {informacion});
+		}
 
 		// 2. Actualiza el registro original
+		let datos = {
+			sugerido_por_id: req.session.usuario.id,
+			sugerido_en: comp.ahora(),
+			status_registro_id: codigo == "inactivar" ? inactivar_id : recuperar_id,
+		};
+		if (motivo_id) datos.motivo_id = motivo_id;
+		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 3. Actualiza prodsEnRCLV
+		// 3. Agrega un registro en el historial de comentarios
+		datos = {...datos, entidad, entidad_id: id, comentario};
+		BD_genericas.agregaRegistro("historial_comentarios", datos);
 
-		// 4. Regresa a la vista de detalle
-		return res.redirect();
+		// 4. Actualiza prodsEnRCLV
+		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		if (familia == "productos") {
+			const producto = await BD_genericas.obtienePorId(entidad, id);
+			procesos.prodEnRCLV(producto);
+		}
+
+		// 5. Regresa a la vista de detalle
+		const destino =
+			origen == "DTP"
+				? "/producto/detalle/?entidad=" + entidad + "&id=" + id
+				: origen == "DTR"
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				: "/";
+		return res.redirect(destino);
 	},
 };
