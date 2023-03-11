@@ -79,8 +79,8 @@ app.set("views", [
 		status_registros: BD_genericas.obtieneTodos("status_registros", "orden"),
 		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
-		altas_motivos_rech: BD_genericas.obtieneTodos("altas_motivos_rech", "orden"),
-		edic_motivos_rech: BD_genericas.obtieneTodos("edic_motivos_rech", "orden"),
+		motivos_rech_altas: BD_genericas.obtieneTodos("motivos_rech_altas", "orden"),
+		motivos_rech_edic: BD_genericas.obtieneTodos("motivos_rech_edic", "orden"),
 		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
 
 		// Consultas - Filtro Personalizado

@@ -224,8 +224,8 @@ module.exports = {
 			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
 
 			// Motivos posibles
-			let motivoVersionActual = edic_motivos_rech.find((n) => n.version_actual);
-			let motivoInfoErronea = edic_motivos_rech.find((n) => n.info_erronea);
+			let motivoVersionActual = motivos_rech_edic.find((n) => n.version_actual);
+			let motivoInfoErronea = motivos_rech_edic.find((n) => n.info_erronea);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -522,7 +522,7 @@ module.exports = {
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
-				motivo = edic_motivos_rech.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				motivo = motivos_rech_edic.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
 			// Asigna los valores 'aprob' y 'rech'

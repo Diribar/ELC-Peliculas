@@ -53,7 +53,7 @@ module.exports = {
 
 		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
-		let motivos = tema == "revisionEnts" ? altas_motivos_rech.filter((n) => n.rclvs) : "";
+		let motivos = tema == "revisionEnts" ? motivos_rech_altas.filter((n) => n.rclvs) : "";
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},

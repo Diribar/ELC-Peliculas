@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "altas_motivos_rech";
+	const alias = "motivos_rech_altas";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},
@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		explicacion: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "altas_motivos_rech",
+		tableName: "motivos_rech_altas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -9,7 +9,7 @@ const procesos = require("./RE-Procesos");
 module.exports = {
 	// Productos y RCLV
 	obtieneMotivoGenerico: (req, res) => {
-		let motivoGenerico_id = edic_motivos_rech.find((n) => n.info_erronea).id;
+		let motivoGenerico_id = motivos_rech_edic.find((n) => n.info_erronea).id;
 		return res.json(motivoGenerico_id);
 	},
 	edicAprobRech: async (req, res) => {
@@ -108,7 +108,7 @@ module.exports = {
 			};
 			if (!aprob && !inactivar) {
 				datosHist.motivo_id = motivo_id;
-				datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+				datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
 			}
 			return;
