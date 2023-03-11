@@ -25,4 +25,13 @@
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
 	<% } %>
+	<% if (tema == "revisionEnts") { %>
+		<a href="<%= rutaSalir %>" target="_self" tabindex="1">
+			<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
+		</a>
+		<button type="submit" autofocus tabindex="2">
+			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
+		</button>
+		<i id="mostrarMotivos" class="fa-solid fa-circle-xmark" tabindex="3" title="Rechazado"></i>
+	<% } %>
 </div>

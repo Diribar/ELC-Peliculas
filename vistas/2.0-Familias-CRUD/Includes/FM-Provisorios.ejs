@@ -23,3 +23,12 @@
 	.flechas:has(.fa-circle-xmark) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
 	.flechas:has(.fa-circle-check) {border-color: var(--verde-oscuro); background: var(--verde-claro);}
 </style>
+
+<% if (tema == "revisionEnts" && codigo == "producto/alta") { %>
+	<div class="flechas inactivo">
+		<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
+		<% if (entidad != "colecciones") { %>
+			<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
+		<% } %>
+	</div>
+<% } %>
