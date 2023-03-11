@@ -90,7 +90,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
 			...{entidad, familias, id, prodNombre, registro: original},
-			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
+			...{bloqueIzq, bloqueDer, imgDerPers, motivos, cartelGenerico: true},
 			...{rutaSalir, urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
