@@ -27,13 +27,28 @@ window.addEventListener("load", async () => {
 			});
 
 	// Comentario
+	comentario.addEventListener("keypress", (e) => {
+		// Previene el uso del 'enter'
+		if (e.key == "Enter") e.preventDefault();
+
+		// Limita el uso del teclado solamente a los caracteres que nos interesan
+		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+		if (!formato.test(e.key)) e.preventDefault() 
+
+	});
 	comentario.addEventListener("input", () => {
-		let com = comentario.value;
+		// Corrige el doble espacio
+		let com = comentario.value.replace(/ +/g, " ").slice(0, 150);
+
+		// Primera letra en mayúscula
 		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-		pendiente.innerHTML = 170 - com.length;
+		pendiente.innerHTML = 150 - com.length;
+
+		// Actualiza el botón submit
 		botonSubmit();
 	});
 
+	// Previene el submit si el botón está inactivo
 	form.addEventListener("submit", (e) => {
 		if (submit.className.includes("inactivo")) e.preventDefault();
 	});

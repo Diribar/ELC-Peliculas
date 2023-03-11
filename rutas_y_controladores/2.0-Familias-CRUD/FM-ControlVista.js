@@ -58,7 +58,7 @@ module.exports = {
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-			motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
+			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")

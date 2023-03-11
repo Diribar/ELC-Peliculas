@@ -77,7 +77,7 @@ module.exports = {
 		let paisesNombre = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(original, paisesNombre);
-		let motivos = altas_motivos_rech.filter((n) => n.prods);
+		let motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
@@ -174,7 +174,7 @@ module.exports = {
 		};
 		if (rechazado) {
 			datosHist.motivo_id = motivo_id;
-			datosHist.motivo = altas_motivos_rech.find((n) => n.id == motivo_id);
+			datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(datosHist.motivo.duracion);
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
@@ -248,7 +248,7 @@ module.exports = {
 				// Variables
 				codigo += "/avatar";
 				avatar = procsCRUD.obtieneAvatarProd(original, edicion);
-				motivos = edic_motivos_rech.filter((m) => m.avatar_prods);
+				motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			}
@@ -267,7 +267,7 @@ module.exports = {
 			// Obtiene el avatar
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			// Variables
-			motivos = edic_motivos_rech.filter((m) => m.prods);
+			motivos = motivos_rech_edic.filter((m) => m.prods);
 			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id, editado_en});
 			imgDerPers = avatar;
 		}
@@ -347,7 +347,7 @@ module.exports = {
 		// Obtiene los ingresos y reemplazos
 		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
 		// Variables
-		let motivos = edic_motivos_rech.filter((m) => m.rclvs);
+		let motivos = motivos_rech_edic.filter((m) => m.rclvs);
 		infoErronea_id = motivos.find((n) => n.info_erronea).id;
 		bloqueDer = await procesos.edicion.fichaDelRegistro(rclvOrig, rclvEdic);
 		// return res.send([edicion, ingresos, reemplazos]);
@@ -407,7 +407,7 @@ module.exports = {
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let motivos = altas_motivos_rech.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
+		let motivos = motivos_rech_altas.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
 
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista

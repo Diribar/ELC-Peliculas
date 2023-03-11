@@ -100,7 +100,7 @@ module.exports = {
 	},
 	requiereExplicacion: (req, res) => {
 		const {id} = req.query;
-		let explicacion = altas_motivos_rech.find((n) => n.id == id).explicacion;
+		let explicacion = motivos_rech_altas.find((n) => n.id == id).explicacion;
 		return res.json(explicacion);
 	},
 };
