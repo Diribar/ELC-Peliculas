@@ -54,51 +54,44 @@ module.exports = {
 
 	// ALTAS
 	prod_altaForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
-		// 2. Obtiene los datos identificatorios del producto
+		// Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
-		// 4. Obtiene los datos ORIGINALES del producto
+		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		// Obtiene el registro original
 		let include = ["status_registro"];
 		if (entidad == "colecciones") include.push("capitulos");
-		// Detecta si el registro no está en status creado
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		// 5. Obtiene avatar original
+		// Obtiene avatar original
 		let imgDerPers = original.avatar;
 		imgDerPers = imgDerPers
 			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		// 6. Configurar el título de la vista
+		// Configurar el título de la vista
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// 7. Obtiene los países
+		// Obtiene los países
 		let paisesNombre = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
-		// 8. Info para la vista
+		// Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(original, paisesNombre);
 		let motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
+		// Ayuda para el titulo
+		const ayudasTitulo = [
+			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
+			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
+		];
 		// Va a la vista
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo,
-			entidad,
-			id,
-			prodOrig: original,
-			imgDerPers,
-			bloqueIzq,
-			bloqueDer,
-			motivos,
-			prodNombre,
-			title: original.nombre_castellano,
-			// urlActual: req.session.urlActual,
-			rutaSalir,
-			urlActual: req.session.urlActual,
-			cartelRechazo: true,
+			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
+			...{entidad, familias, id, prodNombre, registro: original},
+			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
+			...{rutaSalir, urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
 	prodRCLV_altaGuardar: async (req, res) => {
@@ -182,7 +175,7 @@ module.exports = {
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
-		// 7. Acciones por rechazos
+		// 6. Acciones por rechazos
 		if (rechazado) {
 			// 7.1. Penaliza al usuario si corresponde
 			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);
@@ -407,7 +400,7 @@ module.exports = {
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let motivos = motivos_rech_altas.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
+		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista

@@ -5,17 +5,19 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
 	<% } %>
-	<!-- Detalle -->
-	<% if (codigo != "detalle" && locals.id) { %>
-		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-		</a>
-	<% } %>
-	<!-- Edición -->
-	<% if (codigo != "edicion" && locals.id) { %>
-		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-		</a>
+	<% if (tema == "prod_rud" || tema == "links_crud") { %>
+		<!-- Detalle -->
+		<% if (codigo != "detalle" && locals.id) { %>
+			<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+			</a>
+		<% } %>
+		<!-- Edición -->
+		<% if (codigo != "edicion" && locals.id) { %>
+			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			</a>
+		<% } %>
 	<% } %>
 	<!-- Links -->
 	<% if (tema == "prod_rud" && locals.id) { %>

@@ -98,9 +98,9 @@ module.exports = {
 		let datos = await BD_especificas.obtieneCapitulos(req.query.coleccion_id, req.query.temporada);
 		return res.json(datos);
 	},
-	requiereExplicacion: (req, res) => {
+	requiereComentario: (req, res) => {
 		const {id} = req.query;
-		let explicacion = motivos_rech_altas.find((n) => n.id == id).explicacion;
-		return res.json(explicacion);
+		let req_com = motivos_rech_altas.find((n) => n.id == id).req_com;
+		return res.json(req_com);
 	},
 };

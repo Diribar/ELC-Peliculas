@@ -1,7 +1,8 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas=require("../../funciones/2-BD/Especificas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
@@ -18,7 +19,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaEnSingular(entidad);
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
-		let imgDerPers, bloqueDerecha, cantProds, motivos;
+		let imgDerPers, bloqueDer, cantProds, motivos;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -39,11 +40,11 @@ module.exports = {
 		}
 
 		// Datos Breves
-		bloqueDerecha =
+		bloqueDer =
 			familias == "productos"
-				? procsProd.bloqueDerecha(entidad, original)
+				? procsProd.bloqueDer(entidad, original)
 				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDerecha({...original, entidad}, cantProds)
+				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];
 		imgDerPers =
 			familias == "productos"
@@ -69,7 +70,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
-			...{registro: original, imgDerPers, bloqueDerecha, motivos},
+			...{registro: original, imgDerPers, bloqueDer, motivos},
 			cartelGenerico: true,
 		});
 	},
@@ -78,6 +79,39 @@ module.exports = {
 		const tema = "crud";
 		const codigo = req.path.slice(1, -1);
 
-		return res.send({codigo, ...req.query, ...req.body});
+		// Variables
+		let {entidad, id, origen, motivo_id, comentario} = {...req.query, ...req.body};
+
+		// 1. Revisa problemas
+		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
+		if (informacion) {
+			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
+			return res.render("CMP-0Estructura", {informacion});
+		}
+
+		// 2. Actualiza el registro original
+		let datos = {
+			sugerido_por_id: req.session.usuario.id,
+			sugerido_en: comp.ahora(),
+			status_registro_id: codigo == "inactivar" ? inactivar_id : recuperar_id,
+		};
+		if (motivo_id) datos.motivo_id = motivo_id;
+		await BD_genericas.actualizaPorId(entidad, id, datos);
+
+		// 3. Agrega un registro en el historial de comentarios
+		datos = {...datos, entidad, entidad_id: id, comentario};
+		BD_genericas.agregaRegistro("historial_comentarios", datos);
+
+		// 4. Actualiza prodsEnRCLV
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		if (familia == "producto") {
+			const producto = await BD_genericas.obtienePorId(entidad, id);
+			procesos.prodEnRCLV(producto);
+		}
+
+		// 5. Regresa a la vista de detalle
+		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+
+		return res.redirect(destino);
 	},
 };

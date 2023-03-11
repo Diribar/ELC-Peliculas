@@ -135,7 +135,7 @@ module.exports = {
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
 		// Imagen Derecha
-		const bloqueDerecha = procesos.detalle.bloqueDerecha({...original, entidad}, cantProds);
+		const bloqueDer = procesos.detalle.bloqueDer({...original, entidad}, cantProds);
 		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ir a la vista
@@ -143,7 +143,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, entidadNombre, id, familia, familias},
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			...{imgDerPers, bloqueDerecha},
+			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});

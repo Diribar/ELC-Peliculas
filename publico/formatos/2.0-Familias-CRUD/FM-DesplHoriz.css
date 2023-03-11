@@ -7,7 +7,8 @@
 #cuadroDeResultados .mover.fa-caret-left {translate: -100% -50%; left: 0;}
 #cuadroDeResultados .mover.fa-caret-right {translate: 100% -50%; right: 0;}
 /* Botones para productos */
-#listado button {margin: 20px; padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
+#listado li {padding: 20px;}
+#listado button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
 #listado button {border: none; text-align: left; width: 290px;}
 #listado #prodsNuevos button {background: var(--verde-intermedio);}
 #listado #prodsNuevos button:hover {background: var(--verde-oscuro); color: var(--amarillo-claro);}
