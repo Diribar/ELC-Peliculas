@@ -466,7 +466,7 @@ module.exports = {
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
 			let statusResumido = original.status_registro.gr_creado
-				? {id: 1, valor: "Pend. Aprobac."}
+				? {id: 1, valor: "Revisión Pend."}
 				: original.status_registro.aprobado
 				? {id: 2, valor: "Aprobado"}
 				: {id: 3, valor: "Inactivado"};

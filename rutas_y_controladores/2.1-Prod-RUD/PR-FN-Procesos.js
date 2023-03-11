@@ -48,8 +48,8 @@ module.exports = {
 			? {id: 2, valor: "Aprobado"}
 			: producto.status_registro.inactivo
 			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Pend. Aprobac."};
-		// Variable ultimaActualizacion
+			: {id: 1, valor: "Revisión Pend."};
+			// Variable ultimaActualizacion
 		let fechas = [producto.creado_en, producto.sugerido_en];
 		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en)
 		if (producto.editado_en) fechas.push(producto.editado_en)

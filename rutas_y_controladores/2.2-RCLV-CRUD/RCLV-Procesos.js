@@ -75,7 +75,7 @@ module.exports = {
 				? {id: 2, nombre: "Aprobado"}
 				: RCLV.status_registro.inactivo
 				? {id: 3, nombre: "Inactivo"}
-				: {id: 1, nombre: "Pend. Aprobac."};
+				: {id: 1, nombre: "Revisión Pend."};
 			// Comienza a armar el resumen
 			let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
 			if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});

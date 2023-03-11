@@ -103,19 +103,15 @@ module.exports = {
 		BD_genericas.agregaRegistro("historial_comentarios", datos);
 
 		// 4. Actualiza prodsEnRCLV
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
-		if (familia == "productos") {
+		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		if (familia == "producto") {
 			const producto = await BD_genericas.obtienePorId(entidad, id);
 			procesos.prodEnRCLV(producto);
 		}
 
 		// 5. Regresa a la vista de detalle
-		const destino =
-			origen == "DTP"
-				? "/producto/detalle/?entidad=" + entidad + "&id=" + id
-				: origen == "DTR"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
-				: "/";
+		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+
 		return res.redirect(destino);
 	},
 };

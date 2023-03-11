@@ -516,7 +516,7 @@ module.exports = {
 		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
 
 		// 2. Falta el comentario
-		motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+		const motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 		if ((motivo && motivo.req_com && !comentario) || (!motivo && !comentario))
 			informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
 
