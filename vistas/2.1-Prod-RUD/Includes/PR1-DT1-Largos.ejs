@@ -3,7 +3,7 @@
 	<div id="contenidoSinopsis"><%= registro.sinopsis %></div>
 </div>
 <!-- Demás Datos Duros -->
-<% for (bloque of bloqueIzquierda) { %>
+<% for (bloque of bloqueIzq) { %>
 	<div class="datosAdicionales">
 		<% for (campo of bloque) { %>
 			<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 

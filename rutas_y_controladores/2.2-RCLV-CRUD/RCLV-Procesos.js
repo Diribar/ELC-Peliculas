@@ -69,7 +69,7 @@ module.exports = {
 			// Fin
 			return prodsDelRCLV;
 		},
-		bloqueDerecha: (RCLV, cantProds) => {
+		bloqueDer: (RCLV, cantProds) => {
 			// Variable status
 			let statusResumido = RCLV.status_registro.aprobado
 				? {id: 2, nombre: "Aprobado"}

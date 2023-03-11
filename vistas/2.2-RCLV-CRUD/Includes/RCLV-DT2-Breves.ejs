@@ -2,13 +2,13 @@
 <nav>
 	<h3>Datos del <%= entidadNombre %></h3>
 	<div id="texto">
-		<% for (campo of bloqueDerecha.resumenRCLV) { %>
+		<% for (campo of bloqueDer.resumenRCLV) { %>
 			<p><strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span></p>
 		<% } %>
 	</div>
 	<h3>Datos del Registro</h3>
 	<div id="texto">
-		<% for (campo of bloqueDerecha.resumenRegistro) { %>
+		<% for (campo of bloqueDer.resumenRegistro) { %>
 			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
 				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 			</p>

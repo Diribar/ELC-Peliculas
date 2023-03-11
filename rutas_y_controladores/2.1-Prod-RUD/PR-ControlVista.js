@@ -21,7 +21,7 @@ module.exports = {
 		const familias = comp.obtieneFamiliaEnPlural(entidad);
 		if (!origen) origen = "DTP"
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
-		let bloqueIzquierda, bloqueDerecha;
+		let bloqueIzq, bloqueDer;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -69,8 +69,8 @@ module.exports = {
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
-			bloqueIzquierda = procesos.bloqueIzquierda(paisesNombre, prodComb);
-			bloqueDerecha = procesos.bloqueDerecha(entidad, prodComb);
+			bloqueIzq = procesos.bloqueIzq(paisesNombre, prodComb);
+			bloqueDer = procesos.bloqueDer(entidad, prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista
@@ -87,7 +87,7 @@ module.exports = {
 			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
 			...{entidad, id, familia, familias},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
-			...{bloqueIzquierda, bloqueDerecha},
+			...{bloqueIzq, bloqueDer},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			...{dataEntry: {}, avatarLinksExternos},
