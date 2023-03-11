@@ -18,6 +18,7 @@
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
+			<!-- Ir a la colección -->
 			<div id="tempCapI">
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
 				<p><strong>De la colección:</strong>
@@ -26,6 +27,7 @@
 					</a>
 				</p>
 			</div>
+			<!-- Cambiar de capítulo -->
 			<div id="tempCapS">
 				<div class="pack">
 					<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>

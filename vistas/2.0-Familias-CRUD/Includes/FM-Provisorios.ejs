@@ -3,19 +3,19 @@
 		<!-- Inactivar -->
 		<% if (status_id == aprobado_id) { %>
 			<a href="<%= '/crud/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Inactivar"></i>
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
 		<!-- Recuperar -->
 		<% if (status_id == inactivo_id) { %>
 			<a href="<%= '/crud/recuperar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-circle-check" tabindex="-1" title="Recuperar"></i>
+				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 		<% } %>
 	</div>
 <% } else if (tema == "crud") { %>
 	<!-- Confirmar -->
-	<button type="submit" class="flechas">
+	<button type="submit" class="flechas inactivo">
 		<i class="fa-solid fa-circle-check" tabindex="-1" title="Confirma el cambio de status"></i>
 	</button>
 <% } %>

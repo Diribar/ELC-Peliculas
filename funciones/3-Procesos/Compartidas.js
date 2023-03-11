@@ -54,29 +54,29 @@ module.exports = {
 
 	// Conversiones
 	obtieneFamiliaEnSingular: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"
+		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "producto"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores" || entidad == "rclvs_edicion"
+			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
 			? "rclv"
-			: entidad == "links"
+			: ["links", "links_edicion"].includes(entidad)
 			? "links"
 			: "";
 	},
 	obtieneFamiliaEnPlural: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos" || entidad == "prods_edicion"
+		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "productos"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores" || entidad == "rclvs_edicion"
+			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
 			? "rclvs"
-			: entidad == "links" || entidad == "links_edicion"
+			: ["links", "links_edicion"].includes(entidad)
 			? "links"
 			: entidad == "usuarios"
 			? "usuarios"
 			: "";
 	},
 	obtienePetitFamiliaDesdeEntidad: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
 			? "prods"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			: ["personajes", "hechos", "valores"].includes(entidad)
 			? "rclvs"
 			: entidad == "links"
 			? "links"
@@ -136,9 +136,9 @@ module.exports = {
 			: "";
 	},
 	obtieneNombreEdicionDesdeEntidad: (entidad) => {
-		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
 			? "prods_edicion"
-			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
+			: ["personajes", "hechos", "valores"].includes(entidad)
 			? "rclvs_edicion"
 			: entidad == "links"
 			? "links_edicion"
@@ -502,7 +502,7 @@ module.exports = {
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'
-		if (motivo.bloqueo_perm_inputs) objeto.rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		if (motivo.bloqueoInput) objeto.rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
 
 		// Si corresponde, actualiza el usuario
 		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);

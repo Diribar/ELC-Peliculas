@@ -1,6 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas=require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
@@ -21,7 +22,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "alta_analizada_por");
+		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
@@ -59,6 +60,9 @@ module.exports = {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = altas_motivos_rech.filter((n) => n[petitFamilia]);
 		}
+		// Obtiene datos para la vista
+		if (entidad == "capitulos")
+			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 
 		// Render del formulario
 		// return res.send(imgDerPers)
@@ -66,6 +70,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
 			...{registro: original, imgDerPers, bloqueDerecha, motivos},
+			cartelGenerico: true,
 		});
 	},
 	crudGuardar: async (req, res) => {

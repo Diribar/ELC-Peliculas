@@ -19,7 +19,8 @@ module.exports = async (req, res, next) => {
 	(() => {
 		statusEsperados_id =
 			baseUrl == "/revision"
-				? req.path.includes("/alta/") // para 'producto' y 'rclv'
+				? // Preguntas para 'Revisión'
+				  req.path.includes("/alta/") // para 'producto' y 'rclv'
 					? [creado_id]
 					: req.path.includes("/edicion/")
 					? [creado_aprob_id, aprobado_id]
@@ -28,6 +29,11 @@ module.exports = async (req, res, next) => {
 					: req.path.includes("/links/")
 					? [aprobado_id]
 					: [99]
+				: // Preguntas para 'CRUD'
+				req.path == "/inactivar/"
+				? [aprobado_id]
+				: req.path == "/recuperar/"
+				? [inactivo_id]
 				: [99];
 	})();
 

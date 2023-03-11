@@ -9,7 +9,7 @@ select optgroup {margin-top: 3px;}
 select option {font-style: normal;}
 select option[value=''] {display: none;}
 input[type="radio"], input[type="checkbox"] {scale: .8; cursor: pointer;}
-input[type="radio"] {align-self: end;}
+input[type="radio"] {vertical-align: middle;}
 ::placeholder, select:has(option[value=""]:checked) {font-style: italic;}
 :disabled {cursor: default;}
 label[for] {cursor: pointer;}
