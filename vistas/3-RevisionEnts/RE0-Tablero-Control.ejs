@@ -13,7 +13,6 @@
 </div>
 <!-- Datos -->
 <section id="familias">
-	<!-- Productos -->
 	<div id="primeraColumna">
 		<div class="bloques">
 			<!-- Título y ayuda -->
@@ -33,7 +32,7 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rp = "revision/producto/" %>
-				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: productos.IN, url: rp + "inactivar-o-recuperar"}) %>
+				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: productos.IR, url: rp + "inactivar-o-recuperar"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
 				<%- include("RE0-Registros", {titulo: "Ediciones", regs: productos.ED, url: rp + "edicion"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas", regs: productos.AL, url: rp + "alta"}) %>

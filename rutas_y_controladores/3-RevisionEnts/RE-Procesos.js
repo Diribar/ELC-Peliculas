@@ -16,17 +16,17 @@ module.exports = {
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
 			campos = [entidades, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
-			let SE = await TC_obtieneRegs(...campos);
+			let SE = await TC_obtieneRegs(...campos, true);
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
 			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			let IN = await TC_obtieneRegs(...campos);
+			let IN = await TC_obtieneRegs(...campos, true);
 			// RC: En status 'recuperar'
 			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			let RC = await TC_obtieneRegs(...campos);
+			let RC = await TC_obtieneRegs(...campos, true);
 
 			// Fin
-			return {IN, RC, SE};
+			return {IR: [...IN, ...RC], SE};
 		},
 		obtieneProdsConEdicAjena: async (ahora, userID) => {
 			// 1. Variables
@@ -632,17 +632,12 @@ module.exports = {
 };
 
 // Funciones
-let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, include) => {
+let TC_obtieneRegs = async (entidades, status_id, userID, campoFecha, autor_id, include, omitirUnaHora) => {
 	// Variables
-	let campos = {status_id, userID, include, campoFecha, autor_id};
+	let campos = {status_id, userID, include, campoFecha, autor_id, omitirUnaHora};
 	let resultados = [];
 	// Obtiene el resultado por entidad
 	for (let entidad of entidades) resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
-	// Elimina los propuestos hace menos de una hora, o por el Revisor
-	const haceUnaHora = comp.nuevoHorario(-1);
-	if (resultados.length)
-		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][campoFecha] > haceUnaHora || resultados[i][autor_id] == userID) resultados.splice(i, 1);
 	// Agrega el campo 'fecha-ref'
 	resultados = resultados.map((n) => {
 		return {
