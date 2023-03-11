@@ -24,7 +24,8 @@
 				<% } %>
 			</div>
 			<!-- Contenido -->
-			<form method="POST" id="contenido" class="flexCol grow">
+			<% if (tema=="crud") { %><form method="POST" id="contenido" class="flexCol grow">
+			<% } else { %><div id="contenido" class="flexCol grow"><% } %>
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
 					<% if (tema == "prod_rud") { %><%- include("PR1-DT1-Largos") %>
@@ -40,7 +41,7 @@
 					<%- include("PR1-DT3-ProdDetalle") %>
 					<%- include("FM-Provisorios") %>
 				</div>
-			</form>
+			<% if (tema=="crud") { %></form><% } else { %></div><% } %>
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
