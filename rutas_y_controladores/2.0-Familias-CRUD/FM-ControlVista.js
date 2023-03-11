@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas=require("../../funciones/2-BD/Especificas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
@@ -78,6 +78,18 @@ module.exports = {
 		const tema = "crud";
 		const codigo = req.path.slice(1, -1);
 
-		return res.send({codigo, ...req.query, ...req.body});
+		// Variables
+		const datos={...req.query, ...req.body}
+		let {entidad, id, origen, motivo_id, comentario} = datos
+		return res.send(datos);
+
+		// 1. Revisa problemas
+
+		// 2. Actualiza el registro original
+
+		// 3. Actualiza prodsEnRCLV
+
+		// 4. Regresa a la vista de detalle
+		return res.redirect();
 	},
 };

@@ -78,7 +78,7 @@ module.exports = {
 						avatar: prod.poster_path,
 						prodNombre,
 						entidad,
-						comentario: prod.overview,
+						sinopsis: prod.overview,
 						desempate1,
 						desempate2,
 					});
@@ -97,9 +97,9 @@ module.exports = {
 							if (
 								comp.convierteLetrasAlIngles(prod.nombre_original).includes(palabra) ||
 								comp.convierteLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
-								comp.convierteLetrasAlIngles(prod.comentario).includes(palabra)
+								comp.convierteLetrasAlIngles(prod.sinopsis).includes(palabra)
 							) {
-								delete prod.comentario;
+								delete prod.sinopsis;
 								productos.push(prod);
 								break;
 							}

@@ -39,7 +39,7 @@ module.exports = {
 			let temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, comentario: n.comentario}));
+		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {

@@ -407,7 +407,7 @@ module.exports = {
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		let motivos = motivos_rech_altas.filter((m) => m.links).map((m) => ({id: m.id, comentario: m.comentario}));
+		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista

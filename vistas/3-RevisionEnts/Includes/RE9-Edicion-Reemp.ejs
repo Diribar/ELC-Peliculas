@@ -20,7 +20,7 @@
 		<option value="">Elejí un motivo</option>
 		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
 		<% for (motivo of motivos) { %>
-			<option value="<%= motivo.id %>" <% if (motivos.length==1) { %>selected<% } %>><%= motivo.comentario %></option>
+			<option value="<%= motivo.id %>" <% if (motivos.length==1) { %>selected<% } %>><%= motivo.descripcion %></option>
 		<% } %>
 	</select>
 </div>

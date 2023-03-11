@@ -172,8 +172,7 @@ module.exports = {
 						: "");
 
 		// avatarEdic
-		let avatarEdic =
-			edicion && edicion.avatar ? localhost + "/imagenes/4-RCLVs-Revisar/" + edicion.avatar : avatarOrig;
+		let avatarEdic = edicion && edicion.avatar ? localhost + "/imagenes/4-RCLVs-Revisar/" + edicion.avatar : avatarOrig;
 
 		// Fin
 		return {orig: avatarOrig, edic: avatarEdic};
@@ -507,5 +506,25 @@ module.exports = {
 		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
 		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
 		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
+	},
+	infoIncompleta: (datos) => {
+		// Variables
+		let {entidad, id, origen, motivo_id, comentario, codigo} = datos;
+		let informacion;
+
+		// 1. Falta el motivo
+		if (codigo == "inactivar" && !motivo_id) {
+			let informacion = {
+				mensajes: ["Necesitamos que nos digas el motivo"],
+				iconos: {vista: "vistaEntendido", link: "urlAnterior"},
+			};
+			return informacion
+		}
+
+		// 2. Falta el comentario
+		motivo=motivos_rech_altas.find(n=>n.id==motivo_id)
+		if (codigo == "inactivar" && motivo.) {
+
+		}
 	},
 };

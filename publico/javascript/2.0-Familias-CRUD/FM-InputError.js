@@ -6,13 +6,13 @@ window.addEventListener("load", async () => {
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let submit = document.querySelector("#botones button[type='submit']");
-	const ruta = "/crud/api/averigua-si-se-requiere-explicacion/?id=";
-	let explicacion;
+	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
+	let req_com;
 
 	// Botón submit
 	let botonSubmit = () => {
 		let checked = document.querySelector("#motivos input:checked");
-		(!motivos.length && comentario.value) || (motivos && checked && (!explicacion || comentario.value))
+		(!motivos.length && comentario.value) || (motivos && checked && (!req_com || comentario.value))
 			? submit.classList.remove("inactivo")
 			: submit.classList.add("inactivo");
 	};
@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 	if (motivos.length)
 		for (let motivo of motivos)
 			motivo.addEventListener("click", async () => {
-				explicacion = await fetch(ruta + motivo.value).then((n) => n.json());
+				req_com = await fetch(ruta + motivo.value).then((n) => n.json());
 				botonSubmit();
 			});
 
