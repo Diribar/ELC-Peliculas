@@ -220,7 +220,7 @@ window.addEventListener("load", async () => {
 		// Define los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let adicionales = "";
-		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1)
+		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1);
 		// Particularidades por paso
 		if (paso.PC) {
 			// Cambia submit por '?'
@@ -237,6 +237,9 @@ window.addEventListener("load", async () => {
 				// Convierte la primera letra en mayúscula
 				let valor = e.target.value;
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+				// Convierte caracteres especiales en caracteres en español
+				let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
+				e.target.value = (await fetch(rutaCaracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
 			}
 			// Convierte los ID de los países elegidos, en un texto
 			if (campo == "paises") {
@@ -245,10 +248,6 @@ window.addEventListener("load", async () => {
 				campo = v.paisesID.name;
 				valor = v.paisesID.value;
 			}
-			// Convierte caracteres especiales en caracteres en español
-			let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
-			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea")
-				e.target.value = (await fetch(rutaCaracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
 			// Campos combinados
 			if (campo == "ano_estreno") {
 				adicionales += "&ano_fin=" + v.ano_fin.value;
@@ -283,6 +282,6 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	let mostrarErrores = paso.DD
+	let mostrarErrores = paso.DD;
 	statusInicial(mostrarErrores);
 });
