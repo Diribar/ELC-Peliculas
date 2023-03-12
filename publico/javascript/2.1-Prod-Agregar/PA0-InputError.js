@@ -250,7 +250,7 @@ window.addEventListener("load", async () => {
 			}
 			// Campos combinados
 			if (campo == "ano_estreno") {
-				adicionales += "&ano_fin=" + encodeURIComponent(v.ano_fin.value);
+				if (v.ano_fin) adicionales += "&ano_fin=" + encodeURIComponent(v.ano_fin.value);
 				adicionales += "&nombre_original=" + encodeURIComponent(v.nombre_original.value);
 				adicionales += "&nombre_castellano=" + encodeURIComponent(v.nombre_castellano.value);
 				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
