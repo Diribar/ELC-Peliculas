@@ -66,7 +66,7 @@ module.exports = {
 		let camposInput = camposDD.filter((n) => n.campoInput);
 		// Obtiene los países
 		let paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
-		let paisesTop5 = datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
+		let paisesTop5 = !datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
 		// Imagen derecha
 		let imgDerPers = datosDuros.avatar
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
@@ -77,20 +77,13 @@ module.exports = {
 		let origen =
 			req.session.FA || req.cookies.FA ? "ingreso-fa" : req.session.IM || req.cookies.IM ? "ingreso-manual" : "desambiguar";
 		// Render del formulario
+
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Agregar - Datos Duros",
-			dataEntry: datosDuros,
+			...{tema, codigo, titulo: "Agregar - Datos Duros", origen, imgDerPers},
+			...{dataEntry: datosDuros, errores},
 			camposInput1: camposInput.filter((n) => n.antesDePais),
 			camposInput2: camposInput.filter((n) => !n.antesDePais),
-			paisesNombre,
-			paises,
-			paisesTop5,
-			idiomas,
-			origen,
-			errores,
-			imgDerPers,
+			...{paises, paisesTop5, paisesNombre, idiomas},
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
