@@ -1,10 +1,10 @@
 <!-- Ayuda -->
-<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+<% if (!campo.mensajes) {campo.mensajes = (dataEntry.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
 <div class="ayuda">
 	<i class="fa-solid fa-circle-question ayudaClick desplClick">
-		<ul type="<%- registro.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar desplMostrar">
-			<% registro.mensajes.forEach((mensaje, indice) => { %>
-				<li <% if (registro.mensCateg) { %>class="<%= registro.mensCateg[indice] %>"<% } %>><%= mensaje %></li>
+		<ul type="<%- campo.mensajes.length > 1 ? 'dots' : 'none' %>" class="ayudaMostrar ocultar desplMostrar">
+			<% campo.mensajes.forEach((mensaje, indice) => { %>
+				<li <% if (campo.mensCateg) { %>class="<%= campo.mensCateg[indice] %>"<% } %>><%= mensaje %></li>
 			<% }) %> 
 		</ul>
 	</i>

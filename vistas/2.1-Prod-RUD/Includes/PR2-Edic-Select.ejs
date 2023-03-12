@@ -1,11 +1,12 @@
 <% let campo = camposDA.find(n => n.nombre == nombre) %>
+<% let {titulo, valores, angosto} = campo %>
 <section class="label-input">
-	<label><%= campo.titulo %></label>
+	<label><%= titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= nombre %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
-			<option value="" <% if (!registro[nombre]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
-			<% for (let valor of campo.valores) { %>
+		<select name="<%= nombre %>" class="input <%= angosto ? 'angosto ' : '' %>">
+			<option value="" <% if (!registro[nombre]) { %>selected<% } %>>Elejí<% if (!angosto) { %> una opción<% } %></option>
+			<% for (let valor of valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (registro[nombre] == valor.id) { %>selected<% } %>
 				>
