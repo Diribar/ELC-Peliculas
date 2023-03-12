@@ -1,5 +1,5 @@
-<% registro = camposDA.find(n => n.nombre == nombre) %>
-<% let {titulo, valores, grupo} = registro %>
+<% campo = camposDA.find(n => n.nombre == nombre) %>
+<% let {titulo, valores, grupo} = campo %>
 <section id="<%= nombre %>" class="label-select">
 	<label><%= titulo %></label>
 	<div class="inputError">

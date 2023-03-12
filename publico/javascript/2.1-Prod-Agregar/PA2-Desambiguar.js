@@ -5,6 +5,8 @@ window.addEventListener("load", async () => {
 	// Variables
 	let ruta = "api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
+	ruta = "api/localhost";
+	const localhost = await fetch(ruta).then((n) => (n ? n.json() : ""));
 
 	// DOM - Opciones
 	let listado = document.querySelector("#listado");
@@ -13,8 +15,8 @@ window.addEventListener("load", async () => {
 	let prodsYaEnBD_DOM = document.querySelector("#listado #prodsYaEnBD");
 
 	// DOM - Cartel
-	var fondo = document.querySelector("#tapar-el-fondo");
-	var cartel = document.querySelector("#cartel");
+	let fondo = document.querySelector("#tapar-el-fondo");
+	let cartel = document.querySelector("#cartel");
 	let cartelTitulo = document.querySelector("#cartel #titulo");
 	let cartelUl = document.querySelector("#cartel ul");
 	let cartelAlerta = document.querySelector("#cartel #alerta");
@@ -103,7 +105,7 @@ window.addEventListener("load", async () => {
 			// Imagen
 			li.children[0][4].children[0].src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
-				: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+				: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 			li.children[0][4].children[0].alt = prod.nombre_original;
 			li.children[0][4].children[0].title = prod.nombre_original;
 			// Información a mostrar
@@ -114,7 +116,7 @@ window.addEventListener("load", async () => {
 				let ano = prod.ano_fin > prod.ano_estreno ? prod.ano_fin + "-" + prod.ano_estreno : prod.ano_estreno;
 				li.children[0][4].children[1].children[3].innerHTML = ano;
 				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
-			} else li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno
+			} else li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno;
 			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.prodNombre;
 
 			// Quitar la clase 'ocultar'
@@ -134,7 +136,11 @@ window.addEventListener("load", async () => {
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
 			// Imagen
-			let avatar = prod.avatar.startsWith("http") ? prod.avatar : "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
+			let avatar = !prod.avatar
+				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+				: prod.avatar.startsWith("http")
+				? prod.avatar
+				: localhost + "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
 			li.children[0].children[0].children[0].alt = prod.nombre_original;
 			li.children[0].children[0].children[0].title = prod.nombre_original;

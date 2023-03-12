@@ -74,6 +74,10 @@ window.addEventListener("load", async () => {
 	}
 	if (paso.DD) {
 		v.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
+		v.nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
+		v.nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
+		v.ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
+		v.ano_fin = document.querySelector("#dataEntry input[name='ano_fin']");
 		// Variables de país
 		v.paisesSelect = document.querySelector("#paises_id select");
 		if (v.paisesSelect) {
@@ -213,42 +217,52 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
 	v.form.addEventListener("input", async (e) => {
-		// Definir los valores para 'campo' y 'valor'
+		// Define los valores para 'campo' y 'valor'
 		let campo = e.target.name;
-		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.trim();
-		let valor = encodeURIComponent(e.target.value);
-		let datosUrl = "";
+		let adicionales = "";
+		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1);
 		// Particularidades por paso
 		if (paso.PC) {
-			// Cambiar submit por '?'
+			// Cambia submit por '?'
 			v.verificar();
-			// Borrar los resultados anteriores
+			// Borra los resultados anteriores
 			v.resultado.innerHTML = "<br>";
-			// Borrar las clases anteriores
+			// Borra las clases anteriores
 			v.resultado.classList.remove(...v.resultado.classList);
 			v.resultado.classList.add("sinResultado");
 		}
 		if (paso.DD) {
-			// Acciones para campos input texto
+			// Acciones para campos texto
 			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
 				// Convierte la primera letra en mayúscula
-				valor = e.target.value;
+				let valor = e.target.value;
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 				// Convierte caracteres especiales en caracteres en español
-				valor = encodeURIComponent(e.target.value);
-				e.target.value = await fetch(rutaCaracteresCastellano + valor).then((n) => n.json());
+				let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
+				e.target.value = (await fetch(rutaCaracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
 			}
 			// Convierte los ID de los países elegidos, en un texto
-			if (e.target == v.paisesSelect) {
+			if (campo == "paises") {
 				DD.actualizaPaises();
 				// Definir los valores para 'campo' y 'valor'
 				campo = v.paisesID.name;
 				valor = v.paisesID.value;
 			}
+			// Campos combinados
+			if (campo == "ano_estreno") {
+				adicionales += "&ano_fin=" + encodeURIComponent(v.ano_fin.value);
+				adicionales += "&nombre_original=" + encodeURIComponent(v.nombre_original.value);
+				adicionales += "&nombre_castellano=" + encodeURIComponent(v.nombre_castellano.value);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
+			}
+			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
+			if (campo == "nombre_original" || campo == "nombre_castellano") {
+				adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
+			}
 		}
-		// Prepara el datosUrl con los datos a validar
-		valor = encodeURIComponent(e.target.value);
-		datosUrl = campo + "=" + valor;
+		// Prepara los datosUrl con los datos a validar
+		let datosUrl = campo + "=" + encodeURIComponent(e.target.value) + adicionales;
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
@@ -266,6 +280,6 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	let mostrarIconoError = paso.DD; // En DD se muestran los errores iniciales siempre;
-	statusInicial(mostrarIconoError);
+	let mostrarErrores = paso.DD;
+	statusInicial(mostrarErrores);
 });

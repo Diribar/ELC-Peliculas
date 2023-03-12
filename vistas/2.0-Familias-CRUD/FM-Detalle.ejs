@@ -17,7 +17,7 @@
 		<div id="recuadro">
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema == "prod_rud") { %>
+				<% if (tema.endsWith("rud") && familias == "productos") { %>
 					<%- include("FM-Encabezado") %>
 				<% } else if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
@@ -47,7 +47,7 @@
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-		<% if (tema == "prod_rud" && familias == "productos") { %><%- include("PR1-DT2-Breves") %>
+		<% if (tema.endsWith("rud") && familias == "productos") { %><%- include("PR1-DT2-Breves") %>
 		<% } else if (familias == "rclvs") { %><%- include("RCLV-DT2-Breves") %>
 		<% } else if (tema == "revisionEnts") { %><%- include("RE1-PA-Breves") %>
 		<% } %>

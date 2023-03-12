@@ -8,7 +8,7 @@
 		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paisesNombre %>" <% if (inputOK) { %>disabled class="desplClick"<% } %> placeholder="Elegí un país" tabindex="-1">
 		<!-- Opciones de países -->
 		<% if (!inputOK) { %>
-			<select tabindex="-1">
+			<select name="paises" tabindex="-1">
 				<option value="borrar">Borrar todo/s</option>
 				<optgroup label="Más Frecuentes">
 					<% for (let pais of paisesTop5) { %>
