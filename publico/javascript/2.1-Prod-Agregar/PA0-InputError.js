@@ -270,7 +270,6 @@ window.addEventListener("load", async () => {
 	});
 	// Submit
 	v.form.addEventListener("submit", async (e) => {
-		console.log("submit");
 		submitForm(e);
 	});
 	v.submit.addEventListener("click", async (e) => {
