@@ -1,1 +1,11 @@
-{"fechaActual":"Lun. 12/mar","horaActual":"08:00","semanaActual":10,"titulosImgDer":{"10-mar-23":"ELC - Películas","11-mar-23":"Artémides Zatti","12-mar-23":"Artémides Zatti","13-mar-23":"Don Artémides Zatti"}}
+{
+	"fechaActual": "Lun. 12/mar",
+	"horaActual": "08:00",
+	"semanaActual": 10,
+	"titulosImgDer": {
+		"10-mar-23": "ELC - Películas",
+		"11-mar-23": "Artémides Zatti",
+		"12-mar-23": "Artémides Zatti",
+		"13-mar-23": "Don Artémides Zatti"
+	}
+}
