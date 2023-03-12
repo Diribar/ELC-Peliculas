@@ -1,0 +1,33 @@
+<div id="nombres">
+	<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= registro.id %>" target="_blank" tabindex="-1">
+		<h2><%= registro.nombre_castellano %></h2>
+	</a>
+	<% if (registro.nombre_original) { %>
+		<h3><em><%= registro.nombre_original %></em></h3>
+	<% } %>
+</div>
+<div id="colCap">
+	<!-- Cantidad de Temporadas y de Capítulos -->
+	<% if (entidad == "colecciones") { %>
+		<div id="colecciones">
+			<div>
+				<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
+				<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
+			</div>
+		</div>
+		<% } %>
+	<!-- Colección a la que pertenece -->
+	<% if (entidad == "capitulos") { %>
+		<div id="tempCapI">
+			<p><strong>De la colección:</strong>
+				<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion.id %>" target="_blank">
+					<span><%= registro.coleccion.nombre_castellano %></span>
+				</a>
+			</p>
+		</div>
+		<div id="tempCapS">
+			<p id="temporada">Temporada: <%= registro.temporada %></p>
+			<p id="capitulo">Capítulo: <%= registro.capitulo %></p>
+		</div>
+	<% } %>
+</div>

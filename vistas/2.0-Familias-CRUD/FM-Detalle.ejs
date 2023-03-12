@@ -1,4 +1,4 @@
-<% if (locals.cartelGenerico) { %><%- include('CMP-TimerContador') %><% } %>
+<% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('CMP-TimerContador') %><% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
@@ -17,10 +17,12 @@
 		<div id="recuadro">
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema == "rclv_crud") { %>
-					<%- include("RCLV-Encabezado") %>
-				<% } else { %>
+				<% if (tema == "prod_rud") { %>
 					<%- include("FM-Encabezado") %>
+				<% } else if (tema == "rclv_crud") { %>
+					<%- include("RCLV-Encabezado") %>
+				<% } else if (tema == "revisionEnts") { %>
+					<%- include("RE0-Encabezado") %>
 				<% } %>
 			</div>
 			<!-- Contenido -->
@@ -28,7 +30,7 @@
 			<% } else { %><div id="contenido" class="flexCol grow"><% } %>
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
-					<% if (tema == "prod_rud") { %><%- include("PR1-DT1-Largos") %>
+					<% if (tema == "prod_rud" || tema == "revisionEnts") { %><%- include("FM1-Largos") %>
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
 					<% } else if (tema == "crud") { %>
 						<% if (codigo == "inactivar") { %><%- include("FM1-Inactivar") %><% } %>
@@ -37,16 +39,17 @@
 				</div>
 				<!-- Botones -->
 				<div id="botones" class="flexRow">
-					<%- include("FM-Flechas") %>
-					<%- include("PR1-DT3-ProdDetalle") %>
-					<%- include("FM-Provisorios") %>
+					<%- include("FM-Flechas1Std") %>
+					<%- include("FM-Flechas2Prod") %>
+					<%- include("FM-Flechas3Esp") %>
 				</div>
 			<% if (tema=="crud") { %></form><% } else { %></div><% } %>
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-		<% if (familias == "productos") { %><%- include("PR1-DT2-Breves") %>
+		<% if (tema == "prod_rud" && familias == "productos") { %><%- include("PR1-DT2-Breves") %>
 		<% } else if (familias == "rclvs") { %><%- include("RCLV-DT2-Breves") %>
+		<% } else if (tema == "revisionEnts") { %><%- include("RE1-PA-Breves") %>
 		<% } %>
 	</section>
 </section>
