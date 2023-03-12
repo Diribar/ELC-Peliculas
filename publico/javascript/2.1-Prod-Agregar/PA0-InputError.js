@@ -219,8 +219,9 @@ window.addEventListener("load", async () => {
 	v.form.addEventListener("input", async (e) => {
 		// Define los valores para 'campo' y 'valor'
 		let campo = e.target.name;
-		let adicionales = "";
 		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1);
+		let valor = e.target.value;
+		let adicionales = "";
 		// Particularidades por paso
 		if (paso.PC) {
 			// Cambia submit por '?'
@@ -235,11 +236,11 @@ window.addEventListener("load", async () => {
 			// Acciones para campos texto
 			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
 				// Convierte la primera letra en mayúscula
-				let valor = e.target.value;
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 				// Convierte caracteres especiales en caracteres en español
 				let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
 				e.target.value = (await fetch(rutaCaracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
+				valor = e.target.value;
 			}
 			// Convierte los ID de los países elegidos, en un texto
 			if (campo == "paises") {
@@ -262,7 +263,7 @@ window.addEventListener("load", async () => {
 			}
 		}
 		// Prepara los datosUrl con los datos a validar
-		let datosUrl = campo + "=" + encodeURIComponent(e.target.value) + adicionales;
+		let datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
