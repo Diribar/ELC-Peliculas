@@ -67,6 +67,9 @@ module.exports = {
 		// Fin
 		return res.json(resultado);
 	},
+	localhost:(req,res)=>{
+		return res.json(localhost)
+	},
 	desambGuardar1: async (req, res) => {
 		let datos = JSON.parse(req.query.datos);
 		// Obtiene más información del producto
