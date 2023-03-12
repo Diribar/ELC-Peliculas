@@ -250,20 +250,19 @@ window.addEventListener("load", async () => {
 			}
 			// Campos combinados
 			if (campo == "ano_estreno") {
-				adicionales += "&ano_fin=" + v.ano_fin.value;
-				adicionales += "&nombre_original=" + v.nombre_original.value;
-				adicionales += "&nombre_castellano=" + v.nombre_castellano.value;
-				adicionales += "&entidad=" + v.entidad;
+				adicionales += "&ano_fin=" + encodeURIComponent(v.ano_fin.value);
+				adicionales += "&nombre_original=" + encodeURIComponent(v.nombre_original.value);
+				adicionales += "&nombre_castellano=" + encodeURIComponent(v.nombre_castellano.value);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
-			if (campo == "ano_fin") adicionales += "&ano_estreno=" + v.ano_estreno.value;
+			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
 			if (campo == "nombre_original" || campo == "nombre_castellano") {
-				adicionales += "&ano_estreno=" + v.ano_estreno.value;
-				adicionales += "&entidad=" + v.entidad;
+				adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
 		}
 		// Prepara los datosUrl con los datos a validar
-		let valor = encodeURIComponent(e.target.value);
-		let datosUrl = campo + "=" + valor + adicionales;
+		let datosUrl = campo + "=" + encodeURIComponent(e.target.value) + adicionales;
 		// Validar errores
 		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
