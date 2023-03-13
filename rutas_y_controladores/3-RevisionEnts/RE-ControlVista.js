@@ -385,24 +385,11 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo,
-			entidad,
-			id,
-			producto,
-			prodOrig: producto,
-			links,
-			links_provs,
-			links_tipos,
-			avatar,
-			motivos,
-			calidades: variables.calidades,
-			userID,
-			camposARevisar,
-			title: producto.nombre_castellano,
-			imgDerPers: procsCRUD.obtieneAvatarProd(producto, "").orig,
-			cartelGenerico: true,
+			...{tema, codigo, titulo, title: producto.nombre_castellano},
+			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "productos"},
+			...{links, links_provs, links_tipos, motivos},
+			...{camposARevisar, calidades: variables.calidades},
+			...{imgDerPers: procsCRUD.obtieneAvatarProd(producto, "").orig, cartelGenerico: true},
 		});
 	},
 };
