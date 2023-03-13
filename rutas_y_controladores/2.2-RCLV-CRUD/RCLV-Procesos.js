@@ -98,7 +98,7 @@ module.exports = {
 				{titulo: "Creado por", valor: valorNombreApellido(RCLV.creado_por)},
 				{titulo: "Última revisión", valor: ultimaActualizacion},
 				{titulo: "Productos en BD", valor: cantProds},
-				{titulo: "Status", valor: statusResumido.nombre, id: statusResumido.id}
+				{titulo: "Status", valor: statusResumido.valor, id: statusResumido.id}
 			);
 			// Si corresponde, se agrega el motivo
 			// if ()
