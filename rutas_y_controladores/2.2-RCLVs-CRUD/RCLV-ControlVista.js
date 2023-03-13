@@ -54,20 +54,20 @@ module.exports = {
 		// Info para la vista
 		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
 		let motivos = tema == "revisionEnts" ? motivos_rech_altas.filter((n) => n.rclvs) : "";
+		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
 			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamilia(entidad)},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
-			...{dataEntry, DE: !!Object.keys(dataEntry).length},
+			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
-			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
+			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts", institucional: true},
 			vista: req.baseUrl + req.path,
 			rutaSalir,
 			motivos,
 			urlActual: req.session.urlActual,
-			institucional: true,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {

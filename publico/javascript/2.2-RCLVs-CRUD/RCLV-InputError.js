@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 		id: new URL(location.href).searchParams.get("id"),
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
-		botonSubmit: document.querySelector(".flechas #submit"),
+		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 		// Rutas
 		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
 		rutaRegistrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",

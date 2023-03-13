@@ -357,11 +357,6 @@
 	<!-- Flechas y Botón -->
 	<div class="flexRowAlign spaceEvenly">
 		<%- include("Flechas-1Estándar") %>
-		<section class="flechas">
-			<i id="submit" class="fa-solid fa-circle-check inactivo" title="Guardar"></i>
-			<% if (tema=="revisionEnts") { %>
-				<i id="mostrarMotivos" class="fa-solid fa-circle-xmark" title="Rechazar"></i>
-			<% } %>
-		</section>
+		<%- include("Flechas-3CambioStatus") %>
 	</div>
 </form>
