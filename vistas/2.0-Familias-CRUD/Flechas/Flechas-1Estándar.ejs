@@ -6,13 +6,13 @@
 		</a>
 	<% } %>
 	<!-- Detalle -->
-	<% if ((codigo != "detalle" && locals.id)&&(tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts")) { %>
+	<% if ((codigo != "detalle" && locals.id) && (tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts")) { %>
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<!-- Edición -->
-	<% if ((codigo != "edicion" && locals.id)&&(tema == "prod_rud" || tema == "links_crud")) { %>
+	<% if ((codigo != "edicion" && locals.id) && (tema != "revisionEnts")) { %>
 		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</a>
