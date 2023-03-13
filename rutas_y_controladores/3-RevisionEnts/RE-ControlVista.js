@@ -85,11 +85,14 @@ module.exports = {
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
+		// Status de la entidad
+		const status_id = original.status_registro_id;
+		const statusCreado = status_id == creado_id;
 		// Va a la vista
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, familia, id, prodNombre, registro: original},
+			...{entidad, familias, familia, id, prodNombre, registro: original, status_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
 			...{origen, urlActual: req.session.urlActual, cartelRechazo: true},
 		});

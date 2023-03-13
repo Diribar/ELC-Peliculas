@@ -110,12 +110,12 @@ module.exports = {
 		const codigo = "detalle";
 
 		// Variables
-		let {entidad, id, origen} = req.query
+		let {entidad, id, origen} = req.query;
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
-		if (!origen) origen = "DTR"
+		if (!origen) origen = "DTR";
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -137,12 +137,13 @@ module.exports = {
 		// Imagen Derecha
 		const bloqueDer = procesos.detalle.bloqueDer({...original, entidad}, cantProds);
 		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
-
+		// Status de la entidad
+		const status_id = original.status_registro_id;
+		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, id, familia, familias},
-			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
+			...{entidad, entidadNombre, id, familia, familias, status_id, statusEstable},
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
