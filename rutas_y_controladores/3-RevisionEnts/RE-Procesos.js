@@ -465,7 +465,7 @@ module.exports = {
 			fecha = comp.fechaDiaMesAno(edicion.editado_en);
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
-			let statusResumido = comp(original);
+			let statusResumido = procsCRUD.statusResumido(original);
 			bloque1.push({titulo: "Status", ...statusResumido});
 			// Bloque 2 ---------------------------------------------
 			// Obtiene los datos del usuario

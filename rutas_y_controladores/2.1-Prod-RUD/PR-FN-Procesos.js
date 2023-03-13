@@ -1,6 +1,7 @@
 "use strict";
 // Requires
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 
 module.exports = {
 	// Producto
@@ -44,7 +45,7 @@ module.exports = {
 		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: producto.ano_fin});
 		else bloques.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		// Status resumido
-		let statusResumido = comp(producto);
+		let statusResumido = procsCRUD.statusResumido(producto);
 		// Variable ultimaActualizacion
 		let fechas = [producto.creado_en, producto.sugerido_en];
 		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en)

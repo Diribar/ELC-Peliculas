@@ -71,7 +71,7 @@ module.exports = {
 		},
 		bloqueDer: (RCLV, cantProds) => {
 			// Variable status
-			let statusResumido = comp(RCLV);
+			let statusResumido = procsCRUD.statusResumido(RCLV);
 			// Comienza a armar el resumen
 			let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
 			if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
