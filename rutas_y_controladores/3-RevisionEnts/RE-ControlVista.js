@@ -5,8 +5,8 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
-const validaRCLV = require("../2.2-RCLV-CRUD/RCLV-Validar");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
+const validaRCLV = require("../2.2-RCLVs-CRUD/RCLV-Validar");
 
 module.exports = {
 	// TABLERO
@@ -58,8 +58,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = req.path.slice(1, -1);
 		// Variables
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		let {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		// Obtiene el registro original
@@ -77,7 +76,7 @@ module.exports = {
 		// Obtiene los países
 		let paisesNombre = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
 		// Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaForm_ficha(original, paisesNombre);
+		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaFicha(original, paisesNombre);
 		let motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
 		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
@@ -205,15 +204,17 @@ module.exports = {
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
 
 		// Variables
-		const {entidad, id: prodID, edicion_id: edicID} = req.query;
+		const {entidad, id, edicion_id: edicID} = req.query;
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let ingresos, reemplazos, bloqueDer, infoErronea_id, motivos;
+		let ingresos, reemplazos, bloqueDer, motivos;
 
 		// Obtiene la versión original con include
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, prodID, include);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene la edición
 		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
@@ -262,16 +263,23 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			// Variables
 			motivos = motivos_rech_edic.filter((m) => m.prods);
-			bloqueDer = await procesos.edicion.fichaDelRegistro(original, {...edicion, editado_por_id, editado_en});
+			bloqueDer = await procesos.edicion.prodEdicFicha(original, {...edicion, editado_por_id, editado_en});
 			imgDerPers = avatar;
 		}
 		// Variables para la vista
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		// Ayuda para el titulo
+		const ayudasTitulo = [
+			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
+			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
+		];
+		// Botón salir
+		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: original.nombre_castellano},
-			...{entidad, id: prodID, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
+			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, rutaSalir},
+			...{entidad, id, familia, familias, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
@@ -281,11 +289,11 @@ module.exports = {
 	prod_AvatarGuardar: async (req, res) => {
 		// return res.send({...req.query, ...req.body});
 		// Obtiene la respuesta del usuario
-		const {entidad, id: prodID, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
+		const {entidad, id, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
 		let revID = req.session.usuario.id;
-		let original = await BD_genericas.obtienePorId(entidad, prodID);
+		let original = await BD_genericas.obtienePorId(entidad, id);
 		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
 		let campo = "avatar";
 		let aprob = !rechazado;
@@ -311,12 +319,12 @@ module.exports = {
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Variables
-		const {entidad, id: prodID} = req.query;
+		const {entidad, id} = req.query;
 		let ingresos, reemplazos, bloqueDer, infoErronea_id;
 
 		// Obtiene la versión original con include
 		let includeOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
-		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, prodID, includeOrig);
+		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includeOrig);
 
 		// Acciones si no está presente el avatar
 		let edicion = await procsCRUD.puleEdicion(entidad, rclvOrig, rclvEdic);
@@ -327,7 +335,7 @@ module.exports = {
 		// Variables
 		let motivos = motivos_rech_edic.filter((m) => m.rclvs);
 		infoErronea_id = motivos.find((n) => n.info_erronea).id;
-		bloqueDer = await procesos.edicion.fichaDelRegistro(rclvOrig, rclvEdic);
+		bloqueDer = await procesos.edicion.rclvEdicFicha(rclvOrig, rclvEdic);
 		// return res.send([edicion, ingresos, reemplazos]);
 
 		// Variables para la vista
@@ -336,21 +344,6 @@ module.exports = {
 		// Va a la vista
 		// return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo,
-			rclvOrig,
-			rclvEdic,
-			entidadNombre,
-			ingresos,
-			reemplazos,
-			motivos,
-			infoErronea_id,
-			entidad,
-			id: prodID,
-			bloqueDer,
-			title: rclvOrig.nombre_castellano,
-			cartelGenerico: true,
 		});
 	},
 
