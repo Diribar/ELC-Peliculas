@@ -77,13 +77,12 @@ module.exports = {
 	},
 	crudGuardar: async (req, res) => {
 		// Tema y Código
-		const tema = "crud";
 		const codigo = req.path.slice(1, -1);
 
 		// Variables
-		let {entidad, id, origen, motivo_id, comentario} = {...req.query, ...req.body};
+		let {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
 
-		// 1. Revisa problemas
+		// 1. Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
 		if (informacion) {
 			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);

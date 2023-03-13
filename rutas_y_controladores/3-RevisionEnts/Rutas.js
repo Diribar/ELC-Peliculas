@@ -45,6 +45,7 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.get("/producto/rechazar", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.post("/producto/rechazar", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
 router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
 

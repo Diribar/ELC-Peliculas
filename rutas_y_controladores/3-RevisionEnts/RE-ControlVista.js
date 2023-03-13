@@ -99,8 +99,9 @@ module.exports = {
 	},
 	prodRCLV_altaGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, rechazado} = req.query;
-		const motivo_id = req.body.motivo_id;
+		const {entidad, id} = req.query;
+		const rechazado = req.path.endsWith("/rechazar/");
+		const {motivo_id, comentario} = req.body;
 		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";
 		let datos = {};
@@ -172,6 +173,7 @@ module.exports = {
 			datosHist.motivo_id = motivo_id;
 			datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(datosHist.motivo.duracion);
+			datosHist.comentario = comentario;
 		}
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
