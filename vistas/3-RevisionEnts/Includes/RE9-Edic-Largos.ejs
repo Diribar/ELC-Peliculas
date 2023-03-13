@@ -1,0 +1,26 @@
+	<!-- Ingresos -->
+	<% if (ingresos.length) { %>
+		<div id="ingrs">
+			<h2>Información que no se disponía</h2>
+			<table>
+				<tbody>
+					<% for (campo of ingresos) { %>
+						<tr class="fila">
+							<%- include("RE9-Edicion-Ingresos", {campo}) %> 
+						</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	<% } %>
+	<!-- Reemplazos -->
+	<% if (reemplazos.length) { %>
+		<div id="reemps">
+			<h2>Información a reemplazar</h2>
+			<% for (campo of reemplazos) { %>
+				<div class="fila">
+					<%- include("RE9-Edicion-Reemp", {campo}) %>
+				</div>
+			<% } %>
+		</div>
+	<% } %>
