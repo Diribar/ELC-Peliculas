@@ -287,7 +287,7 @@ module.exports = {
 			return;
 		},
 		// Productos Alta
-		prodAltaForm_ficha: async (prodOrig, paisesNombre) => {
+		prodAltaFicha: async (prodOrig, paisesNombre) => {
 			// Funciones
 			let usuario_CalidadAltas = async (userID) => {
 				// 1. Obtiene los datos del usuario
@@ -429,7 +429,7 @@ module.exports = {
 			return [ingresos, reemplazos];
 		},
 		// Prod-Edición Form
-		fichaDelRegistro: async (original, edicion) => {
+		prodEdicFicha: async (original, edicion) => {
 			// Funciones
 			let usuario_CalidadEdic = async (userID) => {
 				// 1. Obtiene los datos del usuario

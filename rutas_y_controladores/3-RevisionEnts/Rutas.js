@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const API = require("./RE-ControlAPI");
 const vista = require("./RE-ControlVista");
-const vistaAltaRCLV = require("../2.2-RCLV-CRUD/RCLV-ControlVista");
+const vistaAltaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
