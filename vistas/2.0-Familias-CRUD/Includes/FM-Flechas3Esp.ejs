@@ -20,8 +20,7 @@
 	</button>
 <% } %>
 <style>
-	.flechas:has(.fa-circle-xmark) {border-color: var(--rojo-oscuro); background: var(--rojo-claro);}
-	.flechas:has(.fa-circle-check) {border-color: var(--verde-oscuro); background: var(--verde-claro);}
+	.flechas :is(.fa-circle-xmark, .fa-circle-check) {color: var(--azul-oscuro)}
 </style>
 
 <% if (tema == "revisionEnts" && codigo == "producto/alta") { %>
