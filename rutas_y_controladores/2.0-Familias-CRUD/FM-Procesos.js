@@ -523,4 +523,15 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
+
+	// Varios
+	statusResumido: (registro) => {
+		return registro.status_registro.gr_creado
+			? {id: 1, valor: "Creado"}
+			: registro.status_registro.aprobado
+			? {id: 2, nombre: "Aprobado"}
+			: registro.status_registro.inactivo
+			? {id: 3, nombre: "Inactivo"}
+			: {id: 1, valor: "Para Revisar"};
+	},
 };

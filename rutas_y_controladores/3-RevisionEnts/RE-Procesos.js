@@ -465,11 +465,7 @@ module.exports = {
 			fecha = comp.fechaDiaMesAno(edicion.editado_en);
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
-			let statusResumido = original.status_registro.gr_creado
-				? {id: 1, valor: "Revisión Pend."}
-				: original.status_registro.aprobado
-				? {id: 2, valor: "Aprobado"}
-				: {id: 3, valor: "Inactivado"};
+			let statusResumido = comp(original);
 			bloque1.push({titulo: "Status", ...statusResumido});
 			// Bloque 2 ---------------------------------------------
 			// Obtiene los datos del usuario

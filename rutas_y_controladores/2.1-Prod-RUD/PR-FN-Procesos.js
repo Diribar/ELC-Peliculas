@@ -44,12 +44,8 @@ module.exports = {
 		if (entidad == "colecciones") bloques.push({titulo: "Año de fin", valor: producto.ano_fin});
 		else bloques.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		// Status resumido
-		let statusResumido = producto.status_registro.aprobado
-			? {id: 2, valor: "Aprobado"}
-			: producto.status_registro.inactivo
-			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Revisión Pend."};
-			// Variable ultimaActualizacion
+		let statusResumido = comp(producto);
+		// Variable ultimaActualizacion
 		let fechas = [producto.creado_en, producto.sugerido_en];
 		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en)
 		if (producto.editado_en) fechas.push(producto.editado_en)
