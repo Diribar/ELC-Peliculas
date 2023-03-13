@@ -1,9 +1,9 @@
 <div id="nombres">
-	<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= registro.id %>" target="_blank" tabindex="-1">
-		<h2><%= registro.nombre_castellano %></h2>
+	<a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= registro.id %>" target="_blank" tabindex="-1">
+		<h2><%= familia == "rclv" ? registro.nombre : registro.nombre_castellano %></h2>
 	</a>
-	<% if (registro.nombre_original) { %>
-		<h3><em><%= registro.nombre_original %></em></h3>
+	<% if (registro.nombre_original || registro.apodo) { %>
+		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
 	<% } %>
 </div>
 <div id="colCap">
