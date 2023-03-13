@@ -1,16 +1,26 @@
-<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
-<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista de Inactivar -->
-
-<% if (locals.userIdentVal && locals.statusEstable || locals.statusCreado) { %>
-	<!-- Usuario validado -->
-	<!-- Vista Detalle y statusEstable -->
-	<!-- Vista RevisionAlta y StatusCreado-->
+<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
+<% if (locals.statusCreado) { %>
 	<div class="flechas">
 		<!-- Aprobar -->
-		<% if (locals.statusCreado) { %>
-			<button type="submit" autofocus tabindex="2">
-				<i class="fa-solid fa-circle-check" title="Aprobar"></i>
-			</button>
+		<button type="submit" autofocus tabindex="2">
+			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
+		</button>
+		<!-- Rechazar -->
+		<a href="<%= '/crud/rechazar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
+		</a>
+	</div>
+<% } %>
+	
+<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
+<% if (locals.userIdentVal && locals.statusEstable) { %>
+	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
+	<div class="flechas">
+		<!-- Inactivar -->
+		<% if (locals.status_id == aprobado_id) { %>
+			<a href="<%= '/crud/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
+			</a>
 		<% } %>
 		<!-- Recuperar -->
 		<% if (locals.status_id == inactivo_id) { %>
@@ -18,16 +28,8 @@
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 		<% } %>
-		<!-- Inactivar -->
-		<% if (locals.status_id == aprobado_id || statusCreado) { %>
-			<a href="<%= '/crud/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
-			</a>
-		<% } %>
 		<!-- Color azul para las vistas de Detalle -->
-		<% if (locals.statusEstable) { %>
-			<style>.flechas :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}</style>
-		<% } %>
+		<style>.flechas :is(.fa-circle-check, .fa-circle-xmark) {color: var(--azul-oscuro)}</style>
 	</div>
 <% } %>
 
