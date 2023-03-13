@@ -1,0 +1,98 @@
+<%- include('CMP-TimerContador') %>
+<div id="tituloPrincipal">
+	<h1 id="titulo"><%= titulo %></h1>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul class="ayudaMostrar ocultar desplMostrar" type="dots">
+				<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
+				<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+			</ul>
+		</i>
+	</div>
+</div>			
+<section id="datos">
+	<div id="datosLargos">
+		<!-- Encabezado y Contenido -->
+		<div>
+			<% if (codigo == "rclvEdicion") { %>
+				<section id="encabezado">
+					<div id="nombres">
+						<a href="/rclv/detalle/?entidad=<%= entidad %>&id=<%= rclvOrig.id %>" target="_blank" tabindex="-1">
+							<h1><%= rclvOrig.nombre %></h1>
+						</a>
+						<% if (rclvOrig.apodo) { %>
+							<h2><em><%= rclvOrig.apodo %></em></h2>
+						<% } %>			
+					</div>
+				</section>	
+			<% } else { %>
+				<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+				<%- include("RE0-Encabezado") %>
+			<% } %>
+			<div class="contenido">
+				<!-- Ingresos -->
+				<% if (ingresos.length) { %>
+					<div id="ingrs">
+						<h2>Información que no se disponía</h2>
+						<table>
+							<tbody>
+								<% for (campo of ingresos) { %>
+									<tr class="fila">
+										<%- include("RE9-Edicion-Ingresos", {campo}) %> 
+									</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
+				<% } %>
+				<!-- Reemplazos -->
+				<% if (reemplazos.length) { %>
+					<div id="reemps">
+						<h2>Información a reemplazar</h2>
+						<% for (campo of reemplazos) { %>
+							<div class="fila">
+								<%- include("RE9-Edicion-Reemp", {campo}) %>
+							</div>
+						<% } %>
+					</div>
+				<% } %>
+			</div>
+		</div>
+		<!-- Botones -->
+		<div class="flexRow">
+			<div class="flechas">
+				<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=TE" target="_self">
+					<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+				</a>
+				<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= codigo == "rclvEdicion" ? rclvOrig.id : prodOrig.id %>" target="_blank">
+					<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
+				</a>
+			</div>
+			<% if (codigo != "rclvEdicion") { %>
+				<div class="flechas">
+					<i class="fa-solid fa-film" tabindex="-1" title="Ver el Trailer"></i>
+					<% if (entidad != "colecciones") { %>
+						<i class="fa-solid fa-video" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
+					<% } %>
+				</div>
+			<% } %>
+		</div>
+	</div>
+	<div id="datosBreves">
+		<h3 class="titulo">Datos del <%= codigo == "rclvEdicion" ? entidadNombre : 'Producto' %></h3>
+		<div id="texto">
+			<% for (campo of bloqueDer[0]) { %>
+				<p class="<%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '"') : '"' %>">
+					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+				</p>
+			<% } %>
+		</div>
+		<h3 class="titulo">Datos del Usuario</h3>
+		<div id="texto">
+			<% for (campo in bloqueDer[1]) { %>
+				<p><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+			<% } %>
+		</div>
+	</div>
+</section>
