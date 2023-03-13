@@ -10,7 +10,7 @@ module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilias(entidad);
 		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const edicion_id = edicion.id;
 		let camposNull = {};
@@ -352,7 +352,7 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familia = comp.obtieneFamiliaEnPlural(entidad);
+		let familia = comp.obtieneFamilias(entidad);
 
 		// Rutina por producto
 		if (familia == "productos") {

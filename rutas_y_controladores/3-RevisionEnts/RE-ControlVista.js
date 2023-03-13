@@ -60,7 +60,7 @@ module.exports = {
 		// Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
-		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		// Obtiene el registro original
 		let include = ["status_registro"];
 		if (entidad == "colecciones") include.push("capitulos");
@@ -98,7 +98,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";
 		let datos = {};
 

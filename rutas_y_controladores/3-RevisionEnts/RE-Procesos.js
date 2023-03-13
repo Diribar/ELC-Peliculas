@@ -205,7 +205,7 @@ module.exports = {
 			// Variables
 			const ahora = comp.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let familia = comp.obtieneFamilias(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
@@ -492,7 +492,7 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familia = comp.obtieneFamiliaEnPlural(entidad);
+			const familia = comp.obtieneFamilias(entidad);
 			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();

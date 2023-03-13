@@ -30,6 +30,8 @@ module.exports = async (req, res, next) => {
 	// Variables - Registro
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
+	v.entidadSingular = comp.obtieneEntidadNombre(v.entidad).toLowerCase()
+	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = v.registro.capturado_en;
 	v.capturadoTexto = comp.fechaHorario(v.registro.capturado_en);
@@ -109,8 +111,22 @@ module.exports = async (req, res, next) => {
 			((v.registro.status_registro.creado && v.urlBase != "/revision") || // en status creado y la ruta no es de revisión
 				(v.registro.status_registro.creado_aprob && !v.usuario.rol_usuario.revisor_ents)) // en status creadoAprob y no es un usuario revisor
 		) {
+			let nombre = v.registro.nombre_castellano
+				? v.registro.nombre_castellano
+				: v.registro.nombre_original
+				? v.registro.nombre_original
+				: v.registro.nombre
+				? v.registro.nombre
+				: "";
+			if (nombre) nombre="'"+nombre+"'"
 			let mensajes = creadoPorElUsuario
-				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
+				? [
+						"Se cumplió el plazo de 1 hora desde que se creó el registro de" +
+							v.articulo +
+							v.entidadSingular +
+							" " +
+							nombre,
+				  ]
 				: ["El registro todavía no está revisado."];
 			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.");
 			informacion = {

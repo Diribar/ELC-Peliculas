@@ -17,8 +17,8 @@ module.exports = {
 		const codigo = req.path.slice(1, -1);
 		let {entidad, id, origen} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const familia = comp.obtieneFamiliaEnSingular(entidad);
-		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		if (!origen) origen = "DTP"
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let bloqueIzq, bloqueDer;
