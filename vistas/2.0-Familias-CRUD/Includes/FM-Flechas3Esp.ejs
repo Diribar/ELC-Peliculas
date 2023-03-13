@@ -21,7 +21,7 @@
 	</button>
 <% } %>
 
-<% if (tema == "revisionEnts" && codigo == "producto/alta") { %>
+<% if (tema == "revisionEnts" && (codigo == "producto/alta"||codigo == "producto/edicion")) { %>
 	<div id="sectorLogos" class="flechas">
 		<!-- TMDB -->
 		<% tmdb = registro.nombre_original ? "search?language=es&query=" + registro.nombre_original : "" %>

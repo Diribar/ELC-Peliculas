@@ -5,26 +5,17 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
 	<% } %>
-	<% if (tema == "revisionEnts") { %>
-		<a href="<%= rutaSalir %>" target="_self" tabindex="1">
-			<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
+	<!-- Detalle -->
+	<% if ((codigo != "detalle" && locals.id)&&(tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts")) { %>
+		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if (tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts") { %>
-		<!-- Detalle -->
-		<% if (codigo != "detalle" && locals.id) { %>
-			<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-			</a>
-		<% } %>
-	<% } %>
-	<% if (tema == "prod_rud" || tema == "links_crud") { %>
-		<!-- Edición -->
-		<% if (codigo != "edicion" && locals.id) { %>
-			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-			</a>
-		<% } %>
+	<!-- Edición -->
+	<% if ((codigo != "edicion" && locals.id)&&(tema == "prod_rud" || tema == "links_crud")) { %>
+		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+		</a>
 	<% } %>
 	<!-- Links -->
 	<% if (tema == "prod_rud" && locals.id) { %>

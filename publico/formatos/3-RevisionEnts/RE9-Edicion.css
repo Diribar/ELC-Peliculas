@@ -3,7 +3,7 @@
 #datos #datosBreves {min-width: 210px;}
 
 /* Datos Largos */
-#datosLargos {display: flex; flex-direction: column; justify-content: space-around; flex-grow: 1;}
+#datosLargos {display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;}
 #datosLargos {padding: 0 40px;}
 #datosLargos h1 {font-size: 1.5rem;}
 #datosLargos #contenido {max-height: 50vh; min-height: 35vh; overflow-y: auto; background: var(--verde-claro);}
