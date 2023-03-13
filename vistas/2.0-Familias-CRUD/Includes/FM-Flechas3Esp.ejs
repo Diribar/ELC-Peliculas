@@ -12,16 +12,14 @@
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 		<% } %>
+		<style>.flechas :is(.fa-circle-xmark, .fa-circle-check) {color: var(--azul-oscuro)}</style>
 	</div>
 <% } else if (tema == "crud") { %>
 	<!-- Confirmar -->
 	<button type="submit" class="flechas inactivo">
-		<i class="fa-solid fa-circle-check" tabindex="-1" title="Confirma el cambio de status"></i>
+		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
 	</button>
 <% } %>
-<style>
-	.flechas :is(.fa-circle-xmark, .fa-circle-check) {color: var(--azul-oscuro)}
-</style>
 
 <% if (tema == "revisionEnts" && codigo == "producto/alta") { %>
 	<div id="sectorLogos" class="flechas">
