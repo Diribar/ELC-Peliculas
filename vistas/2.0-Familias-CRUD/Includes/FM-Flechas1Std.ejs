@@ -5,13 +5,20 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
 	<% } %>
-	<% if (tema == "prod_rud" || tema == "links_crud") { %>
+	<% if (tema == "revisionEnts") { %>
+		<a href="<%= rutaSalir %>" target="_self" tabindex="1">
+			<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
+		</a>
+	<% } %>
+	<% if (tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts") { %>
 		<!-- Detalle -->
 		<% if (codigo != "detalle" && locals.id) { %>
 			<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 			</a>
 		<% } %>
+	<% } %>
+	<% if (tema == "prod_rud" || tema == "links_crud") { %>
 		<!-- Edición -->
 		<% if (codigo != "edicion" && locals.id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
@@ -24,14 +31,5 @@
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
-	<% } %>
-	<% if (tema == "revisionEnts") { %>
-		<a href="<%= rutaSalir %>" target="_self" tabindex="1">
-			<i id="liberarSalir" class="fa-solid fa-circle-left" title="Liberar y salir"></i>
-		</a>
-		<button type="submit" autofocus tabindex="2">
-			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
-		</button>
-		<i id="mostrarMotivos" class="fa-solid fa-circle-xmark" tabindex="3" title="Rechazado"></i>
 	<% } %>
 </div>

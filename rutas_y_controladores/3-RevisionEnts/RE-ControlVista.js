@@ -60,6 +60,7 @@ module.exports = {
 		// Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
+		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		// Obtiene el registro original
 		let include = ["status_registro"];
@@ -89,7 +90,7 @@ module.exports = {
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, id, prodNombre, registro: original},
+			...{entidad, familias, familia, id, prodNombre, registro: original},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
 			...{rutaSalir, urlActual: req.session.urlActual, cartelRechazo: true},
 		});
