@@ -7,27 +7,28 @@ window.addEventListener("load", async () => {
 		entID: new URL(location.href).searchParams.get("id"),
 		edicID: new URL(location.href).searchParams.get("edicion_id"),
 		// Motivos para borrar
-		aprobar: document.querySelectorAll(".contenido .fa-circle-check"),
-		muestraCartelMotivos: document.querySelectorAll(".contenido .fa-circle-xmark.mostrarMotivos"),
-		cartelRechazo: document.querySelectorAll(".contenido #cartelRechazo"),
-		motivoRechazos: document.querySelectorAll(".contenido #cartelRechazo select"),
+		aprobar: document.querySelectorAll("#contenido .fa-circle-check"),
+		muestraCartelMotivos: document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos"),
+		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
+		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
-		rechazar: document.querySelectorAll(".contenido .rechazar"),
+		rechazar: document.querySelectorAll("#contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
 		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
 		// Bloque Ingresos
-		bloqueIngrs: document.querySelector(".contenido #ingrs"),
-		filasIngrs: document.querySelectorAll(".contenido #ingrs .fila"),
+		bloqueIngrs: document.querySelector("#contenido #ingrs"),
+		filasIngrs: document.querySelectorAll("#contenido #ingrs .fila"),
 		// Bloque Reemplazos
-		bloqueReemps: document.querySelector(".contenido #reemps"),
-		filasReemps: document.querySelectorAll(".contenido #reemps .fila"),
+		bloqueReemps: document.querySelector("#contenido #reemps"),
+		filasReemps: document.querySelectorAll("#contenido #reemps .fila"),
 		// Otras variables
-		filas: document.querySelectorAll(".contenido .fila"),
-		campoNombres: document.querySelectorAll(".contenido .campoNombre"),
+		filas: document.querySelectorAll("#contenido .fila"),
+		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
 		rutaEdicion: "",
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
+	console.log(v);
 
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
