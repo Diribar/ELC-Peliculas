@@ -52,8 +52,8 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD"),
-	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD"),
+	path.resolve(__dirname, "./vistas/2.2-RCLVs-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
@@ -148,7 +148,7 @@ app.set("views", [
 	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
 	const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
 	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
-	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
+	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLVs-CRUD/Rutas");
 	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
 	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
