@@ -44,15 +44,15 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/producto/rechazar", aptoStatus, capturaActivar, vistaFM.crudForm);
-router.post("/producto/rechazar", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.get("/producto/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.post("/producto/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
 router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
 
 // RCLV
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/rclv/rechazar", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.get("/rclv/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
 router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
 
 // Producto y RCLV

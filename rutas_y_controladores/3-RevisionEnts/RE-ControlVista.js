@@ -100,7 +100,7 @@ module.exports = {
 	prodRCLV_altaGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id} = req.query;
-		const rechazado = req.path.endsWith("/rechazar/");
+		const rechazado = req.path.endsWith("/rechazo/");
 		const {motivo_id, comentario} = req.body;
 		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";

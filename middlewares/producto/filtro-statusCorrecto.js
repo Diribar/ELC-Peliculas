@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
 					? [inactivar_id, recuperar_id]
 					: ruta.includes("/links/")
 					? [aprobado_id]
-					: ruta.includes("/rechazar/")
+					: ruta.includes("/rechazo/")
 					? [creado_id]
 					: [99]
 				: // Preguntas para 'CRUD'

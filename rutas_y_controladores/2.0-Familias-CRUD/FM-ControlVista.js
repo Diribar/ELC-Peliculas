@@ -14,7 +14,7 @@ module.exports = {
 		// Tema y Código
 		const tema = "crud";
 		let codigo = req.path.slice(1, -1);
-		if (codigo.endsWith("/rechazar")) codigo = "rechazar";
+		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -32,7 +32,7 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " un" + a + entidadNombre;
+		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " de un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -58,7 +58,7 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazar") {
+		if (codigo == "inactivar" || codigo == "rechazo") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
