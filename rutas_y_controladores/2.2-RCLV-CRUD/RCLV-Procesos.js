@@ -71,11 +71,7 @@ module.exports = {
 		},
 		bloqueDer: (RCLV, cantProds) => {
 			// Variable status
-			let statusResumido = RCLV.status_registro.aprobado
-				? {id: 2, nombre: "Aprobado"}
-				: RCLV.status_registro.inactivo
-				? {id: 3, nombre: "Inactivo"}
-				: {id: 1, nombre: "Revisión Pend."};
+			let statusResumido = procsCRUD.statusResumido(RCLV);
 			// Comienza a armar el resumen
 			let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
 			if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
@@ -102,7 +98,7 @@ module.exports = {
 				{titulo: "Creado por", valor: valorNombreApellido(RCLV.creado_por)},
 				{titulo: "Última revisión", valor: ultimaActualizacion},
 				{titulo: "Productos en BD", valor: cantProds},
-				{titulo: "Status", valor: statusResumido.nombre, id: statusResumido.id}
+				{titulo: "Status", valor: statusResumido.valor, id: statusResumido.id}
 			);
 			// Si corresponde, se agrega el motivo
 			// if ()

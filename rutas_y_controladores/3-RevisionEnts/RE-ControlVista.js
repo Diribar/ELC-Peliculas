@@ -60,7 +60,8 @@ module.exports = {
 		// Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
-		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		// Obtiene el registro original
 		let include = ["status_registro"];
 		if (entidad == "colecciones") include.push("capitulos");
@@ -89,7 +90,7 @@ module.exports = {
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, id, prodNombre, registro: original},
+			...{entidad, familias, familia, id, prodNombre, registro: original},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
 			...{rutaSalir, urlActual: req.session.urlActual, cartelRechazo: true},
 		});
@@ -98,7 +99,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, rechazado} = req.query;
 		const motivo_id = req.body.motivo_id;
-		const familia = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";
 		let datos = {};
 
@@ -269,28 +270,12 @@ module.exports = {
 		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo,
-			prodOrig: original,
-			prodEdic: edicion,
-			prodNombre,
-			ingresos,
-			reemplazos,
-			motivos,
-			entidad,
-			id: prodID,
-			avatar,
-			bloqueDer,
-			title: original.nombre_castellano,
-			avatarExterno,
-			avatarLinksExternos,
-			imgDerPers,
-			omitirImagenDerecha: codigo.includes("avatar"),
-			omitirFooter: codigo.includes("avatar"),
-			cartelGenerico: true,
-			cartelRechazo: codigo.includes("avatar"),
-			urlActual: req.session.urlActual,
+			...{tema, codigo, titulo, title: original.nombre_castellano},
+			...{entidad, id: prodID, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
+			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
+			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
+			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
+			...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
 		});
 	},
 	prod_AvatarGuardar: async (req, res) => {

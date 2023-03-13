@@ -51,7 +51,8 @@ module.exports = async (req, res, next) => {
 		let articulo = statusEsperados_id.length == 1 ? "el" : "los";
 
 		// Variables para el ícono
-		let origen = FN_origen(baseUrl);
+		let origen = req.query.origen;
+		if (!origen) origen = FN_origen(baseUrl);
 		let link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
 		let vistaEntendido = variables.vistaEntendido(link);
 

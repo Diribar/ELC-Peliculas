@@ -58,7 +58,6 @@ module.exports = {
 			return fecha;
 		};
 		const fechas = [
-			fechaTexto(milisegs - unDia * 2),
 			fechaTexto(milisegs - unDia),
 			fechaTexto(milisegs),
 			fechaTexto(milisegs + unDia),

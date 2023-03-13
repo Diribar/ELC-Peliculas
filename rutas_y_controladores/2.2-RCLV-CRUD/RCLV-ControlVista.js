@@ -57,7 +57,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo},
-			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamiliaEnSingular(entidad)},
+			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamilia(entidad)},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length},
@@ -113,8 +113,8 @@ module.exports = {
 		let {entidad, id, origen} = req.query
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const familia = comp.obtieneFamiliaEnSingular(entidad);
-		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		if (!origen) origen = "DTR"
 
 		// Titulo

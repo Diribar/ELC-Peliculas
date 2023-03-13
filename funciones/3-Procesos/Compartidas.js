@@ -34,7 +34,7 @@ module.exports = {
 	},
 	obtieneTodosLosCamposInclude: function (entidad) {
 		// Obtiene la familia
-		let familia = this.obtieneFamiliaEnPlural(entidad);
+		let familia = this.obtieneFamilias(entidad);
 
 		// Obtiene todos los campos de la familia
 		let campos = [...variables.camposRevisar[familia]];
@@ -53,7 +53,7 @@ module.exports = {
 	},
 
 	// Conversiones
-	obtieneFamiliaEnSingular: (entidad) => {
+	obtieneFamilia: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "producto"
 			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
@@ -62,7 +62,7 @@ module.exports = {
 			? "links"
 			: "";
 	},
-	obtieneFamiliaEnPlural: (entidad) => {
+	obtieneFamilias: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "productos"
 			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
@@ -476,7 +476,7 @@ module.exports = {
 
 		// 2. Anchor
 		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
-		let link = "/" + this.obtieneFamiliaEnSingular(datos.entidad) + "/detalle/" + url;
+		let link = "/" + this.obtieneFamilia(datos.entidad) + "/detalle/" + url;
 		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";

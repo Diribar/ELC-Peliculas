@@ -17,8 +17,8 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
-		const familia = comp.obtieneFamiliaEnSingular(entidad);
-		const familias = comp.obtieneFamiliaEnPlural(entidad);
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
 		let imgDerPers, bloqueDer, cantProds, motivos;
 
 		// Obtiene el registro
@@ -103,7 +103,7 @@ module.exports = {
 		BD_genericas.agregaRegistro("historial_comentarios", datos);
 
 		// 4. Actualiza prodsEnRCLV
-		const familia = comp.obtieneFamiliaEnSingular(entidad);
+		const familia = comp.obtieneFamilia(entidad);
 		if (familia == "producto") {
 			const producto = await BD_genericas.obtienePorId(entidad, id);
 			procesos.prodEnRCLV(producto);

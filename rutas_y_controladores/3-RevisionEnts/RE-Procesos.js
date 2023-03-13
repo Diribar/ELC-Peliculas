@@ -205,7 +205,7 @@ module.exports = {
 			// Variables
 			const ahora = comp.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamiliaEnPlural(entidad);
+			let familia = comp.obtieneFamilias(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
@@ -465,11 +465,7 @@ module.exports = {
 			fecha = comp.fechaDiaMesAno(edicion.editado_en);
 			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 			// Obtiene el status del producto
-			let statusResumido = original.status_registro.gr_creado
-				? {id: 1, valor: "Revisión Pend."}
-				: original.status_registro.aprobado
-				? {id: 2, valor: "Aprobado"}
-				: {id: 3, valor: "Inactivado"};
+			let statusResumido = procsCRUD.statusResumido(original);
 			bloque1.push({titulo: "Status", ...statusResumido});
 			// Bloque 2 ---------------------------------------------
 			// Obtiene los datos del usuario
@@ -492,7 +488,7 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familia = comp.obtieneFamiliaEnPlural(entidad);
+			const familia = comp.obtieneFamilias(entidad);
 			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
