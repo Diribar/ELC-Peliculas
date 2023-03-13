@@ -17,9 +17,10 @@ module.exports = (sequelize, dt) => {
 		duracion: {type: dt.DECIMAL},
 
 		comunicado_en: {type: dt.DATE},
+		comentario: {type: dt.STRING(150)},
 		};
 	const config = {
-		tableName: "historial_cambios_status",
+		tableName: "aux_hist_cambios_status",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
