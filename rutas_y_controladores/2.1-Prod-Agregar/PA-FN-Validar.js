@@ -124,7 +124,7 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipo_actuacion_id"];
-		// Datos generales + calificación
+		// Datos generales
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
 		// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
@@ -132,7 +132,10 @@ module.exports = {
 		// RCLV - Combinados
 		if (datos.ocurrio || datos.ocurrio === false) {
 			// Variables
-			let sinResponder = (!datos.personaje_id || datos.personaje_id == 1) && (!datos.hecho_id || datos.hecho_id == 1);
+			let sinResponder =
+				(!datos.personaje_id || datos.personaje_id == 1) &&
+				(!datos.hecho_id || datos.hecho_id == 1) &&
+				(!datos.valor_id || datos.valor_id == 1);
 			// Resultado
 			errores.RCLV =
 				// Acciones para 'no lo voy a responder por ahora'

@@ -187,16 +187,12 @@ window.addEventListener("load", async () => {
 				// Muestra 'personaje_id' y 'hecho_id'
 				v.sectorPers.classList.remove("ocultar");
 				v.sectorHecho.classList.remove("ocultar");
-				// Oculta 'valor_id'
-				v.sectorValor.classList.add("ocultar");
 				// Ayudas
 				v.ayudaRCLV[0].classList.remove("ocultaAyudaRCLV");
 				v.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
 			if (ocurrio == "0") {
-				// Muestra 'valor_id
-				v.sectorValor.classList.remove("ocultar");
 				// Oculta 'personaje_id' y 'hecho_id'
 				v.sectorPers.classList.add("ocultar");
 				v.sectorHecho.classList.add("ocultar");
