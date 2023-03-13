@@ -133,21 +133,18 @@ module.exports = {
 		let include = comp.obtieneTodosLosCamposInclude(entidad);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
-		// Completa los datos
+		// CONSECUENCIAS
+		// 1. Actualiza el status en el registro original
 		datos = {
 			...datos,
-			status_registro_id,
 			alta_analizada_por_id: revID,
 			alta_analizada_en,
 			sugerido_por_id: revID,
 			sugerido_en: alta_analizada_en,
+			status_registro_id,
 		};
-
 		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
-		if (rechazado) datos.motivo_id = motivo_id;
-
-		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original
+		if (motivo_id) datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
@@ -159,8 +156,8 @@ module.exports = {
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
 		let datosHist = {
-			entidad_id: id,
 			entidad,
+			entidad_id: id,
 			sugerido_por_id: creado_por_id,
 			sugerido_en: original.creado_en,
 			analizado_por_id: revID,
