@@ -5,7 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
-const procsRCLV = require("../2.2-RCLV-CRUD/RCLV-Procesos");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
 const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
