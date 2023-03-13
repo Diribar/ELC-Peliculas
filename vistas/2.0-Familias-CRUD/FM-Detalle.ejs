@@ -30,11 +30,12 @@
 			<% } else { %><div id="contenido" class="flexCol grow"><% } %>
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
-					<% if (tema == "prod_rud" || tema == "revisionEnts") { %><%- include("FM1-Largos") %>
+					<% if (tema == "prod_rud" || (tema == "revisionEnts" && codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
 					<% } else if (tema == "crud") { %>
 						<% if (codigo == "inactivar") { %><%- include("FM1-Inactivar") %><% } %>
 						<% if (codigo == "recuperar") { %><%- include("FM1-Recuperar") %><% } %>
+					<% } else if (tema == "revisionEnts" && codigo == "producto/edicion") { %><%- include("RE9-Edic-Largos") %>
 					<% } %>
 				</div>
 				<!-- Botones -->
