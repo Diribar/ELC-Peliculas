@@ -17,22 +17,25 @@ module.exports = async (req, res, next) => {
 
 	// Status Esperado
 	(() => {
+		const ruta = req.path;
 		statusEsperados_id =
 			baseUrl == "/revision"
 				? // Preguntas para 'Revisión'
-				  req.path.includes("/alta/") // para 'producto' y 'rclv'
+				  ruta.includes("/alta/") // para 'producto' y 'rclv'
 					? [creado_id]
-					: req.path.includes("/edicion/")
+					: ruta.includes("/edicion/")
 					? [creado_aprob_id, aprobado_id]
-					: req.path.includes("/inactivar-o-recuperar/")
+					: ruta.includes("/inactivar-o-recuperar/")
 					? [inactivar_id, recuperar_id]
-					: req.path.includes("/links/")
+					: ruta.includes("/links/")
 					? [aprobado_id]
+					: ruta.includes("/rechazar/")
+					? [creado_id]
 					: [99]
 				: // Preguntas para 'CRUD'
-				req.path == "/inactivar/"
+				ruta == "/inactivar/"
 				? [aprobado_id]
-				: req.path == "/recuperar/"
+				: ruta == "/recuperar/"
 				? [inactivo_id]
 				: [99];
 	})();

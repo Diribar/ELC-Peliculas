@@ -4,7 +4,8 @@ const express = require("express");
 const router = express.Router();
 const API = require("./RE-ControlAPI");
 const vista = require("./RE-ControlVista");
-const vistaAltaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
+const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
+const vistaFM = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
@@ -43,14 +44,17 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.get("/producto/rechazar", aptoStatus, capturaActivar, vistaFM.crudForm);
 router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
 router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
-router.get("/producto/inactivar-o-recuperar");
 
 // RCLV
-router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaAltaRCLV.altaEdicForm);
+router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.get("/rclv/rechazar", aptoStatus, capturaActivar, vistaFM.crudForm);
 router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
+
+// Producto y RCLV
 router.get("/rclv/inactivar-o-recuperar");
 
 // Links
