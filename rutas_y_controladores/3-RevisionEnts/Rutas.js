@@ -41,25 +41,25 @@ router.get("/api/link/edicion", API.edicAprobRech);
 // Tablero de Control
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
-// Producto
+// Producto y RCLV - Altas
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
-router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/producto/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
-router.post("/producto/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
-router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
-
-// RCLV
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
+router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/rclv/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
-router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
 
-// Producto y RCLV
-router.get("/rclv/inactivar-o-recuperar");
+// Producto y RCLV - Rechazos
+router.get("/producto/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.get("/rclv/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.post("/producto/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.post("/rclv/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+
+// Producto y RCLV - Edición
+router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
+router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
+router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
 
 // Links
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
 
-// Exportarlo **********************************************
+// Exporta **********************************************
 module.exports = router;
