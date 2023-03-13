@@ -13,7 +13,8 @@ module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		const codigo = req.path.slice(1, -1);
+		let codigo = req.path.slice(1, -1);
+		if (codigo.endsWith("/rechazar")) codigo = "rechazar";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -57,7 +58,7 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar") {
+		if (codigo == "inactivar" || codigo == "rechazar") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
