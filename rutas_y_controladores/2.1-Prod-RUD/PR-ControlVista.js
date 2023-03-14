@@ -19,7 +19,7 @@ module.exports = {
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
-		if (!origen) origen = "DTP"
+		if (!origen) origen = "DTP";
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let bloqueIzq, bloqueDer;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
@@ -80,12 +80,14 @@ module.exports = {
 		const ayudasTitulo = [
 			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 		];
+		// Status de la entidad
+		const status_id = original.status_registro_id;
+		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{prodNombre, registro: prodComb},
-			...{status_id: original.status_registro_id, aprobado_id, inactivo_id},
-			...{entidad, id, familia, familias},
+			...{entidad, id, familia, familias, status_id, statusEstable},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzq, bloqueDer},
 			...{camposInput1, camposInput2, produccion},

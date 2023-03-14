@@ -96,7 +96,7 @@ module.exports = {
 			let nuevaFecha_id;
 			let restaUnAno = 0;
 			// Rutina para encontrar la fecha más cercana a la actual, que tenga una imagen
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < 3; i++) {
 				// Si terminó el año, continúa desde el 1/ene
 				if (dia_del_ano_id + i - restaUnAno > 366) restaUnAno = 366;
 				// Busca una imagen con la fecha

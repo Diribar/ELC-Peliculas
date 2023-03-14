@@ -79,19 +79,22 @@ module.exports = {
 		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaFicha(original, paisesNombre);
 		let motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
-		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
+		const origen = "TE";
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
+		// Status de la entidad
+		const status_id = original.status_registro_id;
+		const statusCreado = status_id == creado_id;
 		// Va a la vista
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, familia, id, prodNombre, registro: original},
+			...{entidad, familias, familia, id, prodNombre, registro: original, status_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
-			...{rutaSalir, urlActual: req.session.urlActual, cartelRechazo: true},
+			...{origen, urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
 	prodRCLV_altaGuardar: async (req, res) => {
@@ -275,10 +278,10 @@ module.exports = {
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
 		// Botón salir
-		let rutaSalir = comp.rutaSalir(tema, codigo, {entidad, id});
+		const origen = "TE";
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, rutaSalir},
+			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen},
 			...{entidad, id, familia, familias, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
@@ -343,8 +346,7 @@ module.exports = {
 		const titulo = "Revisión de la Edición del " + entidadNombre;
 		// Va a la vista
 		// return res.send([ingresos, reemplazos]);
-		return res.render("CMP-0Estructura", {
-		});
+		return res.render("CMP-0Estructura", {});
 	},
 
 	// LINKS
