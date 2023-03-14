@@ -209,7 +209,7 @@ module.exports = {
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
 		};
 		return [
-			{titulo: "Centrada en la Fe Católica", nombre: "cfc", siNo: true},
+			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", siNo: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es a color", nombre: "color", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
@@ -314,7 +314,7 @@ module.exports = {
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
 			{titulo: "Avatar", nombre: "avatar", productos: true},
 			{titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod'
-			{titulo: "Centrada en la Fe Católica", nombre: "cfc", productos: true},
+			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
 			{titulo: "Es a color", nombre: "color", productos: true},
