@@ -1,6 +1,6 @@
 <div class="flechas">
 	<!-- Salir -->
-	<% if (locals.origen) { %>
+	<% if (locals.origen && (!origen.startsWith("DT") || codigo != "detalle")) { %>
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad?prodEntidad:entidad) + (locals.prodID||locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
 		</a>
