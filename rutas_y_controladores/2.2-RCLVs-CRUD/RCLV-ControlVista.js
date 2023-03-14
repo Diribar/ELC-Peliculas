@@ -140,12 +140,15 @@ module.exports = {
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
+		// Datos para la vista
+		const procCanoniz = procesos.detalle.procCanoniz(original);
+		const RCLVnombre = original.nombre;
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, entidadNombre, id, familia, familias, status_id, statusEstable},
 			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, procCanoniz: await procesos.detalle.procCanoniz(original), RCLVnombre: original.nombre},
+			...{prodsDelRCLV, procCanoniz, RCLVnombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});
 	},

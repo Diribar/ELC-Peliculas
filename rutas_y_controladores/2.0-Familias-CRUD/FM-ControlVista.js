@@ -20,7 +20,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
-		let imgDerPers, bloqueDer, cantProds, motivos;
+		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -36,8 +36,10 @@ module.exports = {
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
-			let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
 			cantProds = prodsDelRCLV.length;
+			procCanoniz = procsRCLV.detalle.procCanoniz(original);
+			RCLVnombre = original.nombre;
 		}
 
 		// Datos Breves
@@ -71,7 +73,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
-			...{registro: original, imgDerPers, bloqueDer, motivos},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
 	},
@@ -118,7 +120,7 @@ module.exports = {
 			comentario,
 		};
 		if (rechazado) datosHist.motivo_id = motivo_id;
-		
+
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza prodsEnRCLV

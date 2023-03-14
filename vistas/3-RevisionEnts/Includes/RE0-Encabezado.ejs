@@ -1,7 +1,5 @@
 <div id="nombres">
-	<a href="/<%= familia %>/detalle/?entidad=<%= entidad %>&id=<%= registro.id %>" target="_blank" tabindex="-1">
-		<h2><%= familia == "rclv" ? registro.nombre : registro.nombre_castellano %></h2>
-	</a>
+	<h2><%= familia == "rclv" ? registro.nombre : registro.nombre_castellano %></h2>
 	<% if (registro.nombre_original || registro.apodo) { %>
 		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
 	<% } %>
@@ -31,3 +29,6 @@
 		</div>
 	<% } %>
 </div>
+<% if (familia == "rclv") { %>
+	<p>Productos vinculados: <%= prodsDelRCLV.length %></p>
+<% } %>

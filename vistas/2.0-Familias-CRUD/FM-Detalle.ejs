@@ -4,10 +4,10 @@
 		<div id="recuadro">
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema.endsWith("rud") && familias == "productos") { %>
-					<%- include("FM-Encabezado") %>
-				<% } else if (tema == "rclv_crud") { %>
+				<% if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
+				<% } else if (tema.endsWith("rud")) { %>
+					<%- include("FM-Encabezado") %>
 				<% } else if (tema == "revisionEnts") { %>
 					<%- include("RE0-Encabezado") %>
 				<% } %>

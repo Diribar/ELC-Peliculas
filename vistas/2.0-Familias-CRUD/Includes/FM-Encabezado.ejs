@@ -1,7 +1,7 @@
 <div id="nombres">
 	<h2><%- registro.nombre_castellano ? registro.nombre_castellano : registro.nombre ? registro.nombre : '' %></h2>
-	<% if (registro.nombre_original) { %>
-		<h3><em><%= registro.nombre_original %></em></h3>
+	<% if (registro.nombre_original || registro.apodo) { %>
+		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
 	<% } %>
 </div>
 <% if (entidad == "colecciones" || entidad == "capitulos") { %>
@@ -46,4 +46,7 @@
 			</div>
 		<% } %>
 	</div>
+<% } %>
+<% if (familia == "rclv") { %>
+	<p>Productos vinculados: <%= prodsDelRCLV.length %></p>
 <% } %>
