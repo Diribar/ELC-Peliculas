@@ -610,16 +610,10 @@ module.exports = {
 		const vistaAnterior = variables.vistaAnterior(urlAnterior);
 		const vistaTablero = variables.vistaTablero;
 
-		// El producto no está en status 'aprobado'
-		if (!informacion && !producto.status_registro.aprobado)
-			informacion = {
-				mensajes: ["El producto no está en status 'Aprobado'", "Su status es " + producto.status_registro.nombre],
-			};
-
 		// El producto no posee links
 		if (!informacion && !producto.links.length)
 			informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
-		// Agregar los íconos
+		// Agrega los íconos
 		if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
 
 		// Fin

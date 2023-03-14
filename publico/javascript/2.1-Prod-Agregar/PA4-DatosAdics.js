@@ -6,6 +6,7 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
 		inputs: document.querySelectorAll(".inputError .input"),
+		checkbox: document.querySelector("#dataEntry #checkbox input"),
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
@@ -63,7 +64,6 @@ window.addEventListener("load", async () => {
 			for (let grupo of v.optgroupHecho) respuesta.push([...grupo.children]);
 			return respuesta;
 		})();
-
 	})();
 
 	// FUNCIONES *******************************************
@@ -83,6 +83,8 @@ window.addEventListener("load", async () => {
 		let respuesta = "";
 		for (let tipo of v.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
 		datosUrl += "tipo_actuacion_id=" + respuesta + "&";
+		// Busca el checkbox
+		if (v.checkbox.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'
 		v.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
@@ -163,7 +165,8 @@ window.addEventListener("load", async () => {
 					if (grupo.className.includes(categoria)) {
 						// Borra todas las opciones y agrega las que van
 						grupo.innerHTML = "";
-						for (let opcion of v.opcionesHechos[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						for (let opcion of v.opcionesHechos[i])
+							if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
 						// Si tiene opciones, agrega el grupo
 						if (grupo.childElementCount) v.selectHecho.appendChild(grupo);
 					}

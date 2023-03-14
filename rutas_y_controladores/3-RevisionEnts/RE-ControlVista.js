@@ -321,26 +321,28 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
 		// Otras variables
-		let include;
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		const {entidad, id} = req.query;
 		let userID = req.session.usuario.id;
+		let include;
 		// Configurar el título
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		include = ["links", "status_registro"];
 		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
 		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
 		// Obtiene todos los links
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
-		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-		// return res.send(links)
+		links.sort((a, b) => (a.id - b.id));
+
 		// Información para la vista
 		let avatar = producto.avatar;
 		avatar = avatar
