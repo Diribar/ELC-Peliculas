@@ -365,6 +365,149 @@ module.exports = {
 			else this.prodEnRCLV(registro);
 		}
 
+		// linksEnProds
+		if (familia == "links") {
+			// Obtiene los datos identificatorios del producto
+			const prodEntidad = comp.obtieneProdDesdeProducto_id(registro);
+			const campo_id = comp.obtieneProducto_id(registro);
+			const prodID = registro[campo_id];
+			// Actualiza el producto
+			this.linksEnProd({entidad: prodEntidad, id: prodID});
+		}
+
+		// Fin
+		return;
+	},
+	// Actualiza los campos de 'producto' en el RCLV
+	prodEnRCLV: async function (producto) {
+		// Variables
+		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const entidadesRCLV = variables.entidadesRCLV;
+		const entidadesProds = variables.entidadesProd;
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+
+		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
+		for (let entidadRCLV of entidadesRCLV) {
+			// Variables
+			// Acciones si el producto tiene ese 'campo_id'
+			if (id > 10) {
+				let objeto = {[campo_id]: id};
+				let prods_aprob;
+				// Averigua si existe algún producto, con ese RCLV
+				for (let entidadProd of entidadesProds) {
+					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
+					if (prods_aprob) break;
+				}
+
+				if (prods_aprob) prods_aprob = SI;
+				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
+				else
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
+						if (prods_aprob) break;
+					}
+
+				if (prods_aprob) prods_aprob = talVez;
+				// 3. Averigua si existe alguna edición
+				else prods_aprob = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+
+				if (prods_aprob) prods_aprob = talVez;
+				// 4. No encontró ningún caso
+				else prods_aprob = NO;
+
+				// Actualiza el campo en el RCLV
+				BD_genericas.actualizaPorId(entidadRCLV, id, {prods_aprob});
+			}
+		}
+
+		// Fin
+		return;
+	},
+	// Actualiza los campos de 'links' en el producto
+	linksEnProd: async function (link) {
+		// Variables
+		const campo_id = comp.obtieneProducto_id(link);
+		const producto_ent = comp.obtieneProdDesdeProducto_id(link);
+		if (producto_ent == "colecciones") return;
+
+		// Más variables
+		const prodID = link[campo_id];
+		const tipo_id = link_pelicula_id; // El tipo de link 'película'
+		const statusAprobado = {status_registro_id: aprobado_id};
+		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		let objeto = {[campo_id]: prodID, tipo_id};
+
+		// 1. Averigua si existe algún link gratuito, para ese producto
+		let links_gratuitos = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}).then((n) => {
+			return n
+				? SI
+				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
+						return n ? talVez : NO;
+				  });
+		});
+
+		// 2. Averigua si existe algún link, para ese producto
+		let links_general =
+			links_gratuitos == SI ||
+			BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}).then((n) => {
+				return n
+					? SI
+					: links_gratuitos === talVez ||
+							BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}).then((n) => {
+								return n ? talVez : NO;
+							});
+			});
+
+		// 3. Averigua si existe algún link en castellano, para ese producto
+		let castellano = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, castellano: true}).then((n) => {
+			return n
+				? SI
+				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, castellano: true}).then((n) => {
+						return n ? talVez : NO;
+				  });
+		});
+
+		// Consolida
+		[links_general, links_gratuitos, castellano] = await Promise.all([links_general, links_gratuitos, castellano]);
+
+		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
+		await BD_genericas.actualizaPorId(producto_ent, prodID, {links_general, links_gratuitos, castellano});
+
+		// Colecciones - la actualiza en función de la mayoría de los capítulos
+		if (producto_ent == "capitulos") {
+			this.colecComoCap(prodID, "links_general");
+			this.colecComoCap(prodID, "links_gratuitos");
+			this.colecComoCap(prodID, "castellano");
+		}
+
+		// Fin
+		return;
+	},
+	// Actualiza para las colecciones
+	colecComoCap: async (capID, campo) => {
+		// Obtiene los datos para identificar la colección
+		const capitulo = await BD_genericas.obtienePorId("capitulos", capID);
+		const colID = capitulo.coleccion_id;
+		let objeto = {coleccion_id: colID};
+
+		// Cuenta la cantidad de casos true, false y null
+		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
+		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+
+		// Averigua los porcentajes de OK y Potencial
+		let total = OK + potencial + no;
+		let resultadoOK = OK / total;
+		let resultadoPot = (OK + potencial) / total;
+
+		// En función de los resultados, actualiza la colección
+		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
+		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
+		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
+	},
 
 	// Varios
 	infoIncompleta: (datos) => {
