@@ -14,7 +14,6 @@ module.exports = {
 	},
 	obtieneTodosPorCampos: (entidad, objeto) => {
 		return db[entidad].findAll({where: objeto}).then((n) => n.map((m) => m.toJSON()));
-		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtieneTodosPorCamposConInclude: (entidad, objeto, include) => {
 		return db[entidad].findAll({where: objeto, include}).then((n) => n.map((m) => m.toJSON()));
@@ -54,5 +53,9 @@ module.exports = {
 	},
 	contarCasos: (entidad, objeto) => {
 		return db[entidad].count({where: objeto});
+	},
+	// Pendiente de probar
+	maxValor: (entidad, campo) => {
+		return db[entidad].max(campo);
 	},
 };
