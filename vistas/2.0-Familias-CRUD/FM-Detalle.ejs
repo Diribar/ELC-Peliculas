@@ -4,10 +4,10 @@
 		<div id="recuadro">
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema.endsWith("rud") && familias == "productos") { %>
-					<%- include("FM-Encabezado") %>
-				<% } else if (tema == "rclv_crud") { %>
+				<% if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
+				<% } else if (tema.endsWith("rud")) { %>
+					<%- include("FM-Encabezado") %>
 				<% } else if (tema == "revisionEnts") { %>
 					<%- include("RE0-Encabezado") %>
 				<% } %>
@@ -27,7 +27,7 @@
 				</div>
 				<!-- Botones -->
 				<div id="botones" class="flexRow">
-					<%- include("Flechas-1Estándar") %>
+					<%- include("Flechas-1Estandar") %>
 					<%- include("Flechas-2ProdsInfo") %>
 					<%- include("Flechas-3CambioStatus") %>
 					<%- include("Flechas-4ProdsPortales") %>

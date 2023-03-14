@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
 	<script src="/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
 	<!-- Colecciones y Capítulos -->
-	<% if (entidad != "peliculas") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script><% } %>
+	<% if (entidad == "colecciones" || entidad == "capitulos") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script><% } %>
 	<!-- Capítulos -->
 	<% if (entidad == "capitulos") { %><script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script><% } %>
 	

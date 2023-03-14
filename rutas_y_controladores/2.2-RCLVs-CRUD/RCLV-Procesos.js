@@ -105,15 +105,13 @@ module.exports = {
 			// Fin
 			return {resumenRCLV, resumenRegistro};
 		},
-		procCanoniz: async (RCLV) => {
+		procCanoniz: (RCLV) => {
 			// Variables
 			let procCanoniz = "";
 			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (RCLV.proceso_id) {
+			if (!RCLV.proceso_id.startsWith("NN")) {
 				// Obtiene los procesos de canonización
-				let proceso = await BD_genericas.obtieneTodos("procs_canon", "orden").then((n) =>
-					n.find((m) => m.id == RCLV.proceso_id)
-				);
+				let proceso = procs_canon.find((m) => m.id == RCLV.proceso_id);
 				// Asigna el nombre del proceso
 				procCanoniz = proceso.nombre + " ";
 				// Verificación si el nombre del proceso es "Santo" (varón)

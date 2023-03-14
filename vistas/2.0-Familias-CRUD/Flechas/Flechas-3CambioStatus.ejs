@@ -1,8 +1,18 @@
+<!-- VISTA AGREGAR/EDICION RCLV - Para Aprobar -->
+<% if (tema == "rclv_crud") { %>
+	<div class="flechas">
+		<!-- Aprobar -->
+		<button type="submit" autofocus class="inactivo">
+			<i class="fa-solid fa-circle-check" title="Guardar"></i>
+		</button>
+	</div>
+<% } %>
+
 <!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
 <% if (locals.statusCreado) { %>
 	<div class="flechas">
 		<!-- Aprobar -->
-		<button type="submit" autofocus tabindex="2">
+		<button type="submit" autofocus>
 			<i class="fa-solid fa-circle-check" title="Aprobar"></i>
 		</button>
 		<!-- Rechazar -->
@@ -11,7 +21,7 @@
 		</a>
 	</div>
 <% } %>
-	
+
 <!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 <% if (locals.userIdentVal && locals.statusEstable) { %>
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->

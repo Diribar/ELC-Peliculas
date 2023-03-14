@@ -312,39 +312,6 @@ module.exports = {
 		else return res.redirect("/revision/tablero-de-control");
 	},
 	rclv_edicForm: async (req, res) => {
-		// Tema y Código
-		const tema = "revisionEnts";
-		const codigo = "rclvEdicion";
-		// Validaciones y obtiene rclvEdic
-		let {edicAjena: rclvEdic, informacion} = await procesos.edicion.obtieneEdicAjena(req, "rclvs", "rclvs_edicion");
-		// Si no pasa los filtros => informa el error
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Variables
-		const {entidad, id} = req.query;
-		let ingresos, reemplazos, bloqueDer, infoErronea_id;
-
-		// Obtiene la versión original con include
-		let includeOrig = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
-		let rclvOrig = await BD_genericas.obtienePorIdConInclude(entidad, id, includeOrig);
-
-		// Acciones si no está presente el avatar
-		let edicion = await procsCRUD.puleEdicion(entidad, rclvOrig, rclvEdic);
-		// Fin, si no quedan campos
-		if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
-		// Obtiene los ingresos y reemplazos
-		[ingresos, reemplazos] = await procesos.RCLV_EdicForm_ingrReempl(rclvOrig, edicion);
-		// Variables
-		let motivos = motivos_rech_edic.filter((m) => m.rclvs);
-		infoErronea_id = motivos.find((n) => n.info_erronea).id;
-		bloqueDer = await procesos.edicion.rclvEdicFicha(rclvOrig, rclvEdic);
-		// return res.send([edicion, ingresos, reemplazos]);
-
-		// Variables para la vista
-		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = "Revisión de la Edición del " + entidadNombre;
-		// Va a la vista
-		// return res.send([ingresos, reemplazos]);
 		return res.render("CMP-0Estructura", {});
 	},
 

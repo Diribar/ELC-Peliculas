@@ -533,6 +533,7 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
+			if (datos.duracion && !motivo) console.log(536, datos);
 			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
 
 			// 5. Actualiza el registro de 'edición'
@@ -567,7 +568,6 @@ module.exports = {
 				},
 			],
 		},
-
 		// RCLV-Edición Form
 		RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
 			// Obtiene todos los campos a revisar

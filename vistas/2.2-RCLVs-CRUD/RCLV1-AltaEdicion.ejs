@@ -154,7 +154,7 @@
 			</div>
 			<% if (personajes) { %>
 				<!-- Sexo -->
-				<div id="sexo_id" class="flexRowAlign altoFila inputError">
+				<div id="sexo" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
 					<% for (let sexo of sexos) { %>
 						<div class="flexRowAlign opciones relative">
@@ -356,12 +356,7 @@
 	<% } %>
 	<!-- Flechas y Botón -->
 	<div class="flexRowAlign spaceEvenly">
-		<%- include("Flechas-1Estándar") %>
-		<section class="flechas">
-			<i id="submit" class="fa-solid fa-circle-check inactivo" title="Guardar"></i>
-			<% if (tema=="revisionEnts") { %>
-				<i id="mostrarMotivos" class="fa-solid fa-circle-xmark" title="Rechazar"></i>
-			<% } %>
-		</section>
+		<%- include("Flechas-1Estandar") %>
+		<%- include("Flechas-3CambioStatus") %>
 	</div>
 </form>

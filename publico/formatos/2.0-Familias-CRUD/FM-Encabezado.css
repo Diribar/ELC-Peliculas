@@ -7,7 +7,12 @@
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 5px 10px;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);}
-#cuerpo #encabezado :is(#nombres, #colCap) {max-width: 50%;}
+
+/* Ancho, dependiendo de si tiene capítulos */
+#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 50%;}
+#cuerpo #encabezado :is(#colCap) {max-width: 50%;}
+
+/* Otros */
 #cuerpo #encabezado #nombres h2 {margin: 0; }
 #cuerpo #encabezado #nombres h2 {padding-bottom: 3px;}
 #cuerpo #encabezado #nombres h3 {font-weight: normal; font-size: 1rem;}
