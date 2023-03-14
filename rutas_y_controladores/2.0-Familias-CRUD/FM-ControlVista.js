@@ -13,7 +13,8 @@ module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		const codigo = req.path.slice(1, -1);
+		let codigo = req.path.slice(1, -1);
+		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -31,7 +32,7 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " un" + a + entidadNombre;
+		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " de un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -57,7 +58,7 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar") {
+		if (codigo == "inactivar" || codigo == "rechazo") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
@@ -75,41 +76,59 @@ module.exports = {
 		});
 	},
 	crudGuardar: async (req, res) => {
-		// Tema y Código
-		const tema = "crud";
-		const codigo = req.path.slice(1, -1);
-
 		// Variables
-		let {entidad, id, origen, motivo_id, comentario} = {...req.query, ...req.body};
+		const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
+		const codigo = req.path.slice(1, -1);
+		const userID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		const status_registro_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
-		// 1. Revisa problemas
+		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
 		if (informacion) {
 			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
 			return res.render("CMP-0Estructura", {informacion});
 		}
 
-		// 2. Actualiza el registro original
+		// Obtiene el registro original
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+
+		// CONSECUENCIAS
+		// 1. Actualiza el status en el registro original
 		let datos = {
 			sugerido_por_id: req.session.usuario.id,
 			sugerido_en: comp.ahora(),
-			status_registro_id: codigo == "inactivar" ? inactivar_id : recuperar_id,
+			status_registro_id,
 		};
 		if (motivo_id) datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 3. Agrega un registro en el historial de comentarios
-		datos = {...datos, entidad, entidad_id: id, comentario};
-		BD_genericas.agregaRegistro("historial_comentarios", datos);
+		// 2. Agrega un registro en el historial_cambios_de_status
+		let datosHist = {
+			entidad,
+			entidad_id: id,
+			sugerido_por_id: original.sugerido_por_id,
+			sugerido_en: original.sugerido_en,
+			analizado_por_id: userID,
+			analizado_en: ahora,
+			status_original_id: original.status_registro_id,
+			status_final_id: status_registro_id,
+			aprobado: null,
+			comentario,
+		};
+		if (rechazado) datosHist.motivo_id = motivo_id;
+		
+		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
-		// 4. Actualiza prodsEnRCLV
+		// 3. Actualiza prodsEnRCLV
 		const familia = comp.obtieneFamilia(entidad);
 		if (familia == "producto") {
 			const producto = await BD_genericas.obtienePorId(entidad, id);
 			procesos.prodEnRCLV(producto);
 		}
 
-		// 5. Regresa a la vista de detalle
+		// 4. Regresa a la vista de detalle
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 
 		return res.redirect(destino);

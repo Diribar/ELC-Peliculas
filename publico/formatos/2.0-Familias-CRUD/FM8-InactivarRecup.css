@@ -4,9 +4,9 @@
 /* Colores */
 #datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}
 /* Colores - Inactivar */
-#datosLargos #recuadro:has(.inactivar) #encabezado {background: var(--rojo-oscuro);}
-#datosLargos #recuadro:has(.inactivar) {background: var(--rojo-claro);}
-#datosLargos #recuadro:has(.inactivar) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
+#datosLargos #recuadro:has(.inactivar, .rechazo) #encabezado {background: var(--rojo-oscuro);}
+#datosLargos #recuadro:has(.inactivar, .rechazo) {background: var(--rojo-claro);}
+#datosLargos #recuadro:has(.inactivar, .rechazo) :is(#informacion, select, #tempCapS .pack i) {color: var(--rojo-oscuro);}
 
 /* Colores - Recuperar */
 #datosLargos #recuadro:has(.recuperar) #encabezado {background: var(--verde-oscuro);}

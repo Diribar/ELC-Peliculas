@@ -4,7 +4,8 @@ const express = require("express");
 const router = express.Router();
 const API = require("./RE-ControlAPI");
 const vista = require("./RE-ControlVista");
-const vistaAltaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
+const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
+const vistaFM = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
@@ -40,21 +41,25 @@ router.get("/api/link/edicion", API.edicAprobRech);
 // Tablero de Control
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
-// Producto
+// Producto y RCLV - Altas
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
+router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
-router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
-router.get("/producto/inactivar-o-recuperar");
-
-// RCLV
-router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaAltaRCLV.altaEdicForm);
 router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+
+// Producto y RCLV - Rechazos
+router.get("/producto/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.get("/rclv/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.post("/producto/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.post("/rclv/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+
+// Producto y RCLV - Edición
+router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
 router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
-router.get("/rclv/inactivar-o-recuperar");
+router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
 
 // Links
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
 
-// Exportarlo **********************************************
+// Exporta **********************************************
 module.exports = router;
