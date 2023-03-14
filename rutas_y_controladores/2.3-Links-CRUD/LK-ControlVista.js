@@ -30,8 +30,8 @@ module.exports = {
 		// Obtiene el producto y el título
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Actualiza linksEnProd
-		procsCRUD.cambioDeStatus("links", )
+		// Actualiza linksEnProd		
+		procsCRUD.linksEnProd({entidad,id})
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
 			let coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
