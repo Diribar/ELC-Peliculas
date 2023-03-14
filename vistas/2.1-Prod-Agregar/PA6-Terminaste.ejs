@@ -11,7 +11,7 @@
 		</div>
 		<img id="gracias" src="<%= localhost %><%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul id="datos">
-			<li class="texto">Hemos agregado la <%= prodNombre.toLowerCase() %> a nuestra base de datos.</li>
+			<li class="texto">Hemos agregado la <%= prodNombre.toLowerCase() %> <em><strong><%= dataEntry.nombre_castellano %></strong></em> a nuestra base de datos.</li>
 			<li class="texto inputError">Nuestro equipo de Revisores analizará los datos ingresados.
 				<i class="fa-solid fa-circle-question ayudaClick desplClick">
 					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
@@ -38,21 +38,12 @@
 		</ul>
 	</div>
 	<!-- Botones -->
-	<div class="flechas">
-		<% if (dataEntry.fuente != "TMDB" && entidad != "peliculas") { %>
+	<%- include("Flechas-1Estandar") %>
+	<% if (dataEntry.fuente != "TMDB" && entidad != "peliculas") { %>
+		<div class="flechas">
 			<a href="<%= ruta %>agregar/ingreso-manual/?entidad=capitulos&id=<%= entidad == "colecciones" ? id : dataEntry.coleccion_id %>" autofocus>
 				<i class="fa-solid fa-layer-group" title="Agregar un capítulo en forma manual"></i>
 			</a>
-		<% } %>
-		<!-- Tridente 'Detalle', 'Edición', 'Links' -->
-		<a href="<%= ruta + "detalle/?entidad=" + entidad + "&id=" + id %>">
-			<i class="fa-solid fa-circle-info" autofocus title="Ir a la vista 'Detalle'"></i>
-		</a>
-		<a href="<%= ruta + "edicion/?entidad=" + entidad + "&id=" + id %>">
-			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-		</a>
-		<a href="<%= "/links/abm/?entidad=" + entidad + "&id=" + id %>">
-			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
-		</a>
-	</div>	
+		</div>	
+	<% } %>
 </section>

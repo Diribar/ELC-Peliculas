@@ -129,29 +129,27 @@ module.exports = {
 	},
 	// Avatar
 	obtieneAvatarProd: (original, edicion) => {
-		let avatarOrig =
-			// Si es un url
-			original.avatar && original.avatar.startsWith("http")
+		let orig =
+			// Si no existe avatarOrig
+			!original.avatar
+				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+				: original.avatar.startsWith("http")
 				? original.avatar
-				: // Si no existe avatarOrig
-				  localhost +
+				: localhost +
 				  "/imagenes/" +
-				  (!original.avatar
-						? "0-Base/Avatar/Sin-Avatar.jpg"
-						: // Si el avatar está 'aprobado'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
-						? "2-Avatar-Prods-Final/" + original.avatar
-						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
-						? "2-Avatar-Prods-Revisar/" + original.avatar
-						: "");
+				  // Si el avatar está 'aprobado'
+				  comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
+				? "2-Avatar-Prods-Final/" + original.avatar
+				: // Si el avatar está 'a revisar'
+				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
+				? "2-Avatar-Prods-Revisar/" + original.avatar
+				: "0-Base/Avatar/Sin-Avatar.jpg";
 
 		// avatarEdic
-		let avatarEdic =
-			edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : avatarOrig;
+		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : orig;
 
 		// Fin
-		return {orig: avatarOrig, edic: avatarEdic};
+		return {orig, edic};
 	},
 	obtieneAvatarRCLV: (original, edicion) => {
 		let avatarOrig =

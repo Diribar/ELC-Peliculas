@@ -41,9 +41,9 @@
 #repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* Sexo */
-#inicio #sexo_id {margin-top: 10px;}
-#inicio #sexo_id .opciones {margin-left: 10px;}
-#inicio #sexo_id .opciones .ayuda ul {max-width: 200px;}
+#inicio #sexo {margin-top: 10px;}
+#inicio #sexo .opciones {margin-left: 10px;}
+#inicio #sexo .opciones .ayuda ul {max-width: 200px;}
 
 /* Época */
 #epoca h3 {margin-bottom: 5px;}

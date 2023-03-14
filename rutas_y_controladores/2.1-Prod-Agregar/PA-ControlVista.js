@@ -296,21 +296,13 @@ module.exports = {
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Imagen derecha
-		let imgDerPers = procsCRUD.obtieneAvatarProd(registroProd).orig;
+		let imgDerPers = procsCRUD.obtieneAvatarProd(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Agregar - Terminaste",
-			entidad,
-			id,
-			dataEntry: registroProd,
-			prodNombre,
-			imagenMuchasGracias,
-			ruta: "/producto/",
-			imgDerPers,
-			tituloImgDerPers: registroProd.nombre_castellano,
+			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMuchasGracias},
+			...{entidad, familia: "producto", id, dataEntry: registroProd, prodNombre, ruta: "/producto/"},
+			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano},
 		});
 	},
 

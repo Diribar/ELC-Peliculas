@@ -6,7 +6,7 @@
 		</a>
 	<% } %>
 	<!-- Detalle -->
-	<% if ((codigo != "detalle" && locals.id) && (tema == "prod_rud" || tema == "links_crud" || tema == "revisionEnts")) { %>
+	<% if (codigo != "detalle" && locals.id) { %>
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
@@ -18,7 +18,7 @@
 		</a>
 	<% } %>
 	<!-- Links -->
-	<% if (tema == "prod_rud" && locals.id) { %>
+	<% if ((tema == "prod_agregar" || tema == "prod_rud") && locals.id) { %>
 		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
