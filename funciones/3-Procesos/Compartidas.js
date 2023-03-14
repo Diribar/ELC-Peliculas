@@ -200,6 +200,7 @@ module.exports = {
 			.replace(/á/g, "á")
 			.replace(/Æ/g, "Ae")
 			.replace(/æ/g, "ae")
+			.replace(/ß/g, "b")
 			.replace(/[ÇĆĈĊČ]/g, "C")
 			.replace(/[çćĉċč]/g, "c")
 			.replace(/[ÐĎ]/g, "D")
