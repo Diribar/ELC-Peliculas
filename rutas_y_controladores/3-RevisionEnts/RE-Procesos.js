@@ -682,7 +682,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 };
 let obtieneProdsDeLinks = function (links, ahora, userID) {
 	// 1. Variables
-	let prods = {VN: [], OT: []}; // Vencidos y otros	
+	let prods = {VN: [], OT: []}; // Vencidos y otros
 
 	// 2. Obtiene los prods
 	links.map((link) => {
