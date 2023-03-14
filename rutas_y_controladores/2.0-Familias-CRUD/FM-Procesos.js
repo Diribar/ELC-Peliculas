@@ -138,12 +138,12 @@ module.exports = {
 				: localhost +
 				  "/imagenes/" +
 				  // Si el avatar está 'aprobado'
-				  comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
-				? "2-Avatar-Prods-Final/" + original.avatar
-				: // Si el avatar está 'a revisar'
-				comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
-				? "2-Avatar-Prods-Revisar/" + original.avatar
-				: "0-Base/Avatar/Sin-Avatar.jpg";
+				  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
+						? "2-Avatar-Prods-Final/" + original.avatar
+						: // Si el avatar está 'a revisar'
+						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
+						? "2-Avatar-Prods-Revisar/" + original.avatar
+						: "0-Base/Avatar/Sin-Avatar.jpg");
 
 		// avatarEdic
 		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : orig;
