@@ -341,7 +341,7 @@ module.exports = {
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
-		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+		links.sort((a, b) => (a.id - b.id));
 
 		// Información para la vista
 		let avatar = producto.avatar;
