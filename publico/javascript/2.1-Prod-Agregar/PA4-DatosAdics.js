@@ -84,7 +84,7 @@ window.addEventListener("load", async () => {
 		for (let tipo of v.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
 		datosUrl += "tipo_actuacion_id=" + respuesta + "&";
 		// Busca el checkbox
-		if (v.checkbox.checked) datosUrl+="sinRCLV=on&"
+		if (v.checkbox.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'
 		v.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
@@ -98,7 +98,6 @@ window.addEventListener("load", async () => {
 	let statusInicial = async (mostrarIconoError) => {
 		// Variables
 		let datosUrl = obtieneLosDatos();
-		console.log(datosUrl);
 		// Consecuencias de la validación de errores
 		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
