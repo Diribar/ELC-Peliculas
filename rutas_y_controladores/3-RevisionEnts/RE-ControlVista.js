@@ -62,6 +62,8 @@ module.exports = {
 		let {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("status_registro", "creado_por");
@@ -77,7 +79,10 @@ module.exports = {
 		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Info para la vista
 		const bloqueIzq = procsProd.bloqueIzq(original);
-		const bloqueDer = [procsProd.bloqueDer(original)];
+		const bloqueDer = [
+			procsCRUD.bloqueRegistro({...original}),
+			procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+		];
 		const motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
 		const origen = "TE";
@@ -212,6 +217,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -240,11 +246,12 @@ module.exports = {
 		}
 
 		// Datos Breves
-		bloqueDer =
-			familias == "productos"
-				? [procesos.bloqueDer.productos(original), procesos.bloqueDer.usuario(original)]
-				: procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds);
+		bloqueDer = [
+			procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
+			procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+		];
 
+		// Imagen Personalizada
 		imgDerPers =
 			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
@@ -257,15 +264,14 @@ module.exports = {
 				  ];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") {
-			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
-		}
+		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 
 		// Render del formulario
+		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
