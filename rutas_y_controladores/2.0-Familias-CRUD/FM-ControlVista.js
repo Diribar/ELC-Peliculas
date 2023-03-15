@@ -46,7 +46,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? procsProd.bloqueDer(original)
+				? procesos.bloqueRegistro(original)
 				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];
@@ -94,10 +94,6 @@ module.exports = {
 			return res.render("CMP-0Estructura", {informacion});
 		}
 
-		// Obtiene el registro original
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		let datos = {
@@ -105,10 +101,12 @@ module.exports = {
 			sugerido_en: comp.ahora(),
 			status_registro_id,
 		};
-		if (motivo_id) datos.motivo_id = motivo_id;
+		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Agrega un registro en el historial_cambios_de_status
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		let datosHist = {
 			entidad,
 			entidad_id: id,
@@ -121,16 +119,12 @@ module.exports = {
 			aprobado: null,
 			comentario,
 		};
-		if (rechazado) datosHist.motivo_id = motivo_id;
-
+		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza prodsEnRCLV
 		const familia = comp.obtieneFamilia(entidad);
-		if (familia == "producto") {
-			const producto = await BD_genericas.obtienePorId(entidad, id);
-			procesos.prodEnRCLV(producto);
-		}
+		if (familia == "producto") procesos.prodEnRCLV({entidad, id});
 
 		// 4. Regresa a la vista de detalle
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
