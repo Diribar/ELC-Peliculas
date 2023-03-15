@@ -29,7 +29,7 @@ module.exports = {
 		// Fin
 		return [bloque1, bloque2, bloque3];
 	},
-	bloqueDer: (producto, entidad) => {
+	bloqueDer: (producto) => {
 		// Variable
 		let bloque = [];
 
@@ -48,7 +48,7 @@ module.exports = {
 
 		// Años y Duración
 		bloque.push({titulo: "Año de estreno", valor: producto.ano_estreno});
-		if (entidad == "colecciones") bloque.push({titulo: "Año de fin", valor: producto.ano_fin});
+		if (producto.coleccion_id) bloque.push({titulo: "Año de fin", valor: producto.ano_fin});
 		else bloque.push({titulo: "Duracion", valor: producto.duracion + " min."});
 
 		// Datos CRUD

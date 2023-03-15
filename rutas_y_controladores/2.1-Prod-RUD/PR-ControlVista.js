@@ -70,7 +70,7 @@ module.exports = {
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
 			bloqueIzq = procesos.bloqueIzq(prodComb);
-			bloqueDer = procesos.bloqueDer(prodComb, entidad);
+			bloqueDer = procesos.bloqueDer(prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista

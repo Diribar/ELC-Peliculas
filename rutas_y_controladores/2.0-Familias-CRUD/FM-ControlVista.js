@@ -46,7 +46,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? procsProd.bloqueDer(entidad, original)
+				? procsProd.bloqueDer(original)
 				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];
