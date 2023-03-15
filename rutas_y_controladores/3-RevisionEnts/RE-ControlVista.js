@@ -212,6 +212,7 @@ module.exports = {
 		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -228,13 +229,17 @@ module.exports = {
 		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
+		// Obtiene el subcodigo
+		const status_registro_id = original.status_registro_id;
+		const subcodigo =
+			status_registro_id == inactivar_id ? "inactivar" : status_registro_id == recuperar_id ? "recuperar" : "";
+
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const preTitulo =
-			codigo != "inactivar-o-recuperar"
-				? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
-				: "Revisión de Inactivar o Recuperar";
+		const preTitulo = inactivarRecuperar
+			? "Revisión de Inactivar o Recuperar"
+			: codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
@@ -256,15 +261,21 @@ module.exports = {
 			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ayuda para el titulo
-		const ayudasTitulo =
-			codigo != "inactivar-o-recuperar"
-				? ["Por favor decinos por qué sugerís " + codigo + " este registro."]
-				: [
-						"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-				  ];
+		const ayudasTitulo = inactivarRecuperar
+			? [
+					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+			  ]
+			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+
+		// Comentario del rechazo
+		const comentario = inactivarRecuperar
+			? await BD_genericas.obtienePorCamposElUltimo("historial_cambios_de_status", {entidad, entidad_id: id}).then(
+					(n) => n.comentario
+			  )
+			: "";
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -273,8 +284,8 @@ module.exports = {
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familias, familia},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
+			...{entidad, id, entidadNombre, familias, familia, comentario},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
