@@ -3,17 +3,24 @@
 <section id="datos" class="flexRow grow">
 	<section id="datosLargos">
 		<div id="recuadro">
+
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<% if (tema == "rclv_crud") { %>
-					<%- include("RCLV-Encabezado") %>
-				<% } else { %>
-					<%- include("FM-Encabezado") %>
+				<!-- Sólo el alta/baja de RCLV tiene un encabezado distinto -->
+				<% if (tema == "rclv_crud") { %><%- include("RCLV-Encabezado") %>
+				<!-- Los demás, tienen el mismo encabezado -->
+				<% } else { %><%- include("FM-Encabezado") %>
+				<!-- Fin -->
 				<% } %>
 			</div>
+
 			<!-- Contenido -->
-			<% if (tema=="crud" || tema=="revisionEnts") { %><form method="POST" id="contenido" class="flexCol grow">
+			<% let operacCRUD = tema == "crud" || tema == "revisionEnts" %>
+			<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Revisión de Inactivar o Recuperar) -->
+			<% if (operacCRUD) { %><form method="POST" id="contenido" class="flexCol grow">
+			<!-- Las demás requieren que no sea form -->
 			<% } else { %><div id="contenido" class="flexCol grow"><% } %>
+
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
 					<% if (tema == "prod_rud" || (tema == "revisionEnts" && codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
@@ -31,7 +38,9 @@
 					<%- include("Flechas-3CambioStatus") %>
 					<%- include("Flechas-4ProdsPortales") %>
 				</div>
-			<% if (tema=="crud") { %></form><% } else { %></div><% } %>
+
+			<% if (operacCRUD) { %></form><% } else { %></div><% } %>
+
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
