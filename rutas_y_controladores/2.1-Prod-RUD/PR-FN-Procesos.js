@@ -36,28 +36,4 @@ module.exports = {
 		// Fin
 		return [bloque1, bloque2, bloque3];
 	},
-	bloqueDer: (producto) => {
-		// Variable
-		let bloque = [];
-
-		// Datos CRUD
-		bloque.push({
-			titulo: "Creado por",
-			valor: producto.creado_por.apodo ? producto.creado_por.apodo : producto.creado_por.nombre,
-		});
-		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(producto.creado_en)});
-		let fechas = [producto.sugerido_en];
-		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en);
-		if (producto.editado_en) fechas.push(producto.editado_en);
-		if (producto.edic_analizada_en) fechas.push(producto.edic_analizada_en);
-		const ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
-		bloque.push({titulo: "Última novedad", valor: ultimaActualizacion});
-
-		// Status resumido
-		let statusResumido = procsCRUD.statusResumido(producto);
-		bloque.push({titulo: "Status", ...statusResumido});
-
-		// Fin
-		return bloque;
-	},
 };
