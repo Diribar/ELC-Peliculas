@@ -246,11 +246,7 @@ module.exports = {
 				: procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds);
 
 		imgDerPers =
-			familias == "productos"
-				? procsCRUD.obtieneAvatarProd(original).orig
-				: familias == "rclvs"
-				? procsCRUD.obtieneAvatarRCLV(original).orig
-				: "";
+			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ayuda para el titulo
 		const ayudasTitulo =
