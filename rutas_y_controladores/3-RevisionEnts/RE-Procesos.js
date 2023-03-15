@@ -375,55 +375,6 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		// Prod-Edición Form
-		prodEdicFicha: async (original, edicion) => {
-			// Funciones
-			let usuario_CalidadEdic = async (userID) => {
-				// 1. Obtiene los datos del usuario
-				let usuario = await BD_genericas.obtienePorId("usuarios", userID);
-				// 2. Contar los casos aprobados y rechazados
-				let cantAprob = usuario.edics_aprob;
-				let cantRech = usuario.edics_rech;
-				// 3. Precisión de ediciones
-				let cantEdics = cantAprob + cantRech;
-				let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-				// Datos a enviar
-				let enviar = {
-					calidadEdiciones: ["Calidad Edición", calidadInputs],
-					cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-				};
-				// Fin
-				return enviar;
-			};
-
-			// Definir el 'ahora'
-			let ahora = comp.ahora().getTime();
-			// Bloque derecho
-			let bloque1 = [];
-			let fecha;
-			// Bloque 1 ---------------------------------------------
-			if (original.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: original.ano_estreno});
-			if (original.ano_fin) bloque1.push({titulo: "Año de fin", valor: original.ano_fin});
-			if (original.duracion) bloque1.push({titulo: "Duracion", valor: original.duracion + " min."});
-			// Obtiene la fecha de alta
-			fecha = comp.fechaDiaMesAno(original.creado_en);
-			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-			// Obtiene la fecha de edicion
-			fecha = comp.fechaDiaMesAno(edicion.editado_en);
-			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-			// Obtiene el status del producto
-			let statusResumido = procsCRUD.statusResumido(original);
-			bloque1.push({titulo: "Status", ...statusResumido});
-			// Bloque 2 ---------------------------------------------
-			// Obtiene los datos del usuario
-			let fichaDelUsuario = await comp.usuarioFicha(edicion.editado_por_id, ahora);
-			// Obtiene la calidad de las altas
-			let calidadEdic = await usuario_CalidadEdic(edicion.editado_por_id);
-			// Bloque consolidado -----------------------------------
-			let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-			// Fin
-			return derecha;
-		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// TAREAS:
@@ -576,7 +527,7 @@ module.exports = {
 
 		// Datos del usuario
 		// Nombre
-		bloque.push([{titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido}]);
+		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
 		// Edad
 		if (usuario.fecha_nacimiento) {
 			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno);

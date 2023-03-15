@@ -81,7 +81,7 @@ module.exports = {
 		const bloqueIzq = procsProd.bloqueIzq(original);
 		const bloqueDer = [
 			procsCRUD.bloqueRegistro({...original}),
-			procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
 		];
 		const motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
@@ -248,7 +248,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer = [
 			procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
-			procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
 		];
 
 		// Imagen Personalizada
@@ -281,7 +281,7 @@ module.exports = {
 	},
 
 	// EDICION
-	prod_edicForm: async (req, res) => {
+	prodRCLV_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
@@ -290,11 +290,12 @@ module.exports = {
 		const {entidad, id, edicion_id: edicID} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos;
 
 		// Obtiene la versión original con include
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro"];
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
@@ -334,20 +335,26 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
 			// Variables
-			let editado_por_id = edicion.editado_por_id;
-			let editado_en = edicion.editado_en;
+			let cantProds;
+			if (familia == "rclv") {
+				let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+				cantProds = prodsDelRCLV.length;
+				procCanoniz = procsRCLV.detalle.procCanoniz(original);
+				RCLVnombre = original.nombre;
+			}
+			bloqueDer = [
+				procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
+				await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia),
+			];
+			avatar = procsCRUD.obtieneAvatarProd(original).orig;
+			imgDerPers = avatar;
+			motivos = motivos_rech_edic.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(original, edicion);
-			// Obtiene el avatar
-			avatar = procsCRUD.obtieneAvatarProd(original).orig;
-			// Variables
-			motivos = motivos_rech_edic.filter((m) => m.prods);
-			bloqueDer = await procesos.edicion.prodEdicFicha(original, {...edicion, editado_por_id, editado_en});
-			imgDerPers = avatar;
 		}
 		// Variables para la vista
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
@@ -391,9 +398,6 @@ module.exports = {
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);
 		else return res.redirect("/revision/tablero-de-control");
-	},
-	rclv_edicForm: async (req, res) => {
-		return res.render("CMP-0Estructura", {});
 	},
 
 	// LINKS
