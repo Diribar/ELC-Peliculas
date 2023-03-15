@@ -15,12 +15,14 @@
 				<% } %>
 			</div>
 
-			<!-- Contenido -->
+			<!-- Contenido apertura (Form o Div) -->
 			<% let operacCRUD = tema == "crud" || tema == "revisionEnts" %>
 			<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Revisión de Inactivar o Recuperar) -->
 			<% if (operacCRUD) { %><form method="POST" id="contenido" class="flexCol grow">
 			<!-- Las demás requieren que no sea form -->
-			<% } else { %><div id="contenido" class="flexCol grow"><% } %>
+			<% } else { %><div id="contenido" class="flexCol grow">
+			<!-- Fin -->
+			<% } %>
 
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
@@ -51,14 +53,24 @@
 					<%- include("Flechas-4ProdsPortales") %>
 				</div>
 
-			<% if (operacCRUD) { %></form><% } else { %></div><% } %>
+			<!-- Contenido cierre (Form o Div) -->
+			<% if (operacCRUD) { %></form>
+			<% } else { %></div>
+			<% } %>
 
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-		<% if (tema.endsWith("rud") && familias == "productos") { %><%- include("PR1-DT2-Breves") %>
-		<% } else if (familias == "rclvs") { %><%- include("RCLV-DT2-Breves") %>
+		<!-- AptoInput para Productos -->
+		<% if (familias == "productos" && tema != "revisionEnts") { %><%- include("PR1-DT2-Breves") %>
+		
+		<!-- AptoInput para RCLVs -->
+		<% } else if (familias == "rclvs" && tema != "revisionEnts") { %><%- include("RCLV-DT2-Breves") %>
+
+		<!-- Revisión -->
 		<% } else if (tema == "revisionEnts") { %><%- include("RE0-Breves") %>
+
+		<!-- Fin -->
 		<% } %>
 	</section>
 </section>
