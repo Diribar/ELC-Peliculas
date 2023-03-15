@@ -1,16 +1,11 @@
-/* Datos */
-#datos {display: flex; flex-direction: row; flex-grow: 1;}
-#datos #datosBreves {min-width: 210px;}
-
 /* Datos Largos */
-#datosLargos {display: flex; flex-direction: column; justify-content: space-evenly; flex-grow: 1;}
-#datosLargos {padding: 0 40px;}
-#datosLargos h1 {font-size: 1.5rem;}
-#datosLargos #contenido {max-height: 50vh; min-height: 35vh; overflow-y: auto; background: var(--verde-claro);}
-#datosLargos #contenido {padding: 0 15px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
+#datosLargos #contenido {max-height: 50vh; overflow-y: auto;}
+#datosLargos #contenido {background: var(--verde-claro); padding: 0 40px;}
+
 #datosLargos #contenido h2 {margin-top: 15px; font-variant: small-caps}
 #datosLargos #contenido #ingrs {margin-top: 5px;}
 #datosLargos #contenido p {line-height: 1;}
+
 /* Ocultar la 'side-bar' */
 #datosLargos #contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
 #datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
@@ -30,3 +25,9 @@
 #datosLargos #reemps .infoMostrar.ocultar {display: block;}
 #datosLargos #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
 #datosLargos #reemps #cartelRechazo select {margin: 0;}
+
+/* Datos Breves */
+#datos #datosBreves {min-width: 210px;}
+
+/* Flechas */
+#contenido #botones {margin: 40px 20px 30px;}

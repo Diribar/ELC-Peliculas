@@ -1,5 +1,5 @@
-<!-- VISTA AGREGAR/EDICION RCLV - Para Aprobar -->
 <% if (tema == "rclv_crud") { %>
+	<!-- VISTA AGREGAR/EDICION RCLV - Para Aprobar -->
 	<div class="flechas">
 		<!-- Aprobar -->
 		<button type="submit" autofocus class="inactivo">
@@ -8,8 +8,8 @@
 	</div>
 <% } %>
 
-<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
 <% if (locals.statusCreado) { %>
+	<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
 	<div class="flechas">
 		<!-- Aprobar -->
 		<button type="submit" autofocus>
@@ -22,8 +22,8 @@
 	</div>
 <% } %>
 
-<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 <% if (locals.userIdentVal && locals.statusEstable) { %>
+	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div class="flechas">
 		<!-- Inactivar -->
@@ -43,8 +43,8 @@
 	</div>
 <% } %>
 
-<!-- VISTAS INACTIVAR Y RECUPERAR - Para completar el feedback y confirmar -->
 <% if (tema == "crud") {  %>
+	<!-- VISTAS INACTIVAR Y RECUPERAR - Para completar el feedback y confirmar -->
 	<!-- Confirma el cambio de status -->
 	<button type="submit" class="flechas inactivo">
 		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>

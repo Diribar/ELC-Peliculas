@@ -354,15 +354,18 @@ module.exports = {
 
 		// prodsEnRCLV
 		if (familia == "productos") {
-			// Un producto puede tener varios RCLV
-			if (registro.status_registro_id == aprobado_id) {
-				// Camino corto
-				if (registro.personaje_id) BD_genericas.actualizaPorId("personajes", registro.personaje_id, {prods_aprob: SI});
-				if (registro.hecho_id) BD_genericas.actualizaPorId("hechos", registro.hecho_id, {prods_aprob: SI});
-				if (registro.valor_id) BD_genericas.actualizaPorId("valores", registro.valor_id, {prods_aprob: SI});
+			// 1. Variables
+			const stAprob = registro.status_registro_id == aprobado_id;
+			const entidadesRCLV = variables.entidadesRCLV;
+
+			// 2. Rutina por entidad RCLV
+			for (let entidad of entidadesRCLV) {
+				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+				if (registro[campo_id])
+					stAprob
+						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prods_aprob: SI})
+						: this.prodEnRCLV({entidad, id: registro[campo_id]});
 			}
-			// Camino largo
-			else this.prodEnRCLV(registro);
 		}
 
 		// linksEnProds
@@ -379,53 +382,46 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	prodEnRCLV: async function (producto) {
+	prodEnRCLV: async function ({entidad, id}) {
 		// Variables
-		const entidadesRCLV = variables.entidadesRCLV;
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
-		// Un producto tiene hasta 3 RCLVs - Rutina por entidadRCLV
-		for (let entidadRCLV of entidadesRCLV) {
-			// Variables
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidadRCLV);
-			let RCLV_id = producto[campo_id];
+		// Acciones si el producto tiene ese 'campo_id'
+		if (id && id > 10) {
+			let objeto = {[campo_id]: id};
+			let prods_aprob;
 
-			// Acciones si el producto tiene ese 'campo_id'
-			if (RCLV_id && RCLV_id > 10) {
-				let objeto = {[campo_id]: RCLV_id};
-				let prods_aprob;
+			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
+			for (let entidadProd of entidadesProds) {
+				prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
+				if (prods_aprob) {
+					prods_aprob = SI;
+					break;
+				}
+			}
 
-				// 1. Averigua si existe algún producto aprobado, con ese RCLV_id
+			// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
+			if (!prods_aprob)
 				for (let entidadProd of entidadesProds) {
-					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
+					// Averigua si existe algún producto, con ese RCLV
+					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
 					if (prods_aprob) {
-						prods_aprob = SI;
+						prods_aprob = talVez;
 						break;
 					}
 				}
 
-				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-				if (!prods_aprob)
-					for (let entidadProd of entidadesProds) {
-						// Averigua si existe algún producto, con ese RCLV
-						prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
-						if (prods_aprob) {
-							prods_aprob = talVez;
-							break;
-						}
-					}
+			// 3. Averigua si existe alguna edición
+			if (!prods_aprob && (await BD_genericas.obtienePorCampos("prods_edicion", objeto))) prods_aprob = talVez;
 
-				// 3. Averigua si existe alguna edición
-				if (!prods_aprob && (await BD_genericas.obtienePorCampos("prods_edicion", objeto))) prods_aprob = talVez;
+			// 4. No encontró ningún caso
+			if (!prods_aprob) prods_aprob = NO;
 
-				// 4. No encontró ningún caso
-				if (!prods_aprob) prods_aprob = NO;
-
-				// Actualiza el campo en el RCLV
-				BD_genericas.actualizaPorId(entidadRCLV, RCLV_id, {prods_aprob});
-			}
+			// Actualiza el campo en el RCLV
+			BD_genericas.actualizaPorId(entidad, id, {prods_aprob});
 		}
 
 		// Fin

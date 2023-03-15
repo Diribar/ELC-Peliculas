@@ -5,7 +5,7 @@
 #cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
 
 /* Encabezado */
-#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 5px 10px;}
+#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 20px;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);}
 
 /* Ancho, dependiendo de si tiene capítulos */

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Detalle.css">
 <%- include("FM-TituloPrincipal") %>
 <section id="datos" class="flexRow grow">
 	<section id="datosLargos">
@@ -6,10 +7,8 @@
 			<div id="encabezado">
 				<% if (tema == "rclv_crud") { %>
 					<%- include("RCLV-Encabezado") %>
-				<% } else if (tema.endsWith("rud")) { %>
+				<% } else { %>
 					<%- include("FM-Encabezado") %>
-				<% } else if (tema == "revisionEnts") { %>
-					<%- include("RE0-Encabezado") %>
 				<% } %>
 			</div>
 			<!-- Contenido -->
@@ -38,7 +37,7 @@
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
 		<% if (tema.endsWith("rud") && familias == "productos") { %><%- include("PR1-DT2-Breves") %>
 		<% } else if (familias == "rclvs") { %><%- include("RCLV-DT2-Breves") %>
-		<% } else if (tema == "revisionEnts") { %><%- include("RE1-PA-Breves") %>
+		<% } else if (tema == "revisionEnts") { %><%- include("RE0-Breves") %>
 		<% } %>
 	</section>
 </section>
