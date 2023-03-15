@@ -26,6 +26,7 @@ module.exports = {
 		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
+		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
@@ -45,7 +46,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? procsProd.bloqueDer(entidad, original)
+				? procsProd.bloqueDer(original)
 				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];

@@ -5,7 +5,6 @@ const router = express.Router();
 const API = require("./RE-ControlAPI");
 const vista = require("./RE-ControlVista");
 const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
-const vistaFM = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
@@ -50,8 +49,8 @@ router.post("/:familia/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar,
 
 // Producto y RCLV - Otros cambios de status
 // Form
-router.get("/:familia/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
-router.get("/:familia/inactivar-o-recuperar", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.crudForm);
+router.get("/:familia/inactivar-o-recuperar", aptoStatus, capturaActivar, vista.crudForm);
 // Guardar
 router.post("/:familia/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 

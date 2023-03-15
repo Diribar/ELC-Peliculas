@@ -5,6 +5,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
 const validaRCLV = require("../2.2-RCLVs-CRUD/RCLV-Validar");
 
@@ -62,7 +63,8 @@ module.exports = {
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		// Obtiene el registro original
-		let include = ["status_registro"];
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("status_registro", "creado_por");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// Obtiene avatar original
@@ -71,13 +73,12 @@ module.exports = {
 			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		// Configurar el título de la vista
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
-		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtiene los países
-		let paisesNombre = original.paises_id ? await comp.paises_idToNombre(original.paises_id) : "";
+		const prodNombre = comp.obtieneEntidadNombre(entidad);
+		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.alta.prodAltaFicha(original, paisesNombre);
-		let motivos = motivos_rech_altas.filter((n) => n.prods);
+		const bloqueIzq = procsProd.bloqueIzq(original);
+		const bloqueDer = [procsProd.bloqueDer(original)];
+		const motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Botón salir
 		const origen = "TE";
 		// Ayuda para el titulo
@@ -202,13 +203,10 @@ module.exports = {
 	// CRUD - Otros
 	crudForm: async (req, res) => {
 		// Tema y Código
-		// Temas 'crud', códigos posibles: 'inactivar'y 'recuperar'
-		let tema = req.baseUrl.slice(1);
+		const tema = "revisionEnts";
+		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
 		let codigo = req.path.slice(1, -1);
-		// Temas 'revisionEnts', códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-		if (tema == "revision") tema += "Ents";
-		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
-		if (codigo.endsWith("/inactivar-o-recuperar")) codigo = "inactivar-o-recuperar";
+		codigo = codigo.slice(codigo.indexOf("/") + 1);
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -221,6 +219,7 @@ module.exports = {
 		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
+		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
@@ -242,27 +241,12 @@ module.exports = {
 
 		// Datos Breves
 		bloqueDer =
-			tema == "crud"
-				? familias == "productos"
-					? procsProd.bloqueDer(entidad, original)
-					: familias == "rclvs"
-					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
-					: []
-				// : tema == "revisionEnts"
-				// ? familias == "productos"
-				// 	? procsProd.bloqueDer(entidad, original)
-				// 	: familias == "rclvs"
-				// 	? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
-				// 	: []
-				: [];
+			familias == "productos"
+				? [procesos.bloqueDer.productos(original), procesos.bloqueDer.usuario(original)]
+				: procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds);
 
 		imgDerPers =
-			familias == "productos"
-				? procesos.obtieneAvatarProd(original).orig
-				: familias == "rclvs"
-				? procesos.obtieneAvatarRCLV(original).orig
-				: "";
-		console.log(65, bloqueDer);
+			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Ayuda para el titulo
 		const ayudasTitulo =
@@ -289,7 +273,6 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-
 
 	// EDICION
 	prod_edicForm: async (req, res) => {
@@ -433,7 +416,7 @@ module.exports = {
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
-		links.sort((a, b) => (a.id - b.id));
+		links.sort((a, b) => a.id - b.id);
 
 		// Información para la vista
 		let avatar = producto.avatar;

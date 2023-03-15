@@ -513,28 +513,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	usuarioFicha: async (userID, ahora) => {
-		// Obtiene los datos del usuario
-		let include = "rol_iglesia";
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
-		// Variables
-		let unAno = unDia * 365;
-		let enviar = {apodo: ["Apodo", usuario.apodo]};
-		// Edad
-		if (usuario.fecha_nacimiento) {
-			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
-			enviar.edad = ["Edad", edad];
-		}
-		// Antigüedad
-		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10).toFixed(1).replace(".", ",") +
-			" años";
-		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-		// Rol en la iglesia
-		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-		// Fin
-		return enviar;
-	},
 
 	// Internet
 	conectividadInternet: async (req) => {

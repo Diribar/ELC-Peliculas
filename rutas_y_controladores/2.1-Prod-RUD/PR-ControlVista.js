@@ -36,7 +36,7 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
 		// 6. Obtiene el nombre de los países
-		let paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
+		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
@@ -69,8 +69,8 @@ module.exports = {
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
 			// Variables de 'Detalle'
-			bloqueIzq = procesos.bloqueIzq(paisesNombre, prodComb);
-			bloqueDer = procesos.bloqueDer(entidad, prodComb);
+			bloqueIzq = procesos.bloqueIzq(prodComb);
+			bloqueDer = procesos.bloqueDer(prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista
