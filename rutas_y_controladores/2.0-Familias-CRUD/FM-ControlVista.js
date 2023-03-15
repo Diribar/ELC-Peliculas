@@ -12,8 +12,8 @@ const procesos = require("./FM-Procesos");
 module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
-		let tema = "crud";
-		let codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
+		const tema = "crud";
+		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
