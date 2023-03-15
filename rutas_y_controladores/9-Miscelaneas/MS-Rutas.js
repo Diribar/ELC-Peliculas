@@ -2,8 +2,8 @@
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
-const API = require("./ControlAPI");
-const vista = require("./ControlVista");
+const API = require("./MS-ControlAPI");
+const vista = require("./MS-ControlVista");
 
 //************************ Middlewares ******************************
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");

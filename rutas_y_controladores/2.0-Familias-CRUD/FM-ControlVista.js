@@ -13,8 +13,7 @@ module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		let codigo = req.path.slice(1, -1);
-		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
+		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -30,9 +29,10 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
-		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
+		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " de un" + a + entidadNombre;
+		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
+		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -49,6 +49,8 @@ module.exports = {
 				: familias == "rclvs"
 				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];
+
+		// Imagen Derecha
 		imgDerPers =
 			familias == "productos"
 				? procesos.obtieneAvatarProd(original).orig
@@ -60,7 +62,7 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") {
+		if (codigo == "inactivar") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
@@ -69,7 +71,6 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 
 		// Render del formulario
-		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},

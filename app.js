@@ -146,22 +146,22 @@ app.set("views", [
 	app.use(locals);
 
 	// Rutas que dependen de la variable 'global'
-	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/Rutas");
-	const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
-	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
-	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLVs-CRUD/Rutas");
-	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
-	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
-	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
-	const rutaMantenimiento = require("./rutas_y_controladores/5-Mantenimiento/Rutas");
-	const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
-	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/Rutas");
-	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
+	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/US-Rutas");
+	const rutaCRUD = require("./rutas_y_controladores/2.0-Familias-CRUD/FM-Rutas");
+	const rutaProd_Agregar = require("./rutas_y_controladores/2.1-Prod-Agregar/PA-Rutas");
+	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas");
+	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas");
+	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas");
+	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas");
+	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/RU-Rutas");
+	const rutaMantenimiento = require("./rutas_y_controladores/5-Mantenimiento/MT-Rutas");
+	const rutaConsultas = require("./rutas_y_controladores/6-Consultas/CN-Rutas");
+	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/IN-Rutas");
+	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas");
 
 	// Urls que dependen de la variable 'global'
 	app.use("/crud", rutaCRUD);
-	app.use("/producto/agregar", rutaProd_Crear);
+	app.use("/producto/agregar", rutaProd_Agregar);
 	app.use("/producto", rutaProd_RUD);
 	app.use("/rclv", rutaRCLV_CRUD);
 	app.use("/links", rutaLinks_CRUD);
