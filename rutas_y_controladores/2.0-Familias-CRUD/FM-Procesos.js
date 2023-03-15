@@ -524,15 +524,6 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	statusResumido: (registro) => {
-		return registro.status_registro.gr_creado
-			? {id: 1, valor: "Creado"}
-			: registro.status_registro.aprobado
-			? {id: 2, valor: "Aprobado"}
-			: registro.status_registro.inactivo
-			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Para Revisar"};
-	},
 
 	// Bloques a mostrar
 	bloqueRegistro: function (registro, cantProds) {
@@ -561,5 +552,14 @@ module.exports = {
 
 		// Fin
 		return bloque;
+	},
+	statusResumido: (registro) => {
+		return registro.status_registro.gr_creado
+			? {id: 1, valor: "Creado"}
+			: registro.status_registro.aprobado
+			? {id: 2, valor: "Aprobado"}
+			: registro.status_registro.inactivo
+			? {id: 3, valor: "Inactivo"}
+			: {id: 1, valor: "Para Revisar"};
 	},
 };
