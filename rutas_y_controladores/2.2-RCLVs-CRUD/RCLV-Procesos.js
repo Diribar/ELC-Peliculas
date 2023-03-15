@@ -69,41 +69,23 @@ module.exports = {
 			// Fin
 			return prodsDelRCLV;
 		},
-		bloqueDer: (RCLV, cantProds) => {
-			// Variable status
-			let statusResumido = procsCRUD.statusResumido(RCLV);
-			// Comienza a armar el resumen
-			let resumenRCLV = [{titulo: "Nombre", valor: RCLV.nombre}];
-			if (RCLV.apodo) resumenRCLV.push({titulo: "Alternativo", valor: RCLV.apodo});
-			resumenRCLV.push({titulo: "Día del año", valor: RCLV.dia_del_ano.nombre});
-			if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
-				resumenRCLV.push(
-					{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canon, "Ninguno")},
-					{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
-					{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
+		bloqueRCLV: (registro) => {
+			// Variables
+			let bloqueRCLV = []
+
+			// Información
+			bloqueRCLV.push({titulo: "Nombre", valor: registro.nombre})
+			if (registro.apodo) bloqueRCLV.push({titulo: "Alternativo", valor: registro.apodo});
+			if (registro.dia_del_ano) bloqueRCLV.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
+			if (registro.entidad == "personajes" && registro.categoria_id == "CFC")
+				bloqueRCLV.push(
+					{titulo: "Proceso Canonizac.", valor: comp.valorNombre(registro.proc_canon, "Ninguno")},
+					{titulo: "Rol en la Iglesia", valor: comp.valorNombre(registro.rol_iglesia, "Ninguno")},
+					{titulo: "Aparición Mariana", valor: comp.valorNombre(registro.ap_mar, "Ninguno")}
 				);
-			// Variable ultimaActualizacion
-			let fechas = [RCLV.creado_en, RCLV.sugerido_en];
-			if (RCLV.alta_analizada_en) fechas.push(RCLV.alta_analizada_en);
-			if (RCLV.editado_en) fechas.push(RCLV.editado_en);
-			if (RCLV.edic_analizada_en) fechas.push(RCLV.edic_analizada_en);
-			let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
-			// Datos del registro
-			let valorNombreApellido = (valor) => {
-				return valor ? (valor.apodo ? valor.apodo : valor.nombre) : "Ninguno";
-			};
-			let resumenRegistro = [];
-			resumenRegistro.push(
-				{titulo: "Creado el", valor: comp.fechaDiaMesAno(RCLV.creado_en)},
-				{titulo: "Creado por", valor: valorNombreApellido(RCLV.creado_por)},
-				{titulo: "Última revisión", valor: ultimaActualizacion},
-				{titulo: "Productos en BD", valor: cantProds},
-				{titulo: "Status", valor: statusResumido.valor, id: statusResumido.id}
-			);
-			// Si corresponde, se agrega el motivo
-			// if ()
+
 			// Fin
-			return {resumenRCLV, resumenRegistro};
+			return bloqueRCLV
 		},
 		procCanoniz: (RCLV) => {
 			// Variables
