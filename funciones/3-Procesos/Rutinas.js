@@ -19,7 +19,6 @@ module.exports = {
 			// Fin
 			return json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
 		})();
-		// this.actualizaProdEnRCLV();
 
 		// Si la información ya está actualizada. termina
 		const fechaGMT = new Date();
@@ -85,6 +84,7 @@ module.exports = {
 			if (!fechas.includes(imagen.slice(0, 9))) await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", imagen);
 
 		// Fin
+		console.log("'imagenDerecha' actualizado");
 		return info;
 	},
 	actualizaLinksEnProd: async () => {
