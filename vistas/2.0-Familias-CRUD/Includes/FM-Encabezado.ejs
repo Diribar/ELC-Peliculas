@@ -6,7 +6,9 @@
 	<% } %>
 </div>
 <% if (entidad == "colecciones" || entidad == "capitulos") { %>
-	<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
+	<% if (tema == "prod_rud") { %>
+		<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
+	<% } %>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>

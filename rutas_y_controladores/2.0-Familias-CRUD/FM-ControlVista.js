@@ -119,7 +119,7 @@ module.exports = {
 
 		// 3. Actualiza prodsEnRCLV
 		const familia = comp.obtieneFamilia(entidad);
-		if (familia == "producto") procesos.prodEnRCLV({entidad, id});
+		if (familia == "producto") procesos.cambioDeStatus({entidad, registro: original});
 
 		// 4. Regresa a la vista de detalle
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
