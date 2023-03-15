@@ -12,13 +12,8 @@ const procesos = require("./FM-Procesos");
 module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
-		// Temas 'crud', códigos posibles: 'inactivar'y 'recuperar'
-		let tema = req.baseUrl.slice(1);
-		let codigo = req.path.slice(1, -1);
-		// Temas 'revisionEnts', códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-		if (tema == "revision") tema += "Ents";
-		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
-		if (codigo.endsWith("/inactivar-o-recuperar")) codigo = "inactivar-o-recuperar";
+		let tema = "crud";
+		let codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -36,10 +31,7 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const preTitulo =
-			codigo != "inactivar-o-recuperar"
-				? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
-				: "Revisión de Inactivar o Recuperar";
+		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
@@ -52,38 +44,25 @@ module.exports = {
 
 		// Datos Breves
 		bloqueDer =
-			tema == "crud"
-				? familias == "productos"
-					? procsProd.bloqueDer(entidad, original)
-					: familias == "rclvs"
-					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
-					: []
-				: tema == "revisionEnts"
-				? familias == "productos"
-					? procsProd.bloqueDer(entidad, original)
-					: familias == "rclvs"
-					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
-					: []
+			familias == "productos"
+				? procsProd.bloqueDer(entidad, original)
+				: familias == "rclvs"
+				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
 				: [];
 
+		// Imagen Derecha
 		imgDerPers =
 			familias == "productos"
 				? procesos.obtieneAvatarProd(original).orig
 				: familias == "rclvs"
 				? procesos.obtieneAvatarRCLV(original).orig
 				: "";
-		console.log(65, bloqueDer);
 
 		// Ayuda para el titulo
-		const ayudasTitulo =
-			codigo != "inactivar-o-recuperar"
-				? ["Por favor decinos por qué sugerís " + codigo + " este registro."]
-				: [
-						"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-				  ];
+		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") {
+		if (codigo == "inactivar") {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
