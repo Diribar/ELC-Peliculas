@@ -1,0 +1,21 @@
+<% if (locals.mostrar) { %>
+	<!-- Rechazo -->
+	<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-CartelRechazo.css">
+	<form method="POST" id="cartelRechazo" class="ocultar" action="<%= urlActual %>&rechazado=true">
+		<h2>Gracias.</h2>
+		<p><em>Por favor explicanos el motivo<br>por el que rechazás la sugerencia</em></p>
+		<select name="motivo_id">
+			<option value="" selected>Elegí una opción</option>
+			<% for (motivo of motivos) { %>
+			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+			<% } %>
+		</select>
+		<div class="flechas">
+			<i class="fa-solid fa-circle-left" title="Cancelar"></i>
+			<button type="submit" class="inactivo">
+				<i class="fa-solid fa-circle-right rechazar" title="Rechazar"></i>
+			</button>
+		</div>
+	</form>
+	<script src="/javascript/3-RevisionEnts/RE0-CartelRechazo.js"></script>
+<% } %>
