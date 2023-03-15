@@ -6,13 +6,8 @@
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
 
 <% } else { %>
-	<!-- DEMAS VISTAS -->
-	<link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
-
 	<!-- Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Detalle.css">
 		<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
 		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-AltaEdicion.css">
 		<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
@@ -29,7 +24,6 @@
 	
 	<!-- Ediciones -->
 	<% } else if (codigo == "producto/edicion" || codigo == "rclvEdicion") { %>
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 		<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
 		<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
@@ -39,7 +33,6 @@
 	<!-- Links -->
 	<% } else if (codigo == "abmLinks") { %>
 		<!-- Uso compartido -->
-		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 		<link rel="stylesheet" href="/formatos/2.3-Links-CRUD/Links.css">
 		<script src="/javascript/2.3-Links-CRUD/LK0-ActivosInactivos.js"></script>
 		<script src="/javascript/2.3-Links-CRUD/LK0-PeliTrailer.js"></script>
