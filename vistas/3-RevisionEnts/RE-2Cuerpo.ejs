@@ -5,13 +5,14 @@
 <% if (codigo == "producto/alta") { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
+<!-- Otros Cambios de Status -->
+<% if (codigo == "inactivar-o-recuperar") { %><%- include("FM-Detalle") %><% } %>
+<% if (codigo == "rechazo") { %><%- include("FM-Detalle") %><% } %>
+
 <!-- Edición -->
 <% if (codigo == "producto/edicion") { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo == "rclvEdicion") { %><%- include("FM-Detalle") %><% } %>
-
-<!-- Prods y RCLV - Otros -->
 <% if (codigo == "producto/edicion/avatar") { %><%- include("RE1-Prod-Avatar") %><% } %>
-<% if (codigo == "inactivar-o-recuperar") { %><%- include("FM-Detalle") %><% } %>
 
 <!-- Links -->
 <% if (codigo == "abmLinks") { %><%- include("LK-ABM") %><% } %>
