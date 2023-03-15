@@ -359,7 +359,7 @@ module.exports = {
 			const entidadesRCLV = variables.entidadesRCLV;
 
 			// 2. Rutina por entidad RCLV
-			for (let entidad of entidades) {
+			for (let entidad of entidadesRCLV) {
 				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 				if (registro[campo_id])
 					stAprob
