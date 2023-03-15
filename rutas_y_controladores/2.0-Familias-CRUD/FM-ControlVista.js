@@ -108,16 +108,11 @@ module.exports = {
 		let include = comp.obtieneTodosLosCamposInclude(entidad);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		let datosHist = {
-			entidad,
-			entidad_id: id,
-			sugerido_por_id: original.sugerido_por_id,
-			sugerido_en: original.sugerido_en,
-			analizado_por_id: userID,
-			analizado_en: ahora,
-			status_original_id: original.status_registro_id,
-			status_final_id: status_registro_id,
-			aprobado: null,
-			comentario,
+			...{entidad, entidad_id: id},
+			...{sugerido_por_id: original.sugerido_por_id, sugerido_en: original.sugerido_en},
+			...{analizado_por_id: userID, analizado_en: ahora},
+			...{status_original_id: original.status_registro_id, status_final_id: status_registro_id},
+			...{aprobado: null, comentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
