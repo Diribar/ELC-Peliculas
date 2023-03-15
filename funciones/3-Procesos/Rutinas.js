@@ -19,6 +19,7 @@ module.exports = {
 			// Fin
 			return json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
 		})();
+		// this.actualizaProdEnRCLV();
 
 		// Si la información ya está actualizada. termina
 		const fechaGMT = new Date();
@@ -32,6 +33,9 @@ module.exports = {
 
 		// Actualiza 'linksEnProd'
 		this.actualizaLinksEnProd();
+
+		// Actualiza 'prodEnRCLV'
+		this.actualizaProdEnRCLV();
 
 		// Tareas semanales
 		const comienzoAno = new Date(fechaGMT.getFullYear(), 0, 1).getTime();
@@ -85,10 +89,10 @@ module.exports = {
 	},
 	actualizaLinksEnProd: async () => {
 		// return;
-		const entidades = variables.entidadesProd;
+		const entidadesProd = variables.entidadesProd;
 
 		// Rutina por entidad
-		for (let entidad of entidades) {
+		for (let entidad of entidadesProd) {
 			// Obtiene los ID de los registros de la entidad
 			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
 
@@ -98,6 +102,23 @@ module.exports = {
 
 		// Fin
 		console.log("'linksEnProd' actualizado");
+		return;
+	},
+	actualizaProdEnRCLV: async () => {
+		// Obtiene las entidadesRCLV
+		const entidadesRCLV = variables.entidadesRCLV;
+
+		// Rutina por entidad
+		for (let entidad of entidadesRCLV) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función prodEnRCLV
+			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
+		}
+
+		// Fin
+		console.log("'prodEnRCLV' actualizado");
 		return;
 	},
 
