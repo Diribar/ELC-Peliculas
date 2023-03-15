@@ -26,8 +26,8 @@ window.addEventListener("load", () => {
 		resultados[1].push("Mejor relación de alto/ancho");
 
 	// Comparaciones de calidad
-	if (imagenNueva.alto > imagenActual.alto && imagenActual.alto < 700) resultados[0].push("Mejor resolución");
-	if (imagenActual.alto > imagenNueva.alto && imagenNueva.alto < 700) resultados[1].push("Mejor resolución");
+	if (imagenNueva.alto > imagenActual.alto && imagenActual.alto < 700) resultados[0].push("Mayor tamaño");
+	if (imagenActual.alto > imagenNueva.alto && imagenNueva.alto < 700) resultados[1].push("Mayor tamaño");
 
 	// Agrega las ventajas de cada opción
 	resultados.forEach((resultado, i) => {
