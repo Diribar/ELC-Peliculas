@@ -199,6 +199,98 @@ module.exports = {
 		else return res.redirect("/revision/tablero-de-control");
 	},
 
+	// CRUD - Otros
+	crudForm: async (req, res) => {
+		// Tema y Código
+		// Temas 'crud', códigos posibles: 'inactivar'y 'recuperar'
+		let tema = req.baseUrl.slice(1);
+		let codigo = req.path.slice(1, -1);
+		// Temas 'revisionEnts', códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+		if (tema == "revision") tema += "Ents";
+		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
+		if (codigo.endsWith("/inactivar-o-recuperar")) codigo = "inactivar-o-recuperar";
+
+		// Más variables
+		const {entidad, id, origen} = req.query;
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
+		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
+
+		// Obtiene el registro
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+
+		// Obtiene el título
+		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
+		const entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const preTitulo =
+			codigo != "inactivar-o-recuperar"
+				? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
+				: "Revisión de Inactivar o Recuperar";
+		const titulo = preTitulo + " un" + a + entidadNombre;
+
+		// Cantidad de productos asociados al RCLV
+		if (familias == "rclvs") {
+			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			cantProds = prodsDelRCLV.length;
+			procCanoniz = procsRCLV.detalle.procCanoniz(original);
+			RCLVnombre = original.nombre;
+		}
+
+		// Datos Breves
+		bloqueDer =
+			tema == "crud"
+				? familias == "productos"
+					? procsProd.bloqueDer(entidad, original)
+					: familias == "rclvs"
+					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+					: []
+				// : tema == "revisionEnts"
+				// ? familias == "productos"
+				// 	? procsProd.bloqueDer(entidad, original)
+				// 	: familias == "rclvs"
+				// 	? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+				// 	: []
+				: [];
+
+		imgDerPers =
+			familias == "productos"
+				? procesos.obtieneAvatarProd(original).orig
+				: familias == "rclvs"
+				? procesos.obtieneAvatarRCLV(original).orig
+				: "";
+		console.log(65, bloqueDer);
+
+		// Ayuda para el titulo
+		const ayudasTitulo =
+			codigo != "inactivar-o-recuperar"
+				? ["Por favor decinos por qué sugerís " + codigo + " este registro."]
+				: [
+						"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+				  ];
+
+		// Motivos de rechazo
+		if (codigo == "inactivar" || codigo == "rechazo") {
+			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+		}
+		// Obtiene datos para la vista
+		if (entidad == "capitulos")
+			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+
+		// Render del formulario
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{entidad, id, entidadNombre, familias, familia},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
+			cartelGenerico: true,
+		});
+	},
+
+
 	// EDICION
 	prod_edicForm: async (req, res) => {
 		// Tema y Código
