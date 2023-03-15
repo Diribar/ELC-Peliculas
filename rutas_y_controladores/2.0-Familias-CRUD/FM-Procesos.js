@@ -554,7 +554,7 @@ module.exports = {
 		const ultimaNovedad = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
 		bloque.push({titulo: "Última novedad", valor: ultimaNovedad});
 		// Prods en BD
-		if (cantProds !== undefined) bloque.push({titulo: "Productos en BD", valor: cantProds});
+		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
