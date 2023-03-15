@@ -11,7 +11,9 @@
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<% if (tema == "prod_rud") { %>
+					<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<% } %>
 				<div>
 					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
 					<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
