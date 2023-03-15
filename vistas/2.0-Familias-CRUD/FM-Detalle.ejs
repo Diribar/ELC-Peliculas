@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Detalle.css">
+<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 <%- include("FM-TituloPrincipal") %>
 <section id="datos" class="flexRow grow">
 	<section id="datosLargos">
@@ -6,7 +7,7 @@
 
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<!-- Sólo el alta/baja de RCLV tiene un encabezado distinto -->
+				<!-- Sólo el 'Detalle de RCLV' tiene un encabezado distinto -->
 				<% if (tema == "rclv_crud") { %><%- include("RCLV-Encabezado") %>
 				<!-- Los demás, tienen el mismo encabezado -->
 				<% } else { %><%- include("FM-Encabezado") %>
@@ -23,12 +24,23 @@
 
 				<!-- Información -->
 				<div id="informacion" class="<%= codigo %>">
-					<% if (tema == "prod_rud" || (tema == "revisionEnts" && codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
+					
+					<!-- PRODUCTO: Detalle y Revisión de Alta -->
+					<% if (familia == "producto" && (codigo == "detalle" || codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
+					
+					<!-- RCLV: Detalle -->
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
-					<% } else if (tema == "crud") { %>
-						<% if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %><% } %>
-						<% if (codigo == "recuperar") { %><%- include("FM1-Recuperar") %><% } %>
-					<% } else if (tema == "revisionEnts" && codigo == "producto/edicion") { %><%- include("RE9-Edic-Largos") %>
+
+					<!-- AMBOS: Inactivar y Rechazo -->
+					<% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
+					
+					<!-- AMBOS: Recuperar y Revisión de Inactivar/Recuperar -->
+					<% } else if (codigo == "recuperar" || codigo == "inactivar-o-recuperar") { %><%- include("FM1-Recuperar") %>
+
+					<!-- AMBOS: Revisión de Edición -->
+					<% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
+
+					<!-- Fin -->
 					<% } %>
 				</div>
 				<!-- Botones -->

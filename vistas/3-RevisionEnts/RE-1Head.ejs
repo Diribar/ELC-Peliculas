@@ -16,8 +16,15 @@
 		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
 		<script src="/javascript/2.2-RCLVs-CRUD/RCLV-InputError.js"></script>
 
-	<!-- Prod y RCLV - Otros cambios de status -->
-	<% } else if (codigo == "") { %>
+	<!-- Rechazos -->
+	<% } else if (codigo == "rechazo") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
+		<script src="/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
+
+		<!-- Revisión de Inactivar o Recuperar -->
+		<% } else if (codigo == "inactivar-o-recuperar") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM8-InactivarRecup.css">
+		<script src="/javascript/2.0-Familias-CRUD/FM-InputError.js"></script>
 
 	<!-- Ediciones -->
 	<% } else if (codigo == "producto/edicion" || codigo == "rclvEdicion") { %>
