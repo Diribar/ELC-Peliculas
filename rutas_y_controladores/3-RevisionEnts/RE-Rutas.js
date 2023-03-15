@@ -42,21 +42,35 @@ router.get("/api/link/edicion", API.edicAprobRech);
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
 // Producto y RCLV - Altas
+// Form
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
+// Guardar
 router.post("/producto/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.post("/rclv/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 
 // Producto y RCLV - Rechazos
+// Form
 router.get("/producto/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
 router.get("/rclv/rechazo", aptoStatus, capturaActivar, vistaFM.crudForm);
+// Guardar
 router.post("/producto/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.post("/rclv/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 
 // Producto y RCLV - Edición
 router.get("/producto/edicion", ...aptoEdicion, capturaActivar, vista.prod_edicForm);
 router.get("/rclv/edicion", ...aptoEdicion, capturaActivar, vista.rclv_edicForm);
+
+// Revisión de 'Inactivar' y 'Recuperar'
+// Form
+router.get("/producto/inactivar-o-recuperar", aptoStatus, capturaActivar, vistaFM.crudForm);
+router.get("/rclv/inactivar-o-recuperar", aptoStatus, capturaActivar, vistaFM.crudForm);
+
+
+// Producto - Edición Avatar (Guardar)
 router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
+
+
 
 // Links
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);

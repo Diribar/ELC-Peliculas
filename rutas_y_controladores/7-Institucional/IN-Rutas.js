@@ -2,7 +2,7 @@
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
-const vista = require("./ControlVista");
+const vista = require("./IN-ControlVista");
 
 // Vistas *******************************************
 // Vistas de vistas - Institucional

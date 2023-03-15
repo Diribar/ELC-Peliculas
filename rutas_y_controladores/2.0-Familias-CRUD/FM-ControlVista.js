@@ -12,9 +12,13 @@ const procesos = require("./FM-Procesos");
 module.exports = {
 	crudForm: async (req, res) => {
 		// Tema y Código
-		const tema = "crud";
+		// Temas 'crud', códigos posibles: 'inactivar'y 'recuperar'
+		let tema = req.baseUrl.slice(1);
 		let codigo = req.path.slice(1, -1);
+		// Temas 'revisionEnts', códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+		if (tema == "revision") tema += "Ents";
 		if (codigo.endsWith("/rechazo")) codigo = "rechazo";
+		if (codigo.endsWith("/inactivar-o-recuperar")) codigo = "inactivar-o-recuperar";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -30,9 +34,13 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título
-		const a = entidad == "peliculas" || entidad == "coleccion" ? "a " : " ";
+		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1) + " de un" + a + entidadNombre;
+		const preTitulo =
+			codigo != "inactivar-o-recuperar"
+				? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
+				: "Revisión de Inactivar o Recuperar";
+		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -44,20 +52,35 @@ module.exports = {
 
 		// Datos Breves
 		bloqueDer =
-			familias == "productos"
-				? procsProd.bloqueDer(entidad, original)
-				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+			tema == "crud"
+				? familias == "productos"
+					? procsProd.bloqueDer(entidad, original)
+					: familias == "rclvs"
+					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+					: []
+				: tema == "revisionEnts"
+				? familias == "productos"
+					? procsProd.bloqueDer(entidad, original)
+					: familias == "rclvs"
+					? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+					: []
 				: [];
+
 		imgDerPers =
 			familias == "productos"
 				? procesos.obtieneAvatarProd(original).orig
 				: familias == "rclvs"
 				? procesos.obtieneAvatarRCLV(original).orig
 				: "";
+		console.log(65, bloqueDer);
 
 		// Ayuda para el titulo
-		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
+		const ayudasTitulo =
+			codigo != "inactivar-o-recuperar"
+				? ["Por favor decinos por qué sugerís " + codigo + " este registro."]
+				: [
+						"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+				  ];
 
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") {
@@ -69,7 +92,6 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 
 		// Render del formulario
-		// return res.send(imgDerPers)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, entidadNombre, familias, familia},
