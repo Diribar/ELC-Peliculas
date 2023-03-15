@@ -6,7 +6,7 @@
 	<select name="motivo_id">
 		<option value="" selected>Elegí una opción</option>
 		<% for (motivo of motivos) { %>
-		<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+		<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
 		<% } %>
 	</select>
 	<div class="flechas">
