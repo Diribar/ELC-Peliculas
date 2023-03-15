@@ -1,8 +1,10 @@
 "use strict";
 // Variables
+const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
+const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -22,10 +24,14 @@ module.exports = {
 		const fechaGMT = new Date();
 		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + comp.fechaDiaMes(fechaGMT);
 		if (info.fechaActual == fechaFormatoPreferido) return;
-		else info.fechaActual = fechaFormatoPreferido;
 
+		// ACCIONES DIARIAS --------------------------------------------------
 		// Actualiza la imagen derecha
+		info.fechaActual = fechaFormatoPreferido;
 		info = await this.actualizaImagenDerecha({info, fechaGMT});
+
+		// Actualiza 'linksEnProd'
+		this.actualizaLinksEnProd();
 
 		// Tareas semanales
 		const comienzoAno = new Date(fechaGMT.getFullYear(), 0, 1).getTime();
@@ -43,7 +49,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaImagenDerecha: async function ({info, fechaGMT}) {
+	actualizaImagenDerecha: async ({info, fechaGMT}) => {
 		// Asigna las nuevas fecha y hora actual
 		info.horaActual = fechaGMT.toLocaleTimeString().slice(0, -3);
 
@@ -57,19 +63,13 @@ module.exports = {
 			fecha = dia + "-" + mes + "-" + ano;
 			return fecha;
 		};
-		const fechas = [
-			fechaTexto(milisegs - unDia),
-			fechaTexto(milisegs),
-			fechaTexto(milisegs + unDia),
-		];
+		const fechas = [fechaTexto(milisegs - unDia), fechaTexto(milisegs), fechaTexto(milisegs + unDia)];
 
 		// Obtiene los titulos de Imagen Derecha
 		titulosImgDer = {};
 		for (let fecha of fechas)
 			titulosImgDer[fecha] =
-				info.titulosImgDer && info.titulosImgDer[fecha]
-					? info.titulosImgDer[fecha]
-					: await this.obtieneImagenDerecha(fecha);
+				info.titulosImgDer && info.titulosImgDer[fecha] ? info.titulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
 
 		// Actualiza los títulos de la imagen derecha
 		info.titulosImgDer = titulosImgDer;
@@ -83,70 +83,22 @@ module.exports = {
 		// Fin
 		return info;
 	},
-	obtieneImagenDerecha: async function (fecha) {
-		// Obtiene el dia_del_ano
-		let nombre = fecha.slice(0, 6).replace("-", "/");
-		if (nombre.startsWith("0")) nombre = nombre.slice(1);
-		const dia_del_ano_id = dias_del_ano.find((n) => n.nombre == nombre).id;
+	actualizaLinksEnProd: async () => {
+		// return;
+		const entidades = variables.entidadesProd;
 
-		// Obtiene la imagen derecha
-		let imgDerecha;
-		(() => {
-			// Variable de la nueva fecha
-			let nuevaFecha_id;
-			let restaUnAno = 0;
-			// Rutina para encontrar la fecha más cercana a la actual, que tenga una imagen
-			for (let i = 0; i < 3; i++) {
-				// Si terminó el año, continúa desde el 1/ene
-				if (dia_del_ano_id + i - restaUnAno > 366) restaUnAno = 366;
-				// Busca una imagen con la fecha
-				let imagen = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i - restaUnAno);
-				// Si la encuentra, termina de buscar
-				if (imagen) {
-					nuevaFecha_id = imagen.dia_del_ano_id;
-					break;
-				}
-			}
+		// Rutina por entidad
+		for (let entidad of entidades) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
 
-			// Acciones si encontró una imagen para la fecha
-			if (nuevaFecha_id) {
-				// Variables
-				let registros;
-				// Busca registros dentro de los de fecha 'movil'
-				registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id && n.cuando);
-				// Si no los encuentra, los busca dentro de los de fecha 'fija'
-				if (!registros.length) registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
-				// Elije al azar de entre las opciones
-				let indice = parseInt(Math.random() * registros.length);
-				if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
-				imgDerecha = registros[indice];
-				imgDerecha.carpeta = "4-RCLVs-Final/";
-			}
-			// Acciones si no encontró una imagen para la fecha
-			else
-				imgDerecha = {
-					nombre: "ELC - Películas",
-					nombre_archivo: "Institucional-Imagen.jpg",
-					carpeta: "0-Base/",
-				};
-		})();
-
-		// Guarda la nueva imagen
-		await (async () => {
-			// Borra la 'imagenAnterior'
-			await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha", fecha + ".jpg");
-			// Copia la nueva imagen como 'imgDerecha'
-			await comp.copiaUnArchivoDeImagen(
-				imgDerecha.carpeta + imgDerecha.nombre_archivo,
-				"5-ImagenDerecha/" + fecha + ".jpg"
-			);
-
-			// Fin
-			return;
-		})();
+			// Rutina por ID: ejecuta la función linksEnProd
+			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
+		}
 
 		// Fin
-		return imgDerecha.nombre;
+		console.log("'linksEnProd' actualizado");
+		return;
 	},
 
 	// Tareas semanales
@@ -165,4 +117,66 @@ module.exports = {
 		// Fin
 		return;
 	},
+};
+let obtieneImagenDerecha = async (fecha) => {
+	// Obtiene el dia_del_ano
+	let nombre = fecha.slice(0, 6).replace("-", "/");
+	if (nombre.startsWith("0")) nombre = nombre.slice(1);
+	const dia_del_ano_id = dias_del_ano.find((n) => n.nombre == nombre).id;
+
+	// Obtiene la imagen derecha
+	let imgDerecha;
+	(() => {
+		// Variable de la nueva fecha
+		let nuevaFecha_id;
+		let restaUnAno = 0;
+		// Rutina para encontrar la fecha más cercana a la actual, que tenga una imagen
+		for (let i = 0; i < 3; i++) {
+			// Si terminó el año, continúa desde el 1/ene
+			if (dia_del_ano_id + i - restaUnAno > 366) restaUnAno = 366;
+			// Busca una imagen con la fecha
+			let imagen = banco_de_imagenes.find((n) => n.dia_del_ano_id == dia_del_ano_id + i - restaUnAno);
+			// Si la encuentra, termina de buscar
+			if (imagen) {
+				nuevaFecha_id = imagen.dia_del_ano_id;
+				break;
+			}
+		}
+
+		// Acciones si encontró una imagen para la fecha
+		if (nuevaFecha_id) {
+			// Variables
+			let registros;
+			// Busca registros dentro de los de fecha 'movil'
+			registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id && n.cuando);
+			// Si no los encuentra, los busca dentro de los de fecha 'fija'
+			if (!registros.length) registros = banco_de_imagenes.filter((n) => n.dia_del_ano_id == nuevaFecha_id);
+			// Elije al azar de entre las opciones
+			let indice = parseInt(Math.random() * registros.length);
+			if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
+			imgDerecha = registros[indice];
+			imgDerecha.carpeta = "4-RCLVs-Final/";
+		}
+		// Acciones si no encontró una imagen para la fecha
+		else
+			imgDerecha = {
+				nombre: "ELC - Películas",
+				nombre_archivo: "Institucional-Imagen.jpg",
+				carpeta: "0-Base/",
+			};
+	})();
+
+	// Guarda la nueva imagen
+	await (async () => {
+		// Borra la 'imagenAnterior'
+		await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha", fecha + ".jpg");
+		// Copia la nueva imagen como 'imgDerecha'
+		await comp.copiaUnArchivoDeImagen(imgDerecha.carpeta + imgDerecha.nombre_archivo, "5-ImagenDerecha/" + fecha + ".jpg");
+
+		// Fin
+		return;
+	})();
+
+	// Fin
+	return imgDerecha.nombre;
 };

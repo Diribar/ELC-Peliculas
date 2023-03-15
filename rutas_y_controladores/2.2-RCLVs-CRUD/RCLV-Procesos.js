@@ -109,7 +109,7 @@ module.exports = {
 			// Variables
 			let procCanoniz = "";
 			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (!RCLV.proceso_id.startsWith("NN")) {
+			if (RCLV.proceso_id && !RCLV.proceso_id.startsWith("NN")) {
 				// Obtiene los procesos de canonización
 				let proceso = procs_canon.find((m) => m.id == RCLV.proceso_id);
 				// Asigna el nombre del proceso

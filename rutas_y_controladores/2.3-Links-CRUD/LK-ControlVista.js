@@ -27,12 +27,11 @@ module.exports = {
 		// Obtiene información de BD
 		let links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		// Separar entre 'gr_activos' y 'gr_inactivos'
-		// Configurar el producto, el título
+		// Obtiene el producto y el título
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Actualiza linksEnProd
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-		procsCRUD.linksEnProd({[campo_id]: id});
+		// Actualiza linksEnProd		
+		procsCRUD.linksEnProd({entidad,id})
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
 			let coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;

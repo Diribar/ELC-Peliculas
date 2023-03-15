@@ -682,14 +682,14 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 };
 let obtieneProdsDeLinks = function (links, ahora, userID) {
 	// 1. Variables
-	let prods = {VN: [], OT: []};
+	let prods = {VN: [], OT: []}; // Vencidos y otros
 
 	// 2. Obtiene los prods
 	links.map((link) => {
 		// Variables
 		let entidad = comp.obtieneProdDesdeProducto_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
-		let campoFecha = !link.status_registro_id ? "editado_en" : link.status_registro.creado ? "creado_en" : "sugerido_en";
+		let campoFecha = !link.status_registro_id ? "editado_en" : "sugerido_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
 		if (link.status_registro && link.status_registro.creado_aprob)
