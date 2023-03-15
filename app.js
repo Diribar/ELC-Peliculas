@@ -152,8 +152,8 @@ app.set("views", [
 	const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/PR-Rutas");
 	const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLVs-CRUD/RCLV-Rutas");
 	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas");
-	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/RU-Rutas");
 	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas");
+	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/RU-Rutas");
 	const rutaMantenimiento = require("./rutas_y_controladores/5-Mantenimiento/MT-Rutas");
 	const rutaConsultas = require("./rutas_y_controladores/6-Consultas/CN-Rutas");
 	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/IN-Rutas");
