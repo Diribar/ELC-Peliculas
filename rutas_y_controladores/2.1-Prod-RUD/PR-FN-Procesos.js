@@ -11,11 +11,18 @@ module.exports = {
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 
 		// Bloque1
-		if (producto.tipo_actuacion) bloque1.push({titulo: "Tipo de Actuación", valor: producto.tipo_actuacion.nombre});
-		if (producto.idioma_original) bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
+		if (producto.categoria) bloque1.push({titulo: "Categoría", valor: producto.categoria.nombre});
+		if (producto.publico) bloque1.push({titulo: "Público Sugerido", valor: producto.publico.nombre});
 		if (producto.en_castellano !== null) bloque1.push({titulo: "En castellano", valor: producto.en_castellano ? "SI" : "NO"});
+		if (producto.tipo_actuacion) bloque1.push({titulo: "Tipo de Actuación", valor: producto.tipo_actuacion.nombre});
+		if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+		if (producto.cant_temporadas) {
+			if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
+		} else if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion});
 		if (producto.en_color !== null) bloque1.push({titulo: "Es a color", valor: producto.en_color ? "SI" : "NO"});
+		// Menor importancia
 		if (paisesNombre) bloque1.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
+		if (producto.idioma_original) bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
 
 		// Bloque2
 		if (producto.direccion) bloque2.push({titulo: "Dirección", valor: producto.direccion});
