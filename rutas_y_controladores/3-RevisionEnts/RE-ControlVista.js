@@ -336,12 +336,7 @@ module.exports = {
 		else if (!edicion.avatar) {
 			// Variables
 			let cantProds;
-			if (familia == "rclv") {
-				let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
-				cantProds = prodsDelRCLV.length;
-				procCanoniz = procsRCLV.detalle.procCanoniz(original);
-				RCLVnombre = original.nombre;
-			}
+			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [
 				procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
 				await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia),
@@ -364,11 +359,9 @@ module.exports = {
 			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
-		// Botón salir
-		const origen = "TE";
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen},
+			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, familias, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
