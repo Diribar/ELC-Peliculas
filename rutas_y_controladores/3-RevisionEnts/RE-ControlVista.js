@@ -242,11 +242,8 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? [procesos.bloqueDer.productos(original), procesos.bloqueDer.usuario(original)
-				]
-				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
-				: [];
+				? [procesos.bloqueDer.productos(original), procesos.bloqueDer.usuario(original)]
+				: procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds);
 
 		imgDerPers =
 			familias == "productos"
