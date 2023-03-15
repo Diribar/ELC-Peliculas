@@ -1,5 +1,5 @@
 /* Datos breves */
-#datosBreves {display: flex; flex-direction: column; justify-content: center}
+#datosBreves {display: flex; flex-direction: column; justify-content: center; align-self: center;}
 #datosBreves {border: var(--gris-oscuro) 3px solid; margin: 0;}
 #datosBreves {padding: 20px; border-radius: 15px; background: snow;}
 #datosBreves h3 {background: var(--gris-oscuro); color: snow;}
