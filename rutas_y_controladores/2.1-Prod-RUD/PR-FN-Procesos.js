@@ -33,36 +33,18 @@ module.exports = {
 		// Variable
 		let bloque = [];
 
-		// Público sugerido y categoría
-		bloque.push({titulo: "Público Sugerido", valor: comp.valorNombre(producto.publico, "Sin datos")});
-		bloque.push({titulo: "Categoría", valor: comp.valorNombre(producto.categoria, "Sin datos")});
-
-		// RCLVs
-		let rclvs = (titulo, RCLV_entidad, rel) => {
-			if (producto[rel].id != 1)
-				bloque.push({titulo, RCLV_entidad, valor: producto[rel].nombre, RCLV_id: producto[rel].id});
-		};
-		rclvs("Pers. Histórico", "personajes", "personaje");
-		rclvs("Hecho Histórico", "hechos", "hecho");
-		rclvs("Valor", "valores", "valor");
-
-		// Años y Duración
-		bloque.push({titulo: "Año de estreno", valor: producto.ano_estreno});
-		if (producto.coleccion_id) bloque.push({titulo: "Año de fin", valor: producto.ano_fin});
-		else bloque.push({titulo: "Duracion", valor: producto.duracion + " min."});
-
 		// Datos CRUD
-		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(producto.creado_en)});
 		bloque.push({
 			titulo: "Creado por",
 			valor: producto.creado_por.apodo ? producto.creado_por.apodo : producto.creado_por.nombre,
 		});
+		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(producto.creado_en)});
 		let fechas = [producto.sugerido_en];
 		if (producto.alta_analizada_en) fechas.push(producto.alta_analizada_en);
 		if (producto.editado_en) fechas.push(producto.editado_en);
 		if (producto.edic_analizada_en) fechas.push(producto.edic_analizada_en);
-		let ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
-		bloque.push({titulo: "Última revisión", valor: ultimaActualizacion});
+		const ultimaActualizacion = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
+		bloque.push({titulo: "Última novedad", valor: ultimaActualizacion});
 
 		// Status resumido
 		let statusResumido = procsCRUD.statusResumido(producto);
