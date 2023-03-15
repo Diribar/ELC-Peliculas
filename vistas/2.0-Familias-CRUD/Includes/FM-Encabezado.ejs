@@ -6,6 +6,7 @@
 	<% } %>
 </div>
 <% if (entidad == "colecciones" || entidad == "capitulos") { %>
+	<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
@@ -19,6 +20,7 @@
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
+			<script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>

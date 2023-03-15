@@ -16,11 +16,9 @@
 		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
 		<script src="/javascript/2.2-RCLVs-CRUD/RCLV-InputError.js"></script>
 
-	<!-- Prod-Avatar -->
-	<% } else if (codigo == "producto/edicion/avatar") { %>
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Avatar.css">
-		<script src="/javascript/3-RevisionEnts/RE1-Prod-Avatar.js"></script>
-	
+	<!-- Prod y RCLV - Otros cambios de status -->
+	<% } else if (codigo == "") { %>
+
 	<!-- Ediciones -->
 	<% } else if (codigo == "producto/edicion" || codigo == "rclvEdicion") { %>
 		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
@@ -28,12 +26,10 @@
 		<!-- Específico para productos -->
 		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-AltaEdicion.css">
 
-	<!-- Ediciones -->
-	<% } else if (codigo == "" || codigo == "") { %>
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
-		<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
-		<!-- Específico para productos -->
-		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-AltaEdicion.css">
+	<!-- Prod-Avatar -->
+	<% } else if (codigo == "producto/edicion/avatar") { %>
+		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE1-Prod-Avatar.css">
+		<script src="/javascript/3-RevisionEnts/RE1-Prod-Avatar.js"></script>
 
 	<!-- Links -->
 	<% } else if (codigo == "abmLinks") { %>
