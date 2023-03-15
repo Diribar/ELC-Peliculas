@@ -3,7 +3,7 @@
 const db = require("../../base_de_datos/modelos");
 
 module.exports = {
-	// Obtiene
+	// Obtiene todos
 	obtieneTodos: (entidad, orden) => {
 		return db[entidad].findAll({order: [[orden, "ASC"]]}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
@@ -19,6 +19,8 @@ module.exports = {
 		return db[entidad].findAll({where: objeto, include}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
+
+	// Obtiene uno
 	obtienePorId: (entidad, id) => {
 		return db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : ""));
 	},
@@ -30,6 +32,9 @@ module.exports = {
 	},
 	obtienePorCamposConInclude: (entidad, objeto, include) => {
 		return db[entidad].findOne({where: objeto, include}).then((n) => (n ? n.toJSON() : ""));
+	},
+	obtienePorCamposElUltimo: (entidad, objeto) => {
+		return db[entidad].findOne({where: objeto, order: [["id", "DESC"]]}).then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// Otras
