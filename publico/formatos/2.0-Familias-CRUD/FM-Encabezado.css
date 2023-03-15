@@ -1,12 +1,10 @@
-/* Cuerpo */
-#cuerpo {background: var(--gris-claro);}
-
 /* Colores */
 #cuerpo #encabezado:not(:has(.inactivar, .recuperar)) #encabezado :is(#nombres h3, #colCap #tempCapS .pack i) {color: var(--gris-oscuro);}
 
 /* Encabezado */
-#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 20px;}
-#cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); background: var(--celeste-claro);}
+#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #encabezado {padding: 10px 20px; border-bottom: solid 1px var(--azul-oscuro);}
+#cuerpo #encabezado {background: var(--celeste-claro);}
 
 /* Ancho, dependiendo de si tiene capítulos */
 #cuerpo #encabezado:has(#colCap) > #nombres {max-width: 50%;}
