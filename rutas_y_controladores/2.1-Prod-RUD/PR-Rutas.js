@@ -16,6 +16,7 @@ const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const existeEdicion = require("../../middlewares/producto/filtro-existeEdicion");
 const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
+const motivoNecesario = require("../../middlewares/producto/filtro-motivoNecesario");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
@@ -42,7 +43,7 @@ router.get("/edicion", ...edicion, capturaActivar, vista.prodDetEdic_Form);
 router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdic_Guardar);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
-router.post("/inactivar", controles, capturaInactivar, vistaCRUD.crudGuardar);
+router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.crudGuardar);
 router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
 router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
 
