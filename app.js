@@ -117,14 +117,15 @@ app.set("views", [
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
+	global.gr_aprobado_id = global.status_registros.filter((n) => n.gr_aprobado).map((n) => n.id);
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 	global.banco_de_imagenes = [...global.imagenes_movil, ...global.imagenes_fijo];
-	delete global.imagenes_movil
-	delete global.imagenes_fijo
+	delete global.imagenes_movil;
+	delete global.imagenes_fijo;
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias
