@@ -15,5 +15,6 @@
 #datosLargos #recuadro {border-radius: 20px; overflow: hidden;}
 
 /* Datos Breves */
-#datos #datosBreves {max-width: 20%; max-height: 65vh;}
+/* #datos #datosBreves {max-width: 20%;} */
+#datos #datosBreves {max-height: 65vh;}
 #datosBreves nav {max-height: 65vh;}
