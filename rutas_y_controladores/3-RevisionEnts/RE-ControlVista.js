@@ -271,13 +271,13 @@ module.exports = {
 			...{entidad, entidad_id: id},
 			...{sugerido_por_id: userID, sugerido_en: original.sugerido_en, status_original_id},
 			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
-			...{aprobado: aprob, motivo_id: motivo_id},
+			...{aprobado: aprob, motivo_id},
 		};
 		// Se aplica una 'duración' sólo si el usuario intentó un "aprobado"
-		if (codigo == "rechazo" || (!aprob && codigo == "recuperar")) {
-			const motivo = motivo_id ? motivos_rech_altas.find((n) => n.id == motivo_id) : 99; // '99' es el id de 'otro motivo'
-			datosHist.duracion = Number(motivo.duracion);
-		}
+		const motivo =
+			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
+		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
+
 		if (comentario) datosHist.comentario = comentario;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
