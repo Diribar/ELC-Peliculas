@@ -41,10 +41,10 @@ module.exports = {
 				: "";
 		}
 		// subtitulos castellano
-		if (campos.includes("subtit_castellano") && datos.castellano != "1") {
-			errores.subtit_castellano = !datos.subtit_castellano
+		if (campos.includes("subtitulos") && datos.castellano != "1") {
+			errores.subtitulos = !datos.subtitulos
 				? variables.inputVacio
-				: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
+				: datos.subtitulos != "0" && datos.subtitulos != "1"
 				? "Valor inválido"
 				: "";
 		}

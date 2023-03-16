@@ -215,8 +215,8 @@ module.exports = {
 				entidad_id: original.id,
 				editado_por_id: original.creado_por_id,
 				editado_en: original.creado_en,
-				edic_analizada_por_id: revID,
-				edic_analizada_en: ahora,
+				edic_revisada_por_id: revID,
+				edic_revisada_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
 			};
 
@@ -400,8 +400,8 @@ module.exports = {
 			let datos = {
 				editado_por_id: edicion.editado_por_id,
 				editado_en: edicion.editado_en,
-				edic_analizada_por_id: revID,
-				edic_analizada_en: ahora,
+				edic_revisada_por_id: revID,
+				edic_revisada_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
 			};
 
@@ -529,8 +529,8 @@ module.exports = {
 		// Nombre
 		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
 		// Edad
-		if (usuario.fecha_nacimiento) {
-			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno);
+		if (usuario.fecha_nacim) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacim).getTime()) / unAno);
 			bloque.push({titulo: "Edad", valor: edad + " años"});
 		}
 		// Rol en la iglesia

@@ -16,7 +16,7 @@ module.exports = {
 		if (producto.en_castellano !== null) bloque1.push({titulo: "En castellano", valor: producto.en_castellano ? "SI" : "NO"});
 		if (producto.tipo_actuacion) bloque1.push({titulo: "Tipo de Actuación", valor: producto.tipo_actuacion.nombre});
 		if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
-		if (producto.cant_temporadas) {
+		if (producto.cant_temps) {
 			if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
 		} else if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion});
 		if (producto.en_color !== null) bloque1.push({titulo: "Es a color", valor: producto.en_color ? "SI" : "NO"});

@@ -131,7 +131,7 @@ module.exports = {
 		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const alta_analizada_en = ahora;
+		const alta_revisada_en = ahora;
 		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
@@ -143,13 +143,13 @@ module.exports = {
 		// 1. Actualiza el status en el registro original
 		datos = {
 			...datos,
-			alta_analizada_por_id: revID,
-			alta_analizada_en,
+			alta_revisada_por_id: revID,
+			alta_revisada_en,
 			sugerido_por_id: revID,
-			sugerido_en: alta_analizada_en,
+			sugerido_en: alta_revisada_en,
 			status_registro_id,
 		};
-		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
+		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
 		if (motivo_id) datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 

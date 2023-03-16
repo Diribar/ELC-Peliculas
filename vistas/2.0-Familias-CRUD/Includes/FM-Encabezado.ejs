@@ -17,7 +17,7 @@
 					<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
 				<% } %>
 				<div>
-					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin datos" %></p>
+					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
 					<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 						<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
 					</div>
 					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
-						<% for (let temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
+						<% for (let temp = 1; temp <= registro.coleccion.cant_temps; temp++) { %>
 							<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 						<% } %>
 					</select>

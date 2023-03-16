@@ -44,15 +44,15 @@ module.exports = (sequelize, dt) => {
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
-		alta_analizada_por_id: {type: dt.INTEGER},
-		alta_analizada_en: {type: dt.DATE},
+		alta_revisada_por_id: {type: dt.INTEGER},
+		alta_revisada_en: {type: dt.DATE},
 		alta_term_en: {type: dt.DATE},
 		lead_time_creacion: {type: dt.DECIMAL},
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-		edic_analizada_por_id: {type: dt.INTEGER},
-		edic_analizada_en: {type: dt.DATE},
+		edic_revisada_por_id: {type: dt.INTEGER},
+		edic_revisada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
@@ -81,9 +81,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "alta_revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edic_revisada_por_id"});
 
 		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.motivos_rech_altas, {as: "motivo", foreignKey: "motivo_id"});

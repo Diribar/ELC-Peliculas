@@ -66,10 +66,10 @@ module.exports = {
 			// Fin
 			errores.apellido = respuesta;
 		}
-		if (campos.includes("fecha_nacimiento"))
-			errores.fecha_nacimiento = !datos.fecha_nacimiento
+		if (campos.includes("fecha_nacim"))
+			errores.fecha_nacim = !datos.fecha_nacim
 				? "Necesitamos que ingreses la fecha"
-				: fechaRazonable(datos.fecha_nacimiento)
+				: fechaRazonable(datos.fecha_nacim)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
 		if (campos.includes("rol_iglesia_id"))

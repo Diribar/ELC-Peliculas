@@ -41,7 +41,7 @@ module.exports = {
 		datos.prov_id = proveedor.id;
 
 		// Particularidades
-		if (datos.castellano == "1") datos.subtit_castellano = null;
+		if (datos.castellano == "1") datos.subtitulos = null;
 		if (datos.tipo_id == "1") datos.completo = 1;
 		if (datos.completo == "1") datos.parte = "-";
 		// Fin

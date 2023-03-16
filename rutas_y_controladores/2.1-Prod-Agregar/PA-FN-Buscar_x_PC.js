@@ -290,7 +290,7 @@ module.exports = {
 				// Acciones si es una serie de TV
 				else {
 					// OBtiene la cantidad de temporadas
-					let cant_temporadas = coleccion.seasons.filter((n) => n.season_number).length; // mayor a cero
+					let cant_temps = coleccion.seasons.filter((n) => n.season_number).length; // mayor a cero
 					// Obtiene los capítulos
 					let capitulos = coleccion.seasons
 						.filter((n) => n.season_number) // mayor a cero
@@ -301,7 +301,7 @@ module.exports = {
 						...resultados.productos[indice],
 						ano_fin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
 						capitulos,
-						cant_temporadas,
+						cant_temps,
 					};
 					if (coleccion.episode_run_time && coleccion.episode_run_time.length == 1)
 						resultados.productos[indice].duracion = coleccion.episode_run_time[0];
@@ -380,7 +380,7 @@ let agregaCapitulosTV = async (coleccion) => {
 	// Obtiene los datos de la serieTV
 	coleccion = {...coleccion, ...(await BD_genericas.obtienePorId("colecciones", coleccion.id))};
 	// Loop de TEMPORADAS
-	for (let numTemp = 1; numTemp <= coleccion.cant_temporadas; numTemp++) {
+	for (let numTemp = 1; numTemp <= coleccion.cant_temps; numTemp++) {
 		// Obtiene los datos de la temporada
 		let datosTemp = await detailsTMDB(numTemp, coleccion.TMDB_id);
 		// Obtiene los ID de los capítulos
@@ -397,8 +397,8 @@ let agregaCapitulosTV = async (coleccion) => {
 				// Completar datos
 				datosCap = {
 					...datosCap,
-					alta_analizada_por_id: coleccion.alta_analizada_por_id,
-					alta_analizada_en: coleccion.alta_analizada_en,
+					alta_revisada_por_id: coleccion.alta_revisada_por_id,
+					alta_revisada_en: coleccion.alta_revisada_en,
 					status_registro_id: coleccion.status_registro_id,
 				};
 				// Guarda el registro

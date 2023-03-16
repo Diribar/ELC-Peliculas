@@ -334,8 +334,8 @@ module.exports = {
 
 				// Si es una colección, le cambia el status también a los capítulos
 				if (entidad == "colecciones") {
-					datos.alta_analizada_por_id = 2;
-					datos.alta_analizada_en = ahora;
+					datos.alta_revisada_por_id = 2;
+					datos.alta_revisada_en = ahora;
 					await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
 				}
 

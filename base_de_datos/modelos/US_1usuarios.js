@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		apellido: {type: dt.STRING(30)},
 		apodo: {type: dt.STRING(30)},
 		avatar: {type: dt.STRING(100)},
-		fecha_nacimiento: {type: dt.DATE},
+		fecha_nacim: {type: dt.DATE},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},

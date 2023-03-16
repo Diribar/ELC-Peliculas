@@ -51,11 +51,11 @@
 			</div>
 			<!--Fecha de Nacimiento-->
 			<div class="label-input flexCol">
-				<label for="fecha_nacimiento">Fecha de Nacimiento</label>
+				<label for="fecha_nacim">Fecha de Nacimiento</label>
 				<div class="inputError">
-					<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
-					<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-					<%- include("CMP-Errores", {nombre: "fecha_nacimiento", display: true}) %> 
+					<% fecha_nacim = dataEntry ? dataEntry.fecha_nacim : "" %>
+					<input type="date" name="fecha_nacim" class="input" value="<%= fecha_nacim %>">
+					<%- include("CMP-Errores", {nombre: "fecha_nacim", display: true}) %> 
 				</div>
 			</div>
 		</div>

@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		documental: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "prod_tipos_actuacion",
+		tableName: "prod_tipos_actuac",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

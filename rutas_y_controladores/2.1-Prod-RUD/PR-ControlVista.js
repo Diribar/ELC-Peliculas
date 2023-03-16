@@ -151,8 +151,8 @@ module.exports = {
 			// 1. Actualiza el original
 			if (actualizaOrig) {
 				// Completa los datos a guardar
-				prodComb.alta_analizada_por_id = userID;
-				prodComb.alta_analizada_en = comp.ahora();
+				prodComb.alta_revisada_por_id = userID;
+				prodComb.alta_revisada_en = comp.ahora();
 				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 				// Se fija si corresponde cambiar el status
