@@ -182,36 +182,45 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	prodRCLV_altaGuardar: async (req, res) => {
+	prodRCLV_Guardar: async (req, res) => {
 		// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Variables
-		const {entidad, id, desaprueba} = req.query;
-		const {motivo_id, comentario} = req.body;
-		const familia = comp.obtieneFamilias(entidad);
-		const rclvs = familia == "rclvs";
+		const {entidad, id, desaprueba, comentario} = {...req.query, ...req.body};
+		//return res.send({...req.query, ...req.body})
+		const familia = comp.obtieneFamilia(entidad);
+		const rclv = familia == "rclv";
 		let datos = {};
 
 		// Obtiene el registro original y el subcodigo
 		let include = comp.obtieneTodosLosCamposInclude(entidad);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_original_id = original.status_registro_id;
-		const subcodigo = req.path.endsWith("/rechazo/")
-			? "rechazo"
+
+		// Obtiene datos sobre la situación
+		const subcodigo = inactivarRecuperar
+			? status_original_id == inactivar_id
+				? "inactivar"
+				: "recuperar"
 			: req.path.endsWith("/alta/")
 			? "alta"
-			: inactivarRecuperar && (status_original_id == status_original_id) == inactivar_id
-			? "inactivar"
-			: status_original_id == recuperar_id
-			? "recuperar"
-			: "";
-		return res.send([req.query, req.body, {codigo}, req.path]);
+			: "rechazo";
+		const aprob = subcodigo != "rechazo" && !desaprueba;
+		const status_final_id =
+			(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
+				? inactivo_id
+				: subcodigo != "alta" || rclv
+				? aprobado_id
+				: creado_aprob_id;
 
-		// Si es un RCLV y es aprobado, se realizan acciones específicas
-		if (rclvs && !rechazo) {
+		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+		// return res.send([req.query, req.body, req.path, {codigo, subcodigo, aprob, status_final_id}]);
+
+		// Acciones si es un RCLV y un alta aprobada
+		if (rclv && subcodigo == "alta") {
 			// Averigua si hay errores de validación y toma acciones
 			datos = {...req.body, ...req.query};
 			let errores = await validaRCLV.consolidado(datos);
@@ -226,75 +235,74 @@ module.exports = {
 
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const campoDecision = petitFamilia + (rechazo ? "_rech" : "_aprob");
+		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const alta_revisada_en = ahora;
-		const status_final_id = rechazo ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
+		// 1.A. Datos que se necesitan con seguridad
 		datos = {
-			...datos,
-			alta_revisada_por_id: revID,
-			alta_revisada_en,
 			sugerido_por_id: revID,
-			sugerido_en: alta_revisada_en,
+			sugerido_en: ahora,
 			status_registro_id: status_final_id,
+			motivo_id,
 		};
-		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
-		if (motivo_id) datos.motivo_id = motivo_id;
+		// 1.B. Datos sólo si es un alta/rechazo
+		if (!inactivarRecuperar) {
+			datos.alta_revisada_por_id = revID;
+			datos.alta_revisada_en = ahora;
+			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, ahora);
+		}
+		// 1.C. Actualiza el registro
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
+		datos.sugerido_por_id = 2; // Es el usuario 'automatizado'
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datos);
 
 		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs && !rechazo) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
 		let datosHist = {
-			entidad,
-			entidad_id: id,
-			sugerido_por_id: creado_por_id,
-			sugerido_en: original.creado_en,
-			revisado_por_id: revID,
-			revisado_en: ahora,
-			status_original_id: creado_id,
-			status_final_id,
-			aprobado: !rechazo,
+			...{entidad, entidad_id: id},
+			...{sugerido_por_id: userID, sugerido_en: original.sugerido_en, status_original_id},
+			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
+			...{aprobado: aprob, motivo_id: motivo_id},
 		};
-		if (rechazo) {
-			datosHist.motivo_id = motivo_id;
-			datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-			datosHist.duracion = Number(datosHist.motivo.duracion);
-			datosHist.comentario = comentario;
+		// Se aplica una 'duración' sólo si el usuario intentó un "aprobado"
+		if (codigo == "rechazo" || (!aprob && codigo == "recuperar")) {
+			const motivo = motivo_id ? motivos_rech_altas.find((n) => n.id == motivo_id) : 99; // '99' es el id de 'otro motivo'
+			datosHist.duracion = Number(motivo.duracion);
 		}
+		if (comentario) datosHist.comentario = comentario;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
+		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
-		// 6. Acciones por rechazos
-		if (rechazo) {
-			// 7.1. Penaliza al usuario si corresponde
-			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);
+		// 6. Penaliza al usuario si corresponde
+		if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);
 
-			// 7.2 Si es un RCLV, borra su id de los campos rclv_id de las ediciones de producto
-			if (rclvs) BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+		// 7 Si es un RCLV inactivo, borra su id de los campos rclv_id de las ediciones de producto
+		if (rclv && status_final_id == "inactivo")
+			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
-			// 7.3. Acciones si es un producto
-			// Elimina el archivo de avatar de la edicion
-			// Elimina las ediciones de producto que tenga
-			// Actualiza los RCLV, en el campo 'prods_aprob'
-			if (!rclvs) procesos.alta.prodRech(entidad, id, creado_por_id);
-		}
+		// 8. Acciones si es un producto inactivo
+		// Elimina el archivo de avatar de la edicion
+		// Elimina las ediciones de producto que tenga
+		if (!rclv && status_final_id == "inactivo") procesos.alta.prodRech(entidad, id, userID);
+
+		// 9. Actualiza los RCLV, en el campo 'prods_aprob'
+		procsCRUD.cambioDeStatus(entidad, original);
 
 		// Fin
-		// Si es un producto y fue aprobado, redirecciona a una edición
-		if (!rclvs && !rechazo) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		// Si es un producto creado y fue aprobado, redirecciona a una edición
+		if (!rclv && codigo == "alta") return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
