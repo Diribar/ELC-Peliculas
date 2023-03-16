@@ -18,7 +18,6 @@ window.addEventListener("load", async () => {
 	comentario.addEventListener("keypress", (e) => {
 		// Previene el uso del 'enter'
 		if (e.key == "Enter") e.preventDefault();
-		console.log(e.key);
 
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
