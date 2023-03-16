@@ -313,7 +313,7 @@ module.exports = {
 		},
 	},
 
-	guardar: async function ({req}) {
+	guardar: async function (req) {
 		// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
@@ -353,16 +353,17 @@ module.exports = {
 				? aprobado_id
 				: // Si es un producto, se revisa si tiene errores
 				(await validaProd.consolidado(original).then((n) => n.hay))
-				? // Si tiene errores, pasa a creadoAprob
-				  creado_aprob_id
-				: // Si no tiene errores, se aprueba
-				  aprobado_id;
+				? creado_aprob_id
+				: aprobado_id;
 
 		// Obtiene el motivo_id
 		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
 
 		// Fin
-		return {entidad, id, original, status_final_id, inactivarRecuperar, subcodigo, rclv, motivo_id};
+		return {
+			...{entidad, id, original, status_original_id, status_final_id},
+			...{inactivarRecuperar, subcodigo, rclv, motivo_id, aprob},
+		};
 	},
 
 	// Edición

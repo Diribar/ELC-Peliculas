@@ -184,7 +184,9 @@ module.exports = {
 	},
 	prodRCLV_Guardar: async (req, res) => {
 		// Variables
-		const {entidad, id, original, status_final_id, inactivarRecuperar, subcodigo, rclv, motivo_id} = procesos.guardar(req);
+		let datos = await procesos.guardar(req);
+		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
+		const {inactivarRecuperar, subcodigo, rclv, motivo_id, aprob} = {...datos};
 		const comentario = req.body;
 		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
@@ -192,7 +194,6 @@ module.exports = {
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
-		let datos = {};
 
 		// Acciones si es un RCLV y un alta aprobada
 		if (rclv && subcodigo == "alta") {
