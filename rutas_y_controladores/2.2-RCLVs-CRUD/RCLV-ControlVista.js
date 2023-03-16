@@ -13,11 +13,9 @@ module.exports = {
 		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
-		const datos = req.query;
 
 		// Variables
-		const entidad = req.query.entidad;
-		const id = req.query.id;
+		const {entidad, id} = req.query
 		const prodEntidad = req.query.prodEntidad;
 		const prodID = req.query.prodID;
 		const userID = req.session.usuario.id;
@@ -52,13 +50,12 @@ module.exports = {
 		}
 
 		// Info para la vista
-		let rutaSalir = comp.rutaSalir(tema, codigo, datos);
-		let motivos = tema == "revisionEnts" ? motivos_rech_altas.filter((n) => n.rclvs) : "";
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
+		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo},
-			...{entidad, id, prodEntidad, prodID, origen: req.query.origen, familia: comp.obtieneFamilia(entidad)},
+			...{tema, codigo, origen},
+			...{entidad, id, prodEntidad, prodID, familia: comp.obtieneFamilia(entidad)},
 			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
