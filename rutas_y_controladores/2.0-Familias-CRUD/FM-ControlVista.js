@@ -99,7 +99,7 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		let datos = {
-			sugerido_por_id: req.session.usuario.id,
+			sugerido_por_id: userID,
 			sugerido_en: comp.ahora(),
 			status_registro_id: status_final_id,
 		};
