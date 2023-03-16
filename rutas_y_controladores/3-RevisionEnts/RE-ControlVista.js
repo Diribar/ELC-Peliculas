@@ -237,10 +237,15 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const preTitulo = inactivarRecuperar
-			? "Revisión de Inactivar o Recuperar"
-			: codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
+		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
 		const titulo = preTitulo + " un" + a + entidadNombre;
+
+		// Ayuda para el titulo
+		const ayudasTitulo = inactivarRecuperar
+			? [
+					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+			  ]
+			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -259,13 +264,6 @@ module.exports = {
 		// Imagen Personalizada
 		imgDerPers =
 			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
-
-		// Ayuda para el titulo
-		const ayudasTitulo = inactivarRecuperar
-			? [
-					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-			  ]
-			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);

@@ -35,6 +35,9 @@ module.exports = {
 		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
+		// Ayuda para el titulo
+		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
+
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
 			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
@@ -58,9 +61,6 @@ module.exports = {
 				: familias == "rclvs"
 				? procesos.obtieneAvatarRCLV(original).orig
 				: "";
-
-		// Ayuda para el titulo
-		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
