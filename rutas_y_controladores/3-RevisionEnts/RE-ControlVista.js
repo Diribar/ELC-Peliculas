@@ -87,13 +87,13 @@ module.exports = {
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
 		// Status de la entidad
-		const status_id = original.status_registro_id;
-		const statusCreado = status_id == creado_id;
+		const status_registro_id = original.status_registro_id;
+		const statusCreado = status_registro_id == creado_id;
 		// Va a la vista
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, familia, id, prodNombre, registro: original, status_id, statusCreado},
+			...{entidad, familias, familia, id, prodNombre, registro: original, status_id: status_registro_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
@@ -122,9 +122,9 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el subcodigo
-		const status_registro_id = original.status_registro_id;
+		const status_original_id = original.status_registro_id;
 		const subcodigo =
-			status_registro_id == inactivar_id ? "inactivar" : status_registro_id == recuperar_id ? "recuperar" : "";
+			status_original_id == inactivar_id ? "inactivar" : status_original_id == recuperar_id ? "recuperar" : "";
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
@@ -187,15 +187,28 @@ module.exports = {
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
-		return res.send([req.query, req.body,{codigo},req.path]);
 
 		// Variables
 		const {entidad, id, desaprueba} = req.query;
-		const rechazo = req.path.endsWith("/rechazo/");
 		const {motivo_id, comentario} = req.body;
 		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";
 		let datos = {};
+
+		// Obtiene el registro original y el subcodigo
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const status_original_id = original.status_registro_id;
+		const subcodigo = req.path.endsWith("/rechazo/")
+			? "rechazo"
+			: req.path.endsWith("/alta/")
+			? "alta"
+			: inactivarRecuperar && (status_original_id == status_original_id) == inactivar_id
+			? "inactivar"
+			: status_original_id == recuperar_id
+			? "recuperar"
+			: "";
+		return res.send([req.query, req.body, {codigo}, req.path]);
 
 		// Si es un RCLV y es aprobado, se realizan acciones específicas
 		if (rclvs && !rechazo) {
@@ -217,12 +230,8 @@ module.exports = {
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_revisada_en = ahora;
-		const status_registro_id = rechazo ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
+		const status_final_id = rechazo ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-
-		// Obtiene el registro original
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -232,7 +241,7 @@ module.exports = {
 			alta_revisada_en,
 			sugerido_por_id: revID,
 			sugerido_en: alta_revisada_en,
-			status_registro_id,
+			status_registro_id: status_final_id,
 		};
 		datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
 		if (motivo_id) datos.motivo_id = motivo_id;
@@ -254,7 +263,7 @@ module.exports = {
 			revisado_por_id: revID,
 			revisado_en: ahora,
 			status_original_id: creado_id,
-			status_final_id: status_registro_id,
+			status_final_id,
 			aprobado: !rechazo,
 		};
 		if (rechazo) {
