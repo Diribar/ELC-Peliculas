@@ -98,8 +98,97 @@ module.exports = {
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
+	crudForm: async (req, res) => {
+		// Tema y Código
+		const tema = "revisionEnts";
+		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+		let codigo = req.path.slice(1, -1);
+		codigo = codigo.slice(codigo.indexOf("/") + 1);
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
+
+		// Más variables
+		const {entidad, id} = req.query;
+		const familia = comp.obtieneFamilia(entidad);
+		const familias = comp.obtieneFamilias(entidad);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
+
+		// Obtiene el registro
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
+		if (entidad == "capitulos") include.push("coleccion");
+		if (entidad == "colecciones") include.push("capitulos");
+		if (familia == "rclv") include.push(...variables.entidadesProd);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+
+		// Obtiene el subcodigo
+		const status_registro_id = original.status_registro_id;
+		const subcodigo =
+			status_registro_id == inactivar_id ? "inactivar" : status_registro_id == recuperar_id ? "recuperar" : "";
+
+		// Obtiene el título
+		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
+		const entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
+		const titulo = preTitulo + " un" + a + entidadNombre;
+
+		// Ayuda para el titulo
+		const ayudasTitulo = inactivarRecuperar
+			? [
+					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+			  ]
+			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
+
+		// Cantidad de productos asociados al RCLV
+		if (familias == "rclvs") {
+			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
+			cantProds = prodsDelRCLV.length;
+			procCanoniz = procsRCLV.detalle.procCanoniz(original);
+			RCLVnombre = original.nombre;
+		}
+
+		// Datos Breves
+		bloqueDer = [
+			procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
+			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+		];
+
+		// Imagen Personalizada
+		imgDerPers =
+			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
+
+		// Motivos de rechazo
+		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+
+		// Comentario del rechazo
+		const comentarios = inactivarRecuperar
+			? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
+					n.map((m) => m.comentario)
+			  )
+			: [];
+
+		// Obtiene datos para la vista
+		if (entidad == "capitulos")
+			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+		const tituloMotivo =
+			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
+
+		// Render del formulario
+		// return res.send(bloqueDer);
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
+			...{entidad, id, entidadNombre, familias, familia, comentarios, urlActual: req.originalUrl},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
+			cartelGenerico: true,
+		});
+	},
 	prodRCLV_altaGuardar: async (req, res) => {
-		return res.send([req.query, req.body]);
+		// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+		let codigo = req.path.slice(1, -1);
+		codigo = codigo.slice(codigo.indexOf("/") + 1);
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
+		return res.send([req.query, req.body,{codigo},req.path]);
+
 		// Variables
 		const {entidad, id, desaprueba} = req.query;
 		const rechazo = req.path.endsWith("/rechazo/");
@@ -199,92 +288,6 @@ module.exports = {
 		if (!rclvs && !rechazo) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
-	},
-
-	// CRUD - Otros
-	crudForm: async (req, res) => {
-		// Tema y Código
-		const tema = "revisionEnts";
-		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-		let codigo = req.path.slice(1, -1);
-		codigo = codigo.slice(codigo.indexOf("/") + 1);
-		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
-
-		// Más variables
-		const {entidad, id} = req.query;
-		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
-
-		// Obtiene el registro
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
-		if (entidad == "capitulos") include.push("coleccion");
-		if (entidad == "colecciones") include.push("capitulos");
-		if (familia == "rclv") include.push(...variables.entidadesProd);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-
-		// Obtiene el subcodigo
-		const status_registro_id = original.status_registro_id;
-		const subcodigo =
-			status_registro_id == inactivar_id ? "inactivar" : status_registro_id == recuperar_id ? "recuperar" : "";
-
-		// Obtiene el título
-		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
-		const titulo = preTitulo + " un" + a + entidadNombre;
-
-		// Ayuda para el titulo
-		const ayudasTitulo = inactivarRecuperar
-			? [
-					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-			  ]
-			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
-
-		// Cantidad de productos asociados al RCLV
-		if (familias == "rclvs") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
-			cantProds = prodsDelRCLV.length;
-			procCanoniz = procsRCLV.detalle.procCanoniz(original);
-			RCLVnombre = original.nombre;
-		}
-
-		// Datos Breves
-		bloqueDer = [
-			procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
-			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
-		];
-
-		// Imagen Personalizada
-		imgDerPers =
-			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
-
-		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
-
-		// Comentario del rechazo
-		const comentarios = inactivarRecuperar
-			? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
-					n.map((m) => m.comentario)
-			  )
-			: [];
-
-		// Obtiene datos para la vista
-		if (entidad == "capitulos")
-			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
-		const tituloMotivo =
-			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
-
-		// Render del formulario
-		// return res.send(bloqueDer);
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
-			...{entidad, id, entidadNombre, familias, familia, comentarios, urlActual: req.originalUrl},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
-			cartelGenerico: true,
-		});
 	},
 
 	// EDICION
