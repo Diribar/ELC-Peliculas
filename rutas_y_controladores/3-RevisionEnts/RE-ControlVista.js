@@ -45,12 +45,8 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Revisión - Tablero de Entidades",
-			productos,
-			rclvs,
-			origen: "TE",
+			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
+			...{productos, rclvs, origen: "TE"},
 		});
 	},
 
@@ -85,8 +81,6 @@ module.exports = {
 			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
 		];
 		const motivos = motivos_rech_altas.filter((n) => n.prods);
-		// Botón salir
-		const origen = "TE";
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
@@ -101,20 +95,21 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
 			...{entidad, familias, familia, id, prodNombre, registro: original, status_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
-			...{origen, urlActual: req.session.urlActual, cartelRechazo: true},
+			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
 	prodRCLV_altaGuardar: async (req, res) => {
+		return res.send([req.query, req.body]);
 		// Variables
-		const {entidad, id} = req.query;
-		const rechazado = req.path.endsWith("/rechazo/");
+		const {entidad, id, desaprueba} = req.query;
+		const rechazo = req.path.endsWith("/rechazo/");
 		const {motivo_id, comentario} = req.body;
 		const familia = comp.obtieneFamilias(entidad);
 		const rclvs = familia == "rclvs";
 		let datos = {};
 
 		// Si es un RCLV y es aprobado, se realizan acciones específicas
-		if (rclvs && !rechazado) {
+		if (rclvs && !rechazo) {
 			// Averigua si hay errores de validación y toma acciones
 			datos = {...req.body, ...req.query};
 			let errores = await validaRCLV.consolidado(datos);
@@ -129,11 +124,11 @@ module.exports = {
 
 		// Más variables
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const campoDecision = petitFamilia + (rechazado ? "_rech" : "_aprob");
+		const campoDecision = petitFamilia + (rechazo ? "_rech" : "_aprob");
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_revisada_en = ahora;
-		const status_registro_id = rechazado ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
+		const status_registro_id = rechazo ? inactivo_id : rclvs ? aprobado_id : creado_aprob_id;
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 
 		// Obtiene el registro original
@@ -158,7 +153,7 @@ module.exports = {
 		if (entidad == "colecciones") BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, datos);
 
 		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
-		if (rclvs && !rechazado) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+		if (rclvs && !rechazo) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
 		let creado_por_id = original.creado_por_id;
@@ -171,9 +166,9 @@ module.exports = {
 			revisado_en: ahora,
 			status_original_id: creado_id,
 			status_final_id: status_registro_id,
-			aprobado: !rechazado,
+			aprobado: !rechazo,
 		};
-		if (rechazado) {
+		if (rechazo) {
 			datosHist.motivo_id = motivo_id;
 			datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(datosHist.motivo.duracion);
@@ -185,7 +180,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", creado_por_id, campoDecision, 1);
 
 		// 6. Acciones por rechazos
-		if (rechazado) {
+		if (rechazo) {
 			// 7.1. Penaliza al usuario si corresponde
 			if (datosHist.duracion) comp.usuarioPenalizAcum(creado_por_id, datosHist.motivo, petitFamilia);
 
@@ -201,7 +196,7 @@ module.exports = {
 
 		// Fin
 		// Si es un producto y fue aprobado, redirecciona a una edición
-		if (!rclvs && !rechazado) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		if (!rclvs && !rechazo) return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
@@ -216,7 +211,7 @@ module.exports = {
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
-		const {entidad, id, origen} = req.query;
+		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
@@ -281,11 +276,12 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const tituloMotivo =
 			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
+
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
-			...{entidad, id, entidadNombre, familias, familia, comentarios},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
+			...{entidad, id, entidadNombre, familias, familia, comentarios, urlActual: req.originalUrl},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
@@ -383,14 +379,14 @@ module.exports = {
 	prod_AvatarGuardar: async (req, res) => {
 		// return res.send({...req.query, ...req.body});
 		// Obtiene la respuesta del usuario
-		const {entidad, id, edicion_id: edicID, rechazado, motivo_id} = {...req.query, ...req.body};
+		const {entidad, id, edicion_id: edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
 		let revID = req.session.usuario.id;
 		let original = await BD_genericas.obtienePorId(entidad, id);
 		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
 		let campo = "avatar";
-		let aprob = !rechazado;
+		let aprob = !rechazo;
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});

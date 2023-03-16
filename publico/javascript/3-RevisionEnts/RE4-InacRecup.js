@@ -4,14 +4,13 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#recuadro form");
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
-	let submit = document.querySelector("#botones button[type='submit']");
+	let desaprueba = document.querySelector("#botones label[for='desaprueba']");
 
 	// Botón submit
-	let botonSubmit = () => {
-		let checked = document.querySelector("#motivos input:checked");
-		(!motivos.length && comentario.value) || (motivos && checked && (!req_com || comentario.value))
-			? submit.classList.remove("inactivo")
-			: submit.classList.add("inactivo");
+	let botonDesaprobar = () => {
+		comentario.value && comentario.value.length > 3
+			? desaprueba.classList.remove("inactivo")
+			: desaprueba.classList.add("inactivo");
 	};
 
 	// Event listeners
@@ -22,14 +21,13 @@ window.addEventListener("load", async () => {
 
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
-		if (!formato.test(e.key)) e.preventDefault() 
-
+		if (!formato.test(e.key)) e.preventDefault();
 	});
 	comentario.addEventListener("input", () => {
 		// Corrige el doble espacio
 		let com = comentario.value
 			.replace(/ +/g, " ")
-			.replace(/^[a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/\n/g, "")
 			.slice(0, 150);
 
@@ -38,11 +36,12 @@ window.addEventListener("load", async () => {
 		pendiente.innerHTML = 150 - com.length;
 
 		// Actualiza el botón submit
-		botonSubmit();
+		botonDesaprobar();
 	});
 
 	// Previene el submit si el botón está inactivo
 	form.addEventListener("submit", (e) => {
-		if (submit.className.includes("inactivo")) e.preventDefault();
+		// e.preventDefault();
+		if (e.submitter.id == "desaprueba" && desaprueba.className.includes("inactivo")) e.preventDefault();
 	});
 });

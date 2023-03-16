@@ -9,9 +9,9 @@
 
 /* CUADRO DE TEXTO - TEXTO */
 #cuerpo #cuadro-de-texto .bloque:nth-child(n+2) {margin-top: 15px;}
-#cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;}
+/* #cuerpo #cuadro-de-texto .bloque ul {margin-left: 20px;} */
 #cuerpo #cuadro-de-texto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
-#cuerpo #cuadro-de-texto .bloque ul ul {margin-left: 30px;}
+/* #cuerpo #cuadro-de-texto .bloque ul ul {margin-left: 30px;} */
 #cuerpo #cuadro-de-texto .bloque ul ul li {margin-top: 2px;}
 
 mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}

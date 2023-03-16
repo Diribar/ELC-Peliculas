@@ -32,10 +32,9 @@
 #centro #medio .contenedorOpcionAvatar#mostrarMotivos {transform-origin: right; background: var(--rojo-claro); border-color: var(--rojo-oscuro);}
 #centro #medio .contenedorOpcionAvatar button {border: none; background: transparent; outline: none;}
 #centro #medio #info {padding: 15px 20px; width: fit-content;}
-#centro #medio #info h2 {text-align: left;}
-#centro #medio #info ul {list-style-position: outside; text-align: left;}
+#centro #medio #info :is(h2, ul) {text-align: left;}
 #centro #medio #info ul:has(li) {margin-top: 5px;}
-#centro #medio #info ul li {font-size: 1.1rem; margin-left: 15px;}
+#centro #medio #info ul li {font-size: 1.1rem;}
 
 /* Sección central - Medio - Ficha Técnica */
 #centro #medio #fichaTecnica {padding: 15px 20px; border-radius: 20px; width: fit-content; max-width: 30vw; align-self: center;}
