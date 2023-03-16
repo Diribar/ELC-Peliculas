@@ -6,8 +6,8 @@ module.exports = (sequelize, dt) => {
 
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
-		analizado_por_id: {type: dt.INTEGER},
-		analizado_en: {type: dt.DATE},
+		revisado_por_id: {type: dt.INTEGER},
+		revisado_en: {type: dt.DATE},
 		motivo_id: {type: dt.INTEGER},
 
 		status_original_id: {type: dt.INTEGER},
@@ -26,7 +26,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "analizado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "revisado_por_id"});
 
 		entidad.belongsTo(n.motivos_rech_altas, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.status_registros, {as: "status_original", foreignKey: "status_original_id"});

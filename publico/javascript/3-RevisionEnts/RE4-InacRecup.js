@@ -2,12 +2,9 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let form = document.querySelector("#recuadro form");
-	let motivos = document.querySelectorAll("#motivos input");
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let submit = document.querySelector("#botones button[type='submit']");
-	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
-	let req_com;
 
 	// Botón submit
 	let botonSubmit = () => {
@@ -18,14 +15,6 @@ window.addEventListener("load", async () => {
 	};
 
 	// Event listeners
-	// Motivos
-	if (motivos.length)
-		for (let motivo of motivos)
-			motivo.addEventListener("change", async () => {
-				req_com = await fetch(ruta + motivo.value).then((n) => n.json());
-				botonSubmit();
-			});
-
 	// Comentario
 	comentario.addEventListener("keypress", (e) => {
 		// Previene el uso del 'enter'

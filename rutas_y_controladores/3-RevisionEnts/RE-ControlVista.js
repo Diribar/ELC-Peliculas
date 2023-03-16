@@ -42,6 +42,7 @@ module.exports = {
 		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC.prod_ProcesaCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
+
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -166,8 +167,8 @@ module.exports = {
 			entidad_id: id,
 			sugerido_por_id: creado_por_id,
 			sugerido_en: original.creado_en,
-			analizado_por_id: revID,
-			analizado_en: ahora,
+			revisado_por_id: revID,
+			revisado_en: ahora,
 			status_original_id: creado_id,
 			status_final_id: status_registro_id,
 			aprobado: !rechazado,
@@ -269,21 +270,22 @@ module.exports = {
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 
 		// Comentario del rechazo
-		const comentario = inactivarRecuperar
-			? await BD_genericas.obtienePorCamposElUltimo("historial_cambios_de_status", {entidad, entidad_id: id}).then(
-					(n) => n.comentario
+		const comentarios = inactivarRecuperar
+			? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
+					n.map((m) => m.comentario)
 			  )
-			: "";
+			: [];
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
-
+		const tituloMotivo =
+			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familias, familia, comentario},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
+			...{entidad, id, entidadNombre, familias, familia, comentarios},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});

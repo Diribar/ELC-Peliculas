@@ -13,7 +13,7 @@ module.exports = {
 		obtieneProds: async (ahora, userID) => {
 			// Obtiene productos en situaciones particulares
 			// Variables
-			let entidades = ["peliculas", "colecciones"];
+			const entidades = ["peliculas", "colecciones"];
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
 			campos = [entidades, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
@@ -21,13 +21,13 @@ module.exports = {
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
 			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			let IN = await TC_obtieneRegs(...campos, true);
+			const IN = await TC_obtieneRegs(...campos, true);
 			// RC: En status 'recuperar'
 			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			let RC = await TC_obtieneRegs(...campos, true);
+			const RC = await TC_obtieneRegs(...campos, true);
 
 			// Fin
-			return {IR: [...IN, ...RC], SE};
+			return {SE, IR: [...IN, ...RC]};
 		},
 		obtieneProdsConEdicAjena: async (ahora, userID) => {
 			// 1. Variables
@@ -90,23 +90,31 @@ module.exports = {
 		obtieneRCLVs: async (ahora, userID) => {
 			// Obtiene rclvs en situaciones particulares
 			// Variables
-			let entidades = variables.entidadesRCLV;
-			let include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
-			let campos = [entidades, creado_id, userID, "creado_en", "creado_por_id", include];
-			let registros = await TC_obtieneRegs(...campos);
+			const entidades = variables.entidadesRCLV;
+			const include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
+			let [AL, SP] = [[], []];
+			let campos;
 
+			// AL y SP: Altas y Sin Producto
+			campos = [entidades, creado_id, userID, "creado_en", "creado_por_id", include];
+			const CR = await TC_obtieneRegs(...campos);
 			// Distribuir entre AL y SP
-			let respuesta = {AL: [], SP: []};
-			for (let reg of registros) {
+			for (let reg of CR) {
 				// AL: Altas Pendientes de Aprobar (c/producto o c/edicProd)
 				if (reg.peliculas.length || reg.colecciones.length || reg.capitulos.length || reg.prods_edicion.length)
-					respuesta.AL.push(reg);
+					AL.push(reg);
 				// SP: con una antiguedad mayor a una hora
-				else if (reg.creado_en < ahora - unaHora) respuesta.SP.push(reg);
+				else if (reg.creado_en < ahora - unaHora) SP.push(reg);
 			}
+			// IN: En staus 'inactivar'
+			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			const IN = await TC_obtieneRegs(...campos, true);
+			// RC: En status 'recuperar'
+			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			const RC = await TC_obtieneRegs(...campos, true);
 
 			// Fin
-			return respuesta;
+			return {AL, SP, IR: [...IN, ...RC]};
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, userID) {
 			// 1. Variables

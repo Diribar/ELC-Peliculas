@@ -62,6 +62,7 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rr = "revision/rclv/" %>
+				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
 				<%- include("RE0-Registros", {titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
 				<%- include("RE0-Registros", {titulo: "Altas Sin Producto", regs: rclvs.SP, url: rr + "alta"}) %>
