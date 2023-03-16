@@ -17,7 +17,8 @@ const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 const existeEdicion = require("../../middlewares/producto/filtro-existeEdicion");
-const rechazoSinMotivo = require("../../middlewares/producto/filtro-rechazoSinMotivo");
+const motivoNecesario = require("../../middlewares/producto/filtro-motivoNecesario");
+const motivoOpcional = require("../../middlewares/producto/filtro-motivoOpcional");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
@@ -47,18 +48,14 @@ router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm)
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.crudForm);
 // Altas Guardar
-router.post("/:familia/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
-router.post("/:familia/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.post("/:familia/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar);
+router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_Guardar);
 // Inactivar o Recuperar
 router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.crudForm);
-router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
+router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar); // Va sin 'motivo'
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
-// Edición Avatar (Guardar)
-router.post("/producto/edicion", ...aptoEdicion, rechazoSinMotivo, capturaInactivar, vista.prod_AvatarGuardar);
-
-
-
+router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.prod_AvatarGuardar);
 // Links
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
 
