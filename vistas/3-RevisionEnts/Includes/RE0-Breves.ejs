@@ -1,14 +1,16 @@
-<h3 class="titulo">Datos del <%= codigo == "rclvEdicion" ? entidadNombre : 'Producto' %></h3>
-<div id="texto">
-	<% for (campo of bloqueDer[0]) { %>
-		<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
-			<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
-		</p>
-	<% } %>
-</div>
-<h3 class="titulo">Datos del Usuario</h3>
-<div id="texto">
-	<% for (campo in bloqueDer[1]) { %>
-		<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
-	<% } %> 
-</div>
+<nav>
+	<h3 class="titulo">Datos del Registro</h3>
+	<div id="texto">
+		<% for (campo of bloqueDer[0]) { %>
+			<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
+				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+			</p>
+		<% } %>
+	</div>
+	<h3 class="titulo">Datos del Usuario</h3>
+	<div id="texto">
+		<% for (campo of bloqueDer[1]) { %>
+			<p class="datosUsuario"><strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span></p>
+		<% } %> 
+	</div>
+</nav>

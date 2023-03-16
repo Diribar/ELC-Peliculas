@@ -68,9 +68,8 @@ module.exports = {
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		} else if (codigo == "detalle") {
-			// Variables de 'Detalle'
 			bloqueIzq = procesos.bloqueIzq(prodComb);
-			bloqueDer = procesos.bloqueDer(prodComb);
+			bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 			imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 		}
 		// Obtiene datos para la vista

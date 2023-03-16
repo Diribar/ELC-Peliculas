@@ -5,6 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 
 module.exports = {
 	// Tablero
@@ -287,60 +288,6 @@ module.exports = {
 			return;
 		},
 		// Productos Alta
-		prodAltaFicha: async (prodOrig, paisesNombre) => {
-			// Funciones
-			let usuario_CalidadAltas = async (userID) => {
-				// 1. Obtiene los datos del usuario
-				let usuario = await BD_genericas.obtienePorId("usuarios", userID);
-				// 2. Contar los casos aprobados y rechazados
-				let cantAprob = usuario.prods_aprob;
-				let cantRech = usuario.prods_rech;
-				// 3. Precisión de altas
-				let cantAltas = cantAprob + cantRech;
-				let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-				// let diasPenalizacion = usuario.dias_penalizacion
-				// Datos a enviar
-				let enviar = {
-					calidadAltas: ["Calidad Altas", calidadInputs],
-					cantAltas: ["Cant. Prod. Agregados", cantAltas],
-					// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-				};
-				// Fin
-				return enviar;
-			};
-			// Definir el 'ahora'
-			let ahora = comp.ahora().getTime();
-			// Bloque izquierdo
-			let [bloque1, bloque2, bloque3] = [[], [], []];
-			// Bloque 1
-			if (paisesNombre) bloque1.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
-			if (prodOrig.idioma_original) bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
-			// Bloque 2
-			if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
-			if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
-			if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
-			if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
-			// Bloque 3
-			if (prodOrig.actores) bloque3.push({titulo: "Actores", valor: prodOrig.actores});
-			// Bloque izquierdo consolidado
-			let izquierda = [bloque1, bloque2, bloque3];
-			// Bloque derecho
-			[bloque1, bloque2] = [[], []];
-			// Bloque 1
-			if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
-			if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
-			if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
-			// Obtiene la fecha de alta
-			let fecha = comp.fechaDiaMesAno(prodOrig.creado_en);
-			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-			// 5. Obtiene los datos del usuario
-			let fichaDelUsuario = await comp.usuarioFicha(prodOrig.creado_por_id, ahora);
-			// 6. Obtiene la calidad de las altas
-			let calidadAltas = await usuario_CalidadAltas(prodOrig.creado_por_id);
-			// Bloque derecho consolidado
-			let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
-			return [izquierda, derecha];
-		},
 		prodRech: async (entidad, id, editado_por_id) => {
 			// Obtiene la edicion
 			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
@@ -427,55 +374,6 @@ module.exports = {
 			let reemplazos = resultado.filter((n) => n.mostrarOrig);
 			// Fin
 			return [ingresos, reemplazos];
-		},
-		// Prod-Edición Form
-		prodEdicFicha: async (original, edicion) => {
-			// Funciones
-			let usuario_CalidadEdic = async (userID) => {
-				// 1. Obtiene los datos del usuario
-				let usuario = await BD_genericas.obtienePorId("usuarios", userID);
-				// 2. Contar los casos aprobados y rechazados
-				let cantAprob = usuario.edics_aprob;
-				let cantRech = usuario.edics_rech;
-				// 3. Precisión de ediciones
-				let cantEdics = cantAprob + cantRech;
-				let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-				// Datos a enviar
-				let enviar = {
-					calidadEdiciones: ["Calidad Edición", calidadInputs],
-					cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-				};
-				// Fin
-				return enviar;
-			};
-
-			// Definir el 'ahora'
-			let ahora = comp.ahora().getTime();
-			// Bloque derecho
-			let bloque1 = [];
-			let fecha;
-			// Bloque 1 ---------------------------------------------
-			if (original.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: original.ano_estreno});
-			if (original.ano_fin) bloque1.push({titulo: "Año de fin", valor: original.ano_fin});
-			if (original.duracion) bloque1.push({titulo: "Duracion", valor: original.duracion + " min."});
-			// Obtiene la fecha de alta
-			fecha = comp.fechaDiaMesAno(original.creado_en);
-			bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-			// Obtiene la fecha de edicion
-			fecha = comp.fechaDiaMesAno(edicion.editado_en);
-			bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-			// Obtiene el status del producto
-			let statusResumido = procsCRUD.statusResumido(original);
-			bloque1.push({titulo: "Status", ...statusResumido});
-			// Bloque 2 ---------------------------------------------
-			// Obtiene los datos del usuario
-			let fichaDelUsuario = await comp.usuarioFicha(edicion.editado_por_id, ahora);
-			// Obtiene la calidad de las altas
-			let calidadEdic = await usuario_CalidadEdic(edicion.editado_por_id);
-			// Bloque consolidado -----------------------------------
-			let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-			// Fin
-			return derecha;
 		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
@@ -619,6 +517,34 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
+
+	fichaDelUsuario: async (userID, petitFamilia) => {
+		// Variables
+		const ahora = comp.ahora();
+		const include = "rol_iglesia";
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
+		let bloque = [];
+
+		// Datos del usuario
+		// Nombre
+		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
+		// Edad
+		if (usuario.fecha_nacimiento) {
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno);
+			bloque.push({titulo: "Edad", valor: edad + " años"});
+		}
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rol_iglesia.nombre});
+		// Tiempo en ELC
+		const antiguedad = ((ahora - new Date(usuario.creado_en).getTime()) / unAno).toFixed(1).replace(".", ",");
+		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
+		// Calidad de las altas
+		console.log(591, usuarioCalidad(usuario, petitFamilia));
+		bloque.push(...usuarioCalidad(usuario, petitFamilia));
+
+		// Fin
+		return bloque;
+	},
 };
 
 // Funciones
@@ -736,4 +662,23 @@ let sinProblemasDeCaptura = (familia, userID, ahora) => {
 			// Que esté capturado por este usuario hace menos de una hora
 			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 	);
+};
+let usuarioCalidad = (usuario, prefijo) => {
+	// Contar los casos aprobados y rechazados
+	const cantAprob = usuario[prefijo + "_aprob"];
+	const cantRech = usuario[prefijo + "_rech"];
+
+	// Mediciones
+	const cantidad = cantAprob + cantRech;
+	const calidad = cantidad ? parseInt((cantAprob / cantidad) * 100) + "%" : "-";
+
+	// Prepara el resultado
+	const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
+	const resultados = [
+		{titulo: "Calidad de " + sufijo, valor: calidad},
+		{titulo: "Cant. de " + sufijo, valor: cantidad},
+	];
+
+	// Fin
+	return resultados;
 };

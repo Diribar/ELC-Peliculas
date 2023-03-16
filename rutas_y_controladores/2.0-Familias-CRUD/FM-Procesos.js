@@ -533,4 +533,33 @@ module.exports = {
 			? {id: 3, valor: "Inactivo"}
 			: {id: 1, valor: "Para Revisar"};
 	},
+
+	// Bloques a mostrar
+	bloqueRegistro: function (registro, cantProds) {
+		// Variable
+		let bloque = [];
+
+		// Datos CRUD
+		// Creador
+		bloque.push({
+			titulo: "Creado por",
+			valor: registro.creado_por.apodo ? registro.creado_por.apodo : registro.creado_por.nombre,
+		});
+		// Fechas
+		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
+		let fechas = [registro.sugerido_en];
+		if (registro.alta_analizada_en) fechas.push(registro.alta_analizada_en);
+		if (registro.editado_en) fechas.push(registro.editado_en);
+		if (registro.edic_analizada_en) fechas.push(registro.edic_analizada_en);
+		const ultimaNovedad = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
+		bloque.push({titulo: "Última novedad", valor: ultimaNovedad});
+		// Prods en BD
+		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
+
+		// Status resumido
+		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
+
+		// Fin
+		return bloque;
+	},
 };

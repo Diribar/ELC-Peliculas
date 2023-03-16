@@ -134,8 +134,12 @@ module.exports = {
 			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
 			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
 		];
+		// Bloque de la derecha
+		const bloqueDer = {
+			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
+			registro: procsCRUD.bloqueRegistro(original, cantProds),
+		};
 		// Imagen Derecha
-		const bloqueDer = procesos.detalle.bloqueDer({...original, entidad}, cantProds);
 		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
 		// Status de la entidad
 		const status_id = original.status_registro_id;
