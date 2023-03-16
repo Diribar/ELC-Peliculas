@@ -43,8 +43,9 @@
 	</div>
 <% } %>
 
-<% if (tema == "crud") {  %>
+<% if (tema == "crud" || tema == "revisionEnts" && codigo == "rechazo") {  %>
 	<!-- VISTAS CRUD INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
+	<!-- VISTAS REVISION RECHAZO - Para completar el feedback y enviar a Revisión -->
 	<!-- Confirma el cambio de status -->
 	<button type="submit" class="flechas inactivo">
 		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>

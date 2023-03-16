@@ -42,6 +42,7 @@ module.exports = {
 		// Procesa los campos de las 2 familias de entidades
 		productos = procesos.TC.prod_ProcesaCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
+
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
