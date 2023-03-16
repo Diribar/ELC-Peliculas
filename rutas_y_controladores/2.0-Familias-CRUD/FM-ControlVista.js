@@ -51,9 +51,9 @@ module.exports = {
 				? procesos.bloqueRegistro(original)
 				: familias == "rclvs"
 				? {
-					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-					registro: procesos.bloqueRegistro({...original, entidad}, cantProds),		
-				}
+						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
+						registro: procesos.bloqueRegistro({...original, entidad}, cantProds),
+				  }
 				: [];
 
 		// Imagen Derecha
@@ -69,6 +69,16 @@ module.exports = {
 			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
+
+		// Comentario del rechazo
+		const comentarios =
+			codigo == "recuperar"
+				? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {
+						entidad,
+						entidad_id: id,
+				  }).then((n) => n.map((m) => m.comentario))
+				: [];
+
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
@@ -76,7 +86,7 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
-			...{entidad, id, entidadNombre, familias, familia},
+			...{entidad, id, entidadNombre, familias, familia, comentarios},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
