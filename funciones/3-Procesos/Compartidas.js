@@ -513,6 +513,9 @@ module.exports = {
 		// Fin
 		return;
 	},
+	nombreApellido: (usuario) => {
+		return usuario.nombre + " " + usuario.apellido;
+	},
 
 	// Internet
 	conectividadInternet: async (req) => {
@@ -625,6 +628,9 @@ module.exports = {
 		}
 		// Fin
 		return rutaSalir;
+	},
+	inicialMayus: (texto) => {
+		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
 	},
 };
 

@@ -1,6 +1,9 @@
-<!-- Motivos -->
 <section>
     <h3>Motivo por el que fue Inactivado:</h3>
     <p><em><%= registro.motivo ? registro.motivo.descripcion : "No disponemos de esa información" %></em></p>
+    <% if (locals.comentario) { %>
+        <h3 style="margin-top: 15px;">Comentario del usuario:</h3>
+        <p><%= locals.comentario %></p>
+    <% } %>
 </section>
 <%- include("FM1-Comentario") %>

@@ -66,7 +66,7 @@ module.exports = {
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por");
+		include.push("status_registro", "creado_por", "sugerido_por");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// Obtiene avatar original
@@ -212,6 +212,7 @@ module.exports = {
 		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
@@ -222,20 +223,29 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
+		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
+		// Obtiene el subcodigo
+		const status_registro_id = original.status_registro_id;
+		const subcodigo =
+			status_registro_id == inactivar_id ? "inactivar" : status_registro_id == recuperar_id ? "recuperar" : "";
+
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const preTitulo =
-			codigo != "inactivar-o-recuperar"
-				? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
-				: "Revisión de Inactivar o Recuperar";
+		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
 		const titulo = preTitulo + " un" + a + entidadNombre;
+
+		// Ayuda para el titulo
+		const ayudasTitulo = inactivarRecuperar
+			? [
+					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
+			  ]
+			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Cantidad de productos asociados al RCLV
 		if (familias == "rclvs") {
@@ -255,16 +265,15 @@ module.exports = {
 		imgDerPers =
 			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
-		// Ayuda para el titulo
-		const ayudasTitulo =
-			codigo != "inactivar-o-recuperar"
-				? ["Por favor decinos por qué sugerís " + codigo + " este registro."]
-				: [
-						"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-				  ];
-
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+
+		// Comentario del rechazo
+		const comentario = inactivarRecuperar
+			? await BD_genericas.obtienePorCamposElUltimo("historial_cambios_de_status", {entidad, entidad_id: id}).then(
+					(n) => n.comentario
+			  )
+			: "";
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -273,8 +282,8 @@ module.exports = {
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, entidadNombre, familias, familia},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen},
+			...{entidad, id, entidadNombre, familias, familia, comentario},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
@@ -295,7 +304,7 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, motivos;
 
 		// Obtiene la versión original con include
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por"];
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por", "sugerido_por"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
@@ -336,12 +345,7 @@ module.exports = {
 		else if (!edicion.avatar) {
 			// Variables
 			let cantProds;
-			if (familia == "rclv") {
-				let prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
-				cantProds = prodsDelRCLV.length;
-				procCanoniz = procsRCLV.detalle.procCanoniz(original);
-				RCLVnombre = original.nombre;
-			}
+			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [
 				procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
 				await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia),
@@ -364,11 +368,9 @@ module.exports = {
 			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
-		// Botón salir
-		const origen = "TE";
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen},
+			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, familias, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},

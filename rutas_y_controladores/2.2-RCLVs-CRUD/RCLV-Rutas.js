@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const API = require("./RCLV-ControlAPI");
 const vista = require("./RCLV-ControlVista");
+const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
@@ -14,6 +15,7 @@ const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const accesoBloq = require("../../middlewares/producto/filtro-accesoBloq");
+const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
@@ -22,6 +24,7 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
 const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq];
 const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
+const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar
@@ -35,8 +38,11 @@ router.post("/agregar", ...DE_agregar, vista.altaEdicGrabar);
 router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
 router.post("/edicion", ...DE_editar, capturaInactivar, vista.altaEdicGrabar);
 router.get("/detalle", ...DE_detalle, vista.detalle);
-// router.get("/inactivar", ...DE_editar, vista.inactivar);
-// router.get("/recuperar", ...DE_editar, vista.recuperar);
+
+router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
+router.post("/inactivar", controles, capturaInactivar, vistaCRUD.crudGuardar);
+router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
+router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;

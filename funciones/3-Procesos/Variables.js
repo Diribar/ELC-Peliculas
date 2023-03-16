@@ -432,7 +432,9 @@ module.exports = {
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 					autofocus: true,
 			  }
-			: req.originalUrl.startsWith("/producto/edicion/") || req.originalUrl.startsWith("/links/abm/")
+			: req.originalUrl.startsWith("/producto/edicion/") ||
+			  req.originalUrl.startsWith("/links/abm/") ||
+			  req.originalUrl.startsWith("/crud/")
 			? {
 					nombre: "fa-circle-info",
 					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,

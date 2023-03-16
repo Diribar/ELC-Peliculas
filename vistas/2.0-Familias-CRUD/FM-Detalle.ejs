@@ -25,7 +25,7 @@
 			<% } %>
 
 				<!-- Información -->
-				<div id="informacion" class="<%= codigo %>">
+				<div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
 					
 					<!-- PRODUCTO: Detalle y Revisión de Alta -->
 					<% if (familia == "producto" && (codigo == "detalle" || codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
@@ -33,14 +33,14 @@
 					<!-- RCLV: Detalle -->
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
 
+					<!-- AMBOS: Revisión de Edición -->
+					<% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
+
 					<!-- AMBOS: Inactivar y Rechazo -->
 					<% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
 					
 					<!-- AMBOS: Recuperar y Revisión de Inactivar/Recuperar -->
 					<% } else if (codigo == "recuperar" || codigo == "inactivar-o-recuperar") { %><%- include("FM1-Recuperar") %>
-
-					<!-- AMBOS: Revisión de Edición -->
-					<% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
 
 					<!-- Fin -->
 					<% } %>

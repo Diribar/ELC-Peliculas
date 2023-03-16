@@ -539,7 +539,6 @@ module.exports = {
 		const antiguedad = ((ahora - new Date(usuario.creado_en).getTime()) / unAno).toFixed(1).replace(".", ",");
 		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
 		// Calidad de las altas
-		console.log(591, usuarioCalidad(usuario, petitFamilia));
 		bloque.push(...usuarioCalidad(usuario, petitFamilia));
 
 		// Fin

@@ -6,14 +6,18 @@
 	<% } %>
 </div>
 <% if (entidad == "colecciones" || entidad == "capitulos") { %>
-	<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
+	<% if (tema == "prod_rud") { %>
+		<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
+	<% } %>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<% if (tema == "prod_rud") { %>
+					<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
+				<% } %>
 				<div>
-					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin datos" %></p>
 					<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
 				</div>
 			</div>
@@ -23,29 +27,36 @@
 			<script src="/javascript/2.1-Prod-RUD/PR0-AlternarTempCap.js"></script>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
 				<p><strong>De la colección:</strong>
 					<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>">
-						<span><%= registro.coleccion.nombre_castellano %></span>
+						<span><em><%= registro.coleccion.nombre_castellano %></em></span>
 					</a>
 				</p>
 			</div>
-			<!-- Cambiar de capítulo -->
 			<div id="tempCapS">
-				<div class="pack">
-					<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>
-					<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
-				</div>
-				<select id="temporada">
-					<% for (let temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
-						<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
-					<% } %>
-				</select>
-				<select id="capitulo">
-					<% for (let capitulo of registro.capitulos) { %>
-						<option <% if (registro.capitulo == capitulo) { %>selected<% } %> >Capítulo <%= capitulo %></option>
-					<% } %>
-				</select>
+				<% if (tema == "prod_rud") { %>
+					<!-- Cambiar de capítulo -->
+					<div class="pack">
+						<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>
+						<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
+					</div>
+					<select id="temporada" <% if (tema != "prod_rud") { %> readonly <% } %>>
+						<% for (let temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
+							<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+						<% } %>
+					</select>
+					<select id="capitulo">
+						<% for (let capitulo of registro.capitulos) { %>
+							<option <% if (registro.capitulo == capitulo) { %>selected<% } %> >Capítulo <%= capitulo %></option>
+						<% } %>
+					</select>
+				<% } else { %>
+					<!-- Temporada y Capítulo -->
+					<div class="flexRow">
+						<p style="margin-right: 15px;"><strong>Temporada:</strong> <%= registro.temporada %></p>
+						<p><strong>Capítulo:</strong> <%= registro.capitulo %></p>
+					</div>
+				<% } %>
 			</div>
 		<% } %>
 	</div>

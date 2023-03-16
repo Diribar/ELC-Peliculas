@@ -66,7 +66,7 @@ module.exports = {
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
+		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "sugerido_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -350,10 +350,10 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familia = comp.obtieneFamilias(entidad);
+		let familias = comp.obtieneFamilias(entidad);
 
 		// prodsEnRCLV
-		if (familia == "productos") {
+		if (familias == "productos") {
 			// 1. Variables
 			const stAprob = registro.status_registro_id == aprobado_id;
 			const entidadesRCLV = variables.entidadesRCLV;
@@ -369,7 +369,7 @@ module.exports = {
 		}
 
 		// linksEnProds
-		if (familia == "links") {
+		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
 			const prodEntidad = comp.obtieneProdDesdeProducto_id(registro);
 			const campo_id = comp.obtieneProducto_id(registro);
@@ -383,6 +383,8 @@ module.exports = {
 	},
 	// Actualiza los campos de 'producto' en el RCLV
 	prodEnRCLV: async function ({entidad, id}) {
+		// La entidad y el ID son de un RCLV
+
 		// Variables
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
@@ -524,15 +526,6 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
-	statusResumido: (registro) => {
-		return registro.status_registro.gr_creado
-			? {id: 1, valor: "Creado"}
-			: registro.status_registro.aprobado
-			? {id: 2, valor: "Aprobado"}
-			: registro.status_registro.inactivo
-			? {id: 3, valor: "Inactivo"}
-			: {id: 1, valor: "Para Revisar"};
-	},
 
 	// Bloques a mostrar
 	bloqueRegistro: function (registro, cantProds) {
@@ -540,19 +533,13 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		// Creador
-		bloque.push({
-			titulo: "Creado por",
-			valor: registro.creado_por.apodo ? registro.creado_por.apodo : registro.creado_por.nombre,
-		});
-		// Fechas
+		bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
-		let fechas = [registro.sugerido_en];
-		if (registro.alta_analizada_en) fechas.push(registro.alta_analizada_en);
-		if (registro.editado_en) fechas.push(registro.editado_en);
-		if (registro.edic_analizada_en) fechas.push(registro.edic_analizada_en);
-		const ultimaNovedad = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
-		bloque.push({titulo: "Última novedad", valor: ultimaNovedad});
+		if (registro.sugerido_en != registro.creado_en) {
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
+			bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
+		}
+
 		// Prods en BD
 		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
 
@@ -561,5 +548,14 @@ module.exports = {
 
 		// Fin
 		return bloque;
+	},
+	statusResumido: (registro) => {
+		return registro.status_registro.gr_creado
+			? {id: 1, valor: "Creado"}
+			: registro.status_registro.aprobado
+			? {id: 2, valor: "Aprobado"}
+			: registro.status_registro.inactivo
+			? {id: 3, valor: "Inactivo"}
+			: {id: 1, valor: "Para Revisar"};
 	},
 };
