@@ -297,8 +297,8 @@ module.exports = {
 		// Elimina las ediciones de producto que tenga
 		if (!rclv && status_final_id == "inactivo") procesos.alta.prodRech(entidad, id, userID);
 
-		// 9. Actualiza los RCLV, en el campo 'prods_aprob'
-		procsCRUD.cambioDeStatus(entidad, original);
+		// 9. Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
+		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
