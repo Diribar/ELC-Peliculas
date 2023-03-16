@@ -12,7 +12,7 @@ module.exports = {
 		// Puede venir de agregarProd o edicionProd
 		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
-		const codigo = req.path.slice(1, -1);
+		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
 		const datos = req.query;
 
 		// Variables

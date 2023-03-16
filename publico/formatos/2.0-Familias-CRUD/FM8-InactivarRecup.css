@@ -14,10 +14,10 @@
 #datosLargos #recuadro:has(.recuperar) :is(#informacion, select, #tempCapS .pack i) {color: var(--verde-oscuro);}
 
 /* Sector de información */
-#datosLargos #recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
-#datosLargos #recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
-
-.inactivar ul li {line-height: 1.5;}
+#recuadro #informacion {display: flex; flex-direction: row; justify-content: space-between;}
+#recuadro #informacion {flex-grow: 1; margin: 30px 40px;}
+/* Motivos */
+#informacion ul li {margin-top: 3px;}
 
 /* Textarea */
 #informacion #comentario h3 {margin-bottom: 3px;}

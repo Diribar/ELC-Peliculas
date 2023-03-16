@@ -20,5 +20,6 @@ button, span, em, strong, u, a, i {font-size: inherit; color: inherit; line-heig
 /* button:has(i) {border: none; outline: none;} */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 a {text-decoration: none;}
-
 p, li {line-height: 1.2rem;}
+ul[type="dots"] {list-style-position: outside;}
+ul[type="dots"] li {margin-left: 15px;}

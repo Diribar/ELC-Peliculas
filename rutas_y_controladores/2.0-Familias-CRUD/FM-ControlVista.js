@@ -50,7 +50,10 @@ module.exports = {
 			familias == "productos"
 				? procesos.bloqueRegistro(original)
 				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueRCLV({...original, entidad}, cantProds)
+				? {
+					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
+					registro: procesos.bloqueRegistro({...original, entidad}, cantProds),		
+				}
 				: [];
 
 		// Imagen Derecha
