@@ -1,11 +1,13 @@
 <section>
-    <h3>Motivo por el que fue Inactivado:</h3>
+    <h3>Motivo por el que <%= tituloMotivo %>:</h3>
     <p><em><%= registro.motivo ? registro.motivo.descripcion : "No disponemos de esa información" %></em></p>
     <% if (locals.comentarios && comentarios.length) { %>
-        <h3 style="margin-top: 15px;">Comentario del usuario:</h3>
-        <% for (let comentario of comentarios) { %>
-            <p><%= comentario %></p>
-        <% } %>
+        <h3 style="margin-top: 15px;">Comentarios:</h3>
+        <ul>
+            <% for (let comentario of comentarios) { %>
+                <li><%= comentario %></li>
+            <% } %>
+        </ul>
     <% } %>
 </section>
 <%- include("FM1-Comentario") %>

@@ -73,7 +73,7 @@ module.exports = {
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
 			...{entidad, id, entidadNombre, familias, familia},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
