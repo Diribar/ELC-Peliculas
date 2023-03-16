@@ -100,7 +100,7 @@ module.exports = {
 		// 1. Actualiza el status en el registro original
 		let datos = {
 			sugerido_por_id: userID,
-			sugerido_en: comp.ahora(),
+			sugerido_en: ahora,
 			status_registro_id: status_final_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
