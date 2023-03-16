@@ -350,10 +350,10 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familia = comp.obtieneFamilias(entidad);
+		let familias = comp.obtieneFamilias(entidad);
 
 		// prodsEnRCLV
-		if (familia == "productos") {
+		if (familias == "productos") {
 			// 1. Variables
 			const stAprob = registro.status_registro_id == aprobado_id;
 			const entidadesRCLV = variables.entidadesRCLV;
@@ -369,7 +369,7 @@ module.exports = {
 		}
 
 		// linksEnProds
-		if (familia == "links") {
+		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
 			const prodEntidad = comp.obtieneProdDesdeProducto_id(registro);
 			const campo_id = comp.obtieneProducto_id(registro);
@@ -383,6 +383,8 @@ module.exports = {
 	},
 	// Actualiza los campos de 'producto' en el RCLV
 	prodEnRCLV: async function ({entidad, id}) {
+		// La entidad y el ID son de un RCLV
+
 		// Variables
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
