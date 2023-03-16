@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");
+const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
@@ -14,13 +15,15 @@ const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
 const existeEdicion = require("../../middlewares/producto/filtro-existeEdicion");
+const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const edicion = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, existeEdicion, permUserReg, capturaActivar];
+const edicion = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, existeEdicion, permUserReg];
+const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -34,10 +37,14 @@ router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
-// Producto
 router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetEdic_Form);
-router.get("/edicion", ...edicion, vista.prodDetEdic_Form);
+router.get("/edicion", ...edicion, capturaActivar, vista.prodDetEdic_Form);
 router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdic_Guardar);
+
+router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
+router.post("/inactivar", controles, capturaInactivar, vistaCRUD.crudGuardar);
+router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
+router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
 
 // Fin
 module.exports = router;

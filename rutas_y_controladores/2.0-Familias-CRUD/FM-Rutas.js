@@ -29,11 +29,5 @@ router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/averigua-capitulos", API.obtieneCapitulos);
 router.get("/api/averigua-si-se-requiere-comentario", API.requiereComentario);
 
-// Rutas de vistas
-router.get("/inactivar", controles, vista.crudForm);
-router.post("/inactivar", controles, vista.crudGuardar);
-router.get("/recuperar", controles, vista.crudForm);
-router.post("/recuperar", controles, vista.crudGuardar);
-
 // Fin
 module.exports = router;
