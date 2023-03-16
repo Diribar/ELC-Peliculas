@@ -87,7 +87,6 @@ module.exports = {
 		const ahora = comp.ahora();
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const status_original_id = original.status_registro_id;
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 		// Revisa errores
@@ -111,8 +110,8 @@ module.exports = {
 		let datosHist = {
 			...{entidad, entidad_id: id},
 			...{sugerido_por_id: original.sugerido_por_id, sugerido_en: original.sugerido_en},
-			...{analizado_por_id: userID, analizado_en: ahora},
-			...{status_original_id, status_final_id},
+			...{revisado_por_id: userID, revisado_en: ahora},
+			...{status_original_id: original.status_registro_id, status_final_id},
 			...{aprobado: null, comentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
