@@ -38,7 +38,11 @@ window.addEventListener("load", async () => {
 	});
 	comentario.addEventListener("input", () => {
 		// Corrige el doble espacio
-		let com = comentario.value.replace(/ +/g, " ").slice(0, 150);
+		let com = comentario.value
+			.replace(/ +/g, " ")
+			.replace(/^[a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/\n/g, "")
+			.slice(0, 150);
 
 		// Primera letra en mayúscula
 		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);

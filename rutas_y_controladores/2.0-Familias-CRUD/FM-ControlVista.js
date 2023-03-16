@@ -85,7 +85,10 @@ module.exports = {
 		const codigo = req.path.slice(1, -1);
 		const userID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const status_registro_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+		const include = comp.obtieneTodosLosCamposInclude(entidad);
+		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const status_original_id = original.status_registro_id;
+		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
@@ -99,19 +102,17 @@ module.exports = {
 		let datos = {
 			sugerido_por_id: req.session.usuario.id,
 			sugerido_en: comp.ahora(),
-			status_registro_id,
+			status_registro_id: status_final_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Agrega un registro en el historial_cambios_de_status
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		let datosHist = {
 			...{entidad, entidad_id: id},
 			...{sugerido_por_id: original.sugerido_por_id, sugerido_en: original.sugerido_en},
 			...{analizado_por_id: userID, analizado_en: ahora},
-			...{status_original_id: original.status_registro_id, status_final_id: status_registro_id},
+			...{status_original_id, status_final_id},
 			...{aprobado: null, comentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
