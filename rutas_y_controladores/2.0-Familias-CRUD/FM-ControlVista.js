@@ -119,7 +119,7 @@ module.exports = {
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
-		// 3. Actualiza prodsEnRCLV
+		// 3. Actualiza los RCLV, en el campo 'prods_aprob'
 		const familia = comp.obtieneFamilia(entidad);
 		if (familia == "producto") procesos.cambioDeStatus(entidad, original);
 
