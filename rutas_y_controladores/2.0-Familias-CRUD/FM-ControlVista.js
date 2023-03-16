@@ -4,7 +4,6 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
 const procesos = require("./FM-Procesos");
 
@@ -51,7 +50,7 @@ module.exports = {
 			familias == "productos"
 				? procesos.bloqueRegistro(original)
 				: familias == "rclvs"
-				? procsRCLV.detalle.bloqueDer({...original, entidad}, cantProds)
+				? procsRCLV.detalle.bloqueRCLV({...original, entidad}, cantProds)
 				: [];
 
 		// Imagen Derecha
