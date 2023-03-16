@@ -37,13 +37,13 @@
 		</div>
 	</td>
 	<!-- Sub-Títulos -->
-	<td class="ancho_subtitulo subtit_castellano campo">
+	<td class="ancho_subtitulo subtitulos campo">
 		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.subtit_castellano!==null&&n.editado_por_id!=userID) %> 
-			<select name="subtit_castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.subtit_castellano ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.subtit_castellano === false ? "selected" : "" %>>NO</option>
-				<option value="-" <%- link.subtit_castellano === null ? "selected" : "" %> class="ocultar">-</option>
+			<% aux = link.ediciones.find(n=>n.subtitulos!==null&&n.editado_por_id!=userID) %> 
+			<select name="subtitulos" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
+				<option value="1" <%- link.subtitulos ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.subtitulos === false ? "selected" : "" %>>NO</option>
+				<option value="-" <%- link.subtitulos === null ? "selected" : "" %> class="ocultar">-</option>
 			</select>
 			<%- include("CMP-Errores", {z_index: 5, display: true}) %>
 		</div>

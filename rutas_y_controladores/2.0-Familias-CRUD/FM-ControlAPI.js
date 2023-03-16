@@ -49,7 +49,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
 			// Obtiene el último número de temporada de la colección
-			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cant_temporadas),
+			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cant_temps),
 		]).then(([a, b]) => {
 			return [a, b];
 		});

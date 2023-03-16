@@ -18,6 +18,7 @@
 --
 -- Dumping data for table `aux_hist_cambios_status`
 --
+USE elc_peliculas;
 
 LOCK TABLES `aux_hist_cambios_status` WRITE;
 /*!40000 ALTER TABLE `aux_hist_cambios_status` DISABLE KEYS */;
@@ -2254,15 +2255,15 @@ INSERT INTO `prod_publicos` VALUES (5,1,'Mayores solamente');
 UNLOCK TABLES;
 
 --
--- Dumping data for table `prod_tipos_actuacion`
+-- Dumping data for table `prod_tipos_actuac`
 --
 
-LOCK TABLES `prod_tipos_actuacion` WRITE;
-/*!40000 ALTER TABLE `prod_tipos_actuacion` DISABLE KEYS */;
-INSERT INTO `prod_tipos_actuacion` VALUES (1,1,'Actuada',0,0);
-INSERT INTO `prod_tipos_actuacion` VALUES (2,2,'Animé',1,0);
-INSERT INTO `prod_tipos_actuacion` VALUES (3,3,'Documental',0,1);
-/*!40000 ALTER TABLE `prod_tipos_actuacion` ENABLE KEYS */;
+LOCK TABLES `prod_tipos_actuac` WRITE;
+/*!40000 ALTER TABLE `prod_tipos_actuac` DISABLE KEYS */;
+INSERT INTO `prod_tipos_actuac` VALUES (1,1,'Actuada',0,0);
+INSERT INTO `prod_tipos_actuac` VALUES (2,2,'Animé',1,0);
+INSERT INTO `prod_tipos_actuac` VALUES (3,3,'Documental',0,1);
+/*!40000 ALTER TABLE `prod_tipos_actuac` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

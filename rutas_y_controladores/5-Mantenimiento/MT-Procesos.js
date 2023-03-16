@@ -52,7 +52,7 @@ module.exports = {
 			n.filter((m) => m.sugerido_por_id != userID)
 		);
 		// 2. Aprobado sin producto
-		let campoFecha = "alta_analizada_en";
+		let campoFecha = "alta_revisada_en";
 		let SP = obtienePorEntidad({entidades, campoFecha, autor_id: "creado_por_id", status_id: aprobado_id, userID: 1}).then(
 			(n) => n.filter((m) => !m.prods_aprob)
 		);

@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
 		urlInputs: document.querySelectorAll(".inputError input[name='url'"),
 		calidadInputs: document.querySelectorAll(".calidad .inputError .input"),
 		castellanoInputs: document.querySelectorAll(".castellano .inputError .input"),
-		subtit_castellano: document.querySelectorAll(".subtit_castellano .inputError .input"),
+		subtitulos: document.querySelectorAll(".subtitulos .inputError .input"),
 		gratuitoInputs: document.querySelectorAll(".gratuito .inputError .input"),
 		tipoInputs: document.querySelectorAll(".tipo_id .inputError .input"),
 		completoInputs: document.querySelectorAll(".completo .inputError .input"),
@@ -130,12 +130,12 @@ window.addEventListener("load", async () => {
 		controlesEnSubtitulosCastellano: async (fila) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion = v.castellanoInputs[fila].value == "1";
-			if (condicion) v.subtit_castellano[fila].value = "-";
-			v.subtit_castellano[fila].disabled = condicion;
+			if (condicion) v.subtitulos[fila].value = "-";
+			v.subtitulos[fila].disabled = condicion;
 
 			// Detecta errores y aplica consecuencia
-			let error = await mensajeDeError(fila, "subtit_castellano");
-			sinErrores = !error || !error.subtit_castellano;
+			let error = await mensajeDeError(fila, "subtitulos");
+			sinErrores = !error || !error.subtitulos;
 			if (sinErrores) col++;
 
 			// Fin
@@ -269,7 +269,7 @@ window.addEventListener("load", async () => {
 		let indice = fila * columnas + columna;
 		// Casos en los que se necesita considerar el campo anterior
 		let [campoAnt, valorAnt] =
-			campo == "subtit_castellano" || campo == "completo" || campo == "parte"
+			campo == "subtitulos" || campo == "completo" || campo == "parte"
 				? [v.inputs[indice - 1].name + "=", v.inputs[indice - 1].value + "&"]
 				: ["", ""];
 		// Obtiene los datos de campo y valor

@@ -37,13 +37,13 @@ module.exports = {
 		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
-		let fecha_nacimiento = comp.fechaDiaMesAno(usuario.fecha_nacimiento);
+		let fecha_nacim = comp.fechaDiaMesAno(usuario.fecha_nacim);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
 			{titulo: "Nombre", nombre: "nombre", valor: usuario.nombre},
 			{titulo: "Sexo", nombre: "sexo_id", valor: usuario.sexo.nombre},
-			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
+			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim", valor: fecha_nacim},
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
 		let motivos_rech = await BD_genericas.obtieneTodos("motivos_rech_edic", "orden");
@@ -70,7 +70,7 @@ module.exports = {
 		// Si no se respondió algún campo necesario, avisa que se debe reenviar el formulario
 		let redireccionar;
 		if (datos.motivo_docum_id == "0") {
-			let campos = ["docum_pais_id", "apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero"];
+			let campos = ["docum_pais_id", "apellido", "nombre", "sexo_id", "fecha_nacim", "docum_numero"];
 			for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
 		}
 		// Si no se respondió el motivo, avisa que se debe reenviar el formulario
@@ -94,7 +94,7 @@ module.exports = {
 		// Acciones si la imagen del documento fue aprobada
 		if (datos.motivo_docum_id == "0") {
 			// Rutinas para los demás campos --> lleva al status 'editables'
-			let campos = ["docum_pais_id", "docum_numero", "nombre", "apellido", "sexo_id", "fecha_nacimiento"];
+			let campos = ["docum_pais_id", "docum_numero", "nombre", "apellido", "sexo_id", "fecha_nacim"];
 			// Motivo genérico
 			let motivo = motivos.find((n) => n.info_erronea);
 			for (let campo of campos)

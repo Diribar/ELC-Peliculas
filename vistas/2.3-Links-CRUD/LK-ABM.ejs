@@ -77,7 +77,7 @@
 			<%- include("Flechas-1Estandar") %>
 		<% } %>
 		<div class="flechas img">
-			<% for (let prov of links_provs.filter(n => n.buscador_automatico)) { %>
+			<% for (let prov of links_provs.filter(n => n.buscador_autom)) { %>
 				<a 
 					href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
 					target="_blank"

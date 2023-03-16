@@ -70,7 +70,7 @@ module.exports = {
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const alta_analizada_en = ahora;
+		const alta_revisada_en = ahora;
 		const status_registro_id = aprob ? aprobado_id : inactivo_id;
 		const decisAprob = !creadoAprob ? (aprob && (creado || recuperar)) || (!aprob && inactivar) : "";
 		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
@@ -78,12 +78,12 @@ module.exports = {
 		// Arma los datos
 		let datos = {
 			status_registro_id,
-			alta_analizada_por_id: revID,
-			alta_analizada_en,
+			alta_revisada_por_id: revID,
+			alta_revisada_en,
 			sugerido_por_id: revID,
-			sugerido_en: alta_analizada_en,
+			sugerido_en: alta_revisada_en,
 		};
-		if (creado) datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_analizada_en);
+		if (creado) datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
 		if (!aprob) datos.motivo_id = motivo_id;
 		// return res.json({});
 

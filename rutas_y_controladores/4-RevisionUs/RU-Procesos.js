@@ -22,7 +22,7 @@ module.exports = {
 		// let include = [];
 		let usuarios = await BD_especificas.obtieneUsuarioDistintoIdMasFiltros(userID, campos);
 		// Quita los usuarios incompletos
-		campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];
+		campos = ["apellido", "nombre", "sexo_id", "fecha_nacim", "docum_numero", "docum_avatar"];
 		// Valida que todos los campos necesarios de 'usuario' tengan valor
 		for (let i = usuarios.length - 1; i >= 0; i--) {
 			for (let campo of campos) {
@@ -47,7 +47,7 @@ module.exports = {
 	validaContenidoIF: (usuario, avatar) => {
 		// Variables
 		let redireccionar;
-		let campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];
+		let campos = ["apellido", "nombre", "sexo_id", "fecha_nacim", "docum_numero", "docum_avatar"];
 		// Valida que todos los campos necesarios de 'usuario' tengan valor
 		for (let campo of campos) if (!usuario[campo]) redireccionar = true;
 		// Hace otras validaciones
@@ -79,8 +79,8 @@ module.exports = {
 
 			editado_por_id: usuario.id,
 			editado_en: usuario.fecha_revisores,
-			edic_analizada_por_id: revID,
-			edic_analizada_en: comp.ahora(),
+			edic_revisada_por_id: revID,
+			edic_revisada_en: comp.ahora(),
 		};
 		BD_genericas.agregaRegistro("edics_rech", datos);
 

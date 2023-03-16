@@ -378,7 +378,7 @@ module.exports = {
 		links: [
 			{nombre: "calidad", titulo: "Calidad", links: true},
 			{nombre: "castellano", titulo: "En castellano", links: true},
-			{nombre: "subtit_castellano", titulo: "Subtítulos", links: true},
+			{nombre: "subtitulos", titulo: "Subtítulos", links: true},
 			{nombre: "gratuito", titulo: "Gratuito", links: true},
 			{nombre: "tipo_id", titulo: "Tipo", links: true},
 			{nombre: "completo", titulo: "Completo", links: true},

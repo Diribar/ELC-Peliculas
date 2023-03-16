@@ -144,7 +144,7 @@ module.exports = {
 			entidad: "colecciones",
 			fuente: "TMDB",
 			TMDB_entidad: "collection",
-			cant_temporadas: 1,
+			cant_temps: 1,
 		};
 		// Obtiene las API
 		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
@@ -217,7 +217,7 @@ module.exports = {
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
-			datos.cant_temporadas = datosAPI.seasons.length;
+			datos.cant_temps = datosAPI.seasons.length;
 		}
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
@@ -314,7 +314,7 @@ module.exports = {
 	},
 	agregaCapitulosDeTV: function (datosCol) {
 		// Loop de TEMPORADAS
-		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
+		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
 		// Fin
 		return;
 	},
