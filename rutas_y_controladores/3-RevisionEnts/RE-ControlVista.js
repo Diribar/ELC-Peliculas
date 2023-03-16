@@ -186,8 +186,8 @@ module.exports = {
 		// Variables
 		let datos = await procesos.guardar(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
-		const {inactivarRecuperar, subcodigo, rclv, motivo_id, aprob} = {...datos};
-		const comentario = req.body;
+		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, aprob} = {...datos};
+		const comentario = req.body.comentario;
 		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
