@@ -50,7 +50,7 @@ router.get("/:familia/rechazo", aptoStatus, capturaActivar, vistaCRUD.crudForm);
 router.post("/:familia/alta", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 router.post("/:familia/rechazo", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 // Inactivar o Recuperar
-router.get("/:familia/inactivar-o-recuperar", aptoStatus, capturaActivar, vista.crudForm);
+router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.crudForm);
 router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, rechazoSinMotivo, capturaInactivar, vista.prodRCLV_altaGuardar);
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
