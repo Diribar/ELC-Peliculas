@@ -7,7 +7,7 @@
 #cuerpo #encabezado {background: var(--celeste-claro);}
 
 /* Ancho, dependiendo de si tiene capítulos */
-#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 50%;}
+#cuerpo #encabezado:has(#colCap) > #nombres {max-width: 70%;}
 #cuerpo #encabezado :is(#colCap) {max-width: 50%;}
 
 /* Otros */
