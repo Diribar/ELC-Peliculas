@@ -117,7 +117,6 @@ app.set("views", [
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
-	global.gr_aprobado_id = global.status_registros.filter((n) => n.gr_aprobado).map((n) => n.id);
 	// Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
