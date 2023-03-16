@@ -121,7 +121,7 @@ module.exports = {
 		const titulo = "Detalle de un " + entidadNombre;
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("prods_edicion", "status_registro", "creado_por", "alta_analizada_por");
+		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Productos

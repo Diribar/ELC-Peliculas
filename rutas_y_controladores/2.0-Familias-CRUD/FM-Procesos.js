@@ -66,7 +66,7 @@ module.exports = {
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "status_registro"];
+		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "sugerido_por", "status_registro"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -533,19 +533,13 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		// Creador
-		bloque.push({
-			titulo: "Creado por",
-			valor: registro.creado_por.apodo ? registro.creado_por.apodo : registro.creado_por.nombre,
-		});
-		// Fechas
+		bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
-		let fechas = [registro.sugerido_en];
-		if (registro.alta_analizada_en) fechas.push(registro.alta_analizada_en);
-		if (registro.editado_en) fechas.push(registro.editado_en);
-		if (registro.edic_analizada_en) fechas.push(registro.edic_analizada_en);
-		const ultimaNovedad = comp.fechaDiaMesAno(new Date(Math.max(...fechas)));
-		bloque.push({titulo: "Última novedad", valor: ultimaNovedad});
+		if (registro.sugerido_en != registro.creado_en) {
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
+			bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
+		}
+
 		// Prods en BD
 		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
 

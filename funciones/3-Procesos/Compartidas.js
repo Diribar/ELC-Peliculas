@@ -513,6 +513,9 @@ module.exports = {
 		// Fin
 		return;
 	},
+	nombreApellido: (usuario) => {
+		return usuario.nombre + " " + usuario.apellido;
+	},
 
 	// Internet
 	conectividadInternet: async (req) => {

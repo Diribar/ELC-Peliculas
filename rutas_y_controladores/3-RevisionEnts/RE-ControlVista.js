@@ -66,7 +66,7 @@ module.exports = {
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por");
+		include.push("status_registro", "creado_por", "sugerido_por");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// Obtiene avatar original
@@ -223,7 +223,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "alta_analizada_por", "motivo");
+		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidadesProd);
@@ -306,7 +306,7 @@ module.exports = {
 		let ingresos, reemplazos, bloqueDer, motivos;
 
 		// Obtiene la versión original con include
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por"];
+		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por", "sugerido_por"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
