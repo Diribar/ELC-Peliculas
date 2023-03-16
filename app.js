@@ -123,8 +123,8 @@ app.set("views", [
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 	global.banco_de_imagenes = [...global.imagenes_movil, ...global.imagenes_fijo];
-	delete global.imagenes_movil
-	delete global.imagenes_fijo
+	delete global.imagenes_movil;
+	delete global.imagenes_fijo;
 
 	// Procesos que dependen de la variable 'global'
 	// Ejecuta las tareas diarias

@@ -303,13 +303,13 @@ module.exports = {
 			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
 
 			// 1. Elimina el archivo de avatar de la edicion
-			if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
+			if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones de producto que tenga
 			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
 
-			// 3. Actualiza los RCLV, en el campo 'prods_aprob'
-			procsCRUD.cambioDeStatus(entidad, edicion);
+			//Fin
+			return;
 		},
 	},
 
