@@ -53,18 +53,18 @@
 <% } %>
 
 <% if (tema == "revisionEnts" && codigo == "inactivar-o-recuperar") {  %>
-	<!-- VISTAS CRUD INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
+	<!-- VISTAS REVISION INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a 'aprobado' o 'inactivo' -->
 	<div class="flechas">
 
 		<!-- Rechaza el cambio de status -->
-		<label for="rechazo" class="inactivo">
-			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
+		<label for="desaprueba" class="inactivo">
+			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Desaprueba el cambio de status"></i>
 		</label>
-		<input type="submit" id="rechazo" formaction="&rechazo=true" formmethod="post">
+		<input type="submit" id="desaprueba" formaction="<%= urlActual %>&desaprueba=true" formmethod="post">
 
 		<!-- Confirma el cambio de status -->
-		<button type="submit" class="flechas">
-			<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+		<button type="submit" id="aprueba">
+			<i class="fa-solid fa-circle-right" tabindex="-1" title="Aprueba el cambio de status"></i>
 		</button>
 
 	</div>

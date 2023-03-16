@@ -45,12 +45,8 @@ module.exports = {
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Revisión - Tablero de Entidades",
-			productos,
-			rclvs,
-			origen: "TE",
+			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
+			...{productos, rclvs, origen: "TE"},
 		});
 	},
 
@@ -85,8 +81,6 @@ module.exports = {
 			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
 		];
 		const motivos = motivos_rech_altas.filter((n) => n.prods);
-		// Botón salir
-		const origen = "TE";
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
@@ -101,7 +95,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
 			...{entidad, familias, familia, id, prodNombre, registro: original, status_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
-			...{origen, urlActual: req.session.urlActual, cartelRechazo: true},
+			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
 	prodRCLV_altaGuardar: async (req, res) => {
@@ -216,7 +210,7 @@ module.exports = {
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
-		const {entidad, id, origen} = req.query;
+		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
@@ -281,11 +275,12 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const tituloMotivo =
 			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
+
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
-			...{entidad, id, entidadNombre, familias, familia, comentarios},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
+			...{entidad, id, entidadNombre, familias, familia, comentarios, urlActual: req.originalUrl},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
