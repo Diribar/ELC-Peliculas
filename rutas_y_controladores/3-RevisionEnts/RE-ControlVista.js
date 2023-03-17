@@ -23,15 +23,17 @@ module.exports = {
 			// Altas y Ediciones
 			...(await procesos.TC.obtieneProds_AL_ED(ahora, userID)),
 			// Sin Edición, Inactivar y Recuperar
-			...(await procesos.TC.obtieneProds_SE_IR(ahora, userID)),
+			...(await procesos.TC.obtieneProds_SE_IR(userID)),
 		};
 
 		// RCLV
-		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
-		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
+		let rclvs = {
+			...(await procesos.TC.obtieneRCLVs(ahora, userID)),
+			ED: await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID),
+		};
 
 		// Links
-		productos = {...productos, ...(await procesos.TC.obtieneProdsConLink(ahora, userID))};
+		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, userID))};
 		// return res.send(productos.CL)
 
 		// Procesa los campos de las 2 familias de entidades
