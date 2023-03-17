@@ -358,11 +358,13 @@ module.exports = {
 
 		// Obtiene el motivo_id
 		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+		let comentario = req.body.comentario;
+		if (!comentario.endsWith(".")) comentario += ".";
 
 		// Fin
 		return {
 			...{entidad, id, original, status_original_id, status_final_id},
-			...{inactivarRecuperar, subcodigo, rclv, motivo_id, aprob},
+			...{inactivarRecuperar, subcodigo, rclv, motivo_id, comentario, aprob},
 		};
 	},
 

@@ -101,6 +101,11 @@ module.exports = {
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
+		// Comentario para la BD
+		const motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+		let motivoComentario = motivo.descripcion + ". " + comentario;
+		if (!motivoComentario.endsWith(".")) motivoComentario += ".";
+
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
 		if (informacion) {
@@ -124,7 +129,7 @@ module.exports = {
 			...{sugerido_por_id: original.sugerido_por_id, sugerido_en: original.sugerido_en},
 			...{revisado_por_id: userID, revisado_en: ahora},
 			...{status_original_id: original.status_registro_id, status_final_id},
-			...{aprobado: null, comentario},
+			...{aprobado: null, comentario: motivoComentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
