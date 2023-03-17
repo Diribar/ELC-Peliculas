@@ -10,7 +10,7 @@ const validaProd = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Tablero
 	TC: {
-		obtieneProds: async (ahora, userID) => {
+		obtieneProds_SE_IR: async (ahora, userID) => {
 			// Obtiene productos en situaciones particulares
 			// Variables
 			const entidades = ["peliculas", "colecciones"];
@@ -29,7 +29,7 @@ module.exports = {
 			// Fin
 			return {SE, IR: [...IN, ...RC]};
 		},
-		obtieneProdsConEdicAjena: async (ahora, userID) => {
+		obtieneProds_AL_ED: async (ahora, userID) => {
 			// 1. Variables
 			const campoFecha = "editado_en";
 			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
@@ -64,18 +64,30 @@ module.exports = {
 						});
 				});
 
-			// 5. Elimina los repetidos
-			productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-			productos = comp.eliminaRepetidos(productos);
-
-			// 6. Deja solamente los sin problemas de captura
-			if (productos.length) productos = sinProblemasDeCaptura(productos, userID, ahora);
-
-			// 7. Ordena según tengan links
-			productos.sort((a, b) => b.links_general - a.links_general);
+			// 6. Distribuye entre Altas y Ediciones
+			let AL = {};
+			let ED = {};
+			if (productos.length) {
+				// 6.A. Elimina los repetidos
+				productos = comp.eliminaRepetidos(productos);
+				// 6.B. Ordena por fecha descendente
+				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+				// 6.c. Deja solamente los sin problemas de captura
+				productos = sinProblemasDeCaptura(productos, userID, ahora);
+				// 6.D. Altas
+				AL = productos.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
+				if (AL.length) AL.sort((a, b) => b.links_general - a.links_general); // Primero los que tienen links
+				// 6.E. Ediciones - es la suma de:
+				// - En status 'creado_aprob' y que no sean 'capítulos'
+				// - En status 'aprobado'
+				ED = productos.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos");
+				ED.push(...productos.filter((n) => n.status_registro_id == aprobado_id));
+				// 6.F. Primero los productos con menor status
+				if (ED.length) ED.sort((a, b) => a.status_registro_id - b.status_registro_id); 
+			}
 
 			// Fin
-			return productos;
+			return {AL, ED};
 		},
 		obtieneProdsConLink: async (ahora, userID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
