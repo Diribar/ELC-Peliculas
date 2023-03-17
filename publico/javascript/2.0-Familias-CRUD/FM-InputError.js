@@ -33,8 +33,7 @@ window.addEventListener("load", async () => {
 
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
-		if (!formato.test(e.key)) e.preventDefault() 
-
+		if (!formato.test(e.key)) e.preventDefault();
 	});
 	comentario.addEventListener("input", () => {
 		// Corrige el doble espacio
@@ -44,9 +43,14 @@ window.addEventListener("load", async () => {
 			.replace(/\n/g, "")
 			.slice(0, 100);
 
-		// Primera letra en mayúscula
-		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-		pendiente.innerHTML = 100 - com.length;
+		if (com.length) {
+			// El primer caracter no puede ser un espacio
+			if (com.slice(0, 1) == " ") com = com.slice(1);
+
+			// Primera letra en mayúscula
+			comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
+			pendiente.innerHTML = 100 - com.length;
+		}
 
 		// Actualiza el botón submit
 		botonSubmit();
