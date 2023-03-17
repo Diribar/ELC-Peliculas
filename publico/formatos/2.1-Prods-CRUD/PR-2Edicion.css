@@ -1,23 +1,23 @@
 /* Temas generales */
 main #cuerpo {background: var(--gris-claro);}
-main #cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
+#cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
+form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow: 1; position: relative;}
+#formCuerpoFooter #formCuerpo {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Zona del formulario */
-main form #cuerpoForm {display: flex; flex-direction: column; flex-grow: 1; position: relative;}
-main form #cuerpoForm #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
-main form #cuerpoForm #edicionForm {justify-content: space-around; padding: 15px 70px 10px 50px;}
-main form #cuerpoForm #edicionForm .altoFila {height: 21px;}
+#formCuerpo #edicionForm {display: flex; flex-direction: column; justify-content: space-around; align-self: center; flex-grow: 1;}
+#formCuerpo #edicionForm {margin: 15px 70px; min-width: 790px; max-width: 810px; width: 100%;}
+#formCuerpo #edicionForm .altoFila {height: 21px;}
 
 /* Partes del formulario */
-#datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
-/* #datos #primeraColumna {width: 42%;} */
-/* #datos #segundaColumna {width: 45%;} */
+#edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 
-#datos .label-input .inputError {width: 100%;}
-#datos .label-input .inputError .input {width: 100%;}
-#datos #primeraColumna .label-input .inputError {max-width: 200px;}
-#datos #primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
-#datos #segundaColumna .label-input .inputError:not(:has(textarea)) {max-width: 240px;}
+.label-input .inputError .input {width: 100%;}
+#primeraColumna .inputError {width: 100%;}
+#primeraColumna .label-input .inputError {max-width: 200px;}
+#primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
+#segundaColumna .label-input .inputError:not(:has(textarea)) {width: 240px;}
+#segundaColumna .label-input .inputError {width: 100%;}
 
 /* Partes específicas del formulario */
 #datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
@@ -63,6 +63,7 @@ main form #cuerpoForm #edicionForm .altoFila {height: 21px;}
 form #imgDerecha.inputError .fa-arrow-right-long {left: 5px; transform: translateY(-50%);}
 
 /* Comandos - Particularidades */
+#botones {display: flex; flex-direction: row; justify-content: space-around;}
 .flechas i.fa-slash {rotate: 80deg; cursor: default; padding: 0; border: none; margin: 0;}
 .flechas i.activarVersion {background: var(--azul-oscuro); color: var(--gris-claro);}
 .flechas i.activarVersion {padding: 4px; margin-top: 1px; margin-bottom: 1px; font-size: 1.25rem;}
