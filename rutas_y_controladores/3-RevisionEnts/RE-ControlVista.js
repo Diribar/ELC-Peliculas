@@ -98,7 +98,7 @@ module.exports = {
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
-	inactivarRecup_Form: async (req, res) => {
+	inacRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'

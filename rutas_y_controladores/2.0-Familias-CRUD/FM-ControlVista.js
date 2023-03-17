@@ -9,7 +9,7 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	inactivarRecup_Form: async (req, res) => {
+	inacRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
 		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
@@ -91,7 +91,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	crudGuardar: async (req, res) => {
+	inacRecup_Guardar: async (req, res) => {
 		// Variables
 		const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
 		const codigo = req.path.slice(1, -1);
