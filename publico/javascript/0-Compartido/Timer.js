@@ -92,17 +92,15 @@ window.addEventListener("load", async () => {
 					link: "/revision/tablero-de-control",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
-			: (codigo.includes("/edicion/") || codigo.startsWith("/crud/") || codigo.startsWith("/links/abm/")) && productos
+			: productos
 			? {
 					link: "/producto/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  }
-			: (codigo.includes("/edicion/") || codigo.startsWith("/crud/")) && rclvs
-			? {
+			: {
 					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-			  }
-			: {};
+			  };
 		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel

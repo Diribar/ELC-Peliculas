@@ -254,7 +254,7 @@ module.exports = {
 			"ano",
 			"categoria_id",
 			"rol_iglesia_id",
-			"proceso_id",
+			"canon_id",
 			"ap_mar_id",
 		],
 		hechos: ["nombre", "dia_del_ano_id", "ant", "jss", "cnt", "pst", "ano", "solo_cfc", "ama"],
@@ -360,11 +360,11 @@ module.exports = {
 				tabla: "roles_iglesia",
 			},
 			{
-				nombre: "proceso_id",
+				nombre: "canon_id",
 				titulo: "Proceso de Canonizac.",
 				personajes: true,
-				relacInclude: "proc_canon",
-				tabla: "procs_canon",
+				relacInclude: "canon",
+				tabla: "canons",
 			},
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
 			// Hechos
