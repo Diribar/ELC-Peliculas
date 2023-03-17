@@ -61,10 +61,6 @@ module.exports = {
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts", institucional: true},
-			// vista: req.baseUrl + req.path,
-			// rutaSalir,
-			// motivos,
-			// urlActual: req.session.urlActual,
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
