@@ -1,5 +1,6 @@
 /* Temas generales */
-main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
+main #cuerpo {background: var(--gris-claro);}
+main #cuerpo form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 
 /* Zona del formulario */
 main form #cuerpoForm {display: flex; flex-direction: column; flex-grow: 1; position: relative;}
