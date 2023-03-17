@@ -1,3 +1,6 @@
+/* Botones */
+#botones {display: flex; flex-direction: row; justify-content: space-around;}
+
 /* Flechas */
 .flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 .flechas {margin: 0; padding: 5px 5px; border-radius: 18px;}
