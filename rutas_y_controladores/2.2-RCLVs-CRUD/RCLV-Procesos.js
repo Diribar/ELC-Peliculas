@@ -71,33 +71,34 @@ module.exports = {
 		},
 		bloqueRCLV: (registro) => {
 			// Variables
-			let bloqueRCLV = []
+			let bloqueRCLV = [];
 
 			// Información
-			bloqueRCLV.push({titulo: "Nombre", valor: registro.nombre})
+			bloqueRCLV.push({titulo: "Nombre", valor: registro.nombre});
 			if (registro.apodo) bloqueRCLV.push({titulo: "Alternativo", valor: registro.apodo});
 			if (registro.dia_del_ano) bloqueRCLV.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
-			if (registro.entidad == "personajes" && registro.categoria_id == "CFC")
-				bloqueRCLV.push(
-					{titulo: "Proceso Canonizac.", valor: comp.valorNombre(registro.proc_canon, "Ninguno")},
-					{titulo: "Rol en la Iglesia", valor: comp.valorNombre(registro.rol_iglesia, "Ninguno")},
-					{titulo: "Aparición Mariana", valor: comp.valorNombre(registro.ap_mar, "Ninguno")}
-				);
+			if (registro.entidad == "personajes" && registro.categoria_id == "CFC") {
+				if (!registro.canon_id.startsWith("NN"))
+					bloqueRCLV.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
+				if (!registro.rol_iglesia_id.startsWith("NN"))
+					bloqueRCLV.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
+				if (registro.ap_mar_id != 10) bloqueRCLV.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
+			}
 
 			// Fin
-			return bloqueRCLV
+			return bloqueRCLV;
 		},
 		procCanoniz: (RCLV) => {
 			// Variables
 			let procCanoniz = "";
 			// Averigua si el RCLV tiene algún "proceso de canonización"
-			if (RCLV.proceso_id && !RCLV.proceso_id.startsWith("NN")) {
+			if (RCLV.canon_id && !RCLV.canon_id.startsWith("NN")) {
 				// Obtiene los procesos de canonización
-				let proceso = procs_canon.find((m) => m.id == RCLV.proceso_id);
+				let proceso = canons.find((m) => m.id == RCLV.canon_id);
 				// Asigna el nombre del proceso
 				procCanoniz = proceso.nombre + " ";
 				// Verificación si el nombre del proceso es "Santo" (varón)
-				if (RCLV.proceso_id == "STV") {
+				if (RCLV.canon_id == "STV") {
 					// Nombres que llevan el prefijo "Santo"
 					let nombresEspeciales = ["Domingo", "Tomás", "Tomé", "Toribio"];
 					// Obtiene el primer nombre del RCLV
@@ -134,7 +135,7 @@ module.exports = {
 				DE.categoria_id = datos.categoria_id;
 				let CFC = datos.categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? datos.rol_iglesia_id : "NN" + datos.sexo_id;
-				DE.proceso_id = CFC ? datos.proceso_id : "NN" + datos.sexo_id;
+				DE.canon_id = CFC ? datos.canon_id : "NN" + datos.sexo_id;
 				DE.ap_mar_id =
 					CFC && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : no_presencio_ninguna_id;
 			}

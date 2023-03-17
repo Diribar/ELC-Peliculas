@@ -63,12 +63,12 @@ window.addEventListener("load", async () => {
 		v.epocas_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
 		v.categorias_id = document.querySelectorAll("#dataEntry input[name='categoria_id']");
 		v.rol_iglesia_id = document.querySelector("#dataEntry select[name='rol_iglesia_id']");
-		v.proceso_id = document.querySelector("#dataEntry select[name='proceso_id']");
+		v.canon_id = document.querySelector("#dataEntry select[name='canon_id']");
 		v.ap_mar_id = document.querySelector("#dataEntry select[name='ap_mar_id']");
 		// Otros
 		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 		v.opcionesRolIglesia = document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option");
-		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='proceso_id'] option");
+		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='canon_id'] option");
 		v.camposCFC = document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input");
 		// v.camposCFC = Array.from(v.camposCFC).map((n) => n.name);
 	}
@@ -193,7 +193,7 @@ window.addEventListener("load", async () => {
 			// Opciones de 'Rol en la Iglesia'
 			FN(v.rol_iglesia_id, v.opcionesRolIglesia);
 			// Opciones de 'Proceso de Canonización'
-			FN(v.proceso_id, v.opcionesProceso);
+			FN(v.canon_id, v.opcionesProceso);
 
 			// Fin
 			return;

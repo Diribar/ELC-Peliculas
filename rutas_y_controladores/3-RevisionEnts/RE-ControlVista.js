@@ -19,17 +19,12 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
-		let prodsConEdic = await procesos.TC.obtieneProdsConEdicAjena(ahora, userID); // Sólo con RCLV aprobado
-		let productos = await procesos.TC.obtieneProds(ahora, userID);
-		if (prodsConEdic.length) {
-			// Deja solamente los productos en status creado
-			productos.AL = prodsConEdic.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
-			// Deja solamente la suma de los productos:
-			// 1. En status 'creado_aprob' y que no sean 'capítulos'
-			// 2. En status 'aprobado'
-			productos.ED = prodsConEdic.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos");
-			productos.ED.push(...prodsConEdic.filter((n) => n.status_registro_id == aprobado_id));
-		}
+		let productos = {
+			// Altas y Ediciones
+			...(await procesos.TC.obtieneProds_AL_ED(ahora, userID)),
+			// Sin Edición, Inactivar y Recuperar
+			...(await procesos.TC.obtieneProds_SE_IR(ahora, userID)),
+		};
 
 		// RCLV
 		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
@@ -98,7 +93,7 @@ module.exports = {
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
-	crudForm: async (req, res) => {
+	inacRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
@@ -186,8 +181,7 @@ module.exports = {
 		// Variables
 		let datos = await procesos.guardar(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
-		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, aprob} = {...datos};
-		const comentario = req.body.comentario;
+		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
 		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();

@@ -42,10 +42,10 @@ router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetEdic_
 router.get("/edicion", ...edicion, capturaActivar, vista.prodDetEdic_Form);
 router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdic_Guardar);
 
-router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
-router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.crudGuardar);
-router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
-router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
+router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/recuperar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/recuperar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
 
 // Fin
 module.exports = router;

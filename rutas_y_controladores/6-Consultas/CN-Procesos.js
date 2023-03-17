@@ -55,8 +55,8 @@ module.exports = {
 				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
 			});
 			// Proceso de canonización
-			let procs_canon = procs_canon.filter((n) => n.id.length == 2);
-			procs_canon = puleCampos(procs_canon, "CFC procs_canon");
+			let canons = canons.filter((n) => n.id.length == 2);
+			canons = puleCampos(canons, "CFC canons");
 			// Roles Iglesia
 			let roles_iglesia = roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
 			roles_iglesia = puleCampos(roles_iglesia, "CFC roles_iglesia");
@@ -67,7 +67,7 @@ module.exports = {
 					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
 					...epocas,
 					{nombre: "Proceso de Canonización", clase: "CFC"},
-					...procs_canon,
+					...canons,
 					{nombre: "Rol en la Iglesia", clase: "CFC"},
 					...roles_iglesia,
 					{nombre: "Listado de Personajes", clase: "CFC VPC"},

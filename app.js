@@ -89,7 +89,7 @@ app.set("views", [
 		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		// Consultas - Complementos de RCLV
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
-		procs_canon: BD_genericas.obtieneTodos("procs_canon", "orden"),
+		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
 		// Consultas - Otros
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),

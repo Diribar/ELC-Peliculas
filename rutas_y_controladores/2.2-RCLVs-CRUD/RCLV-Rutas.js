@@ -39,10 +39,10 @@ router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
 router.post("/edicion", ...DE_editar, capturaInactivar, vista.altaEdicGrabar);
 router.get("/detalle", ...DE_detalle, vista.detalle);
 
-router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
-router.post("/inactivar", controles, capturaInactivar, vistaCRUD.crudGuardar);
-router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
-router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
+router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/inactivar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/recuperar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/recuperar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
 
 // Exportarlo **********************************************
 module.exports = router;

@@ -287,14 +287,14 @@
 						</div>
 						<!-- Proceso de Canonización -->
 						<div class="flexRowAlign altoFila segunSexo_id invisible">
-							<select name="proceso_id" class="input">
-								<option value="" <% if (!dataEntry.proceso_id) { %>selected<% } %>>Proceso de Canonización</option>
-								<% for (let proc_canon of procs_canon) { %>
-									<option value="<%= proc_canon.id %>" <% if (dataEntry.proceso_id == proc_canon.id) { %>selected<% } %>>
-										<%= proc_canon.nombre %>
+							<select name="canon_id" class="input">
+								<option value="" <% if (!dataEntry.canon_id) { %>selected<% } %>>Proceso de Canonización</option>
+								<% for (let canon of canons) { %>
+									<option value="<%= canon.id %>" <% if (dataEntry.canon_id == canon.id) { %>selected<% } %>>
+										<%= canon.nombre %>
 									</option>
 								<% } %>
-								<option value="null" <% if (dataEntry.proceso_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
+								<option value="null" <% if (dataEntry.canon_id===null) { %>selected<% } %>>Sin proceso de canonizac.</option>
 							</select>
 						</div>
 						<!-- Aparición Mariana -->

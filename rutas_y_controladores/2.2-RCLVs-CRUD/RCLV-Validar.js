@@ -153,7 +153,7 @@ module.exports = {
 				? "Estamos a la espera de que nos informes el sexo"
 				: !datos.rol_iglesia_id
 				? "Necesitamos saber el rol de la persona en la Iglesia"
-				: !datos.proceso_id
+				: !datos.canon_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
 				: datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ap_mar_id
 				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
