@@ -10,25 +10,6 @@ const validaProd = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Tablero
 	TC: {
-		obtieneProds_SE_IR: async (ahora, userID) => {
-			// Obtiene productos en situaciones particulares
-			// Variables
-			const entidades = ["peliculas", "colecciones"];
-			let campos;
-			// SE: Sin Edición (en status creado_aprob)
-			campos = [entidades, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
-			let SE = await TC_obtieneRegs(...campos, true);
-			SE = SE.filter((n) => !n.ediciones.length);
-			// IN: En staus 'inactivar'
-			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			const IN = await TC_obtieneRegs(...campos, true);
-			// RC: En status 'recuperar'
-			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-			const RC = await TC_obtieneRegs(...campos, true);
-
-			// Fin
-			return {SE, IR: [...IN, ...RC]};
-		},
 		obtieneProds_AL_ED: async (ahora, userID) => {
 			// 1. Variables
 			const campoFecha = "editado_en";
@@ -88,6 +69,25 @@ module.exports = {
 
 			// Fin
 			return {AL, ED};
+		},
+		obtieneProds_SE_IR: async (ahora, userID) => {
+			// Obtiene productos en situaciones particulares
+			// Variables
+			const entidades = ["peliculas", "colecciones"];
+			let campos;
+			// SE: Sin Edición (en status creado_aprob)
+			campos = [entidades, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+			let SE = await TC_obtieneRegs(...campos, true);
+			SE = SE.filter((n) => !n.ediciones.length);
+			// IN: En staus 'inactivar'
+			campos = [entidades, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			const IN = await TC_obtieneRegs(...campos, true);
+			// RC: En status 'recuperar'
+			campos = [entidades, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+			const RC = await TC_obtieneRegs(...campos, true);
+
+			// Fin
+			return {SE, IR: [...IN, ...RC]};
 		},
 		obtieneProdsConLink: async (ahora, userID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
