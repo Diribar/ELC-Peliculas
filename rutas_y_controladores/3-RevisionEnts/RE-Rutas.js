@@ -46,12 +46,12 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 // Altas Form
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
-router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.crudForm);
+router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.inactivarRecup_Form);
 // Altas Guardar
 router.post("/:familia/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar);
 router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_Guardar);
 // Inactivar o Recuperar
-router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.crudForm);
+router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.inactivarRecup_Form);
 router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar); // Va sin 'motivo'
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);

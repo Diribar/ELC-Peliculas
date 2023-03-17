@@ -9,7 +9,7 @@ const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	crudForm: async (req, res) => {
+	inactivarRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
 		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'

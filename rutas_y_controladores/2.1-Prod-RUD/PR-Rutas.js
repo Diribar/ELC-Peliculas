@@ -42,9 +42,9 @@ router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetEdic_
 router.get("/edicion", ...edicion, capturaActivar, vista.prodDetEdic_Form);
 router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdic_Guardar);
 
-router.get("/inactivar", controles, capturaActivar, vistaCRUD.crudForm);
+router.get("/inactivar", controles, capturaActivar, vistaCRUD.inactivarRecup_Form);
 router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.crudGuardar);
-router.get("/recuperar", controles, capturaActivar, vistaCRUD.crudForm);
+router.get("/recuperar", controles, capturaActivar, vistaCRUD.inactivarRecup_Form);
 router.post("/recuperar", controles, capturaInactivar, vistaCRUD.crudGuardar);
 
 // Fin

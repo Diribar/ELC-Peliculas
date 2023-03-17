@@ -98,7 +98,7 @@ module.exports = {
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
-	crudForm: async (req, res) => {
+	inactivarRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
 		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
