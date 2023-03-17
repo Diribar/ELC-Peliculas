@@ -1,11 +1,11 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-main form #cuerpo {flex-direction: column;}
 
 /* Zona del formulario */
-main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
-main form #cuerpo #edicionForm {justify-content: space-around; padding: 15px 70px 10px 50px;}
-main form #cuerpo #edicionForm .altoFila {height: 21px;}
+main form #cuerpoForm {display: flex; flex-direction: column; flex-grow: 1; position: relative;}
+main form #cuerpoForm #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
+main form #cuerpoForm #edicionForm {justify-content: space-around; padding: 15px 70px 10px 50px;}
+main form #cuerpoForm #edicionForm .altoFila {height: 21px;}
 
 /* Imagen */
 form #imgDerecha label {line-height: 0;}
