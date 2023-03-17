@@ -15,23 +15,25 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
-		let userID = req.session.usuario.id;
+		let revID = req.session.usuario.id;
 		// Definir variables
 		const ahora = comp.ahora();
 		// Productos y Ediciones
 		let productos = {
 			// Altas y Ediciones
-			...(await procesos.TC.obtieneProds_AL_ED(ahora, userID)),
+			...(await procesos.TC.obtieneProds_AL_ED(ahora, revID)),
 			// Sin Edición, Inactivar y Recuperar
-			...(await procesos.TC.obtieneProds_SE_IR(ahora, userID)),
+			...(await procesos.TC.obtieneProds_SE_IR(revID)),
 		};
 
 		// RCLV
-		let rclvs = await procesos.TC.obtieneRCLVs(ahora, userID);
-		rclvs.ED = await procesos.TC.obtieneRCLVsConEdicAjena(ahora, userID);
+		let rclvs = {
+			...(await procesos.TC.obtieneRCLVs(ahora, revID)),
+			ED: await procesos.TC.obtieneRCLVsConEdicAjena(ahora, revID),
+		};
 
 		// Links
-		productos = {...productos, ...(await procesos.TC.obtieneProdsConLink(ahora, userID))};
+		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
 		// return res.send(productos.CL)
 
 		// Procesa los campos de las 2 familias de entidades
