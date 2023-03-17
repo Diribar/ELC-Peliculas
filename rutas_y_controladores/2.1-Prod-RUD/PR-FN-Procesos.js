@@ -1,7 +1,7 @@
 "use strict";
 // Requires
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 
 module.exports = {
 	// Producto
@@ -35,5 +35,33 @@ module.exports = {
 
 		// Fin
 		return [bloque1, bloque2, bloque3];
+	},
+	obtieneLinksDelProducto: async (entidad, id) => {
+		// Variables
+		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const include = ["tipo", "prov"];
+		let PL = [];
+		let TR = [];
+
+		// Obtiene los links
+		const links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
+
+		// Procesos si hay links
+		if (links.length) {
+			// Los ordena
+			// 1. Por calidad
+			links.sort((a, b) => b.calidad - a.calidad);
+			// 2. Por completo
+			links.sort((a, b) => b.completo - a.completo);
+			// 3. Por idioma
+			links.sort((a, b) => b.castellano - a.castellano);
+
+			// Los separa entre Películas y Trailers
+			PL = links.filter((n) => n.tipo && n.tipo.trailer);
+			TR = links.filter((n) => n.tipo && n.tipo.pelicula);
+		}
+
+		// Fin
+		return {PL, TR};
 	},
 };

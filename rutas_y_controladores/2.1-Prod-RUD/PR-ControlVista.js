@@ -13,14 +13,14 @@ module.exports = {
 	prodDetalle_Form: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_rud";
-		const codigo = "detalle"
+		const codigo = "detalle";
 
 		// Variables
 		let {entidad, id, origen} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
-		let imgDerPers,  bloqueIzq, bloqueDer;
+		let imgDerPers, bloqueIzq, bloqueDer;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -41,18 +41,16 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		// Ayuda para el titulo
-		const ayudasTitulo = [
-			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
-		];
+		const links = await procesos.obtieneLinksDelProducto(entidad, id);
+		return res.send(links);
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen},
 			...{prodNombre, registro: prodComb},
-			...{entidad, id, familia, status_id, statusEstable},
+			...{entidad, id, familia, status_id, statusEstable, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzq, bloqueDer},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
