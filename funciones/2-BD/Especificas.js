@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: ({entidad, status_id, userID, campoFecha, autor_id, include}) => {
+	TC_obtieneRegs: ({entidad, status_id, revID, campoFecha, campoRevID, include}) => {
 		// Variables
 		const haceUnaHora = comp.nuevoHorario(-1);
 		const haceDosHoras = comp.nuevoHorario(-2);
@@ -102,34 +102,20 @@ module.exports = {
 				// Que esté capturado hace más de dos horas
 				{capturado_en: {[Op.lt]: haceDosHoras}},
 				// Que la captura haya sido por otro usuario y hace más de una hora
-				{capturado_por_id: {[Op.ne]: userID}, capturado_en: {[Op.lt]: haceUnaHora}},
+				{capturado_por_id: {[Op.ne]: revID}, capturado_en: {[Op.lt]: haceUnaHora}},
 				// Que la captura haya sido por otro usuario y esté inactiva
-				{capturado_por_id: {[Op.ne]: userID}, captura_activa: {[Op.ne]: 1}},
+				{capturado_por_id: {[Op.ne]: revID}, captura_activa: {[Op.ne]: 1}},
 				// Que esté capturado por este usuario hace menos de una hora
-				{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
+				{capturado_por_id: revID, capturado_en: {[Op.gt]: haceUnaHora}},
 			],
 		};
 		// Que esté propuesto por otro usuario
-		if (userID && autor_id) condiciones[autor_id] = {[Op.ne]: userID};
+		if (campoRevID) condiciones[campoRevID] = {[Op.ne]: revID};
 		// Que esté propuesto hace más de una hora
 		if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
 
 		// Resultado
-		return db[entidad].findAll({where: condiciones, include}).then((n) =>
-			n
-				? n
-						.map((m) => m.toJSON())
-						.map(
-							(m) =>
-								(m = {
-									...m,
-									entidad,
-									fechaRef: m[campoFecha],
-									fechaRefTexto: comp.fechaDiaMes(m[campoFecha]),
-								})
-						)
-				: []
-		);
+		return db[entidad].findAll({where: condiciones, include}).then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
 	TC_obtieneEdicsAptas: (entidad, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
@@ -187,7 +173,7 @@ module.exports = {
 	},
 
 	// Mantenimiento
-	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, autor_id, include}) => {
+	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
 		const haceDosHoras = comp.nuevoHorario(-2);
 		return db[entidad]

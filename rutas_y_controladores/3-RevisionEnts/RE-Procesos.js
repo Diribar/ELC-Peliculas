@@ -76,15 +76,15 @@ module.exports = {
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
-			campos = [entidades, creado_aprob_id, revID, "creado_en", "creado_por_id", "ediciones"];
-			let SE = await TC_obtieneRegs(...campos, true);
+			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
+			let SE = await TC_obtieneRegs(campos);
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
-			campos = [entidades, inactivar_id, revID, "sugerido_en", "sugerido_por_id", ""];
-			const IN = await TC_obtieneRegs(...campos, true);
+			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
+			const IN = await TC_obtieneRegs(campos);
 			// RC: En status 'recuperar'
-			campos = [entidades, recuperar_id, revID, "sugerido_en", "sugerido_por_id", ""];
-			const RC = await TC_obtieneRegs(...campos, true);
+			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
+			const RC = await TC_obtieneRegs(campos);
 
 			// Fin
 			return {SE, IR: [...IN, ...RC]};
@@ -109,8 +109,8 @@ module.exports = {
 
 			// AL y SP: Altas y Sin Producto
 			// Obtiene RCLVs en status creado por otro usuario
-			campos = [entidades, creado_id, revID, "creado_en", "creado_por_id", include];
-			const registros = await TC_obtieneRegs(...campos);
+			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
+			const registros = await TC_obtieneRegs(campos);
 			// Distribuye entre AL y SP
 			for (let reg of registros) {
 				// AL: Altas Pendientes de Aprobar (c/producto o c/edicProd)
@@ -120,16 +120,26 @@ module.exports = {
 				else if (reg.creado_en < ahora - unaHora) SP.push(reg);
 			}
 			// IN: En staus 'inactivar'
-			campos = [entidades, inactivar_id, revID, "sugerido_en", "sugerido_por_id", ""];
-			const IN = await TC_obtieneRegs(...campos, true);
+			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
+			const IN = await TC_obtieneRegs(campos);
 			// RC: En status 'recuperar'
-			campos = [entidades, recuperar_id, revID, "sugerido_en", "sugerido_por_id", ""];
-			const RC = await TC_obtieneRegs(...campos, true);
-			// INO: En status inactivo
-			campos = [entidades, inactivo_id, revID, "sugerido_en", "sugerido_por_id", ""];
+			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
+			const RC = await TC_obtieneRegs(campos);
+			// INO: Inactivo con producto
+			campos = {entidades, status_id: inactivo_id, revID, include};
+			const INO = await TC_obtieneRegs(campos);
+			// Quita las que no están vinculadas con productos
+			if (INO.length)
+				for (let i = INO.length - 1; i >= 0; i--) {
+					const peliculas = INO[i].peliculas.length;
+					const colecciones = INO[i].colecciones.length;
+					const capitulos = INO[i].capitulos.length;
+					const prods_edicion=INO[i].prods_edicion.length;
+					if (!peliculas && !colecciones && !capitulos&&!prods_edicion) INO.splice(i, 1);
+				}
 
 			// Fin
-			return {AL, SP, IR: [...IN, ...RC]};
+			return {AL, SP, IR: [...IN, ...RC], INO};
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
@@ -170,7 +180,7 @@ module.exports = {
 		prod_ProcesaCampos: (productos) => {
 			// Procesar los registros
 			// Variables
-			const anchoMax = 40;
+			const anchoMax = 35;
 			const rubros = Object.keys(productos);
 
 			// Reconvierte los elementos
@@ -625,20 +635,21 @@ module.exports = {
 };
 
 // Funciones
-let TC_obtieneRegs = async (entidades, status_id, revID, campoFecha, autor_id, include, omitirUnaHora) => {
+let TC_obtieneRegs = async (campos) => {
 	// Variables
-	let campos = {status_id, userID: revID, include, campoFecha, autor_id, omitirUnaHora};
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of entidades) resultados.push(...(await BD_especificas.TC_obtieneRegs({entidad, ...campos})));
-	// Agrega el campo 'fecha-ref'
-	resultados = resultados.map((n) => {
-		return {
-			...n,
-			fechaRef: n[campoFecha],
-			fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
-		};
-	});
+	for (let entidad of campos.entidades) {
+		let resultado = await BD_especificas.TC_obtieneRegs({entidad, ...campos});
+		if (resultado.length) {
+			resultado = resultado.map((n) => {
+				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
+				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				return {...n, entidad, fechaRef, fechaRefTexto};
+			});
+			resultados.push(...resultado);
+		}
+	}
 	// Ordena los resultados
 	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	// Fin
