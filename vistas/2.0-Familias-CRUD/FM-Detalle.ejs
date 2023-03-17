@@ -62,10 +62,10 @@
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
 		<!-- CRUD para Productos -->
-		<% if (familias == "productos" && tema != "revisionEnts") { %><%- include("PR0-Breves") %>
+		<% if (familia == "producto" && tema != "revisionEnts") { %><%- include("PR0-Breves") %>
 		
 		<!-- CRUD para RCLVs -->
-		<% } else if (familias == "rclvs" && tema != "revisionEnts") { %><%- include("RCLV-Breves") %>
+		<% } else if (familia == "rclv" && tema != "revisionEnts") { %><%- include("RCLV-Breves") %>
 
 		<!-- Revisión -->
 		<% } else if (tema == "revisionEnts") { %><%- include("RE0-Breves") %>
