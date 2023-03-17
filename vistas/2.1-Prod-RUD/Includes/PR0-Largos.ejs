@@ -1,13 +1,17 @@
-<!-- Sinopsis -->
-<div id="sinopsis">
-	<div id="contenidoSinopsis"><%= registro.sinopsis %></div>
+<h2>Links</h2>
+<div id="links" class="flexCol">
+	<!-- Película -->
+	<% if (entidad != "colecciones") { %>
+		<h3>Película</h3>
+	<% } %>
+	<!-- Trailer -->
+	<h3>Trailer</h3>
 </div>
+<div id="datosDetalle">
+	<div id="sinopsis" class="datosParcial">
 
-<!-- Demás Datos Duros -->
-<% for (bloque of bloqueIzq) { %>
-	<div class="datosAdicionales">
-		<% for (campo of bloque) { %>
-			<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
-		<% } %> 
-	</div>				
-<% } %>
+	</div>
+	<div id="masInfo" class="datosParcial">
+
+	</div>
+</div>
