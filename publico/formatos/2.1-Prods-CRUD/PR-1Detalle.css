@@ -1,7 +1,7 @@
 /* Información */
 #datosLargos #recuadro {max-width: 45vw;}
 #recuadro #contenido {justify-content: space-around;}
-#contenido #informacion {margin: 0 40px;}
+#contenido #informacion {margin: 30px 40px 0;}
 
 /* Información - Datos Detalle */
 #contenido #datosDetalle {margin-top: 10px;}

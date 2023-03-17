@@ -10,7 +10,7 @@ const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prodDetEdic_Form: async (req, res) => {
+	prodDetalle_Form: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		const tema = "prod_rud";
@@ -97,7 +97,81 @@ module.exports = {
 			...{omitirImagenDerecha: codigo == "edicion", omitirFooter: codigo == "edicion", cartelGenerico: codigo == "edicion"},
 		});
 	},
-	prodEdic_Guardar: async (req, res) => {
+	prodEdicion_Form: async (req, res) => {
+		// 1. Tema y Código
+		const tema = "prod_rud";
+		const codigo = "edicion"
+		let {entidad, id, origen} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
+		const familia = comp.obtieneFamilia(entidad);
+		if (!origen) origen = "DTP";
+		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
+		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
+
+		// 2. Obtiene el producto 'Original' y 'Editado'
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		// 3. Obtiene la versión más completa posible del producto
+		let prodComb = {...original, ...edicion, id};
+		// 4. Configura el título de la vista
+		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let titulo =
+			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
+			" de" +
+			(entidad == "capitulos" ? " un " : " la ") +
+			prodNombre;
+		// 5. Obtiene el nombre de los países
+		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
+		// 6. Info para la vista de Edicion o Detalle
+		if (codigo == "edicion") {
+			// Obtiene los datos de session/cookie y luego los elimina
+			let edicSession;
+			// Session
+			if (req.session.edicProd) {
+				if (req.session.edicProd.entidad == entidad && req.session.edicProd.id == id) edicSession = req.session.edicProd;
+				else delete req.session.edicProd;
+			}
+			// Cookies
+			if (req.cookies.edicProd && !edicSession) {
+				if (req.cookies.edicProd.entidad == entidad && req.cookies.edicProd.id == id) edicSession = req.cookies.edicProd;
+				else res.clearCookie("edicProd");
+			}
+			// Actualiza el producto prodComb
+			prodComb = {...prodComb, ...edicSession};
+			// Datos Duros - Campos Input
+			let camposInput = variables.camposDD.filter((n) => n[entidad] || n.productos).filter((n) => n.campoInput);
+			camposInput1 = camposInput.filter((n) => n.antesDePais);
+			camposInput2 = camposInput.filter((n) => !n.antesDePais && n.nombre != "produccion");
+			produccion = camposInput.find((n) => n.nombre == "produccion");
+			// Datos Duros - Bases de Datos
+			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
+			// Datos Duros - Avatar
+			imgDerPers = procsCRUD.obtieneAvatarProd(original, {...edicion, ...edicSession});
+			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
+			// Datos Personalizados
+			camposDA = await variables.camposDA_conValores(userID);
+			gruposPers = procsCRUD.gruposPers(camposDA, userID);
+			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
+		}
+		// 7. Obtiene datos para la vista
+		if (entidad == "capitulos")
+			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+		const ayudasTitulo = [
+			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
+		];
+		// Va a la vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{prodNombre, registro: prodComb},
+			...{entidad, id, familia},
+			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
+			...{camposInput1, camposInput2, produccion},
+			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
+			...{dataEntry: {}, avatarLinksExternos},
+			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
+			...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
+		});
+	},
+	prodEdicion_Guardar: async (req, res) => {
 		// Variables
 		const entidad = req.query.entidad;
 		const id = req.query.id;
