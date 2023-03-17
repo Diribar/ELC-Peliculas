@@ -28,7 +28,7 @@
 				<div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
 					
 					<!-- PRODUCTO: Detalle y Revisión de Alta -->
-					<% if (familia == "producto" && (codigo == "detalle" || codigo == "producto/alta")) { %><%- include("FM1-Largos") %>
+					<% if (familia == "producto" && (codigo == "detalle" || codigo == "producto/alta")) { %><%- include("PR0-Largos") %>
 					
 					<!-- RCLV: Detalle -->
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
