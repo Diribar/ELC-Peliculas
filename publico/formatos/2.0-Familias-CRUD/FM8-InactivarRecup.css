@@ -1,5 +1,5 @@
 /* Datos Largos */
-#datos #datosLargos {max-width: 600px;}
+#datos #datosLargos {width: 65%; max-width: 600px;}
 
 /* Colores */
 #datosLargos #recuadro #encabezado {border-bottom: none; color: snow;}

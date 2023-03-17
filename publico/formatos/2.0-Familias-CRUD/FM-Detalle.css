@@ -7,8 +7,7 @@
 #cuerpo #encabezado {padding: 15px 25px;}
 
 /* Datos Largos */
-#datos #datosLargos {width: 65%; max-width: 600px;}
-#datos #datosLargos {display: flex; flex-direction: column; flex-grow: 1;}
+#datos #datosLargos {display: flex; flex-direction: column;}
 /* Datos */
 #datosLargos #recuadro {display: flex; flex-direction: column;}
 #datosLargos #recuadro {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
