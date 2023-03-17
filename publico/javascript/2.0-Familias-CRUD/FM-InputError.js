@@ -42,11 +42,11 @@ window.addEventListener("load", async () => {
 			.replace(/ +/g, " ")
 			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/\n/g, "")
-			.slice(0, 150);
+			.slice(0, 100);
 
 		// Primera letra en mayúscula
 		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-		pendiente.innerHTML = 150 - com.length;
+		pendiente.innerHTML = 100 - com.length;
 
 		// Actualiza el botón submit
 		botonSubmit();
