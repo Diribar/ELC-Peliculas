@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 		// Corrige el doble espacio
 		let com = comentario.value
 			.replace(/ +/g, " ")
-			.replace(/^[a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/\n/g, "")
 			.slice(0, 150);
 

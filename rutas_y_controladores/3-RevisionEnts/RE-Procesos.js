@@ -5,7 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
+const validaProd = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -311,6 +311,59 @@ module.exports = {
 			//Fin
 			return;
 		},
+	},
+
+	guardar: async function (req) {
+		// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+		let codigo = req.path.slice(1, -1);
+		codigo = codigo.slice(codigo.indexOf("/") + 1);
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
+
+		// Variables
+		const {entidad, id, desaprueba} = req.query;
+		//return res.send({...req.query, ...req.body})
+		const familia = comp.obtieneFamilia(entidad);
+		const rclv = familia == "rclv";
+
+		// Obtiene el registro original y el subcodigo
+		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const status_original_id = original.status_registro_id;
+
+		// Obtiene el 'subcodigo'
+		const subcodigo = inactivarRecuperar
+			? status_original_id == inactivar_id
+				? "inactivar"
+				: "recuperar"
+			: req.path.endsWith("/alta/")
+			? "alta"
+			: "rechazo";
+
+		// Averigua si la sugerencia fue aprobada
+		const aprob = subcodigo != "rechazo" && !desaprueba;
+
+		// Obtiene el status final
+		const status_final_id =
+			// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+			(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
+				? inactivo_id
+				: // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+				// Si es un RCLV, se aprueba
+				rclv
+				? aprobado_id
+				: // Si es un producto, se revisa si tiene errores
+				(await validaProd.consolidado(original).then((n) => n.hay))
+				? creado_aprob_id
+				: aprobado_id;
+
+		// Obtiene el motivo_id
+		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+
+		// Fin
+		return {
+			...{entidad, id, original, status_original_id, status_final_id},
+			...{inactivarRecuperar, subcodigo, rclv, motivo_id, aprob},
+		};
 	},
 
 	// Edición
