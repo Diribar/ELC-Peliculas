@@ -3,7 +3,7 @@
 	<% if (locals.origen && (!origen.startsWith("DT") || codigo != "detalle")) { %>
 		<!-- Salir -->
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad?prodEntidad:entidad) + (locals.prodID||locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
-			<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir a la vista de Origen"></i>
+			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
 	<% if (codigo != "detalle" && locals.id) { %>

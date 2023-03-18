@@ -78,7 +78,7 @@ module.exports = {
 			if (registro.apodo) bloqueRCLV.push({titulo: "Alternativo", valor: registro.apodo});
 			if (registro.dia_del_ano) bloqueRCLV.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
 			if (registro.entidad == "personajes" && registro.categoria_id == "CFC") {
-				if (!registro.canon_id.startsWith("NN"))
+				if (registro.canon_id && !registro.canon_id.startsWith("NN"))
 					bloqueRCLV.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
 				if (!registro.rol_iglesia_id.startsWith("NN"))
 					bloqueRCLV.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
