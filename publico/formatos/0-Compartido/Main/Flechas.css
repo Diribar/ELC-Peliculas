@@ -1,6 +1,6 @@
 /* Flechas */
 .flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-.flechas {margin: 0 auto; padding: 5px 5px; border-radius: 18px;}
+.flechas {margin: 0; padding: 5px 5px; border-radius: 18px;}
 .flechas {background: var(--backFlechas); border: 2px solid var(--bordeFlechas);}
 .flechas i, .flechas img, .flechas a, .flechas button {font-size: 1.75rem; background: transparent; border: none;}
 .flechas i, .flechas img, .flechas a, .flechas button {margin: 0 10px; border-radius: 50%; cursor: pointer;}

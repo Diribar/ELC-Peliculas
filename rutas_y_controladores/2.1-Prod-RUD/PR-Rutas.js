@@ -38,9 +38,9 @@ router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
-router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetEdic_Form);
-router.get("/edicion", ...edicion, capturaActivar, vista.prodDetEdic_Form);
-router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdic_Guardar);
+router.get("/detalle", entValida, IDvalido, capturaInactivar, vista.prodDetalle_Form);
+router.get("/edicion", ...edicion, capturaActivar, vista.prodEdicion_Form);
+router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdicion_Guardar);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
 router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);

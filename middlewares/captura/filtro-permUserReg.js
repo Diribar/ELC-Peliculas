@@ -34,7 +34,6 @@ module.exports = async (req, res, next) => {
 	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = v.registro.capturado_en;
-	v.capturadoTexto = comp.fechaHorario(v.registro.capturado_en);
 	v.horarioFinalCaptura = comp.fechaHorario(comp.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;
 	v.horarioFinalCreado = comp.fechaHorario(comp.nuevoHorario(1, v.creado_en));
@@ -141,7 +140,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: [
 					"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
-					"Estará liberado a más tardar el " + v.capturadoTexto,
+					"Estará liberado a más tardar el " + v.horarioFinalCaptura,
 				],
 				iconos: v.vistaAnteriorInactivar,
 			};
