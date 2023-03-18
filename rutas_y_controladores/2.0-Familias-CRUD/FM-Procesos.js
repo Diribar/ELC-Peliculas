@@ -547,7 +547,6 @@ module.exports = {
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
 
 		// Motivo
-		console.log(550, registro.motivo);
 		if (registro.status_registro_id == inactivo_id)
 			bloque.push({titulo: "Motivo", valor: registro.motivo ? registro.motivo.descripcion : ""});
 
