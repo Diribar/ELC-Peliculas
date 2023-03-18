@@ -1,16 +1,36 @@
 /* Información */
-#datosLargos #recuadro {max-width: 45vw;}
+#datosLargos #recuadro {width: 45vw;}
 #recuadro #contenido {justify-content: space-around;}
 #contenido #informacion {margin: 30px 40px 0;}
-
-/* Información - Datos Detalle */
-#contenido #datosDetalle {margin-top: 10px;}
-
-/* Botones */
-#contenido #botones {margin: 40px 40px 30px; justify-content: space-around;}
+#informacion #tituloLinks {margin-left: 0px; margin-bottom: 5px; width: min-content;}
+#tituloLinks ul p {margin-top: 3px;}
+#tituloLinks ul strong {color: snow;}
 
 /* Links */
 #contenido #links {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
-#contenido #links {margin: 25px 0; padding: 15px 20px;}
-#contenido #links {max-height: 150px; overflow-y: overlay;}
+#contenido #links {margin: 0; padding: 5px 20px;}
 
+#links h4 {margin-right: 5px; width: 50px;}
+#links > div {margin: 5px 0; min-height: 20px;}
+#links nav a {margin-right: 10px;}
+#links nav a img {border: solid 3px; border-radius: 10px;}
+#links nav a img {max-width: 70px; max-height: 24px;}
+#links nav a img.verde {border-color: var(--verde-oscuro);}
+#links nav a img.amarillo {border-color: var(--amarillo-oscuro);}
+#links nav a img.rojo {border-color: var(--rojo-oscuro);}
+
+/* Información - Datos Detalle */
+#contenido #etiquetas {margin-top: 10px;}
+#contenido #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
+#contenido #etiquetas p {padding: 1px 3px; margin-right: 1px;}
+#contenido #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
+#contenido #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
+#contenido #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
+#contenido #datosDetalle {border: var(--gris-oscuro) 1px solid; background: snow;}
+#contenido #datosDetalle {max-height: 156px; overflow-y: auto;}
+#datosDetalle #masInfo {display: flex; flex-direction: row; justify-content: space-between;}
+#datosDetalle #masInfo :is(#masInfoIzq, #masInfoDer) {width: 45%;}
+#datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
+
+/* Botones */
+#contenido #botones {margin: 30px}

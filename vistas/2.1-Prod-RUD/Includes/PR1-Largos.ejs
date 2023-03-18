@@ -1,0 +1,70 @@
+<div id="tituloLinks" class="relative">
+	<h3>Links</h3>
+	<!-- Ayuda -->
+	<div class="ayuda">
+		<i class="fa-solid fa-circle-question ayudaClick desplClick">
+			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+				<p><u>Significado del borde de los logos:</u></p>
+				<li><strong>Verde</strong>: en idioma <strong>castellano</strong></li>
+				<li><strong>Amarillo</strong>: <strong>subtitulos</strong> en castellano</li>
+				<li><strong>Rojo</strong>: en <strong>otro</strong> idioma</li>
+			</ul>
+		</i>
+	</div>
+</div>
+<div id="links" class="flexCol">
+	<!-- Película -->
+	<% if (entidad != "colecciones") { %>
+		<div class="flexRowAlign">
+			<h4>Película</h4>
+			<% if (links.PL.length) { %>
+				<%- include("PR1-LargosLinks", {linksProd: links.PL}) %>
+			<% } else { %>
+				<p><em>- No disponemos -</em></p>
+			<% } %>
+		</div>
+	<% } %>
+	<!-- Trailer -->
+	<div class="flexRowAlign">
+		<h4>Trailer</h4>
+		<% if (links.TR.length) { %>
+			<%- include("PR1-LargosLinks", {linksProd: links.TR}) %>
+		<% } else { %>
+			<p><em>- No disponemos -</em></p>
+		<% } %>
+	</div>
+</div>
+<div id="etiquetas" class="flexRow">
+	<p>Sinopsis</p>
+	<p>Información General</p>
+	<p>Actores</p>
+	<% if (registro.personaje_id != 1) { %>
+		<p>Personaje Histórico</p>
+	<% } %>
+	<% if (registro.hecho_id != 1) { %>
+		<p>Hecho Histórico</p>
+	<% } %>
+	<% if (registro.valor_id != 1) { %>
+		<p>Valor</p>
+	<% } %>
+</div>
+<div id="datosDetalle">
+	<div id="sinopsis" class="datosParcial ocultar">
+		<p><%= registro.sinopsis %></p>
+	</div>
+	<div id="masInfo" class="datosParcial ocultar">
+		<div id="masInfoIzq">
+			<% for (let campo of bloqueIzq[0]) { %>
+				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+			<% } %>
+		</div>
+		<div id="masInfoDer">
+			<% for (let campo of bloqueIzq[1]) { %>
+				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+			<% } %>
+		</div>
+	</div>
+	<div id="Actores" class="datosParcial ocultar">
+		<p><%= bloqueIzq[2][0].titulo %>: <%= bloqueIzq[2][0].valor %></p>
+	</div>
+</div>
