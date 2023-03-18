@@ -55,7 +55,6 @@ module.exports = {
 		// Variables
 		let {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 
 		// Obtiene el registro original
@@ -90,7 +89,7 @@ module.exports = {
 		//return res.send(original)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familias, familia, id, prodNombre, registro: original, status_id: status_registro_id, statusCreado},
+			...{entidad, familia, id, prodNombre, registro: original, status_id: status_registro_id, statusCreado},
 			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
 			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
 		});
@@ -106,7 +105,6 @@ module.exports = {
 		// Más variables
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -137,7 +135,7 @@ module.exports = {
 			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Cantidad de productos asociados al RCLV
-		if (familias == "rclvs") {
+		if (familia == "rclv") {
 			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
 			cantProds = prodsDelRCLV.length;
 			procCanoniz = procsRCLV.detalle.procCanoniz(original);
@@ -152,7 +150,7 @@ module.exports = {
 
 		// Imagen Personalizada
 		imgDerPers =
-			familias == "productos" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
+			familia == "producto" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
 
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
@@ -174,7 +172,7 @@ module.exports = {
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
-			...{entidad, id, entidadNombre, familias, familia, comentarios, urlActual: req.originalUrl},
+			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
 			cartelGenerico: true,
 		});
@@ -274,7 +272,6 @@ module.exports = {
 		// Variables
 		const {entidad, id, edicion_id: edicID} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos;
@@ -347,7 +344,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
-			...{entidad, id, familia, familias, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
+			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
@@ -418,7 +415,7 @@ module.exports = {
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: producto.nombre_castellano},
-			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "productos"},
+			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
 			...{imgDerPers: procsCRUD.obtieneAvatarProd(producto, "").orig, cartelGenerico: true},

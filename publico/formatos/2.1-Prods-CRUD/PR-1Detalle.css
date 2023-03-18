@@ -29,7 +29,8 @@
 #contenido #datosDetalle {border: var(--gris-oscuro) 1px solid; background: snow;}
 #contenido #datosDetalle {max-height: 156px; overflow-y: auto;}
 #datosDetalle .datosParcial#masInfo {display: flex; flex-direction: row; justify-content: space-between;}
-#datosDetalle .datosParcial#masInfo :is(#masInfoIzq, #masInfoDer) {width: 45%;}
+#datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
+#datosDetalle .datosParcial#masInfo #masInfoDer {width: 50%;}
 #datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
 
 /* Botones */
