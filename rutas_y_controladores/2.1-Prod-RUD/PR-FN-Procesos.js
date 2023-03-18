@@ -44,21 +44,30 @@ module.exports = {
 		let TR = [];
 
 		// Obtiene los links
-		const links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
+		const links = await BD_genericas.obtieneTodosPorCamposConInclude(
+			"links",
+			{[campo_id]: id, status_registro_id: aprobado_id},
+			include
+		);
 
 		// Procesos si hay links
 		if (links.length) {
-			// Los ordena
-			// 1. Por calidad
+			// 1. Los ordena
+			// 1.A. Por calidad
 			links.sort((a, b) => b.calidad - a.calidad);
-			// 2. Por completo
+			// 1.B. Por completo
 			links.sort((a, b) => b.completo - a.completo);
-			// 3. Por idioma
+			// 1.C. Por idioma
 			links.sort((a, b) => b.castellano - a.castellano);
 
-			// Los separa entre Películas y Trailers
-			PL = links.filter((n) => n.tipo && n.tipo.trailer);
-			TR = links.filter((n) => n.tipo && n.tipo.pelicula);
+			// 2. Les asigna un color en función del idioma
+			links.map((link) => {
+				link.color = link.castellano ? "verde" : link.subtitulos ? "amarillo" : "rojo";
+			});
+
+			// 3. Los separa entre Películas y Trailers
+			PL = links.filter((n) => n.tipo && n.tipo.pelicula);
+			TR = links.filter((n) => n.tipo && n.tipo.trailer);
 		}
 
 		// Fin
