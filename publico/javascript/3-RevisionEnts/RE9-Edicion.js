@@ -28,7 +28,6 @@ window.addEventListener("load", async () => {
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
-	console.log(v);
 
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;

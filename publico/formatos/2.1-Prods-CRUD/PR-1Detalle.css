@@ -20,7 +20,7 @@
 #links nav a img.rojo {border-color: var(--rojo-oscuro);}
 
 /* Información - Datos Detalle */
-#contenido #etiquetas {margin-top: 10px;}
+#contenido #etiquetas {margin-top: 10px; cursor: pointer;}
 #contenido #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: none;}
 #contenido #etiquetas p {padding: 1px 3px; margin-right: 1px;}
 #contenido #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
@@ -28,8 +28,8 @@
 #contenido #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #contenido #datosDetalle {border: var(--gris-oscuro) 1px solid; background: snow;}
 #contenido #datosDetalle {max-height: 156px; overflow-y: auto;}
-#datosDetalle #masInfo {display: flex; flex-direction: row; justify-content: space-between;}
-#datosDetalle #masInfo :is(#masInfoIzq, #masInfoDer) {width: 45%;}
+#datosDetalle .datosParcial#masInfo {display: flex; flex-direction: row; justify-content: space-between;}
+#datosDetalle .datosParcial#masInfo :is(#masInfoIzq, #masInfoDer) {width: 45%;}
 #datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
 
 /* Botones */

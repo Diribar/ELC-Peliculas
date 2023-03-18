@@ -49,10 +49,10 @@
 	<% } %>
 </div>
 <div id="datosDetalle">
-	<div id="sinopsis" class="datosParcial ocultar">
+	<div id="sinopsis" class="datosParcial">
 		<p><%= registro.sinopsis %></p>
 	</div>
-	<div id="masInfo" class="datosParcial ocultar">
+	<div id="masInfo" class="datosParcial" style="display: none;">
 		<div id="masInfoIzq">
 			<% for (let campo of bloqueIzq[0]) { %>
 				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
@@ -64,7 +64,7 @@
 			<% } %>
 		</div>
 	</div>
-	<div id="Actores" class="datosParcial ocultar">
-		<p><%= bloqueIzq[2][0].titulo %>: <%= bloqueIzq[2][0].valor %></p>
+	<div id="Actores" class="datosParcial" style="display: none;">
+		<p><%= bloqueIzq[2][0].valor %></p>
 	</div>
 </div>
