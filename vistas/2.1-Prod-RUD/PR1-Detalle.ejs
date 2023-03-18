@@ -18,7 +18,7 @@
 		<div class="flexRowAlign">
 			<h4>Película</h4>
 			<% if (links.PL.length) { %>
-				<%- include("PR1-LargosLinks", {linksProd: links.PL}) %>
+				<%- include("PR1-DetalleLinks", {linksProd: links.PL}) %>
 			<% } else { %>
 				<p><em>- No disponemos -</em></p>
 			<% } %>
@@ -28,7 +28,7 @@
 	<div class="flexRowAlign">
 		<h4>Trailer</h4>
 		<% if (links.TR.length) { %>
-			<%- include("PR1-LargosLinks", {linksProd: links.TR}) %>
+			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
 		<% } else { %>
 			<p><em>- No disponemos -</em></p>
 		<% } %>
