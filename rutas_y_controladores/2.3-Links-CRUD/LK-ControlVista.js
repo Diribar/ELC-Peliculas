@@ -6,6 +6,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./LK-FN-Procesos");
 const variables = require("../../funciones/3-Procesos/Variables");
+const {constant} = require("async");
 
 // *********** Controlador ***********
 module.exports = {
@@ -30,20 +31,21 @@ module.exports = {
 		// Obtiene el producto y el título
 		let prodNombre = comp.obtieneEntidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Actualiza linksEnProd		
-		procsCRUD.linksEnProd({entidad,id})
+		// Actualiza linksEnProd
+		procsCRUD.linksEnProd({entidad, id});
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
 			let coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
 			let temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const origen = req.query.origen ? req.query.origen : "DTP";
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: producto.nombre_castellano},
-			...{entidad, familia: "producto", id, origen: req.query.origen},
+			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links},
 			...{links_provs, links_tipos, calidades: variables.calidades, motivos},
 			userID,
