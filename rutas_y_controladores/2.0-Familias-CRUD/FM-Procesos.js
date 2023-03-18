@@ -66,7 +66,7 @@ module.exports = {
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "sugerido_por", "status_registro"];
+		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "sugerido_por", "status_registro", "motivo"];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
@@ -545,6 +545,10 @@ module.exports = {
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
+
+		// Motivo
+		if (registro.status_registro_id == inactivo_id)
+			bloque.push({titulo: "Motivo", valor: registro.motivo ? registro.motivo.descripcion : ""});
 
 		// Fin
 		return bloque;

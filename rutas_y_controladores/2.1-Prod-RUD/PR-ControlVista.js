@@ -20,7 +20,6 @@ module.exports = {
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
-		let imgDerPers, bloqueIzq, bloqueDer;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -34,18 +33,19 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
 		// Info para la vista de Edicion o Detalle
-		bloqueIzq = procesos.bloqueIzq(prodComb);
-		bloqueDer = procsCRUD.bloqueRegistro(prodComb);
-		imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
+		const bloqueIzq = procesos.bloqueIzq(prodComb);
+		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
+		const imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const links = await procesos.obtieneLinksDelProducto(entidad, id);
-		return res.send(links);
+
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
+
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen},

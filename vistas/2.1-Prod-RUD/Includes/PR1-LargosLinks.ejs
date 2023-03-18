@@ -1,0 +1,15 @@
+<nav class="flexRowAlign">
+    <% for (let link of linksProd) { %>
+        <!-- Variables -->
+        <% let gratuito = link.gratuito ? 'Link gratuito' : 'Link pago' %>
+        <% let calidad = link.calidad + 'p' %>
+        <% let parte = link.parte!='-' ? (' - Parte ' + link.parte) : '' %>
+        <a href="//<%= link.url %>" target="_blank">
+            <img 
+                src="<%= localhost + '/imagenes/0-Base/Logos/' + link.prov.avatar %>" 
+                class="<%= link.color %>"
+                title="<%= gratuito %> - <%= calidad + parte %>" 
+            >
+        </a>
+    <% } %>
+</nav>
