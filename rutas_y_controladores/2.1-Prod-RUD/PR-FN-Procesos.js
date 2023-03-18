@@ -13,13 +13,13 @@ module.exports = {
 		// Bloque1
 		if (producto.categoria) bloque1.push({titulo: "Categoría", valor: producto.categoria.nombre});
 		if (producto.publico) bloque1.push({titulo: "Público Sugerido", valor: producto.publico.nombre});
-		if (producto.en_castellano !== null) bloque1.push({titulo: "En castellano", valor: producto.en_castellano ? "SI" : "NO"});
+		if (producto.castellano !== null) bloque1.push({titulo: "En castellano", valor: producto.castellano ? "SI" : "NO"});
 		if (producto.tipo_actuacion) bloque1.push({titulo: "Tipo de Actuación", valor: producto.tipo_actuacion.nombre});
 		if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
 		if (producto.cant_temps) {
 			if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
-		} else if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion});
-		if (producto.en_color !== null) bloque1.push({titulo: "Es a color", valor: producto.en_color ? "SI" : "NO"});
+		} else if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion + " min."});
+		if (producto.color !== null) bloque1.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
 		// Menor importancia
 		if (paisesNombre) bloque1.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
 		if (producto.idioma_original) bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
