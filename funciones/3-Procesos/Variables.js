@@ -44,7 +44,7 @@ module.exports = {
 	],
 	camposFiltros: {
 		// Principales
-		categoria: {
+		categorias: {
 			titulo: "Relacionada con la Fe Católica",
 			siempre: true,
 			opciones: [
@@ -108,9 +108,7 @@ module.exports = {
 			siempre: true,
 			opciones: [
 				{id: "CFC", nombre: "Con links gratuitos"},
-				{id: "VPC", nombre: "Con links 'pay per view'"},
-				{id: "VPC", nombre: "Con links gratuitos y ppv"},
-				{id: "VPC", nombre: "Con links de abono"},
+				{id: "VPC", nombre: "Con links de abono o 'pay per view'"},
 				{id: "VPC", nombre: "Todos los links"},
 			],
 		},

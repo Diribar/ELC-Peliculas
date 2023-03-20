@@ -18,23 +18,16 @@ module.exports = {
 		let camposFiltros = {...variables.camposFiltros};
 
 		// Agrega las opciones de BD
-		(() => {
-			// Procesa cada campo
-			for (let campo in camposFiltros) {
-				// Si el campo no aplica para el 'layoutElegido', lo elimina
-				if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) {
-					delete camposFiltros[campo];
-					continue;
-				}
+		for (let campo in camposFiltros) {
+			// Si el campo no aplica para el 'layoutElegido', lo elimina
+			if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) delete camposFiltros[campo];
+			else {
 				// Le agrega el nombre del campo a cada bloque de información
 				camposFiltros[campo].codigo = campo;
-				// Le agrega las opciones de la BD, si no tiene ninguna
-				if (!camposFiltros[campo].opciones) {
-					let opciones = global[campo];
-					camposFiltros[campo].opciones = opciones ? opciones : [];
-				}
+				// Si no tiene opciones, le agrega las de la BD
+				if (!camposFiltros[campo].opciones) camposFiltros[campo].opciones = global[campo] ? global[campo] : [];
 			}
-		})();
+		}
 
 		// Agrega las opciones grupales
 		for (let entidad in this.gruposConsultas) {
