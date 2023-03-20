@@ -38,7 +38,5 @@ window.addEventListener("load", () => {
 
 	// Convierte el sector en 'bold'
 	textoActores.innerHTML = consolidado;
-	console.log(consolidado);
-	console.log(textoActores.innerHTML);
 	textoActores.style.fontWeight = "bold";
 });
