@@ -10,7 +10,6 @@ module.exports = {
 		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : "";
 		let infoGral = [];
 		let actores = [];
-		let rclv = [];
 
 		// Informacion General
 		if (producto.categoria) infoGral.push({titulo: "Categoría", valor: producto.categoria.nombre});
@@ -31,10 +30,11 @@ module.exports = {
 		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
 
 		// Actores
-		if (producto.actores) actores= producto.actores
+		if (producto.actores) actores = producto.actores;
+
 
 		// Fin
-		return {infoGral, actores, rclv};
+		return {infoGral, actores};
 	},
 	obtieneLinksDelProducto: async (entidad, id) => {
 		// Variables
