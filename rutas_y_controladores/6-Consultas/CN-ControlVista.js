@@ -23,7 +23,7 @@ module.exports = {
 		let ordenes = variables.orden.filter((n) => n.siempre || n[layoutElegido]);
 		// return res.send(camposFiltros)
 		// Va a la vista
-		res.render("CMP-0Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema: "consultas",
 			titulo: "Consulta de Películas",
 			// Elecciones
