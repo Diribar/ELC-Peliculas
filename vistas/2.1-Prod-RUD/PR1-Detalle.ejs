@@ -54,17 +54,17 @@
 	</div>
 	<div id="masInfo" class="datosParcial" style="display: none;">
 		<div id="masInfoIzq">
-			<% for (let campo of bloqueIzq[0]) { %>
+			<% for (let campo of bloqueIzq.masInfoIzq) { %>
 				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
 			<% } %>
 		</div>
 		<div id="masInfoDer">
-			<% for (let campo of bloqueIzq[1]) { %>
+			<% for (let campo of bloqueIzq.masInfoDer) { %>
 				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
 			<% } %>
 		</div>
 	</div>
 	<div id="Actores" class="datosParcial" style="display: none;">
-		<p><%= bloqueIzq[2][0].valor %></p>
+		<p><%= bloqueIzq.actores %></p>
 	</div>
 </div>

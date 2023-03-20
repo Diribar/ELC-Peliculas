@@ -33,7 +33,18 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
 		// Info para la vista de Edicion o Detalle
-		const bloqueIzq = procesos.bloqueIzq(prodComb);
+		const infoProd = procesos.bloqueIzq(prodComb);
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProd[2][0].valor};
+		if ([...infoProd[0], ...infoProd[1]].length) {
+			let masInfo = [...infoProd[0], ...infoProd[1]];
+			for (let i = 0; i < masInfo.length / 2; i++) {
+				// Agrega un dato en 'masInfoIzq'
+				bloqueIzq.masInfoIzq.push(masInfo[i]);
+				// Agrega un dato en 'masInfoDer'
+				let j = parseInt(masInfo.length / 2 + 0.5 + i);
+				if (j <= masInfo.length) bloqueIzq.masInfoDer.push(masInfo[j]);
+			}
+		}
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 		const imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
 

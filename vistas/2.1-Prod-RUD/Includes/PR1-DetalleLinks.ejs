@@ -2,13 +2,13 @@
     <% for (let link of linksProd) { %>
         <!-- Variables -->
         <% let gratuito = link.gratuito ? 'Link gratuito' : 'Link pago' %>
-        <% let calidad = link.calidad + 'p' %>
-        <% let parte = link.parte!='-' ? (' - Parte ' + link.parte) : '' %>
+        <% let calidad = " - " + link.calidad + 'p' %>
+        <% let completoParte = link.completo ? " - Completo" : link.parte != '-' ? (' - Parte ' + link.parte) : '' %>
         <a href="//<%= link.url %>" target="_blank">
             <img 
                 src="<%= localhost + '/imagenes/0-Base/Logos/' + link.prov.avatar %>" 
                 class="<%= link.color %>"
-                title="<%= gratuito %> - <%= calidad + parte %>" 
+                title="<%= gratuito + calidad + completoParte %>" 
             >
         </a>
     <% } %>
