@@ -5,5 +5,5 @@
 /* Recuadro */
 #recuadro #encabezado {align-self: stretch; flex-direction: column; align-items: unset;}
 #recuadro #contenido {margin: 0 40px 20px;}
-#recuadro #contenido #informacion {margin-bottom: 20px;}
+#recuadro #contenido #informacion {margin: 20px 0;}
 #recuadro #contenido #informacion #cuadroDeResultados {position: relative;}

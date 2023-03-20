@@ -2,7 +2,7 @@
 window.addEventListener("load", () => {
 	// Variables
 	let textoActores = document.querySelector("#datosDetalle #actores p");
-	let consolidado = textoActores.innerHTML
+	let consolidado = textoActores.innerHTML;
 	let contador = 0;
 	let texto = null;
 
@@ -14,8 +14,13 @@ window.addEventListener("load", () => {
 				contador++;
 				if (contador == 1) {
 					texto = consolidado.slice(0, i + 1);
-					texto += "</span>";
-					if (i < consolidado.length - 1) texto += consolidado.slice(i + 2);
+					if (i < consolidado.length - 1 && consolidado[i + 1] == ",") {
+						texto += ",</span>";
+						texto += consolidado.slice(i + 2);
+					} else {
+						texto += "</span>";
+						if (i < consolidado.length - 1) texto += consolidado.slice(i + 1);
+					}
 				}
 			} else if (caracter == "(") {
 				contador--;
