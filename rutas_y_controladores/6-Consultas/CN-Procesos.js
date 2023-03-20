@@ -6,9 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	filtrosPers: async (userID) => {
 		// Obtiene los filtros personales
-		let resultado = userID
-			? await BD_genericas.obtienePorCampos("filtros_cabecera", {usuario_id: userID})
-			: [];
+		let resultado = userID ? await BD_genericas.obtienePorCampos("filtros_cabecera", {usuario_id: userID}) : [];
 		if (!resultado) resultado = [];
 		// Le agrega el filtro estándar
 		resultado.push(filtroEstandar);
@@ -50,26 +48,25 @@ module.exports = {
 	gruposConsultas: {
 		personajes: () => {
 			// Época de nacimiento
-			let epocas = epocas.filter((n) => n.nombre_pers);
-			epocas = epocas.map((n) => {
-				return {id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"};
-			});
+			let epocasCons = epocas
+				.filter((n) => n.nombre_pers)
+				.map((n) => ({id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"}));
 			// Proceso de canonización
-			let canons = canons.filter((n) => n.id.length == 2);
-			canons = puleCampos(canons, "CFC canons");
+			let canonsCons = canons.filter((n) => n.id.endsWith("N"));
+			canonsCons = preparaCampos(canonsCons, "CFC canons");
 			// Roles Iglesia
-			let roles_iglesia = roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
-			roles_iglesia = puleCampos(roles_iglesia, "CFC roles_iglesia");
+			let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
+			rolesIglesiaCons = preparaCampos(rolesIglesiaCons, "CFC roles_iglesia");
 			// Consolidación
 			let resultado = {
 				grupo_personajes: [
 					{nombre: "Época de vida", clase: "CFC VPC"},
 					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
-					...epocas,
+					...epocasCons,
 					{nombre: "Proceso de Canonización", clase: "CFC"},
-					...canons,
+					...canonsCons,
 					{nombre: "Rol en la Iglesia", clase: "CFC"},
-					...roles_iglesia,
+					...rolesIglesiaCons,
 					{nombre: "Listado de Personajes", clase: "CFC VPC"},
 				],
 			};
@@ -78,11 +75,11 @@ module.exports = {
 		},
 	},
 };
-let puleCampos = (campo, clase) => {
+let preparaCampos = (campos, clase) => {
 	// Obtiene los campos necesarios
-	campo = campo.map((n) => {
+	campos = campos.map((n) => {
 		return {id: n.id, nombre: n.nombre, clase};
 	});
 	// Fin
-	return campo;
+	return campos;
 };
