@@ -5,11 +5,24 @@ window.addEventListener("load", () => {
 	let datosParcial = document.querySelectorAll("#datosDetalle .datosParcial");
 
 	// Eventos
-	datosParcial.forEach((datoParcial, datoClick) => {
+	for (let datoClick = 0; datoClick < datosParcial.length; datoClick++) {
+		// Evento por solapa
 		etiquetas[datoClick].addEventListener("click", () => {
-			for (let datoBarrido = 0; datoBarrido < datosParcial.length; datoBarrido++)
-				if (datoClick != datoBarrido) datosParcial[datoBarrido].style.display = "none";
-				else datosParcial[datoBarrido].style.display = "flex";
+			for (let datoBarrido = 0; datoBarrido < datosParcial.length; datoBarrido++){
+				// Muestra u 
+				if (datoClick != datoBarrido) {
+					// Oculta información
+					datosParcial[datoBarrido].style.display = "none";
+					// Devuelva la etiqueta a su status original
+					etiquetas[datoBarrido].classList.remove("resaltar")
+				} else {
+					// Muestra información
+					datosParcial[datoBarrido].style.display = "flex";
+					// Destaca la etiqueta
+					etiquetas[datoBarrido].classList.add("resaltar")
+				}				
+			}
+
 		});
-	});
+	}
 });
