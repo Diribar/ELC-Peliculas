@@ -5,6 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -34,19 +35,21 @@ module.exports = {
 			prodNombre;
 		// Info para la vista de Edicion o Detalle
 		const infoProd = procesos.bloqueIzq(prodComb);
-		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProd[2][0].valor};
-		if ([...infoProd[0], ...infoProd[1]].length) {
-			let masInfo = [...infoProd[0], ...infoProd[1]];
-			for (let i = 0; i < masInfo.length / 2; i++) {
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProd.actores};
+		if (infoProd.infoGral.length) {
+			let infoGral = infoProd.infoGral
+			for (let i = 0; i < infoGral.length / 2; i++) {
 				// Agrega un dato en 'masInfoIzq'
-				bloqueIzq.masInfoIzq.push(masInfo[i]);
+				bloqueIzq.masInfoIzq.push(infoGral[i]);
 				// Agrega un dato en 'masInfoDer'
-				let j = parseInt(masInfo.length / 2 + 0.5 + i);
-				if (j <= masInfo.length) bloqueIzq.masInfoDer.push(masInfo[j]);
+				let j = parseInt(infoGral.length / 2 + 0.5 + i);
+				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
 			}
 		}
+		// return res.send(bloqueIzq);
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 		const imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
+		// if (prodComb.presonaje_id) bloqueIzq.personaje=
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")

@@ -50,21 +50,36 @@
 </div>
 <div id="datosDetalle">
 	<div id="sinopsis" class="datosParcial">
-		<p><%= registro.sinopsis %></p>
+		<p><%= registro.sinopsis ? registro.sinopsis : 'No disponemos de esa información' %></p>
 	</div>
 	<div id="masInfo" class="datosParcial" style="display: none;">
-		<div id="masInfoIzq">
-			<% for (let campo of bloqueIzq.masInfoIzq) { %>
-				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
-			<% } %>
-		</div>
-		<div id="masInfoDer">
-			<% for (let campo of bloqueIzq.masInfoDer) { %>
-				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
-			<% } %>
-		</div>
+		<% if (!bloqueIzq.masInfoIzq.length) { %>
+			<p>No disponemos de esa información</p>
+		<% } else { %>
+			<div id="masInfoIzq">
+				<% for (let campo of bloqueIzq.masInfoIzq) { %>
+					<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+				<% } %>
+			</div>
+		<% } %>
+		<% if (bloqueIzq.masInfoDer.length) { %>
+			<div id="masInfoDer">
+				<% for (let campo of bloqueIzq.masInfoDer) { %>
+					<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+				<% } %>
+			</div>
+		<% } %>
 	</div>
 	<div id="actores" class="datosParcial" style="display: none;">
-		<p><%= bloqueIzq.actores %></p>
+		<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 	</div>
+	<% if (registro.personaje_id != 1) { %>
+		<p>Personaje Histórico</p>
+	<% } %>
+	<% if (registro.hecho_id != 1) { %>
+		<p>Hecho Histórico</p>
+	<% } %>
+	<% if (registro.valor_id != 1) { %>
+		<p>Valor</p>
+	<% } %>
 </div>
