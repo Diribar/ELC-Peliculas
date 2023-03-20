@@ -32,7 +32,6 @@ module.exports = {
 		// Actores
 		if (producto.actores) actores = producto.actores;
 
-
 		// Fin
 		return {infoGral, actores};
 	},
