@@ -20,15 +20,16 @@ module.exports = {
 			return json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
 		})();
 
-		// Si la información ya está actualizada. termina
-		const fechaGMT = new Date();
-		const fechaFormatoPreferido = diasSemana[fechaGMT.getDay()] + ". " + comp.fechaDiaMes(fechaGMT);
-		if (info.fechaActual == fechaFormatoPreferido) return;
+		// Si la información ya está actualizada, termina
+		let fechaRef_n = new Date(new Date().getTime() + 12 * unaHora + 1 * unaHora);
+		const fechaRef = diasSemana[fechaRef_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaRef_n);
+		if (info.fechaRef == fechaRef) return;
 
 		// ACCIONES DIARIAS --------------------------------------------------
+		info.fechaRef = fechaRef;
+
 		// Actualiza la imagen derecha
-		info.fechaActual = fechaFormatoPreferido;
-		info = await this.actualizaImagenDerecha({info, fechaGMT});
+		info = await this.actualizaImagenDerecha({info, fechaRef_n});
 
 		// Actualiza 'linksEnProd'
 		this.actualizaLinksEnProd();
@@ -37,12 +38,17 @@ module.exports = {
 		this.actualizaProdEnRCLV();
 
 		// Tareas semanales
-		const comienzoAno = new Date(fechaGMT.getFullYear(), 0, 1).getTime();
-		const semanaActual = parseInt((fechaGMT.getTime() - comienzoAno) / unDia / 7);
-		if (info.semanaActual != semanaActual) {
+		const comienzoAno = new Date(fechaRef_n.getUTCFullYear(), 0, 1).getTime();
+		const semanaRef = parseInt((fechaRef_n.getTime() - comienzoAno) / unDia / 7);
+		if (info.semanaRef != semanaRef) {
 			await this.tareasSemanales();
-			info.semanaActual = semanaActual;
+			info.semanaRef = semanaRef;
 		}
+
+		// Asigna las nuevas fecha y hora locales
+		const fechaLocal_n = new Date(new Date().getTime() - (new Date().getTimezoneOffset() / 60) * unaHora);
+		info.fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
+		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + fechaLocal_n.getUTCMinutes();
 
 		// Actualiza los valores del archivo
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
@@ -52,12 +58,9 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaImagenDerecha: async ({info, fechaGMT}) => {
-		// Asigna las nuevas fecha y hora actual
-		info.horaActual = fechaGMT.toLocaleTimeString().slice(0, -3);
-
+	actualizaImagenDerecha: async ({info, fechaRef_n}) => {
 		// Obtiene los titulos de imgDerecha
-		const milisegs = fechaGMT.getTime();
+		const milisegs = fechaRef_n.getTime();
 		let fechaTexto = (fecha) => {
 			fecha = new Date(fecha);
 			let dia = ("0" + fecha.getDate()).slice(-2);
@@ -84,7 +87,7 @@ module.exports = {
 			if (!fechas.includes(imagen.slice(0, 9))) await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", imagen);
 
 		// Fin
-		console.log("'imagenDerecha' actualizado");
+		console.log("'imagenDerecha' actualizada");
 		return info;
 	},
 	actualizaLinksEnProd: async () => {

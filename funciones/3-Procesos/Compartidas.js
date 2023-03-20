@@ -275,14 +275,14 @@ module.exports = {
 	},
 	fechaDiaMes: (fecha) => {
 		fecha = new Date(fecha);
-		let dia = fecha.getDate();
-		let mes = mesesAbrev[fecha.getMonth()];
+		let dia = fecha.getUTCDate();
+		let mes = mesesAbrev[fecha.getUTCMonth()];
 		fecha = dia + "/" + mes;
 		return fecha;
 	},
 	fechaDiaMesAno: function (fecha) {
 		fecha = new Date(fecha);
-		let ano = fecha.getFullYear().toString().slice(-2);
+		let ano = fecha.getUTCFullYear().toString().slice(-2);
 		return this.fechaDiaMes(fecha) + "/" + ano;
 	},
 	fechaHorario: (horario) => {

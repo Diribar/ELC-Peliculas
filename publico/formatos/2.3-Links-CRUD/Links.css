@@ -1,5 +1,7 @@
+main {background: var(--gris-claro);}
+main #cuerpo {flex-direction: column;}
+
 /* Temas generales */
-#cuerpo {flex-direction: column;}
 #contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-around; flex-grow: 1;}
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column;}

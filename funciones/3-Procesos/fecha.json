@@ -1,1 +1,7 @@
-{"fechaActual":"Dom. 18/mar","horaActual":"00:01","semanaActual":10,"titulosImgDer":{"17-mar-23":"ELC - Películas","18-mar-23":"ELC - Películas","19-mar-23":"ELC - Películas"}}
+{
+	"fechaRef": "Dom. 19/mar",
+	"semanaRef": 10,
+	"fechaLocal": "Sáb. 18/mar",
+	"horaLocal": "8:58",
+	"titulosImgDer": {"17-mar-23": "ELC - Películas", "18-mar-23": "ELC - Películas", "19-mar-23": "ELC - Películas"}
+}

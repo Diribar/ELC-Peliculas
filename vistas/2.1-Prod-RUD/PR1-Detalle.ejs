@@ -18,7 +18,7 @@
 		<div class="flexRowAlign">
 			<h4>Película</h4>
 			<% if (links.PL.length) { %>
-				<%- include("PR1-LargosLinks", {linksProd: links.PL}) %>
+				<%- include("PR1-DetalleLinks", {linksProd: links.PL}) %>
 			<% } else { %>
 				<p><em>- No disponemos -</em></p>
 			<% } %>
@@ -28,7 +28,7 @@
 	<div class="flexRowAlign">
 		<h4>Trailer</h4>
 		<% if (links.TR.length) { %>
-			<%- include("PR1-LargosLinks", {linksProd: links.TR}) %>
+			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
 		<% } else { %>
 			<p><em>- No disponemos -</em></p>
 		<% } %>
@@ -49,10 +49,10 @@
 	<% } %>
 </div>
 <div id="datosDetalle">
-	<div id="sinopsis" class="datosParcial ocultar">
+	<div id="sinopsis" class="datosParcial">
 		<p><%= registro.sinopsis %></p>
 	</div>
-	<div id="masInfo" class="datosParcial ocultar">
+	<div id="masInfo" class="datosParcial" style="display: none;">
 		<div id="masInfoIzq">
 			<% for (let campo of bloqueIzq[0]) { %>
 				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
@@ -64,7 +64,7 @@
 			<% } %>
 		</div>
 	</div>
-	<div id="Actores" class="datosParcial ocultar">
-		<p><%= bloqueIzq[2][0].titulo %>: <%= bloqueIzq[2][0].valor %></p>
+	<div id="Actores" class="datosParcial" style="display: none;">
+		<p><%= bloqueIzq[2][0].valor %></p>
 	</div>
 </div>
