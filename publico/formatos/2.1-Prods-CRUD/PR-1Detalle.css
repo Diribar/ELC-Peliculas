@@ -32,6 +32,7 @@
 #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
 #datosDetalle .datosParcial#masInfo #masInfoDer {width: 50%;}
 #datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
+#datosDetalle .datosParcial#actores p span{font-weight: normal;}
 
 /* Botones */
 #contenido #botones {margin: 30px}
