@@ -8,33 +8,33 @@ module.exports = {
 	bloqueIzq: (producto) => {
 		// Variables
 		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : "";
-		let [bloque1, bloque2, bloque3] = [[], [], []];
+		let infoGral = [];
+		let actores = [];
+		let rclv = [];
 
-		// Bloque1
-		if (producto.categoria) bloque1.push({titulo: "Categoría", valor: producto.categoria.nombre});
-		if (producto.publico) bloque1.push({titulo: "Público Sugerido", valor: producto.publico.nombre});
-		if (producto.castellano !== null) bloque1.push({titulo: "En castellano", valor: producto.castellano ? "SI" : "NO"});
-		if (producto.tipo_actuacion) bloque1.push({titulo: "Tipo de Actuación", valor: producto.tipo_actuacion.nombre});
-		if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+		// Informacion General
+		if (producto.categoria) infoGral.push({titulo: "Categoría", valor: producto.categoria.nombre});
+		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
+		if (producto.castellano !== null)
+			infoGral.push({titulo: "Tenemos links en castellano", valor: producto.castellano ? "SI" : "NO"});
+		if (producto.tipo_actuacion) infoGral.push({titulo: "Tipo de actuación", valor: producto.tipo_actuacion.nombre});
+		if (producto.ano_estreno) infoGral.push({titulo: "Año de estreno", valor: producto.ano_estreno});
 		if (producto.cant_temps) {
-			if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
-		} else if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion + " min."});
-		if (producto.color !== null) bloque1.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
-		// Menor importancia
-		if (paisesNombre) bloque1.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
-		if (producto.idioma_original) bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
+			if (producto.ano_fin) infoGral.push({titulo: "Año de fin", valor: producto.ano_fin});
+		} else if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
+		if (producto.color !== null) infoGral.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
+		if (paisesNombre) infoGral.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
+		if (producto.idioma_original) infoGral.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
+		if (producto.direccion) infoGral.push({titulo: "Dirección", valor: producto.direccion});
+		if (producto.guion) infoGral.push({titulo: "Guión", valor: producto.guion});
+		if (producto.musica) infoGral.push({titulo: "Música", valor: producto.musica});
+		if (producto.produccion) infoGral.push({titulo: "Producción", valor: producto.produccion});
 
-		// Bloque2
-		if (producto.direccion) bloque2.push({titulo: "Dirección", valor: producto.direccion});
-		if (producto.guion) bloque2.push({titulo: "Guión", valor: producto.guion});
-		if (producto.musica) bloque2.push({titulo: "Música", valor: producto.musica});
-		if (producto.produccion) bloque2.push({titulo: "Producción", valor: producto.produccion});
-
-		// Bloque3
-		if (producto.actores) bloque3.push({titulo: "Actores", valor: producto.actores});
+		// Actores
+		if (producto.actores) actores= producto.actores
 
 		// Fin
-		return [bloque1, bloque2, bloque3];
+		return {infoGral, actores, rclv};
 	},
 	obtieneLinksDelProducto: async (entidad, id) => {
 		// Variables
