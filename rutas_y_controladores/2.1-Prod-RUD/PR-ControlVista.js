@@ -33,23 +33,37 @@ module.exports = {
 			" de" +
 			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
-		// Info para la vista de Edicion o Detalle
-		const infoProd = procesos.bloqueIzq(prodComb);
-		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProd.actores};
-		if (infoProd.infoGral.length) {
-			let infoGral = infoProd.infoGral
+		// Info para el bloque Izquierdo
+		// 1. Información general y actores
+		const infoProcesada = procesos.bloqueIzq(prodComb);
+		let infoBloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
+		if (infoProcesada.infoGral.length) {
+			let infoGral = infoProcesada.infoGral;
 			for (let i = 0; i < infoGral.length / 2; i++) {
 				// Agrega un dato en 'masInfoIzq'
-				bloqueIzq.masInfoIzq.push(infoGral[i]);
+				infoBloqueIzq.masInfoIzq.push(infoGral[i]);
 				// Agrega un dato en 'masInfoDer'
 				let j = parseInt(infoGral.length / 2 + 0.5 + i);
-				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
+				if (j < infoGral.length) infoBloqueIzq.masInfoDer.push(infoGral[j]);
 			}
 		}
-		// return res.send(bloqueIzq);
+
+		// RCLV
+		let RCLVs = variables.entidadesRCLV;
+		RCLVs = RCLVs.map((n) => ({
+			entidad: n,
+			campo_id: comp.obtieneCampo_idDesdeEntidad(n),
+			entSing: comp.obtieneAsociacion(n),
+		}));
+		if (prodComb.personaje_id != 1)
+			infoBloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
+		if (prodComb.hecho_id != 1) infoBloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
+		if (prodComb.valor_id != 1) infoBloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "valores", ...prodComb.valor});
+		// return res.send(infoBloqueIzq);
+
+		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
 		const imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
-		// if (prodComb.presonaje_id) bloqueIzq.personaje=
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -66,7 +80,7 @@ module.exports = {
 			...{prodNombre, registro: prodComb},
 			...{entidad, id, familia, status_id, statusEstable, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
-			...{bloqueIzq, bloqueDer},
+			...{bloqueIzq: infoBloqueIzq, bloqueDer, RCLVs},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});

@@ -35,17 +35,17 @@
 	</div>
 </div>
 <div id="marco">
-	<div id="etiquetas" class="flexRow" style="display: non;">
+	<div id="etiquetas" class="flexRow">
 		<p class="resaltar">Sinopsis</p>
 		<p>Información General</p>
 		<p>Actores</p>
-		<% if (registro.personaje_id != 1) { %>
+		<% if (bloqueIzq.personaje) { %>
 			<p>Personaje Histórico</p>
 		<% } %>
-		<% if (registro.hecho_id != 1) { %>
+		<% if (bloqueIzq.hecho) { %>
 			<p>Hecho Histórico</p>
 		<% } %>
-		<% if (registro.valor_id != 1) { %>
+		<% if (bloqueIzq.valor) { %>
 			<p>Valor</p>
 		<% } %>
 	</div>
@@ -74,14 +74,23 @@
 		<div id="actores" class="datosParcial" style="display: none;">
 			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 		</div>
-		<% if (registro.personaje_id != 1) { %>
-			<p>Personaje Histórico</p>
-		<% } %>
-		<% if (registro.hecho_id != 1) { %>
-			<p>Hecho Histórico</p>
-		<% } %>
-		<% if (registro.valor_id != 1) { %>
-			<p>Valor</p>
+		<% for (RCLV of RCLVs) { %>
+			<% if (bloqueIzq[RCLV.entSing]) { %>
+				<div id="rclv" class="datosParcial" style="display: none;">
+					<% for (let campo of bloqueIzq[RCLV.entSing]) { %>
+						<p>
+							<%= campo.titulo %>: <strong><%= campo.valor %></strong>
+							<% if (campo.titulo == bloqueIzq[RCLV.entSing][0].titulo) { %>
+								<span>
+									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
+										<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+									</a>
+								</span>
+							<% } %>
+						</p>
+					<% } %>
+				</div>
+			<% } %>
 		<% } %>
 	</div>
 </div>

@@ -81,11 +81,12 @@ module.exports = {
 			if (registro.entidad == "personajes") {
 				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
 				if (registro.ano) bloque.push({titulo: "Año de nacimiento", valor: registro.ano});
-				if (registro.canon_id && !registro.canon_id.startsWith("NN"))
+				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon)
 					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
-				if (registro.rol_iglesia_id && !registro.rol_iglesia_id.startsWith("NN"))
+				if (registro.rol_iglesia_id && !registro.rol_iglesia_id.startsWith("NN") && registro.rol_iglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
-				if (registro.ap_mar_id != 10) bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
+				if (registro.ap_mar_id && registro.ap_mar_id != 10 && registro.ap_mar)
+					bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
 			}
 
 			// Particularidades para hechos

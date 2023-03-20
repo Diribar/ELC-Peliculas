@@ -22,7 +22,7 @@
 /* Marco */
 #marco {margin-top: 35px; position: relative;}
 /* Marco - Etiqueta */
-#marco #etiquetas {position: absolute; left: 0; top: 0; translate: 0 -20.5px;}
+#marco #etiquetas {position: absolute; left: 0; top: 0; translate: 0 -21.5px;}
 #marco #etiquetas {cursor: pointer;}
 #marco #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: var(--gris-oscuro) 2px solid;}
 #marco #etiquetas p {padding: 1px 3px; margin-right: 1px;}
@@ -34,7 +34,8 @@
 #marco #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
 #marco #datosDetalle {border: var(--gris-oscuro) 2px solid; background: var(--amarillo-claro);}
 #marco #datosDetalle {max-height: 156px; overflow-y: auto;}
-#marco #datosDetalle .datosParcial#masInfo {display: flex; flex-direction: row; justify-content: space-between;}
+#marco #datosDetalle .datosParcial {flex-direction: column;}
+#marco #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #marco #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
 #marco #datosDetalle .datosParcial#masInfo #masInfoDer {width: 50%;}
 #marco #datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
