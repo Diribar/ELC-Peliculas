@@ -273,7 +273,6 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
-	epocasHechos: ["ant", "jss", "cnt", "pst"],
 
 	// Links
 	provsQueNoRespetanCopyright: [
