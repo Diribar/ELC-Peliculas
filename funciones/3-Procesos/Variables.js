@@ -74,11 +74,6 @@ module.exports = {
 			listado: true,
 			hechos: true,
 		},
-		valores: {
-			titulo: "Valor",
-			listado: true,
-			valores: true,
-		},
 		// Otros
 		publicos: {
 			titulo: "Público Recomendado",

@@ -39,9 +39,7 @@ module.exports = {
 	gruposConsultas: {
 		personajes: () => {
 			// Época de nacimiento
-			let epocas = epocas_pers
-				.filter((n) => n.nombre_pers)
-				.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+			let epocas = epocas_pers.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
 			// Proceso de canonización
 			let canonsCons = canons.filter((n) => n.id.endsWith("N"));
 			canonsCons = preparaCampos(canonsCons, "CFC canons");
@@ -65,8 +63,7 @@ module.exports = {
 		},
 		hechos: () => {
 			// Epoca de ocurrencia
-			let epocas = epocas_hechos
-				.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+			let epocas = epocas_hechos.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
 			// Apariciones Marianas
 
 			// Específico de la Iglesia Católica
