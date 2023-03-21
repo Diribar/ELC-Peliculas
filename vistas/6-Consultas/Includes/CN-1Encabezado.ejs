@@ -17,7 +17,7 @@
 			<option 
 				value="<%= orden.valor %>" 
 				<% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %> 
-				class="<%= orden.ascDes ? 'ascDes' : orden.asc ? 'asc' : '' %>"
+				class="<%= orden.ascDes ? 'ascDes' : orden.asc ? 'asc' : '' %> <%= orden.bhr ? 'bhr' : '' %>"
 			><%= orden.nombre %></option>
 		<% } %>
 	</select>
