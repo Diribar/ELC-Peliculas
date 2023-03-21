@@ -1,7 +1,7 @@
 /* Layout y Orden */
 #encabezado #izquierda {display: flex; flex-direction: row;}
 #encabezado #izquierda select {padding: 3px 6px; font-size: 1rem; font-weight: bold; color: snow;}
-#encabezado #izquierda select:invalid {background: var(--rojo-oscuro);}
+#encabezado #izquierda select {background: var(--rojo-oscuro);}
 #encabezado #izquierda select:valid {background: var(--verde-oscuro);}
 #encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
