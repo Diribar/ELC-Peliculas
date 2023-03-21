@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	filtrosUsuarioBD: async (userID) => {
+	filtrosPersUsuario: async (userID) => {
 		// Obtiene los filtros personales
 		let resultado = userID ? await BD_genericas.obtieneTodosPorCampos("filtros_cabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
@@ -13,28 +13,28 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	camposFiltrosPorLayout: function (layoutElegido) {
-		// Variable 'camposFiltrosPorLayout'
-		let camposFiltrosPorLayout = {...variables.camposFiltros};
+	filtrosPorLayout: function (layoutElegido) {
+		// Variable 'filtrosPorLayout'
+		let filtrosPorLayout = {...variables.camposFiltros};
 
 		// Agrega las opciones de BD
 		for (let campo in camposFiltros) {
 			// Si el campo no aplica para el 'layoutElegido', lo elimina
-			if (!camposFiltrosPorLayout[campo].siempre && !camposFiltrosPorLayout[campo][layoutElegido]) delete camposFiltrosPorLayout[campo];
+			if (!filtrosPorLayout[campo].siempre && !filtrosPorLayout[campo][layoutElegido]) delete filtrosPorLayout[campo];
 			else {
 				// Le agrega el nombre del campo a cada bloque de información
-				camposFiltrosPorLayout[campo].codigo = campo;
+				filtrosPorLayout[campo].codigo = campo;
 				// Si no tiene opciones, le agrega las de la BD
-				if (!camposFiltrosPorLayout[campo].opciones) camposFiltrosPorLayout[campo].opciones = global[campo] ? global[campo] : [];
+				if (!filtrosPorLayout[campo].opciones) filtrosPorLayout[campo].opciones = global[campo] ? global[campo] : [];
 			}
 		}
 
 		// Agrega las opciones grupales
 		for (let entidad in this.gruposConsultas)
-			if (camposFiltrosPorLayout[entidad]) camposFiltrosPorLayout[entidad] = {...camposFiltrosPorLayout[entidad], ...this.gruposConsultas[entidad]()};
+			if (filtrosPorLayout[entidad]) filtrosPorLayout[entidad] = {...filtrosPorLayout[entidad], ...this.gruposConsultas[entidad]()};
 
 		// Fin
-		return camposFiltrosPorLayout;
+		return filtrosPorLayout;
 	},
 	gruposConsultas: {
 		personajes: () => {
