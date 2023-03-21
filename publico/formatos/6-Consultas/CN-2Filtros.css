@@ -38,6 +38,7 @@
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
+#cuerpo:has(#encabezado select[name="orden"] option:checked.bhr) > #filtros #hechosReales {display: none}
 
 /* Filtros - Categorías */
 #filtros #campos :where(#categorias) {background: var(--rojo-oscuro); color: snow; font-weight: bold;}
