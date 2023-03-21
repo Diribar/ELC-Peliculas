@@ -44,7 +44,7 @@ module.exports = {
 	],
 	camposFiltros: {
 		// Principales
-		categoria: {
+		categorias: {
 			titulo: "Relacionada con la Fe Católica",
 			siempre: true,
 			opciones: [
@@ -68,17 +68,16 @@ module.exports = {
 			titulo: "Personaje Histórico",
 			listado: true,
 			personajes: true,
-			valores: true,
 		},
 		hechos: {
 			titulo: "Hecho Histórico",
 			listado: true,
 			hechos: true,
-			valores: true,
 		},
 		valores: {
 			titulo: "Valor",
-			siempre: true,
+			listado: true,
+			valores: true,
 		},
 		// Otros
 		publicos: {
@@ -104,14 +103,11 @@ module.exports = {
 			siempre: true,
 		},
 		links: {
-			titulo: "Links",
+			titulo: "Tipos de link",
 			siempre: true,
 			opciones: [
-				{id: "CFC", nombre: "Con links gratuitos"},
-				{id: "VPC", nombre: "Con links 'pay per view'"},
-				{id: "VPC", nombre: "Con links gratuitos y ppv"},
-				{id: "VPC", nombre: "Con links de abono"},
-				{id: "VPC", nombre: "Todos los links"},
+				{id: "CFC", nombre: "Gratuitos"},
+				{id: "VPC", nombre: "De abono o 'pay per view'"},
 			],
 		},
 		castellano: {
@@ -277,7 +273,6 @@ module.exports = {
 		"Ven",
 		"Venerable",
 	],
-	epocasHechos: ["ant", "jss", "cnt", "pst"],
 
 	// Links
 	provsQueNoRespetanCopyright: [
@@ -350,7 +345,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
-			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca", tabla: "epocas"},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca", tabla: "epocas_pers"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
 				nombre: "rol_iglesia_id",

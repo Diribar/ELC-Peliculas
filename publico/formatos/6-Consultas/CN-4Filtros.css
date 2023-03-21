@@ -15,7 +15,7 @@
 
 /* Filtros - Campos - General */
 #filtros #campos {background: var(--gris-claro);}
-#filtros #campos {flex-grow: 1; height: 0; justify-content: space-between; }
+#filtros #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
 #filtros #campos * {order: 2;}
 #filtros #campos .filtro {padding: 7.5px 20px;}
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}

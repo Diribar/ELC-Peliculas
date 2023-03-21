@@ -193,7 +193,7 @@ let epocaHechos = (datos) => {
 	let respuesta = "";
 	let anoNecesario = false;
 	// Averigua la cantidad de épocas elegidas
-	let epocas = variables.epocasHechos;
+	let epocas = epocas_hechos.map((n) => n.id);
 	let cantEpocas = epocas.length;
 	for (let epoca of epocas) if (datos[epoca]) contador++;
 	// 1. Averigua si no fue respondido

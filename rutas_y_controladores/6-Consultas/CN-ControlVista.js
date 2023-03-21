@@ -30,7 +30,7 @@ module.exports = {
 			// Layout y Orden
 			...{layouts: variables.layouts, ordenes},
 			// Filtros - Encabezado y Campos
-			...{filtrosPers, ...camposFiltros},
+			...{filtrosPers, camposFiltros},
 		});
 	},
 };
