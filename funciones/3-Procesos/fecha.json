@@ -1,7 +1,11 @@
 {
-	"fechaRef": "Mar. 21/mar",
+	"fechaRef": "Mié. 22/mar",
 	"semanaRef": 11,
-	"fechaLocal": "Lun. 20/mar",
-	"horaLocal": "8:55",
-	"titulosImgDer": {"19-mar-23": "ELC - Películas", "20-mar-23": "ELC - Películas", "21-mar-23": "ELC - Películas"}
+	"fechaLocal": "Mar. 21/mar",
+	"horaLocal": "8:10",
+	"titulosImgDer": {
+		"20-mar-23": "ELC - Películas",
+		"21-mar-23": "ELC - Películas",
+		"22-mar-23": "Monseñor Oscar Arnulfo Romero"
+	}
 }
