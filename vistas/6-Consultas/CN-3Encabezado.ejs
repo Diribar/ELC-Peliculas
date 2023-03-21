@@ -9,17 +9,21 @@
 		</select>
 		<!-- Orden -->
 		<select name="orden" required>
-			<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
 			<% if (!ordenElegido) { %>
+				<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
 				<option value="" class="ocultar" selected>Ordenar por...</option>
 			<% } %>
 			<!-- Opciones en base de datos -->
 			<% for (let orden of ordenes) { %>
-				<option value="<%= orden.valor %>" <% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %>><%= orden.nombre %></option>
+				<option 
+					value="<%= orden.valor %>" 
+					<% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %> 
+					class="<%= orden.ascDes ? 'ascDes' : orden.asc ? 'asc' : '' %>"
+				><%= orden.nombre %></option>
 			<% } %>
 		</select>
 		<!-- Ascendente / Descendente -->
-		<div class="flexCol">
+		<div id="ascDes" class="flexCol">
 			<div class="flexRow">
 				<input type="radio" name="orden" id="ascendente">
 				<label for="ascendente">Ascendente</label>
