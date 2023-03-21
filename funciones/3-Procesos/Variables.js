@@ -68,17 +68,16 @@ module.exports = {
 			titulo: "Personaje Histórico",
 			listado: true,
 			personajes: true,
-			valores: true,
 		},
 		hechos: {
 			titulo: "Hecho Histórico",
 			listado: true,
 			hechos: true,
-			valores: true,
 		},
 		valores: {
 			titulo: "Valor",
-			siempre: true,
+			listado: true,
+			valores: true,
 		},
 		// Otros
 		publicos: {
@@ -104,12 +103,11 @@ module.exports = {
 			siempre: true,
 		},
 		links: {
-			titulo: "Links",
+			titulo: "Tipos de link",
 			siempre: true,
 			opciones: [
-				{id: "CFC", nombre: "Con links gratuitos"},
-				{id: "VPC", nombre: "Con links de abono o 'pay per view'"},
-				{id: "VPC", nombre: "Todos los links"},
+				{id: "CFC", nombre: "Gratuitos"},
+				{id: "VPC", nombre: "De abono o 'pay per view'"},
 			],
 		},
 		castellano: {

@@ -30,10 +30,8 @@ module.exports = {
 		}
 
 		// Agrega las opciones grupales
-		for (let entidad in this.gruposConsultas) {
-			let resultado = this.gruposConsultas[entidad]();
-			camposFiltros[entidad] = {...camposFiltros[entidad], ...resultado};
-		}
+		for (let entidad in this.gruposConsultas)
+			if (camposFiltros[entidad]) camposFiltros[entidad] = {...camposFiltros[entidad], ...this.gruposConsultas[entidad]()};
 
 		// Fin
 		return camposFiltros;
@@ -43,12 +41,12 @@ module.exports = {
 			// Época de nacimiento
 			let epocasCons = epocas
 				.filter((n) => n.nombre_pers)
-				.map((n) => ({id: n.id, nombre: n.nombre_pers, clase: "CFC VPC epoca"}));
+				.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
 			// Proceso de canonización
 			let canonsCons = canons.filter((n) => n.id.endsWith("N"));
 			canonsCons = preparaCampos(canonsCons, "CFC canons");
 			// Roles Iglesia
-			let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.length == 2);
+			let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.endsWith("N"));
 			rolesIglesiaCons = preparaCampos(rolesIglesiaCons, "CFC roles_iglesia");
 			// Consolidación
 			let resultado = {
@@ -60,7 +58,27 @@ module.exports = {
 					...canonsCons,
 					{nombre: "Rol en la Iglesia", clase: "CFC"},
 					...rolesIglesiaCons,
-					{nombre: "Listado de Personajes", clase: "CFC VPC"},
+				],
+			};
+			// Fin
+			return resultado;
+		},
+		hechos: () => {
+			// Epoca de ocurrencia
+			let epocasCons = epocas_hechos
+				.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+			// Apariciones Marianas
+
+			// Específico de la Iglesia Católica
+			// Consolidación
+			let resultado = {
+				grupo_hechos: [
+					{nombre: "Criterios Particulares", clase: "CFC"},
+					{id: "ama", nombre: "Apariciones Marianas", clase: "CFC VPC ama"},
+					{id: "solo_cfc1", nombre: "Historia de la Iglesia Católica", clase: "CFC VPC solo_cfc1"},
+					{id: "solo_cfc0", nombre: "Historia General", clase: "CFC VPC solo_cfc0"},
+					{nombre: "Época de ocurrencia", clase: "CFC VPC"},
+					...epocasCons,
 				],
 			};
 			// Fin
@@ -71,7 +89,7 @@ module.exports = {
 let preparaCampos = (campos, clase) => {
 	// Obtiene los campos necesarios
 	campos = campos.map((n) => {
-		return {id: n.id, nombre: n.nombre, clase};
+		return {id: n.id, nombre: n.plural ? n.plural : n.nombre, clase};
 	});
 	// Fin
 	return campos;

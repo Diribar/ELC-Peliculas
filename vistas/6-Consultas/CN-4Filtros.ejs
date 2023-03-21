@@ -18,34 +18,34 @@
 	<!-- Campos específicos -->
 	<div id="campos" class="flexCol">
 		<!-- CFC/VPC -->
-		<%- include('CN-1CheckboxV', {tema: categorias}) %>
+		<%- include('CN-1CheckboxV', {tema: camposFiltros.categorias}) %>
 		<div class="sectorConDesplV">
 			<nav class="flexCol">
 				<!-- Basada en Hechos Reales / Ficción -->
-				<%- include('CN-3Selects', {tema: hechosReales}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.hechosReales}) %>
 				<!-- Personajes Históricos -->
-				<%- include('CN-3Selects', {tema: personajes}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.personajes}) %>
 				<!-- Hechos Históricos -->
-				<%- include('CN-3Selects', {tema: hechos}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.hechos}) %>
 				<!-- Valores -->
-				<%- include('CN-3Selects', {tema: valores}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.valores}) %>
 				<hr>
 				<!-- Público Recomendado -->
-				<%- include('CN-3Selects', {tema: publicos}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.publicos}) %>
 				<!-- Época de Estreno -->
-				<%- include('CN-3Selects', {tema: epocasEstreno}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.epocasEstreno}) %>
 				<!-- Interés en la Película -->
-				<%- include('CN-3Selects', {tema: interes_opciones}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.interes_opciones}) %>
 				<!-- Links -->
-				<%- include('CN-3Selects', {tema: links}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.links}) %>
 				<!-- Idioma Castellano -->
-				<%- include('CN-3Selects', {tema: castellano}) %>
+				<%- include('CN-3Selects', {tema: camposFiltros.castellano}) %>
 				<hr>
 				<!-- Tipo de Actuación -->
-				<%- include('CN-1CheckboxV', {tema: tipos_actuacion}) %>
+				<%- include('CN-1CheckboxV', {tema: camposFiltros.tipos_actuacion}) %>
 				<hr>
 				<!-- Musical -->
-				<%- include('CN-2CheckboxH', {tema: musical}) %>
+				<%- include('CN-2CheckboxH', {tema: camposFiltros.musical}) %>
 				<hr>
 				<!-- Época de Estreno -->
 			</nav>
