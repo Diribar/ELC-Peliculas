@@ -18,25 +18,19 @@ module.exports = {
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		// Información para la vista
 		let filtrosPers = await procesos.filtrosPers(userID);
-		let camposFiltros = procesos.camposFiltros(layoutElegido)
+		let camposFiltros = procesos.camposFiltros(layoutElegido);
 		// Obtiene los 'órdenes' que corresponden al layout elegido
 		let ordenes = variables.orden.filter((n) => n.siempre || n[layoutElegido]);
 		// return res.send(camposFiltros)
 		// Va a la vista
-		res.render("CMP-0Estructura", {
-			tema: "consultas",
-			titulo: "Consulta de Películas",
+		return res.render("CMP-0Estructura", {
+			...{tema: "consultas", titulo: "Consulta de Películas"},
 			// Elecciones
-			layoutElegido,
-			opcionesElegidas,
-			ordenElegido,
+			...{layoutElegido, opcionesElegidas, ordenElegido},
 			// Layout y Orden
-			layouts: variables.layouts,
-			ordenes,
-			// Filtros - Encabezado
-			filtrosPers,
-			// Filtros - Campos
-			...camposFiltros,
+			...{layouts: variables.layouts, ordenes},
+			// Filtros - Encabezado y Campos
+			...{filtrosPers, ...camposFiltros},
 		});
 	},
 };

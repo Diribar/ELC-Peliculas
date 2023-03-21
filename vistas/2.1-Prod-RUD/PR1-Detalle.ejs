@@ -34,37 +34,63 @@
 		<% } %>
 	</div>
 </div>
-<div id="etiquetas" class="flexRow">
-	<p>Sinopsis</p>
-	<p>Información General</p>
-	<p>Actores</p>
-	<% if (registro.personaje_id != 1) { %>
-		<p>Personaje Histórico</p>
-	<% } %>
-	<% if (registro.hecho_id != 1) { %>
-		<p>Hecho Histórico</p>
-	<% } %>
-	<% if (registro.valor_id != 1) { %>
-		<p>Valor</p>
-	<% } %>
-</div>
-<div id="datosDetalle">
-	<div id="sinopsis" class="datosParcial">
-		<p><%= registro.sinopsis %></p>
+<div id="marco">
+	<div id="etiquetas" class="flexRow">
+		<p class="resaltar">Sinopsis</p>
+		<p>Información General</p>
+		<p>Actores</p>
+		<% if (bloqueIzq.personaje) { %>
+			<p>Personaje Histórico</p>
+		<% } %>
+		<% if (bloqueIzq.hecho) { %>
+			<p>Hecho Histórico</p>
+		<% } %>
+		<% if (bloqueIzq.valor) { %>
+			<p>Valor</p>
+		<% } %>
 	</div>
-	<div id="masInfo" class="datosParcial" style="display: none;">
-		<div id="masInfoIzq">
-			<% for (let campo of bloqueIzq.masInfoIzq) { %>
-				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+	<div id="datosDetalle">
+		<div id="sinopsis" class="datosParcial">
+			<p><%= registro.sinopsis ? registro.sinopsis : 'No disponemos de esa información' %></p>
+		</div>
+		<div id="masInfo" class="datosParcial" style="display: none;">
+			<% if (!bloqueIzq.masInfoIzq.length) { %>
+				<p>No disponemos de esa información</p>
+			<% } else { %>
+				<div id="masInfoIzq">
+					<% for (let campo of bloqueIzq.masInfoIzq) { %>
+						<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+					<% } %>
+				</div>
+			<% } %>
+			<% if (bloqueIzq.masInfoDer.length) { %>
+				<div id="masInfoDer">
+					<% for (let campo of bloqueIzq.masInfoDer) { %>
+						<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+					<% } %>
+				</div>
 			<% } %>
 		</div>
-		<div id="masInfoDer">
-			<% for (let campo of bloqueIzq.masInfoDer) { %>
-				<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
-			<% } %>
+		<div id="actores" class="datosParcial" style="display: none;">
+			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 		</div>
-	</div>
-	<div id="Actores" class="datosParcial" style="display: none;">
-		<p><%= bloqueIzq.actores %></p>
+		<% for (RCLV of RCLVs) { %>
+			<% if (bloqueIzq[RCLV.entSing]) { %>
+				<div id="rclv" class="datosParcial" style="display: none;">
+					<% for (let campo of bloqueIzq[RCLV.entSing]) { %>
+						<p>
+							<%= campo.titulo %>: <strong><%= campo.valor %></strong>
+							<% if (campo.titulo == bloqueIzq[RCLV.entSing][0].titulo) { %>
+								<span>
+									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
+										<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+									</a>
+								</span>
+							<% } %>
+						</p>
+					<% } %>
+				</div>
+			<% } %>
+		<% } %>
 	</div>
 </div>

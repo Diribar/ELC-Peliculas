@@ -71,22 +71,32 @@ module.exports = {
 		},
 		bloqueRCLV: (registro) => {
 			// Variables
-			let bloqueRCLV = [];
+			let bloque = [];
 
 			// Información
-			bloqueRCLV.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.apodo) bloqueRCLV.push({titulo: "Alternativo", valor: registro.apodo});
-			if (registro.dia_del_ano) bloqueRCLV.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
-			if (registro.entidad == "personajes" && registro.categoria_id == "CFC") {
-				if (registro.canon_id && !registro.canon_id.startsWith("NN"))
-					bloqueRCLV.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
-				if (!registro.rol_iglesia_id.startsWith("NN"))
-					bloqueRCLV.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
-				if (registro.ap_mar_id != 10) bloqueRCLV.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
+			bloque.push({titulo: "Nombre", valor: registro.nombre});
+			if (registro.dia_del_ano) bloque.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
+
+			// Particularidades para personajes
+			if (registro.entidad == "personajes") {
+				if (registro.apodo) bloque.push({titulo: "Alternativo", valor: registro.apodo});
+				if (registro.ano) bloque.push({titulo: "Año de nacimiento", valor: registro.ano});
+				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon)
+					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
+				if (registro.rol_iglesia_id && !registro.rol_iglesia_id.startsWith("NN") && registro.rol_iglesia)
+					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
+				if (registro.ap_mar_id && registro.ap_mar_id != 10 && registro.ap_mar)
+					bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
+			}
+
+			// Particularidades para hechos
+			if (registro.entidad == "hechos") {
+				if (registro.ano) bloque.push({titulo: "Año", valor: registro.ano});
+				if (registro.ama) bloque.push({titulo: "Es una aparición mariana", valor: "sí"});
 			}
 
 			// Fin
-			return bloqueRCLV;
+			return bloque;
 		},
 		procCanoniz: (RCLV) => {
 			// Variables
