@@ -7,8 +7,10 @@
 /* Zona de Encabezado más películas */
 #cuerpo #encabMasPelis {align-items: flex-start; height: 100%;}
 #encabMasPelis #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
-#encabMasPelis #vistaProds {display: flex; flex-direction: column; align-self: center; justify-content: center; align-items: center; flex-grow: 1;}
+#encabMasPelis #zona-de-prods {display: flex; flex-direction: column; flex-grow: 1; width: 100%;}
+#encabMasPelis #zona-de-prods {justify-content: center; align-items: center;}
 
 /* Zona de productos */
+
 
 /* Zona de productos - Comencemos */
