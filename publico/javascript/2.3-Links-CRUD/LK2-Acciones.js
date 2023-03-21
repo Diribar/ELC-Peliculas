@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 			// Obtiene los datos
 			let objeto = obtieneDataEntry(fila);
 			// Submit
-			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
+			await fetch("./api/guardar/" + objeto).then((n) => n.json());
 			location.reload();
 		});
 	});
@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
+			let respuesta = await fetch("./api/recuperar/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");
 			if (respuesta.activos) activos.innerHTML = "* Activos";
@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			let respuesta = await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());
+			let respuesta = await fetch("./api/deshacer/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.reload) location.reload();
 			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");

@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let rechs = document.querySelectorAll(".edicion .inputError .rech");
 	let ediciones_id = document.querySelectorAll(".edicion .edicion_id");
 	let condiciones = "?entidad=links";
-	let motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
+	let motivoGenerico_id = await fetch("./api/edicion/motivo-generico").then((n) => n.json());
 
 	// Decisión tomada
 	ediciones.forEach((edicion, indice) => {
@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 
 // Fórmulas
 let resultado = async (url) => {
-	let ruta = "/revision/api/link/edicion/";
+	let ruta = "./api/link/edicion/";
 	let respuesta = await fetch(ruta + url).then((n) => n.json());
 
 	// Si el resultado es 'OK', recarga la vista

@@ -29,8 +29,8 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 		// Rutas
-		rutaValidar: "/links/api/valida/?",
-		rutaObtieneProvs: "/links/api/obtiene-provs-links",
+		rutaValidar: "./api/valida/?",
+		rutaObtieneProvs: "./api/obtiene-provs-links",
 	};
 	let columnas = v.camposInput.length;
 	let filas = v.inputs.length / columnas;

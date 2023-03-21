@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
 		rechazar: document.querySelectorAll("#contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
-		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
+		motivoGenerico_id: await fetch("./api/edicion/motivo-generico").then((n) => n.json()),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
 		filasIngrs: document.querySelectorAll("#contenido #ingrs .fila"),
@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
 		rutaEdicion: "",
 		familia: location.pathname.slice(1),
-		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
+		rutaEdicion: "./api/edicion/aprob-rech/?entidad=",
 	};
 
 	// Otras variables

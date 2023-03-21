@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 	let paramsOrigen = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables para guardar los datos
 	let inputs = document.querySelectorAll(".inputError .input");
-	let rutaRQ = "/producto/api/edicion/enviar-a-req-session/";
+	let rutaRQ = "./api/edicion/enviar-a-req-session/";
 
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV

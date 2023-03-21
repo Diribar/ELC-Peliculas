@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let entidad = new URL(location.href).searchParams.get("entidad");
 	let prodID = new URL(location.href).searchParams.get("id");
 	let vista = location.pathname;
-	let ruta = "/crud/api/obtiene-col-cap/?entidad=";
+	let ruta = "./api/obtiene-col-cap/?entidad=";
 	// Obtiene el botón de 'alternancia'
 	let botonAlternancia = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 	

@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let submit = document.querySelector("#botones button[type='submit']");
-	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
+	const ruta = "./api/averigua-si-se-requiere-comentario/?id=";
 	let req_com;
 
 	// Botón submit
