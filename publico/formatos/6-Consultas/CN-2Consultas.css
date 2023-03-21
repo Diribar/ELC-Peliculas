@@ -6,9 +6,22 @@
 
 /* Zona de Encabezado más películas */
 #cuerpo #encabMasPelis {align-items: flex-start; height: 100%;}
-#encabMasPelis #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
-#encabMasPelis #vistaProds {display: flex; flex-direction: column; align-self: center; justify-content: center; align-items: center; flex-grow: 1;}
 
-/* Zona de productos */
+/* Zona de Encabezado más películas - Encabezado */
+#encabMasPelis #encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+
+/* Zona de Encabezado más películas - Zona de productos */
+#encabMasPelis #zona-de-prods {display: flex; flex-direction: column; flex-grow: 1; width: 100%;}
+#encabMasPelis #zona-de-prods {justify-content: center; align-items: center;}
 
 /* Zona de productos - Comencemos */
+#zona-de-prods #comencemos {display: flex; flex-direction: column;}
+#zona-de-prods #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
+#zona-de-prods #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+#zona-de-prods #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
+#zona-de-prods #comencemos button#verde {cursor: pointer;}
+#zona-de-prods #comencemos #verde {display: none;}
+/* Muestra y oculta el botón que corresponda */
+#cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid, #filtros #campos #categoria:not(:has(input:checked)))) #zona-de-prods #comencemos #rojo {display: none;}
+#cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid, #filtros #campos #categoria:not(:has(input:checked)))) #zona-de-prods #comencemos #verde {display: block;}
+

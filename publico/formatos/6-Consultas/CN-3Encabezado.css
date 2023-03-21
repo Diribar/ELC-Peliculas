@@ -1,7 +1,7 @@
 /* Layout y Orden */
 #encabezado #izquierda {display: flex; flex-direction: row;}
-#encabezado #izquierda select {padding: 3px 6px; font-size: 1rem; font-weight: bold; color: snow;}
-#encabezado #izquierda select:invalid {background: var(--rojo-oscuro);}
+#encabezado #izquierda select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold; color: snow;}
+#encabezado #izquierda select {background: var(--rojo-oscuro);}
 #encabezado #izquierda select:valid {background: var(--verde-oscuro);}
 #encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
@@ -9,5 +9,5 @@
 #encabezado #izquierda:not(:has(select[name="orden"] option:checked.ascDes)) > #ascDes {display: none}
 
 /* Contador */
-#cuerpo #contador-de-prods {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}
+#cuerpo #contador-de-prods {padding: 3px 5px; border: solid 2px gray; border-bottom-left-radius: 5px;}
 #cuerpo #contador-de-prods {font-size: 1.1rem; font-weight: bold;}

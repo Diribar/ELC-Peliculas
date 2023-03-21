@@ -1,59 +1,57 @@
-<section id="filtros">
-	<!--Filtros Guardados-->
-	<div id="personalizados"> 
-		<select name="filtro-personalizado">
-			<option value="">Filtros Guardados...</option>
-			<% for (filtro of filtrosPers) { %>
-				<option value="<%= filtro.id %>"><%= filtro.nombre %></option>
-			<% } %>
-		</select>
-		<div id="iconos" class="flexRow">
-			<i class="fa-solid fa-file" title="Crear un filtro nuevo"></i>
-			<i class="fa-solid fa-rotate-right" title="Reiniciar el filtro actual"></i>
-			<i class="fa-solid fa-floppy-disk" title="Guardar los cambios"></i>
-			<i class="fa-solid fa-pen" title="Cambiar el nombre"></i>
-			<i class="fa-solid fa-trash-can" title="Eliminar el filtro actual"></i>
-		</div>
+<!--Filtros Guardados-->
+<div id="personalizados"> 
+	<select name="filtro-personalizado">
+		<option value="">Filtros Guardados...</option>
+		<% for (filtro of filtrosPers) { %>
+			<option value="<%= filtro.id %>"><%= filtro.nombre %></option>
+		<% } %>
+	</select>
+	<div id="iconos" class="flexRow">
+		<i class="fa-solid fa-file" title="Crear un filtro nuevo"></i>
+		<i class="fa-solid fa-rotate-right" title="Reiniciar el filtro actual"></i>
+		<i class="fa-solid fa-floppy-disk" title="Guardar los cambios"></i>
+		<i class="fa-solid fa-pen" title="Cambiar el nombre"></i>
+		<i class="fa-solid fa-trash-can" title="Eliminar el filtro actual"></i>
 	</div>
-	<!-- Campos específicos -->
-	<div id="campos" class="flexCol">
-		<!-- CFC/VPC -->
-		<%- include('CN-1CheckboxV', {tema: camposFiltros.categorias}) %>
-		<div class="sectorConDesplV">
-			<nav class="flexCol">
-				<!-- Basada en Hechos Reales / Ficción -->
-				<%- include('CN-3Selects', {tema: camposFiltros.hechosReales}) %>
-				<!-- Personajes Históricos -->
-				<%- include('CN-3Selects', {tema: camposFiltros.personajes}) %>
-				<!-- Hechos Históricos -->
-				<%- include('CN-3Selects', {tema: camposFiltros.hechos}) %>
-				<!-- Valores -->
-				<%- include('CN-3Selects', {tema: camposFiltros.valores}) %>
-				<hr>
-				<!-- Público Recomendado -->
-				<%- include('CN-3Selects', {tema: camposFiltros.publicos}) %>
-				<!-- Época de Estreno -->
-				<%- include('CN-3Selects', {tema: camposFiltros.epocasEstreno}) %>
-				<!-- Interés en la Película -->
-				<%- include('CN-3Selects', {tema: camposFiltros.interes_opciones}) %>
-				<!-- Links -->
-				<%- include('CN-3Selects', {tema: camposFiltros.links}) %>
-				<!-- Idioma Castellano -->
-				<%- include('CN-3Selects', {tema: camposFiltros.castellano}) %>
-				<hr>
-				<!-- Tipo de Actuación -->
-				<%- include('CN-1CheckboxV', {tema: camposFiltros.tipos_actuacion}) %>
-				<hr>
-				<!-- Musical -->
-				<%- include('CN-2CheckboxH', {tema: camposFiltros.musical}) %>
-				<hr>
-				<!-- Época de Estreno -->
-			</nav>
-		</div>
-		<!-- Búsqueda -->
-		<div id="busqueda" class="filtro flexCol"> 
-			<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
-			<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
-		</div>
+</div>
+<!-- Campos específicos -->
+<div id="campos" class="flexCol">
+	<!-- CFC/VPC -->
+	<%- include('CN-1CheckboxV', {tema: camposFiltros.categorias}) %>
+	<div class="sectorConDesplV">
+		<nav class="flexCol">
+			<!-- Basada en Hechos Reales / Ficción -->
+			<%- include('CN-3Selects', {tema: camposFiltros.hechosReales}) %>
+			<!-- Personajes Históricos -->
+			<%- include('CN-3Selects', {tema: camposFiltros.personajes}) %>
+			<!-- Hechos Históricos -->
+			<%- include('CN-3Selects', {tema: camposFiltros.hechos}) %>
+			<!-- Valores -->
+			<%- include('CN-3Selects', {tema: camposFiltros.valores}) %>
+			<hr>
+			<!-- Público Recomendado -->
+			<%- include('CN-3Selects', {tema: camposFiltros.publicos}) %>
+			<!-- Época de Estreno -->
+			<%- include('CN-3Selects', {tema: camposFiltros.epocasEstreno}) %>
+			<!-- Interés en la Película -->
+			<%- include('CN-3Selects', {tema: camposFiltros.interes_opciones}) %>
+			<!-- Links -->
+			<%- include('CN-3Selects', {tema: camposFiltros.links}) %>
+			<!-- Idioma Castellano -->
+			<%- include('CN-3Selects', {tema: camposFiltros.castellano}) %>
+			<hr>
+			<!-- Tipo de Actuación -->
+			<%- include('CN-1CheckboxV', {tema: camposFiltros.tipos_actuacion}) %>
+			<hr>
+			<!-- Musical -->
+			<%- include('CN-2CheckboxH', {tema: camposFiltros.musical}) %>
+			<hr>
+			<!-- Época de Estreno -->
+		</nav>
 	</div>
-</section>
+	<!-- Búsqueda -->
+	<div id="busqueda" class="filtro flexCol"> 
+		<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
+		<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
+	</div>
+</div>
