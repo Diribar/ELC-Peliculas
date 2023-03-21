@@ -6,7 +6,7 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	consultasSinLayout: (req, res) => {
 		delete req.session.opcionesElegidas;
-		res.redirect("./listado");
+		res.redirect("./consultas/listado");
 	},
 	consultasConLayout: async (req, res) => {
 		// Variables
