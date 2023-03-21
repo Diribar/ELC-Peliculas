@@ -346,7 +346,7 @@ module.exports = {
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
-			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca", tabla: "epocas"},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca", tabla: "epocas_pers"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
 				nombre: "rol_iglesia_id",
