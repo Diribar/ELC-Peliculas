@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let v = {
 		// Datos generales
 		cuerpo: document.querySelector("#cuerpo"),
-		layoutElegido:document.querySelector("#cuerpo select[name='layout']"),
+		layoutElegido: document.querySelector("#cuerpo select[name='layout']"),
 		elegiblesSimples: document.querySelectorAll("#cuerpo .elegibleSimple"),
 		elegiblesComplejos: document.querySelectorAll("#cuerpo .elegibleComplejo"),
 
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		rutaConsultaDinamica: "/consultas/api/consulta-dinamica",
 	};
 	const elegiblesSimples = Array.from(v.elegiblesSimples).map((n) => n.name);
-	const elegiblesComplejos = [...new Set(Array.from(v.elegiblesComplejos).map((n) => n.name))];	
+	const elegiblesComplejos = [...new Set(Array.from(v.elegiblesComplejos).map((n) => n.name))];
 
 	// Funciones
 	let FN_fin = (opciones) => {
@@ -35,15 +35,25 @@ window.addEventListener("load", async () => {
 			for (let elegible of v.elegiblesSimples) if (elegible.value) opciones[elegible.name] = elegible.value;
 			// Elegibles Complejos
 			for (let elegible of v.elegiblesComplejos) if (elegible.checked) opciones[elegible.name] = elegible.value;
-			opciones.layout=v.layoutElegido.value
+			opciones.layout = v.layoutElegido.value;
 			// console.log(opciones);
 		}
-		// Actualiza la session y cookie
-		fetch
+		// fetch;
 		// Obtiene la información a mostrar
+		// Actualiza la session y cookie
 		// Actualiza el contador
 		// Actualiza la información mostrada
 		// Actualiza el ID del Filtro en el registro de usuario
+
+		// Limpia líneas consecutivas
+		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
+		let tags = [];
+		hijos.forEach((hijo, num) => {
+			if (window.getComputedStyle(hijo).getPropertyValue("order") == 2) tags.push({tag: hijo.tagName, num});
+			hijo.classList.remove("ocultar");
+		});
+		for (let i = 1; i < tags.length; i++)
+			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
 
 		// Fin
 		return;
@@ -83,9 +93,6 @@ window.addEventListener("load", async () => {
 			v.elegiblesComplejos.forEach((elegible, i) => {
 				elegible.checked = elegible.value == opciones[elegible.name];
 			});
-
-			// Fin
-			FN_fin(opciones);
 		}
 
 		// 2. Si la novedad está en cualquier otro campo...
@@ -106,16 +113,10 @@ window.addEventListener("load", async () => {
 				v.iconos.forEach((icono, i) => {
 					if (i) icono.classList.add("inactivo");
 				});
-
-			// Fin
-			FN_fin();
 		}
 
-		// Limpia líneas consecutivas
-		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *")
-		console.log(hijos);
-		for (let hijo of hijos)
-			console.dir(hijo);
-		
+		// Fin
+		FN_fin(opciones);
+		return;
 	});
 });
