@@ -343,8 +343,8 @@ window.addEventListener("load", async () => {
 			if (boton.className.includes("inactivo")) return;
 			// Elimina los datos de edicG en la BD
 			indice
-				? fetch("./api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID)
-				: fetch("./api/edicion-nueva/eliminar");
+				? fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID)
+				: fetch("/producto/api/edicion-nueva/eliminar");
 				// Actualiza los datos de edición
 				version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
 			// Actualiza el avatar de la edición

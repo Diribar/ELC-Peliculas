@@ -9,8 +9,8 @@ window.addEventListener("load", async () => {
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 		// Rutas
-		rutaValidacion: "./api/valida-sector/?funcion=",
-		rutaRegistrosConEsaFecha: "./api/registros-con-esa-fecha/",
+		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
+		rutaRegistrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 		// Links a otros sitios
 		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 		v.canon_id = document.querySelector("#dataEntry select[name='canon_id']");
 		v.ap_mar_id = document.querySelector("#dataEntry select[name='ap_mar_id']");
 		// Otros
-		v.prefijos = await fetch("./api/prefijos").then((n) => n.json());
+		v.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 		v.opcionesRolIglesia = document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option");
 		v.opcionesProceso = document.querySelectorAll("#dataEntry select[name='canon_id'] option");
 		v.camposCFC = document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input");
