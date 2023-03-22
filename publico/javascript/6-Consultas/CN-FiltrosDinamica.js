@@ -8,26 +8,24 @@ window.addEventListener("load", () => {
 	// Novedad en algún lado
 
 		// 1. Si la novedad está en el filtro personalizado
-			// Si el filtro personalizado es el Estándar, inactiva los íconos 'actualizar', 'modificar nombre' y 'eliminar'
-			
-			// Obtiene la información a mostrar
+			// Obtiene las opciones de la BD y actualiza los filtros
 
 		// 2. Si la novedad está en cualquier otro campo...
-			// Obtiene la información a mostrar
-
 			// Inactiva las opciones de 'Modificar nombre' y 'Eliminar' en la vista
 
 			// Si el filtro personalizado es el Estándar, desaparece el nombre de la vista
 
 		// 3. Comunes
-			// Obtiene todas las opciones elegidas
+			// Obtiene los valores de todos los filtros elegidos
 
 			// Actualiza la session y cookie
 			
+			// Obtiene la información a mostrar
+
 			// Actualiza el contador
 
 			// Actualiza la información mostrada
 
-			// Actualiza el ID del Filtro en el usuario
+			// Actualiza el ID del Filtro en el registro de usuario
 
 	});
