@@ -8,7 +8,7 @@
 	</select>
 	<!-- Orden -->
 	<select name="orden" required>
-		<% if (!ordenElegido) { %>
+		<% if (!opcionesElegidas.orden) { %>
 			<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
 			<option value="" class="ocultar" selected>Ordenar por...</option>
 		<% } %>
@@ -16,7 +16,7 @@
 		<% for (let orden of ordenesPorLayout) { %>
 			<option 
 				value="<%= orden.valor %>" 
-				<% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %> 
+				<% if (orden.valor == opcionesElegidas.orden) { %>selected<% } %> 
 				class="<%= orden.ascDes ? 'ascDes' : orden.asc ? 'asc' : '' %> <%= orden.bhr ? 'bhr' : '' %>"
 			><%= orden.nombre %></option>
 		<% } %>

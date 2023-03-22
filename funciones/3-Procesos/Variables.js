@@ -30,7 +30,7 @@ module.exports = {
 		{nombre: "Películas con Valores", url: "valores"},
 	],
 	orden: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", siempre: true, asc: true},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", listado: true, asc: true},
 		{nombre: "Por fecha interna de agregado", valor: "incorporacion", siempre: true, ascDes: true},
 		{nombre: "Por año de estreno", valor: "estreno", siempre: true, ascDes: true},
 		{nombre: "Por año de nacim. del personaje", valor: "ano", bhr: true, personajes: true, ascDes: true},

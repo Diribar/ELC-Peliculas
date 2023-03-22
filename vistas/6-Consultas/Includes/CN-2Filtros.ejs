@@ -1,9 +1,12 @@
 <!--Filtros Guardados-->
 <div id="personalizados"> 
-	<select name="filtro-personalizado">
+	<select name="filtros_cabecera">
 		<option value="">Filtros Guardados...</option>
 		<% for (filtro of filtrosPersUsuario) { %>
-			<option value="<%= filtro.id %>"><%= filtro.nombre %></option>
+			<option 
+				value="<%= filtro.id %>"
+				<% if (filtro.id == opcionesElegidas.filtro_id) { %>selected<% } %>
+			><%= filtro.nombre %></option>
 		<% } %>
 	</select>
 	<div id="iconos" class="flexRow">
