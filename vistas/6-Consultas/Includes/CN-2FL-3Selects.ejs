@@ -1,6 +1,6 @@
 <% if (tema) { %>
 	<div id="<%= tema.codigo %>" class="filtro select flexCol">
-		<select name="<%= tema.codigo %>">
+		<select name="<%= tema.codigo %>" class="elegibleSimple">
 			<option value="" class="sinFiltro"><%= tema.titulo %></option>
 			<% let label %>
 			<% let grupo = tema["grupo_" + tema.codigo] %>

@@ -1,6 +1,6 @@
 <!--Filtros Guardados-->
 <div id="filtrosPersUsuario"> 
-	<select name="filtros_cabecera">
+	<select name="filtrosCabecera">
 		<option value="">Filtros Guardados...</option>
 		<% for (filtro of filtrosPersUsuario) { %>
 			<option 
@@ -10,11 +10,11 @@
 		<% } %>
 	</select>
 	<div id="iconos" class="flexRow">
-		<i class="fa-solid fa-file scale" title="Crear un filtro nuevo"></i>
-		<i class="fa-solid fa-rotate-right scale" title="Reiniciar el filtro actual"></i>
-		<i class="fa-solid fa-floppy-disk <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Guardar los cambios"></i>
-		<i class="fa-solid fa-pen <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Cambiar el nombre"></i>
-		<i class="fa-solid fa-trash-can <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Eliminar el filtro actual"></i>
+		<i id="nuevo" class="fa-solid fa-file scale" title="Crea un filtro nuevo"></i>
+		<i id="reinicio" class="fa-solid fa-rotate-right scale" title="Reinicia el filtro actual"></i>
+		<i id="actualiza" class="fa-solid fa-floppy-disk <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Guarda los cambios"></i>
+		<i id="modificaNombre" class="fa-solid fa-pen <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Modifica el nombre"></i>
+		<i id="elimina" class="fa-solid fa-trash-can <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Elimina el filtro actual"></i>
 	</div>
 </div>
 <!-- Campos específicos -->
@@ -39,7 +39,7 @@
 			<!-- Interés en la Película -->
 			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.interes_opciones}) %>
 			<!-- Links -->
-			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.links}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.tipos_link}) %>
 			<!-- Idioma Castellano -->
 			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.castellano}) %>
 			<hr>
@@ -54,7 +54,7 @@
 	</div>
 	<!-- Búsqueda -->
 	<div id="busqueda" class="filtro flexCol"> 
-		<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave">
+		<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave" class="elegibleSimple">
 		<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
 	</div>
 </div>

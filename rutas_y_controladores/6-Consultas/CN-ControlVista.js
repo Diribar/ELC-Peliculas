@@ -15,9 +15,9 @@ module.exports = {
 		// Opciones elegidas
 		// Obtiene la información de la cookie
 		if (req.cookies && req.cookies.opcionesElegidas) opcionesElegidas = req.cookies.opcionesElegidas;
+		// Obtiene la información de la BD
 		else {
-			// Obtiene la información de la BD
-			let aux =
+			const aux =
 				userID && usuario.filtro_id
 					? await BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: usuario.filtro_id})
 					: filtroEstandar_campos;
@@ -25,7 +25,6 @@ module.exports = {
 			// Convierte el array en objeto literal
 			aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 			opcionesElegidas.filtro_id = aux[0].cabecera_id;
-			console.log(19, opcionesElegidas);
 		}
 
 		// Variables
