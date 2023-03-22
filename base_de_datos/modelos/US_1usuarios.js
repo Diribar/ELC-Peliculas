@@ -29,6 +29,7 @@ module.exports = (sequelize, dt) => {
 		fecha_ultimo_login: {type: dt.DATE},
 		fecha_contrasena: {type: dt.DATE},
 		fecha_revisores: {type: dt.DATE},
+		filtro_id: {type: dt.INTEGER},
 
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},

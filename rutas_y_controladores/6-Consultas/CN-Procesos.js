@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	filtrosPers: async (userID) => {
+	filtrosPersUsuario: async (userID) => {
 		// Obtiene los filtros personales
 		let resultado = userID ? await BD_genericas.obtieneTodosPorCampos("filtros_cabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
@@ -13,28 +13,28 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	camposFiltros: function (layoutElegido) {
-		// Variable 'camposFiltros'
-		let camposFiltros = {...variables.camposFiltros};
+	filtrosPorLayout: function (layoutElegido) {
+		// Variable 'filtrosPorLayout'
+		let filtrosPorLayout = {...variables.camposFiltros};
 
 		// Agrega las opciones de BD
 		for (let campo in camposFiltros) {
 			// Si el campo no aplica para el 'layoutElegido', lo elimina
-			if (!camposFiltros[campo].siempre && !camposFiltros[campo][layoutElegido]) delete camposFiltros[campo];
+			if (!filtrosPorLayout[campo].siempre && !filtrosPorLayout[campo][layoutElegido]) delete filtrosPorLayout[campo];
 			else {
 				// Le agrega el nombre del campo a cada bloque de información
-				camposFiltros[campo].codigo = campo;
+				filtrosPorLayout[campo].codigo = campo;
 				// Si no tiene opciones, le agrega las de la BD
-				if (!camposFiltros[campo].opciones) camposFiltros[campo].opciones = global[campo] ? global[campo] : [];
+				if (!filtrosPorLayout[campo].opciones) filtrosPorLayout[campo].opciones = global[campo] ? global[campo] : [];
 			}
 		}
 
 		// Agrega las opciones grupales
 		for (let entidad in this.gruposConsultas)
-			if (camposFiltros[entidad]) camposFiltros[entidad] = {...camposFiltros[entidad], ...this.gruposConsultas[entidad]()};
+			if (filtrosPorLayout[entidad]) filtrosPorLayout[entidad] = {...filtrosPorLayout[entidad], ...this.gruposConsultas[entidad]()};
 
 		// Fin
-		return camposFiltros;
+		return filtrosPorLayout;
 	},
 	gruposConsultas: {
 		personajes: () => {

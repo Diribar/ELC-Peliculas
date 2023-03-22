@@ -2,7 +2,7 @@
 <div id="personalizados"> 
 	<select name="filtro-personalizado">
 		<option value="">Filtros Guardados...</option>
-		<% for (filtro of filtrosPers) { %>
+		<% for (filtro of filtrosPersUsuario) { %>
 			<option value="<%= filtro.id %>"><%= filtro.nombre %></option>
 		<% } %>
 	</select>
@@ -17,34 +17,34 @@
 <!-- Campos específicos -->
 <div id="campos" class="flexCol">
 	<!-- CFC/VPC -->
-	<%- include('CN-2FL-1CheckboxV', {tema: camposFiltros.categorias}) %>
+	<%- include('CN-2FL-1CheckboxV', {tema: filtrosPorLayout.categorias}) %>
 	<div class="sectorConDesplV">
 		<nav class="flexCol">
 			<!-- Basada en Hechos Reales / Ficción -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.hechosReales}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.hechosReales}) %>
 			<!-- Personajes Históricos -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.personajes}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.personajes}) %>
 			<!-- Hechos Históricos -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.hechos}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.hechos}) %>
 			<!-- Valores -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.valores}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.valores}) %>
 			<hr>
 			<!-- Público Recomendado -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.publicos}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.publicos}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.epocasEstreno}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.epocasEstreno}) %>
 			<!-- Interés en la Película -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.interes_opciones}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.interes_opciones}) %>
 			<!-- Links -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.links}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.links}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-2FL-3Selects', {tema: camposFiltros.castellano}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.castellano}) %>
 			<hr>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-2FL-1CheckboxV', {tema: camposFiltros.tipos_actuacion}) %>
+			<%- include('CN-2FL-1CheckboxV', {tema: filtrosPorLayout.tipos_actuacion}) %>
 			<hr>
 			<!-- Musical -->
-			<%- include('CN-2FL-2CheckboxH', {tema: camposFiltros.musical}) %>
+			<%- include('CN-2FL-2CheckboxH', {tema: filtrosPorLayout.musical}) %>
 			<hr>
 			<!-- Época de Estreno -->
 		</nav>

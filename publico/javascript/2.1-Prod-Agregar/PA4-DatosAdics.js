@@ -44,8 +44,8 @@ window.addEventListener("load", async () => {
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
 		// Rutas
-		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
-		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
+		rutaValidar: "./api/valida/datos-adicionales/?",
+		rutaGuardaDatosAdics: "./api/DA-guarda-datos-adics/?",
 	};
 	(() => {
 		// Campos de error

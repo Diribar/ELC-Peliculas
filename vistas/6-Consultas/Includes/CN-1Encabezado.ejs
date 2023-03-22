@@ -13,7 +13,7 @@
 			<option value="" class="ocultar" selected>Ordenar por...</option>
 		<% } %>
 		<!-- Opciones en base de datos -->
-		<% for (let orden of ordenes) { %>
+		<% for (let orden of ordenesPorLayout) { %>
 			<option 
 				value="<%= orden.valor %>" 
 				<% if (ordenElegido && orden.valor == ordenElegido) { %>selected<% } %> 
