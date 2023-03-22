@@ -29,11 +29,11 @@ const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalid
 //************************ Rutas ****************************
 // Rutas de APIs
 // Detalle
-router.get("/api/detalle/obtiene-calificaciones", API.obtieneCalificaciones);
+router.get("/api/obtiene-calificaciones", API.obtieneCalificaciones);
 // Edición
-router.get("/api/edicion/valida", API.validaEdicion);
-router.get("/api/edicion/obtiene-original-y-edicion", API.obtieneVersionesProd);
-router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
+router.get("/api/valida", API.validaEdicion);
+router.get("/api/obtiene-original-y-edicion", API.obtieneVersionesProd);
+router.get("/api/envia-a-req-session", API.enviarAReqSession);
 router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
