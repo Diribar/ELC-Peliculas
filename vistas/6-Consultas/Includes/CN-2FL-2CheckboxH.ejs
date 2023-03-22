@@ -4,9 +4,12 @@
 		<% for (let opcion of tema.opciones) { %>
 			<div class="label-input flexRowAlign">
 				<% let nombre = opcion.nombre %>
-				<% if (nombre.length>5) nombre=opcion.nombre.slice(0, 5)+"." %> 
+				<% if (nombre.length > 5) nombre = opcion.nombre.slice(0, 5)+"." %> 
 				<label><%= nombre %></label>
-				<input type="checkbox" name="<%= tema.codigo %>" value="<%= opcion.id %>" class="input">
+				<input 
+					type="checkbox" name="<%= tema.codigo %>" value="<%= opcion.id %>" class="input" 
+					<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>checked<% } %>
+				>
 			</div>
 		<% } %>
 	</div>

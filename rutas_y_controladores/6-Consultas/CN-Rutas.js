@@ -7,11 +7,9 @@ const vista = require("./CN-ControlVista");
 // Middlewares
 let consDescon = require("../../middlewares/urls/urlConsultaDescon");
 
-// Home
-router.get("/", vista.consultasSinLayout);
-
-// Vistas de Opciones
-router.get("/:opcion", consDescon, vista.consultasConLayout);
+// Vistas
+router.get("/", vista.consultas);
+router.get("/:layoutElegido", consDescon, vista.consultas);
 
 // Fin
 module.exports = router;

@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
-		rutaValidar: "./api/edicion/valida/?",
+		rutaValidar: "/producto/api/valida/?",
 		// Variables de país
 		paisesID: document.querySelector("#paises_id input[name='paises_id']"), // Lugar donde almacenar los ID
 		paisesMostrar: document.querySelector("#paises_id #mostrarPaises"), // Lugar donde mostrar los nombres
@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		estamosEnEdicNueva: true,
 		versionAnt: null, // Se usa más adelante, no se debe borrar
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
-		rutaVersiones: "./api/edicion/obtiene-original-y-edicion/",
+		rutaVersiones: "/producto/api/obtiene-original-y-edicion/",
 		// Temas de avatar
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
@@ -343,8 +343,8 @@ window.addEventListener("load", async () => {
 			if (boton.className.includes("inactivo")) return;
 			// Elimina los datos de edicG en la BD
 			indice
-				? fetch("./api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID)
-				: fetch("./api/edicion-nueva/eliminar");
+				? fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + v.entidad + "&id=" + v.prodID)
+				: fetch("/producto/api/edicion-nueva/eliminar");
 				// Actualiza los datos de edición
 				version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
 			// Actualiza el avatar de la edición

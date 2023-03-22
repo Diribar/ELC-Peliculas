@@ -30,7 +30,7 @@ module.exports = {
 		{nombre: "Películas con Valores", url: "valores"},
 	],
 	orden: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", siempre: true, asc: true},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", listado: true, asc: true},
 		{nombre: "Por fecha interna de agregado", valor: "incorporacion", siempre: true, ascDes: true},
 		{nombre: "Por año de estreno", valor: "estreno", siempre: true, ascDes: true},
 		{nombre: "Por año de nacim. del personaje", valor: "ano", bhr: true, personajes: true, ascDes: true},
@@ -101,8 +101,9 @@ module.exports = {
 			titulo: "Tipos de link",
 			siempre: true,
 			opciones: [
-				{id: "CFC", nombre: "Gratuitos"},
-				{id: "VPC", nombre: "De abono o 'pay per view'"},
+				{id: "gratis", nombre: "Gratuitos"},
+				{id: "pagos", nombre: "De abono o 'pay per view'"},
+				{id: "todos", nombre: "Cualquiera de ellos"},
 			],
 		},
 		castellano: {

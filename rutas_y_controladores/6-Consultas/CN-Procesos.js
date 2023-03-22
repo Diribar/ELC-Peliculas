@@ -18,7 +18,7 @@ module.exports = {
 		let filtrosPorLayout = {...variables.camposFiltros};
 
 		// Agrega las opciones de BD
-		for (let campo in camposFiltros) {
+		for (let campo in filtrosPorLayout) {
 			// Si el campo no aplica para el 'layoutElegido', lo elimina
 			if (!filtrosPorLayout[campo].siempre && !filtrosPorLayout[campo][layoutElegido]) delete filtrosPorLayout[campo];
 			else {

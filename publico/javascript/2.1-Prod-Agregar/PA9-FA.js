@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 	let resultadoComentario = document.querySelector("#resultado");
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let statusInicial = true;
-	let pre = "./api/";
+	let pre = "/producto/agregar/api/";
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
@@ -104,7 +104,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("./api/valida/ingreso-fa/" + url).then((n) => n.json());
+		return fetch("/producto/agregar/api/valida/ingreso-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial

@@ -13,7 +13,10 @@
 					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
 				<% } else { %>
 					<!-- Acciones si es una opción dentro del mismo rubro -->
-					<option value="<%= opcion.id %>" class="<%= opcion.clase %>"><%= opcion.nombre %></option>
+					<option 
+						value="<%= opcion.id %>" class="<%= opcion.clase %>"
+						<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>selected<% } %>
+					><%= opcion.nombre %></option>
 				<% } %>
 			<% } %>
 			<!-- Si se había abierto un rubro, lo cierra -->

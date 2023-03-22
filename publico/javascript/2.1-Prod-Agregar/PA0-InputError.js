@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 			v.resultado.classList.remove(...v.resultado.classList);
 			v.resultado.classList.add("resultadoEnEspera");
 			// Obtiene el link
-			return "./api/PC-cant-prods/?palabrasClave=" + palabrasClave;
+			return "/producto/agregar/api/PC-cant-prods/?palabrasClave=" + palabrasClave;
 		};
 		v.mostrarResultados = async (resultados) => {
 			// Variables
@@ -91,8 +91,8 @@ window.addEventListener("load", async () => {
 		v.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
 	}
 	// Rutas
-	let rutaValidar = "./api/valida/" + paso.paso + "/?";
-	let rutaCaracteresCastellano = "./api/convierte-letras-al-castellano/?valor=";
+	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
+	let rutaCaracteresCastellano = "/producto/agregar/api/convierte-letras-al-castellano/?valor=";
 
 	// FUNCIONES *******************************************
 	let statusInicial = async (mostrarIconoError) => {

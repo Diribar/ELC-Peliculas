@@ -3,15 +3,16 @@
 #cuerpo #filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #cuerpo #filtros {display: flex; flex-direction: column; }
 
-/* #filtros {display: flex; flex-direction: column; flex-grow: 1;} */
 #filtros * {font-size: 1rem;}
+#filtros :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
 /* Filtros - Personalizados */
-#filtros #personalizados {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
-#filtros #personalizados :is(h1, .fa-solid) {color: var(--celeste-claro);}
-#filtros #personalizados select {font-weight: bold;}
-#filtros #personalizados :is(select, option) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
-#filtros #personalizados #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
+#filtros #filtrosPersUsuario {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
+#filtros #filtrosPersUsuario :is(h1, .fa-solid) {color: var(--celeste-claro);}
+#filtros #filtrosPersUsuario select {font-weight: bold;}
+#filtros #filtrosPersUsuario :is(select, option) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
+#filtros #filtrosPersUsuario #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
+#filtros #filtrosPersUsuario #iconos i {cursor: pointer; }
 
 /* Filtros - Campos - General */
 #filtros #campos {background: var(--gris-claro);}
@@ -21,7 +22,6 @@
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
 
 /* Filtros - Campos - Select */
-#filtros .filtro select {border-radius: 5px;}
 #filtros .filtro select option {background: snow; color: var(--azul-oscuro);}
 #filtros .filtro select option.sinFiltro {display: block; font-style: italic;}
 

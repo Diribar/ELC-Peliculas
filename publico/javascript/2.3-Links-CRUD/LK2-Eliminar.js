@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 	// Ruta
 	let entorno = location.pathname;
 	let ruta = entorno.startsWith("/links/")
-		? "./api/eliminar/"
+		? "/links/api/eliminar/"
 		: entorno.startsWith("/revision/")
 		? "/revision/api/link/alta-baja"
 		: "";
