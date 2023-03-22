@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 			v.resultado.classList.remove(...v.resultado.classList);
 			v.resultado.classList.add("resultadoEnEspera");
 			// Obtiene el link
-			return "./api/PC-cant-prods/?palabrasClave=" + palabrasClave;
+			return "/producto/agregar/api/PC-cant-prods/?palabrasClave=" + palabrasClave;
 		};
 		v.mostrarResultados = async (resultados) => {
 			// Variables

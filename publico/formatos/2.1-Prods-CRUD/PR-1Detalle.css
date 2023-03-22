@@ -22,13 +22,12 @@
 /* Marco */
 #marco {margin-top: 35px; position: relative;}
 /* Marco - Etiqueta */
-#marco #etiquetas {position: absolute; left: 0; top: 0; translate: 0 -21.5px;}
-#marco #etiquetas {cursor: pointer;}
+#marco #etiquetas {position: absolute; left: 0; top: 0; translate: 0 -21px;}
 #marco #etiquetas p {border: 1px solid var(--gris-oscuro); border-bottom: var(--gris-oscuro) 2px solid;}
-#marco #etiquetas p {padding: 1px 3px; margin-right: 1px;}
+#marco #etiquetas p {padding: 1px 3px; margin-right: 1px; cursor: pointer;}
 #marco #etiquetas p {font-weight: normal; color: var(--azul-oscuro); background: var(--celeste-claro);}
 #marco #etiquetas p {border-top-left-radius: 5px; border-top-right-radius: 5px;}
-#marco #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold;}
+#marco #etiquetas p.resaltar {background: var(--amarillo-claro); font-weight: bold; cursor: default;}
 #marco #etiquetas p.resaltar {border-width: 2px; border-bottom: 3px solid var(--amarillo-claro);}
 /* Marco - Información */
 #marco #datosDetalle {padding: 10px 15px; border-radius: 10px; border-top-left-radius: 0;}
