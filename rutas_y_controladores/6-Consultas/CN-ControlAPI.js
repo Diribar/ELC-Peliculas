@@ -17,4 +17,22 @@ module.exports = {
 		// Fin
 		return res.json(opciones);
 	},
+
+	guardaSessionCookie:(req,res)=>{
+		// Recibe la información
+		let datos = JSON.parse(req.query.datos);
+		// Guarda session
+		req.session.opcionesElegidas = datos
+		// Guarda cookie
+		res.cookie("opcionesElegidas", datos, {maxAge: unDia});
+		// Fin
+		return res.json()
+	},
+
+	obtieneProductos:(req,res)=>{
+		let datos = JSON.parse(req.query.datos);
+		console.log(datos);
+		return res.json()
+	},
+
 };

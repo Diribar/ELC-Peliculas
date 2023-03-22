@@ -21,11 +21,11 @@
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="flexCol">
 		<div class="flexRow">
-			<input type="radio" name="orden" value="des" id="descendente" checked class="elegibleComplejo">
+			<input type="radio" name="ascDes" value="des" id="descendente" class="elegibleComplejo" checked>
 			<label for="descendente">Descendente</label>
 		</div>
 		<div class="flexRow">
-			<input type="radio" name="orden" value="asc" id="ascendente" class="elegibleComplejo">
+			<input type="radio" name="ascDes" value="asc" id="ascendente" class="elegibleComplejo" <% if (opcionesElegidas.ascDesasc) { %>checked<% } %>>
 			<label for="ascendente">Ascendente</label>
 		</div>
 	</div>
