@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 		// Limpia las opciones de lo relacionado con capitulos
 		limpiaLasOpciones(capitulo);
 		// Obtiene los capitulos de la temporada
-		let ruta = "./api/averigua-capitulos/";
+		let ruta = "/crud/api/averigua-capitulos/";
 		let capitulos = await fetch(
 			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value
 		).then((n) => n.json());
