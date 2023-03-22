@@ -101,8 +101,9 @@ module.exports = {
 			titulo: "Tipos de link",
 			siempre: true,
 			opciones: [
-				{id: "CFC", nombre: "Gratuitos"},
-				{id: "VPC", nombre: "De abono o 'pay per view'"},
+				{id: "gratis", nombre: "Gratuitos"},
+				{id: "pagos", nombre: "De abono o 'pay per view'"},
+				{id: "todos", nombre: "Cualquiera de ellos"},
 			],
 		},
 		castellano: {
