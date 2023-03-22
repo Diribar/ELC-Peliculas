@@ -8,10 +8,7 @@
 	</select>
 	<!-- Orden -->
 	<select name="orden" required>
-		<% if (!opcionesElegidas.orden) { %>
-			<!-- Sólo si no hay un orden elegido, toma en cuenta esta opción -->
-			<option value="" class="ocultar" selected>Ordenar por...</option>
-		<% } %>
+		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of ordenesPorLayout) { %>
 			<option 

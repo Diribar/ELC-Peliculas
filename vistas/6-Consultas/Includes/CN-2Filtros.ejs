@@ -1,5 +1,5 @@
 <!--Filtros Guardados-->
-<div id="personalizados"> 
+<div id="filtrosPersUsuario"> 
 	<select name="filtros_cabecera">
 		<option value="">Filtros Guardados...</option>
 		<% for (filtro of filtrosPersUsuario) { %>
@@ -10,11 +10,11 @@
 		<% } %>
 	</select>
 	<div id="iconos" class="flexRow">
-		<i class="fa-solid fa-file" title="Crear un filtro nuevo"></i>
-		<i class="fa-solid fa-rotate-right" title="Reiniciar el filtro actual"></i>
-		<i class="fa-solid fa-floppy-disk" title="Guardar los cambios"></i>
-		<i class="fa-solid fa-pen" title="Cambiar el nombre"></i>
-		<i class="fa-solid fa-trash-can" title="Eliminar el filtro actual"></i>
+		<i class="fa-solid fa-file scale" title="Crear un filtro nuevo"></i>
+		<i class="fa-solid fa-rotate-right scale" title="Reiniciar el filtro actual"></i>
+		<i class="fa-solid fa-floppy-disk <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Guardar los cambios"></i>
+		<i class="fa-solid fa-pen <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Cambiar el nombre"></i>
+		<i class="fa-solid fa-trash-can <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Eliminar el filtro actual"></i>
 	</div>
 </div>
 <!-- Campos específicos -->
