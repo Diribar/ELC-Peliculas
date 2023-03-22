@@ -20,8 +20,13 @@ header section .grupos .iconoComb .adentro {font-size: 1rem; color: var(--azul-o
 header #tituloHeader {position: absolute; left: 50%; transform: translateX(-50%);}
 header #tituloHeader * {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem;}
 
+/* Icono de movie */
+header #imagenMovie {height: 2.5rem; width: 2.5rem; cursor: pointer; border-radius: 50%; overflow: hidden;}
+
 /* Íconos de usuario */
 header #icono_usuario {border-radius: 50%; overflow: hidden; }
 header #icono_usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
-header #icono_usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
 header #icono_usuario #letraInicial {background: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
+
+/* Imágenes */
+header :is(#imagenMovie img, #imagenUsuario img) {height: 100%; width: 100%; object-fit: cover;}

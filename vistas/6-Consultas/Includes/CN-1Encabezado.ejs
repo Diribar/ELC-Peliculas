@@ -1,6 +1,6 @@
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout" onchange="location = './'+ this.value">
+	<select name="layout">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
 			<option value="<%= layout.url %>" <% if (layout.url == layoutElegido) { %>selected<% } %>><%= layout.nombre %></option>
