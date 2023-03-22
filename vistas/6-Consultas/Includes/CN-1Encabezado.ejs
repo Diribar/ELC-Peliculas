@@ -1,13 +1,13 @@
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout" onchange="location = this.value;">
+	<select name="layout" onchange="location = './'+ this.value">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
-			<option value="./<%= layout.url %>" <% if (layout.url == layoutElegido) { %>selected<% } %>><%= layout.nombre %></option>
+			<option value="<%= layout.url %>" <% if (layout.url == layoutElegido) { %>selected<% } %>><%= layout.nombre %></option>
 		<% } %>
 	</select>
 	<!-- Orden -->
-	<select name="orden" required>
+	<select name="orden" required class="elegibleSimple">
 		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of ordenesPorLayout) { %>
@@ -21,11 +21,11 @@
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="flexCol">
 		<div class="flexRow">
-			<input type="radio" name="orden" id="descendente" checked>
+			<input type="radio" name="orden" value="des" id="descendente" checked class="elegibleComplejo">
 			<label for="descendente">Descendente</label>
 		</div>
 		<div class="flexRow">
-			<input type="radio" name="orden" id="ascendente">
+			<input type="radio" name="orden" value="asc" id="ascendente" class="elegibleComplejo">
 			<label for="ascendente">Ascendente</label>
 		</div>
 	</div>

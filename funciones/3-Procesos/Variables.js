@@ -97,7 +97,7 @@ module.exports = {
 			titulo: "Interés en la Película",
 			siempre: true,
 		},
-		links: {
+		tipos_link: {
 			titulo: "Tipos de link",
 			siempre: true,
 			opciones: [

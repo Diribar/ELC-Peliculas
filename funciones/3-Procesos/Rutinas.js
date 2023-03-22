@@ -48,7 +48,7 @@ module.exports = {
 		// Asigna las nuevas fecha y hora locales
 		const fechaLocal_n = new Date(new Date().getTime() - (new Date().getTimezoneOffset() / 60) * unaHora);
 		info.fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
-		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + fechaLocal_n.getUTCMinutes();
+		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
 
 		// Actualiza los valores del archivo
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
