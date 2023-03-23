@@ -24,23 +24,23 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las películas", codigo: "listado"},
+		{nombre: "Todas las películas", codigo: "listado", clase: "bhr"},
 		{nombre: "Películas con Personaje Histórico", codigo: "personajes"},
 		{nombre: "Películas con Hecho Histórico", codigo: "hechos"},
-		{nombre: "Películas con Valores", codigo: "valores"},
+		{nombre: "Películas con Valores", codigo: "valores", clase: "bhr"},
 	],
 	ordenes: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado"},
-		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes"},
-		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes"},
-		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "personajes ascDes bhr"},
-		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "hechos ascDes bhr"},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado bhr"},
+		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes bhr"},
+		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes bhr"},
+		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "personajes ascDes"},
+		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "hechos ascDes"},
 		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes bhr"},
-		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes bhr"},
-		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos bhr"},
-		{nombre: "Por nombre del valor", valor: "rclv", clase: "valores"},
-		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre"},
-		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre"},
+		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes"},
+		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos"},
+		{nombre: "Por nombre del valor", valor: "rclv", clase: "valores bhr"},
+		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre bhr"},
+		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre bhr"},
 	],
 	camposFiltros: {
 		// Principales
@@ -56,10 +56,10 @@ module.exports = {
 			titulo: "Hechos Reales / Ficción",
 			layout: "listado valores",
 			opciones: [
-				{id: "Pers", nombre: "Con Personaje Histórico"},
-				{id: "Hecho", nombre: "Con Hecho Histórico"},
-				{id: "PersHecho", nombre: "Con Personaje y/o Hecho"},
-				{id: "Ficcion", nombre: "Ficción"},
+				{id: "Pers", nombre: "Con Personaje Histórico", clase: "personaje"},
+				{id: "Hecho", nombre: "Con Hecho Histórico", clase: "hecho"},
+				{id: "PersHecho", nombre: "Con Personaje y/o Hecho", clase: "personaje hecho"},
+				{id: "Ficcion", nombre: "Ficción", clase: ""},
 			],
 		},
 		// RCLV
