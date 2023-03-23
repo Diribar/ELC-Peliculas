@@ -246,7 +246,7 @@ window.addEventListener("load", async () => {
 		v.comencemos.classList.add("ocultar");
 
 		// Siguientes pasos
-		await FN_fin();
+		await obtieneProductos();
 
 		// Fin
 		return;

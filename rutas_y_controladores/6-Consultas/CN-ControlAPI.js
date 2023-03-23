@@ -35,8 +35,15 @@ module.exports = {
 	},
 
 	obtieneProductos: (req, res) => {
-		let datos = JSON.parse(req.query.datos);
+		// Obtiene la información
+		const datos = JSON.parse(req.query.datos);
+
+		// Prepara los filtros
+		let objeto={}
+		
+
 		console.log(datos);
+
 		return res.json();
 	},
 };

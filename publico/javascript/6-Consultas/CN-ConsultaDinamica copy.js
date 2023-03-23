@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 
 		// Rutas
 		rutaCambiaFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
-		rutaGuardaSessionCookies: "/consultas/api/guarda-session-cookie/?datos=",
+		rutaGuardaSessionCookies: "/consultas/api/guarda-filtro_id/?datos=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 	};
 	const elegiblesSimples = Array.from(v.elegiblesSimples).map((n) => n.name);
@@ -34,8 +34,6 @@ window.addEventListener("load", async () => {
 		console.log(layoutElegido);
 		// for (){}
 	}
-
-
 	let impactosDeOrden = (opciones) => {
 		// Variables
 		let asc = document.querySelector("#cuerpo input[name='ascDes'][value='asc']");
