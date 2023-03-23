@@ -26,6 +26,7 @@ window.addEventListener("load", async () => {
 		sector_personajes: document.querySelector("#cuerpo #filtros #personajes"),
 		sector_hechos: document.querySelector("#cuerpo #filtros #hechos"),
 
+		// Datos elegidos
 		elegiblesSimples: document.querySelectorAll("#cuerpo .elegibleSimple"),
 		elegiblesComplejos: document.querySelectorAll("#cuerpo .elegibleComplejo"),
 
@@ -34,25 +35,50 @@ window.addEventListener("load", async () => {
 		rutaGuardaSessionCookies: "/consultas/api/guarda-session-cookie/?datos=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 	};
-	const elegiblesSimples = Array.from(v.elegiblesSimples).map((n) => n.name);
-	const elegiblesComplejos = [...new Set(Array.from(v.elegiblesComplejos).map((n) => n.name))];
+	let opciones, nombre, valor;
 
 	// Funciones
+	let impactosDeFiltro = async () => {
+		// 1. Inactiva las opciones 'reinicio' y 'actualiza'
+		v.reinicio.classList.add("inactivo");
+		v.actualiza.classList.add("inactivo");
+
+		// 2. Acciones para los íconos, dependiendo de si el filtro personalizado es el Estándar
+		valor == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
+		valor == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
+
+		// 3. Obtiene las opciones de la BD
+		opciones = await fetch(v.rutaCambiaFiltroPers + valor).then((n) => n.json());
+
+		// 4. Actualiza las elecciones (Encabezado + Filtros)
+		for (let elegible of v.elegiblesSimples) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
+		for (let elegible of v.elegiblesComplejos)
+			elegible.checked = opciones[elegible.name] && opciones[elegible.name].includes(elegible.value);
+
+		// Fin
+		impactosDeLayout();
+		return;
+	};
+
 	let impactosDeLayout = () => {
 		let layoutElegido = v.layout.value;
 
 		// Acciones en 'Ordenes'
 		for (let orden of v.ordenes) {
-			// Muestra una orden
+			// Muestra ordenes
 			if (orden.className.includes("siempre") || orden.className.includes(layoutElegido)) orden.classList.remove("ocultar");
 			// Acciones si la orden no se corresponde con el layout
 			else {
 				// Oculta ordenes
 				orden.classList.add("ocultar");
 				// Des-selecciona una orden si no corresponde al layout
-				if (orden.checked) v.orden.value = "";
+				if (orden.value == v.orden.value) v.orden.value = "";
 			}
 		}
+
+		// Fin
+		impactosDeOrden();
+		return;
 	};
 
 	let impactosDeOrden = () => {
@@ -63,6 +89,10 @@ window.addEventListener("load", async () => {
 		v.layout.className.includes("bhr") && v.orden.className.includes("bhr")
 			? v.sector_hechosReales.classList.remove("ocultar")
 			: v.sector_hechosReales.classList.add("ocultar");
+
+		// Fin
+		impactosDeBHR();
+		return;
 	};
 
 	let impactosDeBHR = () => {
@@ -83,10 +113,35 @@ window.addEventListener("load", async () => {
 			: v.hechosReales.className.includes("hechos")
 			? v.sector_hechos.classList.remove("ocultar")
 			: v.sector_hechos.classList.add("ocultar");
+
+		// Fin
+		return;
 	};
 
+	// Novedad en algún lado
+	v.cuerpo.addEventListener("change", async (e) => {
+		// Variables
+		nombre = e.target.name;
+		valor = e.target.value;
+
+		// Novedades en el Filtro Personalizado - Borra todo y lo deja según el filtro personalizado
+		if (nombre == "filtrosPers") await impactosDeFiltro();
+
+		// Novedades en el layout
+		if (nombre == "layout") impactosDeLayout();
+
+		// Novedades en el orden
+		if (nombre == "orden") impactosDeOrden();
+
+		// Novedades en BHR
+		if (nombre == "hechosReales") impactosDeBHR();
+
+		// Else
+
+		// Fin
+		return;
+	});
+
 	// Startup
-	impactosDeLayout();
-	impactosDeOrden();
-	impactosDeBHR();
+	impactosDeFiltro();
 });

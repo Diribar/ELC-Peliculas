@@ -86,10 +86,6 @@ module.exports = {
 				{id: "2016", nombre: "2016 - Presente"},
 			],
 		},
-		tipos_actuacion: {
-			titulo: "Tipo de Actuación",
-			layout: "siempre",
-		},
 		interes_opciones: {
 			titulo: "Interés en la Película",
 			layout: "siempre",
@@ -111,6 +107,10 @@ module.exports = {
 				{id: "Subt", nombre: "Subtítulos en castellano"},
 				{id: "NO", nombre: "En otro idioma"},
 			],
+		},
+		tipos_actuacion: {
+			titulo: "Tipo de Actuación",
+			layout: "siempre",
 		},
 		musical: {
 			titulo: "Es un musical",

@@ -1,6 +1,6 @@
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout">
+	<select name="layout" class="elegibleSimple">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
 			<option value="<%= layout.codigo %>" <% if (layout.codigo == opcionesElegidas.layout) { %>selected<% } %>><%= layout.nombre %></option>
@@ -21,11 +21,11 @@
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="flexCol">
 		<div class="flexRow">
-			<input type="radio" name="ascDes" value="des" id="descendente" checked>
+			<input type="radio" name="ascDes" value="des" id="descendente" checked class="elegiblesComplejos">
 			<label for="descendente">Descendente</label>
 		</div>
 		<div class="flexRow">
-			<input type="radio" name="ascDes" value="asc" id="ascendente" <% if (opcionesElegidas.ascDes=="asc") { %>checked<% } %>>
+			<input type="radio" name="ascDes" value="asc" id="ascendente" <% if (opcionesElegidas.ascDes=="asc") { %>checked<% } %> class="elegiblesComplejos">
 			<label for="ascendente">Ascendente</label>
 		</div>
 	</div>
