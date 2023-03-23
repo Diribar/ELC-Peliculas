@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
-	filtrosPersUsuario: async (userID) => {
+	filtrosPers: async (userID) => {
 		// Obtiene los filtros personales
 		let resultado = userID ? await BD_genericas.obtieneTodosPorCampos("filtros_cabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
@@ -13,30 +13,26 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	filtrosPorLayout: function (layoutElegido) {
-		// Variable 'filtrosPorLayout'
-		let filtrosPorLayout = {...variables.camposFiltros};
+	filtros: function () {
+		// Variable 'filtros'
+		let filtros = {...variables.camposFiltros};
 
 		// Agrega las opciones de BD
-		for (let campo in filtrosPorLayout) {
-			// Si el campo no aplica para el 'layoutElegido', lo elimina
-			if (!filtrosPorLayout[campo].siempre && !filtrosPorLayout[campo][layoutElegido]) delete filtrosPorLayout[campo];
-			else {
-				// Le agrega el nombre del campo a cada bloque de información
-				filtrosPorLayout[campo].codigo = campo;
-				// Si no tiene opciones, le agrega las de la BD
-				if (!filtrosPorLayout[campo].opciones) filtrosPorLayout[campo].opciones = global[campo] ? global[campo] : [];
-			}
+		for (let campo in filtros) {
+			// Le agrega el nombre del campo a cada bloque de información
+			filtros[campo].codigo = campo;
+			// Si no tiene opciones, le agrega las de la BD
+			if (!filtros[campo].opciones) filtros[campo].opciones = global[campo] ? global[campo] : [];
 		}
 
-		// Agrega las opciones grupales
-		for (let entidad in this.gruposConsultas)
-			if (filtrosPorLayout[entidad]) filtrosPorLayout[entidad] = {...filtrosPorLayout[entidad], ...this.gruposConsultas[entidad]()};
+		// Agrega las opciones grupales para los RCLV
+		for (let entidad in this.gruposConsultasRCLV)
+			if (filtros[entidad]) filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
 
 		// Fin
-		return filtrosPorLayout;
+		return filtros;
 	},
-	gruposConsultas: {
+	gruposConsultasRCLV: {
 		personajes: () => {
 			// Época de nacimiento
 			let epocas = epocas_pers.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));

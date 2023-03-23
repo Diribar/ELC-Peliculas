@@ -24,29 +24,29 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las películas", url: "listado"},
-		{nombre: "Películas con Personaje Histórico", url: "personajes"},
-		{nombre: "Películas con Hecho Histórico", url: "hechos"},
-		{nombre: "Películas con Valores", url: "valores"},
+		{nombre: "Todas las películas", codigo: "listado"},
+		{nombre: "Películas con Personaje Histórico", codigo: "personajes"},
+		{nombre: "Películas con Hecho Histórico", codigo: "hechos"},
+		{nombre: "Películas con Valores", codigo: "valores"},
 	],
-	orden: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", listado: true, asc: true},
-		{nombre: "Por fecha interna de agregado", valor: "incorporacion", siempre: true, ascDes: true},
-		{nombre: "Por año de estreno", valor: "estreno", siempre: true, ascDes: true},
-		{nombre: "Por año de nacim. del personaje", valor: "ano", bhr: true, personajes: true, ascDes: true},
-		{nombre: "Por año de ocurrencia del hecho", valor: "ano", bhr: true, hechos: true, ascDes: true},
-		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", bhr: true, listado: true, ascDes: true},
-		{nombre: "Por nombre del personaje", valor: "rclv", bhr: true, personajes: true, asc: true},
-		{nombre: "Por nombre del hecho", valor: "rclv", bhr: true, hechos: true, asc: true},
-		{nombre: "Por nombre del valor", valor: "rclv", valores: true, asc: true},
-		{nombre: "Por nombre de la película", valor: "producto", siempre: true, asc: true},
-		{nombre: "Por calificación interna", valor: "calificacion", siempre: true},
+	ordenes: [
+		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado"},
+		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes"},
+		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes"},
+		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "bhr personajes ascDes"},
+		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "bhr hechos ascDes"},
+		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "bhr listado ascDes"},
+		{nombre: "Por nombre del personaje", valor: "rclv", clase: "bhr personajes"},
+		{nombre: "Por nombre del hecho", valor: "rclv", clase: "bhr hechos"},
+		{nombre: "Por nombre del valor", valor: "rclv", clase: "valores"},
+		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre"},
+		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre"},
 	],
 	camposFiltros: {
 		// Principales
 		categorias: {
 			titulo: "Relacionada con la Fe Católica",
-			siempre: true,
+			layout: "siempre",
 			opciones: [
 				{id: "CFC", nombre: "SI"},
 				{id: "VPC", nombre: "NO"},
@@ -54,8 +54,7 @@ module.exports = {
 		},
 		hechosReales: {
 			titulo: "Hechos Reales / Ficción",
-			listado: true,
-			valores: true,
+			layout: "listado valores",
 			opciones: [
 				{id: "Pers", nombre: "Con Personaje Histórico"},
 				{id: "Hecho", nombre: "Con Hecho Histórico"},
@@ -66,22 +65,20 @@ module.exports = {
 		// RCLV
 		personajes: {
 			titulo: "Personaje Histórico",
-			listado: true,
-			personajes: true,
+			layout: "listado personajes",
 		},
 		hechos: {
 			titulo: "Hecho Histórico",
-			listado: true,
-			hechos: true,
+			layout: "listado hechos",
 		},
 		// Otros
 		publicos: {
 			titulo: "Público Recomendado",
-			siempre: true,
+			layout: "siempre",
 		},
 		epocasEstreno: {
 			titulo: "Época de Estreno",
-			siempre: true,
+			layout: "siempre",
 			opciones: [
 				{id: "1969", nombre: "Antes de 1970"},
 				{id: "1999", nombre: "1970 - 1999"},
@@ -91,15 +88,15 @@ module.exports = {
 		},
 		tipos_actuacion: {
 			titulo: "Tipo de Actuación",
-			siempre: true,
+			layout: "siempre",
 		},
 		interes_opciones: {
 			titulo: "Interés en la Película",
-			siempre: true,
+			layout: "siempre",
 		},
 		tipos_link: {
 			titulo: "Tipos de link",
-			siempre: true,
+			layout: "siempre",
 			opciones: [
 				{id: "gratis", nombre: "Gratuitos"},
 				{id: "pagos", nombre: "De abono o 'pay per view'"},
@@ -108,7 +105,7 @@ module.exports = {
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
-			siempre: true,
+			layout: "siempre",
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano"},
 				{id: "Subt", nombre: "Subtítulos en castellano"},
@@ -117,7 +114,7 @@ module.exports = {
 		},
 		musical: {
 			titulo: "Es un musical",
-			siempre: true,
+			layout: "siempre",
 			opciones: [
 				{id: "SI", nombre: "SI"},
 				{id: "NO", nombre: "NO"},
