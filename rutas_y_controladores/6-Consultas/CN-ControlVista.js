@@ -11,24 +11,22 @@ module.exports = {
 		const userID = req.session.usuario ? usuario.id : "";
 		const filtrosPers = await procesos.filtrosPers(userID);
 		const layouts = variables.layouts;
-		const filtros = procesos.filtros();
 		const ordenes = variables.ordenes;
-		
-		// Opciones elegidas
+		const filtros = procesos.filtros();
 		let opcionesElegidas = {};
-		// Obtiene la información de la cookie
-		if (req.cookies && req.cookies.opcionesElegidas) opcionesElegidas = req.cookies.opcionesElegidas;
+
+		// Filtro elegido
+		const filtro_id =
+			usuario && usuario.filtro_id ? usuario.filtro_id : req.cookies && req.cookies.filtro_id ? req.cookies.filtro_id : 1;
+
+		// Opciones elegidas
 		// Obtiene la información de la BD
-		else {
-			// Opciones elegidas
-			const aux =
-				userID && usuario.filtro_id
-					? await BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: usuario.filtro_id})
-					: opcionesEstandarFiltros;
-			// Convierte el array en objeto literal
-			aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
-			opcionesElegidas.filtro_id = aux[0].cabecera_id;
-		}
+		const aux =
+			filtro_id == 1
+				? opcionesEstandarFiltros
+				: await BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: filtro_id});
+		// Convierte el array en objeto literal
+		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 
 		// return res.send(filtros)
 		// Va a la vista
@@ -37,7 +35,7 @@ module.exports = {
 			// Layout y Orden
 			...{layouts, ordenes, filtros},
 			// Personalizaciones
-			...{opcionesElegidas, filtrosPers},
+			...{filtro_id, opcionesElegidas, filtrosPers},
 		});
 	},
 };

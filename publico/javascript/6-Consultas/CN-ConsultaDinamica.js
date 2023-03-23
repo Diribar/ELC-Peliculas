@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 			elegible.checked = opciones[elegible.name] && opciones[elegible.name].includes(elegible.value);
 
 		// Actualiza los botones
-		botones.impactosDeFiltrosPers();
+		botones.impactosDeFiltroPers();
 
 		// Fin
 		impactosDeLayout();
@@ -167,8 +167,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let impactosEnBotonesFP = () => {};
-	let FN_fin = async (opciones) => {
+	let FN_fin = async () => {
 		// 1. Obtiene los valores de todos los filtros elegidos
 
 		// 2. Borra los valores anteriores
