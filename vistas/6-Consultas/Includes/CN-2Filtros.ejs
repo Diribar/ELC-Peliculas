@@ -5,7 +5,7 @@
 		<% for (filtro of filtrosPers) { %>
 			<option 
 				value="<%= filtro.id %>"
-				<% if (filtro.id == opcionesElegidas.filtro_id) { %>selected<% } %>
+				<% if (filtro.id == filtro_id) { %>selected<% } %>
 			><%= filtro.nombre %></option>
 		<% } %>
 	</select>
@@ -37,7 +37,6 @@
 			<!-- Época de Estreno -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.epocasEstreno}) %>
 			<!-- Interés en la Película -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.interes_opciones}) %>
 			<!-- Links -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_link}) %>
 			<!-- Idioma Castellano -->
