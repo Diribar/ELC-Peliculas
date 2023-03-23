@@ -13,8 +13,8 @@
 		<% for (let orden of ordenes) { %>
 			<option 
 				value="<%= orden.valor %>" 
-				<% if (orden.valor == opcionesElegidas.orden) { %>selected<% } %> 
-				class="<%= orden.clase %>"
+				<% if (orden.valor == opcionesElegidas.orden && (orden.clase.includes("siempre") || orden.clase.includes(opcionesElegidas.layout))) { %>selected <% } %>
+				class="<%= orden.clase + (!orden.clase.includes("siempre") && !orden.clase.includes(opcionesElegidas.layout) ? ' ocultar' : '') %>"
 			><%= orden.nombre %></option>
 		<% } %>
 	</select>
