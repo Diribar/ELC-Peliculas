@@ -8,8 +8,8 @@ window.addEventListener("load", async () => {
 		// Partes del Encabezado
 		layout: document.querySelector("#cuerpo #encabezado select[name='layout']"),
 		orden: document.querySelector("#cuerpo #encabezado select[name='orden']"),
-		ordenes: document.querySelectorAll("#cuerpo #encabezado select[name='orden'] option"),
-		ascDes: document.querySelector("#cuerpo #encabezado #ascDes"),
+		opciones_orden: document.querySelectorAll("#cuerpo #encabezado select[name='orden'] option"),
+		sector_AscDes: document.querySelector("#cuerpo #encabezado #ascDes"),
 
 		// Filtro personalizado
 		filtroCabecera: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -59,20 +59,20 @@ window.addEventListener("load", async () => {
 		impactosDeLayout();
 		return;
 	};
-
 	let impactosDeLayout = () => {
 		let layoutElegido = v.layout.value;
 
 		// Acciones en 'Ordenes'
-		for (let orden of v.ordenes) {
-			// Muestra ordenes
-			if (orden.className.includes("siempre") || orden.className.includes(layoutElegido)) orden.classList.remove("ocultar");
-			// Acciones si la orden no se corresponde con el layout
+		for (let opcion of v.opciones_orden) {
+			// Muestra opciones
+			if (opcion.className.includes("siempre") || opcion.className.includes(layoutElegido))
+				opcion.classList.remove("ocultar");
+			// Acciones si la opcion no se corresponde con el layout
 			else {
-				// Oculta ordenes
-				orden.classList.add("ocultar");
-				// Des-selecciona una orden si no corresponde al layout
-				if (orden.value == v.orden.value) v.orden.value = "";
+				// Oculta opciones
+				opcion.classList.add("ocultar");
+				// Des-selecciona una opcion si no corresponde al layout
+				if (opcion.value == v.orden.value) v.orden.value = "";
 			}
 		}
 
@@ -80,12 +80,14 @@ window.addEventListener("load", async () => {
 		impactosDeOrden();
 		return;
 	};
-
 	let impactosDeOrden = () => {
-		// Acciones en Ascendente / Descendente
-		v.orden.className.includes("ascDes") ? ascDes.classList.remove("ocultar") : ascDes.classList.add("ocultar");
+		// 1. Acciones en Ascendente / Descendente - Muestra u oculta el sector
+		let ordenElegido = document.querySelector("#cuerpo select[name='orden'] option:checked");
+		ordenElegido.className.includes("ascDes")
+			? v.sector_AscDes.classList.remove("ocultar")
+			: v.sector_AscDes.classList.add("ocultar");
 
-		// Acciones en 'Basado en Hechos Reales' - Tiene que figurar 'bhr' en el layout y en el orden
+		// 2. Acciones en 'Basado en Hechos Reales' - Tiene que figurar 'bhr' en el layout y en el orden
 		v.layout.className.includes("bhr") && v.orden.className.includes("bhr")
 			? v.sector_hechosReales.classList.remove("ocultar")
 			: v.sector_hechosReales.classList.add("ocultar");
@@ -94,7 +96,6 @@ window.addEventListener("load", async () => {
 		impactosDeBHR();
 		return;
 	};
-
 	let impactosDeBHR = () => {
 		// Acciones en Personajes
 		v.layout.value == "personajes"
@@ -117,6 +118,26 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
+	let impactosEnBotonesFP = () => {
+		// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
+		v.modificaNombre.classList.add("inactivo");
+		v.elimina.classList.add("inactivo");
+
+		// Acciones si el filtro personalizado es uno definido
+		if (v.filtroCabecera.value) {
+			// Activa la opcion de 'reinicio'
+			v.reinicio.classList.remove("inactivo");
+			// Activa la opcion de 'actualiza'
+			if (v.filtroCabecera.value != 1) v.actualiza.classList.remove("inactivo");
+		}
+		// Inactiva todos los íconos menos 'nuevo' (el primero)
+		else
+			v.iconos.forEach((icono, i) => {
+				if (i) icono.classList.add("inactivo");
+			});
+		// Fin
+		return;
+	};
 
 	// Novedad en algún lado
 	v.cuerpo.addEventListener("change", async (e) => {
@@ -126,17 +147,25 @@ window.addEventListener("load", async () => {
 
 		// Novedades en el Filtro Personalizado - Borra todo y lo deja según el filtro personalizado
 		if (nombre == "filtrosPers") await impactosDeFiltro();
+		else {
+			// Novedades en el layout
+			if (nombre == "layout") impactosDeLayout();
 
-		// Novedades en el layout
-		if (nombre == "layout") impactosDeLayout();
+			// Novedades en el orden
+			if (nombre == "orden") impactosDeOrden();
 
-		// Novedades en el orden
-		if (nombre == "orden") impactosDeOrden();
+			// Novedades en BHR
+			if (nombre == "hechosReales") impactosDeBHR();
 
-		// Novedades en BHR
-		if (nombre == "hechosReales") impactosDeBHR();
+			// Botones en Filtros Personalizados
+			impactosEnBotonesFP();
+		}
 
-		// Else
+
+		// Averigua si faltan datos mandatorios o si "Comencemos" está visible
+		// En caso afirmativo, termina
+
+		// Si está todo en orden, continúa el proceso
 
 		// Fin
 		return;
