@@ -6,8 +6,8 @@
 			<% let grupo = tema["grupo_" + tema.codigo] %>
 			<% let opciones = grupo ? grupo : tema.opciones %>
 			<% for (let opcion of opciones) { %>
-				<!-- Acciones si es un cambio de 'rubro' -->
 				<% if (!opcion.id) { %>
+					<!-- Acciones si es un cambio de 'rubro' -->
 					<% if (label) { %></optgroup><% } %>
 					<% label = true %>
 					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
