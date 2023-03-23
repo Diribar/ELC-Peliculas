@@ -46,21 +46,16 @@ window.addEventListener("load", async () => {
 		const filtroElegido = v.filtroPers.value;
 		if (!filtroElegido) return;
 
-		// 1. Inactiva las opciones 'reinicio' y 'actualiza'
-		v.reinicio.classList.add("inactivo");
-		v.actualiza.classList.add("inactivo");
-
-		// 2. Acciones para los íconos 'modificaNombre' y 'elimina', dependiendo de si el filtro personalizado es el Estándar
-		filtroElegido == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
-		filtroElegido == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
-
-		// 3. Obtiene las opciones de la BD
+		// Obtiene las opciones de la BD
 		opciones = await fetch(v.rutaCambiaFiltroPers + filtroElegido).then((n) => n.json());
 
-		// 4. Actualiza las elecciones (Encabezado + Filtros)
+		// Actualiza las elecciones (Encabezado + Filtros)
 		for (let elegible of v.elegiblesSimples) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
 		for (let elegible of v.elegiblesComplejos)
 			elegible.checked = opciones[elegible.name] && opciones[elegible.name].includes(elegible.value);
+
+		// Actualiza los botones
+		botones.impactosDeFiltrosPers();
 
 		// Fin
 		impactosDeLayout();
@@ -126,6 +121,19 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let botones = {
+		impactosDeFiltroPers: () => {
+			// 1. Inactiva las opciones 'reinicio' y 'actualiza'
+			v.reinicio.classList.add("inactivo");
+			v.actualiza.classList.add("inactivo");
+			
+			// 2. Acciones para los íconos 'modificaNombre' y 'elimina', dependiendo de si el filtro personalizado es el Estándar
+			const filtroElegido = v.filtroPers.value;
+			filtroElegido == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
+			filtroElegido == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
+
+			// Fin
+			return;
+		},
 		condicionesMinimas: () => {
 			// Variables
 			let categoriaElegida = document.querySelector("#cuerpo #filtros #categorias input:checked");
@@ -135,32 +143,31 @@ window.addEventListener("load", async () => {
 				for (let icono of v.iconos) icono.classList.add("inactivo");
 
 			// Fin
-			return !v.layout.value || !v.orden.value || !categoriaElegida;
+			return v.layout.value && !v.orden.value && !categoriaElegida;
 		},
-		cambioDeFiltros,
+		impactosDeElegibles: () => {
+			// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
+			v.modificaNombre.classList.add("inactivo");
+			v.elimina.classList.add("inactivo");
+
+			// Acciones si el filtro personalizado es uno definido
+			if (v.filtroPers.value) {
+				// Activa la opcion de 'reinicio'
+				v.reinicio.classList.remove("inactivo");
+				// Activa la opcion de 'actualiza'
+				if (v.filtroPers.value != 1) v.actualiza.classList.remove("inactivo");
+			}
+			// Si el filtro personalizado es indefinido, inactiva todos los íconos menos 'nuevo' (el primero)
+			else
+				v.iconos.forEach((icono, i) => {
+					if (i) icono.classList.add("inactivo");
+				});
+
+			// Fin
+			return;
+		},
 	};
-	let impactosEnBotonesFP = () => {
-
-		// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
-		v.modificaNombre.classList.add("inactivo");
-		v.elimina.classList.add("inactivo");
-
-		// Acciones si el filtro personalizado es uno definido
-		if (v.filtroPers.value) {
-			// Activa la opcion de 'reinicio'
-			v.reinicio.classList.remove("inactivo");
-			// Activa la opcion de 'actualiza'
-			if (v.filtroPers.value != 1) v.actualiza.classList.remove("inactivo");
-		}
-		// Inactiva todos los íconos menos 'nuevo' (el primero)
-		else
-			v.iconos.forEach((icono, i) => {
-				if (i) icono.classList.add("inactivo");
-			});
-
-		// Fin
-		return;
-	};
+	let impactosEnBotonesFP = () => {};
 	let FN_fin = async (opciones) => {
 		// 1. Obtiene los valores de todos los filtros elegidos
 
@@ -222,12 +229,9 @@ window.addEventListener("load", async () => {
 			if (nombre == "hechosReales") impactosDeBHR();
 
 			// Botones en Filtros Personalizados
+			if (botones.condicionesMinimas()) botones.impactosDeElegibles();
+			else return;
 		}
-
-		// Si queda pendiente algún elegible mandatorio, termina
-		if (botones.condicionesMinimas()) return;
-
-		impactosEnBotonesFP();
 
 		// Si está todo en orden, continúa el proceso
 
@@ -237,5 +241,4 @@ window.addEventListener("load", async () => {
 
 	// Startup
 	await impactosDeFiltroPers();
-	botonesCondicionesMinimas();
 });
