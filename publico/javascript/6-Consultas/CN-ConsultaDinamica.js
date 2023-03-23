@@ -43,7 +43,6 @@ window.addEventListener("load", async () => {
 
 		// Acciones en 'Ordenes'
 		for (let orden of v.ordenes) {
-			console.log(orden.className);
 			// Muestra una orden
 			if (orden.className.includes("siempre") || orden.className.includes(layoutElegido)) orden.classList.remove("ocultar");
 			// Acciones si la orden no se corresponde con el layout
