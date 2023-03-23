@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
 
 		// Fin
-		return
+		return;
 	};
 	let botones = {
 		impactosDeFiltroPers: () => {
@@ -188,7 +188,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let FN_fin = async () => {
+	let obtieneProductos = async () => {
 		// Si no se hizo 'click' sobre el botón 'comencemos', frena
 		if (!v.comencemos.className.includes("ocultar")) return;
 
@@ -201,12 +201,11 @@ window.addEventListener("load", async () => {
 					? (opciones[elegible.name] += " " + elegible.value)
 					: (opciones[elegible.name] = elegible.value);
 
-		// Actualiza el contador
-		// Actualiza la información mostrada
-		// Actualiza el ID del Filtro en el registro de usuario
-
 		// Obtiene los productos
 		let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
+
+		// Actualiza el contador
+		// Actualiza la información mostrada
 
 		// Fin
 		return;
@@ -235,8 +234,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Si está todo en orden, continúa el proceso
-		await FN_fin();
-		limpiaLineasConsecutivas()
+		await obtieneProductos();
+		limpiaLineasConsecutivas();
 
 		// Fin
 		return;
