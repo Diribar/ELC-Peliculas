@@ -21,10 +21,10 @@ window.addEventListener("load", async () => {
 		iconos: document.querySelectorAll("#filtrosPers #iconos i"),
 
 		// Partes del Filtro
-		hechosReales_sector: document.querySelector("#cuerpo #filtros #hechosReales"),
 		hechosReales: document.querySelector("#cuerpo #filtros #hechosReales select[name='hechosReales']"),
-		personajes_sector: document.querySelector("#cuerpo #filtros #personajes"),
-		hechos_sector: document.querySelector("#cuerpo #filtros #hechos"),
+		sector_hechosReales: document.querySelector("#cuerpo #filtros #hechosReales"),
+		sector_personajes: document.querySelector("#cuerpo #filtros #personajes"),
+		sector_hechos: document.querySelector("#cuerpo #filtros #hechos"),
 
 		elegiblesSimples: document.querySelectorAll("#cuerpo .elegibleSimple"),
 		elegiblesComplejos: document.querySelectorAll("#cuerpo .elegibleComplejo"),
@@ -62,28 +62,28 @@ window.addEventListener("load", async () => {
 
 		// Acciones en 'Basado en Hechos Reales' - Tiene que figurar 'bhr' en el layout y en el orden
 		v.layout.className.includes("bhr") && v.orden.className.includes("bhr")
-			? v.hechosReales_sector.classList.remove("ocultar")
-			: v.hechosReales_sector.classList.add("ocultar");
+			? v.sector_hechosReales.classList.remove("ocultar")
+			: v.sector_hechosReales.classList.add("ocultar");
 	};
 
 	let impactosDeBHR = () => {
 		// Acciones en Personajes
 		v.layout.value == "personajes"
-			? v.personajes_sector.classList.remove("ocultar")
+			? v.sector_personajes.classList.remove("ocultar")
 			: v.layout.value == "hechos"
-			? v.personajes_sector.classList.add("ocultar")
+			? v.sector_personajes.classList.add("ocultar")
 			: v.hechosReales.className.includes("personajes")
-			? v.personajes_sector.classList.remove("ocultar")
-			: v.personajes_sector.classList.add("ocultar");
+			? v.sector_personajes.classList.remove("ocultar")
+			: v.sector_personajes.classList.add("ocultar");
 
 		// Acciones en Hechos
 		v.layout.value == "hechos"
-			? v.hechos_sector.classList.remove("ocultar")
+			? v.sector_hechos.classList.remove("ocultar")
 			: v.layout.value == "personajes"
-			? v.hechos_sector.classList.add("ocultar")
+			? v.sector_hechos.classList.add("ocultar")
 			: v.hechosReales.className.includes("hechos")
-			? v.hechos_sector.classList.remove("ocultar")
-			: v.hechos_sector.classList.add("ocultar");
+			? v.sector_hechos.classList.remove("ocultar")
+			: v.sector_hechos.classList.add("ocultar");
 	};
 
 	// Startup
