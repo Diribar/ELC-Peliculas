@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 		sector_AscDes: document.querySelector("#cuerpo #encabezado #ascDes"),
 
 		// Filtro personalizado
-		filtroCabecera: document.querySelector("#filtrosPers select[name='filtrosPers']"),
+		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
 		nuevo: document.querySelector("#filtrosPers i#nuevo"),
 		reinicio: document.querySelector("#filtrosPers i#reinicio"),
 		actualiza: document.querySelector("#filtrosPers i#actualiza"),
@@ -38,20 +38,24 @@ window.addEventListener("load", async () => {
 		rutaGuardaSessionCookies: "/consultas/api/guarda-session-cookie/?datos=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 	};
-	let opciones, nombre, valor;
+	let opciones = {};
 
 	// Funciones
-	let impactosDeFiltro = async () => {
+	let impactosDeFiltroPers = async () => {
+		// Variables
+		const filtroElegido = v.filtroPers.value;
+		if (!filtroElegido) return;
+
 		// 1. Inactiva las opciones 'reinicio' y 'actualiza'
 		v.reinicio.classList.add("inactivo");
 		v.actualiza.classList.add("inactivo");
 
-		// 2. Acciones para los íconos, dependiendo de si el filtro personalizado es el Estándar
-		valor == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
-		valor == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
+		// 2. Acciones para los íconos 'modificaNombre' y 'elimina', dependiendo de si el filtro personalizado es el Estándar
+		filtroElegido == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
+		filtroElegido == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
 
 		// 3. Obtiene las opciones de la BD
-		opciones = await fetch(v.rutaCambiaFiltroPers + valor).then((n) => n.json());
+		opciones = await fetch(v.rutaCambiaFiltroPers + filtroElegido).then((n) => n.json());
 
 		// 4. Actualiza las elecciones (Encabezado + Filtros)
 		for (let elegible of v.elegiblesSimples) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
@@ -121,23 +125,81 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
+	let botones = {
+		condicionesMinimas: () => {
+			// Variables
+			let categoriaElegida = document.querySelector("#cuerpo #filtros #categorias input:checked");
+
+			// Si no están dadas las condiciones mínimas, se inactivan todos los botones
+			if (!v.layout.value || !v.orden.value || !categoriaElegida)
+				for (let icono of v.iconos) icono.classList.add("inactivo");
+
+			// Fin
+			return !v.layout.value || !v.orden.value || !categoriaElegida;
+		},
+		cambioDeFiltros,
+	};
 	let impactosEnBotonesFP = () => {
+
 		// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
 		v.modificaNombre.classList.add("inactivo");
 		v.elimina.classList.add("inactivo");
 
 		// Acciones si el filtro personalizado es uno definido
-		if (v.filtroCabecera.value) {
+		if (v.filtroPers.value) {
 			// Activa la opcion de 'reinicio'
 			v.reinicio.classList.remove("inactivo");
 			// Activa la opcion de 'actualiza'
-			if (v.filtroCabecera.value != 1) v.actualiza.classList.remove("inactivo");
+			if (v.filtroPers.value != 1) v.actualiza.classList.remove("inactivo");
 		}
 		// Inactiva todos los íconos menos 'nuevo' (el primero)
 		else
 			v.iconos.forEach((icono, i) => {
 				if (i) icono.classList.add("inactivo");
 			});
+
+		// Fin
+		return;
+	};
+	let FN_fin = async (opciones) => {
+		// 1. Obtiene los valores de todos los filtros elegidos
+
+		// 2. Borra los valores anteriores
+		opciones = {};
+		// Elegibles simples
+		for (let elegible of v.elegiblesSimples) {
+			if (elegible.value) opciones[elegible.name] = elegible.value;
+			console.log(elegible.className);
+		}
+		// Elegibles Complejos
+		for (let elegible of v.elegiblesComplejos)
+			if (elegible.checked) opciones[elegible.name + elegible.value] = true;
+			else delete opciones[elegible.name + elegible.value];
+		// Agrega el layout elegido
+		opciones.layout = v.layout.value;
+
+		console.log(opciones);
+
+		// 2. Actualiza la session y cookie
+		fetch(v.rutaGuardaSessionCookies + JSON.stringify(opciones));
+
+		// Obtiene los productos
+		let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
+
+		// Actualiza el contador
+		// Actualiza la información mostrada
+		// Actualiza el ID del Filtro en el registro de usuario
+
+		// Limpia líneas consecutivas
+		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
+		let tags = [];
+		hijos.forEach((hijo, num) => {
+			if (window.getComputedStyle(hijo).getPropertyValue("order") == 2) tags.push({tag: hijo.tagName, num});
+			hijo.classList.remove("ocultar");
+		});
+		for (let i = 1; i < tags.length; i++)
+			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
+
 		// Fin
 		return;
 	};
@@ -145,11 +207,10 @@ window.addEventListener("load", async () => {
 	// Novedad en algún lado
 	v.cuerpo.addEventListener("change", async (e) => {
 		// Variables
-		nombre = e.target.name;
-		valor = e.target.value;
+		let nombre = e.target.name;
 
 		// Novedades en el Filtro Personalizado - Borra todo y lo deja según el filtro personalizado
-		if (nombre == "filtrosPers") await impactosDeFiltro();
+		if (nombre == "filtrosPers") await impactosDeFiltroPers();
 		else {
 			// Novedades en el layout
 			if (nombre == "layout") impactosDeLayout();
@@ -161,20 +222,20 @@ window.addEventListener("load", async () => {
 			if (nombre == "hechosReales") impactosDeBHR();
 
 			// Botones en Filtros Personalizados
-			impactosEnBotonesFP();
 		}
 
-		// Si queda pendiente algún mandatorio, termina
-		let categoriaElegida = document.querySelector("#cuerpo #filtros #categorias input:checked");
-		if (!v.layout.value || !v.orden.value || !categoriaElegida) return;
+		// Si queda pendiente algún elegible mandatorio, termina
+		if (botones.condicionesMinimas()) return;
+
+		impactosEnBotonesFP();
 
 		// Si está todo en orden, continúa el proceso
-		
 
 		// Fin
 		return;
 	});
 
 	// Startup
-	impactosDeFiltro();
+	await impactosDeFiltroPers();
+	botonesCondicionesMinimas();
 });
