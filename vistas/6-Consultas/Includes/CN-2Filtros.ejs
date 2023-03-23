@@ -22,7 +22,7 @@
 	<!-- CFC/VPC -->
 	<%- include('CN-2FL-1CheckboxV', {tema: filtrosPorLayout.categorias}) %>
 	<div class="sectorConDesplV">
-		<nav class="flexCol">
+		<nav class="ocultar">
 			<!-- Basada en Hechos Reales / Ficción -->
 			<%- include('CN-2FL-3Selects', {tema: filtrosPorLayout.hechosReales}) %>
 			<!-- Personajes Históricos -->
@@ -49,12 +49,11 @@
 			<!-- Musical -->
 			<%- include('CN-2FL-2CheckboxH', {tema: filtrosPorLayout.musical}) %>
 			<hr>
-			<!-- Época de Estreno -->
+			<!-- Búsqueda -->
+			<div id="busqueda" class="filtro flexCol"> 
+				<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave" class="elegibleSimple">
+				<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
+			</div>
 		</nav>
-	</div>
-	<!-- Búsqueda -->
-	<div id="busqueda" class="filtro flexCol"> 
-		<input type="text" name="palabras_clave" placeholder="Buscar por palabras clave" class="elegibleSimple">
-		<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
 	</div>
 </div>

@@ -28,8 +28,7 @@ module.exports = {
 		}
 
 		// Variables
-		const layoutElegido = req.params.layoutElegido ? req.params.layoutElegido : opcionesElegidas.layoutElegido;
-		if (!layoutElegido) return res.redirect("/consultas/listado");
+		const layoutElegido = opcionesElegidas.layoutElegido ? opcionesElegidas.layoutElegido : "listado";
 
 		// Más variables
 		const filtrosPersUsuario = await procesos.filtrosPersUsuario(userID);

@@ -21,7 +21,7 @@
 #zona-de-prods #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 #zona-de-prods #comencemos button#verde {cursor: pointer;}
 #zona-de-prods #comencemos #verde {display: none;}
-/* Muestra y oculta el botón que corresponda */
+/* Muestra y oculta el botón 'Comencemos' */
 #cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid), :not(:has(#filtros #categorias input:checked))) #zona-de-prods #comencemos #rojo {display: none;}
 #cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid), :not(:has(#filtros #categorias input:checked))) #zona-de-prods #comencemos #verde {display: block;}
 
