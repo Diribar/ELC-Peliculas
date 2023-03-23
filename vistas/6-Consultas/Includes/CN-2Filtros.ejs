@@ -5,7 +5,7 @@
 		<% for (filtro of filtrosPers) { %>
 			<option 
 				value="<%= filtro.id %>"
-				<% if (filtro.id == opcionesElegidas.filtro_id) { %>selected<% } %>
+				<% if (filtro.id == filtro_id) { %>selected<% } %>
 			><%= filtro.nombre %></option>
 		<% } %>
 	</select>
