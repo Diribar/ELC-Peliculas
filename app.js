@@ -104,7 +104,7 @@ app.set("views", [
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		imagenes_movil: BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
 		imagenes_fijo: BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
-		filtroEstandar_campos: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
+		opcionesEstandarFiltros: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
