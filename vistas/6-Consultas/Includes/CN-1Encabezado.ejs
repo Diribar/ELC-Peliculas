@@ -3,18 +3,18 @@
 	<select name="layout">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
-			<option value="<%= layout.url %>" <% if (layout.url == layoutElegido) { %>selected<% } %>><%= layout.nombre %></option>
+			<option value="<%= layout.url %>" <% if (layout.url == opcionesElegidas.layout) { %>selected<% } %>><%= layout.nombre %></option>
 		<% } %>
 	</select>
 	<!-- Orden -->
 	<select name="orden" required class="elegibleSimple">
-		<option value="" class="ocultar" selected>Ordenar por...</option>
+		<option value="" class="ocultar siempre" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
-		<% for (let orden of ordenesPorLayout) { %>
+		<% for (let orden of ordenes) { %>
 			<option 
 				value="<%= orden.valor %>" 
 				<% if (orden.valor == opcionesElegidas.orden) { %>selected<% } %> 
-				class="<%= orden.ascDes ? 'ascDes' : orden.asc ? 'asc' : '' %> <%= orden.bhr ? 'bhr' : '' %>"
+				class="<%= orden.clase %>"
 			><%= orden.nombre %></option>
 		<% } %>
 	</select>
