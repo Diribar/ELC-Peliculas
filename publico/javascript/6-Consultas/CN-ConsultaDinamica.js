@@ -30,6 +30,9 @@ window.addEventListener("load", async () => {
 		elegiblesSimples: document.querySelectorAll("#cuerpo .elegibleSimple"),
 		elegiblesComplejos: document.querySelectorAll("#cuerpo .elegibleComplejo"),
 
+		// Otros
+		comencemosBotones: document.querySelectorAll("#zona-de-prods #comencemos button"),
+
 		// Rutas
 		rutaCambiaFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		rutaGuardaSessionCookies: "/consultas/api/guarda-session-cookie/?datos=",
@@ -161,11 +164,12 @@ window.addEventListener("load", async () => {
 			impactosEnBotonesFP();
 		}
 
-
-		// Averigua si faltan datos mandatorios o si "Comencemos" está visible
-		// En caso afirmativo, termina
+		// Si queda pendiente algún mandatorio, termina
+		let categoriaElegida = document.querySelector("#cuerpo #filtros #categorias input:checked");
+		if (!v.layout.value || !v.orden.value || !categoriaElegida) return;
 
 		// Si está todo en orden, continúa el proceso
+		
 
 		// Fin
 		return;
