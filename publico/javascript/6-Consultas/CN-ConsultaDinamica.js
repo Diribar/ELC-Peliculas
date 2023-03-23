@@ -31,11 +31,11 @@ window.addEventListener("load", async () => {
 		elegiblesComplejos: document.querySelectorAll("#cuerpo .elegibleComplejo"),
 
 		// Otros
-		comencemosBotones: document.querySelectorAll("#zona-de-prods #comencemos button"),
+		comencemos: document.querySelector("#zona-de-prods #comencemos button#verde"),
 
 		// Rutas
 		rutaCambiaFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
-		rutaGuardaSessionCookies: "/consultas/api/guarda-session-cookie/?datos=",
+		rutaGuardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 	};
 	let opciones = {};
@@ -43,11 +43,14 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let impactosDeFiltroPers = async () => {
 		// Variables
-		const filtroElegido = v.filtroPers.value;
-		if (!filtroElegido) return;
+		const filtro_id = v.filtroPers.value;
+		if (!filtro_id) return;
+
+		// Actualiza el filtro_id en la cookie y el usuario (session y BD)
+		fetch(v.rutaGuardaFiltroID + filtro_id);
 
 		// Obtiene las opciones de la BD
-		opciones = await fetch(v.rutaCambiaFiltroPers + filtroElegido).then((n) => n.json());
+		opciones = await fetch(v.rutaCambiaFiltroPers + filtro_id).then((n) => n.json());
 
 		// Actualiza las elecciones (Encabezado + Filtros)
 		for (let elegible of v.elegiblesSimples) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
@@ -120,12 +123,30 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
+	let limpiaLineasConsecutivas = () => {
+		// Variables
+		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
+		let tags = [];
+
+		// Detecta todos los hijos con orden dos
+		hijos.forEach((hijo, num) => {
+			if (window.getComputedStyle(hijo).getPropertyValue("order") == 2) tags.push({tag: hijo.tagName, num});
+			hijo.classList.remove("ocultar");
+		});
+
+		// Si hay 2 líneas consecutivas en orden dos, uculta la última
+		for (let i = 1; i < tags.length; i++)
+			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
+
+		// Fin
+		return
+	};
 	let botones = {
 		impactosDeFiltroPers: () => {
 			// 1. Inactiva las opciones 'reinicio' y 'actualiza'
 			v.reinicio.classList.add("inactivo");
 			v.actualiza.classList.add("inactivo");
-			
+
 			// 2. Acciones para los íconos 'modificaNombre' y 'elimina', dependiendo de si el filtro personalizado es el Estándar
 			const filtroElegido = v.filtroPers.value;
 			filtroElegido == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
@@ -143,7 +164,7 @@ window.addEventListener("load", async () => {
 				for (let icono of v.iconos) icono.classList.add("inactivo");
 
 			// Fin
-			return v.layout.value && !v.orden.value && !categoriaElegida;
+			return v.layout.value && v.orden.value && !!categoriaElegida;
 		},
 		impactosDeElegibles: () => {
 			// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
@@ -168,43 +189,24 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let FN_fin = async () => {
-		// 1. Obtiene los valores de todos los filtros elegidos
+		// Si no se hizo 'click' sobre el botón 'comencemos', frena
+		if (!v.comencemos.className.includes("ocultar")) return;
 
-		// 2. Borra los valores anteriores
+		// 1. Obtiene los valores de todos los elegibles elegidos
 		opciones = {};
-		// Elegibles simples
-		for (let elegible of v.elegiblesSimples) {
-			if (elegible.value) opciones[elegible.name] = elegible.value;
-			console.log(elegible.className);
-		}
-		// Elegibles Complejos
+		for (let elegible of v.elegiblesSimples) if (elegible.value) opciones[elegible.name] = elegible.value;
 		for (let elegible of v.elegiblesComplejos)
-			if (elegible.checked) opciones[elegible.name + elegible.value] = true;
-			else delete opciones[elegible.name + elegible.value];
-		// Agrega el layout elegido
-		opciones.layout = v.layout.value;
-
-		console.log(opciones);
-
-		// 2. Actualiza la session y cookie
-		fetch(v.rutaGuardaSessionCookies + JSON.stringify(opciones));
-
-		// Obtiene los productos
-		let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
+			if (elegible.checked)
+				opciones[elegible.name]
+					? (opciones[elegible.name] += " " + elegible.value)
+					: (opciones[elegible.name] = elegible.value);
 
 		// Actualiza el contador
 		// Actualiza la información mostrada
 		// Actualiza el ID del Filtro en el registro de usuario
 
-		// Limpia líneas consecutivas
-		let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
-		let tags = [];
-		hijos.forEach((hijo, num) => {
-			if (window.getComputedStyle(hijo).getPropertyValue("order") == 2) tags.push({tag: hijo.tagName, num});
-			hijo.classList.remove("ocultar");
-		});
-		for (let i = 1; i < tags.length; i++)
-			if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
+		// Obtiene los productos
+		let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
 
 		// Fin
 		return;
@@ -233,6 +235,19 @@ window.addEventListener("load", async () => {
 		}
 
 		// Si está todo en orden, continúa el proceso
+		await FN_fin();
+		limpiaLineasConsecutivas()
+
+		// Fin
+		return;
+	});
+	// Comencemos
+	v.comencemos.addEventListener("click", async () => {
+		// Oculta el botón
+		v.comencemos.classList.add("ocultar");
+
+		// Siguientes pasos
+		await FN_fin();
 
 		// Fin
 		return;
