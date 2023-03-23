@@ -19,9 +19,8 @@
 #zona-de-prods #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
 #zona-de-prods #comencemos button#rojo {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 #zona-de-prods #comencemos button#verde {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-#zona-de-prods #comencemos button#verde {cursor: pointer;}
-#zona-de-prods #comencemos #verde {display: none;}
+
 /* Muestra y oculta el botón 'Comencemos' */
 #cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid), :not(:has(#filtros #categorias input:checked))) #zona-de-prods #comencemos #rojo {display: none;}
-#cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:invalid), :not(:has(#filtros #categorias input:checked))) #zona-de-prods #comencemos #verde {display: block;}
-
+#cuerpo:not(:has(#encabMasPelis #encabezado select[name="orden"]:valid)) #zona-de-prods #comencemos #verde {display: none;}
+#cuerpo:not(:has(#filtros #categorias input:checked)) #zona-de-prods #comencemos #verde {display: none;}
