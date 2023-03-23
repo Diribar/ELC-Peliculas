@@ -7,8 +7,8 @@
 				<% if (nombre.length > 5) nombre = opcion.nombre.slice(0, 5)+"." %> 
 				<label for="<%= opcion.id %>"><%= nombre %></label>
 				<input 
-					id="<%= opcion.id %>"
 					type="checkbox" name="<%= tema.codigo %>" value="<%= opcion.id %>" class="elegibleComplejo" 
+					id="<%= opcion.id %>" class="elegibleComplejo" 
 					<% if (opcionesElegidas[tema.codigo]&&opcionesElegidas[tema.codigo].includes(opcion.id)) { %>checked<% } %>
 				>
 			</div>
