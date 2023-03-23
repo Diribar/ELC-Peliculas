@@ -35,7 +35,7 @@ module.exports = {
 		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes bhr"},
 		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "personajes ascDes"},
 		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "hechos ascDes"},
-		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes"},
+		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes bhr"},
 		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes"},
 		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos"},
 		{nombre: "Por nombre del valor", valor: "rclv", clase: "valores bhr"},
