@@ -9,7 +9,7 @@
 				<input 
 					id="<%= opcion.id %>"
 					type="checkbox" name="<%= tema.codigo %>" value="<%= opcion.id %>" class="elegibleComplejo" 
-					<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>checked<% } %>
+					<% if (opcionesElegidas[tema.codigo]&&opcionesElegidas[tema.codigo].includes(opcion.id)) { %>checked<% } %>
 				>
 			</div>
 		<% } %>
