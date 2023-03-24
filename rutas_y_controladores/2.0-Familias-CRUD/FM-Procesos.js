@@ -519,9 +519,14 @@ module.exports = {
 		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
 
 		// 2. Falta el comentario
-		const motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-		if ((motivo && motivo.req_com && !comentario) || (!motivo && !comentario))
-			informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
+		if (!informacion) {
+			let motivo;
+			// Si se inactivó, se fija si el motivo requiere explicación
+			if (codigo == "inactivar") motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+			// Se fija si falta el comentario
+			if (!comentario && ((motivo && motivo.req_com) || !motivo_id))
+				informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
+		}
 
 		// Fin
 		return informacion;

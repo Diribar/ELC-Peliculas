@@ -100,17 +100,21 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Comentario para la BD
-		const motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-		let motivoComentario = motivo.descripcion + ". " + comentario;
-		if (!motivoComentario.endsWith(".")) motivoComentario += ".";
+		let motivo, motivoComentario;
 
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
 		if (informacion) {
 			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
 			return res.render("CMP-0Estructura", {informacion});
+		}
+
+		// Comentario para la BD
+		if (codigo == "inactivar") {
+			motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+			motivoComentario = motivo.descripcion + ".";
+			if (comentario) motivoComentario == " " + comentario;
+			if (!motivoComentario.endsWith(".")) motivoComentario += ".";
 		}
 
 		// CONSECUENCIAS
@@ -131,7 +135,7 @@ module.exports = {
 			...{status_original_id: original.status_registro_id, status_final_id},
 			...{aprobado: null, comentario: motivoComentario},
 		};
-		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
+		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza los RCLV, en el campo 'prods_aprob'
