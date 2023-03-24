@@ -15,7 +15,7 @@ module.exports = {
 		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
 
 		// Variables
-		const {entidad, id} = req.query
+		const {entidad, id} = req.query;
 		const prodEntidad = req.query.prodEntidad;
 		const prodID = req.query.prodID;
 		const userID = req.session.usuario.id;
@@ -53,6 +53,7 @@ module.exports = {
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		// Ir a la vista
+		// return res.send({
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen},
 			...{entidad, id, prodEntidad, prodID, familia: comp.obtieneFamilia(entidad)},
