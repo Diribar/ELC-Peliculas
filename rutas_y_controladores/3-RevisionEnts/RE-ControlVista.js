@@ -336,10 +336,8 @@ module.exports = {
 			// Variables
 			let cantProds;
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
-			bloqueDer = [
-				procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
-				await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia),
-			];
+			bloqueDer = familia == "rclv" ? [procsCRUD.bloqueRegistro({...original, entidad}, cantProds)] : [[]];
+			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia))
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			imgDerPers = avatar;
 			motivos = motivos_rech_edic.filter((m) => m.prods);
