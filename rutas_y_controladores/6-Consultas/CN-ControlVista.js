@@ -17,7 +17,7 @@ module.exports = {
 
 		// Filtro elegido
 		const filtro_id =
-			usuario && usuario.filtro_id ? usuario.filtro_id : req.cookies && req.cookies.filtro_id ? req.cookies.filtro_id : 1;
+			userID && usuario.filtro_id ? usuario.filtro_id : req.cookies && req.cookies.filtro_id ? req.cookies.filtro_id : 1;
 
 		// Opciones elegidas
 		// Obtiene la información de la BD

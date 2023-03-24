@@ -18,21 +18,32 @@ module.exports = {
 		return res.json(opciones);
 	},
 
-	guardaSessionCookie:(req,res)=>{
-		// Recibe la información
-		let datos = JSON.parse(req.query.datos);
-		// Guarda session
-		req.session.opcionesElegidas = datos
-		// Guarda cookie
-		res.cookie("opcionesElegidas", datos, {maxAge: unDia});
+	guardaFiltro_id: (req, res) => {
+		// Variables
+		const filtro_id = req.query.filtro_id
+		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
+
+		// Guarda session y cookie
+		if (userID) req.session.usuario.filtro_id = filtro_id;
+		res.cookie("filtro_id", filtro_id, {maxAge: unDia});
+
+		// Actualiza el usuario
+		if (userID) BD_genericas.actualizaPorId("usuarios", userID, {filtro_id});
+
 		// Fin
-		return res.json()
+		return res.json();
 	},
 
-	obtieneProductos:(req,res)=>{
-		let datos = JSON.parse(req.query.datos);
+	obtieneProductos: (req, res) => {
+		// Obtiene la información
+		const datos = JSON.parse(req.query.datos);
+
+		// Prepara los filtros
+		let objeto={}
+		
+
 		console.log(datos);
-		return res.json()
-	},
 
+		return res.json();
+	},
 };
