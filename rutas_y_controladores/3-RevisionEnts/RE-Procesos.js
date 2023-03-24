@@ -377,7 +377,7 @@ module.exports = {
 				rclv
 				? aprobado_id
 				: // Si es un producto, se revisa si tiene errores
-				(await validaProd.consolidado({campos: "", datos: {...original, entidad}}).then((n) => n.hay))
+				(await validaProd.consolidado({datos: {...original, entidad}}).then((n) => n.hay))
 				? creado_aprob_id
 				: aprobado_id;
 
