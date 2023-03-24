@@ -51,7 +51,7 @@ module.exports = {
 	prod_altaForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		const codigo = req.path.slice(1, -1);
+		const codigo = "producto/alta";
 		// Variables
 		let {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
@@ -67,31 +67,48 @@ module.exports = {
 		imgDerPers = imgDerPers
 			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
-		// Configurar el título de la vista
+		// Configura el título de la vista
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
 		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Info para la vista
-		const bloqueIzq = procsProd.bloqueIzq(original);
-		const bloqueDer = [
-			procsCRUD.bloqueRegistro({...original}),
-			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
-		];
-		const motivos = motivos_rech_altas.filter((n) => n.prods);
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
 			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
 		];
-		// Status de la entidad
+		// Info para el bloque Izquierdo
+		// Primer proceso: hace más legible la información
+		const infoProcesada = procsProd.bloqueIzq(original);
+		// Segundo proceso: reagrupa la información
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
+		if (infoProcesada.infoGral.length) {
+			let infoGral = infoProcesada.infoGral;
+			for (let i = 0; i < infoGral.length / 2; i++) {
+				// Agrega un dato en 'masInfoIzq'
+				bloqueIzq.masInfoIzq.push(infoGral[i]);
+				// Agrega un dato en 'masInfoDer'
+				let j = parseInt(infoGral.length / 2 + 0.5 + i);
+				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
+			}
+		}
+
+		// Bloque Derecho
+		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia)];
+		// Info para la vista
 		const status_registro_id = original.status_registro_id;
 		const statusCreado = status_registro_id == creado_id;
+		const links = await procsProd.obtieneLinksDelProducto(entidad, id);
+		const status_id = status_registro_id;
+		const motivos = motivos_rech_altas.filter((n) => n.prods);
+
 		// Va a la vista
-		//return res.send(original)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, title: original.nombre_castellano},
-			...{entidad, familia, id, prodNombre, registro: original, status_id: status_registro_id, statusCreado},
-			...{bloqueIzq, bloqueDer, imgDerPers, motivos},
-			...{origen: "TE", urlActual: req.session.urlActual, cartelRechazo: true},
+			...{tema, codigo, titulo, ayudasTitulo, origen: "TE"},
+			...{entidad, id, familia, status_id, statusCreado},
+			...{prodNombre, registro: original, links},
+			...{imgDerPers, tituloImgDerPers: original.nombre_castellano},
+			...{bloqueIzq, bloqueDer, RCLVs: []},
+			// title: original.nombre_castellano,motivos
+			...{urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
 	inacRecup_Form: async (req, res) => {

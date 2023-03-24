@@ -605,11 +605,11 @@ module.exports = {
 		return informacion;
 	},
 
-	fichaDelUsuario: async (revID, petitFamilia) => {
+	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
 		const ahora = comp.ahora();
 		const include = "rol_iglesia";
-		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", revID, include);
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		let bloque = [];
 
 		// Datos del usuario

@@ -1,12 +1,14 @@
 <nav>
-	<h3 class="titulo">Datos del Registro</h3>
-	<div id="texto">
-		<% for (campo of bloqueDer[0]) { %>
-			<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
-				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
-			</p>
-		<% } %>
-	</div>
+	<% if (bloqueDer[0].length) { %>
+		<h3 class="titulo">Datos del Registro</h3>
+		<div id="texto">
+			<% for (campo of bloqueDer[0]) { %>
+				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
+					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+				</p>
+			<% } %>
+		</div>
+	<% } %>
 	<h3 class="titulo">Datos del Usuario</h3>
 	<div id="texto">
 		<% for (campo of bloqueDer[1]) { %>
