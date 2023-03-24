@@ -18,26 +18,31 @@ module.exports = async (req, res, next) => {
 	// Status Esperado
 	(() => {
 		const ruta = req.path;
-		statusEsperados_id =
-			baseUrl == "/revision"
-				? // Preguntas para 'Revisión'
-				  ruta.includes("/alta/") // para 'producto' y 'rclv'
-					? [creado_id]
-					: ruta.includes("/edicion/")
-					? [creado_aprob_id, aprobado_id]
-					: ruta.includes("/inactivar-o-recuperar/")
-					? [inactivar_id, recuperar_id]
-					: ruta.includes("/links/")
-					? [aprobado_id]
-					: ruta.includes("/rechazo/")
-					? [creado_id]
-					: [99]
-				: // Preguntas para 'CRUD'
-				ruta == "/inactivar/"
+		statusEsperados_id = false
+			? null
+			: baseUrl == "/producto" && ruta == "/edicion/"||baseUrl == "/links" && ruta == "/abm/"
+			? [creado_id, creado_aprob_id, aprobado_id]
+			: baseUrl == "/revision"
+			? // Preguntas para 'Revisión'
+			  ruta.includes("/alta/") // para 'producto' y 'rclv'
+				? [creado_id]
+				: ruta.includes("/edicion/")
+				? [creado_aprob_id, aprobado_id]
+				: ruta.includes("/inactivar-o-recuperar/")
+				? [inactivar_id, recuperar_id]
+				: ruta.includes("/links/")
+				? [aprobado_id]
+				: ruta.includes("/rechazo/")
+				? [creado_id]
+				: [99]
+			: baseUrl == "/crud"
+			? // Preguntas para 'CRUD'
+			  ruta == "/inactivar/"
 				? [aprobado_id]
 				: ruta == "/recuperar/"
 				? [inactivo_id]
-				: [99];
+				: [99]
+			: [99];
 	})();
 
 	// Verifica si el registro está en un status incorrecto

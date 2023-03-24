@@ -98,7 +98,6 @@ module.exports = {
 		const statusCreado = status_registro_id == creado_id;
 		const links = await procsProd.obtieneLinksDelProducto(entidad, id);
 		const status_id = status_registro_id;
-		const motivos = motivos_rech_altas.filter((n) => n.prods);
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
