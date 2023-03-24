@@ -456,7 +456,7 @@ window.addEventListener("load", async () => {
 			valor = v[campo].value;
 			// 2. Quita los caracteres no deseados
 			v[campo].value = valor
-				.replace(/[^a-záéíóúüñ'\s]/gi, "")
+				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
 				.replace(/ +/g, " ")
 				.replace(/\t/g, "")
 				.replace(/\r/g, "");

@@ -20,8 +20,10 @@ module.exports = async (req, res, next) => {
 		const ruta = req.path;
 		statusEsperados_id = false
 			? null
-			: baseUrl == "/producto" && ruta == "/edicion/"||baseUrl == "/links" && ruta == "/abm/"
+			: (baseUrl == "/producto" && ruta == "/edicion/") || (baseUrl == "/links" && ruta == "/abm/")
 			? [creado_id, creado_aprob_id, aprobado_id]
+			: baseUrl == "/rclv" && ruta == "/edicion/"
+			? [creado_id, aprobado_id]
 			: baseUrl == "/revision"
 			? // Preguntas para 'Revisión'
 			  ruta.includes("/alta/") // para 'producto' y 'rclv'
@@ -35,13 +37,11 @@ module.exports = async (req, res, next) => {
 				: ruta.includes("/rechazo/")
 				? [creado_id]
 				: [99]
-			: baseUrl == "/crud"
-			? // Preguntas para 'CRUD'
-			  ruta == "/inactivar/"
-				? [aprobado_id]
-				: ruta == "/recuperar/"
-				? [inactivo_id]
-				: [99]
+			: // Preguntas para 'CRUD'
+			(baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/inactivar/"
+			? [aprobado_id]
+			: (baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/recuperar/"
+			? [inactivo_id]
 			: [99];
 	})();
 

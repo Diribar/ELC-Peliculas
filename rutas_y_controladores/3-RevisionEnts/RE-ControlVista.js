@@ -6,8 +6,8 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./RE-Procesos");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
-const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
-const validaRCLV = require("../2.2-RCLVs-CRUD/RCLV-Validar");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
+const validaRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Validar");
 
 module.exports = {
 	// TABLERO
