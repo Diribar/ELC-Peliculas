@@ -548,7 +548,7 @@ module.exports = {
 
 		// Motivo
 		if (registro.status_registro_id == inactivo_id)
-			bloque.push({titulo: "Motivo", valor: registro.motivo ? registro.motivo.descripcion : ""});
+			bloque.push({titulo: "Motivo", valor: registro.motivo ? registro.motivo.descripcion : "?"});
 
 		// Fin
 		return bloque;

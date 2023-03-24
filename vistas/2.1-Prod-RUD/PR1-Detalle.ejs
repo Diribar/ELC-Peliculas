@@ -75,12 +75,12 @@
 			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 		</div>
 		<% for (RCLV of RCLVs) { %>
-			<% if (bloqueIzq[RCLV.entSing]) { %>
+			<% if (bloqueIzq[RCLV.asociacion]) { %>
 				<div id="rclv" class="datosParcial" style="display: none;">
-					<% for (let campo of bloqueIzq[RCLV.entSing]) { %>
+					<% for (let campo of bloqueIzq[RCLV.asociacion]) { %>
 						<p>
 							<%= campo.titulo %>: <strong><%= campo.valor %></strong>
-							<% if (campo.titulo == bloqueIzq[RCLV.entSing][0].titulo) { %>
+							<% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
 								<span>
 									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
 										<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
