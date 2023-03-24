@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		cabecera_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
-		valor: {type: dt.STRING(10)},
+		valor: {type: dt.STRING(15)},
 	};
 	const config = {
 		tableName: "filtros_campos",

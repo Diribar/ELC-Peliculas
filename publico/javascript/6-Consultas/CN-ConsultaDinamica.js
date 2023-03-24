@@ -2,7 +2,7 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let v = {
-		// Partes del cuerpo
+		// Cuerpo
 		cuerpo: document.querySelector("#cuerpo"),
 
 		// Partes del Encabezado
@@ -55,7 +55,8 @@ window.addEventListener("load", async () => {
 		// Actualiza las elecciones (Encabezado + Filtros)
 		for (let elegible of v.elegiblesSimples) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
 		for (let elegible of v.elegiblesComplejos)
-			elegible.checked = opciones[elegible.name] && opciones[elegible.name].includes(elegible.value);
+			if (elegible.name != "ascDes" || opciones.ascDes)
+				elegible.checked = opciones[elegible.name] && opciones[elegible.name].includes(elegible.value);
 
 		// Actualiza los botones
 		botones.impactosDeFiltroPers();
@@ -194,7 +195,9 @@ window.addEventListener("load", async () => {
 
 		// 1. Obtiene los valores de todos los elegibles elegidos
 		opciones = {};
+		// Sencillos
 		for (let elegible of v.elegiblesSimples) if (elegible.value) opciones[elegible.name] = elegible.value;
+		// Checkbox
 		for (let elegible of v.elegiblesComplejos)
 			if (elegible.checked)
 				opciones[elegible.name]
