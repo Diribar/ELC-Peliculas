@@ -366,7 +366,6 @@ module.exports = {
 		});
 	},
 	prod_AvatarGuardar: async (req, res) => {
-		// return res.send({...req.query, ...req.body});
 		// Obtiene la respuesta del usuario
 		const {entidad, id, edicion_id: edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 

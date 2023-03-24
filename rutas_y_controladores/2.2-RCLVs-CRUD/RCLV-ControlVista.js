@@ -53,7 +53,6 @@ module.exports = {
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		// Ir a la vista
-		// return res.send({
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen},
 			...{entidad, id, prodEntidad, prodID, familia: comp.obtieneFamilia(entidad)},
