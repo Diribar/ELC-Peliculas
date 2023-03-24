@@ -117,7 +117,7 @@ module.exports = {
 			if (comentario) motivoComentario += " ";
 		}
 		if (comentario) motivoComentario += comentario;
-		if (!motivoComentario.endsWith(".")) motivoComentario += ".";
+		if (motivoComentario && !motivoComentario.endsWith(".")) motivoComentario += ".";
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
