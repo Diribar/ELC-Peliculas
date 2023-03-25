@@ -427,7 +427,7 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: producto.nombre_castellano},
+			...{tema, codigo, titulo, origen: "TE"},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
