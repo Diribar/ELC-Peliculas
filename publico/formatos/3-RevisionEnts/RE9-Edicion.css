@@ -1,4 +1,5 @@
 /* Datos Largos */
+#datosLargos #recuadro {width: 45vw;}
 #datosLargos #contenido {max-height: 50vh; overflow-y: auto;}
 #datosLargos #contenido {background: var(--verde-claro); padding: 0 40px;}
 
