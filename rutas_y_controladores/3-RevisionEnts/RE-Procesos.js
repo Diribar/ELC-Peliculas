@@ -95,6 +95,7 @@ module.exports = {
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
+			
 			// Obtiene los links 'a revisar'
 			let links = await BD_especificas.TC_obtieneLinksAjenos(revID);
 			// Obtiene los productos
@@ -706,9 +707,11 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		// Variables
 		let entidad = comp.obtieneProdDesdeProducto_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
-		let campoFecha = !link.status_registro_id ? "editado_en" : "sugerido_en";
+		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
+
+		// Separa en VN y OT
 		if (link.status_registro && link.status_registro.creado_aprob)
 			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
@@ -728,6 +731,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 5. Deja solamente los prods aprobados
 	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.status_registro_id == aprobado_id);
 	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.status_registro_id == aprobado_id);
+
 	// 6. Deja solamente los sin problemas de captura
 	if (prods.VN.length) prods.VN = sinProblemasDeCaptura(prods.VN, revID, ahora);
 	if (prods.OT.length) prods.OT = sinProblemasDeCaptura(prods.OT, revID, ahora);
