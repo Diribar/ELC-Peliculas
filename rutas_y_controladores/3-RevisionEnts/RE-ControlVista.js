@@ -96,7 +96,7 @@ module.exports = {
 		// Info para la vista
 		const status_registro_id = original.status_registro_id;
 		const statusCreado = status_registro_id == creado_id;
-		const links = await procsProd.obtieneLinksDelProducto(entidad, id);
+		const links = await procsProd.obtieneLinksDelProducto(entidad, id, [creado_id, aprobado_id, recuperar_id]);
 		const status_id = status_registro_id;
 
 		// Va a la vista
@@ -336,7 +336,7 @@ module.exports = {
 			let cantProds;
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = familia == "rclv" ? [procsCRUD.bloqueRegistro({...original, entidad}, cantProds)] : [[]];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia))
+			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			imgDerPers = avatar;
 			motivos = motivos_rech_edic.filter((m) => m.prods);

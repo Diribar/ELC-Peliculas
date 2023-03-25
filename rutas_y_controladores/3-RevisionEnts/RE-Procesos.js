@@ -389,7 +389,7 @@ module.exports = {
 		// Fin
 		return {
 			...{entidad, id, original, status_original_id, status_final_id},
-			...{inactivarRecuperar, subcodigo, rclv, motivo_id, comentario, aprob},
+			...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 		};
 	},
 
