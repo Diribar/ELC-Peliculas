@@ -76,7 +76,7 @@ module.exports = {
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
-			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
+			campos = {entidades, status_id: [creado_id, creado_aprob_id], revID, include: "ediciones"};
 			let SE = await TC_obtieneRegs(campos);
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
