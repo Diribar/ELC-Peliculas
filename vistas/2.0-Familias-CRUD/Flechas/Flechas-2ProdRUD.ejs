@@ -1,0 +1,32 @@
+<% if (tema == "prod_rud" && codigo == "detalle") { %>
+    <div class="flechas inactivo">
+        <i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+        <i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+        <i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+    </div>
+<% } %>
+<% if (tema == "prod_rud" && codigo == "edicion") { %>
+    <div class="flechas">
+		<!-- Versión editada 'edicN' -->
+		<div class="pack">
+			<!-- Muestra la nueva edición sin guardar -->
+			<i class="fa-solid fa-pen-to-square activaVersion activo" tabindex="-1" title='Muestra la edición nueva'></i>
+			<!-- Guarda los cambios de la nueva edición -->
+			<button type="submit">
+				<i id="guardar" class="fa-solid fa-floppy-disk edicN inactivoVersion" tabindex="-1" title='Guarda la edición nueva'></i>
+			</button>
+			<!-- Recarga la vista -->
+			<i class="fa-solid fa-rotate-right elimina edicN  inactivoVersion" tabindex="-1" title='Elimina la edición nueva'></i>
+		</div>
+		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+		<div class="pack">
+			<!-- Muestra la edición guardada -->
+			<i class="fa-solid fa-pencil activaVersion inactivoVersion" tabindex="-1" title='Muestra la edición guardada'></i>
+			<!-- Elimina la edición guardada -->
+			<i class="fa-solid fa-trash-can elimina edicG inactivoVersion" tabindex="-1" title='Elimina la edición guardada'></i>
+		</div>
+		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+		<!-- Muestra la versión original -->
+		<i class="fa-solid fa-house activaVersion" tabindex="-1" title='Muestra la versión original'></i>
+    </div>
+<% } %>
