@@ -29,7 +29,7 @@ module.exports = {
 					)
 						ediciones.splice(i, 1);
 
-			// 4. Obtiene los productos originales
+			// 4. Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
 					let entidad = comp.obtieneProdDesdeProducto_id(n);
@@ -44,6 +44,10 @@ module.exports = {
 							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 						});
 				});
+
+			// 5. Les agrega los productos en status 'creado' y sin edicion
+			const SE = await creadosSinEdicion();
+			if (SE.length) productos = [...productos, ...SE];
 
 			// 6. Distribuye entre Altas y Ediciones
 			let AL = {};
@@ -76,7 +80,7 @@ module.exports = {
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
 			// SE: Sin Edición (en status creado_aprob)
-			campos = {entidades, status_id: [creado_id, creado_aprob_id], revID, include: "ediciones"};
+			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
 			let SE = await TC_obtieneRegs(campos);
 			SE = SE.filter((n) => !n.ediciones.length);
 			// IN: En staus 'inactivar'
@@ -768,4 +772,31 @@ let usuarioCalidad = (usuario, prefijo) => {
 
 	// Fin
 	return resultados;
+};
+let creadosSinEdicion = async () => {
+	// Obtiene los productos en status 'creado' y sin edicion
+	const PL = BD_genericas.obtieneTodosPorCamposConInclude("peliculas", {status_registro_id: creado_id}, "ediciones")
+		.then((n) => n.filter((m) => !m.ediciones.length))
+		.then((n) =>
+			n.map((m) => {
+				const fechaRef = m.creado_en;
+				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
+			})
+		);
+	const CL = BD_genericas.obtieneTodosPorCamposConInclude("colecciones", {status_registro_id: creado_id}, "ediciones")
+		.then((n) => n.filter((m) => !m.ediciones.length))
+		.then((n) =>
+			n.map((m) => {
+				const fechaRef = m.creado_en;
+				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
+			})
+		);
+
+	// Consolida el resultado
+	const SE = await Promise.all([PL, CL]).then(([a, b]) => [...a, ...b]);
+
+	// Fin
+	return SE;
 };

@@ -34,9 +34,9 @@ module.exports = {
 
 		// Links
 		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
-		// return res.send(productos.CL)
-
+		
 		// Procesa los campos de las 2 familias de entidades
+		// return res.send(productos.AL)
 		productos = procesos.TC.prod_ProcesaCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
 
