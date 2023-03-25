@@ -274,7 +274,7 @@ module.exports = {
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
 	provsListaNegra: ["gloria.tv"],
-	calidades: [360, 480, 720, 1080],
+	calidades: [240, 360, 480, 720, 1080],
 
 	// Entorno Revisiones
 	camposRevisar: {
