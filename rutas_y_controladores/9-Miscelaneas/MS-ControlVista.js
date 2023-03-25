@@ -16,20 +16,23 @@ module.exports = {
 	redireccionar: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
+		// return res.send(req.query)
 		// Si es 'tablero', ir a tablero
 		let destino =
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
-				: origen == "ED"
-				? "/producto/edicion/?entidad=" + entidad + "&id=" + id
 				: origen == "DTP"
-				? "/producto/detalle/?entidad=" + entidad + "&id=" + id
-				: origen == "DTR"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				? "/producto/detalle/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+				: origen == "EDP"
+				? "/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+				: origen == "LK"
+				? "/links/abm/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+				: // : origen == "DTR"
+				// ? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				origen == "TE"
+				? "/revision/tablero-de-control"
 				: origen == "TU"
 				? "/revision/usuarios/tablero-de-control"
-				: origen == "TE"
-				? "/revision/tablero-de-control"
 				: origen == "MT"
 				? "/mantenimiento"
 				: urlDestino

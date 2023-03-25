@@ -87,7 +87,7 @@ module.exports = {
 		let destino =
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
-				: origen == "ED"
+				: origen == "EDP"
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
 				: origen == "DTP"
 				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
