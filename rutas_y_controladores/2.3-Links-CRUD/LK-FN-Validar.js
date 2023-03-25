@@ -65,8 +65,7 @@ module.exports = {
 				: "";
 		}
 		// completo
-		if (campos.includes("completo") && datos.tipo_id != "1")
-			errores.completo = !datos.completo ? variables.inputVacio : "";
+		if (campos.includes("completo") && datos.tipo_id != "1") errores.completo = !datos.completo ? variables.inputVacio : "";
 		// parte
 		if (campos.includes("parte") && datos.completo == "0") {
 			errores.parte = !datos.parte
@@ -94,7 +93,7 @@ let validaLinkRepetidos = async (datos) => {
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(prodEntidad);
 		let prodID = link[campo_id];
 		datos = {entidad: prodEntidad, id: prodID};
-		respuesta = comp.cartelRepetido(datos);
+		respuesta = comp.cartelRepetido(datos, "link");
 	}
 	// Fin
 	return respuesta;

@@ -472,16 +472,16 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	cartelRepetido: function (datos) {
+	cartelRepetido: function (datos, entidadNombre) {
 		// Variables
 		// 1. Inicio
-		let genero = datos.entidad == "capitulos" ? "o" : "a";
+		let genero = datos.entidad == "capitulos" || entidadNombre == "link" ? "e" : "a";
 		let inicio = "Est" + genero + " ";
 
 		// 2. Anchor
 		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
 		let link = "/" + this.obtieneFamilia(datos.entidad) + "/detalle/" + url;
-		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
