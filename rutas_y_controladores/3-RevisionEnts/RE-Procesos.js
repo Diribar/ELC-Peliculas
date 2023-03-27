@@ -95,7 +95,7 @@ module.exports = {
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
-			
+
 			// Obtiene los links 'a revisar'
 			let links = await BD_especificas.TC_obtieneLinksAjenos(revID);
 			// Obtiene los productos
@@ -524,6 +524,7 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
+			console.log(527, datos.duracion, motivo);
 			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
 
 			// 5. Actualiza el registro de 'edición'
