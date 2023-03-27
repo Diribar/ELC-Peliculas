@@ -6,7 +6,7 @@
 	<% } %>
 </div>
 <% if (entidad == "colecciones" || entidad == "capitulos") { %>
-	<% if (tema == "prod_rud") { %>
+	<% if (tema == "prod_rud" && entidad == "colecciones") { %>
 		<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
 	<% } %>
 	<div id="colCap">
@@ -34,7 +34,7 @@
 				</p>
 			</div>
 			<div id="tempCapS">
-				<% if (tema == "prod_rud") { %>
+				<% if (tema == "prod_rud" || tema == "links_crud") { %>
 					<!-- Cambiar de capítulo -->
 					<div class="pack">
 						<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>

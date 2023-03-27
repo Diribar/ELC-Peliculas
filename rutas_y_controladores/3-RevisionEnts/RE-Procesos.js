@@ -29,7 +29,7 @@ module.exports = {
 					)
 						ediciones.splice(i, 1);
 
-			// 4. Obtiene los productos originales
+			// 4. Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
 					let entidad = comp.obtieneProdDesdeProducto_id(n);
@@ -44,6 +44,10 @@ module.exports = {
 							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 						});
 				});
+
+			// 5. Les agrega los productos en status 'creado' y sin edicion
+			const SE = await creadosSinEdicion();
+			if (SE.length) productos = [...productos, ...SE];
 
 			// 6. Distribuye entre Altas y Ediciones
 			let AL = {};
@@ -91,6 +95,7 @@ module.exports = {
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
+			
 			// Obtiene los links 'a revisar'
 			let links = await BD_especificas.TC_obtieneLinksAjenos(revID);
 			// Obtiene los productos
@@ -389,7 +394,7 @@ module.exports = {
 		// Fin
 		return {
 			...{entidad, id, original, status_original_id, status_final_id},
-			...{inactivarRecuperar, subcodigo, rclv, motivo_id, comentario, aprob},
+			...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 		};
 	},
 
@@ -702,9 +707,11 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		// Variables
 		let entidad = comp.obtieneProdDesdeProducto_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
-		let campoFecha = !link.status_registro_id ? "editado_en" : "sugerido_en";
+		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
+
+		// Separa en VN y OT
 		if (link.status_registro && link.status_registro.creado_aprob)
 			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
@@ -724,6 +731,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 5. Deja solamente los prods aprobados
 	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.status_registro_id == aprobado_id);
 	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.status_registro_id == aprobado_id);
+
 	// 6. Deja solamente los sin problemas de captura
 	if (prods.VN.length) prods.VN = sinProblemasDeCaptura(prods.VN, revID, ahora);
 	if (prods.OT.length) prods.OT = sinProblemasDeCaptura(prods.OT, revID, ahora);
@@ -768,4 +776,31 @@ let usuarioCalidad = (usuario, prefijo) => {
 
 	// Fin
 	return resultados;
+};
+let creadosSinEdicion = async () => {
+	// Obtiene los productos en status 'creado' y sin edicion
+	const PL = BD_genericas.obtieneTodosPorCamposConInclude("peliculas", {status_registro_id: creado_id}, "ediciones")
+		.then((n) => n.filter((m) => !m.ediciones.length))
+		.then((n) =>
+			n.map((m) => {
+				const fechaRef = m.creado_en;
+				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
+			})
+		);
+	const CL = BD_genericas.obtieneTodosPorCamposConInclude("colecciones", {status_registro_id: creado_id}, "ediciones")
+		.then((n) => n.filter((m) => !m.ediciones.length))
+		.then((n) =>
+			n.map((m) => {
+				const fechaRef = m.creado_en;
+				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
+			})
+		);
+
+	// Consolida el resultado
+	const SE = await Promise.all([PL, CL]).then(([a, b]) => [...a, ...b]);
+
+	// Fin
+	return SE;
 };

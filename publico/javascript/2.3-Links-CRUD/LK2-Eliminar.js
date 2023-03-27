@@ -25,7 +25,22 @@ window.addEventListener("load", () => {
 	// Listener de 'inactivar'
 	botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
-			if (botonOut.classList.contains("fa-circle-xmark")) {
+			// Eliminar permanentemente
+			if (
+				botonOut.classList.contains("fa-trash-can") &&
+				!botonOut.classList.contains("inactivo")
+			) {
+				let motivo_id = motivosSelect[fila].value;
+				let url = condiciones;
+				url += "&url=" + encodeURIComponent(links_url[fila].value);
+				url += "&motivo_id=" + motivo_id;
+				let respuesta = await fetch(ruta + url).then((n) => n.json());
+				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
+				if (respuesta.reload) location.reload();
+				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
+			}
+			// Inactivar
+			else {
 				// Ocultar el botón de editar
 				botonesEditar[fila].classList.add("ocultar");
 				// Reemplazar por el tacho
@@ -38,18 +53,6 @@ window.addEventListener("load", () => {
 				// Mostrar el select
 				motivosFila[fila].classList.remove("ocultar");
 				motivosSelect[fila].focus()
-			} else if (
-				botonOut.classList.contains("fa-trash-can") &&
-				!botonOut.classList.contains("inactivo")
-			) {
-				let motivo_id = motivosSelect[fila].value;
-				let url = condiciones;
-				url += "&url=" + encodeURIComponent(links_url[fila].value);
-				url += "&motivo_id=" + motivo_id;
-				let respuesta = await fetch(ruta + url).then((n) => n.json());
-				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
-				if (respuesta.reload) location.reload();
-				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
 			}
 		});
 	});

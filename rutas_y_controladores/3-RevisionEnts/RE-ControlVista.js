@@ -34,9 +34,9 @@ module.exports = {
 
 		// Links
 		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
-		// return res.send(productos.CL)
-
+		
 		// Procesa los campos de las 2 familias de entidades
+		// return res.send(productos.AL)
 		productos = procesos.TC.prod_ProcesaCampos(productos);
 		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
 
@@ -96,7 +96,7 @@ module.exports = {
 		// Info para la vista
 		const status_registro_id = original.status_registro_id;
 		const statusCreado = status_registro_id == creado_id;
-		const links = await procsProd.obtieneLinksDelProducto(entidad, id);
+		const links = await procsProd.obtieneLinksDelProducto(entidad, id, [creado_id, aprobado_id, recuperar_id]);
 		const status_id = status_registro_id;
 
 		// Va a la vista
@@ -336,7 +336,7 @@ module.exports = {
 			let cantProds;
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = familia == "rclv" ? [procsCRUD.bloqueRegistro({...original, entidad}, cantProds)] : [[]];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia))
+			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			imgDerPers = avatar;
 			motivos = motivos_rech_edic.filter((m) => m.prods);
@@ -427,7 +427,7 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: producto.nombre_castellano},
+			...{tema, codigo, titulo, origen: "TE"},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},

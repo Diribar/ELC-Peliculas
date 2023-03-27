@@ -1,10 +1,18 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let entidad = new URL(location.href).searchParams.get("entidad");
-	let prodID = new URL(location.href).searchParams.get("id");
-	let vista = location.pathname;
-	let ruta
+	const prodID = new URL(location.href).searchParams.get("id");
+	const codigo = location.pathname.slice(1,-1)
+	const origen = false
+		? null
+		: codigo == "producto/detalle"
+		? "DTP"
+		: codigo == "producto/edicion"
+		? "EDP"
+		: codigo == "links/abm"
+		? "LK"
+		: "";
+	let ruta;
 
 	// Obtiene el ID de la colección
 	ruta = "/crud/api/obtiene-col-cap/?entidad=capitulos&id=";
@@ -20,10 +28,8 @@ window.addEventListener("load", async () => {
 		let tempNum = temporada.value.slice(10);
 		// Obtiene los capítulos de la temporada
 		let ruta = "/crud/api/averigua-capitulos/";
-		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then(
-			(n) => n.json()
-		);
-		// Eliminar las opciones actuales
+		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
+		// Elimina las opciones actuales
 		capSelect.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
 		for (let capitulo of capitulos) {
@@ -38,12 +44,18 @@ window.addEventListener("load", async () => {
 		let capNum = capitulo.value.slice(9);
 		// Obtiene el capID
 		let ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
-		let capID = await fetch(
-			ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum
-		).then((n) => n.json());
-		location.href = vista + "?entidad=capitulos&id=" + capID;
-	});	
-	
+		let capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
+			n.json()
+		);
+		location.href =
+			"/inactivar-captura/?entidad=capitulos&id=" +
+			prodID +
+			"&prodEntidad=capitulos&prodID=" +
+			capID +
+			"&origen=" +
+			origen;
+	});
+
 	// CAPÍTULOS ANTERIOR O POSTERIOR
 	// Obtiene el ID del capítulo anterior y del posterior
 	ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
@@ -53,7 +65,13 @@ window.addEventListener("load", async () => {
 	if (capAntID) {
 		botonCapAnt.classList.remove("inactivo");
 		botonCapAnt.addEventListener("click", () => {
-			location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
+			location.href =
+				"/inactivar-captura/?entidad=capitulos&id=" +
+				prodID +
+				"&prodEntidad=capitulos&prodID=" +
+				capAntID +
+				"&origen=" +
+				origen;
 		});
 	} else botonCapAnt.classList.add("inactivo");
 	// Acción si se elije "capítulo posterior"
@@ -61,7 +79,13 @@ window.addEventListener("load", async () => {
 	if (capPostID) {
 		botonCapPost.classList.remove("inactivo");
 		botonCapPost.addEventListener("click", () => {
-			location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
+			location.href =
+				"/inactivar-captura/?entidad=capitulos&id=" +
+				prodID +
+				"&prodEntidad=capitulos&prodID=" +
+				capPostID +
+				"&origen=" +
+				origen;
 		});
 	} else botonCapPost.classList.add("inactivo");
 });

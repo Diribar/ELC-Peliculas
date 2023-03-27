@@ -25,10 +25,10 @@ const ABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, sta
 // Links
 router.get("/api/valida", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
-router.get("/api/guardar", API.guardar);
-router.get("/api/eliminar", API.eliminar);
-router.get("/api/recuperar", API.recuperar);
-router.get("/api/deshacer", API.deshacer);
+router.get("/api/guardar", API.guarda);
+router.get("/api/eliminar", API.elimina);
+router.get("/api/recuperar", API.recupera);
+router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links

@@ -1,5 +1,9 @@
 <!-- Logo de Portales de información de Películas -->
-<% if (tema == "revisionEnts" && (codigo == "producto/alta"||codigo == "producto/edicion")) { %>
+<% if (tema == "revisionEnts"&&(codigo == "producto/alta"||codigo == "producto/edicion") || (tema=="prod_rud"&&codigo=="edicion")) { %>
+	<style>
+		#sectorLogos a.logos {width: 30px; height: 30px; position: relative; }
+		#sectorLogos a.logos img {width: 100%; height: 100%; position: absolute; object-fit: contain; border-radius: 8px;}
+	</style>
 	<div id="sectorLogos" class="flechas">
 		<!-- TMDB -->
 		<% tmdb = registro.nombre_original ? "search?language=es&query=" + registro.nombre_original : "" %>

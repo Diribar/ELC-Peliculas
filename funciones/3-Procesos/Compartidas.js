@@ -472,16 +472,16 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	cartelRepetido: function (datos) {
+	cartelRepetido: function (datos, entidadNombre) {
 		// Variables
 		// 1. Inicio
-		let genero = datos.entidad == "capitulos" ? "o" : "a";
+		let genero = datos.entidad == "capitulos" || entidadNombre == "link" ? "e" : "a";
 		let inicio = "Est" + genero + " ";
 
 		// 2. Anchor
 		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
 		let link = "/" + this.obtieneFamilia(datos.entidad) + "/detalle/" + url;
-		let entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
@@ -604,7 +604,7 @@ module.exports = {
 
 			// 1. Obtiene la ruta a la cual ir
 			let rutaOrigen =
-				datos.origen == "DA" ? "/producto/agregar/datos-adicionales" : datos.origen == "ED" ? "/producto/edicion/" : "/";
+				datos.origen == "DA" ? "/producto/agregar/datos-adicionales" : datos.origen == "EDP" ? "/producto/edicion/" : "/";
 			// Obtiene los parámetros de entidad + ID, en la ruta de origen
 			let entidadIdOrigen =
 				datos.origen && datos.origen != "DA" ? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID : "";
@@ -622,8 +622,8 @@ module.exports = {
 			// Obtiene los parámetros de entidad + ID, a inactivar
 			let entidadId_inactivar = "&entidad=" + datos.entidad + "&id=" + datos.id;
 
-			// Datos sólo si el origen es 'ED'
-			let soloSiOrigenED = datos.origen == "ED" ? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID : "";
+			// Datos sólo si el origen es 'EDP'
+			let soloSiOrigenED = datos.origen == "EDP" ? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID : "";
 
 			// Fin - Consolida la información
 			rutaSalir = rutaOrigen + vistaOrigen + entidadId_inactivar + soloSiOrigenED;

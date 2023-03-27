@@ -2,7 +2,8 @@
 <% cond.creado = link.status_registro.creado %> 
 <% cond.creadoPropio = cond.creado && link.creado_por_id == userID %> 
 <% cond.aprobado = link.status_registro.aprobado %>
-<% cond.creadoAprob = cond.creado || cond.aprobado %> 
+<% cond.creadoAprob = cond.creado || cond.aprobado %>
+<% cond.inactivar = link.status_registro.inactivar %>
 <% cond.inactivo = link.status_registro.inactivo %>
 <% cond.estable = cond.aprobado || cond.inactivo %>
 <% cond.inactivarPropio = link.status_registro.inactivar && link.sugerido_por_id == userID %>

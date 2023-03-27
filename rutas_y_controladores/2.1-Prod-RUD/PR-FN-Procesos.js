@@ -35,19 +35,18 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async (entidad, id) => {
+	obtieneLinksDelProducto: async (entidad, id, status_registro_id) => {
 		// Variables
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		const include = ["tipo", "prov"];
+
+		// Declara las variables de links de tipo 'Película' y 'Trailer'
 		let PL = [];
 		let TR = [];
 
 		// Obtiene los links
-		const links = await BD_genericas.obtieneTodosPorCamposConInclude(
-			"links",
-			{[campo_id]: id, status_registro_id: aprobado_id},
-			include
-		);
+		if (!status_registro_id) status_registro_id = aprobado_id;
+		const links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id, status_registro_id}, include);
 
 		// Procesos si hay links
 		if (links.length) {

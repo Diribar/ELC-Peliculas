@@ -127,17 +127,17 @@ module.exports = {
 				.then((n) => (n ? n.map((m) => m.toJSON()) : []))
 		);
 	},
-	TC_obtieneLinksAjenos: async (userID) => {
+	TC_obtieneLinksAjenos: async (revID) => {
 		// Variables
 		let include = ["pelicula", "coleccion", "capitulo"];
 
 		// Obtiene los links en status 'a revisar'
 		let condiciones = {
 			[Op.or]: [
-				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: userID}}]},
-				{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: userID}}]},
-				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
-				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: userID}}]},
+				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: revID}}]},
+				{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: revID}}]},
+				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
+				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
 			],
 		};
 		let originales = db.links
@@ -145,7 +145,7 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()));
 
 		// Obtiene todas las ediciones ajenas
-		let condicion = {editado_por_id: {[Op.ne]: userID}};
+		let condicion = {editado_por_id: {[Op.ne]: revID}};
 		let ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
 
 		// Los consolida

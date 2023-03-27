@@ -19,7 +19,7 @@ module.exports = {
 	obtieneProvs: (req, res) => {
 		return res.json(links_provs);
 	},
-	guardar: async (req, res) => {
+	guarda: async (req, res) => {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
@@ -57,7 +57,7 @@ module.exports = {
 		// Fin
 		return res.json(mensaje);
 	},
-	eliminar: async (req, res) => {
+	elimina: async (req, res) => {
 		// Proceso
 		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
 		// - Los demás --> se inactivan
@@ -101,7 +101,7 @@ module.exports = {
 			return res.json(respuesta);
 		}
 	},
-	recuperar: async (req, res) => {
+	recupera: async (req, res) => {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
@@ -125,7 +125,7 @@ module.exports = {
 		// Fin
 		return res.json(respuesta);
 	},
-	deshacer: async (req, res) => {
+	deshace: async (req, res) => {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
