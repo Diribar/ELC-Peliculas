@@ -134,8 +134,8 @@ module.exports = {
 					const peliculas = INO[i].peliculas.length;
 					const colecciones = INO[i].colecciones.length;
 					const capitulos = INO[i].capitulos.length;
-					const prods_edicion=INO[i].prods_edicion.length;
-					if (!peliculas && !colecciones && !capitulos&&!prods_edicion) INO.splice(i, 1);
+					const prods_edicion = INO[i].prods_edicion.length;
+					if (!peliculas && !colecciones && !capitulos && !prods_edicion) INO.splice(i, 1);
 				}
 
 			// Fin
@@ -377,14 +377,14 @@ module.exports = {
 				rclv
 				? aprobado_id
 				: // Si es un producto, se revisa si tiene errores
-				(await validaProd.consolidado(original).then((n) => n.hay))
+				(await validaProd.consolidado({datos: {...original, entidad}}).then((n) => n.hay))
 				? creado_aprob_id
 				: aprobado_id;
 
 		// Obtiene el motivo_id
 		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-		let comentario = req.body.comentario;
-		if (!comentario.endsWith(".")) comentario += ".";
+		let comentario = req.body.comentario ? req.body.comentario : "";
+		if (comentario && !comentario.endsWith(".")) comentario += ".";
 
 		// Fin
 		return {
@@ -605,11 +605,11 @@ module.exports = {
 		return informacion;
 	},
 
-	fichaDelUsuario: async (revID, petitFamilia) => {
+	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
 		const ahora = comp.ahora();
 		const include = "rol_iglesia";
-		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", revID, include);
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		let bloque = [];
 
 		// Datos del usuario

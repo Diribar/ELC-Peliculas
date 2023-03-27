@@ -2,6 +2,7 @@
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -20,7 +21,7 @@ module.exports = {
 
 	guardaFiltro_id: (req, res) => {
 		// Variables
-		const filtro_id = req.query.filtro_id
+		const filtro_id = req.query.filtro_id;
 		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 		// Guarda session y cookie
@@ -35,15 +36,19 @@ module.exports = {
 	},
 
 	obtieneProductos: (req, res) => {
-		// Obtiene la información
+		// Variables
 		const datos = JSON.parse(req.query.datos);
-
-		// Prepara los filtros
-		let objeto={}
-		
-
 		console.log(datos);
+		let objeto = {};
+		objeto.notNull = [];
 
+		// Prepara la información para enviar a BD_especificas
+		// Filtros - RCLV asociado
+		if (datos.layout != "listado") objeto.notNull.push(comp.obtieneRCLV_id(datos.layout))
+
+		// Orden
+
+		// Fin
 		return res.json();
 	},
 };

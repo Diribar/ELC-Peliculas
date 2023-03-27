@@ -5,7 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -34,17 +34,18 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			prodNombre;
 		// Info para el bloque Izquierdo
-		// 1. Información general y actores
+		// Primer proceso: hace más legible la información
 		const infoProcesada = procesos.bloqueIzq(prodComb);
-		let infoBloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
+		// Segundo proceso: reagrupa la información
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
 		if (infoProcesada.infoGral.length) {
 			let infoGral = infoProcesada.infoGral;
 			for (let i = 0; i < infoGral.length / 2; i++) {
 				// Agrega un dato en 'masInfoIzq'
-				infoBloqueIzq.masInfoIzq.push(infoGral[i]);
+				bloqueIzq.masInfoIzq.push(infoGral[i]);
 				// Agrega un dato en 'masInfoDer'
 				let j = parseInt(infoGral.length / 2 + 0.5 + i);
-				if (j < infoGral.length) infoBloqueIzq.masInfoDer.push(infoGral[j]);
+				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
 			}
 		}
 
@@ -53,13 +54,13 @@ module.exports = {
 		RCLVs = RCLVs.map((n) => ({
 			entidad: n,
 			campo_id: comp.obtieneCampo_idDesdeEntidad(n),
-			entSing: comp.obtieneAsociacion(n),
+			asociacion: comp.obtieneAsociacion(n),
 		}));
 		if (prodComb.personaje_id != 1)
-			infoBloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
-		if (prodComb.hecho_id != 1) infoBloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
-		if (prodComb.valor_id != 1) infoBloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "valores", ...prodComb.valor});
-		// return res.send(infoBloqueIzq);
+			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
+		if (prodComb.hecho_id != 1) bloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
+		if (prodComb.valor_id != 1) bloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "valores", ...prodComb.valor});
+		// return res.send(bloqueIzq);
 
 		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro(prodComb);
@@ -72,15 +73,15 @@ module.exports = {
 
 		// Status de la entidad
 		const status_id = original.status_registro_id;
-		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
+		const statusEstable = status_id == aprobado_id || status_id == inactivo_id;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen},
-			...{prodNombre, registro: prodComb},
-			...{entidad, id, familia, status_id, statusEstable, links},
+			...{entidad, id, familia, status_id, statusEstable},
+			...{prodNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
-			...{bloqueIzq: infoBloqueIzq, bloqueDer, RCLVs},
+			...{bloqueIzq, bloqueDer, RCLVs},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});

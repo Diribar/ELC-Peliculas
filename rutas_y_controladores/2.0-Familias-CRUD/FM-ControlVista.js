@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
-const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-Procesos");
+const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
 const procesos = require("./FM-Procesos");
 
 // *********** Controlador ***********
@@ -100,11 +100,8 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-
-		// Comentario para la BD
-		const motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-		let motivoComentario = motivo.descripcion + ". " + comentario;
-		if (!motivoComentario.endsWith(".")) motivoComentario += ".";
+		let motivoComentario = "";
+		let motivo;
 
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
@@ -112,6 +109,15 @@ module.exports = {
 			informacion.iconos = variables.vistaEntendido(req.session.urlAnterior);
 			return res.render("CMP-0Estructura", {informacion});
 		}
+
+		// Comentario para la BD
+		if (codigo == "inactivar") {
+			motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+			motivoComentario = motivo.descripcion + ".";
+			if (comentario) motivoComentario += " ";
+		}
+		if (comentario) motivoComentario += comentario;
+		if (motivoComentario && !motivoComentario.endsWith(".")) motivoComentario += ".";
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -131,7 +137,7 @@ module.exports = {
 			...{status_original_id: original.status_registro_id, status_final_id},
 			...{aprobado: null, comentario: motivoComentario},
 		};
-		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : codigo == "recuperar" ? original.motivo_id : null;
+		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza los RCLV, en el campo 'prods_aprob'

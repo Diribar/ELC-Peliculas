@@ -4,8 +4,8 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const procesos = require("./RCLV-Procesos");
-const valida = require("./RCLV-Validar");
+const procesos = require("./RCLV-FN-Procesos");
+const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
@@ -15,7 +15,7 @@ module.exports = {
 		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
 
 		// Variables
-		const {entidad, id} = req.query
+		const {entidad, id} = req.query;
 		const prodEntidad = req.query.prodEntidad;
 		const prodID = req.query.prodID;
 		const userID = req.session.usuario.id;

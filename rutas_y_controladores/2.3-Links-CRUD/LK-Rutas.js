@@ -10,14 +10,15 @@ const vista = require("./LK-ControlVista");
 const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
-// Específicos de links
+// Específicos de productos
 const entValida = require("../../middlewares/producto/filtro-entidadValida");
 const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
+const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
-const ABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, permUserReg, capturaActivar];
+const ABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs

@@ -249,6 +249,8 @@ module.exports = {
 			.replace(/\t/g, " ")
 			.replace(/ /g, "")
 			.replace(/–/g, "-")
+			.replace("[", "(")
+			.replace("]", ")")
 			.replace(/#/g, "");
 	},
 	paises_idToNombre: (paises_id) => {

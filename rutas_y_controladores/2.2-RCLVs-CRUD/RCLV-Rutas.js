@@ -22,7 +22,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
 const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
-const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq];
+const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq, statusCorrecto];
 const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
 const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
 
