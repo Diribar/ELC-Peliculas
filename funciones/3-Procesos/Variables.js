@@ -28,22 +28,22 @@ module.exports = {
 		cfc: {
 			titulo: "Relacionada con la Fe Católica",
 			opciones: [
-				{nombre: "SI", valor: "CFC"},
-				{nombre: "NO", valor: "VPC"},
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
 			],
 		},
 		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
-			not_null_in: "- tema",
+			ocurrio: "-",
 			opciones: [
-				{nombre: "SI", valor: "SI"},
-				{nombre: "NO", valor: "NO"},
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
 			],
 		},
 		// RCLV
 		epoca_id: {
 			titulo: "Epoca",
-			layout: "siempre",
+			ocurrio: "SI",
 			opciones: [
 				{id: "ant", nombre: "Antiguo Testamento"},
 				{id: "cnt", nombre: "Nuevo Testamento"},
@@ -52,7 +52,9 @@ module.exports = {
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
-			layout: "listado personaj",
+			ocurrio: "SI",
+			epoca_id: "pst",
+			cfc: "SI",
 			opciones: [
 				{id: "SI", nombre: "SI"},
 				{id: "NO", nombre: "NO"},
@@ -60,7 +62,8 @@ module.exports = {
 		},
 		canons: {
 			titulo: "Proceso de Canonización",
-			layout: "personajes",
+			notNull: "personaje",
+			cfc: "SI",
 			opciones: [
 				{id: "sb", nombre: "Santos y Beatos"},
 				{id: "vs", nombre: "Venerables y Siervos de Dios"},
@@ -68,7 +71,8 @@ module.exports = {
 		},
 		rolesIglesia: {
 			titulo: "Rol en la Iglesia",
-			layout: "personajes",
+			notNull: "personaje",
+			cfc: "SI",
 			opciones: [
 				{id: "la", nombre: "Laicos"},
 				{id: "lc", nombre: "Laicos casados"},
