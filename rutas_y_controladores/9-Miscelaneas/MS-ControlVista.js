@@ -27,9 +27,9 @@ module.exports = {
 				? "/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
 				: origen == "LK"
 				? "/links/abm/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
-				: // : origen == "DTR"
-				// ? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
-				origen == "TE"
+				: origen == "DTR"
+				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
+				: origen == "TE"
 				? "/revision/tablero-de-control"
 				: origen == "TU"
 				? "/revision/usuarios/tablero-de-control"

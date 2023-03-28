@@ -9,7 +9,7 @@ module.exports = {
 		let resultado = userID ? await BD_genericas.obtieneTodosPorCampos("filtros_cabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
 		// Le agrega el filtro estándar
-		resultado.push(filtroEstandar);
+		resultado.push(filtroEstandarCabecera);
 		// Fin
 		return resultado;
 	},

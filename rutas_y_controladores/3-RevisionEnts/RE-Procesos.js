@@ -277,7 +277,7 @@ module.exports = {
 				let valorRech = relacInclude ? original[relacInclude].nombre : original[campo];
 
 				// Casos especiales
-				if (["solo_cfc", "ant", "jss", "cnt", "pst", "ama"].includes(campo)) {
+				if (["solo_cfc", "ama"].includes(campo)) {
 					valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
 					valorRech = original[campo] == 1 ? "SI" : "NO";
 				}
