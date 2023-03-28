@@ -79,29 +79,35 @@ app.set("views", [
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
 		status_registros: BD_genericas.obtieneTodos("status_registros", "orden"),
-		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
-		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		motivos_rech_altas: BD_genericas.obtieneTodos("motivos_rech_altas", "orden"),
 		motivos_rech_edic: BD_genericas.obtieneTodos("motivos_rech_edic", "orden"),
-		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
-
-		// Consultas - Filtro Personalizado
-		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
-		filtroEstandarCampos: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
-		// Consultas - Complementos de RCLV
+		
+		// Variables de productos
+		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
+		paises: BD_genericas.obtieneTodos("paises", "nombre"),
+		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+		
+		// Variables de RCLVs
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
-		// Consultas - Otros
-		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
+		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
+		
+		// Variables de links
+		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
+		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+
+		// Consultas
+		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		filtroEstandarCampos: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
+		ordenes: BD_genericas.obtieneTodos("ordenes", "orden"),
 		interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
-		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
-		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
-		paises: BD_genericas.obtieneTodos("paises", "nombre"),
+
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
-		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		imagenes_movil: BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
 		imagenes_fijo: BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
 	};
