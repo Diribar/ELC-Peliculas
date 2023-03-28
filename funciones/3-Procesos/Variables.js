@@ -24,23 +24,10 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las películas", codigo: "listado", clase: "reqBhr"},
-		{nombre: "Películas por Personaje Histórico", codigo: "personajes"},
-		{nombre: "Películas por Hecho Histórico", codigo: "hechos"},
-		{nombre: "Películas por Tema", codigo: "temas", clase: "reqBhr"},
-	],
-	ordenes: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado"},
-		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes reqBhr"},
-		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes reqBhr"},
-		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "personajes ascDes"},
-		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "hechos ascDes"},
-		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes"},
-		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes"},
-		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos"},
-		{nombre: "Por nombre del tema", valor: "rclv", clase: "temas reqBhr"},
-		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre reqBhr"},
-		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre reqBhr"},
+		{nombre: "Todas las películas", valor: "listado", notNull: ""},
+		{nombre: "Películas por Personaje Histórico", valor: "personaje", notNull: "personaje"},
+		{nombre: "Películas por Hecho Histórico", valor: "hecho", notNull: "hecho"},
+		{nombre: "Películas por Tema", valor: "tema", notNull: "tema"},
 	],
 	camposFiltros: {
 		// Principales
@@ -58,19 +45,25 @@ module.exports = {
 			opciones: [
 				{id: "Pers", nombre: "Con Personaje Histórico", clase: "personaje"},
 				{id: "Hecho", nombre: "Con Hecho Histórico", clase: "hecho"},
-				{id: "PersHecho", nombre: "Con Personaje y/o Hecho", clase: "personaje hecho"},
 				{id: "Ficcion", nombre: "Ficción", clase: ""},
 			],
 		},
 		// RCLV
-		epocasApMar: {
-			titulo: "Epoca / Aparición Mariana",
+		epocas: {
+			titulo: "Epoca",
 			layout: "siempre",
 			opciones: [
 				{id: "ant", nombre: "Antiguo Testamento"},
 				{id: "cnt", nombre: "Nuevo Testamento"},
 				{id: "pst", nombre: "Posterior a los Apóstoles"},
-				{ama:"ama",nombre:"Apariciones Marianas"}
+			],
+		},
+		apMar: {
+			titulo: "Aparición Mariana",
+			layout: "listado personaj",
+			opciones: [
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
 			],
 		},
 		canons: {
@@ -264,8 +257,8 @@ module.exports = {
 			"canon_id",
 			"ap_mar_id",
 		],
-		hechos: ["nombre", "dia_del_ano_id", "ant", "jss", "cnt", "pst", "ano", "solo_cfc", "ama"],
-		valores: ["nombre", "dia_del_ano_id"],
+		hechos: ["nombre", "ano", "dia_del_ano_id", "epoca_id", "solo_cfc", "ama"],
+		temas: ["nombre", "dia_del_ano_id"],
 	},
 	entidadesRCLV: ["personajes", "hechos", "temas"],
 	prefijos: [
@@ -353,10 +346,10 @@ module.exports = {
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano", tabla: "dias_del_ano"},
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
+			{nombre: "epoca_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocas"},
 			// Personajes
 			{nombre: "apodo", titulo: "Nombre Alternativo", personajes: true},
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
-			{nombre: "epoca_id", titulo: "Epoca", personajes: true, relacInclude: "epoca", tabla: "epocas_pers"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
 				nombre: "rol_iglesia_id",
@@ -375,10 +368,6 @@ module.exports = {
 			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
-			{nombre: "ant", titulo: "Anterior a Jesús", hechos: true},
-			{nombre: "jss", titulo: "Durante la vida de Jesús", hechos: true},
-			{nombre: "cnt", titulo: "Durante la vida de los Apóstoles", hechos: true},
-			{nombre: "pst", titulo: "Posterior a los Apóstoles", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 		],
 		links: [
