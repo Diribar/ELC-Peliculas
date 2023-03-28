@@ -57,7 +57,7 @@ window.addEventListener("load", async () => {
 			let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 
 			// Si es YOUTUBE, quitarle el sufijo
-			if (url.startsWith("youtube.com")) if (url.includes("&")) url = url.slice(0, url.indexOf("&"));
+			if (url.startsWith("youtube.com") && url.includes("&")) url = url.slice(0, url.indexOf("&"));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
 			if (url.startsWith("ver.formed.lat")) {

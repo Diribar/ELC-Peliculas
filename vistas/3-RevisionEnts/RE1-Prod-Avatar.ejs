@@ -44,15 +44,7 @@
 			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
 			<p>Dirección: <%= prodOrig.direccion %></p>
 		</div>
-		<div class="flechas">
-			<!-- Liberar y salir -->
-			<a href="/inactivar-captura/?entidad=<%= entidad %>&id=<%= id %>&origen=TE" target="_self">
-				<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
-			</a>
-			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= id %>" target="_blank">
-				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-			</a>
-		</div>
+		<%- include("Flechas-1Estandar") %>
 	</div>
 	<div id="abajo">
 		<%- include('CMP-3Footer', {mostrar: true}) %>
