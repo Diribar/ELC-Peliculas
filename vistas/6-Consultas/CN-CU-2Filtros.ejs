@@ -20,30 +20,31 @@
 <!-- Campos específicos -->
 <div id="campos" class="flexCol">
 	<!-- CFC/VPC -->
-	<%- include('CN-2FL-1CheckboxV', {tema: filtros.categorias}) %>
+	<%- include('CN-2FL-1CheckboxV', {tema: filtros.cfc}) %>
 	<div class="sectorConDesplV">
 		<nav class="ocultar">
-			<!-- Basada en Hechos Reales / Ficción -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.hechosReales}) %>
-			<!-- Personajes Históricos -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.personajes}) %>
-			<!-- Hechos Históricos -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.hechos}) %>
-			<!-- Temas -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.temas}) %>
+			<!-- Ocurrió -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.ocurrio}) %>
+			<!-- Epoca -->
+			<%- include('CN-2FL-1CheckboxV', {tema: filtros.epoca_id}) %>
+			<!-- ApMar -->
+			<%- include('CN-2FL-2CheckboxH', {tema: filtros.apMar}) %>
+			<!-- Proceso de Canonización -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.canons}) %>
+			<!-- Roles Iglesia -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.rolesIglesia}) %>
 			<hr>
 			<!-- Público Recomendado -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.publicos}) %>
 			<!-- Época de Estreno -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.epocasEstreno}) %>
-			<!-- Interés en la Película -->
 			<!-- Links -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_link}) %>
 			<!-- Idioma Castellano -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.castellano}) %>
 			<hr>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-2FL-1CheckboxV', {tema: filtros.tipos_actuacion}) %>
+			<%- include('CN-2FL-1CheckboxV', {tema: filtros.tiposActuacion}) %>
 			<hr>
 			<!-- Musical -->
 			<%- include('CN-2FL-2CheckboxH', {tema: filtros.musical}) %>
