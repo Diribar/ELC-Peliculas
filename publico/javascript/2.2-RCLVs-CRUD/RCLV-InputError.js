@@ -37,14 +37,14 @@ window.addEventListener("load", async () => {
 		// Entidades en formato booleano
 		v.personajes = v.entidad == "personajes";
 		v.hechos = v.entidad == "hechos";
-		v.valores = v.entidad == "valores";
+		v.temas = v.entidad == "temas";
 		// Campos por sector
 		if (v.personajes) v.camposError.push("sexo_id"); // Tiene que estar antes de "época"
 		v.camposNombre = Array.from(v.camposNombre).map((n) => n.name);
 		v.camposFecha = Array.from(v.camposFecha).map((n) => n.name);
 	})();
-	// Valores para !valores
-	if (!v.valores) {
+	// Valores para !temas
+	if (!v.temas) {
 		// Valores comunes a 'personajes' y 'hechos'
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.camposError.push("epoca", "RCLIC");

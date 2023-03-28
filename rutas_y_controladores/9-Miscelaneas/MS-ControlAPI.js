@@ -15,7 +15,7 @@ module.exports = {
 			{familia: "producto", entidad: "capitulos", campos: ["nombre_castellano", "nombre_original"]},
 			{familia: "rclv", entidad: "personajes", campos: ["nombre", "apodo"]},
 			{familia: "rclv", entidad: "hechos", campos: ["nombre"]},
-			{familia: "rclv", entidad: "valores", campos: ["nombre"]},
+			{familia: "rclv", entidad: "temas", campos: ["nombre"]},
 		];
 		let condiciones;
 		let resultados = [];

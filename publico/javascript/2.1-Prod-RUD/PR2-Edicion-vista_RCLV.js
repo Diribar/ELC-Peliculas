@@ -82,5 +82,5 @@ let entidades = (link) => {
 		? "personajes"
 		: link.className.includes("hecho")
 		? "hechos"
-		: "valores";
+		: "temas";
 };

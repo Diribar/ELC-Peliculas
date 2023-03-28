@@ -59,7 +59,7 @@ module.exports = {
 		if (prodComb.personaje_id != 1)
 			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
 		if (prodComb.hecho_id != 1) bloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
-		if (prodComb.valor_id != 1) bloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "valores", ...prodComb.valor});
+		if (prodComb.valor_id != 1) bloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "temas", ...prodComb.valor});
 		// return res.send(bloqueIzq);
 
 		// Info para el bloque Derecho

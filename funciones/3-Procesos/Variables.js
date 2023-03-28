@@ -241,9 +241,9 @@ module.exports = {
 			{
 				titulo: "Valor principal",
 				nombre: "valor_id",
-				valores: registrosRCLV.valores,
+				valores: registrosRCLV.temas,
 				mensajes: ["Poné el más representativo."],
-				link: "valores",
+				link: "temas",
 				grupo: "RCLV",
 			},
 		];
@@ -267,7 +267,7 @@ module.exports = {
 		hechos: ["nombre", "dia_del_ano_id", "ant", "jss", "cnt", "pst", "ano", "solo_cfc", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
-	entidadesRCLV: ["personajes", "hechos", "valores"],
+	entidadesRCLV: ["personajes", "hechos", "temas"],
 	prefijos: [
 		"Beata",
 		"Beato",
@@ -341,7 +341,7 @@ module.exports = {
 				productos: true,
 			},
 			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "valor", tabla: "valores", rclv: true, productos: true},
+			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "valor", tabla: "temas", rclv: true, productos: true},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones

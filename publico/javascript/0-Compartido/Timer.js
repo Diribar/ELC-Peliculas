@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	const entID = new URL(location.href).searchParams.get("id");
 	let entidad = new URL(location.href).searchParams.get("entidad");
 	const productos = ["peliculas", "colecciones", "capitulos"].includes(entidad);
-	const rclvs = ["personajes", "hechos", "valores"].includes(entidad);
+	const rclvs = ["personajes", "hechos", "temas"].includes(entidad);
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 	// Temas de horario y fechas
 	const unMinuto = 60 * 1000;

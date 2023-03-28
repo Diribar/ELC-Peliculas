@@ -340,5 +340,5 @@ window.addEventListener("load", async () => {
 });
 
 let entidades = (link) => {
-	return link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "valores";
+	return link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";
 };
