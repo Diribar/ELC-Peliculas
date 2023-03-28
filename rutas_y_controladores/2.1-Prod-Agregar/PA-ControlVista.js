@@ -220,7 +220,7 @@ module.exports = {
 		// 1. Obtiene el Data Entry de session y cookies
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		// Si no existe algún RCLV, vuelve a la instancia anterior
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id) {
+		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) {
 			let existe = procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
 		}
@@ -260,7 +260,7 @@ module.exports = {
 
 		// PRODUCTO EN RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.valor_id)
+		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
 			procsCRUD.cambioDeStatus(confirma.entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES

@@ -13,7 +13,7 @@ Música
 Producción
 Personaje Histórico
 Hecho Histórico
-Valor
+Tema
 Rol en la Iglesia
 
 Opción de mostrar los capítulos

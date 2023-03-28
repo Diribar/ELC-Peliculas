@@ -29,7 +29,7 @@ module.exports = (sequelize, dt) => {
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
-		valor_id: {type: dt.INTEGER},
+		tema_id: {type: dt.INTEGER},
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
@@ -50,7 +50,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
+		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 	};

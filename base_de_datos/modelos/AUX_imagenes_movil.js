@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 
 		personajes: {type: dt.BOOLEAN},
 		hechos: {type: dt.BOOLEAN},
-		valores: {type: dt.BOOLEAN},
+		temas: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_imagenes_movil",

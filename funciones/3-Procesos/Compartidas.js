@@ -56,7 +56,7 @@ module.exports = {
 	obtieneFamilia: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "producto"
-			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
+			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
 			? "rclv"
 			: ["links", "links_edicion"].includes(entidad)
 			? "links"
@@ -65,7 +65,7 @@ module.exports = {
 	obtieneFamilias: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "productos"
-			: ["personajes", "hechos", "valores", "rclvs_edicion"].includes(entidad)
+			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
 			? "rclvs"
 			: ["links", "links_edicion"].includes(entidad)
 			? "links"
@@ -76,7 +76,7 @@ module.exports = {
 	obtienePetitFamiliaDesdeEntidad: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
 			? "prods"
-			: ["personajes", "hechos", "valores"].includes(entidad)
+			: ["personajes", "hechos", "temas"].includes(entidad)
 			? "rclvs"
 			: entidad == "links"
 			? "links"
@@ -93,8 +93,8 @@ module.exports = {
 			? "Personaje"
 			: entidad == "hechos"
 			? "Hecho"
-			: entidad == "valores"
-			? "Valor"
+			: entidad == "temas"
+			? "Tema"
 			: entidad == "links"
 			? "Links"
 			: entidad == "usuarios"
@@ -112,8 +112,8 @@ module.exports = {
 			? "personaje_id"
 			: entidad == "hechos"
 			? "hecho_id"
-			: entidad == "valores"
-			? "valor_id"
+			: entidad == "temas"
+			? "tema_id"
 			: entidad == "links"
 			? "link_id"
 			: "";
@@ -129,8 +129,8 @@ module.exports = {
 			? "personaje"
 			: entidad == "hechos"
 			? "hecho"
-			: entidad == "valores"
-			? "valor"
+			: entidad == "temas"
+			? "tema"
 			: entidad == "links"
 			? "link"
 			: "";
@@ -138,7 +138,7 @@ module.exports = {
 	obtieneNombreEdicionDesdeEntidad: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
 			? "prods_edicion"
-			: ["personajes", "hechos", "valores"].includes(entidad)
+			: ["personajes", "hechos", "temas"].includes(entidad)
 			? "rclvs_edicion"
 			: entidad == "links"
 			? "links_edicion"
@@ -148,7 +148,7 @@ module.exports = {
 		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "valores" : "";
+		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
 	},
 	obtieneEntidadDesdeCampo_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
@@ -165,7 +165,7 @@ module.exports = {
 			: "";
 	},
 	obtieneRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.valor_id ? "valor_id" : "";
+		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.tema_id ? "tema_id" : "";
 	},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado

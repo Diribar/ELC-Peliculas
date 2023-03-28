@@ -13,7 +13,7 @@ module.exports = {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
 			const campoFecha = "editado_en";
-			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
+			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema"];
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
@@ -25,7 +25,7 @@ module.exports = {
 					if (
 						(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
 						(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
-						(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
+						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id)
 					)
 						ediciones.splice(i, 1);
 
@@ -149,7 +149,7 @@ module.exports = {
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
 			const campoFecha = "editado_en";
-			let include = ["personaje", "hecho", "valor"];
+			let include = ["personaje", "hecho", "tema"];
 			let rclvs = [];
 			// 2. Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", include);
@@ -693,7 +693,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Casos especiales
 	if (["cfc", "ocurrio", "musical", "color"].includes(campoRevisar.nombre))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	else if (["personaje_id", "hecho_id", "valor_id"].includes(campoRevisar.nombre) && registro[campoRevisar.nombre] == 1)
+	else if (["personaje_id", "hecho_id", "tema_id"].includes(campoRevisar.nombre) && registro[campoRevisar.nombre] == 1)
 		resultado = null;
 
 	// Fin

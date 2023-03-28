@@ -16,7 +16,7 @@ module.exports = {
 		// Sexo
 		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
 		// Época y RCLI
-		if (datos.entidad != "valores") {
+		if (datos.entidad != "temas") {
 			errores.epoca = this.epoca(datos);
 			errores.RCLI = this["RCLIC_" + datos.entidad](datos);
 		}

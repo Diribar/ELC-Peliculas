@@ -24,27 +24,27 @@ module.exports = {
 
 	// Consulta de Productos
 	layouts: [
-		{nombre: "Todas las películas", codigo: "listado", clase: "bhr"},
-		{nombre: "Películas con Personaje Histórico", codigo: "personajes"},
-		{nombre: "Películas con Hecho Histórico", codigo: "hechos"},
-		{nombre: "Películas con Valores", codigo: "valores", clase: "bhr"},
+		{nombre: "Todas las películas", codigo: "listado", clase: "reqBhr"},
+		{nombre: "Películas por Personaje Histórico", codigo: "personajes"},
+		{nombre: "Películas por Hecho Histórico", codigo: "hechos"},
+		{nombre: "Películas por Tema", codigo: "temas", clase: "reqBhr"},
 	],
 	ordenes: [
-		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado bhr"},
-		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes bhr"},
-		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes bhr"},
+		{nombre: "Sugeridas para el momento del año", valor: "momento", clase: "listado"},
+		{nombre: "Por fecha interna de agregado", valor: "incorporacion", clase: "siempre ascDes reqBhr"},
+		{nombre: "Por año de estreno", valor: "estreno", clase: "siempre ascDes reqBhr"},
 		{nombre: "Por año de nacim. del personaje", valor: "ano", clase: "personajes ascDes"},
 		{nombre: "Por año de ocurrencia del hecho", valor: "ano", clase: "hechos ascDes"},
-		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes bhr"},
+		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes"},
 		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes"},
 		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos"},
-		{nombre: "Por nombre del valor", valor: "rclv", clase: "valores bhr"},
-		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre bhr"},
-		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre bhr"},
+		{nombre: "Por nombre del tema", valor: "rclv", clase: "temas reqBhr"},
+		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre reqBhr"},
+		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre reqBhr"},
 	],
 	camposFiltros: {
 		// Principales
-		categorias: {
+		feCatolica: {
 			titulo: "Relacionada con la Fe Católica",
 			layout: "siempre",
 			opciones: [
@@ -54,7 +54,7 @@ module.exports = {
 		},
 		hechosReales: {
 			titulo: "Hechos Reales / Ficción",
-			layout: "listado valores",
+			layout: "listado temas",
 			opciones: [
 				{id: "Pers", nombre: "Con Personaje Histórico", clase: "personaje"},
 				{id: "Hecho", nombre: "Con Hecho Histórico", clase: "hecho"},
@@ -63,13 +63,35 @@ module.exports = {
 			],
 		},
 		// RCLV
-		personajes: {
-			titulo: "Personaje Histórico",
-			layout: "listado personajes",
+		epocasApMar: {
+			titulo: "Epoca / Aparición Mariana",
+			layout: "siempre",
+			opciones: [
+				{id: "ant", nombre: "Antiguo Testamento"},
+				{id: "cnt", nombre: "Nuevo Testamento"},
+				{id: "pst", nombre: "Posterior a los Apóstoles"},
+				{ama:"ama",nombre:"Apariciones Marianas"}
+			],
 		},
-		hechos: {
-			titulo: "Hecho Histórico",
-			layout: "listado hechos",
+		canons: {
+			titulo: "Proceso de Canonización",
+			layout: "personajes",
+			opciones: [
+				{id: "sb", nombre: "Santos y Beatos"},
+				{id: "vs", nombre: "Venerables y Siervos de Dios"},
+			],
+		},
+		rolesIglesia: {
+			titulo: "Rol en la Iglesia",
+			layout: "personajes",
+			opciones: [
+				{id: "la", nombre: "Laicos"},
+				{id: "lc", nombre: "Laicos casados"},
+				{id: "rs", nombre: "Religiosos y Sacerdotes"},
+				{id: "pp", nombre: "Papas"},
+				{id: "ap", nombre: "Apóstoles"},
+				{id: "sf", nombre: "Sagrada Familia"},
+			],
 		},
 		// Otros
 		publicos: {
@@ -85,10 +107,6 @@ module.exports = {
 				{id: "2015", nombre: "2000 - 2015"},
 				{id: "2016", nombre: "2016 - Presente"},
 			],
-		},
-		interes_opciones: {
-			titulo: "Interés en la Película",
-			layout: "siempre",
 		},
 		tipos_link: {
 			titulo: "Tipos de link",
@@ -108,7 +126,7 @@ module.exports = {
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},
-		tipos_actuacion: {
+		tiposActuacion: {
 			titulo: "Tipo de Actuación",
 			layout: "siempre",
 		},
@@ -156,7 +174,7 @@ module.exports = {
 		{nombre: "publico_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
-		{nombre: "valor_id", grupo: "RCLV"},
+		{nombre: "tema_id", grupo: "RCLV"},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
@@ -169,8 +187,8 @@ module.exports = {
 			entidades.forEach((entidad) => {
 				registros[entidad] = BD_genericas.obtieneTodosConInclude(entidad, "status_registro");
 			});
-			let [personajes, hechos, valores] = await Promise.all(Object.values(registros));
-			registros = {personajes, hechos, valores};
+			let [personajes, hechos, temas] = await Promise.all(Object.values(registros));
+			registros = {personajes, hechos, temas};
 
 			// Filtra los registros RCLV en status 'aprobado' y 'creado' (del usuario)
 			entidades.forEach((entidad) => {
@@ -221,11 +239,11 @@ module.exports = {
 				grupo: "RCLV",
 			},
 			{
-				titulo: "Valor principal",
-				nombre: "valor_id",
-				valores: registrosRCLV.valores,
+				titulo: "Tema principal",
+				nombre: "tema_id",
+				valores: registrosRCLV.temas,
 				mensajes: ["Poné el más representativo."],
-				link: "valores",
+				link: "temas",
 				grupo: "RCLV",
 			},
 		];
@@ -249,7 +267,7 @@ module.exports = {
 		hechos: ["nombre", "dia_del_ano_id", "ant", "jss", "cnt", "pst", "ano", "solo_cfc", "ama"],
 		valores: ["nombre", "dia_del_ano_id"],
 	},
-	entidadesRCLV: ["personajes", "hechos", "valores"],
+	entidadesRCLV: ["personajes", "hechos", "temas"],
 	prefijos: [
 		"Beata",
 		"Beato",
@@ -323,7 +341,7 @@ module.exports = {
 				productos: true,
 			},
 			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "valor", tabla: "valores", rclv: true, productos: true},
+			{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones
