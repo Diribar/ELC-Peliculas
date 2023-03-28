@@ -1,7 +1,11 @@
 {
-	"fechaRef": "Mar. 28/mar",
-	"semanaRef": 12,
-	"fechaLocal": "Lun. 27/mar",
-	"horaLocal": "9:25",
-	"titulosImgDer": {"26-mar-23": "ELC - Películas", "27-mar-23": "ELC - Películas", "28-mar-23": "ELC - Películas"}
+	"fechaLocal": "Mar. 28/mar",
+	"horaLocal": "10:31",
+	"semana": 12,
+	"titulosImgDer": {
+		"27-mar-23": "ELC - Películas",
+		"28-mar-23": "ELC - Películas",
+		"29-mar-23": "ELC - Películas",
+		"30-mar-23": "ELC - Películas"
+	}
 }

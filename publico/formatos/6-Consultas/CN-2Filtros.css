@@ -48,8 +48,6 @@
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent; text-align: center}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
-/* Para ocultar líneas consecutivas en el filtro */
-#cuerpo:has(#encabezado select[name="orden"] option:checked.bhr) > #filtros #hechosReales {display: none}
 /* Para ocultar el filtro si las opciones obligatorias no fueron elegidas */
 #cuerpo:not(
     :has(#encabMasPelis #encabezado select[name="orden"]:invalid),

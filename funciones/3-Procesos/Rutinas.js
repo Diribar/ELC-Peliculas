@@ -12,24 +12,33 @@ module.exports = {
 	tareasDiarias: async function () {
 		// Obtiene información del archivo 'json'
 		const rutaNombre = path.join(__dirname, "fecha.json");
-		let info = (() => {
-			// Variables
-			const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
-			const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-			// Fin
-			return json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
-		})();
+		const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
+		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
+		let info = json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
+
+		// Más variables
+		const ahora = new Date();
+		const fechaLocal_n = new Date(ahora.getTime() - (ahora.getTimezoneOffset() / 60) * unaHora);
+		const fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
+		const milisegs = fechaLocal_n.getTime();
+		const fechas = [
+			fechaTexto(milisegs - unDia),
+			fechaTexto(milisegs),
+			fechaTexto(milisegs + unDia),
+			fechaTexto(milisegs + unDia * 2),
+		];
 
 		// Si la información ya está actualizada, termina
-		let fechaRef_n = new Date(new Date().getTime() + 12 * unaHora + 1 * unaHora);
-		const fechaRef = diasSemana[fechaRef_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaRef_n);
-		if (info.fechaRef == fechaRef) return;
+		if (info.fechaLocal == fechaLocal) {
+			titulosImgDer = {};
+			for (let fecha of fechas) titulosImgDer[fecha] = info.titulosImgDer[fecha];
+			return;
+		}
 
 		// ACCIONES DIARIAS --------------------------------------------------
-		info.fechaRef = fechaRef;
 
 		// Actualiza la imagen derecha
-		info = await this.actualizaImagenDerecha({info, fechaRef_n});
+		info = await this.actualizaImagenDerecha({info, fechas});
 
 		// Actualiza 'linksEnProd'
 		this.actualizaLinksEnProd();
@@ -38,19 +47,16 @@ module.exports = {
 		this.actualizaProdEnRCLV();
 
 		// Tareas semanales
-		const comienzoAno = new Date(fechaRef_n.getUTCFullYear(), 0, 1).getTime();
-		const semanaRef = parseInt((fechaRef_n.getTime() - comienzoAno) / unDia / 7);
-		if (info.semanaRef != semanaRef) {
+		const comienzoAno = new Date(fechaLocal_n.getUTCFullYear(), 0, 1).getTime();
+		const semana = parseInt((fechaLocal_n.getTime() - comienzoAno) / unDia / 7);
+		if (info.semana != semana) {
 			await this.tareasSemanales();
-			info.semanaRef = semanaRef;
+			info.semana = semana;
 		}
 
-		// Asigna las nuevas fecha y hora locales
-		const fechaLocal_n = new Date(new Date().getTime() - (new Date().getTimezoneOffset() / 60) * unaHora);
-		info.fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
-		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
-
 		// Actualiza los valores del archivo
+		info.fechaLocal = fechaLocal
+		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) return console.log("Tareas Diarias:", err);
 		});
@@ -58,19 +64,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaImagenDerecha: async ({info, fechaRef_n}) => {
-		// Obtiene los titulos de imgDerecha
-		const milisegs = fechaRef_n.getTime();
-		let fechaTexto = (fecha) => {
-			fecha = new Date(fecha);
-			let dia = ("0" + fecha.getDate()).slice(-2);
-			let mes = mesesAbrev[fecha.getMonth()];
-			let ano = fecha.getFullYear().toString().slice(-2);
-			fecha = dia + "-" + mes + "-" + ano;
-			return fecha;
-		};
-		const fechas = [fechaTexto(milisegs - unDia), fechaTexto(milisegs), fechaTexto(milisegs + unDia)];
-
+	actualizaImagenDerecha: async function ({info, fechas}) {
 		// Obtiene los titulos de Imagen Derecha
 		titulosImgDer = {};
 		for (let fecha of fechas)
@@ -80,11 +74,10 @@ module.exports = {
 		// Actualiza los títulos de la imagen derecha
 		info.titulosImgDer = titulosImgDer;
 
-		// Borra las imagenes que no se corresponden con los titulos
-		// Obtiene el listado de archivos
-		let imagenes = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
-		for (let imagen of imagenes)
-			if (!fechas.includes(imagen.slice(0, 9))) await comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", imagen);
+		// Borra los archivos de imagen que no se corresponden con los titulos
+		let archivosDeImagen = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
+		for (let archivo of archivosDeImagen)
+			if (!fechas.includes(archivo.slice(0, 9))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
 
 		// Fin
 		console.log("'imagenDerecha' actualizada");
@@ -203,4 +196,12 @@ let obtieneImagenDerecha = async (fecha) => {
 
 	// Fin
 	return imgDerecha.nombre;
+};
+let fechaTexto = (fecha) => {
+	fecha = new Date(fecha);
+	let dia = ("0" + fecha.getDate()).slice(-2);
+	let mes = mesesAbrev[fecha.getMonth()];
+	let ano = fecha.getFullYear().toString().slice(-2);
+	fecha = dia + "-" + mes + "-" + ano;
+	return fecha;
 };
