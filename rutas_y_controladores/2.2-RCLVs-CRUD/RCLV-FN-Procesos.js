@@ -137,28 +137,25 @@ module.exports = {
 			else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				DE.apodo = datos.apodo ? datos.apodo : "";
-				DE.sexo_id = datos.sexo_id;
-				DE.epoca_id = datos.epoca_id;
-				DE.ano = datos.epoca_id == "pst" ? datos.ano : 0;
+				let {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				DE.apodo = apodo ? apodo : "";
+				DE.sexo_id = sexo_id;
+				DE.epoca_id = epoca_id;
+				DE.ano = epoca_id == "pst" ? ano : 0;
 				// RCLI
-				DE.categoria_id = datos.categoria_id;
-				let CFC = datos.categoria_id == "CFC";
-				DE.rol_iglesia_id = CFC ? datos.rol_iglesia_id : "NN" + datos.sexo_id;
-				DE.canon_id = CFC ? datos.canon_id : "NN" + datos.sexo_id;
-				DE.ap_mar_id =
-					CFC && datos.epoca_id == "pst" && parseInt(datos.ano) > 1100 ? datos.ap_mar_id : no_presencio_ninguna_id;
+				DE.categoria_id = categoria_id;
+				let CFC = categoria_id == "CFC";
+				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
+				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
+				DE.ap_mar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? ap_mar_id : no_presencio_ninguna_id;
 			}
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
-				let {ant, jss, cnt, pst, ano, solo_cfc, ama} = datos;
+				let {epoca_id, ano, solo_cfc, ama} = datos;
 				// Época
-				DE.ant = ant ? 1 : 0;
-				DE.jss = jss ? 1 : 0;
-				DE.cnt = cnt ? 1 : 0;
-				DE.pst = pst ? 1 : 0;
-				DE.ano = !ant && !jss && !cnt && pst ? ano : 0;
+				DE.epoca_id = epoca_id;
+				DE.ano = epoca_id == "pst" ? ano : 0;
 				// RCLIC
 				DE.solo_cfc = solo_cfc;
 				DE.ama = solo_cfc == "1" ? ama : 0;

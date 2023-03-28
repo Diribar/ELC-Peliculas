@@ -48,9 +48,11 @@ window.addEventListener("load", async () => {
 		// Valores comunes a 'personajes' y 'hechos'
 		v.ano = document.querySelector("#dataEntry input[name='ano']");
 		v.camposError.push("epoca", "RCLIC");
-		// Campos por sector
+		// Campos para época
 		v.camposEpoca = document.querySelectorAll("#dataEntry #epoca .input");
 		v.camposEpoca = Array.from(v.camposEpoca).map((n) => n.name);
+		v.epocas_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
+		// Otros
 		v.camposRCLIC = document.querySelectorAll("#dataEntry #RCLIC .input");
 		v.camposRCLIC = Array.from(v.camposRCLIC).map((n) => n.name);
 		v.sectorApMar = document.querySelector("#dataEntry #sectorApMar");
@@ -60,7 +62,6 @@ window.addEventListener("load", async () => {
 		// Data-Entry adicional
 		v.apodo = document.querySelector("#dataEntry input[name='apodo']");
 		v.sexos_id = document.querySelectorAll("#dataEntry input[name='sexo_id']");
-		v.epocas_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
 		v.categorias_id = document.querySelectorAll("#dataEntry input[name='categoria_id']");
 		v.rol_iglesia_id = document.querySelector("#dataEntry select[name='rol_iglesia_id']");
 		v.canon_id = document.querySelector("#dataEntry select[name='canon_id']");
@@ -74,12 +75,6 @@ window.addEventListener("load", async () => {
 	}
 	// Valores para hechos
 	if (v.hechos) {
-		// Inputs - Epoca
-		v.ant = document.querySelector("#dataEntry #epoca input[name='ant']");
-		v.jss = document.querySelector("#dataEntry #epoca input[name='jss']");
-		v.cnt = document.querySelector("#dataEntry #epoca input[name='cnt']");
-		v.pst = document.querySelector("#dataEntry #epoca input[name='pst']");
-		v.epocas = document.querySelectorAll("#dataEntry #epoca input[type='checkbox']");
 		// Inputs - RCLIC
 		v.solo_cfc = document.querySelectorAll("#dataEntry input[name='solo_cfc']");
 		v.ama = document.querySelectorAll("#dataEntry input[name='ama']");
@@ -312,16 +307,9 @@ window.addEventListener("load", async () => {
 			let params = "epoca&entidad=" + v.entidad;
 
 			// Agrega los demás parámetros
-			if (v.personajes) {
-				let epoca_id = opcionElegida(v.epocas_id);
-				params += "&epoca_id=" + epoca_id.value;
-				if (epoca_id.value == "pst") params += "&ano=" + FN_ano(v.ano.value);
-			}
-			if (v.hechos) {
-				// Si el campo está chequeado, lo agrega a los parámetros
-				for (let epoca of v.epocas) if (epoca.checked) params += "&" + epoca.name + "=on";
-				if (opcionElegida(v.epocas).name == "pst") params += "&ano=" + FN_ano(v.ano.value);
-			}
+			let epoca_id = opcionElegida(v.epocas_id);
+			params += "&epoca_id=" + epoca_id.value;
+			if (epoca_id.value == "pst") params += "&ano=" + FN_ano(v.ano.value);
 
 			// OK y Errores
 			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
@@ -523,8 +511,7 @@ window.addEventListener("load", async () => {
 			await impactos.epoca[v.entidad]();
 			await validacs.epoca();
 			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
-			if (v.personajes && e.target.value == "pst") v.ano.focus();
-			if (v.hechos && opcionElegida(v.epocas).name == "pst") v.ano.focus();
+			if (e.target.value == "pst") v.ano.focus();
 			// Si corresponde, valida RCLIC
 			if (v.OK.epoca) {
 				if (v.personajes && opcionElegida(v.categorias_id).value == "CFC") await validacs.RCLIC.personajes();

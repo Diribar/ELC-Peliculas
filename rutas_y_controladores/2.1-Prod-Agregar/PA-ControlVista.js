@@ -145,16 +145,10 @@ module.exports = {
 		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
 		// 5. Render del formulario
 		return res.render("CMP-0Estructura", {
-			tema,
-			codigo,
-			titulo: "Agregar - Datos Personalizados",
-			dataEntry: datosAdics,
-			camposDA,
-			camposDE,
-			gruposPers,
-			gruposHechos,
-			imgDerPers,
-			tituloImgDerPers: datosAdics.nombre_castellano,
+			...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
+			...{dataEntry: datosAdics, camposDA, camposDE},
+			...{gruposPers, gruposHechos},
+			...{imgDerPers, tituloImgDerPers: datosAdics.nombre_castellano},
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
@@ -260,8 +254,7 @@ module.exports = {
 
 		// PRODUCTO EN RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-			procsCRUD.cambioDeStatus(confirma.entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
+		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) procsCRUD.cambioDeStatus(confirma.entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso

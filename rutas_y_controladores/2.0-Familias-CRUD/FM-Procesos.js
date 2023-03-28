@@ -186,7 +186,7 @@ module.exports = {
 			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
 		);
 
-		// Deja los valores necesarios
+		// Deja los datos necesarios
 		personajes = personajes.map((n) => {
 			return {
 				id: n.id,
@@ -196,21 +196,20 @@ module.exports = {
 				ap_mar_id: n.ap_mar_id,
 			};
 		});
-		let roles = roles_iglesia.filter((m) => m.plural);
 		let listadoGral = [];
 		let casosPuntuales = [];
+
 		// Grupos Estándar
 		let grupos = [
-			{codigo: "SF", orden: 2},
-			{codigo: "AL", orden: 3},
-			{codigo: "PP", orden: 4},
-			{codigo: "AP", orden: 15},
+			{codigo: "SF", orden: 2, label: "Sagrada Familia"},
+			{codigo: "AL", orden: 3, label: "Apóstoles"},
+			{codigo: "PP", orden: 4, label: "Papas"},
 		];
 		for (let grupo of grupos) {
-			grupo.label = roles.find((n) => n.id.startsWith(grupo.codigo)).plural;
 			grupo.valores = [];
 			grupo.clase = "CFC";
 		}
+
 		// Valores para los grupos
 		for (let personaje of personajes) {
 			// Clase
@@ -252,25 +251,27 @@ module.exports = {
 		// Deja solamente los aprobados o creados por el usuario
 		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID));
 
-		// Deja los valores necesarios
+		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
-			let {id, nombre, solo_cfc, ant, jss, cnt, pst, ama} = n;
-			return {id, nombre, solo_cfc, ant, jss, cnt, pst, ama};
+			let {id, nombre, solo_cfc, epoca_id, ama} = n;
+			return {id, nombre, solo_cfc, epoca_id, ama};
 		});
 		let apMar = [];
 		let casosPuntuales = [];
 
 		// Grupos estándar
 		let grupos = [
-			{codigo: "jss", orden: 2, label: "Durante la vida de Cristo"},
-			{codigo: "cnt", orden: 3, label: "Durante los Apóstoles"},
-			{codigo: "pst", orden: 5, label: "Posterior a Cristo"},
-			{codigo: "ant", orden: 6, label: "Anterior a Cristo"},
+			// 1 - Casos especiales
+			{codigo: "ant", orden: 2, label: "Antiguo Testamento"},
+			{codigo: "cnt", orden: 3, label: "Nuevo Testamento"},
+			{codigo: "pst", orden: 4, label: "Posterior a los Apóstoles"},
+			// 5 - Apariciones Marianas
 		];
 		for (let grupo of grupos) {
-			grupo.clase = "CFC VPC";
 			grupo.valores = [];
+			grupo.clase = "CFC VPC";
 		}
+
 		// Valores para los grupos
 		for (let hecho of hechos) {
 			// Si es un caso que no se debe mostrar, lo saltea
@@ -290,7 +291,7 @@ module.exports = {
 			// Si es alguno de los 'grupos'
 			if (!OK)
 				for (let grupo of grupos)
-					if (hecho[grupo.codigo]) {
+					if (hecho.epoca_id == grupo.codigo) {
 						hecho.clase += grupo.codigo;
 						grupo.valores.push(hecho);
 						OK = true;
@@ -299,10 +300,10 @@ module.exports = {
 			// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
 			if (!OK) casosPuntuales.push(hecho);
 		}
-		// Grupo Apariciones Marianas
-		grupos.push({codigo: "ama", orden: 4, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
 		// Grupo 'Casos Puntuales'
 		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
+		// Grupo Apariciones Marianas
+		grupos.push({codigo: "ama", orden: 5, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
 		// Ordena los grupos
 		grupos.sort((a, b) => a.orden - b.orden);
 

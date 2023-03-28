@@ -7,13 +7,10 @@ module.exports = (sequelize, dt) => {
 
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
+		epoca_id: {type: dt.STRING(3)},
 
 		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
-		ant: {type: dt.BOOLEAN},
-		jss: {type: dt.BOOLEAN},
-		cnt: {type: dt.BOOLEAN},
-		pst: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
@@ -44,6 +41,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
+		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "alta_revisada_por_id"});
