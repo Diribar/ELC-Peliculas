@@ -35,7 +35,7 @@ module.exports = {
 	gruposConsultasRCLV: {
 		personajes: () => {
 			// Época de nacimiento
-			let epocas = epocas_pers.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+			let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
 			// Proceso de canonización
 			let canonsCons = canons.filter((n) => n.id.endsWith("N"));
 			canonsCons = preparaCampos(canonsCons, "CFC canons");
@@ -47,7 +47,7 @@ module.exports = {
 				grupo_personajes: [
 					{nombre: "Época de vida", clase: "CFC VPC"},
 					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
-					...epocas,
+					...epocasCons,
 					{nombre: "Proceso de Canonización", clase: "CFC"},
 					...canonsCons,
 					{nombre: "Rol en la Iglesia", clase: "CFC"},
@@ -59,7 +59,7 @@ module.exports = {
 		},
 		hechos: () => {
 			// Epoca de ocurrencia
-			let epocas = epocas_hechos.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+			let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
 			// Apariciones Marianas
 
 			// Específico de la Iglesia Católica
@@ -71,7 +71,7 @@ module.exports = {
 					{id: "solo_cfc1", nombre: "Historia de la Iglesia Católica", clase: "CFC VPC solo_cfc1"},
 					{id: "solo_cfc0", nombre: "Historia General", clase: "CFC VPC solo_cfc0"},
 					{nombre: "Época de ocurrencia", clase: "CFC VPC"},
-					...epocas,
+					...epocasCons,
 				],
 			};
 			// Fin
