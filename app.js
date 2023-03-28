@@ -72,7 +72,7 @@ app.set("views", [
 (async () => {
 	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/2-BD/Genericas");
-	let no_presencio_ninguna = {solo_cfc: true, ant: false, jss: false, cnt: false, pst: false, ama: true};
+	let no_presencio_ninguna = {solo_cfc: true, epoca_id: null, ama: true};
 	let campos = {
 		// Variables de usuario
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
@@ -86,7 +86,8 @@ app.set("views", [
 		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
 
 		// Consultas - Filtro Personalizado
-		filtroEstandar: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
+		filtroEstandarCampos: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
 		// Consultas - Complementos de RCLV
 		epocas_pers: BD_genericas.obtieneTodos("epocas_pers", "orden"),
 		epocas_hechos: BD_genericas.obtieneTodos("epocas_hechos", "orden"),
@@ -104,7 +105,6 @@ app.set("views", [
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		imagenes_movil: BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
 		imagenes_fijo: BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
-		opcionesEstandarFiltros: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
