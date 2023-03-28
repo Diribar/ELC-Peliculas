@@ -38,7 +38,7 @@ module.exports = {
 		{nombre: "Por año de nacim. u ocurrencia", valor: "ano", clase: "listado ascDes"},
 		{nombre: "Por nombre del personaje", valor: "rclv", clase: "personajes"},
 		{nombre: "Por nombre del hecho", valor: "rclv", clase: "hechos"},
-		{nombre: "Por nombre del valor", valor: "rclv", clase: "temas reqBhr"},
+		{nombre: "Por nombre del tema", valor: "rclv", clase: "temas reqBhr"},
 		{nombre: "Por nombre de la película", valor: "producto", clase: "siempre reqBhr"},
 		{nombre: "Por calificación interna", valor: "calificacion", clase: "siempre reqBhr"},
 	],
@@ -341,7 +341,7 @@ module.exports = {
 				productos: true,
 			},
 			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "valor", tabla: "temas", rclv: true, productos: true},
+			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones

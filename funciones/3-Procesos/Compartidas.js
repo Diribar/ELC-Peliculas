@@ -130,7 +130,7 @@ module.exports = {
 			: entidad == "hechos"
 			? "hecho"
 			: entidad == "temas"
-			? "valor"
+			? "tema"
 			: entidad == "links"
 			? "link"
 			: "";
