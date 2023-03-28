@@ -55,6 +55,7 @@ module.exports = {
 		}
 
 		// Actualiza los valores del archivo
+		info.fechaLocal = fechaLocal
 		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) return console.log("Tareas Diarias:", err);
