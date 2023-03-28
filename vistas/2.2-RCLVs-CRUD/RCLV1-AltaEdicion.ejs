@@ -200,7 +200,6 @@
 			<!-- Valores -->
 			<div class="flexRowAlign grow spaceBetween">
 				<!-- Épocas -->
-				<% const epocas = personajes ? epocas_pers : epocas_hechos %>
 				<% epocas.forEach((epoca, indice) => { %>
 					<% let z_index = "z-index:" + (1 + epocas.length - indice) %>
 					<div class="flexRowAlign opciones" style=<%= z_index %>>
