@@ -135,7 +135,7 @@ module.exports = {
 			let sinResponder =
 				(!datos.personaje_id || datos.personaje_id == 1) &&
 				(!datos.hecho_id || datos.hecho_id == 1) &&
-				(!datos.valor_id || datos.valor_id == 1);
+				(!datos.tema_id || datos.tema_id == 1);
 			// Resultado
 			errores.RCLV =
 				// Acciones para 'no lo voy a responder por ahora'
@@ -145,8 +145,8 @@ module.exports = {
 					datos.ocurrio == "1" && sinResponder
 					? "Necesitamos que respondas por el Personaje o el Hecho Histórico"
 					: // Acciones para "no ocurrió"
-					datos.ocurrio == "0" && (!datos.valor_id || datos.valor_id == 1)
-					? "Necesitamos que respondas por el Valor"
+					datos.ocurrio == "0" && (!datos.tema_id || datos.tema_id == 1)
+					? "Necesitamos que respondas por el Tema"
 					: // Acciones si no se cumple ninguna de las anteriores
 					  "";
 		}

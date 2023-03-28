@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
-		valor_id: {type: dt.INTEGER},
+		tema_id: {type: dt.INTEGER},
 
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
@@ -36,7 +36,7 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "valor_id"});
+		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 		

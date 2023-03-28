@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
 		// RCLV
-		camposRCLV: ["personaje_id", "hecho_id", "valor_id"],
+		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 		checkRCLV: document.querySelector("#RCLV #checkbox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		sectorRCLV: document.querySelector("#RCLV"),
 		sectorPers: document.querySelector("#RCLV #personaje_id"),
 		sectorHecho: document.querySelector("#RCLV #hecho_id"),
-		sectorValor: document.querySelector("#RCLV #valor_id"),
+		sectorValor: document.querySelector("#RCLV #tema_id"),
 		// RCLV - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),

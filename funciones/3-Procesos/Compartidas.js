@@ -113,7 +113,7 @@ module.exports = {
 			: entidad == "hechos"
 			? "hecho_id"
 			: entidad == "temas"
-			? "valor_id"
+			? "tema_id"
 			: entidad == "links"
 			? "link_id"
 			: "";
@@ -148,7 +148,7 @@ module.exports = {
 		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
 	obtieneRCLVdesdeRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.valor_id ? "temas" : "";
+		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
 	},
 	obtieneEntidadDesdeCampo_id: function (edicion) {
 		let producto = this.obtieneProdDesdeProducto_id(edicion);
@@ -165,7 +165,7 @@ module.exports = {
 			: "";
 	},
 	obtieneRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.valor_id ? "valor_id" : "";
+		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.tema_id ? "tema_id" : "";
 	},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado

@@ -174,7 +174,7 @@ module.exports = {
 		{nombre: "publico_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
-		{nombre: "valor_id", grupo: "RCLV"},
+		{nombre: "tema_id", grupo: "RCLV"},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
@@ -239,8 +239,8 @@ module.exports = {
 				grupo: "RCLV",
 			},
 			{
-				titulo: "Valor principal",
-				nombre: "valor_id",
+				titulo: "Tema principal",
+				nombre: "tema_id",
 				valores: registrosRCLV.temas,
 				mensajes: ["Poné el más representativo."],
 				link: "temas",
@@ -341,7 +341,7 @@ module.exports = {
 				productos: true,
 			},
 			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
-			{titulo: "Valor principal", nombre: "valor_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
+			{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones
