@@ -60,12 +60,8 @@ window.addEventListener("load", async () => {
 			if (url.startsWith("youtube.com") && url.includes("&")) url = url.slice(0, url.indexOf("&"));
 
 			// Si es FORMED-LAT, quitarle el nombre repetido del producto
-			if (url.startsWith("ver.formed.lat")) {
-				let producto = url.slice(url.lastIndexOf("/"));
-				let nuevaUrl = url.split(producto);
-				nuevaUrl.pop();
-				url = nuevaUrl.join("") + producto;
-			}
+			if (url.startsWith("ver.formed.lat") && url.includes("?")) url = url.slice(0, url.indexOf("?"));
+
 			// Conclusiones
 			v.urlInputs[filaAlta].value = url;
 			return url;
