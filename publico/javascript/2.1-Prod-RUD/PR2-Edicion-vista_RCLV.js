@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	// Variables para el ruteo del origen
 	let prodEntidad = new URL(location.href).searchParams.get("entidad");
 	let prodID = new URL(location.href).searchParams.get("id");
-	let paramsOrigen = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	let paramsOrigen = "&origen=EDP&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables para guardar los datos
 	let inputs = document.querySelectorAll(".inputError .input");
 	let rutaRQ = "/producto/api/envia-a-req-session/";
