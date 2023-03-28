@@ -23,33 +23,25 @@ module.exports = {
 	],
 
 	// Consulta de Productos
-	layouts: [
-		{nombre: "Todas las películas", valor: "listado", notNull: ""},
-		{nombre: "Películas por Personaje Histórico", valor: "personaje", notNull: "personaje"},
-		{nombre: "Películas por Hecho Histórico", valor: "hecho", notNull: "hecho"},
-		{nombre: "Películas por Tema", valor: "tema", notNull: "tema"},
-	],
 	camposFiltros: {
 		// Principales
-		feCatolica: {
+		cfc: {
 			titulo: "Relacionada con la Fe Católica",
-			layout: "siempre",
 			opciones: [
-				{id: "CFC", nombre: "SI"},
-				{id: "VPC", nombre: "NO"},
+				{nombre: "SI", valor: "CFC"},
+				{nombre: "NO", valor: "VPC"},
 			],
 		},
-		hechosReales: {
+		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
-			layout: "listado temas",
+			not_null_in: "- tema",
 			opciones: [
-				{id: "Pers", nombre: "Con Personaje Histórico", clase: "personaje"},
-				{id: "Hecho", nombre: "Con Hecho Histórico", clase: "hecho"},
-				{id: "Ficcion", nombre: "Ficción", clase: ""},
+				{nombre: "SI", valor: "SI"},
+				{nombre: "NO", valor: "NO"},
 			],
 		},
 		// RCLV
-		epocas: {
+		epoca_id: {
 			titulo: "Epoca",
 			layout: "siempre",
 			opciones: [
