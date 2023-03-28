@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "valores";
+	const alias = "temas";
 	const columns = {
 		nombre: {type: dt.STRING(30)},
 		prods_aprob: {type: dt.INTEGER},
@@ -29,7 +29,7 @@ module.exports = (sequelize, dt) => {
 		captura_activa: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "rclv_3valores",
+		tableName: "rclv_3temas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

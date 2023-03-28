@@ -80,14 +80,14 @@ CREATE TABLE `aux_imagenes_fijo` (
   `nombre_archivo` varchar(45) DEFAULT NULL,
   `personajes` tinyint(1) unsigned DEFAULT NULL,
   `hechos` tinyint(1) unsigned DEFAULT NULL,
-  `valores` tinyint(1) unsigned DEFAULT NULL,
+  `temas` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `nombre_archivo` (`nombre_archivo`),
   KEY `dia_del_ano_id` (`dia_del_ano_id`),
   KEY `aux_banco_fotos_FK` (`personajes`),
   KEY `aux_banco_fotos_FK_1` (`hechos`),
-  KEY `aux_banco_fotos_FK_2` (`valores`),
+  KEY `aux_banco_fotos_FK_2` (`temas`),
   CONSTRAINT `aux_imagenes_fijo_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -106,7 +106,7 @@ CREATE TABLE `aux_imagenes_movil` (
   `cuando` varchar(45) NOT NULL,
   `personajes` tinyint(1) unsigned DEFAULT NULL,
   `hechos` tinyint(1) unsigned DEFAULT NULL,
-  `valores` tinyint(1) unsigned DEFAULT NULL,
+  `temas` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `nombre_archivo` (`nombre_archivo`),
@@ -685,7 +685,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `prod_1peliculas_ibfk_4` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_7` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_8` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `prod_1peliculas_ibfk_9` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`)
+  CONSTRAINT `prod_1peliculas_ibfk_9` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3temas` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -776,7 +776,7 @@ CREATE TABLE `prod_2colecciones` (
   CONSTRAINT `prod_2colecciones_ibfk_16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_6` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_7` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `prod_2colecciones_ibfk_8` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `prod_2colecciones_ibfk_8` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_9` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -864,7 +864,7 @@ CREATE TABLE `prod_3capitulos` (
   KEY `prod_3capitulos_FK` (`tipo_actuacion_id`),
   CONSTRAINT `prod_3capitulos_FK` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_1` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
-  CONSTRAINT `prod_3capitulos_ibfk_10` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `prod_3capitulos_ibfk_10` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_11` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_12` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_13` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
@@ -933,7 +933,7 @@ CREATE TABLE `prod_4edicion` (
   CONSTRAINT `prod_4edicion_ibfk_1` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_10` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_11` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `prod_4edicion_ibfk_12` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `prod_4edicion_ibfk_12` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_13` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_2` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
   CONSTRAINT `prod_4edicion_ibfk_3` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
@@ -1141,12 +1141,12 @@ CREATE TABLE `rclv_2hechos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `rclv_3valores`
+-- Table structure for table `rclv_3temas`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `rclv_3valores` (
+CREATE TABLE `rclv_3temas` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) NOT NULL,
   `prods_aprob` tinyint(1) DEFAULT NULL,
@@ -1180,16 +1180,16 @@ CREATE TABLE `rclv_3valores` (
   KEY `sugerido_por_id` (`sugerido_por_id`),
   KEY `motivo_id` (`motivo_id`),
   KEY `capturado_por_id` (`capturado_por_id`),
-  KEY `rclv_3valores_FK` (`avatar`),
-  CONSTRAINT `rclv_3valores_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_2` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_3` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_4` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_5` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_8` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `rclv_3valores_ibfk_9` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
+  KEY `rclv_3temas_FK` (`avatar`),
+  CONSTRAINT `rclv_3temas_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_2` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_3` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_4` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_5` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_8` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
+  CONSTRAINT `rclv_3temas_ibfk_9` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1236,7 +1236,7 @@ CREATE TABLE `rclv_4edicion` (
   CONSTRAINT `rclv_4edicion_ibfk_1` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `rclv_4edicion_ibfk_10` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_4edicion_ibfk_2` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `rclv_4edicion_ibfk_3` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3valores` (`id`),
+  CONSTRAINT `rclv_4edicion_ibfk_3` FOREIGN KEY (`valor_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `rclv_4edicion_ibfk_4` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias` (`id`),
   CONSTRAINT `rclv_4edicion_ibfk_5` FOREIGN KEY (`sexo_id`) REFERENCES `aux_sexos` (`id`),
   CONSTRAINT `rclv_4edicion_ibfk_6` FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),

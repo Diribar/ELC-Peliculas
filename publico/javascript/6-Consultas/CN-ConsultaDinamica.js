@@ -93,8 +93,8 @@ window.addEventListener("load", async () => {
 			? v.sector_AscDes.classList.remove("ocultar")
 			: v.sector_AscDes.classList.add("ocultar");
 
-		// 2. Acciones en 'Basado en Hechos Reales' - Tiene que figurar 'bhr' en el layout y en el orden
-		v.layout.className.includes("bhr") && v.orden.className.includes("bhr")
+		// 2. Acciones en 'Basado en Hechos Reales' - Tiene que figurar 'reqBhr' en el layout y en el orden
+		v.layout.className.includes("reqBhr") && v.orden.className.includes("reqBhr")
 			? v.sector_hechosReales.classList.remove("ocultar")
 			: v.sector_hechosReales.classList.add("ocultar");
 
@@ -256,5 +256,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Startup
-	await impactosDeFiltroPers();
+	// await impactosDeFiltroPers();
 });
