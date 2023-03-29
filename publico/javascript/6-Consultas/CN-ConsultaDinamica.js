@@ -71,8 +71,7 @@ window.addEventListener("load", async () => {
 			});
 
 			// IMPACTOS DE
-			const SI = !!v.ordenSelect.value;
-			if (SI) {
+			if (v.ordenSelect.value) {
 				const orden = opcionesOrdenBD.find((n) => n.id == v.ordenSelect.value);
 				if (v.notNull == "-" && orden.not_null_out != "-") v.notNull = orden.not_null_out;
 				if (v.ocurrio == "-" && orden.ocurrio != "-") v.ocurrio = orden.ocurrio;
