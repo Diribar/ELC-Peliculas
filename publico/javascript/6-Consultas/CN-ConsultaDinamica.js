@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
 		canonsSector: document.querySelector("#filtros #campos #canons"),
 		canonsSelect: document.querySelector("#filtros #campos #canons select"),
-		rolesIglesiaSector: document.querySelector("#filtros #campos #rolesIglesia"),
+		rolesIglSector: document.querySelector("#filtros #campos #rolesIglesia"),
 		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
 		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles select"),
 
@@ -179,13 +179,9 @@ window.addEventListener("load", async () => {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
 			// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
-			if (v.notNull == "personaje" && v.cfc == "SI") {
-				v.canonsSector.classList.remove("ocultarCanons");
-				v.rolesIglesiaSector.classList.remove("ocultarRolesIglesia");
-			} else {
-				v.canonsSector.classList.add("ocultarCanons");
-				v.rolesIglesiaSector.classList.add("ocultarRolesIglesia");
-			}
+			const SI = v.notNull == "personaje" && v.cfc == "SI";
+			SI ? v.canonsSector.classList.remove("ocultarCanons") : v.canonsSector.classList.add("ocultarCanons");
+			SI ? v.rolesIglSector.classList.remove("ocultarRolesIglesia") : v.rolesIglSector.classList.add("ocultarRolesIglesia");
 
 			// IMPACTOS DE
 			if (v.canonsSelect.value) v.elegibles.canons = v.canonsSelect.value;
