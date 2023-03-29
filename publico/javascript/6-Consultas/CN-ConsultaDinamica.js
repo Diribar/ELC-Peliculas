@@ -117,7 +117,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		mostrarOcultar: () => {
-			let SI = condicionesMinimas();
+			const SI = condicionesMinimas();
 
 			// Muestra/Oculta sectores
 			SI ? v.nav.classList.remove("ocultar") : v.nav.classList.add("ocultar");
@@ -261,7 +261,7 @@ window.addEventListener("load", async () => {
 		},
 		impactoEnBotonesPorCondicMins: () => {
 			// Variables
-			let SI = condicionesMinimas();
+			const SI = condicionesMinimas();
 
 			// Si no están dadas las condiciones mínimas, se inactivan todos los botones
 			if (!SI) for (let icono of v.iconos) icono.classList.add("inactivo");
