@@ -41,10 +41,7 @@
 #filtros #campos #busqueda i {position: absolute; right: 2px; translate: -20px -50%; top: 50%;}
 
 /* Condicionales */
-/* Para marcar los filtros con valor */
-#filtros #campos :is(.ocultarLayout, .ocultarOrden, .ocultarOrdenam) {display: none;}
 #filtros #campos :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
-
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
