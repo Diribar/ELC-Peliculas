@@ -259,7 +259,8 @@ window.addEventListener("load", async () => {
 			DOM.modificaNombre.classList.add("inactivo");
 			DOM.elimina.classList.add("inactivo");
 
-			// Activa las opciones de 'reinicio' y 'actualiza'
+			// Activa las opciones de 'nuevo', 'reinicio' y 'actualiza'
+			DOM.nuevo.classList.remove("inactivo");
 			DOM.reinicio.classList.remove("inactivo");
 			if (DOM.filtroPers.value != 1) DOM.actualiza.classList.remove("inactivo");
 
