@@ -88,20 +88,13 @@ window.addEventListener("load", async () => {
 			const orden = v.ordenSelect.value ? opcionesOrdenBD.find((n) => n.id == v.ordenSelect.value) : null;
 
 			// IMPACTOS EN
-			if (!v.ordenSelect.value || orden.ordenam != "ascDes") {
-				// Ocultar el sector
-				v.ordenamSector.classList.add("ocultar");
-				v.ordenamSector.classList.remove("flexCol");
-				if (v.ordenSelect.value) v.elegibles.ordenam = orden.ordenam;
-			} else {
-				// Muestra el sector
-				v.ordenamSector.classList.add("flexCol");
-				v.ordenamSector.classList.remove("ocultar");
-				for (let ordenam of v.ordenamInputs) if (ordenam.checked) v.elegibles.ordenam = ordenam.value;
-			}
+			const SI = !v.ordenSelect.value || orden.ordenam != "ascDes";
+			SI ? v.ordenamSector.classList.add("ocultar") : v.ordenamSector.classList.add("flexCol");
+			SI ? v.ordenamSector.classList.remove("flexCol") : v.ordenamSector.classList.remove("ocultar");
+			if (SI && v.ordenSelect.value) v.elegibles.ordenam = orden.ordenam;
+			if (!SI) for (let ordenam of v.ordenamInputs) if (ordenam.checked) v.elegibles.ordenam = ordenam.value;
 
-			// IMPACTOS DE
-			// Sector 'OK'
+			// IMPACTOS DE - Sector 'OK'
 			v.elegibles.ordenam ? v.ordenamSector.classList.add("OK") : v.ordenamSector.classList.remove("OK");
 
 			this.mostrarOcultar();
