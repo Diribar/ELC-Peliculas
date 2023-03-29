@@ -6,6 +6,16 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
+		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple"),
+
+		// Filtro personalizado
+		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
+		nuevo: document.querySelector("#filtrosPers i#nuevo"),
+		reinicio: document.querySelector("#filtrosPers i#reinicio"),
+		actualiza: document.querySelector("#filtrosPers i#actualiza"),
+		modificaNombre: document.querySelector("#filtrosPers i#modificaNombre"),
+		elimina: document.querySelector("#filtrosPers i#elimina"),
+		iconos: document.querySelectorAll("#filtrosPers #iconos i"),
 
 		// Layout y Orden
 		layoutSelect: document.querySelector("#encabezado select[name='layout']"),
@@ -31,6 +41,9 @@ window.addEventListener("load", async () => {
 
 		// Rutas
 		rutaLayoutsOrdenes: "/consultas/api/layouts-y-ordenes",
+		rutaGuardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
+		rutaCambiaFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
+		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 
 		// Variables directrices
 		notNull: "",
@@ -43,7 +56,7 @@ window.addEventListener("load", async () => {
 	const [layouts, opcionesOrdenBD] = await fetch(v.rutaLayoutsOrdenes).then((n) => n.json());
 
 	// Funciones
-	let FN = {
+	let encabFiltros = {
 		// Impactos de layout
 		impactosDeLayout: function () {
 			// Asigna valor a las variables
@@ -104,10 +117,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		mostrarOcultar: () => {
-			const SI_layout = !!v.layoutSelect.value;
-			const SI_orden = !!v.ordenSelect.value;
-			const SI_ordenam = !!v.elegibles.ordenam;
-			const SI = SI_layout && SI_orden && SI_ordenam;
+			let SI = condicionesMinimas();
 
 			// Muestra/Oculta sectores
 			SI ? v.nav.classList.remove("ocultar") : v.nav.classList.add("ocultar");
@@ -194,32 +204,104 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos de Demás Elegibles
 		impactosDeDemasElegibles: function () {
-			for (let elegible of v.demasElegibles)
-				if (elegible.value) v.elegibles[elegible.name]=elegible.value
-			
+			for (let elegible of v.demasElegibles) if (elegible.value) v.elegibles[elegible.name] = elegible.value;
+
 			// Fin
-			return
+			return;
 		},
+	};
+	let filtrosPers = {
+		impactosDeFiltroPers: async function () {
+			// Variables
+			const filtro_id = v.filtroPers.value;
+			if (!filtro_id) return;
+
+			// Actualiza el filtro_id en la cookie y el usuario (session y BD)
+			fetch(v.rutaGuardaFiltroID + filtro_id);
+
+			// Obtiene las opciones de la BD
+			const opciones = await fetch(v.rutaCambiaFiltroPers + filtro_id).then((n) => n.json());
+
+			// Actualiza los elegibles simples (Encabezado + Filtros)
+			for (let elegible of v.elegiblesSimple) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
+
+			// Actualiza los elegibles 'AscDes'
+			for (let elegible of v.ordenamInputs) elegible.checked = opciones.ascDes && elegible.value == opciones.ascDes;
+
+			// Actualiza los botones
+			this.impactosEnBotonesPorFiltroPers();
+
+			// Fin
+			return;
+		},
+		impactosEnBotonesPorFiltroPers: () => {
+			// 1. Inactiva las opciones 'reinicio' y 'actualiza'
+			v.reinicio.classList.add("inactivo");
+			v.actualiza.classList.add("inactivo");
+
+			// 2. Acciones para los íconos 'modificaNombre' y 'elimina'
+			const filtroElegido = v.filtroPers.value;
+			filtroElegido == 1 ? v.modificaNombre.classList.add("inactivo") : v.modificaNombre.classList.remove("inactivo");
+			filtroElegido == 1 ? v.elimina.classList.add("inactivo") : v.elimina.classList.remove("inactivo");
+
+			// Fin
+			return;
+		},
+		impactosEnBotonesPorElegibles: () => {
+			// Inactiva las opciones de 'modificaNombre' y 'elimina' en la vista
+			v.modificaNombre.classList.add("inactivo");
+			v.elimina.classList.add("inactivo");
+
+			// Activa las opciones de 'reinicio' y 'actualiza'
+			v.reinicio.classList.remove("inactivo");
+			if (v.filtroPers.value != 1) v.actualiza.classList.remove("inactivo");
+
+			// Fin
+			return;
+		},
+		impactoEnBotonesPorCondicMins: () => {
+			// Variables
+			let SI = condicionesMinimas();
+
+			// Si no están dadas las condiciones mínimas, se inactivan todos los botones
+			if (!SI) for (let icono of v.iconos) icono.classList.add("inactivo");
+
+			// Fin
+			return;
+		},
+	};
+	let condicionesMinimas = () => {
+		const SI_layout = !!v.layoutSelect.value;
+		const SI_orden = !!v.ordenSelect.value;
+		const SI_ordenam = !!v.elegibles.ordenam;
+		const SI = SI_layout && SI_orden && SI_ordenam;
+
+		// Fin
+		return SI;
 	};
 
 	// Eventos
 	v.cuerpo.addEventListener("change", async (e) => {
 		// Variables
-		let nombre = e.target.name;
+		let clickEnFiltrosPers = e.target.name == "filtrosPers";
 		v.elegibles = {};
 
 		// Novedades en el Filtro Personalizado
-		if (nombre == "filtrosPers") {
-		} else {
-			FN.impactosDeLayout();
-			console.log(v.elegibles);
+		if (clickEnFiltrosPers) await filtrosPers.impactosDeFiltroPers();
 
-			// Botones en Filtros Personalizados
-			// if (botones.condicionesMinimas()) botones.impactosDeElegibles();
-			// else return;
+		// Impacto en Encabezado y Filtros
+		encabFiltros.impactosDeLayout();
+
+		// Botones en Filtros Personalizados
+		if (!clickEnFiltrosPers) {
+			if (!condicionesMinimas()) filtrosPers.impactoEnBotonesPorCondicMins();
+			else filtrosPers.impactosEnBotonesPorElegibles();
 		}
+
+		// Fin
+		return;
 	});
 
 	// Start-up
-	FN.impactosDeLayout();
+	encabFiltros.impactosDeLayout();
 });

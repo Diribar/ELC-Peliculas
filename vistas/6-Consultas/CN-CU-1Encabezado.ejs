@@ -1,6 +1,6 @@
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout" required>
+	<select name="layout" required class="elegibleSimple">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
 			<option 
@@ -10,7 +10,7 @@
 		<% } %>
 	</select>
 	<!-- Orden -->
-	<select name="orden" required>
+	<select name="orden" required class="elegibleSimple">
 		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of ordenes) { %>
