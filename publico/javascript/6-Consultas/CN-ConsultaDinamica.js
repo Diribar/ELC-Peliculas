@@ -192,8 +192,8 @@ window.addEventListener("load", async () => {
 			if (varias.ocurrio == "SI") {
 				// IMPACTOS EN
 				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-				// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
-				const SI = elegibles.notNull == "personaje" && varias.cfc == "SI";
+				// Sólo se muestra el sector si notNull='personajes' y CFC='SI'
+				const SI = elegibles.notNull == "personajes" && varias.cfc == "SI";
 				SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
 				SI
 					? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
