@@ -42,8 +42,8 @@
 
 /* Condicionales */
 /* Para marcar los filtros con valor */
-#filtros #campos :is(.ocultarLayout, .ocultarOrden, .ocultarApMar) {display: none;}
-#filtros:not(:has(#campos .ocultarLayout, #campos .ocultarOrden)) > #campos nav {display: flex; flex-direction: column;}
+#filtros #campos :is(.ocultarLayout, .ocultarOrden, .ocultarOrdenam) {display: none;}
+#filtros #campos :is(.ocultarApMar, .ocultarCanons, .ocultarRolesIglesia) {display: none;}
 
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}

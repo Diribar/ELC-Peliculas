@@ -20,7 +20,7 @@
 <!-- Campos específicos -->
 <div id="campos" class="flexCol">
 	<div class="sectorConDesplV">
-		<nav class="ocultarLayout ocultarOrden">
+		<nav class="ocultar flexCol">
 			<!-- CFC/VPC -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.cfc}) %>
 			<hr>
@@ -31,22 +31,22 @@
 			<!-- ApMar -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.apMar, class: "ocurrioSI ocultarApMar"}) %>
 			<!-- Proceso de Canonización -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.canons, class: "ocurrioSI"}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.canons, class: "ocurrioSI ocultarCanons"}) %>
 			<!-- Roles Iglesia -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.rolesIglesia, class: "ocurrioSI"}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.rolesIglesia, class: "ocurrioSI ocultarRolesIglesia"}) %>
 			<hr>
 			<!-- Público Recomendado -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.publicos}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.publicos, class: "demasElegibles"}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.epocasEstreno}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.epocasEstreno, class: "demasElegibles"}) %>
 			<!-- Links -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_link}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_link, class: "demasElegibles"}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.castellano}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.castellano, class: "demasElegibles"}) %>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_actuacion}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.tipos_actuacion, class: "demasElegibles"}) %>
 			<!-- Musical -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.musical}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.musical, class: "demasElegibles"}) %>
 			<hr>
 			<!-- Búsqueda -->
 			<div id="busqueda" class="filtro flexCol"> 

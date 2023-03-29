@@ -1,8 +1,9 @@
 /* Layout y Orden */
 #encabezado #izquierda {display: flex; flex-direction: row;}
-#encabezado #izquierda select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold; color: snow;}
-#encabezado #izquierda select {background: var(--rojo-oscuro);}
-#encabezado #izquierda select:valid {background: var(--verde-oscuro);}
+#encabezado #izquierda select {padding: 3px 6px; font-size: 1.1rem;}
+#encabezado #izquierda #ascDes {padding: 0 5px 0 3px ;}
+#encabezado #izquierda :where(select, #ascDes) {background: var(--rojo-oscuro); font-weight: bold; color: snow;}
+#encabezado #izquierda :is(select:valid, #ascDes.OK) {background: var(--verde-oscuro);}
 #encabezado #izquierda select option {background: var(--gris-claro); color: var(--azul-oscuro); font-style: normal;}
 
 /* Contador */
