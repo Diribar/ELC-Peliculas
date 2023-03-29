@@ -7,7 +7,6 @@ window.addEventListener("load", async () => {
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
 		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple"),
-		comencemos: document.querySelector("#zona-de-prods #comencemos button#verde"),
 
 		// Filtro personalizado
 		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -47,12 +46,13 @@ window.addEventListener("load", async () => {
 		rutaOpcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 
-		// Variables directrices
+		// Otras variables
 		notNull: "",
 		cfc: "",
 		epoca_id: "",
 		ocurrio: "",
 		elegibles: {},
+		start: true,
 	};
 	// Obtiene tabla de layouts y ordenes
 	const [layouts, opcionesOrdenBD] = await fetch(v.rutaLayoutsOrdenes).then((n) => n.json());
@@ -124,7 +124,7 @@ window.addEventListener("load", async () => {
 			// Muestra/Oculta sectores
 			SI ? v.nav.classList.remove("ocultar") : v.nav.classList.add("ocultar");
 			SI ? v.asegurate.classList.add("ocultar") : v.asegurate.classList.remove("ocultar");
-			SI ? v.comencemos.classList.remove("ocultar") : v.comencemos.classList.add("ocultar");
+			SI && v.start ? v.comencemos.classList.remove("ocultar") : v.comencemos.classList.add("ocultar");
 
 			// Fin
 			return;
@@ -314,22 +314,21 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let zonaDeProds={
+	let zonaDeProds = {
 		obtieneLosProductos: async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
 			if (!v.comencemos.className.includes("ocultar")) return;
-	
+
 			// Obtiene los productos
-			// let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
-	
+			let productos = await fetch(v.rutaProductos + JSON.stringify(v.elegibles));
+
 			// Actualiza el contador
 			// Actualiza la información mostrada
-	
+
 			// Fin
 			return;
 		},
-
-	}
+	};
 
 	// Eventos
 	v.cuerpo.addEventListener("change", async (e) => {
@@ -363,6 +362,7 @@ window.addEventListener("load", async () => {
 	// Comencemos
 	v.comencemos.addEventListener("click", async () => {
 		// Oculta el botón
+		v.start = false;
 		v.comencemos.classList.add("ocultar");
 
 		// Siguientes pasos
