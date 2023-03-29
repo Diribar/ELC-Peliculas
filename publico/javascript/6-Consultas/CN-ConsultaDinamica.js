@@ -66,11 +66,8 @@ window.addEventListener("load", async () => {
 			opcionesOrdenBD.forEach((opcion, i) => {
 				if (!v.layout || (opcion.not_null_in && opcion.not_null_in != v.layout.not_null_out)) {
 					v.opcionesOrdenVista[i].classList.add("ocultar");
-					// Si la opción estaba elegida, la 'des-elige'
 					if (v.opcionesOrdenVista[i] == checked) v.ordenSelect.value = "";
-				} else {
-					v.opcionesOrdenVista[i].classList.remove("ocultar");
-				}
+				} else v.opcionesOrdenVista[i].classList.remove("ocultar");
 			});
 
 			// IMPACTOS DE
