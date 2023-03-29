@@ -23,35 +23,27 @@ module.exports = {
 	],
 
 	// Consulta de Productos
-	layouts: [
-		{nombre: "Todas las películas", valor: "listado", notNull: ""},
-		{nombre: "Películas por Personaje Histórico", valor: "personaje", notNull: "personaje"},
-		{nombre: "Películas por Hecho Histórico", valor: "hecho", notNull: "hecho"},
-		{nombre: "Películas por Tema", valor: "tema", notNull: "tema"},
-	],
 	camposFiltros: {
 		// Principales
-		feCatolica: {
+		cfc: {
 			titulo: "Relacionada con la Fe Católica",
-			layout: "siempre",
 			opciones: [
-				{id: "CFC", nombre: "SI"},
-				{id: "VPC", nombre: "NO"},
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
 			],
 		},
-		hechosReales: {
+		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
-			layout: "listado temas",
+			ocurrio: "-",
 			opciones: [
-				{id: "Pers", nombre: "Con Personaje Histórico", clase: "personaje"},
-				{id: "Hecho", nombre: "Con Hecho Histórico", clase: "hecho"},
-				{id: "Ficcion", nombre: "Ficción", clase: ""},
+				{id: "SI", nombre: "SI"},
+				{id: "NO", nombre: "NO"},
 			],
 		},
 		// RCLV
-		epocas: {
+		epoca_id: {
 			titulo: "Epoca",
-			layout: "siempre",
+			ocurrio: "SI",
 			opciones: [
 				{id: "ant", nombre: "Antiguo Testamento"},
 				{id: "cnt", nombre: "Nuevo Testamento"},
@@ -60,7 +52,9 @@ module.exports = {
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
-			layout: "listado personaj",
+			ocurrio: "SI",
+			epoca_id: "pst",
+			cfc: "SI",
 			opciones: [
 				{id: "SI", nombre: "SI"},
 				{id: "NO", nombre: "NO"},
@@ -68,7 +62,8 @@ module.exports = {
 		},
 		canons: {
 			titulo: "Proceso de Canonización",
-			layout: "personajes",
+			notNull: "personaje",
+			cfc: "SI",
 			opciones: [
 				{id: "sb", nombre: "Santos y Beatos"},
 				{id: "vs", nombre: "Venerables y Siervos de Dios"},
@@ -76,7 +71,8 @@ module.exports = {
 		},
 		rolesIglesia: {
 			titulo: "Rol en la Iglesia",
-			layout: "personajes",
+			notNull: "personaje",
+			cfc: "SI",
 			opciones: [
 				{id: "la", nombre: "Laicos"},
 				{id: "lc", nombre: "Laicos casados"},

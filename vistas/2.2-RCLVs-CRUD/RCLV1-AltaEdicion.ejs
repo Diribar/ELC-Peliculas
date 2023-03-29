@@ -189,7 +189,7 @@
 						<div class="ayuda" style="z-index: 3;">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<li>Si transcurre durante varias épocas, marcalas a todas.</li>
+									<li>Si transcurre durante varias épocas, desdoblá el hecho en varios, cada uno con su correspondiente época.</li>
 								</ul>
 							</i>
 						</div>
@@ -203,32 +203,17 @@
 				<% epocas.forEach((epoca, indice) => { %>
 					<% let z_index = "z-index:" + (1 + epocas.length - indice) %>
 					<div class="flexRowAlign opciones" style=<%= z_index %>>
-						<% if (personajes) { %>
-							<input type="radio" name="epoca_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epoca_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
-							<label for="<%= epoca.id %>"><%= epoca.nombre %></label>
-							<!-- Ayuda -->
-							<% if (epoca.ayuda_pers) { %> 
-								<div class="ayuda">
-									<i class="fa-solid fa-circle-question ayudaClick desplClick">
-										<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-											<li><%= epoca.ayuda_pers %>.</li>
-										</ul>
-									</i>
-								</div>
-							<% } %>
-						<% } else if (hechos) { %>
-							<input type="checkbox" name="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry[epoca.id]) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
-							<label for="<%= epoca.id %>"><%= epoca.nombre %> </label>
-							<!-- Ayuda -->
-							<% if (epoca.ayuda_hecho) { %> 
-								<div class="ayuda">
-									<i class="fa-solid fa-circle-question ayudaClick desplClick">
-										<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-											<li><%= epoca.ayuda %>.</li>
-										</ul>
-									</i>
-								</div>
-							<% } %>
+						<input type="radio" name="epoca_id" value="<%= epoca.id %>" id="<%= epoca.id %>" <% if (dataEntry.epoca_id==epoca.id) { %>checked<% } %> class="input<%= epoca.id!="pst"?" noPST":"" %>">
+						<label for="<%= epoca.id %>"><%= epoca.nombre %></label>
+						<!-- Ayuda -->
+						<% if (epoca["ayuda_" + ent]) { %> 
+							<div class="ayuda">
+								<i class="fa-solid fa-circle-question ayudaClick desplClick">
+									<ul type="none" class="ayudaMostrar ocultar desplMostrar">
+										<li><%= epoca["ayuda_" + ent] %>.</li>
+									</ul>
+								</i>
+							</div>
 						<% } %>
 					</div>
 				<% }) %>

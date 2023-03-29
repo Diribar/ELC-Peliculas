@@ -52,11 +52,16 @@ module.exports = {
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
+		const familia = comp.obtieneFamilia(entidad);
+		const personajes = entidad == "personajes";
+		const hechos = entidad == "hechos";
+		const ent = personajes ? "pers" : hechos ? "hecho" : "";
+
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen},
-			...{entidad, id, prodEntidad, prodID, familia: comp.obtieneFamilia(entidad)},
-			...{personajes: entidad == "personajes", hechos: entidad == "hechos"},
+			...{entidad, id, prodEntidad, prodID, familia, ent},
+			...{personajes, hechos, ent},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},

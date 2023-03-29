@@ -10,7 +10,6 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : "";
 		const filtrosPers = await procesos.filtrosPers(userID);
-		const layouts = variables.layouts;
 		const filtros = procesos.filtros();
 		let opcionesElegidas = {};
 
@@ -31,10 +30,10 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema: "consultas", titulo: "Consulta de Películas"},
-			// Layout y Orden
-			...{layouts, filtros},
 			// Personalizaciones
 			...{filtro_id, opcionesElegidas, filtrosPers},
+			// Filtros
+			filtros,
 		});
 	},
 };
