@@ -117,12 +117,15 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		mostrarOcultar: () => {
-			const SI = condicionesMinimas();
+			const SI = apoyo.condicionesMinimas();
 
 			// Muestra/Oculta sectores
 			SI ? v.nav.classList.remove("ocultar") : v.nav.classList.add("ocultar");
 			SI ? v.asegurate.classList.add("ocultar") : v.asegurate.classList.remove("ocultar");
 			SI ? v.comencemos.classList.remove("ocultar") : v.comencemos.classList.add("ocultar");
+
+			// Fin
+			return;
 		},
 		impactosDeCFC: function () {
 			// IMPACTOS DE
@@ -155,11 +158,12 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de epoca
 		impactosEnDeEpoca: function () {
-			if (v.ocurrio != "SI") return;
-			// IMPACTOS EN - Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+			if (v.ocurrio == "SI") {
+				// IMPACTOS EN - Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
 
-			// IMPACTOS DE
-			if (v.epocaSelect.value) v.epoca = v.epocaSelect.value;
+				// IMPACTOS DE
+				if (v.epocaSelect.value) v.epoca = v.epocaSelect.value;
+			}
 
 			this.impactosEnDeApMar();
 
@@ -168,15 +172,16 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de apMar
 		impactosEnDeApMar: function () {
-			if (v.ocurrio != "SI") return;
-			// IMPACTOS EN
-			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si CFC='SI' y epoca='pst'
-			if (v.cfc == "SI" && v.epoca == "pst") v.apMarSector.classList.remove("ocultarApMar");
-			else v.apMarSector.classList.add("ocultarApMar");
+			if (v.ocurrio == "SI") {
+				// IMPACTOS EN
+				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+				// Sólo se muestra el sector si CFC='SI' y epoca='pst'
+				if (v.cfc == "SI" && v.epoca == "pst") v.apMarSector.classList.remove("ocultarApMar");
+				else v.apMarSector.classList.add("ocultarApMar");
 
-			// IMPACTOS DE
-			if (v.apMarSelect.value) v.elegibles.apMar = v.apMarSelect.value;
+				// IMPACTOS DE
+				if (v.apMarSelect.value) v.elegibles.apMar = v.apMarSelect.value;
+			}
 
 			this.impactosEnDeCanonsMasRolesIglesia();
 
@@ -185,17 +190,20 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de canons y rolesIglesia
 		impactosEnDeCanonsMasRolesIglesia: function () {
-			if (v.ocurrio != "SI") return;
-			// IMPACTOS EN
-			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
-			const SI = v.notNull == "personaje" && v.cfc == "SI";
-			SI ? v.canonsSector.classList.remove("ocultarCanons") : v.canonsSector.classList.add("ocultarCanons");
-			SI ? v.rolesIglSector.classList.remove("ocultarRolesIglesia") : v.rolesIglSector.classList.add("ocultarRolesIglesia");
+			if (v.ocurrio == "SI") {
+				// IMPACTOS EN
+				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+				// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
+				const SI = v.notNull == "personaje" && v.cfc == "SI";
+				SI ? v.canonsSector.classList.remove("ocultarCanons") : v.canonsSector.classList.add("ocultarCanons");
+				SI
+					? v.rolesIglSector.classList.remove("ocultarRolesIglesia")
+					: v.rolesIglSector.classList.add("ocultarRolesIglesia");
 
-			// IMPACTOS DE
-			if (v.canonsSelect.value) v.elegibles.canons = v.canonsSelect.value;
-			if (v.rolesIglesiaSelect.value) v.elegibles.rolesIglesia = v.rolesIglesiaSelect.value;
+				// IMPACTOS DE
+				if (v.canonsSelect.value) v.elegibles.canons = v.canonsSelect.value;
+				if (v.rolesIglesiaSelect.value) v.elegibles.rolesIglesia = v.rolesIglesiaSelect.value;
+			}
 
 			this.impactosDeDemasElegibles();
 
@@ -261,7 +269,7 @@ window.addEventListener("load", async () => {
 		},
 		impactoEnBotonesPorCondicMins: () => {
 			// Variables
-			const SI = condicionesMinimas();
+			const SI = apoyo.condicionesMinimas();
 
 			// Si no están dadas las condiciones mínimas, se inactivan todos los botones
 			if (!SI) for (let icono of v.iconos) icono.classList.add("inactivo");
@@ -270,14 +278,39 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let condicionesMinimas = () => {
-		const SI_layout = !!v.layoutSelect.value;
-		const SI_orden = !!v.ordenSelect.value;
-		const SI_ordenam = !!v.elegibles.ordenam;
-		const SI = SI_layout && SI_orden && SI_ordenam;
+	let apoyo = {
+		condicionesMinimas: () => {
+			const SI_layout = !!v.layoutSelect.value;
+			const SI_orden = !!v.ordenSelect.value;
+			const SI_ordenam = !!v.elegibles.ordenam;
+			const SI = SI_layout && SI_orden && SI_ordenam;
 
-		// Fin
-		return SI;
+			// Fin
+			return SI;
+		},
+		limpiaLineasConsecutivas: () => {
+			// Variables
+			let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
+			let tags = [];
+
+			hijos.forEach((hijo, num) => {
+				// Limpia el historial de 'ocultar' para los 'HR'
+				if (hijo.tagName == "HR") hijo.classList.remove("ocultar");
+				// Detecta todos los hijos con orden dos y visibles
+				if (
+					window.getComputedStyle(hijo).getPropertyValue("order") == 2 &&
+					window.getComputedStyle(hijo).getPropertyValue("display") != "none"
+				)
+					tags.push({tag: hijo.tagName, num});
+			});
+
+			// Si hay 2 líneas consecutivas en orden dos, oculta la última
+			for (let i = 1; i < tags.length; i++)
+				if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
+
+			// Fin
+			return;
+		},
 	};
 
 	// Eventos
@@ -294,9 +327,12 @@ window.addEventListener("load", async () => {
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {
-			if (!condicionesMinimas()) filtrosPers.impactoEnBotonesPorCondicMins();
+			if (!apoyo.condicionesMinimas()) filtrosPers.impactoEnBotonesPorCondicMins();
 			else filtrosPers.impactosEnBotonesPorElegibles();
 		}
+
+		// Limpia líneas consecutivas
+		apoyo.limpiaLineasConsecutivas();
 
 		// Fin
 		return;
