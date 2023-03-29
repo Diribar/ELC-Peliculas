@@ -50,8 +50,8 @@ module.exports = {
 			capPost = 1;
 		}
 		// Obtiene los ID
-		let objetoAnt = {coleccion_id: coleccion_id, temporada: tempAnt, capitulo: capAnt};
-		let objetoPost = {coleccion_id: coleccion_id, temporada: tempPost, capitulo: capPost};
+		let objetoAnt = {coleccion_id, temporada: tempAnt, capitulo: capAnt};
+		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
 		let [capAntID, capPostID] = await Promise.all([
 			// Obtiene el ID del capítulo anterior
 			capAnt ? BD_genericas.obtienePorCampos("capitulos", objetoAnt).then((n) => n.id) : false,
