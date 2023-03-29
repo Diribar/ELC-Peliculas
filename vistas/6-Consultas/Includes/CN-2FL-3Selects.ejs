@@ -1,26 +1,24 @@
-<% if (tema) { %>
-	<div id="<%= tema.codigo %>" class="filtro select <%= locals.class %>">
-		<select name="<%= tema.codigo %>" class="elegibleSimple">
-			<option value=""><%= tema.titulo %></option>
-			<% let label %>
-			<% let grupo = tema["grupo_" + tema.codigo] %>
-			<% let opciones = grupo ? grupo : tema.opciones %>
-			<% for (let opcion of opciones) { %>
-				<% if (!opcion.id) { %>
-					<!-- Acciones si es un cambio de 'rubro' -->
-					<% if (label) { %></optgroup><% } %>
-					<% label = true %>
-					<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
-				<% } else { %>
-					<!-- Acciones si es una opción dentro del mismo rubro -->
-					<option 
-						value="<%= opcion.id %>" class="<%= opcion.clase %>"
-						<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>selected<% } %>
-					><%= opcion.nombre %></option>
-				<% } %>
+<div id="<%= tema.codigo %>" class="filtro select <%= locals.class %>">
+	<select name="<%= tema.codigo %>" class="elegibleSimple">
+		<option value=""><%= tema.titulo %></option>
+		<% let label %>
+		<% let grupo = tema["grupo_" + tema.codigo] %>
+		<% let opciones = grupo ? grupo : tema.opciones %>
+		<% for (let opcion of opciones) { %>
+			<% if (!opcion.id) { %>
+				<!-- Acciones si es un cambio de 'rubro' -->
+				<% if (label) { %></optgroup><% } %>
+				<% label = true %>
+				<optgroup label="<%= opcion.nombre %>" class="<%= opcion.clase %>">
+			<% } else { %>
+				<!-- Acciones si es una opción dentro del mismo rubro -->
+				<option 
+					value="<%= opcion.id %>" class="<%= opcion.clase %>"
+					<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>selected<% } %>
+				><%= opcion.nombre %></option>
 			<% } %>
-			<!-- Si se había abierto un rubro, lo cierra -->
-			<% if (label) { %></optgroup><% } %>
-		</select>
-	</div>
-<% } %>
+		<% } %>
+		<!-- Si se había abierto un rubro, lo cierra -->
+		<% if (label) { %></optgroup><% } %>
+	</select>
+</div>

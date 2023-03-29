@@ -10,32 +10,30 @@
 		<% } %>
 	</select>
 	<div id="iconos" class="flexRow">
-		<i id="nuevo" class="fa-solid fa-file scale" title="Crea un filtro nuevo"></i>
-		<i id="reinicio" class="fa-solid fa-rotate-right scale" title="Reinicia el filtro actual"></i>
-		<i id="actualiza" class="fa-solid fa-floppy-disk <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Guarda los cambios"></i>
-		<i id="modificaNombre" class="fa-solid fa-pen <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Modifica el nombre"></i>
-		<i id="elimina" class="fa-solid fa-trash-can <%= opcionesElegidas.filtro_id==1 ? 'inactivo' : 'scale' %>" title="Elimina el filtro actual"></i>
+		<i id="nuevo" class="fa-solid fa-file scale inactivo" title="Crea un filtro nuevo"></i>
+		<i id="reinicio" class="fa-solid fa-rotate-right scale inactivo" title="Reinicia el filtro actual"></i>
+		<i id="actualiza" class="fa-solid fa-floppy-disk scale inactivo" title="Guarda los cambios"></i>
+		<i id="modificaNombre" class="fa-solid fa-pen scale inactivo" title="Modifica el nombre"></i>
+		<i id="elimina" class="fa-solid fa-trash-can scale inactivo" title="Elimina el filtro actual"></i>
 	</div>
 </div>
 <!-- Campos específicos -->
 <div id="campos" class="flexCol">
 	<div class="sectorConDesplV">
-		<nav class="ocultar">
+		<nav class="ocultarLayout ocultarOrden">
 			<!-- CFC/VPC -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.cfc}) %>
 			<hr>
 			<!-- Ocurrió -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.ocurrio, class: "ocurrioNO ocultar"}) %>
-			<div class="ocurrioSI ocultar">
-				<!-- Epoca -->
-				<%- include('CN-2FL-3Selects', {tema: filtros.epoca}) %>
-				<!-- ApMar -->
-				<%- include('CN-2FL-3Selects', {tema: filtros.apMar}) %>
-				<!-- Proceso de Canonización -->
-				<%- include('CN-2FL-3Selects', {tema: filtros.canons}) %>
-				<!-- Roles Iglesia -->
-				<%- include('CN-2FL-3Selects', {tema: filtros.rolesIglesia}) %>
-			</div>
+			<%- include('CN-2FL-3Selects', {tema: filtros.ocurrio, class: "ocultar"}) %>
+			<!-- Epoca -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.epoca, class: "ocurrioSI"}) %>
+			<!-- ApMar -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.apMar, class: "ocurrioSI"}) %>
+			<!-- Proceso de Canonización -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.canons, class: "ocurrioSI"}) %>
+			<!-- Roles Iglesia -->
+			<%- include('CN-2FL-3Selects', {tema: filtros.rolesIglesia, class: "ocurrioSI"}) %>
 			<hr>
 			<!-- Público Recomendado -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.publicos}) %>

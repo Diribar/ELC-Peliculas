@@ -219,7 +219,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		let nombre = e.target.name;
 
-		// Novedades en el Filtro Personalizado - Borra todo y lo deja según el filtro personalizado
+		// Novedades en el Filtro Personalizado
 		if (nombre == "filtrosPers") await impactosDeFiltroPers();
 		else {
 			// Novedades en el layout
