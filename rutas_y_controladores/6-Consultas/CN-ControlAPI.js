@@ -13,7 +13,7 @@ module.exports = {
 		[layouts, ordenes] = await Promise.all([layouts, ordenes]);
 
 		// Fin
-		return res.json([layouts, ordenes])
+		return res.json({layouts, opcionesOrdenBD: ordenes});
 	},
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
@@ -48,12 +48,6 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log(datos);
-		let objeto = {};
-		objeto.notNull = [];
-
-		// Prepara la información para enviar a BD_especificas
-		// Filtros - RCLV asociado
-		if (datos.layout != "listado") objeto.notNull.push(comp.obtieneRCLV_id(datos.layout));
 
 		// Orden
 
