@@ -6,18 +6,15 @@ module.exports = {
 	// Obtiene todos
 	obtieneTodos: (entidad, orden) => {
 		return db[entidad].findAll({order: [[orden, "ASC"]]}).then((n) => n.map((m) => m.toJSON()));
-		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtieneTodosConInclude: (entidad, include) => {
 		return db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON()));
-		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtieneTodosPorCampos: (entidad, objeto) => {
 		return db[entidad].findAll({where: objeto}).then((n) => n.map((m) => m.toJSON()));
 	},
 	obtieneTodosPorCamposConInclude: (entidad, objeto, include) => {
 		return db[entidad].findAll({where: objeto, include}).then((n) => n.map((m) => m.toJSON()));
-		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	// Obtiene uno
@@ -37,7 +34,7 @@ module.exports = {
 		return db[entidad].findOne({where: objeto, order: [["id", "DESC"]]}).then((n) => (n ? n.toJSON() : ""));
 	},
 
-	// Otras
+	// ABM
 	agregaRegistro: (entidad, datos) => {
 		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
@@ -56,11 +53,15 @@ module.exports = {
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {
 		return db[entidad].increment(campo, {by: aumento, where: {id}});
 	},
+
+	// Lectura
 	contarCasos: (entidad, objeto) => {
 		return db[entidad].count({where: objeto});
 	},
-	// Pendiente de probar
 	maxValor: (entidad, campo) => {
 		return db[entidad].max(campo);
+	},
+	maxValorPorCampos: (entidad, objeto, campo) => {
+		return db[entidad].max(campo, {where: objeto});
 	},
 };

@@ -24,24 +24,22 @@ module.exports = {
 
 	// Consulta de Productos
 	camposFiltros: {
-		// Principales
 		cfc: {
-			titulo: "Relacionada con la Fe Católica",
+			titulo: "Relación con la Fe Católica",
 			opciones: [
-				{id: "SI", nombre: "SI"},
-				{id: "NO", nombre: "NO"},
+				{id: "SI", nombre: "Con relación con la FC"},
+				{id: "NO", nombre: "Sin relación con la FC"},
 			],
 		},
 		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
 			ocurrio: "-",
 			opciones: [
-				{id: "SI", nombre: "SI"},
-				{id: "NO", nombre: "NO"},
+				{id: "SI", nombre: "Hechos Reales"},
+				{id: "NO", nombre: "Ficción"},
 			],
 		},
-		// RCLV
-		epoca_id: {
+		epoca: {
 			titulo: "Epoca",
 			ocurrio: "SI",
 			opciones: [
@@ -56,8 +54,8 @@ module.exports = {
 			epoca_id: "pst",
 			cfc: "SI",
 			opciones: [
-				{id: "SI", nombre: "SI"},
-				{id: "NO", nombre: "NO"},
+				{id: "SI", nombre: "Con Aparición Mariana"},
+				{id: "NO", nombre: "Sin aparición Mariana"},
 			],
 		},
 		canons: {
@@ -66,7 +64,8 @@ module.exports = {
 			cfc: "SI",
 			opciones: [
 				{id: "sb", nombre: "Santos y Beatos"},
-				{id: "vs", nombre: "Venerables y Siervos de Dios"},
+				{id: "vs", nombre: "Vener. y Siervos de Dios"},
+				{id: "nn", nombre: "Sin proceso de canonizac."},
 			],
 		},
 		rolesIglesia: {
@@ -74,9 +73,9 @@ module.exports = {
 			notNull: "personaje",
 			cfc: "SI",
 			opciones: [
-				{id: "la", nombre: "Laicos"},
-				{id: "lc", nombre: "Laicos casados"},
-				{id: "rs", nombre: "Religiosos y Sacerdotes"},
+				{id: "la", nombre: "Laicos/as"},
+				{id: "lc", nombre: "Laicos/as casados/as"},
+				{id: "rs", nombre: "Religiosos/as y Sacerdotes"},
 				{id: "pp", nombre: "Papas"},
 				{id: "ap", nombre: "Apóstoles"},
 				{id: "sf", nombre: "Sagrada Familia"},
@@ -85,11 +84,9 @@ module.exports = {
 		// Otros
 		publicos: {
 			titulo: "Público Recomendado",
-			layout: "siempre",
 		},
 		epocasEstreno: {
 			titulo: "Época de Estreno",
-			layout: "siempre",
 			opciones: [
 				{id: "1969", nombre: "Antes de 1970"},
 				{id: "1999", nombre: "1970 - 1999"},
@@ -99,32 +96,29 @@ module.exports = {
 		},
 		tipos_link: {
 			titulo: "Tipos de link",
-			layout: "siempre",
 			opciones: [
-				{id: "gratis", nombre: "Gratuitos"},
-				{id: "pagos", nombre: "De abono o 'pay per view'"},
-				{id: "todos", nombre: "Cualquiera de ellos"},
+				{id: "gratis", nombre: "Links gratuitos"},
+				{id: "pagos", nombre: "Links con pago"},
+				{id: "todos", nombre: "Links de cualquier tipo"},
+				{id: "todos", nombre: "Sin Links"},
 			],
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
-			layout: "siempre",
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano"},
 				{id: "Subt", nombre: "Subtítulos en castellano"},
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},
-		tiposActuacion: {
+		tipos_actuacion: {
 			titulo: "Tipo de Actuación",
-			layout: "siempre",
 		},
 		musical: {
-			titulo: "Es un musical",
-			layout: "siempre",
+			titulo: "Musical",
 			opciones: [
-				{id: "SI", nombre: "SI"},
-				{id: "NO", nombre: "NO"},
+				{id: "SI", nombre: "Es un musical"},
+				{id: "NO", nombre: "No es un musical"},
 			],
 		},
 	},
