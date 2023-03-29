@@ -1,5 +1,5 @@
 /* Layout y Orden */
-#encabezado #izquierda {display: flex; flex-direction: row;}
+#encabezado #izquierda {display: flex; flex-direction: row; flex-wrap: wrap;}
 #encabezado #izquierda select {padding: 3px 6px; font-size: 1.1rem; font-weight: bold;}
 #encabezado #izquierda #ascDes {padding: 1px 5px;}
 #encabezado #izquierda :where(select, #ascDes) {background: var(--rojo-oscuro); color: snow;}
