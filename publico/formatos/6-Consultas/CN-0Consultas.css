@@ -14,8 +14,6 @@
 #encabMasPelis #zona-de-prods {display: flex; flex-direction: column; flex-grow: 1; width: 100%;}
 #encabMasPelis #zona-de-prods {justify-content: center; align-items: center;}
 
-#zona-de-prods #comencemos :is(.ocultarLayout, .ocultarOrden, .ocultarOrdenam) {display: none;}
-
 /* Zona de productos - Comencemos */
 #zona-de-prods #comencemos {display: flex; flex-direction: column;}
 #zona-de-prods #comencemos button {font-size: 1.2rem; font-weight: bold; padding: 10px; border-radius: 10px; margin: auto;}
