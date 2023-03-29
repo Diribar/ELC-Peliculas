@@ -47,9 +47,15 @@ module.exports = {
 	obtieneProductos: (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		console.log(datos);
+
+		// Entidades de producto
+		let entidadesProd = [...variables.entidadesProd];
+		if (datos.notNull == "-") entidadesProd.pop();
 
 		// Orden
+		const orden = ordenes.find((n) => n.id == datos.orden_id);
+
+		console.log(54, datos, entidadesProd, orden);
 
 		// Fin
 		return res.json();

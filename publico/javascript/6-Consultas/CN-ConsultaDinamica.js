@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layoutSelect.value) : null;
 			elegibles.notNull = SI ? varias.layout.not_null_out : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
-			if (SI) elegibles.layout_id = DOM.layoutSelect.value;
+			// if (SI) elegibles.layout_id = DOM.layoutSelect.value;
 
 			// Siguiente rutina
 			this.impactosEnDeOrden();
