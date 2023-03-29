@@ -78,6 +78,49 @@ module.exports = {
 			return resultado;
 		},
 	},
+	API: {
+		filtrosRecibidos: (datos) => {
+			// 1. Obtiene la información
+			let {
+				cfc,
+				ocurrio,
+				epoca_id,
+				apMar,
+				canons,
+				rolesIglesia,
+				publicos,
+				epocasEstreno,
+				tipos_link,
+				castellano,
+				tipos_actuacion,
+				musical,
+				palabrasClave,
+			} = datos;
+
+			// 2. Arma el filtro
+			let filtro = {
+				cfc,
+				ocurrio,
+				epoca_id,
+				apMar,
+				canons,
+				rolesIglesia,
+				publicos,
+				epocasEstreno,
+				tipos_link,
+				castellano,
+				tipos_actuacion,
+				musical,
+				palabrasClave,
+			};
+
+			// 3. Descarta lo irrelevante
+			for (let campo of Object.keys(filtro)) if (!filtro[campo]) delete filtro[campo];
+
+			// Fin
+			return filtro;
+		},
+	},
 };
 let preparaCampos = (campos, clase) => {
 	// Obtiene los campos necesarios

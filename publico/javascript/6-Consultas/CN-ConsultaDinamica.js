@@ -46,10 +46,10 @@ window.addEventListener("load", async () => {
 		opcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		productos: "/consultas/api/obtiene-los-productos/?datos=",
 	};
-	let elegibles= {}
+	let elegibles = {};
 	let varias = {
-		start: true,
-		...await fetch(rutas.layoutsOrdenes).then((n) => n.json()),
+		comencemos: true,
+		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),
 	};
 	// Obtiene tabla de layouts y ordenes
 
@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layoutSelect.value) : null;
 			elegibles.notNull = SI ? varias.layout.not_null_out : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
-			if (SI) elegibles.layout_id = DOM.layoutSelect.value;
+			// if (SI) elegibles.layout_id = DOM.layoutSelect.value;
 
 			// Siguiente rutina
 			this.impactosEnDeOrden();
@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 			// Muestra/Oculta sectores
 			SI ? DOM.nav.classList.remove("ocultar") : DOM.nav.classList.add("ocultar");
 			SI ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
-			SI && varias.start ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
+			SI && varias.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
 			// Fin
 			return;
@@ -158,7 +158,7 @@ window.addEventListener("load", async () => {
 		impactosEnDeEpoca: function () {
 			if (varias.ocurrio == "SI") {
 				// IMPACTOS EN - Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-				
+
 				// IMPACTOS DE
 				varias.epoca = DOM.epocaSelect.value ? DOM.epocaSelect.value : "";
 				if (varias.epoca) elegibles.epoca_id = varias.epoca;
@@ -192,8 +192,8 @@ window.addEventListener("load", async () => {
 			if (varias.ocurrio == "SI") {
 				// IMPACTOS EN
 				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-				// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
-				const SI = elegibles.notNull == "personaje" && varias.cfc == "SI";
+				// Sólo se muestra el sector si notNull='personajes' y CFC='SI'
+				const SI = elegibles.notNull == "personajes" && varias.cfc == "SI";
 				SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
 				SI
 					? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
@@ -259,7 +259,8 @@ window.addEventListener("load", async () => {
 			DOM.modificaNombre.classList.add("inactivo");
 			DOM.elimina.classList.add("inactivo");
 
-			// Activa las opciones de 'reinicio' y 'actualiza'
+			// Activa las opciones de 'nuevo', 'reinicio' y 'actualiza'
+			DOM.nuevo.classList.remove("inactivo");
 			DOM.reinicio.classList.remove("inactivo");
 			if (DOM.filtroPers.value != 1) DOM.actualiza.classList.remove("inactivo");
 
@@ -283,6 +284,9 @@ window.addEventListener("load", async () => {
 			const SI_orden = !!DOM.ordenSelect.value;
 			const SI_ordenam = !!elegibles.ordenam;
 			const SI = SI_layout && SI_orden && SI_ordenam;
+
+			// Comencemos
+			if (!SI) varias.comencemos = true;
 
 			// Fin
 			return SI;
@@ -314,9 +318,10 @@ window.addEventListener("load", async () => {
 	let zonaDeProds = {
 		obtieneLosProductos: async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
-			if (!DOM.comencemos.className.includes("ocultar")) return;
+			if (varias.comencemos) return
 
 			// Obtiene los productos
+			console.log("Busca los productos");
 			let productos = await fetch(rutas.productos + JSON.stringify(elegibles));
 
 			// Actualiza el contador
@@ -359,8 +364,8 @@ window.addEventListener("load", async () => {
 	// Comencemos
 	DOM.comencemos.addEventListener("click", async () => {
 		// Oculta el botón
-		varias.start = false;
 		DOM.comencemos.classList.add("ocultar");
+		varias.comencemos = false;
 
 		// Siguientes pasos
 		await zonaDeProds.obtieneLosProductos();
