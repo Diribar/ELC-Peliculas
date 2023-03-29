@@ -123,6 +123,9 @@ window.addEventListener("load", async () => {
 			SI ? v.nav.classList.remove("ocultar") : v.nav.classList.add("ocultar");
 			SI ? v.asegurate.classList.add("ocultar") : v.asegurate.classList.remove("ocultar");
 			SI ? v.comencemos.classList.remove("ocultar") : v.comencemos.classList.add("ocultar");
+
+			// Fin
+			return;
 		},
 		impactosDeCFC: function () {
 			// IMPACTOS DE
@@ -157,10 +160,10 @@ window.addEventListener("load", async () => {
 		impactosEnDeEpoca: function () {
 			if (v.ocurrio == "SI") {
 				// IMPACTOS EN - Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-	
+
 				// IMPACTOS DE
 				if (v.epocaSelect.value) v.epoca = v.epocaSelect.value;
-			};
+			}
 
 			this.impactosEnDeApMar();
 
@@ -175,10 +178,10 @@ window.addEventListener("load", async () => {
 				// Sólo se muestra el sector si CFC='SI' y epoca='pst'
 				if (v.cfc == "SI" && v.epoca == "pst") v.apMarSector.classList.remove("ocultarApMar");
 				else v.apMarSector.classList.add("ocultarApMar");
-	
+
 				// IMPACTOS DE
 				if (v.apMarSelect.value) v.elegibles.apMar = v.apMarSelect.value;
-			};
+			}
 
 			this.impactosEnDeCanonsMasRolesIglesia();
 
@@ -189,17 +192,19 @@ window.addEventListener("load", async () => {
 		impactosEnDeCanonsMasRolesIglesia: function () {
 			if (v.ocurrio == "SI") {
 				// IMPACTOS EN
-			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
-			const SI = v.notNull == "personaje" && v.cfc == "SI";
-			SI ? v.canonsSector.classList.remove("ocultarCanons") : v.canonsSector.classList.add("ocultarCanons");
-			SI ? v.rolesIglSector.classList.remove("ocultarRolesIglesia") : v.rolesIglSector.classList.add("ocultarRolesIglesia");
+				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+				// Sólo se muestra el sector si notNull='personaje' y CFC='SI'
+				const SI = v.notNull == "personaje" && v.cfc == "SI";
+				SI ? v.canonsSector.classList.remove("ocultarCanons") : v.canonsSector.classList.add("ocultarCanons");
+				SI
+					? v.rolesIglSector.classList.remove("ocultarRolesIglesia")
+					: v.rolesIglSector.classList.add("ocultarRolesIglesia");
 
-			// IMPACTOS DE
-			if (v.canonsSelect.value) v.elegibles.canons = v.canonsSelect.value;
-			if (v.rolesIglesiaSelect.value) v.elegibles.rolesIglesia = v.rolesIglesiaSelect.value;
+				// IMPACTOS DE
+				if (v.canonsSelect.value) v.elegibles.canons = v.canonsSelect.value;
+				if (v.rolesIglesiaSelect.value) v.elegibles.rolesIglesia = v.rolesIglesiaSelect.value;
 			}
-			
+
 			this.impactosDeDemasElegibles();
 
 			// Fin
@@ -288,13 +293,18 @@ window.addEventListener("load", async () => {
 			let hijos = document.querySelectorAll("#cuerpo #filtros .sectorConDesplV nav > *");
 			let tags = [];
 
-			// Detecta todos los hijos con orden dos
 			hijos.forEach((hijo, num) => {
-				if (window.getComputedStyle(hijo).getPropertyValue("order") == 2) tags.push({tag: hijo.tagName, num});
-				hijo.classList.remove("ocultar");
+				// Limpia el historial de 'ocultar' para los 'HR'
+				if (hijo.tagName == "HR") hijo.classList.remove("ocultar");
+				// Detecta todos los hijos con orden dos y visibles
+				if (
+					window.getComputedStyle(hijo).getPropertyValue("order") == 2 &&
+					window.getComputedStyle(hijo).getPropertyValue("display") != "none"
+				)
+					tags.push({tag: hijo.tagName, num});
 			});
 
-			// Si hay 2 líneas consecutivas en orden dos, uculta la última
+			// Si hay 2 líneas consecutivas en orden dos, oculta la última
 			for (let i = 1; i < tags.length; i++)
 				if (tags[i - 1].tag == "HR" && tags[i].tag == "HR") hijos[tags[i].num].classList.add("ocultar");
 
@@ -322,7 +332,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Limpia líneas consecutivas
-		apoyo.limpiaLineasConsecutivas()
+		apoyo.limpiaLineasConsecutivas();
 
 		// Fin
 		return;
