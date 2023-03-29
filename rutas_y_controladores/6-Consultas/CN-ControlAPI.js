@@ -13,7 +13,7 @@ module.exports = {
 		[layouts, ordenes] = await Promise.all([layouts, ordenes]);
 
 		// Fin
-		return res.json([layouts, ordenes])
+		return res.json({layouts, opcionesOrdenBD: ordenes});
 	},
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
@@ -48,7 +48,6 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log(datos);
-		const layout = layouts.find(n=>n.id==datos.layout)
 
 		// Orden
 
