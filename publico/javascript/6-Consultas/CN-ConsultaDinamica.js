@@ -2,11 +2,12 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let v = {
-		// Todo el formulario
+		// Formulario General
 		cuerpo: document.querySelector("#cuerpo"),
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
 		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple"),
+		comencemos: document.querySelector("#zona-de-prods #comencemos button#verde"),
 
 		// Filtro personalizado
 		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -313,6 +314,22 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
+	let zonaDeProds={
+		obtieneLosProductos: async () => {
+			// Si no se hizo 'click' sobre el botón 'comencemos', frena
+			if (!v.comencemos.className.includes("ocultar")) return;
+	
+			// Obtiene los productos
+			// let productos = await fetch(v.rutaProductos + JSON.stringify(opciones));
+	
+			// Actualiza el contador
+			// Actualiza la información mostrada
+	
+			// Fin
+			return;
+		},
+
+	}
 
 	// Eventos
 	v.cuerpo.addEventListener("change", async (e) => {
@@ -336,6 +353,20 @@ window.addEventListener("load", async () => {
 
 		// Limpia líneas consecutivas
 		apoyo.limpiaLineasConsecutivas();
+
+		// Obtiene los productos
+		await zonaDeProds.obtieneLosProductos();
+
+		// Fin
+		return;
+	});
+	// Comencemos
+	v.comencemos.addEventListener("click", async () => {
+		// Oculta el botón
+		v.comencemos.classList.add("ocultar");
+
+		// Siguientes pasos
+		await zonaDeProds.obtieneLosProductos();
 
 		// Fin
 		return;
