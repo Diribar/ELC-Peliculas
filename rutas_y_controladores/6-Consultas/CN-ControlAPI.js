@@ -47,17 +47,36 @@ module.exports = {
 	obtieneProductos: (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
+		let filtro;
+		console.log("Datos:", datos);
 
 		// Entidades de producto
 		let entidadesProd = [...variables.entidadesProd];
 		if (datos.notNull == "-") entidadesProd.pop();
+		console.log("Entidades Prod:", entidadesProd);
+
+		// Entidades RCLV
+		const notNull = datos.notNull;
+		const entidadesRCLV = notNull == "persHecho" ? ["personajes", "hechos"] : notNull == "-" ? [] : [notNull];
+		console.log("Entidades RCLV:", entidadesRCLV);
 
 		// Orden
-		const orden = ordenes.find((n) => n.id == datos.orden_id);
+		const aux = ordenes.find((n) => n.id == datos.orden_id);
+		let orden = {};
+		if (entidadesRCLV.length) {
+			orden.rclv = [aux.valor, datos.ordenam];
+			orden.producto = ["ano_estreno", "DESC"];
+		} else orden.producto = [aux.valor, datos.ordenam];
+		console.log("Orden:", orden);
 
-		console.log(54, datos, entidadesProd, orden);
+		// Filtros
+		filtro = procesos.API.filtrosRecibidos(datos);
+
+		console.log("Filtros: ", filtro);
 
 		// Fin
+		console.log("- Fin -");
+		console.log();
 		return res.json();
 	},
 };
