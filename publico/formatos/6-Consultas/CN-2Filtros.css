@@ -17,14 +17,14 @@
 /* Filtros - Campos - General */
 #filtros #campos {background: var(--gris-claro);}
 #filtros #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
-#filtros #campos > * {order: 1;}
 #filtros #campos nav > * {order: 2;}
 #filtros #campos .filtro {padding: 7.5px 20px;}
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
 
 /* Filtros - Campos - Select */
+#filtros .filtro select {width: 100%;}
 #filtros .filtro select option {background: snow; color: var(--azul-oscuro);}
-#filtros .filtro select option.sinFiltro {display: block; font-style: italic;}
+#filtros .filtro select option[value=""] {display: block; font-style: italic;}
 
 /* Filtros - Campos - Checkbox */
 #filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
@@ -34,8 +34,6 @@
 #filtros .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}
 #filtros .filtro.checkbox.flexRowAlign h3 {width: -webkit-fill-available;}
 
-/* Filtros - Categorías */
-#filtros #campos :where(#categorias) {background: var(--rojo-oscuro); color: snow; font-weight: bold;}
 /* Filtros - Búsqueda */
 #filtros #campos #busqueda {position: relative; background-color: var(--verde-intermedio);}
 #filtros #campos #busqueda {padding-top: 10px; padding-bottom: 10px;}
@@ -45,11 +43,6 @@
 /* Condicionales */
 /* Para marcar los filtros con valor */
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}
-#filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent; text-align: center}
+#filtros #campos .filtro.select select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow; font-weight: bold; border-color: transparent;}
 #filtros #campos .filtro.checkbox:has(input:checked) {background: var(--verde-oscuro); order: 1;}
 #filtros #campos .filtro.checkbox:has(input:checked) > * {color: snow; font-weight: bold;}
-/* Para ocultar el filtro si las opciones obligatorias no fueron elegidas */
-#cuerpo:not(
-    :has(#encabMasPelis #encabezado select[name="orden"]:invalid),
-    :not(:has(#filtros #categorias input:checked))
-) #filtros .sectorConDesplV nav {display: flex; flex-direction: column;}

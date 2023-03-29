@@ -3,7 +3,6 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
-		valor: {type: dt.STRING(20)},
 		not_null_out: {type: dt.STRING(20)},
 		ocurrio: {type: dt.STRING(2)},
 	};

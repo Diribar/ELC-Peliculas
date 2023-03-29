@@ -7,14 +7,11 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
 	obtieneColCap: async (req, res) => {
-		let {entidad, id} = req.query;
-		let ID =
+		const {entidad, id} = req.query;
+		const objeto = {coleccion_id: id, temporada: 1, capitulo: 1};
+		const ID =
 			entidad == "colecciones"
-				? await BD_genericas.obtienePorCampos("capitulos", {
-						coleccion_id: id,
-						temporada: 1,
-						capitulo: 1,
-				  }).then((n) => n.id)
+				? await BD_genericas.obtienePorCampos("capitulos", objeto).then((n) => n.id)
 				: await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
@@ -31,28 +28,18 @@ module.exports = {
 		else {
 			tempAnt = temporada - 1;
 			// Obtiene el último número de capítulo de la temporada anterior
-			capAnt = await BD_genericas.obtieneTodosPorCampos("capitulos", {
-				coleccion_id: coleccion_id,
-				temporada: tempAnt,
-			})
-				.then((n) => n.map((m) => m.capitulo))
-				.then((n) => Math.max(...n));
+			let objeto = {coleccion_id, temporada: tempAnt};
+			capAnt = await BD_genericas.maxValorPorCampos("capitulos", objeto, "capitulo");
 		}
 		// Averigua los datos del capítulo posterior ********************
 		// Obtiene datos de la colección y el capítulo
+		let objeto = {coleccion_id, temporada};
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtiene el último número de capítulo de la temporada actual
-			BD_genericas.obtieneTodosPorCampos("capitulos", {
-				coleccion_id: coleccion_id,
-				temporada: temporada,
-			})
-				.then((n) => n.map((m) => m.capitulo))
-				.then((n) => Math.max(...n)),
+			BD_genericas.maxValorPorCampos("capitulos", objeto, "capitulo"),
 			// Obtiene el último número de temporada de la colección
 			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cant_temps),
-		]).then(([a, b]) => {
-			return [a, b];
-		});
+		]);
 		// Obtiene los datos del capítulo posterior (temporada y capítulo)
 		let tempPost = temporada;
 		let capPost = 0;
@@ -63,25 +50,13 @@ module.exports = {
 			capPost = 1;
 		}
 		// Obtiene los ID
+		let objetoAnt = {coleccion_id, temporada: tempAnt, capitulo: capAnt};
+		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
 		let [capAntID, capPostID] = await Promise.all([
 			// Obtiene el ID del capítulo anterior
-			capAnt
-				? BD_genericas.obtienePorCampos("capitulos", {
-						coleccion_id: coleccion_id,
-						temporada: tempAnt,
-						capitulo: capAnt,
-				  }).then((n) => n.id)
-				: false,
-			capPost
-				? BD_genericas.obtienePorCampos("capitulos", {
-						coleccion_id: coleccion_id,
-						temporada: tempPost,
-						capitulo: capPost,
-				  }).then((n) => n.id)
-				: false,
-		]).then(([a, b]) => {
-			return [a, b];
-		});
+			capAnt ? BD_genericas.obtienePorCampos("capitulos", objetoAnt).then((n) => n.id) : false,
+			capPost ? BD_genericas.obtienePorCampos("capitulos", objetoPost).then((n) => n.id) : false,
+		]);
 		// // Enviar el resultado
 		return res.json([capAntID, capPostID]);
 	},

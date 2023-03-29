@@ -1,7 +1,7 @@
 <% if (tema) { %>
-	<div id="<%= tema.codigo %>" class="filtro select flexCol">
+	<div id="<%= tema.codigo %>" class="filtro select <%= locals.class %>">
 		<select name="<%= tema.codigo %>" class="elegibleSimple">
-			<option value="" class="sinFiltro"><%= tema.titulo %></option>
+			<option value=""><%= tema.titulo %></option>
 			<% let label %>
 			<% let grupo = tema["grupo_" + tema.codigo] %>
 			<% let opciones = grupo ? grupo : tema.opciones %>
