@@ -42,7 +42,7 @@
 
 /* Condicionales */
 /* Para marcar los filtros con valor */
-#filtros #campos :is(.ocultarLayout, .ocultarOrden) {display: none;}
+#filtros #campos :is(.ocultarLayout, .ocultarOrden, .ocultarApMar) {display: none;}
 #filtros:not(:has(#campos .ocultarLayout, #campos .ocultarOrden)) > #campos nav {display: flex; flex-direction: column;}
 
 #filtros #campos .filtro.select:not(:has(select option[value=""]:checked)) {background: var(--verde-oscuro); order: 1;}

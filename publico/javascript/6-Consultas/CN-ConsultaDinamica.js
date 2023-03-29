@@ -17,6 +17,9 @@ window.addEventListener("load", async () => {
 		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
 		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
 		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
+		epocaSelect:document.querySelector("#filtros #campos #epoca select"),
+		apMarSector: document.querySelector("#filtros #campos #apMar"),
+		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
 
 		// Rutas
 		rutaLayoutsOrdenes: "/consultas/api/layouts-y-ordenes",
@@ -69,7 +72,6 @@ window.addEventListener("load", async () => {
 				if (orden) {
 					if (v.notNull == "-" && orden.not_null_out != "-") v.notNull = orden.not_null_out;
 					if (v.ocurrio == "-" && orden.ocurrio != "-") v.ocurrio = orden.ocurrio;
-					console.log(v.ocurrio);
 				}
 				// Ordenamiento
 				if (orden && orden.ordenam == "ascDes") {
@@ -102,7 +104,6 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de ocurrio
 		impactosEnDeOcurrio: () => {
-			console.log(v.ocurrio);
 			// IMPACTOS EN
 			v.ocurrio == "-" ? v.ocurrioSector.classList.remove("ocultar") : v.ocurrioSector.classList.add("ocultar");
 
@@ -111,13 +112,41 @@ window.addEventListener("load", async () => {
 			for (let sector of v.ocurrioSISectores)
 				v.ocurrio == "SI" ? sector.classList.remove("ocultar") : sector.classList.add("ocultar");
 
+			this.impactosEnDeEpoca()
+
 			// Fin
 			return;
 		},
-
 		// Impactos en/de epoca
+		impactosEnDeEpoca:()=>{
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
 
+			// IMPACTOS DE
+			if (v.epocaSelect.value) v.epoca = v.epocaSelect.value;
+			
+			this.impactosEnDeApMar()
+
+			// Fin
+			return;
+		},
 		// Impactos en/de apMar
+		impactosEnDeApMar:()=>{
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+			// Sólo se muestra el sector si CFC='SI' y epoca='pst'
+			if (v.cfc=="SI"&&v.epoca=="pst") v.apMarSector.classList.remove("ocultarApMar")
+			else v.apMarSector.classList.add("ocultarApMar")
+
+			// IMPACTOS DE
+			if (v.epocaSelect.value) v.epoca = v.epocaSelect.value;
+			
+			this.impactosEnDeApMar()
+
+			// Fin
+			return;
+		}
+
 
 		// Impactos en/de canons
 
