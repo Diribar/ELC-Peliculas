@@ -38,6 +38,7 @@ window.addEventListener("load", async () => {
 		rolesIglSector: document.querySelector("#filtros #campos #rolesIglesia"),
 		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
 		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles .input"),
+		palabrasClave: document.querySelector("#filtros #campos #palabrasClave"),
 
 		// Rutas
 		rutaLayoutsOrdenes: "/consultas/api/layouts-y-ordenes",
@@ -324,6 +325,8 @@ window.addEventListener("load", async () => {
 
 		// Impacto en Encabezado y Filtros
 		encabFiltros.impactosDeLayout();
+		if (e.target.name == "palabrasClave")
+			e.target.value ? palabrasClave.classList.add("verde") : palabrasClave.classList.remove("verde");
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {
