@@ -48,12 +48,7 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log(datos);
-		let objeto = {};
-		objeto.notNull = [];
-
-		// Prepara la información para enviar a BD_especificas
-		// Filtros - RCLV asociado
-		if (datos.layout != "listado") objeto.notNull.push(comp.obtieneRCLV_id(datos.layout));
+		const layout = layouts.find(n=>n.id==datos.layout)
 
 		// Orden
 
