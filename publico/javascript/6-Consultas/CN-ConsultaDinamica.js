@@ -108,13 +108,13 @@ window.addEventListener("load", async () => {
 			// Sector 'OK'
 			v.elegibles.ordenam ? v.ordenamSector.classList.add("OK") : v.ordenamSector.classList.remove("OK");
 
-			this.impactosEnBotonesZP();
+			this.mostrarOcultar();
 			this.impactosDeCFC();
 
 			// Fin
 			return;
 		},
-		impactosEnBotonesZP: () => {
+		mostrarOcultar: () => {
 			const SI_layout = !!v.layoutSelect.value;
 			const SI_orden = !!v.ordenSelect.value;
 			const SI_ordenam = !!v.elegibles.ordenam;
