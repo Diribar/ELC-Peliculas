@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		canonsSelect: document.querySelector("#filtros #campos #canons select"),
 		rolesIglSector: document.querySelector("#filtros #campos #rolesIglesia"),
 		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
-		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles select"),
+		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles .input"),
 
 		// Rutas
 		rutaLayoutsOrdenes: "/consultas/api/layouts-y-ordenes",
@@ -193,7 +193,13 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		// Impactos de Demás Elegibles
-		impactosDeDemasElegibles: function () {},
+		impactosDeDemasElegibles: function () {
+			for (let elegible of v.demasElegibles)
+				if (elegible.value) v.elegibles[elegible.name]=elegible.value
+			
+			// Fin
+			return
+		},
 	};
 
 	// Eventos
@@ -206,6 +212,7 @@ window.addEventListener("load", async () => {
 		if (nombre == "filtrosPers") {
 		} else {
 			FN.impactosDeLayout();
+			console.log(v.elegibles);
 
 			// Botones en Filtros Personalizados
 			// if (botones.condicionesMinimas()) botones.impactosDeElegibles();
