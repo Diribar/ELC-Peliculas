@@ -27,8 +27,8 @@ module.exports = {
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
-				{id: "SI", nombre: "Con relación con la FC"},
-				{id: "NO", nombre: "Sin relación con la FC"},
+				{id: "SI", nombre: "Fe Católica"},
+				{id: "NO", nombre: "Sin Fe Católica"},
 			],
 		},
 		ocurrio: {
@@ -54,8 +54,8 @@ module.exports = {
 			epoca_id: "pst",
 			cfc: "SI",
 			opciones: [
-				{id: "SI", nombre: "Con Aparición Mariana"},
-				{id: "NO", nombre: "Sin aparición Mariana"},
+				{id: "SI", nombre: "Aparición Mariana"},
+				{id: "NO", nombre: "Sin Aparición Mariana"},
 			],
 		},
 		canons: {
