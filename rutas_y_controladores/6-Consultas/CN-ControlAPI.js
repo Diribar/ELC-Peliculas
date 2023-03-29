@@ -71,7 +71,7 @@ module.exports = {
 
 		// Filtros
 		filtro = procesos.API.filtrosRecibidos(datos);
-
+		filtro = procesos.API.filtrosProcesados(filtro);
 		console.log("Filtros: ", filtro);
 
 		// Fin

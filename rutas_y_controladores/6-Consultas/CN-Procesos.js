@@ -80,45 +80,34 @@ module.exports = {
 	},
 	API: {
 		filtrosRecibidos: (datos) => {
-			// 1. Obtiene la información
-			let {
-				cfc,
-				ocurrio,
-				epoca_id,
-				apMar,
-				canons,
-				rolesIglesia,
-				publicos,
-				epocasEstreno,
-				tipos_link,
-				castellano,
-				tipos_actuacion,
-				musical,
-				palabrasClave,
-			} = datos;
+			// Variables
+			let campos = ["cfc", "ocurrio", "epoca_id", "apMar", "canons_id", "roles_iglesia_id", "publico_id"];
+			campos.push("epocasEstreno", "tipos_link", "castellano", "tipos_actuacion", "musical", "palabrasClave");
+			let filtro = {};
 
 			// 2. Arma el filtro
-			let filtro = {
-				cfc,
-				ocurrio,
-				epoca_id,
-				apMar,
-				canons,
-				rolesIglesia,
-				publicos,
-				epocasEstreno,
-				tipos_link,
-				castellano,
-				tipos_actuacion,
-				musical,
-				palabrasClave,
-			};
-
-			// 3. Descarta lo irrelevante
-			for (let campo of Object.keys(filtro)) if (!filtro[campo]) delete filtro[campo];
+			for (let campo of campos) if (datos[campo]) filtro[campo] = datos[campo];
 
 			// Fin
 			return filtro;
+		},
+		filtrosProcesados: (filtroOrig) => {
+			// Separa entre filtros de RCLVs y productos
+			let filtrosProds = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tipos_link"];
+			filtrosProds.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
+			let filtrosRCLVs = ["epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
+			
+			// 2. Arma el filtro
+			let filtro={producto:{},rclv:{}}
+			for (let campo of filtrosProds) if (filtroOrig[campo]) filtro.producto[campo] = filtroOrig[campo];
+			for (let campo of filtrosRCLVs) if (filtroOrig[campo]) filtro.rclv[campo] = filtroOrig[campo];
+
+			// 3. Elimina la familia sin información
+			if (!Object.keys(filtro.producto).length) delete filtro.producto
+			if (!Object.keys(filtro.rclv).length) delete filtro.rclv
+
+			// Fin
+			return filtro
 		},
 	},
 };
