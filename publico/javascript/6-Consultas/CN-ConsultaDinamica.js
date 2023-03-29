@@ -42,7 +42,7 @@ window.addEventListener("load", async () => {
 		// Rutas
 		rutaLayoutsOrdenes: "/consultas/api/layouts-y-ordenes",
 		rutaGuardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
-		rutaCambiaFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
+		rutaOpcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		rutaProductos: "/consultas/api/obtiene-los-productos/?datos=",
 
 		// Variables directrices
@@ -220,7 +220,7 @@ window.addEventListener("load", async () => {
 			fetch(v.rutaGuardaFiltroID + filtro_id);
 
 			// Obtiene las opciones de la BD
-			const opciones = await fetch(v.rutaCambiaFiltroPers + filtro_id).then((n) => n.json());
+			const opciones = await fetch(v.rutaOpcionesFiltroPers + filtro_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
 			for (let elegible of v.elegiblesSimple) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
