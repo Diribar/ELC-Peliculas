@@ -4,8 +4,8 @@
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
 			<option 
-				value="<%= layout.valor %>" 
-				<% if (layout.valor == opcionesElegidas.layout) { %>selected<% } %>
+				value="<%= layout.not_null_out %>" 
+				<% if (layout.not_null_out == opcionesElegidas.layout) { %>selected<% } %>
 			><%= layout.nombre %></option>
 		<% } %>
 	</select>

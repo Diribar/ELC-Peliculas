@@ -6,6 +6,7 @@ const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");
 
 // API
+router.get("/api/layouts-y-ordenes", API.layoutsOrdenes);
 router.get("/api/opciones-de-filtro-personalizado", API.opcionesFiltro);
 router.get("/api/guarda-filtro_id", API.guardaFiltro_id);
 router.get("/api/obtiene-los-productos", API.obtieneProductos);

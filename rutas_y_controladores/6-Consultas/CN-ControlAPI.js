@@ -6,6 +6,15 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
+	layoutsOrdenes: async (req, res) => {
+		// Obtiene los valores
+		let layouts = BD_genericas.obtieneTodos("layouts", "orden");
+		let ordenes = BD_genericas.obtieneTodos("ordenes", "orden");
+		[layouts, ordenes] = await Promise.all([layouts, ordenes]);
+
+		// Fin
+		return res.json([layouts, ordenes])
+	},
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
@@ -44,7 +53,7 @@ module.exports = {
 
 		// Prepara la información para enviar a BD_especificas
 		// Filtros - RCLV asociado
-		if (datos.layout != "listado") objeto.notNull.push(comp.obtieneRCLV_id(datos.layout))
+		if (datos.layout != "listado") objeto.notNull.push(comp.obtieneRCLV_id(datos.layout));
 
 		// Orden
 
