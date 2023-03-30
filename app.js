@@ -138,7 +138,8 @@ app.set("views", [
 	// Ejecuta las tareas de rutina
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
 	global.TitulosImgDer = {};
-	await rutinas.tareasDiarias();
+	await rutinas.rutinasDiarias();
+	await rutinas.rutinasSemanales();
 
 	// Rutinas programadas
 	const info = rutinas.lecturaRutinasJSON();
@@ -151,7 +152,9 @@ app.set("views", [
 	const cron = require("node-cron");
 	for (let actividad in horarios)
 		cron.schedule("0 " + horarios[actividad] + " * * *", async () => await rutinas[actividad](), {timezone: "Etc/Greenwich"});
-	
+	// Actualiza la semana UTC (lunes, a las 00:01hs)
+	cron.schedule("1 0 * * 1", async () => await rutinas.SemanaUTC(), {timezone: "Etc/Greenwich"});
+
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
 	const loginConCookie = require("./middlewares/varios/loginConCookie");

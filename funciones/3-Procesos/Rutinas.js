@@ -142,7 +142,7 @@ module.exports = {
 	SemanaUTC: function () {
 		// Obtiene la fecha y la hora procesados
 		const [FechaUTC, HoraUTC] = fechaHora();
-		const SemanaUTC = "";
+		const SemanaUTC = semanaUTC();
 
 		// Obtiene las rutinas del archivo JSON
 		let info = this.lecturaRutinasJSON();
@@ -156,7 +156,7 @@ module.exports = {
 		const ObtencionSemanaUTC = "SI";
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({SemanaUTC, ObtencionSemanaUTC, ...statusRutinas});
+		this.actualizaRutinasJSON({SemanaUTC, HoraSemUTC: HoraUTC, ObtencionSemanaUTC, ...statusRutinas});
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Semana UTC' actualizada y datos guardados en JSON");
@@ -189,7 +189,7 @@ module.exports = {
 	},
 
 	// Conjunto de tareas
-	tareasDiarias: async function () {
+	rutinasDiarias: async function () {
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -205,7 +205,21 @@ module.exports = {
 		// Fin
 		return;
 	},
-	tareasSemanales: async () => {
+	rutinasSemanales: async function () {
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
+		const rutinas = Object.keys(info.DiasUTC);
+		// Obtiene la semana
+		const SemanaUTC = semanaUTC();
+
+		// Acciones si la 'SemanaUTC' es distinta
+		if (info.SemanaUTC != SemanaUTC) {
+			this.SemanaUTC();
+			for (let rutina of rutinas) await this[rutina]();
+		} else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
+
 		// Fin
 		return;
 	},
@@ -288,4 +302,23 @@ let fechaHora = () => {
 
 	// Fin
 	return [FechaUTC, HoraUTC];
+};
+let semanaUTC = () => {
+	// Obtiene el primer día del año
+	const fecha = new Date();
+	const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
+
+	// Obtiene el dia de la semana (lun: 0 a dom: 6)
+	let diaSem = new Date(comienzoAno).getDay();
+	diaSem = diaSem == 0 ? 6 : diaSem - 1;
+
+	// Obtiene el primer lunes del año
+	const adicionarDias = diaSem == 0 ? 0 : 7 - diaSem;
+	const primerLunes = comienzoAno + adicionarDias * unDia;
+
+	// Obtiene la semana del año
+	const semana = parseInt((fecha.getTime() - primerLunes) / unDia / 7);
+
+	// Fin
+	return semana;
 };
