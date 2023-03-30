@@ -8,24 +8,115 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Tareas diarias
-	tareasDiarias: async function () {
+	// Lectura del archivo Rutinas.json
+	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
-		const rutaNombre = path.join(__dirname, "fecha.json");
+		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-		let info = json ? JSON.parse(fs.readFileSync(rutaNombre, "utf8")) : {};
+		let info = json ? JSON.parse(json) : {};
 
-		// Más variables
+		// Fin
+		return info;
+	},
+	actualizaRutinasJSON: function (datos) {
+		// Consolida la información actualizada
+		let info = this.lecturaRutinasJSON();
+		info = {...info, ...datos};
+
+		// Guarda la información actualizada
+		const rutaNombre = path.join(__dirname, "Rutinas.json");
+		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
+			if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
+		});
+
+		// Fin
+		return;
+	},
+
+	// Actualizaciones diarias
+	FechaHoraUTC: function () {
+		// Obtiene la fecha y la hora y las procesa
+		const ahora = new Date();
+		const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
+		const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
+
+		// Actualiza la información
+		this.actualizaRutinasJSON({FechaUTC, HoraUTC});
+
+		// Fin
+		return;
+	},
+	ImagenDerecha: async function ({info, fechas}) {
+		// Obtiene los titulos de Imagen Derecha
+		titulosImgDer = {};
+		for (let fecha of fechas)
+			titulosImgDer[fecha] =
+				info.titulosImgDer && info.titulosImgDer[fecha] ? info.titulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
+
+		// Actualiza los títulos de la imagen derecha
+		info.titulosImgDer = titulosImgDer;
+
+		// Borra los archivos de imagen que no se corresponden con los titulos
+		let archivosDeImagen = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
+		for (let archivo of archivosDeImagen)
+			if (!fechas.includes(archivo.slice(0, 9))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
+
+		// Fin
+		console.log("'imagenDerecha' actualizada");
+		return info;
+	},
+	LinksEnProd: async () => {
+		// return;
+		const entidadesProd = variables.entidadesProd;
+
+		// Rutina por entidad
+		for (let entidad of entidadesProd) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función linksEnProd
+			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
+		}
+
+		// Fin
+		console.log("'linksEnProd' actualizado");
+		return;
+	},
+	ProdEnRCLV: async () => {
+		// Obtiene las entidadesRCLV
+		const entidadesRCLV = variables.entidadesRCLV;
+
+		// Rutina por entidad
+		for (let entidad of entidadesRCLV) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función prodEnRCLV
+			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
+		}
+
+		// Fin
+		console.log("'prodEnRCLV' actualizado");
+		return;
+	},
+	momentoDelAno: () => {},
+
+	// Conjunto de tareas diarias
+	tareasDiarias: async function () {
+		// rutinas.FechaHoraUTC()
+
+		// Variables
+		let info = this.lecturaRutinasJSON();
 		const ahora = new Date();
 		const fechaLocal_n = new Date(ahora.getTime() - (ahora.getTimezoneOffset() / 60) * unaHora);
 		const fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
 		const milisegs = fechaLocal_n.getTime();
 		const fechas = [
-			fechaTexto(milisegs - unDia),
-			fechaTexto(milisegs),
-			fechaTexto(milisegs + unDia),
-			fechaTexto(milisegs + unDia * 2),
+			diaMesAno(milisegs - unDia),
+			diaMesAno(milisegs),
+			diaMesAno(milisegs + unDia),
+			diaMesAno(milisegs + unDia * 2),
 		];
 
 		// Si la información ya está actualizada, termina
@@ -55,7 +146,7 @@ module.exports = {
 		}
 
 		// Actualiza los valores del archivo
-		info.fechaLocal = fechaLocal
+		info.fechaLocal = fechaLocal;
 		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) return console.log("Tareas Diarias:", err);
@@ -64,61 +155,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	actualizaImagenDerecha: async function ({info, fechas}) {
-		// Obtiene los titulos de Imagen Derecha
-		titulosImgDer = {};
-		for (let fecha of fechas)
-			titulosImgDer[fecha] =
-				info.titulosImgDer && info.titulosImgDer[fecha] ? info.titulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
-
-		// Actualiza los títulos de la imagen derecha
-		info.titulosImgDer = titulosImgDer;
-
-		// Borra los archivos de imagen que no se corresponden con los titulos
-		let archivosDeImagen = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
-		for (let archivo of archivosDeImagen)
-			if (!fechas.includes(archivo.slice(0, 9))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
-
-		// Fin
-		console.log("'imagenDerecha' actualizada");
-		return info;
-	},
-	actualizaLinksEnProd: async () => {
-		// return;
-		const entidadesProd = variables.entidadesProd;
-
-		// Rutina por entidad
-		for (let entidad of entidadesProd) {
-			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
-
-			// Rutina por ID: ejecuta la función linksEnProd
-			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
-		}
-
-		// Fin
-		console.log("'linksEnProd' actualizado");
-		return;
-	},
-	actualizaProdEnRCLV: async () => {
-		// Obtiene las entidadesRCLV
-		const entidadesRCLV = variables.entidadesRCLV;
-
-		// Rutina por entidad
-		for (let entidad of entidadesRCLV) {
-			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
-
-			// Rutina por ID: ejecuta la función prodEnRCLV
-			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
-		}
-
-		// Fin
-		console.log("'prodEnRCLV' actualizado");
-		return;
-	},
-
-	// Tareas semanales
+	// Actualizaciones semanales
 	tareasSemanales: async () => {
 		// Obtiene la condición
 		const condiciones = await BD_especificas.linksVencidos();
@@ -197,7 +234,7 @@ let obtieneImagenDerecha = async (fecha) => {
 	// Fin
 	return imgDerecha.nombre;
 };
-let fechaTexto = (fecha) => {
+let diaMesAno = (fecha) => {
 	fecha = new Date(fecha);
 	let dia = ("0" + fecha.getDate()).slice(-2);
 	let mes = mesesAbrev[fecha.getMonth()];
