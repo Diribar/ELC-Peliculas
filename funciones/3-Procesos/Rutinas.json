@@ -7,9 +7,10 @@
 	"LinksEnProd": "SI",
 	"ProdsEnRCLV": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00", "LinksEnProd": "09:00", "ProdsEnRCLV": "10:00"},
-	"SemanaUTC": 12,
-	"HoraSemUTC": "17:09",
-	"ObtencionSemanaUTC": "SI",
+	"semanaUTC": 12,
+	"FechaSemUTC": "Jue. 30/mar",
+	"HoraSemUTC": "21:35",
+	"SemanaUTC": "SI",
 	"LinksVencidos": "SI",
-	"DiasUTC": {"LinksVencidos": "Monday"}
+	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1"}
 }
