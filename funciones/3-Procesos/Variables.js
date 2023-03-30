@@ -82,7 +82,7 @@ module.exports = {
 			],
 		},
 		// Otros
-		publicos: {
+		publico_id: {
 			titulo: "Público Recomendado",
 		},
 		epocasEstreno: {

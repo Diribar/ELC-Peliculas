@@ -200,8 +200,8 @@ window.addEventListener("load", async () => {
 					: DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
 
 				// IMPACTOS DE
-				if (DOM.canonsSelect.value) elegibles.canons = DOM.canonsSelect.value;
-				if (DOM.rolesIglesiaSelect.value) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
+				if (DOM.canonsSelect.value) elegibles.canons_id = DOM.canonsSelect.value;
+				if (DOM.rolesIglesiaSelect.value) elegibles.roles_iglesia_id = DOM.rolesIglesiaSelect.value;
 			}
 
 			this.impactosDeDemasElegibles();
