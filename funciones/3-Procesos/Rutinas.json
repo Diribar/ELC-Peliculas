@@ -1,11 +1,11 @@
 {
 	"FechaUTC": "Jue. 30/mar",
-	"HoraUTC": "13:37",
+	"HoraUTC": "14:47",
 	"SemanaUTC": 12,
 	"TitulosImgDer": {"29-mar-23": "ELC - Películas", "30-mar-23": "ELC - Películas", "31-mar-23": "Domingo de Ramos"},
 	"FechaHoraUTC": "SI",
-	"ImagenDerecha": "NO",
-	"LinksEnProd": "NO",
-	"ProdsEnRCLV": "NO",
+	"ImagenDerecha": "SI",
+	"LinksEnProd": "SI",
+	"ProdsEnRCLV": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00", "LinksEnProd": "09:00", "ProdsEnRCLV": "10:00"}
 }

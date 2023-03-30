@@ -36,10 +36,8 @@ module.exports = {
 
 	// Actualizaciones diarias
 	FechaHoraUTC: function () {
-		// Obtiene la fecha y la hora y las procesa
-		const ahora = new Date();
-		const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
-		const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
+		// Obtiene la fecha y la hora procesados
+		const [FechaUTC, HoraUTC] = fechaHora();
 
 		// Establece el status de los procesos de rutina
 		const rutinas = {
@@ -49,8 +47,11 @@ module.exports = {
 			ProdsEnRCLV: "NO",
 		};
 
-		// Actualiza la información
+		// Actualiza el archivo JSON
 		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
+
+		// Feedback del proceso
+		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Fecha y Hora' actualizadas y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -76,14 +77,17 @@ module.exports = {
 			if (!fechas.includes(archivo.slice(0, dot))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
 		}
 
-		// Actualiza la información
+		// Actualiza el archivo JSON
 		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
+		// Feedback del proceso
+		const [FechaUTC, HoraUTC] = fechaHora();
+		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Imagen Derecha' actualizada y datos guardados en JSON");
+
 		// Fin
-		console.log("Imagen Derecha actualizada y datos guardados");
 		return;
 	},
-	LinksEnProd: async () => {
+	LinksEnProd: async function () {
 		// return;
 		const entidadesProd = variables.entidadesProd;
 
@@ -96,11 +100,17 @@ module.exports = {
 			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
 		}
 
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({LinksEnProd: "SI"});
+
+		// Feedback del proceso
+		const [FechaUTC, HoraUTC] = fechaHora();
+		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Links en Producto' actualizados y datos guardados en JSON");
+
 		// Fin
-		console.log("'linksEnProd' actualizado");
 		return;
 	},
-	ProdEnRCLV: async () => {
+	ProdEnRCLV: async function () {
 		// Obtiene las entidadesRCLV
 		const entidadesRCLV = variables.entidadesRCLV;
 
@@ -113,8 +123,14 @@ module.exports = {
 			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
 		}
 
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({ProdsEnRCLV: "SI"});
+
+		// Feedback del proceso
+		const [FechaUTC, HoraUTC] = fechaHora();
+		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Prods en RCLV' actualizados y datos guardados en JSON");
+
 		// Fin
-		console.log("'prodEnRCLV' actualizado");
 		return;
 	},
 	momentoDelAno: () => {},
@@ -166,7 +182,7 @@ module.exports = {
 		info.fechaLocal = fechaLocal;
 		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
 		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
-			if (err) return console.log("Tareas Diarias:", err);
+			if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
 		});
 
 		// Fin
@@ -258,4 +274,13 @@ let diaMesAno = (fecha) => {
 	let ano = fecha.getFullYear().toString().slice(-2);
 	fecha = dia + "-" + mes + "-" + ano;
 	return fecha;
+};
+let fechaHora = () => {
+	// Obtiene la fecha y la hora y las procesa
+	const ahora = new Date();
+	const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
+	const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
+
+	// Fin
+	return [FechaUTC, HoraUTC];
 };
