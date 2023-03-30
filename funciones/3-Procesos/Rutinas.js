@@ -51,7 +51,7 @@ module.exports = {
 		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
 
 		// Feedback del proceso
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Fecha y Hora' actualizadas y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -82,7 +82,7 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Imagen Derecha' actualizada y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -105,7 +105,7 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Links en Producto' actualizados y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -128,7 +128,7 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Prods en RCLV' actualizados y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -140,18 +140,14 @@ module.exports = {
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
 		// Obtiene la fecha y la hora procesados
 		const [FechaUTC, HoraUTC] = fechaHora();
 
 		// Acciones si la 'FechaUTC' es distinta
-		if (info.FechaUTC != FechaUTC) {
-			if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-			const rutinas = Object.keys(info.HorariosUTC);
-			for(let rutina of rutinas) {
-				console.log(rutina);
-				await this[rutina]()
-			}
-		}
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
+		else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
 
 		// Fin
 		return;
