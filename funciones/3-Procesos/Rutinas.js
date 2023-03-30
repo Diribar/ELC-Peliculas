@@ -39,16 +39,19 @@ module.exports = {
 		// Obtiene la fecha y la hora procesados
 		const [FechaUTC, HoraUTC] = fechaHora();
 
+		// Obtiene las rutinas del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
+
 		// Establece el status de los procesos de rutina
-		const rutinas = {
-			FechaHoraUTC: "SI",
-			ImagenDerecha: "NO",
-			LinksEnProd: "NO",
-			ProdsEnRCLV: "NO",
-		};
+		const statusRutinas = {};
+		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
+		statusRutinas.FechaHoraUTC = "SI";
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
+		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...statusRutinas});
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
@@ -135,27 +138,36 @@ module.exports = {
 	},
 	momentoDelAno: () => {},
 
-	// Conjunto de tareas diarias
-	tareasDiarias: async function () {
-		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
-		if (!Object.keys(info).length) return;
-		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		const rutinas = Object.keys(info.HorariosUTC);
+	// Actualizaciones semanales
+	SemanaUTC: function () {
 		// Obtiene la fecha y la hora procesados
 		const [FechaUTC, HoraUTC] = fechaHora();
+		const SemanaUTC = "";
 
-		// Acciones si la 'FechaUTC' es distinta
-		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
-		else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
+		// Obtiene las rutinas del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
+		const rutinas = Object.keys(info.DiasUTC);
+
+		// Establece el status de los procesos de rutina
+		const statusRutinas = {};
+		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
+		const ObtencionSemanaUTC = "SI";
+
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({SemanaUTC, ObtencionSemanaUTC, ...statusRutinas});
+
+		// Feedback del proceso
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Semana UTC' actualizada y datos guardados en JSON");
 
 		// Fin
 		return;
 	},
-	// Actualizaciones semanales
-	tareasSemanales: async () => {
-		// Obtiene la condición
+	LinksVencidos: async function () {
+		// Obtiene la condición de cuáles son los links vencidos
 		const condiciones = await BD_especificas.linksVencidos();
+
 		// Prepara la información
 		const objeto = {
 			status_registro_id: creado_aprob_id,
@@ -165,6 +177,35 @@ module.exports = {
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCampos("links", condiciones, objeto);
 
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({LinksVencidos: "SI"});
+
+		// Feedback del proceso
+		const [FechaUTC, HoraUTC] = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+
+	// Conjunto de tareas
+	tareasDiarias: async function () {
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
+		// Obtiene la fecha procesada
+		const FechaUTC = fechaHora()[0];
+
+		// Acciones si la 'FechaUTC' es distinta
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
+		else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
+
+		// Fin
+		return;
+	},
+	tareasSemanales: async () => {
 		// Fin
 		return;
 	},
