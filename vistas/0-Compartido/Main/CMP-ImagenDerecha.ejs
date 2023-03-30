@@ -19,7 +19,7 @@
 			<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
 			<% rutaImagen = localhost + "/imagenes/5-ImagenDerecha/" + hoyLocal + ".jpg" %>
-			<% tituloImagen = titulosImgDer[hoyLocal] %>
+			<% tituloImagen = TitulosImgDer[hoyLocal] %>
 		<% } %>
 		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
 	</section>

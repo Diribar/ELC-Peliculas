@@ -82,19 +82,19 @@ app.set("views", [
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		motivos_rech_altas: BD_genericas.obtieneTodos("motivos_rech_altas", "orden"),
 		motivos_rech_edic: BD_genericas.obtieneTodos("motivos_rech_edic", "orden"),
-		
+
 		// Variables de productos
 		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
 		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
-		
+
 		// Variables de RCLVs
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
 		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
-		
+
 		// Variables de links
 		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
@@ -135,14 +135,27 @@ app.set("views", [
 	delete global.imagenes_fijo;
 
 	// Procesos que dependen de la variable 'global'
-	// Ejecuta las tareas diarias
+	// Ejecuta las tareas de rutina
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
-	global.titulosImgDer = {};
-	await rutinas.tareasDiarias();
-	// Dispara tareas en cierto horario
-	const cron = require("node-cron");
-	cron.schedule("0 23 * * *", () => rutinas.tareasDiarias(), {timezone: "Etc/GMT-12"});
+	global.TitulosImgDer = {};
+	// await rutinas.tareasDiarias();
+	// rutinas.FechaHoraUTC()
+	// rutinas.ImagenDerecha()
+	// rutinas.LinksEnProd()
+	rutinas.ProdEnRCLV()
 
+	// Rutinas programadas
+	// const info = rutinas.lecturaRutinasJSON();
+	// const horarios = {
+	// 	FechaHoraUTC: info.HorariosUTC && info.HorariosUTC.FechaHoraUTC ? obtieneLaHora(info.HorariosUTC.FechaHoraUTC) : 0,
+	// 	ImagenDerecha: info.HorariosUTC && info.HorariosUTC.ImagenDerecha ? obtieneLaHora(info.HorariosUTC.ImagenDerecha) : 6,
+	// 	LinksEnProd: info.HorariosUTC && info.HorariosUTC.LinksEnProd ? obtieneLaHora(info.HorariosUTC.LinksEnProd) : 9,
+	// 	ProdsEnRCLV: info.HorariosUTC && info.HorariosUTC.ProdsEnRCLV ? obtieneLaHora(info.HorariosUTC.ProdsEnRCLV) : 10,
+	// };
+	// const cron = require("node-cron");
+	// for (let actividad in horarios)
+	// 	cron.schedule("0 " + horarios[actividad] + " * * *", async () => await rutinas[actividad](), {timezone: "Etc/Greenwich"});
+	
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
 	const loginConCookie = require("./middlewares/varios/loginConCookie");
@@ -187,3 +200,17 @@ app.set("views", [
 	const urlDescon = require("./middlewares/urls/urlDescon");
 	app.use(urlDescon);
 })();
+
+// Fórmulas
+let obtieneLaHora = (dato) => {
+	// Obtiene la ubicación de los dos puntos
+	const ubicDosPuntos = dato.indexOf(":");
+	if (ubicDosPuntos < 1) return 0;
+
+	// Obtiene la hora
+	let hora = dato.slice(0, ubicDosPuntos);
+	hora = parseInt(hora);
+
+	// Fin
+	return hora;
+};
