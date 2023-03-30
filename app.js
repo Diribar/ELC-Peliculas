@@ -138,11 +138,7 @@ app.set("views", [
 	// Ejecuta las tareas de rutina
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
 	global.TitulosImgDer = {};
-	// await rutinas.tareasDiarias();
-	// rutinas.FechaHoraUTC()
-	// rutinas.ImagenDerecha()
-	// rutinas.LinksEnProd()
-	rutinas.ProdEnRCLV()
+	await rutinas.tareasDiarias();
 
 	// Rutinas programadas
 	// const info = rutinas.lecturaRutinasJSON();
