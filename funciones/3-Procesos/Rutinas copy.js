@@ -30,8 +30,8 @@ module.exports = {
 
 		// Si la información ya está actualizada, termina
 		if (info.fechaLocal == fechaLocal) {
-			titulosImgDer = {};
-			for (let fecha of fechas) titulosImgDer[fecha] = info.titulosImgDer[fecha];
+			TitulosImgDer = {};
+			for (let fecha of fechas) TitulosImgDer[fecha] = info.TitulosImgDer[fecha];
 			return;
 		}
 
@@ -66,13 +66,13 @@ module.exports = {
 	},
 	actualizaImagenDerecha: async function ({info, fechas}) {
 		// Obtiene los titulos de Imagen Derecha
-		titulosImgDer = {};
+		TitulosImgDer = {};
 		for (let fecha of fechas)
-			titulosImgDer[fecha] =
-				info.titulosImgDer && info.titulosImgDer[fecha] ? info.titulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
+			TitulosImgDer[fecha] =
+				info.TitulosImgDer && info.TitulosImgDer[fecha] ? info.TitulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
 
 		// Actualiza los títulos de la imagen derecha
-		info.titulosImgDer = titulosImgDer;
+		info.TitulosImgDer = TitulosImgDer;
 
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		let archivosDeImagen = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");

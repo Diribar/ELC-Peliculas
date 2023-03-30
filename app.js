@@ -135,22 +135,23 @@ app.set("views", [
 	delete global.imagenes_fijo;
 
 	// Procesos que dependen de la variable 'global'
-	// Ejecuta las tareas diarias
+	// Ejecuta las tareas de rutina
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
 	global.titulosImgDer = {};
 	// await rutinas.tareasDiarias();
-	// Rutinas
-	const info = rutinas.lecturaRutinasJSON();
-	const horarios = {
-		FechaHoraUTC: info.HorariosUTC && info.HorariosUTC.FechaHoraUTC ? obtieneLaHora(info.HorariosUTC.FechaHoraUTC) : 0,
-		ImagenDerecha: info.HorariosUTC && info.HorariosUTC.ImagenDerecha ? obtieneLaHora(info.HorariosUTC.ImagenDerecha) : 6,
-		LinksEnProd: info.HorariosUTC && info.HorariosUTC.LinksEnProd ? obtieneLaHora(info.HorariosUTC.LinksEnProd) : 9,
-		ProdsEnRCLV: info.HorariosUTC && info.HorariosUTC.ProdsEnRCLV ? obtieneLaHora(info.HorariosUTC.ProdsEnRCLV) : 10,
-	};
-	const cron = require("node-cron");
+
+	// Rutinas programadas
+	// const info = rutinas.lecturaRutinasJSON();
+	// const horarios = {
+	// 	FechaHoraUTC: info.HorariosUTC && info.HorariosUTC.FechaHoraUTC ? obtieneLaHora(info.HorariosUTC.FechaHoraUTC) : 0,
+	// 	ImagenDerecha: info.HorariosUTC && info.HorariosUTC.ImagenDerecha ? obtieneLaHora(info.HorariosUTC.ImagenDerecha) : 6,
+	// 	LinksEnProd: info.HorariosUTC && info.HorariosUTC.LinksEnProd ? obtieneLaHora(info.HorariosUTC.LinksEnProd) : 9,
+	// 	ProdsEnRCLV: info.HorariosUTC && info.HorariosUTC.ProdsEnRCLV ? obtieneLaHora(info.HorariosUTC.ProdsEnRCLV) : 10,
+	// };
+	// const cron = require("node-cron");
 	// for (let actividad in horarios)
 	// 	cron.schedule("0 " + horarios[actividad] + " * * *", async () => await rutinas[actividad](), {timezone: "Etc/Greenwich"});
-
+	
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
 	const loginConCookie = require("./middlewares/varios/loginConCookie");

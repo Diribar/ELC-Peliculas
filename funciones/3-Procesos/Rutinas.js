@@ -41,30 +41,47 @@ module.exports = {
 		const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
 		const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
 
+		// Establece el status de los procesos de rutina
+		const rutinas = {
+			FechaHoraUTC: "SI",
+			ImagenDerecha: "NO",
+			LinksEnProd: "NO",
+			ProdsEnRCLV: "NO",
+		};
+
 		// Actualiza la información
-		this.actualizaRutinasJSON({FechaUTC, HoraUTC});
+		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
 
 		// Fin
 		return;
 	},
-	ImagenDerecha: async function ({info, fechas}) {
-		// Obtiene los titulos de Imagen Derecha
-		titulosImgDer = {};
-		for (let fecha of fechas)
-			titulosImgDer[fecha] =
-				info.titulosImgDer && info.titulosImgDer[fecha] ? info.titulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
+	ImagenDerecha: async function () {
+		// Variables
+		let info = this.lecturaRutinasJSON();
+		const milisegs = new Date().getTime();
+		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
 
 		// Actualiza los títulos de la imagen derecha
-		info.titulosImgDer = titulosImgDer;
+		TitulosImgDer = {};
+		for (let fecha of fechas)
+			TitulosImgDer[fecha] =
+				info.TitulosImgDer && info.TitulosImgDer[fecha] ? info.TitulosImgDer[fecha] : await obtieneImagenDerecha(fecha);
+		info.TitulosImgDer = TitulosImgDer;
 
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		let archivosDeImagen = fs.readdirSync("./publico/imagenes/5-ImagenDerecha/");
-		for (let archivo of archivosDeImagen)
-			if (!fechas.includes(archivo.slice(0, 9))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
+		for (let archivo of archivosDeImagen) {
+			let dot = archivo.lastIndexOf(".");
+			if (dot < 0) dato = archivo.length;
+			if (!fechas.includes(archivo.slice(0, dot))) comp.borraUnArchivo("./publico/imagenes/5-ImagenDerecha/", archivo);
+		}
+
+		// Actualiza la información
+		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Fin
-		console.log("'imagenDerecha' actualizada");
-		return info;
+		console.log("Imagen Derecha actualizada y datos guardados");
+		return;
 	},
 	LinksEnProd: async () => {
 		// return;
@@ -121,8 +138,8 @@ module.exports = {
 
 		// Si la información ya está actualizada, termina
 		if (info.fechaLocal == fechaLocal) {
-			titulosImgDer = {};
-			for (let fecha of fechas) titulosImgDer[fecha] = info.titulosImgDer[fecha];
+			TitulosImgDer = {};
+			for (let fecha of fechas) TitulosImgDer[fecha] = info.TitulosImgDer[fecha];
 			return;
 		}
 
