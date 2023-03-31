@@ -51,7 +51,7 @@ module.exports = {
 		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
 
 		// Feedback del proceso
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Fecha y Hora' actualizadas y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -82,7 +82,7 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Imagen Derecha' actualizada y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -105,12 +105,12 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Links en Producto' actualizados y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
 
 		// Fin
 		return;
 	},
-	ProdEnRCLV: async function () {
+	ProdsEnRCLV: async function () {
 		// Obtiene las entidadesRCLV
 		const entidadesRCLV = variables.entidadesRCLV;
 
@@ -128,7 +128,7 @@ module.exports = {
 
 		// Feedback del proceso
 		const [FechaUTC, HoraUTC] = fechaHora();
-		console.log(FechaUTC + ",", HoraUTC + "hs.:", "'Prods en RCLV' actualizados y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
 
 		// Fin
 		return;
@@ -137,53 +137,17 @@ module.exports = {
 
 	// Conjunto de tareas diarias
 	tareasDiarias: async function () {
-		// rutinas.FechaHoraUTC()
-
-		// Variables
+		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
-		const ahora = new Date();
-		const fechaLocal_n = new Date(ahora.getTime() - (ahora.getTimezoneOffset() / 60) * unaHora);
-		const fechaLocal = diasSemana[fechaLocal_n.getUTCDay()] + ". " + comp.fechaDiaMes(fechaLocal_n);
-		const milisegs = fechaLocal_n.getTime();
-		const fechas = [
-			diaMesAno(milisegs - unDia),
-			diaMesAno(milisegs),
-			diaMesAno(milisegs + unDia),
-			diaMesAno(milisegs + unDia * 2),
-		];
+		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
+		// Obtiene la fecha y la hora procesados
+		const [FechaUTC, HoraUTC] = fechaHora();
 
-		// Si la información ya está actualizada, termina
-		if (info.fechaLocal == fechaLocal) {
-			TitulosImgDer = {};
-			for (let fecha of fechas) TitulosImgDer[fecha] = info.TitulosImgDer[fecha];
-			return;
-		}
-
-		// ACCIONES DIARIAS --------------------------------------------------
-
-		// Actualiza la imagen derecha
-		info = await this.actualizaImagenDerecha({info, fechas});
-
-		// Actualiza 'linksEnProd'
-		this.actualizaLinksEnProd();
-
-		// Actualiza 'prodEnRCLV'
-		this.actualizaProdEnRCLV();
-
-		// Tareas semanales
-		const comienzoAno = new Date(fechaLocal_n.getUTCFullYear(), 0, 1).getTime();
-		const semana = parseInt((fechaLocal_n.getTime() - comienzoAno) / unDia / 7);
-		if (info.semana != semana) {
-			await this.tareasSemanales();
-			info.semana = semana;
-		}
-
-		// Actualiza los valores del archivo
-		info.fechaLocal = fechaLocal;
-		info.horaLocal = fechaLocal_n.getUTCHours() + ":" + ("0" + fechaLocal_n.getUTCMinutes()).slice(-2);
-		await fs.writeFile(rutaNombre, JSON.stringify(info), function writeJSON(err) {
-			if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
-		});
+		// Acciones si la 'FechaUTC' es distinta
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
+		else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
 
 		// Fin
 		return;
