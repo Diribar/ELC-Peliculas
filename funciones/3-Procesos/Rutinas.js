@@ -14,6 +14,7 @@ module.exports = {
 		// Rutinas programadas
 		const info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
+
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
