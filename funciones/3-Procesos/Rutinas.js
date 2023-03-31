@@ -230,15 +230,23 @@ module.exports = {
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		const rutinas = Object.keys(info.HorariosUTC);
+		const rutinasDiarias = Object.keys(info.HorariosUTC);
 
 		// Obtiene la fecha procesada
 		const {FechaUTC, HoraUTC} = fechaHora();
 
-		// Si la 'FechaUTC' es distinta, actualiza todas las rutinas
-		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
+		// Acciones si la 'FechaUTC' es distinta
+		if (info.FechaUTC != FechaUTC) {
+			// Actualiza todas las rutinas horarias
+			const rutinasHorarias = info.RutinasHorarias;
+			for (let rutina of rutinasHorarias) await this[rutina]();
+			// Actualiza todas las rutinas diarias
+			for (let rutina of rutinasDiarias) await this[rutina]();
+		}
 		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
-		else for (let rutina of rutinas) if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
+		else
+			for (let rutina of rutinasDiarias)
+				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
 
 		// Fin
 		return;
