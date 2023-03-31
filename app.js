@@ -8,6 +8,7 @@ global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
+global.TitulosImgDer = {};
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Para usar el archivo '.env' --> se debe colocar al principio
@@ -134,24 +135,26 @@ app.set("views", [
 	delete global.imagenes_movil;
 	delete global.imagenes_fijo;
 
-	// Procesos que dependen de la variable 'global'
-	// Ejecuta las tareas de rutina
-	const rutinas = require("./funciones/3-Procesos/Rutinas");
-	global.TitulosImgDer = {};
-	await rutinas.tareasDiarias();
-
+	// Procesos que dependen de la variable 'global'	
 	// Rutinas programadas
-	const info = rutinas.lecturaRutinasJSON();
-	const horarios = {
-		FechaHoraUTC: info.HorariosUTC && info.HorariosUTC.FechaHoraUTC ? obtieneLaHora(info.HorariosUTC.FechaHoraUTC) : 0,
-		ImagenDerecha: info.HorariosUTC && info.HorariosUTC.ImagenDerecha ? obtieneLaHora(info.HorariosUTC.ImagenDerecha) : 6,
-		LinksEnProd: info.HorariosUTC && info.HorariosUTC.LinksEnProd ? obtieneLaHora(info.HorariosUTC.LinksEnProd) : 9,
-		ProdsEnRCLV: info.HorariosUTC && info.HorariosUTC.ProdsEnRCLV ? obtieneLaHora(info.HorariosUTC.ProdsEnRCLV) : 10,
-	};
+	const rutinas = require("./funciones/3-Procesos/Rutinas");
 	const cron = require("node-cron");
-	for (let actividad in horarios)
-		cron.schedule("0 " + horarios[actividad] + " * * *", async () => await rutinas[actividad](), {timezone: "Etc/Greenwich"});
-	
+	const info = rutinas.lecturaRutinasJSON();
+	// Rutinas diarias
+	await rutinas.rutinasDiarias();
+	const rutinasDiarias = Object.keys(info.HorariosUTC);
+	for (let rutina of rutinasDiarias) {
+		let hora = obtieneLaHora(info.HorariosUTC[rutina]);
+		cron.schedule("0 " + hora + " * * *", async () => await rutinas[rutina](), {timezone: "Etc/Greenwich"});
+	}
+	// Rutinas semanales
+	await rutinas.rutinasSemanales();
+	const rutinasSemanales = Object.keys(info.DiasUTC);
+	for (let rutina of rutinasSemanales) {
+		let diaSem = obtieneLaHora(info.DiasUTC[rutina]);
+		cron.schedule("1 " + diaSem + " * * *", async () => await rutinas[rutina](), {timezone: "Etc/Greenwich"});
+	}
+
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
 	const loginConCookie = require("./middlewares/varios/loginConCookie");

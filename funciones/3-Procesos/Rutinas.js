@@ -37,18 +37,21 @@ module.exports = {
 	// Actualizaciones diarias
 	FechaHoraUTC: function () {
 		// Obtiene la fecha y la hora procesados
-		const [FechaUTC, HoraUTC] = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHora();
+
+		// Obtiene las rutinas del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
 
 		// Establece el status de los procesos de rutina
-		const rutinas = {
-			FechaHoraUTC: "SI",
-			ImagenDerecha: "NO",
-			LinksEnProd: "NO",
-			ProdsEnRCLV: "NO",
-		};
+		const statusRutinas = {};
+		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
+		statusRutinas.FechaHoraUTC = "SI";
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...rutinas});
+		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...statusRutinas});
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
@@ -81,7 +84,7 @@ module.exports = {
 		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Feedback del proceso
-		const [FechaUTC, HoraUTC] = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHora();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
 
 		// Fin
@@ -104,7 +107,7 @@ module.exports = {
 		this.actualizaRutinasJSON({LinksEnProd: "SI"});
 
 		// Feedback del proceso
-		const [FechaUTC, HoraUTC] = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHora();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
 
 		// Fin
@@ -127,7 +130,7 @@ module.exports = {
 		this.actualizaRutinasJSON({ProdsEnRCLV: "SI"});
 
 		// Feedback del proceso
-		const [FechaUTC, HoraUTC] = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHora();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
 
 		// Fin
@@ -135,27 +138,36 @@ module.exports = {
 	},
 	momentoDelAno: () => {},
 
-	// Conjunto de tareas diarias
-	tareasDiarias: async function () {
-		// Obtiene la información del archivo JSON
+	// Actualizaciones semanales
+	SemanaUTC: function () {
+		// Obtiene la fecha y la hora procesados
+		const {FechaUTC, HoraUTC} = fechaHora();
+		const semana = semanaUTC();
+
+		// Obtiene las rutinas del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
-		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		const rutinas = Object.keys(info.HorariosUTC);
-		// Obtiene la fecha y la hora procesados
-		const [FechaUTC, HoraUTC] = fechaHora();
+		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
+		const rutinas = Object.keys(info.DiasUTC);
 
-		// Acciones si la 'FechaUTC' es distinta
-		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
-		else for (let rutina of rutinas) if (info[rutina] != "SI") await this[rutina]();
+		// Establece el status de los procesos de rutina
+		const statusRutinas = {};
+		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
+		statusRutinas.SemanaUTC = "SI";
+
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({semanaUTC: semana, FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, ...statusRutinas});
+
+		// Feedback del proceso
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Semana UTC' actualizada y datos guardados en JSON");
 
 		// Fin
 		return;
 	},
-	// Actualizaciones semanales
-	tareasSemanales: async () => {
-		// Obtiene la condición
+	LinksVencidos: async function () {
+		// Obtiene la condición de cuáles son los links vencidos
 		const condiciones = await BD_especificas.linksVencidos();
+
 		// Prepara la información
 		const objeto = {
 			status_registro_id: creado_aprob_id,
@@ -164,6 +176,52 @@ module.exports = {
 		};
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCampos("links", condiciones, objeto);
+
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({LinksVencidos: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+
+	// Conjunto de tareas
+	rutinasDiarias: async function () {
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinas = Object.keys(info.HorariosUTC);
+
+		// Obtiene la fecha procesada
+		const {FechaUTC, HoraUTC} = fechaHora();
+
+		// Si la 'FechaUTC' es distinta, actualiza todas las rutinas
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
+		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
+		else for (let rutina of rutinas) if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
+
+		// Fin
+		return;
+	},
+	rutinasSemanales: async function () {
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
+		const rutinas = Object.keys(info.DiasUTC);
+
+		// Obtiene la semana y el día de la semana
+		const SemanaUTC = semanaUTC();
+		const diaSem = new Date().getDay();
+
+		// Si la 'SemanaUTC' es distinta, actualiza todas las rutinas
+		if (info.semanaUTC != SemanaUTC) for (let rutina of rutinas) await this[rutina]();
+		// Si la 'SemanaUTC' está bien, actualiza las rutinas que correspondan en función del día de la semana
+		else for (let rutina of rutinas) if (info[rutina] != "SI" && diaSem >= info.DiasUTC[rutina]) await this[rutina]();
 
 		// Fin
 		return;
@@ -246,5 +304,24 @@ let fechaHora = () => {
 	const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
 
 	// Fin
-	return [FechaUTC, HoraUTC];
+	return {FechaUTC, HoraUTC};
+};
+let semanaUTC = () => {
+	// Obtiene el primer día del año
+	const fecha = new Date();
+	const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
+
+	// Obtiene el dia de la semana (lun: 1 a dom: 7)
+	let diaSem = new Date(comienzoAno).getDay();
+	if (diaSem < 1) diaSem = diaSem + 7;
+
+	// Obtiene el primer domingo del año
+	const adicionarDias = 7 - diaSem;
+	const primerDomingo = comienzoAno + adicionarDias * unDia;
+
+	// Obtiene la semana del año
+	const semana = parseInt((fecha.getTime() - primerDomingo) / unDia / 7);
+
+	// Fin
+	return semana;
 };
