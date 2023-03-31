@@ -135,25 +135,10 @@ app.set("views", [
 	delete global.imagenes_movil;
 	delete global.imagenes_fijo;
 
-	// Procesos que dependen de la variable 'global'	
-	// Rutinas programadas
+	// Procesos que dependen de la variable 'global'
+	// Rutinas
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
-	const cron = require("node-cron");
-	const info = rutinas.lecturaRutinasJSON();
-	// Rutinas diarias
-	await rutinas.rutinasDiarias();
-	const rutinasDiarias = Object.keys(info.HorariosUTC);
-	for (let rutina of rutinasDiarias) {
-		let hora = obtieneLaHora(info.HorariosUTC[rutina]);
-		cron.schedule("0 " + hora + " * * *", async () => await rutinas[rutina](), {timezone: "Etc/Greenwich"});
-	}
-	// Rutinas semanales
-	await rutinas.rutinasSemanales();
-	const rutinasSemanales = Object.keys(info.DiasUTC);
-	for (let rutina of rutinasSemanales) {
-		let diaSem = obtieneLaHora(info.DiasUTC[rutina]);
-		cron.schedule("1 " + diaSem + " * * *", async () => await rutinas[rutina](), {timezone: "Etc/Greenwich"});
-	}
+	await rutinas.coordinacGeneral();
 
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
@@ -199,17 +184,3 @@ app.set("views", [
 	const urlDescon = require("./middlewares/urls/urlDescon");
 	app.use(urlDescon);
 })();
-
-// Fórmulas
-let obtieneLaHora = (dato) => {
-	// Obtiene la ubicación de los dos puntos
-	const ubicDosPuntos = dato.indexOf(":");
-	if (ubicDosPuntos < 1) return 0;
-
-	// Obtiene la hora
-	let hora = dato.slice(0, ubicDosPuntos);
-	hora = parseInt(hora);
-
-	// Fin
-	return hora;
-};
