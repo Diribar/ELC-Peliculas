@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
-		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple"),
+		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple .input"),
 
 		// Filtro personalizado
 		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
 		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
 		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
-		epocaSelect: document.querySelector("#filtros #campos #epoca select"),
+		epoca_idSelect: document.querySelector("#filtros #campos #epoca_id select"),
 		apMarSector: document.querySelector("#filtros #campos #apMar"),
 		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
 		canonsSector: document.querySelector("#filtros #campos #canons"),
@@ -144,24 +144,26 @@ window.addEventListener("load", async () => {
 			// 1. Actualiza el valor de 'ocurrio'
 			if (varias.ocurrio == "-" && DOM.ocurrioSelect.value) varias.ocurrio = DOM.ocurrioSelect.value;
 			// 2. Muestra/Oculta los sectores dependientes
-			for (let sector of DOM.ocurrioSISectores)
-				varias.ocurrio == "SI" ? sector.classList.remove("ocultar") : sector.classList.add("ocultar");
+			for (let ocurrioSISector of DOM.ocurrioSISectores)
+				varias.ocurrio != "-" && varias.ocurrio != "NO"
+					? ocurrioSISector.classList.remove("ocurrioSI")
+					: ocurrioSISector.classList.add("ocurrioSI");
 			// 3. Asigna el valor para 'ocurrio'
-			if (varias.ocurrio == "SI" || varias.ocurrio == "NO") elegibles.ocurrio = varias.ocurrio;
+			if (varias.ocurrio != "-") elegibles.ocurrio = varias.ocurrio;
 
 			this.impactosEnDeEpoca();
 
 			// Fin
 			return;
 		},
-		// Impactos en/de epoca
+		// Impactos en/de epoca_id
 		impactosEnDeEpoca: function () {
-			if (varias.ocurrio == "SI") {
-				// IMPACTOS EN - Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
+			if (varias.ocurrio != "-" && varias.ocurrio != "NO") {
+				// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 				// IMPACTOS DE
-				varias.epoca = DOM.epocaSelect.value ? DOM.epocaSelect.value : "";
-				if (varias.epoca) elegibles.epoca_id = varias.epoca;
+				varias.epoca_id = DOM.epoca_idSelect.value ? DOM.epoca_idSelect.value : "";
+				if (varias.epoca_id) elegibles.epoca_id = varias.epoca_id;
 			}
 
 			this.impactosEnDeApMar();
@@ -171,11 +173,11 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de apMar
 		impactosEnDeApMar: function () {
-			if (varias.ocurrio == "SI") {
+			if (varias.ocurrio != "-" && varias.ocurrio != "NO") {
 				// IMPACTOS EN
-				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-				// Sólo se muestra el sector si CFC='SI' y epoca='pst'
-				if (varias.cfc == "SI" && varias.epoca == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+				// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+				// Sólo se muestra el sector si CFC='SI' y epoca_id='pst'
+				if (varias.cfc == "CFC" && varias.epoca_id == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
 				else DOM.apMarSector.classList.add("ocultarApMar");
 
 				// IMPACTOS DE
@@ -189,20 +191,18 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de canons y rolesIglesia
 		impactosEnDeCanonsMasRolesIglesia: function () {
-			if (varias.ocurrio == "SI") {
-				// IMPACTOS EN
-				// Sólo se muestra el sector si ocurrió='SI' - resuelto en impactosEnDeOcurrio
-				// Sólo se muestra el sector si notNull='personajes' y CFC='SI'
-				const SI = elegibles.notNull == "personajes" && varias.cfc == "SI";
-				SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
-				SI
-					? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
-					: DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+			// Sólo se muestra el sector si notNull='personajes' y CFC='SI'
+			const SI = elegibles.ocurrio == "pers" && varias.cfc == "CFC";
+			SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
+			SI
+				? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
+				: DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
 
-				// IMPACTOS DE
-				if (DOM.canonsSelect.value) elegibles.canons_id = DOM.canonsSelect.value;
-				if (DOM.rolesIglesiaSelect.value) elegibles.roles_iglesia_id = DOM.rolesIglesiaSelect.value;
-			}
+			// IMPACTOS DE
+			if (DOM.canonsSelect.value) elegibles.canons_id = DOM.canonsSelect.value;
+			if (DOM.rolesIglesiaSelect.value) elegibles.roles_iglesia_id = DOM.rolesIglesiaSelect.value;
 
 			this.impactosDeDemasElegibles();
 
@@ -318,7 +318,7 @@ window.addEventListener("load", async () => {
 	let zonaDeProds = {
 		obtieneLosProductos: async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
-			if (varias.comencemos) return
+			if (varias.comencemos) return;
 
 			// Obtiene los productos
 			console.log("Busca los productos");
@@ -344,7 +344,7 @@ window.addEventListener("load", async () => {
 		// Impacto en Encabezado y Filtros
 		encabFiltros.impactosDeLayout();
 		if (e.target.name == "palabrasClave")
-			e.target.value ? palabrasClave.classList.add("verde") : palabrasClave.classList.remove("verde");
+			e.target.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
 
 		// Botones en Filtros Personalizados
 		if (!clickEnFiltrosPers) {
@@ -368,6 +368,27 @@ window.addEventListener("load", async () => {
 		varias.comencemos = false;
 
 		// Siguientes pasos
+		await zonaDeProds.obtieneLosProductos();
+
+		// Fin
+		return;
+	});
+	// Reinicio
+	reinicio.addEventListener("click", async () => {
+		// Variables
+		elegibles = {};
+
+		// Novedades en el Filtro Personalizado
+		await filtrosPers.impactosDeFiltroPers();
+
+		// Impacto en Encabezado y Filtros, y Palabras Clave
+		encabFiltros.impactosDeLayout();
+		DOM.palabrasClave.value ? DOM.palabrasClave.classList.add("verde") : DOM.palabrasClave.classList.remove("verde");
+
+		// Limpia líneas consecutivas
+		apoyo.limpiaLineasConsecutivas();
+
+		// Obtiene los productos
 		await zonaDeProds.obtieneLosProductos();
 
 		// Fin

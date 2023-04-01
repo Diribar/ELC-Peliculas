@@ -19,7 +19,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
 		rutinasHorarias.forEach((rutina, i) => {
-			let horario = 30 + i;
+			let horario = 1 + i;
 			cron.schedule(horario + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		});
 

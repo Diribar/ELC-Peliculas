@@ -210,16 +210,14 @@ window.addEventListener("load", async () => {
 			},
 			hechos: async () => {
 				// Obtiene la opción elegida
-				let epoca = opcionElegida(v.epocas);
-				// Si 'jss' --> 'cnt'
-				if (epoca.name == "jss") v.cnt.checked = true;
+				let epoca_id = opcionElegida(v.epocas_id);
 
 				// Obtiene el año
 				let ano = FN_ano(v.ano.value);
 
 				// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 				// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
-				if (epoca.name == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
+				if (epoca_id.value == "pst" && ano > 1100) v.sectorApMar.classList.remove("invisible");
 				else v.sectorApMar.classList.add("invisible");
 
 				// Fin
@@ -341,7 +339,12 @@ window.addEventListener("load", async () => {
 						let epoca_id = opcionElegida(v.epocas_id);
 						params += "&epoca_id=" + epoca_id.value;
 						let ano = FN_ano(v.ano.value);
-						if (epoca_id.value == "pst") params += "&ano=" + ano;
+						if (epoca_id.value == "pst") {
+							// Agrega el año
+							params += "&ano=" + ano;
+							// Agrega lo referido a la aparición mariana
+							if (ano > 1100) params += "&ap_mar_id=" + opcionElegida(v.ap_mar_id).value;
+						}
 					}
 				}
 
@@ -361,13 +364,15 @@ window.addEventListener("load", async () => {
 				params += "&solo_cfc=" + solo_cfc.value;
 
 				if (solo_cfc.value == 1) {
-					// Obtiene los datos de época y año
-					let epoca = opcionElegida(v.epocas);
-					params += "&epoca=" + epoca.name;
-
+					// Agrega los datos de epoca_id y año
+					let epoca_id = opcionElegida(v.epocas_id);
+					params += "&epoca_id=" + epoca_id.value;
 					let ano = FN_ano(v.ano.value);
-					if (epoca.name == "pst") {
+
+					if (epoca_id.value == "pst") {
+						// Agrega el año
 						params += "&ano=" + ano;
+						// Agrega lo referido a la aparición mariana
 						if (ano > 1100) params += "&ama=" + opcionElegida(v.ama).value;
 					}
 				}
@@ -417,7 +422,7 @@ window.addEventListener("load", async () => {
 			if (v.personajes && opcionElegida(v.sexos_id).value) await this.sexo();
 
 			// 5. Valida la época
-			if ((v.personajes && opcionElegida(v.epocas_id).value) || (v.hechos && opcionElegida(v.epocas).name)) {
+			if (opcionElegida(v.epocas_id).value) {
 				await impactos.epoca[v.entidad]();
 				await this.epoca();
 			}

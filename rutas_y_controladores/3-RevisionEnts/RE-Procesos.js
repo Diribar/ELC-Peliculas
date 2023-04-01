@@ -68,7 +68,7 @@ module.exports = {
 				ED = productos.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos");
 				ED.push(...productos.filter((n) => n.status_registro_id == aprobado_id));
 				// 6.F. Primero los productos con menor status
-				if (ED.length) ED.sort((a, b) => a.status_registro_id - b.status_registro_id);
+				if (ED.length) ED.sort((a, b) => b.fechaRef - a.fechaRef);
 			}
 
 			// Fin
@@ -524,8 +524,10 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
-			console.log(527, datos.duracion, motivo);
-			if (datos.duracion) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+			if (datos.duracion) {
+				console.log({entidad, original, edicion, revID, campo, aprob, motivo_id, datos, motivo, familia});
+				comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+			}
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
