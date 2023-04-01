@@ -168,10 +168,34 @@ module.exports = {
 		// Fin
 		return;
 	},
-	momentoDelAno: () => {
-		// Obtiene el día de referencia
-		// Compara el 'día_del_ano_id' de los 3 RCLVs, sumandole 366 al que dé negativo
-		// Actualiza el registro de producto con el menor de los 3
+	MomentoDelAno: async function () {
+		// Actualiza el dia actual
+		diaActualID();
+
+		// Proceso para las 3 entidades
+		const entidadesProd = variables.entidadesProd;
+		const entidadesRCLV = variables.entidadesRCLV;
+		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
+		for (let entidad of entidadesProd) {
+			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
+			let productos = await BD_genericas.obtieneTodosPorCamposConInclude(
+				entidad,
+				{status_registro_id: aprobado_id},
+				asociacionesRCLV
+			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
+			// Actualiza el campo 'momento' - Envía a la rutina CRUD
+			for (let producto of productos) procsCRUD.momentoDelAno({entidad, producto});
+		}
+
+		// Actualiza el archivo JSON
+		this.actualizaRutinasJSON({MomentoDelAno: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Momento del Año' actualizado y datos guardados en JSON");
+
+		// Fin
+		return;
 	},
 
 	// Actualizaciones semanales
@@ -226,6 +250,7 @@ module.exports = {
 
 	// Conjunto de tareas
 	rutinasDiarias: async function () {
+		let horarioInicial = new Date().getTime();
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -236,17 +261,27 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = fechaHora();
 
 		// Acciones si la 'FechaUTC' es distinta
+
 		if (info.FechaUTC != FechaUTC) {
 			// Actualiza todas las rutinas horarias
 			const rutinasHorarias = info.RutinasHorarias;
-			for (let rutina of rutinasHorarias) await this[rutina]();
+			for (let rutina of rutinasHorarias) {
+				await this[rutina]();
+				horarioInicial = medicionDelTiempo(horarioInicial);
+			}
 			// Actualiza todas las rutinas diarias
-			for (let rutina of rutinasDiarias) await this[rutina]();
+			for (let rutina of rutinasDiarias) {
+				await this[rutina]();
+				horarioInicial = medicionDelTiempo(horarioInicial);
+			}
 		}
 		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
 		else
 			for (let rutina of rutinasDiarias)
-				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
+				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) {
+					await this[rutina]();
+					horarioInicial = medicionDelTiempo(horarioInicial);
+				}
 
 		// Fin
 		return;
@@ -380,4 +415,24 @@ let obtieneLaHora = (dato) => {
 
 	// Fin
 	return hora;
+};
+let diaActualID = () => {
+	// Obtiene el mes y dia
+	const milisegs = new Date().getTime() - 12 * unaHora;
+	const fecha = new Date(milisegs);
+	const dia = fecha.getDate();
+	const mes = fecha.getMonth() + 1;
+
+	// Obtiene el dia_actual_id
+	dia_actual_id = dias_del_ano.find((n) => n.dia == dia && n.mes_id == mes).id;
+
+	// Fin
+	return;
+};
+let medicionDelTiempo = (horarioInicial) => {
+	const horarioFinal = new Date().getTime();
+	console.log(horarioFinal - horarioInicial);
+
+	// Fin
+	return horarioFinal;
 };

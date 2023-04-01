@@ -6,8 +6,9 @@ module.exports = (sequelize, dt) => {
 		nombre_archivo: {type: dt.STRING(30)},
 		cuando: {type: dt.STRING(45)},
 
-		personajes: {type: dt.BOOLEAN},
-		hechos: {type: dt.BOOLEAN},
+		personaje_id: {type: dt.INTEGER},
+		hecho_id: {type: dt.INTEGER},
+		tema_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "aux_imagenes_movil",
