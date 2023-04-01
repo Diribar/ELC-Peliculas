@@ -66,6 +66,74 @@ module.exports = {
 		return;
 	},
 
+	// Actualizaciones horarias
+	LinksEnProd: async function () {
+		// return;
+		const entidadesProd = variables.entidadesProd;
+
+		// Rutina por entidad
+		for (let entidad of entidadesProd) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función linksEnProd
+			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
+		}
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	ProdsEnRCLV: async function () {
+		// Obtiene las entidadesRCLV
+		const entidadesRCLV = variables.entidadesRCLV;
+
+		// Rutina por entidad
+		for (let entidad of entidadesRCLV) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función prodEnRCLV
+			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
+		}
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	MomentoDelAno: async function () {
+		// Actualiza el dia actual
+		diaActualID();
+
+		// Proceso para las 3 entidades
+		const entidadesProd = variables.entidadesProd;
+		const entidadesRCLV = variables.entidadesRCLV;
+		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
+		for (let entidad of entidadesProd) {
+			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
+			let productos = await BD_genericas.obtieneTodosPorCamposConInclude(
+				entidad,
+				{status_registro_id: aprobado_id},
+				asociacionesRCLV
+			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
+			// Actualiza el campo 'momento' - Envía a la rutina CRUD
+			for (let producto of productos) procsCRUD.momentoDelAno({entidad, producto});
+		}
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHora();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Momento del Año' actualizado y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+
 	// Actualizaciones diarias
 	FechaHoraUTC: function () {
 		// Obtiene la fecha y la hora procesados
@@ -118,81 +186,6 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHora();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	LinksEnProd: async function () {
-		// return;
-		const entidadesProd = variables.entidadesProd;
-
-		// Rutina por entidad
-		for (let entidad of entidadesProd) {
-			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
-
-			// Rutina por ID: ejecuta la función linksEnProd
-			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
-		}
-
-		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({LinksEnProd: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	ProdsEnRCLV: async function () {
-		// Obtiene las entidadesRCLV
-		const entidadesRCLV = variables.entidadesRCLV;
-
-		// Rutina por entidad
-		for (let entidad of entidadesRCLV) {
-			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
-
-			// Rutina por ID: ejecuta la función prodEnRCLV
-			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
-		}
-
-		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({ProdsEnRCLV: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	MomentoDelAno: async function () {
-		// Actualiza el dia actual
-		diaActualID();
-
-		// Proceso para las 3 entidades
-		const entidadesProd = variables.entidadesProd;
-		const entidadesRCLV = variables.entidadesRCLV;
-		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
-		for (let entidad of entidadesProd) {
-			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
-			let productos = await BD_genericas.obtieneTodosPorCamposConInclude(
-				entidad,
-				{status_registro_id: aprobado_id},
-				asociacionesRCLV
-			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
-			// Actualiza el campo 'momento' - Envía a la rutina CRUD
-			for (let producto of productos) procsCRUD.momentoDelAno({entidad, producto});
-		}
-
-		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({MomentoDelAno: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Momento del Año' actualizado y datos guardados en JSON");
 
 		// Fin
 		return;
