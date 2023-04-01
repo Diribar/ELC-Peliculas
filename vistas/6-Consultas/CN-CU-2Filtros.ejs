@@ -27,7 +27,7 @@
 			<!-- Ocurrió -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.ocurrio, class: "ocultar"}) %>
 			<!-- Epoca -->
-			<%- include('CN-2FL-3Selects', {tema: filtros.epoca, class: "ocurrioSI"}) %>
+			<%- include('CN-2FL-3Selects', {tema: filtros.epoca_id, class: "ocurrioSI"}) %>
 			<!-- ApMar -->
 			<%- include('CN-2FL-3Selects', {tema: filtros.apMar, class: "ocurrioSI ocultarApMar"}) %>
 			<!-- Proceso de Canonización -->
@@ -49,8 +49,8 @@
 			<%- include('CN-2FL-3Selects', {tema: filtros.musical, class: "demasElegibles"}) %>
 			<hr>
 			<!-- Búsqueda -->
-			<div id="palabrasClave" class="filtro demasElegibles"> 
-				<input type="text" name="palabrasClave" placeholder="Buscar por palabras clave" class="input elegibleSimple">
+			<div id="palabrasClave" class="filtro demasElegibles elegibleSimple"> 
+				<input type="text" name="palabrasClave" placeholder="Buscar por palabras clave" class="input">
 				<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
 			</div>
 		</nav>

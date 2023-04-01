@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		not_null_in: {type: dt.STRING(20)},
 		not_null_out: {type: dt.STRING(20)},
 		ordenam: {type: dt.STRING(20)},
-		ocurrio: {type: dt.STRING(2)},
+		ocurrio: {type: dt.STRING(5)},
 	};
 	const config = {
 		tableName: "cn_ordenes",

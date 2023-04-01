@@ -27,19 +27,21 @@ module.exports = {
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
-				{id: "SI", nombre: "Fe Católica"},
-				{id: "NO", nombre: "Sin Fe Católica"},
+				{id: "CFC", nombre: "Fe Católica"},
+				{id: "VPC", nombre: "Sin Fe Católica"},
 			],
 		},
 		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
 			ocurrio: "-",
 			opciones: [
-				{id: "SI", nombre: "Hechos Reales"},
+				{id: "pers", nombre: "Con Personaje Histórico"},
+				{id: "hecho", nombre: "Con Hecho Histórico"},
+				{id: "SI", nombre: "Con Personaje/Hecho"},
 				{id: "NO", nombre: "Ficción"},
 			],
 		},
-		epoca: {
+		epoca_id: {
 			titulo: "Epoca",
 			ocurrio: "SI",
 			opciones: [
