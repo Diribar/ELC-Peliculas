@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
@@ -8,6 +9,37 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	// Coordinación general
+	coordinacGeneral: async function () {
+		// Rutinas programadas
+		const info = this.lecturaRutinasJSON();
+		if (!Object.keys(info).length) return;
+
+		// Rutinas horarias
+		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
+		const rutinasHorarias = info.RutinasHorarias;
+		rutinasHorarias.forEach((rutina, i) => {
+			let horario = 30 + i;
+			cron.schedule(horario + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+		});
+
+		// Rutinas diarias
+		await this.rutinasDiarias();
+		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		const rutinasDiarias = Object.keys(info.HorariosUTC);
+		for (let rutina of rutinasDiarias) {
+			let hora = obtieneLaHora(info.HorariosUTC[rutina]);
+			cron.schedule("0 " + hora + " * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+		}
+		// Rutinas semanales
+		await this.rutinasSemanales();
+		if (!info.rutinasSemanales || !Object.keys(info.rutinasSemanales).length) return;
+		const rutinasSemanales = Object.keys(info.DiasUTC);
+		for (let rutina of rutinasSemanales) {
+			let diaSem = obtieneLaHora(info.DiasUTC[rutina]);
+			cron.schedule("1 " + diaSem + " * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+		}
+	},
 	// Lectura del archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
@@ -136,7 +168,11 @@ module.exports = {
 		// Fin
 		return;
 	},
-	momentoDelAno: () => {},
+	momentoDelAno: () => {
+		// Obtiene el día de referencia
+		// Compara el 'día_del_ano_id' de los 3 RCLVs, sumandole 366 al que dé negativo
+		// Actualiza el registro de producto con el menor de los 3
+	},
 
 	// Actualizaciones semanales
 	SemanaUTC: function () {
@@ -324,4 +360,16 @@ let semanaUTC = () => {
 
 	// Fin
 	return semana;
+};
+let obtieneLaHora = (dato) => {
+	// Obtiene la ubicación de los dos puntos
+	const ubicDosPuntos = dato.indexOf(":");
+	if (ubicDosPuntos < 1) return 0;
+
+	// Obtiene la hora
+	let hora = dato.slice(0, ubicDosPuntos);
+	hora = parseInt(hora);
+
+	// Fin
+	return hora;
 };
