@@ -21,8 +21,8 @@ window.addEventListener("load", async () => {
 		layoutSelect: document.querySelector("#encabezado select[name='layout']"),
 		ordenSelect: document.querySelector("#encabezado select[name='orden']"),
 		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden'] option:not(option[value=''])"),
-		ordenamSector: document.querySelector("#encabezado #ascDes"),
-		ordenamInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		ascDesSector: document.querySelector("#encabezado #ascDes"),
+		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 
 		// Filtros
 		nav: document.querySelector("#filtros #campos nav"),
@@ -45,6 +45,7 @@ window.addEventListener("load", async () => {
 		guardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
 		opcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		productos: "/consultas/api/obtiene-los-productos/?datos=",
+		rclvs: "/consultas/api/obtiene-los-rclvs/?datos=",
 	};
 	let elegibles = {};
 	let varias = {
@@ -60,7 +61,7 @@ window.addEventListener("load", async () => {
 			// Asigna valor a las variables
 			const SI = !!DOM.layoutSelect.value;
 			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layoutSelect.value) : null;
-			elegibles.notNull = SI ? varias.layout.not_null_out : null;
+			elegibles.entidad = SI ? varias.layout.entidad : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
 			// if (SI) elegibles.layout_id = DOM.layoutSelect.value;
 
@@ -75,38 +76,38 @@ window.addEventListener("load", async () => {
 			// IMPACTOS EN - Oculta/Muestra las opciones que corresponden
 			const checked = document.querySelector("#encabezado select[name='orden'] option:checked");
 			varias.opcionesOrdenBD.forEach((opcion, i) => {
-				if (!varias.layout || (opcion.not_null_in && opcion.not_null_in != varias.layout.not_null_out)) {
+				// Acciones si no existe 'layout' o la opción tiene una entidad distinta a la de layout
+				if (!varias.layout || opcion.entidad != varias.layout.entidad) {
+					// 1. Oculta la opción
 					DOM.opcionesOrdenVista[i].classList.add("ocultar");
+					// 2. La 'des-selecciona'
 					if (DOM.opcionesOrdenVista[i] == checked) DOM.ordenSelect.value = "";
-				} else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
+				}
+				// En caso contrario, muestra la opción
+				else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
 			});
 
 			// IMPACTOS DE
-			if (DOM.ordenSelect.value) {
-				const orden = varias.opcionesOrdenBD.find((n) => n.id == DOM.ordenSelect.value);
-				if (elegibles.notNull == "-" && orden.not_null_out != "-") elegibles.notNull = orden.not_null_out;
-				if (varias.ocurrio == "-" && orden.ocurrio != "-") varias.ocurrio = orden.ocurrio;
-				elegibles.orden_id = DOM.ordenSelect.value;
-			}
+			if (DOM.ordenSelect.value) elegibles.orden_id = DOM.ordenSelect.value;
 
-			this.impactosEnDeOrdenam();
+			this.impactosEnDeAscDes();
 
 			// Fin
 			return;
 		},
-		impactosEnDeOrdenam: function () {
+		impactosEnDeAscDes: function () {
 			// Variables
 			const orden = DOM.ordenSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.ordenSelect.value) : null;
 
 			// IMPACTOS EN
-			const SI = !DOM.ordenSelect.value || orden.ordenam != "ascDes";
-			SI ? DOM.ordenamSector.classList.add("ocultar") : DOM.ordenamSector.classList.add("flexCol");
-			SI ? DOM.ordenamSector.classList.remove("flexCol") : DOM.ordenamSector.classList.remove("ocultar");
-			if (SI && DOM.ordenSelect.value) elegibles.ordenam = orden.ordenam;
-			if (!SI) for (let ordenam of DOM.ordenamInputs) if (ordenam.checked) elegibles.ordenam = ordenam.value;
+			const SI = !DOM.ordenSelect.value || orden.asc_des != "ascDes";
+			SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
+			SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
+			if (SI && DOM.ordenSelect.value) elegibles.asc_des = orden.asc_des;
+			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = ascDes.value;
 
 			// IMPACTOS DE - Sector 'OK'
-			elegibles.ordenam ? DOM.ordenamSector.classList.add("OK") : DOM.ordenamSector.classList.remove("OK");
+			elegibles.asc_des ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");
 
 			this.mostrarOcultar();
 			this.impactosDeCFC();
@@ -193,7 +194,7 @@ window.addEventListener("load", async () => {
 		impactosEnDeCanonsMasRolesIglesia: function () {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si notNull='personajes' y CFC='SI'
+			// Sólo se muestra el sector si entidad='personajes' y CFC='SI'
 			const SI = elegibles.ocurrio == "pers" && varias.cfc == "CFC";
 			SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
 			SI
@@ -230,10 +231,10 @@ window.addEventListener("load", async () => {
 			const opciones = await fetch(rutas.opcionesFiltroPers + filtro_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
-			for (let elegible of DOM.elegiblesSimple) elegible.value = opciones[elegible.name] ? opciones[elegible.name] : "";
+			for (let elegibleSimple of DOM.elegiblesSimple) elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
 
 			// Actualiza los elegibles 'AscDes'
-			for (let elegible of DOM.ordenamInputs) elegible.checked = opciones.ascDes && elegible.value == opciones.ascDes;
+			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && elegible.value == opciones.ascDes;
 
 			// Actualiza los botones
 			this.impactosEnBotonesPorFiltroPers();
@@ -282,8 +283,8 @@ window.addEventListener("load", async () => {
 		condicionesMinimas: () => {
 			const SI_layout = !!DOM.layoutSelect.value;
 			const SI_orden = !!DOM.ordenSelect.value;
-			const SI_ordenam = !!elegibles.ordenam;
-			const SI = SI_layout && SI_orden && SI_ordenam;
+			const SI_ascDes = !!elegibles.asc_des;
+			const SI = SI_layout && SI_orden && SI_ascDes;
 
 			// Comencemos
 			if (!SI) varias.comencemos = true;
@@ -322,7 +323,11 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los productos
 			console.log("Busca los productos");
-			let productos = await fetch(rutas.productos + JSON.stringify(elegibles));
+			if (elegibles.entidad == "producto") {
+				let productos = await fetch(rutas.productos + JSON.stringify(elegibles));
+			} else {
+				let rclvs = await fetch(rutas.rclvs + JSON.stringify(elegibles));
+			}
 
 			// Actualiza el contador
 			// Actualiza la información mostrada

@@ -1,13 +1,11 @@
 module.exports = (sequelize, dt) => {
 	const alias = "ordenes";
 	const columns = {
+		entidad: {type: dt.STRING(20)},
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
 		valor: {type: dt.STRING(20)},
-		not_null_in: {type: dt.STRING(20)},
-		not_null_out: {type: dt.STRING(20)},
-		ordenam: {type: dt.STRING(20)},
-		ocurrio: {type: dt.STRING(5)},
+		asc_des: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "cn_ordenes",
