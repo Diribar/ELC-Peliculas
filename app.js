@@ -1,5 +1,5 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
-// Variables de tiempo
+// Variables con valor útil
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
@@ -7,8 +7,10 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
+// Variables con valor irrelevante
 global.NO = null;
 global.TitulosImgDer = {};
+global.dia_actual_id = null;
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Para usar el archivo '.env' --> se debe colocar al principio

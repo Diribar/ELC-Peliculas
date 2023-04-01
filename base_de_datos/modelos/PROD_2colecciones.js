@@ -40,6 +40,8 @@ module.exports = (sequelize, dt) => {
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
+		momento: {type: dt.INTEGER},
+
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
 		alta_revisada_por_id: {type: dt.INTEGER},
