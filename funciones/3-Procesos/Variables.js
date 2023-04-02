@@ -66,8 +66,8 @@ module.exports = {
 			titulo: "Idioma Castellano",
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano"},
-				{id: "Subt", nombre: "Subtítulos en castellano"},
-				{id: "Cast", nombre: "En castellano (habl./subt.)"},
+				{id: "subt", nombre: "Subtítulos en castellano"},
+				{id: "cast", nombre: "En castellano (habl./subt.)"},
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},

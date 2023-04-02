@@ -133,8 +133,8 @@ module.exports = {
 			if (prod.castellano) {
 				const castellano = prod.castellano;
 				if (castellano == "SI") condicsProd.castellano = SI;
-				if (castellano == "Subt") condicsProd.subtitulos = SI;
-				if (castellano == "Cast") condicsProd[Op.or] = [{castellano: SI}, {subtitulos: SI}];
+				if (castellano == "subt") condicsProd.subtitulos = SI;
+				if (castellano == "cast") condicsProd[Op.or] = [{castellano: SI}, {subtitulos: SI}];
 				if (castellano == "NO") condicsProd[Op.and] = [{castellano: {[Op.ne]: SI}}, {subtitulos: {[Op.ne]: SI}}];
 			}
 			if (prod.tipos_actuacion) condicsProd.tipo_actuacion_id = prod.tipos_actuacion;
