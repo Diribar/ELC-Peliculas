@@ -53,10 +53,10 @@ module.exports = {
 		const orden = ordenes.find((n) => n.id == datos.orden_id).valor;
 		const ascDes = datos.asc_des;
 		filtros = procesos.API.filtrosPorFamilia(datos);
-		filtros = procesos.API.convFiltros(filtros);
+		// filtros = procesos.API.convFiltros(filtros);
 
 		// Fin
-		console.log("Productos:", filtro);
+		console.log("Productos:", filtros);
 		return res.json();
 	},
 	obtieneRCLVs: async (req, res) => {
