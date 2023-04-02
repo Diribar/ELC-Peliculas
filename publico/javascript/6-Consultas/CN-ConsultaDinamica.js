@@ -139,18 +139,18 @@ window.addEventListener("load", async () => {
 		// Impactos en/de ocurrio
 		impactosEnDeOcurrio: function () {
 			// IMPACTOS EN
-			varias.ocurrio == "-" ? DOM.ocurrioSector.classList.remove("ocultar") : DOM.ocurrioSector.classList.add("ocultar");
+			varias.ocurrio ? DOM.ocurrioSector.classList.add("ocultar") : DOM.ocurrioSector.classList.remove("ocultar");
 
 			// IMPACTOS DE
 			// 1. Actualiza el valor de 'ocurrio'
-			if (varias.ocurrio == "-" && DOM.ocurrioSelect.value) varias.ocurrio = DOM.ocurrioSelect.value;
+			if (!varias.ocurrio && DOM.ocurrioSelect.value) varias.ocurrio = DOM.ocurrioSelect.value;
 			// 2. Muestra/Oculta los sectores dependientes
 			for (let ocurrioSISector of DOM.ocurrioSISectores)
-				varias.ocurrio != "-" && varias.ocurrio != "NO"
+				varias.ocurrio && varias.ocurrio != "NO"
 					? ocurrioSISector.classList.remove("ocurrioSI")
 					: ocurrioSISector.classList.add("ocurrioSI");
 			// 3. Asigna el valor para 'ocurrio'
-			if (varias.ocurrio != "-") elegibles.ocurrio = varias.ocurrio;
+			if (varias.ocurrio) elegibles.ocurrio = varias.ocurrio;
 
 			this.impactosEnDeEpoca();
 
@@ -159,7 +159,7 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de epoca_id
 		impactosEnDeEpoca: function () {
-			if (varias.ocurrio != "-" && varias.ocurrio != "NO") {
+			if (varias.ocurrio && varias.ocurrio != "NO") {
 				// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 				// IMPACTOS DE
@@ -174,7 +174,7 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de apMar
 		impactosEnDeApMar: function () {
-			if (varias.ocurrio != "-" && varias.ocurrio != "NO") {
+			if (varias.ocurrio && varias.ocurrio != "NO") {
 				// IMPACTOS EN
 				// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 				// Sólo se muestra el sector si CFC='SI' y epoca_id='pst'
@@ -231,7 +231,8 @@ window.addEventListener("load", async () => {
 			const opciones = await fetch(rutas.opcionesFiltroPers + filtro_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
-			for (let elegibleSimple of DOM.elegiblesSimple) elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
+			for (let elegibleSimple of DOM.elegiblesSimple)
+				elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
 
 			// Actualiza los elegibles 'AscDes'
 			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && elegible.value == opciones.ascDes;

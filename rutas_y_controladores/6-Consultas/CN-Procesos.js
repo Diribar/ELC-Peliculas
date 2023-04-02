@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+const Op = require("../../base_de_datos/modelos").Sequelize.Op;
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
@@ -79,35 +80,33 @@ module.exports = {
 		},
 	},
 	API: {
-		filtrosRecibidos: (datos) => {
-			// Variables
-			let campos = ["cfc", "ocurrio", "epoca_id", "apMar", "canons_id", "roles_iglesia_id", "publico_id"];
-			campos.push("epocasEstreno", "tipos_link", "castellano", "tipos_actuacion", "musical", "palabrasClave");
-			let filtro = {};
+		filtrosPorFamilia: (datos) => {
+			// 1. Separa los filtros por familia
+			let filtrosProd = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tipos_link"];
+			filtrosProd.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
+			let filtrosRCLV = ["epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
 
 			// 2. Arma el filtro
-			for (let campo of campos) if (datos[campo]) filtro[campo] = datos[campo];
-
-			// Fin
-			return filtro;
-		},
-		filtrosProcesados: (filtroOrig) => {
-			// Separa entre filtros de RCLVs y productos
-			let filtrosProds = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tipos_link"];
-			filtrosProds.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
-			let filtrosRCLVs = ["epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
-			
-			// 2. Arma el filtro
-			let filtro={producto:{},rclv:{}}
-			for (let campo of filtrosProds) if (filtroOrig[campo]) filtro.producto[campo] = filtroOrig[campo];
-			for (let campo of filtrosRCLVs) if (filtroOrig[campo]) filtro.rclv[campo] = filtroOrig[campo];
+			let filtros = {producto: {}, rclv: {}};
+			for (let campo of filtrosProd) if (datos[campo]) filtros.prod[campo] = datos[campo];
+			for (let campo of filtrosRCLV) if (datos[campo]) filtros.rclv[campo] = datos[campo];
 
 			// 3. Elimina la familia sin información
-			if (!Object.keys(filtro.producto).length) delete filtro.producto
-			if (!Object.keys(filtro.rclv).length) delete filtro.rclv
+			if (!Object.keys(filtros.prod).length) delete filtros.prod;
+			if (!Object.keys(filtros.rclv).length) delete filtros.rclv;
 
 			// Fin
-			return filtro
+			return filtros;
+		},
+		convFiltros: (filtros) => {
+			// Variables
+			let {filtrosProd, filtrosRCLV} = filtros;
+
+			// Conversión de filtros de Producto
+			if (filtrosProd.cfc) filtrosProd.cfc = filtrosProd.cfc == "CFC";
+			if (filtrosProd.ocurrio) filtrosProd.ocurrio = true;
+			// publico_id conserva su valor
+			if (filtrosProd.epocasEstreno) filtros.ano_estreno
 		},
 	},
 };

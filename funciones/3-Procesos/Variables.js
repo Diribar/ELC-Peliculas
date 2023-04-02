@@ -24,6 +24,7 @@ module.exports = {
 
 	// Consulta de Productos
 	camposFiltros: {
+		// Producto
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
@@ -33,7 +34,6 @@ module.exports = {
 		},
 		ocurrio: {
 			titulo: "Hechos Reales / Ficción",
-			ocurrio: "-",
 			opciones: [
 				{id: "pers", nombre: "Con Personaje Histórico"},
 				{id: "hecho", nombre: "Con Hecho Histórico"},
@@ -41,49 +41,6 @@ module.exports = {
 				{id: "NO", nombre: "Ficción"},
 			],
 		},
-		epoca_id: {
-			titulo: "Epoca",
-			ocurrio: "SI",
-			opciones: [
-				{id: "ant", nombre: "Antiguo Testamento"},
-				{id: "cnt", nombre: "Nuevo Testamento"},
-				{id: "pst", nombre: "Posterior a los Apóstoles"},
-			],
-		},
-		apMar: {
-			titulo: "Aparición Mariana",
-			ocurrio: "SI",
-			epoca_id: "pst",
-			cfc: "SI",
-			opciones: [
-				{id: "SI", nombre: "Aparición Mariana"},
-				{id: "NO", nombre: "Sin Aparición Mariana"},
-			],
-		},
-		canons: {
-			titulo: "Proceso de Canonización",
-			notNull: "personaje",
-			cfc: "SI",
-			opciones: [
-				{id: "sb", nombre: "Santos y Beatos"},
-				{id: "vs", nombre: "Vener. y Siervos de Dios"},
-				{id: "nn", nombre: "Sin proceso de canonizac."},
-			],
-		},
-		rolesIglesia: {
-			titulo: "Rol en la Iglesia",
-			notNull: "personaje",
-			cfc: "SI",
-			opciones: [
-				{id: "la", nombre: "Laicos/as"},
-				{id: "lc", nombre: "Laicos/as casados/as"},
-				{id: "rs", nombre: "Religiosos/as y Sacerdotes"},
-				{id: "pp", nombre: "Papas"},
-				{id: "ap", nombre: "Apóstoles"},
-				{id: "sf", nombre: "Sagrada Familia"},
-			],
-		},
-		// Otros
 		publico_id: {
 			titulo: "Público Recomendado",
 		},
@@ -121,6 +78,41 @@ module.exports = {
 			opciones: [
 				{id: "SI", nombre: "Es un musical"},
 				{id: "NO", nombre: "No es un musical"},
+			],
+		},
+		// RCLVs
+		epoca_id: {
+			titulo: "Epoca",
+			opciones: [
+				{id: "ant", nombre: "Antiguo Testamento"},
+				{id: "cnt", nombre: "Nuevo Testamento"},
+				{id: "pst", nombre: "Posterior a los Apóstoles"},
+			],
+		},
+		apMar: {
+			titulo: "Aparición Mariana",
+			opciones: [
+				{id: "SI", nombre: "Aparición Mariana"},
+				{id: "NO", nombre: "Sin Aparición Mariana"},
+			],
+		},
+		canons: {
+			titulo: "Proceso de Canonización",
+			opciones: [
+				{id: "sb", nombre: "Santos y Beatos"},
+				{id: "vs", nombre: "Vener. y Siervos de Dios"},
+				{id: "nn", nombre: "Sin proceso de canonizac."},
+			],
+		},
+		rolesIglesia: {
+			titulo: "Rol en la Iglesia",
+			opciones: [
+				{id: "la", nombre: "Laicos/as"},
+				{id: "lc", nombre: "Laicos/as casados/as"},
+				{id: "rs", nombre: "Religiosos/as y Sacerdotes"},
+				{id: "pp", nombre: "Papas"},
+				{id: "ap", nombre: "Apóstoles"},
+				{id: "sf", nombre: "Sagrada Familia"},
 			],
 		},
 	},
