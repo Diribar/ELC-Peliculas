@@ -286,7 +286,6 @@ window.addEventListener("load", async () => {
 			const SI_orden = !!DOM.ordenSelect.value;
 			const SI_ascDes = !!elegibles.asc_des;
 			const SI = SI_layout && SI_orden && SI_ascDes;
-			console.log(SI_layout, SI_orden, SI_ascDes);
 
 			// Comencemos
 			if (!SI) varias.comencemos = true;
