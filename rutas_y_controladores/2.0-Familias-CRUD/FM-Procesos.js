@@ -469,11 +469,25 @@ module.exports = {
 				  });
 		});
 
+		// 4. Averigua si existe algún link con subtitulos, para ese producto
+		let subtitulos = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, subtitulos: true}).then((n) => {
+			return n
+				? SI
+				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) => {
+						return n ? talVez : NO;
+				  });
+		});
+
 		// Consolida
-		[links_general, links_gratuitos, castellano] = await Promise.all([links_general, links_gratuitos, castellano]);
+		[links_general, links_gratuitos, castellano, subtitulos] = await Promise.all([
+			links_general,
+			links_gratuitos,
+			castellano,
+			subtitulos,
+		]);
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
-		await BD_genericas.actualizaPorId(entidad, id, {links_general, links_gratuitos, castellano});
+		await BD_genericas.actualizaPorId(entidad, id, {links_general, links_gratuitos, castellano, subtitulos});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (entidad == "capitulos") {
@@ -484,6 +498,7 @@ module.exports = {
 			this.linksEnColeccion(colID, "links_general");
 			this.linksEnColeccion(colID, "links_gratuitos");
 			this.linksEnColeccion(colID, "castellano");
+			this.linksEnColeccion(colID, "subtitulos");
 		}
 
 		// Fin

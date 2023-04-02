@@ -7,8 +7,8 @@ global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
-// Variables con valor irrelevante
 global.NO = null;
+// Variables con valor irrelevante
 global.TitulosImgDer = {};
 global.dia_actual_id = null;
 

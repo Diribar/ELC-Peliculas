@@ -82,7 +82,7 @@ module.exports = {
 	API: {
 		filtrosPorFamilia: (datos) => {
 			// 1. Separa los filtros por familia
-			let filtrosProd = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tipos_link"];
+			let filtrosProd = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tiposLink"];
 			filtrosProd.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
 			let filtrosRCLV = ["epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
 
@@ -100,13 +100,40 @@ module.exports = {
 		},
 		convFiltros: (filtros) => {
 			// Variables
-			let {filtrosProd, filtrosRCLV} = filtros;
+			const {filtrosProd, filtrosRCLV} = filtros;
+			let condicsProd = {};
+			let epocaEstreno;
+
+			// Proceso para épocas de estreno
+			if (filtrosProd.epocasEstreno) {
+				const epocasEstreno = variables.camposFiltros.epocasEstreno;
+				epocaEstreno = epocasEstreno.opciones.find((n) => n.id == filtrosProd.epocasEstreno);
+			}
 
 			// Conversión de filtros de Producto
-			if (filtrosProd.cfc) filtrosProd.cfc = filtrosProd.cfc == "CFC";
-			if (filtrosProd.ocurrio) filtrosProd.ocurrio = true;
-			// publico_id conserva su valor
-			if (filtrosProd.epocasEstreno) filtros.ano_estreno
+			if (filtrosProd.cfc) condicsProd.cfc = filtrosProd.cfc == "CFC";
+			if (filtrosProd.ocurrio) condicsProd.ocurrio = true;
+			if (filtrosProd.publico_id) condicsProd.publico_id = filtrosProd.publico_id;
+			if (filtrosProd.epocasEstreno) condicsProd.ano_estreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
+			if (filtrosProd.tiposLink) {
+				const tipo_id = filtrosProd.tiposLink;
+				if (tipo_id == "gratis") condicsProd.links_gratuitos = SI;
+				if (tipo_id == "todos") condicsProd.links_general = SI;
+				if (tipo_id == "sin") condicsProd.links_general = NO;
+				if (tipo_id == "soloPagos") {
+					condicsProd.links_gratuitos = {[Op.ne]: SI};
+					condicsProd.links_general = SI;
+				}
+			}
+			if (filtrosProd.castellano) {
+				const castellano = filtrosProd.castellano;
+				if (castellano == "SI") condicsProd.castellano = SI;
+				if (castellano == "Subt") condicsProd.subtitulos = SI;
+				if (castellano == "NO") {
+					condicsProd.castellano = {[Op.ne]: SI};
+					condicsProd.subtitulos = {[Op.ne]: SI};
+				}
+			}
 		},
 	},
 };
