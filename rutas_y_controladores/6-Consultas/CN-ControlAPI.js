@@ -44,39 +44,20 @@ module.exports = {
 		return res.json();
 	},
 
-	obtieneProductos: (req, res) => {
+	obtieneProductos: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		let filtro;
-		console.log("Datos:", datos);
-
-		// Entidades de producto
-		let entidadesProd = [...variables.entidadesProd];
-		if (datos.notNull == "-") entidadesProd.pop();
-		console.log("Entidades Prod:", entidadesProd);
-
-		// Entidades RCLV
-		const notNull = datos.notNull;
-		const entidadesRCLV = notNull == "persHecho" ? ["personajes", "hechos"] : notNull == "-" ? [] : [notNull];
-		console.log("Entidades RCLV:", entidadesRCLV);
-
-		// Orden
-		const aux = ordenes.find((n) => n.id == datos.orden_id);
-		let orden = {};
-		if (entidadesRCLV.length) {
-			orden.rclv = [aux.valor, datos.ordenam];
-			orden.producto = ["ano_estreno", "DESC"];
-		} else orden.producto = [aux.valor, datos.ordenam];
-		console.log("Orden:", orden);
-
-		// Filtros
-		filtro = procesos.API.filtrosRecibidos(datos);
-		filtro = procesos.API.filtrosProcesados(filtro);
-		console.log("Filtros: ", filtro);
+		console.log("Productos:", datos);
 
 		// Fin
-		console.log("- Fin -");
-		console.log();
+		return res.json();
+	},
+	obtieneRCLVs: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		console.log("RCLVs:", datos);
+
+		// Fin
 		return res.json();
 	},
 };

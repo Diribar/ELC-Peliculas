@@ -37,7 +37,7 @@ module.exports = {
 			opciones: [
 				{id: "pers", nombre: "Con Personaje Histórico"},
 				{id: "hecho", nombre: "Con Hecho Histórico"},
-				{id: "SI", nombre: "Con Personaje/Hecho"},
+				{id: "perHec", nombre: "Con Personaje o Hecho"},
 				{id: "NO", nombre: "Ficción"},
 			],
 		},
