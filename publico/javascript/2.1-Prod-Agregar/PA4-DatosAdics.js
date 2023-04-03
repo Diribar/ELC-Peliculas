@@ -47,24 +47,16 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
 		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
-	(() => {
-		// Campos de error
-		v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
 
-		// Opciones para personajes
-		v.opcionesPers = (() => {
-			let respuesta = [];
-			for (let grupo of v.optgroupPers) respuesta.push([...grupo.children]);
-			return respuesta;
-		})();
+	// Campos de error
+	v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
 
-		// Opciones para hechos
-		v.opcionesHechos = (() => {
-			let respuesta = [];
-			for (let grupo of v.optgroupHecho) respuesta.push([...grupo.children]);
-			return respuesta;
-		})();
-	})();
+	// Opciones para personajes
+	v.opcionesPers = [];
+	for (let grupo of v.optgroupPers) v.opcionesPers.push([...grupo.children]);
+	// Opciones para hechos
+	v.opcionesHechos = [];
+	for (let grupo of v.optgroupHecho) v.opcionesHechos.push([...grupo.children]);
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos

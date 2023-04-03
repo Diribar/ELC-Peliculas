@@ -197,28 +197,24 @@ module.exports = {
 				ap_mar_id: n.ap_mar_id,
 			};
 		});
-		let listadoGral = [];
 		let casosPuntuales = [];
 
 		// Grupos Estándar
 		let grupos = [
-			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento"},
-			{orden: 3, codigo: "SF", campo: "rol_iglesia_id", label: "Sagrada Familia"},
-			{orden: 4, codigo: "AL", campo: "rol_iglesia_id", label: "Apóstoles"},
-			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Nuevo Testamento"},
-			{orden: 6, codigo: "PP", campo: "rol_iglesia_id", label: "Papas"},
-			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Posterior a los Apóstoles"},
+			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento", clase: "CFC VPC"},
+			{orden: 3, codigo: "SF", campo: "rol_iglesia_id", label: "Sagrada Familia", clase: "CFC"},
+			{orden: 4, codigo: "AL", campo: "rol_iglesia_id", label: "Apóstoles", clase: "CFC"},
+			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Nuevo Testamento", clase: "CFC VPC"},
+			{orden: 6, codigo: "PP", campo: "rol_iglesia_id", label: "Papas", clase: "CFC"},
+			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Posterior a los Apóstoles", clase: "CFC VPC"},
 		];
-		for (let grupo of grupos) {
-			grupo.valores = [];
-			grupo.clase = "CFC";
-		}
+		for (let grupo of grupos) grupo.valores = [];
 
 		// Valores para los grupos
 		for (let personaje of personajes) {
 			// Clase
 			personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
-			if (personaje.ap_mar_id) personaje.clase += " AMA AM" + personaje.ap_mar_id;
+			if (personaje.ap_mar_id != 10) personaje.clase += " AMA AM" + personaje.ap_mar_id;
 
 			// Si tiene 'rol_iglesia_id'
 			if (personaje.rol_iglesia_id) {
@@ -228,17 +224,14 @@ module.exports = {
 					if (personaje[grupo.campo].startsWith(grupo.codigo)) {
 						grupo.valores.push(personaje);
 						OK = true;
+						if (personaje.id == 52) console.log(grupo);
 						break;
 					}
-
-				// Si no es ninguno de los 'grupos'
-				if (!OK) listadoGral.push(personaje);
+				if (personaje.id == 52) console.log(OK, personaje);
 			}
 			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
 			else casosPuntuales.push(personaje);
 		}
-		// Grupo 'Listado General'
-		grupos.push({codigo: "LG", orden: 10, label: "Listado General", valores: listadoGral, clase: "CFC VPC"});
 		// Grupo 'Casos Puntuales'
 		grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
 
