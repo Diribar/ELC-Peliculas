@@ -54,6 +54,11 @@ module.exports = {
 		const ascDes = datos.asc_des;
 		const filtros = procesos.API.filtrosPorFamilia(datos);
 		const condicsProd = procesos.API.convFiltrosProd(filtros);
+
+		// Obtiene los RCLV
+		// !ocurrio --> los 3
+		// ocurrio == perHec --> 2
+		// ocurrio == pers/hecho --> 1
 		const condicsRCLV = procesos.API.convFiltrosRCLV(filtros);
 
 		// Fin
