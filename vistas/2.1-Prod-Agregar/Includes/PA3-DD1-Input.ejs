@@ -10,6 +10,9 @@
 			placeholder="Ingresá el texto"
 		>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
+		<% if (nombre=="actores" && dataEntry.actores && (!locals.errores || !errores.actores)) { %>
+			<%- include("PA3-DD8-Ayuda") %>
+		<% } %>
 		<%- include("CMP-Errores", {nombre}) %>
 	</div>
 </section>

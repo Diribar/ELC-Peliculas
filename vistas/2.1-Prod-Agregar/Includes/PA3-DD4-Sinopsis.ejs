@@ -10,13 +10,7 @@
 		<%- include("CMP-Errores", {nombre: "sinopsis"}) %>
 		<!-- Si se puede publicar, muestra el contenido de la sinopsis -->
 		<% if (dataEntry.sinopsis && (!locals.errores || !errores.sinopsis)) { %>
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaClick desplClick">
-					<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-						<li><%= dataEntry.sinopsis %></li>
-					</ul>
-				</i>
-			</div>
+			<%- include("PA3-DD8-Ayuda", {nombre: "sinopsis"}) %>
 		<% } %>
 	</div>
 </section>
