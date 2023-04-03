@@ -41,32 +41,33 @@ module.exports = {
 				{id: "NO", nombre: "Ficción"},
 			],
 		},
-		publico_id: {
+		publicos: {
 			titulo: "Público Recomendado",
 		},
 		epocasEstreno: {
 			titulo: "Época de Estreno",
 			opciones: [
-				{id: "1969", nombre: "Antes de 1970"},
-				{id: "1999", nombre: "1970 - 1999"},
-				{id: "2015", nombre: "2000 - 2015"},
-				{id: "2016", nombre: "2016 - Presente"},
+				{id: "1969", nombre: "Antes de 1970", desde: "0", hasta: "1969"},
+				{id: "1999", nombre: "1970 - 1999", desde: "1970", hasta: "1999"},
+				{id: "2015", nombre: "2000 - 2015", desde: "2000", hasta: "2015"},
+				{id: "2016", nombre: "2016 - Presente", desde: "2016", hasta: "3000"},
 			],
 		},
-		tipos_link: {
+		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
 				{id: "gratis", nombre: "Links gratuitos"},
-				{id: "pagos", nombre: "Links con pago"},
 				{id: "todos", nombre: "Links de cualquier tipo"},
-				{id: "todos", nombre: "Sin Links"},
+				{id: "soloPagos", nombre: "Solamente links con pago"},
+				{id: "sin", nombre: "Sin Links"},
 			],
 		},
 		castellano: {
 			titulo: "Idioma Castellano",
 			opciones: [
 				{id: "SI", nombre: "Hablada en castellano"},
-				{id: "Subt", nombre: "Subtítulos en castellano"},
+				{id: "subt", nombre: "Subtítulos en castellano"},
+				{id: "cast", nombre: "En castellano (habl./subt.)"},
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},

@@ -104,7 +104,7 @@ window.addEventListener("load", async () => {
 			SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
 			SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
 			if (SI && DOM.ordenSelect.value) elegibles.asc_des = orden.asc_des;
-			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = ascDes.value;
+			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = input.value;
 
 			// IMPACTOS DE - Sector 'OK'
 			elegibles.asc_des ? DOM.ascDesSector.classList.add("OK") : DOM.ascDesSector.classList.remove("OK");

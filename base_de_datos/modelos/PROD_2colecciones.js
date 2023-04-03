@@ -32,6 +32,7 @@ module.exports = (sequelize, dt) => {
 		tema_id: {type: dt.INTEGER},
 
 		castellano: {type: dt.INTEGER},
+		subtitulos: {type: dt.INTEGER},
 		links_general: {type: dt.INTEGER},
 		links_gratuitos: {type: dt.INTEGER},
 

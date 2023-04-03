@@ -47,16 +47,17 @@ module.exports = {
 	obtieneProductos: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		let filtros;
+		console.log("Datos:", datos);
 
 		// Obtiene todos los productos
 		const orden = ordenes.find((n) => n.id == datos.orden_id).valor;
 		const ascDes = datos.asc_des;
-		filtros = procesos.API.filtrosPorFamilia(datos);
-		filtros = procesos.API.convFiltros(filtros);
+		const filtros = procesos.API.filtrosPorFamilia(datos);
+		const condicsProd = procesos.API.convFiltrosProd(filtros);
+		const condicsRCLV = procesos.API.convFiltrosRCLV(filtros);
 
 		// Fin
-		console.log("Productos:", filtro);
+		console.log("Productos:", condicsProd);
 		return res.json();
 	},
 	obtieneRCLVs: async (req, res) => {

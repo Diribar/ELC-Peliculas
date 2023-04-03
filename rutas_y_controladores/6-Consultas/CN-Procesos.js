@@ -82,12 +82,12 @@ module.exports = {
 	API: {
 		filtrosPorFamilia: (datos) => {
 			// 1. Separa los filtros por familia
-			let filtrosProd = ["cfc", "ocurrio", "publico_id", "epocasEstreno", "tipos_link"];
+			let filtrosProd = ["cfc", "ocurrio", "publicos", "epocasEstreno", "tiposLink"];
 			filtrosProd.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
-			let filtrosRCLV = ["epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
+			let filtrosRCLV = ["ocurrio", "epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
 
 			// 2. Arma el filtro
-			let filtros = {producto: {}, rclv: {}};
+			let filtros = {prod: {}, rclv: {}};
 			for (let campo of filtrosProd) if (datos[campo]) filtros.prod[campo] = datos[campo];
 			for (let campo of filtrosRCLV) if (datos[campo]) filtros.rclv[campo] = datos[campo];
 
@@ -98,15 +98,58 @@ module.exports = {
 			// Fin
 			return filtros;
 		},
-		convFiltros: (filtros) => {
+		convFiltrosProd: (filtros) => {
 			// Variables
-			let {filtrosProd, filtrosRCLV} = filtros;
+			const {prod} = filtros;
+			let condicsProd = {};
+			let epocaEstreno;
+
+			// Proceso para épocas de estreno
+			if (prod.epocasEstreno) {
+				const epocasEstreno = variables.camposFiltros.epocasEstreno;
+				epocaEstreno = epocasEstreno.opciones.find((n) => n.id == prod.epocasEstreno);
+			}
 
 			// Conversión de filtros de Producto
-			if (filtrosProd.cfc) filtrosProd.cfc = filtrosProd.cfc == "CFC";
-			if (filtrosProd.ocurrio) filtrosProd.ocurrio = true;
-			// publico_id conserva su valor
-			if (filtrosProd.epocasEstreno) filtros.ano_estreno
+			if (prod.cfc) condicsProd.cfc = prod.cfc == "CFC";
+			if (prod.ocurrio) condicsProd.ocurrio = prod.ocurrio != "NO";
+			if (prod.ocurrio != "NO") {
+				if (prod.ocurrio == "pers") condicsProd.personaje_id = {[Op.ne]: 1};
+				if (prod.ocurrio == "hecho") condicsProd.hecho_id = {[Op.ne]: 1};
+				if (prod.ocurrio == "perHec") condicsProd.tema_id = {[Op.ne]: 1};
+			}
+			if (prod.publicos) condicsProd.publico_id = prod.publicos;
+			if (prod.epocasEstreno) condicsProd.ano_estreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
+			if (prod.tiposLink) {
+				const tipo_id = prod.tiposLink;
+				if (tipo_id == "gratis") condicsProd.links_gratuitos = SI;
+				if (tipo_id == "todos") condicsProd.links_general = SI;
+				if (tipo_id == "sin") condicsProd.links_general = NO;
+				if (tipo_id == "soloPagos") {
+					condicsProd.links_gratuitos = {[Op.ne]: SI};
+					condicsProd.links_general = SI;
+				}
+			}
+			if (prod.castellano) {
+				const castellano = prod.castellano;
+				if (castellano == "SI") condicsProd.castellano = SI;
+				if (castellano == "subt") condicsProd.subtitulos = SI;
+				if (castellano == "cast") condicsProd[Op.or] = [{castellano: SI}, {subtitulos: SI}];
+				if (castellano == "NO") condicsProd[Op.and] = [{castellano: {[Op.ne]: SI}}, {subtitulos: {[Op.ne]: SI}}];
+			}
+			if (prod.tipos_actuacion) condicsProd.tipo_actuacion_id = prod.tipos_actuacion;
+			if (prod.musical) condicsProd.musical = prod.musical == "SI";
+
+			// Fin
+			return condicsProd;
+		},
+		convFiltrosRCLV: (filtros) => {
+			// Variables
+			const {rclv} = filtros;
+			let condicsRCLV = {};
+
+			// Fin
+			return condicsRCLV;
 		},
 	},
 };
