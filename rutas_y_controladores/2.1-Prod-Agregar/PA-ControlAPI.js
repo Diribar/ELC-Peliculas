@@ -80,7 +80,6 @@ module.exports = {
 		return res.json();
 	},
 	desambGuardar2: async (req, res) => {
-		//let datosDuros = JSON.parse(req.query.datos);
 		let datosDuros = req.cookies.datosOriginales;
 		// Para datosDuros, da de alta el avatar_url y de baja el avatar
 		datosDuros.avatar_url = datosDuros.avatar;
