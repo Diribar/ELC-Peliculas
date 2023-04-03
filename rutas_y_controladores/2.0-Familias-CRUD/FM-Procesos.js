@@ -192,6 +192,7 @@ module.exports = {
 				id: n.id,
 				nombre: n.nombre,
 				categoria_id: n.categoria_id,
+				epoca_id: n.epoca_id,
 				rol_iglesia_id: n.rol_iglesia_id,
 				ap_mar_id: n.ap_mar_id,
 			};
@@ -201,9 +202,12 @@ module.exports = {
 
 		// Grupos Estándar
 		let grupos = [
-			{codigo: "SF", orden: 2, label: "Sagrada Familia"},
-			{codigo: "AL", orden: 3, label: "Apóstoles"},
-			{codigo: "PP", orden: 4, label: "Papas"},
+			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento"},
+			{orden: 3, codigo: "SF", campo: "rol_iglesia_id", label: "Sagrada Familia"},
+			{orden: 4, codigo: "AL", campo: "rol_iglesia_id", label: "Apóstoles"},
+			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Nuevo Testamento"},
+			{orden: 6, codigo: "PP", campo: "rol_iglesia_id", label: "Papas"},
+			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Posterior a los Apóstoles"},
 		];
 		for (let grupo of grupos) {
 			grupo.valores = [];
@@ -221,7 +225,7 @@ module.exports = {
 				let OK = false;
 				// Si es alguno de los 'grupos'
 				for (let grupo of grupos)
-					if (personaje.rol_iglesia_id.startsWith(grupo.codigo)) {
+					if (personaje[grupo.campo].startsWith(grupo.codigo)) {
 						grupo.valores.push(personaje);
 						OK = true;
 						break;
