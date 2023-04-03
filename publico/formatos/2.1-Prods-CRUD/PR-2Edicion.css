@@ -36,7 +36,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos .label-input .inputError .input:disabled, #datos .label-input#paises_id 
 #datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 #datos .flexRowAlign #siNoTitulo {width: 210px;}
-#datos #tipoActuacion #tipos {margin-left: 35px; flex-wrap: wrap;}
+#datos #tipoActuacion #tipos {margin-left: 10px; flex-wrap: wrap;}
 
 /* País */
 #datos #paises_id {align-items: center;}

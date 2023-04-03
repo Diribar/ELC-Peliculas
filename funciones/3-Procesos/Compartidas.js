@@ -186,9 +186,8 @@ module.exports = {
 		let valores = Object.values(objeto);
 
 		// Rutina por campo
-		campos.forEach((campo, i) => {
-			if (typeof valores[i] == "string") objeto[campo] = this.convierteLetrasAlCastellano_campo(valores[i]);
-		});
+		for (let campo in objeto)
+			if (typeof objeto[campo] == "string") objeto[campo] = this.convierteLetrasAlCastellano_campo(objeto[campo]);
 
 		// Fin
 		return objeto;
@@ -203,7 +202,7 @@ module.exports = {
 			.replace(/ß/g, "b")
 			.replace(/[ÇĆĈĊČ]/g, "C")
 			.replace(/[çćĉċč]/g, "c")
-			.replace(/[ÐĎ]/g, "D")
+			.replace(/[ÐĎĐ]/g, "D")
 			.replace(/[đď]/g, "d")
 			.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
 			.replace(/[èêëēĕėęě]/g, "e")

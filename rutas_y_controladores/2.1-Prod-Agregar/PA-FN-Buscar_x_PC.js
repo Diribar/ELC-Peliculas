@@ -288,7 +288,7 @@ module.exports = {
 					};
 				}
 				// Acciones si es una serie de TV
-				else {
+				else if (coleccion.seasons) {
 					// OBtiene la cantidad de temporadas
 					let cant_temps = coleccion.seasons.filter((n) => n.season_number).length; // mayor a cero
 					// Obtiene los capítulos

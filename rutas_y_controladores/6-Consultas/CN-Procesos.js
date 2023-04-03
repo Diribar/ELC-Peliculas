@@ -101,7 +101,7 @@ module.exports = {
 		convFiltrosProd: (filtros) => {
 			// Variables
 			const {prod} = filtros;
-			let condicsProd = {};
+			let condicsProd = {status_registro_id: aprobado_id};
 			let epocaEstreno;
 
 			// Proceso para épocas de estreno
@@ -146,7 +146,7 @@ module.exports = {
 		convFiltrosRCLV: (filtros) => {
 			// Variables
 			const {rclv} = filtros;
-			let condicsRCLV = {};
+			let condicsRCLV = {status_registro_id: aprobado_id};
 
 			// Fin
 			return condicsRCLV;
