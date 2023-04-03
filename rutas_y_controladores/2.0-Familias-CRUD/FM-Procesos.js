@@ -224,10 +224,8 @@ module.exports = {
 					if (personaje[grupo.campo].startsWith(grupo.codigo)) {
 						grupo.valores.push(personaje);
 						OK = true;
-						if (personaje.id == 52) console.log(grupo);
 						break;
 					}
-				if (personaje.id == 52) console.log(OK, personaje);
 			}
 			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
 			else casosPuntuales.push(personaje);
