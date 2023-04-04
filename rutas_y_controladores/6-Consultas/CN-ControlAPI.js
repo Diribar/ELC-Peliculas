@@ -68,6 +68,9 @@ module.exports = {
 							entidadNombre: comp.obtieneEntidadNombre(entidad),
 							direccion: m.direccion,
 							avatar: m.avatar,
+							personaje_id: m.personaje_id,
+							hecho_id: m.hecho_id,
+							tema_id: m.tema_id,
 							// Orden
 							momento: m.momento,
 							creado_en: m.creado_en,
@@ -99,20 +102,16 @@ module.exports = {
 
 			// Obtiene los RCLV
 			rclvs = await procesos.API.obtieneRCLVs(datos);
-			console.log(101, rclvs.length);
-			console.log(102, rclvs[0]);
+			console.log(102, rclvs);
 			// Filtra los productos por RCLV
-			const entidadesRCLV = variables.entidadesRCLV;
-			for (let entidadRCLV of entidadesRCLV) {
-				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidadRCLV);
-				rclvsPorEntidad[campo_id] = rclvs.filter((n) => n.entidad == entidadRCLV).map((n) => n.id);
-				console.log(108,rclvsPorEntidad.length);
-				productos=productos.filter(n=>(
-					n.
-				))
-			}
-
-			// productos=productos.filter(n=>)
+			console.log(104, productos.length);
+			productos = productos.filter(
+				(n) =>
+					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
+					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
+					(rclvs.temas && rclvs.temas.includes(n.tema_id))
+			);
+			console.log(111, productos.length);
 		}
 
 		// Fin
