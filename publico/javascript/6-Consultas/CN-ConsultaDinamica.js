@@ -322,15 +322,13 @@ window.addEventListener("load", async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
 			if (varias.comencemos) return;
 
-			// Obtiene los productos
+			// Obtiene los resultados
 			console.log("Busca los productos");
-			if (elegibles.entidad == "producto") {
-				let productos = await fetch(rutas.productos + JSON.stringify(elegibles));
-			} else {
-				let rclvs = await fetch(rutas.rclvs + JSON.stringify(elegibles));
-			}
+			const resultados = elegibles.entidad == "producto" ? await fetch(rutas.productos + JSON.stringify(elegibles)) : [];
 
+			console.log(resultados.length);
 			// Actualiza el contador
+
 			// Actualiza la información mostrada
 
 			// Fin

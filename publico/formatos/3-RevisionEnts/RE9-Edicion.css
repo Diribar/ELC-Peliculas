@@ -1,31 +1,30 @@
 /* Datos Largos */
 #datosLargos #recuadro {width: 45vw;}
-#datosLargos #contenido {max-height: 50vh; overflow-y: auto;}
 #datosLargos #contenido {background: var(--verde-claro); padding: 0 40px;}
 
-#datosLargos #contenido h2 {margin-top: 15px; font-variant: small-caps}
-#datosLargos #contenido #ingrs {margin-top: 5px;}
-#datosLargos #contenido p {line-height: 1;}
-
-/* Ocultar la 'side-bar' */
-#datosLargos #contenido::-webkit-scrollbar {display: none; /* Safari and Chrome */}
-#datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
-#datosLargos .fa-trash-can {color: var(--rojo-oscuro);}
-#datosLargos .aprobRech {display: flex; flex-direction: row; flex-wrap: nowrap; width: 40px; justify-content: space-around;}
-
-/* Datos Largos - Ingresos */
-#datosLargos #contenido #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
-#datosLargos #contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
-#datosLargos #contenido #ingrs tr #cartelRechazo select {background: inherit;}
-
-/* Datos Largos - Reemplazos */
-#datosLargos #reemps .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px; font-style: italic;}
-#datosLargos #reemps .infoMostrar .orig {background: var(--amarillo-claro);}
-#datosLargos #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
-#datosLargos #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
-#datosLargos #reemps .infoMostrar.ocultar {display: block;}
-#datosLargos #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
-#datosLargos #reemps #cartelRechazo select {margin: 0;}
+/* Informacion */
+#contenido #informacion {max-height: 40vh; overflow-y: auto;}
+/* Oculta la 'side-bar' */
+/* #contenido #informacion::-webkit-scrollbar {display: none; Safari and Chrome} */
+/* #contenido #informacion {-ms-overflow-style: none; Internet Explorer 10+scrollbar-width: none; Firefox} */
+/* Ingresos y Reemplazos */
+#contenido #informacion h2 {margin-top: 15px; font-variant: small-caps}
+#contenido #informacion p {line-height: 1;}
+#contenido #informacion .aprobRech {width: 40px; text-align: center;}
+/* Ingresos */
+#informacion #ingrs {margin-top: 5px;}
+#informacion #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
+#informacion #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
+#informacion #ingrs tr #cartelRechazo select {background: inherit;}
+/* Reemplazos */
+#informacion #reemps .fa-trash-can {color: var(--rojo-oscuro);}
+#informacion #reemps .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px; font-style: italic;}
+#informacion #reemps .infoMostrar .orig {background: var(--amarillo-claro);}
+#informacion #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
+#informacion #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
+#informacion #reemps .infoMostrar.ocultar {display: block;}
+#informacion #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
+#informacion #reemps #cartelRechazo select {margin: 0;}
 
 /* Datos Breves */
 #datos #datosBreves {min-width: 210px;}
