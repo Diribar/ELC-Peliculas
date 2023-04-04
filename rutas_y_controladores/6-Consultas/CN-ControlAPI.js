@@ -1,8 +1,8 @@
 "use strict";
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -48,21 +48,19 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log("Datos:", datos);
-		let filtros;
 		let productos = [];
+		let rclvs = [];
+		let resultado = [];
 
-		// Obtiene los filtros
-		filtros = procesos.API.filtrosPorFamilia(datos);
-		if (filtros.prod) filtros = procesos.API.filtrosProd(filtros);
-		else filtros = {status_registro_id: aprobado_id};
-
-		// Obtiene el orden
+		// Obtiene los filtros y el orden
+		const filtrosProd = procesos.API.filtrosProd(datos);
 		const ordenCampo = ordenes.find((n) => n.id == datos.orden_id).valor;
 		const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
 
+		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
 		for (let entidad of ["peliculas", "colecciones"])
 			productos.push(
-				BD_genericas.obtieneTodosPorCampos(entidad, filtros).then((n) =>
+				BD_genericas.obtieneTodosPorCampos(entidad, filtrosProd).then((n) =>
 					n.map((m) => {
 						return {
 							id: m.id,
@@ -80,34 +78,42 @@ module.exports = {
 					})
 				)
 			);
-		// console.log(65,colecciones.length);
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+		console.log(83, filtrosProd, productos.length, ordenCampo, ordenAscDes);
+		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
+		console.log(85, productos.length);
 
-		console.log(filtros);
-		console.log(productos.length, ordenCampo, ordenAscDes);
-
-		// Elimina los productos que tienen 'nul' en el campo de orden
-		productos = productos.filter((n) => n[ordenCampo] !== null);
-		console.log(91,productos.length);
-
-		// Los ordena
-		productos.sort((a, b) => {
-			return typeof a[ordenCampo] == "string"
-				? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
+		if (productos.length) {
+			// Ordena los productos
+			productos.sort((a, b) => {
+				return typeof a[ordenCampo] == "string"
+					? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
+						? ordenAscDes
+						: -ordenAscDes
+					: a[ordenCampo] < b[ordenCampo]
 					? ordenAscDes
-					: -ordenAscDes
-				: a[ordenCampo] < b[ordenCampo]
-				? ordenAscDes
-				: -ordenAscDes;
-		});
-		console.log(productos[0]);
-		console.log(productos[1]);
+					: -ordenAscDes;
+			});
+			console.log(productos[0]);
+			console.log(productos[1]);
 
-		// Obtiene los RCLV
-		// !ocurrio --> los 3
-		// ocurrio == perHec --> 2
-		// ocurrio == pers/hecho --> 1
-		// const condicsRCLV = procesos.API.filtrosRCLV(filtros);
+			// Obtiene los RCLV
+			rclvs = await procesos.API.obtieneRCLVs(datos);
+			console.log(101, rclvs.length);
+			console.log(102, rclvs[0]);
+			// Filtra los productos por RCLV
+			const entidadesRCLV = variables.entidadesRCLV;
+			for (let entidadRCLV of entidadesRCLV) {
+				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidadRCLV);
+				rclvsPorEntidad[campo_id] = rclvs.filter((n) => n.entidad == entidadRCLV).map((n) => n.id);
+				console.log(108,rclvsPorEntidad.length);
+				productos=productos.filter(n=>(
+					n.
+				))
+			}
+
+			// productos=productos.filter(n=>)
+		}
 
 		// Fin
 		return res.json(productos);

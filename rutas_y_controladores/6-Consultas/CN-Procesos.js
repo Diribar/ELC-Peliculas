@@ -2,6 +2,7 @@
 // Definir variables
 const Op = require("../../base_de_datos/modelos").Sequelize.Op;
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -16,14 +17,15 @@ module.exports = {
 	},
 	filtros: function () {
 		// Variable 'filtros'
-		let filtros = {...variables.camposFiltros};
+		let filtros = {...variables.filtrosConsultas};
 
 		// Agrega las opciones de BD
 		for (let campo in filtros) {
 			// Le agrega el nombre del campo a cada bloque de información
 			filtros[campo].codigo = campo;
 			// Si no tiene opciones, le agrega las de la BD
-			if (!filtros[campo].opciones) filtros[campo].opciones = global[campo] ? global[campo] : [];
+			if (!filtros[campo].opciones) filtros[campo].opciones = global[campo];
+			if (campo == "epocas") filtros.epocas.opciones = filtros.epocas.opciones.map((n) => ({id: n.id, nombre: n.consulta}));
 		}
 
 		// Agrega las opciones grupales para los RCLV
@@ -80,47 +82,34 @@ module.exports = {
 		},
 	},
 	API: {
-		filtrosPorFamilia: (datos) => {
-			// 1. Separa los filtros por familia
-			let filtrosProd = ["cfc", "ocurrio", "publicos", "epocasEstreno", "tiposLink"];
-			filtrosProd.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
-			let filtrosRCLV = ["ocurrio", "epoca_id", "apMar", "canons_id", "roles_iglesia_id"];
-
-			// 2. Arma el filtro
-			let filtros = {prod: {}, rclv: {}};
-			for (let campo of filtrosProd) if (datos[campo]) filtros.prod[campo] = datos[campo];
-			for (let campo of filtrosRCLV) if (datos[campo]) filtros.rclv[campo] = datos[campo];
-
-			// 3. Elimina la familia sin información
-			if (!Object.keys(filtros.prod).length) delete filtros.prod;
-			if (!Object.keys(filtros.rclv).length) delete filtros.rclv;
-
-			// Fin
-			return filtros;
-		},
-		filtrosProd: (filtros) => {
+		filtrosProd: (datos) => {
 			// Variables
-			const {prod} = filtros;
+			let filtros = {};
 			let condics = {status_registro_id: aprobado_id};
 			let epocaEstreno;
 
+			// Arma el filtro
+			let campos = ["cfc", "ocurrio", "publicos", "epocasEstreno", "tiposLink"];
+			campos.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
+			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
+
 			// Proceso para épocas de estreno
-			if (prod.epocasEstreno) {
-				const epocasEstreno = variables.camposFiltros.epocasEstreno;
-				epocaEstreno = epocasEstreno.opciones.find((n) => n.id == prod.epocasEstreno);
+			if (filtros.epocasEstreno) {
+				const epocasEstreno = variables.filtrosConsultas.epocasEstreno;
+				epocaEstreno = epocasEstreno.opciones.find((n) => n.id == filtros.epocasEstreno);
 			}
 
+			// Ocurrió
+			if (filtros.ocurrio) condics.ocurrio = filtros.ocurrio != "NO";
+			if (filtros.ocurrio == "pers") condics.personaje_id = {[Op.ne]: 1};
+			if (filtros.ocurrio == "hecho") condics.hecho_id = {[Op.ne]: 1};
+
 			// Conversión de filtros de Producto
-			if (prod.cfc) condics.cfc = prod.cfc == "CFC";
-			if (prod.ocurrio) condics.ocurrio = prod.ocurrio != "NO";
-			if (prod.ocurrio != "NO") {
-				if (prod.ocurrio == "pers") condics.personaje_id = {[Op.ne]: 1};
-				if (prod.ocurrio == "hecho") condics.hecho_id = {[Op.ne]: 1};
-			}
-			if (prod.publicos) condics.publico_id = prod.publicos;
-			if (prod.epocasEstreno) condics.ano_estreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
-			if (prod.tiposLink) {
-				const tipo_id = prod.tiposLink;
+			if (filtros.cfc) condics.cfc = filtros.cfc == "CFC";
+			if (filtros.publicos) condics.publico_id = filtros.publicos;
+			if (filtros.epocasEstreno) condics.ano_estreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
+			if (filtros.tiposLink) {
+				const tipo_id = filtros.tiposLink;
 				if (tipo_id == "gratis") condics.links_gratuitos = SI;
 				if (tipo_id == "todos") condics.links_general = SI;
 				if (tipo_id == "sin") condics.links_general = NO;
@@ -129,28 +118,81 @@ module.exports = {
 					condics.links_general = SI;
 				}
 			}
-			if (prod.castellano) {
-				const castellano = prod.castellano;
+			if (filtros.castellano) {
+				const castellano = filtros.castellano;
 				if (castellano == "SI") condics.castellano = SI;
 				if (castellano == "subt") condics.subtitulos = SI;
 				if (castellano == "cast") condics[Op.or] = [{castellano: SI}, {subtitulos: SI}];
 				if (castellano == "NO") condics[Op.and] = [{castellano: {[Op.ne]: SI}}, {subtitulos: {[Op.ne]: SI}}];
 			}
-			if (prod.tipos_actuacion) condics.tipo_actuacion_id = prod.tipos_actuacion;
-			if (prod.musical) condics.musical = prod.musical == "SI";
+			if (filtros.tipos_actuacion) condics.tipo_actuacion_id = filtros.tipos_actuacion;
+			if (filtros.musical) condics.musical = prod.musical == "SI";
 
 			// Fin
 			return condics;
 		},
-		filtrosRCLV: (filtros) => {
+		filtrosRCLV: (datos) => {
 			// Variables
-			const {rclv} = filtros;
-			let condicsRCLV = {status_registro_id: aprobado_id};
+			let filtros = {};
+			let condics = {
+				status_registro_id: aprobado_id,
+				id: {[Op.gt]: 10},
+				[Op.or]: [],
+			};
+
+			// Arma el filtro
+			let campos = ["epoca_id", "apMar", "canon_id", "rol_iglesia_id"];
+			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
 			// Conversión de filtros de RCLV
+			if (filtros.epoca_id && datos.entidad != "temas") condics.epoca_id = filtros.epoca_id;
+			if (filtros.apMar) {
+				if (datos.entidad == "personajes") condics.ap_mar_id = {[Op.ne]: 10};
+				if (datos.entidad == "hechos") condics.ama = true;
+			}
+			if (filtros.canon_id) {
+				if (filtros.canon_id == "sb") condics[Op.or].push({canon_id: {[Op.like]: "ST%"}}, {canon_id: {[Op.like]: "BT%"}});
+				if (filtros.canon_id == "vs") condics[Op.or].push({canon_id: {[Op.like]: "VN%"}}, {canon_id: {[Op.like]: "SD%"}});
+				if (filtros.canon_id == "sb") condics.canon_id = {[Op.like]: "NN%"};
+			}
+			if (filtros.rol_iglesia_id) {
+				if (filtros.rol_iglesia_id == "la") condics.rol_iglesia_id = {[Op.like]: "L%"};
+				if (filtros.rol_iglesia_id == "lc") condics.rol_iglesia_id = {[Op.like]: "LC%"};
+				if (filtros.rol_iglesia_id == "rs")
+					condics[Op.or].push({rol_iglesia_id: {[Op.like]: "RE%"}}, {rol_iglesia_id: {[Op.like]: "SC%"}});
+				if (filtros.rol_iglesia_id == "pp") condics.rol_iglesia_id = "PPV";
+				if (filtros.rol_iglesia_id == "ap") condics.rol_iglesia_id = "ALV";
+				if (filtros.rol_iglesia_id == "sf") condics.rol_iglesia_id = {[Op.like]: "SF%"};
+			}
+			if (!condics[Op.or].length) delete condics[Op.or];
 
 			// Fin
-			return condicsRCLV;
+			return condics;
+		},
+		obtieneRCLVs: async function (datos) {
+			// Variables
+			let auxs = [];
+			let rclvs = [];
+
+			// Obtiene las entidades
+			const entidades =
+				datos.ocurrio == "pers"
+					? ["personajes"]
+					: datos.ocurrio == "hecho"
+					? ["hechos"]
+					: ["personajes", "hechos", "temas"];
+			// Obtiene los registros de RCLV
+			for (let entidad of entidades) {
+				// Obtiene los filtros
+				let filtros = this.filtrosRCLV({...datos, entidad});
+				// Obtiene los registros
+				auxs.push(BD_genericas.obtieneTodosPorCampos(entidad, filtros).then((n) => n.map((m) => m.id)));
+			}
+			auxs = await Promise.all(auxs);
+			entidades.forEach((entidad, i) => (rclvs[entidad] = auxs[i]));
+
+			// Fin
+			return rclvs;
 		},
 	},
 };
