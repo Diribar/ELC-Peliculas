@@ -13,9 +13,11 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 
 .label-input .inputError .input {width: 100%;}
+#primeraColumna {width: 350px;}
 #primeraColumna .inputError {width: 100%;}
 #primeraColumna .label-input .inputError {max-width: 200px;}
 #primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
+#segundaColumna {width: 380px;}
 #segundaColumna .label-input .inputError:not(:has(textarea)) {width: 240px;}
 #segundaColumna .label-input .inputError {width: 100%;}
 
