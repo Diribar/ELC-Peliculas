@@ -242,7 +242,7 @@ module.exports = {
 			.replace(/[ýŷÿ]/g, "y")
 			.replace(/[ŽŹŻŽ]/g, "Z")
 			.replace(/[žźżž]/g, "z")
-			.replace(/[‘“’”«»]/g, '"')
+			.replace(/[`‘“’”«»]/g, '"')
 			.replace(/[º]/g, "°")
 			.replace(/ +/g, " ")
 			.replace(/\t/g, " ")
@@ -259,8 +259,8 @@ module.exports = {
 			let paises_idArray = paises_id.split(" ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
-				let paisNombre = paises.find((n) => n.id == pais_id).nombre;
-				if (paisNombre) paisesNombre.push(paisNombre);
+				let paisNombre = paises.find((n) => n.id == pais_id)
+				if (paisNombre) paisesNombre.push(paisNombre.nombre);
 			}
 		}
 		// Fin

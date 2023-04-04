@@ -10,7 +10,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		let longitud = dato ? comp.longitud(dato, 3, 30) : "";
+		let longitud = dato ? comp.longitud(dato, 3, 35) : "";
 		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
