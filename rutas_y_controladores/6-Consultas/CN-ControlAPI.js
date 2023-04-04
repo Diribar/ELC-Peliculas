@@ -48,22 +48,55 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log("Datos:", datos);
+		let filtros;
+		let productos = [];
 
-		// Obtiene todos los productos
-		const orden = ordenes.find((n) => n.id == datos.orden_id).valor;
-		const ascDes = datos.asc_des;
-		const filtros = procesos.API.filtrosPorFamilia(datos);
-		const condicsProd = procesos.API.convFiltrosProd(filtros);
+		// Obtiene los filtros
+		filtros = procesos.API.filtrosPorFamilia(datos);
+		filtros = procesos.API.filtrosProd(filtros);
+		// Obtiene el orden
+		const ordenCampo = ordenes.find((n) => n.id == datos.orden_id).valor;
+		const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
+
+		for (let entidad of ["peliculas", "colecciones"])
+			productos.push(
+				BD_genericas.obtieneTodosPorCampos(entidad, filtros).then((n) =>
+					n.map((m) => {
+						return {
+							id: m.id,
+							entidad,
+							entidadNombre: comp.obtieneEntidadNombre(entidad),
+							direccion: m.direccion,
+							avatar: m.avatar,
+							// Orden
+							momento: m.momento,
+							creado_en: m.creado_en,
+							ano_estreno: m.ano_estreno,
+							nombre_castellano: m.nombre_castellano,
+							calificacion: m.calificacion,
+						};
+					})
+				)
+			);
+		// console.log(65,colecciones.length);
+		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+
+		// Los ordena
+		productos.sort((a, b) => (a[ordenCampo] < b[ordenCampo] ? ordenAscDes : -ordenAscDes));
+
+		console.log(filtros);
+		console.log(productos.length, ordenCampo, ordenAscDes);
+		console.log(productos[0]);
+		console.log(productos[1]);
 
 		// Obtiene los RCLV
 		// !ocurrio --> los 3
 		// ocurrio == perHec --> 2
 		// ocurrio == pers/hecho --> 1
-		const condicsRCLV = procesos.API.convFiltrosRCLV(filtros);
+		// const condicsRCLV = procesos.API.filtrosRCLV(filtros);
 
 		// Fin
-		console.log("Productos:", condicsProd);
-		return res.json();
+		return res.json(productos);
 	},
 	obtieneRCLVs: async (req, res) => {
 		// Variables
