@@ -524,7 +524,7 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
-			if (datos.duracion) {
+			if (motivo) {
 				console.log({entidad, original, edicion, revID, campo, aprob, motivo_id, datos, motivo, familia});
 				comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
 			}
