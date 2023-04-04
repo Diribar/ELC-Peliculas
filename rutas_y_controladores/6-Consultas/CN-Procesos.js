@@ -17,7 +17,7 @@ module.exports = {
 	},
 	filtros: function () {
 		// Variable 'filtros'
-		let filtros = {...variables.filtrosConsultas};
+		let filtros = variables.filtrosConsultas;
 
 		// Agrega las opciones de BD
 		for (let campo in filtros) {
