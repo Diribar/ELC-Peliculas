@@ -82,9 +82,7 @@ module.exports = {
 				)
 			);
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
-		console.log(83, filtrosProd, productos.length, ordenCampo, ordenAscDes);
 		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
-		console.log(85, productos.length);
 
 		if (productos.length) {
 			// Ordena los productos
@@ -97,21 +95,16 @@ module.exports = {
 					? ordenAscDes
 					: -ordenAscDes;
 			});
-			console.log(productos[0]);
-			console.log(productos[1]);
 
 			// Obtiene los RCLV
 			rclvs = await procesos.API.obtieneRCLVs(datos);
-			console.log(102, rclvs);
 			// Filtra los productos por RCLV
-			console.log(104, productos.length);
 			productos = productos.filter(
 				(n) =>
 					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
 					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
 					(rclvs.temas && rclvs.temas.includes(n.tema_id))
 			);
-			console.log(111, productos.length);
 		}
 
 		// Fin
@@ -120,7 +113,7 @@ module.exports = {
 	obtieneRCLVs: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		console.log("RCLVs:", datos);
+		console.log("Datos:", datos);
 
 		// Fin
 		return res.json();
