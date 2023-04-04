@@ -23,7 +23,7 @@ module.exports = {
 	],
 
 	// Consulta de Productos
-	camposFiltros: {
+	filtrosConsultas: {
 		// Producto
 		cfc: {
 			titulo: "Relación con la Fe Católica",
@@ -82,13 +82,8 @@ module.exports = {
 			],
 		},
 		// RCLVs
-		epoca_id: {
+		epocas: {
 			titulo: "Epoca",
-			opciones: [
-				{id: "ant", nombre: "Antiguo Testamento"},
-				{id: "cnt", nombre: "Nuevo Testamento"},
-				{id: "pst", nombre: "Posterior a los Apóstoles"},
-			],
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
