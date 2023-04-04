@@ -324,7 +324,10 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los resultados
 			console.log("Busca los productos");
-			const resultados = elegibles.entidad == "producto" ? await fetch(rutas.productos + JSON.stringify(elegibles)) : [];
+			const resultados =
+				elegibles.entidad == "producto"
+					? await fetch(rutas.productos + JSON.stringify(elegibles)).then((n) => n.json())
+					: [];
 
 			console.log(resultados.length);
 			// Actualiza el contador

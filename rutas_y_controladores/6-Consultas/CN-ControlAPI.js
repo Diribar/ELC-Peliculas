@@ -53,7 +53,9 @@ module.exports = {
 
 		// Obtiene los filtros
 		filtros = procesos.API.filtrosPorFamilia(datos);
-		filtros = procesos.API.filtrosProd(filtros);
+		if (filtros.prod) filtros = procesos.API.filtrosProd(filtros);
+		else filtros = {status_registro_id: aprobado_id};
+
 		// Obtiene el orden
 		const ordenCampo = ordenes.find((n) => n.id == datos.orden_id).valor;
 		const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
@@ -81,11 +83,23 @@ module.exports = {
 		// console.log(65,colecciones.length);
 		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
 
-		// Los ordena
-		productos.sort((a, b) => (a[ordenCampo] < b[ordenCampo] ? ordenAscDes : -ordenAscDes));
-
 		console.log(filtros);
 		console.log(productos.length, ordenCampo, ordenAscDes);
+
+		// Elimina los productos que tienen 'nul' en el campo de orden
+		productos = productos.filter((n) => n[ordenCampo] !== null);
+		console.log(91,productos.length);
+
+		// Los ordena
+		productos.sort((a, b) => {
+			return typeof a[ordenCampo] == "string"
+				? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
+					? ordenAscDes
+					: -ordenAscDes
+				: a[ordenCampo] < b[ordenCampo]
+				? ordenAscDes
+				: -ordenAscDes;
+		});
 		console.log(productos[0]);
 		console.log(productos[1]);
 
