@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
 		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
 		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
-		epoca_idSelect: document.querySelector("#filtros #campos #epoca_id select"),
+		epocasSelect: document.querySelector("#filtros #campos #epocas select"),
 		apMarSector: document.querySelector("#filtros #campos #apMar"),
 		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
 		canonsSector: document.querySelector("#filtros #campos #canons"),
@@ -163,7 +163,7 @@ window.addEventListener("load", async () => {
 				// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 				// IMPACTOS DE
-				varias.epoca_id = DOM.epoca_idSelect.value ? DOM.epoca_idSelect.value : "";
+				varias.epoca_id = DOM.epocasSelect.value ? DOM.epocasSelect.value : "";
 				if (varias.epoca_id) elegibles.epoca_id = varias.epoca_id;
 			}
 
