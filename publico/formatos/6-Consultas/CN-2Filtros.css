@@ -14,6 +14,9 @@
 #filtros #filtrosPers #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 #filtros #filtrosPers #iconos i {cursor: pointer; }
 
+/* Filtros - Campos - Filtros para enfocar tu búqueda */
+#filtros #campos div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
+
 /* Filtros - Campos - General */
 #filtros #campos {background: var(--gris-claro);}
 #filtros #campos {flex-grow: 1; height: 0; justify-content: flex-start;}

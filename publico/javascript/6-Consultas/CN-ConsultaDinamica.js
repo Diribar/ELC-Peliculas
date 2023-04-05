@@ -25,8 +25,9 @@ window.addEventListener("load", async () => {
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 
 		// Filtros
-		nav: document.querySelector("#filtros #campos nav"),
-		cfcSelect: document.querySelector("#filtros #campos nav #cfc select"),
+		camposTitulo: document.querySelector("#filtros #campos div:has(h2)"),
+		camposNav: document.querySelector("#filtros #campos div nav"),
+		cfcSelect: document.querySelector("#filtros #campos div nav #cfc select"),
 		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
 		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
 		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
@@ -122,7 +123,8 @@ window.addEventListener("load", async () => {
 			const SI = apoyo.condicionesMinimas();
 
 			// Muestra/Oculta sectores
-			SI ? DOM.nav.classList.remove("ocultar") : DOM.nav.classList.add("ocultar");
+			SI ? DOM.camposTitulo.classList.remove("ocultar") : DOM.camposTitulo.classList.add("ocultar");
+			SI ? DOM.camposNav.classList.remove("ocultar") : DOM.camposNav.classList.add("ocultar");
 			SI ? DOM.asegurate.classList.add("ocultar") : DOM.asegurate.classList.remove("ocultar");
 			SI && varias.comencemos ? DOM.comencemos.classList.remove("ocultar") : DOM.comencemos.classList.add("ocultar");
 
@@ -160,13 +162,13 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		// Impactos en/de epoca_id
+		// Impactos en/de epocas
 		impactosEnDeEpoca: function () {
 			// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
 			// IMPACTOS DE
 			const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
-			if (DOM.epocasSelect.value && sectorVisible) elegibles.epoca_id = DOM.epocasSelect.value;
+			if (DOM.epocasSelect.value && sectorVisible) elegibles.epocas = DOM.epocasSelect.value;
 
 			this.impactosEnDeApMar();
 
@@ -177,8 +179,8 @@ window.addEventListener("load", async () => {
 		impactosEnDeApMar: function () {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si CFC='SI' y epoca_id='pst'
-			if (elegibles.cfc == "CFC" && elegibles.epoca_id == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+			// Sólo se muestra el sector si CFC='SI' y epocas='pst'
+			if (elegibles.cfc == "CFC" && elegibles.epocas == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
 			else DOM.apMarSector.classList.add("ocultarApMar");
 
 			// IMPACTOS DE
@@ -206,9 +208,9 @@ window.addEventListener("load", async () => {
 
 			// IMPACTOS DE
 			sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
-			if (DOM.canonsSelect.value && sectorVisible) elegibles.canon_id = DOM.canonsSelect.value;
+			if (DOM.canonsSelect.value && sectorVisible) elegibles.canons = DOM.canonsSelect.value;
 			sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
-			if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rol_iglesia_id = DOM.rolesIglesiaSelect.value;
+			if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rolesIglesia = DOM.rolesIglesiaSelect.value;
 
 			this.impactosDeDemasElegibles();
 
@@ -218,6 +220,8 @@ window.addEventListener("load", async () => {
 		// Impactos de Demás Elegibles
 		impactosDeDemasElegibles: function () {
 			for (let elegible of DOM.demasElegibles) if (elegible.value) elegibles[elegible.name] = elegible.value;
+
+			apoyo.limpiaLineasConsecutivas();
 
 			// Fin
 			return;
@@ -336,6 +340,7 @@ window.addEventListener("load", async () => {
 					: [];
 
 			console.log(resultados.length);
+			console.log(resultados);
 			// Actualiza el contador
 
 			// Actualiza la información mostrada
@@ -364,9 +369,6 @@ window.addEventListener("load", async () => {
 			if (!apoyo.condicionesMinimas()) filtrosPers.impactoEnBotonesPorCondicMins();
 			else filtrosPers.impactosEnBotonesPorElegibles();
 		}
-
-		// Limpia líneas consecutivas
-		apoyo.limpiaLineasConsecutivas();
 
 		// Obtiene los productos
 		await zonaDeProds.obtieneLosProductos();
@@ -413,6 +415,7 @@ window.addEventListener("load", async () => {
 	DOM.actualiza.addEventListener("click", async () => {
 		// Si está inactivo, interrumpe
 		if (DOM.actualiza.className.includes("inactivo")) return;
+		else filtrosPers.statusInicialBotonera();
 
 		// Variables
 		const filtro_id = DOM.filtroPers.value;
@@ -422,9 +425,6 @@ window.addEventListener("load", async () => {
 
 		// Guarda los cambios en el filtro personalizado
 		fetch(rutas.actualiza + JSON.stringify(objeto));
-
-		// Inactiva/Activa los botones según corresponda
-		filtrosPers.statusInicialBotonera();
 
 		// Fin
 		return;
