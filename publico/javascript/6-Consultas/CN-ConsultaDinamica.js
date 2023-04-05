@@ -341,7 +341,7 @@ window.addEventListener("load", async () => {
 					: [];
 
 			// Actualiza el contador
-			contador_de_prods.innerHTML = resultados.length+" resultados"
+			contador_de_prods.innerHTML = resultados.length + " resultados";
 
 			console.log(resultados.length);
 			console.log(resultados);
