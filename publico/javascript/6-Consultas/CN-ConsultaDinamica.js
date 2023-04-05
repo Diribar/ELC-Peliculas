@@ -18,9 +18,9 @@ window.addEventListener("load", async () => {
 		iconos: document.querySelectorAll("#filtrosPers #iconos i"),
 
 		// Layout y Orden
-		layoutSelect: document.querySelector("#encabezado select[name='layout']"),
-		ordenSelect: document.querySelector("#encabezado select[name='orden']"),
-		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden'] option:not(option[value=''])"),
+		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
+		orden_idSelect: document.querySelector("#encabezado select[name='orden_id']"),
+		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDesSector: document.querySelector("#encabezado #ascDes"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
 
@@ -47,6 +47,8 @@ window.addEventListener("load", async () => {
 		opcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
 		productos: "/consultas/api/obtiene-los-productos/?datos=",
 		rclvs: "/consultas/api/obtiene-los-rclvs/?datos=",
+		// Botonera
+		actualiza: "/consultas/api/fp-actualiza/?datos=",
 	};
 	let elegibles = {};
 	let varias = {
@@ -60,11 +62,11 @@ window.addEventListener("load", async () => {
 		// Impactos de layout
 		impactosDeLayout: function () {
 			// Asigna valor a las variables
-			const SI = !!DOM.layoutSelect.value;
-			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layoutSelect.value) : null;
+			const SI = !!DOM.layout_idSelect.value;
+			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
 			elegibles.entidad = SI ? varias.layout.entidad : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
-			// if (SI) elegibles.layout_id = DOM.layoutSelect.value;
+			if (SI) elegibles.layout_id = DOM.layout_idSelect.value;
 
 			// Siguiente rutina
 			this.impactosEnDeOrden();
@@ -72,24 +74,24 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		// Impactos en/de orden
+		// Impactos en/de orden_id
 		impactosEnDeOrden: function () {
 			// IMPACTOS EN - Oculta/Muestra las opciones que corresponden
-			const checked = document.querySelector("#encabezado select[name='orden'] option:checked");
+			const checked = document.querySelector("#encabezado select[name='orden_id'] option:checked");
 			varias.opcionesOrdenBD.forEach((opcion, i) => {
 				// Acciones si no existe 'layout' o la opción tiene una entidad distinta a la de layout
 				if (!varias.layout || opcion.entidad != varias.layout.entidad) {
 					// 1. Oculta la opción
 					DOM.opcionesOrdenVista[i].classList.add("ocultar");
 					// 2. La 'des-selecciona'
-					if (DOM.opcionesOrdenVista[i] == checked) DOM.ordenSelect.value = "";
+					if (DOM.opcionesOrdenVista[i] == checked) DOM.orden_idSelect.value = "";
 				}
 				// En caso contrario, muestra la opción
 				else DOM.opcionesOrdenVista[i].classList.remove("ocultar");
 			});
 
 			// IMPACTOS DE
-			if (DOM.ordenSelect.value) elegibles.orden_id = DOM.ordenSelect.value;
+			if (DOM.orden_idSelect.value) elegibles.orden_id = DOM.orden_idSelect.value;
 
 			this.impactosEnDeAscDes();
 
@@ -98,13 +100,13 @@ window.addEventListener("load", async () => {
 		},
 		impactosEnDeAscDes: function () {
 			// Variables
-			const orden = DOM.ordenSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.ordenSelect.value) : null;
+			const orden = DOM.orden_idSelect.value ? varias.opcionesOrdenBD.find((n) => n.id == DOM.orden_idSelect.value) : null;
 
 			// IMPACTOS EN
-			const SI = !DOM.ordenSelect.value || orden.asc_des != "ascDes";
+			const SI = !DOM.orden_idSelect.value || orden.asc_des != "ascDes";
 			SI ? DOM.ascDesSector.classList.add("ocultar") : DOM.ascDesSector.classList.add("flexCol");
 			SI ? DOM.ascDesSector.classList.remove("flexCol") : DOM.ascDesSector.classList.remove("ocultar");
-			if (SI && DOM.ordenSelect.value) elegibles.asc_des = orden.asc_des;
+			if (SI && DOM.orden_idSelect.value) elegibles.asc_des = orden.asc_des;
 			if (!SI) for (let input of DOM.ascDesInputs) if (input.checked) elegibles.asc_des = input.value;
 
 			// IMPACTOS DE - Sector 'OK'
@@ -193,7 +195,7 @@ window.addEventListener("load", async () => {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 			// Sólo se muestra el sector si entidad='personajes' y CFC='SI'
-			let sectorVisible
+			let sectorVisible;
 			const SI = elegibles.ocurrio == "pers" && elegibles.cfc == "CFC";
 
 			// Oculta/Muestra sectores
@@ -241,17 +243,18 @@ window.addEventListener("load", async () => {
 			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && input.value == opciones.ascDes;
 
 			// Actualiza los botones
-			this.impactosEnBotonesPorFiltroPers();
+			this.statusInicialBotonera();
 
 			// Fin
 			return;
 		},
-		impactosEnBotonesPorFiltroPers: () => {
-			// 1. Inactiva las opciones 'reinicio' y 'actualiza'
+		statusInicialBotonera: () => {
+			// 1. Inactiva las opciones 'nuevo', 'reinicio' y 'actualiza'
+			DOM.nuevo.classList.add("inactivo");
 			DOM.reinicio.classList.add("inactivo");
 			DOM.actualiza.classList.add("inactivo");
 
-			// 2. Acciones para los íconos 'modificaNombre' y 'elimina'
+			// 2. Activa los íconos 'modificaNombre' y 'elimina', salvo para el filtro Estándar
 			const filtroElegido = DOM.filtroPers.value;
 			filtroElegido == 1 ? DOM.modificaNombre.classList.add("inactivo") : DOM.modificaNombre.classList.remove("inactivo");
 			filtroElegido == 1 ? DOM.elimina.classList.add("inactivo") : DOM.elimina.classList.remove("inactivo");
@@ -285,8 +288,8 @@ window.addEventListener("load", async () => {
 	};
 	let apoyo = {
 		condicionesMinimas: () => {
-			const SI_layout = !!DOM.layoutSelect.value;
-			const SI_orden = !!DOM.ordenSelect.value;
+			const SI_layout = !!DOM.layout_idSelect.value;
+			const SI_orden = !!DOM.orden_idSelect.value;
 			const SI_ascDes = !!elegibles.asc_des;
 			const SI = SI_layout && SI_orden && SI_ascDes;
 
@@ -383,8 +386,11 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	});
-	// Reinicio
-	reinicio.addEventListener("click", async () => {
+	// Botonera de Filtros Personalizados
+	DOM.reinicio.addEventListener("click", async () => {
+		// Si está inactivo, interrumpe
+		if (DOM.reinicio.classList.includes("inactivo")) return;
+
 		// Variables
 		elegibles = {};
 
@@ -400,6 +406,25 @@ window.addEventListener("load", async () => {
 
 		// Obtiene los productos
 		await zonaDeProds.obtieneLosProductos();
+
+		// Fin
+		return;
+	});
+	DOM.actualiza.addEventListener("click", async () => {
+		// Si está inactivo, interrumpe
+		if (DOM.actualiza.className.includes("inactivo")) return;
+
+		// Variables
+		const filtro_id = DOM.filtroPers.value;
+		if (!filtro_id) return;
+		let objeto = {...elegibles, filtro_id};
+		delete objeto.entidad;
+
+		// Guarda los cambios en el filtro personalizado
+		fetch(rutas.actualiza + JSON.stringify(objeto));
+
+		// Inactiva/Activa los botones según corresponda
+		filtrosPers.statusInicialBotonera();
 
 		// Fin
 		return;

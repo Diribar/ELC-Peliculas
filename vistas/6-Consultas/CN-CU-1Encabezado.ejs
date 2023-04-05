@@ -1,33 +1,33 @@
 <div id="izquierda">
 	<!-- Layout -->
-	<select name="layout" required class="elegibleSimple">
+	<select name="layout_id" required class="elegibleSimple">
 		<!-- Opciones en base de datos -->
 		<% for (let layout of layouts) { %>
 			<option 
 				value="<%= layout.id %>" 
-				<% if (layout.id == opcionesElegidas.layout) { %>selected<% } %>
+				<% if (layout.id == opcionesElegidas.layout_id) { %>selected<% } %>
 			><%= layout.nombre %></option>
 		<% } %>
 	</select>
 	<!-- Orden -->
-	<select name="orden" required class="elegibleSimple">
+	<select name="orden_id" required class="elegibleSimple">
 		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
 		<% for (let orden of ordenes) { %>
 			<option 
 				value="<%= orden.id %>" class="ocultar" 
-				<% if (orden.id == opcionesElegidas.orden) { %>selected <% } %>
+				<% if (orden.id == opcionesElegidas.orden_id) { %>selected <% } %>
 			><%= orden.nombre %></option>
 		<% } %>
 	</select>
 	<!-- Ascendente / Descendente -->
 	<div id="ascDes" class="ocultar">
 		<div class="flexRow">
-			<input type="radio" name="ascDes" value="ASC" id="ascendente" <% if (opcionesElegidas.ascDes=="ASC") { %>checked<% } %>>
+			<input type="radio" name="ascDes" value="ASC" id="ascendente" <% if (opcionesElegidas.asc_des=="ASC") { %>checked<% } %>>
 			<label for="ascendente">Ascendente</label>
 		</div>
 		<div class="flexRow">
-			<input type="radio" name="ascDes" value="DESC" id="descendente" <% if (opcionesElegidas.ascDes=="DESC") { %>checked<% } %>>
+			<input type="radio" name="ascDes" value="DESC" id="descendente" <% if (opcionesElegidas.asc_des=="DESC") { %>checked<% } %>>
 			<label for="descendente">Descendente</label>
 		</div>
 	</div>
