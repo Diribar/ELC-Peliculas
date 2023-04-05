@@ -30,7 +30,8 @@ window.addEventListener("load", async () => {
 		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
 		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
 		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
-		epoca_idSelect: document.querySelector("#filtros #campos #epoca_id select"),
+		epocasSector: document.querySelector("#filtros #campos #epocas"),
+		epocasSelect: document.querySelector("#filtros #campos #epocas select"),
 		apMarSector: document.querySelector("#filtros #campos #apMar"),
 		apMarSelect: document.querySelector("#filtros #campos #apMar select"),
 		canonsSector: document.querySelector("#filtros #campos #canons"),
@@ -159,13 +160,11 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de epoca_id
 		impactosEnDeEpoca: function () {
-			if (varias.ocurrio && varias.ocurrio != "NO") {
-				// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+			// IMPACTOS EN - Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 
-				// IMPACTOS DE
-				varias.epoca_id = DOM.epoca_idSelect.value ? DOM.epoca_idSelect.value : "";
-				if (varias.epoca_id) elegibles.epoca_id = varias.epoca_id;
-			}
+			// IMPACTOS DE
+			const sectorVisible = window.getComputedStyle(DOM.epocasSector).getPropertyValue("display") != "none";
+			if (DOM.epocasSelect.value && sectorVisible) elegibles.epoca_id = DOM.epocasSelect.value;
 
 			this.impactosEnDeApMar();
 
@@ -174,16 +173,15 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos en/de apMar
 		impactosEnDeApMar: function () {
-			if (varias.ocurrio && varias.ocurrio != "NO") {
-				// IMPACTOS EN
-				// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-				// Sólo se muestra el sector si CFC='SI' y epoca_id='pst'
-				if (varias.cfc == "CFC" && varias.epoca_id == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
-				else DOM.apMarSector.classList.add("ocultarApMar");
+			// IMPACTOS EN
+			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
+			// Sólo se muestra el sector si CFC='SI' y epoca_id='pst'
+			if (elegibles.cfc == "CFC" && elegibles.epoca_id == "pst") DOM.apMarSector.classList.remove("ocultarApMar");
+			else DOM.apMarSector.classList.add("ocultarApMar");
 
-				// IMPACTOS DE
-				if (DOM.apMarSelect.value) elegibles.apMar = DOM.apMarSelect.value;
-			}
+			// IMPACTOS DE
+			const sectorVisible = window.getComputedStyle(DOM.apMarSector).getPropertyValue("display") != "none";
+			if (DOM.apMarSelect.value && sectorVisible) elegibles.apMar = DOM.apMarSelect.value;
 
 			this.impactosEnDeCanonsMasRolesIglesia();
 
@@ -195,15 +193,20 @@ window.addEventListener("load", async () => {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 			// Sólo se muestra el sector si entidad='personajes' y CFC='SI'
-			const SI = elegibles.ocurrio == "pers" && varias.cfc == "CFC";
+			let sectorVisible
+			const SI = elegibles.ocurrio == "pers" && elegibles.cfc == "CFC";
+
+			// Oculta/Muestra sectores
 			SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");
 			SI
 				? DOM.rolesIglSector.classList.remove("ocultarRolesIglesia")
 				: DOM.rolesIglSector.classList.add("ocultarRolesIglesia");
 
 			// IMPACTOS DE
-			if (DOM.canonsSelect.value) elegibles.canons_id = DOM.canonsSelect.value;
-			if (DOM.rolesIglesiaSelect.value) elegibles.roles_iglesia_id = DOM.rolesIglesiaSelect.value;
+			sectorVisible = window.getComputedStyle(DOM.canonsSector).getPropertyValue("display") != "none";
+			if (DOM.canonsSelect.value && sectorVisible) elegibles.canon_id = DOM.canonsSelect.value;
+			sectorVisible = window.getComputedStyle(DOM.rolesIglSector).getPropertyValue("display") != "none";
+			if (DOM.rolesIglesiaSelect.value && sectorVisible) elegibles.rol_iglesia_id = DOM.rolesIglesiaSelect.value;
 
 			this.impactosDeDemasElegibles();
 
@@ -235,7 +238,7 @@ window.addEventListener("load", async () => {
 				elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
 
 			// Actualiza los elegibles 'AscDes'
-			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && elegible.value == opciones.ascDes;
+			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && input.value == opciones.ascDes;
 
 			// Actualiza los botones
 			this.impactosEnBotonesPorFiltroPers();
@@ -324,7 +327,10 @@ window.addEventListener("load", async () => {
 
 			// Obtiene los resultados
 			console.log("Busca los productos");
-			const resultados = elegibles.entidad == "producto" ? await fetch(rutas.productos + JSON.stringify(elegibles)) : [];
+			const resultados =
+				elegibles.entidad == "producto"
+					? await fetch(rutas.productos + JSON.stringify(elegibles)).then((n) => n.json())
+					: [];
 
 			console.log(resultados.length);
 			// Actualiza el contador

@@ -1,8 +1,8 @@
 "use strict";
 // Variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const variables = require("../../funciones/3-Procesos/Variables");
 const comp = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
@@ -48,27 +48,72 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log("Datos:", datos);
+		let productos = [];
+		let rclvs = [];
+		let resultado = [];
 
-		// Obtiene todos los productos
-		const orden = ordenes.find((n) => n.id == datos.orden_id).valor;
-		const ascDes = datos.asc_des;
-		const filtros = procesos.API.filtrosPorFamilia(datos);
-		const condicsProd = procesos.API.convFiltrosProd(filtros);
+		// Obtiene los filtros y el orden
+		const filtrosProd = procesos.API.filtrosProd(datos);
+		const ordenCampo = ordenes.find((n) => n.id == datos.orden_id).valor;
+		const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
 
-		// Obtiene los RCLV
-		// !ocurrio --> los 3
-		// ocurrio == perHec --> 2
-		// ocurrio == pers/hecho --> 1
-		const condicsRCLV = procesos.API.convFiltrosRCLV(filtros);
+		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
+		for (let entidad of ["peliculas", "colecciones"])
+			productos.push(
+				BD_genericas.obtieneTodosPorCampos(entidad, filtrosProd).then((n) =>
+					n.map((m) => {
+						return {
+							id: m.id,
+							entidad,
+							entidadNombre: comp.obtieneEntidadNombre(entidad),
+							direccion: m.direccion,
+							avatar: m.avatar,
+							personaje_id: m.personaje_id,
+							hecho_id: m.hecho_id,
+							tema_id: m.tema_id,
+							// Orden
+							momento: m.momento,
+							creado_en: m.creado_en,
+							ano_estreno: m.ano_estreno,
+							nombre_castellano: m.nombre_castellano,
+							calificacion: m.calificacion,
+						};
+					})
+				)
+			);
+		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+		if (productos.length) productos = productos.filter((n) => n[ordenCampo] !== null);
+
+		if (productos.length) {
+			// Ordena los productos
+			productos.sort((a, b) => {
+				return typeof a[ordenCampo] == "string"
+					? a[ordenCampo].toLowerCase() < b[ordenCampo].toLowerCase()
+						? ordenAscDes
+						: -ordenAscDes
+					: a[ordenCampo] < b[ordenCampo]
+					? ordenAscDes
+					: -ordenAscDes;
+			});
+
+			// Obtiene los RCLV
+			rclvs = await procesos.API.obtieneRCLVs(datos);
+			// Filtra los productos por RCLV
+			productos = productos.filter(
+				(n) =>
+					(rclvs.personajes && rclvs.personajes.includes(n.personaje_id)) ||
+					(rclvs.hechos && rclvs.hechos.includes(n.hecho_id)) ||
+					(rclvs.temas && rclvs.temas.includes(n.tema_id))
+			);
+		}
 
 		// Fin
-		console.log("Productos:", condicsProd);
-		return res.json();
+		return res.json(productos);
 	},
 	obtieneRCLVs: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		console.log("RCLVs:", datos);
+		console.log("Datos:", datos);
 
 		// Fin
 		return res.json();
