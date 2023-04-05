@@ -6,6 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
+	// Lectura
 	layoutsOrdenes: async (req, res) => {
 		// Obtiene los valores
 		let layouts = BD_genericas.obtieneTodos("layouts", "orden");
@@ -28,6 +29,7 @@ module.exports = {
 		return res.json(opciones);
 	},
 
+	// Guardado
 	guardaFiltro_id: (req, res) => {
 		// Variables
 		const filtro_id = req.query.filtro_id;
@@ -43,7 +45,29 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+	fpActualiza: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		console.log("Datos:", datos);
+		const cabecera_id = datos.filtro_id;
 
+		// Elimina la información guardada
+		await BD_genericas.eliminaTodosPorCampos("filtros_campos", {cabecera_id});
+
+		// Guarda la nueva información
+		for (let campo in datos) {
+			// Si el campo es 'filtro_id', saltea la rutina
+			if (campo == "filtro_id") continue;
+			// Crea el registro
+			let objeto = {cabecera_id, campo, valor: datos[campo]};
+			BD_genericas.agregaRegistro("filtros_campos", objeto);
+		}
+
+		// Fin
+		return res.json();
+	},
+	
+	// Obtiene Productos/RCLVs
 	obtieneProductos: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
