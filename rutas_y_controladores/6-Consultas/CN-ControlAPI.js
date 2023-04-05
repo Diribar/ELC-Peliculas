@@ -66,15 +66,13 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
-	
+
 	// Obtiene Productos/RCLVs
 	obtieneProductos: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		console.log("Datos:", datos);
 		let productos = [];
 		let rclvs = [];
-		let resultado = [];
 
 		// Obtiene los filtros y el orden
 		const filtrosProd = procesos.API.filtrosProd(datos);

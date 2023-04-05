@@ -24,8 +24,11 @@ module.exports = {
 			// Le agrega el nombre del campo a cada bloque de información
 			filtros[campo].codigo = campo;
 			// Si no tiene opciones, le agrega las de la BD
-			if (!filtros[campo].opciones) filtros[campo].opciones = global[campo];
-			if (campo == "epocas") filtros.epocas.opciones = filtros.epocas.opciones.map((n) => ({id: n.id, nombre: n.consulta}));
+			if (!filtros[campo].opciones) {
+				filtros[campo].opciones = global[campo];
+				if (campo == "epocas")
+					filtros.epocas.opciones = filtros.epocas.opciones.map((n) => ({id: n.id, nombre: n.consulta}));
+			}
 		}
 
 		// Agrega las opciones grupales para los RCLV
@@ -137,34 +140,36 @@ module.exports = {
 			let condics = {
 				status_registro_id: aprobado_id,
 				id: {[Op.gt]: 10},
-				[Op.or]: [],
+				[Op.and]: [],
 			};
 
 			// Arma el filtro
-			let campos = ["epoca_id", "apMar", "canon_id", "rol_iglesia_id"];
+			let campos = ["epocas", "apMar", "canons", "rolesIglesia"];
 			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
 			// Conversión de filtros de RCLV
-			if (filtros.epoca_id && datos.entidad != "temas") condics.epoca_id = filtros.epoca_id;
+			if (filtros.epocas && datos.entidad != "temas") condics.epoca_id = filtros.epocas;
 			if (filtros.apMar) {
 				if (datos.entidad == "personajes") condics.ap_mar_id = {[Op.ne]: 10};
 				if (datos.entidad == "hechos") condics.ama = true;
 			}
-			if (filtros.canon_id) {
-				if (filtros.canon_id == "sb") condics[Op.or].push({canon_id: {[Op.like]: "ST%"}}, {canon_id: {[Op.like]: "BT%"}});
-				if (filtros.canon_id == "vs") condics[Op.or].push({canon_id: {[Op.like]: "VN%"}}, {canon_id: {[Op.like]: "SD%"}});
-				if (filtros.canon_id == "sb") condics.canon_id = {[Op.like]: "NN%"};
+			if (filtros.canons) {
+				if (filtros.canons == "sb")
+					condics[Op.and].push({[Op.or]: [{canon_id: {[Op.like]: "ST%"}}, {canon_id: {[Op.like]: "BT%"}}]});
+				if (filtros.canons == "vs")
+					condics[Op.and].push({[Op.or]: [{canon_id: {[Op.like]: "VN%"}}, {canon_id: {[Op.like]: "SD%"}}]});
+				if (filtros.canons == "nn") condics.canon_id = {[Op.like]: "NN%"};
 			}
-			if (filtros.rol_iglesia_id) {
-				if (filtros.rol_iglesia_id == "la") condics.rol_iglesia_id = {[Op.like]: "L%"};
-				if (filtros.rol_iglesia_id == "lc") condics.rol_iglesia_id = {[Op.like]: "LC%"};
-				if (filtros.rol_iglesia_id == "rs")
-					condics[Op.or].push({rol_iglesia_id: {[Op.like]: "RE%"}}, {rol_iglesia_id: {[Op.like]: "SC%"}});
-				if (filtros.rol_iglesia_id == "pp") condics.rol_iglesia_id = "PPV";
-				if (filtros.rol_iglesia_id == "ap") condics.rol_iglesia_id = "ALV";
-				if (filtros.rol_iglesia_id == "sf") condics.rol_iglesia_id = {[Op.like]: "SF%"};
+			if (filtros.rolesIglesia) {
+				if (filtros.rolesIglesia == "la") condics.rol_iglesia_id = {[Op.like]: "L%"};
+				if (filtros.rolesIglesia == "lc") condics.rol_iglesia_id = {[Op.like]: "LC%"};
+				if (filtros.rolesIglesia == "rs")
+					condics[Op.and].push({[Op.or]: [{rol_iglesia_id: {[Op.like]: "RE%"}}, {rol_iglesia_id: "SCV"}]});
+				if (filtros.rolesIglesia == "pp") condics.rol_iglesia_id = "PPV";
+				if (filtros.rolesIglesia == "ap") condics.rol_iglesia_id = "ALV";
+				if (filtros.rolesIglesia == "sf") condics.rol_iglesia_id = {[Op.like]: "SF%"};
 			}
-			if (!condics[Op.or].length) delete condics[Op.or];
+			if (!condics[Op.and].length) delete condics[Op.and];
 
 			// Fin
 			return condics;
@@ -172,7 +177,7 @@ module.exports = {
 		obtieneRCLVs: async function (datos) {
 			// Variables
 			let auxs = [];
-			let rclvs = [];
+			let rclvs = {};
 
 			// Obtiene las entidades
 			const entidades =
