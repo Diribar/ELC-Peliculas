@@ -1,1 +1,7 @@
+/* Zona de productos */
 #encabMasPelis #zona_de_prods {border: red 1px solid;}
+
+/* Zona de vista */
+#zona_de_prods #vistaProds {border: green 1px solid; width: 70%; height: 70%;}
+#zona_de_prods #vistaProds {display: flex; flex-direction: row;}
+
