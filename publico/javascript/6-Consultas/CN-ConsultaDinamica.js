@@ -17,12 +17,13 @@ window.addEventListener("load", async () => {
 		elimina: document.querySelector("#filtrosPers i#elimina"),
 		iconos: document.querySelectorAll("#filtrosPers #iconos i"),
 
-		// Layout y Orden
+		// Encabezado
 		layout_idSelect: document.querySelector("#encabezado select[name='layout_id']"),
 		orden_idSelect: document.querySelector("#encabezado select[name='orden_id']"),
 		opcionesOrdenVista: document.querySelectorAll("#encabezado select[name='orden_id'] option:not(option[value=''])"),
 		ascDesSector: document.querySelector("#encabezado #ascDes"),
 		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		contador_de_prods: document.querySelector("#encabezado #derecha #contador_de_prods"),
 
 		// Filtros
 		camposTitulo: document.querySelector("#filtros #campos div:has(h2)"),
@@ -338,6 +339,9 @@ window.addEventListener("load", async () => {
 				elegibles.entidad == "producto"
 					? await fetch(rutas.productos + JSON.stringify(elegibles)).then((n) => n.json())
 					: [];
+
+			// Actualiza el contador
+			contador_de_prods.innerHTML = resultados.length+" resultados"
 
 			console.log(resultados.length);
 			console.log(resultados);
