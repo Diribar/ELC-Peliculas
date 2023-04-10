@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
 <div class="flechas">
-	<% console.log(codigo) %>
 	<% if (locals.origen && (!origen.startsWith("DT") || codigo != "detalle")) { %>
 		<!-- Salir -->
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad?prodEntidad:entidad) + (locals.prodID||locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
@@ -8,7 +7,6 @@
 		</a>
 	<% } %>
 	<% if (tema != "crud" && codigo != "detalle" && locals.id) { %>
-		<% console.log(tema,codigo) %>
 		<!-- Detalle -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
