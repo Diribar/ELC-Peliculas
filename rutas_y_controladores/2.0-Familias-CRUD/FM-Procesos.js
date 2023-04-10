@@ -66,7 +66,15 @@ module.exports = {
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
 		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = ["ediciones", ...includesEstandar, "creado_por", "sugerido_por", "status_registro", "motivo"];
+		let includesOrig = [
+			"ediciones",
+			...includesEstandar,
+			"creado_por",
+			"alta_revisada_por",
+			"sugerido_por",
+			"status_registro",
+			"motivo",
+		];
 		let includesEdic = [...includesEstandar];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");

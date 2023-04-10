@@ -7,13 +7,14 @@
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (codigo != "detalle" && locals.id) { %>
+	<% if (tema != "crud" && codigo != "detalle" && locals.id) { %>
+		<% console.log(tema,codigo) %>
 		<!-- Detalle -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if ((tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
+	<% if ((tema != "crud" && tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
 		<!-- Edición -->
 		<% if (status_id <= aprobado_id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
