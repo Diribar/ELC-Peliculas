@@ -25,8 +25,12 @@
 	<% } %>
 	<% if ((tema == "prod_agregar" || tema == "prod_rud") && locals.id) { %>
 		<!-- Links -->
-		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
-		</a>
+		<% if (status_id <= aprobado_id) { %>
+			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+			</a>
+		<% } else { %>
+			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+		<% } %>
 	<% } %>
 </div>
