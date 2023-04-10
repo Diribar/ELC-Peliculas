@@ -1,6 +1,4 @@
 "use strict";
-//import { hello } from '/javascript/2.1-Prod-Agregar/2-Prod-DS-Guardar.js';
-
 window.addEventListener("load", async () => {
 	// Variables
 	let ruta = "api/desambiguar-form0";

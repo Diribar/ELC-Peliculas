@@ -42,6 +42,10 @@ window.addEventListener("load", async () => {
 		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
 		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles .input"),
 		palabrasClave: document.querySelector("#filtros #campos #palabrasClave"),
+
+		// Zona de Productos
+		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
+		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
 	};
 	let rutas = {
 		layoutsOrdenes: "/consultas/api/layouts-y-ordenes",
@@ -342,12 +346,10 @@ window.addEventListener("load", async () => {
 
 			// Actualiza el contador
 			contador_de_prods.innerHTML = resultados.length + " resultados";
-
-			console.log(resultados.length);
-			console.log(resultados);
-			// Actualiza el contador
+			//console.log(resultados);
 
 			// Actualiza la información mostrada
+			vistaProds.classList.remove("ocultar")
 
 			// Fin
 			return;
