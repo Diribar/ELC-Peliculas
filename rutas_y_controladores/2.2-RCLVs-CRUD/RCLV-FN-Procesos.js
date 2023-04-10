@@ -65,9 +65,13 @@ module.exports = {
 				if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
-			prodsDelRCLV.sort((a, b) => (a.ano_estreno > b.ano_estreno ? -1 : a.ano_estreno < b.ano_estreno ? 1 : 0));
+			prodsDelRCLV.sort((a, b) => b.ano_estreno - a.ano_estreno);
+			// Ordena por inactivo
+			let resultado = prodsDelRCLV.filter((n) => n.status_registro_id != inactivo_id);
+			resultado.push(...prodsDelRCLV.filter((n) => n.status_registro_id == inactivo_id));
+			// prodsDelRCLV.sort(a,b)
 			// Fin
-			return prodsDelRCLV;
+			return resultado;
 		},
 		bloqueRCLV: (registro) => {
 			// Variables

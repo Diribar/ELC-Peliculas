@@ -18,11 +18,12 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
+		include.push("status_registro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidadesProd);
@@ -48,11 +49,11 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? procesos.bloqueRegistro(original)
+				? procesos.bloqueRegistro({registro: original, revisor})
 				: familias == "rclvs"
 				? {
 						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-						registro: procesos.bloqueRegistro({...original, entidad}, cantProds),
+						registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
 				  }
 				: [];
 
@@ -82,12 +83,13 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+		const status_id = original.status_registro_id;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
 			...{entidad, id, entidadNombre, familias, familia, comentarios},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
 			cartelGenerico: true,
 		});
 	},
