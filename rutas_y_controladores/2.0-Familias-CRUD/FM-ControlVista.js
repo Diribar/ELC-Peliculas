@@ -18,6 +18,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -48,11 +49,11 @@ module.exports = {
 		// Datos Breves
 		bloqueDer =
 			familias == "productos"
-				? procesos.bloqueRegistro(original)
+				? procesos.bloqueRegistro({registro: original, revisor})
 				: familias == "rclvs"
 				? {
 						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-						registro: procesos.bloqueRegistro({...original, entidad}, cantProds),
+						registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
 				  }
 				: [];
 

@@ -570,16 +570,21 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function (registro, cantProds) {
+	bloqueRegistro: function ({registro, revisor, cantProds}) {
 		// Variable
 		let bloque = [];
 
 		// Datos CRUD
-		bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
-		bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
-		if (registro.sugerido_en != registro.creado_en) {
+		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
+		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
+
+		if (registro.alta_revisada_en) {
+			bloque.push({titulo: "Revisado el", valor: comp.fechaDiaMesAno(registro.alta_revisada_en)});
+			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
+		}
+		if (registro.alta_revisada_en && registro.alta_revisada_en - registro.sugerido_en) {
 			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
-			bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
+			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 
 		// Prods en BD
@@ -587,10 +592,6 @@ module.exports = {
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
-
-		// Motivo
-		if (registro.status_registro_id == inactivo_id)
-			bloque.push({titulo: "Motivo", valor: registro.motivo ? registro.motivo.descripcion : "?"});
 
 		// Fin
 		return bloque;

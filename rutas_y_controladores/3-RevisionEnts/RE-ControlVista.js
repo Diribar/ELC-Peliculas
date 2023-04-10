@@ -34,7 +34,7 @@ module.exports = {
 
 		// Links
 		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
-		
+
 		// Procesa los campos de las 2 familias de entidades
 		// return res.send(productos.AL)
 		productos = procesos.TC.prod_ProcesaCampos(productos);
@@ -122,6 +122,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -160,7 +161,7 @@ module.exports = {
 
 		// Datos Breves
 		bloqueDer = [
-			procsCRUD.bloqueRegistro({...original, entidad}, cantProds),
+			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
 			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
 		];
 
@@ -289,6 +290,7 @@ module.exports = {
 		const {entidad, id, edicion_id: edicID} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos;
 
@@ -333,9 +335,10 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
 			// Variables
-			let cantProds;
-			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
-			bloqueDer = familia == "rclv" ? [procsCRUD.bloqueRegistro({...original, entidad}, cantProds)] : [[]];
+			if (familia == "rclv") {
+				let cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
+				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
+			} else bloqueDer = [[]];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			avatar = procsCRUD.obtieneAvatarProd(original).orig;
 			imgDerPers = avatar;
