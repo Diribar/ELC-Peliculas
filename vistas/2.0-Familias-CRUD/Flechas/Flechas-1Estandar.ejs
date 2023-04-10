@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
 <div class="flechas">
+	<% console.log(codigo) %>
 	<% if (locals.origen && (!origen.startsWith("DT") || codigo != "detalle")) { %>
 		<!-- Salir -->
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad?prodEntidad:entidad) + (locals.prodID||locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
@@ -12,11 +13,15 @@
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if ((codigo != "edicion" && locals.id) && (tema != "revisionEnts")) { %>
+	<% if ((tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
 		<!-- Edición -->
-		<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
-			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-		</a>
+		<% if (status_id <= aprobado_id) { %>
+			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			</a>
+		<% } else { %>
+			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+		<% } %>
 	<% } %>
 	<% if ((tema == "prod_agregar" || tema == "prod_rud") && locals.id) { %>
 		<!-- Links -->
