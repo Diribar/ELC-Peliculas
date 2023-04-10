@@ -114,12 +114,13 @@ module.exports = {
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		if (!origen) origen = "DTR";
+		const revisor = req.session.usuario.rol_usuario.revisor_ents
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por");
+		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Productos
@@ -135,7 +136,7 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
-			registro: procsCRUD.bloqueRegistro(original, cantProds),
+			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
 		};
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;

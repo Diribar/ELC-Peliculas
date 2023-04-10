@@ -156,7 +156,7 @@ module.exports = {
 			// Si es un url
 			original.avatar && original.avatar.startsWith("http")
 				? original.avatar
-				: // Si no existe avatarOrig
+				: // Si 'avatarOrig' no es un link
 				  localhost +
 				  "/imagenes/" +
 				  (!original.avatar
