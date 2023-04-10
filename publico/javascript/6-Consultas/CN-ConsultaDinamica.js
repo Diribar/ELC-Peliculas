@@ -59,8 +59,9 @@ window.addEventListener("load", async () => {
 	let elegibles = {};
 	let varias = {
 		comencemos: true,
-		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),
+		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),		
 	};
+
 	// Obtiene tabla de layouts y ordenes
 
 	// Funciones
@@ -338,7 +339,6 @@ window.addEventListener("load", async () => {
 			if (varias.comencemos) return;
 
 			// Obtiene los resultados
-			console.log("Busca los productos");
 			const resultados =
 				elegibles.entidad == "producto"
 					? await fetch(rutas.productos + JSON.stringify(elegibles)).then((n) => n.json())
@@ -346,10 +346,19 @@ window.addEventListener("load", async () => {
 
 			// Actualiza el contador
 			contador_de_prods.innerHTML = resultados.length + " resultados";
-			//console.log(resultados);
+
+			// Actualiza los resultados
+			DOM.listado.innerHTML = ""
+			if (!resultados.length) {
+			} else {
+				const tope = Math.min(4, resultados.length);
+				for (let i = 0; i < tope; i++) {
+					await botonPelicula(resultados[i]);
+				}
+			}
 
 			// Actualiza la información mostrada
-			vistaProds.classList.remove("ocultar")
+			vistaProds.classList.remove("ocultar");
 
 			// Fin
 			return;

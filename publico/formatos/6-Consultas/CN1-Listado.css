@@ -2,6 +2,22 @@
 #encabMasPelis #zona_de_prods {border: red 1px solid;}
 
 /* Zona de vista */
-#zona_de_prods #vistaProds {border: green 1px solid; width: 70%; height: 70%;}
-#zona_de_prods #vistaProds {display: flex; flex-direction: row;}
+#zona_de_prods #vistaProds {border: green 1px solid; max-width: 700px; width: 100%; height: 500px;}
+#zona_de_prods #vistaProds {display: flex; flex-direction: row; overflow-y: auto;}
 
+/* Cuadro de Resultados */
+#vistaProds #listado {display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;}
+#vistaProds #listado {max-width: 100%;}
+
+/* Botones para productos */
+#listado li {padding: 20px; list-style-type: none}
+#listado li a button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px; width: 290px;}
+#listado li a button {border: none; text-align: left; background: var(--celeste-oscuro);}
+#listado li a button:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+
+/* Partes del resultado */
+#listado button .imagenChica, #listado button #texto {height: 100%;}
+#listado button #texto {display: flex; flex-direction: column; justify-content: space-between;}
+#listado button #texto, #listado button #texto * {color: inherit;}
+#listado button #infoPeli {margin: 10px 15px;}
+#listado button .interlineadoChico {margin-top: 5px;}
