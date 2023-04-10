@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let ruta = "api/desambiguar-form0";
 	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
-	ruta = "api/localhost";
+	ruta = "/api/localhost";
 	const localhost = await fetch(ruta).then((n) => (n ? n.json() : ""));
 
 	// DOM - Opciones
@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 
 	// Productos nuevos
 	if (prodsNuevos.length)
-		prodsNuevos.forEach((prod) => {
+		for (let prod of prodsNuevos) {
 			// Crea el elemento 'li'
 			let li = prodsNuevos_DOM.cloneNode(true);
 			// Información a enviar al BE
@@ -123,11 +123,11 @@ window.addEventListener("load", async () => {
 			listado.insertBefore(li, ingrManual_DOM);
 			// Elimina el form modelo, que ya no se necesita
 			prodsNuevos_DOM.remove();
-		});
+		}
 
 	// Productos ya en BD
 	if (prodsYaEnBD.length)
-		prodsYaEnBD.forEach((prod) => {
+		for (let prod of prodsYaEnBD) {
 			// Crea el elemento 'li'
 			let li = prodsYaEnBD_DOM.cloneNode(true);
 			// Información a enviar al BE
@@ -153,7 +153,7 @@ window.addEventListener("load", async () => {
 			listado.append(li);
 			// Elimina el form modelo, que ya no se necesita
 			prodsYaEnBD_DOM.remove();
-		});
+		}
 
 	// Terminaciones
 	// Agrega el mensaje
@@ -174,10 +174,10 @@ window.addEventListener("load", async () => {
 	}
 
 	// Comienzo de Back-end
-	// Acciones apartir del click en una opción
+	// Acciones a partir del click en una opción
 	let forms = document.querySelectorAll("#prodsNuevos form");
 	let errores, yaEligio;
-	forms.forEach((form) => {
+	for (let form of forms) {
 		form.addEventListener("submit", async (e) => {
 			// Frena el POST
 			e.preventDefault();
@@ -217,7 +217,7 @@ window.addEventListener("load", async () => {
 			if (errores.hay) location.href = "datos-duros";
 			else location.href = "datos-adicionales";
 		});
-	});
+	}
 
 	// Desplazamiento original
 	desplazamHoriz();

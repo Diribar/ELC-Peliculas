@@ -1,11 +1,15 @@
 {
-	"FechaUTC": "Mié. 5/abr",
-	"HoraUTC": "7:21",
-	"FechaSemUTC": "Dom. 2/abr",
-	"HoraSemUTC": "3:05",
-	"semanaUTC": 13,
+	"FechaUTC": "Lun. 10/abr",
+	"HoraUTC": "1:40",
+	"FechaSemUTC": "Lun. 10/abr",
+	"HoraSemUTC": "1:40",
+	"semanaUTC": 14,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MomentoDelAno"],
-	"TitulosImgDer": {"04-abr-23": "Martes Santo", "05-abr-23": "Miércoles Santo", "06-abr-23": "Jueves Santo"},
+	"TitulosImgDer": {
+		"08-abr-23": "Domingo de Resurrección",
+		"09-abr-23": "Domingo de Resurrección",
+		"10-abr-23": "ELC - Películas"
+	},
 	"FechaHoraUTC": "SI",
 	"ImagenDerecha": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},

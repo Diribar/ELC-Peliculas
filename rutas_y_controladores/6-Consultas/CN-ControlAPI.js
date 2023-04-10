@@ -88,6 +88,7 @@ module.exports = {
 							id: m.id,
 							entidad,
 							entidadNombre: comp.obtieneEntidadNombre(entidad),
+							nombre_original: m.nombre_original,
 							direccion: m.direccion,
 							avatar: m.avatar,
 							personaje_id: m.personaje_id,
