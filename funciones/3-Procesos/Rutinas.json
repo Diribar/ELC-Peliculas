@@ -1,15 +1,11 @@
 {
 	"FechaUTC": "Lun. 10/abr",
-	"HoraUTC": "1:40",
+	"HoraUTC": "14:27",
 	"FechaSemUTC": "Lun. 10/abr",
 	"HoraSemUTC": "1:40",
 	"semanaUTC": 14,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MomentoDelAno"],
-	"TitulosImgDer": {
-		"08-abr-23": "Domingo de Resurrección",
-		"09-abr-23": "Domingo de Resurrección",
-		"10-abr-23": "ELC - Películas"
-	},
+	"TitulosImgDer": {"09-abr-23": "Domingo de Resurrección", "10-abr-23": "San José Moscati", "11-abr-23": "San José Moscati"},
 	"FechaHoraUTC": "SI",
 	"ImagenDerecha": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},

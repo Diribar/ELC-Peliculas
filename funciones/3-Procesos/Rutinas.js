@@ -162,7 +162,7 @@ module.exports = {
 	ImagenDerecha: async function () {
 		// Variables
 		let info = this.lecturaRutinasJSON();
-		const milisegs = new Date().getTime();
+		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
 
 		// Actualiza los títulos de la imagen derecha
@@ -244,6 +244,7 @@ module.exports = {
 	// Conjunto de tareas
 	rutinasDiarias: async function () {
 		let horarioInicial = new Date().getTime();
+
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
