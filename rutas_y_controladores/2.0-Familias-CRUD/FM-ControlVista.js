@@ -82,12 +82,13 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+		const status_id = original.status_registro_id;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
 			...{entidad, id, entidadNombre, familias, familia, comentarios},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
 			cartelGenerico: true,
 		});
 	},
