@@ -17,6 +17,7 @@
 		<% } %>
 	<!-- Colección a la que pertenece -->
 	<% if (entidad == "capitulos") { %>
+		<script src="/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
 		<div id="tempCapI">
 			<p><strong>De la colección:</strong>
 				<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion.id %>" target="_blank">
@@ -25,6 +26,11 @@
 			</p>
 		</div>
 		<div id="tempCapS">
+			<!-- Cambiar de capítulo -->
+			<div class="pack">
+				<i class="fa-solid fa-circle-left inactivo" tabindex="-1" title="Ir al capítulo anterior"></i>
+				<i class="fa-solid fa-circle-right inactivo" tabindex="-1" title="Ir al capítulo posterior"></i>
+			</div>			
 			<p id="temporada">Temporada: <%= registro.temporada %></p>
 			<p id="capitulo">Capítulo: <%= registro.capitulo %></p>
 		</div>
