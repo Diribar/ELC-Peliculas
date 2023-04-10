@@ -46,7 +46,7 @@ module.exports = {
 	// Links
 	linkAltaBaja: async (req, res) => {
 		// Variables
-		const {entidad: prodEntidad, id: prodID, url, aprob, motivo_id} = req.query;
+		const {prodEntidad, prodID, url, IN, aprob, motivo_id} = req.query;
 		const entidad = "links";
 
 		// PROBLEMAS
@@ -71,21 +71,22 @@ module.exports = {
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
 		const alta_revisada_en = ahora;
-		const status_registro_id = aprob ? aprobado_id : inactivo_id;
-		const decisAprob = !creadoAprob ? (aprob && (creado || recuperar)) || (!aprob && inactivar) : "";
+		const status_registro_id = IN == "SI" ? aprobado_id : inactivo_id;
+		const decisAprob = aprob == "SI";
 		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
 		let datos = {
 			status_registro_id,
-			alta_revisada_por_id: revID,
-			alta_revisada_en,
 			sugerido_por_id: revID,
 			sugerido_en: alta_revisada_en,
 		};
-		if (creado) datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
-		if (!aprob) datos.motivo_id = motivo_id;
-		// return res.json({});
+		if (creado) {
+			datos.alta_revisada_por_id = revID;
+			datos.alta_revisada_en = alta_revisada_en;
+			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
+		}
+		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -93,7 +94,7 @@ module.exports = {
 
 		// 2. Agrega un registro en el historial_cambios_de_status
 		let datosHist;
-		let sugerido_por_id = creado ? original.creado_por_id : original.sugerido_por_id;
+		let sugerido_por_id = original.sugerido_por_id;
 		(() => {
 			datosHist = {
 				entidad_id: id,
@@ -106,20 +107,21 @@ module.exports = {
 				status_final_id: status_registro_id,
 				aprobado: decisAprob,
 			};
-			if (!aprob && !inactivar) {
-				datosHist.motivo_id = motivo_id;
+			if (datos.motivo_id) {
+				datosHist.motivo_id = datos.motivo_id;
 				datosHist.motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
 			}
 			return;
 		})();
+		// return res.json({});
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
-		if (!creadoAprob) BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
 
 		// 4. Penaliza al usuario si corresponde
-		if (!creadoAprob && datosHist.duracion) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
+		if (datosHist.motivo) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'links_gratuitos' y 'links_general'
 		procsCRUD.cambioDeStatus(entidad, {...original, status_registro_id});

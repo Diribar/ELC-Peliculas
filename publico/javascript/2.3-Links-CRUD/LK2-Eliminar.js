@@ -31,7 +31,8 @@ window.addEventListener("load", () => {
 				let url = condiciones;
 				url += "&url=" + encodeURIComponent(links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
-				url += "aprob=NO";
+				url += "&IN=NO";
+				url += "&aprob=NO";
 				let respuesta = await fetch(ruta + url).then((n) => n.json());
 				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) location.reload();

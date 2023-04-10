@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 			// Completar el url
 			url += "&url=" + encodeURIComponent(links_url[indice].value);
 			url += "&IN=SI";
-			url += "aprob=" + icono.className.includes("aprob") ? "SI" : "NO";
+			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
 			if (respuesta.reload) location.reload();
 		});
@@ -28,7 +28,8 @@ window.addEventListener("load", () => {
 			let url = condiciones;
 			// Completar el url
 			url += "&url=" + encodeURIComponent(links_url[indice].value);
-			url += "aprob=" + icono.className.includes("aprob") ? "SI" : "NO";
+			url += "&IN=NO";
+			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
 			if (respuesta.reload) location.reload();
 		});
