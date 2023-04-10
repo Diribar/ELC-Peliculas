@@ -60,37 +60,60 @@
 	<td class="ancho_propio"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion">
-		<!-- EDITAR -->
-		<!-- Sólo en RUD para links creadosPropios y aprobados -->
-		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creadoPropio && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
-		<!-- APROBAR -->
-		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
-		<i class="fa-solid <%= cond.inactivo ? 'fa-circle-left' : 'fa-circle-check' %> in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio || link.ediciones.length || cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
-		<!-- DESHACER -->
-		<!-- Solo para RUD y provisorios propios -->
-		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
-		<!-- ELIMINAR PERMANENTEMENTE -->
-		<!-- Sólo para RUD en status creado y propio -->
-		<% if (cond.rud && cond.creadoPropio) { %>
-			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
-		<!-- A INACTIVO -->
-		<% } else if (cond.rud && cond.aprobado) { %>
-			<!-- Sólo para RUD-aprobado -->
-			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a Inactivar"></i>
-		<% } else if (cond.revision && cond.creado && !cond.propio) { %>
-			<!-- Sólo para Revisión-creado -->
-			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a Inactivo"></i>
-		<% } else if (cond.revision && cond.inactivar && !cond.propio) { %>
-			<!-- Sólo para Revisión-inactivar -->
-			<i class="fa-solid fa-circle-right out" tabindex="-1" title="Cambiarlo a Inactivo"></i>
-		<!-- Para hacer número -->
-		<% } else { %>
-			<i class="ocultar out"></i>
+		<% let ocultar, mostrar %>
+		<!-- Sólo para RUD -->
+		<% if (cond.rud) { %>
+			<!-- Status creado y propio, o status aprobado -> EDICION -->
+			<% mostrar = cond.creadoPropio || cond.aprobado %>
+			<i class="fa-solid fa-pen editar <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+
+			<!-- Status provisorio y propio -> DESHACER -->
+			<% mostrar = cond.provPropio %>
+			<i class="fa-solid fa-rotate-left deshacer <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
+
+			<!-- Status inactivo -> RECUPERAR -->
+			<% mostrar = cond.inactivo %>
+			<i class="fa-solid fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
+		
+			<!-- ELIMINAR -->
+			<% if (cond.creadoPropio) { %>
+				<!-- Status creado y propio -> ELIMINAR PERMANENTEMENTE -->
+				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
+			<% } else if (cond.aprobado) { %>
+				<!-- Status aprobado -> INACTIVAR -->
+				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>
+			<% } else { %>
+				<i class="ocultar out"></i>
+			<% } %>
 		<% } %>
+
+		<!-- Sólo para Revisión -->
+		<% if (cond.revision) { %>
+			<% if (cond.creado && !cond.creadoPropio) { %>
+				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
+				<i class="fa-solid fa-circle-check in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="ocultar fuera"></i>
+			<% } else if (cond.inactivar && !cond.inactivarPropio) { %>
+				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
+				<i class="fa-solid fa-circle-left in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="fa-solid fa-circle-right fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="ocultar out"></i>
+			<% } else if (cond.recuperar && !cond.recuperarPropio) { %>
+				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
+				<i class="fa-solid fa-circle-left fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="fa-solid fa-circle-right in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="ocultar out"></i>
+			<% } else { %>
+				<i class="ocultar in"></i>
+				<i class="ocultar out"></i>
+				<i class="ocultar fuera"></i>
+			<% } %>
+		<% } %>
+
 		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
-		<% if (link.motivo && !cond.propio) { %>
-			<i class="fa-solid fa-circle-question " tabindex="-1" title="<%= link.motivo.descripcion %>">
-			</i>
+		<% if (link.motivo) { %>
+			<i class="fa-solid fa-circle-question " tabindex="-1" title="<%= link.motivo.descripcion %>"></i>
 		<% } %>
 	</td>
 </tr>
