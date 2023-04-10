@@ -62,7 +62,6 @@ module.exports = {
 
 		// Variables de status
 		const creado = original.status_registro.creado;
-		const creadoAprob = original.status_registro.creado_aprob;
 		const inactivar = original.status_registro.inactivar;
 		const recuperar = original.status_registro.recuperar;
 
