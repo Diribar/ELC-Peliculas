@@ -21,7 +21,7 @@ module.exports = {
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
-		const revisor = req.session.usuario.rol_usuario.revisor_ents
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -99,7 +99,7 @@ module.exports = {
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
 		// 2. Obtiene el producto 'Original' y 'Editado'
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// 4. Configura el título de la vista
@@ -148,6 +148,7 @@ module.exports = {
 		const ayudasTitulo = [
 			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 		];
+		const status_id = original.status_registro_id;
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
@@ -156,7 +157,7 @@ module.exports = {
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-			...{dataEntry: {}, avatarLinksExternos},
+			...{dataEntry: {}, avatarLinksExternos, status_id},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
 		});
