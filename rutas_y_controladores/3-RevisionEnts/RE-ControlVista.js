@@ -335,7 +335,7 @@ module.exports = {
 		else if (!edicion.avatar) {
 			// Actualiza el avatar original si es un url
 			if (original.avatar && original.avatar.includes("/")) {
-				// Descarga y guarda el nombre del avatar en la BD
+				// Descarga el archivo avatar
 				const avatar = Date.now() + path.extname(original.avatar);
 				const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
 				comp.descarga(original.avatar, ruta + avatar);
