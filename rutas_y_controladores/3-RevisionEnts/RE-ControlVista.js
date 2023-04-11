@@ -186,7 +186,7 @@ module.exports = {
 		const status_id = original.status_registro_id;
 
 		// Render del formulario
-		// return res.send({tema,codigo,subcodigo,tituloMotivo})
+		// return res.send({tema, codigo, subcodigo, tituloMotivo});
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
 			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
@@ -267,7 +267,7 @@ module.exports = {
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 			// Sus productos asociados:
 			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status 2
+			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
 			await procesos.guardar.prodsAsocs(entidad, id);
 		}
 
