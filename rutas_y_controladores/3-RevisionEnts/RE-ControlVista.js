@@ -334,7 +334,6 @@ module.exports = {
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
 			// Actualiza el avatar original si es un url
-			let a=Date.now()
 			if (original.avatar && original.avatar.includes("/")) {
 				// Descarga y guarda el nombre del avatar en la BD
 				const avatar = Date.now() + path.extname(original.avatar);
@@ -346,8 +345,6 @@ module.exports = {
 				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
 				BD_genericas.actualizaPorId(entidad, id, {avatar});
 			}
-			let b=Date.now()
-			console.log(b-a);
 			// Variables
 			if (familia == "rclv") {
 				let cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
