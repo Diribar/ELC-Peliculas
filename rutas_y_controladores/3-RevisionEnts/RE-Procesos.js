@@ -406,7 +406,6 @@ module.exports = {
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
-				console.log("SI");
 				BD_especificas.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
 
 				// Similar rutina para los productos aprobados

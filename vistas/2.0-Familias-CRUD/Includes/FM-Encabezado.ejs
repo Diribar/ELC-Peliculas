@@ -63,5 +63,6 @@
 	</div>
 <% } %>
 <% if (familia == "rclv") { %>
-	<p>Productos vinculados: <%= prodsDelRCLV.length %></p>
+	<% console.log(locals.cantProds) %>
+	<p>Productos vinculados: <%= locals.cantProds != undefined ? cantProds : prodsDelRCLV.length %></p>
 <% } %>

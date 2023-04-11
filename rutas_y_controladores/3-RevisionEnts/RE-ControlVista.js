@@ -184,9 +184,9 @@ module.exports = {
 		const tituloMotivo =
 			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
 		const status_id = original.status_registro_id;
-		
+
 		// Render del formulario
-		// return res.send(bloqueDer);
+		// return res.send({tema,codigo,subcodigo,tituloMotivo})
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
 			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
@@ -262,13 +262,13 @@ module.exports = {
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilia);
 
 		// 7 Acciones si es un RCLV inactivo
-		if (rclv && status_final_id == "inactivo") {
+		if (rclv && status_final_id == inactivo_id) {
 			// Borra su id de los campos rclv_id de las ediciones de producto
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 			// Sus productos asociados:
-			await procesos.guardar.prodsAsocs(entidad,id)
 			// Dejan de estar vinculados
 			// Si no pasan el control de error y estaban aprobados, pasan al status 2
+			await procesos.guardar.prodsAsocs(entidad, id);
 		}
 
 		// 8. Acciones si es un producto inactivo
@@ -290,27 +290,36 @@ module.exports = {
 	prodRCLV_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		let codigo = "producto/edicion"; // No se puede poner 'const', porque más adelante puede cambiar
+		let codigo = req.path.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 		// Variables
 		const {entidad, id, edicion_id: edicID} = req.query;
 		const familia = comp.obtieneFamilia(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
-		let ingresos, reemplazos, bloqueDer, motivos;
+		let ingresos, reemplazos, bloqueDer, motivos, cantProds;
 
 		// Obtiene la versión original con include
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad), "status_registro", "creado_por", "sugerido_por"];
+		let include = [
+			...comp.obtieneTodosLosCamposInclude(entidad),
+			"status_registro",
+			"creado_por",
+			"sugerido_por",
+			"alta_revisada_por",
+		];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
+		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		console.log(317, original.peliculas, entidad, id, include);
 
 		// Obtiene la edición
-		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
-		// return res.send([original,edicion])
+		let edicion = await BD_genericas.obtienePorId(edicEntidad, edicID);
+		//return res.send({original,edicion})
 
-		// Acciones si está presente el avatar
+		// Acciones si el avatar está presente en la edición
 		if (edicion.avatar) {
 			// Averigua si se debe reemplazar el avatar en forma automática
 			let reemplAvatarAutomaticam =
@@ -338,7 +347,7 @@ module.exports = {
 				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			}
 		}
-		// Acciones si no está presente el avatar
+		// Acciones si el avatar no está presente en la edición
 		else if (!edicion.avatar) {
 			// Actualiza el avatar original si es un url
 			if (original.avatar && original.avatar.includes("/")) {
@@ -354,7 +363,7 @@ module.exports = {
 			}
 			// Variables
 			if (familia == "rclv") {
-				let cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
+				cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
 			} else bloqueDer = [[]];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
@@ -378,7 +387,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
-			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
+			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre, cantProds},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
