@@ -428,7 +428,7 @@ module.exports = {
 			}
 			// Sus productos asociados:
 			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status 2
+			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
 		},
 	},
 
