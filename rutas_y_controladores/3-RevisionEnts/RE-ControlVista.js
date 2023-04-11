@@ -313,7 +313,6 @@ module.exports = {
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidadesProd);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		console.log(317, original.peliculas, entidad, id, include);
 
 		// Obtiene la edición
 		let edicion = await BD_genericas.obtienePorId(edicEntidad, edicID);
