@@ -74,12 +74,14 @@ module.exports = {
 			: "";
 	},
 	obtienePetitFamiliaDesdeEntidad: (entidad) => {
-		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
-			? "prods"
-			: ["personajes", "hechos", "temas"].includes(entidad)
-			? "rclvs"
+		return false
+			? null
 			: entidad == "links"
 			? "links"
+			: ["personajes", "hechos", "temas"].includes(entidad)
+			? "rclvs"
+			: ["peliculas", "colecciones", "capitulos"].includes(entidad)
+			? "prods"
 			: "";
 	},
 	obtieneEntidadNombre: (entidad) => {
@@ -151,9 +153,9 @@ module.exports = {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
 	},
 	obtieneEntidadDesdeCampo_id: function (edicion) {
-		let producto = this.obtieneProdDesdeProducto_id(edicion);
-		let RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);
-		return producto ? producto : RCLV ? RCLV : edicion.link_id ? "links" : "";
+		const producto = this.obtieneProdDesdeProducto_id(edicion);
+		const RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);
+		return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
 	},
 	obtieneProducto_id: (edicion) => {
 		return edicion.pelicula_id
@@ -259,7 +261,7 @@ module.exports = {
 			let paises_idArray = paises_id.split(" ");
 			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
-				let paisNombre = paises.find((n) => n.id == pais_id)
+				let paisNombre = paises.find((n) => n.id == pais_id);
 				if (paisNombre) paisesNombre.push(paisNombre.nombre);
 			}
 		}

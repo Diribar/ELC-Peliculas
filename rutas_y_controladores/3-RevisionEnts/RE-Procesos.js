@@ -411,7 +411,7 @@ module.exports = {
 			if (!aprob) {
 				// Si el avatar original es un url y el registro es una pelicula o coleccion, descarga el avatar
 				let url = original.avatar;
-				if (url.startsWith("http") && entidad != "capitulos") {
+				if (url.includes("/") && entidad != "capitulos") {
 					// Asigna un nombre al archivo a descargar
 					original.avatar = Date.now() + path.extname(url);
 					// Descarga el url

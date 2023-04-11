@@ -139,7 +139,7 @@ module.exports = {
 			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
 		};
 		// Imagen Derecha
-		const imgDerPers = procsCRUD.obtieneAvatarRCLV(original).orig;
+		const imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);

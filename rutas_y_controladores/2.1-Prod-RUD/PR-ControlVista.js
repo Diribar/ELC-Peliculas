@@ -65,7 +65,7 @@ module.exports = {
 
 		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
-		const imgDerPers = procsCRUD.obtieneAvatarProd(original, edicion).edic;
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
@@ -135,7 +135,7 @@ module.exports = {
 			// Datos Duros - Bases de Datos
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
-			imgDerPers = procsCRUD.obtieneAvatarProd(original, {...edicion, ...edicSession});
+			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
 			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);

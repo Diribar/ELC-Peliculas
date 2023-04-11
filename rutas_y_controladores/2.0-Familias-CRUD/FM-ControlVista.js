@@ -58,12 +58,7 @@ module.exports = {
 				: [];
 
 		// Imagen Derecha
-		imgDerPers =
-			familias == "productos"
-				? procesos.obtieneAvatarProd(original).orig
-				: familias == "rclvs"
-				? procesos.obtieneAvatarRCLV(original).orig
-				: "";
+		imgDerPers = procesos.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
