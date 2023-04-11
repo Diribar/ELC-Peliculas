@@ -102,7 +102,7 @@ module.exports = {
 			// 1. Verifica que el documento no exista ya en la Base de Datos
 			let docum_numero = datos.docum_numero;
 			let docum_pais_id = datos.docum_pais_id;
-			let averigua = await BD_genericas.obtienePorCampos("usuarios", {docum_numero, docum_pais_id});
+			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {docum_numero, docum_pais_id});
 			if (averigua && averigua.id != datos.id) errores.credenciales = true;
 
 			// 2. Verifica el docum_avatar
@@ -133,7 +133,7 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		// Verifica credenciales
 		if (!errores.hay) {
-			let usuario = await BD_genericas.obtienePorCampos("usuarios", {email});
+			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
 			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
 			errores.hay = errores.credenciales;
@@ -146,7 +146,7 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let informacion;
-		let usuario = await BD_genericas.obtienePorCamposConInclude(
+		let usuario = await BD_genericas.obtienePorCondicionConInclude(
 			"usuarios",
 			{email: datos.email},
 			"status_registro"

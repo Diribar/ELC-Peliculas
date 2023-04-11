@@ -8,7 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	filtrosPers: async (userID) => {
 		// Obtiene los filtros personales
-		let resultado = userID ? await BD_genericas.obtieneTodosPorCampos("filtros_cabecera", {usuario_id: userID}) : [];
+		let resultado = userID ? await BD_genericas.obtieneTodosPorCondicion("filtros_cabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
 		// Le agrega el filtro estándar
 		resultado.push(filtroEstandarCabecera);
@@ -191,7 +191,7 @@ module.exports = {
 				// Obtiene los filtros
 				let filtros = this.filtrosRCLV({...datos, entidad});
 				// Obtiene los registros
-				auxs.push(BD_genericas.obtieneTodosPorCampos(entidad, filtros).then((n) => n.map((m) => m.id)));
+				auxs.push(BD_genericas.obtieneTodosPorCondicion(entidad, filtros).then((n) => n.map((m) => m.id)));
 			}
 			auxs = await Promise.all(auxs);
 			entidades.forEach((entidad, i) => (rclvs[entidad] = auxs[i]));

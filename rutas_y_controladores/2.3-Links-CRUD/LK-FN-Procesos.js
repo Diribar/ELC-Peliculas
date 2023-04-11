@@ -14,7 +14,7 @@ module.exports = {
 		let include = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: prodID}, include);
+		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
 		// Ordenar por ID
 		links.sort((a, b) => (a.id - b.id));
 		// Los combina con la edición, si existe

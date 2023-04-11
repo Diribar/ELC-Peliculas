@@ -127,7 +127,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "sugerido_por", "motivo");
+		include.push("status_registro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidadesProd);
@@ -173,7 +173,7 @@ module.exports = {
 
 		// Comentario del rechazo
 		const comentarios = inactivarRecuperar
-			? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
+			? await BD_genericas.obtieneTodosPorCondicion("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
 					n.map((m) => m.comentario)
 			  )
 			: [];
@@ -183,19 +183,20 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const tituloMotivo =
 			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
-
+		const status_id = original.status_registro_id;
+		
 		// Render del formulario
 		// return res.send(bloqueDer);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
 			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
 			cartelGenerico: true,
 		});
 	},
 	prodRCLV_Guardar: async (req, res) => {
 		// Variables
-		let datos = await procesos.guardar(req);
+		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
 		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
 		const userID = original.sugerido_por_id;
@@ -260,9 +261,15 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilia);
 
-		// 7 Si es un RCLV inactivo, borra su id de los campos rclv_id de las ediciones de producto
-		if (rclv && status_final_id == "inactivo")
+		// 7 Acciones si es un RCLV inactivo
+		if (rclv && status_final_id == "inactivo") {
+			// Borra su id de los campos rclv_id de las ediciones de producto
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+			// Sus productos asociados:
+			await procesos.guardar.prodsAsocs(entidad,id)
+			// Dejan de estar vinculados
+			// Si no pasan el control de error y estaban aprobados, pasan al status 2
+		}
 
 		// 8. Acciones si es un producto inactivo
 		// Elimina el archivo de avatar de la edicion
@@ -426,7 +433,7 @@ module.exports = {
 		// Obtiene todos los links
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id}, include);
+		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
 
 		// Información para la vista

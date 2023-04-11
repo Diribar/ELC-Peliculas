@@ -5,7 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
-const validaProd = require("../2.1-Prod-RUD/PR-FN-Validar");
+const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
 	// Tablero
@@ -330,7 +330,7 @@ module.exports = {
 			// Obtiene la edicion
 			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			let objeto = {[campo_id]: id, editado_por_id};
-			let edicion = await BD_genericas.obtienePorCampos("prods_edicion", objeto);
+			let edicion = await BD_genericas.obtienePorCondicion("prods_edicion", objeto);
 
 			// 1. Elimina el archivo de avatar de la edicion
 			if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
@@ -343,59 +343,94 @@ module.exports = {
 		},
 	},
 
-	guardar: async function (req) {
-		// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-		let codigo = req.path.slice(1, -1);
-		codigo = codigo.slice(codigo.indexOf("/") + 1);
-		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
+	guardar: {
+		obtieneDatos: async function (req) {
+			// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
+			let codigo = req.path.slice(1, -1);
+			codigo = codigo.slice(codigo.indexOf("/") + 1);
+			const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
-		// Variables
-		const {entidad, id, desaprueba} = req.query;
-		//return res.send({...req.query, ...req.body})
-		const familia = comp.obtieneFamilia(entidad);
-		const rclv = familia == "rclv";
+			// Variables
+			const {entidad, id, desaprueba} = req.query;
+			//return res.send({...req.query, ...req.body})
+			const familia = comp.obtieneFamilia(entidad);
+			const rclv = familia == "rclv";
 
-		// Obtiene el registro original y el subcodigo
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const status_original_id = original.status_registro_id;
+			// Obtiene el registro original y el subcodigo
+			let include = comp.obtieneTodosLosCamposInclude(entidad);
+			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+			const status_original_id = original.status_registro_id;
 
-		// Obtiene el 'subcodigo'
-		const subcodigo = inactivarRecuperar
-			? status_original_id == inactivar_id
-				? "inactivar"
-				: "recuperar"
-			: req.path.endsWith("/alta/")
-			? "alta"
-			: "rechazo";
+			// Obtiene el 'subcodigo'
+			const subcodigo = inactivarRecuperar
+				? status_original_id == inactivar_id
+					? "inactivar"
+					: "recuperar"
+				: req.path.endsWith("/alta/")
+				? "alta"
+				: "rechazo";
 
-		// Averigua si la sugerencia fue aprobada
-		const aprob = subcodigo != "rechazo" && !desaprueba;
+			// Averigua si la sugerencia fue aprobada
+			const aprob = subcodigo != "rechazo" && !desaprueba;
 
-		// Obtiene el status final
-		const status_final_id =
-			// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
-			(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
-				? inactivo_id
-				: // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
-				// Si es un RCLV, se aprueba
-				rclv
-				? aprobado_id
-				: // Si es un producto, se revisa si tiene errores
-				(await validaProd.consolidado({datos: {...original, entidad}}).then((n) => n.hay))
-				? creado_aprob_id
-				: aprobado_id;
+			// Obtiene el status final
+			const status_final_id =
+				// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
+				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
+					? inactivo_id
+					: // Los demás casos: un alta, un recuperar aprobado, o un inactivar desaprobado
+					// Si es un RCLV, se aprueba
+					rclv
+					? aprobado_id
+					: // Si es un producto, se revisa si tiene errores
+					(await validaPR.consolidado({datos: {...original, entidad}}).then((n) => n.hay))
+					? creado_aprob_id
+					: aprobado_id;
 
-		// Obtiene el motivo_id
-		const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-		let comentario = req.body.comentario ? req.body.comentario : "";
-		if (comentario && !comentario.endsWith(".")) comentario += ".";
+			// Obtiene el motivo_id
+			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
+			let comentario = req.body.comentario ? req.body.comentario : "";
+			if (comentario && !comentario.endsWith(".")) comentario += ".";
 
-		// Fin
-		return {
-			...{entidad, id, original, status_original_id, status_final_id},
-			...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
-		};
+			// Fin
+			return {
+				...{entidad, id, original, status_original_id, status_final_id},
+				...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
+			};
+		},
+		prodsAsocs: async (entidad, id) => {
+			// Variables
+			const entidadesProd = variables.entidadesProd;
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+
+			// Rutina por entidadProd
+			for (let entidadProd of entidadesProd) {
+				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
+				console.log("SI");
+				BD_especificas.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
+
+				// Similar rutina para los productos aprobados
+				// Obtiene los productos aprobados con ese 'campo_id'
+				const condicion = {[campo_id]: id, status_registro_id: aprobado_id};
+				let prodsVinculados = await BD_genericas.obtieneTodosPorCondicion(entidadProd, condicion);
+				// Los actualiza, fijándose si tiene errores
+				for (let prodVinculado of prodsVinculados) {
+					// Averigua si el producto tiene errores cuando se le actualiza el 'campo_id'
+					let objeto = {[campo_id]: 1};
+					prodVinculado = {...prodVinculado, ...objeto, publico: true};
+					const errores = await validaPR.consolidado({datos: prodVinculado});
+
+					// Si tiene errores, se le cambia el status a 'creado_aprob'
+					if (errores.hay) objeto.status_registro_id = creado_aprob_id;
+
+					// Actualiza el registro del producto
+					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
+				}
+			}
+			// Sus productos asociados:
+			// Dejan de estar vinculados
+			// Si no pasan el control de error y estaban aprobados, pasan al status 2
+		},
 	},
 
 	// Edición
@@ -779,7 +814,7 @@ let usuarioCalidad = (usuario, prefijo) => {
 };
 let creadosSinEdicion = async () => {
 	// Obtiene los productos en status 'creado' y sin edicion
-	const PL = BD_genericas.obtieneTodosPorCamposConInclude("peliculas", {status_registro_id: creado_id}, "ediciones")
+	const PL = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {status_registro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {
@@ -788,7 +823,7 @@ let creadosSinEdicion = async () => {
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);
-	const CL = BD_genericas.obtieneTodosPorCamposConInclude("colecciones", {status_registro_id: creado_id}, "ediciones")
+	const CL = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {status_registro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {

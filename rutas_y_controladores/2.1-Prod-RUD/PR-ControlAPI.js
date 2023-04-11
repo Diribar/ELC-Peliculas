@@ -26,7 +26,7 @@ module.exports = {
 		// Datos particulares
 		if (detalle) {
 			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-			datos = await BD_genericas.obtienePorCampos("cal_registros", {
+			datos = await BD_genericas.obtienePorCondicion("cal_registros", {
 				usuario_id: userID,
 				[campo_id]: prodID,
 			}).then((n) => (n ? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100] : ""));

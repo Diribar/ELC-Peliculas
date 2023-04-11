@@ -53,7 +53,7 @@ module.exports = {
 		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let original = await BD_genericas.obtienePorCamposConInclude(entidad, {url}, ["status_registro", "tipo"]);
+		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["status_registro", "tipo"]);
 		const id = original.id;
 		// El link no existe en la BD
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});

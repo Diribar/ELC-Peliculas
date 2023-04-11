@@ -46,7 +46,7 @@ module.exports = {
 
 		// Obtiene los links
 		if (!status_registro_id) status_registro_id = aprobado_id;
-		const links = await BD_genericas.obtieneTodosPorCamposConInclude("links", {[campo_id]: id, status_registro_id}, include);
+		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, status_registro_id}, include);
 
 		// Procesos si hay links
 		if (links.length) {

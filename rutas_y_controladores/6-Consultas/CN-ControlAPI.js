@@ -19,7 +19,7 @@ module.exports = {
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
-		const aux = await BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: filtro_id});
+		const aux = await BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: filtro_id});
 
 		// Convierte el array en objeto literal
 		let opciones = {};
@@ -82,7 +82,7 @@ module.exports = {
 		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
 		for (let entidad of ["peliculas", "colecciones"])
 			productos.push(
-				BD_genericas.obtieneTodosPorCampos(entidad, filtrosProd).then((n) =>
+				BD_genericas.obtieneTodosPorCondicion(entidad, filtrosProd).then((n) =>
 					n.map((m) => {
 						return {
 							id: m.id,
