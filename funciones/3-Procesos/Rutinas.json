@@ -11,5 +11,6 @@
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
 	"LinksVencidos": "SI",
-	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1"}
+	"BorraImagenesSinRegistro": "SI",
+	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon", "BorraImagenesSinRegistro": "Tue"}
 }
