@@ -166,8 +166,7 @@ module.exports = {
 		];
 
 		// Imagen Personalizada
-		imgDerPers =
-			familia == "producto" ? procsCRUD.obtieneAvatarProd(original).orig : procsCRUD.obtieneAvatarRCLV(original).orig;
+		imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
 		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
@@ -326,7 +325,7 @@ module.exports = {
 			else if (!reemplAvatarAutomaticam) {
 				// Variables
 				codigo += "/avatar";
-				avatar = procsCRUD.obtieneAvatarProd(original, edicion);
+				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
 				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
@@ -338,10 +337,11 @@ module.exports = {
 			if (familia == "rclv") {
 				let cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
-			} else bloqueDer = [[]];
+			} else if (familia == "producto") {
+				bloqueDer = [[]];
+			}
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
-			avatar = procsCRUD.obtieneAvatarProd(original).orig;
-			imgDerPers = avatar;
+			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_rech_edic.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
@@ -363,7 +363,7 @@ module.exports = {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
-			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
+			...{avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
 			...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
 		});
@@ -434,7 +434,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers: procsCRUD.obtieneAvatarProd(producto, "").orig, cartelGenerico: true},
+			...{imgDerPers: procsCRUD.obtieneAvatar(producto).orig, cartelGenerico: true},
 		});
 	},
 };

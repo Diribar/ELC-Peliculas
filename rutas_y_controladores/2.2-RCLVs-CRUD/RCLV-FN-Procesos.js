@@ -49,7 +49,7 @@ module.exports = {
 				// Completa la información de cada producto dentro del tipo de producto
 				let aux = RCLV[entidad].map((registro) => {
 					// Averigua la ruta y el nombre del avatar
-					let avatar = procsCRUD.obtieneAvatarProd(registro).edic;
+					let avatar = procsCRUD.obtieneAvatar(registro).edic;
 					// Agrega la entidad, el avatar, y el nombre de la entidad
 					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
 				});

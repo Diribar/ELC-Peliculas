@@ -136,52 +136,32 @@ module.exports = {
 		return edicion;
 	},
 	// Avatar
-	obtieneAvatarProd: (original, edicion) => {
-		let orig =
-			// Si no existe avatarOrig
-			!original.avatar
-				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
-				: original.avatar.startsWith("http")
-				? original.avatar
-				: localhost +
-				  "/imagenes/" +
-				  // Si el avatar está 'aprobado'
-				  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar)
-						? "2-Avatar-Prods-Final/" + original.avatar
-						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/" + original.avatar)
-						? "2-Avatar-Prods-Revisar/" + original.avatar
-						: "0-Base/Avatar/Sin-Avatar.jpg");
+	obtieneAvatar: (original, edicion) => {
+		// Obtiene la petitEntidad
+		const ents = original.fuente ? "prods" : original.dia_del_ano_id ? "rclvs" : "";
+
+		// Si no detectó la petitFamilia, devuelve el genérico
+		if (!ents) return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
+
+		// Obtiene el avatar original
+		let orig = !original.avatar
+			? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+			: original.avatar.includes("/")
+			? original.avatar
+			: localhost +
+			  "/imagenes/" +
+			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + ents + "-Final/" + original.avatar)
+					? "2-Avatar-Prods-Final/" + original.avatar
+					: // Si el avatar está 'a revisar'
+					comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + ents + "-Revisar/" + original.avatar)
+					? "2-Avatar-Prods-Revisar/" + original.avatar
+					: "0-Base/Avatar/Sin-Avatar.jpg");
 
 		// avatarEdic
-		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-Prods-Revisar/" + edicion.avatar : orig;
+		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + ents + "-Revisar/" + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
-	},
-	obtieneAvatarRCLV: (original, edicion) => {
-		let avatarOrig =
-			// Si es un url
-			original.avatar && original.avatar.startsWith("http")
-				? original.avatar
-				: // Si 'avatarOrig' no es un link
-				  localhost +
-				  "/imagenes/" +
-				  (!original.avatar
-						? "0-Base/Avatar/Sin-Avatar.jpg"
-						: // Si el avatar está 'aprobado'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/4-RCLVs-Final/" + original.avatar)
-						? "4-RCLVs-Final/" + original.avatar
-						: // Si el avatar está 'a revisar'
-						comp.averiguaSiExisteUnArchivo("./publico/imagenes/4-RCLVs-Revisar/" + original.avatar)
-						? "4-RCLVs-Revisar/" + original.avatar
-						: "");
-
-		// avatarEdic
-		let avatarEdic = edicion && edicion.avatar ? localhost + "/imagenes/4-RCLVs-Revisar/" + edicion.avatar : avatarOrig;
-
-		// Fin
-		return {orig: avatarOrig, edic: avatarEdic};
 	},
 
 	// Listados de RCLV
