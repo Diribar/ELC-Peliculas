@@ -258,6 +258,7 @@ window.addEventListener("load", async () => {
 			}
 			// 2. De lo contrario, actualiza los errores y el avatar
 			let reader = new FileReader();
+			console.dir(DOM.inputAvatarEdicN.files[0]);
 			reader.readAsDataURL(DOM.inputAvatarEdicN.files[0]);
 			reader.onload = () => {
 				let image = new Image();
