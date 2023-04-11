@@ -115,7 +115,7 @@ module.exports = {
 		if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
 
 		// Resultado
-		return db[entidad].findAll({where: condiciones, include}).then((n) => (n ? n.map((m) => m.toJSON()) : []));
+		return db[entidad].findAll({where: condiciones, include}).then((n) => n.map((m) => m.toJSON()));
 	},
 	TC_obtieneEdicsAptas: (entidad, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
@@ -124,7 +124,7 @@ module.exports = {
 			db[entidad]
 				// Que esté editado desde hace más de 1 hora
 				.findAll({where: {editado_en: {[Op.lt]: haceUnaHora}}, include})
-				.then((n) => (n ? n.map((m) => m.toJSON()) : []))
+				.then((n) => n.map((m) => m.toJSON()))
 		);
 	},
 	TC_obtieneLinksAjenos: async (revID) => {
@@ -197,20 +197,9 @@ module.exports = {
 				},
 				include,
 			})
+			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n
-					? n
-							.map((m) => m.toJSON())
-							.map(
-								(m) =>
-									(m = {
-										...m,
-										entidad,
-										fechaRef: m[campoFecha],
-										fechaRefTexto: comp.fechaDiaMes(m[campoFecha]),
-									})
-							)
-					: []
+				n.map((m) => (m = {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto: comp.fechaDiaMes(m[campoFecha])}))
 			);
 	},
 	linksVencidos: () => {
@@ -227,20 +216,18 @@ module.exports = {
 		// Fin
 		return condicion;
 	},
+	nombresDeAvatarEnBD: (entidad) => {
+		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
+		return db[entidad]
+			.findAll({where: condiciones})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) => n.map((m) => m.avatar));
+	},
 
 	// USUARIOS ---------------------------------------------------------
 	// Controlador/Usuario/Login
 	obtieneUsuarioDistintoIdMasFiltros: (userID, filtros) => {
-		return db.usuarios
-			.findAll({
-				where: {
-					// Filtros
-					...filtros,
-					// Otro usuario
-					id: {[Op.ne]: userID},
-				},
-			})
-			.then((n) => n.map((m) => m.toJSON()));
+		return db.usuarios.findAll({where: {...filtros, id: {[Op.ne]: userID}}}).then((n) => n.map((m) => m.toJSON()));
 	},
 	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login
 	obtieneUsuarioPorMail: (email) => {

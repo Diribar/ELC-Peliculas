@@ -4,9 +4,11 @@
 <% cond.aprobado = link.status_registro.aprobado %>
 <% cond.creadoAprob = cond.creado || cond.aprobado %>
 <% cond.inactivar = link.status_registro.inactivar %>
+<% cond.inactivarPropio = link.status_registro.inactivar && link.sugerido_por_id == userID %>
+<% cond.recuperar = link.status_registro.recuperar %>
+<% cond.recuperarPropio = link.status_registro.recuperar && link.sugerido_por_id == userID %>
 <% cond.inactivo = link.status_registro.inactivo %>
 <% cond.estable = cond.aprobado || cond.inactivo %>
-<% cond.inactivarPropio = link.status_registro.inactivar && link.sugerido_por_id == userID %>
 <% cond.provisorio = link.status_registro.inactivar || link.status_registro.recuperar %>
 <% cond.provPropio = cond.provisorio && link.sugerido_por_id == userID %>
 <% cond.provAjeno = cond.provisorio && link.sugerido_por_id != userID %>

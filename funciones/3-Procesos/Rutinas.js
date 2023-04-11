@@ -24,20 +24,20 @@ module.exports = {
 		});
 
 		// Rutinas diarias
-		await this.rutinasDiarias();
 		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
+		await this.rutinasDiarias();
 		const rutinasDiarias = Object.keys(info.HorariosUTC);
 		for (let rutina of rutinasDiarias) {
 			let hora = obtieneLaHora(info.HorariosUTC[rutina]);
 			cron.schedule("0 " + hora + " * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
 		// Rutinas semanales
+		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
 		await this.rutinasSemanales();
-		if (!info.rutinasSemanales || !Object.keys(info.rutinasSemanales).length) return;
 		const rutinasSemanales = Object.keys(info.DiasUTC);
 		for (let rutina of rutinasSemanales) {
-			let diaSem = obtieneLaHora(info.DiasUTC[rutina]);
-			cron.schedule("1 " + diaSem + " * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+			let diaSem = info.DiasUTC[rutina];
+			cron.schedule("1 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
 	},
 	// Lectura del archivo Rutinas.json
@@ -240,6 +240,30 @@ module.exports = {
 		// Fin
 		return;
 	},
+	BorraImagenesSinRegistro: async () => {
+		let entidad, carpeta, nombresDeAvatar;
+
+		// Obtiene el nombre de todas las imagenes de los registros de edicion
+		entidad = "prods_edicion";
+		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
+
+		// Borra los avatar de Revisar
+		carpeta = "2-Avatar-Prods-Revisar";
+		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
+
+		// Obtiene el nombre de todas las imagenes de los registros de productos
+		const entidades = variables.entidadesProd;
+		nombresDeAvatar = [];
+		let consolidado = [];
+		for (let entidad of entidades) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
+		// Borra los avatar de Final
+		carpeta = "2-Avatar-Prods-Final";
+		borraImagenesSinRegistro(consolidado, carpeta);
+
+		// Fin
+		return;
+	},
 
 	// Conjunto de tareas
 	rutinasDiarias: async function () {
@@ -247,8 +271,6 @@ module.exports = {
 
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
-		if (!Object.keys(info).length) return;
-		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
 		const rutinasDiarias = Object.keys(info.HorariosUTC);
 
 		// Obtiene la fecha procesada
@@ -283,8 +305,6 @@ module.exports = {
 	rutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
-		if (!Object.keys(info).length) return;
-		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
 		const rutinas = Object.keys(info.DiasUTC);
 
 		// Obtiene la semana y el día de la semana
@@ -429,4 +449,18 @@ let medicionDelTiempo = (horarioInicial) => {
 
 	// Fin
 	return horarioFinal;
+};
+let borraImagenesSinRegistro = async (nombresDeAvatar, carpeta) => {
+	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta "Revisar"
+	let archivosDeAvatar = fs.readdirSync("./publico/imagenes/" + carpeta);
+
+	// Rutina para borrar archivos
+	for (let archivo of archivosDeAvatar)
+		if (!nombresDeAvatar.includes(archivo)) comp.borraUnArchivo("./publico/imagenes/" + carpeta, archivo);
+
+	// Rutina para detectar nombres sin archivo
+	for (let nombre of nombresDeAvatar) if (!archivosDeAvatar.includes(nombre)) console.log(nombre);
+
+	// Fin
+	return;
 };

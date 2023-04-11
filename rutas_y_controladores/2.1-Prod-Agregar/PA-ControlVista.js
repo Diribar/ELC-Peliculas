@@ -296,7 +296,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMuchasGracias},
 			...{entidad, familia: "producto", id, dataEntry: registroProd, prodNombre, ruta: "/producto/"},
-			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano},
+			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano, status_id: creado_id},
 		});
 	},
 
