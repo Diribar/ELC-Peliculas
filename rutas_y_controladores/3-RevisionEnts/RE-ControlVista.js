@@ -65,7 +65,7 @@ module.exports = {
 		// Obtiene avatar original
 		let imgDerPers = original.avatar;
 		imgDerPers = imgDerPers
-			? (!imgDerPers.startsWith("http") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
+			? (!imgDerPers.includes("/") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		// Configura el título de la vista
 		const prodNombre = comp.obtieneEntidadNombre(entidad);
@@ -333,13 +333,14 @@ module.exports = {
 		}
 		// Acciones si no está presente el avatar
 		else if (!edicion.avatar) {
+			// Actualiza el avatar original si es un url
+			if (original.avatar && original.avatar.includes("/")) {
+			}
 			// Variables
 			if (familia == "rclv") {
 				let cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
-			} else if (familia == "producto") {
-				bloqueDer = [[]];
-			}
+			} else bloqueDer = [[]];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_rech_edic.filter((m) => m.prods);
@@ -422,7 +423,7 @@ module.exports = {
 		// Información para la vista
 		let avatar = producto.avatar;
 		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
+			? (!avatar.includes("/") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 

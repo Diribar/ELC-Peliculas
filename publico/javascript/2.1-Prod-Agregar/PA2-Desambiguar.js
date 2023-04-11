@@ -136,7 +136,7 @@ window.addEventListener("load", async () => {
 			// Imagen
 			let avatar = !prod.avatar
 				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
-				: prod.avatar.startsWith("http")
+				: prod.avatar.includes("/")
 				? prod.avatar
 				: localhost + "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
