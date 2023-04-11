@@ -217,10 +217,7 @@ module.exports = {
 		return condicion;
 	},
 	nombresDeAvatarEnBD: (entidad) => {
-		const condiciones = {
-			avatar: {[Op.ne]: null},
-			avatar: {[Op.notLike]: "%/%"}
-		};
+		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
 		return db[entidad]
 			.findAll({where: condiciones})
 			.then((n) => n.map((m) => m.toJSON()))
