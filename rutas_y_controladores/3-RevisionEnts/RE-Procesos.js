@@ -325,22 +325,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// Productos Alta
-		prodRech: async (entidad, id, editado_por_id) => {
-			// Obtiene la edicion
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-			let objeto = {[campo_id]: id, editado_por_id};
-			let edicion = await BD_genericas.obtienePorCondicion("prods_edicion", objeto);
-
-			// 1. Elimina el archivo de avatar de la edicion
-			if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
-
-			// 2. Elimina las ediciones de producto que tenga
-			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
-
-			//Fin
-			return;
-		},
 	},
 
 	guardar: {
@@ -429,6 +413,26 @@ module.exports = {
 			// Sus productos asociados:
 			// Dejan de estar vinculados
 			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
+		},
+		// Productos Alta
+		prodRclvRech: async (entidad, id) => {
+			// Obtiene la edicion
+			const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const condicion = {[campo_id]: id};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdicion, condicion);
+			const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+
+			// 1. Elimina el archivo avatar de las ediciones
+			for (let edicion of ediciones)
+				if (edicion.avatar)
+					comp.borraUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+
+			// 2. Elimina las ediciones
+			BD_genericas.eliminaTodosPorCampos(nombreEdicion, {[campo_id]: id});
+
+			//Fin
+			return;
 		},
 	},
 

@@ -273,8 +273,8 @@ module.exports = {
 
 		// 8. Acciones si es un producto inactivo
 		// Elimina el archivo de avatar de la edicion
-		// Elimina las ediciones de producto que tenga
-		if (!rclv && status_final_id == "inactivo") procesos.alta.prodRech(entidad, id, userID);
+		// Elimina las ediciones que tenga
+		if (status_final_id == "inactivo") procesos.guardar.prodRclvRech(entidad, id);
 
 		// 9. Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
