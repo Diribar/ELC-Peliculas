@@ -59,7 +59,6 @@ window.addEventListener("load", async () => {
 		v.camposRCLIC = Array.from(v.camposRCLIC).map((n) => n.name);
 		v.sectorApMar = document.querySelector("#dataEntry #sectorApMar");
 	}
-	console.log(v.camposError);
 	// Valores para personajes
 	if (v.personajes) {
 		// Data-Entry adicional
