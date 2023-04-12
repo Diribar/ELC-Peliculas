@@ -469,10 +469,10 @@ module.exports = {
 		// Prod-Edición Form
 		ingrReempl: async (original, edicion) => {
 			// Obtiene la familia
-			const entidad = comp.obtieneEntidadDesdeEnt_id(edicion);
-			const familia = comp.obtieneFamiliaDesdeEntidad;
+			const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "rclvs" : "";
+
 			// Obtiene todos los campos a revisar
-			let camposRevisar = [...variables.camposRevisar.productos]; // Escrito así para desligarlos
+			let camposRevisar = [...variables.camposRevisar[familias]]; // Escrito así para desligarlos
 			let resultado = [];
 
 			// Deja solamente la intersección entre: los campos presentes en edición y los que se comparan
@@ -489,6 +489,7 @@ module.exports = {
 				// Consolidar los resultados
 				resultado.push(campoRevisar);
 			}
+
 			// Paises
 			let indicePais = resultado.findIndex((n) => n.nombre == "paises_id");
 			if (indicePais >= 0) {
@@ -502,9 +503,11 @@ module.exports = {
 				// Fin
 				resultado[indicePais] = {...resultado[indicePais], mostrarOrig, mostrarEdic};
 			}
+
 			// Separa los resultados entre ingresos y reemplazos
 			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
 			let reemplazos = resultado.filter((n) => n.mostrarOrig);
+
 			// Fin
 			return [ingresos, reemplazos];
 		},

@@ -134,10 +134,10 @@ module.exports = {
 	// Avatar
 	obtieneAvatar: (original, edicion) => {
 		// Obtiene la petitEntidad
-		const ents = original.fuente ? "prods" : original.dia_del_ano_id ? "rclvs" : "";
+		const petitFamilia = original.fuente ? "prods" : original.dia_del_ano_id ? "rclvs" : "";
 
 		// Si no detectó la petitFamilia, devuelve el genérico
-		if (!ents) return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
+		if (!petitFamilia) return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
 
 		// Obtiene el avatar original
 		let orig = !original.avatar
@@ -146,15 +146,15 @@ module.exports = {
 			? original.avatar
 			: localhost +
 			  "/imagenes/" +
-			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + ents + "-Final/" + original.avatar)
+			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/" + original.avatar)
 					? "2-Avatar-Prods-Final/" + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + ents + "-Revisar/" + original.avatar)
+					comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + original.avatar)
 					? "2-Avatar-Prods-Revisar/" + original.avatar
 					: "0-Base/Avatar/Sin-Avatar.jpg");
 
 		// avatarEdic
-		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + ents + "-Revisar/" + edicion.avatar : orig;
+		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
