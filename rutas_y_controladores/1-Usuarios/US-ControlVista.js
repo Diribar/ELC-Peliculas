@@ -176,7 +176,7 @@ module.exports = {
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 		// Roles de Iglesia
-		let roles_iglesia = await BD_genericas.obtieneTodosPorCampos("roles_iglesia", {usuario: true});
+		let roles_iglesia = await BD_genericas.obtieneTodosPorCondicion("roles_iglesia", {usuario: true});
 		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 3 && n.id.slice(-1) == usuario.sexo_id);
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Avatar

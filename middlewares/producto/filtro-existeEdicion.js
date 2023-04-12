@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 		} else {
 			// Averigua si existe una edicion propia
 			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};
-			edicion = await BD_genericas.obtienePorCampos(entEdicion, objeto);
+			edicion = await BD_genericas.obtienePorCondicion(entEdicion, objeto);
 		}
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url

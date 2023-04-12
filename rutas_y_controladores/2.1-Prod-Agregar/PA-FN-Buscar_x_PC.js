@@ -234,7 +234,7 @@ module.exports = {
 				let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
 				// Busca entre las películas o colecciones
 				let include = prod.entidad == "colecciones" ? "capitulos" : "";
-				productos.push(BD_genericas.obtienePorCamposConInclude(entidad, {TMDB_id}, include));
+				productos.push(BD_genericas.obtienePorCondicionConInclude(entidad, {TMDB_id}, include));
 			}
 			// Agrega info de la BD
 			productos = await Promise.all(productos);

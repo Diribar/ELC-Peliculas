@@ -28,7 +28,7 @@ module.exports = {
 		let mensaje;
 
 		// Obtiene el link y el id de la edicion
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
 		let edicion_id = link
 			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
 			: "";
@@ -70,7 +70,7 @@ module.exports = {
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		else {
 			// Obtiene el link
-			link = await BD_genericas.obtienePorCamposConInclude("links", {url}, "status_registro");
+			link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, "status_registro");
 			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
@@ -108,7 +108,7 @@ module.exports = {
 		let respuesta = {};
 		// Completar la info
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
@@ -131,7 +131,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCamposConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}

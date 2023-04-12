@@ -11,7 +11,7 @@ module.exports = {
 		const objeto = {coleccion_id: id, temporada: 1, capitulo: 1};
 		const ID =
 			entidad == "colecciones"
-				? await BD_genericas.obtienePorCampos("capitulos", objeto).then((n) => n.id)
+				? await BD_genericas.obtienePorCondicion("capitulos", objeto).then((n) => n.id)
 				: await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
@@ -54,15 +54,15 @@ module.exports = {
 		let objetoPost = {coleccion_id, temporada: tempPost, capitulo: capPost};
 		let [capAntID, capPostID] = await Promise.all([
 			// Obtiene el ID del capítulo anterior
-			capAnt ? BD_genericas.obtienePorCampos("capitulos", objetoAnt).then((n) => n.id) : false,
-			capPost ? BD_genericas.obtienePorCampos("capitulos", objetoPost).then((n) => n.id) : false,
+			capAnt ? BD_genericas.obtienePorCondicion("capitulos", objetoAnt).then((n) => n.id) : false,
+			capPost ? BD_genericas.obtienePorCondicion("capitulos", objetoPost).then((n) => n.id) : false,
 		]);
 		// // Enviar el resultado
 		return res.json([capAntID, capPostID]);
 	},
 	obtieneCapID: async (req, res) => {
 		let {coleccion_id, temporada, capitulo} = req.query;
-		let ID = await BD_genericas.obtienePorCampos("capitulos", {
+		let ID = await BD_genericas.obtienePorCondicion("capitulos", {
 			coleccion_id: coleccion_id,
 			temporada: temporada,
 			capitulo: capitulo,

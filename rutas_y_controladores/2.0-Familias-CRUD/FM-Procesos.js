@@ -382,7 +382,7 @@ module.exports = {
 
 			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
 			for (let entidadProd of entidadesProds) {
-				prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusAprobado});
+				prods_aprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
 				if (prods_aprob) {
 					prods_aprob = SI;
 					break;
@@ -393,7 +393,7 @@ module.exports = {
 			if (!prods_aprob)
 				for (let entidadProd of entidadesProds) {
 					// Averigua si existe algún producto, con ese RCLV
-					prods_aprob = await BD_genericas.obtienePorCampos(entidadProd, {...objeto, ...statusPotencial});
+					prods_aprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
 					if (prods_aprob) {
 						prods_aprob = talVez;
 						break;
@@ -401,7 +401,7 @@ module.exports = {
 				}
 
 			// 3. Averigua si existe alguna edición
-			if (!prods_aprob && (await BD_genericas.obtienePorCampos("prods_edicion", objeto))) prods_aprob = talVez;
+			if (!prods_aprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prods_aprob = talVez;
 
 			// 4. No encontró ningún caso
 			if (!prods_aprob) prods_aprob = NO;
@@ -426,37 +426,37 @@ module.exports = {
 		let objeto = {[campo_id]: id, tipo_id};
 
 		// 1. Averigua si existe algún link, para ese producto
-		let links_general = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado}).then((n) => {
+		let links_general = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) => {
 			return n
 				? SI
-				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial}).then((n) => {
+				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => {
 						return n ? talVez : NO;
 				  });
 		});
 
 		// 2. Averigua si existe algún link gratuito, para ese producto
-		let links_gratuitos = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, gratuito: true}).then((n) => {
+		let links_gratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then((n) => {
 			return n
 				? SI
-				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
+				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
 						return n ? talVez : NO;
 				  });
 		});
 
 		// 3. Averigua si existe algún link en castellano, para ese producto
-		let castellano = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, castellano: true}).then((n) => {
+		let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then((n) => {
 			return n
 				? SI
-				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, castellano: true}).then((n) => {
+				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, castellano: true}).then((n) => {
 						return n ? talVez : NO;
 				  });
 		});
 
 		// 4. Averigua si existe algún link con subtitulos, para ese producto
-		let subtitulos = BD_genericas.obtienePorCampos("links", {...objeto, ...statusAprobado, subtitulos: true}).then((n) => {
+		let subtitulos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, subtitulos: true}).then((n) => {
 			return n
 				? SI
-				: BD_genericas.obtienePorCampos("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) => {
+				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) => {
 						return n ? talVez : NO;
 				  });
 		});

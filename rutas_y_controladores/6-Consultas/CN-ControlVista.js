@@ -22,7 +22,7 @@ module.exports = {
 		const aux =
 			filtro_id == 1
 				? filtroEstandarCampos
-				: await BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: filtro_id});
+				: await BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: filtro_id});
 		// Convierte el array en objeto literal
 		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 

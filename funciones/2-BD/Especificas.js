@@ -171,6 +171,12 @@ module.exports = {
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
+	// Revisar - Inactivo
+	actualizaLosProdsVinculadosNoAprobados: ({entidad, campo_id, id}) => {
+		const condicion = {[campo_id]: id, status_registro_id: {[Op.ne]: aprobado_id}};
+		const objeto = {[campo_id]: 1};
+		return db[entidad].update(objeto, {where: condicion});
+	},
 
 	// Mantenimiento
 	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {

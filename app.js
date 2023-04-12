@@ -96,7 +96,7 @@ app.set("views", [
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
-		no_presencio_ninguna_id: BD_genericas.obtienePorCampos("hechos", no_presencio_ninguna).then((n) => n.id),
+		no_presencio_ninguna_id: BD_genericas.obtienePorCondicion("hechos", no_presencio_ninguna).then((n) => n.id),
 
 		// Variables de links
 		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
@@ -104,7 +104,7 @@ app.set("views", [
 
 		// Consultas
 		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
-		filtroEstandarCampos: BD_genericas.obtieneTodosPorCampos("filtros_campos", {cabecera_id: 1}),
+		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: 1}),
 		layouts: BD_genericas.obtieneTodos("layouts", "orden"),
 		ordenes: BD_genericas.obtieneTodos("ordenes", "orden"),
 		// interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),

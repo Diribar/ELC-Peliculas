@@ -40,12 +40,13 @@ module.exports = {
 		}
 		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const origen = req.query.origen ? req.query.origen : "DTP";
+		const status_id = original.status_registro_id;
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: producto.nombre_castellano},
 			...{entidad, familia: "producto", id, origen},
-			...{registro: producto, links},
+			...{registro: producto, links, status_id},
 			...{links_provs, links_tipos, calidades: variables.calidades, motivos},
 			userID,
 			vista: req.baseUrl + req.path,

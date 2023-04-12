@@ -69,7 +69,7 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			codigo == "recuperar"
-				? await BD_genericas.obtieneTodosPorCampos("historial_cambios_de_status", {
+				? await BD_genericas.obtieneTodosPorCondicion("historial_cambios_de_status", {
 						entidad,
 						entidad_id: id,
 				  }).then((n) => n.map((m) => m.comentario))

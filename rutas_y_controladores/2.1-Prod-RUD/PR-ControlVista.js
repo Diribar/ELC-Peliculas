@@ -21,7 +21,7 @@ module.exports = {
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -64,7 +64,7 @@ module.exports = {
 		// return res.send(bloqueIzq);
 
 		// Info para el bloque Derecho
-		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
+		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor: revisor_ents});
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Obtiene datos para la vista

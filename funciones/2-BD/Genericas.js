@@ -10,11 +10,11 @@ module.exports = {
 	obtieneTodosConInclude: (entidad, include) => {
 		return db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON()));
 	},
-	obtieneTodosPorCampos: (entidad, objeto) => {
-		return db[entidad].findAll({where: objeto}).then((n) => n.map((m) => m.toJSON()));
+	obtieneTodosPorCondicion: (entidad, condicion) => {
+		return db[entidad].findAll({where: condicion}).then((n) => n.map((m) => m.toJSON()));
 	},
-	obtieneTodosPorCamposConInclude: (entidad, objeto, include) => {
-		return db[entidad].findAll({where: objeto, include}).then((n) => n.map((m) => m.toJSON()));
+	obtieneTodosPorCondicionConInclude: (entidad, condicion, include) => {
+		return db[entidad].findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
 	},
 
 	// Obtiene uno
@@ -24,14 +24,14 @@ module.exports = {
 	obtienePorIdConInclude: (entidad, id, include) => {
 		return db[entidad].findByPk(id, {include}).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtienePorCampos: (entidad, objeto) => {
-		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.toJSON() : ""));
+	obtienePorCondicion: (entidad, condicion) => {
+		return db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtienePorCamposConInclude: (entidad, objeto, include) => {
-		return db[entidad].findOne({where: objeto, include}).then((n) => (n ? n.toJSON() : ""));
+	obtienePorCondicionConInclude: (entidad, condicion, include) => {
+		return db[entidad].findOne({where: condicion, include}).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtienePorCamposElUltimo: (entidad, objeto) => {
-		return db[entidad].findOne({where: objeto, order: [["id", "DESC"]]}).then((n) => (n ? n.toJSON() : ""));
+	obtienePorCondicionElUltimo: (entidad, condicion) => {
+		return db[entidad].findOne({where: condicion, order: [["id", "DESC"]]}).then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// ABM

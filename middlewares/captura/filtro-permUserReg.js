@@ -62,7 +62,7 @@ module.exports = async (req, res, next) => {
 		let resultado;
 		// Rutina por cada asociación
 		for (let entidad of entidades) {
-			let registros = await BD_genericas.obtieneTodosPorCampos(entidad, {capturado_por_id: v.userID});
+			let registros = await BD_genericas.obtieneTodosPorCondicion(entidad, {capturado_por_id: v.userID});
 			for (let registro of registros) {
 				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
 				if (registro.capturado_en < v.haceDosHoras && registro.id != v.entID)

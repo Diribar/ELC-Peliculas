@@ -117,7 +117,7 @@ module.exports = {
 		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
 		for (let entidad of entidadesProd) {
 			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
-			let productos = await BD_genericas.obtieneTodosPorCamposConInclude(
+			let productos = await BD_genericas.obtieneTodosPorCondicionConInclude(
 				entidad,
 				{status_registro_id: aprobado_id},
 				asociacionesRCLV
