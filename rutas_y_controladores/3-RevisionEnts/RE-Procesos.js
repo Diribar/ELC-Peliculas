@@ -373,8 +373,8 @@ module.exports = {
 
 			// Obtiene el motivo_id
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-			let comentario = req.body.comentario ? req.body.comentario : "";
-			if (comentario && !comentario.endsWith(".")) comentario += ".";
+			let comentario = req.body.comentario ? req.body.comentario : "Recomendación " + (aprob ? "aceptada" : "rechazada");
+			if (!comentario.endsWith(".")) comentario += ".";
 
 			// Fin
 			return {
@@ -648,6 +648,7 @@ module.exports = {
 		return informacion;
 	},
 
+	// Varios
 	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
 		const ahora = comp.ahora();
@@ -673,6 +674,19 @@ module.exports = {
 
 		// Fin
 		return bloque;
+	},
+	descargaAvatar: async (original, entidad) => {
+		// Descarga el archivo avatar
+		const avatar = Date.now() + path.extname(original.avatar);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
+		comp.descarga(original.avatar, ruta + avatar);
+
+		// Actualiza el registro 'original'
+		await BD_genericas.actualizaPorId(entidad, original.id, {avatar});
+
+		// Fin
+		return;
 	},
 };
 

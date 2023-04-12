@@ -39,7 +39,7 @@ module.exports = async (req, res, next) => {
 				: [99]
 			: // Preguntas para 'CRUD'
 			(baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/inactivar/"
-			? [aprobado_id]
+			? [creado_aprob_id, aprobado_id]
 			: (baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/recuperar/"
 			? [inactivo_id]
 			: [99];

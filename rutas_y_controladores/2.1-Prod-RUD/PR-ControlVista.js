@@ -74,7 +74,7 @@ module.exports = {
 
 		// Status de la entidad
 		const status_id = original.status_registro_id;
-		const statusEstable = status_id == aprobado_id || status_id == inactivo_id;
+		const statusEstable = [creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
