@@ -90,6 +90,15 @@ module.exports = {
 		}
 		// Revisa si los nombres son iguales
 		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
+
+		// Revisa si es una aparición mariana
+		const apMar = "Ap. Mar. - ";
+		if (!mensaje && entidad == "hechos" && ama && nombre && !nombre.startsWith(apMar))
+			mensaje = "El nombre debe comenzar con '" + apMar + "'";
+
+		console.log({entidad, nombre, ama});
+		console.log(mensaje);
+
 		// Fin
 		return mensaje;
 	},
