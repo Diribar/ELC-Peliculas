@@ -53,13 +53,13 @@ module.exports = {
 	},
 
 	// Conversiones
-	obtieneFamilia: (entidad) => {
+	obtieneFamiliaDesdeEntidad: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "producto"
 			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
 			? "rclv"
 			: ["links", "links_edicion"].includes(entidad)
-			? "links"
+			? "link"
 			: "";
 	},
 	obtieneFamilias: (entidad) => {
@@ -146,15 +146,15 @@ module.exports = {
 			? "links_edicion"
 			: "";
 	},
-	obtieneProdDesdeProducto_id: (edicion) => {
+	obtieneProductosDesdeProducto_id: (edicion) => {
 		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
-	obtieneRCLVdesdeRCLV_id: (edicion) => {
+	obtieneRclvsDesdeRCLV_id: (edicion) => {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
 	},
-	obtieneEntidadDesdeCampo_id: function (edicion) {
-		const producto = this.obtieneProdDesdeProducto_id(edicion);
-		const RCLV = this.obtieneRCLVdesdeRCLV_id(edicion);
+	obtieneEntidadDesdeEnt_id: function (edicion) {
+		const producto = this.obtieneProductosDesdeProducto_id(edicion);
+		const RCLV = this.obtieneRclvsDesdeRCLV_id(edicion);
 		return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
 	},
 	obtieneProducto_id: (edicion) => {
@@ -481,7 +481,7 @@ module.exports = {
 
 		// 2. Anchor
 		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
-		let link = "/" + this.obtieneFamilia(datos.entidad) + "/detalle/" + url;
+		let link = "/" + this.obtieneFamiliaDesdeEntidad(datos.entidad) + "/detalle/" + url;
 		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";

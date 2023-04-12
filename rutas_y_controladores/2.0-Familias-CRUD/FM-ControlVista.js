@@ -16,8 +16,8 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
-		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		// const familias = comp.obtieneFamilias(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -39,7 +39,7 @@ module.exports = {
 		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Cantidad de productos asociados al RCLV
-		if (familias == "rclvs") {
+		if (familia == "rclv") {
 			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
 			cantProds = prodsDelRCLV.length;
 			procCanoniz = procsRCLV.detalle.procCanoniz(original);
@@ -48,9 +48,9 @@ module.exports = {
 
 		// Datos Breves
 		bloqueDer =
-			familias == "productos"
+			familia == "producto"
 				? procesos.bloqueRegistro({registro: original, revisor})
-				: familias == "rclvs"
+				: familia == "rclv"
 				? {
 						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
 						registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
@@ -83,7 +83,8 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
-			...{entidad, id, entidadNombre, familias, familia, comentarios},
+			...{entidad, id, entidadNombre, familia, comentarios},
+			//familias,
 			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
 			cartelGenerico: true,
 		});
@@ -134,7 +135,7 @@ module.exports = {
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza los RCLV, en el campo 'prods_aprob'
-		const familia = comp.obtieneFamilia(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		if (familia == "producto") procesos.cambioDeStatus(entidad, original);
 
 		// 4. Regresa a la vista de detalle
