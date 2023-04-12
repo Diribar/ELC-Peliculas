@@ -32,7 +32,7 @@ module.exports = {
 			// 4. Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
-					let entidad = comp.obtieneProdDesdeProducto_id(n);
+					let entidad = comp.obtieneProdEntidadDesdeProd_id(n);
 					let asociacion = comp.obtieneAsociacion(entidad);
 					// Carga los productos excepto los aprobados y editados por el revisor
 					if (n[asociacion].status_registro_id != aprobado_id || n.editado_por_id != revID)
@@ -158,7 +158,7 @@ module.exports = {
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
-					let entidad = comp.obtieneRCLVdesdeRCLV_id(n);
+					let entidad = comp.obtieneRclvEntidadDesdeRclv_id(n);
 					let asociacion = comp.obtieneAsociacion(entidad);
 					rclvs.push({
 						...n[asociacion],
@@ -244,7 +244,7 @@ module.exports = {
 			// Variables
 			const ahora = comp.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamilias(entidad);
+			let familia = comp.obtieneFamiliasDesdeEntidad(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
@@ -336,8 +336,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, desaprueba} = req.query;
-			//return res.send({...req.query, ...req.body})
-			const familia = comp.obtieneFamilia(entidad);
+			const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
@@ -468,7 +467,10 @@ module.exports = {
 			return;
 		},
 		// Prod-Edición Form
-		prodEdicForm_ingrReempl: async (original, edicion) => {
+		ingrReempl: async (original, edicion) => {
+			// Obtiene la familia
+			const entidad = comp.obtieneEntidadDesdeEnt_id(edicion);
+			const familia = comp.obtieneFamiliaDesdeEntidad;
 			// Obtiene todos los campos a revisar
 			let camposRevisar = [...variables.camposRevisar.productos]; // Escrito así para desligarlos
 			let resultado = [];
@@ -517,7 +519,7 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familia = comp.obtieneFamilias(entidad);
+			const familia = comp.obtieneFamiliasDesdeEntidad(entidad);
 			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
@@ -754,7 +756,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 2. Obtiene los prods
 	links.map((link) => {
 		// Variables
-		let entidad = comp.obtieneProdDesdeProducto_id(link);
+		let entidad = comp.obtieneProdEntidadDesdeProd_id(link);
 		let asociacion = comp.obtieneAsociacion(entidad);
 		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
