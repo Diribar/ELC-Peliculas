@@ -75,7 +75,7 @@ module.exports = {
 		};
 
 		// Variables
-		let {entidad, nombre} = datos;
+		let {entidad, nombre, ama} = datos;
 		// Variable 'campos'
 		let campos = Object.keys(datos);
 		// Descarta los campos que no sean de nombre
@@ -134,7 +134,7 @@ module.exports = {
 					? "No es un número válido"
 					: parseInt(ano) > new Date().getFullYear()
 					? "El año no debe superar al actual"
-					: (parseInt(ano) < 100 && datos.epoca_id == "pst")
+					: parseInt(ano) < 100 && datos.epoca_id == "pst"
 					? "Ese año no corresponde a la época 'posterior'"
 					: "";
 		}
