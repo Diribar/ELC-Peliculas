@@ -16,26 +16,22 @@ module.exports = {
 		let camposNull = {};
 
 		// 1. Quita de edición los campos que no se comparan
-		(() => {
-			// Obtiene los campos a comparar
-			let camposRevisar = [];
-			for (let campo of variables.camposRevisar[familia]) {
-				camposRevisar.push(campo.nombre);
-				if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
-			}
-			// Quita de edicion los campos que no se comparan
-			for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
-		})();
+		let camposRevisar = [];
+		for (let campo of variables.camposRevisar[familia]) {
+			camposRevisar.push(campo.nombre);
+			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
+		}
+		for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
 
 		// 2. Quita de edición las coincidencias con el original y los campos 'null'
 		for (let campo in edicion) {
 			// Corrige errores de data-entry
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-			// CONDICION 1: La edición no es 'null'
+			// CONDICION 1: La edición es 'null'
 			let condicion1 = edicion[campo] === null;
 
-			// CONDICION 2: El original y la edición no son 'null' ni 'undefined' y son 'iguales'
+			// CONDICION 2: El original y la edición no son 'undefined' y son 'iguales'
 			// El original no puede ser 'null', porque ya habría sido eliminado
 			// El original no puede ser 'undefined', porque ya lo estamos preguntando
 			// La edición no puede ser 'null', porque ya habría sido eliminada
@@ -47,7 +43,7 @@ module.exports = {
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
 			if (condicion1 || condicion2 || condicion3) delete edicion[campo];
-			if (condicion2 || condicion2) camposNull[campo] = null;
+			if (condicion2) camposNull[campo] = null;
 		}
 
 		// 3. Acciones en función de si quedan campos
@@ -57,7 +53,7 @@ module.exports = {
 			edicion = null;
 			// Si además había una edición guardada en la BD, la elimina
 			if (edicion_id) await BD_genericas.eliminaPorId(nombreEdicion, edicion_id);
-		} else if (edicion_id) edicion.id = edicion_id;
+		} else edicion.id = edicion_id;
 
 		// Fin
 		return [edicion, camposNull];
@@ -435,13 +431,15 @@ module.exports = {
 		});
 
 		// 2. Averigua si existe algún link gratuito, para ese producto
-		let links_gratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then((n) => {
-			return n
-				? SI
-				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
-						return n ? talVez : NO;
-				  });
-		});
+		let links_gratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
+			(n) => {
+				return n
+					? SI
+					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
+							return n ? talVez : NO;
+					  });
+			}
+		);
 
 		// 3. Averigua si existe algún link en castellano, para ese producto
 		let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then((n) => {
