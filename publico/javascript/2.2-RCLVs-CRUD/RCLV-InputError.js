@@ -233,7 +233,8 @@ window.addEventListener("load", async () => {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
-
+				
+				// Lo agrega lo referido a la aparición mariana
 				if (v.hechos) {
 					let solo_cfc = opcionElegida(v.solo_cfc);
 					let epoca_id = opcionElegida(v.epocas_id);
@@ -241,10 +242,14 @@ window.addEventListener("load", async () => {
 					let ama = opcionElegida(v.ama).value;
 					if (solo_cfc.value == 1 && epoca_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
 				}
+
+				// Averigua los errores
 				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+
 				// Si hay errores, cambia el OK a false
 				if (v.errores.nombre) v.OK.nombre = false;
 				else if (!v.personajes) v.OK.nombre = !v.errores.nombre;
+
 				// Fin
 				return;
 			},
