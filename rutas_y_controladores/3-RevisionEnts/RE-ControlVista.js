@@ -267,14 +267,14 @@ module.exports = {
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 			// Sus productos asociados:
 			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
+			// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
 			await procesos.guardar.prodsAsocs(entidad, id);
 		}
 
 		// 8. Acciones si es un producto inactivo
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (status_final_id == "inactivo") procesos.guardar.prodRclvRech(entidad, id);
+		if (status_final_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 9. Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
