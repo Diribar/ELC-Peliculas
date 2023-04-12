@@ -543,7 +543,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 			}
 
-			// 2. Actualiza la tabla de edics_aprob o edics_rech
+			// 2. Actualiza la tabla de 'edics_aprob' o 'edics_rech'
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
@@ -558,7 +558,7 @@ module.exports = {
 			// Agrega el registro
 			BD_genericas.agregaRegistro(decision, datos);
 
-			// 3. Aumenta el campo edics_aprob o edics_rech en el registro del usuario
+			// 3. Aumenta el campo 'edics_aprob' o 'edics_rech' en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
