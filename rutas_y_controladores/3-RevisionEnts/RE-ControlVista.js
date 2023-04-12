@@ -252,7 +252,7 @@ module.exports = {
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
-		if (comentario) datosHist.comentario = comentario;
+		datosHist.comentario = comentario;
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
@@ -261,23 +261,27 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilia);
 
-		// 7 Acciones si es un RCLV inactivo
+		// 7. Acciones si es un RCLV inactivo
 		if (rclv && status_final_id == inactivo_id) {
 			// Borra su id de los campos rclv_id de las ediciones de producto
 			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 			// Sus productos asociados:
 			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
+			// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
 			await procesos.guardar.prodsAsocs(entidad, id);
 		}
 
 		// 8. Acciones si es un producto inactivo
 		// Elimina el archivo de avatar de la edicion
-		// Elimina las ediciones de producto que tenga
-		if (!rclv && status_final_id == "inactivo") procesos.alta.prodRech(entidad, id, userID);
+		// Elimina las ediciones que tenga
+		if (status_final_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 9. Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
+
+		// 10. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
+		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
+			procesos.descargaAvatar(original, entidad);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
@@ -350,15 +354,12 @@ module.exports = {
 		else if (!edicion.avatar) {
 			// Actualiza el avatar original si es un url
 			if (original.avatar && original.avatar.includes("/")) {
-				// Descarga el archivo avatar
-				const avatar = Date.now() + path.extname(original.avatar);
-				const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
-				comp.descarga(original.avatar, ruta + avatar);
-				// Actualiza los registros 'original' y 'edición'
+				// Descarga el archivo avatar y actualiza el registro 'original'
+				procesos.descargaAvatar(original, entidad);
+				// Actualiza el registro 'edición'
 				edicion.avatar_url = null;
 				const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
-				BD_genericas.actualizaPorId(entidad, id, {avatar});
 			}
 			// Variables
 			if (familia == "rclv") {

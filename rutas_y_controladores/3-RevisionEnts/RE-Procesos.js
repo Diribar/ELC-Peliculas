@@ -325,22 +325,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// Productos Alta
-		prodRech: async (entidad, id, editado_por_id) => {
-			// Obtiene la edicion
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-			let objeto = {[campo_id]: id, editado_por_id};
-			let edicion = await BD_genericas.obtienePorCondicion("prods_edicion", objeto);
-
-			// 1. Elimina el archivo de avatar de la edicion
-			if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar", edicion.avatar);
-
-			// 2. Elimina las ediciones de producto que tenga
-			await BD_genericas.eliminaTodosPorCampos("prods_edicion", {[campo_id]: id});
-
-			//Fin
-			return;
-		},
 	},
 
 	guardar: {
@@ -389,8 +373,8 @@ module.exports = {
 
 			// Obtiene el motivo_id
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-			let comentario = req.body.comentario ? req.body.comentario : "";
-			if (comentario && !comentario.endsWith(".")) comentario += ".";
+			let comentario = req.body.comentario ? req.body.comentario : "Recomendación " + (aprob ? "aceptada" : "rechazada");
+			if (!comentario.endsWith(".")) comentario += ".";
 
 			// Fin
 			return {
@@ -429,6 +413,26 @@ module.exports = {
 			// Sus productos asociados:
 			// Dejan de estar vinculados
 			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
+		},
+		// Productos Alta
+		prodRclvRech: async (entidad, id) => {
+			// Obtiene la edicion
+			const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const condicion = {[campo_id]: id};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdicion, condicion);
+			const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+
+			// 1. Elimina el archivo avatar de las ediciones
+			for (let edicion of ediciones)
+				if (edicion.avatar)
+					comp.borraUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+
+			// 2. Elimina las ediciones
+			BD_genericas.eliminaTodosPorCampos(nombreEdicion, {[campo_id]: id});
+
+			//Fin
+			return;
 		},
 	},
 
@@ -521,7 +525,7 @@ module.exports = {
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
 			const titulo = campoRevisar.titulo;
-			let motivo;
+			let motivo, prodStatusAprob;
 
 			// Genera la información a actualizar
 			let datos = {
@@ -539,7 +543,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 			}
 
-			// 2. Actualiza la tabla de edics_aprob o edics_rech
+			// 2. Actualiza la tabla de 'edics_aprob' o 'edics_rech'
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
@@ -554,7 +558,7 @@ module.exports = {
 			// Agrega el registro
 			BD_genericas.agregaRegistro(decision, datos);
 
-			// 3. Aumenta el campo edics_aprob o edics_rech en el registro del usuario
+			// 3. Aumenta el campo 'edics_aprob' o 'edics_rech' en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
@@ -575,8 +579,8 @@ module.exports = {
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			let prodStatusAprob;
-			if (familia == "productos") prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
+			if (familia == "productos" && !edicion)
+				prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return [edicion, prodStatusAprob];
@@ -644,6 +648,7 @@ module.exports = {
 		return informacion;
 	},
 
+	// Varios
 	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
 		const ahora = comp.ahora();
@@ -669,6 +674,19 @@ module.exports = {
 
 		// Fin
 		return bloque;
+	},
+	descargaAvatar: async (original, entidad) => {
+		// Descarga el archivo avatar
+		const avatar = Date.now() + path.extname(original.avatar);
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
+		comp.descarga(original.avatar, ruta + avatar);
+
+		// Actualiza el registro 'original'
+		await BD_genericas.actualizaPorId(entidad, original.id, {avatar});
+
+		// Fin
+		return;
 	},
 };
 

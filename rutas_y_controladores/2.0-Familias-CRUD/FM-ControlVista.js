@@ -108,13 +108,9 @@ module.exports = {
 		}
 
 		// Comentario para la BD
-		if (codigo == "inactivar") {
-			motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-			motivoComentario = motivo.descripcion + ".";
-			if (comentario) motivoComentario += " ";
-		}
-		if (comentario) motivoComentario += comentario;
-		if (motivoComentario && !motivoComentario.endsWith(".")) motivoComentario += ".";
+		if (codigo == "inactivar") motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
+		if (comentario) motivoComentario = comentario;
+		if (comentario && !comentario.endsWith(".")) motivoComentario += ".";
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original

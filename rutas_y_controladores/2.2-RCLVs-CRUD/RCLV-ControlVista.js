@@ -114,7 +114,7 @@ module.exports = {
 		const familia = comp.obtieneFamilia(entidad);
 		const familias = comp.obtieneFamilias(entidad);
 		if (!origen) origen = "DTR";
-		const revisor = req.session.usuario.rol_usuario.revisor_ents
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -136,13 +136,14 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
-			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
+			registro: procsCRUD.bloqueRegistro({registro: original, revisor: revisor_ents, cantProds}),
 		};
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 		// Status de la entidad
 		const status_id = original.status_registro_id;
-		const statusEstable = codigo == "detalle" && (status_id == aprobado_id || status_id == inactivo_id);
+		const statusEstable =
+			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
 		const procCanoniz = procesos.detalle.procCanoniz(original);
 		const RCLVnombre = original.nombre;

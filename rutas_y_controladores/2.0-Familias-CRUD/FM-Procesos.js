@@ -306,21 +306,21 @@ module.exports = {
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;
-				let ahora = comp.ahora();
-				let datos = {
+				const ahora = comp.ahora();
+				const datos = {
 					alta_term_en: ahora,
 					lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
 					status_registro_id: aprobado_id,
 				};
 
 				// Cambia el status del registro
-				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+				BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// Si es una colección, le cambia el status también a los capítulos
 				if (entidad == "colecciones") {
 					datos.alta_revisada_por_id = 2;
 					datos.alta_revisada_en = ahora;
-					await BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+					BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
 				}
 
 				// Actualiza prodEnRCLV
