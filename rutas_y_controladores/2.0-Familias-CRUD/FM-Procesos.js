@@ -10,14 +10,14 @@ module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const familia = comp.obtieneFamilias(entidad);
+		const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const edicion_id = edicion.id;
 		let camposNull = {};
 
 		// 1. Quita de edición los campos que no se comparan
 		let camposRevisar = [];
-		for (let campo of variables.camposRevisar[familia]) {
+		for (let campo of variables.camposRevisar[familias]) {
 			camposRevisar.push(campo.nombre);
 			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
 		}
@@ -330,7 +330,7 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familias = comp.obtieneFamilias(entidad);
+		let familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 
 		// prodsEnRCLV
 		if (familias == "productos") {
