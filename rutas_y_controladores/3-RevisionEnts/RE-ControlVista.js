@@ -54,7 +54,7 @@ module.exports = {
 		const codigo = "producto/alta";
 		// Variables
 		let {entidad, id} = req.query;
-		const familia = comp.obtieneFamilia(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 
 		// Obtiene el registro original
@@ -68,7 +68,7 @@ module.exports = {
 			? (!imgDerPers.includes("/") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Avatar-Generico.jpg";
 		// Configura el título de la vista
-		const prodNombre = comp.obtieneEntidadNombre(entidad);
+		const prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
@@ -120,7 +120,7 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
-		const familia = comp.obtieneFamilia(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
@@ -140,7 +140,7 @@ module.exports = {
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
@@ -298,7 +298,7 @@ module.exports = {
 
 		// Variables
 		const {entidad, id, edicion_id: edicID} = req.query;
-		const familia = comp.obtieneFamilia(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
@@ -374,10 +374,10 @@ module.exports = {
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
-			[ingresos, reemplazos] = await procesos.edicion.prodEdicForm_ingrReempl(original, edicion);
+			[ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
 		}
 		// Variables para la vista
-		const prodNombre = comp.obtieneEntidadNombre(entidad);
+		const prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
@@ -427,7 +427,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let include;
 		// Configurar el título
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		include = ["links", "status_registro"];
