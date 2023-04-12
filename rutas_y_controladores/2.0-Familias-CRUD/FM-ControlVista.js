@@ -17,7 +17,7 @@ module.exports = {
 		// Más variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		// const familias = comp.obtieneFamilias(entidad);
+		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -31,7 +31,7 @@ module.exports = {
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneEntidadNombre(entidad);
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
