@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let submit = document.querySelector("#botones button[type='submit']");
 	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
-	let req_com;
+	let req_com = true;
 
 	// Botón submit
 	let botonSubmit = () => {
@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 	if (motivos.length)
 		for (let motivo of motivos)
 			motivo.addEventListener("change", async () => {
-				req_com = await fetch(ruta + motivo.value).then((n) => n.json());
+				// req_com = await fetch(ruta + motivo.value).then((n) => n.json());
 				botonSubmit();
 			});
 
