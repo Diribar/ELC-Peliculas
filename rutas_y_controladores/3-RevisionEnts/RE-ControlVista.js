@@ -389,7 +389,7 @@ module.exports = {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre, cantProds},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
-			...{avatarExterno, avatarLinksExternos, imgDerPers},
+			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
 			...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
 		});

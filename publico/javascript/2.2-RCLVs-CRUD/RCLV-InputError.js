@@ -8,9 +8,6 @@ window.addEventListener("load", async () => {
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
-		// Rutas
-		rutaValidacion: "/rclv/api/valida-sector/?funcion=",
-		rutaRegistrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 		// Links a otros sitios
 		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
@@ -31,6 +28,11 @@ window.addEventListener("load", async () => {
 		// Otros
 		camposNombre: document.querySelectorAll("#dataEntry #nombre .input"),
 		camposFecha: document.querySelectorAll("#dataEntry #fecha .input"),
+	};
+	let rutas = {
+		// Rutas
+		validacion: "/rclv/api/valida-sector/?funcion=",
+		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 	};
 	// Otros valores
 	(() => {
@@ -128,7 +130,7 @@ window.addEventListener("load", async () => {
 					if (v.id) params += "&id=" + v.id;
 					params += "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
 					// 2. Busca otros casos con esa fecha
-					casos = await fetch(v.rutaRegistrosConEsaFecha + params).then((n) => n.json());
+					casos = await fetch(rutas.registrosConEsaFecha + params).then((n) => n.json());
 				}
 
 				// Si no hay otros casos, mensaje de "No hay otros casos"
@@ -230,17 +232,31 @@ window.addEventListener("load", async () => {
 		nombre: {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + encodeURIComponent(v.nombre.value);
-				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
+				
+				// Lo agrega lo referido a la aparición mariana
+				if (v.hechos) {
+					let solo_cfc = opcionElegida(v.solo_cfc);
+					let epoca_id = opcionElegida(v.epocas_id);
+					let ano = FN_ano(v.ano.value);
+					let ama = opcionElegida(v.ama).value;
+					if (solo_cfc.value == 1 && epoca_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
+				}
+
+				// Averigua los errores
+				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+
 				// Si hay errores, cambia el OK a false
 				if (v.errores.nombre) v.OK.nombre = false;
+				else if (!v.personajes) v.OK.nombre = !v.errores.nombre;
+
 				// Fin
 				return;
 			},
 			apodo: async () => {
 				// Verifica errores en el sector 'nombre', campo 'apodo'
 				let params = "&apodo=" + encodeURIComponent(v.apodo.value);
-				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
 				if (v.errores.nombre) v.OK.nombre = false;
 				// Fin
 				return;
@@ -250,7 +266,7 @@ window.addEventListener("load", async () => {
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
 				if (v.personajes) params += "&apodo=" + encodeURIComponent(v.apodo.value);
 				if (v.id) params += "&id=" + v.id;
-				v.errores.nombre = await fetch(v.rutaValidacion + "nombre" + params).then((n) => n.json());
+				v.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
 				// Consolidar la info
 				v.OK.nombre = !v.errores.nombre;
 				// Fin
@@ -262,7 +278,7 @@ window.addEventListener("load", async () => {
 			if (!v.desconocida.checked) {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + v.mes_id.value + "&dia=" + v.dia.value;
-				v.errores.fecha = await fetch(v.rutaValidacion + "fecha" + params).then((n) => n.json());
+				v.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
 				v.OK.fecha = !v.errores.fecha;
 			} else {
 				// Errores y OK
@@ -294,7 +310,7 @@ window.addEventListener("load", async () => {
 			let params = "sexo&sexo_id=" + sexo_id.value;
 
 			// OK y Errores
-			v.errores.sexo_id = await fetch(v.rutaValidacion + params).then((n) => n.json());
+			v.errores.sexo_id = await fetch(rutas.validacion + params).then((n) => n.json());
 			v.OK.sexo_id = !v.errores.sexo_id;
 
 			// Fin
@@ -310,7 +326,7 @@ window.addEventListener("load", async () => {
 			if (epoca_id.value == "pst") params += "&ano=" + FN_ano(v.ano.value);
 
 			// OK y Errores
-			v.errores.epoca = await fetch(v.rutaValidacion + params).then((n) => n.json());
+			v.errores.epoca = await fetch(rutas.validacion + params).then((n) => n.json());
 			v.OK.epoca = !v.errores.epoca;
 
 			// Fin
@@ -349,7 +365,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// OK y Errores
-				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
+				v.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
 				v.OK.RCLIC = !v.errores.RCLIC;
 
 				// Fin
@@ -367,9 +383,9 @@ window.addEventListener("load", async () => {
 					// Agrega los datos de epoca_id y año
 					let epoca_id = opcionElegida(v.epocas_id);
 					params += "&epoca_id=" + epoca_id.value;
-					let ano = FN_ano(v.ano.value);
 
 					if (epoca_id.value == "pst") {
+						let ano = FN_ano(v.ano.value);
 						// Agrega el año
 						params += "&ano=" + ano;
 						// Agrega lo referido a la aparición mariana
@@ -378,7 +394,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// OK y Errores
-				v.errores.RCLIC = await fetch(v.rutaValidacion + params).then((n) => n.json());
+				v.errores.RCLIC = await fetch(rutas.validacion + params).then((n) => n.json());
 				v.OK.RCLIC = !v.errores.RCLIC;
 
 				// Fin
@@ -407,29 +423,36 @@ window.addEventListener("load", async () => {
 				? v.botonSubmit.classList.remove("inactivo")
 				: v.botonSubmit.classList.add("inactivo");
 		},
-		startUp: async function () {
+		startUp: async function (forzar) {
 			// 1. Valida el nombre
-			if (v.nombre.value) await this.nombre.nombreApodo();
+			if (v.nombre.value || (forzar && v.errores.nombre == undefined))
+				v.personajes ? await this.nombre.nombreApodo() : await this.nombre.nombre();
 			if (v.nombre.value && v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
-			if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
-			if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-			if ((v.mes_id.value && v.dia.value) || v.desconocida.checked) await this.fecha();
+			if (!v.tema) {
+				if (v.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
+				if (v.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+				if ((v.mes_id.value && v.dia.value) || v.desconocida.checked || (forzar && v.errores.fecha == undefined))
+					await this.fecha();
 
-			// 4. Valida el sexo
-			if (v.personajes && opcionElegida(v.sexos_id).value) await impactos.sexo();
-			if (v.personajes && opcionElegida(v.sexos_id).value) await this.sexo();
+				// 4. Valida el sexo
+				if (v.personajes && opcionElegida(v.sexos_id).value) await impactos.sexo();
+				if (v.personajes && (opcionElegida(v.sexos_id).value || (forzar && v.errores.sexo_id == undefined)))
+					await this.sexo();
 
-			// 5. Valida la época
-			if (opcionElegida(v.epocas_id).value) {
-				await impactos.epoca[v.entidad]();
-				await this.epoca();
+				// 5. Valida la época
+				if (opcionElegida(v.epocas_id).value) await impactos.epoca[v.entidad]();
+				if (opcionElegida(v.epocas_id).value || (forzar && v.errores.epoca == undefined)) await this.epoca();
+
+				// 6. Valida RCLIC
+				if (
+					(v.personajes && opcionElegida(v.categorias_id).value) ||
+					(v.hechos && opcionElegida(v.solo_cfc).value) ||
+					(forzar && v.errores.RCLIC == undefined)
+				)
+					await this.RCLIC[v.entidad]();
 			}
-
-			// 6. Valida RCLIC
-			if ((v.personajes && opcionElegida(v.categorias_id).value) || (v.hechos && opcionElegida(v.solo_cfc).value))
-				await this.RCLIC[v.entidad]();
 
 			// Fin
 			this.muestraErroresOK();
@@ -486,7 +509,8 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
 		if (v.camposNombre.includes(campo) && v.nombre.value) {
-			await validacs.nombre.nombreApodo();
+			if (v.personajes) await validacs.nombre.nombreApodo();
+			else await validacs.nombre.nombre();
 			if (v.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia el sector Fecha
@@ -527,6 +551,7 @@ window.addEventListener("load", async () => {
 		if (v.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[v.entidad]();
+			if (v.hechos) await validacs.nombre.nombre();
 		}
 
 		// Final de la rutina
@@ -536,7 +561,10 @@ window.addEventListener("load", async () => {
 	// Botón submit
 	v.botonSubmit.addEventListener("click", async (e) => {
 		// Acciones si el botón está inactivo
-		if (v.botonSubmit.classList.contains("inactivo")) await validacs.startUp();
+		if (v.botonSubmit.classList.contains("inactivo")) {
+			e.preventDefault();
+			await validacs.startUp(true);
+		}
 		// Si el botón está activo, función 'submit'
 		else v.dataEntry.submit();
 	});

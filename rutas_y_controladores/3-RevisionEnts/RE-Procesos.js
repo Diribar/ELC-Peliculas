@@ -568,12 +568,9 @@ module.exports = {
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 
 			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
-			// Actualiza la información del original guardado
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
-			// Actualiza la información de la edición
 			edicion[campo] = null;
 			if (relacInclude) delete edicion[relacInclude];
-			// Completa el proceso
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
 			// 7. PROCESOS DE CIERRE

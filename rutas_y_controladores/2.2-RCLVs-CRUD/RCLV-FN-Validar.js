@@ -75,7 +75,7 @@ module.exports = {
 		};
 
 		// Variables
-		let {entidad, nombre} = datos;
+		let {entidad, nombre, ama} = datos;
 		// Variable 'campos'
 		let campos = Object.keys(datos);
 		// Descarta los campos que no sean de nombre
@@ -90,6 +90,12 @@ module.exports = {
 		}
 		// Revisa si los nombres son iguales
 		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
+
+		// Revisa si es una aparición mariana
+		const apMar = "Ap. Mar. - ";
+		if (!mensaje && entidad == "hechos" && ama && nombre && !nombre.startsWith(apMar))
+			mensaje = "El nombre debe comenzar con '" + apMar + "'";
+
 		// Fin
 		return mensaje;
 	},
@@ -134,7 +140,7 @@ module.exports = {
 					? "No es un número válido"
 					: parseInt(ano) > new Date().getFullYear()
 					? "El año no debe superar al actual"
-					: (parseInt(ano) < 100 && datos.epoca_id == "pst")
+					: parseInt(ano) < 100 && datos.epoca_id == "pst"
 					? "Ese año no corresponde a la época 'posterior'"
 					: "";
 		}

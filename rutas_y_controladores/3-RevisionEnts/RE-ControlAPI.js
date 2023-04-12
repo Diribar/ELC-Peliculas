@@ -14,12 +14,12 @@ module.exports = {
 	},
 	edicAprobRech: async (req, res) => {
 		// Variables
-		let {entidad, id: entID, edicion_id: edicID, campo, aprob, motivo_id} = req.query; // Tiene que ser 'let' por el 'entID'
+		const {entidad, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
 
 		// Obtiene el registro editado
-		let include = comp.obtieneTodosLosCamposInclude(entidad);
+		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
 
 		// PROBLEMAS
@@ -30,15 +30,25 @@ module.exports = {
 		// 3. Rechazado sin motivo
 		if (!aprob && !motivo_id) return res.json({mensaje: "Falta especificar el motivo del rechazo"});
 
-		// Si la entidad es un link, obtiene su id
-		if (entidad == "links") entID = edicion.link_id;
 		// Obtiene la versión original con include
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
+		const entID = entidad == "links" ? edicion.link_id : req.query.id;
+		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
 		let prodStatusAprob;
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		[edicion, prodStatusAprob] = await procesos.edicion.edicAprobRech(objeto);
+
+		// Cuando se termina de revisar una edicion, se fija si existen otras ediciones con los mismos valores que el original, y en caso afirmativo elimina el valor de esos campos y eventualmente el registro de edicion
+		if (!edicion) {
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const condicion = {[campo_id]: entID};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
+			if (ediciones.length) {
+				const originalGuardado = await BD_genericas.obtienePorId(entidad, entID);
+				for (let edic of ediciones) await procsCRUD.puleEdicion(entidad, originalGuardado, edic);
+			}
+		}
 
 		// Fin
 		return res.json({OK: true, quedanCampos: !!edicion, statusAprob: prodStatusAprob});
