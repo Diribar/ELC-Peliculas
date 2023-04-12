@@ -351,7 +351,7 @@ module.exports = {
 		// linksEnProds
 		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneProdDesdeProducto_id(registro);
+			const prodEntidad = comp.obtieneProdEntidadDesdeProd_id(registro);
 			const campo_id = comp.obtieneProducto_id(registro);
 			const prodID = registro[campo_id];
 			// Actualiza el producto

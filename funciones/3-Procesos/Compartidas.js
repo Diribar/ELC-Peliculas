@@ -146,15 +146,15 @@ module.exports = {
 			? "links_edicion"
 			: "";
 	},
-	obtieneProductosDesdeProducto_id: (edicion) => {
+	obtieneProdEntidadDesdeProd_id: (edicion) => {
 		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
-	obtieneRclvsDesdeRCLV_id: (edicion) => {
+	obtieneRclvEntidadDesdeRclv_id: (edicion) => {
 		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
 	},
 	obtieneEntidadDesdeEnt_id: function (edicion) {
-		const producto = this.obtieneProductosDesdeProducto_id(edicion);
-		const RCLV = this.obtieneRclvsDesdeRCLV_id(edicion);
+		const producto = this.obtieneProdEntidadDesdeProd_id(edicion);
+		const RCLV = this.obtieneRclvEntidadDesdeRclv_id(edicion);
 		return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
 	},
 	obtieneProducto_id: (edicion) => {
