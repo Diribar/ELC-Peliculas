@@ -354,7 +354,7 @@ module.exports = {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			let paisNombreToId = (pais_nombre) => {

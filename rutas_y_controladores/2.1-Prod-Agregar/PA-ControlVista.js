@@ -285,8 +285,8 @@ module.exports = {
 		let {entidad, id} = terminaste;
 		// Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-		// Obtiene el producto
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		// Obtiene el nombre del producto
+		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Imagen derecha
@@ -329,7 +329,7 @@ module.exports = {
 		let IM = {
 			...req.body,
 			...req.query,
-			prodNombre: comp.obtieneEntidadNombre(req.body.entidad),
+			prodNombre: comp.obtieneEntidadNombreDesdeEntidad(req.body.entidad),
 		};
 		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
 		req.session.IM = IM;

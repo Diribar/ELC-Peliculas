@@ -19,7 +19,6 @@ module.exports = {
 		// Variables
 		let {entidad, id, origen} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
 		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 
@@ -28,7 +27,7 @@ module.exports = {
 		// Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// Configura el título de la vista
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -79,7 +78,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen},
-			...{entidad, id, familia, status_id, statusEstable},
+			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{prodNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzq, bloqueDer, RCLVs},
@@ -93,7 +92,6 @@ module.exports = {
 		const codigo = "edicion";
 		let {entidad, id, origen} = req.query;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const familia = comp.obtieneFamilia(entidad);
 		if (!origen) origen = "DTP";
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
@@ -103,7 +101,7 @@ module.exports = {
 		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// 4. Configura el título de la vista
-		let prodNombre = comp.obtieneEntidadNombre(entidad);
+		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -153,7 +151,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{prodNombre, registro: prodComb},
-			...{entidad, id, familia},
+			...{entidad, id, familia: "producto"},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
