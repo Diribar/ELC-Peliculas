@@ -525,7 +525,7 @@ module.exports = {
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
 			const titulo = campoRevisar.titulo;
-			let motivo;
+			let motivo, prodStatusAprob;
 
 			// Genera la información a actualizar
 			let datos = {
@@ -579,8 +579,8 @@ module.exports = {
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			let prodStatusAprob;
-			if (familia == "productos") prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
+			if (familia == "productos" && !edicion)
+				prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
 
 			// Fin
 			return [edicion, prodStatusAprob];
