@@ -34,13 +34,13 @@ module.exports = {
 	},
 	obtieneTodosLosCamposInclude: function (entidad) {
 		// Obtiene la familia
-		let familia = this.obtieneFamilias(entidad);
+		let familias = this.obtieneFamiliasDesdeEntidad(entidad);
 
 		// Obtiene todos los campos de la familia
-		let campos = [...variables.camposRevisar[familia]];
+		let campos = [...variables.camposRevisar[familias]];
 
 		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad] || n[familia]);
+		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
 
 		// Deja solamente los campos con vínculo
 		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
@@ -62,7 +62,7 @@ module.exports = {
 			? "link"
 			: "";
 	},
-	obtieneFamilias: (entidad) => {
+	obtieneFamiliasDesdeEntidad: (entidad) => {
 		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
 			? "productos"
 			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
@@ -84,7 +84,7 @@ module.exports = {
 			? "prods"
 			: "";
 	},
-	obtieneEntidadNombre: (entidad) => {
+	obtieneEntidadNombreDesdeEntidad: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -482,7 +482,7 @@ module.exports = {
 		// 2. Anchor
 		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
 		let link = "/" + this.obtieneFamiliaDesdeEntidad(datos.entidad) + "/detalle/" + url;
-		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombre(datos.entidad).toLowerCase();
+		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombreDesdeEntidad(datos.entidad).toLowerCase();
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
