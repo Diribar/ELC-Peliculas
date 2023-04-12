@@ -407,7 +407,6 @@ window.addEventListener("load", async () => {
 				? v.iconoOK[i].classList.remove("ocultar")
 				: v.iconoOK[i].classList.add("ocultar");
 			// Íconos de error
-			if (i == 1) console.log(400, {errores: v.errores[v.camposError[i]], nombre: v.camposError[i], i});
 			v.errores[v.camposError[i]] ? v.iconoError[i].classList.remove("ocultar") : v.iconoError[i].classList.add("ocultar");
 			// Mensaje de error
 			v.mensajeError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
