@@ -96,9 +96,6 @@ module.exports = {
 		if (!mensaje && entidad == "hechos" && ama && nombre && !nombre.startsWith(apMar))
 			mensaje = "El nombre debe comenzar con '" + apMar + "'";
 
-		console.log({entidad, nombre, ama});
-		console.log(mensaje);
-
 		// Fin
 		return mensaje;
 	},
