@@ -31,7 +31,7 @@ module.exports = {
 					// Obtiene los productos de esas ediciones
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
-						let entProd = comp.obtieneProdDesdeProducto_id(edicion);
+						let entProd = comp.obtieneProdEntidadDesdeProd_id(edicion);
 						let campo_id = comp.obtieneCampo_idDesdeEntidad(entProd);
 						let entID = edicion[campo_id];
 						// Obtiene los registros del producto original y su edición por el usuario
@@ -51,7 +51,7 @@ module.exports = {
 					// Averigua la ruta y el nombre del avatar
 					let avatar = procsCRUD.obtieneAvatar(registro).edic;
 					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombre(entidad)};
+					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad)};
 				});
 				prodsDelRCLV.push(...aux);
 			}
