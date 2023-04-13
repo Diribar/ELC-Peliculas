@@ -46,15 +46,14 @@ window.addEventListener("load", async () => {
 	let impactos = {
 		muestraLosDiasDelMes: (desdeHasta) => {
 			// Variables
-			const prefijo = desdeHasta.slice(0, 1+desdeHasta.indexOf("_"));
-			console.log(desdeHasta,prefijo);
+			const prefijo = desdeHasta.slice(0, 1 + desdeHasta.indexOf("_"));
 
 			// Aplica cambios en los días 30 y 31
 			// Variables
 			DOM.dia30 = document.querySelector("select[name='" + prefijo + "dia'] option[value='30']");
 			DOM.dia31 = document.querySelector("select[name='" + prefijo + "dia'] option[value='31']");
-			DOM.dia = DOM[prefijo + "dia"]
-			const mesValor = DOM[prefijo + "mes_id"].value
+			DOM.dia = DOM[prefijo + "dia"];
+			const mesValor = DOM[prefijo + "mes_id"].value;
 
 			// Revisar para febrero
 			if (mesValor == 2) {
@@ -74,7 +73,11 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		limpiezaDeMesDia: () => {
-			return
+			// Limpia los valores de mes, día y repetidos
+			for (let campoFecha of DOM.camposFecha) campoFecha.value = "";
+
+			// Fin
+			return;
 		},
 	};
 	let validacs = {
@@ -91,10 +94,10 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		vigencia: () => {
-			return
+			return;
 		},
 		descripcion: () => {
-			return
+			return;
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -137,7 +140,7 @@ window.addEventListener("load", async () => {
 	});
 	// Correcciones mientras se escribe
 	DOM.dataEntry.addEventListener("input", async (e) => {
-		if (!["input", "textarea"].includes(e.target.localName) && e.target.value.length) return;
+		if (!["nombre", "descripcion"].includes(e.target.name) && e.target.value.length) return;
 
 		// Variables
 		const campo = e.target.name;
