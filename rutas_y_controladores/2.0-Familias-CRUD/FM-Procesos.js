@@ -137,7 +137,8 @@ module.exports = {
 		const petitFamilia = original.fuente ? "prods" : original.dia_del_ano_id ? "rclvs" : "";
 
 		// Si no detectó la petitFamilia, devuelve el genérico
-		if (!petitFamilia) return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
+		if (!petitFamilia)
+			return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
 
 		// Obtiene el avatar original
 		let orig = !original.avatar
@@ -154,7 +155,8 @@ module.exports = {
 					: "0-Base/Avatar/Sin-Avatar.jpg");
 
 		// avatarEdic
-		let edic = edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + edicion.avatar : orig;
+		let edic =
+			edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};
@@ -542,14 +544,7 @@ module.exports = {
 		if (codigo == "inactivar" && !motivo_id) informacion = {mensajes: ["Necesitamos que nos digas el motivo"]};
 
 		// 2. Falta el comentario
-		if (!informacion) {
-			let motivo;
-			// Si se inactivó, se fija si el motivo requiere explicación
-			if (codigo == "inactivar") motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-			// Se fija si falta el comentario
-			if (!comentario && ((motivo && motivo.req_com) || !motivo_id))
-				informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
-		}
+		if (!informacion && !comentario) informacion = {mensajes: ["Necesitamos que nos des un comentario"]};
 
 		// Fin
 		return informacion;
