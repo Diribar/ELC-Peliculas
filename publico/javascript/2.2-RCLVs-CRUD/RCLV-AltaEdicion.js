@@ -229,6 +229,7 @@ window.addEventListener("load", async () => {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+				if (varios.id) params += "&id=" + varios.id;
 
 				// Lo agrega lo referido a la aparición mariana
 				if (varios.hechos) {
