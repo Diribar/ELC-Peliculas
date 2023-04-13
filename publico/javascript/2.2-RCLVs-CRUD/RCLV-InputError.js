@@ -228,7 +228,7 @@ window.addEventListener("load", async () => {
 		nombre: {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + DOM.entidad;
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
 
 				// Lo agrega lo referido a la aparición mariana
 				if (varios.hechos) {
@@ -259,7 +259,7 @@ window.addEventListener("load", async () => {
 			},
 			nombreApodo: async () => {
 				// Verifica errores en el sector 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + DOM.entidad;
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
 				if (varios.personajes) params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
 				if (varios.id) params += "&id=" + varios.id;
 				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
@@ -314,7 +314,7 @@ window.addEventListener("load", async () => {
 		},
 		epoca: async () => {
 			// Variables
-			let params = "epoca&entidad=" + DOM.entidad;
+			let params = "epoca&entidad=" + varios.entidad;
 
 			// Agrega los demás parámetros
 			let epoca_id = opcionElegida(DOM.epocas_id);
@@ -440,7 +440,7 @@ window.addEventListener("load", async () => {
 					await this.sexo();
 
 				// 5. Valida la época
-				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[DOM.entidad]();
+				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
 				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
 
 				// 6. Valida RCLIC
@@ -449,7 +449,7 @@ window.addEventListener("load", async () => {
 					(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
 					(forzar && varios.errores.RCLIC == undefined)
 				)
-					await this.RCLIC[DOM.entidad]();
+					await this.RCLIC[varios.entidad]();
 			}
 
 			// Fin
@@ -535,7 +535,7 @@ window.addEventListener("load", async () => {
 		// 5. Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
-			await impactos.epoca[DOM.entidad]();
+			await impactos.epoca[varios.entidad]();
 			await validacs.epoca();
 			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
 			if (e.target.value == "pst") DOM.ano.focus();
@@ -548,7 +548,7 @@ window.addEventListener("load", async () => {
 		// 6. Acciones si se cambia el sector RCLIC
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
-			await validacs.RCLIC[DOM.entidad]();
+			await validacs.RCLIC[varios.entidad]();
 			if (varios.hechos) await validacs.nombre.nombre();
 		}
 
