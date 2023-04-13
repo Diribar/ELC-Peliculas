@@ -1,5 +1,5 @@
 <% if (codigo != "agregar") { %>
-	<%- include('CMP-TimerContador') %>
+	<!--  include('CMP-TimerContador') -->
 <% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= tituloCuerpo %> </h1>
@@ -19,96 +19,144 @@
 		<div id="primeraCol">
 			<!-- Nombres -->
 			<div class="flexCol">
-				<!-- Campos -->
+				<!-- Título, Ayuda y Error/OK -->
+				<div class="flexRow">
+					<div class="margenBottomTitulo inputError" style="z-index: 5;">
+						<!-- Título -->
+						<h3>Nombre</h3>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<li>Necesitamos un nombre breve, claro, y que <br> no esté ya en nuestra Base de Datos.</li>
+								</ul>	
+							</i>
+						</div>
+						<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
+					</div>
+				</div>
+				<!-- Valor -->
 				<div id="nombre" class="flexCol spaceBetween">
 					<!-- Nombre -->
 					<div class="flexRowAlign inputError"  style="z-index: 4;">
-						<h3>Nombre</h3>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-						<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
 					</div>
 				</div>
 			</div>
-			<!-- Descripción -->
+			<!-- Vigencia -->
 			<div class="borderTop flexCol">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flexRow">
+				<div class="flexRowAlign spaceBetween">
 					<div class="margenBottomTitulo inputError" style="z-index: 4;">
 						<!-- Título -->
-						<h3>Fecha más representativa</h3>
+						<h3>Vigencia</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
 								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<p>Usamos la fecha en que se lo recuerda.</p>
+									<li>Podés fijar un rango de fechas, o especificar 'sin fecha'</li>
+									<li>El rango puede ser de un día</li>
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre:"fecha", display: true}) %>
+						<%- include("CMP-Errores", {nombre:"vigencia", display: true}) %>
+					</div>
+					<!-- Fecha desconocida -->
+					<div class="flexRowAlign altoFila">
+						<input id="sinFecha" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (!dataEntry && dataEntry && dataEntry.dia_del_ano_id >= 400) { %>checked<% } %>>
+						<label for="sinFecha">Sin fecha</label>
 					</div>
 				</div>
 				<!-- Valores -->
-				<div id="fecha" class="flexCol spaceBetween">
-					<!-- Mes y Día -->
-					<div class="flexRowAlign">
+				<div id="vigencia" class="flexCol">
+					<!-- Desde -->
+					<div class="flexRowAlign spaceBetween">
+						<p>Desde:</p>
 						<!-- Meses -->
 						<div class="flexRowAlign altoFila">
-							<select name="mes_id" class="input">
-								<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
+							<select name="desde_mes_id" class="input">
+								<option value="" <% if (!dataEntry.desde_mes_id) { %>selected<% } %>>Mes</option>
 								<% for (let mes of meses) { %>
-									<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+									<option value="<%= mes.id %>" <% if (mes.id == dataEntry.desde_mes_id) { %>selected<% } %>>
 										<%= mes.nombre %>
 									</option>
 								<% } %>
 							</select>
 						</div>
 						<!-- Días -->
-						<div id="dia" class="flexRowAlign altoFila separarDiv">
-							<select name="dia" class="input">
-								<option value="" <% if (!dataEntry.dia) { %>selected<% } %>>Día</option>
+						<div id="desde_dia" class="flexRowAlign altoFila separarDiv">
+							<select name="desde_dia" class="input">
+								<option value="" <% if (!dataEntry.desde_dia) { %>selected<% } %>>Día</option>
 								<% for (let dia = 1; dia < 32; dia++) { %>
 									<option value="<%= dia %>" 
 										<% if (dia > 29) { %>class="ocultar"<% } %>
-										<% if (dataEntry.dia == dia) { %>selected<% } %>
+										<% if (dia == dataEntry.desde_dia) { %>selected<% } %>
 									>
 										<%= dia %>
 									</option>
 								<% } %>
 							</select>
 						</div>
-						<a id="wiki" target="blank" class="links ocultar" tabindex="-1">
-							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
-						</a>
 					</div>
-					<!-- Fecha desconocida -->
-					<div class="flexRowAlign altoFila">
-						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && dataEntry.dia_del_ano_id>=400) { %>checked<% } %>>
-						<label for="desconocida">Desconocida o sin fecha</label>
+					<!-- Hasta -->
+					<div class="flexRowAlign spaceBetween">
+						<p>Hasta:</p>
+						<!-- Meses -->
+						<div class="flexRowAlign altoFila">
+							<select name="desde_mes_id" class="input">
+								<option value="" <% if (!dataEntry.desde_mes_id) { %>selected<% } %>>Mes</option>
+								<% for (let mes of meses) { %>
+									<option value="<%= mes.id %>" <% if (mes.id == dataEntry.desde_mes_id) { %>selected<% } %>>
+										<%= mes.nombre %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Días -->
+						<div id="desde_dia" class="flexRowAlign altoFila separarDiv">
+							<select name="desde_dia" class="input">
+								<option value="" <% if (!dataEntry.desde_dia) { %>selected<% } %>>Día</option>
+								<% for (let dia = 1; dia < 32; dia++) { %>
+									<option value="<%= dia %>" 
+										<% if (dia > 29) { %>class="ocultar"<% } %>
+										<% if (dia == dataEntry.desde_dia) { %>selected<% } %>
+									>
+										<%= dia %>
+									</option>
+								<% } %>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Segunda columna-->
-		<div id="segundaCol">
-			<!-- Repetidos -->
-			<div id="repetidos">
+		<div id="segundaCol" class="spaceBetween">
+			<!-- Descripción -->
+			<div class="flexCol">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
-					<div class="margenBottomTitulo inputError" style="z-index: 3;">
+					<div class="margenBottomTitulo inputError" style="z-index: 5;">
 						<!-- Título -->
-						<h3>Nombres con esa fecha</h3>
+						<h3>Descripción</h3>
 						<!-- Ayuda -->
 						<div class="ayuda">
 							<i class="fa-solid fa-circle-question ayudaClick desplClick">
-								<ul type="none" class="ayudaMostrar ocultar desplMostrar">
-									<li>Destildalos si no coinciden con el tuyo.</li>
-								</ul>
+								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<li>Necesitamos una descripción breve y sencilla.</li>
+								</ul>	
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre:"repetidos", display: true}) %>
+						<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
 					</div>
 				</div>
-				<ul type="none" id="posiblesRepetidos"></ul>
+				<!-- Valor -->
+				<div id="descripcion" class="flexCol">
+					<!-- Nombre -->
+					<div class="flexRowAlign inputError"  style="z-index: 3;">
+						<textarea name="descripcion" class="input" value="<%= dataEntry.descripcion %>"></textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
