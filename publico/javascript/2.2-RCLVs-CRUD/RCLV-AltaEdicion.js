@@ -5,11 +5,13 @@ window.addEventListener("load", async () => {
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
+
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
-		// Campos comunes a 'personajes' y 'hechos'
+
+		// Campos
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
 		mes_id: document.querySelector("#dataEntry select[name='mes_id']"),
 		dia: document.querySelector("#dataEntry select[name='dia']"),
@@ -432,7 +434,11 @@ window.addEventListener("load", async () => {
 			if (!DOM.tema) {
 				if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 				if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-				if ((DOM.mes_id.value && DOM.dia.value) || DOM.desconocida.checked || (forzar && varios.errores.fecha == undefined))
+				if (
+					(DOM.mes_id.value && DOM.dia.value) ||
+					DOM.desconocida.checked ||
+					(forzar && varios.errores.fecha == undefined)
+				)
 					await this.fecha();
 
 				// 4. Valida el sexo
@@ -564,8 +570,6 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			await validacs.startUp(true);
 		}
-		// Si el botón está activo, función 'submit'
-		else DOM.dataEntry.submit();
 	});
 
 	// Status inicial
