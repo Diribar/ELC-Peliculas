@@ -11,17 +11,17 @@
 #contenido #informacion h2 {margin-top: 15px; font-variant: small-caps}
 #contenido #informacion p {line-height: 1;}
 #contenido #informacion .aprobRech {width: 40px; text-align: center;}
+#contenido #informacion .campoTitulo {font-weight: bold; color: var(--gris-mas-oscuro);}
+#contenido #informacion .infoMostrar :is(.orig, .edic) {padding: 2px 4px; margin-left: 5px; border-radius: 5px;}
+#contenido #informacion .infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
+#contenido #informacion .infoMostrar .edic {background: var(--gris-oscuro); color: white;}
 /* Ingresos */
 #informacion #ingrs {margin-top: 5px;}
 #informacion #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
-#informacion #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px;}
 #informacion #ingrs tr #cartelRechazo select {background: inherit;}
 /* Reemplazos */
 #informacion #reemps .fa-trash-can {color: var(--rojo-oscuro);}
-#informacion #reemps .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px; font-style: italic;}
 #informacion #reemps .infoMostrar .orig {background: var(--amarillo-claro);}
-#informacion #reemps .infoMostrar .edic {background: var(--gris-oscuro); color: white; width: fit-content;}
-#informacion #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
 #informacion #reemps .infoMostrar.ocultar {display: block;}
 #informacion #reemps #cartelRechazo {position: static; translate: 0 0; padding: 0; width: fit-content; background: transparent}
 #informacion #reemps #cartelRechazo select {margin: 0;}
