@@ -19,14 +19,14 @@ module.exports = {
 		const prodEntidad = req.query.prodEntidad;
 		const prodID = req.query.prodID;
 		const userID = req.session.usuario.id;
-		const nombre = comp.obtieneEntidadNombre(entidad);
-		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + nombre;
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
 		const tituloCuerpo =
 			(codigo == "agregar"
-				? "Agregá un " + nombre + " a"
+				? "Agregá un " + entidadNombre + " a"
 				: codigo == "edicion"
-				? "Editá el " + nombre + " de"
-				: "Revisá el " + nombre + " de") + " nuestra Base de Datos";
+				? "Editá el " + entidadNombre + " de"
+				: "Revisá el " + entidadNombre + " de") + " nuestra Base de Datos";
 		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
 		let ap_mars, roles_igl;
 
@@ -52,7 +52,6 @@ module.exports = {
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
-		const familia = comp.obtieneFamilia(entidad);
 		const personajes = entidad == "personajes";
 		const hechos = entidad == "hechos";
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
@@ -60,7 +59,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen},
-			...{entidad, id, prodEntidad, prodID, familia, ent},
+			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent},
 			...{personajes, hechos, ent},
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
@@ -110,9 +109,9 @@ module.exports = {
 		// Variables
 		let {entidad, id, origen} = req.query;
 		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneEntidadNombre(entidad);
-		const familia = comp.obtieneFamilia(entidad);
-		const familias = comp.obtieneFamilias(entidad);
+		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		if (!origen) origen = "DTR";
 		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 
@@ -150,7 +149,8 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, id, familia, familias, status_id, statusEstable},
+			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
+			//familias,
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz, RCLVnombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,

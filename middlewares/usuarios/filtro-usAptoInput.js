@@ -53,7 +53,7 @@ module.exports = async (req, res, next) => {
 				FN_entidades({producto, rclv, links});
 				if (!entidades) {
 					let {entidad} = req.query;
-					let familia = comp.obtieneFamilia(entidad);
+					let familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 					let {producto, rclv, links} = {[familia]: true};
 					FN_entidades({producto, rclv, links});
 				}

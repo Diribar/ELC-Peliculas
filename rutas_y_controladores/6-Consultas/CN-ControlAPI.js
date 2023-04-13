@@ -87,7 +87,7 @@ module.exports = {
 						return {
 							id: m.id,
 							entidad,
-							entidadNombre: comp.obtieneEntidadNombre(entidad),
+							entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad),
 							nombre_original: m.nombre_original,
 							direccion: m.direccion,
 							avatar: m.avatar,

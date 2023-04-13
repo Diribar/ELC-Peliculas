@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 	// Variables - Registro
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	v.entidadSingular = comp.obtieneEntidadNombre(v.entidad).toLowerCase();
+	v.entidadNombreMinuscula = comp.obtieneEntidadNombreDesdeEntidad(v.entidad).toLowerCase();
 	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = v.registro.capturado_en;
@@ -122,7 +122,7 @@ module.exports = async (req, res, next) => {
 				? [
 						"Se cumplió el plazo de 1 hora desde que se creó el registro de" +
 							v.articulo +
-							v.entidadSingular +
+							v.entidadNombreMinuscula +
 							" " +
 							nombre,
 				  ]
@@ -163,7 +163,7 @@ module.exports = async (req, res, next) => {
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidad = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtieneEntidadNombre(pc_entidad);
+			const pc_entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(pc_entidad);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
