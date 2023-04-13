@@ -135,7 +135,7 @@
 			<!-- Descripción -->
 			<div class="flexCol">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flexRow">
+				<div class="flexRow spaceBetween">
 					<div class="margenBottomTitulo inputError" style="z-index: 5;">
 						<!-- Título -->
 						<h3>Descripción</h3>
@@ -147,8 +147,9 @@
 								</ul>	
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
+						<%- include("CMP-Errores", {nombre:"descripcion", display: true}) %>
 					</div>
+					<p><span id="pendiente">100</span>/100</p>
 				</div>
 				<!-- Valor -->
 				<div id="descripcion" class="flexCol">
