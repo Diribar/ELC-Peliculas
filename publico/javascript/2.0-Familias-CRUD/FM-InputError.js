@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 	// Botón submit
 	let botonSubmit = () => {
 		let checked = document.querySelector("#motivos input:checked");
-		(!motivos.length && comentario.value) || (motivos && checked && (!req_com || comentario.value))
+		comentario.value && (!motivos.length || (motivos && checked))
 			? submit.classList.remove("inactivo")
 			: submit.classList.add("inactivo");
 	};
