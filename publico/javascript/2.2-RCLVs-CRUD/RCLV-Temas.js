@@ -171,7 +171,6 @@ window.addEventListener("load", async () => {
 		if (campo == "descripcion") DOM.pendiente.innerHTML = 100 - valor.length;
 
 		// 7. Revisa los errores y los publica si existen
-		console.log(campo);
 		await validacs[campo]();
 		validacs.muestraErrorOK(0, true);
 	});
