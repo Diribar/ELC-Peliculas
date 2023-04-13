@@ -66,10 +66,10 @@ module.exports = {
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
 			prodsDelRCLV.sort((a, b) => b.ano_estreno - a.ano_estreno);
-			// Ordena por inactivo
+			// Quita los inactivos
 			let resultado = prodsDelRCLV.filter((n) => n.status_registro_id != inactivo_id);
-			resultado.push(...prodsDelRCLV.filter((n) => n.status_registro_id == inactivo_id));
-			// prodsDelRCLV.sort(a,b)
+			// resultado.push(...prodsDelRCLV.filter((n) => n.status_registro_id == inactivo_id));
+
 			// Fin
 			return resultado;
 		},
