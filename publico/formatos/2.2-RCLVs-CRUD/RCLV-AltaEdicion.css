@@ -11,7 +11,7 @@
 #dataEntry #inicio #primeraCol {margin-right: 50px; width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry select {border-width: .7px; border-radius: 5px; background: white;}
+#dataEntry :is(.input, #posiblesRepetidos) {border-width: .7px; border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 
 /* Temas de filas */
@@ -23,11 +23,13 @@
 
 /* Temas particulares de dataEntry */
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
-#dataEntry input, #inicio #posiblesRepetidos {border-width: .7px; border-radius: 5px; background: white;}
 
 /* Nombres */
 #inicio #nombre label {margin-right: 7px;}
 #inicio #nombre .input {padding-left: 5px; width: 100%;}
+
+/* Descripción */
+#inicio #descripcion textarea {padding: 10px; width: 100%; height: 80px;}
 
 /* Fechas */
 #inicio #dia {margin-left: 15px;}
