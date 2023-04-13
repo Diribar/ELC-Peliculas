@@ -248,7 +248,7 @@ module.exports = {
 			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
 			...{aprobado: aprob, motivo_id},
 		};
-		// 4.B. Agrega una 'duración' sólo si el usuario intentó un "aprobado"
+		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
