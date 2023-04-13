@@ -568,7 +568,7 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
-			if (motivo) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+			if (motivo) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familias);
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
@@ -585,7 +585,7 @@ module.exports = {
 			const statusAprob =
 				familias == "rclvs"
 					? true
-					: familia == "productos" && !edicion
+					: familias == "productos" && !edicion
 					? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
 					: false;
 
