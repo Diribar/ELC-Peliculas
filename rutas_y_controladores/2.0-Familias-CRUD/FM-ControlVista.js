@@ -98,8 +98,6 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		let motivoComentario = "";
-		let motivo;
 
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
@@ -109,9 +107,9 @@ module.exports = {
 		}
 
 		// Comentario para la BD
-		if (codigo == "inactivar") motivo = motivos_rech_altas.find((n) => n.id == motivo_id);
-		if (comentario) motivoComentario = comentario;
-		if (comentario && !comentario.endsWith(".")) motivoComentario += ".";
+		let motivoComentario = status_registros.find((n) => n.id == status_final_id).nombre;
+		if (comentario) motivoComentario += " - " + comentario;
+		if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0,-1);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original

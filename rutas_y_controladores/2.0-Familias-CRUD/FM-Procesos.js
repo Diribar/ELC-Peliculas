@@ -556,7 +556,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function ({registro, revisor, cantProds}) {
+	bloqueRegistro: function ({registro, revisor}) {
 		// Variable
 		let bloque = [];
 
