@@ -14,15 +14,12 @@ window.addEventListener("load", () => {
 	let imagenActual = FN(imagenActualDOM);
 
 	// Comparaciones de ratio
-	if (
-		!imagenActual.ratioAdecuado &&
-		(imagenNueva.ratioAdecuado || (imagenNueva.ratio > imagenActual.ratio && imagenNueva.ratio <= 2))
-	)
+	//console.log(imagenNueva,imagenActual);
+	// Mejor imagen nueva
+	if (imagenNueva.ratioAdecuado && imagenNueva.ratio > imagenActual.ratio)
 		resultados[0].push("Mejor relación de alto/ancho");
-	else if (
-		!imagenNueva.ratioAdecuado &&
-		(imagenActual.ratioAdecuado || (imagenActual.ratio > imagenNueva.ratio && imagenActual.ratio <= 2))
-	)
+	// Mejor imagen actual
+	else if (imagenActual.ratioAdecuado && imagenActual.ratio > imagenNueva.ratio)
 		resultados[1].push("Mejor relación de alto/ancho");
 
 	// Comparaciones de calidad
@@ -41,9 +38,8 @@ window.addEventListener("load", () => {
 
 // Funciones
 let FN = (imagenDOM) => {
-	let dom = imagenDOM;
-	let ancho = imagenDOM.naturalWidth;
 	let alto = imagenDOM.naturalHeight;
+	let ancho = imagenDOM.naturalWidth;
 
 	let ratio = alto / ancho;
 	let ratioAdecuado = ratio >= 1.42 && ratio <= 2;

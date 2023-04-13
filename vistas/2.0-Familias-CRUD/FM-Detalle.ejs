@@ -7,12 +7,7 @@
 
 			<!-- Encabezado -->
 			<div id="encabezado">
-				<!-- Sólo el 'Detalle de RCLV' tiene un encabezado distinto -->
-				<% if (tema == "rclv_crud") { %><%- include("RCLV-Encabezado") %>
-				<!-- Los demás, tienen el mismo encabezado -->
-				<% } else { %><%- include("FM-Encabezado") %>
-				<!-- Fin -->
-				<% } %>
+				<%- include(tema == "rclv_crud" ? "RCLV-Encabezado" : tema == "revisionEnts" ? "RE-Encabezado" : "FM-Encabezado") %>
 			</div>
 
 			<!-- Contenido apertura (Form o Div) -->

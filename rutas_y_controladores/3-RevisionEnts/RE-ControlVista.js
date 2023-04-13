@@ -353,7 +353,7 @@ module.exports = {
 		// Acciones si el avatar no está presente en la edición
 		else if (!edicion.avatar) {
 			// Actualiza el avatar original si es un url
-			if (original.avatar && original.avatar.includes("/")) {
+			if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
 				// Descarga el archivo avatar y actualiza el registro 'original'
 				procesos.descargaAvatar(original, entidad);
 				// Actualiza el registro 'edición'

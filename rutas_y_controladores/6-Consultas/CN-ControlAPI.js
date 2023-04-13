@@ -48,7 +48,6 @@ module.exports = {
 	fpActualiza: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		console.log("Datos:", datos);
 		const cabecera_id = datos.filtro_id;
 
 		// Elimina la información guardada
