@@ -1,64 +1,61 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let v = {
-		// Variables que se obtienen del url
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		id: new URL(location.href).searchParams.get("id"),
+	let DOM = {
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
-		// Links a otros sitios
-		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
-		// Campos para todos los RCLV
+		// Campos comunes a 'personajes' y 'hechos'
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
 		mes_id: document.querySelector("#dataEntry select[name='mes_id']"),
 		dia: document.querySelector("#dataEntry select[name='dia']"),
 		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
-		// Errores
-		camposError: ["nombre", "fecha", "repetidos"],
-		OK: {},
-		errores: {},
+		epocas_id: document.querySelectorAll("#dataEntry input[name='epoca_id']"),
+		ano: document.querySelector("#dataEntry input[name='ano']"),
+
 		// Otros
 		camposNombre: document.querySelectorAll("#dataEntry #nombre .input"),
 		camposFecha: document.querySelectorAll("#dataEntry #fecha .input"),
+		camposEpoca: document.querySelectorAll("#dataEntry #epoca .input"),
+		camposRCLIC: document.querySelectorAll("#dataEntry #RCLIC .input"),
+		sectorApMar: document.querySelector("#dataEntry #sectorApMar"),
+		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
 	};
 	let rutas = {
 		// Rutas
 		validacion: "/rclv/api/valida-sector/?funcion=",
 		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 	};
+	let varios = {
+		// Variables que se obtienen del url
+		entidad: new URL(location.href).searchParams.get("entidad"),
+		id: new URL(location.href).searchParams.get("id"),
+		// Campos para época y RCLIC
+		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
+		camposRCLIC: Array.from(DOM.camposRCLIC).map((n) => n.name),
+		// Links a otros sitios
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
+		// Errores
+		camposError: ["nombre", "fecha", "repetidos", "epoca", "RCLIC"],
+		OK: {},
+		errores: {},
+	};
 	// Otros valores
 	(() => {
 		// Entidades en formato booleano
 		v.personajes = v.entidad == "personajes";
 		v.hechos = v.entidad == "hechos";
-		v.temas = v.entidad == "temas";
 		// Campos por sector
 		if (v.personajes) v.camposError.push("sexo_id"); // Tiene que estar antes de "época"
 		v.camposNombre = Array.from(v.camposNombre).map((n) => n.name);
 		v.camposFecha = Array.from(v.camposFecha).map((n) => n.name);
 	})();
-	// Valores para !temas
-	if (!v.temas) {
-		// Valores comunes a 'personajes' y 'hechos'
-		v.ano = document.querySelector("#dataEntry input[name='ano']");
-		v.camposError.push("epoca", "RCLIC");
-		// Campos para época
-		v.camposEpoca = document.querySelectorAll("#dataEntry #epoca .input");
-		v.camposEpoca = Array.from(v.camposEpoca).map((n) => n.name);
-		v.epocas_id = document.querySelectorAll("#dataEntry input[name='epoca_id']");
-		// Otros
-		v.camposRCLIC = document.querySelectorAll("#dataEntry #RCLIC .input");
-		v.camposRCLIC = Array.from(v.camposRCLIC).map((n) => n.name);
-		v.sectorApMar = document.querySelector("#dataEntry #sectorApMar");
-	}
+
 	// Valores para personajes
 	if (v.personajes) {
 		// Data-Entry adicional
@@ -233,7 +230,7 @@ window.addEventListener("load", async () => {
 			nombre: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(v.nombre.value) + "&entidad=" + v.entidad;
-				
+
 				// Lo agrega lo referido a la aparición mariana
 				if (v.hechos) {
 					let solo_cfc = opcionElegida(v.solo_cfc);
