@@ -49,7 +49,7 @@
 				<!-- Campos -->
 				<div id="nombre" class="flexCol spaceBetween">
 					<!-- Nombre Formal o Nombre-->
-					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
+					<div class="flexRowAlign inputError"  style="z-index: 4;">
 						<% if (personajes) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
