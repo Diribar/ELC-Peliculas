@@ -103,23 +103,23 @@
 						<p>Hasta:</p>
 						<!-- Meses -->
 						<div class="flexRowAlign altoFila">
-							<select name="desde_mes_id" class="input">
-								<option value="" <% if (!dataEntry.desde_mes_id) { %>selected<% } %>>Mes</option>
+							<select name="hasta_mes_id" class="input">
+								<option value="" <% if (!dataEntry.hasta_mes_id) { %>selected<% } %>>Mes</option>
 								<% for (let mes of meses) { %>
-									<option value="<%= mes.id %>" <% if (mes.id == dataEntry.desde_mes_id) { %>selected<% } %>>
+									<option value="<%= mes.id %>" <% if (mes.id == dataEntry.hasta_mes_id) { %>selected<% } %>>
 										<%= mes.nombre %>
 									</option>
 								<% } %>
 							</select>
 						</div>
 						<!-- Días -->
-						<div id="desde_dia" class="flexRowAlign altoFila separarDiv">
-							<select name="desde_dia" class="input">
-								<option value="" <% if (!dataEntry.desde_dia) { %>selected<% } %>>Día</option>
+						<div id="hasta_dia" class="flexRowAlign altoFila separarDiv">
+							<select name="hasta_dia" class="input">
+								<option value="" <% if (!dataEntry.hasta_dia) { %>selected<% } %>>Día</option>
 								<% for (let dia = 1; dia < 32; dia++) { %>
 									<option value="<%= dia %>" 
 										<% if (dia > 29) { %>class="ocultar"<% } %>
-										<% if (dia == dataEntry.desde_dia) { %>selected<% } %>
+										<% if (dia == dataEntry.hasta_dia) { %>selected<% } %>
 									>
 										<%= dia %>
 									</option>

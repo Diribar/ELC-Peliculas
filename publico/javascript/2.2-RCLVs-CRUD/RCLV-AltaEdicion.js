@@ -5,11 +5,13 @@ window.addEventListener("load", async () => {
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
+
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
-		// Campos comunes a 'personajes' y 'hechos'
+
+		// Campos
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
 		mes_id: document.querySelector("#dataEntry select[name='mes_id']"),
 		dia: document.querySelector("#dataEntry select[name='dia']"),
@@ -53,7 +55,7 @@ window.addEventListener("load", async () => {
 	varios.camposEpoca.push("epoca", "RCLIC");
 
 	// Valores para personajes
-	if (varios.personajes)
+	if (varios.personajes) {
 		DOM = {
 			...DOM,
 			// Data-Entry adicional
@@ -64,11 +66,12 @@ window.addEventListener("load", async () => {
 			canon_id: document.querySelector("#dataEntry select[name='canon_id']"),
 			ap_mar_id: document.querySelector("#dataEntry select[name='ap_mar_id']"),
 			// Otros
-			prefijos: await fetch("/rclv/api/prefijos").then((n) => n.json()),
 			opcionesRolIglesia: document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option"),
 			opcionesProceso: document.querySelectorAll("#dataEntry select[name='canon_id'] option"),
 			camposCFC: document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input"),
 		};
+		varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
+	}
 	// Valores para hechos
 	if (varios.hechos)
 		DOM = {
@@ -432,7 +435,11 @@ window.addEventListener("load", async () => {
 			if (!DOM.tema) {
 				if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
 				if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-				if ((DOM.mes_id.value && DOM.dia.value) || DOM.desconocida.checked || (forzar && varios.errores.fecha == undefined))
+				if (
+					(DOM.mes_id.value && DOM.dia.value) ||
+					DOM.desconocida.checked ||
+					(forzar && varios.errores.fecha == undefined)
+				)
 					await this.fecha();
 
 				// 4. Valida el sexo
@@ -466,9 +473,11 @@ window.addEventListener("load", async () => {
 		if (varios.camposNombre.includes(campo)) {
 			// Variables
 			let valor = DOM[campo].value;
+
 			// 1. Primera letra en mayúscula
 			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			valor = DOM[campo].value;
+
 			// 2. Quita los caracteres no deseados
 			DOM[campo].value = valor
 				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
@@ -476,18 +485,21 @@ window.addEventListener("load", async () => {
 				.replace(/\t/g, "")
 				.replace(/\r/g, "");
 			valor = DOM[campo].value;
+
 			// 3. Quita el prefijo 'San'
 			if (campo == "nombre" && varios.personajes)
-				for (let prefijo of DOM.prefijos) {
+				for (let prefijo of varios.prefijos) {
 					if (valor.startsWith(prefijo + " ")) {
 						DOM[campo].value = valor.slice(prefijo.length + 1);
 						valor = DOM[campo].value;
 						break;
 					}
 				}
+
 			// 4. Quita los caracteres que exceden el largo permitido
 			if (valor.length > 30) DOM[campo].value = valor.slice(0, 30);
-			// Revisa los errores y los publica si existen
+
+			// 5. Revisa los errores de 'nombre' y los publica si existen
 			await validacs.nombre[campo]();
 			validacs.muestraErrorOK(0, true);
 		}
@@ -564,8 +576,6 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			await validacs.startUp(true);
 		}
-		// Si el botón está activo, función 'submit'
-		else DOM.dataEntry.submit();
 	});
 
 	// Status inicial
