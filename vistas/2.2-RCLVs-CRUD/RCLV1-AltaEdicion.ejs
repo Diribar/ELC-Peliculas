@@ -1,5 +1,4 @@
 <% if (codigo != "agregar") { %>
-	<%- include('CMP-TimerContador') %>
 <% } %>
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= tituloCuerpo %> </h1>
@@ -19,39 +18,35 @@
 		<div id="primeraCol">
 			<!-- Nombres -->
 			<div class="flexCol">
-				<% if (personajes) { %>
-					<!-- Título, Ayuda y Error/OK -->
-					<div class="flexRow">
-						<div class="margenBottomTitulo inputError" style="z-index: 5;">
-							<!-- Título -->
-							<h3>Nombres</h3>
-							<!-- Ayuda -->
-							<div class="ayuda">
-								<i class="fa-solid fa-circle-question ayudaClick desplClick">
-									<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
-										<li>El <strong>Nombre Formal</strong> es <u>necesario</u>, el Alternativo es opcional.</li>
-										<li><u><em>Formal</em></u>: para las personas que,</li>
-										<ul type="dots" class="subgrupo">
-											<li>Cambiaron su nombre usamos el nuevo.</li>
-											<li>No lo  cambiaron, usamos su nombre de civil.</li>
-										</ul>
-										<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
-										<li>También es necesario que nos informes el sexo.</li>
-									</ul>	
-								</i>
-							</div>
-							<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
+				<!-- Título, Ayuda y Error/OK -->
+				<div class="flexRow">
+					<div class="margenBottomTitulo inputError" style="z-index: 5;">
+						<!-- Título -->
+						<h3>Nombre<%- personajes ? 's' : '' %></h3>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<li>El <strong>Nombre Formal</strong> es <u>necesario</u>, el Alternativo es opcional.</li>
+									<li><u><em>Formal</em></u>: para las personas que,</li>
+									<ul type="dots" class="subgrupo">
+										<li>Cambiaron su nombre usamos el nuevo.</li>
+										<li>No lo  cambiaron, usamos su nombre de civil.</li>
+									</ul>
+									<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
+									<li>También es necesario que nos informes el sexo.</li>
+								</ul>	
+							</i>
 						</div>
+						<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
 					</div>
-				<% } %>
+				</div>
 				<!-- Campos -->
 				<div id="nombre" class="flexCol spaceBetween">
 					<!-- Nombre Formal o Nombre-->
 					<div class="flexRowAlign <%- entidad != "personajes" ? 'inputError' : 'spaceBetween altoFila' %>"  style="z-index: 4;">
-						<% if (personajes) { %><label>Formal</label>
-						<% } else { %><h3>Nombre</h3><% } %>
+						<% if (personajes) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-						<% if (entidad != "personajes") { %><%- include("CMP-Errores", {nombre:"nombre", display: true}) %><% } %>
 					</div>
 					<% if (personajes) { %>
 						<!-- Nombre Alternativo -->
