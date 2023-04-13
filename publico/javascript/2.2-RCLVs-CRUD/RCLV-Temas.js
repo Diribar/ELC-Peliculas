@@ -9,9 +9,10 @@ window.addEventListener("load", async () => {
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
-		// Campos comunes a 'personajes' y 'hechos'
+		// Campos
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
 		descripcion: document.querySelector("#dataEntry textarea[name='descripcion']"),
+		pendiente: document.querySelector("#segundaCol #pendiente"),
 	};
 	let rutas = {
 		// Rutas
@@ -96,30 +97,46 @@ window.addEventListener("load", async () => {
 		},
 	};
 
+	// Previene el uso del 'enter'
+	DOM.descripcion.addEventListener("keypress", (e) => {
+		if (e.key == "Enter") e.preventDefault();
+	});
 	// Correcciones mientras se escribe
 	DOM.dataEntry.addEventListener("input", async (e) => {
-		let campo = e.target.name;
-		// Acciones si se cambia el nombre o apodo
-		if (["nombre", "descripcion"].includes(campo)) {
-			// Variables
-			let valor = DOM[campo].value;
-			// 1. Primera letra en mayúscula
-			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			valor = DOM[campo].value;
-			// 2. Quita los caracteres no deseados
-			DOM[campo].value = valor
-				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
+		// Variables
+		const campo = e.target.name;
+		let valor = e.target.value;
+		const largoMaximo = varios.largoMaximo[campo];
+
+		// Validaciones
+		if (["input", "textarea"].includes(e.target.localName) && valor.length) {
+			// 1. Quita los caracteres no deseados
+			valor = valor
 				.replace(/ +/g, " ")
+				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+				.replace(/\n/g, "")
 				.replace(/\t/g, "")
 				.replace(/\r/g, "");
-			valor = DOM[campo].value;
+
+			// 2. El primer caracter no puede ser un espacio
+			if (valor.length && valor.slice(0, 1) == " ") valor = valor.slice(1);
+
+			// 3. Primera letra en mayúscula
+			if (valor.length) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+
 			// 4. Quita los caracteres que exceden el largo permitido
-			let largoMaximo = varios.largoMaximo[campo];
-			if (valor.length > largoMaximo) DOM[campo].value = valor.slice(0, largoMaximo);
-			// Revisa los errores y los publica si existen
-			// await validacs.nombre[campo]();
-			validacs.muestraErrorOK(0, true);
+			valor = valor.slice(0, largoMaximo);
+
+			// 5. Actualiza el valor en el DOM
+			e.target.value = valor;
+
+			// 6. Actualiza el contador de caracteres
+			if (campo=="descripcion") DOM.pendiente.innerHTML = 100 - valor.length;
 		}
+
+		// Revisa los errores y los publica si existen
+		// await validacs.nombre[campo]();
+		// validacs.muestraErrorOK(0, true);
 	});
 	// Acciones cuando se  confirma el input
 	DOM.dataEntry.addEventListener("change", async (e) => {
