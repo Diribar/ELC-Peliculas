@@ -85,6 +85,7 @@ window.addEventListener("load", async () => {
 		nombre: async () => {
 			// Verifica errores en el campo 'nombre'
 			let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+			if (varios.id) params += "&id=" + varios.id;
 
 			// Averigua los errores
 			varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
