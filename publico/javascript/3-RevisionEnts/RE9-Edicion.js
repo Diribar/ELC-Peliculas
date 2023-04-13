@@ -24,7 +24,6 @@ window.addEventListener("load", async () => {
 		// Otras variables
 		filas: document.querySelectorAll("#contenido .fila"),
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
-		rutaEdicion: "",
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};

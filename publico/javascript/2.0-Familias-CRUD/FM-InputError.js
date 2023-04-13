@@ -1,33 +1,35 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let form = document.querySelector("#recuadro form");
-	let motivos = document.querySelectorAll("#motivos input");
-	let comentario = document.querySelector("#comentario textarea");
-	let pendiente = document.querySelector("#comentario #pendiente");
-	let submit = document.querySelector("#botones button[type='submit']");
-	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
-	let req_com = true;
+	let DOM = {
+		form: document.querySelector("#recuadro form"),
+		motivos: document.querySelectorAll("#motivos input"),
+		comentario: document.querySelector("#comentario textarea"),
+		pendiente: document.querySelector("#comentario #pendiente"),
+		submit: document.querySelector("#botones button[type='submit']"),
+	};
+	let motivos_rech_altas = await fetch("/crud/api/motivos_rech_altas").then((n) => n.json());
 
 	// Botón submit
 	let botonSubmit = () => {
 		let checked = document.querySelector("#motivos input:checked");
-		(!motivos.length && comentario.value) || (motivos && checked && (!req_com || comentario.value))
-			? submit.classList.remove("inactivo")
-			: submit.classList.add("inactivo");
+		DOM.comentario.value && (!DOM.motivos.length || (DOM.motivos && checked))
+			? DOM.submit.classList.remove("inactivo")
+			: DOM.submit.classList.add("inactivo");
 	};
 
 	// Event listeners
 	// Motivos
-	if (motivos.length)
-		for (let motivo of motivos)
+	if (DOM.motivos.length)
+		for (let motivo of DOM.motivos)
 			motivo.addEventListener("change", async () => {
-				// req_com = await fetch(ruta + motivo.value).then((n) => n.json());
+				const motivo_rech_altas = motivos_rech_altas.find((n) => n.id == motivo.value);
+				DOM.comentario.value = motivo_rech_altas.coment_aut ? motivo_rech_altas.descripcion : "";
 				botonSubmit();
 			});
 
 	// Comentario
-	comentario.addEventListener("keypress", (e) => {
+	DOM.comentario.addEventListener("keypress", (e) => {
 		// Previene el uso del 'enter'
 		if (e.key == "Enter") e.preventDefault();
 
@@ -35,9 +37,9 @@ window.addEventListener("load", async () => {
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
 		if (!formato.test(e.key)) e.preventDefault();
 	});
-	comentario.addEventListener("input", () => {
+	DOM.comentario.addEventListener("input", () => {
 		// Corrige el doble espacio
-		let com = comentario.value
+		let com = DOM.comentario.value
 			.replace(/ +/g, " ")
 			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/\n/g, "")
@@ -48,8 +50,8 @@ window.addEventListener("load", async () => {
 			if (com.slice(0, 1) == " ") com = com.slice(1);
 
 			// Primera letra en mayúscula
-			comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-			pendiente.innerHTML = 100 - com.length;
+			DOM.comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
+			DOM.pendiente.innerHTML = 100 - com.length;
 		}
 
 		// Actualiza el botón submit
@@ -57,7 +59,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Previene el submit si el botón está inactivo
-	form.addEventListener("submit", (e) => {
-		if (submit.className.includes("inactivo")) e.preventDefault();
+	DOM.form.addEventListener("submit", (e) => {
+		if (DOM.submit.className.includes("inactivo")) e.preventDefault();
 	});
 });

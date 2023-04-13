@@ -374,7 +374,7 @@ module.exports = {
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
 			let comentario = status_registros.find((n) => n.id == status_final_id).nombre;
 			if (req.body.comentario) comentario += " - " + req.body.comentario;
-			if (comentario.endsWith(".")) comentario = comentario.slice(0,-1);
+			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Fin
 			return {
@@ -523,15 +523,15 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familia = comp.obtieneFamiliasDesdeEntidad(entidad);
+			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
-			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
 			const titulo = campoRevisar.titulo;
-			let motivo, prodStatusAprob;
+			let motivo;
 
 			// Genera la información a actualizar
 			let datos = {
@@ -568,7 +568,7 @@ module.exports = {
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
-			if (motivo) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familia);
+			if (motivo) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familias);
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
@@ -582,11 +582,15 @@ module.exports = {
 			// 7. PROCESOS DE CIERRE
 			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
 			// - Actualiza 'prodsEnRCLV'
-			if (familia == "productos" && !edicion)
-				prodStatusAprob = await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado);
+			const statusAprob =
+				familias == "rclvs"
+					? true
+					: familias == "productos" && !edicion
+					? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
+					: false;
 
 			// Fin
-			return [edicion, prodStatusAprob];
+			return [edicion, statusAprob];
 		},
 		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {

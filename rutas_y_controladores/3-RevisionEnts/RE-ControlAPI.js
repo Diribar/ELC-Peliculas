@@ -35,9 +35,9 @@ module.exports = {
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		let prodStatusAprob;
+		let statusAprob;
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
-		[edicion, prodStatusAprob] = await procesos.edicion.edicAprobRech(objeto);
+		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
 		// Cuando se termina de revisar una edicion, se fija si existen otras ediciones con los mismos valores que el original, y en caso afirmativo elimina el valor de esos campos y eventualmente el registro de edicion
 		if (!edicion) {
@@ -51,7 +51,7 @@ module.exports = {
 		}
 
 		// Fin
-		return res.json({OK: true, quedanCampos: !!edicion, statusAprob: prodStatusAprob});
+		return res.json({OK: true, quedanCampos: !!edicion, statusAprob});
 	},
 	// Links
 	linkAltaBaja: async (req, res) => {
