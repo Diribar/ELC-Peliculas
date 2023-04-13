@@ -362,10 +362,8 @@ module.exports = {
 				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
 			}
 			// Variables
-			if (familia == "rclv") {
-				cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
-				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
-			} else bloqueDer = [[]];
+			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
+			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_rech_edic.filter((m) => m.prods);
