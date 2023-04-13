@@ -248,7 +248,7 @@ module.exports = {
 			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
 			...{aprobado: aprob, motivo_id},
 		};
-		// 4.B. Agrega una 'duración' sólo si el usuario intentó un "aprobado"
+		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
@@ -362,10 +362,8 @@ module.exports = {
 				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
 			}
 			// Variables
-			if (familia == "rclv") {
-				cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
-				bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds})];
-			} else bloqueDer = [[]];
+			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
+			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_rech_edic.filter((m) => m.prods);

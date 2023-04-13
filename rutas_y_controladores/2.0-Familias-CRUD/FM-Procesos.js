@@ -556,7 +556,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function ({registro, revisor, cantProds}) {
+	bloqueRegistro: function ({registro, revisor}) {
 		// Variable
 		let bloque = [];
 
@@ -572,9 +572,6 @@ module.exports = {
 			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
-
-		// Prods en BD
-		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
 
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});

@@ -370,10 +370,11 @@ module.exports = {
 					? creado_aprob_id
 					: aprobado_id;
 
-			// Obtiene el motivo_id
+			// Obtiene el motivo_id y el comentario
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-			let comentario = req.body.comentario ? req.body.comentario : "Recomendación " + (aprob ? "aceptada" : "rechazada");
-			if (!comentario.endsWith(".")) comentario += ".";
+			let comentario = status_registros.find((n) => n.id == status_final_id).nombre;
+			if (req.body.comentario) comentario += " - " + req.body.comentario;
+			if (comentario.endsWith(".")) comentario = comentario.slice(0,-1);
 
 			// Fin
 			return {
