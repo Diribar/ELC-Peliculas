@@ -73,11 +73,6 @@ module.exports = {
 		let datos = await BD_especificas.obtieneCapitulos(req.query.coleccion_id, req.query.temporada);
 		return res.json(datos);
 	},
-	comentarioAutom: (req, res) => {
-		const {id} = req.query;
-		let coment_aut = motivos_rech_altas.find((n) => n.id == id).coment_aut;
-		return res.json(coment_aut);
-	},
 	motivosRechAltas: (req, res) => {
 		return res.json(motivos_rech_altas);
 	},
