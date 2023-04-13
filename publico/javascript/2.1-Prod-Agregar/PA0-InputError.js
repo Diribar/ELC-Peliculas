@@ -281,6 +281,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	let mostrarErrores = paso.DD;
-	statusInicial(mostrarErrores);
+	if (!paso.DD) statusInicial();
 });

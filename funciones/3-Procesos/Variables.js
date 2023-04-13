@@ -407,16 +407,14 @@ module.exports = {
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 					autofocus: true,
 			  }
-			: req.originalUrl.startsWith("/producto/edicion/") ||
-			  req.originalUrl.startsWith("/links/abm/") ||
-			  req.originalUrl.startsWith("/crud/")
+			: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
 			? {
 					nombre: "fa-circle-info",
 					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
 					titulo: "Ir al 'Detalle de Producto'",
 					autofocus: true,
 			  }
-			: req.originalUrl.startsWith("/rclv/edicion/")
+			: req.originalUrl.startsWith("/rclv/")
 			? {
 					nombre: "fa-circle-info",
 					link: "/rclv/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
