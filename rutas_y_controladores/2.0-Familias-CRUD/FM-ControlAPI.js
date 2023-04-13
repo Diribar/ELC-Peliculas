@@ -78,4 +78,7 @@ module.exports = {
 		let coment_aut = motivos_rech_altas.find((n) => n.id == id).coment_aut;
 		return res.json(coment_aut);
 	},
+	motivosRechAltas: (req, res) => {
+		return res.json(motivos_rech_altas);
+	},
 };

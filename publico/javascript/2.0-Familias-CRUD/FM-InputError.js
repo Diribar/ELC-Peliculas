@@ -8,8 +8,12 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
+	let rutas = {
+		coment_aut: "/crud/api/averigua-si-comentario-automatico/?id=",
+		motivos_rech_altas: "/crud/api/motivos_rech_altas",
+	};
 	let v = {
-		ruta: "/crud/api/averigua-si-comentario-automatico/?id=",
+		motivos_rech_altas: await fetch(rutas.motivos_rech_altas).then((n) => n.json()),
 		coment_aut: false,
 	};
 
@@ -26,7 +30,7 @@ window.addEventListener("load", async () => {
 	if (DOM.motivos.length)
 		for (let motivo of DOM.motivos)
 			motivo.addEventListener("change", async () => {
-				v.coment_aut = await fetch(v.ruta + motivo.value).then((n) => n.json());
+				v.coment_aut = await fetch(v.coment_aut + motivo.value).then((n) => n.json());
 				if (v.coment_aut) console.log(motivo);
 				// botonSubmit();
 			});
