@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let comentario = document.querySelector("#comentario textarea");
 	let pendiente = document.querySelector("#comentario #pendiente");
 	let submit = document.querySelector("#botones button[type='submit']");
-	const ruta = "/crud/api/averigua-si-se-requiere-comentario/?id=";
-	let req_com = true;
+	const ruta = "/crud/api/averigua-si-comentario-automatico/?id=";
+	let coment_aut 
 
 	// Botón submit
 	let botonSubmit = () => {
@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 	if (motivos.length)
 		for (let motivo of motivos)
 			motivo.addEventListener("change", async () => {
-				// req_com = await fetch(ruta + motivo.value).then((n) => n.json());
+				coment_aut = await fetch(ruta + motivo.value).then((n) => n.json());
 				botonSubmit();
 			});
 
