@@ -11,9 +11,7 @@ window.addEventListener("load", async () => {
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
 		// Campos comunes a 'personajes' y 'hechos'
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
-
-		// Otros
-		camposNombre: document.querySelectorAll("#dataEntry #nombre .input"),
+		descripcion: document.querySelector("#dataEntry textarea[name='descripcion']"),
 	};
 	let rutas = {
 		// Rutas
@@ -23,19 +21,18 @@ window.addEventListener("load", async () => {
 		// Variables que se obtienen del url
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		id: new URL(location.href).searchParams.get("id"),
-		// Campos por sector
-		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		// Errores
 		camposError: ["nombre"],
 		OK: {},
 		errores: {},
+		// Otros
+		largoMaximo: {nombre: 30, descripcion: 100},
 	};
 
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
-		nombre: {
-		},
+		nombre: {},
 	};
 	let validacs = {
 		// Sectores
@@ -90,7 +87,8 @@ window.addEventListener("load", async () => {
 		},
 		startUp: async function (forzar) {
 			// 1. Valida el nombre
-			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined)){}
+			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined)) {
+			}
 
 			// Fin
 			this.muestraErroresOK();
@@ -102,32 +100,24 @@ window.addEventListener("load", async () => {
 	DOM.dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		// Acciones si se cambia el nombre o apodo
-		if (varios.camposNombre.includes(campo)) {
+		if (["nombre", "descripcion"].includes(campo)) {
 			// Variables
-			let valor = v[campo].value;
+			let valor = DOM[campo].value;
 			// 1. Primera letra en mayúscula
-			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			valor = v[campo].value;
+			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			valor = DOM[campo].value;
 			// 2. Quita los caracteres no deseados
-			v[campo].value = valor
+			DOM[campo].value = valor
 				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
 				.replace(/ +/g, " ")
 				.replace(/\t/g, "")
 				.replace(/\r/g, "");
-			valor = v[campo].value;
-			// 3. Quita el prefijo 'San'
-			if (campo == "nombre" && varios.personajes)
-				for (let prefijo of DOM.prefijos) {
-					if (valor.startsWith(prefijo + " ")) {
-						v[campo].value = valor.slice(prefijo.length + 1);
-						valor = v[campo].value;
-						break;
-					}
-				}
+			valor = DOM[campo].value;
 			// 4. Quita los caracteres que exceden el largo permitido
-			if (valor.length > 30) v[campo].value = valor.slice(0, 30);
+			let largoMaximo = varios.largoMaximo[campo];
+			if (valor.length > largoMaximo) DOM[campo].value = valor.slice(0, largoMaximo);
 			// Revisa los errores y los publica si existen
-			await validacs.nombre[campo]();
+			// await validacs.nombre[campo]();
 			validacs.muestraErrorOK(0, true);
 		}
 	});
@@ -136,11 +126,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
-		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
-			if (varios.personajes) await validacs.nombre.nombreApodo();
-			else await validacs.nombre.nombre();
-			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
-		}
+		if (campo == "nombre" && DOM.nombre.value) await validacs.nombre.nombre();
 
 		// Final de la rutina
 		validacs.muestraErroresOK();
