@@ -573,9 +573,6 @@ module.exports = {
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 
-		// Prods en BD
-		if (cantProds !== undefined && cantProds !== null) bloque.push({titulo: "Productos en BD", valor: cantProds});
-
 		// Status resumido
 		bloque.push({titulo: "Status", ...this.statusResumido(registro)});
 
