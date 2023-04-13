@@ -22,16 +22,10 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "No tiene música"';
-		let cartelActores = variables.inputVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"';
+		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
 		let camposPosibles = [
 			{nombre: "nombre_original", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{
-				nombre: "nombre_castellano",
-				idioma: "completo",
-				cartel: variables.inputVacio,
-				corto: 3,
-				largo: 70,
-			},
+			{nombre: "nombre_castellano", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "direccion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "guion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
@@ -54,7 +48,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.inicial[idioma](dato);
 				} else respuesta = variables.inputVacio;
 				// Excepción para actores
-				if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
+				// if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
 				// Fin
 				errores[nombre] = respuesta;
 			}
