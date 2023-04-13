@@ -11,7 +11,7 @@
 #contenido #informacion h2 {margin-top: 15px; font-variant: small-caps}
 #contenido #informacion p {line-height: 1;}
 #contenido #informacion .aprobRech {width: 40px; text-align: center;}
-#contenido #informacion .campoTitulo {font-weight: bold; color: var(--gris-mas-oscuro);}
+#contenido #informacion .campoTitulo {font-weight: bold; color: var(--gris-oscuro);}
 #contenido #informacion .infoMostrar :is(.orig, .edic) {padding: 2px 4px; margin-left: 5px; border-radius: 5px;}
 #contenido #informacion .infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
 #contenido #informacion .infoMostrar .edic {background: var(--gris-oscuro); color: white;}
