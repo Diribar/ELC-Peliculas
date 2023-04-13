@@ -3,7 +3,7 @@
 
 <!-- Altas -->
 <% if (codigo == "producto/alta") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+<% if (codigo == "rclv/alta") { %><%- include(entidad != "temas" ? "RCLV1-AltaEdicion" : "RCLV1-Temas") %><% } %>
 
 <!-- Otros Cambios de Status -->
 <% if (codigo == "rechazo") { %><%- include("FM-Detalle") %><% } %>

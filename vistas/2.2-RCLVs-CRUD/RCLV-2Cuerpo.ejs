@@ -1,3 +1,5 @@
-<% if (codigo == "agregar") { %><%- include("RCLV1-AltaEdicion") %><% } %>
-<% if (codigo == "edicion") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+<!-- Detalle -->
 <% if (codigo == "detalle") { %><%- include("FM-Detalle") %><% } %>
+
+<!-- Altas y Edición -->
+<% if (codigo != "detalle") { %><%- include(entidad != "temas" ? "RCLV1-AltaEdicion" : "RCLV1-Temas") %><% } %>
