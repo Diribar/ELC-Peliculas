@@ -5,12 +5,22 @@ window.addEventListener("load", async () => {
 		// Variables generales
 		dataEntry: document.querySelector("#dataEntry"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
+
 		// Variables de errores
 		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
 		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
-		// Campos
+
+		// Campos - Varios
 		nombre: document.querySelector("#dataEntry input[name='nombre']"),
+		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
+		// Campos - Vigencia
+		camposFecha: document.querySelectorAll("#dataEntry #vigencia .input"),
+		desde_mes_id: document.querySelector("#dataEntry select[name='desde_mes_id']"),
+		desde_dia: document.querySelector("#dataEntry select[name='desde_dia']"),
+		hasta_mes_id: document.querySelector("#dataEntry select[name='hasta_mes_id']"),
+		hasta_dia: document.querySelector("#dataEntry select[name='hasta_dia']"),
+		// Campos - Descripción
 		descripcion: document.querySelector("#dataEntry textarea[name='descripcion']"),
 		pendiente: document.querySelector("#segundaCol #pendiente"),
 	};
@@ -28,6 +38,7 @@ window.addEventListener("load", async () => {
 		errores: {},
 		// Otros
 		largoMaximo: {nombre: 30, descripcion: 100},
+		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 	};
 
 	// -------------------------------------------------------
@@ -131,7 +142,7 @@ window.addEventListener("load", async () => {
 			e.target.value = valor;
 
 			// 6. Actualiza el contador de caracteres
-			if (campo=="descripcion") DOM.pendiente.innerHTML = 100 - valor.length;
+			if (campo == "descripcion") DOM.pendiente.innerHTML = 100 - valor.length;
 		}
 
 		// Revisa los errores y los publica si existen
@@ -145,6 +156,22 @@ window.addEventListener("load", async () => {
 		// 1. Acciones si se cambia el sector Nombre
 		if (campo == "nombre" && DOM.nombre.value) await validacs.nombre.nombre();
 
+		// 2. Acciones si se cambia el sector Vigencia
+		if (varios.camposFecha.includes(campo)) {
+			if (campo.endsWith("mes_id")) impactos.vigencia.muestraLosDiasDelMes(campo);
+			DOM.desconocida.checked = false;
+			let todosConValor = true;
+			for (let campoFecha of varios.camposFecha) if (!campoFecha.value) todosConValor = false;
+			if (todosConValor) await validacs.vigencia();
+		}
+		if (campo == "desconocida") {
+			if (DOM.desconocida.checked) impactos.vigencia.limpiezaDeMesDia();
+			await validacs.vigencia();
+		}
+
+		// 3. Acciones si se cambia el sector Descripción
+		if (campo == "descripcion") validacs.descripcion();
+
 		// Final de la rutina
 		validacs.muestraErroresOK();
 		validacs.botonSubmit();
@@ -156,8 +183,6 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			await validacs.startUp(true);
 		}
-		// Si el botón está activo, función 'submit'
-		else DOM.dataEntry.submit();
 	});
 
 	// Status inicial
