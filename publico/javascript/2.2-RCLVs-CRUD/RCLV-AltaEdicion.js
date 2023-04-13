@@ -465,28 +465,28 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el nombre o apodo
 		if (varios.camposNombre.includes(campo)) {
 			// Variables
-			let valor = v[campo].value;
+			let valor = DOM[campo].value;
 			// 1. Primera letra en mayúscula
-			v[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			valor = v[campo].value;
+			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			valor = DOM[campo].value;
 			// 2. Quita los caracteres no deseados
-			v[campo].value = valor
+			DOM[campo].value = valor
 				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
 				.replace(/ +/g, " ")
 				.replace(/\t/g, "")
 				.replace(/\r/g, "");
-			valor = v[campo].value;
+			valor = DOM[campo].value;
 			// 3. Quita el prefijo 'San'
 			if (campo == "nombre" && varios.personajes)
 				for (let prefijo of DOM.prefijos) {
 					if (valor.startsWith(prefijo + " ")) {
-						v[campo].value = valor.slice(prefijo.length + 1);
-						valor = v[campo].value;
+						DOM[campo].value = valor.slice(prefijo.length + 1);
+						valor = DOM[campo].value;
 						break;
 					}
 				}
 			// 4. Quita los caracteres que exceden el largo permitido
-			if (valor.length > 30) v[campo].value = valor.slice(0, 30);
+			if (valor.length > 30) DOM[campo].value = valor.slice(0, 30);
 			// Revisa los errores y los publica si existen
 			await validacs.nombre[campo]();
 			validacs.muestraErrorOK(0, true);
