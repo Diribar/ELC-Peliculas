@@ -39,7 +39,7 @@ module.exports = {
 			if (!mensaje) mensaje = await nombreApodo({datos, campo});
 			if (mensaje) break;
 		}
-		
+
 		// Revisa si los nombres son iguales
 		if (!mensaje && datos.nombre && datos.nombre == datos.apodo) mensaje = "El nombre y el apodo deben ser diferentes";
 
@@ -178,12 +178,11 @@ let prefijo = (nombre) => {
 	let respuesta = "";
 
 	// Verificación
-	for (let prefijo of prefijos) {
+	for (let prefijo of prefijos)
 		if (nombre.startsWith(prefijo + " ")) {
 			respuesta = "El nombre no debe tener ningún prefijo (ej: " + prefijo + ").";
 			break;
 		}
-	}
 
 	// Fin
 	return respuesta;
