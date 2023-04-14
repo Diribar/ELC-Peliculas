@@ -476,9 +476,8 @@ module.exports = {
 	cartelRepetido: function (datos) {
 		// Variables
 		const {entidad, id} = datos;
-		const entidadNombre = datos.entidadNombre
-			? datos.entidadNombre // Para links
-			: this.obtieneEntidadNombreDesdeEntidad(entidad).toLowerCase();
+		let entidadNombre = datos.entidadNombre; // Para links
+		if (entidadNombre) entidadNombre = this.obtieneEntidadNombreDesdeEntidad(entidad).toLowerCase();
 
 		// 1. Inicio
 		let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
