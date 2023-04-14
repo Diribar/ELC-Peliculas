@@ -272,12 +272,10 @@ window.addEventListener("load", async () => {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
-				varios.OK.fecha = !varios.errores.fecha;
-			} else {
-				// Errores y OK
-				varios.errores.fecha = "";
-				varios.OK.fecha = true;
-			}
+			} else varios.errores.fecha = "";
+
+			// OK vigencia
+			varios.OK.fecha = !varios.errores.fecha;
 
 			// Acciones si la fecha está OK
 			if (varios.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
