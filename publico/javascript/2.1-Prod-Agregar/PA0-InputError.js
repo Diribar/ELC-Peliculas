@@ -171,14 +171,12 @@ window.addEventListener("load", async () => {
 	let FN = {
 		statusInicial: async function (mostrarIconoError) {
 			//Busca todos los valores
-			let datosUrl = "";
+			let datosUrl = "entidad=" + (varios.entidad ? varios.entidad : "");
 			DOM.inputs.forEach((input, i) => {
-				// Caracter de unión para i > 0
-				if (i) datosUrl += "&";
-				// Particularidad para DD
+				// Particularidad para DD avatar
 				if (varios.DD && input.name == "avatar" && !varios.sinAvatar) return;
 				// Agrega el campo y el valor
-				datosUrl += input.name + "=" + encodeURIComponent(input.value);
+				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
 			// Consecuencias de las validaciones de errores
 			await this.muestraLosErrores(datosUrl, mostrarIconoError);
@@ -269,7 +267,7 @@ window.addEventListener("load", async () => {
 
 			// Prepara los datosUrl con los datos a validar
 			const campo = e.target.name;
-			const datosUrl = campo + "=" + encodeURIComponent(valor)
+			const datosUrl = campo + "=" + encodeURIComponent(valor);
 
 			// Validar errores
 			await FN.muestraLosErrores(datosUrl, true);
