@@ -47,6 +47,21 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	let PC = {
+		particsInput: () => {
+			// Actualiza el botón 'submit'
+			DOM.submit.classList.remove("fa-circle-check", "verde");
+			DOM.submit.classList.add("fa-circle-question", "naranja");
+			DOM.submit.title = "Verificar";
+			DOM.submit.style = "background";
+
+			// Actualiza el resultado
+			DOM.resultado.innerHTML = "<br>";
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			DOM.resultado.classList.add("sinResultado");
+
+			// Fin
+			return;
+		},
 		rutaObtieneCantProds: (input) => {
 			let palabrasClave = input.trim();
 			// Procesando la información
@@ -86,13 +101,6 @@ window.addEventListener("load", async () => {
 			DOM.submit.classList.remove("fa-circle-question", "naranja");
 			DOM.submit.classList.add("fa-circle-check", "verde");
 			DOM.submit.title = "Avanzar";
-			return;
-		},
-		botonSubmit: () => {
-			DOM.submit.classList.remove("fa-circle-check", "verde");
-			DOM.submit.classList.add("fa-circle-question", "naranja");
-			DOM.submit.title = "Verificar";
-			DOM.submit.style = "background";
 			return;
 		},
 	};
@@ -255,26 +263,31 @@ window.addEventListener("load", async () => {
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
 
-		// Particularidades por varios
+		// Particularidades
 		if (varios.PC) {
-			// Cambia submit por '?'
-			PC.botonSubmit();
-			// Borra los resultados anteriores
-			DOM.resultado.innerHTML = "<br>";
-			// Borra las clases anteriores
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
-			DOM.resultado.classList.add("sinResultado");
+			PC.particsInput();
+
+			// Prepara los datosUrl con los datos a validar
+			const campo = e.target.name;
+			const datosUrl = campo + "=" + encodeURIComponent(valor)
+
+			// Validar errores
+			await FN.muestraLosErrores(datosUrl, true);
+
+			// Actualiza botón Submit
+			FN.actualizaBotonSubmit();
 		}
-		if (varios.DD) {
-		}
+
+		// Fin
+		return;
 	});
 
 	if (varios.DD) {
 		DOM.form.addEventListener("change", async (e) => {
 			// Variables
-			let adicionales = "";
 			let campo = e.target.name;
 			let valor = e.target.value;
+			let adicionales = "";
 
 			// Convierte los ID de los países elegidos, en un texto
 			if (campo == "paises") {
