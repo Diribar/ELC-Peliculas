@@ -143,34 +143,34 @@ let nombreApodo = async ({datos, campo}) => {
 	const {entidad, ama} = datos;
 	const dato = datos[campo];
 	const apMar = "Ap. Mar. - ";
-	let respuesta = "";
+	let mensaje = "";
 
 	// Validación solamente para 'nombre'
-	if (!dato && campo == "nombre") respuesta = variables.inputVacio;
+	if (!dato && campo == "nombre") mensaje = variables.inputVacio;
 
 	// Validaciones cuando existe un dato
-	if (!respuesta && dato) {
+	if (!mensaje && dato) {
 		// Idioma castellano
-		if (!respuesta) respuesta = comp.castellano.completo(dato);
-		if (!respuesta) respuesta = comp.inicial.basico(dato);
-		if (respuesta && campo == "apodo") respuesta += " (nombre alternativo)";
+		if (!mensaje) mensaje = comp.castellano.completo(dato);
+		if (!mensaje) mensaje = comp.inicial.basico(dato);
+		if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
 
 		// Prefijo y longitud
-		if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo(dato);
-		if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
+		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
+		if (!mensaje) mensaje = comp.longitud(dato, 4, 30);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && ama && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";
 
 		// Nombre repetido
-		if (!respuesta) {
+		if (!mensaje) {
 			let id = await BD_especificas.validaRepetidos([campo], datos);
-			if (id) respuesta = comp.cartelRepetido({...datos, id});
+			if (id) mensaje = comp.cartelRepetido({...datos, id});
 		}
 	}
 
 	// Fin
-	return respuesta;
+	return mensaje;
 };
 let prefijo = (nombre) => {
 	// Variables
