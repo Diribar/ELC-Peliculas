@@ -435,33 +435,27 @@ window.addEventListener("load", async () => {
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
-			if (!DOM.tema) {
-				if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
-				if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-				if (
-					(DOM.mes_id.value && DOM.dia.value) ||
-					DOM.desconocida.checked ||
-					(forzar && varios.errores.fecha == undefined)
-				)
-					await this.fecha();
+			if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
+			if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+			if ((DOM.mes_id.value && DOM.dia.value) || DOM.desconocida.checked || (forzar && varios.errores.fecha == undefined))
+				await this.fecha();
 
-				// 4. Valida el sexo
-				if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-				if (varios.personajes && (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)))
-					await this.sexo();
+			// 4. Valida el sexo
+			if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
+			if (varios.personajes && (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)))
+				await this.sexo();
 
-				// 5. Valida la época
-				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
-				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
+			// 5. Valida la época
+			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
+			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
 
-				// 6. Valida RCLIC
-				if (
-					(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-					(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
-					(forzar && varios.errores.RCLIC == undefined)
-				)
-					await this.RCLIC[varios.entidad]();
-			}
+			// 6. Valida RCLIC
+			if (
+				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
+				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
+				(forzar && varios.errores.RCLIC == undefined)
+			)
+				await this.RCLIC[varios.entidad]();
 
 			// Fin
 			this.muestraErroresOK();
