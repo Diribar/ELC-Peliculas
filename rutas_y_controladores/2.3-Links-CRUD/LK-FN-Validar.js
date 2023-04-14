@@ -92,8 +92,8 @@ let validaLinkRepetidos = async (datos) => {
 		let prodEntidad = comp.obtieneProdEntidadDesdeProd_id(link);
 		let campo_id = comp.obtieneCampo_idDesdeEntidad(prodEntidad);
 		let prodID = link[campo_id];
-		datos = {entidad: prodEntidad, id: prodID};
-		respuesta = comp.cartelRepetido(datos, "link");
+		datos = {entidad: prodEntidad, id: prodID, entidadNombre: "link"};
+		respuesta = comp.cartelRepetido(datos);
 	}
 	// Fin
 	return respuesta;

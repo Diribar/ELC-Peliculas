@@ -473,16 +473,20 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	cartelRepetido: function (datos, entidadNombre) {
+	cartelRepetido: function (datos) {
 		// Variables
+		const {entidad, id} = datos;
+		const entidadNombre = datos.entidadNombre
+			? datos.entidadNombre // Para links
+			: this.obtieneEntidadNombreDesdeEntidad(entidad).toLowerCase();
+
 		// 1. Inicio
-		let genero = datos.entidad == "capitulos" || entidadNombre == "link" ? "e" : "a";
+		let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
 		let inicio = "Est" + genero + " ";
 
 		// 2. Anchor
-		let url = "?entidad=" + datos.entidad + "&id=" + datos.id;
-		let link = "/" + this.obtieneFamiliaDesdeEntidad(datos.entidad) + "/detalle/" + url;
-		if (!entidadNombre) entidadNombre = this.obtieneEntidadNombreDesdeEntidad(datos.entidad).toLowerCase();
+		let url = "?entidad=" + entidad + "&id=" + id;
+		let link = "/" + this.obtieneFamiliaDesdeEntidad(entidad) + "/detalle/" + url;
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 

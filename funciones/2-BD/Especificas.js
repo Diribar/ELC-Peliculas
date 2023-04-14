@@ -11,14 +11,14 @@ module.exports = {
 	},
 	validaRepetidos: (campos, datos) => {
 		// El mismo valor para los campos
-		let objeto = {};
-		for (let campo of campos) objeto[campo] = datos[campo];
+		let condicion = {};
+		for (let campo of campos) condicion[campo] = datos[campo];
 
 		// Si tiene ID, agrega la condición de que sea distinto
-		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
+		if (datos.id) condicion.id = {[Op.ne]: datos.id};
 
 		// Fin
-		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
+		return db[datos.entidad].findOne({where: condicion}).then((n) => (n ? n.id : false));
 	},
 	// Header
 	quickSearchCondics: (palabras, dato, userID) => {
