@@ -83,14 +83,14 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add(formatoVigente);
 		},
 		avanzar: () => {
-			DOM.submit.classList.remove("fa-circle-question, naranja");
-			DOM.submit.classList.add("fa-circle-check, verde");
+			DOM.submit.classList.remove("fa-circle-question", "naranja");
+			DOM.submit.classList.add("fa-circle-check", "verde");
 			DOM.submit.title = "Avanzar";
 			return;
 		},
-		verificar: () => {
-			DOM.submit.classList.remove("fa-circle-check, verde");
-			DOM.submit.classList.add("fa-circle-question, naranja");
+		botonSubmit: () => {
+			DOM.submit.classList.remove("fa-circle-check", "verde");
+			DOM.submit.classList.add("fa-circle-question", "naranja");
 			DOM.submit.title = "Verificar";
 			DOM.submit.style = "background";
 			return;
@@ -121,14 +121,15 @@ window.addEventListener("load", async () => {
 				datosUrl += "&" + camposComb[i] + "=" + DOM.inputs[indice].value;
 			}
 			// Obtiene el mensaje para el campo
-			await muestraLosErrores(datosUrl, true);
-			actualizaBotonSubmit();
+			await FN.muestraLosErrores(datosUrl, true);
+			FN.actualizaBotonSubmit();
 			return;
 		},
 		actualizaPaises: () => {
-			// Actualizar los ID del input
+			// Actualiza los ID del input
 			// Variables
-			let paisID = DOM.paisesSelect.value;
+			const paisID = DOM.paisesSelect.value;
+
 			// Si se eligió 'borrar', borra todo
 			if (paisID == "borrar") {
 				DOM.paisesSelect.value = "";
@@ -136,7 +137,8 @@ window.addEventListener("load", async () => {
 				DOM.paisesID.value = "";
 				return;
 			}
-			// Verificar si figura en paisesID
+
+			// Verifica si figura en paisesID
 			let agregar = !DOM.paisesID.value.includes(paisID);
 			if (agregar) {
 				if (DOM.paisesID.value.length >= 2 * 1 + 3 * 4) return; // Limita la cantidad máxima de países a 1 + 4 = 5
@@ -159,7 +161,7 @@ window.addEventListener("load", async () => {
 	};
 	// Funciones compartidas
 	let FN = {
-		statusInicial: async (mostrarIconoError) => {
+		statusInicial: async function (mostrarIconoError) {
 			//Busca todos los valores
 			let datosUrl = "";
 			DOM.inputs.forEach((input, i) => {
@@ -171,14 +173,14 @@ window.addEventListener("load", async () => {
 				datosUrl += input.name + "=" + encodeURIComponent(input.value);
 			});
 			// Consecuencias de las validaciones de errores
-			await muestraLosErrores(datosUrl, mostrarIconoError);
-			actualizaBotonSubmit();
+			await this.muestraLosErrores(datosUrl, mostrarIconoError);
+			this.actualizaBotonSubmit();
 			// Fin
 			return;
 		},
 		muestraLosErrores: async (datos, mostrarIconoError) => {
-			let errores = await fetch(validarDatos + datos).then((n) => n.json());
-			campos.forEach((campo, indice) => {
+			let errores = await fetch(rutas.validarDatos + datos).then((n) => n.json());
+			varios.campos.forEach((campo, indice) => {
 				if (errores[campo] !== undefined) {
 					DOM.mensajesError[indice].innerHTML = errores[campo];
 					// Acciones en función de si hay o no mensajes de error
@@ -204,7 +206,7 @@ window.addEventListener("load", async () => {
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
-		submitForm: async (e) => {
+		submitForm: async function (e) {
 			e.preventDefault();
 			if (varios.PC)
 				if (DOM.submit.classList.contains("fa-circle-question")) {
@@ -215,25 +217,48 @@ window.addEventListener("load", async () => {
 						PC.mostrarResultados(resultados);
 						DOM.submit.classList.remove("inactivo");
 						PC.avanzar();
-					} else statusInicial(true);
+					} else this.statusInicial(true);
 				} else DOM.form.submit();
-			else if (DOM.submit.classList.contains("inactivo")) statusInicial(true);
+			else if (DOM.submit.classList.contains("inactivo")) this.statusInicial(true);
 			else DOM.form.submit();
 		},
 	};
 
 	// ADD EVENT LISTENERS *********************************
-	// Averigua si hubieron cambios
+	DOM.form.addEventListener("keypress", (e) => {
+		// Previene el uso del 'enter'
+		if (e.key == "Enter") e.preventDefault();
+
+		// Limita el uso del teclado solamente a los caracteres que nos interesan
+		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+		if (!formato.test(e.key)) e.preventDefault();
+	});
+
 	DOM.form.addEventListener("input", async (e) => {
-		// Define los valores para 'campo' y 'valor'
-		let campo = e.target.name;
-		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1);
+		// Variables
 		let valor = e.target.value;
-		let adicionales = "";
+
+		// Tareas comunes
+		if (valor.length) {
+			// Limita el uso del teclado solamente a los caracteres que nos interesan
+			valor = valor
+				.replace(/ +/g, " ")
+				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+				.replace(/\n/g, "");
+
+			// El primer caracter no puede ser un espacio
+			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
+
+			// Primera letra en mayúscula
+			if (varios.DD) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+		}
+		// Reemplaza el valor del DOM
+		e.target.value = valor;
+
 		// Particularidades por varios
 		if (varios.PC) {
 			// Cambia submit por '?'
-			PC.verificar();
+			PC.botonSubmit();
 			// Borra los resultados anteriores
 			DOM.resultado.innerHTML = "<br>";
 			// Borra las clases anteriores
@@ -241,19 +266,20 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add("sinResultado");
 		}
 		if (varios.DD) {
-			// Acciones para campos texto
-			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
-				// Convierte la primera letra en mayúscula
-				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-				// Convierte caracteres especiales en caracteres en español
-				let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
-				e.target.value = (await fetch(caracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
-				valor = e.target.value;
-			}
+		}
+	});
+
+	if (varios.DD) {
+		DOM.form.addEventListener("change", async (e) => {
+			// Variables
+			let adicionales = "";
+			let campo = e.target.name;
+			let valor = e.target.value;
+
 			// Convierte los ID de los países elegidos, en un texto
 			if (campo == "paises") {
 				DD.actualizaPaises();
-				// Definir los valores para 'campo' y 'valor'
+				// Actualiza los valores para 'campo' y 'valor'
 				campo = DOM.paisesID.name;
 				valor = DOM.paisesID.value;
 			}
@@ -269,28 +295,30 @@ window.addEventListener("load", async () => {
 				adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
 				adicionales += "&entidad=" + encodeURIComponent(varios.entidad);
 			}
-		}
-		// Prepara los datosUrl con los datos a validar
-		let datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
-		// Validar errores
-		await muestraLosErrores(datosUrl, true);
-		// Actualiza botón Submit
-		actualizaBotonSubmit();
-	});
-	DOM.form.addEventListener("change", async (e) => {});
+
+			// Prepara los datosUrl con los datos a validar
+			let datosUrl = campo + "=" + encodeURIComponent(valor) + adicionales;
+
+			// Validar errores
+			await FN.muestraLosErrores(datosUrl, true);
+
+			// Actualiza botón Submit
+			FN.actualizaBotonSubmit();
+		});
+	}
 	// Submit
 	DOM.form.addEventListener("submit", async (e) => {
-		submitForm(e);
+		FN.submitForm(e);
 	});
 	DOM.submit.addEventListener("click", async (e) => {
-		submitForm(e);
+		FN.submitForm(e);
 	});
 	DOM.submit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") submitForm(e);
+		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
 	});
 
 	// STATUS INICIAL *************************************
-	statusInicial(varios.DD);
+	FN.statusInicial(varios.DD);
 });
 
 // Variables
