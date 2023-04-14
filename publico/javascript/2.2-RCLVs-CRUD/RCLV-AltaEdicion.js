@@ -512,11 +512,13 @@ window.addEventListener("load", async () => {
 	DOM.dataEntry.addEventListener("change", async (e) => {
 		// Variables
 		let campo = e.target.name;
+
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
 			await validacs.nombre[varios.entidad]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
+
 		// 2. Acciones si se cambia el sector Fecha
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
@@ -529,8 +531,10 @@ window.addEventListener("load", async () => {
 				await validacs.fecha();
 			}
 		}
+
 		// 3. Acciones si se cambia el sector Repetido
 		if (campo == "repetido") validacs.repetido();
+		
 		// 4. Acciones si se cambia el sector Sexo
 		if (campo == "sexo_id") {
 			await impactos.sexo();
@@ -538,6 +542,7 @@ window.addEventListener("load", async () => {
 			// Si corresponde, valida RCLIC
 			if (varios.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 		}
+
 		// 5. Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
@@ -551,6 +556,7 @@ window.addEventListener("load", async () => {
 				if (varios.hechos && opcionElegida(DOM.solo_cfc).value == 1) await validacs.RCLIC.hechos();
 			}
 		}
+
 		// 6. Acciones si se cambia el sector RCLIC
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
