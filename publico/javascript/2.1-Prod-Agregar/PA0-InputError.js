@@ -1,34 +1,62 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Averigua el 'paso'
-	let url = location.pathname;
-	let paso = url.slice(url.lastIndexOf("/") + 1);
-	paso = {paso, PC: paso == "palabras-clave", DD: paso == "datos-duros"};
 	// Variables
-	let v = {
+	let DOM = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
+
 		// Datos
 		inputs: document.querySelectorAll(".inputError .input"),
+
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	let campos = Array.from(v.inputs).map((n) => n.name);
-	if (paso.PC) {
-		v.resultado = document.querySelector("#dataEntry #resultado");
-		v.rutaObtieneCantProds = (input) => {
+	let rutas = {
+		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
+		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
+	};
+	let varios = {
+		PC: paso == "palabras-clave",
+		DD: paso == "datos-duros",
+		campos: Array.from(DOM.inputs).map((n) => n.name),
+	};
+	if (varios.PC) DOM.resultado = document.querySelector("#dataEntry #resultado");
+	if (varios.DD) {
+		DOM = {
+			...DOM,
+			// Campos en general
+			nombre_original: document.querySelector("#dataEntry input[name='nombre_original']"),
+			nombre_castellano: document.querySelector("#dataEntry input[name='nombre_castellano']"),
+			ano_estreno: document.querySelector("#dataEntry input[name='ano_estreno']"),
+			ano_fin: document.querySelector("#dataEntry input[name='ano_fin']"),
+			// Variables de país
+			paisesSelect: document.querySelector("#paises_id select"),
+		};
+		varios.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
+		varios.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
+		if (DOM.paisesSelect) {
+			DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
+			DOM.paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
+			DOM.paisesOpciones = document.querySelectorAll("#paises_id select option");
+			varios.paisesListado = Array.from(DOM.paisesOpciones).map((n) => ({id: n.value, nombre: n.innerHTML}));
+		}
+	}
+
+	// FUNCIONES *******************************************
+	let PC = {
+		rutaObtieneCantProds: (input) => {
 			let palabrasClave = input.trim();
 			// Procesando la información
-			v.resultado.innerHTML = "Procesando la información...";
-			v.resultado.classList.remove(...v.resultado.classList);
-			v.resultado.classList.add("resultadoEnEspera");
+			DOM.resultado.innerHTML = "Procesando la información...";
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			DOM.resultado.classList.add("resultadoEnEspera");
 			// Obtiene el link
 			return "/producto/agregar/api/PC-cant-prods/?palabrasClave=" + palabrasClave;
-		};
-		v.mostrarResultados = async (resultados) => {
+		},
+		mostrarResultados: async (resultados) => {
 			// Variables
 			let {cantProds, cantProdsNuevos, hayMas} = resultados;
 			// Determinar oracion y formato
@@ -50,107 +78,23 @@ window.addEventListener("load", async () => {
 					? "No encontramos ninguna coincidencia"
 					: oracion;
 			}
-			v.resultado.innerHTML = oracion;
-			v.resultado.classList.remove(...v.resultado.classList);
-			v.resultado.classList.add(formatoVigente);
-		};
-		v.avanzar = () => {
-			v.submit.classList.remove("fa-circle-question");
-			v.submit.classList.add("fa-circle-check");
-			v.submit.classList.remove("naranja");
-			v.submit.classList.add("verde");
-			v.submit.title = "Avanzar";
+			DOM.resultado.innerHTML = oracion;
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			DOM.resultado.classList.add(formatoVigente);
+		},
+		avanzar: () => {
+			DOM.submit.classList.remove("fa-circle-question, naranja");
+			DOM.submit.classList.add("fa-circle-check, verde");
+			DOM.submit.title = "Avanzar";
 			return;
-		};
-		v.verificar = () => {
-			v.submit.classList.remove("fa-circle-check");
-			v.submit.classList.add("fa-circle-question");
-			v.submit.classList.remove("verde");
-			v.submit.classList.add("naranja");
-			v.submit.title = "Verificar";
-			v.submit.style = "background";
+		},
+		verificar: () => {
+			DOM.submit.classList.remove("fa-circle-check, verde");
+			DOM.submit.classList.add("fa-circle-question, naranja");
+			DOM.submit.title = "Verificar";
+			DOM.submit.style = "background";
 			return;
-		};
-	}
-	if (paso.DD) {
-		v.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
-		v.nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
-		v.nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
-		v.ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
-		v.ano_fin = document.querySelector("#dataEntry input[name='ano_fin']");
-		// Variables de país
-		v.paisesSelect = document.querySelector("#paises_id select");
-		if (v.paisesSelect) {
-			v.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
-			v.paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
-			v.paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map((n) => {
-				return {id: n.value, nombre: n.innerHTML};
-			});
-		}
-		// Imagen derecha
-		v.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
-	}
-	// Rutas
-	let rutaValidar = "/producto/agregar/api/valida/" + paso.paso + "/?";
-	let rutaCaracteresCastellano = "/producto/agregar/api/convierte-letras-al-castellano/?valor=";
-
-	// FUNCIONES *******************************************
-	let statusInicial = async (mostrarIconoError) => {
-		//Busca todos los valores
-		let datosUrl = "";
-		v.inputs.forEach((input, i) => {
-			// Caracter de unión para i > 0
-			if (i) datosUrl += "&";
-			// Particularidad para DD
-			if (paso.DD && input.name == "avatar" && !v.sinAvatar) return;
-			// Agrega el campo y el valor
-			datosUrl += input.name + "=" + encodeURIComponent(input.value);
-		});
-		// Consecuencias de las validaciones de errores
-		await muestraLosErrores(datosUrl, mostrarIconoError);
-		actualizaBotonSubmit();
-		// Fin
-		return;
-	};
-	let muestraLosErrores = async (datos, mostrarIconoError) => {
-		let errores = await fetch(rutaValidar + datos).then((n) => n.json());
-		campos.forEach((campo, indice) => {
-			if (errores[campo] !== undefined) {
-				v.mensajesError[indice].innerHTML = errores[campo];
-				// Acciones en función de si hay o no mensajes de error
-				errores[campo] ? v.iconosError[indice].classList.add("error") : v.iconosError[indice].classList.remove("error");
-				errores[campo] && mostrarIconoError
-					? v.iconosError[indice].classList.remove("ocultar")
-					: v.iconosError[indice].classList.add("ocultar");
-				errores[campo] ? v.iconosOK[indice].classList.add("ocultar") : v.iconosOK[indice].classList.remove("ocultar");
-			}
-		});
-		// Fin
-		return;
-	};
-	let actualizaBotonSubmit = () => {
-		// Detectar la cantidad de 'errores' ocultos
-		let hayErrores = Array.from(v.iconosError)
-			.map((n) => n.className)
-			.some((n) => n.includes("error"));
-		// Consecuencias
-		hayErrores ? v.submit.classList.add("inactivo") : v.submit.classList.remove("inactivo");
-	};
-	let submitForm = async (e) => {
-		e.preventDefault();
-		if (paso.PC)
-			if (v.submit.classList.contains("fa-circle-question")) {
-				if (!v.submit.classList.contains("inactivo")) {
-					v.submit.classList.add("inactivo");
-					let ruta = v.rutaObtieneCantProds(v.inputs[0].value);
-					let resultados = await fetch(ruta).then((n) => n.json());
-					v.mostrarResultados(resultados);
-					v.submit.classList.remove("inactivo");
-					v.avanzar();
-				} else statusInicial(true);
-			} else v.form.submit();
-		else if (v.submit.classList.contains("inactivo")) statusInicial(true);
-		else v.form.submit();
+		},
 	};
 	let DD = {
 		dosCampos: async function (datos, campo) {
@@ -161,20 +105,20 @@ window.addEventListener("load", async () => {
 			let camposComb = [campo1, campo2];
 			if (
 				(campo == campo1 || campo == campo2) &&
-				v.inputs[indice1].value &&
-				!v.mensajesError[indice1].innerHTML &&
-				v.inputs[indice2].value &&
-				!v.mensajesError[indice2].innerHTML
+				DOM.inputs[indice1].value &&
+				!DOM.mensajesError[indice1].innerHTML &&
+				DOM.inputs[indice2].value &&
+				!DOM.mensajesError[indice2].innerHTML
 			)
 				this.camposCombinados(camposComb);
 			return;
 		},
 		camposCombinados: async (camposComb) => {
 			// Armado de la ruta
-			let datosUrl = "entidad=" + v.entidad;
+			let datosUrl = "entidad=" + DOM.entidad;
 			for (let i = 0; i < camposComb.length; i++) {
 				let indice = campos.indexOf(camposComb[i]);
-				datosUrl += "&" + camposComb[i] + "=" + v.inputs[indice].value;
+				datosUrl += "&" + camposComb[i] + "=" + DOM.inputs[indice].value;
 			}
 			// Obtiene el mensaje para el campo
 			await muestraLosErrores(datosUrl, true);
@@ -184,82 +128,146 @@ window.addEventListener("load", async () => {
 		actualizaPaises: () => {
 			// Actualizar los ID del input
 			// Variables
-			let paisID = v.paisesSelect.value;
+			let paisID = DOM.paisesSelect.value;
 			// Si se eligió 'borrar', borra todo
 			if (paisID == "borrar") {
-				v.paisesSelect.value = "";
-				v.paisesMostrar.value = "";
-				v.paisesID.value = "";
+				DOM.paisesSelect.value = "";
+				DOM.paisesMostrar.value = "";
+				DOM.paisesID.value = "";
 				return;
 			}
 			// Verificar si figura en paisesID
-			let agregar = !v.paisesID.value.includes(paisID);
+			let agregar = !DOM.paisesID.value.includes(paisID);
 			if (agregar) {
-				if (v.paisesID.value.length >= 2 * 1 + 3 * 4) return; // Limita la cantidad máxima de países a 1 + 4 = 5
-				v.paisesID.value += (v.paisesID.value ? " " : "") + paisID; // Actualiza el input
-			} else v.paisesID.value = v.paisesID.value.replace(paisID, "").replace("  ", " ").trim(); // Quita el paisID solicitado
+				if (DOM.paisesID.value.length >= 2 * 1 + 3 * 4) return; // Limita la cantidad máxima de países a 1 + 4 = 5
+				DOM.paisesID.value += (DOM.paisesID.value ? " " : "") + paisID; // Actualiza el input
+			} else DOM.paisesID.value = DOM.paisesID.value.replace(paisID, "").replace("  ", " ").trim(); // Quita el paisID solicitado
 
 			// Actualizar los países a mostrar
 			let paisesNombre = "";
-			if (v.paisesID.value) {
-				let paises_idArray = v.paisesID.value.split(" ");
+			if (DOM.paisesID.value) {
+				let paises_idArray = DOM.paisesID.value.split(" ");
 				paises_idArray.forEach((pais_id) => {
-					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
+					let paisNombre = varios.paisesListado.find((n) => n.id == pais_id).nombre;
 					paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
 				});
 			}
-			v.paisesMostrar.value = paisesNombre;
+			DOM.paisesMostrar.value = paisesNombre;
 			// Fin
 			return;
+		},
+	};
+	// Funciones compartidas
+	let FN = {
+		statusInicial: async (mostrarIconoError) => {
+			//Busca todos los valores
+			let datosUrl = "";
+			DOM.inputs.forEach((input, i) => {
+				// Caracter de unión para i > 0
+				if (i) datosUrl += "&";
+				// Particularidad para DD
+				if (varios.DD && input.name == "avatar" && !varios.sinAvatar) return;
+				// Agrega el campo y el valor
+				datosUrl += input.name + "=" + encodeURIComponent(input.value);
+			});
+			// Consecuencias de las validaciones de errores
+			await muestraLosErrores(datosUrl, mostrarIconoError);
+			actualizaBotonSubmit();
+			// Fin
+			return;
+		},
+		muestraLosErrores: async (datos, mostrarIconoError) => {
+			let errores = await fetch(validarDatos + datos).then((n) => n.json());
+			campos.forEach((campo, indice) => {
+				if (errores[campo] !== undefined) {
+					DOM.mensajesError[indice].innerHTML = errores[campo];
+					// Acciones en función de si hay o no mensajes de error
+					errores[campo]
+						? DOM.iconosError[indice].classList.add("error")
+						: DOM.iconosError[indice].classList.remove("error");
+					errores[campo] && mostrarIconoError
+						? DOM.iconosError[indice].classList.remove("ocultar")
+						: DOM.iconosError[indice].classList.add("ocultar");
+					errores[campo]
+						? DOM.iconosOK[indice].classList.add("ocultar")
+						: DOM.iconosOK[indice].classList.remove("ocultar");
+				}
+			});
+			// Fin
+			return;
+		},
+		actualizaBotonSubmit: () => {
+			// Detectar la cantidad de 'errores' ocultos
+			let hayErrores = Array.from(DOM.iconosError)
+				.map((n) => n.className)
+				.some((n) => n.includes("error"));
+			// Consecuencias
+			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
+		},
+		submitForm: async (e) => {
+			e.preventDefault();
+			if (varios.PC)
+				if (DOM.submit.classList.contains("fa-circle-question")) {
+					if (!DOM.submit.classList.contains("inactivo")) {
+						DOM.submit.classList.add("inactivo");
+						let ruta = PC.rutaObtieneCantProds(DOM.inputs[0].value);
+						let resultados = await fetch(ruta).then((n) => n.json());
+						PC.mostrarResultados(resultados);
+						DOM.submit.classList.remove("inactivo");
+						PC.avanzar();
+					} else statusInicial(true);
+				} else DOM.form.submit();
+			else if (DOM.submit.classList.contains("inactivo")) statusInicial(true);
+			else DOM.form.submit();
 		},
 	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
-	v.form.addEventListener("input", async (e) => {
+	DOM.form.addEventListener("input", async (e) => {
 		// Define los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		if (e.target.value.slice(0, 1) == " ") e.target.value = e.target.value.slice(1);
 		let valor = e.target.value;
 		let adicionales = "";
-		// Particularidades por paso
-		if (paso.PC) {
+		// Particularidades por varios
+		if (varios.PC) {
 			// Cambia submit por '?'
-			v.verificar();
+			PC.verificar();
 			// Borra los resultados anteriores
-			v.resultado.innerHTML = "<br>";
+			DOM.resultado.innerHTML = "<br>";
 			// Borra las clases anteriores
-			v.resultado.classList.remove(...v.resultado.classList);
-			v.resultado.classList.add("sinResultado");
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			DOM.resultado.classList.add("sinResultado");
 		}
-		if (paso.DD) {
+		if (varios.DD) {
 			// Acciones para campos texto
 			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
 				// Convierte la primera letra en mayúscula
 				e.target.value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 				// Convierte caracteres especiales en caracteres en español
 				let espacioAlFinal = e.target.value.slice(-1) == " " ? " " : "";
-				e.target.value = (await fetch(rutaCaracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
+				e.target.value = (await fetch(caracteresCastellano + e.target.value).then((n) => n.json())) + espacioAlFinal;
 				valor = e.target.value;
 			}
 			// Convierte los ID de los países elegidos, en un texto
 			if (campo == "paises") {
 				DD.actualizaPaises();
 				// Definir los valores para 'campo' y 'valor'
-				campo = v.paisesID.name;
-				valor = v.paisesID.value;
+				campo = DOM.paisesID.name;
+				valor = DOM.paisesID.value;
 			}
 			// Campos combinados
 			if (campo == "ano_estreno") {
-				if (v.ano_fin) adicionales += "&ano_fin=" + encodeURIComponent(v.ano_fin.value);
-				adicionales += "&nombre_original=" + encodeURIComponent(v.nombre_original.value);
-				adicionales += "&nombre_castellano=" + encodeURIComponent(v.nombre_castellano.value);
-				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
+				if (DOM.ano_fin) adicionales += "&ano_fin=" + encodeURIComponent(DOM.ano_fin.value);
+				adicionales += "&nombre_original=" + encodeURIComponent(DOM.nombre_original.value);
+				adicionales += "&nombre_castellano=" + encodeURIComponent(DOM.nombre_castellano.value);
+				adicionales += "&entidad=" + encodeURIComponent(varios.entidad);
 			}
-			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
+			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
 			if (campo == "nombre_original" || campo == "nombre_castellano") {
-				adicionales += "&ano_estreno=" + encodeURIComponent(v.ano_estreno.value);
-				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
+				adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
+				adicionales += "&entidad=" + encodeURIComponent(varios.entidad);
 			}
 		}
 		// Prepara los datosUrl con los datos a validar
@@ -269,17 +277,22 @@ window.addEventListener("load", async () => {
 		// Actualiza botón Submit
 		actualizaBotonSubmit();
 	});
+	DOM.form.addEventListener("change", async (e) => {});
 	// Submit
-	v.form.addEventListener("submit", async (e) => {
+	DOM.form.addEventListener("submit", async (e) => {
 		submitForm(e);
 	});
-	v.submit.addEventListener("click", async (e) => {
+	DOM.submit.addEventListener("click", async (e) => {
 		submitForm(e);
 	});
-	v.submit.addEventListener("keydown", async (e) => {
+	DOM.submit.addEventListener("keydown", async (e) => {
 		if (e.key == "Enter" || e.key == "Space") submitForm(e);
 	});
 
 	// STATUS INICIAL *************************************
-	if (!paso.DD) statusInicial();
+	statusInicial(varios.DD);
 });
+
+// Variables
+let url = location.pathname;
+let paso = url.slice(url.lastIndexOf("/") + 1);
