@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 		},
 		fecha: {
 			muestraLosDiasDelMes: () => {
-				// Aplicar cambios en los días 30 y 31
+				// Aplica cambios en los días 30 y 31
 				// Variables
 				let dia30 = document.querySelector("select[name='dia'] option[value='30']");
 				let dia31 = document.querySelector("select[name='dia'] option[value='31']");
@@ -117,6 +117,9 @@ window.addEventListener("load", async () => {
 						if (DOM.dia.value > 30) DOM.dia.value = "";
 					} else dia31.classList.remove("ocultar");
 				}
+
+				// Fin
+				return;
 			},
 			muestraPosiblesRepetidos: async () => {
 				// Variables

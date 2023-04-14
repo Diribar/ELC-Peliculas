@@ -44,34 +44,60 @@ window.addEventListener("load", async () => {
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
-		nombre: {},
+		muestraLosDiasDelMes: (desdeHasta) => {
+			// Variables
+			const prefijo = desdeHasta.slice(0, 1 + desdeHasta.indexOf("_"));
+
+			// Aplica cambios en los días 30 y 31
+			// Variables
+			DOM.dia30 = document.querySelector("select[name='" + prefijo + "dia'] option[value='30']");
+			DOM.dia31 = document.querySelector("select[name='" + prefijo + "dia'] option[value='31']");
+			DOM.dia = DOM[prefijo + "dia"];
+			const mesValor = DOM[prefijo + "mes_id"].value;
+
+			// Revisar para febrero
+			if (mesValor == 2) {
+				DOM.dia30.classList.add("ocultar");
+				DOM.dia31.classList.add("ocultar");
+				if (DOM.dia.value > 29) DOM.dia.value = "";
+			} else {
+				// Revisar para los demás meses de 30 días
+				DOM.dia30.classList.remove("ocultar");
+				if (mesValor == 4 || mesValor == 6 || mesValor == 9 || mesValor == 11) {
+					DOM.dia31.classList.add("ocultar");
+					if (DOM.dia.value > 30) DOM.dia.value = "";
+				} else DOM.dia31.classList.remove("ocultar");
+			}
+
+			// Fin
+			return;
+		},
+		limpiezaDeMesDia: () => {
+			// Limpia los valores de mes, día y repetidos
+			for (let campoFecha of DOM.camposFecha) campoFecha.value = "";
+
+			// Fin
+			return;
+		},
 	};
 	let validacs = {
 		// Sectores
-		nombre: {
-			nombre: async () => {
-				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+		nombre: async () => {
+			// Verifica errores en el campo 'nombre'
+			let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
 
-				// Lo agrega lo referido a la aparición mariana
-				if (varios.hechos) {
-					let solo_cfc = opcionElegida(DOM.solo_cfc);
-					let epoca_id = opcionElegida(DOM.epocas_id);
-					let ano = FN_ano(DOM.ano.value);
-					let ama = opcionElegida(DOM.ama).value;
-					if (solo_cfc.value == 1 && epoca_id.value == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
-				}
+			// Averigua los errores
+			varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+			varios.OK.nombre = !varios.errores.nombre;
 
-				// Averigua los errores
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-
-				// Si hay errores, cambia el OK a false
-				if (varios.errores.nombre) varios.OK.nombre = false;
-				else if (!varios.personajes) varios.OK.nombre = !varios.errores.nombre;
-
-				// Fin
-				return;
-			},
+			// Fin
+			return;
+		},
+		vigencia: () => {
+			return;
+		},
+		descripcion: () => {
+			return;
 		},
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
@@ -114,7 +140,7 @@ window.addEventListener("load", async () => {
 	});
 	// Correcciones mientras se escribe
 	DOM.dataEntry.addEventListener("input", async (e) => {
-		if (["input", "textarea"].includes(e.target.localName) && e.target.value.length) return;
+		if (!["nombre", "descripcion"].includes(e.target.name) && e.target.value.length) return;
 
 		// Variables
 		const campo = e.target.name;
@@ -148,13 +174,11 @@ window.addEventListener("load", async () => {
 		await validacs[campo]();
 		validacs.muestraErrorOK(0, true);
 	});
-	
+
 	// Acciones cuando se  confirma el input
 	DOM.dataEntry.addEventListener("change", async (e) => {
 		// Variables
 		let campo = e.target.name;
-		// 1. Acciones si se cambia el sector Nombre
-		if (campo == "nombre") await validacs.nombre();
 
 		// 2. Acciones si se cambia el sector Vigencia
 		if (varios.camposFecha.includes(campo)) {
@@ -168,9 +192,6 @@ window.addEventListener("load", async () => {
 			if (DOM.desconocida.checked) impactos.limpiezaDeMesDia();
 			await validacs.vigencia();
 		}
-
-		// 3. Acciones si se cambia el sector Descripción
-		if (campo == "descripcion") validacs.descripcion();
 
 		// Final de la rutina
 		validacs.muestraErroresOK();
