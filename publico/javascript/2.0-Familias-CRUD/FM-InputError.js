@@ -38,14 +38,14 @@ window.addEventListener("load", async () => {
 		if (!formato.test(e.key)) e.preventDefault();
 	});
 	DOM.comentario.addEventListener("input", () => {
-		// Corrige el doble espacio
-		let com = DOM.comentario.value
-			.replace(/ +/g, " ")
-			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
-			.replace(/\n/g, "")
-			.slice(0, 100);
-
 		if (com.length) {
+			// Limita el uso del teclado solamente a los caracteres que nos interesan
+			let com = DOM.comentario.value
+				.replace(/ +/g, " ")
+				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+				.replace(/\n/g, "")
+				.slice(0, 100);
+	
 			// El primer caracter no puede ser un espacio
 			if (com.slice(0, 1) == " ") com = com.slice(1);
 
