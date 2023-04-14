@@ -100,14 +100,15 @@ window.addEventListener("load", async () => {
 			// Si tiene fechas de vigencia
 			if (!DOM.desconocida.checked) {
 				let errores = [];
+
 				// Obtiene los errores en 'desde' y 'hasta'
 				for (let i = 0; i < DOM.meses_id.length; i++) {
 					let params = "&mes_id=" + DOM.meses_id[i].value + "&dia=" + DOM.dias[i].value;
 					errores.push(fetch(rutas.validacion + "fecha" + params).then((n) => n.json()));
 				}
-				// Errores y OK
+
+				// Error
 				const vigencias = await Promise.all(errores);
-				console.log(vigencias);
 				for (var vigencia of vigencias) if (vigencia) break;
 				varios.errores.vigencia = vigencia;
 			}
