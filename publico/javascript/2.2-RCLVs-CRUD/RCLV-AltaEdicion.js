@@ -230,9 +230,23 @@ window.addEventListener("load", async () => {
 	let validacs = {
 		// Sectores
 		nombre: {
-			nombre: async () => {
+			personajes: async () => {
+				// Verifica errores en el sector 'nombre'
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+				params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
+				params += "&entidad=" + varios.entidad;
+				if (varios.id) params += "&id=" + varios.id;
+
+				// Averigua los errores
+				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+				varios.OK.nombre = !varios.errores.nombre;
+				// Fin
+				return;
+			},
+			hechos: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+				parms += "&entidad=" + varios.entidad;
 				if (varios.id) params += "&id=" + varios.id;
 
 				// Lo agrega lo referido a la aparición mariana
@@ -246,30 +260,8 @@ window.addEventListener("load", async () => {
 
 				// Averigua los errores
 				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-
-				// Si hay errores, cambia el OK a false
-				if (varios.errores.nombre) varios.OK.nombre = false;
-				else if (!varios.personajes) varios.OK.nombre = !varios.errores.nombre;
-
-				// Fin
-				return;
-			},
-			apodo: async () => {
-				// Verifica errores en el sector 'nombre', campo 'apodo'
-				let params = "&apodo=" + encodeURIComponent(DOM.apodo.value);
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				if (varios.errores.nombre) varios.OK.nombre = false;
-				// Fin
-				return;
-			},
-			nombreApodo: async () => {
-				// Verifica errores en el sector 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
-				if (varios.personajes) params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
-				if (varios.id) params += "&id=" + varios.id;
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				// Consolidar la info
 				varios.OK.nombre = !varios.errores.nombre;
+
 				// Fin
 				return;
 			},
@@ -492,11 +484,17 @@ window.addEventListener("load", async () => {
 				}
 
 			// 4. Quita los caracteres que exceden el largo permitido
-			if (valor.length > 30) DOM[campo].value = valor.slice(0, 30);
+			if (valor.length > 30) valor = valor.slice(0, 30);
 
-			// 5. Revisa los errores de 'nombre' y los publica si existen
-			await validacs.nombre[campo]();
-			validacs.muestraErrorOK(0, true);
+			// Si hubo alguna novedad y antes había un mensaje de error, oculta el acierto/error
+			if (valor != DOM[campo].value && varios.errores.nombre) {
+				DOM.mensajeError[0].innerHTML = "";
+				DOM.iconosError[0].classList.add("ocultar");
+				DOM.iconosOK[0].classList.add("ocultar");
+			}
+
+			// Fin
+			return;
 		}
 		if (campo == "ano") {
 			// Sólo números en el año
@@ -515,8 +513,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
-			if (varios.personajes) await validacs.nombre.nombreApodo();
-			else await validacs.nombre.nombre();
+			await validacs.nombre[varios.entidad]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia el sector Fecha
@@ -557,7 +554,7 @@ window.addEventListener("load", async () => {
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[varios.entidad]();
-			if (varios.hechos) await validacs.nombre.nombre();
+			if (varios.hechos) await validacs.nombre.hechos();
 		}
 
 		// Final de la rutina
