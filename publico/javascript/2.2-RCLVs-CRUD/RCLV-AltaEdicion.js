@@ -455,12 +455,12 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.dataEntry.addEventListener("input", async (e) => {
+		// Variables
 		let campo = e.target.name;
+		let valor = DOM[campo].value;
+
 		// Acciones si se cambia el nombre o apodo
 		if (varios.camposNombre.includes(campo)) {
-			// Variables
-			let valor = DOM[campo].value;
-
 			// 1. Primera letra en mayúscula
 			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			valor = DOM[campo].value;
@@ -485,27 +485,30 @@ window.addEventListener("load", async () => {
 
 			// 4. Quita los caracteres que exceden el largo permitido
 			if (valor.length > 30) valor = valor.slice(0, 30);
-
-			// Si hubo alguna novedad y antes había un mensaje de error, oculta el acierto/error
-			if (valor != DOM[campo].value && varios.errores.nombre) {
-				DOM.mensajeError[0].innerHTML = "";
-				DOM.iconosError[0].classList.add("ocultar");
-				DOM.iconosOK[0].classList.add("ocultar");
-			}
-
-			// Fin
-			return;
 		}
 		if (campo == "ano") {
 			// Sólo números en el año
-			DOM.ano.value = DOM.ano.value.replace(/[^\d]/g, "");
+			valor = valor.replace(/[^\d]/g, "");
+
 			// Menor o igual que el año actual
-			if (DOM.ano.value) {
-				let anoIngresado = parseInt(DOM.ano.value);
+			if (valor) {
+				let anoIngresado = parseInt(valor);
 				let anoActual = new Date().getFullYear();
-				DOM.ano.value = Math.min(anoIngresado, anoActual);
+				valor = Math.min(anoIngresado, anoActual);
 			}
 		}
+
+		// Actualiza el valor en el DOM
+		e.target.value = valor;
+
+		// Oculta íconos de acierto y error
+		const i = varios.camposError.indexOf(campo);
+		DOM.mensajeError[i].innerHTML = "";
+		DOM.iconosError[i].classList.add("ocultar");
+		DOM.iconosOK[i].classList.add("ocultar");
+
+		// Fin
+		return;
 	});
 	// Acciones cuando se  confirma el input
 	DOM.dataEntry.addEventListener("change", async (e) => {
