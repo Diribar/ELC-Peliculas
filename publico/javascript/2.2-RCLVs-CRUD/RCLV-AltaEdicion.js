@@ -7,8 +7,8 @@ window.addEventListener("load", async () => {
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 
 		// Variables de errores
-		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
-		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
+		iconosOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
+		iconosError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
 
 		// Campos
@@ -45,14 +45,12 @@ window.addEventListener("load", async () => {
 		// Links a otros sitios
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		// Errores
-		camposError: ["nombre", "fecha", "repetidos"],
+		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
 	};
 	varios.personajes = varios.entidad == "personajes";
 	varios.hechos = varios.entidad == "hechos";
-	if (varios.personajes) varios.camposError.push("sexo_id"); // Tiene que estar antes de "época"
-	varios.camposEpoca.push("epoca", "RCLIC");
 
 	// Valores para personajes
 	if (varios.personajes) {
@@ -407,12 +405,12 @@ window.addEventListener("load", async () => {
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
 			varios.OK[varios.camposError[i]] && !ocultarOK
-				? DOM.iconoOK[i].classList.remove("ocultar")
-				: DOM.iconoOK[i].classList.add("ocultar");
+				? DOM.iconosOK[i].classList.remove("ocultar")
+				: DOM.iconosOK[i].classList.add("ocultar");
 			// Íconos de error
 			varios.errores[varios.camposError[i]]
-				? DOM.iconoError[i].classList.remove("ocultar")
-				: DOM.iconoError[i].classList.add("ocultar");
+				? DOM.iconosError[i].classList.remove("ocultar")
+				: DOM.iconosError[i].classList.add("ocultar");
 			// Mensaje de error
 			DOM.mensajeError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
 		},
