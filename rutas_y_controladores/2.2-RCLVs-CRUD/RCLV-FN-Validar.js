@@ -112,14 +112,10 @@ module.exports = {
 		}
 		return respuesta;
 	},
+	// Personajes y Hechos
 	repetidos: (datos) => {
 		return datos.repetidos ? cartelDuplicado : "";
 	},
-	// Personajes
-	sexo: (datos) => {
-		return !datos.sexo_id ? variables.radioVacio : "";
-	},
-	// Personajes o Hechos
 	epoca: (datos) => {
 		// Variables
 		let respuesta = "";
@@ -147,6 +143,10 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
+	// Personajes
+	sexo: (datos) => {
+		return !datos.sexo_id ? variables.radioVacio : "";
+	},
 	RCLIC_personajes: (datos) => {
 		if (datos.ano) datos.ano = parseInt(datos.ano);
 		let respuesta = !datos.categoria_id
@@ -167,6 +167,7 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
+	// Hechos
 	RCLIC_hechos: (datos) => {
 		if (datos.ano) datos.ano = parseInt(datos.ano);
 		let respuesta = !datos.solo_cfc
@@ -181,6 +182,8 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
+	// Valores
+
 };
 
 // Carteles
