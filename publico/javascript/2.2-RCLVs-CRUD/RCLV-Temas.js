@@ -110,7 +110,7 @@ window.addEventListener("load", async () => {
 
 				// Obtiene los errores
 				let params = JSON.stringify({meses_id, dias});
-				varios.errores.vigencia = await fetch(rutas.validacion + "vigencia&datos=" + params).then((n) => n.json());
+				varios.errores.vigencia = await fetch(rutas.validacion + "vigencia&stringify=" + params).then((n) => n.json());
 			}
 			// Si no tiene fechas de vigencia
 			else varios.errores.vigencia = "";
