@@ -7,33 +7,34 @@ window.addEventListener("load", async () => {
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 
 		// Variables de errores
-		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
-		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
+		iconosOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
+		iconosError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
 
-		// Campos - Varios
-		nombre: document.querySelector("#dataEntry input[name='nombre']"),
-		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 		// Campos - Vigencia
 		camposFecha: document.querySelectorAll("#dataEntry #vigencia .input"),
 		desde_mes_id: document.querySelector("#dataEntry select[name='desde_mes_id']"),
 		desde_dia: document.querySelector("#dataEntry select[name='desde_dia']"),
 		hasta_mes_id: document.querySelector("#dataEntry select[name='hasta_mes_id']"),
 		hasta_dia: document.querySelector("#dataEntry select[name='hasta_dia']"),
+		meses_id: document.querySelectorAll("#dataEntry select.mes_id"),
+		dias: document.querySelectorAll("#dataEntry select.dia"),
+
 		// Campos - Descripción
 		descripcion: document.querySelector("#dataEntry textarea[name='descripcion']"),
 		pendiente: document.querySelector("#segundaCol #pendiente"),
+
+		// Campos - Varios
+		nombre: document.querySelector("#dataEntry input[name='nombre']"),
+		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
 	};
-	let rutas = {
-		// Rutas
-		validacion: "/rclv/api/valida-sector/?funcion=",
-	};
+	let rutas = {validacion: "/rclv/api/valida-sector/?funcion="};
 	let varios = {
 		// Variables que se obtienen del url
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		id: new URL(location.href).searchParams.get("id"),
 		// Errores
-		camposError: ["nombre"],
+		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
 		// Otros
@@ -84,7 +85,8 @@ window.addEventListener("load", async () => {
 		// Sectores
 		nombre: async () => {
 			// Verifica errores en el campo 'nombre'
-			let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+			let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+			params += "&entidad=" + varios.entidad;
 			if (varios.id) params += "&id=" + varios.id;
 
 			// Averigua los errores
@@ -94,7 +96,29 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		vigencia: () => {
+		vigencia: async () => {
+			// Si tiene fechas de vigencia
+			if (!DOM.desconocida.checked) {
+				let errores = [];
+
+				// Obtiene los errores en 'desde' y 'hasta'
+				for (let i = 0; i < DOM.meses_id.length; i++) {
+					let params = "&mes_id=" + DOM.meses_id[i].value + "&dia=" + DOM.dias[i].value;
+					errores.push(fetch(rutas.validacion + "fecha" + params).then((n) => n.json()));
+				}
+
+				// Error
+				const vigencias = await Promise.all(errores);
+				for (var vigencia of vigencias) if (vigencia) break;
+				varios.errores.vigencia = vigencia;
+			}
+			// Si no tiene fechas de vigencia
+			else varios.errores.vigencia = "";
+
+			// OK vigencia
+			varios.OK.vigencia = !varios.errores.vigencia;
+
+			// Fin
 			return;
 		},
 		descripcion: () => {
@@ -103,12 +127,12 @@ window.addEventListener("load", async () => {
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
 			varios.OK[varios.camposError[i]] && !ocultarOK
-				? DOM.iconoOK[i].classList.remove("ocultar")
-				: DOM.iconoOK[i].classList.add("ocultar");
+				? DOM.iconosOK[i].classList.remove("ocultar")
+				: DOM.iconosOK[i].classList.add("ocultar");
 			// Íconos de error
 			varios.errores[varios.camposError[i]]
-				? DOM.iconoError[i].classList.remove("ocultar")
-				: DOM.iconoError[i].classList.add("ocultar");
+				? DOM.iconosError[i].classList.remove("ocultar")
+				: DOM.iconosError[i].classList.add("ocultar");
 			// Mensaje de error
 			DOM.mensajeError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
 		},
@@ -116,22 +140,35 @@ window.addEventListener("load", async () => {
 			// Muestra los íconos de Error y OK
 			for (let i = 0; i < varios.camposError.length; i++) this.muestraErrorOK(i);
 		},
-		botonSubmit: () => {
+		activaInactivaBotonSubmit: () => {
 			// Botón submit
-			let resultado = Object.values(varios.OK);
-			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
-			resultadosTrue && resultado.length == varios.camposError.length
+			let resultados = Object.values(varios.OK);
+			let resultadosTrue = resultados.length ? resultados.every((n) => !!n) : false;
+			resultadosTrue && resultados.length == varios.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
+
+			// Fin
+			return;
 		},
 		startUp: async function (forzar) {
 			// 1. Valida el nombre
-			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined)) {
-			}
+			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined)) await this.nombre();
+
+			// 2. Valida la vigencia
+			if (
+				(DOM.desde_mes_id.value && DOM.desde_dia.value && DOM.hasta_mes_id.value && DOM.hasta_dia.value) ||
+				DOM.desconocida.checked ||
+				(forzar && varios.errores.vigencia == undefined)
+			)
+				await this.vigencia();
+
+			// 3. Valida la descripción
+			if (DOM.descripcion.value || (forzar && varios.errores.descripcion == undefined)) await this.descripcion();
 
 			// Fin
 			this.muestraErroresOK();
-			this.botonSubmit();
+			this.activaInactivaBotonSubmit();
 		},
 	};
 
@@ -171,9 +208,11 @@ window.addEventListener("load", async () => {
 		// 6. Actualiza el contador de caracteres
 		if (campo == "descripcion") DOM.pendiente.innerHTML = 100 - valor.length;
 
-		// 7. Revisa los errores y los publica si existen
-		await validacs[campo]();
-		validacs.muestraErrorOK(0, true);
+		// 7. Oculta íconos de acierto y error
+		const i = varios.camposError.indexOf(campo);
+		DOM.mensajeError[i].innerHTML = "";
+		DOM.iconosError[i].classList.add("ocultar");
+		DOM.iconosOK[i].classList.add("ocultar");
 	});
 
 	// Acciones cuando se  confirma el input
@@ -186,7 +225,7 @@ window.addEventListener("load", async () => {
 			if (campo.endsWith("mes_id")) impactos.muestraLosDiasDelMes(campo);
 			DOM.desconocida.checked = false;
 			let todosConValor = true;
-			for (let campoFecha of varios.camposFecha) if (!campoFecha.value) todosConValor = false;
+			for (let campoFecha of DOM.camposFecha) if (!campoFecha.value) todosConValor = false;
 			if (todosConValor) await validacs.vigencia();
 		}
 		if (campo == "desconocida") {
@@ -196,7 +235,7 @@ window.addEventListener("load", async () => {
 
 		// Final de la rutina
 		validacs.muestraErroresOK();
-		validacs.botonSubmit();
+		validacs.activaInactivaBotonSubmit();
 	});
 	// Botón submit
 	DOM.botonSubmit.addEventListener("click", async (e) => {

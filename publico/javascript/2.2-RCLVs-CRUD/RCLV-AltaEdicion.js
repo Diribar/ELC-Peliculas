@@ -7,8 +7,8 @@ window.addEventListener("load", async () => {
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 
 		// Variables de errores
-		iconoOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
-		iconoError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
+		iconosOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
+		iconosError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
 		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
 
 		// Campos
@@ -45,14 +45,12 @@ window.addEventListener("load", async () => {
 		// Links a otros sitios
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		// Errores
-		camposError: ["nombre", "fecha", "repetidos"],
+		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
 	};
 	varios.personajes = varios.entidad == "personajes";
 	varios.hechos = varios.entidad == "hechos";
-	if (varios.personajes) varios.camposError.push("sexo_id"); // Tiene que estar antes de "época"
-	varios.camposEpoca.push("epoca", "RCLIC");
 
 	// Valores para personajes
 	if (varios.personajes) {
@@ -232,9 +230,23 @@ window.addEventListener("load", async () => {
 	let validacs = {
 		// Sectores
 		nombre: {
-			nombre: async () => {
+			personajes: async () => {
+				// Verifica errores en el sector 'nombre'
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+				params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
+				params += "&entidad=" + varios.entidad;
+				if (varios.id) params += "&id=" + varios.id;
+
+				// Averigua los errores
+				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
+				varios.OK.nombre = !varios.errores.nombre;
+				// Fin
+				return;
+			},
+			hechos: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
+				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
+				parms += "&entidad=" + varios.entidad;
 				if (varios.id) params += "&id=" + varios.id;
 
 				// Lo agrega lo referido a la aparición mariana
@@ -248,30 +260,8 @@ window.addEventListener("load", async () => {
 
 				// Averigua los errores
 				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-
-				// Si hay errores, cambia el OK a false
-				if (varios.errores.nombre) varios.OK.nombre = false;
-				else if (!varios.personajes) varios.OK.nombre = !varios.errores.nombre;
-
-				// Fin
-				return;
-			},
-			apodo: async () => {
-				// Verifica errores en el sector 'nombre', campo 'apodo'
-				let params = "&apodo=" + encodeURIComponent(DOM.apodo.value);
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				if (varios.errores.nombre) varios.OK.nombre = false;
-				// Fin
-				return;
-			},
-			nombreApodo: async () => {
-				// Verifica errores en el sector 'nombre'
-				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value) + "&entidad=" + varios.entidad;
-				if (varios.personajes) params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
-				if (varios.id) params += "&id=" + varios.id;
-				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
-				// Consolidar la info
 				varios.OK.nombre = !varios.errores.nombre;
+
 				// Fin
 				return;
 			},
@@ -282,12 +272,10 @@ window.addEventListener("load", async () => {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
-				varios.OK.fecha = !varios.errores.fecha;
-			} else {
-				// Errores y OK
-				varios.errores.fecha = "";
-				varios.OK.fecha = true;
-			}
+			} else varios.errores.fecha = "";
+
+			// OK vigencia
+			varios.OK.fecha = !varios.errores.fecha;
 
 			// Acciones si la fecha está OK
 			if (varios.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
@@ -407,12 +395,12 @@ window.addEventListener("load", async () => {
 		muestraErrorOK: (i, ocultarOK) => {
 			// Íconos de OK
 			varios.OK[varios.camposError[i]] && !ocultarOK
-				? DOM.iconoOK[i].classList.remove("ocultar")
-				: DOM.iconoOK[i].classList.add("ocultar");
+				? DOM.iconosOK[i].classList.remove("ocultar")
+				: DOM.iconosOK[i].classList.add("ocultar");
 			// Íconos de error
 			varios.errores[varios.camposError[i]]
-				? DOM.iconoError[i].classList.remove("ocultar")
-				: DOM.iconoError[i].classList.add("ocultar");
+				? DOM.iconosError[i].classList.remove("ocultar")
+				: DOM.iconosError[i].classList.add("ocultar");
 			// Mensaje de error
 			DOM.mensajeError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
 		},
@@ -435,33 +423,27 @@ window.addEventListener("load", async () => {
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
-			if (!DOM.tema) {
-				if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
-				if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-				if (
-					(DOM.mes_id.value && DOM.dia.value) ||
-					DOM.desconocida.checked ||
-					(forzar && varios.errores.fecha == undefined)
-				)
-					await this.fecha();
+			if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
+			if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+			if ((DOM.mes_id.value && DOM.dia.value) || DOM.desconocida.checked || (forzar && varios.errores.fecha == undefined))
+				await this.fecha();
 
-				// 4. Valida el sexo
-				if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-				if (varios.personajes && (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)))
-					await this.sexo();
+			// 4. Valida el sexo
+			if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
+			if (varios.personajes && (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)))
+				await this.sexo();
 
-				// 5. Valida la época
-				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
-				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
+			// 5. Valida la época
+			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
+			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
 
-				// 6. Valida RCLIC
-				if (
-					(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-					(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
-					(forzar && varios.errores.RCLIC == undefined)
-				)
-					await this.RCLIC[varios.entidad]();
-			}
+			// 6. Valida RCLIC
+			if (
+				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
+				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
+				(forzar && varios.errores.RCLIC == undefined)
+			)
+				await this.RCLIC[varios.entidad]();
 
 			// Fin
 			this.muestraErroresOK();
@@ -471,12 +453,12 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.dataEntry.addEventListener("input", async (e) => {
+		// Variables
 		let campo = e.target.name;
+		let valor = DOM[campo].value;
+
 		// Acciones si se cambia el nombre o apodo
 		if (varios.camposNombre.includes(campo)) {
-			// Variables
-			let valor = DOM[campo].value;
-
 			// 1. Primera letra en mayúscula
 			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 			valor = DOM[campo].value;
@@ -500,22 +482,31 @@ window.addEventListener("load", async () => {
 				}
 
 			// 4. Quita los caracteres que exceden el largo permitido
-			if (valor.length > 30) DOM[campo].value = valor.slice(0, 30);
-
-			// 5. Revisa los errores de 'nombre' y los publica si existen
-			await validacs.nombre[campo]();
-			validacs.muestraErrorOK(0, true);
+			if (valor.length > 30) valor = valor.slice(0, 30);
 		}
 		if (campo == "ano") {
 			// Sólo números en el año
-			DOM.ano.value = DOM.ano.value.replace(/[^\d]/g, "");
+			valor = valor.replace(/[^\d]/g, "");
+
 			// Menor o igual que el año actual
-			if (DOM.ano.value) {
-				let anoIngresado = parseInt(DOM.ano.value);
+			if (valor) {
+				let anoIngresado = parseInt(valor);
 				let anoActual = new Date().getFullYear();
-				DOM.ano.value = Math.min(anoIngresado, anoActual);
+				valor = Math.min(anoIngresado, anoActual);
 			}
 		}
+
+		// Actualiza el valor en el DOM
+		e.target.value = valor;
+
+		// Oculta íconos de acierto y error
+		const i = varios.camposError.indexOf(campo);
+		DOM.mensajeError[i].innerHTML = "";
+		DOM.iconosError[i].classList.add("ocultar");
+		DOM.iconosOK[i].classList.add("ocultar");
+
+		// Fin
+		return;
 	});
 	// Acciones cuando se  confirma el input
 	DOM.dataEntry.addEventListener("change", async (e) => {
@@ -523,8 +514,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
-			if (varios.personajes) await validacs.nombre.nombreApodo();
-			else await validacs.nombre.nombre();
+			await validacs.nombre[varios.entidad]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 		// 2. Acciones si se cambia el sector Fecha
@@ -565,7 +555,7 @@ window.addEventListener("load", async () => {
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[varios.entidad]();
-			if (varios.hechos) await validacs.nombre.nombre();
+			if (varios.hechos) await validacs.nombre.hechos();
 		}
 
 		// Final de la rutina
