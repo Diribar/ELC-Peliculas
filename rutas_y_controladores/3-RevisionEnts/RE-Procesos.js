@@ -731,11 +731,11 @@ let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Productos/Final");
+		comp.mueveUnArchivoImagen(avatarEdic, "2-Productos/Revisar", "2-Productos/Final");
 	}
 
 	// Elimina el archivo de edicion
-	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Productos/Revisar/", avatarEdic);
 
 	// Fin
 	return;

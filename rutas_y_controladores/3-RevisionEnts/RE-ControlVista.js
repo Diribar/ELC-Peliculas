@@ -65,7 +65,7 @@ module.exports = {
 		// Obtiene avatar original
 		let imgDerPers = original.avatar;
 		imgDerPers = imgDerPers
-			? (!imgDerPers.includes("/") ? "/imagenes/2-Avatar-Prods-Revisar/" : "") + imgDerPers
+			? (!imgDerPers.includes("/") ? "/imagenes/2-Productos/Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
 		// Configura el título de la vista
 		const prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);

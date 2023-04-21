@@ -238,11 +238,11 @@ module.exports = {
 		if (!confirma.avatar) {
 			// Descarga el avatar en la carpeta 'Prods-Revisar'
 			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
-			let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Revisar/" + confirma.avatar;
+			let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
 			comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		}
 		// Mueve el avatar de 'provisorio' a 'revisar'
-		else comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Avatar-Prods-Revisar");
+		else comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 		// Guarda los datos de 'edición'
 		await procsCRUD.guardaActEdicCRUD({

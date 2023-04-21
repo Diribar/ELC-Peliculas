@@ -248,7 +248,7 @@ module.exports = {
 		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
 
 		// Borra los avatar de Revisar
-		carpeta = "2-Avatar-Prods-Revisar";
+		carpeta = "2-Productos/Revisar";
 		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
 
 		// Obtiene el nombre de todas las imagenes de los registros de productos
