@@ -53,12 +53,12 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "tema_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "tema_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "tema_id"});
-		entidad.hasMany(n.prods_edicion, {as: "prods_edicion", foreignKey: "tema_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "epoca_del_ano_id"});
+		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "epoca_del_ano_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "epoca_del_ano_id"});
+		entidad.hasMany(n.prods_edicion, {as: "prods_edicion", foreignKey: "epoca_del_ano_id"});
 
-		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "tema_id"});
+		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "epoca_del_ano_id"});
 	};
 	return entidad;
 };
