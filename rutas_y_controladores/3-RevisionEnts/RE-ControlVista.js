@@ -446,7 +446,7 @@ module.exports = {
 		// Información para la vista
 		let avatar = producto.avatar;
 		avatar = avatar
-			? (!avatar.includes("/") ? "/imagenes/2-Avatar-Prods-Final/" : "") + avatar
+			? (!avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
 		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 

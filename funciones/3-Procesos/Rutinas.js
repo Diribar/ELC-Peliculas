@@ -258,7 +258,7 @@ module.exports = {
 		for (let entidad of entidades) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
 		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
 		// Borra los avatar de Final
-		carpeta = "2-Avatar-Prods-Final";
+		carpeta = "2-Productos/Final";
 		borraImagenesSinRegistro(consolidado, carpeta);
 
 		// Fin
