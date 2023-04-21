@@ -8,20 +8,28 @@ module.exports = {
 	consolidado: async function (datos) {
 		datos = {...datos}; // Es fundamental escribir 'datos' así
 		// Campos comunes a los 3 RCLV
-		let errores = {
-			nombre: await this.nombre(datos),
-			fecha: this.fecha(datos),
-			repetidos: this.repetidos(datos),
-		};
-		// Sexo
-		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
-		// Época y RCLI
-		if (datos.entidad != "temas") {
+		let errores = {nombre: await this.nombre(datos)};
+
+		// Campos de personajes y hechos
+		if (datos.entidad == "personajes" || datos.entidad == "hechos") {
+			errores.fecha = this.fecha(datos);
+			errores.repetidos = this.repetidos(datos);
 			errores.epoca = this.epoca(datos);
 			errores.RCLI = this["RCLIC_" + datos.entidad](datos);
 		}
+
+		// Campos de personajes
+		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
+
+		// Campos de temas
+		if (datos.entidad == "temas") {
+			errores.vigencia = this.vigencia(datos);
+			errores.descripcion = this.descripcion(datos);
+		}
+
 		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
+
 		// Fin
 		return errores;
 	},
@@ -129,7 +137,37 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	// Valores
+	// Temas
+	vigencia: function (datos) {
+		// Obtiene los errores en 'desde' y 'hasta'
+		const {desconocida, meses_id, dias} = datos;
+		let mensaje;
+
+		// Si tiene fechas de vigencia
+		if (!desconocida)
+			for (let i = 0; i < meses_id.length; i++) {
+				let objeto = {mes_id: meses_id[i], dia: dias[i]};
+				mensaje = this.fecha(objeto);
+				if (mensaje) break;
+			}
+		// Si no tiene fechas de vigencia
+		else mensaje = "";
+
+		// Fin
+		return mensaje;
+	},
+	descripcion: (datos) => {
+		// Variables
+		const dato = datos.descripcion;
+		let mensaje = "";
+
+		// Validaciones
+		if (!dato) mensaje = variables.inputVacio;
+		if (!mensaje) mensaje = comp.longitud(dato, 4, 100);
+
+		// Fin
+		return mensaje;
+	},
 };
 
 // Carteles
@@ -143,34 +181,34 @@ let nombreApodo = async ({datos, campo}) => {
 	const {entidad, ama} = datos;
 	const dato = datos[campo];
 	const apMar = "Ap. Mar. - ";
-	let respuesta = "";
+	let mensaje = "";
 
 	// Validación solamente para 'nombre'
-	if (!dato && campo == "nombre") respuesta = variables.inputVacio;
+	if (!dato && campo == "nombre") mensaje = variables.inputVacio;
 
 	// Validaciones cuando existe un dato
-	if (!respuesta && dato) {
+	if (!mensaje && dato) {
 		// Idioma castellano
-		if (!respuesta) respuesta = comp.castellano.completo(dato);
-		if (!respuesta) respuesta = comp.inicial.basico(dato);
-		if (respuesta && campo == "apodo") respuesta += " (nombre alternativo)";
+		if (!mensaje) mensaje = comp.castellano.completo(dato);
+		if (!mensaje) mensaje = comp.inicial.basico(dato);
+		if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
 
 		// Prefijo y longitud
-		if (!respuesta && entidad == "personajes" && campo == "nombre") respuesta = prefijo(dato);
-		if (!respuesta) respuesta = comp.longitud(dato, 4, 30);
+		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
+		if (!mensaje) mensaje = comp.longitud(dato, 4, 30);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && ama && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";
 
 		// Nombre repetido
-		if (!respuesta) {
+		if (!mensaje) {
 			let id = await BD_especificas.validaRepetidos([campo], datos);
-			if (id) respuesta = comp.cartelRepetido({...datos, id});
+			if (id) mensaje = comp.cartelRepetido({...datos, id});
 		}
 	}
 
 	// Fin
-	return respuesta;
+	return mensaje;
 };
 let prefijo = (nombre) => {
 	// Variables

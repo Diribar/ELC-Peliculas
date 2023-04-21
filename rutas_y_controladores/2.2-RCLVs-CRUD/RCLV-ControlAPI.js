@@ -5,6 +5,20 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
+	validaSector: async (req, res) => {
+		// Variables
+		let datos = req.query;
+		if (datos.stringify) datos = {funcion: datos.funcion, ...JSON.parse(datos.stringify)};
+
+		// Obtiene el mensaje
+		let mensaje = await valida[datos.funcion](datos);
+
+		// Fin
+		return res.json(mensaje);
+	},
+	prefijos: (req, res) => {
+		return res.json(variables.prefijos);
+	},
 	registrosConEsaFecha: async (req, res) => {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
@@ -14,12 +28,5 @@ module.exports = {
 			.then((n) => n.filter((m) => m.id > 10))
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
-	},
-	validaSector: async (req, res) => {
-		let mensaje = await valida[req.query.funcion](req.query);
-		return res.json(mensaje);
-	},
-	prefijos: (req, res) => {
-		return res.json(variables.prefijos);
 	},
 };

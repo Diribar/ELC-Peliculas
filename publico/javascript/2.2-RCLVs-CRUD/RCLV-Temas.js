@@ -99,18 +99,18 @@ window.addEventListener("load", async () => {
 		vigencia: async () => {
 			// Si tiene fechas de vigencia
 			if (!DOM.desconocida.checked) {
-				let errores = [];
+				let meses_id = [];
+				let dias = [];
 
-				// Obtiene los errores en 'desde' y 'hasta'
+				// Obtiene los valores de meses_id y dias
 				for (let i = 0; i < DOM.meses_id.length; i++) {
-					let params = "&mes_id=" + DOM.meses_id[i].value + "&dia=" + DOM.dias[i].value;
-					errores.push(fetch(rutas.validacion + "fecha" + params).then((n) => n.json()));
+					meses_id.push(DOM.meses_id[i].value);
+					dias.push(DOM.dias[i].value);
 				}
 
-				// Error
-				const vigencias = await Promise.all(errores);
-				for (var vigencia of vigencias) if (vigencia) break;
-				varios.errores.vigencia = vigencia;
+				// Obtiene los errores
+				let params = JSON.stringify({meses_id, dias});
+				varios.errores.vigencia = await fetch(rutas.validacion + "vigencia&stringify=" + params).then((n) => n.json());
 			}
 			// Si no tiene fechas de vigencia
 			else varios.errores.vigencia = "";
@@ -121,7 +121,15 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		descripcion: () => {
+		descripcion: async () => {
+			// Verifica errores en el campo 'descripcion'
+			let params = "&descripcion=" + encodeURIComponent(DOM.descripcion.value);
+
+			// Averigua los errores
+			varios.errores.descripcion = await fetch(rutas.validacion + "descripcion" + params).then((n) => n.json());
+			varios.OK.descripcion = !varios.errores.descripcion;
+
+			// Fin
 			return;
 		},
 		muestraErrorOK: (i, ocultarOK) => {
@@ -220,6 +228,9 @@ window.addEventListener("load", async () => {
 		// Variables
 		let campo = e.target.name;
 
+		// 1. Acciones si se cambia el sector Nombre
+		if (campo == "nombre") await validacs.nombre();
+
 		// 2. Acciones si se cambia el sector Vigencia
 		if (varios.camposFecha.includes(campo)) {
 			if (campo.endsWith("mes_id")) impactos.muestraLosDiasDelMes(campo);
@@ -232,6 +243,9 @@ window.addEventListener("load", async () => {
 			if (DOM.desconocida.checked) impactos.limpiezaDeMesDia();
 			await validacs.vigencia();
 		}
+
+		// 3. Acciones si se cambia el sector Descripción
+		if (campo == "descripcion") await validacs.descripcion();
 
 		// Final de la rutina
 		validacs.muestraErroresOK();
