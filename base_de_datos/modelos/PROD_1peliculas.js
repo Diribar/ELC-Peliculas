@@ -1,16 +1,17 @@
 module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
+		fuente: {type: dt.STRING(5)},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
-		fuente: {type: dt.STRING(5)},
-		nombre_castellano: {type: dt.STRING(70)},
 		nombre_original: {type: dt.STRING(70)},
-		idioma_original_id: {type: dt.STRING(2)},
+		nombre_castellano: {type: dt.STRING(70)},
+		ano_estreno: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 		paises_id: {type: dt.STRING(14)},
-		ano_estreno: {type: dt.INTEGER},
+		idioma_original_id: {type: dt.STRING(2)},
+		
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
