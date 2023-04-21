@@ -16,7 +16,7 @@ let botonPelicula = async (producto) => {
 
 	// Imagen
 	const localhost = await fetch("/api/localhost").then((n) => n.json());
-	let avatar = localhost + "/imagenes/2-Avatar-Prods-Final/" + producto.avatar;
+	let avatar = localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
 	boton.avatar.src = avatar;
 	boton.avatar.alt = producto.nombre_original;
 	boton.avatar.title = producto.nombre_original;

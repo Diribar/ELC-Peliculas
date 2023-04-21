@@ -248,7 +248,7 @@ module.exports = {
 		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
 
 		// Borra los avatar de Revisar
-		carpeta = "2-Avatar-Prods-Revisar";
+		carpeta = "2-Productos/Revisar";
 		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
 
 		// Obtiene el nombre de todas las imagenes de los registros de productos
@@ -258,7 +258,7 @@ module.exports = {
 		for (let entidad of entidades) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
 		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
 		// Borra los avatar de Final
-		carpeta = "2-Avatar-Prods-Final";
+		carpeta = "2-Productos/Final";
 		borraImagenesSinRegistro(consolidado, carpeta);
 
 		// Fin
@@ -357,7 +357,7 @@ let obtieneImagenDerecha = async (fecha) => {
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
 			imgDerecha = registros[indice];
-			imgDerecha.carpeta = "4-RCLVs-Final/";
+			imgDerecha.carpeta = "2-RCLVs/Final/";
 		}
 		// Acciones si no encontró una imagen para la fecha
 		else

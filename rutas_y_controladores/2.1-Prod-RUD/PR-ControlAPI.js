@@ -78,7 +78,7 @@ module.exports = {
 		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
 
 		if (condicion && prodEdic) {
-			if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", prodEdic.avatar);
+			if (prodEdic.avatar) comp.borraUnArchivo("./publico/imagenes/2-Productos/Revisar/", prodEdic.avatar);
 			BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
 		}
 		// Terminar

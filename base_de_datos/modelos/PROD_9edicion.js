@@ -35,7 +35,7 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "prod_4edicion",
+		tableName: "prod_9edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

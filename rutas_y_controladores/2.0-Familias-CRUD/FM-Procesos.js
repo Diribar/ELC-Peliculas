@@ -148,10 +148,10 @@ module.exports = {
 			: localhost +
 			  "/imagenes/" +
 			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/" + original.avatar)
-					? "2-Avatar-Prods-Final/" + original.avatar
+					? "2-Productos/Final/" + original.avatar
 					: // Si el avatar está 'a revisar'
 					comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + original.avatar)
-					? "2-Avatar-Prods-Revisar/" + original.avatar
+					? "2-Productos/Revisar/" + original.avatar
 					: "0-Base/Avatar/Sin-Avatar.jpg");
 
 		// avatarEdic

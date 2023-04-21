@@ -99,8 +99,8 @@ module.exports = {
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
 		let avatar = usuario.avatar
-			? "/imagenes/1-Avatar-Usuarios/" + usuario.avatar
-			: "/imagenes/0-Base/Avatar/Usuario-Avatar-Generico.jpg";
+			? "/imagenes/1-Usuarios/1-Avatar/" + usuario.avatar
+			: "/imagenes/0-Base/Avatar/Usuario-Generico.jpg";
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -144,7 +144,7 @@ module.exports = {
 		await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Avatar-Usuarios");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios/1-Avatar");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
@@ -181,8 +181,8 @@ module.exports = {
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Avatar
 		let avatar = usuario.docum_avatar
-			? "/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar
-			: "/imagenes/0-Base/Avatar/DNI-Avatar-Generico.jpg";
+			? "/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar
+			: "/imagenes/0-Base/Avatar/DNI-Generico.jpg";
 		// Crear la carpeta si no existe
 		const ruta = "./publico/imagenes/9-Provisorio";
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
@@ -212,7 +212,7 @@ module.exports = {
 		if (req.file) datos.tamano = req.file.size;
 		datos.ruta = req.file
 			? "./publico/imagenes/9-Provisorio/"
-			: "./publico/imagenes/3-DNI-Usuarios-Revisar/";
+			: "./publico/imagenes/1-Usuarios/2-DNI-Revisar/";
 		// Averigua si hay errores de validación
 		let errores = await valida.identidadBE(datos);
 		// Redirecciona si hubo algún error de validación
@@ -225,7 +225,7 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				comp.borraUnArchivo("./publico/imagenes/3-DNI-Usuarios-Revisar/", usuario.docum_avatar);
+				comp.borraUnArchivo("./publico/imagenes/1-Usuarios/2-DNI-Revisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}
@@ -238,7 +238,7 @@ module.exports = {
 			req.body
 		);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "3-DNI-Usuarios-Revisar");
+		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios/2-DNI-Revisar");
 		// Redirecciona
 		return res.redirect("/usuarios/validacion-en-proceso");
 	},

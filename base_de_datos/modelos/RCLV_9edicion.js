@@ -29,7 +29,7 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "rclv_4edicion",
+		tableName: "rclv_9edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

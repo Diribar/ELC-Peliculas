@@ -453,7 +453,7 @@ module.exports = {
 					// Asigna un nombre al archivo a descargar
 					original.avatar = Date.now() + path.extname(url);
 					// Descarga el url
-					let rutaYnombre = "./publico/imagenes/2-Avatar-Prods-Final/" + original.avatar;
+					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
 					await comp.descarga(url, rutaYnombre);
 				}
 			}
@@ -727,15 +727,15 @@ let actualizaArchivoAvatar = async (original, edicion, aprob) => {
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		let rutaFinal = "./publico/imagenes/2-Avatar-Prods-Final/";
+		let rutaFinal = "./publico/imagenes/2-Productos/Final/";
 		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.mueveUnArchivoImagen(avatarEdic, "2-Avatar-Prods-Revisar", "2-Avatar-Prods-Final");
+		comp.mueveUnArchivoImagen(avatarEdic, "2-Productos/Revisar", "2-Productos/Final");
 	}
 
 	// Elimina el archivo de edicion
-	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Avatar-Prods-Revisar/", avatarEdic);
+	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Productos/Revisar/", avatarEdic);
 
 	// Fin
 	return;

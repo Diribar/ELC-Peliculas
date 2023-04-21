@@ -33,7 +33,7 @@ module.exports = {
 		let userID = req.query.id;
 		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rol_usuario", "status_registro"]);
 		// Redireccionar si no existe el usuario o el avatar
-		let docum_avatar = usuario ? "./publico/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar : false;
+		let docum_avatar = usuario ? "./publico/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar : false;
 		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
@@ -56,7 +56,7 @@ module.exports = {
 			titulo: "Validación de Identidad",
 			usuario,
 			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
-			docum_avatar: "/imagenes/3-DNI-Usuarios-Revisar/" + usuario.docum_avatar,
+			docum_avatar: "/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar,
 			title: usuario.apodo,
 			campos,
 			userID,
@@ -119,7 +119,7 @@ module.exports = {
 			let rolPermInputs_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
 			objeto.rol_usuario_id = rolPermInputs_id;
 			// Mueve la imagen del documento a su carpeta definitiva
-			comp.mueveUnArchivoImagen(usuario.docum_avatar, "3-DNI-Usuarios-Revisar", "3-DNI-Usuarios-Final");
+			comp.mueveUnArchivoImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");
 		}
 		// Actualiza el usuario
 		objeto = {...objeto, status_registro_id};

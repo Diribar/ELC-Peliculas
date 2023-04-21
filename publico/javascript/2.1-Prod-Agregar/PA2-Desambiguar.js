@@ -138,7 +138,7 @@ window.addEventListener("load", async () => {
 				? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
 				: prod.avatar.includes("/")
 				? prod.avatar
-				: localhost + "/imagenes/2-Avatar-Prods-Final/" + prod.avatar;
+				: localhost + "/imagenes/2-Productos/Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
 			li.children[0].children[0].children[0].alt = prod.nombre_original;
 			li.children[0].children[0].children[0].title = prod.nombre_original;
