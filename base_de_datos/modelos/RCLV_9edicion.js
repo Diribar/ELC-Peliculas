@@ -23,9 +23,6 @@ module.exports = (sequelize, dt) => {
 
 		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
-		jss: {type: dt.BOOLEAN},
-		cnt: {type: dt.BOOLEAN},
-		ncn: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
 		editado_por_id: {type: dt.INTEGER},

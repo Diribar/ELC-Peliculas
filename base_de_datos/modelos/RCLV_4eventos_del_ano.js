@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 		
 		// Específicos
-		cfc: {type: dt.BOOLEAN},
+		categoria_id: {type: dt.STRING(3)},
 
 		// Común con todos los RCLVs
 		creado_por_id: {type: dt.INTEGER},
