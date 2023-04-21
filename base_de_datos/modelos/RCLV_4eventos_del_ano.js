@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "temas";
+	const alias = "eventos_del_ano";
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(30)},
@@ -8,6 +8,9 @@ module.exports = (sequelize, dt) => {
 		fecha_movil: {type: dt.BOOLEAN},
 		prioridad:{type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
+		
+		// Específicos
+		cfc: {type: dt.BOOLEAN},
 
 		// Común con todos los RCLVs
 		creado_por_id: {type: dt.INTEGER},
@@ -32,7 +35,7 @@ module.exports = (sequelize, dt) => {
 		captura_activa: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "rclv_3temas",
+		tableName: "rclv_4eventos_del_ano",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

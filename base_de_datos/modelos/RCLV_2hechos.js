@@ -1,18 +1,23 @@
 module.exports = (sequelize, dt) => {
 	const alias = "hechos";
 	const columns = {
+		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(30)},
 		prods_aprob: {type: dt.INTEGER},
+		dia_del_ano_id: {type: dt.INTEGER},
+		fecha_movil: {type: dt.BOOLEAN},
+		prioridad:{type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
-		dia_del_ano_id: {type: dt.INTEGER},
+		// Común con personajes
 		ano: {type: dt.INTEGER},
 		epoca_id: {type: dt.STRING(3)},
 
-		// Específico de 'hechos'
+		// Específicos
 		solo_cfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
+		// Común con todos los RCLVs
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
 		alta_revisada_por_id: {type: dt.INTEGER},
