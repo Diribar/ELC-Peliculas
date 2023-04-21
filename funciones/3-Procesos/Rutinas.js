@@ -357,7 +357,7 @@ let obtieneImagenDerecha = async (fecha) => {
 			let indice = parseInt(Math.random() * registros.length);
 			if (indice == registros.length) indice--; // Por si justo tocó el '1' en el sorteo
 			imgDerecha = registros[indice];
-			imgDerecha.carpeta = "4-RCLVs-Final/";
+			imgDerecha.carpeta = "2-RCLVs/Final/";
 		}
 		// Acciones si no encontró una imagen para la fecha
 		else
