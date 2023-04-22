@@ -133,30 +133,31 @@ module.exports = {
 	},
 	// Avatar
 	obtieneAvatar: (original, edicion) => {
-		// Obtiene la petitEntidad
-		const petitFamilia = original.fuente ? "prods" : original.dia_del_ano_id ? "rclvs" : "";
+		// Variables
+		const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "rclvs" : "";
+		const revisar = "2-" + familias + "/Revisar/";
+		const final = "2-" + familias + "/Final/";
+		const sinAvatar = "0-Base/Avatar/Sin-Avatar.jpg";
 
-		// Si no detectó la petitFamilia, devuelve el genérico
-		if (!petitFamilia)
-			return {orig: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg", edic: "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"};
+		// Si no detectó la familias, devuelve el genérico
+		if (!familias) return {orig: "/imagenes/" + sinAvatar, edic: "/imagenes/" + sinAvatar};
 
 		// Obtiene el avatar original
-		let orig = !original.avatar
-			? localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg"
+		const orig = !original.avatar
+			? localhost + "/imagenes/" + sinAvatar
 			: original.avatar.includes("/")
 			? original.avatar
 			: localhost +
 			  "/imagenes/" +
-			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/" + original.avatar)
-					? "2-Productos/Final/" + original.avatar
+			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + final + original.avatar)
+					? final + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.averiguaSiExisteUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + original.avatar)
-					? "2-Productos/Revisar/" + original.avatar
-					: "0-Base/Avatar/Sin-Avatar.jpg");
+					comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + original.avatar)
+					? revisar + original.avatar
+					: sinAvatar);
 
 		// avatarEdic
-		let edic =
-			edicion && edicion.avatar ? localhost + "/imagenes/2-Avatar-" + petitFamilia + "-Revisar/" + edicion.avatar : orig;
+		const edic = edicion && edicion.avatar ? localhost + "/imagenes/" + revisar + edicion.avatar : orig;
 
 		// Fin
 		return {orig, edic};

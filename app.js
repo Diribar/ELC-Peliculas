@@ -112,8 +112,6 @@ app.set("views", [
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
 		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
-		imagenes_movil: BD_genericas.obtieneTodos("imagenes_movil", "dia_del_ano_id"),
-		imagenes_fijo: BD_genericas.obtieneTodos("imagenes_fijo", "dia_del_ano_id"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
@@ -133,9 +131,6 @@ app.set("views", [
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 	global.hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-	global.banco_de_imagenes = [...global.imagenes_movil, ...global.imagenes_fijo];
-	delete global.imagenes_movil;
-	delete global.imagenes_fijo;
 
 	// Procesos que dependen de la variable 'global'
 	// Rutinas

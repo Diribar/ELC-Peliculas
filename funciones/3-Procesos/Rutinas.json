@@ -1,16 +1,16 @@
 {
-	"FechaUTC": "Dom. 16/abr",
-	"HoraUTC": "0:00",
-	"FechaSemUTC": "Dom. 16/abr",
-	"HoraSemUTC": "0:01",
-	"semanaUTC": 14,
+	"FechaUTC": "Vie. 21/abr",
+	"HoraUTC": "14:19",
+	"FechaSemUTC": "Vie. 21/abr",
+	"HoraSemUTC": "14:19",
+	"semanaUTC": 15,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MomentoDelAno"],
 	"TitulosImgDer": {"14-abr-23": "ELC - Películas", "15-abr-23": "ELC - Películas", "16-abr-23": "ELC - Películas"},
 	"FechaHoraUTC": "SI",
 	"ImagenDerecha": "NO",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
-	"LinksVencidos": "NO",
+	"LinksVencidos": "SI",
 	"BorraImagenesSinRegistro": "NO",
 	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon", "BorraImagenesSinRegistro": "Tue"}
 }
