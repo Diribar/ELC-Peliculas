@@ -510,21 +510,21 @@ CREATE TABLE `prod_2colecciones` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `TMDB_id` (`TMDB_id`),
   UNIQUE KEY `FA_id` (`FA_id`),
-  FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
-  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
-  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
   FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
-  FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
-  FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`)
+  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
+  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
+  FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_3capitulos` (
