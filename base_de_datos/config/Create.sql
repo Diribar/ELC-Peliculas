@@ -273,9 +273,6 @@ CREATE TABLE `links` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`),
   FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
-  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
   FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
   FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
   FOREIGN KEY (`tipo_id`) REFERENCES `links_tipos` (`id`),
@@ -283,7 +280,10 @@ CREATE TABLE `links` (
   FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
+  FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links_edicion` (
