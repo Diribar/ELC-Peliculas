@@ -646,17 +646,17 @@ CREATE TABLE `prod_9edicion` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
-  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
-  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
+  FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
+  FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
+  FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
+  FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
   FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
-  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
-  FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
-  FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
-  FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`)
+  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
+  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
+  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_categ1` (
