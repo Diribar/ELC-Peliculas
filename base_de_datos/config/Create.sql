@@ -898,7 +898,7 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   CONSTRAINT `regla7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla8` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla9` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_9edicion` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
@@ -934,7 +934,7 @@ CREATE TABLE `rclv_9edicion` (
   CONSTRAINT `regla10` FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
   CONSTRAINT `regla11` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
   CONSTRAINT `regla12` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_canons` (
   `id` varchar(3) NOT NULL,
@@ -955,9 +955,9 @@ CREATE TABLE `rclv_dias_del_ano` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_dias_edicion` (
-  `id` smallint(5) unsigned NOT NULL,
-  `dia_del_ano_id` smallint(5) unsigned DEFAULT NULL,
-  `epoca_del_ano_id` smallint(5) unsigned DEFAULT NULL,
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `dia_del_ano_id` smallint(5) unsigned NOT NULL,
+  `epoca_del_ano_id` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `regla01` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
   CONSTRAINT `regla02` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`)
