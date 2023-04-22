@@ -811,8 +811,8 @@ CREATE TABLE `rclv_3temas` (
   FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
+  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_4eventos_del_ano` (
@@ -882,15 +882,15 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   `captura_activa` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
+  FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
   FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
   FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`)
+  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_9edicion` (
@@ -915,18 +915,18 @@ CREATE TABLE `rclv_9edicion` (
   `editado_por_id` int(10) unsigned NOT NULL,
   `editado_en` datetime DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
-  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
-  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
-  FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
-  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
   FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
   FOREIGN KEY (`sexo_id`) REFERENCES `aux_sexos` (`id`),
   FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),
   FOREIGN KEY (`canon_id`) REFERENCES `rclv_canons` (`id`),
-  FOREIGN KEY (`rol_iglesia_id`) REFERENCES `aux_roles_iglesia` (`id`)
+  FOREIGN KEY (`rol_iglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
+  FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
+  FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
+  FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
+  FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
+  FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
+  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
+  FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_canons` (
@@ -943,8 +943,8 @@ CREATE TABLE `rclv_dias_del_ano` (
   `nombre` varchar(9) NOT NULL,
   `epoca_del_ano_id` smallint(5) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
-  FOREIGN KEY (`mes_id`) REFERENCES `rclv_meses` (`id`)
+  FOREIGN KEY (`mes_id`) REFERENCES `rclv_meses` (`id`),
+  FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_dias_edicion` (
