@@ -135,7 +135,7 @@ CREATE TABLE `cn_filtros_cabecera` (
   `nombre` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `cn_filtros_cabecera_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_filtros_campos` (
@@ -145,7 +145,7 @@ CREATE TABLE `cn_filtros_campos` (
   `valor` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `filtro_cabecera_id` (`cabecera_id`),
-  CONSTRAINT `cn_filtros_campos_ibfk_1` FOREIGN KEY (`cabecera_id`) REFERENCES `cn_filtros_cabecera` (`id`)
+  CONSTRAINT `regla` FOREIGN KEY (`cabecera_id`) REFERENCES `cn_filtros_cabecera` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_layouts` (
@@ -183,8 +183,8 @@ CREATE TABLE `edics_aprob` (
   `comunicado_en` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  CONSTRAINT `edics_aprob_ibfk_1` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `edics_aprob_ibfk_2` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla1` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla2` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `edics_rech` (
@@ -204,9 +204,9 @@ CREATE TABLE `edics_rech` (
   `comunicado_en` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  CONSTRAINT `edics_rech_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_edic` (`id`),
-  CONSTRAINT `edics_rech_ibfk_2` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `edics_rech_ibfk_3` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla1` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_edic` (`id`),
+  CONSTRAINT `regla2` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla3` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `int_1registros` (
@@ -271,10 +271,10 @@ CREATE TABLE `links` (
   CONSTRAINT `regla06` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla07` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla08` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `regla09` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla09` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla10` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `regla11` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `regla12` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
+  CONSTRAINT `regla12` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links_edicion` (
@@ -427,7 +427,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `regla03` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `regla04` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
   CONSTRAINT `regla05` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `regla06` FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`)
+  CONSTRAINT `regla06` FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `regla07` FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
   CONSTRAINT `regla08` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
   CONSTRAINT `regla10` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
@@ -437,7 +437,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `regla14` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `regla15` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla16` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `regla17` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla17` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_2colecciones` (
@@ -508,14 +508,14 @@ CREATE TABLE `prod_2colecciones` (
   CONSTRAINT `regla05` FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `regla06` FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
   CONSTRAINT `regla07` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
-  CONSTRAINT `regla09` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla09` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla10` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla11` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla12` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla13` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `regla14` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla15` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `regla16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_3capitulos` (
@@ -587,7 +587,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `regla03` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `regla04` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `regla05` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
-  CONSTRAINT `regla06` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`)
+  CONSTRAINT `regla06` FOREIGN KEY (`hecho_id`) REFERENCES `rclv_2hechos` (`id`),
   CONSTRAINT `regla07` FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `regla08` FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
   CONSTRAINT `regla09` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
@@ -598,7 +598,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `regla15` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `regla16` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla17` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `regla18` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla18` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_9edicion` (
@@ -638,7 +638,7 @@ CREATE TABLE `prod_9edicion` (
   UNIQUE KEY `id` (`id`),
   CONSTRAINT `regla01` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `regla02` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
-  CONSTRAINT `regla03` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`)
+  CONSTRAINT `regla03` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `regla04` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
   CONSTRAINT `regla05` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
   CONSTRAINT `regla06` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
@@ -647,7 +647,7 @@ CREATE TABLE `prod_9edicion` (
   CONSTRAINT `regla09` FOREIGN KEY (`tema_id`) REFERENCES `rclv_3temas` (`id`),
   CONSTRAINT `regla10` FOREIGN KEY (`evento_id`) REFERENCES `rclv_4eventos_del_ano` (`id`),
   CONSTRAINT `regla11` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`),
-  CONSTRAINT `regla12` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla12` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_categ1` (
@@ -708,37 +708,21 @@ CREATE TABLE `rclv_1personajes` (
   `captura_activa` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
-  KEY `dia_del_ano_id` (`dia_del_ano_id`),
-  KEY `sexo_id` (`sexo_id`),
-  KEY `categoria_id` (`categoria_id`),
-  KEY `proceso_id` (`canon_id`),
-  KEY `rol_iglesia_id` (`rol_iglesia_id`),
-  KEY `creado_por_id` (`creado_por_id`),
-  KEY `alta_revisada_por_id` (`alta_revisada_por_id`),
-  KEY `editado_por_id` (`editado_por_id`),
-  KEY `edic_revisada_por_id` (`edic_revisada_por_id`),
-  KEY `status_registro_id` (`status_registro_id`),
-  KEY `sugerido_por_id` (`sugerido_por_id`),
-  KEY `motivo_id` (`motivo_id`),
-  KEY `capturado_por_id` (`capturado_por_id`),
-  KEY `ap_mar_id` (`ap_mar_id`),
-  KEY `rclv_1personajes_FK` (`epoca_id`),
-  KEY `rclv_1personajes_FK_1` (`avatar`),
-  CONSTRAINT `rclv_1personajes_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_10` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_11` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_12` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_13` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_14` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_15` FOREIGN KEY (`ap_mar_id`) REFERENCES `rclv_2hechos` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_2` FOREIGN KEY (`sexo_id`) REFERENCES `aux_sexos` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_3` FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_5` FOREIGN KEY (`canon_id`) REFERENCES `rclv_canons` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_6` FOREIGN KEY (`rol_iglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_7` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_8` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_9` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla01` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
+  CONSTRAINT `regla02` FOREIGN KEY (`sexo_id`) REFERENCES `aux_sexos` (`id`),
+  CONSTRAINT `regla03` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
+  CONSTRAINT `regla04` FOREIGN KEY (`categoria_id`) REFERENCES `prod_categ1` (`id`),
+  CONSTRAINT `regla05` FOREIGN KEY (`canon_id`) REFERENCES `rclv_canons` (`id`),
+  CONSTRAINT `regla06` FOREIGN KEY (`rol_iglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
+  CONSTRAINT `regla07` FOREIGN KEY (`ap_mar_id`) REFERENCES `rclv_2hechos` (`id`),
+  CONSTRAINT `regla08` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla09` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla10` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla11` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla12` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  CONSTRAINT `regla13` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla14` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regla15` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_2hechos` (
@@ -779,9 +763,9 @@ CREATE TABLE `rclv_2hechos` (
   CONSTRAINT `regla12` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla13` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla15` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `regla16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `regla16` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla17` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `regla20` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  CONSTRAINT `regla20` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_3temas` (
@@ -889,7 +873,7 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   `captura_activa` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
-  CONSTRAINT `regla1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`)
+  CONSTRAINT `regla1` FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
   CONSTRAINT `regla2` FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla3` FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla4` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
@@ -897,7 +881,7 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   CONSTRAINT `regla6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `regla7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla8` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `regla9` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
+  CONSTRAINT `regla9` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_9edicion` (
@@ -1056,6 +1040,6 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `regla5` FOREIGN KEY (`rol_iglesia_id`) REFERENCES `aux_roles_iglesia` (`id`),
   CONSTRAINT `regla6` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `regla7` FOREIGN KEY (`status_registro_id`) REFERENCES `us_status_registro` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dump completed on 2023-04-21 21:03:00
