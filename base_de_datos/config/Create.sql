@@ -765,16 +765,16 @@ CREATE TABLE `rclv_2hechos` (
   `captura_activa` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
-  FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   FOREIGN KEY (`dia_del_ano_id`) REFERENCES `rclv_dias_del_ano` (`id`),
+  FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   FOREIGN KEY (`creado_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`alta_revisada_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
   FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
+  FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
+  FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
+  FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_3temas` (
