@@ -18,7 +18,6 @@
 --
 -- Dumping data for table `aux_hist_cambios_status`
 --
-USE elc_peliculas;
 
 LOCK TABLES `aux_hist_cambios_status` WRITE;
 /*!40000 ALTER TABLE `aux_hist_cambios_status` DISABLE KEYS */;
