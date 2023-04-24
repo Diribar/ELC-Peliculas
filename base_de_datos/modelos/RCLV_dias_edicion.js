@@ -4,6 +4,9 @@ module.exports = (sequelize, dt) => {
 		dia: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		epoca_del_ano_id: {type: dt.INTEGER},
+
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "rclv_dias_del_ano",
@@ -13,6 +16,8 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epoca_del_ano_id"});
+
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 	};
 	return entidad;
 };

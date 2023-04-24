@@ -18,7 +18,6 @@
 --
 -- Dumping data for table `aux_hist_cambios_status`
 --
-USE elc_peliculas;
 
 LOCK TABLES `aux_hist_cambios_status` WRITE;
 /*!40000 ALTER TABLE `aux_hist_cambios_status` DISABLE KEYS */;
@@ -4182,4 +4181,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-21 23:05:46
+-- Dump completed on 2023-04-22  1:08:06

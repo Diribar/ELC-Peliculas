@@ -19,6 +19,7 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.hechos, {as: "hechos", foreignKey: "dia_del_ano_id"});
 		entidad.hasMany(n.temas, {as: "temas", foreignKey: "dia_del_ano_id"});
 		entidad.hasMany(n.eventos_del_ano, {as: "eventos_del_ano", foreignKey: "dia_del_ano_id"});
+		// A propósito no se pone épocas del año
 	};
 	return entidad;
 };
