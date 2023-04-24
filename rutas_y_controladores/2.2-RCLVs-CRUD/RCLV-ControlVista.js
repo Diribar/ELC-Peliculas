@@ -24,13 +24,13 @@ module.exports = {
 		let ap_mars, roles_igl;
 
 		// Configura el título de la vista
-		const titulo =
+		const tituloCuerpo =
 			(codigo == "agregar"
 				? "Agregá un " + entidadNombre + " a"
 				: codigo == "edicion"
 				? "Editá el " + entidadNombre + " de"
 				: "Revisá el " + entidadNombre + " de") + " nuestra Base de Datos";
-		// const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
+		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
 
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
@@ -60,10 +60,9 @@ module.exports = {
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, origen, titulo},
+			...{tema, codigo, origen, tituloCuerpo, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos},
-			// tituloCuerpo,
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
