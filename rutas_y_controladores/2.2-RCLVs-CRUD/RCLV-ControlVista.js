@@ -19,7 +19,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia=comp.obtieneFamiliaDesdeEntidad(entidad)
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		let dataEntry = {};
 		let ap_mars, roles_igl;
 
@@ -61,14 +61,14 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
-			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent},
+			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent,familia},
 			...{personajes, hechos},
 			// tituloCuerpo,
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			// ...{omitirImagenDerecha: true, omitirFooter: true},
-			// ...{imgDerPers, avatarLinksExternos},
+			...{omitirImagenDerecha: true, omitirFooter: true},
+			...{imgDerPers, avatarLinksExternos},
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
