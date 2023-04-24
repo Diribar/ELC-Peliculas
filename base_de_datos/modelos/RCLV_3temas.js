@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		prods_aprob: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
-		prioridad:{type: dt.INTEGER},
+		prioridad: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
 		// Común con todos los RCLVs
@@ -22,14 +22,14 @@ module.exports = (sequelize, dt) => {
 		edic_revisada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
-		status_registro_id: {type: dt.INTEGER},
-		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
-
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 		captura_activa: {type: dt.BOOLEAN},
+
+		status_registro_id: {type: dt.INTEGER},
+		motivo_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "rclv_3temas",

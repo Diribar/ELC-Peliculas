@@ -63,7 +63,9 @@
 				<% if (userRevisor) { %>
 					<%- include("RE0-Registros", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
 				<% } %>
-				<%- include("RE0-Registros", {titulo: "Sin Producto", regs: rclvs.SP, url: "rclv/detalle", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", origen: "MT"}) %>
+				<%- include("RE0-Registros", {titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", origen: "MT"}) %>
 			</div>
 		</div>
 		<!-- Links -->

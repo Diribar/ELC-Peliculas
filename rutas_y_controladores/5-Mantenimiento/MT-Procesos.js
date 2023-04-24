@@ -44,34 +44,48 @@ module.exports = {
 	},
 	TC_obtieneRCLVs: async (userID) => {
 		// Variables
-		let autor_id = "nombre";
 		let entidades = variables.entidadesRCLV;
 
 		// 1. RCLVs inactivos
 		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID}).then((n) =>
 			n.filter((m) => m.sugerido_por_id != userID)
 		);
-		// 2. Aprobado sin producto
-		let campoFecha = "alta_revisada_en";
-		let SP = obtienePorEntidad({entidades, campoFecha, autor_id: "creado_por_id", status_id: aprobado_id, userID: 1}).then(
-			(n) => n.filter((m) => !m.prods_aprob)
-		);
+
+		// 2. Aprobados
+		let aprobados = obtienePorEntidad({entidades, campoFecha: "alta_revisada_en", status_id: aprobado_id, userID: 1});
+
+		// Await
+		[IN, aprobados] = await Promise.all([IN, aprobados]);
+
+		// 2.1. Sin Avatar
+		const SA = aprobados.filter((m) => !m.avatar && m.id > 2);
+
+		// 2.2. Con solapamiento de fechas
+		const SF = aprobados.filter((m) => m.solapam_fechas);
+
+		// 2.3. Con fecha móvil
+		const FM = aprobados.filter((m) => m.fecha_movil);
 
 		// Fin
-		[IN, SP] = await Promise.all([IN, SP]);
-		return {IN, SP};
+		return {IN, SA, SF, FM};
 	},
 };
 
-let obtienePorEntidad = async ({entidades, status_id, userID, include, campoFecha, autor_id}) => {
+let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, include}) => {
 	// Variables
 	let campos = {status_id, userID, include, campoFecha, include};
-	let resultados = [];
+	let resultados1 = [];
+	let resultados2 = [];
 
 	// Rutina
-	for (let entidad of entidades) resultados.push(...(await BD_especificas.MT_obtieneRegs({entidad, ...campos})));
-	resultados.sort((a, b) => b.fechaRef - a.fechaRef);
+	for (let entidad of entidades) resultados1.push(BD_especificas.MT_obtieneRegs({entidad, ...campos}));
+
+	// Espera hasta tener todos los resultados
+	await Promise.all(resultados1).then((resultados) => resultados.map((n) => resultados2.push(...n)));
+
+	// Ordena
+	resultados2.sort((a, b) => b.fechaRef - a.fechaRef);
 
 	// Fin
-	return resultados;
+	return resultados2;
 };

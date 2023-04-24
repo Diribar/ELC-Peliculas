@@ -6,9 +6,9 @@ module.exports = (sequelize, dt) => {
 		prods_aprob: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
-		prioridad:{type: dt.INTEGER},
+		prioridad: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
-		
+
 		// Específicos
 		categoria_id: {type: dt.STRING(3)},
 
@@ -25,14 +25,14 @@ module.exports = (sequelize, dt) => {
 		edic_revisada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
-		status_registro_id: {type: dt.INTEGER},
-		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
-
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 		captura_activa: {type: dt.BOOLEAN},
+
+		status_registro_id: {type: dt.INTEGER},
+		motivo_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "rclv_4eventos_del_ano",
@@ -52,12 +52,12 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "eventos_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "eventos_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "eventos_id"});
-		entidad.hasMany(n.prods_edicion, {as: "prods_edicion", foreignKey: "eventos_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "evento_id"});
+		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "evento_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "evento_id"});
+		entidad.hasMany(n.prods_edicion, {as: "prods_edicion", foreignKey: "evento_id"});
 
-		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "eventos_id"});
+		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "evento_id"});
 	};
 	return entidad;
 };
