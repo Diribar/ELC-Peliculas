@@ -264,8 +264,8 @@ module.exports = {
 	// Datos Adicionales
 	quitaCamposRCLV: (datos) => {
 		// Variables
-		let camposDA = variables.camposDA;
-		let camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
+		const camposDA = variables.camposDA;
+		const camposRCLV = camposDA.filter((n) => n.grupo == "RCLV").map((m) => m.nombre);
 		if (datos.sinRCLV) for (let campo of camposRCLV) delete datos[campo];
 
 		// Fin
@@ -273,8 +273,8 @@ module.exports = {
 	},
 	valorParaActores: (datos) => {
 		// Variables
-		let anime = tipos_actuacion.find((n) => n.anime);
-		let documental = tipos_actuacion.find((n) => n.documental);
+		const anime = tipos_actuacion.find((n) => n.anime);
+		const documental = tipos_actuacion.find((n) => n.documental);
 
 		// Acciones si no hay un valor para actores
 		return datos.tipo_actuacion_id == anime.id
