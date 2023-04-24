@@ -26,14 +26,14 @@ module.exports = (sequelize, dt) => {
 		edic_revisada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
-		status_registro_id: {type: dt.INTEGER},
-		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
-
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 		captura_activa: {type: dt.BOOLEAN},
+
+		status_registro_id: {type: dt.INTEGER},
+		motivo_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "rclv_4eventos_del_ano",
