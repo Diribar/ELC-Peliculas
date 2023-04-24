@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "eventos_del_ano";
+	const alias = "eventos";
 	const columns = {
 		// Común con todos los RCLVs
 		nombre: {type: dt.STRING(30)},
