@@ -385,6 +385,15 @@ module.exports = {
 			},
 		];
 	},
+	avatarExternoRCLVs: (nombre) => {
+		return [
+			{
+				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
+				src: "/imagenes/0-Base/Logos/BD-Google.jpg",
+				alt: "Google",
+			},
+		];
+	},
 
 	// Mensajes
 	inputVacio: "Necesitamos que completes este campo",
