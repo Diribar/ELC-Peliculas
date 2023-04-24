@@ -17,9 +17,10 @@ module.exports = {
 		const codigo = "detalle";
 
 		// Variables
-		let {entidad, id, origen} = req.query;
+		const {entidad, id} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		if (!origen) origen = "DTP";
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -27,12 +28,11 @@ module.exports = {
 		// Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		// Configura el título de la vista
-		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? " un " : " la ") +
-			prodNombre;
+			entidadNombre;
 		// Info para el bloque Izquierdo
 		// Primer proceso: hace más legible la información
 		const infoProcesada = procesos.bloqueIzq(prodComb);
@@ -79,7 +79,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
-			...{prodNombre, registro: prodComb, links},
+			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzq, bloqueDer, RCLVs},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
@@ -90,23 +90,26 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = "edicion";
-		let {entidad, id, origen} = req.query;
+
+		// Más variables
+		const {entidad, id} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		if (!origen) origen = "DTP";
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
+
+		// Configura el título de la vista
+		const titulo =
+			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
+			" de" +
+			(entidad == "capitulos" ? " un " : " la ") +
+			entidadNombre;
 
 		// 2. Obtiene el producto 'Original' y 'Editado'
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
-		// 4. Configura el título de la vista
-		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		let titulo =
-			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
-			" de" +
-			(entidad == "capitulos" ? " un " : " la ") +
-			prodNombre;
 		// 5. Obtiene el nombre de los países
 		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 		// 6. Info para la vista de Edicion o Detalle
@@ -134,7 +137,7 @@ module.exports = {
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
-			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
+			avatarLinksExternos = variables.avatarExternoProds(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);
@@ -150,7 +153,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{prodNombre, registro: prodComb},
+			...{entidadNombre, registro: prodComb},
 			...{entidad, id, familia: "producto"},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{camposInput1, camposInput2, produccion},
@@ -162,10 +165,8 @@ module.exports = {
 	},
 	prodEdicion_Guardar: async (req, res) => {
 		// Variables
-		const entidad = req.query.entidad;
-		const id = req.query.id;
+		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
-		const origen = req.query.origen;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);

@@ -54,18 +54,18 @@ module.exports = {
 
 	// Conversiones
 	obtieneFamiliaDesdeEntidad: (entidad) => {
-		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
+		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
 			? "producto"
-			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
+			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
 			? "rclv"
 			: ["links", "links_edicion"].includes(entidad)
 			? "link"
 			: "";
 	},
 	obtieneFamiliasDesdeEntidad: (entidad) => {
-		return ["peliculas", "colecciones", "capitulos", "prods_edicion"].includes(entidad)
+		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
 			? "productos"
-			: ["personajes", "hechos", "temas", "rclvs_edicion"].includes(entidad)
+			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
 			? "rclvs"
 			: ["links", "links_edicion"].includes(entidad)
 			? "links"
@@ -78,9 +78,9 @@ module.exports = {
 			? null
 			: entidad == "links"
 			? "links"
-			: ["personajes", "hechos", "temas"].includes(entidad)
+			: variables.entidadesRCLV.includes(entidad)
 			? "rclvs"
-			: ["peliculas", "colecciones", "capitulos"].includes(entidad)
+			: variables.entidadesProd.includes(entidad)
 			? "prods"
 			: "";
 	},
@@ -97,6 +97,10 @@ module.exports = {
 			? "Hecho"
 			: entidad == "temas"
 			? "Tema"
+			: entidad == "eventos"
+			? "Evento del Año"
+			: entidad == "epocas_del_ano"
+			? "Epocas del Año"
 			: entidad == "links"
 			? "Links"
 			: entidad == "usuarios"
@@ -116,6 +120,10 @@ module.exports = {
 			? "hecho_id"
 			: entidad == "temas"
 			? "tema_id"
+			: entidad == "eventos"
+			? "evento_id"
+			: entidad == "epocas_del_ano"
+			? "epoca_del_ano_id"
 			: entidad == "links"
 			? "link_id"
 			: "";
@@ -133,14 +141,18 @@ module.exports = {
 			? "hecho"
 			: entidad == "temas"
 			? "tema"
+			: entidad == "eventos"
+			? "evento"
+			: entidad == "epocas_del_ano"
+			? "epoca_del_ano"
 			: entidad == "links"
 			? "link"
 			: "";
 	},
 	obtieneNombreEdicionDesdeEntidad: (entidad) => {
-		return ["peliculas", "colecciones", "capitulos"].includes(entidad)
+		return variables.entidadesProd.includes(entidad)
 			? "prods_edicion"
-			: ["personajes", "hechos", "temas"].includes(entidad)
+			: variables.entidadesRCLV.includes(entidad)
 			? "rclvs_edicion"
 			: entidad == "links"
 			? "links_edicion"
@@ -150,7 +162,17 @@ module.exports = {
 		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
 	},
 	obtieneRclvEntidadDesdeRclv_id: (edicion) => {
-		return edicion.personaje_id ? "personajes" : edicion.hecho_id ? "hechos" : edicion.tema_id ? "temas" : "";
+		return edicion.personaje_id
+			? "personajes"
+			: edicion.hecho_id
+			? "hechos"
+			: edicion.tema_id
+			? "temas"
+			: edicion.evento_id
+			? "eventos"
+			: edicion.epoca_del_ano_id
+			? "epocas_del_ano"
+			: "";
 	},
 	obtieneEntidadDesdeEnt_id: function (edicion) {
 		const producto = this.obtieneProdEntidadDesdeProd_id(edicion);

@@ -2,4 +2,4 @@
 <% if (codigo == "detalle") { %><%- include("FM-Detalle") %><% } %>
 
 <!-- Altas y Edición -->
-<% if (codigo != "detalle") { %><%- include(entidad != "temas" ? "RCLV1-AltaEdicion" : "RCLV1-Temas") %><% } %>
+<% if (codigo != "detalle") { %><%- include("RCLV1-AltaEdicion") %><% } %>

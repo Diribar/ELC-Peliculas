@@ -154,7 +154,7 @@ module.exports = {
 	camposDA_conValores: async function (userID) {
 		// Variables
 		const entidadesRCLV = this.entidadesRCLV;
-		const registrosRCLV = await regsRCLV(entidadesRCLV);
+		const registrosRCLV = await regsRCLV(entidadesRCLV, userID);
 
 		// Mensajes
 		const mensajes = {
@@ -361,7 +361,7 @@ module.exports = {
 			{nombre: "parte", titulo: "Parte", links: true},
 		],
 	},
-	avatarLinksExternos: (nombre) => {
+	avatarExternoProds: (nombre) => {
 		return [
 			{
 				href: "//themoviedb.org/search?query=" + nombre,
@@ -378,6 +378,15 @@ module.exports = {
 				src: "/imagenes/0-Base/Logos/BD-IMDB.jpg",
 				alt: "IMDB",
 			},
+			{
+				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
+				src: "/imagenes/0-Base/Logos/BD-Google.jpg",
+				alt: "Google",
+			},
+		];
+	},
+	avatarExternoRCLVs: (nombre) => {
+		return [
 			{
 				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
 				src: "/imagenes/0-Base/Logos/BD-Google.jpg",
@@ -435,7 +444,7 @@ module.exports = {
 	},
 };
 
-let regsRCLV = async (entidades) => {
+let regsRCLV = async (entidades, userID) => {
 	let valores = [];
 	let registrosRCLV = {};
 

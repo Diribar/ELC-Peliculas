@@ -9,32 +9,33 @@ const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
-		// Puede venir de agregarProd o edicionProd
+		// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
 
-		// Variables
-		const {entidad, id} = req.query;
-		const prodEntidad = req.query.prodEntidad;
-		const prodID = req.query.prodID;
+		// Más variables
+		const {entidad, id, prodEntidad, prodID} = req.query;
+		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
-		const tituloCuerpo =
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		let dataEntry = {};
+		let ap_mars, roles_igl;
+
+		// Configura el título de la vista
+		const titulo =
 			(codigo == "agregar"
 				? "Agregá un " + entidadNombre + " a"
 				: codigo == "edicion"
 				? "Editá el " + entidadNombre + " de"
 				: "Revisá el " + entidadNombre + " de") + " nuestra Base de Datos";
-		let dataEntry = req.session[entidad] ? req.session[entidad] : req.cookies[entidad] ? req.cookies[entidad] : {};
-		let ap_mars, roles_igl;
+		// const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
 
 		// Variables específicas para personajes
 		if (entidad == "personajes") {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
-			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano");
-			ap_mars = ap_mars.filter((n) => n.ama);
+			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano").then((n) => n.filter((m) => m.ama));
 		}
 
 		// Pasos exclusivos para edición y revisión
@@ -43,28 +44,31 @@ module.exports = {
 			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			// Pisa el data entry de session
 			dataEntry = {...original, ...edicion, id};
-			// 3. Revisar error de revisión
-			if (tema == "revisionEnts" && !dataEntry.status_registro.creado) res.redirect("/revision/tablero-de-control");
 			// Obtiene el día y el mes
 			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
 
+		// Avatar
+		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
+		const avatarLinksExternos = variables.avatarExternoRCLVs(codigo != "agregar" ? dataEntry.nombre : "@");
+
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
-		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const personajes = entidad == "personajes";
 		const hechos = entidad == "hechos";
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, origen},
-			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent},
-			...{personajes, hechos, ent},
-			...{titulo, tituloCuerpo},
+			...{tema, codigo, origen, titulo},
+			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
+			...{personajes, hechos},
+			// tituloCuerpo,
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
-			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts", institucional: true},
+			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
+			...{omitirImagenDerecha: true, omitirFooter: true},
+			...{imgDerPers, avatarLinksExternos},
 		});
 	},
 	altaEdicGrabar: async (req, res) => {

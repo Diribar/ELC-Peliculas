@@ -8,33 +8,35 @@
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry #inicio #primeraCol {margin-right: 50px; width: 210px;}
+#dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
 #dataEntry :is(.input, #posiblesRepetidos) {border-width: .7px; border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 
 /* Temas de filas */
-#dataEntry .altoFila {height: 25px;}
+#dataEntry .altoFila {height: 28px;}
 #dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
 #dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
-#dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
+#dataEntry .borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
 
 /* Temas particulares de dataEntry */
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 
 /* Nombres */
 #inicio #nombre label {margin-right: 7px;}
-#inicio #nombre .input {padding-left: 5px; width: 100%;}
+#inicio #nombre .input {padding-left: 5px; width: 180px;}
 
 /* Descripción */
 #inicio #descripcion textarea {padding: 10px; width: 100%; height: 80px;}
 
-/* Fechas */
-#inicio #dia {margin-left: 15px;}
+/* Fecha */
+#inicio #fecha :is(select[name="tipoFecha"], #dia) {margin-left: 15px;}
 #inicio #fecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #inicio #fecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
+#inicio #fecha #caracteres {align-self: flex-end;}
+#inicio #fecha textarea {height: 31px; padding-left: 5px;}
 
 /* Repetidos */
 #inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}

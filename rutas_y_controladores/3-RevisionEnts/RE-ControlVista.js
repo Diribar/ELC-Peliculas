@@ -68,8 +68,8 @@ module.exports = {
 			? (!imgDerPers.includes("/") ? "/imagenes/2-Productos/Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
 		// Configura el título de la vista
-		const prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.",
@@ -103,7 +103,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, status_id, statusCreado},
-			...{prodNombre, registro: original, links},
+			...{entidadNombre, registro: original, links},
 			...{imgDerPers, tituloImgDerPers: original.nombre_castellano},
 			...{bloqueIzq, bloqueDer, RCLVs: []},
 			// title: original.nombre_castellano,motivos
@@ -375,8 +375,8 @@ module.exports = {
 			[ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
 		}
 		// Variables para la vista
-		const prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
@@ -385,7 +385,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
-			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, prodNombre, cantProds},
+			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
@@ -425,8 +425,8 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let include;
 		// Configurar el título
-		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		include = ["links", "status_registro"];
 		if (entidad == "capitulos") include.push("coleccion");

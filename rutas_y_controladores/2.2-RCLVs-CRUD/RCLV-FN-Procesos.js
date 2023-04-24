@@ -51,7 +51,7 @@ module.exports = {
 					// Averigua la ruta y el nombre del avatar
 					let avatar = procsCRUD.obtieneAvatar(registro).edic;
 					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, prodNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad)};
+					return {...registro, entidad, avatar, entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad)};
 				});
 				prodsDelRCLV.push(...aux);
 			}
