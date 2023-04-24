@@ -59,6 +59,7 @@ module.exports = {
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 
 		// Ir a la vista
+		//return res.send(dataEntry)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, tituloCuerpo, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
