@@ -361,7 +361,7 @@ module.exports = {
 			{nombre: "parte", titulo: "Parte", links: true},
 		],
 	},
-	avatarLinksExternos: (nombre) => {
+	avatarExternoProds: (nombre) => {
 		return [
 			{
 				href: "//themoviedb.org/search?query=" + nombre,

@@ -134,7 +134,7 @@ module.exports = {
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
-			avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
+			avatarLinksExternos = variables.avatarExternoProds(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);

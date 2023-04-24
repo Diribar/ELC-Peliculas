@@ -49,6 +49,10 @@ module.exports = {
 			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
 
+		// Datos Duros - Avatar
+		const imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
+		const avatarLinksExternos = variables.avatarExternosRCLV(original.nombre);
+
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
@@ -64,7 +68,9 @@ module.exports = {
 			...{titulo, tituloCuerpo},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
-			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts", institucional: true},
+			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
+			...{omitirImagenDerecha: true, omitirFooter: true},
+			...{imgDerPers, avatarLinksExternos},
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
