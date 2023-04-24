@@ -148,34 +148,14 @@ module.exports = {
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "tema_id", grupo: "RCLV"},
+		{nombre: "evento_id", grupo: "RCLV"},
+		{nombre: "epoca_del_ano_id", grupo: "RCLV"},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
-		const registrosRCLV = await (async () => {
-			// Variables
-			let registros = {};
-			let entidades = this.entidadesRCLV;
+		const entidadesRCLV = this.entidadesRCLV;
+		const registrosRCLV = await regsRCLV(entidadesRCLV);
 
-			// Obtiene todos los registros RCLV
-			entidades.forEach((entidad) => {
-				registros[entidad] = BD_genericas.obtieneTodosConInclude(entidad, "status_registro");
-			});
-			let [personajes, hechos, temas] = await Promise.all(Object.values(registros));
-			registros = {personajes, hechos, temas};
-
-			// Filtra los registros RCLV en status 'aprobado' y 'creado' (del usuario)
-			entidades.forEach((entidad) => {
-				let regsEnt = registros[entidad];
-				let aprobados = regsEnt.filter((n) => n.status_registro.aprobado);
-				let creados = regsEnt.filter((n) => n.status_registro.creado && n.creado_por_id == userID);
-				regsEnt = [...creados, ...aprobados];
-				regsEnt.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
-				registros[entidad] = regsEnt;
-			});
-
-			// Fin
-			return registros;
-		})();
 		// Mensajes
 		const mensajes = {
 			publico: [
@@ -196,7 +176,7 @@ module.exports = {
 			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", valores: tipos_actuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{
-				titulo: "Personaje histórico",
+				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
 				valores: registrosRCLV.personajes,
 				mensajes: mensajes.personaje,
@@ -204,7 +184,7 @@ module.exports = {
 				grupo: "RCLV",
 			},
 			{
-				titulo: "Hecho histórico",
+				titulo: "Hecho Histórico",
 				nombre: "hecho_id",
 				valores: registrosRCLV.hechos,
 				mensajes: mensajes.hecho,
@@ -212,11 +192,27 @@ module.exports = {
 				grupo: "RCLV",
 			},
 			{
-				titulo: "Tema principal",
+				titulo: "Tema Principal",
 				nombre: "tema_id",
 				valores: registrosRCLV.temas,
 				mensajes: ["Poné el más representativo."],
 				link: "temas",
+				grupo: "RCLV",
+			},
+			{
+				titulo: "Evento del Año",
+				nombre: "evento_id",
+				valores: registrosRCLV.eventos,
+				mensajes: ["Poné el más representativo."],
+				link: "eventos",
+				grupo: "RCLV",
+			},
+			{
+				titulo: "Epoca del Año",
+				nombre: "epoca_del_ano_id",
+				valores: registrosRCLV.epocas_del_ano,
+				mensajes: ["Poné la fecha en la que comienza."],
+				link: "epocas_del_ano",
 				grupo: "RCLV",
 			},
 		];
@@ -224,11 +220,14 @@ module.exports = {
 	entidadesProd: ["peliculas", "colecciones", "capitulos"],
 
 	// RCLV
-	camposRCLV: {
+	entidadesRCLV: ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"],
+	camposEdicionRCLV: {
 		personajes: [
 			"nombre",
 			"apodo",
 			"dia_del_ano_id",
+			"fecha_movil",
+			"prioridad",
 			"sexo_id",
 			"epoca_id",
 			"ano",
@@ -236,11 +235,13 @@ module.exports = {
 			"rol_iglesia_id",
 			"canon_id",
 			"ap_mar_id",
+			"avatar",
 		],
-		hechos: ["nombre", "ano", "dia_del_ano_id", "epoca_id", "solo_cfc", "ama"],
-		temas: ["nombre", "dia_del_ano_id"],
+		hechos: ["nombre", "ano", "dia_del_ano_id", "fecha_movil", "prioridad", "epoca_id", "solo_cfc", "ama", "avatar"],
+		temas: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad", "avatar"],
+		eventos: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad", "avatar"],
+		epocas_del_ano: ["nombre", "dia_del_ano_id", "fecha_movil", "dias", "prioridad", "avatar"],
 	},
-	entidadesRCLV: ["personajes", "hechos", "temas"],
 	prefijos: [
 		"Beata",
 		"Beato",
@@ -432,4 +433,28 @@ module.exports = {
 	vistaEntendido: (url) => {
 		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
 	},
+};
+
+let regsRCLV = async (entidades) => {
+	let valores = [];
+	let registrosRCLV = {};
+
+	// Obtiene los registrosRCLV
+	for (let entidad of entidades) valores.push(BD_genericas.obtieneTodosConInclude(entidad, "status_registro"));
+	valores = await Promise.all(valores);
+
+	// Pule la información
+	entidades.forEach((entidad, i) => {
+		// Deja solamente los registros aprobados o creados por el usuario
+		valores[i] = valores[i].filter(
+			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
+		);
+		// Los ordena por nombre
+		valores[i].sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+		// Fin
+		registrosRCLV[entidad] = valores[i];
+	});
+
+	// Fin
+	return registrosRCLV;
 };

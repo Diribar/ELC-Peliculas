@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
 		// RCLV
-		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
+		camposRCLV: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epoca_del_ano_id"],
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 		checkRCLV: document.querySelector("#RCLV #checkbox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),

@@ -131,7 +131,7 @@ module.exports = {
 			// Variables
 			let DE = {};
 			// Asigna el valor 'null' a todos los campos
-			for (let campo of variables.camposRCLV[datos.entidad]) DE[campo] = null;
+			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
 			// Datos comunes - Nombre
 			DE.nombre = datos.nombre;
 			// Datos comunes - Día del año

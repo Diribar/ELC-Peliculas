@@ -160,6 +160,7 @@ module.exports = {
 		return;
 	},
 	ImagenDerecha: async function () {
+		return
 		// Variables
 		let info = this.lecturaRutinasJSON();
 		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
@@ -445,7 +446,6 @@ let diaActualID = () => {
 };
 let medicionDelTiempo = (horarioInicial) => {
 	const horarioFinal = new Date().getTime();
-	console.log(horarioFinal - horarioInicial);
 
 	// Fin
 	return horarioFinal;
