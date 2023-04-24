@@ -18,7 +18,7 @@
 		<!--Primera columna-->
 		<div id="primeraCol">
 			<!-- Nombres -->
-			<div class="flexCol">
+			<div id="nombre" class="flexCol">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
 					<div class="margenBottomTitulo inputError" style="z-index: 5;">
@@ -47,9 +47,9 @@
 					</div>
 				</div>
 				<!-- Campos -->
-				<div id="nombre" class="flexCol spaceBetween">
+				<div class="flexCol spaceBetween">
 					<!-- Nombre Formal o Nombre-->
-					<div class="flexRowAlign inputError"  style="z-index: 4;">
+					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
 						<% if (personajes) { %><label>Formal</label><% } %>
 						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
@@ -63,29 +63,32 @@
 				</div>
 			</div>
 			<!-- Fecha Representativa -->
-			<div class="borderTop flexCol">
+			<div id="fecha" class="borderTop flexCol">
 				<!-- Título, Ayuda y Error/OK -->
-				<div class="flexRow">
-					<div class="margenBottomTitulo inputError" style="z-index: 4;">
-						<!-- Título -->
-						<h3>Fecha más representativa</h3>
-						<!-- Ayuda -->
-						<div class="ayuda">
-							<i class="fa-solid fa-circle-question ayudaClick desplClick">
-								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-									<p>Usamos la fecha en que se lo recuerda.</p>
-									<% if (personajes) { %>
-										<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
-										<li>Para los demás, suele ser la fecha de su muerte.</li>
-									<% } %>
-								</ul>
-							</i>
-						</div>
-						<%- include("CMP-Errores", {nombre:"fecha", display: true}) %>
+				<div class="flexRow spaceBetween margenBottomTitulo inputError" style="z-index: 4;">
+					<!-- Título -->
+					<h3>Fecha representativa</h3>
+					<!-- Select -->
+					<select name="tipoFecha" class="input">
+						<option value="FD" <% if (dataEntry && !dataEntry.fecha_movil && dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400) { %>selected<% } %>>Fecha definida</option>
+						<option value="FM" <% if (dataEntry && dataEntry.fecha_movil) { %>selected<% } %>>Fecha móvil</option>
+						<option value="SF" <% if (dataEntry && dataEntry.dia_del_ano_id == 400) { %>selected<% } %>>Sin Fecha</option>
+					</select>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<p>Usamos la fecha en que se lo recuerda.</p>
+								<% if (personajes) { %>
+									<li>Para los santos o beatos, se usa la fecha del santoral (Novus Ordo).</li>
+									<li>Para los demás, suele ser la fecha de su muerte.</li>
+								<% } %>
+							</ul>
+						</i>
 					</div>
+					<%- include("CMP-Errores", {nombre:"fecha", display: true}) %>
 				</div>
-				<!-- Valores -->
-				<div id="fecha" class="flexCol spaceBetween">
+				<div class="flexRow spaceBetween">
 					<!-- Mes y Día -->
 					<div class="flexRowAlign">
 						<!-- Meses -->
@@ -122,12 +125,9 @@
 							</a>
 						<% } %>
 					</div>
-					<!-- Fecha desconocida -->
-					<div class="flexRowAlign altoFila">
-						<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if ((codigo != "agregar") && dataEntry && dataEntry.dia_del_ano_id>=400) { %>checked<% } %>>
-						<label for="desconocida">Desconocida o sin fecha</label>
-					</div>
+					<p id="caracteres"><span>60</span>/60</p>
 				</div>
+				<textarea name="comentarioMovil" class="input" placeholder="Comentario sobre la fecha móvil"></textarea>
 			</div>
 		</div>
 		<!--Segunda columna-->
