@@ -35,7 +35,7 @@ module.exports = (sequelize, dt) => {
 		motivo_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "rclv_4eventos_del_ano",
+		tableName: "rclv_4eventos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
