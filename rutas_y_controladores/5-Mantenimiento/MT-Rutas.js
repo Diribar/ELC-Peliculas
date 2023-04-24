@@ -6,11 +6,15 @@ const router = express.Router();
 const vista = require("./MT-ControlVista");
 
 //************************ Middlewares ******************************
+// Específicos de usuarios
+const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+// Varios
+const controles = [usAltaTerm, usPenalizaciones];
 
 //************************ Rutas ****************************
 // Rutas de vistas
-// Mantenimiento
-router.get("/", vista.mantenimiento);
+router.get("/", ...controles, vista.mantenimiento);
 
 // Exportarlo **********************************************
 module.exports = router;
