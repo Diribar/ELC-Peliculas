@@ -61,7 +61,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
-			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent,familia},
+			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos},
 			// tituloCuerpo,
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
