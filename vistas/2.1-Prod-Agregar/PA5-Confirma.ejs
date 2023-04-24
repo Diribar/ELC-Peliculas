@@ -1,6 +1,6 @@
 <div id="tituloPrincipal">
 	<h1 id="titulo">
-		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
+		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.entidadNombre %> a nuestra Base de Datos
 	</h1>
 </div>
 <form method="POST" id="dataEntry" class="flexCol">
@@ -37,7 +37,7 @@
 			</div>
 		</ul>
 		<div id="datosProd">
-			<p><%= dataEntry.prodNombre %>: <strong><%= dataEntry.nombre_castellano %></strong></p>
+			<p><%= dataEntry.entidadNombre %>: <strong><%= dataEntry.nombre_castellano %></strong></p>
 			<p>Año de estreno: <strong><%= dataEntry.ano_estreno %></strong></p>
 			<p>Dirección: <strong><%= direccion %></strong></p>
 			<p>Actores: <%= actores %></p>

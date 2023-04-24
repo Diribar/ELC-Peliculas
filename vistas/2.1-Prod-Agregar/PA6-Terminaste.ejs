@@ -1,6 +1,6 @@
 <div id="tituloPrincipal">
 	<h1 id="titulo">
-		Agregaste un<%= entidad != "capitulos" ? "a" : "" %> <%= prodNombre %> a nuestra Base de Datos
+		Agregaste un<%= entidad != "capitulos" ? "a" : "" %> <%= entidadNombre %> a nuestra Base de Datos
 	</h1>
 </div>
 <section id="dataEntry" class="flexCol">
@@ -11,7 +11,7 @@
 		</div>
 		<img id="gracias" src="<%= localhost %><%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul type="dots" id="datos">
-			<li class="texto">Hemos agregado la <%= prodNombre.toLowerCase() %> <em><strong><%= dataEntry.nombre_castellano %></strong></em> a nuestra base de datos.</li>
+			<li class="texto">Hemos agregado la <%= entidadNombre.toLowerCase() %> <em><strong><%= dataEntry.nombre_castellano %></strong></em> a nuestra base de datos.</li>
 			<li class="texto inputError">Nuestro equipo de Revisores analizará los datos ingresados.
 				<i class="fa-solid fa-circle-question ayudaClick desplClick">
 					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">

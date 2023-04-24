@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 				li.children[0][4].children[1].children[3].innerHTML = ano;
 				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
 			} else li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno;
-			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.prodNombre;
+			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
 
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
@@ -145,7 +145,7 @@ window.addEventListener("load", async () => {
 			// Información a mostrar
 			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombre_original;
 			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
-			li.children[0].children[0].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.prodNombre;
+			li.children[0].children[0].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.entidadNombre;
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 

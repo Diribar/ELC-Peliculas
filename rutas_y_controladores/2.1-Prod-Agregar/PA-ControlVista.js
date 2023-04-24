@@ -286,7 +286,7 @@ module.exports = {
 		// Obtiene los demás datos del producto
 		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Obtiene el nombre del producto
-		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		let imagenMuchasGracias = procesos.imagenMuchasGracias();
 		// Imagen derecha
@@ -295,7 +295,7 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMuchasGracias},
-			...{entidad, familia: "producto", id, dataEntry: registroProd, prodNombre, ruta: "/producto/"},
+			...{entidad, familia: "producto", id, dataEntry: registroProd, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano, status_id: creado_id},
 		});
 	},
@@ -329,7 +329,7 @@ module.exports = {
 		let IM = {
 			...req.body,
 			...req.query,
-			prodNombre: comp.obtieneEntidadNombreDesdeEntidad(req.body.entidad),
+			entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(req.body.entidad),
 		};
 		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
 		req.session.IM = IM;

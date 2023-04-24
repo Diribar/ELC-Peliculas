@@ -59,7 +59,7 @@ module.exports = {
 		// Procesa la información
 		if (Object.keys(datosAPI).length) {
 			if (!datosAPI.belongs_to_collection) {
-				datos.prodNombre = "Película";
+				datos.entidadNombre = "Película";
 				datos.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
@@ -140,7 +140,7 @@ module.exports = {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
-			prodNombre: "Colección",
+			entidadNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			TMDB_entidad: "collection",
@@ -179,7 +179,7 @@ module.exports = {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
-			prodNombre: "Colección",
+			entidadNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			TMDB_entidad: "tv",
@@ -354,7 +354,7 @@ module.exports = {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
-		let prodNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			let paisNombreToId = (pais_nombre) => {
@@ -376,7 +376,7 @@ module.exports = {
 		}
 		// Generar el resultado
 		let respuesta = {
-			prodNombre,
+			entidadNombre,
 			entidad,
 			fuente: "FA",
 			FA_id,

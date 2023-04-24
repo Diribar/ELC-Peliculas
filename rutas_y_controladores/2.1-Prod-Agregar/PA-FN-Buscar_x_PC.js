@@ -35,11 +35,11 @@ module.exports = {
 				let productos = [];
 				for (let prod of lote.productos) {
 					// Variables
-					let prodNombre, entidad, nombre_original, nombre_castellano, idioma_original_id, ano_estreno, ano_fin;
+					let entidadNombre, entidad, nombre_original, nombre_castellano, idioma_original_id, ano_estreno, ano_fin;
 					ano_estreno = ano_fin = "";
 					// Colecciones
 					if (TMDB_entidad == "collection") {
-						prodNombre = "Colección";
+						entidadNombre = "Colección";
 						entidad = "colecciones";
 						nombre_original = prod.original_name;
 						nombre_castellano = prod.name;
@@ -47,7 +47,7 @@ module.exports = {
 					}
 					// TV
 					else if (TMDB_entidad == "tv") {
-						prodNombre = "Colección";
+						entidadNombre = "Colección";
 						entidad = "colecciones";
 						nombre_original = prod.original_name;
 						nombre_castellano = prod.name;
@@ -56,7 +56,7 @@ module.exports = {
 					}
 					// Películas
 					else if (TMDB_entidad == "movie") {
-						prodNombre = "Película";
+						entidadNombre = "Película";
 						entidad = "peliculas";
 						nombre_original = prod.original_title;
 						nombre_castellano = prod.title;
@@ -76,7 +76,7 @@ module.exports = {
 						ano_fin,
 						idioma_original_id,
 						avatar: prod.poster_path,
-						prodNombre,
+						entidadNombre,
 						entidad,
 						sinopsis: prod.overview,
 						desempate1,
@@ -206,7 +206,7 @@ module.exports = {
 					nombre_castellano: coleccion.belongs_to_collection.name,
 					idioma_original_id,
 					avatar: coleccion.belongs_to_collection.poster_path,
-					prodNombre: "Colección",
+					entidadNombre: "Colección",
 					entidad: "colecciones",
 				};
 			});
