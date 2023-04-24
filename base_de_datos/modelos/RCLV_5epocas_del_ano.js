@@ -12,6 +12,7 @@ module.exports = (sequelize, dt) => {
 		// Específicos
 		dias_de_rango: {type: dt.INTEGER},
 		carpeta_avatars: {type: dt.STRING(20)},
+		solapamiento_fechas: {type: dt.BOOLEAN},
 
 		// Común con todos los RCLVs
 		creado_por_id: {type: dt.INTEGER},
