@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		epoca_del_ano_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "rclv_dias_del_ano",
+		tableName: "aux_dias_del_ano",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

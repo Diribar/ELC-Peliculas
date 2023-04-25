@@ -221,6 +221,11 @@ module.exports = {
 
 	// RCLV
 	entidadesRCLV: ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"],
+	prioridadesRCLV: [
+		{id: 1, nombre: "Menor"},
+		{id: 2, nombre: "Estándar"},
+		{id: 3, nombre: "Mayor"},
+	],
 	camposEdicionRCLV: {
 		personajes: [
 			"nombre",
@@ -323,8 +328,13 @@ module.exports = {
 		],
 		rclvs: [
 			// Todos
-			{nombre: "nombre", titulo: "Nombre Formal", rclvs: true},
+			{nombre: "nombre", titulo: "Nombre", rclvs: true},
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano", tabla: "dias_del_ano"},
+			{nombre: "fecha_movil", titulo: "Fecha Móvil", rclvs: true},
+			{nombre: "comentario_movil", titulo: "Comentario Móvil", rclvs: true},
+			{nombre: "prioridad", titulo: "Prioridad"},
+			{nombre: "avatar", titulo: "Avatar", rclvs: true},
+
 			// Personajes y Hechos
 			{nombre: "ano", titulo: "Año", personajes: true, hechos: true},
 			{nombre: "epoca_id", titulo: "Epoca", personajes: true, hechos: true, relacInclude: "epoca", tabla: "epocas"},
@@ -350,6 +360,10 @@ module.exports = {
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
+			// Epocas del año
+			{nombre: "dias_de_duracion", titulo: "Días de Duración", epocas_del_ano: true},
+			{nombre: "comentario_duracion", titulo: "Comentario Duración", epocas_del_ano: true},
+			{nombre: "carpeta_avatars", titulo: "Carpeta de Imágenes", epocas_del_ano: true},
 		],
 		links: [
 			{nombre: "calidad", titulo: "Calidad", links: true},

@@ -6,13 +6,14 @@ module.exports = (sequelize, dt) => {
 		prods_aprob: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
+		comentario_movil: {type: dt.STRING(60)},
 		prioridad: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
 		// Específicos
 		categoria_id: {type: dt.STRING(3)},
 
-		// Común con todos los RCLVs
+		// Fechas y Usuarios
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
 		alta_revisada_por_id: {type: dt.INTEGER},
