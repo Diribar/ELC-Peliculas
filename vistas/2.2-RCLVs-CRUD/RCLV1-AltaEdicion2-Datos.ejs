@@ -227,7 +227,7 @@
 		<!-- Prioridad -->
 		<div id="prioridad" class="flexRowAlign inputError spaceBetween">
 			<h3 class="margenDebajo">Prioridad</h3>
-			<select name="carpetaImagenes" class="input margenIzq">
+			<select name="prioridad" class="input margenIzq">
 				<option value="">Elegí una</option>
 				<% for (let prioridad of prioridades) { %>
 					<option value="<%= prioridad.id %>"><%= prioridad.nombre %></option>
@@ -268,7 +268,7 @@
 					</ul>
 				</i>
 			</div>
-			<%- include("CMP-Errores", {nombre: "carpetaImagenes", display: true}) %>
+			<%- include("CMP-Errores", {nombre: "prioridad", display: true}) %>
 		</div>
 	</div>
 </section>
