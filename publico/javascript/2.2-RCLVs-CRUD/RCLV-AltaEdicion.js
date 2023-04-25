@@ -13,10 +13,11 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
-		// Primera columna
+		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #nombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
 		apodo: document.querySelector("form input[name='apodo']"),
+		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #fecha .input"),
 		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
 		mesDia: document.querySelector("form #fecha #mesDia"),
@@ -26,6 +27,9 @@ window.addEventListener("load", async () => {
 		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
 		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
 		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),
+		sectorContadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres"),
+		contadores: document.querySelectorAll("form #dataEntry .caracteres span"),
+		textAreas: document.querySelectorAll("form #dataEntry textarea"),
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
@@ -172,10 +176,18 @@ window.addEventListener("load", async () => {
 			},
 			muestraOcultaCamposFecha: () => {
 				const tipoFecha = DOM.tipoFecha.value;
+
+				// Sin fecha
 				tipoFecha == "SF" ? DOM.mesDia.classList.add("ocultar") : DOM.mesDia.classList.remove("ocultar");
-				tipoFecha == "FM"
-					? DOM.comentario_movil.classList.remove("ocultar")
-					: DOM.comentario_movil.classList.add("ocultar");
+
+				// Fecha móvil
+				if (tipoFecha == "FM") {
+					DOM.sectorContadorMovil.classList.remove("ocultar");
+					DOM.comentario_movil.classList.remove("ocultar");
+				} else {
+					DOM.sectorContadorMovil.classList.add("ocultar");
+					DOM.comentario_movil.classList.add("ocultar");
+				}
 
 				// Fin
 				return;
@@ -469,35 +481,33 @@ window.addEventListener("load", async () => {
 
 		// Acciones si existe el campo
 		if (DOM[campo]) {
-			let valor = DOM[campo].value;
+			let valor = e.target.value;
 
-			// Acciones si se cambia el nombre o apodo
-			if (varios.camposNombre.includes(campo)) {
-				// 1. Primera letra en mayúscula
-				DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-				valor = DOM[campo].value;
+			if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
+				// Primera letra en mayúscula
+				valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 
-				// 2. Quita los caracteres no deseados
-				DOM[campo].value = valor
+				// Quita los caracteres no deseados
+				valor = valor
 					.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
 					.replace(/ +/g, " ")
 					.replace(/\t/g, "")
 					.replace(/\r/g, "");
-				valor = DOM[campo].value;
-
-				// 3. Quita el prefijo 'San'
-				if (campo == "nombre" && varios.personajes)
-					for (let prefijo of varios.prefijos) {
-						if (valor.startsWith(prefijo + " ")) {
-							DOM[campo].value = valor.slice(prefijo.length + 1);
-							valor = DOM[campo].value;
-							break;
-						}
-					}
-
-				// 4. Quita los caracteres que exceden el largo permitido
-				if (valor.length > 30) valor = valor.slice(0, 30);
 			}
+
+			// Si se cambia el nombre, quita el prefijo 'San'
+			if (campo == "nombre" && varios.personajes)
+				for (let prefijo of varios.prefijos) {
+					if (valor.startsWith(prefijo + " ")) {
+						DOM[campo].value = valor.slice(prefijo.length + 1);
+						valor = DOM[campo].value;
+						break;
+					}
+				}
+
+			// Quita los caracteres que exceden el largo permitido
+			const largoMaximo = campo == "nombre" || campo == "apodo" ? 30 : campo.startsWith("comentario") ? 60 : false;
+			if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
 
 			// Acciones si se cambia el año
 			if (campo == "ano") {
