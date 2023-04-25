@@ -55,7 +55,7 @@
 				<h3>Fecha representativa</h3>
 				<!-- Select -->
 				<select name="tipoFecha" class="input">
-					<option value="FD" <% if (dataEntry && !dataEntry.fecha_movil && dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400) { %>selected<% } %>>Fecha definida</option>
+					<option value="FD" selected>Fecha definida</option>
 					<option value="FM" <% if (dataEntry && dataEntry.fecha_movil) { %>selected<% } %>>Fecha móvil</option>
 					<% if (entidad!="epocas_del_ano") { %>
 						<option value="SF" <% if (dataEntry && dataEntry.dia_del_ano_id == 400) { %>selected<% } %>>Sin Fecha</option>
@@ -76,7 +76,7 @@
 				<%- include("CMP-Errores", {nombre: "fecha", display: true}) %>
 			</div>
 			<!-- Mes y Día -->
-			<div class="flexRow spaceBetween">
+			<div id="mesDia" class="flexRow spaceBetween">
 				<div class="flexRow margenDebajo">
 					<!-- Meses -->
 					<select name="mes_id" class="input">
@@ -222,51 +222,53 @@
 			<% } %>
 		<% } %>
 		<!-- Prioridad -->
-		<div id="prioridad" class="flexRowAlign inputError spaceBetween">
-			<h3 class="margenDebajo">Prioridad</h3>
-			<select name="prioridad" class="input margenIzq">
-				<option value="">Elegí una</option>
-				<% for (let prioridad of prioridades) { %>
-					<option value="<%= prioridad.id %>"><%= prioridad.nombre %></option>
-				<% } %>
-			</select>
-		<!-- Ayuda -->
-			<div class="ayuda">
-				<i class="fa-solid fa-circle-question ayudaClick desplClick">
-					<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-						<% if (personajes) { %>
-							<li class="nivel1">Personajes</li>
-							<ul class="nivel2">
-								<li>Estándar</li>
-								<li>Mayor importancia: algunos como Sagrada Familia, San José, María, Jesús</li>
-							</ul>
-						<% } else if (hechos) { %>
-							<li class="nivel1">Hechos</li>
-							<ul class="nivel2">
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Estándar</li>
-								<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
-							</ul>
-						<% } else if (temas) { %>
-							<li class="nivel1">Temas: Menor Importancia</li>
-						<% } else if (eventos) { %>
-							<li class="nivel1">Eventos del año</li>
-							<ul class="nivel2">
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Mayor importancia</li>
-							</ul>
-						<% } else if (epocas_del_ano) { %>
-							<li class="nivel1">Epocas del año</li>
-							<ul class="nivel2">
-								<li>Menor Importancia</li>
-								<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
-							</ul>
-						<% } %>
-					</ul>
-				</i>
+		<% if (revisor) { %>
+			<div id="prioridad" class="flexRowAlign inputError spaceBetween">
+				<h3 class="margenDebajo">Prioridad</h3>
+				<select name="prioridad" class="input margenIzq">
+					<option value="">Elegí una</option>
+					<% for (let prioridad of prioridades) { %>
+						<option value="<%= prioridad.id %>"><%= prioridad.nombre %></option>
+					<% } %>
+				</select>
+				<!-- Ayuda -->
+				<div class="ayuda">
+					<i class="fa-solid fa-circle-question ayudaClick desplClick">
+						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+							<% if (personajes) { %>
+								<li class="nivel1">Personajes</li>
+								<ul class="nivel2">
+									<li>Estándar</li>
+									<li>Mayor importancia: algunos como Sagrada Familia, San José, María, Jesús</li>
+								</ul>
+							<% } else if (hechos) { %>
+								<li class="nivel1">Hechos</li>
+								<ul class="nivel2">
+									<li>VPC: Menor Importancia</li>
+									<li>CFC: Estándar</li>
+									<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
+								</ul>
+							<% } else if (temas) { %>
+								<li class="nivel1">Temas: Menor Importancia</li>
+							<% } else if (eventos) { %>
+								<li class="nivel1">Eventos del año</li>
+								<ul class="nivel2">
+									<li>VPC: Menor Importancia</li>
+									<li>CFC: Mayor importancia</li>
+								</ul>
+							<% } else if (epocas_del_ano) { %>
+								<li class="nivel1">Epocas del año</li>
+								<ul class="nivel2">
+									<li>Menor Importancia</li>
+									<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
+								</ul>
+							<% } %>
+						</ul>
+					</i>
+				</div>
+				<%- include("CMP-Errores", {nombre: "prioridad", display: true}) %>
 			</div>
-			<%- include("CMP-Errores", {nombre: "prioridad", display: true}) %>
-		</div>
+		<% } %>
 	</div>
 </section>
 <% if (personajes || hechos) { %>
