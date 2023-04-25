@@ -18,6 +18,7 @@ module.exports = {
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		let dataEntry = {};
@@ -62,7 +63,7 @@ module.exports = {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
+			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado, revisor},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true},
