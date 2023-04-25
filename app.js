@@ -122,14 +122,14 @@ app.set("views", [
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
 	// Variables que dependen de las lecturas de BD
-	// Status
+	// 1. Status
 	global.creado_id = global.status_registros.find((n) => n.creado).id;
 	global.creado_aprob_id = status_registros.find((n) => n.creado_aprob).id;
 	global.aprobado_id = global.status_registros.find((n) => n.aprobado).id;
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
-	// Otros
+	// 2. Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
