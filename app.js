@@ -16,11 +16,14 @@ global.dia_actual_id = null;
 // Para usar el archivo '.env' --> se debe colocar al principio
 require("dotenv").config();
 global.localhost = process.env.localhost;
+// fs
+global.fs = require("fs");
+global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
+// path
+global.path = require("path");
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
-global.path = require("path");
-global.fs = require("fs");
 app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
