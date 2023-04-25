@@ -114,7 +114,7 @@ app.set("views", [
 
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
-		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "mes"),
+		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "epoca_del_ano"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
