@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		prods_aprob: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
+		comentario_movil: {type: dt.STRING(60)},
 		prioridad: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
@@ -28,6 +29,7 @@ module.exports = (sequelize, dt) => {
 		alta_revisada_en: {type: dt.DATE},
 		lead_time_creacion: {type: dt.DECIMAL},
 
+		// Fechas y Usuarios
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
 		edic_revisada_por_id: {type: dt.INTEGER},

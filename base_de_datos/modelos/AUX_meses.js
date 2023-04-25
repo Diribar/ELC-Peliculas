@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 	
 	};
 	const config = {
-		tableName: "rclv_meses",
+		tableName: "aux_meses",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
