@@ -28,6 +28,7 @@ window.addEventListener("load", async () => {
 		sectorApMar: document.querySelector("#dataEntry #sectorApMar"),
 		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
 	};
+	console.dir(Array.from(DOM.iconosOK).map(n=>n.parentNode))
 	let rutas = {
 		// Rutas
 		validacion: "/rclv/api/valida-sector/?funcion=",
