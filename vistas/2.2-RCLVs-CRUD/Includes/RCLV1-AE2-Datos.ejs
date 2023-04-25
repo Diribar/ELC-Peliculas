@@ -143,23 +143,24 @@
 						</div>
 					</div>
 				</div>
-				<table>
-					<tbody>
-						<% for (let dia_del_ano of dias_del_ano) { %>
-							<% if (dia_del_ano.id < 3) { %>
+				<div id="calendario" class="relative">
+					<table class="absolute">
+						<tbody>
+							<% for (let dia_del_ano of dias_del_ano) { %>
+								<% if (dia_del_ano.id > 366) {break} %>
 								<tr>
-									<td><%= dia_del_ano.nombre %></td>
+									<td style="width: 50px;"><%= dia_del_ano.nombre %></td>
 									<td><%= dia_del_ano.epoca_del_ano.nombre %></td>
 								</tr>
 							<% } %>
-						<% } %>
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<!-- Carpeta de imagenes -->
 			<div class="borderTop"></div>
 			<div id="carpetaImagenes" class="flexRowAlign inputError spaceBetween">
-				<h3 class="margenDebajo">Carpeta de Imágenes</h3>
+				<h3>Carpeta de Imágenes</h3>
 				<select name="carpetaImagenes" class="input margenIzq">
 					<option value="">Elegí una</option>
 					<% for (let carpeta of carpetasImagen) { %>

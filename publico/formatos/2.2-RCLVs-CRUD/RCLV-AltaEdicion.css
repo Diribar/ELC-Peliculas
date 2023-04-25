@@ -14,7 +14,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry :is(.input, #posiblesRepetidos, #dias_del_ano table) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+#dataEntry :is(.input, #posiblesRepetidos, #dias_del_ano #calendario) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 #dataEntry textarea {padding-left: 5px; resize: none;}
 
@@ -54,9 +54,10 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Calendario */
 #dias_del_ano {display: flex; flex-direction: column; flex-grow: 1;}
-#dias_del_ano table {height: 100%;}
-#dias_del_ano table {overflow-y: auto; overflow-x: hidden;}
-#dias_del_ano table {margin-top: 5px; padding: 5px;}
+#dias_del_ano #calendario {height: 100%;}
+#dias_del_ano #calendario {overflow-y: auto; overflow-x: hidden;}
+#dias_del_ano #calendario {margin-top: 5px; padding: 3px;}
+#dias_del_ano #calendario table {width: 100%;}
 
 /* Carpeta de Imágenes y Prioridad */
 #inicio :is(#carpetaImagenes select, #prioridad select) {width: 108px;}
