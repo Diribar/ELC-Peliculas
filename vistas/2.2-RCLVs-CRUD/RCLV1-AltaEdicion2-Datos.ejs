@@ -55,7 +55,7 @@
 				<h3>Fecha representativa</h3>
 				<!-- Select -->
 				<select name="tipoFecha" class="input">
-					<option value="FD" <% if (dataEntry && !dataEntry.fecha_movil && dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400) { %>selected<% } %>>Fecha definida</option>
+					<option value="FD" selected>Fecha definida</option>
 					<option value="FM" <% if (dataEntry && dataEntry.fecha_movil) { %>selected<% } %>>Fecha móvil</option>
 					<% if (entidad!="epocas_del_ano") { %>
 						<option value="SF" <% if (dataEntry && dataEntry.dia_del_ano_id == 400) { %>selected<% } %>>Sin Fecha</option>
@@ -76,7 +76,7 @@
 				<%- include("CMP-Errores", {nombre: "fecha", display: true}) %>
 			</div>
 			<!-- Mes y Día -->
-			<div class="flexRow spaceBetween">
+			<div id="mesDia" class="flexRow spaceBetween">
 				<div class="flexRow margenDebajo">
 					<!-- Meses -->
 					<select name="mes_id" class="input">

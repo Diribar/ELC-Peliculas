@@ -19,12 +19,13 @@ window.addEventListener("load", async () => {
 		apodo: document.querySelector("form input[name='apodo']"),
 		camposFecha: document.querySelectorAll("form #fecha .input"),
 		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
+		mesDia: document.querySelector("form #fecha #mesDia"),
 		mes_id: document.querySelector("form .input[name='mes_id']"),
 		dia: document.querySelector("form .input[name='dia']"),
 		linksClick: document.querySelectorAll("form #fecha .links"),
 		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
 		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
-		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),		
+		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),
 
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
@@ -124,7 +125,7 @@ window.addEventListener("load", async () => {
 				// Variables
 				let casos = [];
 
-				if (!DOM.desconocida.checked) {
+				if (DOM.tipoFecha.value != "SF") {
 					// Obtiene los casos con esa fecha
 					// 1. Obtiene los parámetros
 					let params = "?entidad=" + entidad;
@@ -169,10 +170,12 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			limpiezaDeMesDia: () => {
-				// Limpia los valores de mes, día y repetidos
-				DOM.mes_id.value = "";
-				DOM.dia.value = "";
+			muestraOcultaCamposFecha: () => {
+				const tipoFecha = DOM.tipoFecha.value;
+				tipoFecha == "SF" ? DOM.mesDia.classList.add("ocultar") : DOM.mesDia.classList.remove("ocultar");
+				tipoFecha == "FM"
+					? DOM.comentario_movil.classList.remove("ocultar")
+					: DOM.comentario_movil.classList.add("ocultar");
 
 				// Fin
 				return;
@@ -269,7 +272,7 @@ window.addEventListener("load", async () => {
 		},
 		fecha: async () => {
 			// Si se conoce la fecha...
-			if (!DOM.desconocida.checked) {
+			if (DOM.tipoFecha.value != "SF") {
 				// Averigua si hay un error con la fecha
 				let params = "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
@@ -424,9 +427,13 @@ window.addEventListener("load", async () => {
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
-			if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
+			impactos.fecha.muestraOcultaCamposFecha();
 			if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-			if ((DOM.mes_id.value && DOM.dia.value) || DOM.desconocida.checked || (forzar && varios.errores.fecha == undefined))
+			if (
+				(DOM.mes_id.value && DOM.dia.value) ||
+				DOM.tipoFecha.value == "SF" ||
+				(forzar && varios.errores.fecha == undefined)
+			)
 				await this.fecha();
 
 			// 4. Valida el sexo
@@ -524,11 +531,10 @@ window.addEventListener("load", async () => {
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if ((campo == "mes_id" || campo == "dia") && DOM.mes_id.value && DOM.dia.value) {
-				DOM.desconocida.checked = false;
 				await validacs.fecha();
 			}
-			if (campo == "desconocida") {
-				if (DOM.desconocida.checked) impactos.fecha.limpiezaDeMesDia();
+			if (campo == "tipoFecha") {
+				impactos.fecha.muestraOcultaCamposFecha();
 				await validacs.fecha();
 			}
 		}
