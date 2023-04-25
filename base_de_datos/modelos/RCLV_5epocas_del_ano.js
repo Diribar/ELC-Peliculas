@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(15)},
 
 		// Específicos
-		dias_de_rango: {type: dt.INTEGER},
+		dias_de_duracion: {type: dt.INTEGER},
 		carpeta_avatars: {type: dt.STRING(20)},
 		solapam_fechas: {type: dt.BOOLEAN},
 

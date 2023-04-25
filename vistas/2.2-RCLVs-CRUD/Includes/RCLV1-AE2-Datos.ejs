@@ -75,8 +75,8 @@
 				</div>
 				<%- include("CMP-Errores", {nombre: "fecha", display: true}) %>
 			</div>
+			<!-- Mes y Día -->
 			<div class="flexRow spaceBetween">
-				<!-- Mes y Día -->
 				<div class="flexRow margenDebajo">
 					<!-- Meses -->
 					<select name="mes_id" class="input">
@@ -115,7 +115,7 @@
 				<div class="flexRow spaceBetween altoFila">
 					<div id="dias" class="flexRowAlign margenDebajo">
 						<label for="inputDias">Días de duración</label>
-						<input id="inputDias" type="number" class="input">
+						<input name="dias_de_duracion" id="inputDias" type="number" class="input">
 					</div>
 					<p class="caracteres"><span>60</span>/60</p>
 				</div>
