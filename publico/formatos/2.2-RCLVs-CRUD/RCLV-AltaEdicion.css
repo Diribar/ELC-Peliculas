@@ -33,7 +33,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #inicio #nombre .input {padding-left: 5px; width: 180px;}
 
 /* Fecha */
-#inicio #fecha h3 {align-self: flex-start;}
+#inicio #fecha h3 {align-self: flex-start; margin-top: 1px;}
 #inicio #fecha :is(select[name="tipoFecha"], select[name="dia"], #inputDias) {margin-left: 15px;}
 #inicio #fecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #inicio #fecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}

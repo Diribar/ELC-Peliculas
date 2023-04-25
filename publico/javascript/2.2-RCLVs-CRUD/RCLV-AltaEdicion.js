@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		// Variables de errores
 		iconosOK: document.querySelectorAll("form .OK .fa-circle-check"),
 		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
-		mensajeError: document.querySelectorAll("form .OK .mensajeError"),
+		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
 		// Primera columna
 		camposNombre: document.querySelectorAll("form #nombre .input"),
@@ -281,9 +281,6 @@ window.addEventListener("load", async () => {
 			// OK vigencia
 			varios.OK.fecha = !varios.errores.fecha;
 
-			// Acciones si la fecha está OK
-			if (varios.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
-
 			// Fin
 			return;
 		},
@@ -406,7 +403,7 @@ window.addEventListener("load", async () => {
 				? DOM.iconosError[i].classList.remove("ocultar")
 				: DOM.iconosError[i].classList.add("ocultar");
 			// Mensaje de error
-			DOM.mensajeError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
+			DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
 		},
 		muestraErroresOK: function () {
 			// Muestra los íconos de Error y OK
@@ -414,8 +411,10 @@ window.addEventListener("load", async () => {
 		},
 		botonSubmit: () => {
 			// Botón submit
+			console.log(varios.OK);
 			let resultado = Object.values(varios.OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
+			console.log(resultadosTrue, resultado.length, varios.camposError.length);
 			resultadosTrue && resultado.length == varios.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
@@ -433,8 +432,12 @@ window.addEventListener("load", async () => {
 				(DOM.mes_id.value && DOM.dia.value) ||
 				DOM.tipoFecha.value == "SF" ||
 				(forzar && varios.errores.fecha == undefined)
-			)
+			) {
+				// Valida las fechas
 				await this.fecha();
+				// Si la fecha está OK, revisa los repetidos
+				if (varios.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
+			}
 
 			// 4. Valida el sexo
 			if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
@@ -463,55 +466,62 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
 		let campo = e.target.name;
-		let valor = DOM[campo].value;
 
-		// Acciones si se cambia el nombre o apodo
-		if (varios.camposNombre.includes(campo)) {
-			// 1. Primera letra en mayúscula
-			DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			valor = DOM[campo].value;
+		// Acciones si existe el campo
+		if (DOM[campo]) {
+			let valor = DOM[campo].value;
 
-			// 2. Quita los caracteres no deseados
-			DOM[campo].value = valor
-				.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
-				.replace(/ +/g, " ")
-				.replace(/\t/g, "")
-				.replace(/\r/g, "");
-			valor = DOM[campo].value;
+			// Acciones si se cambia el nombre o apodo
+			if (varios.camposNombre.includes(campo)) {
+				// 1. Primera letra en mayúscula
+				DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+				valor = DOM[campo].value;
 
-			// 3. Quita el prefijo 'San'
-			if (campo == "nombre" && varios.personajes)
-				for (let prefijo of varios.prefijos) {
-					if (valor.startsWith(prefijo + " ")) {
-						DOM[campo].value = valor.slice(prefijo.length + 1);
-						valor = DOM[campo].value;
-						break;
+				// 2. Quita los caracteres no deseados
+				DOM[campo].value = valor
+					.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
+					.replace(/ +/g, " ")
+					.replace(/\t/g, "")
+					.replace(/\r/g, "");
+				valor = DOM[campo].value;
+
+				// 3. Quita el prefijo 'San'
+				if (campo == "nombre" && varios.personajes)
+					for (let prefijo of varios.prefijos) {
+						if (valor.startsWith(prefijo + " ")) {
+							DOM[campo].value = valor.slice(prefijo.length + 1);
+							valor = DOM[campo].value;
+							break;
+						}
 					}
+
+				// 4. Quita los caracteres que exceden el largo permitido
+				if (valor.length > 30) valor = valor.slice(0, 30);
+			}
+
+			// Acciones si se cambia el año
+			if (campo == "ano") {
+				// Sólo números en el año
+				valor = valor.replace(/[^\d]/g, "");
+
+				// Menor o igual que el año actual
+				if (valor) {
+					let anoIngresado = parseInt(valor);
+					let anoActual = new Date().getFullYear();
+					valor = Math.min(anoIngresado, anoActual);
 				}
+			}
+			// Actualiza el valor en el DOM
+			e.target.value = valor;
 
-			// 4. Quita los caracteres que exceden el largo permitido
-			if (valor.length > 30) valor = valor.slice(0, 30);
-		}
-		if (campo == "ano") {
-			// Sólo números en el año
-			valor = valor.replace(/[^\d]/g, "");
-
-			// Menor o igual que el año actual
-			if (valor) {
-				let anoIngresado = parseInt(valor);
-				let anoActual = new Date().getFullYear();
-				valor = Math.min(anoIngresado, anoActual);
+			// Oculta íconos de acierto y error
+			const i = varios.camposError.indexOf(campo);
+			if (i > -1) {
+				DOM.mensajesError[i].innerHTML = "";
+				DOM.iconosError[i].classList.add("ocultar");
+				DOM.iconosOK[i].classList.add("ocultar");
 			}
 		}
-
-		// Actualiza el valor en el DOM
-		e.target.value = valor;
-
-		// Oculta íconos de acierto y error
-		const i = varios.camposError.indexOf(campo);
-		DOM.mensajeError[i].innerHTML = "";
-		DOM.iconosError[i].classList.add("ocultar");
-		DOM.iconosOK[i].classList.add("ocultar");
 
 		// Fin
 		return;
@@ -520,6 +530,10 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		let campo = e.target.name;
+
+		// 0. Acciones si se cambia el avatar
+		if (campo == "avatar") {
+		}
 
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
@@ -530,13 +544,11 @@ window.addEventListener("load", async () => {
 		// 2. Acciones si se cambia el sector Fecha
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if ((campo == "mes_id" || campo == "dia") && DOM.mes_id.value && DOM.dia.value) {
-				await validacs.fecha();
-			}
-			if (campo == "tipoFecha") {
-				impactos.fecha.muestraOcultaCamposFecha();
-				await validacs.fecha();
-			}
+			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
+			// Valida las fechas
+			await validacs.fecha();
+			// Si la fecha se cambió y está OK, revisa los repetidos
+			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) await impactos.fecha.muestraPosiblesRepetidos();
 		}
 
 		// 3. Acciones si se cambia el sector Repetido
