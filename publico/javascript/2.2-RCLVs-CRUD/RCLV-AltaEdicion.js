@@ -1,84 +1,84 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	const entidad = new URL(location.href).searchParams.get("entidad");
+	const id = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Variables generales
-		dataEntry: document.querySelector("#dataEntry"),
+		form: document.querySelector("form"),
 		botonSubmit: document.querySelector(".flechas button[type='submit']"),
 
 		// Variables de errores
-		iconosOK: document.querySelectorAll("#dataEntry .OK .fa-circle-check"),
-		iconosError: document.querySelectorAll("#dataEntry .OK .fa-circle-xmark"),
-		mensajeError: document.querySelectorAll("#dataEntry .OK .mensajeError"),
+		iconosOK: document.querySelectorAll("form .OK .fa-circle-check"),
+		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
+		mensajeError: document.querySelectorAll("form .OK .mensajeError"),
 
-		// Campos
-		nombre: document.querySelector("#dataEntry input[name='nombre']"),
-		mes_id: document.querySelector("#dataEntry select[name='mes_id']"),
-		dia: document.querySelector("#dataEntry select[name='dia']"),
-		desconocida: document.querySelector("#dataEntry input[name='desconocida']"),
-		posiblesRepetidos: document.querySelector("#dataEntry #posiblesRepetidos"),
-		epocas_id: document.querySelectorAll("#dataEntry input[name='epoca_id']"),
-		ano: document.querySelector("#dataEntry input[name='ano']"),
+		// Primera columna
+		camposNombre: document.querySelectorAll("form #nombre .input"),
+		nombre: document.querySelector("form .input[name='nombre']"),
+		apodo: document.querySelector("form input[name='apodo']"),
+		camposFecha: document.querySelectorAll("form #fecha .input"),
+		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
+		mes_id: document.querySelector("form .input[name='mes_id']"),
+		dia: document.querySelector("form .input[name='dia']"),
+		linksClick: document.querySelectorAll("form #fecha .links"),
+		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
+		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
+		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),		
 
-		// Otros
-		camposNombre: document.querySelectorAll("#dataEntry #nombre .input"),
-		camposFecha: document.querySelectorAll("#dataEntry #fecha .input"),
-		camposEpoca: document.querySelectorAll("#dataEntry #epoca .input"),
-		camposRCLIC: document.querySelectorAll("#dataEntry #RCLIC .input"),
-		sectorApMar: document.querySelector("#dataEntry #sectorApMar"),
-		linksClick: document.querySelectorAll("#dataEntry #fecha .links"),
+		// Segunda columna
+		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
+		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
+		carpeta_avatars: document.querySelector("form .input[name='carpeta_avatars']"),
+		prioridad: document.querySelector("form .input[name='prioridad']"),
+
+		// Abajo
+		camposEpoca: document.querySelectorAll("form #epoca .input"),
+		epocas_id: document.querySelectorAll("form input[name='epoca_id']"),
+		ano: document.querySelector("form input[name='ano']"),
+		// Personajes
+		camposRCLIC: document.querySelectorAll("form #RCLIC .input"),
+		preguntasRCLIC: document.querySelectorAll("form #RCLIC #preguntasRCLIC .input"),
+		categorias_id: document.querySelectorAll("form input[name='categoria_id']"),
+		rol_iglesia_id: document.querySelector("form select[name='rol_iglesia_id']"),
+		opcionesRolIglesia: document.querySelectorAll("form select[name='rol_iglesia_id'] option"),
+		canon_id: document.querySelector("form select[name='canon_id']"),
+		opcionesProceso: document.querySelectorAll("form select[name='canon_id'] option"),
+		sectorApMar: document.querySelector("form #sectorApMar"),
+		ap_mar_id: document.querySelector("form select[name='ap_mar_id']"),
+		// Hechos
+		solo_cfc: document.querySelectorAll("form input[name='solo_cfc']"),
+		ama: document.querySelectorAll("form input[name='ama']"),
 	};
-	console.dir(Array.from(DOM.iconosOK).map(n=>n.parentNode))
 	let rutas = {
 		// Rutas
 		validacion: "/rclv/api/valida-sector/?funcion=",
 		registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 	};
 	let varios = {
-		// Variables que se obtienen del url
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		id: new URL(location.href).searchParams.get("id"),
+		// Variables de entidad
+		personajes: entidad == "personajes",
+		hechos: entidad == "hechos",
+		epocas_del_ano: entidad == "epocas_del_ano",
+
 		// Campos por sector
 		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
 		camposRCLIC: Array.from(DOM.camposRCLIC).map((n) => n.name),
+
 		// Links a otros sitios
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
+
 		// Errores
 		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
 	};
-	varios.personajes = varios.entidad == "personajes";
-	varios.hechos = varios.entidad == "hechos";
 
 	// Valores para personajes
-	if (varios.personajes) {
-		DOM = {
-			...DOM,
-			// Data-Entry adicional
-			apodo: document.querySelector("#dataEntry input[name='apodo']"),
-			sexos_id: document.querySelectorAll("#dataEntry input[name='sexo_id']"),
-			categorias_id: document.querySelectorAll("#dataEntry input[name='categoria_id']"),
-			rol_iglesia_id: document.querySelector("#dataEntry select[name='rol_iglesia_id']"),
-			canon_id: document.querySelector("#dataEntry select[name='canon_id']"),
-			ap_mar_id: document.querySelector("#dataEntry select[name='ap_mar_id']"),
-			// Otros
-			opcionesRolIglesia: document.querySelectorAll("#dataEntry select[name='rol_iglesia_id'] option"),
-			opcionesProceso: document.querySelectorAll("#dataEntry select[name='canon_id'] option"),
-			camposCFC: document.querySelectorAll("#dataEntry #RCLIC #preguntasRCLIC .input"),
-		};
-		varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
-	}
-	// Valores para hechos
-	if (varios.hechos)
-		DOM = {
-			...DOM,
-			// Inputs - RCLIC
-			solo_cfc: document.querySelectorAll("#dataEntry input[name='solo_cfc']"),
-			ama: document.querySelectorAll("#dataEntry input[name='ama']"),
-		};
+	if (varios.personajes) varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
+
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
@@ -127,8 +127,8 @@ window.addEventListener("load", async () => {
 				if (!DOM.desconocida.checked) {
 					// Obtiene los casos con esa fecha
 					// 1. Obtiene los parámetros
-					let params = "?entidad=" + varios.entidad;
-					if (varios.id) params += "&id=" + varios.id;
+					let params = "?entidad=" + entidad;
+					if (id) params += "&id=" + id;
 					params += "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 					// 2. Busca otros casos con esa fecha
 					casos = await fetch(rutas.registrosConEsaFecha + params).then((n) => n.json());
@@ -235,8 +235,8 @@ window.addEventListener("load", async () => {
 				// Verifica errores en el sector 'nombre'
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
 				params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
-				params += "&entidad=" + varios.entidad;
-				if (varios.id) params += "&id=" + varios.id;
+				params += "&entidad=" + entidad;
+				if (id) params += "&id=" + id;
 
 				// Averigua los errores
 				varios.errores.nombre = await fetch(rutas.validacion + "nombre" + params).then((n) => n.json());
@@ -244,11 +244,11 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			hechos: async () => {
+			demas: async () => {
 				// Verifica errores en el sector 'nombre', campo 'nombre'
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
-				parms += "&entidad=" + varios.entidad;
-				if (varios.id) params += "&id=" + varios.id;
+				parms += "&entidad=" + entidad;
+				if (id) params += "&id=" + id;
 
 				// Lo agrega lo referido a la aparición mariana
 				if (varios.hechos) {
@@ -310,7 +310,7 @@ window.addEventListener("load", async () => {
 		},
 		epoca: async () => {
 			// Variables
-			let params = "epoca&entidad=" + varios.entidad;
+			let params = "epoca&entidad=" + entidad;
 
 			// Agrega los demás parámetros
 			let epoca_id = opcionElegida(DOM.epocas_id);
@@ -339,10 +339,10 @@ window.addEventListener("load", async () => {
 					if (categoria_id) sexo_id = opcionElegida(DOM.sexos_id);
 					params += "&sexo_id=" + (sexo_id.value ? "on" : "");
 
-					// Obtiene los valores de los camposCFC
+					// Obtiene los valores de los preguntasRCLIC
 					if (sexo_id.value) {
 						// Agrega los datos de CFC
-						for (let campo of DOM.camposCFC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
+						for (let campo of DOM.preguntasRCLIC) if (campo.value) params += "&" + campo.name + "=" + campo.value;
 						// Agrega los datos de epoca_id y año
 						let epoca_id = opcionElegida(DOM.epocas_id);
 						params += "&epoca_id=" + epoca_id.value;
@@ -420,7 +420,7 @@ window.addEventListener("load", async () => {
 		startUp: async function (forzar) {
 			// 1. Valida el nombre
 			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
-				varios.personajes ? await this.nombre.nombreApodo() : await this.nombre.nombre();
+				varios.personajes ? await this.nombre.personajes() : await this.nombre.demas();
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// 2. Valida las fechas
@@ -435,7 +435,7 @@ window.addEventListener("load", async () => {
 				await this.sexo();
 
 			// 5. Valida la época
-			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[varios.entidad]();
+			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
 			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
 
 			// 6. Valida RCLIC
@@ -444,7 +444,7 @@ window.addEventListener("load", async () => {
 				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
 				(forzar && varios.errores.RCLIC == undefined)
 			)
-				await this.RCLIC[varios.entidad]();
+				await this.RCLIC[entidad]();
 
 			// Fin
 			this.muestraErroresOK();
@@ -453,7 +453,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Correcciones mientras se escribe
-	DOM.dataEntry.addEventListener("input", async (e) => {
+	DOM.form.addEventListener("input", async (e) => {
 		// Variables
 		let campo = e.target.name;
 		let valor = DOM[campo].value;
@@ -510,13 +510,13 @@ window.addEventListener("load", async () => {
 		return;
 	});
 	// Acciones cuando se  confirma el input
-	DOM.dataEntry.addEventListener("change", async (e) => {
+	DOM.form.addEventListener("change", async (e) => {
 		// Variables
 		let campo = e.target.name;
 
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
-			await validacs.nombre[varios.entidad]();
+			await validacs.nombre[entidad]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 
@@ -535,7 +535,7 @@ window.addEventListener("load", async () => {
 
 		// 3. Acciones si se cambia el sector Repetido
 		if (campo == "repetido") validacs.repetido();
-		
+
 		// 4. Acciones si se cambia el sector Sexo
 		if (campo == "sexo_id") {
 			await impactos.sexo();
@@ -547,7 +547,7 @@ window.addEventListener("load", async () => {
 		// 5. Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
-			await impactos.epoca[varios.entidad]();
+			await impactos.epoca[entidad]();
 			await validacs.epoca();
 			// Si se eligió el checkbox "pst", pone el cursor en 'Año'
 			if (e.target.value == "pst") DOM.ano.focus();
@@ -561,7 +561,7 @@ window.addEventListener("load", async () => {
 		// 6. Acciones si se cambia el sector RCLIC
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
-			await validacs.RCLIC[varios.entidad]();
+			await validacs.RCLIC[entidad]();
 			if (varios.hechos) await validacs.nombre.hechos();
 		}
 

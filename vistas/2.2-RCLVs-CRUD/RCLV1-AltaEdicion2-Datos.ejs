@@ -110,16 +110,16 @@
 				</div>
 				<p class="caracteres"><span>60</span>/60</p>
 			</div>
-			<textarea name="comentarioMovil" class="input margenDebajo" placeholder="Comentario sobre la fecha móvil"></textarea>
+			<textarea name="comentario_movil" class="input margenDebajo" placeholder="Comentario sobre la fecha móvil"></textarea>
 			<% if (epocas_del_ano) { %>
 				<div class="flexRow spaceBetween altoFila">
-					<div id="dias" class="flexRowAlign margenDebajo">
+					<div id="dias_de_duracion" class="flexRowAlign margenDebajo">
 						<label for="inputDias">Días de duración</label>
 						<input name="dias_de_duracion" id="inputDias" type="number" class="input">
 					</div>
 					<p class="caracteres"><span>60</span>/60</p>
 				</div>
-				<textarea name="comentarioDias" class="input" placeholder="Comentario sobre los días de duración"></textarea>
+				<textarea name="comentario_duracion" class="input" placeholder="Comentario sobre los días de duración"></textarea>
 			<% } %>
 		</div>
 	</div>
@@ -159,9 +159,9 @@
 			</div>
 			<!-- Carpeta de imagenes -->
 			<div class="borderTop"></div>
-			<div id="carpetaImagenes" class="flexRowAlign inputError spaceBetween">
+			<div id="carpeta_avatars" class="flexRowAlign inputError spaceBetween">
 				<h3>Carpeta de Imágenes</h3>
-				<select name="carpetaImagenes" class="input margenIzq">
+				<select name="carpeta_avatars" class="input margenIzq">
 					<option value="">Elegí una</option>
 					<% for (let carpeta of carpetasImagen) { %>
 						<option value="<%= carpeta %>"><%= carpeta %></option>
@@ -171,14 +171,11 @@
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
 						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-							<p>Es la carpeta en la que se guardan las imagenes.</p>
-							<% if (personajes) { %>
-								<li>.</li>
-							<% } %>
+							<li>Es la carpeta en la que se guardan las imagenes.</li>
 						</ul>
 					</i>
 				</div>
-				<%- include("CMP-Errores", {nombre: "carpetaImagenes", display: true}) %>
+				<%- include("CMP-Errores", {nombre: "carpeta_avatars", display: true}) %>
 			</div>
 		<% } else { %>
 			<!-- Repetidos -->
@@ -276,7 +273,7 @@
 	<!-- Época respecto a Jesús -->
 	<section id="epoca" class="borderTop OK">
 		<!-- Título, Ayuda y Error/OK -->
-		<div class="margenDebajo inputError flexRow">
+		<div class="inputError flexRow">
 			<!-- Título -->
 			<h3 class="margenDebajo">Época en la que <%- personajes ? 'vivió' : 'ocurrió' %> respecto a Jesús</h3>
 			<!-- Ayuda -->
@@ -330,11 +327,17 @@
 	</section>
 	<!-- Relación con la Iglesia Católica -->
 	<section id="RCLIC" class="borderTop OK">
+		<!-- Título, Ayuda y Error/OK -->
+		<div class="inputError" style="z-index: 4;">
+			<!-- Título -->
+			<h3>Relación con la Iglesia Católica</h3>
+			<%- include("CMP-Errores", {nombre: "RCLIC", display: true}) %>
+		</div>
 		<% if (personajes) { %>
 			<div class="personajes">
 				<!-- ¿El personaje es conocido por su relación con la Iglesia Católica? -->
-				<div id="categoria_id" class="flexRowAlign altoFila inputError">
-					<p class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</p>
+				<div id="categoria_id" class="flexRowAlign altoFila">
+					<div class="pregunta">¿El personaje es conocido por su relación con la Iglesia Católica?</div>
 					<div class="flexRowAlign siNo">
 						<div class="flexRowAlign opciones">
 							<input type="radio" name="categoria_id" value="CFC" id="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="input">
@@ -345,7 +348,6 @@
 							<label for="VPC">NO</label>
 						</div>
 					</div>
-					<%- include("CMP-Errores", {nombre:"RCLIC", display: true}) %>
 				</div>
 				<!-- Preguntas RCLIC -->
 				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
@@ -390,14 +392,6 @@
 			</div>
 		<% } else if (hechos) { %>
 			<div class="hechos">
-				<!-- Relación con la Iglesia Católica -->
-				<!-- Título, Ayuda y Error/OK -->
-				<div class="margenDebajo inputError" style="z-index: 4;">
-					<!-- Título -->
-					<h3>Relación con la Iglesia Católica</h3>
-					<%- include("CMP-Errores", {nombre:"RCLIC", display: true}) %>
-				</div>
-				<!-- Valores -->
 				<!-- ¿Es un hecho específico de la historia de la Iglesia Católica? -->
 				<div id="soloCFC" class="flexRowAlign">
 					<div class="flexRowAlign siNo">
@@ -410,7 +404,7 @@
 							<label for="solo_cfc_NO">NO</label>
 						</div>
 					</div>
-					<p class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</p>
+					<div class="pregunta">¿Es un hecho específico de la historia de la Iglesia Católica?</div>
 				</div>
 				<div id="preguntasRCLIC" class="invisible">
 					<!-- ¿Es una aparición mariana -->
@@ -425,7 +419,7 @@
 								<label for="ama_NO">NO</label>
 							</div>
 						</div>
-						<p class="pregunta">¿Es una aparición mariana?</p>
+						<div class="pregunta">¿Es una aparición mariana?</div>
 					</div>
 				</div>
 			</div>
