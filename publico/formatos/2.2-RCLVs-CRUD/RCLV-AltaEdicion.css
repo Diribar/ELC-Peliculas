@@ -7,21 +7,21 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Temas generales del formulario */
 #formCuerpo #dataEntry {margin: auto; padding: 30px 40px; border-radius: 20px;}
 #formCuerpo #dataEntry {display: flex; flex-direction: column; z-index: 8;}
-#formCuerpo #dataEntry {background: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#formCuerpo #dataEntry {background: var(--gris-claro); border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
 #dataEntry #inicio {display: flex; flex-direction: row; justify-content: space-between;}
 #dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry :is(.input, #posiblesRepetidos) {border-width: .7px; border-radius: 5px; background: white;}
+#dataEntry :is(.input, #posiblesRepetidos, #dias_del_ano table) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 #dataEntry textarea {padding-left: 5px; resize: none;}
 
 /* Temas de filas */
 #dataEntry .altoFila {height: 28px;}
-#dataEntry .flexRowAlign .margenDer {margin-right: 5px;}
-#dataEntry .flexRowAlign .margenIzq {margin-left: 15px;}
+#dataEntry .margenDer {margin-right: 5px;}
+#dataEntry .margenIzq {margin-left: 15px;}
 #dataEntry .margenDebajo {margin-bottom: 5px;}
 #dataEntry .borderTop {margin-top: 12px; padding-top: 9px; border-top: solid 1px gray;}
 
@@ -42,16 +42,31 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #inicio #fecha #dias {margin-top: 7px;}
 #inicio #fecha #dias input {width: 30px; text-align: center;}
 #inicio #fecha #dias input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
-#inicio #fecha #dias input[type=number] {-moz-appearance: textfield;} /* Firefox */
+/* #inicio #fecha #dias input[type=number] {-moz-appearance: textfield;} Firefox */
 
 /* Repetidos */
 #inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
 #repetidos #posiblesRepetidos {display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;}
-#repetidos #posiblesRepetidos {border: 1px var(--azul-oscuro) solid; margin-top: 5px; padding: 5px;}
-#repetidos #posiblesRepetidos {height: 100%;}
+#repetidos #posiblesRepetidos {margin-top: 5px; padding: 5px; height: 100%;}
 #repetidos #posiblesRepetidos li {padding: 3px 0; display: flex; flex-direction: row;}
 #repetidos #posiblesRepetidos li input {padding-right: 5px;}
 #repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+
+/* Calendario */
+#dias_del_ano {display: flex; flex-direction: column; flex-grow: 1;}
+#dias_del_ano table {height: 100%;}
+#dias_del_ano table {overflow-y: auto; overflow-x: hidden;}
+#dias_del_ano table {margin-top: 5px; padding: 5px;}
+
+/* Carpeta de Imágenes y Prioridad */
+#inicio :is(#carpetaImagenes select, #prioridad select) {width: 108px;}
+#inicio #prioridad {margin-top: 5px;}
+#inicio #prioridad .ayuda ul[type="dots"] {padding: 7px;}
+#inicio #prioridad .ayuda ul li {padding: 0; line-height: 1;}
+#inicio #prioridad .ayuda ul li.nivel1 {margin-top: 4px; margin-bottom: 2px;}
+#inicio #prioridad .ayuda ul li.nivel1:first-child {margin-top: 0;}
+#inicio #prioridad .ayuda ul.nivel2 {padding-left: 25px;}
+#inicio #prioridad .ayuda ul.nivel2 li {margin-bottom: 2px;}
 
 /* Sexo */
 #inicio #sexo {margin-top: 10px;}
