@@ -52,13 +52,14 @@ module.exports = {
 		const hechos = entidad == "hechos";
 		const epocas_del_ano = entidad == "epocas_del_ano";
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
+		const prioridades = variables.prioridadesRCLV
 
 		// Ir a la vista
 		//return res.send(dataEntry)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
-			...{personajes, hechos, epocas_del_ano},
+			...{personajes, hechos, epocas_del_ano, prioridades},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado},
 			...{roles_igl, ap_mars},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
