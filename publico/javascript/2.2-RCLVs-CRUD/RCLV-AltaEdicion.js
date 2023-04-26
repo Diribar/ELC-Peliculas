@@ -248,9 +248,20 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let validacs = {
+		avatar: async () => {
+			// Variables
+			let params = "&avatar=" + encodeURIComponent(DOM.avatar.value);
+
+			// Averigua los errores
+			varios.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
+			varios.OK.avatar = !varios.errores.avatar;
+
+			// Fin
+			return;
+		},
 		nombre: {
 			personajes: async () => {
-				// Verifica errores en el sector 'nombre'
+				// Variables
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
 				params += "&apodo=" + encodeURIComponent(DOM.apodo.value);
 				params += "&entidad=" + entidad;
@@ -263,7 +274,7 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			demas: async () => {
-				// Verifica errores en el sector 'nombre', campo 'nombre'
+				// Variables
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
 				parms += "&entidad=" + entidad;
 				if (id) params += "&id=" + id;
