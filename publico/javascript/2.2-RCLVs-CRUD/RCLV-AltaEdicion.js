@@ -14,7 +14,6 @@ window.addEventListener("load", async () => {
 		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
 		// Avatar
-		avatarLabel: document.querySelector("form #imgDerecha label"),
 		avatarImg: document.querySelector("form #imgDerecha img#imgAvatar"),
 		avatarInput: document.querySelector("form #imgDerecha .input[name='avatar']"),
 
