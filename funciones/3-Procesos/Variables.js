@@ -332,7 +332,7 @@ module.exports = {
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano", tabla: "dias_del_ano"},
 			{nombre: "fecha_movil", titulo: "Fecha Móvil", rclvs: true},
 			{nombre: "comentario_movil", titulo: "Comentario Móvil", rclvs: true},
-			{nombre: "prioridad_id", titulo: "prioridad_id", rclvs: true},
+			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},
 			{nombre: "avatar", titulo: "Avatar", rclvs: true},
 
 			// Personajes y Hechos
