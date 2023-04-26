@@ -55,16 +55,31 @@ module.exports = {
 		return mensaje;
 	},
 	fecha: (datos) => {
+		// Variables
 		let respuesta = "";
-		if (datos.desconocida == "false" || !datos.desconocida) {
+		console.log(datos);
+
+		// Validación para Fecha Definida y Fecha Móvil
+		if (datos.tipoFecha != "SF") {
+			// Valida que el mes y el día estén respondidos
 			if (!datos.mes_id || !datos.dia) respuesta = cartelFechaIncompleta;
+			// Valida si el día supera lo permitido para el mes
 			else {
 				let mes = datos.mes_id;
 				let dia = datos.dia;
 				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
 					respuesta = cartelSupera;
 			}
+
+			// Validaciones para Fecha Movil
+			if (!respuesta && datos.tipoFecha == "FM") {
+				if (!datos.comentario_movil) respuesta = cartelFechaMovil;
+				const aux = !respuesta ? comp.longitud(datos.comentario_movil, 4, 70) : "";
+				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
+			}
 		}
+
+		// Fin
 		return respuesta;
 	},
 	avatar: (datos) => {
@@ -168,24 +183,13 @@ module.exports = {
 		// Fin
 		return mensaje;
 	},
-	descripcion: (datos) => {
-		// Variables
-		const dato = datos.descripcion;
-		let mensaje = "";
-
-		// Validaciones
-		if (!dato) mensaje = variables.inputVacio;
-		if (!mensaje) mensaje = comp.longitud(dato, 4, 100);
-
-		// Fin
-		return mensaje;
-	},
 };
 
 // Carteles
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+const cartelFechaMovil = "Necesitamos saber el criterio sobre la fecha representativa";
 
 // Funciones
 let nombreApodo = async ({datos, campo}) => {
