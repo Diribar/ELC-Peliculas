@@ -1,4 +1,6 @@
 "use strict";
+const API_key = process.env.API_key;
+
 module.exports = {
 	search: async (palabrasClave, TMDB_entidad, page) => {
 		// PARTES DEL URL
