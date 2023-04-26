@@ -13,6 +13,16 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
+		// Específicos de Palabras Clave
+		resultado: document.querySelector("#dataEntry #resultado"),
+
+		// Específicos de Datos Duros
+		nombre_original: document.querySelector("#dataEntry input[name='nombre_original']"),
+		nombre_castellano: document.querySelector("#dataEntry input[name='nombre_castellano']"),
+		ano_estreno: document.querySelector("#dataEntry input[name='ano_estreno']"),
+		ano_fin: document.querySelector("#dataEntry input[name='ano_fin']"),
+		paisesSelect: document.querySelector("#paises_id select"),
 	};
 	let rutas = {
 		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
@@ -23,18 +33,7 @@ window.addEventListener("load", async () => {
 		DD: paso == "datos-duros",
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 	};
-	if (varios.PC) DOM.resultado = document.querySelector("#dataEntry #resultado");
 	if (varios.DD) {
-		DOM = {
-			...DOM,
-			// Campos en general
-			nombre_original: document.querySelector("#dataEntry input[name='nombre_original']"),
-			nombre_castellano: document.querySelector("#dataEntry input[name='nombre_castellano']"),
-			ano_estreno: document.querySelector("#dataEntry input[name='ano_estreno']"),
-			ano_fin: document.querySelector("#dataEntry input[name='ano_fin']"),
-			// Variables de país
-			paisesSelect: document.querySelector("#paises_id select"),
-		};
 		varios.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
 		varios.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
 		if (DOM.paisesSelect) {
@@ -233,7 +232,7 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS *********************************
 	DOM.form.addEventListener("keypress", (e) => {
 		// Previene el uso del 'enter'
-		if (e.key == "Enter") e.preventDefault();
+		if (e.key == "Enter" && varios.DD) e.preventDefault();
 
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
