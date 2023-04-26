@@ -189,7 +189,7 @@ module.exports = {
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-const cartelFechaMovil = "Necesitamos saber el criterio sobre la fecha representativa";
+const cartelFechaMovil = "Necesitamos saber el criterio sobre la Fecha Móvil";
 
 // Funciones
 let nombreApodo = async ({datos, campo}) => {
