@@ -484,8 +484,7 @@ module.exports = {
 					: "";
 
 			// Respuesta
-			if (!respuesta) respuesta = MN_esImagen ? MN_esImagen : MN_nombre ? MN_nombre : "";
-			if (!respuesta) respuesta = MN_extension ? MN_extension : MN_tamano ? MN_tamano : "";
+			respuesta = MN_esImagen ? MN_esImagen : MN_extension ? MN_extension : MN_tamano ? MN_tamano : "";
 		}
 		// Mensajes si no existe un avatar
 		else if (!opcional) respuesta = "Necesitamos que agregues una imagen";
