@@ -176,20 +176,15 @@ module.exports = {
 	},
 	DS_tv: async (datos) => {
 		// Datos obtenidos sin la API
-		datos = {
-			...datos,
-			entidadNombre: "Colección",
-			entidad: "colecciones",
-			fuente: "TMDB",
-			TMDB_entidad: "tv",
-		};
+		datos = {...datos, entidadNombre: "Colección", entidad: "colecciones", fuente: "TMDB", TMDB_entidad: "tv"};
+
 		// Obtiene las API
-		let datosAPI = await Promise.all([APIsTMDB.details("tv", datos.TMDB_id), APIsTMDB.credits("tv", datos.TMDB_id)]).then(
-			([a, b]) => {
-				return {...a, ...b};
-			}
-		);
-		// Procesar la información
+		const resultados = [APIsTMDB.details("tv", datos.TMDB_id), APIsTMDB.credits("tv", datos.TMDB_id)];
+		const datosAPI = await Promise.all(resultados).then(([a, b]) => {
+			return {...a, ...b};
+		});
+
+		// Procesa la información
 		if (Object.keys(datosAPI).length) {
 			// nombre_original, nombre_castellano, duración de capítulos
 			if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
