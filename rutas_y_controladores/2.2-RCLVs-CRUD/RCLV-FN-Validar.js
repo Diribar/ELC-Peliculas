@@ -33,7 +33,7 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	// Campos comunes a los 3 RCLV
+	// Campos comunes a todos los RCLV
 	nombre: async function (datos) {
 		// Variables
 		let mensaje = "";
@@ -67,10 +67,19 @@ module.exports = {
 		}
 		return respuesta;
 	},
-	// Personajes y Hechos
+	avatar: (datos) => {
+		return comp.avatar(datos);
+	},
+	prioridad: (datos) => {
+		return !datos.prioridad ? variables.selectVacio : "";
+	},
+
+	// Personajes, Hechos, Temas, Eventos
 	repetidos: (datos) => {
 		return datos.repetidos ? cartelDuplicado : "";
 	},
+
+	// Personajes y Hechos
 	epoca: (datos) => {
 		// Variables
 		let respuesta = "";
@@ -98,6 +107,7 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
+
 	// Personajes
 	sexo: (datos) => {
 		return !datos.sexo_id ? variables.radioVacio : "";
@@ -122,6 +132,7 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
+
 	// Hechos
 	RCLIC_hechos: (datos) => {
 		if (datos.ano) datos.ano = parseInt(datos.ano);
@@ -137,7 +148,8 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	// Temas
+
+	// Épocas del año
 	vigencia: function (datos) {
 		// Obtiene los errores en 'desde' y 'hasta'
 		const {desconocida, meses_id, dias} = datos;
