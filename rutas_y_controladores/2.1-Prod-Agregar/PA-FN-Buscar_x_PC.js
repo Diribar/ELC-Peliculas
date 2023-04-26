@@ -1,8 +1,6 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../../funciones/1-APIs_TMDB/1-Search");
-const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
-const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
+const APIsTMDB = require("../../funciones/3-Procesos/APIsTMDB");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const procesos = require("./PA-FN-Procesos");
@@ -122,7 +120,7 @@ module.exports = {
 			entidadesTMDB.forEach((TMDB_entidad) => {
 				if (pagina == 1 || pagina <= acumulador.cantPaginasAPI[TMDB_entidad]) {
 					lotes.push(
-						searchTMDB(palabrasClave, TMDB_entidad, pagina)
+						APIsTMDB.search(palabrasClave, TMDB_entidad, pagina)
 							// Procesos por lote de productos
 							.then((n) => funcionesSearchIniciales(n, TMDB_entidad, palabrasClave))
 					);
@@ -189,7 +187,7 @@ module.exports = {
 			let colecciones = [];
 			// Obtiene el detalle de las películas
 			for (let prod of resultados.productos)
-				colecciones.push(prod.entidad == "peliculas" ? detailsTMDB("movie", prod.TMDB_id) : "");
+				colecciones.push(prod.entidad == "peliculas" ? APIsTMDB.details("movie", prod.TMDB_id) : "");
 			colecciones = await Promise.all(colecciones);
 			// Reemplaza las películas de colección por su colección
 			colecciones.forEach((coleccion, indice) => {
@@ -262,7 +260,7 @@ module.exports = {
 			let colecciones = [];
 			// Obtiene las colecciones/series que se necesitan
 			resultados.productos.forEach((prod) => {
-				colecciones.push(prod.TMDB_entidad != "movie" ? detailsTMDB(prod.TMDB_entidad, prod.TMDB_id) : "");
+				colecciones.push(prod.TMDB_entidad != "movie" ? APIsTMDB.details(prod.TMDB_entidad, prod.TMDB_id) : "");
 			});
 			colecciones = await Promise.all(colecciones);
 			// Completa los campos
@@ -382,7 +380,7 @@ let agregaCapitulosTV = async (coleccion) => {
 	// Loop de TEMPORADAS
 	for (let numTemp = 1; numTemp <= coleccion.cant_temps; numTemp++) {
 		// Obtiene los datos de la temporada
-		let datosTemp = await detailsTMDB(numTemp, coleccion.TMDB_id);
+		let datosTemp = await APIsTMDB.details(numTemp, coleccion.TMDB_id);
 		// Obtiene los ID de los capítulos
 		coleccion.capitulosID_TMDB = datosTemp.episodes.map((m) => m.id);
 		// Recorre los capítulos TMDB
@@ -390,7 +388,7 @@ let agregaCapitulosTV = async (coleccion) => {
 			// Acciones si algún capítulo es nuevo
 			if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
 				// Amplía la información
-				datosTemp = {...datosTemp, ...(await creditsTMDB(numTemp, coleccion.TMDB_id))};
+				datosTemp = {...datosTemp, ...(await APIsTMDB.credits(numTemp, coleccion.TMDB_id))};
 				// Procesa la información
 				let episodio = datosTemp.episodes.find((n) => n.id == capituloID_TMDB);
 				let datosCap = procesos.infoTMDBparaAgregarCapitulosDeTV(coleccion, datosTemp, episodio);
