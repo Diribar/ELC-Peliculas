@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
-		comentario_movil: {type: dt.STRING(60)},
+		comentario_movil: {type: dt.STRING(70)},
 		prioridad: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
@@ -34,7 +34,7 @@ module.exports = (sequelize, dt) => {
 
 		// Específico de 'epocas_del_ano'
 		dias_de_duracion: {type: dt.INTEGER},
-		comentario_duracion: {type: dt.STRING(60)},
+		comentario_duracion: {type: dt.STRING(70)},
 		carpeta_avatars: {type: dt.STRING(20)},
 
 		// Fechas y Usuarios

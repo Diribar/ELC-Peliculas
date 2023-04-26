@@ -13,18 +13,24 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
-		// Primera columna
+		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #nombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
 		apodo: document.querySelector("form input[name='apodo']"),
+		// Primera columna - Fecha
 		camposFecha: document.querySelectorAll("form #fecha .input"),
 		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
 		mesDia: document.querySelector("form #fecha #mesDia"),
 		mes_id: document.querySelector("form .input[name='mes_id']"),
 		dia: document.querySelector("form .input[name='dia']"),
 		linksClick: document.querySelectorAll("form #fecha .links"),
-		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
 		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
+		// Primera columna - Fecha comentarios móvil
+		sectorContadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres"),
+		contadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres span"),
+		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
+		// Primera columna - Fecha comentarios duración
+		contadorDuracion: document.querySelector("form #dataEntry #dias_de_duracion .caracteres span"),
 		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),
 
 		// Segunda columna
@@ -172,10 +178,18 @@ window.addEventListener("load", async () => {
 			},
 			muestraOcultaCamposFecha: () => {
 				const tipoFecha = DOM.tipoFecha.value;
+
+				// Sin fecha
 				tipoFecha == "SF" ? DOM.mesDia.classList.add("ocultar") : DOM.mesDia.classList.remove("ocultar");
-				tipoFecha == "FM"
-					? DOM.comentario_movil.classList.remove("ocultar")
-					: DOM.comentario_movil.classList.add("ocultar");
+
+				// Fecha móvil
+				if (tipoFecha == "FM") {
+					DOM.sectorContadorMovil.classList.remove("ocultar");
+					DOM.comentario_movil.classList.remove("ocultar");
+				} else {
+					DOM.sectorContadorMovil.classList.add("ocultar");
+					DOM.comentario_movil.classList.add("ocultar");
+				}
 
 				// Fin
 				return;
@@ -469,34 +483,42 @@ window.addEventListener("load", async () => {
 
 		// Acciones si existe el campo
 		if (DOM[campo]) {
-			let valor = DOM[campo].value;
+			// Variables
+			let valor = e.target.value;
 
-			// Acciones si se cambia el nombre o apodo
-			if (varios.camposNombre.includes(campo)) {
-				// 1. Primera letra en mayúscula
-				DOM[campo].value = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-				valor = DOM[campo].value;
+			// Acciones si se cambia un texto
+			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario")) {
+				// Variables
+				const largoMaximo = campo == "nombre" || campo == "apodo" ? 30 : campo.startsWith("comentario") ? 70 : false;
 
-				// 2. Quita los caracteres no deseados
-				DOM[campo].value = valor
+				// Quita los caracteres no deseados
+				valor = valor
 					.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
 					.replace(/ +/g, " ")
 					.replace(/\t/g, "")
 					.replace(/\r/g, "");
-				valor = DOM[campo].value;
 
-				// 3. Quita el prefijo 'San'
-				if (campo == "nombre" && varios.personajes)
-					for (let prefijo of varios.prefijos) {
+				// El primer caracter no puede ser un espacio
+				if (valor.slice(0, 1) == " ") valor = valor.slice(1);
+
+				// Primera letra en mayúscula
+				valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+
+				// Si se cambia el nombre, quita el prefijo 'San'
+				if (campo == "nombre" && varios.personajes) {
+					for (let prefijo of varios.prefijos)
 						if (valor.startsWith(prefijo + " ")) {
-							DOM[campo].value = valor.slice(prefijo.length + 1);
-							valor = DOM[campo].value;
+							valor = valor.slice(prefijo.length + 1);
 							break;
 						}
-					}
+				}
 
-				// 4. Quita los caracteres que exceden el largo permitido
-				if (valor.length > 30) valor = valor.slice(0, 30);
+				// Quita los caracteres que exceden el largo permitido
+				if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
+
+				// Si se cambia un 'textarea', actualiza el contador
+				if (campo == "comentario_movil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
+				if (campo == "comentario_duracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
 			}
 
 			// Acciones si se cambia el año
