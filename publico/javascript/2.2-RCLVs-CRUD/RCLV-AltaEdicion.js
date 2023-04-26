@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
 		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
 		carpeta_avatars: document.querySelector("form .input[name='carpeta_avatars']"),
-		prioridad: document.querySelector("form .input[name='prioridad']"),
+		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #epoca .input"),
@@ -251,7 +251,7 @@ window.addEventListener("load", async () => {
 	let validacs = {
 		avatar: async () => {
 			// Variables
-			let params = "&avatar=" + encodeURIComponent(DOM.avatar.value);
+			let params = "&avatar=" + encodeURIComponent(DOM.avatarInput.value);
 			params += "&opcional=SI";
 			params += "&esImagen=" + varios.esImagen;
 
@@ -347,11 +347,11 @@ window.addEventListener("load", async () => {
 			let params = "prioridad&entidad=" + entidad;
 
 			// Agrega los demás parámetros
-			params += "&prioridad=" + DOM.prioridad.value;
+			params += "&prioridad_id=" + DOM.prioridad_id.value;
 
 			// OK y Errores
-			varios.errores.prioridad = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.prioridad = !varios.errores.prioridad;
+			varios.errores.prioridad_id = await fetch(rutas.validacion + params).then((n) => n.json());
+			varios.OK.prioridad_id = !varios.errores.prioridad_id;
 
 			// Fin
 			return;
@@ -504,7 +504,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Prioridad
-			if (DOM.prioridad && (DOM.prioridad.value || (forzar && varios.errores.sexo_id == undefined))) await this.prioridad();
+			if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
+				await this.prioridad();
 
 			// Época
 			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
@@ -694,7 +695,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambia el sector Prioridad
-		if (campo == "prioridad") validacs.prioridad();
+		if (campo == "prioridad_id") await validacs.prioridad();
 
 		// Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
