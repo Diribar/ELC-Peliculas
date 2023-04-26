@@ -95,53 +95,6 @@ window.addEventListener("load", async () => {
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
-		avatar: function () {
-			// 1. Acciones si se omitió ingresar un archivo
-			if (!DOM.avatarInput.value) {
-				// Vuelve a la imagen original
-				DOM.avatarImg.src = varios.avatarInicial;
-
-				// Actualiza los errores
-				varios.errores.avatar = "";
-				varios.OK.avatar = !varios.errores.avatar;
-
-				// Fin
-				return;
-			}
-			// 2. Acciones si se ingresó un archivo
-			let reader = new FileReader();
-			reader.readAsDataURL(avatar.files[0]);
-			reader.onload = () => {
-				let image = new Image();
-				image.src = reader.result;
-				// Acciones si es realmente una imagen
-				image.onload = async () => {
-					// Actualiza la imagen del avatar en la vista
-					DOM.imgsAvatar[0].src = reader.result;
-					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (avatar.value) version.edicN.avatar = avatar.files[0].name;
-					// Actualiza los errores
-					varias.esImagen = true;
-					FN.actualizaVarios();
-					// Fin
-					return;
-				};
-				// Acciones si no es una imagen
-				image.onerror = () => {
-					// Limpia el avatar
-					DOM.imgsAvatar[0].src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-					// Limpia el input
-					avatar.value = "";
-					// Actualiza la variable 'avatar' en la versión 'edicN'
-					if (avatar.value) version.edicN.avatar = "";
-					// Actualiza los errores
-					varias.esImagen = false;
-					FN.actualizaVarios();
-					// Fin
-					return;
-				};
-			};
-		},
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
@@ -478,10 +431,10 @@ window.addEventListener("load", async () => {
 		},
 		botonSubmit: () => {
 			// Botón submit
-			console.log(varios.OK);
+			// console.log(varios.OK);
 			let resultado = Object.values(varios.OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
-			console.log(resultadosTrue, resultado.length, varios.camposError.length);
+			// console.log(resultadosTrue, resultado.length, varios.camposError.length);
 			resultadosTrue && resultado.length == varios.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
@@ -527,6 +480,56 @@ window.addEventListener("load", async () => {
 			this.muestraErroresOK();
 			this.botonSubmit();
 		},
+	};
+	let impactosValidacsAvatar = async () => {
+		// 1. Acciones si se omitió ingresar un archivo
+		if (!DOM.avatarInput.value) {
+			// Vuelve a la imagen original
+			DOM.avatarImg.src = varios.avatarInicial;
+
+			// Actualiza los errores
+			varios.errores.avatar = "";
+			varios.OK.avatar = !varios.errores.avatar;
+
+			// Fin
+			return;
+		}
+		// 2. Acciones si se ingresó un archivo
+		let reader = new FileReader();
+		await reader.readAsDataURL(DOM.avatarInput.files[0]);
+		reader.onload = async () => {
+			let image = await new Image();
+			image.src = await reader.result;
+
+			// Acciones si es realmente una imagen
+			image.onload = () => {
+				// Actualiza la imagen del avatar en la vista
+				DOM.avatarImg.src = reader.result;
+
+				// Actualiza los errores
+				varios.errores.avatar = "";
+				varios.OK.avatar = !varios.errores.avatar;
+
+				// Fin
+				return;
+			};
+
+			// Acciones si no es una imagen
+			image.onerror = () => {
+				// Limpia el avatar
+				DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+
+				// Limpia el input
+				DOM.avatarInput.value.value = "";
+
+				// Actualiza los errores
+				varios.errores.avatar = "No es un archivo de imagen";
+				varios.OK.avatar = !varios.errores.avatar;
+
+				// Fin
+				return;
+			};
+		};
 	};
 
 	// Correcciones mientras se escribe
@@ -607,7 +610,11 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 
 		// 0. Acciones si se cambia el avatar
-		if (campo == "avatar") impactos.avatar();
+		if (campo == "avatar") {
+			await impactosValidacsAvatar();
+			return;
+		}
+		console.log(!!varios.errores.avatar, varios.OK.avatar);
 
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
