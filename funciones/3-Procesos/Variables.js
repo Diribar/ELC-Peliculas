@@ -411,8 +411,8 @@ module.exports = {
 
 	// Mensajes
 	inputVacio: "Necesitamos que completes este campo",
-	selectVacio: "Necesitamos que elijas un valor",
-	radioVacio: "Necesitamos que elijas alguna opción",
+	selectVacio: "Necesitamos que elijas una opción",
+	radioVacio: "Necesitamos que elijas una opción",
 	urlDesconocida: "No tenemos esa dirección de url en nuestro sistema",
 
 	// Links a vistas

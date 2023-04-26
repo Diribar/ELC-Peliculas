@@ -463,35 +463,33 @@ module.exports = {
 	},
 	avatar: (datos) => {
 		// Variables
-		let {avatar, avatar_url, docum_avatar, tamano, esImagen} = datos;
-		avatar = avatar ? avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
-		let ext = path.extname(avatar).toLocaleLowerCase();
-
-		// Mensajes
-		let MN_esImagen = esImagen == "NO" ? "El archivo no es una imagen" : "";
-
-		let MN_nombre = !avatar ? "Necesitamos que agregues una imagen" : "";
-
-		let MN_extension = !ext
-			? "El archivo debe tener alguna extensión"
-			: ![".jpg", ".png", ".jpeg"].includes(ext)
-			? "Usaste un archivo con la extensión '" +
-			  ext.slice(1).toUpperCase() +
-			  "'. Las extensiones válidas son JPG, JPEG y PNG"
-			: "";
-
-		let MN_tamano =
-			tamano && tamano > 1100000
-				? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
-				: "";
-
-		// Variables
+		const {avatar_url, docum_avatar, tamano, esImagen, opcional} = datos;
+		const avatar = datos.avatar ? datos.avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
+		const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 		let respuesta = "";
-		// Validaciones
-		if (!respuesta) respuesta = MN_esImagen;
-		if (!respuesta) respuesta = MN_nombre;
-		if (!respuesta) respuesta = MN_extension;
-		if (!respuesta) respuesta = MN_tamano;
+
+		// Mensajes si existe un avatar
+		if (avatar) {
+			const MN_esImagen = esImagen == "NO" ? "El archivo no es una imagen" : "";
+			const MN_extension = !ext
+				? "El archivo debe tener alguna extensión"
+				: ![".jpg", ".png", ".jpeg"].includes(ext)
+				? "Usaste un archivo con la extensión '" +
+				  ext.slice(1).toUpperCase() +
+				  "'. Las extensiones válidas son JPG, JPEG y PNG"
+				: "";
+			const MN_tamano =
+				tamano && tamano > 1100000
+					? "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB"
+					: "";
+
+			// Respuesta
+			if (!respuesta) respuesta = MN_esImagen ? MN_esImagen : MN_nombre ? MN_nombre : "";
+			if (!respuesta) respuesta = MN_extension ? MN_extension : MN_tamano ? MN_tamano : "";
+		}
+		// Mensajes si no existe un avatar
+		else if (!opcional) respuesta = "Necesitamos que agregues una imagen";
+
 		// Fin
 		return respuesta;
 	},

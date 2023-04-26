@@ -228,7 +228,7 @@
 				<select name="prioridad" class="input margenIzq">
 					<option value="">Elegí una</option>
 					<% for (let prioridad of prioridades) { %>
-						<option value="<%= prioridad.id %>"><%= prioridad.nombre %></option>
+						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad) { %>selected<% } %>><%= prioridad.nombre %></option>
 					<% } %>
 				</select>
 				<!-- Ayuda -->
