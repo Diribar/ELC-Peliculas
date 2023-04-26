@@ -571,6 +571,7 @@ window.addEventListener("load", async () => {
 				// Actualiza los errores
 				varios.esImagen = "NO";
 				await validacs.avatar();
+
 				// Limpia el input - debe estar después de la validación de errores debido al valor del input
 				DOM.avatarInput.value = "";
 
