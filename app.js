@@ -14,10 +14,8 @@ global.dia_actual_id = null;
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
 global.API_key = process.env.API_key;
-// fs
 global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
-// varios
 global.path = require("path");
 global.fetch = require("node-fetch");
 
