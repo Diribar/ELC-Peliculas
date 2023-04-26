@@ -13,6 +13,11 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
+		// Avatar
+		avatarLabel: document.querySelector("form #imgDerecha label"),
+		avatarImg: document.querySelector("form #imgDerecha img#imgAvatar"),
+		avatarInput: document.querySelector("form #imgDerecha .input[name='avatar']"),
+
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #nombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
@@ -74,13 +79,14 @@ window.addEventListener("load", async () => {
 		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
 		camposRCLIC: Array.from(DOM.camposRCLIC).map((n) => n.name),
 
-		// Links a otros sitios
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
-
 		// Errores
 		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
+
+		// Otros
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
+		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 	};
 
 	// Valores para personajes
@@ -89,6 +95,53 @@ window.addEventListener("load", async () => {
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
+		avatar: function () {
+			// 1. Acciones si se omitió ingresar un archivo
+			if (!DOM.avatarInput.value) {
+				// Vuelve a la imagen original
+				DOM.avatarImg.src = varios.avatarInicial;
+
+				// Actualiza los errores
+				varios.errores.avatar = "";
+				varios.OK.avatar = !varios.errores.avatar;
+
+				// Fin
+				return;
+			}
+			// 2. Acciones si se ingresó un archivo
+			let reader = new FileReader();
+			reader.readAsDataURL(avatar.files[0]);
+			reader.onload = () => {
+				let image = new Image();
+				image.src = reader.result;
+				// Acciones si es realmente una imagen
+				image.onload = async () => {
+					// Actualiza la imagen del avatar en la vista
+					DOM.imgsAvatar[0].src = reader.result;
+					// Actualiza la variable 'avatar' en la versión 'edicN'
+					if (avatar.value) version.edicN.avatar = avatar.files[0].name;
+					// Actualiza los errores
+					varias.esImagen = true;
+					FN.actualizaVarios();
+					// Fin
+					return;
+				};
+				// Acciones si no es una imagen
+				image.onerror = () => {
+					// Limpia el avatar
+					DOM.imgsAvatar[0].src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+					// Limpia el input
+					avatar.value = "";
+					// Actualiza la variable 'avatar' en la versión 'edicN'
+					if (avatar.value) version.edicN.avatar = "";
+					// Actualiza los errores
+					varias.esImagen = false;
+					FN.actualizaVarios();
+					// Fin
+					return;
+				};
+			};
+		},
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
@@ -554,8 +607,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 
 		// 0. Acciones si se cambia el avatar
-		if (campo == "avatar") {
-		}
+		if (campo == "avatar") impactos.avatar();
 
 		// 1. Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
