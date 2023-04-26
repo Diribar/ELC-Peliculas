@@ -1,5 +1,5 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
-// Variables con valor útil
+// Simples
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
 global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
@@ -8,19 +8,17 @@ global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
-// Variables con valor irrelevante
 global.TitulosImgDer = {};
 global.dia_actual_id = null;
-
-// REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
-// Para usar el archivo '.env' --> se debe colocar al principio
-require("dotenv").config();
+// Con 'require'
+require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
-// fs
 global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
-// path
 global.path = require("path");
+global.fetch = require("node-fetch");
+
+// MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Para usar propiedades de express
 const express = require("express");
 const app = express();

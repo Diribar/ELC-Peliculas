@@ -13,6 +13,10 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll("form .OK .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll("form .OK .mensajeError"),
 
+		// Avatar
+		avatarImg: document.querySelector("form #imgDerecha img#imgAvatar"),
+		avatarInput: document.querySelector("form #imgDerecha .input[name='avatar']"),
+
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #nombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
@@ -74,13 +78,14 @@ window.addEventListener("load", async () => {
 		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
 		camposRCLIC: Array.from(DOM.camposRCLIC).map((n) => n.name),
 
-		// Links a otros sitios
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
-
 		// Errores
 		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		OK: {},
 		errores: {},
+
+		// Otros
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
+		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 	};
 
 	// Valores para personajes
@@ -146,7 +151,7 @@ window.addEventListener("load", async () => {
 					DOM.posiblesRepetidos.innerHTML = "¡No hay otros casos!";
 					DOM.posiblesRepetidos.classList.add("sinCasos");
 				}
-				// Si hay otros casos, los muestra y valida 'repetidos'
+				// Si hay otros casos, los muestra
 				else {
 					DOM.posiblesRepetidos.innerHTML = "";
 					DOM.posiblesRepetidos.classList.remove("sinCasos");
@@ -169,9 +174,6 @@ window.addEventListener("load", async () => {
 						DOM.posiblesRepetidos.appendChild(li);
 					});
 				}
-
-				// Valida repetidos
-				validacs.repetido();
 
 				// Fin
 				return;
@@ -302,9 +304,11 @@ window.addEventListener("load", async () => {
 			// Variables
 			let casos = document.querySelectorAll("#posiblesRepetidos li input");
 			let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+
 			// Errores y OK
 			varios.errores.repetidos = casos && Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 			varios.OK.repetidos = !varios.errores.repetidos;
+
 			// Fin
 			return;
 		},
@@ -424,16 +428,23 @@ window.addEventListener("load", async () => {
 			for (let i = 0; i < varios.camposError.length; i++) this.muestraErrorOK(i);
 		},
 		botonSubmit: () => {
-			// Botón submit
-			console.log(varios.OK);
+			// Variables
 			let resultado = Object.values(varios.OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
-			console.log(resultadosTrue, resultado.length, varios.camposError.length);
+
+			// Activa/Inactiva
 			resultadosTrue && resultado.length == varios.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
+
+			// Fin
+			return;
 		},
 		startUp: async function (forzar) {
+			// 0. Valida el avatar
+			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
+			varios.OK.avatar = !varios.errores.avatar;
+
 			// 1. Valida el nombre
 			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
 				varios.personajes ? await this.nombre.personajes() : await this.nombre.demas();
@@ -450,7 +461,10 @@ window.addEventListener("load", async () => {
 				// Valida las fechas
 				await this.fecha();
 				// Si la fecha está OK, revisa los repetidos
-				if (varios.OK.fecha) await impactos.fecha.muestraPosiblesRepetidos();
+				if (varios.OK.fecha) {
+					await impactos.fecha.muestraPosiblesRepetidos();
+					validacs.repetido();
+				}
 			}
 
 			// 4. Valida el sexo
@@ -474,6 +488,64 @@ window.addEventListener("load", async () => {
 			this.muestraErroresOK();
 			this.botonSubmit();
 		},
+	};
+	let impactosValidacsAvatar = () => {
+		// 1. Acciones si se omitió ingresar un archivo
+		if (!DOM.avatarInput.value) {
+			// Vuelve a la imagen original
+			DOM.avatarImg.src = varios.avatarInicial;
+
+			// Actualiza los errores
+			varios.errores.avatar = "";
+			varios.OK.avatar = !varios.errores.avatar;
+
+			// Fin
+			validacs.muestraErroresOK();
+			validacs.botonSubmit();
+			return;
+		}
+		// 2. Acciones si se ingresó un archivo
+		let reader = new FileReader();
+		reader.readAsDataURL(DOM.avatarInput.files[0]);
+		reader.onload = () => {
+			let image = new Image();
+			image.src = reader.result;
+			console.log(reader);
+
+			// Acciones si es realmente una imagen
+			image.onload = () => {
+				console.dir(image);
+				// Actualiza la imagen del avatar en la vista
+				DOM.avatarImg.src = reader.result;
+
+				// Actualiza los errores
+				varios.errores.avatar = "";
+				varios.OK.avatar = !varios.errores.avatar;
+
+				// Fin
+				validacs.muestraErroresOK();
+				validacs.botonSubmit();
+				return;
+			};
+
+			// Acciones si no es una imagen
+			image.onerror = () => {
+				// Limpia el avatar
+				DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+
+				// Limpia el input
+				DOM.avatarInput.value = "";
+
+				// Actualiza los errores
+				varios.errores.avatar = "No es un archivo de imagen";
+				varios.OK.avatar = !varios.errores.avatar;
+
+				// Fin
+				validacs.muestraErroresOK();
+				validacs.botonSubmit();
+				return;
+			};
+		};
 	};
 
 	// Correcciones mientras se escribe
@@ -555,6 +627,8 @@ window.addEventListener("load", async () => {
 
 		// 0. Acciones si se cambia el avatar
 		if (campo == "avatar") {
+			impactosValidacsAvatar();
+			return;
 		}
 
 		// 1. Acciones si se cambia el sector Nombre
