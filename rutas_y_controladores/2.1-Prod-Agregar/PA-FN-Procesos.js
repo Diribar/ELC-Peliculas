@@ -1,7 +1,6 @@
 "use strict";
 // Definir variables
-const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
-const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
+const APIsTMDB = require("../../funciones/3-Procesos/APIsTMDB");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
@@ -51,8 +50,8 @@ module.exports = {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
 		// Obtiene las API
-		let detalles = detailsTMDB("movie", datos.TMDB_id);
-		let creditos = creditsTMDB("movie", datos.TMDB_id);
+		let detalles = APIsTMDB.details("movie", datos.TMDB_id);
+		let creditos = APIsTMDB.credits("movie", datos.TMDB_id);
 		let datosAPI = await Promise.all([detalles, creditos]).then(([a, b]) => {
 			return {...a, ...b};
 		});
@@ -101,7 +100,7 @@ module.exports = {
 			let datosAPI = [];
 			let capitulos = [];
 			datos.capitulosID_TMDB.forEach((capTMDB_id, orden) => {
-				datosAPI.push(detailsTMDB("movie", capTMDB_id), creditsTMDB("movie", capTMDB_id), {orden});
+				datosAPI.push(APIsTMDB.details("movie", capTMDB_id), APIsTMDB.credits("movie", capTMDB_id), {orden});
 			});
 			await Promise.all(datosAPI).then((n) => {
 				for (let i = 0; i < datosAPI.length; i += 3) capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
@@ -147,7 +146,7 @@ module.exports = {
 			cant_temps: 1,
 		};
 		// Obtiene las API
-		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
+		let datosAPI = await APIsTMDB.details("collection", datos.TMDB_id);
 		// Procesa la información
 		if (Object.keys(datosAPI).length) {
 			// nombre_castellano
@@ -185,9 +184,11 @@ module.exports = {
 			TMDB_entidad: "tv",
 		};
 		// Obtiene las API
-		let datosAPI = await Promise.all([detailsTMDB("tv", datos.TMDB_id), creditsTMDB("tv", datos.TMDB_id)]).then(([a, b]) => {
-			return {...a, ...b};
-		});
+		let datosAPI = await Promise.all([APIsTMDB.details("tv", datos.TMDB_id), APIsTMDB.credits("tv", datos.TMDB_id)]).then(
+			([a, b]) => {
+				return {...a, ...b};
+			}
+		);
 		// Procesar la información
 		if (Object.keys(datosAPI).length) {
 			// nombre_original, nombre_castellano, duración de capítulos
@@ -321,8 +322,8 @@ module.exports = {
 	agregaCapituloDeTV: async function (datosCol, temporada) {
 		// Datos de UNA TEMPORADA
 		let datosTemp = await Promise.all([
-			detailsTMDB(temporada, datosCol.TMDB_id),
-			creditsTMDB(temporada, datosCol.TMDB_id),
+			APIsTMDB.details(temporada, datosCol.TMDB_id),
+			APIsTMDB.credits(temporada, datosCol.TMDB_id),
 		]).then(([a, b]) => ({...a, ...b}));
 
 		// Loop de CAPITULOS ********************************************
