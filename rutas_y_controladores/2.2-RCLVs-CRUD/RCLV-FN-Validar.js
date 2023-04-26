@@ -71,7 +71,7 @@ module.exports = {
 		return comp.avatar(datos);
 	},
 	prioridad: (datos) => {
-		return !datos.prioridad ? variables.selectVacio : "";
+		return !datos.prioridad_id ? variables.selectVacio : "";
 	},
 
 	// Personajes, Hechos, Temas, Eventos
