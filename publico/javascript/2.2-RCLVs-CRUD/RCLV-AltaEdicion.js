@@ -86,6 +86,7 @@ window.addEventListener("load", async () => {
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
+		esImagen: "",
 	};
 
 	// Valores para personajes
@@ -251,6 +252,8 @@ window.addEventListener("load", async () => {
 		avatar: async () => {
 			// Variables
 			let params = "&avatar=" + encodeURIComponent(DOM.avatar.value);
+			params += "&opcional=SI";
+			params += "&esImagen=" + varios.esImagen;
 
 			// Averigua los errores
 			varios.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
@@ -520,14 +523,15 @@ window.addEventListener("load", async () => {
 			this.botonSubmit();
 		},
 	};
-	let impactosValidacsAvatar = () => {
+	let impactosValidacsAvatar = async () => {
 		// 1. Acciones si se omitió ingresar un archivo
 		if (!DOM.avatarInput.value) {
 			// Vuelve a la imagen original
 			DOM.avatarImg.src = varios.avatarInicial;
 
 			// Actualiza los errores
-			varios.errores.avatar = "";
+			varios.esImagen = "";
+			varios.errores.avatar = await validacs.avatar();
 			varios.OK.avatar = !varios.errores.avatar;
 
 			// Fin
@@ -541,16 +545,15 @@ window.addEventListener("load", async () => {
 		reader.onload = () => {
 			let image = new Image();
 			image.src = reader.result;
-			console.log(reader);
 
 			// Acciones si es realmente una imagen
-			image.onload = () => {
-				console.dir(image);
+			image.onload = async () => {
 				// Actualiza la imagen del avatar en la vista
 				DOM.avatarImg.src = reader.result;
 
 				// Actualiza los errores
-				varios.errores.avatar = "";
+				varios.esImagen = "SI";
+				varios.errores.avatar = await validacs.avatar();
 				varios.OK.avatar = !varios.errores.avatar;
 
 				// Fin
@@ -560,16 +563,17 @@ window.addEventListener("load", async () => {
 			};
 
 			// Acciones si no es una imagen
-			image.onerror = () => {
+			image.onerror = async () => {
 				// Limpia el avatar
 				DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
-				// Limpia el input
-				DOM.avatarInput.value = "";
-
 				// Actualiza los errores
-				varios.errores.avatar = "No es un archivo de imagen";
+				varios.esImagen = "NO";
+				varios.errores.avatar = await validacs.avatar();
 				varios.OK.avatar = !varios.errores.avatar;
+
+				// Limpia el input - debe estar después de la validación de errores debido al valor del input
+				DOM.avatarInput.value = "";
 
 				// Fin
 				validacs.muestraErroresOK();
