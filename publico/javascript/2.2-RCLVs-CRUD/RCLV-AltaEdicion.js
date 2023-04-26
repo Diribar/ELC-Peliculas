@@ -660,19 +660,19 @@ window.addEventListener("load", async () => {
 		// Variables
 		let campo = e.target.name;
 
-		// 0. Acciones si se cambia el avatar
+		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
 			impactosValidacsAvatar();
 			return;
 		}
 
-		// 1. Acciones si se cambia el sector Nombre
+		// Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
 			await validacs.nombre[entidad]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 
-		// 2. Acciones si se cambia el sector Fecha
+		// Acciones si se cambia el sector Fecha
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
@@ -682,10 +682,10 @@ window.addEventListener("load", async () => {
 			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) await impactos.fecha.muestraPosiblesRepetidos();
 		}
 
-		// 3. Acciones si se cambia el sector Repetido
+		// Acciones si se cambia el sector Repetido
 		if (campo == "repetido") validacs.repetido();
 
-		// 4. Acciones si se cambia el sector Sexo
+		// Acciones si se cambia el sector Sexo
 		if (campo == "sexo_id") {
 			await impactos.sexo();
 			await validacs.sexo();
@@ -693,7 +693,10 @@ window.addEventListener("load", async () => {
 			if (varios.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 		}
 
-		// 5. Acciones si se cambia el sector Época
+		// Acciones si se cambia el sector Prioridad
+		if (campo == "prioridad") validacs.prioridad();
+
+		// Acciones si se cambia el sector Época
 		if (varios.camposEpoca.includes(campo)) {
 			// Impacto y Validaciones
 			await impactos.epoca[entidad]();
@@ -707,7 +710,7 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// 6. Acciones si se cambia el sector RCLIC
+		// Acciones si se cambia el sector RCLIC
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[entidad]();
