@@ -248,7 +248,6 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let validacs = {
-		// Sectores
 		nombre: {
 			personajes: async () => {
 				// Verifica errores en el sector 'nombre'
@@ -289,8 +288,11 @@ window.addEventListener("load", async () => {
 		fecha: async () => {
 			// Si se conoce la fecha...
 			if (DOM.tipoFecha.value != "SF") {
+				// Obtiene los datos de los campos
+				let params = "";
+				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
+
 				// Averigua si hay un error con la fecha
-				let params = "&mes_id=" + DOM.mes_id.value + "&dia=" + DOM.dia.value;
 				varios.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
 			} else varios.errores.fecha = "";
 
@@ -322,6 +324,20 @@ window.addEventListener("load", async () => {
 			// OK y Errores
 			varios.errores.sexo_id = await fetch(rutas.validacion + params).then((n) => n.json());
 			varios.OK.sexo_id = !varios.errores.sexo_id;
+
+			// Fin
+			return;
+		},
+		prioridad: async () => {
+			// Variables
+			let params = "prioridad&entidad=" + entidad;
+
+			// Agrega los demás parámetros
+			params += "&prioridad=" + DOM.prioridad.value;
+
+			// OK y Errores
+			varios.errores.prioridad = await fetch(rutas.validacion + params).then((n) => n.json());
+			varios.OK.prioridad = !varios.errores.prioridad;
 
 			// Fin
 			return;
@@ -441,42 +457,46 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		startUp: async function (forzar) {
-			// 0. Valida el avatar
+			// Avatar
 			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
 			varios.OK.avatar = !varios.errores.avatar;
 
-			// 1. Valida el nombre
+			// Nombre
 			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
 				varios.personajes ? await this.nombre.personajes() : await this.nombre.demas();
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
-			// 2. Valida las fechas
+			// Fechas
 			impactos.fecha.muestraOcultaCamposFecha();
-			if (DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+			if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
 			if (
-				(DOM.mes_id.value && DOM.dia.value) ||
 				DOM.tipoFecha.value == "SF" ||
+				(DOM.mes_id.value && DOM.dia.value) ||
 				(forzar && varios.errores.fecha == undefined)
 			) {
-				// Valida las fechas
+				// Valida el sector Fechas
 				await this.fecha();
-				// Si la fecha está OK, revisa los repetidos
+				// Si la fecha está OK, revisa los Repetidos
 				if (varios.OK.fecha) {
 					await impactos.fecha.muestraPosiblesRepetidos();
 					validacs.repetido();
 				}
 			}
 
-			// 4. Valida el sexo
-			if (varios.personajes && opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-			if (varios.personajes && (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)))
-				await this.sexo();
+			// Sexo
+			if (DOM.sexos_id) {
+				if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
+				if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await this.sexo();
+			}
 
-			// 5. Valida la época
+			// Prioridad
+			if (DOM.prioridad && (DOM.prioridad.value || (forzar && varios.errores.sexo_id == undefined))) await this.prioridad();
+
+			// Época
 			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
 			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
 
-			// 6. Valida RCLIC
+			// RCLIC
 			if (
 				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
 				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
