@@ -17,7 +17,6 @@ window.addEventListener("load", async () => {
 
 		// Temas de avatar
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
-		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
@@ -49,6 +48,7 @@ window.addEventListener("load", async () => {
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
 		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
+		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
 	};
 	let rutas = {
 		rutaValidar: "/producto/api/valida/?",
@@ -249,7 +249,7 @@ window.addEventListener("load", async () => {
 			// 1. Si se omitió ingresar un archivo, vuelve a la imagen original
 			if (!DOM.inputAvatarEdicN.value) {
 				// Actualiza el avatar
-				DOM.imgsAvatar[0].src = DOM.avatarInicial;
+				DOM.imgsAvatar[0].src = varios.avatarInicial;
 				// Actualiza los errores
 				varias.esImagen = true;
 				this.actualizaVarios();
