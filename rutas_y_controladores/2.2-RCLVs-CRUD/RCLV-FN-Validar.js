@@ -68,7 +68,7 @@ module.exports = {
 		return respuesta;
 	},
 	avatar: (datos) => {
-		return comp.avatar(datos);
+		return comp.validaAvatar(datos);
 	},
 	prioridad: (datos) => {
 		return !datos.prioridad_id ? variables.selectVacio : "";
