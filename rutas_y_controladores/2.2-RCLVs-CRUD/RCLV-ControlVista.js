@@ -54,10 +54,10 @@ module.exports = {
 			? "FD"
 			: entidad == "personajes" || entidad == "hechos"
 			? "FD"
-			: entidad == "temas" || entidad == "eventos"
-			? "SF"
-			: entidad == "epocas_del_ano"
+			: entidad == "eventos" || entidad == "epocas_del_ano"
 			? "FM"
+			: entidad == "temas"
+			? "SF"
 			: "";
 
 		// Avatar
