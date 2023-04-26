@@ -472,8 +472,10 @@ window.addEventListener("load", async () => {
 		},
 		startUp: async function (forzar) {
 			// Avatar
-			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
-			varios.OK.avatar = !varios.errores.avatar;
+			if (forzar) {
+				varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
+				varios.OK.avatar = !varios.errores.avatar;
+			}
 
 			// Nombre
 			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
