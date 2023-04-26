@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
 		comentario_movil: {type: dt.STRING(70)},
-		prioridad: {type: dt.INTEGER},
+		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
 		// Común con hechos
