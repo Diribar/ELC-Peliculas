@@ -43,6 +43,23 @@ module.exports = {
 			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
 
+		// Tipo de fecha
+		dataEntry.tipoFecha_id = false
+			? false
+			: dataEntry.fecha_movil
+			? "FM"
+			: dataEntry.dia_del_ano_id == 400
+			? "SF"
+			: dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400
+			? "FD"
+			: entidad == "personajes" || entidad == "hechos"
+			? "FD"
+			: entidad == "eventos" || entidad == "epocas_del_ano"
+			? "FM"
+			: entidad == "temas"
+			? "SF"
+			: "";
+
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
 		const avatarLinksExternos = variables.avatarExternoRCLVs(codigo != "agregar" ? dataEntry.nombre : "@");

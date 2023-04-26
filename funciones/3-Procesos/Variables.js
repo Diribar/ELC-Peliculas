@@ -232,7 +232,7 @@ module.exports = {
 			"apodo",
 			"dia_del_ano_id",
 			"fecha_movil",
-			"prioridad",
+			"prioridad_id",
 			"sexo_id",
 			"epoca_id",
 			"ano",
@@ -242,10 +242,10 @@ module.exports = {
 			"ap_mar_id",
 			"avatar",
 		],
-		hechos: ["nombre", "ano", "dia_del_ano_id", "fecha_movil", "prioridad", "epoca_id", "solo_cfc", "ama", "avatar"],
-		temas: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad", "avatar"],
-		eventos: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad", "avatar"],
-		epocas_del_ano: ["nombre", "dia_del_ano_id", "fecha_movil", "dias", "prioridad", "avatar"],
+		hechos: ["nombre", "ano", "dia_del_ano_id", "fecha_movil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
+		temas: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
+		eventos: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
+		epocas_del_ano: ["nombre", "dia_del_ano_id", "fecha_movil", "dias", "prioridad_id", "avatar"],
 	},
 	prefijos: [
 		"Beata",
@@ -332,7 +332,7 @@ module.exports = {
 			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano", tabla: "dias_del_ano"},
 			{nombre: "fecha_movil", titulo: "Fecha Móvil", rclvs: true},
 			{nombre: "comentario_movil", titulo: "Comentario Móvil", rclvs: true},
-			{nombre: "prioridad", titulo: "Prioridad"},
+			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},
 			{nombre: "avatar", titulo: "Avatar", rclvs: true},
 
 			// Personajes y Hechos
