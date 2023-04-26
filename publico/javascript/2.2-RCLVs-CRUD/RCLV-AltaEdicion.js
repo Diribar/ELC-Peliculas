@@ -532,8 +532,7 @@ window.addEventListener("load", async () => {
 
 			// Actualiza los errores
 			varios.esImagen = "";
-			varios.errores.avatar = await validacs.avatar();
-			varios.OK.avatar = !varios.errores.avatar;
+			await validacs.avatar();
 
 			// Fin
 			validacs.muestraErroresOK();
@@ -554,8 +553,7 @@ window.addEventListener("load", async () => {
 
 				// Actualiza los errores
 				varios.esImagen = "SI";
-				varios.errores.avatar = await validacs.avatar();
-				varios.OK.avatar = !varios.errores.avatar;
+				await validacs.avatar();
 
 				// Fin
 				validacs.muestraErroresOK();
@@ -570,9 +568,7 @@ window.addEventListener("load", async () => {
 
 				// Actualiza los errores
 				varios.esImagen = "NO";
-				varios.errores.avatar = await validacs.avatar();
-				varios.OK.avatar = !varios.errores.avatar;
-
+				await validacs.avatar();
 				// Limpia el input - debe estar después de la validación de errores debido al valor del input
 				DOM.avatarInput.value = "";
 
