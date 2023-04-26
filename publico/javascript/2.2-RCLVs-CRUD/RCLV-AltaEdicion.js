@@ -662,7 +662,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
-			impactosValidacsAvatar();
+			await impactosValidacsAvatar();
 			return;
 		}
 
