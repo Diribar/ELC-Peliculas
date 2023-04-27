@@ -57,7 +57,6 @@ module.exports = {
 	fecha: (datos) => {
 		// Variables
 		let respuesta = "";
-		console.log(datos);
 
 		// Validaciones para Fecha Definida y Fecha Móvil
 		if (datos.tipoFecha != "SF") {
