@@ -46,6 +46,7 @@ window.addEventListener("load", async () => {
 		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
 		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
 		dias_del_ano_RCLV: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
+		tablaCalendario: document.querySelector("form #calendario table"),
 
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #epoca .input"),
@@ -291,8 +292,9 @@ window.addEventListener("load", async () => {
 				}
 
 				// Centra el día 'desde'
-
-				// Muestra los días del año
+				const porcentajeCalendario = idInicio / 365;
+				const alturaCalendario = DOM.tablaCalendario.offsetHeight;
+				const traslado = alturaCalendario * porcentajeCalendario
 
 				// Fin
 				return;
