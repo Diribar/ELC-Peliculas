@@ -59,23 +59,39 @@ module.exports = {
 		let respuesta = "";
 		console.log(datos);
 
-		// Validación para Fecha Definida y Fecha Móvil
+		// Validaciones para Fecha Definida y Fecha Móvil
 		if (datos.tipoFecha != "SF") {
 			// Valida que el mes y el día estén respondidos
-			if (!datos.mes_id || !datos.dia) respuesta = cartelFechaIncompleta;
+			if (!datos.mes_id || !datos.dia) respuesta = cartelFaltaElDatoSobre + "el mes y/o el día";
 			// Valida si el día supera lo permitido para el mes
 			else {
 				let mes = datos.mes_id;
 				let dia = datos.dia;
 				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
-					respuesta = cartelSupera;
+					respuesta = cartelMesDiaIncompatibles;
 			}
 
 			// Validaciones para Fecha Movil
 			if (!respuesta && datos.tipoFecha == "FM") {
-				if (!datos.comentario_movil) respuesta = cartelFechaMovil;
+				// Valida si existe un comentario adecuado para la fecha móvil
+				if (!datos.comentario_movil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
 				const aux = !respuesta ? comp.longitud(datos.comentario_movil, 4, 70) : "";
 				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
+			}
+
+			// Validaciones para 'epocas_del_ano'
+			if (!respuesta && datos.entidad == "epocas_del_ano") {
+				// Variables
+				const sufijo = "los Días de Duración";
+				// Valida la cantidad de días
+				if (!datos.dias_de_duracion) respuesta = cartelFaltaElDatoSobre + sufijo;
+
+				// Valida si existe un comentario adecuado para la cantidad de días
+				if (!respuesta) {
+					if (!datos.comentario_duracion) respuesta = cartelCriterioSobre + sufijo;
+					const aux = !respuesta ? comp.longitud(datos.comentario_duracion, 4, 70) : "";
+					if (aux) respuesta = aux.replace("contenido", "comentario sobre " + sufijo);
+				}
 			}
 		}
 
@@ -91,7 +107,7 @@ module.exports = {
 
 	// Personajes, Hechos, Temas, Eventos
 	repetidos: (datos) => {
-		return datos.repetidos ? cartelDuplicado : "";
+		return datos.repetidos ? cartelRegistroDuplicado : "";
 	},
 
 	// Personajes y Hechos
@@ -186,10 +202,10 @@ module.exports = {
 };
 
 // Carteles
-const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
-const cartelSupera = "El número de día y el mes elegidos son incompatibles";
-const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-const cartelFechaMovil = "Necesitamos saber el criterio sobre la Fecha Móvil";
+const cartelFaltaElDatoSobre = "Falta el dato sobre ";
+const cartelMesDiaIncompatibles = "El número de día y el mes elegidos son incompatibles";
+const cartelCriterioSobre = "Necesitamos saber el criterio sobre ";
+const cartelRegistroDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 // Funciones
 let nombreApodo = async ({datos, campo}) => {

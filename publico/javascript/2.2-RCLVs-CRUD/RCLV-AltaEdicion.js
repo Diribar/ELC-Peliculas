@@ -88,8 +88,6 @@ window.addEventListener("load", async () => {
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: "",
 	};
-
-	// Valores para personajes
 	if (varios.personajes) varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 
 	// -------------------------------------------------------
@@ -279,7 +277,7 @@ window.addEventListener("load", async () => {
 			demas: async () => {
 				// Variables
 				let params = "&nombre=" + encodeURIComponent(DOM.nombre.value);
-				parms += "&entidad=" + entidad;
+				params += "&entidad=" + entidad;
 				if (id) params += "&id=" + id;
 
 				// Lo agrega lo referido a la aparición mariana
@@ -303,7 +301,7 @@ window.addEventListener("load", async () => {
 			// Si se conoce la fecha...
 			if (DOM.tipoFecha.value != "SF") {
 				// Obtiene los datos de los campos
-				let params = "";
+				let params = "&entidad=" + entidad;
 				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 				// Averigua si hay un error con la fecha
@@ -500,7 +498,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Sexo
-			if (DOM.sexos_id) {
+			if (DOM.sexos_id.length) {
 				if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
 				if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await this.sexo();
 			}
@@ -510,14 +508,16 @@ window.addEventListener("load", async () => {
 				await this.prioridad();
 
 			// Época
-			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
-			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
+			if (DOM.epocas_id.length) {
+				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
+				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
+			}
 
 			// RCLIC
 			if (
 				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
 				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
-				(forzar && varios.errores.RCLIC == undefined)
+				(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
 			)
 				await this.RCLIC[entidad]();
 
@@ -626,6 +626,11 @@ window.addEventListener("load", async () => {
 				// Si se cambia un 'textarea', actualiza el contador
 				if (campo == "comentario_movil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
 				if (campo == "comentario_duracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
+
+				// Limpia el ícono de error/OK
+				const indice = campo.startsWith("comentario") ? 2 : 1 // 2 para fecha, 1 para nombre
+				DOM.iconosError[indice].classList.add("ocultar")
+				DOM.iconosOK[indice].classList.add("ocultar")
 			}
 
 			// Acciones si se cambia el año
