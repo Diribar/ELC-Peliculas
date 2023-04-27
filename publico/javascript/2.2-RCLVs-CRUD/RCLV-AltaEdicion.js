@@ -93,6 +93,62 @@ window.addEventListener("load", async () => {
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
+		avatar: async () => {
+			// 1. Acciones si se omitió ingresar un archivo
+			if (!DOM.avatarInput.value) {
+				// Vuelve a la imagen original
+				DOM.avatarImg.src = varios.avatarInicial;
+	
+				// Actualiza los errores
+				varios.esImagen = "";
+				await validacs.avatar();
+	
+				// Fin
+				validacs.muestraErroresOK();
+				validacs.botonSubmit();
+				return;
+			}
+			// 2. Acciones si se ingresó un archivo
+			let reader = new FileReader();
+			reader.readAsDataURL(DOM.avatarInput.files[0]);
+			reader.onload = () => {
+				let image = new Image();
+				image.src = reader.result;
+	
+				// Acciones si es realmente una imagen
+				image.onload = async () => {
+					// Actualiza la imagen del avatar en la vista
+					DOM.avatarImg.src = reader.result;
+	
+					// Actualiza los errores
+					varios.esImagen = "SI";
+					await validacs.avatar();
+	
+					// Fin
+					validacs.muestraErroresOK();
+					validacs.botonSubmit();
+					return;
+				};
+	
+				// Acciones si no es una imagen
+				image.onerror = async () => {
+					// Limpia el avatar
+					DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+	
+					// Actualiza los errores
+					varios.esImagen = "NO";
+					await validacs.avatar();
+	
+					// Limpia el input - debe estar después de la validación de errores debido al valor del input
+					DOM.avatarInput.value = "";
+	
+					// Fin
+					validacs.muestraErroresOK();
+					validacs.botonSubmit();
+					return;
+				};
+			};
+		},	
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
@@ -475,62 +531,6 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let impactosValidacsAvatar = async () => {
-		// 1. Acciones si se omitió ingresar un archivo
-		if (!DOM.avatarInput.value) {
-			// Vuelve a la imagen original
-			DOM.avatarImg.src = varios.avatarInicial;
-
-			// Actualiza los errores
-			varios.esImagen = "";
-			await validacs.avatar();
-
-			// Fin
-			validacs.muestraErroresOK();
-			validacs.botonSubmit();
-			return;
-		}
-		// 2. Acciones si se ingresó un archivo
-		let reader = new FileReader();
-		reader.readAsDataURL(DOM.avatarInput.files[0]);
-		reader.onload = () => {
-			let image = new Image();
-			image.src = reader.result;
-
-			// Acciones si es realmente una imagen
-			image.onload = async () => {
-				// Actualiza la imagen del avatar en la vista
-				DOM.avatarImg.src = reader.result;
-
-				// Actualiza los errores
-				varios.esImagen = "SI";
-				await validacs.avatar();
-
-				// Fin
-				validacs.muestraErroresOK();
-				validacs.botonSubmit();
-				return;
-			};
-
-			// Acciones si no es una imagen
-			image.onerror = async () => {
-				// Limpia el avatar
-				DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-
-				// Actualiza los errores
-				varios.esImagen = "NO";
-				await validacs.avatar();
-
-				// Limpia el input - debe estar después de la validación de errores debido al valor del input
-				DOM.avatarInput.value = "";
-
-				// Fin
-				validacs.muestraErroresOK();
-				validacs.botonSubmit();
-				return;
-			};
-		};
-	};
 	let startUp = async (forzar) => {
 		// Avatar
 		if (forzar) {
@@ -672,7 +672,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
-			await impactosValidacsAvatar();
+			await impactos.avatar();
 			return;
 		}
 
