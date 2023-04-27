@@ -195,6 +195,10 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
+			epocas_del_ano: () => {
+				// Fin
+				return;
+			},
 		},
 		sexo: async () => {
 			// Obtiene la opción elegida
@@ -481,7 +485,7 @@ window.addEventListener("load", async () => {
 			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
 			// Fechas
-			impactos.fecha.muestraOcultaCamposFecha();
+			impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
 			if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
 			if (
 				DOM.tipoFecha.value == "SF" ||
@@ -628,10 +632,13 @@ window.addEventListener("load", async () => {
 				if (campo == "comentario_duracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
 
 				// Limpia el ícono de error/OK
-				const indice = campo.startsWith("comentario") ? 2 : 1 // 2 para fecha, 1 para nombre
-				DOM.iconosError[indice].classList.add("ocultar")
-				DOM.iconosOK[indice].classList.add("ocultar")
+				const indice = campo.startsWith("comentario") ? 2 : 1; // 2 para fecha, 1 para nombre
+				DOM.iconosError[indice].classList.add("ocultar");
+				DOM.iconosOK[indice].classList.add("ocultar");
 			}
+
+			// Acciones si se cambian los Días de Duración
+			if (campo == "dias_de_duracion") valor = Math.max(2, Math.min(valor, 366));
 
 			// Acciones si se cambia el año
 			if (campo == "ano") {
@@ -681,6 +688,7 @@ window.addEventListener("load", async () => {
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
+			if (varios.epocas_del_ano) impactos.fecha.epocas_del_ano();
 			// Valida las fechas
 			await validacs.fecha();
 			// Si la fecha se cambió y está OK, revisa los repetidos
