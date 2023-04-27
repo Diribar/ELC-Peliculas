@@ -42,6 +42,10 @@ window.addEventListener("load", async () => {
 		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
 		carpeta_avatars: document.querySelector("form .input[name='carpeta_avatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
+		// Días del año
+		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
+		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
+		dias_del_ano_RCLV: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
 
 		// Abajo
 		camposEpoca: document.querySelectorAll("form #epoca .input"),
@@ -83,6 +87,10 @@ window.addEventListener("load", async () => {
 		OK: {},
 		errores: {},
 
+		// Temas de fecha
+		meses: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+		dias_del_ano: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
+
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
@@ -98,11 +106,11 @@ window.addEventListener("load", async () => {
 			if (!DOM.avatarInput.value) {
 				// Vuelve a la imagen original
 				DOM.avatarImg.src = varios.avatarInicial;
-	
+
 				// Actualiza los errores
 				varios.esImagen = "";
 				await validacs.avatar();
-	
+
 				// Fin
 				validacs.muestraErroresOK();
 				validacs.botonSubmit();
@@ -114,41 +122,41 @@ window.addEventListener("load", async () => {
 			reader.onload = () => {
 				let image = new Image();
 				image.src = reader.result;
-	
+
 				// Acciones si es realmente una imagen
 				image.onload = async () => {
 					// Actualiza la imagen del avatar en la vista
 					DOM.avatarImg.src = reader.result;
-	
+
 					// Actualiza los errores
 					varios.esImagen = "SI";
 					await validacs.avatar();
-	
+
 					// Fin
 					validacs.muestraErroresOK();
 					validacs.botonSubmit();
 					return;
 				};
-	
+
 				// Acciones si no es una imagen
 				image.onerror = async () => {
 					// Limpia el avatar
 					DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-	
+
 					// Actualiza los errores
 					varios.esImagen = "NO";
 					await validacs.avatar();
-	
+
 					// Limpia el input - debe estar después de la validación de errores debido al valor del input
 					DOM.avatarInput.value = "";
-	
+
 					// Fin
 					validacs.muestraErroresOK();
 					validacs.botonSubmit();
 					return;
 				};
 			};
-		},	
+		},
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
@@ -252,6 +260,40 @@ window.addEventListener("load", async () => {
 				return;
 			},
 			epocas_del_ano: () => {
+				// Variables
+				const dia = DOM.dia.value;
+				const mes_id = DOM.mes_id.value;
+				const dias_de_duracion = parseInt(DOM.dias_de_duracion.value);
+
+				// Si la información está incompleta/incorrecta, sale de la función
+				if (!mes_id || !dia) return;
+				if (mes_id < 1 || mes_id > 12) return;
+				if (!dias_de_duracion || dias_de_duracion < 2 || dias_de_duracion > 366) return;
+
+				// Obtiene la fecha de inicio
+				const mes = varios.meses[mes_id - 1];
+				const fechaInicio = dia + "/" + mes;
+
+				// Obtiene los ID de inicio y de fin
+				const idInicio = varios.dias_del_ano.indexOf(fechaInicio);
+				if (idInicio < 0) return;
+				let idFin = idInicio + dias_de_duracion - 1;
+				if (idFin > 365) idFin -= 366;
+
+				// Actualiza el color de todos los días del año
+				for (let i = 0; i < DOM.dias_del_ano_Fila.length; i++) {
+					let ninguno = DOM.dias_del_ano_RCLV[i].innerHTML == "Ninguno";
+					let color =
+						(idInicio < idFin && (i < idInicio || i > idFin)) || (idFin < i && i < idInicio)
+							? "white"
+							: "var(--" + (ninguno ? "verde" : "rojo") + "-claro)";
+					DOM.dias_del_ano_Fila[i].style = "background:" + color;
+				}
+
+				// Centra el día 'desde'
+
+				// Muestra los días del año
+
 				// Fin
 				return;
 			},
@@ -684,12 +726,16 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Fecha
 		if (varios.camposFecha.includes(campo)) {
+			// Impactos en fecha
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-			if (varios.epocas_del_ano) impactos.fecha.epocas_del_ano();
+			if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))
+				impactos.fecha.epocas_del_ano();
+
 			// Valida las fechas
 			await validacs.fecha();
-			// Si la fecha se cambió y está OK, revisa los repetidos
+
+			// Impactos en repetidos
 			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) await impactos.fecha.muestraPosiblesRepetidos();
 		}
 
