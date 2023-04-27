@@ -443,21 +443,23 @@ window.addEventListener("load", async () => {
 				return;
 			},
 		},
-		muestraErrorOK: (i, ocultarOK) => {
-			// Íconos de OK
-			varios.OK[varios.camposError[i]] && !ocultarOK
-				? DOM.iconosOK[i].classList.remove("ocultar")
-				: DOM.iconosOK[i].classList.add("ocultar");
-			// Íconos de error
-			varios.errores[varios.camposError[i]]
-				? DOM.iconosError[i].classList.remove("ocultar")
-				: DOM.iconosError[i].classList.add("ocultar");
-			// Mensaje de error
-			DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
-		},
-		muestraErroresOK: function () {
-			// Muestra los íconos de Error y OK
-			for (let i = 0; i < varios.camposError.length; i++) this.muestraErrorOK(i);
+		muestraErroresOK: () => {
+			for (let i = 0; i < varios.camposError.length; i++) {
+				// Íconos de OK
+				varios.OK[varios.camposError[i]]
+					? DOM.iconosOK[i].classList.remove("ocultar")
+					: DOM.iconosOK[i].classList.add("ocultar");
+
+				// Íconos de error
+				varios.errores[varios.camposError[i]]
+					? DOM.iconosError[i].classList.remove("ocultar")
+					: DOM.iconosError[i].classList.add("ocultar");
+
+				// Mensaje de error
+				DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]]
+					? varios.errores[varios.camposError[i]]
+					: "";
+			}
 		},
 		botonSubmit: () => {
 			// Variables
@@ -471,63 +473,6 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			return;
-		},
-		startUp: async function (forzar) {
-			// Avatar
-			if (forzar) {
-				varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
-				varios.OK.avatar = !varios.errores.avatar;
-			}
-
-			// Nombre
-			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
-				varios.personajes ? await this.nombre.personajes() : await this.nombre.demas();
-			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
-
-			// Fechas
-			impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
-			if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-			if (
-				DOM.tipoFecha.value == "SF" ||
-				(DOM.mes_id.value && DOM.dia.value) ||
-				(forzar && varios.errores.fecha == undefined)
-			) {
-				// Valida el sector Fechas
-				await this.fecha();
-				// Si la fecha está OK, revisa los Repetidos
-				if (varios.OK.fecha) {
-					await impactos.fecha.muestraPosiblesRepetidos();
-					validacs.repetido();
-				}
-			}
-
-			// Sexo
-			if (DOM.sexos_id.length) {
-				if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-				if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await this.sexo();
-			}
-
-			// Prioridad
-			if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
-				await this.prioridad();
-
-			// Época
-			if (DOM.epocas_id.length) {
-				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
-				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
-			}
-
-			// RCLIC
-			if (
-				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
-				(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
-			)
-				await this.RCLIC[entidad]();
-
-			// Fin
-			this.muestraErroresOK();
-			this.botonSubmit();
 		},
 	};
 	let impactosValidacsAvatar = async () => {
@@ -585,6 +530,59 @@ window.addEventListener("load", async () => {
 				return;
 			};
 		};
+	};
+	let startUp = async (forzar) => {
+		// Avatar
+		if (forzar) {
+			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
+			varios.OK.avatar = !varios.errores.avatar;
+		}
+
+		// Nombre
+		if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
+			varios.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
+		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
+
+		// Fechas
+		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
+		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && varios.errores.fecha == undefined)) {
+			// Valida el sector Fechas
+			await validacs.fecha();
+			// Si la fecha está OK, revisa los Repetidos
+			if (varios.OK.fecha) {
+				await impactos.fecha.muestraPosiblesRepetidos();
+				validacs.repetido();
+			}
+		}
+
+		// Sexo
+		if (DOM.sexos_id.length) {
+			if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
+			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await validacs.sexo();
+		}
+
+		// Prioridad
+		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
+			await validacs.prioridad();
+
+		// Época
+		if (DOM.epocas_id.length) {
+			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
+			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await validacs.epoca();
+		}
+
+		// RCLIC
+		if (
+			(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
+			(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
+			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
+		)
+			await validacs.RCLIC[entidad]();
+
+		// Fin
+		validacs.muestraErroresOK();
+		validacs.botonSubmit();
 	};
 
 	// Correcciones mientras se escribe
@@ -744,7 +742,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await validacs.startUp();
+	await startUp();
 });
 
 // Funciones
