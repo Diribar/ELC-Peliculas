@@ -46,6 +46,7 @@ window.addEventListener("load", async () => {
 		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
 		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
 		dias_del_ano_RCLV: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
+		marcoCalendario: document.querySelector("form #calendario"),
 		tablaCalendario: document.querySelector("form #calendario table"),
 
 		// Abajo
@@ -293,8 +294,9 @@ window.addEventListener("load", async () => {
 
 				// Centra el día 'desde'
 				const porcentajeCalendario = idInicio / 365;
+				const alturaMarco = DOM.marcoCalendario.offsetHeight;
 				const alturaCalendario = DOM.tablaCalendario.offsetHeight;
-				const traslado = alturaCalendario * porcentajeCalendario
+				const traslado = alturaCalendario * porcentajeCalendario - alturaMarco / 2;
 
 				// Fin
 				return;
