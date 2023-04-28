@@ -40,6 +40,9 @@ module.exports = {
 		return errores;
 	},
 	// Campos comunes a todos los RCLV
+	avatar: (datos) => {
+		return comp.validaAvatar(datos);
+	},
 	nombre: async function (datos) {
 		// Variables
 		let mensaje = "";
@@ -103,9 +106,6 @@ module.exports = {
 
 		// Fin
 		return respuesta;
-	},
-	avatar: (datos) => {
-		return comp.validaAvatar(datos);
 	},
 	prioridad: (datos) => {
 		return !datos.prioridad_id && Object.keys(datos).includes("prioridad_id") ? variables.selectVacio : "";
