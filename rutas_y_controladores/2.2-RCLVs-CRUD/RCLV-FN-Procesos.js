@@ -145,11 +145,11 @@ module.exports = {
 
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				let {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				const {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
 				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
 				if (epoca_id == "pst") DE.ano = ano;
-				let CFC = categoria_id == "CFC";
+				const CFC = categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
 				DE.ap_mar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? ap_mar_id : no_presencio_ninguna_id;
