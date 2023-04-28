@@ -242,20 +242,24 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("input", async (e) => {
 		// Variables
 		let valor = e.target.value;
+		const aux = valor;
+		console.dir(e.target);
 
 		// Tareas comunes
-		if (valor.length) {
+		if (valor.length && e.target.localName != "select") {
 			// Limita el uso del teclado solamente a los caracteres que nos interesan
 			valor = valor
 				.replace(/ +/g, " ")
 				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 				.replace(/\n/g, "");
-
+			console.log(valor == aux);
 			// El primer caracter no puede ser un espacio
 			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
+			console.log(valor == aux);
 
 			// Primera letra en mayúscula
 			if (varios.DD) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			console.log(valor == aux);
 		}
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
