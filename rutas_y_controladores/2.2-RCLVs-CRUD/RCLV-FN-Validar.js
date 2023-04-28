@@ -8,24 +8,30 @@ module.exports = {
 	consolidado: async function (datos) {
 		datos = {...datos}; // Es fundamental escribir 'datos' así
 		// Campos comunes a los 3 RCLV
-		let errores = {nombre: await this.nombre(datos)};
+		let errores = {
+			nombre: await this.nombre(datos),
+			fecha: this.fecha(datos),
+			avatar: this.avatar(datos),
+			prioridad: this.prioridad(datos),
+		};
+
+		// Campos de todos menos 'epocas_del_ano'
+		if (datos.entidad != "epocas_del_ano") errores.repetidos = this.repetidos(datos);
 
 		// Campos de personajes y hechos
-		if (datos.entidad == "personajes" || datos.entidad == "hechos") {
-			errores.fecha = this.fecha(datos);
-			errores.repetidos = this.repetidos(datos);
-			errores.epoca = this.epoca(datos);
-			errores.RCLI = this["RCLIC_" + datos.entidad](datos);
-		}
+		if (datos.entidad == "personajes" || datos.entidad == "hechos") errores.epoca = this.epoca(datos);
 
 		// Campos de personajes
-		if (datos.entidad == "personajes") errores.sexo = this.sexo(datos);
-
-		// Campos de temas
-		if (datos.entidad == "temas") {
-			errores.vigencia = this.vigencia(datos);
-			errores.descripcion = this.descripcion(datos);
+		if (datos.entidad == "personajes") {
+			errores.sexo = this.sexo(datos);
+			errores.RCLIC = this.RCLIC_personajes(datos);
 		}
+
+		// Campos de hechos
+		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
+
+		// Épocas del año
+		if (datos.entidad == "epocas_del_ano") errores.carpeta_avatars = this.carpeta_avatars(datos);
 
 		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -102,10 +108,10 @@ module.exports = {
 		return comp.validaAvatar(datos);
 	},
 	prioridad: (datos) => {
-		return !datos.prioridad_id ? variables.selectVacio : "";
+		return !datos.prioridad_id && Object.keys(datos).includes("prioridad_id") ? variables.selectVacio : "";
 	},
 
-	// Personajes, Hechos, Temas, Eventos
+	// Entidades distintas a 'epocas_del_ano'
 	repetidos: (datos) => {
 		return datos.repetidos ? cartelRegistroDuplicado : "";
 	},
