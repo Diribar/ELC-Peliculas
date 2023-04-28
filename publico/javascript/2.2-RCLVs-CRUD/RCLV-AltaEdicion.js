@@ -104,6 +104,9 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let impactos = {
 		avatar: async () => {
+			// Si hubo alguna novedad en el avatar, muestra los resultados
+			DOM.iconosOK[0].classList.remove("ocultaAvatar");
+
 			// 1. Acciones si se omitió ingresar un archivo
 			if (!DOM.avatarInput.value) {
 				// Vuelve a la imagen original
@@ -449,7 +452,7 @@ window.addEventListener("load", async () => {
 		},
 		carpetaAvatars: async () => {
 			// Variables
-			let params = "carpeta_avatars" ;
+			let params = "carpeta_avatars";
 
 			// Agrega los demás parámetros
 			params += "&carpeta_avatars=" + DOM.carpeta_avatars.value;
@@ -463,7 +466,7 @@ window.addEventListener("load", async () => {
 		},
 		prioridad: async () => {
 			// Variables
-			let params = "prioridad" ;
+			let params = "prioridad";
 			params += "&prioridad_id=" + DOM.prioridad_id.value;
 
 			// OK y Errores
@@ -592,10 +595,9 @@ window.addEventListener("load", async () => {
 	};
 	let startUp = async (forzar) => {
 		// Avatar
-		if (forzar) {
-			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
-			varios.OK.avatar = !varios.errores.avatar;
-		}
+		varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
+		varios.OK.avatar = !varios.errores.avatar;
+		if (forzar) DOM.iconosOK[0].classList.remove("ocultaAvatar");
 
 		// Nombre
 		if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
@@ -757,7 +759,10 @@ window.addEventListener("load", async () => {
 			await validacs.fecha();
 
 			// Impactos en repetidos
-			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) await impactos.fecha.muestraPosiblesRepetidos();
+			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) {
+				await impactos.fecha.muestraPosiblesRepetidos();
+				validacs.repetido();
+			}
 		}
 
 		// Acciones si se cambia el sector Repetido
@@ -812,6 +817,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
+	DOM.iconosOK[0].classList.add("ocultaAvatar");
 	await startUp();
 });
 
