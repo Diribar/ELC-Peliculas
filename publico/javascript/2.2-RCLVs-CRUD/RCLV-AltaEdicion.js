@@ -297,6 +297,7 @@ window.addEventListener("load", async () => {
 				const alturaMarco = DOM.marcoCalendario.offsetHeight;
 				const alturaCalendario = DOM.tablaCalendario.offsetHeight;
 				const traslado = alturaCalendario * porcentajeCalendario - alturaMarco / 2;
+				DOM.marcoCalendario.scrollTop = traslado + DOM.dias_del_ano_Fila[0].offsetHeight * 1.5;
 
 				// Fin
 				return;
@@ -448,9 +449,7 @@ window.addEventListener("load", async () => {
 		},
 		prioridad: async () => {
 			// Variables
-			let params = "prioridad&entidad=" + entidad;
-
-			// Agrega los demás parámetros
+			let params = "prioridad" ;
 			params += "&prioridad_id=" + DOM.prioridad_id.value;
 
 			// OK y Errores
@@ -608,6 +607,10 @@ window.addEventListener("load", async () => {
 			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await validacs.sexo();
 		}
 
+		// Carpeta Avatars
+		if (DOM.carpeta_avatars && (DOM.carpeta_avatars.value || (forzar && varios.errores.carpeta_avatars == undefined)))
+			await validacs.carpetaAvatars();
+
 		// Prioridad
 		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
 			await validacs.prioridad();
@@ -753,6 +756,9 @@ window.addEventListener("load", async () => {
 			// Si corresponde, valida RCLIC
 			if (varios.OK.sexo_id && opcionElegida(DOM.categorias_id).value == "CFC") await validacs.RCLIC.personajes();
 		}
+
+		// Acciones si se cambia el sector Carpeta Avatars
+		if (campo == "carpeta_avatars") await validacs.carpetaAvatars();
 
 		// Acciones si se cambia el sector Prioridad
 		if (campo == "prioridad_id") await validacs.prioridad();
