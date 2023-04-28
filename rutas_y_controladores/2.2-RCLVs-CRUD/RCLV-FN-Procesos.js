@@ -210,7 +210,7 @@ module.exports = {
 				// Acciones si es un registro propio y en status creado
 				if (original.creado_por_id == userID && original.status_registro.creado) {
 					// Actualiza el registro original
-					await BD_genericas.actualizaPorId(entidad, id, DE);
+					BD_genericas.actualizaPorId(entidad, id, DE);
 
 					// Elimina el archivo avatar-original, si existía
 					if (req.file && DE.avatar && original.avatar)
@@ -228,7 +228,7 @@ module.exports = {
 						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 
 					// Guarda la edición
-					await procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
+					procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
 				}
 			}
 			// Fin
