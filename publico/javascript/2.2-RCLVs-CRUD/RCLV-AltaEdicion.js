@@ -18,16 +18,16 @@ window.addEventListener("load", async () => {
 		avatarInput: document.querySelector("form #imgDerecha .input[name='avatar']"),
 
 		// Primera columna - Nombre
-		camposNombre: document.querySelectorAll("form #nombre .input"),
+		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
 		nombre: document.querySelector("form .input[name='nombre']"),
 		apodo: document.querySelector("form input[name='apodo']"),
 		// Primera columna - Fecha
-		camposFecha: document.querySelectorAll("form #fecha .input"),
+		camposFecha: document.querySelectorAll("form #sectorFecha .input"),
 		tipoFecha: document.querySelector("form .input[name='tipoFecha']"),
-		mesDia: document.querySelector("form #fecha #mesDia"),
+		mesDia: document.querySelector("form #sectorFecha #mesDia"),
 		mes_id: document.querySelector("form .input[name='mes_id']"),
 		dia: document.querySelector("form .input[name='dia']"),
-		linksClick: document.querySelectorAll("form #fecha .links"),
+		linksClick: document.querySelectorAll("form #sectorFecha .links"),
 		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
 		// Primera columna - Fecha comentarios móvil
 		sectorContadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres"),
@@ -50,12 +50,12 @@ window.addEventListener("load", async () => {
 		tablaCalendario: document.querySelector("form #calendario table"),
 
 		// Abajo
-		camposEpoca: document.querySelectorAll("form #epoca .input"),
+		camposEpoca: document.querySelectorAll("form #sectorEpoca .input"),
 		epocas_id: document.querySelectorAll("form input[name='epoca_id']"),
 		ano: document.querySelector("form input[name='ano']"),
 		// Personajes
-		camposRCLIC: document.querySelectorAll("form #RCLIC .input"),
-		preguntasRCLIC: document.querySelectorAll("form #RCLIC #preguntasRCLIC .input"),
+		camposRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
+		preguntasRCLIC: document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input"),
 		categorias_id: document.querySelectorAll("form input[name='categoria_id']"),
 		rol_iglesia_id: document.querySelector("form select[name='rol_iglesia_id']"),
 		opcionesRolIglesia: document.querySelectorAll("form select[name='rol_iglesia_id'] option"),

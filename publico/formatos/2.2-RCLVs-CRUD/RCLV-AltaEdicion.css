@@ -14,7 +14,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #dataEntry #inicio #primeraCol {margin-right: 50px; min-width: 210px;}
 #dataEntry #inicio #segundaCol {display: flex; flex-direction: column; min-width: 210px;}
 #dataEntry .inputError .errores {left: -5px; translate: -100% -50%; right: auto;}
-#dataEntry :is(.input, #posiblesRepetidos, #dias_del_ano #calendario) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
+#dataEntry :is(.input, #posiblesRepetidos, #sectorDiasDelAno #calendario) {border: .7px solid var(--azul-oscuro); border-radius: 5px; background: white;}
 #dataEntry label[for] {padding-left: 3px;}
 #dataEntry textarea {padding-left: 5px; resize: none;}
 
@@ -29,66 +29,66 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 
 /* Nombres */
-#inicio #nombre label {margin-right: 7px;}
-#inicio #nombre .input {padding-left: 5px; width: 180px;}
+#inicio #sectorNombre label {margin-right: 7px;}
+#inicio #sectorNombre .input {padding-left: 5px; width: 180px;}
 
 /* Fecha */
-#inicio #fecha h3 {align-self: flex-start; margin-top: 1px;}
-#inicio #fecha :is(select[name="tipoFecha"], select[name="dia"], #inputDias) {margin-left: 15px;}
-#inicio #fecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
-#inicio #fecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
-#inicio #fecha .caracteres {align-self: flex-end;}
-#inicio #fecha textarea {height: 31px;}
-#inicio #fecha #dias_de_duracion {margin-top: 7px;}
-#inicio #fecha #dias_de_duracion input {width: 30px; text-align: center;}
-#inicio #fecha #dias_de_duracion input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
-/* #inicio #fecha #dias_de_duracion input[type=number] {-moz-appearance: textfield;} Firefox */
+#inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
+#inicio #sectorFecha :is(select[name="tipoFecha"], select[name="dia"], #inputDias) {margin-left: 15px;}
+#inicio #sectorFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
+#inicio #sectorFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
+#inicio #sectorFecha .caracteres {align-self: flex-end;}
+#inicio #sectorFecha textarea {height: 31px;}
+#inicio #sectorFecha #dias_de_duracion {margin-top: 7px;}
+#inicio #sectorFecha #dias_de_duracion input {width: 30px; text-align: center;}
+#inicio #sectorFecha #dias_de_duracion input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
+/* #inicio #sectorFecha #dias_de_duracion input[type=number] {-moz-appearance: textfield;} Firefox */
 
 /* Repetidos */
-#inicio #repetidos {display: flex; flex-direction: column; flex-grow: 1;}
-#repetidos #posiblesRepetidos {display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;}
-#repetidos #posiblesRepetidos {margin-top: 5px; padding: 5px; height: 100%;}
-#repetidos #posiblesRepetidos li {padding: 3px 0; display: flex; flex-direction: row;}
-#repetidos #posiblesRepetidos li input {padding-right: 5px;}
-#repetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+#inicio #sectorRepetidos {display: flex; flex-direction: column; flex-grow: 1;}
+#sectorRepetidos #posiblesRepetidos {display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;}
+#sectorRepetidos #posiblesRepetidos {margin-top: 5px; padding: 5px; height: 100%;}
+#sectorRepetidos #posiblesRepetidos li {padding: 3px 0; display: flex; flex-direction: row;}
+#sectorRepetidos #posiblesRepetidos li input {padding-right: 5px;}
+#sectorRepetidos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* Calendario */
-#dias_del_ano {display: flex; flex-direction: column; flex-grow: 1;}
-#dias_del_ano #calendario {height: 100%;}
-#dias_del_ano #calendario {margin-top: 5px; padding: 5px 10px;}
-#dias_del_ano #calendario {overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
-#dias_del_ano #calendario table {border-collapse: collapse; width: 90%;}
-#dias_del_ano #calendario table tr td {padding: 1px 0;}
+#sectorDiasDelAno {display: flex; flex-direction: column; flex-grow: 1;}
+#sectorDiasDelAno #calendario {height: 100%;}
+#sectorDiasDelAno #calendario {margin-top: 5px; padding: 5px 10px;}
+#sectorDiasDelAno #calendario {overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+#sectorDiasDelAno #calendario table {border-collapse: collapse; width: 90%;}
+#sectorDiasDelAno #calendario table tr td {padding: 1px 0;}
 
 /* Carpeta de Imágenes y Prioridad */
-#inicio :is(#sectorCarpetaAvatars select, #prioridad select) {width: 108px;}
-#inicio #prioridad {margin-top: 5px;}
-#inicio #prioridad .ayuda ul[type="dots"] {padding: 7px;}
-#inicio #prioridad .ayuda ul li {padding: 0; line-height: 1;}
-#inicio #prioridad .ayuda ul li.nivel1 {margin-top: 4px; margin-bottom: 2px;}
-#inicio #prioridad .ayuda ul li.nivel1:first-child {margin-top: 0;}
-#inicio #prioridad .ayuda ul.nivel2 {padding-left: 25px;}
-#inicio #prioridad .ayuda ul.nivel2 li {margin-bottom: 2px;}
+#inicio :is(#sectorCarpetaAvatars select, #sectorPrioridad select) {width: 108px;}
+#inicio #sectorPrioridad {margin-top: 5px;}
+#inicio #sectorPrioridad .ayuda ul[type="dots"] {padding: 7px;}
+#inicio #sectorPrioridad .ayuda ul li {padding: 0; line-height: 1;}
+#inicio #sectorPrioridad .ayuda ul li.nivel1 {margin-top: 4px; margin-bottom: 2px;}
+#inicio #sectorPrioridad .ayuda ul li.nivel1:first-child {margin-top: 0;}
+#inicio #sectorPrioridad .ayuda ul.nivel2 {padding-left: 25px;}
+#inicio #sectorPrioridad .ayuda ul.nivel2 li {margin-bottom: 2px;}
 
 /* Sexo */
-#inicio #sexo {margin-top: 10px;}
-#inicio #sexo .opciones {margin-left: 10px;}
-#inicio #sexo .opciones .ayuda ul {max-width: 200px;}
+#inicio #sectorSexo {margin-top: 10px;}
+#inicio #sectorSexo .opciones {margin-left: 10px;}
+#inicio #sectorSexo .opciones .ayuda ul {max-width: 200px;}
 
 /* Época */
-#epoca .opciones {justify-content: center; }
-#epoca .opciones .ayuda {position: static; translate: 5px 0px;}
-#epoca .opciones input {align-self: center;}
+#sectorEpoca .opciones {justify-content: center; }
+#sectorEpoca .opciones .ayuda {position: static; translate: 5px 0px;}
+#sectorEpoca .opciones input {align-self: center;}
 
 /* Relación con la Iglesia Católica */
-#RCLIC #soloCFC {margin-bottom: 5px;}
-#RCLIC .pregunta {font-size: 1.10rem;}
-#RCLIC .siNo {width: 70px; justify-content: space-between;}
-#RCLIC .personajes .siNo {margin-left: 10px;}
-#RCLIC .hechos .siNo {margin-right: 10px;}
+#sectorRCLIC #soloCFC {margin-bottom: 5px;}
+#sectorRCLIC .pregunta {font-size: 1.10rem;}
+#sectorRCLIC .siNo {width: 70px; justify-content: space-between;}
+#sectorRCLIC .personajes .siNo {margin-left: 10px;}
+#sectorRCLIC .hechos .siNo {margin-right: 10px;}
 
 /* 1. Año (personajes y hechos) */
-#epoca:not(
+#sectorEpoca:not(
 	:not(:has(.opciones input#pst:checked)), /* epoca = 'pst' */
 	:has(.opciones input.noPST:checked)      /* ninguna otra opción está 'checked' */
 ) .invisible {visibility: visible;}
@@ -97,7 +97,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #dataEntry:has(.personajes #categoria_id input#CFC:checked) /* la categoría es 'CFC' */
 	#preguntasRCLIC.invisible {visibility: visible;}
 
-#dataEntry:has(#sexo input:checked)                       /* contestó 'sexo' */
+#dataEntry:has(#sectorSexo input:checked)                       /* contestó 'sexo' */
 	#preguntasRCLIC .segunSexo_id.invisible {visibility: inherit;}
 
 /* 3. PreguntasRCLIC (hechos) */
