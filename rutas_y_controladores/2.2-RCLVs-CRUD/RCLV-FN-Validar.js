@@ -101,6 +101,9 @@ module.exports = {
 	avatar: (datos) => {
 		return comp.validaAvatar(datos);
 	},
+	carpeta_avatars: (datos) => {
+		return !datos.carpeta_avatars ? variables.selectVacio : "";
+	},
 	prioridad: (datos) => {
 		return !datos.prioridad_id ? variables.selectVacio : "";
 	},
