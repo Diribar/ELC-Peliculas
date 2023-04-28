@@ -98,12 +98,10 @@ module.exports = {
 			datos.avatar = req.file.filename;
 			datos.tamano = req.file.size;
 		}
-		console.log(95, datos);
 
 		// Averigua si hay errores de validación y toma acciones
 		const errores = await valida.consolidado(datos);
-		console.log(105, errores);
-		if (errores.hay || true) {
+		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
@@ -111,6 +109,8 @@ module.exports = {
 
 		// Obtiene el dataEntry
 		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
+		return res.send({datos, DE});
+
 		// Guarda los cambios del RCLV
 		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
 		// Borra el RCLV en session y cookies
