@@ -130,40 +130,47 @@ module.exports = {
 		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};
+
 			// Asigna el valor 'null' a todos los campos
 			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
-			// Datos comunes - Nombre
+
+			// Datos comunes
 			DE.nombre = datos.nombre;
-			// Datos comunes - Día del año
-			if (datos.mes_id && datos.dia)
-				DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-			else if (datos.desconocida) DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
-			else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
+			DE.dia_del_ano_id =
+				datos.tipoFecha == "SF" ? 400 : dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+			DE.fecha_movil = datos.tipoFecha == "FM";
+			if (datos.tipoFecha == "FM") DE.comentario_movil = datos.comentario_movil;
+			if (datos.prioridad_id) DE.prioridad_id = datos.prioridad_id;
+			if (datos.avatar) DE.avatar = datos.avatar;
+
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
 				let {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
-				DE.sexo_id = sexo_id;
-				DE.epoca_id = epoca_id;
 				DE.ano = epoca_id == "pst" ? ano : 0;
-				// RCLI
-				DE.categoria_id = categoria_id;
 				let CFC = categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
 				DE.ap_mar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? ap_mar_id : no_presencio_ninguna_id;
 			}
+
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
 				let {epoca_id, ano, solo_cfc, ama} = datos;
-				// Época
 				DE.epoca_id = epoca_id;
 				DE.ano = epoca_id == "pst" ? ano : 0;
-				// RCLIC
 				DE.solo_cfc = solo_cfc;
 				DE.ama = solo_cfc == "1" ? ama : 0;
 			}
+
+			// Datos para epocas_del_ano
+			if (datos.entidad == "epocas_del_ano") {
+				DE.dias_de_duracion = datos.dias_de_duracion;
+				DE.comentario_duracion = datos.comentario_duracion;
+			}
+
 			// Fin
 			return DE;
 		},
