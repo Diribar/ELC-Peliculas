@@ -88,11 +88,12 @@ module.exports = {
 		});
 	},
 	altaEdicGrabar: async (req, res) => {
-		// Puede venir de agregarProd o edicionProd
+		// Puede venir de agregarProd, edicionProd, o detalleRCLV
 
 		// Variables
 		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
+
 		// Averigua si hay errores de validación y toma acciones
 		let errores = await valida.consolidado(datos);
 		if (errores.hay) {
@@ -100,6 +101,7 @@ module.exports = {
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
+
 		// Obtiene el dataEntry
 		let DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
@@ -107,6 +109,7 @@ module.exports = {
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
+
 		// Obtiene el url de la siguiente instancia
 		let destino =
 			origen == "DA"
@@ -118,6 +121,7 @@ module.exports = {
 				: origen == "DTR"
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
 				: "/";
+
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
 	},

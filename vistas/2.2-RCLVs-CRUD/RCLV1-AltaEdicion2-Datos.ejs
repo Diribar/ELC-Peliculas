@@ -3,7 +3,7 @@
 	<!--Primera columna-->
 	<div id="primeraCol">
 		<!-- Nombres -->
-		<div id="nombre" class="flexCol">
+		<div id="sectorNombre" class="flexCol">
 			<!-- Título, Ayuda y Error/OK -->
 			<div class="flexRow">
 				<div class="margenDebajo inputError flexRow" style="z-index: 5;">
@@ -28,7 +28,7 @@
 							</ul>	
 						</i>
 					</div>
-					<%- include("CMP-Errores", {nombre:"nombre", display: true}) %>
+					<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
 				</div>
 			</div>
 			<!-- Campos -->
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<!-- Fecha Representativa -->
-		<div id="fecha" class="borderTop flexCol">
+		<div id="sectorFecha" class="borderTop flexCol">
 			<!-- Título, Ayuda y Error/OK -->
 			<div class="flexRow spaceBetween margenDebajo inputError" style="z-index: 4;">
 				<!-- Título -->
@@ -127,7 +127,7 @@
 	<div id="segundaCol">
 		<% if (epocas_del_ano) { %>
 			<!-- Días del año -->
-			<div id="dias_del_ano">
+			<div id="sectorDiasDelAno">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
 					<div class="margenDebajo inputError" style="z-index: 3;">
@@ -179,7 +179,7 @@
 			</div>
 		<% } else { %>
 			<!-- Repetidos -->
-			<div id="repetidos">
+			<div id="sectorRepetidos">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flexRow">
 					<div class="margenDebajo inputError" style="z-index: 3;">
@@ -193,7 +193,7 @@
 								</ul>
 							</i>
 						</div>
-						<%- include("CMP-Errores", {nombre:"repetidos", display: true}) %>
+						<%- include("CMP-Errores", {nombre: "repetidos", display: true}) %>
 					</div>
 				</div>
 				<!-- Valores -->
@@ -201,7 +201,7 @@
 			</div>
 			<% if (personajes) { %>
 				<!-- Sexo -->
-				<div id="sexo" class="flexRowAlign altoFila inputError">
+				<div id="sectorSexo" class="flexRowAlign altoFila inputError">
 					<h3>Sexo</h3>
 					<% for (let sexo of sexos) { %>
 						<div class="flexRowAlign opciones relative">
@@ -223,7 +223,7 @@
 		<% } %>
 		<!-- Prioridad -->
 		<% if (revisor) { %>
-			<div id="prioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
+			<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
 				<h3>Prioridad</h3>
 				<select name="prioridad_id" class="input margenIzq">
 					<option value="">Elegí una</option>
@@ -273,7 +273,7 @@
 </section>
 <% if (personajes || hechos) { %>
 	<!-- Época respecto a Jesús -->
-	<section id="epoca" class="borderTop OK">
+	<section id="sectorEpoca" class="borderTop OK">
 		<!-- Título, Ayuda y Error/OK -->
 		<div class="inputError flexRow margenDebajo">
 			<!-- Título -->
@@ -328,7 +328,7 @@
 		</div>
 	</section>
 	<!-- Relación con la Iglesia Católica -->
-	<section id="RCLIC" class="borderTop OK">
+	<section id="sectorRCLIC" class="borderTop OK">
 		<!-- Título, Ayuda y Error/OK -->
 		<div class="inputError" style="z-index: 4;">
 			<!-- Título -->
