@@ -158,7 +158,7 @@ module.exports = {
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
-				let {epoca_id, ano, solo_cfc, ama} = datos;
+				const {epoca_id, ano, solo_cfc, ama} = datos;
 				DE.epoca_id = epoca_id;
 				if (epoca_id == "pst") DE.ano = ano;
 				DE.solo_cfc = solo_cfc;
