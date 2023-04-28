@@ -55,9 +55,10 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Calendario */
 #dias_del_ano {display: flex; flex-direction: column; flex-grow: 1;}
 #dias_del_ano #calendario {height: 100%;}
-#dias_del_ano #calendario {overflow-y: auto; overflow-x: hidden;}
-#dias_del_ano #calendario {margin-top: 5px; padding: 3px;}
-#dias_del_ano #calendario table {width: 100%;}
+#dias_del_ano #calendario {margin-top: 5px; padding: 5px 10px;}
+#dias_del_ano #calendario {overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+#dias_del_ano #calendario table {border-collapse: collapse; width: 90%;}
+#dias_del_ano #calendario table tr td {padding: 1px 0;}
 
 /* Carpeta de Imágenes y Prioridad */
 #inicio :is(#carpeta_avatars select, #prioridad select) {width: 108px;}
