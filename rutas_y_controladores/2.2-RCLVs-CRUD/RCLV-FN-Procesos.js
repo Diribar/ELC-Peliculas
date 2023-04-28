@@ -160,7 +160,7 @@ module.exports = {
 				// Variables
 				let {epoca_id, ano, solo_cfc, ama} = datos;
 				DE.epoca_id = epoca_id;
-				DE.ano = epoca_id == "pst" ? ano : 0;
+				if (epoca_id == "pst") DE.ano =  ano 
 				DE.solo_cfc = solo_cfc;
 				DE.ama = solo_cfc == "1" ? ama : 0;
 			}
