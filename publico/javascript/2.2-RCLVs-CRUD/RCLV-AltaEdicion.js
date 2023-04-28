@@ -447,6 +447,20 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
+		carpetaAvatars: async () => {
+			// Variables
+			let params = "carpeta_avatars" ;
+
+			// Agrega los demás parámetros
+			params += "&carpeta_avatars=" + DOM.carpeta_avatars.value;
+
+			// OK y Errores
+			varios.errores.carpeta_avatars = await fetch(rutas.validacion + params).then((n) => n.json());
+			varios.OK.carpeta_avatars = !varios.errores.carpeta_avatars;
+
+			// Fin
+			return;
+		},
 		prioridad: async () => {
 			// Variables
 			let params = "prioridad" ;
@@ -793,7 +807,7 @@ window.addEventListener("load", async () => {
 		// Acciones si el botón está inactivo
 		if (DOM.botonSubmit.classList.contains("inactivo")) {
 			e.preventDefault();
-			await validacs.startUp(true);
+			await startUp(true);
 		}
 	});
 
