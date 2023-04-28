@@ -20,7 +20,8 @@
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
-#dataEntry .inputError :is(input.input, select[name="idioma_original_id"], textarea) {align-self: center; width: 200px;}
+#dataEntry .inputError :is(input.input, select[name="idioma_original_id"], textarea) {width: 200px;}
+#dataEntry .inputError select[name="idioma_original_id"]:has(option[value=""]:checked) {color: var(--gris-oscuro);}
 #dataEntry .inputError :is(input.input, textarea) {padding: 0px 5px;}
 #dataEntry .inputError input.input.angosto {width: 90px;}
 #dataEntry .inputError textarea {padding: 0px 5px; resize:vertical; max-height: 45px; min-height: 18px;}

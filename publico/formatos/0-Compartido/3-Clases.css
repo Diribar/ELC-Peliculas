@@ -20,7 +20,7 @@
 .inactivo *, .inactivoErrores *, .inactivoVersion * {border-color: transparent !important;}
 
 /* Maneras de Ocultar */
-.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, 
+.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAyudaRCLV, .ocultaAvatar,
 .ocultaCfc, .ocultaOcurrio {display: none;}
 .invisible {visibility: hidden;}
 

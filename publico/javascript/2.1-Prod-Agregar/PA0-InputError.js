@@ -244,7 +244,7 @@ window.addEventListener("load", async () => {
 		let valor = e.target.value;
 
 		// Tareas comunes
-		if (valor.length) {
+		if (valor.length && e.target.localName != "select") {
 			// Limita el uso del teclado solamente a los caracteres que nos interesan
 			valor = valor
 				.replace(/ +/g, " ")
