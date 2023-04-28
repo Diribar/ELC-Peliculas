@@ -87,23 +87,30 @@ module.exports = {
 			...{imgDerPers, avatarLinksExternos},
 		});
 	},
+	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGrabar: async (req, res) => {
-		// Puede venir de agregarProd, edicionProd, o detalleRCLV
-
 		// Variables
-		let {entidad, id, origen, prodEntidad, prodID} = req.query;
-		let datos = {...req.body, ...req.query};
+		const {entidad, id, origen, prodEntidad, prodID} = req.query;
+		let datos = {...req.body, ...req.query, opcional: true};
+
+		// Si recibimos un avatar, se completa la información
+		if (req.file) {
+			datos.avatar = req.file.filename;
+			datos.tamano = req.file.size;
+		}
+		console.log(95, datos);
 
 		// Averigua si hay errores de validación y toma acciones
-		let errores = await valida.consolidado(datos);
-		if (errores.hay) {
+		const errores = await valida.consolidado(datos);
+		console.log(105, errores);
+		if (errores.hay || true) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
 
 		// Obtiene el dataEntry
-		let DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
+		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
 		// Guarda los cambios del RCLV
 		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
 		// Borra el RCLV en session y cookies
@@ -111,7 +118,7 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		let destino =
+		const destino =
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
 				: origen == "EDP"
