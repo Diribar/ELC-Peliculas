@@ -93,6 +93,62 @@ window.addEventListener("load", async () => {
 	// -------------------------------------------------------
 	// Funciones
 	let impactos = {
+		avatar: async () => {
+			// 1. Acciones si se omitió ingresar un archivo
+			if (!DOM.avatarInput.value) {
+				// Vuelve a la imagen original
+				DOM.avatarImg.src = varios.avatarInicial;
+	
+				// Actualiza los errores
+				varios.esImagen = "";
+				await validacs.avatar();
+	
+				// Fin
+				validacs.muestraErroresOK();
+				validacs.botonSubmit();
+				return;
+			}
+			// 2. Acciones si se ingresó un archivo
+			let reader = new FileReader();
+			reader.readAsDataURL(DOM.avatarInput.files[0]);
+			reader.onload = () => {
+				let image = new Image();
+				image.src = reader.result;
+	
+				// Acciones si es realmente una imagen
+				image.onload = async () => {
+					// Actualiza la imagen del avatar en la vista
+					DOM.avatarImg.src = reader.result;
+	
+					// Actualiza los errores
+					varios.esImagen = "SI";
+					await validacs.avatar();
+	
+					// Fin
+					validacs.muestraErroresOK();
+					validacs.botonSubmit();
+					return;
+				};
+	
+				// Acciones si no es una imagen
+				image.onerror = async () => {
+					// Limpia el avatar
+					DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+	
+					// Actualiza los errores
+					varios.esImagen = "NO";
+					await validacs.avatar();
+	
+					// Limpia el input - debe estar después de la validación de errores debido al valor del input
+					DOM.avatarInput.value = "";
+	
+					// Fin
+					validacs.muestraErroresOK();
+					validacs.botonSubmit();
+					return;
+				};
+			};
+		},	
 		nombre: {
 			logosWikiSantopedia: () => {
 				// Mostrar logo de Wiki y Santopedia
@@ -192,6 +248,10 @@ window.addEventListener("load", async () => {
 					DOM.comentario_movil.classList.add("ocultar");
 				}
 
+				// Fin
+				return;
+			},
+			epocas_del_ano: () => {
 				// Fin
 				return;
 			},
@@ -439,21 +499,23 @@ window.addEventListener("load", async () => {
 				return;
 			},
 		},
-		muestraErrorOK: (i, ocultarOK) => {
-			// Íconos de OK
-			varios.OK[varios.camposError[i]] && !ocultarOK
-				? DOM.iconosOK[i].classList.remove("ocultar")
-				: DOM.iconosOK[i].classList.add("ocultar");
-			// Íconos de error
-			varios.errores[varios.camposError[i]]
-				? DOM.iconosError[i].classList.remove("ocultar")
-				: DOM.iconosError[i].classList.add("ocultar");
-			// Mensaje de error
-			DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]] ? varios.errores[varios.camposError[i]] : "";
-		},
-		muestraErroresOK: function () {
-			// Muestra los íconos de Error y OK
-			for (let i = 0; i < varios.camposError.length; i++) this.muestraErrorOK(i);
+		muestraErroresOK: () => {
+			for (let i = 0; i < varios.camposError.length; i++) {
+				// Íconos de OK
+				varios.OK[varios.camposError[i]]
+					? DOM.iconosOK[i].classList.remove("ocultar")
+					: DOM.iconosOK[i].classList.add("ocultar");
+
+				// Íconos de error
+				varios.errores[varios.camposError[i]]
+					? DOM.iconosError[i].classList.remove("ocultar")
+					: DOM.iconosError[i].classList.add("ocultar");
+
+				// Mensaje de error
+				DOM.mensajesError[i].innerHTML = varios.errores[varios.camposError[i]]
+					? varios.errores[varios.camposError[i]]
+					: "";
+			}
 		},
 		botonSubmit: () => {
 			// Variables
@@ -468,119 +530,59 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		startUp: async function (forzar) {
-			// Avatar
-			if (forzar) {
-				varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
-				varios.OK.avatar = !varios.errores.avatar;
-			}
-
-			// Nombre
-			if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
-				varios.personajes ? await this.nombre.personajes() : await this.nombre.demas();
-			if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
-
-			// Fechas
-			impactos.fecha.muestraOcultaCamposFecha();
-			if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-			if (
-				DOM.tipoFecha.value == "SF" ||
-				(DOM.mes_id.value && DOM.dia.value) ||
-				(forzar && varios.errores.fecha == undefined)
-			) {
-				// Valida el sector Fechas
-				await this.fecha();
-				// Si la fecha está OK, revisa los Repetidos
-				if (varios.OK.fecha) {
-					await impactos.fecha.muestraPosiblesRepetidos();
-					validacs.repetido();
-				}
-			}
-
-			// Sexo
-			if (DOM.sexos_id.length) {
-				if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
-				if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await this.sexo();
-			}
-
-			// Prioridad
-			if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
-				await this.prioridad();
-
-			// Época
-			if (DOM.epocas_id.length) {
-				if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
-				if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await this.epoca();
-			}
-
-			// RCLIC
-			if (
-				(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
-				(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
-				(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
-			)
-				await this.RCLIC[entidad]();
-
-			// Fin
-			this.muestraErroresOK();
-			this.botonSubmit();
-		},
 	};
-	let impactosValidacsAvatar = async () => {
-		// 1. Acciones si se omitió ingresar un archivo
-		if (!DOM.avatarInput.value) {
-			// Vuelve a la imagen original
-			DOM.avatarImg.src = varios.avatarInicial;
-
-			// Actualiza los errores
-			varios.esImagen = "";
-			await validacs.avatar();
-
-			// Fin
-			validacs.muestraErroresOK();
-			validacs.botonSubmit();
-			return;
+	let startUp = async (forzar) => {
+		// Avatar
+		if (forzar) {
+			varios.errores.avatar = varios.errores.avatar ? varios.errores.avatar : false;
+			varios.OK.avatar = !varios.errores.avatar;
 		}
-		// 2. Acciones si se ingresó un archivo
-		let reader = new FileReader();
-		reader.readAsDataURL(DOM.avatarInput.files[0]);
-		reader.onload = () => {
-			let image = new Image();
-			image.src = reader.result;
 
-			// Acciones si es realmente una imagen
-			image.onload = async () => {
-				// Actualiza la imagen del avatar en la vista
-				DOM.avatarImg.src = reader.result;
+		// Nombre
+		if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
+			varios.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
+		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 
-				// Actualiza los errores
-				varios.esImagen = "SI";
-				await validacs.avatar();
+		// Fechas
+		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
+		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
+		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && varios.errores.fecha == undefined)) {
+			// Valida el sector Fechas
+			await validacs.fecha();
+			// Si la fecha está OK, revisa los Repetidos
+			if (varios.OK.fecha) {
+				await impactos.fecha.muestraPosiblesRepetidos();
+				validacs.repetido();
+			}
+		}
 
-				// Fin
-				validacs.muestraErroresOK();
-				validacs.botonSubmit();
-				return;
-			};
+		// Sexo
+		if (DOM.sexos_id.length) {
+			if (opcionElegida(DOM.sexos_id).value) await impactos.sexo();
+			if (opcionElegida(DOM.sexos_id).value || (forzar && varios.errores.sexo_id == undefined)) await validacs.sexo();
+		}
 
-			// Acciones si no es una imagen
-			image.onerror = async () => {
-				// Limpia el avatar
-				DOM.avatarImg.src = "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+		// Prioridad
+		if (DOM.prioridad_id && (DOM.prioridad_id.value || (forzar && varios.errores.prioridad_id == undefined)))
+			await validacs.prioridad();
 
-				// Actualiza los errores
-				varios.esImagen = "NO";
-				await validacs.avatar();
+		// Época
+		if (DOM.epocas_id.length) {
+			if (opcionElegida(DOM.epocas_id).value) await impactos.epoca[entidad]();
+			if (opcionElegida(DOM.epocas_id).value || (forzar && varios.errores.epoca == undefined)) await validacs.epoca();
+		}
 
-				// Limpia el input - debe estar después de la validación de errores debido al valor del input
-				DOM.avatarInput.value = "";
+		// RCLIC
+		if (
+			(varios.personajes && opcionElegida(DOM.categorias_id).value) ||
+			(varios.hechos && opcionElegida(DOM.solo_cfc).value) ||
+			(forzar && (varios.personajes || varios.hechos) && varios.errores.RCLIC == undefined)
+		)
+			await validacs.RCLIC[entidad]();
 
-				// Fin
-				validacs.muestraErroresOK();
-				validacs.botonSubmit();
-				return;
-			};
-		};
+		// Fin
+		validacs.muestraErroresOK();
+		validacs.botonSubmit();
 	};
 
 	// Correcciones mientras se escribe
@@ -628,10 +630,13 @@ window.addEventListener("load", async () => {
 				if (campo == "comentario_duracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
 
 				// Limpia el ícono de error/OK
-				const indice = campo.startsWith("comentario") ? 2 : 1 // 2 para fecha, 1 para nombre
-				DOM.iconosError[indice].classList.add("ocultar")
-				DOM.iconosOK[indice].classList.add("ocultar")
+				const indice = campo.startsWith("comentario") ? 2 : 1; // 2 para fecha, 1 para nombre
+				DOM.iconosError[indice].classList.add("ocultar");
+				DOM.iconosOK[indice].classList.add("ocultar");
 			}
+
+			// Acciones si se cambian los Días de Duración
+			if (campo == "dias_de_duracion") valor = Math.max(2, Math.min(valor, 366));
 
 			// Acciones si se cambia el año
 			if (campo == "ano") {
@@ -667,7 +672,7 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el avatar
 		if (campo == "avatar") {
-			await impactosValidacsAvatar();
+			await impactos.avatar();
 			return;
 		}
 
@@ -681,6 +686,7 @@ window.addEventListener("load", async () => {
 		if (varios.camposFecha.includes(campo)) {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
+			if (varios.epocas_del_ano) impactos.fecha.epocas_del_ano();
 			// Valida las fechas
 			await validacs.fecha();
 			// Si la fecha se cambió y está OK, revisa los repetidos
@@ -736,7 +742,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Status inicial
-	await validacs.startUp();
+	await startUp();
 });
 
 // Funciones

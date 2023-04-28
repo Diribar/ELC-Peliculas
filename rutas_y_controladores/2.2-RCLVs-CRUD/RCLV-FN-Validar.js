@@ -83,9 +83,10 @@ module.exports = {
 				// Variables
 				const sufijo = "los Días de Duración";
 				// Valida la cantidad de días
-				if (!datos.dias_de_duracion) respuesta = cartelFaltaElDatoSobre + sufijo;
+				if (!respuesta && !datos.dias_de_duracion) respuesta = cartelFaltaElDatoSobre + sufijo;
+				if (!respuesta && datos.dias_de_duracion < 2) respuesta = "La cantidad de dias debe ser mayor a dos";
 
-				// Valida si existe un comentario adecuado para la cantidad de días
+				// Valida el comentario para la cantidad de días
 				if (!respuesta) {
 					if (!datos.comentario_duracion) respuesta = cartelCriterioSobre + sufijo;
 					const aux = !respuesta ? comp.longitud(datos.comentario_duracion, 4, 70) : "";
