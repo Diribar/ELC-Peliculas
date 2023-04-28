@@ -122,7 +122,7 @@ module.exports = {
 				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
 				: "/";
 
-				// Redirecciona a la siguiente instancia
+		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
 	},
 	detalle: async (req, res) => {
