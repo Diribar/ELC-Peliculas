@@ -14,7 +14,7 @@
 	<% } %>
 	<% if ((tema != "crud" && tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
 		<!-- Edición -->
-		<% if (status_id <= aprobado_id) { %>
+		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
