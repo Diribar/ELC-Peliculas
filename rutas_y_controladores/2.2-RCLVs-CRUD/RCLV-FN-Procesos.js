@@ -148,7 +148,7 @@ module.exports = {
 				let {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
 				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
-				DE.ano = epoca_id == "pst" ? ano : 0;
+				if (epoca_id == "pst") DE.ano =  ano 
 				let CFC = categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;

@@ -108,7 +108,7 @@ module.exports = {
 		return respuesta;
 	},
 	prioridad: (datos) => {
-		return !datos.prioridad_id && Object.keys(datos).includes("prioridad_id") ? variables.selectVacio : "";
+		return !datos.prioridad_id && (Object.keys(datos).includes("prioridad_id") || datos.revisor) ? variables.selectVacio : "";
 	},
 
 	// Entidades distintas a 'epocas_del_ano'

@@ -92,6 +92,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
+		datos.revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
