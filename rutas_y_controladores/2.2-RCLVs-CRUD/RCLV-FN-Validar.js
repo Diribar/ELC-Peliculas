@@ -101,9 +101,6 @@ module.exports = {
 	avatar: (datos) => {
 		return comp.validaAvatar(datos);
 	},
-	carpeta_avatars: (datos) => {
-		return !datos.carpeta_avatars ? variables.selectVacio : "";
-	},
 	prioridad: (datos) => {
 		return !datos.prioridad_id ? variables.selectVacio : "";
 	},
@@ -184,23 +181,8 @@ module.exports = {
 	},
 
 	// Épocas del año
-	vigencia: function (datos) {
-		// Obtiene los errores en 'desde' y 'hasta'
-		const {desconocida, meses_id, dias} = datos;
-		let mensaje;
-
-		// Si tiene fechas de vigencia
-		if (!desconocida)
-			for (let i = 0; i < meses_id.length; i++) {
-				let objeto = {mes_id: meses_id[i], dia: dias[i]};
-				mensaje = this.fecha(objeto);
-				if (mensaje) break;
-			}
-		// Si no tiene fechas de vigencia
-		else mensaje = "";
-
-		// Fin
-		return mensaje;
+	carpeta_avatars: (datos) => {
+		return !datos.carpeta_avatars ? variables.selectVacio : "";
 	},
 };
 
