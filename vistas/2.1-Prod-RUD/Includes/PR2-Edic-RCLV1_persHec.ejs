@@ -4,7 +4,7 @@
 	<label><%= titulo %></label>
 	<div class="inputError">
 		<!-- Input -->
-		<select name="<%= nombre %>" class="input">
+		<select name="<%= nombre %>" class="input RCLV">
 			<% for (let grupo of grupos) { %>
 				<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
 					<% for (let valor of grupo.valores) { %>
