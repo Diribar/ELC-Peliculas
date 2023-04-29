@@ -177,6 +177,7 @@ module.exports = {
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
 			const {entidad, id, origen, edic} = req.query;
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
 
@@ -188,10 +189,9 @@ module.exports = {
 				// Guarda el nuevo registro
 				DE.creado_por_id = userID;
 				DE.sugerido_por_id = userID;
-				let id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
+				const id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
 
 				// Les agrega el 'rclv_id' a session y cookie de origen
-				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 				if (origen == "DA") {
 					req.session.datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: id};
@@ -210,7 +210,7 @@ module.exports = {
 				// Acciones si es un registro propio y en status creado
 				if (original.creado_por_id == userID && original.status_registro.creado) {
 					// Actualiza el registro original
-					BD_genericas.actualizaPorId(entidad, id, DE);
+					await BD_genericas.actualizaPorId(entidad, id, DE);
 
 					// Elimina el archivo avatar-original, si existía
 					if (req.file && DE.avatar && original.avatar)
@@ -219,7 +219,6 @@ module.exports = {
 				// Acciones si no esta en status 'creado'
 				else {
 					// Obtiene la edicion
-					const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 					const condiciones = {[campo_id]: id, editado_por_id: userID};
 					const edicion = await BD_genericas.obtienePorCondicion(entidad, condiciones);
 
@@ -228,7 +227,7 @@ module.exports = {
 						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 
 					// Guarda la edición
-					procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
+					await procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
 				}
 			}
 			// Fin

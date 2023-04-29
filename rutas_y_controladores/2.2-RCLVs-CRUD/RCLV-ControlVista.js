@@ -112,7 +112,7 @@ module.exports = {
 		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
 
 		// Guarda los cambios y mueve el archivo avatar del RCLV
-		procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
+		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
 
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
