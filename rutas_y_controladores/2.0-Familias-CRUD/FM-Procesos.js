@@ -134,9 +134,9 @@ module.exports = {
 	// Avatar
 	obtieneAvatar: (original, edicion) => {
 		// Variables
-		const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "rclvs" : "";
-		const revisar = "2-" + familias + "/Revisar/";
+		const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "RCLVs" : "";
 		const final = "2-" + familias + "/Final/";
+		const revisar = "2-" + familias + "/Revisar/";
 		const sinAvatar = "0-Base/Avatar/Sin-Avatar.jpg";
 
 		// Si no detectó la familias, devuelve el genérico
@@ -152,7 +152,7 @@ module.exports = {
 			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + final + original.avatar)
 					? final + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + original.avatar)
+					comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + revisar + original.avatar)
 					? revisar + original.avatar
 					: sinAvatar);
 
