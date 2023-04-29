@@ -116,12 +116,12 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
+		const destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
 		// + prodEntidad + "&id=" + req.query.id + "&origen="+origen,
-		if (origen == "EDP" || origen == "DTP" || origen == "DTR") link += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 		// Redirecciona a la siguiente instancia
-		return res.redirect(link);
+		return res.redirect(destino);
 	},
 	detalle: async (req, res) => {
 		// Tema y Código
