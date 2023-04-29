@@ -18,7 +18,7 @@ module.exports = {
 		let productos = await procesos.TC_obtieneProds(userID);
 		productos = procesosRE.TC.prod_ProcesaCampos(productos);
 
-		// RCLVs Inactivos
+		// RCLVs
 		let rclvs = await procesos.TC_obtieneRCLVs(userID);
 		rclvs = procesosRE.TC.RCLV_ProcesaCampos(rclvs);
 

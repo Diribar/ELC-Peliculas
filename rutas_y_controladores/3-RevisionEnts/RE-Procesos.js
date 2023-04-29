@@ -700,21 +700,24 @@ module.exports = {
 // Funciones
 let TC_obtieneRegs = async (campos) => {
 	// Variables
+	let lecturas = [];
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of campos.entidades) {
-		let resultado = await BD_especificas.TC_obtieneRegs({entidad, ...campos});
-		if (resultado.length) {
-			resultado = resultado.map((n) => {
-				const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
-				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
-				return {...n, entidad, fechaRef, fechaRefTexto};
-			});
-			resultados.push(...resultado);
-		}
+	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC_obtieneRegs({entidad, ...campos}));
+	await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
+
+	if (resultados.length) {
+		resultados = resultados.map((n) => {
+			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
+			const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+			return {...n, fechaRef, fechaRefTexto};
+		});
+
+		// Ordena los resultados
+		resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	}
-	// Ordena los resultados
-	if (resultados.length) resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+
+
 	// Fin
 	return resultados;
 };

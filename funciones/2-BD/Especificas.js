@@ -115,7 +115,10 @@ module.exports = {
 		if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
 
 		// Resultado
-		return db[entidad].findAll({where: condiciones, include}).then((n) => n.map((m) => m.toJSON()));
+		return db[entidad]
+			.findAll({where: condiciones, include})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) => n.map((m) => ({...m, entidad})));
 	},
 	TC_obtieneEdicsAptas: (entidad, include) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
