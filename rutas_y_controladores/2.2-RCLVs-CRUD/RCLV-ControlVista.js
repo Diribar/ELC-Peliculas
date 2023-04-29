@@ -107,10 +107,8 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 
-		// Obtiene el dataEntry
+		// Obtiene el dataEntry, guarda los cambios y mueve el archivo avatar del RCLV
 		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
-
-		// Guarda los cambios y mueve el archivo avatar del RCLV
 		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
 
 		// Borra el RCLV en session y cookies
@@ -118,16 +116,9 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		const destino =
-			origen == "DA"
-				? "/producto/agregar/datos-adicionales"
-				: origen == "EDP"
-				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
-				: origen == "DTP"
-				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
-				: origen == "DTR"
-				? "/rclv/detalle/?entidad=" + entidad + "&id=" + id
-				: "/";
+		const destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
+		// + prodEntidad + "&id=" + req.query.id + "&origen="+origen,
+		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);

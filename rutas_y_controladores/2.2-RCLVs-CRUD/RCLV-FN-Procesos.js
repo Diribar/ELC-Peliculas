@@ -220,7 +220,7 @@ module.exports = {
 				else {
 					// Obtiene la edicion
 					const condiciones = {[campo_id]: id, editado_por_id: userID};
-					const edicion = await BD_genericas.obtienePorCondicion(entidad, condiciones);
+					const edicion = await BD_genericas.obtienePorCondicion("rclvs_edicion", condiciones);
 
 					// Elimina el archivo avatar-edicion, si existía
 					if (req.file && DE.avatar && edicion && edicion.avatar)
