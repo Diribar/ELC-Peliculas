@@ -130,55 +130,66 @@ module.exports = {
 		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};
+
 			// Asigna el valor 'null' a todos los campos
 			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
-			// Datos comunes - Nombre
+
+			// Datos comunes
 			DE.nombre = datos.nombre;
-			// Datos comunes - Día del año
-			if (datos.mes_id && datos.dia)
-				DE.dia_del_ano_id = dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-			else if (datos.desconocida) DE.dia_del_ano_id = 400; // Si marcó 'sin fecha conocida', pone el año genérico
-			else DE.dia_del_ano_id = 401; // Si pasó algo raro, pone otra fecha genérica
+			DE.dia_del_ano_id =
+				datos.tipoFecha == "SF" ? 400 : dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+			DE.fecha_movil = datos.tipoFecha == "FM";
+			if (datos.tipoFecha == "FM") DE.comentario_movil = datos.comentario_movil;
+			if (datos.prioridad_id) DE.prioridad_id = datos.prioridad_id;
+			if (datos.avatar) DE.avatar = datos.avatar;
+
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				let {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				const {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
-				DE.sexo_id = sexo_id;
-				DE.epoca_id = epoca_id;
-				DE.ano = epoca_id == "pst" ? ano : 0;
-				// RCLI
-				DE.categoria_id = categoria_id;
-				let CFC = categoria_id == "CFC";
+				if (epoca_id == "pst") DE.ano = ano;
+				const CFC = categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
 				DE.ap_mar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? ap_mar_id : no_presencio_ninguna_id;
 			}
+
 			// Datos para hechos
 			if (datos.entidad == "hechos") {
 				// Variables
-				let {epoca_id, ano, solo_cfc, ama} = datos;
-				// Época
+				const {epoca_id, ano, solo_cfc, ama} = datos;
 				DE.epoca_id = epoca_id;
-				DE.ano = epoca_id == "pst" ? ano : 0;
-				// RCLIC
+				if (epoca_id == "pst") DE.ano = ano;
 				DE.solo_cfc = solo_cfc;
 				DE.ama = solo_cfc == "1" ? ama : 0;
 			}
+
+			// Datos para epocas_del_ano
+			if (datos.entidad == "epocas_del_ano") {
+				DE.dias_de_duracion = datos.dias_de_duracion;
+				DE.comentario_duracion = datos.comentario_duracion;
+			}
+
 			// Fin
 			return DE;
 		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
-			let entidad = req.query.entidad;
-			let origen = req.query.origen;
-			let userID = req.session.usuario.id;
+			const {entidad, id, origen, edic} = req.query;
+			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
+
+			// Mueve el archivo avatar de Provisorio a Revisar
+			if (req.file && DE.avatar) comp.mueveUnArchivoImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
+
 			// Tareas para un nuevo registro
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
 				DE.creado_por_id = userID;
 				DE.sugerido_por_id = userID;
 				let id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
+
 				// Les agrega el 'rclv_id' a session y cookie de origen
 				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 				if (origen == "DA") {
@@ -194,12 +205,31 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				let id = req.query.id;
-				let original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
-				// Actualiza el registro o crea una edición
-				original.creado_por_id == userID && original.status_registro.creado // ¿Registro propio y en status creado?
-					? await BD_genericas.actualizaPorId(entidad, id, DE) // Actualiza el registro original
-					: await procsCRUD.guardaActEdicCRUD({original, edicion: DE, entidad, userID}); // Guarda la edición
+				const original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+
+				// Acciones si es un registro propio y en status creado
+				if (original.creado_por_id == userID && original.status_registro.creado) {
+					// Actualiza el registro original
+					BD_genericas.actualizaPorId(entidad, id, DE);
+
+					// Elimina el archivo avatar-original, si existía
+					if (req.file && DE.avatar && original.avatar)
+						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+				}
+				// Acciones si no esta en status 'creado'
+				else {
+					// Obtiene la edicion
+					const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+					const condiciones = {[campo_id]: id, editado_por_id: userID};
+					const edicion = await BD_genericas.obtienePorCondicion(entidad, condiciones);
+
+					// Elimina el archivo avatar-edicion, si existía
+					if (req.file && DE.avatar && edicion && edicion.avatar)
+						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+
+					// Guarda la edición
+					procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
+				}
 			}
 			// Fin
 			return;

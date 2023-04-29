@@ -168,17 +168,17 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
 
-		// Obtiene el producto 'Original' y 'Editado'
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
-		const actualizaOrig = revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length;
-
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
 			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
 			req.body.tamano = req.file.size;
 		}
+
+		// Obtiene el producto 'Original' y 'Editado'
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const actualizaOrig = revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length;
 
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido

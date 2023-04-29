@@ -87,15 +87,21 @@ module.exports = {
 			...{imgDerPers, avatarLinksExternos},
 		});
 	},
+	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGrabar: async (req, res) => {
-		// Puede venir de agregarProd, edicionProd, o detalleRCLV
-
 		// Variables
-		let {entidad, id, origen, prodEntidad, prodID} = req.query;
-		let datos = {...req.body, ...req.query};
+		const {entidad, id, origen, prodEntidad, prodID} = req.query;
+		let datos = {...req.body, ...req.query, opcional: true};
+		datos.revisor = req.session.usuario.rol_usuario.revisor_ents;
+
+		// Si recibimos un avatar, se completa la información
+		if (req.file) {
+			datos.avatar = req.file.filename;
+			datos.tamano = req.file.size;
+		}
 
 		// Averigua si hay errores de validación y toma acciones
-		let errores = await valida.consolidado(datos);
+		const errores = await valida.consolidado(datos);
 		if (errores.hay) {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
@@ -103,15 +109,17 @@ module.exports = {
 		}
 
 		// Obtiene el dataEntry
-		let DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
-		// Guarda los cambios del RCLV
-		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
+		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
+
+		// Guarda los cambios y mueve el archivo avatar del RCLV
+		procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
+
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		let destino =
+		const destino =
 			origen == "DA"
 				? "/producto/agregar/datos-adicionales"
 				: origen == "EDP"

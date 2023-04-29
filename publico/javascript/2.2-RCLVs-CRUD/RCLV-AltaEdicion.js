@@ -97,6 +97,7 @@ window.addEventListener("load", async () => {
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: "",
+		tamano: "",
 	};
 	if (varios.personajes) varios.prefijos = await fetch("/rclv/api/prefijos").then((n) => n.json());
 
@@ -114,6 +115,7 @@ window.addEventListener("load", async () => {
 
 				// Actualiza los errores
 				varios.esImagen = "";
+				varios.tamano = 0;
 				await validacs.avatar();
 
 				// Fin
@@ -135,6 +137,7 @@ window.addEventListener("load", async () => {
 
 					// Actualiza los errores
 					varios.esImagen = "SI";
+					varios.tamano = DOM.avatarInput.files[0].size;
 					await validacs.avatar();
 
 					// Fin
@@ -150,6 +153,7 @@ window.addEventListener("load", async () => {
 
 					// Actualiza los errores
 					varios.esImagen = "NO";
+					varios.tamano = 0;
 					await validacs.avatar();
 
 					// Limpia el input - debe estar después de la validación de errores debido al valor del input
@@ -362,6 +366,7 @@ window.addEventListener("load", async () => {
 			let params = "&avatar=" + encodeURIComponent(DOM.avatarInput.value);
 			params += "&opcional=SI";
 			params += "&esImagen=" + varios.esImagen;
+			params += "&tamano=" + varios.tamano;
 
 			// Averigua los errores
 			varios.errores.avatar = await fetch(rutas.validacion + "avatar" + params).then((n) => n.json());
@@ -759,7 +764,7 @@ window.addEventListener("load", async () => {
 			await validacs.fecha();
 
 			// Impactos en repetidos
-			if (varios.OK.fecha && ["mes_id", "dia"].includes(campo)) {
+			if (varios.OK.fecha && ["mes_id", "dia", "tipoFecha"].includes(campo)) {
 				await impactos.fecha.muestraPosiblesRepetidos();
 				validacs.repetido();
 			}

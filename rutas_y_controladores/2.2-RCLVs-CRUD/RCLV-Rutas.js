@@ -25,6 +25,8 @@ const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
 const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq, statusCorrecto];
 const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
 const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
+// Otros
+const multer = require("../../middlewares/varios/multer");
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar
@@ -34,9 +36,9 @@ router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", ...DE_agregar, vista.altaEdicForm);
-router.post("/agregar", ...DE_agregar, vista.altaEdicGrabar);
+router.post("/agregar", ...DE_agregar, multer.single("avatar"), vista.altaEdicGrabar);
 router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", ...DE_editar, capturaInactivar, vista.altaEdicGrabar);
+router.post("/edicion", ...DE_editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGrabar);
 router.get("/detalle", ...DE_detalle, vista.detalle);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
