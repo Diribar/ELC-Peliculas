@@ -110,3 +110,4 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Submit button */
 #dataEntry .flechas {margin: 20px 0 0;}
+#dataEntry .flechas label[for="eliminaEdicion"] {color: var(--rojo-oscuro);}
