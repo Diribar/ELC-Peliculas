@@ -22,6 +22,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #segundaColumna .label-input .inputError {width: 100%;}
 
 /* Partes específicas del formulario */
+#datos .columna {display: flex; flex-direction: column; justify-content: space-between;}
 #datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
 #datos .columna h3:first-child {margin-top: 0;}
 #datos .columna .label-input:has(h3) {margin-top: 15px;}
