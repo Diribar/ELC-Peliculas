@@ -52,13 +52,15 @@ module.exports = {
 		);
 
 		// 2. Aprobados
-		let aprobados = obtienePorEntidad({entidades, campoFecha: "alta_revisada_en", status_id: aprobado_id, userID: 1});
+		const include = ["ediciones"];
+		let campoFecha = "alta_revisada_en";
+		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID: 1, include});
 
 		// Await
 		[IN, aprobados] = await Promise.all([IN, aprobados]);
 
 		// 2.1. Sin Avatar
-		const SA = aprobados.filter((m) => !m.avatar && m.id > 2);
+		const SA = aprobados.filter((m) => !m.avatar && m.id > 2 && !m.ediciones.length);
 
 		// 2.2. Con solapamiento de fechas
 		const SF = aprobados.filter((m) => m.solapam_fechas);
