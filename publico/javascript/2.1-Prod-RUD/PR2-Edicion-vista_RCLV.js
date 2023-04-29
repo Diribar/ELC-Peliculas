@@ -1,16 +1,18 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let linksAlta = document.querySelectorAll(".inputError i.linkRCLV#alta");
-	let linksEdicion = document.querySelectorAll(".inputError i.linkRCLV#edicion");
-	let inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
+	const linksAlta = document.querySelectorAll(".inputError i.linkRCLV#alta");
+	const linksEdicion = document.querySelectorAll(".inputError i.linkRCLV#edicion");
+	const inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
+
 	// Variables para el ruteo del origen
-	let prodEntidad = new URL(location.href).searchParams.get("entidad");
-	let prodID = new URL(location.href).searchParams.get("id");
-	let paramsOrigen = "&origen=EDP&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	const prodEntidad = new URL(location.href).searchParams.get("entidad");
+	const prodID = new URL(location.href).searchParams.get("id");
+	const paramsOrigen = "&origen=EDP&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+
 	// Variables para guardar los datos
-	let inputs = document.querySelectorAll(".inputError .input");
-	let rutaRQ = "/producto/api/envia-a-req-session/";
+	const inputs = document.querySelectorAll(".inputError .input");
+	const rutaRQ = "/producto/api/envia-a-req-session/";
 
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV

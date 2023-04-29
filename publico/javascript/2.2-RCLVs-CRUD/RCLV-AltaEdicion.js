@@ -701,6 +701,7 @@ window.addEventListener("load", async () => {
 
 				// Limpia el ícono de error/OK
 				const indice = campo.startsWith("comentario") ? 2 : 1; // 2 para fecha, 1 para nombre
+				DOM.mensajesError[indice].innerHTML = "";
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
 			}
@@ -719,17 +720,15 @@ window.addEventListener("load", async () => {
 					let anoActual = new Date().getFullYear();
 					valor = Math.min(anoIngresado, anoActual);
 				}
+
+				// Limpia el ícono de error/OK
+				const indice = varios.camposError.indexOf("epoca")
+				DOM.mensajesError[indice].innerHTML = "";
+				DOM.iconosError[indice].classList.add("ocultar");
+				DOM.iconosOK[indice].classList.add("ocultar");
 			}
 			// Actualiza el valor en el DOM
 			e.target.value = valor;
-
-			// Oculta íconos de acierto y error
-			const i = varios.camposError.indexOf(campo);
-			if (i > -1) {
-				DOM.mensajesError[i].innerHTML = "";
-				DOM.iconosError[i].classList.add("ocultar");
-				DOM.iconosOK[i].classList.add("ocultar");
-			}
 		}
 
 		// Fin
