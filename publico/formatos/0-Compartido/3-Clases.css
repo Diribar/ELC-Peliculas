@@ -16,7 +16,7 @@
 .fa-circle-check {color: var(--verde-oscuro);}
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 .inactivo, .inactivo *, .inactivoErrores, .inactivoErrores *, .inactivoVersion, .inactivoVersion * 
-{opacity: .5 !important; cursor: not-allowed !important;}
+{opacity: .65 !important; cursor: not-allowed !important;}
 .inactivo *, .inactivoErrores *, .inactivoVersion * {border-color: transparent !important;}
 
 /* Maneras de Ocultar */

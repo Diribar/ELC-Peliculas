@@ -6,8 +6,8 @@ module.exports = (req, res, next) => {
 	// Acciones comunes entre los pasos de 'producto agregar'
 
 	// Variables
-	let urlActual = req.path.slice(1);
-	let variables = [
+	const urlActual = req.path.slice(1);
+	const variables = [
 		{url: "palabras-clave", codigo: "palabrasClave"},
 		{url: "desambiguar", codigo: "desambiguar"},
 		{url: "ingreso-manual", codigo: "IM"},
@@ -19,16 +19,16 @@ module.exports = (req, res, next) => {
 	];
 
 	// Obtiene el código que corresponde al 'url'
-	let {codigo} = variables.find((n) => urlActual.startsWith(n.url));
+	const {codigo} = variables.find((n) => urlActual.startsWith(n.url));
 
 	// Si no está la session/cookie actual, redirige a la url anterior
-	let sessionCookie = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
+	const sessionCookie = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 	if (!sessionCookie && codigo != "palabrasClave" && codigo != "desambiguar" && codigo != "IM") {
-		let indice = variables.findIndex((n) => n.url == urlActual);
+		const indice = variables.findIndex((n) => n.url == urlActual);
 		if (codigo != "datosDuros") return res.redirect(variables[indice - 1].url);
 		else {
 			// Obtiene el origen
-			let origen =
+			const origen =
 				req.session.FA || req.cookies.FA
 					? "ingreso-fa"
 					: req.session.IM || req.cookies.IM

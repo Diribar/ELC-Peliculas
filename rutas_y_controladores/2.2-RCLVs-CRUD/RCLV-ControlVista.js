@@ -73,6 +73,7 @@ module.exports = {
 		const epocas_del_ano = entidad == "epocas_del_ano";
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 		const prioridades = variables.prioridadesRCLV;
+		const urlActual = req.path.slice(1);
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
@@ -80,10 +81,9 @@ module.exports = {
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
 			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado, revisor},
-			...{roles_igl, ap_mars},
+			...{roles_igl, ap_mars, urlActual},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			...{omitirImagenDerecha: true, omitirFooter: true},
-			...{imgDerPers, avatarLinksExternos},
+			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarLinksExternos},
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
