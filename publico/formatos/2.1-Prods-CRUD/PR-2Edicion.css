@@ -17,7 +17,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #primeraColumna .inputError {width: 100%;}
 #primeraColumna .label-input .inputError {max-width: 200px;}
 #primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
-#segundaColumna {width: 380px;}
+#segundaColumna {width: 380px; display: flex; flex-direction: column;}
 #segundaColumna .label-input .inputError:not(:has(textarea)) {width: 240px;}
 #segundaColumna .label-input .inputError {width: 100%;}
 
@@ -55,8 +55,9 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos .label-input .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
 
 /* Sinopsis */
-#datos .label-input#sinopsis .inputError {width: 100%; margin-left: 0;} 
-#datos #segundaColumna #sinopsis textarea {height: 84px; padding: 5px 10px; resize: none;}
+#datos .label-input#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
+#datos .label-input#sinopsis .inputError {margin-left: 0; flex-grow: 1;}
+#datos #segundaColumna #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
 /* Mensajes de aviso de cambio de data-entry */
