@@ -19,7 +19,7 @@
 	<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	<!-- Links a sitios externos para buscar imágenes alternativas -->
 	<nav class="agregados">
-		<% for (let registro of avatarLinksExternos) { %>
+		<% for (let registro of avatarsExternos) { %>
 			<a href="<%= registro.href %>" target="_blank">
 				<img src="<%= localhost %><%= registro.src %>" alt="<%= registro.alt %>" class="scale">
 			</a>
