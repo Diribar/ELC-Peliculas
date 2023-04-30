@@ -44,25 +44,11 @@ module.exports = {
 		}
 
 		// Tipo de fecha
-		dataEntry.tipoFecha_id = false
-			? false
-			: dataEntry.fecha_movil
-			? "FM"
-			: dataEntry.dia_del_ano_id == 400
-			? "SF"
-			: dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400
-			? "FD"
-			: entidad == "personajes" || entidad == "hechos"
-			? "FD"
-			: entidad == "eventos" || entidad == "epocas_del_ano"
-			? "FM"
-			: entidad == "temas"
-			? "SF"
-			: "";
+		dataEntry.tipoFecha_id = procesos.altaEdicForm.tipoFecha_id(dataEntry, entidad);
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
-		const avatarsExternos = variables.avatarsExternos.rclvs(codigo != "agregar" ? dataEntry.nombre : "@");
+		const avatarsExternos = codigo != "agregar" ? variables.avatarsExternos.rclvs(dataEntry.nombre) : null;
 
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;

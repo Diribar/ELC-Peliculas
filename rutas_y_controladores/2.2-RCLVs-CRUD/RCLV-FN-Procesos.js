@@ -126,6 +126,25 @@ module.exports = {
 			return procCanoniz;
 		},
 	},
+	altaEdicForm: {
+		tipoFecha_id: (dataEntry, entidad) => {
+			return false
+				? false
+				: dataEntry.fecha_movil
+				? "FM"
+				: dataEntry.dia_del_ano_id == 400
+				? "SF"
+				: dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400
+				? "FD"
+				: entidad == "personajes" || entidad == "hechos"
+				? "FD"
+				: entidad == "eventos" || entidad == "epocas_del_ano"
+				? "FM"
+				: entidad == "temas"
+				? "SF"
+				: "";
+		},
+	},
 	altaEdicGrabar: {
 		procesaLosDatos: (datos) => {
 			// Variables
