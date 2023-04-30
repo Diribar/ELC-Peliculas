@@ -246,7 +246,6 @@ module.exports = {
 
 			// Procesa los datos del Data Entry
 			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
-			console.log(245, datos.avatar);
 		}
 
 		// CONSECUENCIAS
