@@ -38,20 +38,24 @@ window.addEventListener("load", async () => {
 		if (!formato.test(e.key)) e.preventDefault();
 	});
 	DOM.comentario.addEventListener("input", () => {
-		if (com.length) {
+		let valor = DOM.comentario.value;
+		if (valor.length) {
 			// Limita el uso del teclado solamente a los caracteres que nos interesan
-			let com = DOM.comentario.value
+			valor = valor
 				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 				.replace(/ +/g, " ")
 				.replace(/\n/g, "")
 				.slice(0, 100);
 
 			// El primer caracter no puede ser un espacio
-			if (com.slice(0, 1) == " ") com = com.slice(1);
+			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
 
 			// Primera letra en mayúscula
-			DOM.comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-			DOM.pendiente.innerHTML = 100 - com.length;
+			valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+
+			// Fin
+			DOM.comentario.value = valor;
+			DOM.pendiente.innerHTML = 100 - valor.length;
 		}
 
 		// Actualiza el botón submit
