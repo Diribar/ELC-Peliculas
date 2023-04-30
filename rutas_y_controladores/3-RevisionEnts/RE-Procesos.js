@@ -445,24 +445,29 @@ module.exports = {
 			// - Borra el campo 'avatar_url' en el registro de edicion
 			// - Impacto en los archivos de avatar (original y edicion)
 
-			// 1. Si se cumplen ciertas condiciones, descarga el avatar del original
-			if (!aprob) {
-				// Si el avatar original es un url y el registro es una pelicula o coleccion, descarga el avatar
-				let url = original.avatar;
-				if (url.includes("/") && entidad != "capitulos") {
-					// Asigna un nombre al archivo a descargar
-					original.avatar = Date.now() + path.extname(url);
-					// Descarga el url
-					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
-					await comp.descarga(url, rutaYnombre);
+			// Variables
+			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+
+			if (familias == "productos") {
+				// 1. Si se cumplen ciertas condiciones, descarga el avatar del original
+				if (!aprob) {
+					// Si el avatar original es un url y el registro es una pelicula o coleccion, descarga el avatar
+					let url = original.avatar;
+					if (url.includes("/") && entidad != "capitulos") {
+						// Asigna un nombre al archivo a descargar
+						original.avatar = Date.now() + path.extname(url);
+						// Descarga el url
+						let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
+						await comp.descarga(url, rutaYnombre);
+					}
 				}
+
+				// 2. Borra el campo 'avatar_url' en el registro de edicion
+				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
 			}
 
-			// 2. Borra el campo 'avatar_url' en el registro de edicion
-			await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
-
 			// 3. Impacto en los archivos de avatar (original y edicion)
-			await actualizaArchivoAvatar(original, edicion, aprob);
+			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
 			// Fin
 			return;
@@ -717,28 +722,28 @@ let TC_obtieneRegs = async (campos) => {
 		resultados.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 	}
 
-
 	// Fin
 	return resultados;
 };
 // VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
-let actualizaArchivoAvatar = async (original, edicion, aprob) => {
+let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;
 	const avatarEdic = edicion.avatar;
+	const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
-		let rutaFinal = "./publico/imagenes/2-Productos/Final/";
+		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
 		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.mueveUnArchivoImagen(avatarEdic, "2-Productos/Revisar", "2-Productos/Final");
+		comp.mueveUnArchivoImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
 	}
 
-	// Elimina el archivo de edicion
-	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-Productos/Revisar/", avatarEdic);
+	// Rechazo - Elimina el archivo de edicion
+	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;
