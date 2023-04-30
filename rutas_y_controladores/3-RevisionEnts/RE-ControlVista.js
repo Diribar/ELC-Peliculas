@@ -205,11 +205,12 @@ module.exports = {
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Acciones si es un RCLV y un alta aprobada
 		if (rclv && subcodigo == "alta") {
 			// Averigua si hay errores de validación y toma acciones
-			datos = {...req.body, ...req.query};
+			datos = {...req.body, ...req.query, revisor};
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
 				req.session[entidad] = datos;
