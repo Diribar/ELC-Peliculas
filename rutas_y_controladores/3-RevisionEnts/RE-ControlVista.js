@@ -222,8 +222,14 @@ module.exports = {
 			// Averigua si hay errores de validación y toma acciones
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
+				// Session y cookie
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
+
+				// Si se agregó un archivo avatar, lo elimina
+				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+				
+				// Fin
 				return res.redirect(req.originalUrl);
 			}
 
@@ -233,12 +239,16 @@ module.exports = {
 				if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 			}
 			// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-			else comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+			else {
+				datos.avatar = original.avatar;
+				if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+			}
 
 			// Procesa los datos del Data Entry
 			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+			console.log(245, datos.avatar);
 		}
-
+		res.redirect("/revision/tablero-de-control");
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad

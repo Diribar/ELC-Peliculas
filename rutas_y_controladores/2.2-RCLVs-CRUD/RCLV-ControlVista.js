@@ -52,7 +52,8 @@ module.exports = {
 		if (tema == "revisionEnts") dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
 
 		// Avatar
-		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
+		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
+		console.log(56, imgDerPers);
 		const avatarsExternos = codigo != "agregar" ? variables.avatarsExternos.rclvs(dataEntry.nombre) : null;
 
 		// Info para la vista
@@ -61,6 +62,7 @@ module.exports = {
 		const urlActual = req.path.slice(1);
 		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
@@ -68,7 +70,7 @@ module.exports = {
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
 			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado},
-			...{roles_igl, ap_mars, urlActual},
+			...{roles_igl, ap_mars, urlActual, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
 		});
@@ -127,7 +129,7 @@ module.exports = {
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		if (!origen) origen = "DTR";
-		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Titulo
 		const titulo = "Detalle de un " + entidadNombre;
@@ -149,7 +151,7 @@ module.exports = {
 		// Bloque de la derecha
 		const bloqueDer = {
 			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
-			registro: procsCRUD.bloqueRegistro({registro: original, revisor: revisor_ents, cantProds}),
+			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
 		};
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatar(original).orig;
