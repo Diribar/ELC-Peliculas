@@ -377,7 +377,8 @@ module.exports = {
 		}
 		// Variables para la vista
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const titulo = "Revisión de la Edición de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
+		const titulo = "Revisión de la Edición de" + articulo + entidadNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
 			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
