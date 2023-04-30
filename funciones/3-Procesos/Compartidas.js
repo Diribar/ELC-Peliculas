@@ -100,7 +100,7 @@ module.exports = {
 			: entidad == "eventos"
 			? "Evento del Año"
 			: entidad == "epocas_del_ano"
-			? "Epocas del Año"
+			? "Epoca del Año"
 			: entidad == "links"
 			? "Links"
 			: entidad == "usuarios"
