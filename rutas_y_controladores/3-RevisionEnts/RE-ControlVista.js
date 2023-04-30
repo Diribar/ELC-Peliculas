@@ -208,45 +208,64 @@ module.exports = {
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		datos = {};
 
-		// Acciones si es un RCLV y un alta aprobada
-		if (rclv && subcodigo == "alta") {
-			// Obtiene los datos
-			datos = {...req.body, ...req.query, revisor, opcional: true};
+		// Acciones si es un RCLV
+		if (rclv) {
+			// Variables
+			datos.avatar = req.file ? req.file.filename : original.avatar;
 
-			// Si recibimos un avatar, se completa la información
-			if (req.file) {
-				datos.avatar = req.file.filename;
-				datos.tamano = req.file.size;
+			// Acciones para alta
+			if (subcodigo == "alta") {
+				// Obtiene los datos
+				datos = {...datos, ...req.body, ...req.query, revisor, opcional: true};
+
+				// Si recibimos un avatar, se completa la información
+				if (req.file) datos.tamano = req.file.size;
+
+				// Averigua si hay errores de validación y toma acciones
+				let errores = await validaRCLV.consolidado(datos);
+				if (errores.hay) {
+					// Session y cookie
+					req.session[entidad] = datos;
+					res.cookie(entidad, datos, {maxAge: unDia});
+
+					// Si se agregó un archivo avatar, lo elimina
+					if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+					// Fin
+					return res.redirect(req.originalUrl);
+				}
+
+				// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el eventual anterior
+				if (req.file) {
+					comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+				}
+				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+				else if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+
+				// Procesa los datos del Data Entry
+				datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 			}
 
-			// Averigua si hay errores de validación y toma acciones
-			let errores = await validaRCLV.consolidado(datos);
-			if (errores.hay) {
-				// Session y cookie
-				req.session[entidad] = datos;
-				res.cookie(entidad, datos, {maxAge: unDia});
-
-				// Si se agregó un archivo avatar, lo elimina
-				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
-
-				// Fin
-				return res.redirect(req.originalUrl);
-			}
-
-			// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el eventual anterior
-			if (req.file) {
-				comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
-				if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
-			}
-			// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-			else {
-				datos.avatar = original.avatar;
+			// Acciones para rechazo
+			if (subcodigo == "rechazo") {
+				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 			}
 
-			// Procesa los datos del Data Entry
-			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+			// Acciones si es un RCLV inactivo
+			if (status_final_id == inactivo_id) {
+				// Borra su id de los campos rclv_id de las ediciones de producto
+				BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+
+				// Sus productos asociados:
+				// Dejan de estar vinculados
+				// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
+				await procesos.guardar.prodsAsocs(entidad, id);
+			}
 		}
+		// Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
+		else procsCRUD.cambioDeStatus(entidad, original);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -257,15 +276,15 @@ module.exports = {
 			datos.alta_revisada_por_id = revID;
 			datos.alta_revisada_en = ahora;
 			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, ahora);
-		}
-		// 1.C. Actualiza el registro
+		}		
+		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, {...datos, sugerido_por_id: 2});
 
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario
+		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el historial_cambios_de_status
@@ -274,13 +293,13 @@ module.exports = {
 			...{entidad, entidad_id: id},
 			...{sugerido_por_id: userID, sugerido_en: original.sugerido_en, status_original_id},
 			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
-			...{aprobado: aprob, motivo_id},
+			...{aprobado: aprob, motivo_id, comentario},
 		};
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
-		datosHist.comentario = comentario;
+		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
@@ -289,25 +308,12 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilia);
 
-		// 7. Acciones si es un RCLV inactivo
-		if (rclv && status_final_id == inactivo_id) {
-			// Borra su id de los campos rclv_id de las ediciones de producto
-			BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
-			// Sus productos asociados:
-			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
-			await procesos.guardar.prodsAsocs(entidad, id);
-		}
-
-		// 8. Acciones si es un producto inactivo
+		// 7. Acciones si es un registro inactivo
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
 		if (status_final_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
-		// 9. Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
-		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
-
-		// 10. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
+		// 8. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
 			procesos.descargaAvatar(original, entidad);
 
