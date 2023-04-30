@@ -221,14 +221,15 @@ module.exports = {
 
 			// Averigua si hay errores de validación y toma acciones
 			let errores = await validaRCLV.consolidado(datos);
-			if (errores.hay) {
+			console.log(225, errores.hay);
+			if (errores.hay && true) {
 				// Session y cookie
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
 
 				// Si se agregó un archivo avatar, lo elimina
 				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
-				
+
 				// Fin
 				return res.redirect(req.originalUrl);
 			}
@@ -476,13 +477,13 @@ module.exports = {
 		links.sort((a, b) => a.id - b.id);
 
 		// Información para la vista
-		let avatar = producto.avatar;
-		avatar = avatar
-			? (!avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + avatar
+		const avatar = producto.avatar		
+			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
-		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
+		const imgDerPers= procsCRUD.obtieneAvatar(producto).orig
 
-		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
@@ -490,7 +491,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers: procsCRUD.obtieneAvatar(producto).orig, cartelGenerico: true},
+			...{imgDerPers, cartelGenerico: true},
 		});
 	},
 };
