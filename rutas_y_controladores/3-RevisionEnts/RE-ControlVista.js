@@ -251,6 +251,8 @@ module.exports = {
 			if (subcodigo == "rechazo") {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+				// Si se había agregado un archivo, lo elimina
+				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
 			}
 
 			// Acciones si es un RCLV inactivo
@@ -276,7 +278,7 @@ module.exports = {
 			datos.alta_revisada_por_id = revID;
 			datos.alta_revisada_en = ahora;
 			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, ahora);
-		}		
+		}
 		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
