@@ -123,7 +123,7 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		const destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
+		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
 		// + prodEntidad + "&id=" + req.query.id + "&origen="+origen,
 		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
