@@ -64,7 +64,6 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #inicio :is(#sectorCarpetaAvatars select, #sectorPrioridad select) {width: 108px;}
 #inicio #sectorPrioridad {margin-top: 5px;}
 #inicio #sectorPrioridad .ayuda ul[type="dots"] {padding: 7px;}
-#inicio #sectorPrioridad .ayuda ul li {padding: 0; line-height: 1;}
 
 /* Sexo */
 #inicio #sectorSexo {margin-top: 10px;}
