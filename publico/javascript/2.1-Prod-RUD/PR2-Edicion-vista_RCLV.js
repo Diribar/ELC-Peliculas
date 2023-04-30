@@ -21,8 +21,7 @@ window.addEventListener("load", async () => {
 		if (input.value == "11" && i === 0) linksAlta[i].classList.add("ocultar");
 		else linksAlta[i].classList.remove("ocultar");
 		// Oculta el link de edición cuando el valor es 'nada', 'ninguno' o 'Jesús
-		if (!input.value || input.value == "1" || (input.value == "11" && i === 0))
-			linksEdicion[i].classList.add("ocultar");
+		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) linksEdicion[i].classList.add("ocultar");
 		else linksEdicion[i].classList.remove("ocultar");
 		return;
 	};
@@ -44,7 +43,7 @@ window.addEventListener("load", async () => {
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
-			if (link.className.includes("inactivo")) return
+			if (link.className.includes("inactivo")) return;
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 			// Obtiene la RCLV_entidad
@@ -58,7 +57,7 @@ window.addEventListener("load", async () => {
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
-			if (link.className.includes("inactivo")) return
+			if (link.className.includes("inactivo")) return;
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 			// Obtiene la RCLV_entidad
@@ -80,9 +79,15 @@ window.addEventListener("load", async () => {
 });
 
 let entidades = (link) => {
-	return link.className.includes("personaje")
+	return link.className.includes("personaje_id")
 		? "personajes"
-		: link.className.includes("hecho")
+		: link.className.includes("hecho_id")
 		? "hechos"
-		: "temas";
+		: link.className.includes("tema_id")
+		? "temas"
+		: link.className.includes("evento_id")
+		? "eventos"
+		: link.className.includes("epoca_del_ano_id")
+		? "epocas_del_ano"
+		: "";
 };
