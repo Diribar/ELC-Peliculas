@@ -39,11 +39,13 @@
 				<%- include("RE1-Prod-AvatarEtiq") %>
 			</div>
 		</div>
-		<div id="fichaTecnica">
-			<p><%= entidadNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
-			<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
-			<p>Dirección: <%= prodOrig.direccion %></p>
-		</div>
+		<% if (familia == "productos") { %>
+			<div id="fichaTecnica">
+				<p><%= entidadNombre %>: <strong><%= prodOrig.nombre_castellano %></strong></p>
+				<p>Año de estreno: <%= prodOrig.ano_estreno %></p>
+				<p>Dirección: <%= prodOrig.direccion %></p>
+			</div>
+		<% } %>
 		<%- include("Flechas-1Estandar") %>
 	</div>
 	<div id="abajo">
