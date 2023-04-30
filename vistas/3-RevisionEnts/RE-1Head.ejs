@@ -14,8 +14,9 @@
 	
 	<!-- RCLV-Altas -->
 	<% } else if (codigo == "rclv/alta") { %>
+		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
 		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
-		<script src="/javascript/2.2-RCLVs-CRUD/RCLV-InputError.js"></script>
+		<script src="/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
 
 	<!-- Rechazos -->
 	<% } else if (codigo == "rechazo") { %>
@@ -28,7 +29,7 @@
 		<script src="/javascript/3-RevisionEnts/RE4-InacRecup.js"></script>
 
 	<!-- Ediciones -->
-	<% } else if (codigo == "producto/edicion" || codigo == "rclv/edicion") { %>
+	<% } else if (codigo.endsWith("/edicion")) { %>
 		<link rel="stylesheet" href="/formatos/3-RevisionEnts/RE9-Edicion.css">
 		<script src="/javascript/3-RevisionEnts/RE9-Edicion.js"></script>
 

@@ -190,7 +190,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
 			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
 	},
@@ -205,17 +205,28 @@ module.exports = {
 		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		datos = {};
 
 		// Acciones si es un RCLV y un alta aprobada
 		if (rclv && subcodigo == "alta") {
+			// Obtiene los datos
+			datos = {...req.body, ...req.query, revisor, opcional: true};
+
+			// Si recibimos un avatar, se completa la información
+			if (req.file) {
+				datos.avatar = req.file.filename;
+				datos.tamano = req.file.size;
+			}
+
 			// Averigua si hay errores de validación y toma acciones
-			datos = {...req.body, ...req.query};
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
 				return res.redirect(req.originalUrl);
 			}
+
 			// Procesa los datos del Data Entry
 			else datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
@@ -223,7 +234,7 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
-		datos = {sugerido_por_id: revID, sugerido_en: ahora, status_registro_id: status_final_id, motivo_id};
+		datos = {...datos, sugerido_por_id: revID, sugerido_en: ahora, status_registro_id: status_final_id, motivo_id};
 		// 1.B. Datos sólo si es un alta/rechazo
 		if (!inactivarRecuperar) {
 			datos.alta_revisada_por_id = revID;
@@ -399,11 +410,12 @@ module.exports = {
 		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
-		let revID = req.session.usuario.id;
-		let original = await BD_genericas.obtienePorId(entidad, id);
-		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
-		let campo = "avatar";
-		let aprob = !rechazo;
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const revID = req.session.usuario.id;
+		const original = await BD_genericas.obtienePorId(entidad, id);
+		const campo = "avatar";
+		const aprob = !rechazo;
+		let edicion = await BD_genericas.obtienePorId(petitFamilia + "_edicion", edicID);
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});

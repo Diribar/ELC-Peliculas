@@ -22,10 +22,12 @@ const motivoOpcional = require("../../middlewares/producto/filtro-motivoOpcional
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-// Consolidados
+// Consolidado
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, existeEdicion, permUserReg];
+// Otros
+const multer = require("../../middlewares/varios/multer");
 
 // APIs -------------------------------------------------
 // Producto y RCLV
@@ -47,7 +49,8 @@ router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm)
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.inacRecup_Form);
 // Altas Guardar
-router.post("/:familia/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar);
+router.post("/producto/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_Guardar);
+router.post("/rclv/alta", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.prodRCLV_Guardar);
 router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_Guardar);
 // Inactivar o Recuperar
 router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.inacRecup_Form);

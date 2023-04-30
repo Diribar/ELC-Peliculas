@@ -1,5 +1,5 @@
 <!-- Detalle -->
-<% if (codigo == "detalle") { %><%- include("FM-Detalle") %><% } %>
+<% if (codigo == "detalle") { %><%- include("FM-Detalle") %>
 
 <!-- Altas y Edición -->
-<% if (codigo != "detalle") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+<% } else { %><%- include("RCLV1-AltaEdicion") %><% } %>

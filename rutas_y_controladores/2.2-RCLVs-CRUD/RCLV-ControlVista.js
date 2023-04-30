@@ -18,7 +18,6 @@ module.exports = {
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		let dataEntry = {};
@@ -44,25 +43,11 @@ module.exports = {
 		}
 
 		// Tipo de fecha
-		dataEntry.tipoFecha_id = false
-			? false
-			: dataEntry.fecha_movil
-			? "FM"
-			: dataEntry.dia_del_ano_id == 400
-			? "SF"
-			: dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400
-			? "FD"
-			: entidad == "personajes" || entidad == "hechos"
-			? "FD"
-			: entidad == "eventos" || entidad == "epocas_del_ano"
-			? "FM"
-			: entidad == "temas"
-			? "SF"
-			: "";
+		dataEntry.tipoFecha_id = procesos.altaEdicForm.tipoFecha_id(dataEntry, entidad);
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
-		const avatarsExternos = variables.avatarsExternos.rclvs(codigo != "agregar" ? dataEntry.nombre : "@");
+		const avatarsExternos = codigo != "agregar" ? variables.avatarsExternos.rclvs(dataEntry.nombre) : null;
 
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
@@ -81,7 +66,7 @@ module.exports = {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado, revisor},
+			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado},
 			...{roles_igl, ap_mars, urlActual},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
@@ -92,7 +77,6 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
-		datos.revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -123,7 +107,7 @@ module.exports = {
 		if (req.cookies[entidad]) res.clearCookie(entidad);
 
 		// Obtiene el url de la siguiente instancia
-		const destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
+		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
 		// + prodEntidad + "&id=" + req.query.id + "&origen="+origen,
 		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
