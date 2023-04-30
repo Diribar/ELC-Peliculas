@@ -39,7 +39,7 @@ module.exports = {
 						productos.push({
 							...n[asociacion],
 							entidad,
-							edicion_id: n.id,
+							edicID: n.id,
 							fechaRef: n[campoFecha],
 							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 						});
@@ -164,7 +164,7 @@ module.exports = {
 						...n[asociacion],
 						entidad,
 						editado_en: n.editado_en,
-						edicion_id: n.id,
+						edicID: n.id,
 						fechaRef: n[campoFecha],
 						fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 					});
@@ -205,7 +205,7 @@ module.exports = {
 						abrev: n.entidad.slice(0, 3).toUpperCase(),
 						fechaRefTexto: n.fechaRefTexto,
 					};
-					if (rubro == "ED") datos.edicion_id = n.edicion_id;
+					if (rubro == "ED") datos.edicID = n.edicID;
 					return datos;
 				});
 
@@ -228,7 +228,7 @@ module.exports = {
 						abrev: n.entidad.slice(0, 3).toUpperCase(),
 						fechaRefTexto: n.fechaRefTexto,
 					};
-					if (rubro == "ED") datos.edicion_id = n.edicion_id;
+					if (rubro == "ED") datos.edicID = n.edicID;
 					return datos;
 				});
 
