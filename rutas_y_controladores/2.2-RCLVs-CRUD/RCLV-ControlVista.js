@@ -53,7 +53,6 @@ module.exports = {
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
-		console.log(56, imgDerPers);
 		const avatarsExternos = codigo != "agregar" ? variables.avatarsExternos.rclvs(dataEntry.nombre) : null;
 
 		// Info para la vista
