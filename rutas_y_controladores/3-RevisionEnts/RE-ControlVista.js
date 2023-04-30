@@ -266,8 +266,6 @@ module.exports = {
 				await procesos.guardar.prodsAsocs(entidad, id);
 			}
 		}
-		// Si es un producto, actualiza los RCLV en el campo 'prods_aprob'
-		else procsCRUD.cambioDeStatus(entidad, original);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
