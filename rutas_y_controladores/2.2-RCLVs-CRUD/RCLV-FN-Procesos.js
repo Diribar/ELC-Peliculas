@@ -232,8 +232,11 @@ module.exports = {
 					await BD_genericas.actualizaPorId(entidad, id, DE);
 
 					// Elimina el archivo avatar-original, si existía
-					if (req.file && DE.avatar && original.avatar)
-						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+					if (req.file && original.avatar) {
+						original.status_registro_id == creado_id
+							? comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar)
+							: comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Final/", original.avatar);
+					}
 				}
 				// Acciones si no esta en status 'creado'
 				else {
