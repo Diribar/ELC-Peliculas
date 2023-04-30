@@ -144,6 +144,26 @@ module.exports = {
 				? "SF"
 				: "";
 		},
+		prioridad_id: (dataEntry, entidad) => {
+			const prioridad = {menor: 1, estandar: 2, mayor: 3};
+			return false
+				? false
+				: entidad == "personajes"
+				? prioridad.estandar
+				: entidad == "hechos"
+				? dataEntry.solo_cfc
+					? prioridad.estandar
+					: prioridad.menor
+				: entidad == "temas"
+				? prioridad.menor
+				: entidad == "eventos"
+				? dataEntry.solo_cfc
+					? prioridad.mayor
+					: prioridad.menor
+				: entidad == "epocas_del_ano"
+				? prioridad.menor
+				: "";
+		},
 	},
 	altaEdicGrabar: {
 		procesaLosDatos: (datos) => {

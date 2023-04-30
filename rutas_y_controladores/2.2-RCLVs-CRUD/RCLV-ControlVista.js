@@ -20,6 +20,11 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		const personajes = entidad == "personajes";
+		const hechos = entidad == "hechos";
+		const temas = entidad == "temas";
+		const eventos = entidad == "eventos";
+		const epocas_del_ano = entidad == "epocas_del_ano";
 		let dataEntry = {};
 		let ap_mars, roles_igl;
 
@@ -27,7 +32,7 @@ module.exports = {
 		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
 
 		// Variables específicas para personajes
-		if (entidad == "personajes") {
+		if (personajes) {
 			roles_igl = roles_iglesia.filter((m) => m.personaje);
 			ap_mars = await BD_genericas.obtieneTodos("hechos", "ano").then((n) => n.filter((m) => m.ama));
 		}
@@ -44,6 +49,7 @@ module.exports = {
 
 		// Tipo de fecha
 		dataEntry.tipoFecha_id = procesos.altaEdicForm.tipoFecha_id(dataEntry, entidad);
+		if (tema == "revisionEnts") dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
@@ -51,15 +57,10 @@ module.exports = {
 
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
-		const personajes = entidad == "personajes";
-		const hechos = entidad == "hechos";
-		const temas = entidad == "temas";
-		const eventos = entidad == "eventos";
-		const epocas_del_ano = entidad == "epocas_del_ano";
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
-		const prioridades = variables.prioridadesRCLV;
 		const urlActual = req.path.slice(1);
 		const DE = !!Object.keys(dataEntry).length;
+		const prioridades = variables.prioridadesRCLV;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
