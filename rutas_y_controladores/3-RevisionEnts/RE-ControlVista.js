@@ -194,7 +194,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	prodRCLV_Guardar: async (req, res) => {
+	prodRCLV_ARIR_guardar: async (req, res) => {
 		// Variables
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
@@ -227,8 +227,16 @@ module.exports = {
 				return res.redirect(req.originalUrl);
 			}
 
+			// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el potencial anterior
+			if (req.file) {
+				comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+				if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+			}
+			// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+			else comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+
 			// Procesa los datos del Data Entry
-			else datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
 
 		// CONSECUENCIAS
