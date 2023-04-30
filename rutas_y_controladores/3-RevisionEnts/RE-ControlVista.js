@@ -190,7 +190,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
 			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
 	},
