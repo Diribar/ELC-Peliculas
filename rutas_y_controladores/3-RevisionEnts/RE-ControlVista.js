@@ -297,7 +297,7 @@ module.exports = {
 		let codigo = req.path.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 		// Variables
-		const {entidad, id, edicion_id: edicID} = req.query;
+		const {entidad, id, edicID} = req.query;
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
@@ -396,7 +396,7 @@ module.exports = {
 	},
 	prod_AvatarGuardar: async (req, res) => {
 		// Obtiene la respuesta del usuario
-		const {entidad, id, edicion_id: edicID, rechazo, motivo_id} = {...req.query, ...req.body};
+		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
 		let revID = req.session.usuario.id;

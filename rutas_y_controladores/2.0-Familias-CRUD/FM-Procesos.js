@@ -12,7 +12,7 @@ module.exports = {
 		// Variables
 		const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-		const edicion_id = edicion.id;
+		const edicID = edicion.id;
 		let camposNull = {};
 
 		// 1. Quita de edición los campos que no se comparan
@@ -52,8 +52,8 @@ module.exports = {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 			// Si además había una edición guardada en la BD, la elimina
-			if (edicion_id) await BD_genericas.eliminaPorId(nombreEdicion, edicion_id);
-		} else edicion.id = edicion_id;
+			if (edicID) await BD_genericas.eliminaPorId(nombreEdicion, edicID);
+		} else edicion.id = edicID;
 
 		// Fin
 		return [edicion, camposNull];

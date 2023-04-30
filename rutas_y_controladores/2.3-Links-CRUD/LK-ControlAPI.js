@@ -29,7 +29,7 @@ module.exports = {
 
 		// Obtiene el link y el id de la edicion
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
-		let edicion_id = link
+		let edicID = link
 			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
 			: "";
 
@@ -50,7 +50,7 @@ module.exports = {
 		}
 		// Guarda la edición
 		else {
-			if (edicion_id) datos.id = edicion_id;
+			if (edicID) datos.id = edicID;
 			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
 		}
 

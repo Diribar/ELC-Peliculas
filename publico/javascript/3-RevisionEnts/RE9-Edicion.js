@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 		// Datos del registro
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		entID: new URL(location.href).searchParams.get("id"),
-		edicID: new URL(location.href).searchParams.get("edicion_id"),
+		edicID: new URL(location.href).searchParams.get("edicID"),
 		// Motivos para borrar
 		aprobar: document.querySelectorAll("#contenido .fa-circle-check"),
 		muestraCartelMotivos: document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos"),
@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Otras variables
-	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicion_id=" + v.edicID;
+	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
 	let sinMotivo = v.rechazar.length - v.motivoRechazos.length; // Son los reemplazos, donde no se le pregunta un motivo al usuario
 	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
 	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);

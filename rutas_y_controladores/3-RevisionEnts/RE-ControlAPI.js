@@ -14,7 +14,7 @@ module.exports = {
 	},
 	edicAprobRech: async (req, res) => {
 		// Variables
-		const {entidad, edicion_id: edicID, campo, aprob, motivo_id} = req.query;
+		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
 
