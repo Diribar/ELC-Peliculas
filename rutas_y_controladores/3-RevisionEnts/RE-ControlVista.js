@@ -194,7 +194,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	prodRCLV_Guardar: async (req, res) => {
+	prodRCLV_ARIR_guardar: async (req, res) => {
 		// Variables
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
@@ -222,13 +222,30 @@ module.exports = {
 			// Averigua si hay errores de validación y toma acciones
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
+				// Session y cookie
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
+
+				// Si se agregó un archivo avatar, lo elimina
+				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+				// Fin
 				return res.redirect(req.originalUrl);
 			}
 
+			// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el eventual anterior
+			if (req.file) {
+				comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+				if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+			}
+			// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+			else {
+				datos.avatar = original.avatar;
+				if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+			}
+
 			// Procesa los datos del Data Entry
-			else datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
 
 		// CONSECUENCIAS
@@ -458,13 +475,13 @@ module.exports = {
 		links.sort((a, b) => a.id - b.id);
 
 		// Información para la vista
-		let avatar = producto.avatar;
-		avatar = avatar
-			? (!avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + avatar
+		const avatar = producto.avatar
+			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
-		let motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
+		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 
-		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
@@ -472,7 +489,7 @@ module.exports = {
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, links_provs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers: procsCRUD.obtieneAvatar(producto).orig, cartelGenerico: true},
+			...{imgDerPers, cartelGenerico: true},
 		});
 	},
 };

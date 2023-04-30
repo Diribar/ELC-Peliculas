@@ -139,7 +139,7 @@ module.exports = {
 		const revisar = "2-" + familias + "/Revisar/";
 		const sinAvatar = "0-Base/Avatar/Sin-Avatar.jpg";
 
-		// Si no detectó la familias, devuelve el genérico
+		// Si no detectó la familia, devuelve el genérico
 		if (!familias) return {orig: "/imagenes/" + sinAvatar, edic: "/imagenes/" + sinAvatar};
 
 		// Obtiene el avatar original

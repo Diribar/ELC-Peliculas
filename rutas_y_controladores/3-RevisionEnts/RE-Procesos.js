@@ -340,8 +340,8 @@ module.exports = {
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
-			let include = comp.obtieneTodosLosCamposInclude(entidad);
-			let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+			const include = comp.obtieneTodosLosCamposInclude(entidad);
+			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 			const status_original_id = original.status_registro_id;
 
 			// Obtiene el 'subcodigo'

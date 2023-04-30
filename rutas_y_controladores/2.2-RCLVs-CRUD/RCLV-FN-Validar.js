@@ -43,7 +43,7 @@ module.exports = {
 	avatar: (datos) => {
 		return comp.validaAvatar(datos);
 	},
-	nombre: async function (datos) {
+	nombre: async (datos) => {
 		// Variables
 		let mensaje = "";
 

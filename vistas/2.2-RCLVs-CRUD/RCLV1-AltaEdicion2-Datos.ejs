@@ -222,7 +222,7 @@
 			<% } %>
 		<% } %>
 		<!-- Prioridad -->
-		<% if (tema == "revisionEnts") { %>
+		<% if (tema == "revisionEnts" || (revisor && dataEntry.status_registro_id == aprobado_id)) { %>
 			<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
 				<h3>Prioridad</h3>
 				<select name="prioridad_id" class="input margenIzq">
@@ -236,32 +236,20 @@
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
 						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 							<% if (personajes) { %>
-								<li class="nivel1">Personajes</li>
-								<ul class="nivel2">
-									<li>Estándar</li>
-									<li>Mayor importancia: algunos como Sagrada Familia, San José, María, Jesús</li>
-								</ul>
+								<li>Estándar</li>
+								<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
 							<% } else if (hechos) { %>
-								<li class="nivel1">Hechos</li>
-								<ul class="nivel2">
-									<li>VPC: Menor Importancia</li>
-									<li>CFC: Estándar</li>
-									<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
-								</ul>
+								<li>VPC: Menor Importancia</li>
+								<li>CFC: Estándar</li>
+								<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
 							<% } else if (temas) { %>
-								<li class="nivel1">Temas: Menor Importancia</li>
+								<li>Menor Importancia</li>
 							<% } else if (eventos) { %>
-								<li class="nivel1">Eventos del año</li>
-								<ul class="nivel2">
-									<li>VPC: Menor Importancia</li>
-									<li>CFC: Mayor importancia</li>
-								</ul>
+								<li>VPC: Menor Importancia</li>
+								<li>CFC: Mayor importancia</li>
 							<% } else if (epocas_del_ano) { %>
-								<li class="nivel1">Epocas del año</li>
-								<ul class="nivel2">
-									<li>Menor Importancia</li>
-									<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
-								</ul>
+								<li>Menor Importancia</li>
+								<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
 							<% } %>
 						</ul>
 					</i>
