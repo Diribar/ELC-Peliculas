@@ -399,11 +399,12 @@ module.exports = {
 		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
-		let revID = req.session.usuario.id;
-		let original = await BD_genericas.obtienePorId(entidad, id);
-		let edicion = await BD_genericas.obtienePorId("prods_edicion", edicID);
-		let campo = "avatar";
-		let aprob = !rechazo;
+		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const revID = req.session.usuario.id;
+		const original = await BD_genericas.obtienePorId(entidad, id);
+		const edicion = await BD_genericas.obtienePorId(petitFamilia + "_edicion", edicID);
+		const campo = "avatar";
+		const aprob = !rechazo;
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
