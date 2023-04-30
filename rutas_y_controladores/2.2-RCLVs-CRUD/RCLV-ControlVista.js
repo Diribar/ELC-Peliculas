@@ -38,7 +38,7 @@ module.exports = {
 			// Obtiene el original y edicion
 			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			// Pisa el data entry de session
-			dataEntry = {...original, ...edicion, id};
+			dataEntry = {...original, ...edicion, id, edicID: edicion.id};
 			// Obtiene el día y el mes
 			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
 		}
@@ -62,7 +62,7 @@ module.exports = {
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(codigo != "agregar" ? dataEntry : {dia_del_ano_id: 400}, {}).edic;
-		const avatarLinksExternos = variables.avatarExternoRCLVs(codigo != "agregar" ? dataEntry.nombre : "@");
+		const avatarsExternos = variables.avatarsExternos.rclvs(codigo != "agregar" ? dataEntry.nombre : "@");
 
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
@@ -74,16 +74,17 @@ module.exports = {
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 		const prioridades = variables.prioridadesRCLV;
 		const urlActual = req.path.slice(1);
+		const DE = !!Object.keys(dataEntry).length;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE: !!Object.keys(dataEntry).length, statusCreado, revisor},
+			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado, revisor},
 			...{roles_igl, ap_mars, urlActual},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarLinksExternos},
+			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV

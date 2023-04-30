@@ -96,7 +96,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		let imgDerPers, avatarLinksExternos, gruposPers, gruposHechos;
+		let imgDerPers, avatarsExternos, gruposPers, gruposHechos;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
 		// Configura el título de la vista
@@ -137,7 +137,7 @@ module.exports = {
 			paisesTop5 = paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5);
 			// Datos Duros - Avatar
 			imgDerPers = procsCRUD.obtieneAvatar(original, {...edicion, ...edicSession});
-			avatarLinksExternos = variables.avatarExternoProds(original.nombre_castellano);
+			avatarsExternos = variables.avatarsExternos.prods(original.nombre_castellano);
 			// Datos Personalizados
 			camposDA = await variables.camposDA_conValores(userID);
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);
@@ -158,7 +158,7 @@ module.exports = {
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-			...{dataEntry: {}, avatarLinksExternos, status_id},
+			...{dataEntry: {}, avatarsExternos, status_id},
 			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
 		});

@@ -3,16 +3,15 @@
 
 <!-- Altas -->
 <% if (codigo == "producto/alta") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "rclv/alta") { %><%- include(entidad != "temas" ? "RCLV1-AltaEdicion" : "RCLV1-Temas") %><% } %>
+<% if (codigo == "rclv/alta") { %><%- include("RCLV1-AltaEdicion") %><% } %>
 
 <!-- Otros Cambios de Status -->
 <% if (codigo == "rechazo") { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo == "inactivar-o-recuperar") { %><%- include("FM-Detalle") %><% } %>
 
 <!-- Edición -->
-<% if (codigo == "producto/edicion") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "rclv/edicion") { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "producto/edicion/avatar") { %><%- include("RE1-Prod-Avatar") %><% } %>
+<% if (codigo.endsWith("producto/edicion")) { %><%- include("FM-Detalle") %><% } %>
+<% if (codigo.endsWith("/edicion/avatar")) { %><%- include("RE1-Prod-Avatar") %><% } %>
 
 <!-- Links -->
 <% if (codigo == "abmLinks") { %><%- include("LK-ABM") %><% } %>
