@@ -103,8 +103,14 @@ module.exports = {
 		// Averigua si hay errores de validación y toma acciones
 		const errores = await valida.consolidado(datos);
 		if (errores.hay) {
+			// Guarda session y cookie
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
+
+			// Elimina el archivo avatar, si existía
+			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+			// Redirige a la vista 'form'
 			return res.redirect(req.originalUrl);
 		}
 
