@@ -206,17 +206,27 @@ module.exports = {
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		datos = {};
 
 		// Acciones si es un RCLV y un alta aprobada
 		if (rclv && subcodigo == "alta") {
+			// Obtiene los datos
+			datos = {...req.body, ...req.query, revisor, opcional: true};
+
+			// Si recibimos un avatar, se completa la información
+			if (req.file) {
+				datos.avatar = req.file.filename;
+				datos.tamano = req.file.size;
+			}
+
 			// Averigua si hay errores de validación y toma acciones
-			datos = {...req.body, ...req.query, revisor};
 			let errores = await validaRCLV.consolidado(datos);
 			if (errores.hay) {
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
 				return res.redirect(req.originalUrl);
 			}
+
 			// Procesa los datos del Data Entry
 			else datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 		}
@@ -224,7 +234,7 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
-		datos = {sugerido_por_id: revID, sugerido_en: ahora, status_registro_id: status_final_id, motivo_id};
+		datos = {...datos, sugerido_por_id: revID, sugerido_en: ahora, status_registro_id: status_final_id, motivo_id};
 		// 1.B. Datos sólo si es un alta/rechazo
 		if (!inactivarRecuperar) {
 			datos.alta_revisada_por_id = revID;
