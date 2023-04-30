@@ -65,10 +65,6 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #inicio #sectorPrioridad {margin-top: 5px;}
 #inicio #sectorPrioridad .ayuda ul[type="dots"] {padding: 7px;}
 #inicio #sectorPrioridad .ayuda ul li {padding: 0; line-height: 1;}
-#inicio #sectorPrioridad .ayuda ul li.nivel1 {margin-top: 4px; margin-bottom: 2px;}
-#inicio #sectorPrioridad .ayuda ul li.nivel1:first-child {margin-top: 0;}
-#inicio #sectorPrioridad .ayuda ul.nivel2 {padding-left: 25px;}
-#inicio #sectorPrioridad .ayuda ul.nivel2 li {margin-bottom: 2px;}
 
 /* Sexo */
 #inicio #sectorSexo {margin-top: 10px;}
