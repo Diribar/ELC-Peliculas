@@ -221,8 +221,7 @@ module.exports = {
 
 			// Averigua si hay errores de validación y toma acciones
 			let errores = await validaRCLV.consolidado(datos);
-			console.log(225, errores.hay);
-			if (errores.hay && true) {
+			if (errores.hay) {
 				// Session y cookie
 				req.session[entidad] = datos;
 				res.cookie(entidad, datos, {maxAge: unDia});
@@ -234,7 +233,7 @@ module.exports = {
 				return res.redirect(req.originalUrl);
 			}
 
-			// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el potencial anterior
+			// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el eventual anterior
 			if (req.file) {
 				comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
 				if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
@@ -249,7 +248,7 @@ module.exports = {
 			datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 			console.log(245, datos.avatar);
 		}
-		res.redirect("/revision/tablero-de-control");
+
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
@@ -477,12 +476,12 @@ module.exports = {
 		links.sort((a, b) => a.id - b.id);
 
 		// Información para la vista
-		const avatar = producto.avatar		
+		const avatar = producto.avatar
 			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
 		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
-		const imgDerPers= procsCRUD.obtieneAvatar(producto).orig
+		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 
 		// Va a la vista
 		//return res.send(links)
