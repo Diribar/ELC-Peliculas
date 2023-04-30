@@ -302,7 +302,7 @@ module.exports = {
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
-		let avatarExterno, avatarLinksExternos, avatar, imgDerPers;
+		let avatarExterno, avatarsExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos, cantProds;
 
 		// Obtiene la versión original con include
@@ -347,7 +347,8 @@ module.exports = {
 				avatar = procsCRUD.obtieneAvatar(original, edicion);
 				motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
 				avatarExterno = !avatar.orig.includes("/imagenes/");
-				avatarLinksExternos = variables.avatarLinksExternos(original.nombre_castellano);
+				const nombre = petitFamilia == "prods" ? original.nombre_castellano : original.nombre;
+				avatarsExternos = variables.avatarsExternos[petitFamilia](nombre);
 			}
 		}
 		// Acciones si el avatar no está presente en la edición
@@ -387,7 +388,7 @@ module.exports = {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
-			...{avatar, avatarExterno, avatarLinksExternos, imgDerPers},
+			...{avatar, avatarExterno, avatarsExternos, imgDerPers},
 			...{omitirImagenDerecha: codigo.includes("avatar"), omitirFooter: codigo.includes("avatar")},
 			...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
 		});
