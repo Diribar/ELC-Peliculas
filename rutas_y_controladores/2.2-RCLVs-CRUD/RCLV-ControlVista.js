@@ -18,7 +18,6 @@ module.exports = {
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		let dataEntry = {};
@@ -67,7 +66,7 @@ module.exports = {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado, revisor},
+			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado},
 			...{roles_igl, ap_mars, urlActual},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
@@ -78,7 +77,6 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
-		datos.revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
