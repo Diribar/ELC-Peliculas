@@ -110,7 +110,7 @@
 				</div>
 				<p class="caracteres ocultar"><span>70</span>/70</p>
 			</div>
-			<textarea name="comentario_movil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"></textarea>
+			<textarea name="comentario_movil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentario_movil %></textarea>
 			<% if (epocas_del_ano) { %>
 				<div id="dias_de_duracion" class="flexRow spaceBetween altoFila">
 					<div class="flexRowAlign margenDebajo">
@@ -119,7 +119,7 @@
 					</div>
 					<p class="caracteres"><span>70</span>/70</p>
 				</div>
-				<textarea name="comentario_duracion" class="input margenDebajo" placeholder="Comentario sobre los días de duración"></textarea>
+				<textarea name="comentario_duracion" class="input margenDebajo" placeholder="Comentario sobre los días de duración"><%= dataEntry.comentario_duracion %></textarea>
 			<% } %>
 		</div>
 	</div>
