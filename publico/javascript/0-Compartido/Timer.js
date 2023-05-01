@@ -5,25 +5,37 @@ window.addEventListener("load", async () => {
 	const entID = new URL(location.href).searchParams.get("id");
 	let entidad = new URL(location.href).searchParams.get("entidad");
 	const productos = ["peliculas", "colecciones", "capitulos"].includes(entidad);
-	const rclvs = ["personajes", "hechos", "temas"].includes(entidad);
+	const rclvs = ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"].includes(entidad);
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
+
 	// Temas de horario y fechas
 	const unMinuto = 60 * 1000;
 	const mesesAbrev = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
 	// Otras variables
 	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 	const codigo = new URL(location.href).pathname;
 	let timer = document.querySelector("#timer");
+
 	// Horario Inicial
 	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) => n.json());
-	let horarioInicial = datos.capturado_en ? datos.capturado_en : datos.creado_en;
+	let horarioInicial = false
+		? false
+		: !datos.capturado_en
+		? datos.creado_en
+		: datos.capturado_por_id == datos.userID
+		? datos.capturado_en
+		: new Date()
+
 	// Configurar el horario final
 	let horarioFinal = new Date(horarioInicial);
 	horarioFinal.setHours(horarioFinal.getHours() + 1);
+
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoMax = 60;
 	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / unMinuto);
+
 	// Minutos y Segundos disponibles
 	let minutosDispon =
 		// ¿Hay tiempo restante?
@@ -118,6 +130,7 @@ window.addEventListener("load", async () => {
 	timer.innerHTML = minutosInicialesAMostrar + " min.";
 	formatoTimer(minutosDispon);
 	timer.classList.remove("ocultar");
+
 	// Pausa hasta que se acaben los segundos del minuto inicial
 	setTimeout(() => {
 		// Actualizar los minutos disponibles
