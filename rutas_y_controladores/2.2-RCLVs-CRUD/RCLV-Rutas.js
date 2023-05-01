@@ -36,9 +36,9 @@ router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", ...DE_agregar, vista.altaEdicForm);
-router.post("/agregar", ...DE_agregar, multer.single("avatar"), vista.altaEdicGrabar);
+router.post("/agregar", ...DE_agregar, multer.single("avatar"), vista.altaEdicGuardar);
 router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", ...DE_editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGrabar);
+router.post("/edicion", ...DE_editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
 router.get("/detalle", ...DE_detalle, vista.detalle);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);

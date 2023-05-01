@@ -165,7 +165,7 @@ module.exports = {
 				: "";
 		},
 	},
-	altaEdicGrabar: {
+	altaEdicGuardar: {
 		procesaLosDatos: (datos) => {
 			// Variables
 			let DE = {};

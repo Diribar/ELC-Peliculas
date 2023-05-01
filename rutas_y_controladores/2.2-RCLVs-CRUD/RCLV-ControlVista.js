@@ -76,7 +76,7 @@ module.exports = {
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
-	altaEdicGrabar: async (req, res) => {
+	altaEdicGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
@@ -102,8 +102,8 @@ module.exports = {
 		}
 
 		// Obtiene el dataEntry, guarda los cambios y mueve el archivo avatar del RCLV
-		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
-		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
+		const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
+		await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];

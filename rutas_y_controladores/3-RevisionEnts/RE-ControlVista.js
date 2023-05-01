@@ -240,7 +240,7 @@ module.exports = {
 					comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
 					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
-				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+				// Si no recibimos un avatar y no hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				else if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 
 				// Acciones si es un 'epoca_del_ano'
@@ -258,7 +258,7 @@ module.exports = {
 				}
 
 				// Procesa los datos del Data Entry
-				datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+				datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 			}
 
 			// Acciones para rechazo
