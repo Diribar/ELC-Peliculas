@@ -216,20 +216,19 @@ module.exports = {
 		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
-			const {entidad, id, origen, edic} = req.query;
+			const {entidad, id, origen} = req.query;
 			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
 			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
-
-			// Mueve el archivo avatar de Provisorio a Revisar
-			if (req.file && DE.avatar) comp.mueveUnArchivoImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
+			let original, edicion, edicN;
 
 			// Tareas para un nuevo registro
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
 				DE.creado_por_id = userID;
 				DE.sugerido_por_id = userID;
-				const id = await BD_genericas.agregaRegistro(entidad, DE).then((n) => n.id);
+				original = await BD_genericas.agregaRegistro(entidad, DE);
+				id = original.id;
 
 				// Les agrega el 'rclv_id' a session y cookie de origen
 				if (origen == "DA") {
@@ -245,36 +244,18 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				const original = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["status_registro", "ediciones"]);
+				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editado_por_id == userID);
 
-				// Acciones si es un registro propio y en status creado
-				if (original.creado_por_id == userID && original.status_registro.creado) {
-					// Actualiza el registro original
+				// Si es un registro propio y en status creado, actualiza el registro original
+				if (original.creado_por_id == userID && original.status_registro.creado)
 					await BD_genericas.actualizaPorId(entidad, id, DE);
-
-					// Elimina el archivo avatar-original, si existía
-					if (req.file && original.avatar) {
-						original.status_registro_id == creado_id
-							? comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar)
-							: comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Final/", original.avatar);
-					}
-				}
-				// Acciones si no esta en status 'creado'
-				else {
-					// Obtiene la edicion
-					const condiciones = {[campo_id]: id, editado_por_id: userID};
-					const edicion = await BD_genericas.obtienePorCondicion("rclvs_edicion", condiciones);
-
-					// Elimina el archivo avatar-edicion, si existía
-					if (req.file && DE.avatar && edicion && edicion.avatar)
-						comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
-
-					// Guarda la edición
-					await procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
-				}
+				// Si no esta en status 'creado', guarda la edición
+				else edicN = await procsCRUD.guardaActEdicCRUD({original, edicion: {...edicion, ...DE}, entidad, userID});
 			}
+
 			// Fin
-			return;
+			return {original, edicion, edicN};
 		},
 	},
 };
