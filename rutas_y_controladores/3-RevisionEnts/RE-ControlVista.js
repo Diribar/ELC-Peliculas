@@ -235,6 +235,9 @@ module.exports = {
 					return res.redirect(req.originalUrl);
 				}
 
+				// Procesa los datos del Data Entry
+				datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
+
 				// Acciones si recibimos un avatar
 				if (req.file) {
 					// Lo mueve de 'Provisorio' a 'Final'
@@ -258,9 +261,6 @@ module.exports = {
 					const duracion = parseInt(datos.dias_de_duracion);
 					await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 				}
-
-				// Procesa los datos del Data Entry
-				datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 			}
 
 			// Acciones para rechazo

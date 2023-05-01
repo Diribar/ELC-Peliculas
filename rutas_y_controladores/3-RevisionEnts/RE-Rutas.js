@@ -43,7 +43,7 @@ router.get("/api/link/edicion", API.edicAprobRech);
 // Tablero de Control
 router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
-// Producto y RCLV
+// PRODUCTO y RCLV
 // Altas Form
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
@@ -58,7 +58,10 @@ router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, 
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
 router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.prod_AvatarGuardar);
-// Links
+// Otros
+router.get("/rclv/solapamiento", ...aptoStatus, capturaInactivar, vistaRCLV.altaEdicForm);
+
+// LINKS
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
 
 // Exporta **********************************************

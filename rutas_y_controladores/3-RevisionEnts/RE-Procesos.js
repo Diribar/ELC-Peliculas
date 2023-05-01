@@ -126,8 +126,8 @@ module.exports = {
 			);
 
 			// CA: En status 'creadoAprob'
-			campos = {entidades, status_id: creado_aprob_id, revID};
-			const CA = TC_obtieneRegs(campos);
+			campos = {entidades, status_id: aprobado_id, revID};
+			const SL = TC_obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
@@ -140,7 +140,7 @@ module.exports = {
 			);
 
 			// Aguarda las lecturas
-			const resultado = await Promise.all([AL, CA, IR, IN]).then(([AL, CA, IR, IN]) => ({AL, CA, IR, IN}));
+			const resultado = await Promise.all([AL, SL, IR, IN]).then(([AL, SL, IR, IN]) => ({AL, SL, IR, IN}));
 
 			// Fin
 			return resultado;
@@ -386,14 +386,14 @@ module.exports = {
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
 
 			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
-			const IDs_a_status_2 = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
+			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
 				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
 				.then((n) => n.map((n) => n.epoca_del_ano_id))
 				.then((n) => [...new Set(n)]);
-			console.log(393, IDs_a_status_2);
+			console.log(393, IDs_solapam);
 
 			// En caso afirmativo pasa esas epocas al status '2'
-			if (IDs_a_status_2.length) await BD_especificas.actualizaStatus2(IDs_a_status_2);
+			if (IDs_solapam.length) await BD_especificas.actualizaStatus2(IDs_solapam);
 
 			// Actualiza la tabla 'dias_del_ano'
 			const datos = {epoca_del_ano_id: id};
