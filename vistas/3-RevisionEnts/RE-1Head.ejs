@@ -16,7 +16,12 @@
 	<% } else if (codigo == "rclv/alta" || codigo == "rclv/solapamiento") { %>
 		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
 		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
-		<script src="/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
+		<% if (codigo == "rclv/alta") { %>
+			<script src="/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
+		<% } else if (codigo == "rclv/solapamiento") { %>
+			<script src="/javascript/3-RevisionEnts/RE2-Solapamiento.js"></script>
+		<% } %>
+		
 
 	<!-- Rechazos -->
 	<% } else if (codigo == "rechazo") { %>
