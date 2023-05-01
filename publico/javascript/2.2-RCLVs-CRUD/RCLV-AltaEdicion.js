@@ -616,7 +616,7 @@ window.addEventListener("load", async () => {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
-			if (varios.OK.fecha) {
+			if (varios.OK.fecha && entidad != "epocas_del_ano") {
 				await impactos.fecha.muestraPosiblesRepetidos();
 				validacs.repetido();
 			}
