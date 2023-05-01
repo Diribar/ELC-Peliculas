@@ -63,7 +63,6 @@ module.exports = {
 		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
-		console.log(66,edicID);
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
