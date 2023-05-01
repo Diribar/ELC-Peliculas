@@ -248,8 +248,10 @@ module.exports = {
 				// Acciones si es un registro de 'epocas_del_ano'
 				if (entidad == "epocas_del_ano") {
 					// Si tiene imagen, la copia en su carpeta
-					const archivo_avatar = "3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar;
-					if (datos.avatar) comp.copiaUnArchivoDeImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+					if (datos.avatar) {
+						const archivo_avatar = "3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar;
+						comp.copiaUnArchivoDeImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+					}
 
 					// Actualiza los dias_del_ano
 					const desde = datos.dia_del_ano_id;
