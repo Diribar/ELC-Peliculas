@@ -706,9 +706,6 @@ window.addEventListener("load", async () => {
 				DOM.iconosOK[indice].classList.add("ocultar");
 			}
 
-			// Acciones si se cambian los Días de Duración
-			if (campo == "dias_de_duracion") valor = Math.max(2, Math.min(valor, 366));
-
 			// Acciones si se cambia el año
 			if (campo == "ano") {
 				// Sólo números en el año
@@ -722,7 +719,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Limpia el ícono de error/OK
-				const indice = varios.camposError.indexOf("epoca")
+				const indice = varios.camposError.indexOf("epoca");
 				DOM.mensajesError[indice].innerHTML = "";
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
@@ -747,13 +744,14 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambia el sector Nombre
 		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
-			await validacs.nombre[entidad]();
+			await validacs.nombre[varios.personajes ? "personajes" : "demas"]();
 			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
 		}
 
 		// Acciones si se cambia el sector Fecha
 		if (varios.camposFecha.includes(campo)) {
-			// Impactos en fecha
+			// Impactos
+			if (campo == "dias_de_duracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
 			if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))

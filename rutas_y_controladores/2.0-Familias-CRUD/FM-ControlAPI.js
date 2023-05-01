@@ -29,14 +29,14 @@ module.exports = {
 			tempAnt = temporada - 1;
 			// Obtiene el último número de capítulo de la temporada anterior
 			let objeto = {coleccion_id, temporada: tempAnt};
-			capAnt = await BD_genericas.maxValorPorCampos("capitulos", objeto, "capitulo");
+			capAnt = await BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo");
 		}
 		// Averigua los datos del capítulo posterior ********************
 		// Obtiene datos de la colección y el capítulo
 		let objeto = {coleccion_id, temporada};
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtiene el último número de capítulo de la temporada actual
-			BD_genericas.maxValorPorCampos("capitulos", objeto, "capitulo"),
+			BD_genericas.maxValorPorCondicion("capitulos", objeto, "capitulo"),
 			// Obtiene el último número de temporada de la colección
 			BD_genericas.obtienePorId("colecciones", coleccion_id).then((n) => n.cant_temps),
 		]);

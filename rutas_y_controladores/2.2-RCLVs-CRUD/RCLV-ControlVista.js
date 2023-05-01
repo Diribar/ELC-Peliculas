@@ -131,7 +131,8 @@ module.exports = {
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Titulo
-		const titulo = "Detalle de un " + entidadNombre;
+		const articulo = entidad == "epocas_del_ano" ? "a" : "";
+		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 		// Obtiene RCLV con productos
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");

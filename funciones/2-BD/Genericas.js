@@ -41,27 +41,27 @@ module.exports = {
 	actualizaPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id}});
 	},
-	actualizaTodosPorCampos: (entidad, objeto, datos) => {
-		return db[entidad].update(datos, {where: objeto});
+	actualizaTodosPorCondicion: (entidad, condicion, datos) => {
+		return db[entidad].update(datos, {where: condicion});
 	},
 	eliminaPorId: (entidad, id) => {
 		return db[entidad].destroy({where: {id}});
 	},
-	eliminaTodosPorCampos: (entidad, objeto) => {
-		return db[entidad].destroy({where: objeto});
+	eliminaTodosPorCondicion: (entidad, condicion) => {
+		return db[entidad].destroy({where: condicion});
 	},
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {
 		return db[entidad].increment(campo, {by: aumento, where: {id}});
 	},
 
 	// Lectura
-	contarCasos: (entidad, objeto) => {
-		return db[entidad].count({where: objeto});
+	contarCasos: (entidad, condicion) => {
+		return db[entidad].count({where: condicion});
 	},
 	maxValor: (entidad, campo) => {
 		return db[entidad].max(campo);
 	},
-	maxValorPorCampos: (entidad, objeto, campo) => {
-		return db[entidad].max(campo, {where: objeto});
+	maxValorPorCondicion: (entidad, condicion, campo) => {
+		return db[entidad].max(campo, {where: condicion});
 	},
 };

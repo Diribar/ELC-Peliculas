@@ -3,23 +3,27 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 // Controlador
 module.exports = {
 	// Quick Search
 	quickSearch: async (req, res) => {
-		// Declaración de variables
-		let datos = [
-			{familia: "producto", entidad: "peliculas", campos: ["nombre_castellano", "nombre_original"]},
-			{familia: "producto", entidad: "colecciones", campos: ["nombre_castellano", "nombre_original"]},
-			{familia: "producto", entidad: "capitulos", campos: ["nombre_castellano", "nombre_original"]},
-			{familia: "rclv", entidad: "personajes", campos: ["nombre", "apodo"]},
-			{familia: "rclv", entidad: "hechos", campos: ["nombre"]},
-			{familia: "rclv", entidad: "temas", campos: ["nombre"]},
-		];
-		let condiciones;
+		// Variables
+		const userID = req.session.usuario ? req.session.usuario.id : 0;
+		const entidadesProd = variables.entidadesProd;
+		const entidadesRCLV = variables.entidadesRCLV;
+		const camposProds = ["nombre_castellano", "nombre_original"];
+		const camposPers = ["nombre", "apodo"];
 		let resultados = [];
-		let userID = req.session.usuario ? req.session.usuario.id : 0;
+		let datos = [];
+		let condiciones;
+
+		// Armado de la variable 'datos'
+		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos: camposProds});
+		for (let entidad of entidadesRCLV)
+			datos.push({familia: "rclv", entidad, campos: entidad == "personajes" ? camposPers : ["nombre"]});
+
 		// Rutina
 		for (let dato of datos) {
 			// Obtiene las condiciones
@@ -49,7 +53,7 @@ module.exports = {
 		// Fin
 		return res.json(datos);
 	},
-	localhost:(req,res)=>{
-		return res.json(localhost)
+	localhost: (req, res) => {
+		return res.json(localhost);
 	},
 };
