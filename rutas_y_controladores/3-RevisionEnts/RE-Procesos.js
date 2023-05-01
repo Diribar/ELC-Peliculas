@@ -114,7 +114,15 @@ module.exports = {
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
 			const AL = TC_obtieneRegs(campos).then((n) =>
-				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_edicion.length)
+				n.filter(
+					(m) =>
+						m.entidad == "eventos" ||
+						m.entidad == "epocas_del_ano" ||
+						m.peliculas.length ||
+						m.colecciones.length ||
+						m.capitulos.length ||
+						m.prods_edicion.length
+				)
 			);
 
 			// CA: En status 'creadoAprob'
