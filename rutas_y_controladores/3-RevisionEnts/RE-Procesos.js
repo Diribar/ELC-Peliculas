@@ -381,7 +381,7 @@ module.exports = {
 			const IDs_a_status_2 = await BD_genericas.obtienePorCondicion("dias_del_ano", condicion)
 				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
 				.then((n) => n.map((n) => n.epoca_del_ano_id))
-				.then((n) => new Set(n));
+				.then((n) => [...new Set(n)]);
 			console.log(394, IDs_a_status_2);
 
 			// En caso afirmativo pasa esas epocas al status '2'
