@@ -243,6 +243,20 @@ module.exports = {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				else if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 
+				// Acciones si es un 'epoca_del_ano'
+				if (entidad == "epoca_del_ano" && datos.avatar) {
+					// Si tiene imagen, la copia en su carpeta
+					comp.copiaUnArchivoDeImagen(
+						"2-RCLVs/Final" + datos.avatar,
+						"3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar
+					);
+
+					// Actualiza los dias_del_ano
+					const desde = datos.dia_del_ano_id;
+					const duracion = datos.duracion;
+					await procesos.actualizaDiasDelAno({desde, duracion, id});
+				}
+
 				// Procesa los datos del Data Entry
 				datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
 			}
@@ -258,7 +272,7 @@ module.exports = {
 			// Acciones si es un RCLV inactivo
 			if (status_final_id == inactivo_id) {
 				// Borra su id de los campos rclv_id de las ediciones de producto
-				BD_genericas.actualizaTodosPorCampos("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+				BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
@@ -282,7 +296,7 @@ module.exports = {
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: id}, {...datos, sugerido_por_id: 2});
+			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugerido_por_id: 2});
 
 		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);

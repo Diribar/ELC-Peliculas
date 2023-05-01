@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 		esImagen: true,
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
-		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
+		camposTodos: new Set(Array.from(DOM.inputsTodos).map((n) => n.name)),
 		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
 	};
 	let rutas = {
