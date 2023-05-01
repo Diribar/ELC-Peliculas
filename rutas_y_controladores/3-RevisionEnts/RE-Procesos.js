@@ -395,9 +395,6 @@ module.exports = {
 			// En caso afirmativo pasa esas epocas al status '2'
 			if (IDs_a_status_2.length) await BD_especificas.actualizaStatus2(IDs_a_status_2);
 
-			// Limpia la tabla 'dias_del_ano' de los registros anteriores de esta 'epoca_del_ano'
-			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", {epoca_del_ano_id: id}, {epoca_del_ano_id: 1});
-
 			// Actualiza la tabla 'dias_del_ano'
 			const datos = {epoca_del_ano_id: id};
 			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", condicion, datos);
