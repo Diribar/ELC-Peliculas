@@ -109,42 +109,41 @@ module.exports = {
 			// Variables
 			const entidades = variables.entidadesRCLV;
 			const include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
-			let [AL, SP] = [[], []];
 			let campos;
 
-			// AL y SP: Altas y Sin Producto
-			// Obtiene RCLVs en status creado por otro usuario
+			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const registros = await TC_obtieneRegs(campos);
-			// Distribuye entre AL y SP
-			for (let reg of registros) {
-				// AL: Altas Pendientes de Aprobar (c/producto o c/edicProd)
-				if (reg.peliculas.length || reg.colecciones.length || reg.capitulos.length || reg.prods_edicion.length)
-					AL.push(reg);
-				// SP: con una antiguedad mayor a una hora
-				else if (reg.creado_en < ahora - unaHora) SP.push(reg);
-			}
-			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
-			const IN = await TC_obtieneRegs(campos);
-			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
-			const RC = await TC_obtieneRegs(campos);
-			// INO: Inactivo con producto
+			const AL = TC_obtieneRegs(campos).then((n) =>
+				n.filter(
+					(m) =>
+						m.entidad == "eventos" ||
+						m.entidad == "epocas_del_ano" ||
+						m.peliculas.length ||
+						m.colecciones.length ||
+						m.capitulos.length ||
+						m.prods_edicion.length
+				)
+			);
+
+			// CA: En status 'creadoAprob'
+			campos = {entidades, status_id: creado_aprob_id, revID};
+			const CA = TC_obtieneRegs(campos);
+
+			// IR: En staus 'inactivar' o 'recuperar'
+			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
+			const IR = TC_obtieneRegs(campos);
+
+			// IN: Inactivo con producto
 			campos = {entidades, status_id: inactivo_id, revID, include};
-			const INO = await TC_obtieneRegs(campos);
-			// Quita las que no están vinculadas con productos
-			if (INO.length)
-				for (let i = INO.length - 1; i >= 0; i--) {
-					const peliculas = INO[i].peliculas.length;
-					const colecciones = INO[i].colecciones.length;
-					const capitulos = INO[i].capitulos.length;
-					const prods_edicion = INO[i].prods_edicion.length;
-					if (!peliculas && !colecciones && !capitulos && !prods_edicion) INO.splice(i, 1);
-				}
+			const IN = TC_obtieneRegs(campos).then((n) =>
+				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_edicion.length)
+			);
+
+			// Aguarda las lecturas
+			const resultado = await Promise.all([AL, CA, IR, IN]).then(([AL, CA, IR, IN]) => ({AL, CA, IR, IN}));
 
 			// Fin
-			return {AL, SP, IR: [...IN, ...RC], INO};
+			return resultado;
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
@@ -382,6 +381,27 @@ module.exports = {
 				...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 			};
 		},
+		actualizaDiasDelAno: async ({desde, duracion, id}) => {
+			// Obtiene el/los rangos
+			const condicion = BD_especificas.condicsDDA({desde, duracion});
+
+			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
+			const IDs_a_status_2 = await BD_genericas.obtienePorCondicion("dias_del_ano", condicion)
+				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
+				.then((n) => n.map((n) => n.epoca_del_ano_id))
+				.then((n) => [...new Set(n)]);
+			console.log(394, IDs_a_status_2);
+
+			// En caso afirmativo pasa esas epocas al status '2'
+			if (IDs_a_status_2.length) await BD_especificas.actualizaStatus2(IDs_a_status_2);
+
+			// Actualiza la tabla 'dias_del_ano'
+			const datos = {epoca_del_ano_id: id};
+			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", condicion, datos);
+
+			// Fin
+			return;
+		},
 		prodsAsocs: async (entidad, id) => {
 			// Variables
 			const entidadesProd = variables.entidadesProd;
@@ -429,7 +449,7 @@ module.exports = {
 					comp.borraUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
-			BD_genericas.eliminaTodosPorCampos(nombreEdicion, {[campo_id]: id});
+			BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id});
 
 			//Fin
 			return;

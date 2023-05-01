@@ -180,6 +180,25 @@ module.exports = {
 		const objeto = {[campo_id]: 1};
 		return db[entidad].update(objeto, {where: condicion});
 	},
+	// Revisar dias_del_ano
+	condicsDDA: ({desde, duracion}) => {
+		// Primera Condicion
+		let condicion = {[Op.or]: [{[Op.between]: [desde, Math.min(desde + duracion, 366)]}]};
+
+		// Si es necesario, segunda condición
+		if (desde + duracion > 366) condicion[Op.or].push({[Op.between]: [1, Math.min(desde + duracion - 366)]});
+
+		// Fin
+		return condicion;
+	},
+	actualizaStatus2: (IDs_a_status_2) => {
+		// Variables
+		const datos = {status_registro_id: creado_aprob_id};
+		const condicion = {id: {[Op.or]: IDs_a_status_2}};
+
+		// Fin
+		return db.epocas_del_ano.update(datos, {where: condicion});
+	},
 
 	// Mantenimiento
 	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {

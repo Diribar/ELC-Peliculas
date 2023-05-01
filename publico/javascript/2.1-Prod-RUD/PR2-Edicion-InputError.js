@@ -76,8 +76,10 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		senalaLasDiferencias: () => {
+			// Variables
+			const referencia = varias.versionActual == "edicN" ? "edicG" : "orig";
+
 			// Marca dónde están las diferencias con la versión original
-			let referencia = varias.versionActual == "edicN" ? "edicG" : "orig";
 			varias.camposTodos.forEach((campo, i) => {
 				varias.versionActual != "orig" &&
 				version[varias.versionActual][campo] != version[referencia][campo] &&
