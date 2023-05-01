@@ -51,7 +51,7 @@ module.exports = {
 		const cabecera_id = datos.filtro_id;
 
 		// Elimina la información guardada
-		await BD_genericas.eliminaTodosPorCampos("filtros_campos", {cabecera_id});
+		await BD_genericas.eliminaTodosPorCondicion("filtros_campos", {cabecera_id});
 
 		// Guarda la nueva información
 		for (let campo in datos) {

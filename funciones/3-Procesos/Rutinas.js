@@ -229,7 +229,7 @@ module.exports = {
 			sugerido_por_id: 2,
 		};
 		// Actualiza el status de los links vencidos
-		BD_genericas.actualizaTodosPorCampos("links", condiciones, objeto);
+		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Actualiza el archivo JSON
 		this.actualizaRutinasJSON({LinksVencidos: "SI"});

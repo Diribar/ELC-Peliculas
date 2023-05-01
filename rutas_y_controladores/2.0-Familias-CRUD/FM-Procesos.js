@@ -319,7 +319,7 @@ module.exports = {
 				if (entidad == "colecciones") {
 					datos.alta_revisada_por_id = 2;
 					datos.alta_revisada_en = ahora;
-					BD_genericas.actualizaTodosPorCampos("capitulos", {coleccion_id: original.id}, datos);
+					BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: original.id}, datos);
 				}
 
 				// Actualiza prodEnRCLV
