@@ -164,7 +164,7 @@
 				<select name="carpeta_avatars" class="input margenIzq">
 					<option value="">Elegí una</option>
 					<% for (let carpeta of carpetasImagen) { %>
-						<option value="<%= carpeta %>"><%= carpeta %></option>
+						<option value="<%= carpeta %>" <% if (dataEntry.carpeta_avatars == carpeta) { %>selected<% } %>><%= carpeta %></option>
 					<% } %>
 				</select>
 				<!-- Ayuda -->
