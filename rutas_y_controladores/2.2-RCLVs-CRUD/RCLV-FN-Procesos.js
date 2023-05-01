@@ -208,6 +208,7 @@ module.exports = {
 			if (datos.entidad == "epocas_del_ano") {
 				DE.dias_de_duracion = datos.dias_de_duracion;
 				DE.comentario_duracion = datos.comentario_duracion;
+				DE.carpeta_avatars = datos.carpeta_avatars;
 			}
 
 			// Fin
