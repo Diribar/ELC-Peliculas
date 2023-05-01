@@ -386,11 +386,10 @@ module.exports = {
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
 
 			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
-			const IDs_a_status_2 = await BD_genericas.obtienePorCondicion("dias_del_ano", condicion)
+			const IDs_a_status_2 = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
 				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
 				.then((n) => n.map((n) => n.epoca_del_ano_id))
 				.then((n) => [...new Set(n)]);
-			console.log(394, IDs_a_status_2);
 
 			// En caso afirmativo pasa esas epocas al status '2'
 			if (IDs_a_status_2.length) await BD_especificas.actualizaStatus2(IDs_a_status_2);
@@ -398,6 +397,9 @@ module.exports = {
 			// Actualiza la tabla 'dias_del_ano'
 			const datos = {epoca_del_ano_id: id};
 			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", condicion, datos);
+
+			// Actualiza la variable 'dias_del_ano'
+			dias_del_ano = await BD_genericas.obtieneTodosConInclude("dias_del_ano", "epoca_del_ano");
 
 			// Fin
 			return;
