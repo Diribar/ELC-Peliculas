@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 		esImagen: true,
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
-		camposTodos: new Set(Array.from(DOM.inputsTodos).map((n) => n.name)),
+		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
 		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
 	};
 	let rutas = {
@@ -76,8 +76,10 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		senalaLasDiferencias: () => {
+			// Variables
+			const referencia = varias.versionActual == "edicN" ? "edicG" : "orig";
+
 			// Marca dónde están las diferencias con la versión original
-			let referencia = varias.versionActual == "edicN" ? "edicG" : "orig";
 			varias.camposTodos.forEach((campo, i) => {
 				varias.versionActual != "orig" &&
 				version[varias.versionActual][campo] != version[referencia][campo] &&
