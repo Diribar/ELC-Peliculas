@@ -6,7 +6,6 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
-const procesosRev = require("../3-RevisionEnts/RE-Procesos");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
