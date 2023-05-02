@@ -494,9 +494,9 @@ module.exports = {
 
 			// Si es un registro de 'epocas_del_ano', guarda el avatar en la carpeta tematica
 			if (entidad == "epocas_del_ano" && aprob) {
-				const carpeta_avatars = edicion.carpeta_avatars ? edicion.carpeta_avatars : original.carpeta_avatars;
-				const archivo_avatar = "3-EpocasDelAno/" + carpeta_avatars + "/" + edicion.avatar;
-				comp.copiaUnArchivoDeImagen("2-RCLVs/Final/" + edicion.avatar, archivo_avatar);
+				let carpeta_avatar = edicion.carpeta_avatars ? edicion.carpeta_avatars : original.carpeta_avatars;
+				carpeta_avatar = "3-EpocasDelAno/" + carpeta_avatar + "/";
+				comp.copiaUnArchivoDeImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
 			}
 
 			// Fin
