@@ -389,7 +389,6 @@ module.exports = {
 		actualizaDiasDelAno: async ({desde, duracion, id}) => {
 			// Obtiene el/los rangos
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
-			console.log(392, condicion);
 
 			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
 			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
