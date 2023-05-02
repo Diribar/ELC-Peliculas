@@ -4,7 +4,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = (req, res, next) => {
 	// Variables
 	const id = req.query.id;
-	const revisor = req.session.usuario.rol_usuario.revisor_ents;
+	const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 	let informacion;
 	// Bloquea el acceso a los ID menores que 10

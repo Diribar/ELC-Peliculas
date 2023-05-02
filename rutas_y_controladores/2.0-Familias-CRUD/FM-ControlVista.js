@@ -18,7 +18,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -109,7 +109,7 @@ module.exports = {
 		// Comentario para la BD
 		let motivoComentario = status_registros.find((n) => n.id == status_final_id).nombre;
 		if (comentario) motivoComentario += " - " + comentario;
-		if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0,-1);
+		if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0, -1);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
