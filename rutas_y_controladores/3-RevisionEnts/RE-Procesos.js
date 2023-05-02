@@ -390,7 +390,6 @@ module.exports = {
 				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
 				.then((n) => n.map((n) => n.epoca_del_ano_id))
 				.then((n) => [...new Set(n)]);
-			console.log(393, IDs_solapam);
 
 			// En caso afirmativo pasa esas epocas al status '2'
 			if (IDs_solapam.length) await BD_especificas.actualizaStatus2(IDs_solapam);
