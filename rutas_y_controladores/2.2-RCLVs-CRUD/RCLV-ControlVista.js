@@ -8,6 +8,67 @@ const procesos = require("./RCLV-FN-Procesos");
 const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
+	detalle: async (req, res) => {
+		// Tema y Código
+		const tema = "rclv_crud";
+		const codigo = "detalle";
+
+		// Variables
+		let {entidad, id, origen} = req.query;
+		let usuario = req.session.usuario ? req.session.usuario : "";
+		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+		if (!origen) origen = "DTR";
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+
+		// Titulo
+		const articulo = entidad == "epocas_del_ano" ? "a" : "";
+		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
+		// Obtiene RCLV con productos
+		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
+		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
+		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		let edicion = usuario
+			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
+			: {};
+
+		// Productos
+		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
+		let cantProds = prodsDelRCLV.length;
+
+		// Ayuda para el titulo
+		const ayudasTitulo = [
+			"El grupo de películas con fondo azul, son las que ya tenemos en nuestra BD.",
+			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
+			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
+		];
+		// Bloque de la derecha
+		const bloqueDer = {
+			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
+			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
+		};
+		// Imagen Derecha
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		// Status de la entidad
+		const status_id = original.status_registro_id;
+		const statusEstable =
+			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
+		// Datos para la vista
+		const procCanoniz = procesos.detalle.procCanoniz(original);
+		const RCLVnombre = original.nombre;
+
+		// Ir a la vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
+			//familias,
+			...{imgDerPers, bloqueDer},
+			...{prodsDelRCLV, procCanoniz, RCLVnombre},
+			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
+		});
+	},
 	altaEdicForm: async (req, res) => {
 		// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 		// Tema y Código
@@ -133,61 +194,5 @@ module.exports = {
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
-	},
-	detalle: async (req, res) => {
-		// Tema y Código
-		const tema = "rclv_crud";
-		const codigo = "detalle";
-
-		// Variables
-		let {entidad, id, origen} = req.query;
-		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-		if (!origen) origen = "DTR";
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
-
-		// Titulo
-		const articulo = entidad == "epocas_del_ano" ? "a" : "";
-		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
-		// Obtiene RCLV con productos
-		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-
-		// Productos
-		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
-		let cantProds = prodsDelRCLV.length;
-
-		// Ayuda para el titulo
-		const ayudasTitulo = [
-			"El grupo de películas con fondo azul, son las que ya tenemos en nuestra BD.",
-			"El grupo de películas con fondo verde, son las que no tenemos en nuestra BD y podés agregar.",
-			"Dentro de cada grupo, primero figuran las colecciones y luego las películas, y están ordenadas desde la más reciente a las más antigua.",
-		];
-		// Bloque de la derecha
-		const bloqueDer = {
-			rclv: procesos.detalle.bloqueRCLV({...original, entidad}),
-			registro: procsCRUD.bloqueRegistro({registro: original, revisor, cantProds}),
-		};
-		// Imagen Derecha
-		const imgDerPers = procsCRUD.obtieneAvatar(original).orig;
-		// Status de la entidad
-		const status_id = original.status_registro_id;
-		const statusEstable =
-			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
-		// Datos para la vista
-		const procCanoniz = procesos.detalle.procCanoniz(original);
-		const RCLVnombre = original.nombre;
-		// Ir a la vista
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
-			//familias,
-			...{imgDerPers, bloqueDer},
-			...{prodsDelRCLV, procCanoniz, RCLVnombre},
-			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
-		});
 	},
 };
