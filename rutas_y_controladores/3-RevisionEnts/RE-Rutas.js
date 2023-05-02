@@ -47,10 +47,12 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 // Altas Form
 router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
 router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
+router.get("/rclv/solapamiento", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
 router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.inacRecup_Form);
 // Altas Guardar
 router.post("/producto/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar);
 router.post("/rclv/alta", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.prodRCLV_ARIR_guardar);
+router.post("/rclv/solapamiento", ...aptoStatus, capturaInactivar, vista.solapamGuardar);
 router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_ARIR_guardar);
 // Inactivar o Recuperar
 router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.inacRecup_Form);
@@ -58,8 +60,6 @@ router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, 
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
 router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.prod_AvatarGuardar);
-// Otros
-router.get("/rclv/solapamiento", ...aptoStatus, capturaInactivar, vistaRCLV.altaEdicForm);
 
 // LINKS
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
