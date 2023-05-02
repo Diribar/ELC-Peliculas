@@ -288,7 +288,7 @@ module.exports = {
 		// Obtiene el nombre del producto
 		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
-		let imagenMuchasGracias = procesos.imagenMuchasGracias();
+		let imagenMuchasGracias = comp.imagenAlAzar("0-Base/Muchas-gracias/");
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
