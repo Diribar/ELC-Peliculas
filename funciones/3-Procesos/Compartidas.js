@@ -354,7 +354,7 @@ module.exports = {
 		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
 			console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
 		else
-			fs.rename(archivoOrigen, archivoDestino, (error) => {
+			fs.renameSync(archivoOrigen, archivoDestino, (error) => {
 				if (!error) {
 					if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
 				} else throw error;
