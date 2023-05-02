@@ -150,13 +150,13 @@ module.exports = {
 			const campoFecha = "editado_en";
 			let include = ["personaje", "hecho", "tema", "evento", "epoca_del_ano"];
 			let rclvs = [];
+
 			// 2. Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", include);
 			ediciones.filter((n) => n.editado_por_id != revID);
-			console.log(156, ediciones, ediciones.length);
+			
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
-				console.log(159);
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
 					let entidad = comp.obtieneRclvEntidadDesdeRclv_id(n);
@@ -170,18 +170,19 @@ module.exports = {
 						fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
 					});
 				});
-				console.log(173, rclvs);
 				// Deja solamente los rclvs aprobados
 				rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
 			}
-			console.log(174, rclvs);
+			
 			// 4. Elimina los repetidos
 			if (rclvs.length) {
 				rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 				rclvs = comp.eliminaRepetidos(rclvs);
 			}
+			
 			// 5. Deja solamente los sin problemas de captura
 			if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, revID, ahora);
+			
 			// Fin
 			return rclvs;
 		},
