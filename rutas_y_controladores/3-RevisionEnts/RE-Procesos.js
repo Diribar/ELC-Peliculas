@@ -396,7 +396,7 @@ module.exports = {
 				.then((n) => n.map((n) => n.epoca_del_ano_id))
 				.then((n) => [...new Set(n)]);
 
-			// En caso afirmativo pasa esas epocas al status '2'
+			// En caso afirmativo, activa 'solapamiento' para esas epocas
 			if (IDs_solapam.length) await BD_especificas.actualizaSolapam(IDs_solapam);
 
 			// Limpia la tabla 'dias_del_ano' del registro 'epoca_del_ano_id'
