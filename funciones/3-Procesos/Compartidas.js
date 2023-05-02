@@ -435,7 +435,7 @@ module.exports = {
 		const imagenAlAzar = archivos[indice];
 
 		// Fin
-		return carpeta + imagenAlAzar;
+		return imagenAlAzar;
 	},
 
 	// Validaciones
