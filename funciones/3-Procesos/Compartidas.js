@@ -431,7 +431,7 @@ module.exports = {
 		// Elije al azar el n° de imagen
 		const indice = parseInt(Math.random() * archivos.length);
 
-		// Genera la ruta y el nombre del archivo
+		// Genera el nombre del archivo
 		const imagenAlAzar = archivos[indice];
 
 		// Fin
