@@ -48,6 +48,7 @@ module.exports = {
 			creado_por_id: registro.creado_por_id,
 			capturado_en: registro.capturado_en,
 			capturado_por_id: registro.capturado_por_id,
+			userID: req.session.usuario.id,
 		};
 
 		// Fin

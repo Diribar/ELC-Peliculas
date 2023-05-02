@@ -80,6 +80,8 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
+		const codigo = req.baseUrl + req.path;
+		const userID = req.session.usuario.id;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -94,16 +96,32 @@ module.exports = {
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 
-			// Elimina el archivo avatar, si existía
+			// Si se agregó un archivo avatar, lo elimina
 			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 			// Redirige a la vista 'form'
 			return res.redirect(req.originalUrl);
 		}
 
-		// Obtiene el dataEntry, guarda los cambios y mueve el archivo avatar del RCLV
+		// Obtiene el dataEntry y guarda los cambios
 		const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
-		await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
+		const {original, edicion} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
+
+		// Acciones si recibimos un avatar
+		if (req.file) {
+			// Lo mueve de 'Provisorio' a 'Revisar'
+			comp.mueveUnArchivoImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
+
+			// Elimina el eventual anterior
+			if (codigo == "/rclv/edicion/") {
+				// Si es un registro propio y en status creado, borra el eventual avatar original
+				if (original.creado_por_id == userID && original.status_registro.creado) {
+					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+				}
+				// Si no está en status 'creado', borra el eventual avatar edicion
+				else if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+			}
+		}
 
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];
@@ -111,7 +129,6 @@ module.exports = {
 
 		// Obtiene el url de la siguiente instancia
 		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-		// + prodEntidad + "&id=" + req.query.id + "&origen="+origen,
 		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 		// Redirecciona a la siguiente instancia

@@ -174,7 +174,7 @@ module.exports = {
 			for (let campo of variables.camposEdicionRCLV[datos.entidad]) DE[campo] = null;
 
 			// Datos comunes
-			DE.nombre = datos.nombre;
+			if (datos.nombre) DE.nombre = datos.nombre;
 			DE.dia_del_ano_id =
 				datos.tipoFecha == "SF" ? 400 : dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
 			DE.fecha_movil = datos.tipoFecha == "FM";
@@ -208,7 +208,7 @@ module.exports = {
 			if (datos.entidad == "epocas_del_ano") {
 				DE.dias_de_duracion = datos.dias_de_duracion;
 				DE.comentario_duracion = datos.comentario_duracion;
-				DE.carpeta_avatars = datos.carpeta_avatars;
+				if (datos.carpeta_avatars) DE.carpeta_avatars = datos.carpeta_avatars;
 			}
 
 			// Fin

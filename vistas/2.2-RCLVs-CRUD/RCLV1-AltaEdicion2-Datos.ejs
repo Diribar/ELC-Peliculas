@@ -9,43 +9,49 @@
 				<div class="margenDebajo inputError flexRow" style="z-index: 5;">
 					<!-- Título -->
 					<h3>Nombre<%- personajes ? 's' : '' %></h3>
-					<!-- Ayuda -->
-					<div class="ayuda">
-						<i class="fa-solid fa-circle-question ayudaClick desplClick">
-							<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
-								<% if (personajes) { %>
-									<li>El <strong>Nombre Formal</strong> es <u>necesario</u>, el Alternativo es opcional.</li>
-									<li><u><em>Formal</em></u>: para las personas que,</li>
-									<ul type="dots" class="subgrupo">
-										<li>Cambiaron su nombre usamos el nuevo.</li>
-										<li>No lo  cambiaron, usamos su nombre de civil.</li>
-									</ul>
-									<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
-									<li>También es necesario que nos informes el sexo.</li>
-								<% } else { %>
-									<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><strong>Ap. Mar. - Guadalupe</strong></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
-									<% } %>
-							</ul>	
-						</i>
-					</div>
-					<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
+					<% if (codigo != "rclv/solapamiento") { %>
+						<!-- Ayuda -->
+						<div class="ayuda">
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul id="ayudaNombrePers" type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<% if (personajes) { %>
+										<li>El <strong>Nombre Formal</strong> es <u>necesario</u>, el Alternativo es opcional.</li>
+										<li><u><em>Formal</em></u>: para las personas que,</li>
+										<ul type="dots" class="subgrupo">
+											<li>Cambiaron su nombre usamos el nuevo.</li>
+											<li>No lo  cambiaron, usamos su nombre de civil.</li>
+										</ul>
+										<li><u><em>Alternativo</em></u>: usamos algún otro nombre por el que sean conocidos.</li>
+										<li>También es necesario que nos informes el sexo.</li>
+									<% } else { %>
+										<li>Si vas a ingresar una Aparición Mariana, necesitamos que lo hagas con el formato: <em><strong>Ap. Mar. - Guadalupe</strong></em>, donde <em>Guadalupe</em> sería el lugar donde apareció o el nombre de la advocación.</li>
+										<% } %>
+								</ul>	
+							</i>
+						</div>
+						<%- include("CMP-Errores", {nombre: "nombre", display: true}) %>
+					<% } %>
 				</div>
 			</div>
-			<!-- Campos -->
-			<div class="flexCol spaceBetween">
-				<!-- Nombre Formal o Nombre-->
-				<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
-					<% if (personajes) { %><label>Formal</label><% } %>
-					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-				</div>
-				<% if (personajes) { %>
-					<!-- Nombre Alternativo -->
-					<div class="flexRowAlign spaceBetween altoFila">
-						<label>Alternativo</label>
-						<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+			<% if (codigo != "rclv/solapamiento") { %>
+				<!-- Campos -->
+				<div class="flexCol spaceBetween">
+					<!-- Nombre Formal o Nombre-->
+					<div class="flexRowAlign spaceBetween"  style="z-index: 4;">
+						<% if (personajes) { %><label>Formal</label><% } %>
+						<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					</div>
-				<% } %>
-			</div>
+					<% if (personajes) { %>
+						<!-- Nombre Alternativo -->
+						<div class="flexRowAlign spaceBetween altoFila">
+							<label>Alternativo</label>
+							<input type="text" name="apodo" class="input" value="<%= dataEntry.apodo %>" autocomplete="off">
+						</div>
+					<% } %>
+				</div>
+			<% } else { %>
+				<p id="nombre"><%= dataEntry.nombre %></p>
+			<% } %>
 		</div>
 		<!-- Fecha Representativa -->
 		<div id="sectorFecha" class="borderTop flexCol">
@@ -57,7 +63,7 @@
 				<select name="tipoFecha" class="input">
 					<option value="FD" <% if (dataEntry.tipoFecha_id == "FD") { %>selected<% } %>>Fecha definida</option>
 					<option value="FM" <% if (dataEntry.tipoFecha_id == "FM") { %>selected<% } %>>Fecha móvil</option>
-					<% if (entidad!="epocas_del_ano") { %>
+					<% if (entidad != "epocas_del_ano") { %>
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
 					<% } %>
 				</select>
@@ -157,26 +163,28 @@
 					</table>
 				</div>
 			</div>
-			<!-- Carpeta de imagenes -->
-			<div class="borderTop"></div>
-			<div id="sectorCarpetaAvatars" class="flexRowAlign inputError spaceBetween">
-				<h3>Carpeta de Imágenes</h3>
-				<select name="carpeta_avatars" class="input margenIzq">
-					<option value="">Elegí una</option>
-					<% for (let carpeta of carpetasImagen) { %>
-						<option value="<%= carpeta %>" <% if (dataEntry.carpeta_avatars == carpeta) { %>selected<% } %>><%= carpeta %></option>
-					<% } %>
-				</select>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-							<li>Es la carpeta en la que se guardan las imagenes.</li>
-						</ul>
-					</i>
+			<% if (codigo != "rclv/solapamiento") { %>
+				<!-- Carpeta de imagenes -->
+				<div class="borderTop"></div>
+				<div id="sectorCarpetaAvatars" class="flexRowAlign inputError spaceBetween">
+					<h3>Carpeta de Imágenes</h3>
+					<select name="carpeta_avatars" class="input margenIzq">
+						<option value="">Elegí una</option>
+						<% for (let carpeta of carpetasImagen) { %>
+							<option value="<%= carpeta %>" <% if (dataEntry.carpeta_avatars == carpeta) { %>selected<% } %>><%= carpeta %></option>
+						<% } %>
+					</select>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<li>Es la carpeta en la que se guardan las imagenes.</li>
+							</ul>
+						</i>
+					</div>
+					<%- include("CMP-Errores", {nombre: "carpeta_avatars", display: true}) %>
 				</div>
-				<%- include("CMP-Errores", {nombre: "carpeta_avatars", display: true}) %>
-			</div>
+			<% } %>
 		<% } else { %>
 			<!-- Repetidos -->
 			<div id="sectorRepetidos">
@@ -221,41 +229,43 @@
 				</div>
 			<% } %>
 		<% } %>
-		<!-- Prioridad -->
-		<% if (tema == "revisionEnts" || (revisor && dataEntry.status_registro_id == aprobado_id)) { %>
-			<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
-				<h3>Prioridad</h3>
-				<select name="prioridad_id" class="input margenIzq">
-					<option value="">Elegí una</option>
-					<% for (let prioridad of prioridades) { %>
-						<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
-					<% } %>
-				</select>
-				<!-- Ayuda -->
-				<div class="ayuda">
-					<i class="fa-solid fa-circle-question ayudaClick desplClick">
-						<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-							<% if (personajes) { %>
-								<li>Estándar</li>
-								<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
-							<% } else if (hechos) { %>
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Estándar</li>
-								<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
-							<% } else if (temas) { %>
-								<li>Menor Importancia</li>
-							<% } else if (eventos) { %>
-								<li>VPC: Menor Importancia</li>
-								<li>CFC: Mayor importancia</li>
-							<% } else if (epocas_del_ano) { %>
-								<li>Menor Importancia</li>
-								<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
-							<% } %>
-						</ul>
-					</i>
+		<% if (codigo != "rclv/solapamiento") { %>
+			<!-- Prioridad -->
+			<% if (tema == "revisionEnts" || (revisor && dataEntry.status_registro_id == aprobado_id)) { %>
+				<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
+					<h3>Prioridad</h3>
+					<select name="prioridad_id" class="input margenIzq">
+						<option value="">Elegí una</option>
+						<% for (let prioridad of prioridades) { %>
+							<option value="<%= prioridad.id %>" <% if (prioridad.id==dataEntry.prioridad_id) { %>selected<% } %>><%= prioridad.nombre %></option>
+						<% } %>
+					</select>
+					<!-- Ayuda -->
+					<div class="ayuda">
+						<i class="fa-solid fa-circle-question ayudaClick desplClick">
+							<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+								<% if (personajes) { %>
+									<li>Estándar</li>
+									<li class="ocultar">Mayor importancia: Sagrada Familia, San José, María, Jesús</li>
+								<% } else if (hechos) { %>
+									<li>VPC: Menor Importancia</li>
+									<li>CFC: Estándar</li>
+									<li>Mayor importancia: algunos como Navidad, Bautismo de nuestro Señor, cada día de Semana Santa, Ascensión del Señor, Pentecostés</li>
+								<% } else if (temas) { %>
+									<li>Menor Importancia</li>
+								<% } else if (eventos) { %>
+									<li>VPC: Menor Importancia</li>
+									<li>CFC: Mayor importancia</li>
+								<% } else if (epocas_del_ano) { %>
+									<li>Menor Importancia</li>
+									<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
+								<% } %>
+							</ul>
+						</i>
+					</div>
+					<%- include("CMP-Errores", {nombre: "prioridad_id", display: true}) %>
 				</div>
-				<%- include("CMP-Errores", {nombre: "prioridad_id", display: true}) %>
-			</div>
+			<% } %>
 		<% } %>
 	</div>
 </section>

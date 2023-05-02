@@ -192,10 +192,10 @@ module.exports = {
 		// Fin
 		return condicion;
 	},
-	actualizaStatus2: (IDs_a_status_2) => {
+	actualizaStatus2: (IDs_solapam) => {
 		// Variables
-		const datos = {status_registro_id: creado_aprob_id};
-		const condicion = {id: {[Op.or]: IDs_a_status_2}};
+		const datos = {solapamiento: true};
+		const condicion = {id: {[Op.or]: IDs_solapam}};
 
 		// Fin
 		return db.epocas_del_ano.update(datos, {where: condicion});

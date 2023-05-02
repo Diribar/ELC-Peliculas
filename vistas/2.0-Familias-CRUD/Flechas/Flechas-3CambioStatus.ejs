@@ -1,4 +1,6 @@
-<% if (tema == "rclv_crud" && (codigo == "agregar" || codigo == "edicion")) { %>
+<% const condic1 = tema == "rclv_crud" && (codigo == "agregar" || codigo == "edicion") %>
+<% const condic2 = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
+<% if (condic1 || condic2) { %>
 	<!-- VISTA CRUD AGREGAR/EDICION RCLV - Para Aprobar -->
 	<div class="flechas">
 		<!-- Eliminar edición -->

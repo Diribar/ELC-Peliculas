@@ -13,5 +13,8 @@
 <% if (codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
 <% if (codigo.endsWith("/edicion/avatar")) { %><%- include("RE1-Prod-Avatar") %><% } %>
 
+<!-- Solapamiento -->
+<% if (codigo == "rclv/solapamiento") { %><%- include("RCLV1-AltaEdicion") %><% } %>
+
 <!-- Links -->
 <% if (codigo == "abmLinks") { %><%- include("LK-ABM") %><% } %>
