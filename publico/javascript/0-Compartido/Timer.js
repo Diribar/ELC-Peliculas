@@ -5,7 +5,6 @@ window.addEventListener("load", async () => {
 	const entID = new URL(location.href).searchParams.get("id");
 	let entidad = new URL(location.href).searchParams.get("entidad");
 	const productos = ["peliculas", "colecciones", "capitulos"].includes(entidad);
-	const rclvs = ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"].includes(entidad);
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Temas de horario y fechas
@@ -25,7 +24,7 @@ window.addEventListener("load", async () => {
 		? datos.creado_en
 		: datos.capturado_por_id == datos.userID
 		? datos.capturado_en
-		: new Date()
+		: new Date();
 
 	// Configurar el horario final
 	let horarioFinal = new Date(horarioInicial);
@@ -94,7 +93,9 @@ window.addEventListener("load", async () => {
 		for (let mensaje of mensajes) cartelMensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
-		let icono = codigo.startsWith("/revision/usuarios")
+		let icono = false
+			? false
+			: codigo.startsWith("/revision/usuarios")
 			? {
 					link: "/revision/usuarios/tablero-de-control",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
@@ -113,6 +114,7 @@ window.addEventListener("load", async () => {
 					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  };
+
 		flechas.innerHTML = "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
