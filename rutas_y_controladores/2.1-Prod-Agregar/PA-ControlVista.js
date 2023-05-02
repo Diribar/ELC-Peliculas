@@ -288,13 +288,14 @@ module.exports = {
 		// Obtiene el nombre del producto
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
-		const imagenMuchasGracias = "/imagenes/" + comp.imagenAlAzar("0-Base/Muchas-gracias/");
+		const carpetaMG = "0-Base/Muchas-gracias/";
+		const imagenMG = "/imagenes/" + carpetaMG + comp.imagenAlAzar(carpetaMG);
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMuchasGracias},
+			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMG},
 			...{entidad, familia: "producto", id, dataEntry: registroProd, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano, status_id: creado_id},
 		});
