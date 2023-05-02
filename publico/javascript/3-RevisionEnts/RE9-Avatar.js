@@ -14,12 +14,11 @@ window.addEventListener("load", () => {
 	let imagenActual = FN(imagenActualDOM);
 
 	// Comparaciones de ratio
-	//console.log(imagenNueva,imagenActual);
-	// Mejor imagen nueva
-	if (imagenNueva.ratioAdecuado && imagenNueva.ratio > imagenActual.ratio)
-		resultados[0].push("Mejor relación de alto/ancho");
-	// Mejor imagen actual
-	else if (imagenActual.ratioAdecuado && imagenActual.ratio > imagenNueva.ratio)
+	// console.log(imagenNueva, imagenActual);
+	// 1. Mejor imagen nueva
+	if (imagenNueva.ratio > imagenActual.ratio && !imagenActual.ratioAdecuado) resultados[0].push("Mejor relación de alto/ancho");
+	// 2. Mejor imagen actual
+	else if (imagenActual.ratio > imagenNueva.ratio && !imagenNueva.ratioAdecuado)
 		resultados[1].push("Mejor relación de alto/ancho");
 
 	// Comparaciones de calidad
