@@ -157,7 +157,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			epocas_del_ano: () => {
+			epocas_del_ano: (campo) => {
 				// Variables
 				const dia = DOM.dia.value;
 				const mes_id = DOM.mes_id.value;
@@ -190,11 +190,13 @@ window.addEventListener("load", async () => {
 				}
 
 				// Centra el día 'desde'
-				const porcentajeCalendario = idInicio / 365;
-				const alturaMarco = DOM.marcoCalendario.offsetHeight;
-				const alturaCalendario = DOM.tablaCalendario.offsetHeight;
-				const traslado = alturaCalendario * porcentajeCalendario - alturaMarco / 2;
-				DOM.marcoCalendario.scrollTop = traslado + DOM.dias_del_ano_Fila[0].offsetHeight * 1.5;
+				if (campo != "dias_de_duracion") {
+					const porcentajeCalendario = idInicio / 365;
+					const alturaMarco = DOM.marcoCalendario.offsetHeight;
+					const alturaCalendario = DOM.tablaCalendario.offsetHeight;
+					const traslado = alturaCalendario * porcentajeCalendario - alturaMarco / 2;
+					DOM.marcoCalendario.scrollTop = traslado + DOM.dias_del_ano_Fila[0].offsetHeight * 1.5;
+				}
 
 				// Fin
 				return;
@@ -243,7 +245,6 @@ window.addEventListener("load", async () => {
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
 
 			// Activa/Inactiva
-			console.log(!!resultadosTrue , resultado.length , varios.camposError.length,resultado.length == varios.camposError.length);
 			resultadosTrue && resultado.length == varios.camposError.length
 				? DOM.botonSubmit.classList.remove("inactivo")
 				: DOM.botonSubmit.classList.add("inactivo");
@@ -350,7 +351,7 @@ window.addEventListener("load", async () => {
 			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
 			if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))
-				impactos.fecha.epocas_del_ano();
+				impactos.fecha.epocas_del_ano(campo);
 
 			// Valida las fechas
 			await validacs.fecha();

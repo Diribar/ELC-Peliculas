@@ -17,6 +17,8 @@ module.exports = {
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revID = req.session.usuario.id;
+		const camposDDA = ["dia_del_ano_id", "dias_de_duracion"];
+		let statusAprob;
 
 		// Obtiene el registro editado
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
@@ -34,9 +36,13 @@ module.exports = {
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
-		// PROCESOS COMUNES A TODOS LOS CAMPOS
-		let statusAprob;
+		// Variables
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
+		let datosDDA = {};
+		datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
+		datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
+
+		// PROCESOS COMUNES A TODOS LOS CAMPOS
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
 		// Cuando se termina de revisar una edicion, se fija si existen otras ediciones con los mismos valores que el original, y en caso afirmativo elimina el valor de esos campos y eventualmente el registro de edicion
@@ -47,6 +53,23 @@ module.exports = {
 			if (ediciones.length) {
 				const originalGuardado = await BD_genericas.obtienePorId(entidad, entID);
 				for (let edic of ediciones) await procsCRUD.puleEdicion(entidad, originalGuardado, edic);
+			}
+		}
+
+		// Solapamiento y dias_del_ano
+		if (entidad == "epocas_del_ano" && camposDDA.includes(campo)) {
+			// Si es necesario, actualiza el original quitándole el solapamiento
+			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
+
+			// Si no quedan camposDDA, funcion 'dias_del_ano'
+			let quedan = false;
+			for (let campo of camposDDA) if (edicion && edicion[campo]) quedan = true;
+			if (!quedan) {
+				// Actualiza los dias_del_ano
+				const desde = datosDDA.dia_del_ano_id;
+				const duracion = datosDDA.dias_de_duracion - 1;
+				console.log(68, {desde, duracion, id: entID});
+				await procesos.guardar.actualizaDiasDelAno({desde, duracion, id: entID});
 			}
 		}
 

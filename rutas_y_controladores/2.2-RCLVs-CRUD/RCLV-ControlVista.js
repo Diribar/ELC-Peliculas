@@ -50,7 +50,7 @@ module.exports = {
 
 		// Tipo de fecha
 		dataEntry.tipoFecha_id = procesos.altaEdicForm.tipoFecha_id(dataEntry, entidad);
-		if (tema == "revisionEnts") dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
+		if (!dataEntry.prioridad_id) dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;

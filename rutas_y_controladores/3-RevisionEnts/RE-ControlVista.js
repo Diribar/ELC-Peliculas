@@ -258,7 +258,7 @@ module.exports = {
 
 					// Actualiza los dias_del_ano
 					const desde = datos.dia_del_ano_id;
-					const duracion = parseInt(datos.dias_de_duracion);
+					const duracion = parseInt(datos.dias_de_duracion) - 1;
 					await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 				}
 			}
@@ -344,14 +344,14 @@ module.exports = {
 	},
 	solapamGuardar: async (req, res) => {
 		// Variables
-		const {id} = req.query;
+		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		let datos = {...req.body};
+		let datos = {...req.body, entidad}; // la 'entidad' hace falta para una función posterior
 
 		// Averigua si hay errores de validación y toma acciones
 		let errores = await validaRCLV.fecha(datos);
-		if (errores.hay) {
+		if (errores) {
 			// Guarda session y cookie
 			req.session.epocas_del_ano = datos;
 			res.cookie("epocas_del_ano", datos, {maxAge: unDia});
@@ -362,19 +362,15 @@ module.exports = {
 
 		// Procesa los datos del Data Entry
 		datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
-
-		// Acciones si es un registro de 'epocas_del_ano'
+		for (let campo in datos) if (datos[campo] === null) delete datos[campo];
 
 		// Actualiza los dias_del_ano
 		const desde = datos.dia_del_ano_id;
-		const duracion = parseInt(datos.dias_de_duracion);
+		const duracion = parseInt(datos.dias_de_duracion) - 1;
 		await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 
-		// CONSECUENCIAS
-		// 1. Actualiza el status en el registro original
-		// 1.A. Datos que se necesitan con seguridad
-		datos = {...datos, editado_por_id: revID, editado_en: ahora};
-		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
+		// Actualiza el registro original
+		datos = {...datos, solapamiento: false, editado_por_id: revID, editado_en: ahora};
 		await BD_genericas.actualizaPorId("epocas_del_ano", id, datos);
 
 		// Fin

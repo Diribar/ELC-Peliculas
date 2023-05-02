@@ -245,7 +245,17 @@ module.exports = {
 		hechos: ["nombre", "ano", "dia_del_ano_id", "fecha_movil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
 		temas: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
 		eventos: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
-		epocas_del_ano: ["nombre", "dia_del_ano_id", "fecha_movil", "dias", "prioridad_id", "avatar"],
+		epocas_del_ano: [
+			"nombre",
+			"dia_del_ano_id",
+			"fecha_movil",
+			"comentario_movil",
+			"dias_de_duracion",
+			"comentario_duracion",
+			"prioridad_id",
+			"carpeta_avatars",
+			"avatar",
+		],
 	},
 	prefijos: [
 		"Beata",
@@ -375,7 +385,7 @@ module.exports = {
 			{nombre: "parte", titulo: "Parte", links: true},
 		],
 	},
-	avatarsExternos:{
+	avatarsExternos: {
 		prods: (nombre) => {
 			return [
 				{
