@@ -114,17 +114,6 @@ module.exports = {
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
 			const AL = TC_obtieneRegs(campos)
-			// .then((n) =>
-			// 	n.filter(
-			// 		(m) =>
-			// 			m.entidad == "eventos" ||
-			// 			m.entidad == "epocas_del_ano" ||
-			// 			m.peliculas.length ||
-			// 			m.colecciones.length ||
-			// 			m.capitulos.length ||
-			// 			m.prods_edicion.length
-			// 	)
-			// );
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -154,7 +143,9 @@ module.exports = {
 
 			// 2. Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", include);
+			console.log(146,ediciones.length);
 			ediciones.filter((n) => n.editado_por_id != revID);
+			console.log(148,ediciones.length);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {

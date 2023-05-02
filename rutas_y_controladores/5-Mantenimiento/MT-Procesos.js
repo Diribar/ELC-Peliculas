@@ -60,7 +60,7 @@ module.exports = {
 		[IN, aprobados] = await Promise.all([IN, aprobados]);
 
 		// 2.1. Sin Avatar
-		const SA = aprobados.filter((m) => !m.avatar && m.id > 2 && !m.ediciones.length);
+		const SA = aprobados.filter((m) => !m.avatar && m.id > 10 && !m.ediciones.length);
 
 		// 2.2. Con solapamiento de fechas
 		const SF = aprobados.filter((m) => m.solapam_fechas);
