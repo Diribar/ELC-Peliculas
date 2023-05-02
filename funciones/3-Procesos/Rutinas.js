@@ -366,14 +366,14 @@ let obtieneImagenDerecha = async (fechaNum) => {
 	}
 
 	// Consolida los rclvs
-	await Promise.all([...rclvs, epoca_del_ano]).then((n) => n.map((m) => resultados.push(...m)));
+	await Promise.all([...rclvs, ...epoca_del_ano]).then((n) => n.map((m) => resultados.push(...m)));
 
 	// Acciones si se encontraron resultados
 	if (resultados.length > 1) {
 		// Ordena por prioridad_id
 		resultados.sort((a, b) => b.prioridad_id - a.prioridad_id);
 
-		// Filtra por los que tienen esa prioridad_id
+		// Filtra por los que tienen la maxima prioridad_id
 		const prioridad_id = resultados[0].prioridad_id;
 		resultados = resultados.filter((n) => n.prioridad_id == prioridad_id);
 
