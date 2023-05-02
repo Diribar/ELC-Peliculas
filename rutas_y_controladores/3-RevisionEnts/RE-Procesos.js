@@ -113,17 +113,18 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const AL = TC_obtieneRegs(campos).then((n) =>
-				n.filter(
-					(m) =>
-						m.entidad == "eventos" ||
-						m.entidad == "epocas_del_ano" ||
-						m.peliculas.length ||
-						m.colecciones.length ||
-						m.capitulos.length ||
-						m.prods_edicion.length
-				)
-			);
+			const AL = TC_obtieneRegs(campos)
+			// .then((n) =>
+			// 	n.filter(
+			// 		(m) =>
+			// 			m.entidad == "eventos" ||
+			// 			m.entidad == "epocas_del_ano" ||
+			// 			m.peliculas.length ||
+			// 			m.colecciones.length ||
+			// 			m.capitulos.length ||
+			// 			m.prods_edicion.length
+			// 	)
+			// );
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -218,7 +219,7 @@ module.exports = {
 		},
 		RCLV_ProcesaCampos: (rclvs) => {
 			// Procesar los registros
-			let anchoMax = 30;
+			let anchoMax = 35;
 			const rubros = Object.keys(rclvs);
 
 			// Reconvierte los elementos
