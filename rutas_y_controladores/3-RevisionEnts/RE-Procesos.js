@@ -397,7 +397,7 @@ module.exports = {
 				.then((n) => [...new Set(n)]);
 
 			// En caso afirmativo, activa 'solapamiento' para esas epocas
-			if (IDs_solapam.length) await BD_especificas.actualizaSolapam(IDs_solapam);
+			if (IDs_solapam.length) await BD_especificas.activaSolapam(IDs_solapam);
 
 			// Limpia la tabla 'dias_del_ano' del registro 'epoca_del_ano_id'
 			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", {epoca_del_ano_id: id}, {epoca_del_ano_id: 1});

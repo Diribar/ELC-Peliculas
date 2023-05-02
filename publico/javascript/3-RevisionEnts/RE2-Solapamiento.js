@@ -344,24 +344,15 @@ window.addEventListener("load", async () => {
 		// Variables
 		let campo = e.target.name;
 
-		// Acciones si se cambia el sector Fecha
-		if (varios.camposFecha.includes(campo)) {
-			// Impactos
-			if (campo == "dias_de_duracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
-			if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
-			if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-			if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))
-				impactos.fecha.epocas_del_ano(campo);
+		// Impactos
+		if (campo == "dias_de_duracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
+		if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
+		if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
+		if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))
+			impactos.fecha.epocas_del_ano(campo);
 
-			// Valida las fechas
-			await validacs.fecha();
-
-			// Impactos en repetidos
-			if (varios.OK.fecha && ["mes_id", "dia", "tipoFecha"].includes(campo)) {
-				await impactos.fecha.muestraPosiblesRepetidos();
-				validacs.repetido();
-			}
-		}
+		// Valida las fechas
+		await validacs.fecha();
 
 		// Final de la rutina
 		validacs.muestraErroresOK();
