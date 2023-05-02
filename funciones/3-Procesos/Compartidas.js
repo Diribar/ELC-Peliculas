@@ -424,6 +424,19 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
+	imagenAlAzar: (carpeta) => {
+		// Obtiene el listado de archivos
+		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+
+		// Elije al azar el n° de imagen
+		const indice = parseInt(Math.random() * archivos.length);
+
+		// Genera la ruta y el nombre del archivo
+		const imagenAlAzar = archivos[indice];
+
+		// Fin
+		return carpeta + imagenAlAzar;
+	},
 
 	// Validaciones
 	longitud: (dato, corto, largo) => {
