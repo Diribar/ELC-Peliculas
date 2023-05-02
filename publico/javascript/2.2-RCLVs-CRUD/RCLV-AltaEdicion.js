@@ -676,7 +676,7 @@ window.addEventListener("load", async () => {
 
 				// Quita los caracteres no deseados
 				valor = valor
-					.replace(/[^a-záéíóúüñ'.-\s]/gi, "")
+					.replace(/[^a-záéíóúüñ'.-\s\d]/gi, "")
 					.replace(/ +/g, " ")
 					.replace(/\t/g, "")
 					.replace(/\r/g, "");
@@ -765,7 +765,7 @@ window.addEventListener("load", async () => {
 			await validacs.fecha();
 
 			// Impactos en repetidos
-			if (varios.OK.fecha && ["mes_id", "dia", "tipoFecha"].includes(campo)) {
+			if (varios.OK.fecha) {
 				await impactos.fecha.muestraPosiblesRepetidos();
 				validacs.repetido();
 			}
@@ -806,7 +806,7 @@ window.addEventListener("load", async () => {
 		if (varios.camposRCLIC.includes(campo)) {
 			// Nota: sus impactos se resuelven con CSS
 			await validacs.RCLIC[entidad]();
-			if (varios.hechos) await validacs.nombre.hechos();
+			if (varios.hechos) await validacs.nombre.demas();
 		}
 
 		// Final de la rutina

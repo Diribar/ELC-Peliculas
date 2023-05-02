@@ -389,8 +389,10 @@ module.exports = {
 		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
 		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
 		let avatarExterno, avatarsExternos, avatar, imgDerPers;
-		let ingresos, reemplazos, bloqueDer, motivos, cantProds;
+		let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
 
 		// Obtiene la versión original con include
 		let include = [
@@ -427,16 +429,14 @@ module.exports = {
 				// Recarga la ruta
 				return res.redirect(req.originalUrl);
 			}
-			// Reemplazo manual
-			else if (!reemplAvatarAutomaticam) {
-				// Variables
-				codigo += "/avatar";
-				avatar = procsCRUD.obtieneAvatar(original, edicion);
-				motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
-				avatarExterno = !avatar.orig.includes("/imagenes/");
-				const nombre = petitFamilia == "prods" ? original.nombre_castellano : original.nombre;
-				avatarsExternos = variables.avatarsExternos[petitFamilia](nombre);
-			}
+			// Reemplazo manual - Variables
+			codigo += "/avatar";
+			avatar = procsCRUD.obtieneAvatar(original, edicion);
+			motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
+			avatarExterno = !avatar.orig.includes("/imagenes/");
+			const nombre = petitFamilia == "prods" ? original.nombre_castellano : original.nombre;
+			avatarsExternos = variables.avatarsExternos[petitFamilia](nombre);
+			titulo = "Revisión de la Imagen: " + nombre;
 		}
 		// Acciones si el avatar no está presente en la edición
 		else if (!edicion.avatar) {
@@ -461,16 +461,13 @@ module.exports = {
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
+			// Variables para la vista
+			titulo = "Revisión de la Edición de" + articulo + entidadNombre;
+			ayudasTitulo = [
+				"Necesitamos que nos digas si estás de acuerdo con la información editada.",
+				"Si considerás que no, te vamos a pedir que nos digas el motivo.",
+			];
 		}
-		// Variables para la vista
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
-		const titulo = "Revisión de la Edición de" + articulo + entidadNombre;
-		// Ayuda para el titulo
-		const ayudasTitulo = [
-			"Necesitamos que nos digas si estás de acuerdo con la información editada.",
-			"Si considerás que no, te vamos a pedir que nos digas el motivo.",
-		];
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
