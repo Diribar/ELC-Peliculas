@@ -342,6 +342,44 @@ module.exports = {
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
+	solapamGuardar: async (req, res) => {
+		// Variables
+		const {id} = req.query;
+		const revID = req.session.usuario.id;
+		const ahora = comp.ahora();
+		let datos = {...req.body};
+
+		// Averigua si hay errores de validación y toma acciones
+		let errores = await validaRCLV.fecha(datos);
+		if (errores.hay) {
+			// Guarda session y cookie
+			req.session.epocas_del_ano = datos;
+			res.cookie("epocas_del_ano", datos, {maxAge: unDia});
+
+			// Fin
+			return res.redirect(req.originalUrl);
+		}
+
+		// Procesa los datos del Data Entry
+		datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
+
+		// Acciones si es un registro de 'epocas_del_ano'
+
+		// Actualiza los dias_del_ano
+		const desde = datos.dia_del_ano_id;
+		const duracion = parseInt(datos.dias_de_duracion);
+		await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
+
+		// CONSECUENCIAS
+		// 1. Actualiza el status en el registro original
+		// 1.A. Datos que se necesitan con seguridad
+		datos = {...datos, editado_por_id: revID, editado_en: ahora};
+		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
+		await BD_genericas.actualizaPorId("epocas_del_ano", id, datos);
+
+		// Fin
+		return res.redirect("/revision/tablero-de-control");
+	},
 
 	// EDICION
 	prodRCLV_edicForm: async (req, res) => {
