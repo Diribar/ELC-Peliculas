@@ -490,7 +490,7 @@ module.exports = {
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
-			else await actualizaArchivoAvatar({entidad, original, edicion, aprob});
+			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
 			// Si es un registro de 'epocas_del_ano', guarda el avatar en la carpeta tematica
 			if (entidad == "epocas_del_ano" && aprob) {
