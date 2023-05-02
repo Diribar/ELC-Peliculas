@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
 				mensajes.innerHTML = "";
 				for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 				flechas.innerHTML = "";
-				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='-1'>" + icono.HTML + "</a>";
+				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
 				// Muestra el cartel
 				v.tapaElFondo.classList.remove("ocultar");

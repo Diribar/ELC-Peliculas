@@ -20,7 +20,7 @@ module.exports = {
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
 		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		if (!origen) origen = "DTR";
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Titulo
 		const articulo = entidad == "epocas_del_ano" ? "a" : "";
@@ -123,7 +123,7 @@ module.exports = {
 		const urlActual = req.path.slice(1);
 		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
