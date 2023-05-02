@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
 			],
 		};
 	// Bloquea la edición de los ID menores que 20
-	else if (req.originalUrl.includes("/edicion/") && id && id < 20 && !revisor)
+	else if (req.originalUrl.includes("/edicion/") && id && id < 2 && !revisor)
 		informacion = {
 			mensajes: [
 				"Este registro es de alta sensibilidad.",
