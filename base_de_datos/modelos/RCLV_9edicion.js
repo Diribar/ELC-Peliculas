@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		epoca_del_ano_id: {type: dt.INTEGER},
 
 		// Comunes
-		nombre: {type: dt.STRING(30)},
+		nombre: {type: dt.STRING(35)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
 		comentario_movil: {type: dt.STRING(70)},
@@ -21,7 +21,7 @@ module.exports = (sequelize, dt) => {
 		epoca_id: {type: dt.STRING(3)},
 
 		// Específico de 'personajes'
-		apodo: {type: dt.STRING(30)},
+		apodo: {type: dt.STRING(35)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		ap_mar_id: {type: dt.INTEGER},

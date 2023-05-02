@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "personajes";
 	const columns = {
 		// Común con todos los RCLVs
-		nombre: {type: dt.STRING(30)},
+		nombre: {type: dt.STRING(35)},
 		prods_aprob: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		fecha_movil: {type: dt.BOOLEAN},
@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		epoca_id: {type: dt.STRING(3)},
 
 		// Específicos
-		apodo: {type: dt.STRING(30)},
+		apodo: {type: dt.STRING(35)},
 		sexo_id: {type: dt.STRING(1)},
 		categoria_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},

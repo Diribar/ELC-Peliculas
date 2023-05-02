@@ -672,7 +672,7 @@ window.addEventListener("load", async () => {
 			// Acciones si se cambia un texto
 			if (campo == "nombre" || campo == "apodo" || campo.startsWith("comentario")) {
 				// Variables
-				const largoMaximo = campo == "nombre" || campo == "apodo" ? 30 : campo.startsWith("comentario") ? 70 : false;
+				const largoMaximo = campo == "nombre" || campo == "apodo" ? 35 : campo.startsWith("comentario") ? 70 : false;
 
 				// Quita los caracteres no deseados
 				valor = valor
