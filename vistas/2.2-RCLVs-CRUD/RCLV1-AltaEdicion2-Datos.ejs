@@ -108,7 +108,7 @@
 						</a>
 					<% } %>
 				</div>
-				<p class="caracteres ocultar"><span>70</span>/70</p>
+				<p class="caracteres ocultar"><span><%- dataEntry.comentario_movil ? 70 - dataEntry.comentario_movil.length : 70 %></span>/70</p>
 			</div>
 			<textarea name="comentario_movil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentario_movil %></textarea>
 			<% if (epocas_del_ano) { %>
@@ -117,7 +117,7 @@
 						<label for="inputDias">Días de duración</label>
 						<input name="dias_de_duracion" id="inputDias" type="number" class="input" value="<%- dataEntry.dias_de_duracion ? dataEntry.dias_de_duracion : 2 %>">
 					</div>
-					<p class="caracteres"><span>70</span>/70</p>
+					<p class="caracteres"><span><%- dataEntry.comentario_duracion ? 70 - dataEntry.comentario_duracion.length : 70 %></span>/70</p>
 				</div>
 				<textarea name="comentario_duracion" class="input margenDebajo" placeholder="Comentario sobre los días de duración"><%= dataEntry.comentario_duracion %></textarea>
 			<% } %>

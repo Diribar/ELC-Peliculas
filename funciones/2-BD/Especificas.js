@@ -183,10 +183,11 @@ module.exports = {
 	// Revisar dias_del_ano
 	condicsDDA: ({desde, duracion}) => {
 		// Primera Condicion
-		let condicion = {[Op.or]: [{[Op.between]: [desde, Math.min(desde + duracion, 366)]}]};
+		let condicion = {id: {[Op.between]: [desde, Math.min(desde + duracion, 366)]}};
 
 		// Si es necesario, segunda condición
-		if (desde + duracion > 366) condicion[Op.or].push({[Op.between]: [1, Math.min(desde + duracion - 366)]});
+		if (desde + duracion > 366)
+			condicion = {[Op.or]: [condicion, {id: {[Op.between]: [1, Math.min(desde + duracion - 366)]}}]};
 
 		// Fin
 		return condicion;

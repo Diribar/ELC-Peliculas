@@ -26,7 +26,7 @@ module.exports = {
 		const eventos = entidad == "eventos";
 		const epocas_del_ano = entidad == "epocas_del_ano";
 		let dataEntry = {};
-		let ap_mars, roles_igl;
+		let ap_mars, roles_igl, edicID;
 
 		// Configura el título de la vista
 		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
@@ -41,6 +41,7 @@ module.exports = {
 		if (codigo != "agregar") {
 			// Obtiene el original y edicion
 			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+			edicID = edicion.id;
 			// Pisa el data entry de session
 			dataEntry = {...original, ...edicion, id, edicID: edicion.id};
 			// Obtiene el día y el mes
@@ -66,16 +67,16 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
-			...{entidad, id, prodEntidad, prodID, familia: "rclv", ent, familia},
+			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE, edicID: dataEntry.edicID, statusCreado},
+			...{dataEntry, DE, statusCreado},
 			...{roles_igl, ap_mars, urlActual, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
-	altaEdicGrabar: async (req, res) => {
+	altaEdicGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
@@ -101,8 +102,8 @@ module.exports = {
 		}
 
 		// Obtiene el dataEntry, guarda los cambios y mueve el archivo avatar del RCLV
-		const DE = procesos.altaEdicGrabar.procesaLosDatos(datos);
-		await procesos.altaEdicGrabar.guardaLosCambios(req, res, DE);
+		const DE = procesos.altaEdicGuardar.procesaLosDatos(datos);
+		await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
 		// Borra el RCLV en session y cookies
 		if (req.session[entidad]) delete req.session[entidad];

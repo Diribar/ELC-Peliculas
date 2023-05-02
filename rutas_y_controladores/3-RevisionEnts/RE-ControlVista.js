@@ -224,7 +224,7 @@ module.exports = {
 				// Averigua si hay errores de validación y toma acciones
 				let errores = await validaRCLV.consolidado(datos);
 				if (errores.hay) {
-					// Session y cookie
+					// Guarda session y cookie
 					req.session[entidad] = datos;
 					res.cookie(entidad, datos, {maxAge: unDia});
 
@@ -235,30 +235,32 @@ module.exports = {
 					return res.redirect(req.originalUrl);
 				}
 
-				// Si recibimos un avatar, lo mueve de 'Provisorio' a 'Final' y elimina el eventual anterior
+				// Acciones si recibimos un avatar
 				if (req.file) {
+					// Lo mueve de 'Provisorio' a 'Final'
 					comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+					// Elimina el eventual anterior
 					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
-				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+				// Si no recibimos un avatar y hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				else if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 
-				// Acciones si es un 'epoca_del_ano'
-				if (entidad == "epoca_del_ano" && datos.avatar) {
+				// Acciones si es un registro de 'epocas_del_ano'
+				if (entidad == "epocas_del_ano") {
 					// Si tiene imagen, la copia en su carpeta
-					comp.copiaUnArchivoDeImagen(
-						"2-RCLVs/Final" + datos.avatar,
-						"3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar
-					);
+					if (datos.avatar) {
+						const archivo_avatar = "3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar;
+						comp.copiaUnArchivoDeImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+					}
 
 					// Actualiza los dias_del_ano
 					const desde = datos.dia_del_ano_id;
-					const duracion = datos.duracion;
-					await procesos.actualizaDiasDelAno({desde, duracion, id});
+					const duracion = parseInt(datos.dias_de_duracion);
+					await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 				}
 
 				// Procesa los datos del Data Entry
-				datos = procsRCLV.altaEdicGrabar.procesaLosDatos(datos);
+				datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 			}
 
 			// Acciones para rechazo
