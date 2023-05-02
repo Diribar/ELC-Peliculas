@@ -765,7 +765,7 @@ window.addEventListener("load", async () => {
 			await validacs.fecha();
 
 			// Impactos en repetidos
-			if (varios.OK.fecha && ["mes_id", "dia", "tipoFecha"].includes(campo)) {
+			if (varios.OK.fecha) {
 				await impactos.fecha.muestraPosiblesRepetidos();
 				validacs.repetido();
 			}
