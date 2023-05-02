@@ -26,7 +26,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento"},
 			...{productos, rclvs},
-			userRevisor: req.session.usuario.rol_usuario.revisor_ents,
+			revisor: req.session.usuario.rol_usuario.revisor_ents,
 		});
 	},
 };

@@ -75,15 +75,17 @@ module.exports = {
 		const status_id = original.status_registro_id;
 		const statusEstable = [creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
+		// Info para la vista
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const userIdentVal = req.session.usuario && req.session.usuario.status_registro.ident_validada;
+
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{bloqueIzq, bloqueDer, RCLVs},
-			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
-			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
 		});
 	},
 	prodEdicion_Form: async (req, res) => {
@@ -150,16 +152,16 @@ module.exports = {
 			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 		];
 		const status_id = original.status_registro_id;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidadNombre, registro: prodComb},
-			...{entidad, id, familia: "producto"},
+			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
+			...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
 			...{dataEntry: {}, avatarsExternos, status_id},
-			userRevisor: req.session.usuario && req.session.usuario.rol_usuario.revisor_ents,
 			...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
 		});
 	},
