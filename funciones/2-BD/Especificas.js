@@ -192,7 +192,7 @@ module.exports = {
 		// Fin
 		return condicion;
 	},
-	actualizaStatus2: (IDs_solapam) => {
+	activaSolapam: (IDs_solapam) => {
 		// Variables
 		const datos = {solapamiento: true};
 		const condicion = {id: {[Op.or]: IDs_solapam}};
