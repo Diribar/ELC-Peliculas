@@ -125,9 +125,9 @@ module.exports = {
 				)
 			);
 
-			// CA: En status 'creadoAprob'
-			campos = {entidades, status_id: aprobado_id, revID};
-			const SL = TC_obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento));
+			// SL: Con solapamiento
+			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
+			const SL = TC_obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
