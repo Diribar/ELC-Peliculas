@@ -154,7 +154,7 @@ module.exports = {
 			// 2. Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC_obtieneEdicsAptas("rclvs_edicion", include);
 			ediciones.filter((n) => n.editado_por_id != revID);
-			
+
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
@@ -173,16 +173,16 @@ module.exports = {
 				// Deja solamente los rclvs aprobados
 				rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
 			}
-			
+
 			// 4. Elimina los repetidos
 			if (rclvs.length) {
 				rclvs.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
 				rclvs = comp.eliminaRepetidos(rclvs);
 			}
-			
+
 			// 5. Deja solamente los sin problemas de captura
 			if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, revID, ahora);
-			
+
 			// Fin
 			return rclvs;
 		},
@@ -389,6 +389,7 @@ module.exports = {
 		actualizaDiasDelAno: async ({desde, duracion, id}) => {
 			// Obtiene el/los rangos
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
+			console.log(392, condicion);
 
 			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
 			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
@@ -399,7 +400,10 @@ module.exports = {
 			// En caso afirmativo pasa esas epocas al status '2'
 			if (IDs_solapam.length) await BD_especificas.actualizaStatus2(IDs_solapam);
 
-			// Actualiza la tabla 'dias_del_ano'
+			// Limpia la tabla 'dias_del_ano' del registro 'epoca_del_ano_id'
+			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", {epoca_del_ano_id: id}, {epoca_del_ano_id: 1});
+
+			// Actualiza la tabla 'dias_del_ano' con la 'epoca_del_ano_id'
 			const datos = {epoca_del_ano_id: id};
 			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", condicion, datos);
 
