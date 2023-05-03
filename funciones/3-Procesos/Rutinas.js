@@ -150,32 +150,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	DiaDelAno: async function () {
-		// Actualiza el dia actual
-		diaActualID();
-
-		// Proceso para las 3 entidades
-		const entidadesProd = variables.entidadesProd;
-		const entidadesRCLV = variables.entidadesRCLV;
-		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
-		for (let entidad of entidadesProd) {
-			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
-			let productos = await BD_genericas.obtieneTodosPorCondicionConInclude(
-				entidad,
-				{status_registro_id: aprobado_id},
-				asociacionesRCLV
-			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
-			// Actualiza el campo 'dia_del_ano_id' - Envía a la rutina CRUD
-			for (let producto of productos) procsCRUD.diaDelAno({entidad, producto});
-		}
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Día del Año' actualizado y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
 
 	// 2. Rutinas diarias
 	FechaHoraUTC: function () {
@@ -198,6 +172,32 @@ module.exports = {
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	DiaDelAno: async function () {
+		// Actualiza el dia actual
+		diaActualID();
+
+		// Proceso para las 3 entidades
+		const entidadesProd = variables.entidadesProd;
+		const entidadesRCLV = variables.entidadesRCLV;
+		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
+		for (let entidad of entidadesProd) {
+			// Obtiene todos los registros aprobados y se queda solo con los que tienen algún RCLV
+			let productos = await BD_genericas.obtieneTodosPorCondicionConInclude(
+				entidad,
+				{status_registro_id: aprobado_id},
+				asociacionesRCLV
+			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
+			// Actualiza el campo 'dia_del_ano_id' - Envía a la rutina CRUD
+			for (let producto of productos) procsCRUD.diaDelAno({entidad, producto});
+		}
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Día del Año' actualizado y datos guardados en JSON");
 
 		// Fin
 		return;
