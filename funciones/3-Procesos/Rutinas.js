@@ -9,10 +9,10 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Coordinación general
+	// 0.A. Start-up y Configuracion de Rutinas periodicas
 	startupMasRutinasHDS: async function () {
 		// Rutinas programadas
-		const info = this.lecturaRutinasJSON();
+		const info = lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 
 		// Rutinas horarias
@@ -41,12 +41,13 @@ module.exports = {
 		await this.conjuntoDeRutinasDiarias();
 		await this.conjuntoDeRutinasSemanales();
 	},
-	// Conjunto de tareas
+
+	// 0.B. Conjunto de tareas
 	conjuntoDeRutinasHorarias: async function () {
 		let horarioInicial = new Date().getTime();
 
 		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		const rutinas = info.RutinasHorarias;
 
 		// Obtiene la fecha UTC actual
@@ -63,12 +64,11 @@ module.exports = {
 		// Fin
 		return;
 	},
-
 	conjuntoDeRutinasDiarias: async function () {
 		let horarioInicial = new Date().getTime();
 
 		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		const rutinas = Object.keys(info.HorariosUTC);
 
 		// Obtiene la fecha UTC actual
@@ -93,7 +93,7 @@ module.exports = {
 	},
 	conjuntoDeRutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		const rutinas = Object.keys(info.DiasUTC);
 
 		// Obtiene la semana y el día de la semana
@@ -108,35 +108,8 @@ module.exports = {
 		// Fin
 		return;
 	},
-	// Lectura del archivo Rutinas.json
-	lecturaRutinasJSON: () => {
-		// Obtiene información del archivo 'json'
-		const rutaNombre = path.join(__dirname, "Rutinas.json");
-		const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
-		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-		let info = json ? JSON.parse(json) : {};
 
-		// Fin
-		return info;
-	},
-	actualizaRutinasJSON: function (datos) {
-		// Obtiene la informacion vigente
-		let info = this.lecturaRutinasJSON();
-
-		// Actualiza la información
-		info = {...info, ...datos};
-
-		// Guarda la información actualizada
-		const rutaNombre = path.join(__dirname, "Rutinas.json");
-		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
-			if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
-		});
-
-		// Fin
-		return;
-	},
-
-	// Actualizaciones horarias
+	// 1. Rutinas horarias
 	LinksEnProd: async function () {
 		// return;
 		const entidadesProd = variables.entidadesProd;
@@ -204,13 +177,13 @@ module.exports = {
 		return;
 	},
 
-	// Actualizaciones diarias
+	// 2. Rutinas diarias
 	FechaHoraUTC: function () {
 		// Obtiene la fecha y la hora procesados
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 
 		// Obtiene las rutinas del archivo JSON
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
 		const rutinas = Object.keys(info.HorariosUTC);
@@ -221,7 +194,7 @@ module.exports = {
 		statusRutinas.FechaHoraUTC = "SI";
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({FechaUTC, HoraUTC, ...statusRutinas});
+		actualizaRutinasJSON({FechaUTC, HoraUTC, ...statusRutinas});
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
@@ -231,7 +204,7 @@ module.exports = {
 	},
 	ImagenDerecha: async function () {
 		// Variables
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
 
@@ -264,7 +237,7 @@ module.exports = {
 		}
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
+		actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
@@ -274,14 +247,14 @@ module.exports = {
 		return;
 	},
 
-	// Actualizaciones semanales
+	// 3. Rutinas semanales
 	SemanaUTC: function () {
 		// Obtiene la fecha y la hora procesados
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		const semana = semanaUTC();
 
 		// Obtiene las rutinas del archivo JSON
-		let info = this.lecturaRutinasJSON();
+		let info = lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
 		const rutinas = Object.keys(info.DiasUTC);
@@ -292,7 +265,7 @@ module.exports = {
 		statusRutinas.SemanaUTC = "SI";
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({semanaUTC: semana, FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, ...statusRutinas});
+		actualizaRutinasJSON({semanaUTC: semana, FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, ...statusRutinas});
 
 		// Feedback del proceso
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Semana UTC' actualizada y datos guardados en JSON");
@@ -314,7 +287,7 @@ module.exports = {
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({LinksVencidos: "SI"});
+		actualizaRutinasJSON({LinksVencidos: "SI"});
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
@@ -348,6 +321,34 @@ module.exports = {
 		return;
 	},
 };
+// Funciones 1 - Interacciones con el archivo Rutinas.json
+let lecturaRutinasJSON = () => {
+	// Obtiene información del archivo 'json'
+	const rutaNombre = path.join(__dirname, "Rutinas.json");
+	const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
+	const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
+	let info = json ? JSON.parse(json) : {};
+
+	// Fin
+	return info;
+};
+let actualizaRutinasJSON = function (datos) {
+	// Obtiene la informacion vigente
+	let info = lecturaRutinasJSON();
+
+	// Actualiza la información
+	info = {...info, ...datos};
+
+	// Guarda la información actualizada
+	const rutaNombre = path.join(__dirname, "Rutinas.json");
+	fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
+		if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
+	});
+
+	// Fin
+	return;
+};
+
 // Funciones - Imagen Derecha
 let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	// Variables
