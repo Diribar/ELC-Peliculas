@@ -134,7 +134,7 @@ module.exports = {
 	// Avatar
 	obtieneAvatar: (original, edicion) => {
 		// Variables
-		const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "RCLVs" : "";
+		const familias = original.fuente ? "productos" : "RCLVs";
 		const final = "2-" + familias + "/Final/";
 		const revisar = "2-" + familias + "/Revisar/";
 		const sinAvatar = "0-Base/Avatar/Sin-Avatar.jpg";
@@ -508,9 +508,9 @@ module.exports = {
 		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
 		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
 	},
-	momentoDelAno: ({entidad, producto}) => {
+	diaDelAno: ({entidad, producto}) => {
 		// Variables
-		let momento = null;
+		let dia_del_ano_id = null;
 
 		// Obtiene los dias_del_ano_id válidos
 		const entidadesRCLV = variables.entidadesRCLV;
@@ -525,11 +525,11 @@ module.exports = {
 
 			// Resta el menor menos el vigente
 			const menor = Math.min(...dias_del_ano_id);
-			momento = menor - dia_actual_id;
+			dia_del_ano_id = menor - dia_actual_id;
 		}
 
 		// Le agrega la diferencia al registro del producto
-		BD_genericas.actualizaPorId(entidad, producto.id, {momento});
+		BD_genericas.actualizaPorId(entidad, producto.id, {dia_del_ano_id});
 
 		// Fin
 		return;

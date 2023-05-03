@@ -94,7 +94,7 @@ module.exports = {
 							hecho_id: m.hecho_id,
 							tema_id: m.tema_id,
 							// Orden
-							momento: m.momento,
+							dia_del_ano_id: m.dia_del_ano_id,
 							creado_en: m.creado_en,
 							ano_estreno: m.ano_estreno,
 							nombre_castellano: m.nombre_castellano,

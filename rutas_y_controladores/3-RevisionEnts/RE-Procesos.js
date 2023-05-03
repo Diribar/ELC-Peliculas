@@ -505,7 +505,7 @@ module.exports = {
 		// Prod-Edición Form
 		ingrReempl: async (original, edicion) => {
 			// Obtiene la familia
-			const familias = original.fuente ? "productos" : original.dia_del_ano_id ? "rclvs" : "";
+			const familias = original.fuente ? "productos" : "rclvs";
 
 			// Obtiene todos los campos a revisar
 			let camposRevisar = [...variables.camposRevisar[familias]]; // Escrito así para desligarlos

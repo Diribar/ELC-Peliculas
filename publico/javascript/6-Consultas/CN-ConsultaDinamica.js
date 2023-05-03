@@ -447,5 +447,4 @@ window.addEventListener("load", async () => {
 
 	// Start-up
 	encabFiltros.impactosDeLayout();
-	console.log(new Date().getTimezoneOffset());
 });
