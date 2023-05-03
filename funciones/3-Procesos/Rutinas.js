@@ -162,9 +162,9 @@ module.exports = {
 	ImagenDerecha: async function () {
 		// Variables
 		let info = this.lecturaRutinasJSON();
-		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
+		const milisegs = new Date(2023, 2, 15).getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
-		console.log(fechas);
+		console.log(167, fechas);
 
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		const carpetaImagen = "./publico/imagenes/4-ImagenDerecha/";
@@ -177,18 +177,26 @@ module.exports = {
 
 		// Actualiza los títulos de la imagen derecha
 		TitulosImgDer = {}; // para limpiar el historial
-		await fechas.forEach(async (fecha, i) => {
+		for (let i = 0; i < fechas.length; i++) {
+			// Variables
+			let fecha = fechas[i];
+
 			// Obtiene la fecha en numero
 			const fechaNum = milisegs + (i - 1) * unDia;
+
+			// Obtiene los 'TitulosImgDer'
 			TitulosImgDer[fecha] =
 				info.TitulosImgDer && info.TitulosImgDer[fecha]
 					? info.TitulosImgDer[fecha]
 					: await obtieneImagenDerecha(fechaNum);
-			info.TitulosImgDer = TitulosImgDer;
-		});
+			console.log(192, TitulosImgDer[fecha]);
+			console.log();
+		}
+		console.log(194, TitulosImgDer);
+		info.TitulosImgDer = TitulosImgDer;
 
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
+		// this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHora();
@@ -330,43 +338,23 @@ module.exports = {
 // Funciones
 let obtieneImagenDerecha = async (fechaNum) => {
 	// Variables
-	let rclvs = [];
-	let resultados = [];
+	const fecha = new Date(fechaNum);
+	const fechaArchivo = diaMesAno(fechaNum);
 	let resultado;
-	let epoca_del_ano = {};
-	let imgDerecha = {};
 
 	// Obtiene el 'dia_del_ano_id'
-	const dia = fechaNum.getDate();
-	const mes_id = fechaNum.getMonth() + 1;
-	const dia_del_ano = dias_del_ano.find((n) => n.dia == dia && m.mes_id == mes_id);
-	const dia_del_ano_id = dia_del_ano.id;
+	const dia = fecha.getDate();
+	const mes_id = fecha.getMonth() + 1;
+	const dia_del_ano = dias_del_ano.find((n) => n.dia == dia && n.mes_id == mes_id);
+	delete dia_del_ano.epoca_del_ano;
 
-	// Busca los RCLVs con esa fecha, para las entidades diferentes a 'epocas_del_ano'
-	for (let entidad of variables.entidadesRCLV) {
-		// Salteo de la rutina para 'epocas_del_ano'
-		if (entidad == "epocas_del_ano") continue;
-
-		// Condicion estandar
-		let condicion = {dia_del_ano_id, status_registro_id: aprobado_id};
-
-		// Para "personajes", deja solamente aquellos que tengan proceso de canonizacion
-		let valores = BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-			.then((n) => n.filter((m) => m.avatar))
-			.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n));
-		rclvs.push(valores);
-	}
-
-	// Busca el registro de 'epoca_del_ano'
-	if (dia_del_ano.epoca_del_ano_id != 1) {
-		const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
-		epoca_del_ano = BD_genericas.obtieneTodosPorCondicion("epocas_del_ano", condicion)
-			.then((n) => n.filter((m) => m.avatar))
-			.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m})));
-	}
-
-	// Consolida los rclvs
-	await Promise.all([...rclvs, ...epoca_del_ano]).then((n) => n.map((m) => resultados.push(...m)));
+	// Obtiene los RCLV
+	let resultados = await obtieneLosRCLV(dia_del_ano);
+	console.log(
+		382,
+		resultados.length,
+		resultados.map((n) => n.nombre)
+	);
 
 	// Acciones si se encontraron resultados
 	if (resultados.length > 1) {
@@ -385,31 +373,14 @@ let obtieneImagenDerecha = async (fechaNum) => {
 	else if (resultados.length == 1) resultado = resultados[0];
 
 	// Obtiene los datos para la imgDerecha
-	if (resultado) {
-		// Nombre de la imagen
-		imgDerecha.nombre = resultado.apodo ? resultado.apodo : resultado.nombre;
-
-		// Datos del archivo, dependiendo de la entidad
-		if (!resultado.entidad) {
-			imgDerecha.carpeta = "2-RCLVs/Final";
-			imgDerecha.nombre_archivo = resultado.avatar;
-		} else {
-			imgDerecha.carpeta = resultado.carpeta_avatars;
-			imgDerecha.nombre_archivo = comp.imagenAlAzar("3-EpocasDelAno/" + resultado.carpeta_avatars);
-		}
-	}
-	// Acciones si no encontró una imagen para la fecha
-	else
-		imgDerecha = {
-			nombre: "ELC - Películas",
-			carpeta: "0-Base/Varios/",
-			nombre_archivo: "Institucional-Imagen.jpg",
-		};
+	const imgDerecha = FN_imgDerecha(resultado);
+	console.log(420, imgDerecha);
 
 	// Guarda la nueva imagen como 'imgDerecha'
-	await comp.copiaUnArchivoDeImagen(imgDerecha.carpeta + imgDerecha.nombre_archivo, "4-ImagenDerecha/" + fecha + ".jpg");
+	await comp.copiaUnArchivoDeImagen(imgDerecha.carpeta + imgDerecha.nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
 
 	// Fin
+	console.log(426, imgDerecha.nombre);
 	return imgDerecha.nombre;
 };
 let diaMesAno = (fecha) => {
@@ -420,6 +391,69 @@ let diaMesAno = (fecha) => {
 	fecha = dia + "-" + mes + "-" + ano;
 	return fecha;
 };
+let obtieneLosRCLV = async (dia_del_ano) => {
+	// Variables
+	let rclvs = [];
+	let resultados = [];
+
+	// Obtiene los RCLV de las primeras cuatro entidades
+	for (let entidad of variables.entidadesRCLV) {
+		// Salteo de la rutina para 'epocas_del_ano'
+		if (entidad == "epocas_del_ano") continue;
+
+		// Condicion estandar
+		let condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
+
+		// Para "personajes", deja solamente aquellos que tengan proceso de canonizacion
+		rclvs.push(
+			BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				.then((n) => n.filter((m) => m.avatar))
+				.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
+		);
+	}
+
+	// Busca el registro de 'epoca_del_ano'
+	if (dia_del_ano.epoca_del_ano_id != 1) {
+		const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
+		rclvs.push([await BD_genericas.obtienePorCondicion("epocas_del_ano", condicion)]);
+	}
+
+	// Espera y consolida la informacion
+	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
+
+	// Fin
+	return resultados;
+};
+let FN_imgDerecha = (resultado) => {
+	// Variables
+	let imgDerecha = {};
+
+	// Acciones si se obtuvo un resultado
+	if (resultado) {
+		// Nombre de la imagen
+		imgDerecha.nombre = resultado.apodo ? resultado.apodo : resultado.nombre;
+
+		// Datos del archivo, dependiendo de la entidad
+		if (!resultado.carpeta_avatars) {
+			imgDerecha.carpeta = "2-RCLVs/Final/";
+			imgDerecha.nombre_archivo = resultado.avatar;
+		} else {
+			imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpeta_avatars + "/";
+			imgDerecha.nombre_archivo = comp.imagenAlAzar(imgDerecha.carpeta);
+		}
+	}
+	// Acciones si no encontró una imagen para la fecha
+	else
+		imgDerecha = {
+			nombre: "ELC - Películas",
+			carpeta: "0-Base/Varios/",
+			nombre_archivo: "Institucional-Imagen.jpg",
+		};
+
+	// Fin
+	return imgDerecha;
+};
+
 let fechaHora = () => {
 	// Obtiene la fecha y la hora y las procesa
 	const ahora = new Date();
