@@ -11,6 +11,7 @@
 		"04-may-23": "Pascua de Resurrección"
 	},
 	"FechaHoraUTC": "SI",
+	"MomentoDelAno":"",
 	"ImagenDerecha": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "MomentoDelAno": "00:01", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
