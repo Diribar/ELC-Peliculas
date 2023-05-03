@@ -136,7 +136,7 @@ app.set("views", [
 	// Procesos que dependen de la variable 'global'
 	// Rutinas
 	const rutinas = require("./funciones/3-Procesos/Rutinas");
-	await rutinas.coordinacGeneral();
+	await rutinas.startupMasRutinasHDS();
 
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
