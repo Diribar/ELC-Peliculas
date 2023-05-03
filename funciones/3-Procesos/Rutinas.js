@@ -362,6 +362,7 @@ let obtieneImgDerecha = async (fechaNum) => {
 
 	// Obtiene los RCLV
 	let rclvs = await obtieneLosRCLV(dia_del_ano);
+	// console.log(365,rclvs.map((n) => ({nombre: n.nombre, prioridad: n.prioridad_id})));
 
 	// Acciones si se encontraron rclvs
 	if (rclvs.length > 1) {
@@ -403,13 +404,15 @@ let obtieneLosRCLV = async (dia_del_ano) => {
 		// Salteo de la rutina para 'epocas_del_ano'
 		if (entidad == "epocas_del_ano") continue;
 
-		// Condicion estandar
+		// Condicion estandar: RCLVs del dia y en status aprobado
 		let condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
 
-		// Para "personajes", deja solamente aquellos que tengan proceso de canonizacion
+		// Obtiene los RCLVs
 		rclvs.push(
 			BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				// Deja solo los que tienen avatar
 				.then((n) => n.filter((m) => m.avatar))
+				// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
 				.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
 		);
 	}
@@ -417,7 +420,7 @@ let obtieneLosRCLV = async (dia_del_ano) => {
 	// Busca el registro de 'epoca_del_ano'
 	if (dia_del_ano.epoca_del_ano_id != 1) {
 		const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
-		rclvs.push([await BD_genericas.obtienePorCondicion("epocas_del_ano", condicion)]);
+		rclvs.push(BD_genericas.obtieneTodosPorCondicion("epocas_del_ano", condicion));
 	}
 
 	// Espera y consolida la informacion
