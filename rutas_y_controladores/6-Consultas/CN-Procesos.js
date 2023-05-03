@@ -38,6 +38,74 @@ module.exports = {
 		// Fin
 		return filtros;
 	},
+	momento: {
+		obtieneRCLVs: async (datos) => {
+			// Variables
+			const entidadesRCLV = variables.entidadesRCLV;
+			const include = variables.entidadesProd;
+			let rclvs = [];
+			let condicion;
+
+			// Rutina para obtener los RCLVs de los días 0, +1, +2
+			for (let i = 0; i < 3; i++) {
+				// Variables
+				let dia_del_ano_id = datos.dia_del_ano_id + i;
+				if (dia_del_ano_id > 366) dia_del_ano_id -= 366;
+				console.log(90, dia_del_ano_id);
+				let registros = [];
+
+				// Obtiene los RCLV de las primeras cuatro entidades
+				for (let entidad of entidadesRCLV) {
+					// Salteo de la rutina para 'epocas_del_ano'
+					if (entidad == "epocas_del_ano") continue;
+
+					// Condicion estandar: RCLVs del dia y en status aprobado
+					condicion = {id: {[Op.gt]: 10}, dia_del_ano_id, status_registro_id: aprobado_id};
+
+					// Obtiene los RCLVs
+					registros.push(
+						await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include)
+							// Deja solo los que tienen productos
+							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
+							// Le agrega su entidad
+							.then((n) => n.map((m) => ({entidad, ...m, dia_del_ano_id})))
+					);
+				}
+
+				// Busca el registro de 'epoca_del_ano'
+				const epoca_del_ano_id = dias_del_ano.find((n) => n.id == dia_del_ano_id).epoca_del_ano_id;
+				if (epoca_del_ano_id != 1) {
+					const condicion = {id: epoca_del_ano_id, status_registro_id: aprobado_id};
+					registros.push(
+						BD_genericas.obtieneTodosPorCondicionConInclude("epocas_del_ano", condicion, include)
+							// Deja solo los que tienen productos
+							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
+							// Le agrega su entidad
+							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, dia_del_ano_id})))
+					);
+				}
+
+				// Espera y consolida la informacion
+				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
+			}
+
+			// Quita los RCLVs repetidos
+			if (rclvs.length)
+				for (let i = rclvs.length - 1; i >= 0; i--) {
+					let rclv = rclvs[i];
+					if (i != rclvs.findIndex((n) => n.id == rclv.id && n.entidad == rclv.entidad)) rclvs.splice(i, 1);
+				}
+
+			// Fin
+			return rclvs;
+		},
+		obtieneProds: async (rclvs) => {
+			// Obtiene los productos
+
+			// Fin
+			return;
+		},
+	},
 	gruposConsultasRCLV: {
 		personajes: () => {
 			// Época de nacimiento

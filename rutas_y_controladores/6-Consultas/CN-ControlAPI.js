@@ -6,7 +6,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
-	// Lectura
+	// API - Startup
 	layoutsOrdenes: async (req, res) => {
 		// Obtiene los valores
 		let layouts = BD_genericas.obtieneTodos("layouts", "orden");
@@ -28,8 +28,11 @@ module.exports = {
 		// Fin
 		return res.json(opciones);
 	},
+	diasDelAno: (req, res) => {
+		return res.json(dias_del_ano);
+	},
 
-	// Guardado
+	// API - Filtros personalizados
 	guardaFiltro_id: (req, res) => {
 		// Variables
 		const filtro_id = req.query.filtro_id;
@@ -66,7 +69,21 @@ module.exports = {
 		return res.json();
 	},
 
-	// Obtiene Productos/RCLVs
+	// API - Consultas
+	momentoDelAno: async (req, res) => {
+		// Variables
+		const datos = JSON.parse(req.query.datos);
+		// console.log(78, datos);
+
+		// Obtiene los RCLVs (sin repeticiones)
+		const rclvs = await procesos.momento.obtieneRCLVs(datos);
+
+		// Obtiene los productos
+		const productos = await procesos.momento.obtieneProds(rclvs);
+
+		// Fin
+		return res.json(rclvs);
+	},
 	obtieneProductos: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);

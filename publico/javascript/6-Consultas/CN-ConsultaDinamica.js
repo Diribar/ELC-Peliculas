@@ -345,6 +345,24 @@ window.addEventListener("load", async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
 			if (varias.comencemos) return;
 
+			// Variables
+			let resultados;
+
+			// Obtiene los resultados
+
+			// Momento del ano
+			if (elegibles.layout_id == 1 && elegibles.orden_id == 1) {
+				// Obtiene el dia_del_ano
+				const ahora = new Date();
+				const diaUsuario = ahora.getDate();
+				const mes_idUsuario = ahora.getMonth() + 1;
+				elegibles.dia_del_ano_id = varias.diasDelAno.find((n) => n.dia == diaUsuario && n.mes_id == mes_idUsuario).id;
+				console.log(elegibles);
+
+				//resultados =
+				console.log(await fetch(rutas.momento + JSON.stringify(elegibles)).then((n) => n.json()));
+			}
+			return;
 
 			// Actualiza el contador
 			contador_de_prods.innerHTML = resultados.length + " resultados";
