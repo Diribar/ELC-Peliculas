@@ -10,7 +10,7 @@ const variables = require("./Variables");
 // Exportar ------------------------------------
 module.exports = {
 	// Coordinación general
-	coordinacGeneral: async function () {
+	startupMasRutinasHDS: async function () {
 		// Rutinas programadas
 		const info = this.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -19,13 +19,12 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
 		rutinasHorarias.forEach((rutina, i) => {
-			let horario = 1 + i;
+			let horario = 10 + i;
 			cron.schedule(horario + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		});
 
 		// Rutinas diarias
 		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		await this.rutinasDiarias();
 		const rutinasDiarias = Object.keys(info.HorariosUTC);
 		for (let rutina of rutinasDiarias) {
 			let hora = obtieneLaHora(info.HorariosUTC[rutina]);
@@ -33,42 +32,57 @@ module.exports = {
 		}
 		// Rutinas semanales
 		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
-		await this.rutinasSemanales();
 		const rutinasSemanales = Object.keys(info.DiasUTC);
 		for (let rutina of rutinasSemanales) {
 			let diaSem = info.DiasUTC[rutina];
 			cron.schedule("1 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
+		// Start-up
+		await this.conjuntoDeRutinasDiarias();
+		await this.conjuntoDeRutinasSemanales();
 	},
 	// Conjunto de tareas
-	rutinasDiarias: async function () {
+	conjuntoDeRutinasHorarias: async function () {
 		let horarioInicial = new Date().getTime();
 
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
-		const rutinasDiarias = Object.keys(info.HorariosUTC);
+		const rutinas = info.RutinasHorarias;
 
-		// Obtiene la fecha procesada
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		// Obtiene la fecha UTC actual
+		const {FechaUTC} = fechaHoraUTC();
 
-		// Acciones si la 'FechaUTC' es distinta
-
+		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas horarias
 		if (info.FechaUTC != FechaUTC) {
-			// Actualiza todas las rutinas horarias
-			const rutinasHorarias = info.RutinasHorarias;
-			for (let rutina of rutinasHorarias) {
-				await this[rutina]();
-				horarioInicial = medicionDelTiempo(horarioInicial);
-			}
-			// Actualiza todas las rutinas diarias
-			for (let rutina of rutinasDiarias) {
+			for (let rutina of rutinas) {
 				await this[rutina]();
 				horarioInicial = medicionDelTiempo(horarioInicial);
 			}
 		}
+
+		// Fin
+		return;
+	},
+
+	conjuntoDeRutinasDiarias: async function () {
+		let horarioInicial = new Date().getTime();
+
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		const rutinas = Object.keys(info.HorariosUTC);
+
+		// Obtiene la fecha UTC actual
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+
+		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas diarias
+		if (info.FechaUTC != FechaUTC)
+			for (let rutina of rutinas) {
+				await this[rutina]();
+				horarioInicial = medicionDelTiempo(horarioInicial);
+			}
 		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
 		else
-			for (let rutina of rutinasDiarias)
+			for (let rutina of rutinas)
 				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) {
 					await this[rutina]();
 					horarioInicial = medicionDelTiempo(horarioInicial);
@@ -77,7 +91,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	rutinasSemanales: async function () {
+	conjuntoDeRutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
 		let info = this.lecturaRutinasJSON();
 		const rutinas = Object.keys(info.DiasUTC);
