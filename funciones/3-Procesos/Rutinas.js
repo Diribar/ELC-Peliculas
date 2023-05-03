@@ -162,7 +162,7 @@ module.exports = {
 	ImagenDerecha: async function () {
 		// Variables
 		let info = this.lecturaRutinasJSON();
-		const milisegs = new Date(2023, 2, 15).getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
+		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
 		console.log(167, fechas);
 
@@ -195,7 +195,7 @@ module.exports = {
 		}
 
 		// Actualiza el archivo JSON
-		// this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
+		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHora();
@@ -368,7 +368,6 @@ let obtieneImgDerecha = async (fechaNum) => {
 	if (rclvs.length > 1) {
 		// Ordena por prioridad_id
 		rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
-		console.log(371, rclvs.map((n) => [n.nombre, n.prioridad_id]));
 
 		// Filtra por los que tienen la maxima prioridad_id
 		const prioridad_id = rclvs[0].prioridad_id;
