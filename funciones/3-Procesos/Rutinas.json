@@ -13,7 +13,7 @@
 	"FechaHoraUTC": "SI",
 	"DiaDelAno":"",
 	"ImagenDerecha": "SI",
-	"HorariosUTC": {"FechaHoraUTC": "00:00", "DiaDelAno": "00:01", "ImagenDerecha": "06:00"},
+	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
 	"LinksVencidos": "SI",
 	"BorraImagenesSinRegistro": "NO",
