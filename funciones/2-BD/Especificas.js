@@ -201,7 +201,7 @@ module.exports = {
 		return db.epocas_del_ano.update(datos, {where: condicion});
 	},
 
-	// Mantenimiento
+	// Otros
 	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {
 		const haceUnaHora = comp.nuevoHorario(-1);
 		const haceDosHoras = comp.nuevoHorario(-2);

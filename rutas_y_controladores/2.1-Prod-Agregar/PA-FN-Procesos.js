@@ -330,19 +330,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	// Terminaste
-	imagenMuchasGracias: () => {
-		// Obtiene el listado de archivos
-		let muchasGracias = fs.readdirSync("./publico/imagenes/0-Base/Muchas-gracias/");
-		// Elije al azar el n° de imagen
-		let indice = parseInt(Math.random() * muchasGracias.length);
-		// Si se pasó del n°, lo reduce en 1 unidad
-		if (indice == muchasGracias.length) indice--;
-		// Genera la ruta y el nombre del archivo
-		let imagenMuchasGracias = "/imagenes/0-Base/Muchas-gracias/" + muchasGracias[indice];
-		// Fin
-		return imagenMuchasGracias;
-	},
 
 	// FILM AFFINITY **********************
 	// ControllerVista (copiarFA_Guardar)

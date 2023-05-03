@@ -275,26 +275,27 @@ module.exports = {
 		const tema = "prod_agregar";
 		const codigo = "terminaste";
 		// Obtiene el Data Entry de session y cookies
-		let terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
+		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
 		// Borra 'session' y 'cookie' para que no se pueda recargar la página
 		delete req.session.terminaste;
 		res.clearCookie("terminaste");
 		// Si se perdió la info, redirige a 'palabras clave'
 		if (!terminaste) return res.redirect("palabras-clave");
 		// Obtiene los datos clave del producto
-		let {entidad, id} = terminaste;
+		const {entidad, id} = terminaste;
 		// Obtiene los demás datos del producto
-		let registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Obtiene el nombre del producto
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
-		let imagenMuchasGracias = procesos.imagenMuchasGracias();
+		const carpetaMG = "0-Base/Muchas-gracias/";
+		const imagenMG = "/imagenes/" + carpetaMG + comp.imagenAlAzar(carpetaMG);
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMuchasGracias},
+			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMG},
 			...{entidad, familia: "producto", id, dataEntry: registroProd, entidadNombre, ruta: "/producto/"},
 			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano, status_id: creado_id},
 		});

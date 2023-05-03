@@ -113,18 +113,7 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const AL = TC_obtieneRegs(campos)
-			// .then((n) =>
-			// 	n.filter(
-			// 		(m) =>
-			// 			m.entidad == "eventos" ||
-			// 			m.entidad == "epocas_del_ano" ||
-			// 			m.peliculas.length ||
-			// 			m.colecciones.length ||
-			// 			m.capitulos.length ||
-			// 			m.prods_edicion.length
-			// 	)
-			// );
+			const AL = TC_obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
@@ -480,25 +469,35 @@ module.exports = {
 			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 
 			if (familias == "productos") {
-				// 1. Si se cumplen ciertas condiciones, descarga el avatar del original
-				if (!aprob) {
-					// Si el avatar original es un url y el registro es una pelicula o coleccion, descarga el avatar
-					let url = original.avatar;
-					if (url.includes("/") && entidad != "capitulos") {
-						// Asigna un nombre al archivo a descargar
-						original.avatar = Date.now() + path.extname(url);
-						// Descarga el url
-						let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
-						await comp.descarga(url, rutaYnombre);
-					}
+				// Variables
+				const url = original.avatar;
+
+				// Condiciones para descargar el avatar
+				// 1. Si la sugerencia fue rechazada
+				// 2. Si el avatar original es un url
+				// 3. Si el registro es una pelicula o coleccion,
+				if (!aprob && url.includes("/") && entidad != "capitulos") {
+					// Asigna un nombre al archivo a descargar
+					original.avatar = Date.now() + path.extname(url);
+
+					// Descarga el url
+					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
+					await comp.descarga(url, rutaYnombre);
 				}
 
 				// 2. Borra el campo 'avatar_url' en el registro de edicion
 				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
 			}
 
-			// 3. Impacto en los archivos de avatar (original y edicion)
+			// Impacto en los archivos de avatar (original y edicion)
 			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
+
+			// Si es un registro de 'epocas_del_ano', guarda el avatar en la carpeta tematica
+			if (entidad == "epocas_del_ano" && aprob) {
+				let carpeta_avatar = edicion.carpeta_avatars ? edicion.carpeta_avatars : original.carpeta_avatars;
+				carpeta_avatar = "3-EpocasDelAno/" + carpeta_avatar + "/";
+				comp.copiaUnArchivoDeImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
+			}
 
 			// Fin
 			return;

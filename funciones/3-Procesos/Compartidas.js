@@ -354,7 +354,7 @@ module.exports = {
 		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
 			console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
 		else
-			fs.rename(archivoOrigen, archivoDestino, (error) => {
+			fs.renameSync(archivoOrigen, archivoDestino, (error) => {
 				if (!error) {
 					if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
 				} else throw error;
@@ -423,6 +423,19 @@ module.exports = {
 		});
 		// Fin
 		return resultado;
+	},
+	imagenAlAzar: (carpeta) => {
+		// Obtiene el listado de archivos
+		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+
+		// Elije al azar el n° de imagen
+		const indice = parseInt(Math.random() * archivos.length);
+
+		// Genera el nombre del archivo
+		const imagenAlAzar = archivos[indice];
+
+		// Fin
+		return imagenAlAzar;
 	},
 
 	// Validaciones
