@@ -331,6 +331,22 @@ module.exports = {
 			},
 			{titulo: "Hecho histórico", nombre: "hecho_id", relacInclude: "hecho", tabla: "hechos", rclv: true, productos: true},
 			{titulo: "Tema principal", nombre: "tema_id", relacInclude: "tema", tabla: "temas", rclv: true, productos: true},
+			{
+				titulo: "Evento del año",
+				nombre: "evento_id",
+				relacInclude: "evento",
+				tabla: "eventos",
+				rclv: true,
+				productos: true,
+			},
+			{
+				titulo: "Época del año",
+				nombre: "epoca_del_ano_id",
+				relacInclude: "epoca_del_ano",
+				tabla: "epocas_del_ano",
+				rclv: true,
+				productos: true,
+			},
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones
