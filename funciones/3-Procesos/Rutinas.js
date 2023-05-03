@@ -150,7 +150,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	MomentoDelAno: async function () {
+	DiaDelAno: async function () {
 		// Actualiza el dia actual
 		diaActualID();
 
@@ -165,13 +165,13 @@ module.exports = {
 				{status_registro_id: aprobado_id},
 				asociacionesRCLV
 			).then((n) => n.filter((m) => m.personaje_id != 1 || m.hecho_id != 1 || m.tema_id != 1));
-			// Actualiza el campo 'momento' - Envía a la rutina CRUD
-			for (let producto of productos) procsCRUD.momentoDelAno({entidad, producto});
+			// Actualiza el campo 'dia_del_ano_id' - Envía a la rutina CRUD
+			for (let producto of productos) procsCRUD.diaDelAno({entidad, producto});
 		}
 
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Momento del Año' actualizado y datos guardados en JSON");
+		console.log(FechaUTC, HoraUTC + "hs. -", "'Día del Año' actualizado y datos guardados en JSON");
 
 		// Fin
 		return;
