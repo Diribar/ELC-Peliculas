@@ -40,6 +40,60 @@ module.exports = {
 			cron.schedule("1 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
 	},
+	// Conjunto de tareas
+	rutinasDiarias: async function () {
+		let horarioInicial = new Date().getTime();
+
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		const rutinasDiarias = Object.keys(info.HorariosUTC);
+
+		// Obtiene la fecha procesada
+		const {FechaUTC, HoraUTC} = fechaHora();
+
+		// Acciones si la 'FechaUTC' es distinta
+
+		if (info.FechaUTC != FechaUTC) {
+			// Actualiza todas las rutinas horarias
+			const rutinasHorarias = info.RutinasHorarias;
+			for (let rutina of rutinasHorarias) {
+				await this[rutina]();
+				horarioInicial = medicionDelTiempo(horarioInicial);
+			}
+			// Actualiza todas las rutinas diarias
+			for (let rutina of rutinasDiarias) {
+				await this[rutina]();
+				horarioInicial = medicionDelTiempo(horarioInicial);
+			}
+		}
+		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
+		else
+			for (let rutina of rutinasDiarias)
+				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) {
+					await this[rutina]();
+					horarioInicial = medicionDelTiempo(horarioInicial);
+				}
+
+		// Fin
+		return;
+	},
+	rutinasSemanales: async function () {
+		// Obtiene la información del archivo JSON
+		let info = this.lecturaRutinasJSON();
+		const rutinas = Object.keys(info.DiasUTC);
+
+		// Obtiene la semana y el día de la semana
+		const SemanaUTC = semanaUTC();
+		const diaSem = new Date().getDay();
+
+		// Si la 'SemanaUTC' es distinta, actualiza todas las rutinas
+		if (info.semanaUTC != SemanaUTC) for (let rutina of rutinas) await this[rutina]();
+		// Si la 'SemanaUTC' está bien, actualiza las rutinas que correspondan en función del día de la semana
+		else for (let rutina of rutinas) if (info[rutina] != "SI" && diaSem >= info.DiasUTC[rutina]) await this[rutina]();
+
+		// Fin
+		return;
+	},
 	// Lectura del archivo Rutinas.json
 	lecturaRutinasJSON: () => {
 		// Obtiene información del archivo 'json'
@@ -273,61 +327,6 @@ module.exports = {
 		// Borra los avatar de Final
 		carpeta = "2-Productos/Final";
 		borraImagenesSinRegistro(consolidado, carpeta);
-
-		// Fin
-		return;
-	},
-
-	// Conjunto de tareas
-	rutinasDiarias: async function () {
-		let horarioInicial = new Date().getTime();
-
-		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
-		const rutinasDiarias = Object.keys(info.HorariosUTC);
-
-		// Obtiene la fecha procesada
-		const {FechaUTC, HoraUTC} = fechaHora();
-
-		// Acciones si la 'FechaUTC' es distinta
-
-		if (info.FechaUTC != FechaUTC) {
-			// Actualiza todas las rutinas horarias
-			const rutinasHorarias = info.RutinasHorarias;
-			for (let rutina of rutinasHorarias) {
-				await this[rutina]();
-				horarioInicial = medicionDelTiempo(horarioInicial);
-			}
-			// Actualiza todas las rutinas diarias
-			for (let rutina of rutinasDiarias) {
-				await this[rutina]();
-				horarioInicial = medicionDelTiempo(horarioInicial);
-			}
-		}
-		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
-		else
-			for (let rutina of rutinasDiarias)
-				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) {
-					await this[rutina]();
-					horarioInicial = medicionDelTiempo(horarioInicial);
-				}
-
-		// Fin
-		return;
-	},
-	rutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
-		let info = this.lecturaRutinasJSON();
-		const rutinas = Object.keys(info.DiasUTC);
-
-		// Obtiene la semana y el día de la semana
-		const SemanaUTC = semanaUTC();
-		const diaSem = new Date().getDay();
-
-		// Si la 'SemanaUTC' es distinta, actualiza todas las rutinas
-		if (info.semanaUTC != SemanaUTC) for (let rutina of rutinas) await this[rutina]();
-		// Si la 'SemanaUTC' está bien, actualiza las rutinas que correspondan en función del día de la semana
-		else for (let rutina of rutinas) if (info[rutina] != "SI" && diaSem >= info.DiasUTC[rutina]) await this[rutina]();
 
 		// Fin
 		return;
