@@ -59,7 +59,7 @@ window.addEventListener("load", async () => {
 	let elegibles = {};
 	let varias = {
 		comencemos: true,
-		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),		
+		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),
 	};
 
 	// Obtiene tabla de layouts y ordenes
@@ -348,7 +348,7 @@ window.addEventListener("load", async () => {
 			contador_de_prods.innerHTML = resultados.length + " resultados";
 
 			// Actualiza los resultados
-			DOM.listado.innerHTML = ""
+			DOM.listado.innerHTML = "";
 			if (!resultados.length) {
 			} else {
 				const tope = Math.min(4, resultados.length);
