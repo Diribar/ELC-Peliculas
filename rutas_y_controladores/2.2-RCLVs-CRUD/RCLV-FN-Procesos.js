@@ -145,23 +145,23 @@ module.exports = {
 				: "";
 		},
 		prioridad_id: (dataEntry, entidad) => {
-			const prioridad = {menor: 1, estandar: 2, mayor: 3};
+			const prioridades = {menor: 1, estandar: 2, mayor: 3};
 			return false
 				? false
 				: entidad == "personajes"
-				? prioridad.estandar
+				? prioridades.estandar
 				: entidad == "hechos"
 				? dataEntry.solo_cfc
-					? prioridad.estandar
-					: prioridad.menor
+					? prioridades.estandar
+					: prioridades.menor
 				: entidad == "temas"
-				? prioridad.menor
+				? prioridades.menor
 				: entidad == "eventos"
 				? dataEntry.solo_cfc
-					? prioridad.mayor
-					: prioridad.menor
+					? prioridades.mayor
+					: prioridades.menor
 				: entidad == "epocas_del_ano"
-				? prioridad.menor
+				? prioridades.menor
 				: "";
 		},
 	},
