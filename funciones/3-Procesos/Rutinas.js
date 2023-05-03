@@ -167,33 +167,32 @@ module.exports = {
 		console.log(167, fechas);
 
 		// Borra los archivos de imagen que no se corresponden con los titulos
-		const carpetaImagen = "./publico/imagenes/4-ImagenDerecha/";
-		const archivosDeImagen = fs.readdirSync(carpetaImagen);
-		for (let archivo of archivosDeImagen) {
-			const dot = archivo.lastIndexOf(".");
-			if (dot < 0) dato = archivo.length;
-			if (!fechas.includes(archivo.slice(0, dot))) comp.borraUnArchivo(carpetaImagen, archivo);
-		}
+		borraLosArchivosDeImgDerechaObsoletos(fechas);
 
-		// Actualiza los títulos de la imagen derecha
-		TitulosImgDer = {}; // para limpiar el historial
+		// Limpia el historial de titulos
+		TitulosImgDer = {};
+
+		// Actualiza los títulos de la imagen derecha para cada fecha
 		for (let i = 0; i < fechas.length; i++) {
-			// Variables
-			let fecha = fechas[i];
-
-			// Obtiene la fecha en numero
-			const fechaNum = milisegs + (i - 1) * unDia;
+			const fecha = fechas[i];
 
 			// Obtiene los 'TitulosImgDer'
-			TitulosImgDer[fecha] =
-				info.TitulosImgDer && info.TitulosImgDer[fecha]
-					? info.TitulosImgDer[fecha]
-					: await obtieneImagenDerecha(fechaNum);
-			console.log(192, TitulosImgDer[fecha]);
-			console.log();
+			if (info.TitulosImgDer && info.TitulosImgDer[fecha]) TitulosImgDer[fecha] = info.TitulosImgDer[fecha];
+			else {
+				// Variables
+				const fechaNum = milisegs + (i - 1) * unDia;
+				const fechaArchivo = diaMesAno(fechaNum);
+
+				// Obtiene los datos de la imagen derecha
+				const {titulo, carpeta, nombre_archivo} = await obtieneImgDerecha(fechaNum);
+
+				// Actualiza el titulo para esa fecha
+				TitulosImgDer[fecha] = titulo;
+
+				// Guarda el archivo de la 'imgDerecha' para esa fecha
+				comp.copiaUnArchivoDeImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
+			}
 		}
-		console.log(194, TitulosImgDer);
-		info.TitulosImgDer = TitulosImgDer;
 
 		// Actualiza el archivo JSON
 		// this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
@@ -336,10 +335,24 @@ module.exports = {
 	},
 };
 // Funciones
-let obtieneImagenDerecha = async (fechaNum) => {
+let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
+	// Variables
+	const carpetaImagen = "./publico/imagenes/4-ImagenDerecha/";
+	const archivosDeImagen = fs.readdirSync(carpetaImagen);
+
+	// Revisa si corresponde borrar los archivos
+	for (let archivo of archivosDeImagen) {
+		const dot = archivo.lastIndexOf(".");
+		if (dot < 0) dato = archivo.length;
+		if (!fechas.includes(archivo.slice(0, dot))) comp.borraUnArchivo(carpetaImagen, archivo);
+	}
+
+	// Fin
+	return;
+};
+let obtieneImgDerecha = async (fechaNum) => {
 	// Variables
 	const fecha = new Date(fechaNum);
-	const fechaArchivo = diaMesAno(fechaNum);
 	let resultado;
 
 	// Obtiene el 'dia_del_ano_id'
@@ -349,39 +362,30 @@ let obtieneImagenDerecha = async (fechaNum) => {
 	delete dia_del_ano.epoca_del_ano;
 
 	// Obtiene los RCLV
-	let resultados = await obtieneLosRCLV(dia_del_ano);
-	console.log(
-		382,
-		resultados.length,
-		resultados.map((n) => n.nombre)
-	);
+	let rclvs = await obtieneLosRCLV(dia_del_ano);
 
-	// Acciones si se encontraron resultados
-	if (resultados.length > 1) {
+	// Acciones si se encontraron rclvs
+	if (rclvs.length > 1) {
 		// Ordena por prioridad_id
-		resultados.sort((a, b) => b.prioridad_id - a.prioridad_id);
+		rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
+		console.log(371, rclvs.map((n) => [n.nombre, n.prioridad_id]));
 
 		// Filtra por los que tienen la maxima prioridad_id
-		const prioridad_id = resultados[0].prioridad_id;
-		resultados = resultados.filter((n) => n.prioridad_id == prioridad_id);
+		const prioridad_id = rclvs[0].prioridad_id;
+		rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
 
 		// Asigna el resultado
-		const indice = parseInt(Math.random() * resultados.length);
-		resultado = resultados[indice];
+		const indice = parseInt(Math.random() * rclvs.length);
+		resultado = rclvs[indice];
 	}
 	// Si se encontro un solo resultado, lo asigna
-	else if (resultados.length == 1) resultado = resultados[0];
+	else if (rclvs.length == 1) resultado = rclvs[0];
 
 	// Obtiene los datos para la imgDerecha
-	const imgDerecha = FN_imgDerecha(resultado);
-	console.log(420, imgDerecha);
-
-	// Guarda la nueva imagen como 'imgDerecha'
-	await comp.copiaUnArchivoDeImagen(imgDerecha.carpeta + imgDerecha.nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
+	const imgDerecha = datosImgDerecha(resultado);
 
 	// Fin
-	console.log(426, imgDerecha.nombre);
-	return imgDerecha.nombre;
+	return imgDerecha;
 };
 let diaMesAno = (fecha) => {
 	fecha = new Date(fecha);
@@ -424,14 +428,14 @@ let obtieneLosRCLV = async (dia_del_ano) => {
 	// Fin
 	return resultados;
 };
-let FN_imgDerecha = (resultado) => {
+let datosImgDerecha = (resultado) => {
 	// Variables
 	let imgDerecha = {};
 
 	// Acciones si se obtuvo un resultado
 	if (resultado) {
 		// Nombre de la imagen
-		imgDerecha.nombre = resultado.apodo ? resultado.apodo : resultado.nombre;
+		imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
 
 		// Datos del archivo, dependiendo de la entidad
 		if (!resultado.carpeta_avatars) {
@@ -445,7 +449,7 @@ let FN_imgDerecha = (resultado) => {
 	// Acciones si no encontró una imagen para la fecha
 	else
 		imgDerecha = {
-			nombre: "ELC - Películas",
+			titulo: "ELC - Películas",
 			carpeta: "0-Base/Varios/",
 			nombre_archivo: "Institucional-Imagen.jpg",
 		};
