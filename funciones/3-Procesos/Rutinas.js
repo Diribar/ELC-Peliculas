@@ -164,7 +164,6 @@ module.exports = {
 		let info = this.lecturaRutinasJSON();
 		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechas = [diaMesAno(milisegs - unDia), diaMesAno(milisegs), diaMesAno(milisegs + unDia)];
-		console.log(167, fechas);
 
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		borraLosArchivosDeImgDerechaObsoletos(fechas);
