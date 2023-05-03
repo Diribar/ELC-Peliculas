@@ -49,7 +49,7 @@ module.exports = {
 		const rutinasDiarias = Object.keys(info.HorariosUTC);
 
 		// Obtiene la fecha procesada
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 
 		// Acciones si la 'FechaUTC' es distinta
 
@@ -106,8 +106,10 @@ module.exports = {
 		return info;
 	},
 	actualizaRutinasJSON: function (datos) {
-		// Consolida la información actualizada
+		// Obtiene la informacion vigente
 		let info = this.lecturaRutinasJSON();
+
+		// Actualiza la información
 		info = {...info, ...datos};
 
 		// Guarda la información actualizada
@@ -135,7 +137,7 @@ module.exports = {
 		}
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
 
 		// Fin
@@ -155,7 +157,7 @@ module.exports = {
 		}
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
 
 		// Fin
@@ -181,7 +183,7 @@ module.exports = {
 		}
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Momento del Año' actualizado y datos guardados en JSON");
 
 		// Fin
@@ -191,7 +193,7 @@ module.exports = {
 	// Actualizaciones diarias
 	FechaHoraUTC: function () {
 		// Obtiene la fecha y la hora procesados
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 
 		// Obtiene las rutinas del archivo JSON
 		let info = this.lecturaRutinasJSON();
@@ -251,7 +253,7 @@ module.exports = {
 		this.actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
 
 		// Fin
@@ -261,7 +263,7 @@ module.exports = {
 	// Actualizaciones semanales
 	SemanaUTC: function () {
 		// Obtiene la fecha y la hora procesados
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		const semana = semanaUTC();
 
 		// Obtiene las rutinas del archivo JSON
@@ -301,7 +303,7 @@ module.exports = {
 		this.actualizaRutinasJSON({LinksVencidos: "SI"});
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHora();
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
 
 		// Fin
@@ -332,7 +334,7 @@ module.exports = {
 		return;
 	},
 };
-// Funciones
+// Funciones - Imagen Derecha
 let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	// Variables
 	const carpetaImagen = "./publico/imagenes/4-ImagenDerecha/";
@@ -458,7 +460,8 @@ let datosImgDerecha = (resultado) => {
 	return imgDerecha;
 };
 
-let fechaHora = () => {
+// Funciones - Otras
+let fechaHoraUTC = () => {
 	// Obtiene la fecha y la hora y las procesa
 	const ahora = new Date();
 	const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
