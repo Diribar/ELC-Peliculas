@@ -381,7 +381,7 @@ window.addEventListener("load", async () => {
 
 				// Recarga la vista para actualizar el url sin el ID de la edición
 				const origen = varias.origen ? "&origen=" + varias.origen : "";
-				location.href = new URL(location.href).pathname + "?entidad=" + varias.entidad + "&id=" + varias.prodID + origen;
+				location.href = location.pathname + "?entidad=" + varias.entidad + "&id=" + varias.prodID + origen;
 			}
 
 			// Vuelve al status de la versión anterior

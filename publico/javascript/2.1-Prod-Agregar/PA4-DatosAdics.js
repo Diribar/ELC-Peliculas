@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 		guardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
 	};
 	let v = {
-		camposRCLV: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epoca_del_ano_id"],
+		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
 	};
 
 	// Campos de error
@@ -235,10 +235,10 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el hecho
 		if (campo == "hecho_id") {
 			// Muestra los personajes que hayan presenciado la aparición y oculta los demás
-			DOM.opcionesPers.forEach((opcion) => {
+			for (let opcion of DOM.opcionesPers) {
 				if (opcion.className.includes("AM" + DOM.inputsRCLV[1].value)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
-			});
+			}
 			// Cambia el contenido del Personaje
 			verificaUnaSolaOpcionRCLV();
 		}
@@ -251,9 +251,7 @@ window.addEventListener("load", async () => {
 		let url = "";
 		checkRCLV
 			? (url += campo + "=on" + "&")
-			: v.camposRCLV.forEach((n, i) => {
-					url += n + "=" + DOM.inputsRCLV[i].value + "&";
-			  });
+			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
 		// Agrega 'ocurrió'
 		if (ocurrio) url += "ocurrio=" + ocurrio;
 		// Fin
