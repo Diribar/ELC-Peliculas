@@ -255,7 +255,9 @@ window.addEventListener("load", async () => {
 			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
 
 			// Primera letra en mayúscula
+			const posicCursor = e.target.selectionStart;
 			if (varios.DD) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			e.target.selectionEnd = posicCursor;
 		}
 		// Reemplaza el valor del DOM
 		e.target.value = valor;

@@ -32,7 +32,9 @@ window.addEventListener("load", async () => {
 			.slice(0, 100);
 
 		// Primera letra en mayúscula
+		const posicCursor = e.target.selectionStart;
 		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
+		e.target.selectionEnd = posicCursor;
 		pendiente.innerHTML = 100 - com.length;
 
 		// Actualiza el botón submit

@@ -685,7 +685,9 @@ window.addEventListener("load", async () => {
 				if (valor.slice(0, 1) == " ") valor = valor.slice(1);
 
 				// Primera letra en mayúscula
+				const posicCursor = e.target.selectionStart;
 				valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+				e.target.selectionEnd = posicCursor;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
 				if (campo == "nombre" && varios.personajes) {

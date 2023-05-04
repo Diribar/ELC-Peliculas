@@ -139,14 +139,13 @@ window.addEventListener("load", async () => {
 
 			// Averigua si los campos input son iguales
 			let sonIguales = true;
-			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false; 
-			
+			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
+
 			// Averigua si la imagen avatar es igual
 			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
-			
+
 			// Si los campos 'input' y la imagen avatar son iguales --> inactiva Guardar y Eliminar
 			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
-			
 			// Acciones si los campos 'input' o la imagen avatar son distintos
 			else {
 				// Activa el botón Eliminar
@@ -320,9 +319,12 @@ window.addEventListener("load", async () => {
 			FN.actualizaPaisesNombre();
 		}
 		// Primera letra en mayúscula
-		if (e.target.localName == "input" && e.target.type == "text") {
-			let aux = e.target.value;
+		if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
+			console.log(e.target.selectionStart);
+			const aux = e.target.value;
+			const posicCursor = e.target.selectionStart;
 			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+			e.target.selectionEnd = posicCursor;
 		}
 
 		// Acciones si se cambió el avatar
