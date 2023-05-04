@@ -78,7 +78,7 @@ window.addEventListener("load", async () => {
 			// Asigna valor a las variables
 			const SI = !!DOM.layout_idSelect.value;
 			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
-			elegibles.entidad = SI ? varias.layout.entidad : null;
+			elegibles.codigo = SI ? varias.layout.codigo : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
 			if (SI) elegibles.layout_id = DOM.layout_idSelect.value;
 
@@ -93,8 +93,8 @@ window.addEventListener("load", async () => {
 			// IMPACTOS EN - Oculta/Muestra las opciones que corresponden
 			const checked = document.querySelector("#encabezado select[name='orden_id'] option:checked");
 			varias.opcionesOrdenBD.forEach((opcion, i) => {
-				// Acciones si no existe 'layout' o la opción tiene una entidad distinta a la de layout
-				if (!varias.layout || opcion.entidad != varias.layout.entidad) {
+				// Acciones si no existe 'layout' o la opción tiene un código distinto al de layout
+				if (!varias.layout || opcion.codigo != varias.layout.codigo) {
 					// 1. Oculta la opción
 					DOM.opcionesOrdenVista[i].classList.add("ocultar");
 					// 2. La 'des-selecciona'
@@ -209,7 +209,7 @@ window.addEventListener("load", async () => {
 		impactosEnDeCanonsMasRolesIglesia: function () {
 			// IMPACTOS EN
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
-			// Sólo se muestra el sector si entidad='personajes' y CFC='SI'
+			// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
 			let sectorVisible;
 			const SI = elegibles.ocurrio == "pers" && elegibles.cfc == "CFC";
 
@@ -357,12 +357,10 @@ window.addEventListener("load", async () => {
 				const diaUsuario = ahora.getDate();
 				const mes_idUsuario = ahora.getMonth() + 1;
 				elegibles.dia_del_ano_id = varias.diasDelAno.find((n) => n.dia == diaUsuario && n.mes_id == mes_idUsuario).id;
-				console.log(elegibles);
 
 				//resultados =
-				console.log(await fetch(rutas.momento + JSON.stringify(elegibles)).then((n) => n.json()));
+				resultados = await fetch(rutas.momento + JSON.stringify(elegibles)).then((n) => n.json());
 			}
-			return;
 
 			// Actualiza el contador
 			contador_de_prods.innerHTML = resultados.length + " resultados";
@@ -456,7 +454,7 @@ window.addEventListener("load", async () => {
 		const filtro_id = DOM.filtroPers.value;
 		if (!filtro_id) return;
 		let objeto = {...elegibles, filtro_id};
-		delete objeto.entidad;
+		delete objeto.codigo;
 
 		// Guarda los cambios en el filtro personalizado
 		fetch(rutas.actualiza + JSON.stringify(objeto));
