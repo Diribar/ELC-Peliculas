@@ -7,6 +7,7 @@ const comp = require("../../funciones/3-Procesos/Compartidas");
 module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id, edicID} = req.query;
+	let origen = req.query.origen;
 	let entEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
 	let informacion;
 
@@ -16,17 +17,19 @@ module.exports = async (req, res, next) => {
 		let edicion = await BD_genericas.obtienePorId(entEdicion, edicID);
 
 		// En caso que no, mensaje de error
-		if (!edicion)
+		if (!edicion) {
+			if (!origen) origen = "TE";
 			informacion = {
-				mensajes: ["No encontramos esa edición.", "Te sugerimos que regreses al tablero y lo vuelvas a intentar"],
+				mensajes: ["No encontramos esa edición."],
 				iconos: [
 					{
-						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
-						titulo: "Regresar al Tablero de Control",
+						nombre: "fa-circle-left",
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen,
+						titulo: "Regresar",
 					},
 				],
 			};
+		}
 	}
 
 	// 2. Acciones en caso de que no exista el 'edicID' en el url
@@ -48,7 +51,6 @@ module.exports = async (req, res, next) => {
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url
 		if (edicion) return res.redirect(req.originalUrl + "&edicID=" + edicion.id);
-		
 		// 2.2. En caso que no exista, mensaje de error para revisión
 		else if (revision)
 			informacion = {
