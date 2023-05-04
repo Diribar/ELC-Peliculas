@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	let PC = {
-		particsInput: async () => {
+		particsInput: async (e) => {
 			// Actualiza el botón 'submit' a 'Verificar'
 			DOM.submit.classList.remove("fa-circle-check", "verde");
 			DOM.submit.classList.add("fa-circle-question", "naranja");
@@ -243,11 +243,12 @@ window.addEventListener("load", async () => {
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
+		const respetarMinus = PC;
 		// Validaciones estándar
-		input(e);
+		input(e, respetarMinus);
 
 		// Validaciones particulares
-		if (varios.PC) await PC.particsInput();
+		if (varios.PC) await PC.particsInput(e);
 
 		// Fin
 		return;
