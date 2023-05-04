@@ -27,24 +27,6 @@ module.exports = {
 		}
 	},
 
-	// DesambiguarForm
-	agregaCapituloDeCollection: async function (datosCol, capituloID_TMDB, indice) {
-		// Toma los datos de la colección
-		let {cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id} = datosCol;
-		// Prepara los datos del capítulo
-		let datosCap = {
-			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
-			...{creado_por_id: 2, sugerido_por_id: 2},
-			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
-		};
-		// Guarda los datos del capítulo
-		await this.DS_movie({TMDB_id: capituloID_TMDB})
-			.then((n) => (n = {...n, ...datosCap}))
-			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
-
-		// Fin
-		return;
-	},
 	// DesambiguarGuardar
 	DS_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
@@ -218,44 +200,6 @@ module.exports = {
 		// Fin
 		return comp.convierteLetrasAlCastellano(datos);
 	},
-	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
-		// Datos fijos
-		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, sugerido_por_id: 2};
-
-		// Datos de la colección
-		let {direccion, guion, musica, produccion} = datosCol;
-		let {cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id} = datosCol;
-		datos = {
-			...datos,
-			...{direccion, guion, musica, produccion},
-			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
-		};
-		datos.coleccion_id = datosCol.id;
-		if (datosCap.runtime) datos.duracion = datosCap.runtime;
-		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
-
-		// Datos de la temporada
-		datos.temporada = datosTemp.season_number;
-
-		// Datos distintivos del capítulo
-		datos.capitulo = datosCap.episode_number;
-		datos.TMDB_id = datosCap.id;
-		if (datosCap.name) datos.nombre_castellano = datosCap.name;
-		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
-		if (datosCap.crew.length > 0) {
-			datos.direccion = limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
-			datos.guion = limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
-			datos.musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
-		}
-		let actores = [];
-		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
-		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-		if (actores.length) datos.actores = FN_actores(actores);
-		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
-		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
-		return datos;
-	},
 
 	// Datos Adicionales
 	quitaCamposRCLV: (datos) => {
@@ -300,21 +244,41 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	agregaCapitulosDeCollection: async function (datos) {
+
+	// Agregado de capítulos de colección
+	agregaCaps_Colec: async function (datos) {
 		// Replica para todos los capítulos de la colección
 		datos.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
-			await this.agregaCapituloDeCollection(datos, capituloID_TMDB, indice);
+			await this.agregaUnCap_Colec(datos, capituloID_TMDB, indice);
 		});
 		// Fin
 		return;
 	},
-	agregaCapitulosDeTV: function (datosCol) {
-		// Loop de TEMPORADAS
-		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) this.agregaCapituloDeTV(datosCol, temporada);
+	agregaUnCap_Colec: async function (datosCol, capituloID_TMDB, indice) {
+		// Toma los datos de la colección
+		let {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		// Prepara los datos del capítulo
+		let datosCap = {
+			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
+			...{creado_por_id: 2, sugerido_por_id: 2},
+			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
+		};
+		// Guarda los datos del capítulo
+		await this.DS_movie({TMDB_id: capituloID_TMDB})
+			.then((n) => (n = {...n, ...datosCap}))
+			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
+
 		// Fin
 		return;
 	},
-	agregaCapituloDeTV: async function (datosCol, temporada) {
+	// Agregado de Capítulos de TV
+	agregaCaps_TV: function (datosCol) {
+		// Loop de TEMPORADAS
+		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) this.agregaUnCap_TV(datosCol, temporada);
+		// Fin
+		return;
+	},
+	agregaUnCap_TV: async function (datosCol, temporada) {
 		// Datos de UNA TEMPORADA
 		let datosTemp = await Promise.all([
 			APIsTMDB.details(temporada, datosCol.TMDB_id),
@@ -323,12 +287,53 @@ module.exports = {
 
 		// Loop de CAPITULOS ********************************************
 		for (let episode of datosTemp.episodes) {
-			let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
-			// Obtiene las API
+			// Obtiene la información del registro
+			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
+
+			// Guarda el registro
 			await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
 		}
 		// Fin
 		return;
+	},
+	infoTMDB_capsTV: (datosCol, datosTemp, datosCap) => {
+		// Elige datos de la colección
+		let {paises_id, direccion, guion, musica, produccion} = datosCol;
+		let {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		let {personaje_id, hecho_id, tema_id} = datosCol;
+
+		// Genera la información a guardar
+		let datos = {
+			...{entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, sugerido_por_id: 2},
+			...{paises_id, direccion, guion, musica, produccion},
+			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			...{personaje_id, hecho_id, tema_id},
+			coleccion_id: datosCol.id
+		};
+		if (datosCap.runtime) datos.duracion = datosCap.runtime;
+		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
+
+		// Datos de la temporada
+		datos.temporada = datosTemp.season_number;
+
+		// Datos distintivos del capítulo
+		datos.capitulo = datosCap.episode_number;
+		datos.TMDB_id = datosCap.id;
+		if (datosCap.name) datos.nombre_castellano = datosCap.name;
+		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
+		if (datosCap.crew.length > 0) {
+			datos.direccion = limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
+			datos.guion = limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
+			datos.musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
+		}
+		let actores = [];
+		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
+		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
+		if (actores.length) datos.actores = FN_actores(actores);
+		if (datosCap.overview) datos.sinopsis = datosCap.overview;
+		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
+		return datos;
 	},
 
 	// FILM AFFINITY **********************

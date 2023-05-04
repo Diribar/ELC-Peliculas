@@ -368,7 +368,7 @@ let agregaCapitulosCollection = async (coleccion) => {
 		// Averigua si algún capítulo es nuevo
 		if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
 			// Si es nuevo, lo agrega
-			await procesos.agregaCapituloDeCollection(coleccion, capituloID_TMDB, indice);
+			await procesos.agregaCaps_Colec(coleccion, capituloID_TMDB, indice);
 		}
 	});
 	// Fin
