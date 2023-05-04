@@ -1,17 +1,16 @@
 {
-	"FechaUTC": "Mié. 3/may",
-	"HoraUTC": "0:01",
+	"FechaUTC": "Jue. 4/may",
+	"HoraUTC": "10:45",
 	"FechaSemUTC": "Dom. 30/abr",
 	"HoraSemUTC": "3:15",
 	"semanaUTC": 17,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
 	"TitulosImgDer": {
-		"02-may-23": "Pascua de Resurrección",
 		"03-may-23": "Pascua de Resurrección",
-		"04-may-23": "Pascua de Resurrección"
+		"04-may-23": "Pascua de Resurrección",
+		"05-may-23": "Pascua de Resurrección"
 	},
 	"FechaHoraUTC": "SI",
-	"DiaDelAno":"",
 	"ImagenDerecha": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",

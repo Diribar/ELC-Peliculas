@@ -50,8 +50,8 @@ module.exports = {
 			for (let i = 0; i < 3; i++) {
 				// Variables
 				let dia_del_ano_id = datos.dia_del_ano_id + i;
+				let dia = dia_del_ano_id;
 				if (dia_del_ano_id > 366) dia_del_ano_id -= 366;
-				console.log(90, dia_del_ano_id);
 				let registros = [];
 
 				// Obtiene los RCLV de las primeras cuatro entidades
@@ -68,7 +68,7 @@ module.exports = {
 							// Deja solo los que tienen productos
 							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
 							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad, ...m, dia_del_ano_id})))
+							.then((n) => n.map((m) => ({entidad, ...m, dia_del_ano_id: dia})))
 					);
 				}
 
@@ -81,7 +81,7 @@ module.exports = {
 							// Deja solo los que tienen productos
 							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
 							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, dia_del_ano_id})))
+							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, dia_del_ano_id: dia})))
 					);
 				}
 
@@ -89,7 +89,7 @@ module.exports = {
 				await Promise.all(registros).then((n) => n.map((m) => rclvs.push(...m)));
 			}
 
-			// Quita los RCLVs repetidos
+			// Elimina los repetidos
 			if (rclvs.length)
 				for (let i = rclvs.length - 1; i >= 0; i--) {
 					let rclv = rclvs[i];
@@ -99,11 +99,59 @@ module.exports = {
 			// Fin
 			return rclvs;
 		},
-		obtieneProds: async (rclvs) => {
-			// Obtiene los productos
+		obtieneProds: (rclvs) => {
+			// Variables
+			let productos = [];
+
+			// Obtiene los productos y los procesa
+			// Obtiene sus productos
+			for (let rclv of rclvs)
+				for (let entidad of variables.entidadesProd) {
+					// Variables
+					let registros;
+
+					// Obtiene los productos y los procesa
+					if (rclv[entidad].length) {
+						// Obtiene los productos
+						registros = rclv[entidad];
+
+						// Los procesa
+						registros = registros
+							// Filtra por los que estan aprobados
+							.filter((n) => n.status_registro_id == aprobado_id)
+							// Les agrega su entidad, dia_del_ano_id y prioridad_id
+							.map((n) => ({...n, entidad, dia_del_ano_id: rclv.dia_del_ano_id, prioridad_id: rclv.prioridad_id}));
+
+						// Los pasa a la variable que los acumula
+						if (registros.length) productos.push(...registros);
+					}
+				}
+
+			// Elimina los repetidos
+			if (productos.length)
+				for (let i = productos.length - 1; i >= 0; i--) {
+					let producto = productos[i];
+					if (i != productos.findIndex((n) => n.id == producto.id && n.entidad == producto.entidad))
+						productos.splice(i, 1);
+				}
+
+			// Ordenamiento por fecha, prioridad, calificación y alta_term_en
+			productos.sort((a, b) => {
+				return false
+					? false
+					: a.dia_del_ano_id != b.dia_del_ano_id
+					? a.dia_del_ano_id - b.dia_del_ano_id
+					: a.prioridad_id != b.prioridad_id
+					? b.prioridad_id - a.prioridad_id
+					: a.calificacion != b.calificacion
+					? b.calificacion - a.calificacion
+					: a.alta_term_en != b.alta_term_en
+					? b.alta_term_en - a.alta_term_en
+					: 0;
+			});
 
 			// Fin
-			return;
+			return productos;
 		},
 	},
 	gruposConsultasRCLV: {

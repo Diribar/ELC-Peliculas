@@ -79,10 +79,10 @@ module.exports = {
 		const rclvs = await procesos.momento.obtieneRCLVs(datos);
 
 		// Obtiene los productos
-		const productos = await procesos.momento.obtieneProds(rclvs);
+		const productos = procesos.momento.obtieneProds(rclvs);
 
 		// Fin
-		return res.json(rclvs);
+		return res.json(productos);
 	},
 	obtieneProductos: async (req, res) => {
 		// Variables
