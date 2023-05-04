@@ -1,5 +1,5 @@
 "use strict";
-// Definir variables
+// Variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const comp = require("../3-Procesos/Compartidas");

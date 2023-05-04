@@ -21,7 +21,7 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -60,10 +60,9 @@ module.exports = {
 			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
 		if (prodComb.hecho_id != 1) bloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
 		if (prodComb.tema_id != 1) bloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "temas", ...prodComb.tema});
-		// return res.send(bloqueIzq);
 
 		// Info para el bloque Derecho
-		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor: revisor_ents});
+		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Obtiene datos para la vista
@@ -76,7 +75,6 @@ module.exports = {
 		const statusEstable = [creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
 		// Info para la vista
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		const userIdentVal = req.session.usuario && req.session.usuario.status_registro.ident_validada;
 
 		// Va a la vista
@@ -179,14 +177,14 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		const revisor_ents = req.session.usuario.rol_usuario.revisor_ents;
-		const actualizaOrig = revisor_ents && original.status_registro.creado_aprob && !original.ediciones.length;
+		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const actualizaOrig = revisor && original.status_registro.creado_aprob && !original.ediciones.length;
 
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...edicion, ...req.body, id};
-		prodComb.publico = revisor_ents;
+		prodComb.publico = revisor;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones sobre el archivo avatar, si recibimos uno
@@ -225,7 +223,9 @@ module.exports = {
 				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;
-			} else {
+			} 
+			// De lo contrario, actualiza la edicion
+			else {
 				// Combina la información
 				edicion = {...edicion, ...req.body};
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión

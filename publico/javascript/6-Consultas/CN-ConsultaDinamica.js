@@ -48,19 +48,26 @@ window.addEventListener("load", async () => {
 		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
 	};
 	let rutas = {
+		// Startup
 		layoutsOrdenes: "/consultas/api/layouts-y-ordenes",
-		guardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
 		opcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
+		diasDelAno: "/consultas/api/dias-del-ano",
+
+		// API - Filtros personalizados
+		guardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
+		actualiza: "/consultas/api/fp-actualiza/?datos=",
+
+		// API - Consultas
+		momento: "/consultas/api/momento-del-ano/?datos=",
 		productos: "/consultas/api/obtiene-los-productos/?datos=",
 		rclvs: "/consultas/api/obtiene-los-rclvs/?datos=",
-		// Botonera
-		actualiza: "/consultas/api/fp-actualiza/?datos=",
 	};
-	let elegibles = {};
 	let varias = {
 		comencemos: true,
 		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),
+		diasDelAno: await fetch(rutas.diasDelAno).then((n) => n.json()),
 	};
+	let elegibles = {};
 
 	// Obtiene tabla de layouts y ordenes
 
@@ -338,11 +345,24 @@ window.addEventListener("load", async () => {
 			// Si no se hizo 'click' sobre el botón 'comencemos', frena
 			if (varias.comencemos) return;
 
+			// Variables
+			let resultados;
+
 			// Obtiene los resultados
-			const resultados =
-				elegibles.entidad == "producto"
-					? await fetch(rutas.productos + JSON.stringify(elegibles)).then((n) => n.json())
-					: [];
+
+			// Momento del ano
+			if (elegibles.layout_id == 1 && elegibles.orden_id == 1) {
+				// Obtiene el dia_del_ano
+				const ahora = new Date();
+				const diaUsuario = ahora.getDate();
+				const mes_idUsuario = ahora.getMonth() + 1;
+				elegibles.dia_del_ano_id = varias.diasDelAno.find((n) => n.dia == diaUsuario && n.mes_id == mes_idUsuario).id;
+				console.log(elegibles);
+
+				//resultados =
+				console.log(await fetch(rutas.momento + JSON.stringify(elegibles)).then((n) => n.json()));
+			}
+			return;
 
 			// Actualiza el contador
 			contador_de_prods.innerHTML = resultados.length + " resultados";
