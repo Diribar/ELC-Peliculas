@@ -55,7 +55,6 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/producto/api/valida/?",
 		rutaVersiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + varias.entidad + "&id=" + varias.prodID,
 	};
-
 	// Obtiene versiones ORIGINAL, EDICION GUARDADA, EDICION NUEVA
 	let version = await versiones(rutas.rutaVersiones);
 
@@ -356,21 +355,33 @@ window.addEventListener("load", async () => {
 		boton.addEventListener("click", () => {
 			// Si está inactivo aborta la operación
 			if (boton.className.includes("inactivo")) return;
-			// Elimina los datos de edicG en la BD
-			indice
-				? fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + varias.entidad + "&id=" + varias.prodID)
-				: fetch("/producto/api/edicion-nueva/eliminar");
-			// Actualiza los datos de edición
-			version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
-			// Actualiza el avatar de la edición
-			DOM.imgsAvatar[indice].src = DOM.imgsAvatar[indice + 1].src;
-			// Si corresponde, actualiza el avatar de edicN
-			if (indice && !DOM.inputAvatarEdicN.value && varias.esImagen) {
-				version.edicN.avatar = version.orig.avatar;
-				DOM.imgsAvatar[0].src = DOM.imgsAvatar[2].src;
+
+			// 1. Acciones exclusivas para edicN
+			if (!indice) {
+				// Vuelve al status original la condición del avatar
+				varias.esImagen = true;
+
+				// Actualiza el avatar
+				version.edicN.avatar = version.edicG.avatar;
+
+				// Elimina Session y Cookies
+				fetch("/producto/api/edicion-nueva/eliminar");
 			}
-			// Avisa que ya no existe la edicG
-			if (indice) version.edicG_existe = false;
+			// 2. Acciones exclusivas para edicG
+			else {
+				// Actualiza la información de que ya no existe la edicG
+				version.edicG_existe = false;
+
+				// Elimina los datos de edicG en la BD
+				fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + varias.entidad + "&id=" + varias.prodID);
+			}
+
+			// Vuelve al status de la versión anterior
+			version[indice ? "edicG" : "edicN"] = {...version[indice ? "orig" : "edicG"]};
+
+			// Actualiza el avatar
+			DOM.imgsAvatar[indice].src = DOM.imgsAvatar[indice + 1].src;
+
 			// Tareas finales
 			FN.accionesPorCambioDeVersion();
 			FN.actualizaBotones();
