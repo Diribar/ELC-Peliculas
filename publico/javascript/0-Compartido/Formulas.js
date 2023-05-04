@@ -1,5 +1,5 @@
 "use strict";
-let keyPressed = () => {
+let keyPressed = (e) => {
 	// Previene el uso del 'enter'
 	if (e.key == "Enter") e.preventDefault();
 
@@ -12,11 +12,10 @@ let keyPressed = () => {
 };
 let input = (e) => {
 	// Variables
-	const target=e.target
-	let valor = target.value;
+	let valor = e.target.value;
 	const localName = e.target.localName;
 	const type = e.target.type;
-	let posicCursor = target.selectionStart;
+	let posicCursor = e.target.selectionStart;
 
 	// Validaciones
 	if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
@@ -24,7 +23,9 @@ let input = (e) => {
 		valor = valor
 			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/ +/g, " ") // previene repetición de espacios
-			.replace(/\n/g, ""); // previene el uso de 'return'
+			.replace(/\t/g, "") // previene el uso de 'tab'
+			.replace(/\n/g, "") // previene el uso de 'return'
+			.replace(/\r/g, ""); // previene el uso de 'return'
 
 		// El primer caracter no puede ser un espacio
 		if (valor.slice(0, 1) == " ") {
@@ -36,8 +37,8 @@ let input = (e) => {
 		valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 
 		// Reemplaza el valor del DOM
-		target.value = valor;
-		target.selectionEnd = posicCursor;
+		e.target.value = valor;
+		e.target.selectionEnd = posicCursor;
 	}
 
 	// Fin
