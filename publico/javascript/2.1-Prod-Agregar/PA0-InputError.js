@@ -46,8 +46,8 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	let PC = {
-		particsInput: () => {
-			// Actualiza el botón 'submit'
+		particsInput: async () => {
+			// Actualiza el botón 'submit' a 'Verificar'
 			DOM.submit.classList.remove("fa-circle-check", "verde");
 			DOM.submit.classList.add("fa-circle-question", "naranja");
 			DOM.submit.title = "Verificar";
@@ -57,6 +57,13 @@ window.addEventListener("load", async () => {
 			DOM.resultado.innerHTML = "<br>";
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
 			DOM.resultado.classList.add("sinResultado");
+
+			// Validar errores
+			const datosUrl = e.target.name + "=" + encodeURIComponent(e.target.value);
+			await FN.muestraLosErrores(datosUrl, true);
+
+			// Actualiza botón Submit
+			FN.actualizaBotonSubmit();
 
 			// Fin
 			return;
@@ -204,7 +211,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		actualizaBotonSubmit: () => {
-			// Detectar la cantidad de 'errores' ocultos
+			// Detecta la cantidad de 'errores' ocultos
 			let hayErrores = Array.from(DOM.iconosError)
 				.map((n) => n.className)
 				.some((n) => n.includes("error"));
@@ -231,51 +238,16 @@ window.addEventListener("load", async () => {
 
 	// ADD EVENT LISTENERS *********************************
 	DOM.form.addEventListener("keypress", (e) => {
-		// Previene el uso del 'enter'
-		if (e.key == "Enter" && varios.DD) e.preventDefault();
-
-		// Limita el uso del teclado solamente a los caracteres que nos interesan
-		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
-		if (!formato.test(e.key)) e.preventDefault();
+		keyPressed(e);
+		return;
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
-		// Variables
-		let valor = e.target.value;
+		// Validaciones estándar
+		input(e);
 
-		// Tareas comunes
-		if (valor.length && e.target.localName != "select") {
-			// Limita el uso del teclado solamente a los caracteres que nos interesan
-			valor = valor
-				.replace(/ +/g, " ")
-				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
-				.replace(/\n/g, "");
-
-			// El primer caracter no puede ser un espacio
-			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
-
-			// Primera letra en mayúscula
-			const posicCursor = e.target.selectionStart;
-			if (varios.DD) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			e.target.selectionEnd = posicCursor;
-		}
-		// Reemplaza el valor del DOM
-		e.target.value = valor;
-
-		// Particularidades
-		if (varios.PC) {
-			PC.particsInput();
-
-			// Prepara los datosUrl con los datos a validar
-			const campo = e.target.name;
-			const datosUrl = campo + "=" + encodeURIComponent(valor);
-
-			// Validar errores
-			await FN.muestraLosErrores(datosUrl, true);
-
-			// Actualiza botón Submit
-			FN.actualizaBotonSubmit();
-		}
+		// Validaciones particulares
+		if (varios.PC) await PC.particsInput();
 
 		// Fin
 		return;

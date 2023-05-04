@@ -1,4 +1,49 @@
 "use strict";
+let keyPressed = (e) => {
+	// Previene el uso del 'enter'
+	if (e.key == "Enter") e.preventDefault();
+
+	// Limita el uso del teclado solamente a los caracteres que nos interesan
+	const formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+	if (!formato.test(e.key)) e.preventDefault();
+
+	// Fin
+	return;
+};
+let input = (e) => {
+	// Variables
+	let valor = e.target.value;
+	const localName = e.target.localName;
+	const type = e.target.type;
+	let posicCursor = e.target.selectionStart;
+
+	// Validaciones
+	if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
+		// Limita el uso del teclado solamente a los caracteres que nos interesan
+		valor = valor
+			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/ +/g, " ") // previene repetición de espacios
+			.replace(/\t/g, "") // previene el uso de 'tab'
+			.replace(/\n/g, "") // previene el uso de 'return'
+			.replace(/\r/g, ""); // previene el uso de 'return'
+
+		// El primer caracter no puede ser un espacio
+		if (valor.slice(0, 1) == " ") {
+			valor = valor.slice(1);
+			posicCursor--;
+		}
+
+		// Primera letra en mayúscula
+		valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+
+		// Reemplaza el valor del DOM
+		e.target.value = valor;
+		e.target.selectionEnd = posicCursor;
+	}
+
+	// Fin
+	return;
+};
 let desplazamHoriz = () => {
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");

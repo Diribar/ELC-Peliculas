@@ -661,6 +661,9 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
+		// Validaciones estándar
+		input(e);
+
 		// Variables
 		let campo = e.target.name;
 
@@ -674,29 +677,13 @@ window.addEventListener("load", async () => {
 				// Variables
 				const largoMaximo = campo == "nombre" || campo == "apodo" ? 35 : campo.startsWith("comentario") ? 70 : false;
 
-				// Quita los caracteres no deseados
-				valor = valor
-					.replace(/[^a-záéíóúüñ'.-\s\d]/gi, "")
-					.replace(/ +/g, " ")
-					.replace(/\t/g, "")
-					.replace(/\r/g, "");
-
-				// El primer caracter no puede ser un espacio
-				if (valor.slice(0, 1) == " ") valor = valor.slice(1);
-
-				// Primera letra en mayúscula
-				const posicCursor = e.target.selectionStart;
-				valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-				e.target.selectionEnd = posicCursor;
-
 				// Si se cambia el nombre, quita el prefijo 'San'
-				if (campo == "nombre" && varios.personajes) {
+				if (campo == "nombre" && varios.personajes)
 					for (let prefijo of varios.prefijos)
 						if (valor.startsWith(prefijo + " ")) {
 							valor = valor.slice(prefijo.length + 1);
 							break;
 						}
-				}
 
 				// Quita los caracteres que exceden el largo permitido
 				if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
@@ -730,8 +717,11 @@ window.addEventListener("load", async () => {
 				DOM.iconosError[indice].classList.add("ocultar");
 				DOM.iconosOK[indice].classList.add("ocultar");
 			}
-			// Actualiza el valor en el DOM
+
+			// Reemplaza el valor del DOM
+			const posicCursor = e.target.selectionStart;
 			e.target.value = valor;
+			e.target.selectionEnd = posicCursor;
 		}
 
 		// Fin
