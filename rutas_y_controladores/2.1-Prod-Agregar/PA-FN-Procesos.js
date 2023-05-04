@@ -245,7 +245,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregado de capítulos de colección
+	// Agrega capítulos de colección
 	agregaCaps_Colec: async function (datos) {
 		// Replica para todos los capítulos de la colección
 		datos.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
@@ -256,16 +256,21 @@ module.exports = {
 	},
 	agregaUnCap_Colec: async function (datosCol, capituloID_TMDB, indice) {
 		// Toma los datos de la colección
+		let {paises_id, direccion, guion, musica, produccion} = datosCol;
 		let {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
-		// Prepara los datos del capítulo
+		let {personaje_id, hecho_id, tema_id} = datosCol;
+
+		// Genera la información a guardar
 		let datosCap = {
-			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
 			...{creado_por_id: 2, sugerido_por_id: 2},
-			...{cfc, ocurrio, musical, color, tipo_actuacion_id, publico_id},
+			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
+			...{paises_id, direccion, guion, musica, produccion},
+			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			...{personaje_id, hecho_id, tema_id},
 		};
 		// Guarda los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
-			.then((n) => (n = {...n, ...datosCap}))
+			.then((n) => (n = {...datosCap, ...n}))
 			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
 
 		// Fin
@@ -291,24 +296,24 @@ module.exports = {
 			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
 
 			// Guarda el registro
-			await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);
+			await BD_genericas.agregaRegistro("capitulos", datosCap);
 		}
 		// Fin
 		return;
 	},
 	infoTMDB_capsTV: (datosCol, datosTemp, datosCap) => {
-		// Elige datos de la colección
+		// Toma los datos de la colección
 		let {paises_id, direccion, guion, musica, produccion} = datosCol;
 		let {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
 		let {personaje_id, hecho_id, tema_id} = datosCol;
 
 		// Genera la información a guardar
 		let datos = {
-			...{entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, sugerido_por_id: 2},
+			...{fuente: "TMDB", creado_por_id: 2, sugerido_por_id: 2},
 			...{paises_id, direccion, guion, musica, produccion},
 			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
 			...{personaje_id, hecho_id, tema_id},
-			coleccion_id: datosCol.id
+			coleccion_id: datosCol.id,
 		};
 		if (datosCap.runtime) datos.duracion = datosCap.runtime;
 		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
