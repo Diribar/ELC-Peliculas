@@ -1,16 +1,22 @@
 "use strict";
 let keyPressed = (e) => {
+	// Variables
+	const localName = e.target.localName;
+	const type = e.target.type;
+
 	// Previene el uso del 'enter'
-	if (e.key == "Enter") e.preventDefault();
+	if (e.key == "Enter" && localName == "textarea") e.preventDefault();
 
 	// Limita el uso del teclado solamente a los caracteres que nos interesan
-	const formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
-	if (!formato.test(e.key)) e.preventDefault();
+	if ((localName == "input" && type == "text") || localName == "textarea") {
+		const formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+		if (!formato.test(e.key)) e.preventDefault();
+	}
 
 	// Fin
 	return;
 };
-let input = (e) => {
+let input = (e, respetarMinusc) => {
 	// Variables
 	let valor = e.target.value;
 	const localName = e.target.localName;
@@ -24,8 +30,7 @@ let input = (e) => {
 			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/ +/g, " ") // previene repetición de espacios
 			.replace(/\t/g, "") // previene el uso de 'tab'
-			.replace(/\n/g, "") // previene el uso de 'return'
-			.replace(/\r/g, ""); // previene el uso de 'return'
+			.replace(/\n/g, ""); // previene el uso de 'return'
 
 		// El primer caracter no puede ser un espacio
 		if (valor.slice(0, 1) == " ") {
@@ -34,7 +39,7 @@ let input = (e) => {
 		}
 
 		// Primera letra en mayúscula
-		valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+		if (!respetarMinusc) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
 
 		// Reemplaza el valor del DOM
 		e.target.value = valor;
