@@ -17,6 +17,7 @@ window.addEventListener("load", async () => {
 
 		// Temas de avatar
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
+		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
@@ -48,7 +49,7 @@ window.addEventListener("load", async () => {
 		// Varias
 		camposError: Array.from(document.querySelectorAll(".errores")).map((n) => n.id),
 		camposTodos: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
-		avatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN").src,
+		avatarInicial: DOM.imgAvatarInicial.src,
 	};
 	let rutas = {
 		rutaValidar: "/producto/api/valida/?",
@@ -140,15 +141,18 @@ window.addEventListener("load", async () => {
 			// Si la edicN es igual a la edicG --> inactiva Guardar y Eliminar
 			let sonIguales = true;
 			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
-			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion")
+			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
+			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
 			else {
-				// Si hay errores en la edición nueva --> inactiva Guardar
+				// Activa el botón Eliminar
+				DOM.botonesEliminar[0].classList.remove("inactivoVersion");
+
+				// Activa / Inactiva Guardar, dependiendo de si hay errores en la edición nueva
 				let hayErrores = Array.from(DOM.iconosError)
 					.map((n) => n.className)
 					.some((n) => !n.includes("ocultar"));
-				if (hayErrores) DOM.botonGuardar.classList.add("inactivoVersion")
-				// Else -> activa
-				else DOM.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
+				if (hayErrores) DOM.botonGuardar.classList.add("inactivoVersion");
+				else DOM.botonGuardar.classList.remove("inactivoVersion");
 			}
 
 			// Fin
