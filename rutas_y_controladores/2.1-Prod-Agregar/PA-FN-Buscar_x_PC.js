@@ -391,7 +391,7 @@ let agregaCapitulosTV = async (coleccion) => {
 				datosTemp = {...datosTemp, ...(await APIsTMDB.credits(numTemp, coleccion.TMDB_id))};
 				// Procesa la información
 				let episodio = datosTemp.episodes.find((n) => n.id == capituloID_TMDB);
-				let datosCap = procesos.infoTMDBparaAgregarCapitulosDeTV(coleccion, datosTemp, episodio);
+				let datosCap = procesos.infoTMDB_capsTV(coleccion, datosTemp, episodio);
 				// Completar datos
 				datosCap = {
 					...datosCap,
