@@ -34,6 +34,7 @@ window.addEventListener("load", async () => {
 		return;
 	});
 	DOM.comentario.addEventListener("input", (e) => {
+		// Validaciones estándar
 		input(e);
 
 		// Actualiza el contador

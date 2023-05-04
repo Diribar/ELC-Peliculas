@@ -661,12 +661,14 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
+		// Validaciones estándar
+		input(e);
+
 		// Variables
 		let campo = e.target.name;
 
 		// Acciones si existe el campo
 		if (DOM[campo]) {
-			input(e)
 			// Variables
 			let valor = e.target.value;
 
@@ -676,13 +678,12 @@ window.addEventListener("load", async () => {
 				const largoMaximo = campo == "nombre" || campo == "apodo" ? 35 : campo.startsWith("comentario") ? 70 : false;
 
 				// Si se cambia el nombre, quita el prefijo 'San'
-				if (campo == "nombre" && varios.personajes) {
+				if (campo == "nombre" && varios.personajes)
 					for (let prefijo of varios.prefijos)
 						if (valor.startsWith(prefijo + " ")) {
 							valor = valor.slice(prefijo.length + 1);
 							break;
 						}
-				}
 
 				// Quita los caracteres que exceden el largo permitido
 				if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);

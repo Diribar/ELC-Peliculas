@@ -275,12 +275,14 @@ window.addEventListener("load", async () => {
 
 	// Correcciones mientras se escribe
 	DOM.form.addEventListener("input", async (e) => {
+		// Validaciones estándar
+		input(e)
+
 		// Variables
 		let campo = e.target.name;
 
 		// Acciones si existe el campo
 		if (DOM[campo]) {
-			input(e)
 			// Variables
 			let valor = e.target.value;
 

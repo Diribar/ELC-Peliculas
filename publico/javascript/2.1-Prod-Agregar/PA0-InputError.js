@@ -242,8 +242,13 @@ window.addEventListener("load", async () => {
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
+		// Validaciones estándar
 		input(e);
+
+		// Validaciones particulares
 		if (varios.PC) await PC.particsInput();
+
+		// Fin
 		return;
 	});
 

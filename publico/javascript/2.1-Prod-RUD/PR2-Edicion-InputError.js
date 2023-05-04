@@ -313,6 +313,9 @@ window.addEventListener("load", async () => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
 		if (varias.versionActual != varias.versiones[0]) return;
 
+		// Validaciones estándar
+		input(e)
+
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {
 			FN.actualizaPaisesID();
@@ -322,9 +325,6 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambió el avatar
 		if (e.target == DOM.inputAvatarEdicN) FN.revisaAvatarNuevo();
 		else FN.actualizaVarios();
-
-		// Validaciones estándar
-		input(e)
 
 		// Fin
 		return
