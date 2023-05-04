@@ -10,18 +10,21 @@ let keyPressed = () => {
 	// Fin
 	return;
 };
-let input = (target) => {
+let input = (e) => {
 	// Variables
+	const target=e.target
 	let valor = target.value;
+	const localName = e.target.localName;
+	const type = e.target.type;
 	let posicCursor = target.selectionStart;
 
 	// Validaciones
-	if (valor.length) {
+	if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		valor = valor
 			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
 			.replace(/ +/g, " ") // previene repetición de espacios
-			.replace(/\n/g, "") // previene el uso de 'return'
+			.replace(/\n/g, ""); // previene el uso de 'return'
 
 		// El primer caracter no puede ser un espacio
 		if (valor.slice(0, 1) == " ") {
@@ -38,7 +41,7 @@ let input = (target) => {
 	}
 
 	// Fin
-	return
+	return;
 };
 let desplazamHoriz = () => {
 	// Definir variables

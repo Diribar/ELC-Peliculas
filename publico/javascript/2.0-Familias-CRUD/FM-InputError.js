@@ -30,35 +30,15 @@ window.addEventListener("load", async () => {
 
 	// Comentario
 	DOM.comentario.addEventListener("keypress", (e) => {
-		// Previene el uso del 'enter'
-		if (e.key == "Enter") e.preventDefault();
-
-		// Limita el uso del teclado solamente a los caracteres que nos interesan
-		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
-		if (!formato.test(e.key)) e.preventDefault();
+		keyPressed();
+		return;
 	});
-	DOM.comentario.addEventListener("input", () => {
-		let valor = DOM.comentario.value;
-		if (valor.length) {
-			// Limita el uso del teclado solamente a los caracteres que nos interesan
-			valor = valor
-				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
-				.replace(/ +/g, " ")
-				.replace(/\n/g, "")
-				.slice(0, 100);
+	DOM.comentario.addEventListener("input", (e) => {
+		input(e.target);
 
-			// El primer caracter no puede ser un espacio
-			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
-
-			// Primera letra en mayúscula
-			const posicCursor = DOM.comentario.selectionStart;
-			valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-			DOM.comentario.selectionEnd = posicCursor;
-
-			// Fin
-			DOM.comentario.value = valor;
-			DOM.pendiente.innerHTML = 100 - valor.length;
-		}
+		// Actualiza el contador
+		let largo = DOM.comentario.value.length;
+		if (largo) DOM.pendiente.innerHTML = 100 - largo;
 
 		// Actualiza el botón submit
 		botonSubmit();
