@@ -144,7 +144,7 @@ window.addEventListener("load", async () => {
 			// Averigua si la imagen avatar es igual
 			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
 			
-			// Si la edicN es igual a la edicG --> inactiva Guardar y Eliminar
+			// Si los campos 'input' y la imagen avatar son iguales --> inactiva Guardar y Eliminar
 			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion");
 			
 			// Acciones si los campos 'input' o la imagen avatar son distintos
