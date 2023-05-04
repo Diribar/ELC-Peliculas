@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		return;
 	});
 	DOM.comentario.addEventListener("input", (e) => {
-		input(e.target);
+		input(e);
 
 		// Actualiza el contador
 		let largo = DOM.comentario.value.length;
