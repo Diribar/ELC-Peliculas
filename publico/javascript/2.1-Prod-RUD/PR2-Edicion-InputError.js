@@ -69,7 +69,10 @@ window.addEventListener("load", async () => {
 			version.edicN = {};
 			for (let input of inputs) {
 				if (input.name != "avatar") version.edicN[input.name] = input.value;
-				else version.edicN.avatar = DOM.inputAvatarEdicN.files[0] ? DOM.inputAvatarEdicN.files[0].name : version.edicG.avatar;
+				else
+					version.edicN.avatar = DOM.inputAvatarEdicN.files[0]
+						? DOM.inputAvatarEdicN.files[0].name
+						: version.edicG.avatar;
 			}
 
 			// Fin
@@ -133,19 +136,21 @@ window.addEventListener("load", async () => {
 				DOM.botonesActivarVersion[1].classList.add("inactivoVersion");
 				DOM.botonesEliminar[1].classList.add("inactivoVersion");
 			}
-			// Averiguaciones sobre la edición nueva
-			// 1. Averigua si hay errores
-			let hayErrores = Array.from(DOM.iconosError)
-				.map((n) => n.className)
-				.some((n) => !n.includes("ocultar"));
-			// 2. Averigua si es igual a la edicion
+
+			// Si la edicN es igual a la edicG --> inactiva Guardar y Eliminar
 			let sonIguales = true;
 			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
+			if (sonIguales) for (let edic of DOM.botones.edicN) edic.classList.add("inactivoVersion")
+			else {
+				// Si hay errores en la edición nueva --> inactiva Guardar
+				let hayErrores = Array.from(DOM.iconosError)
+					.map((n) => n.className)
+					.some((n) => !n.includes("ocultar"));
+				if (hayErrores) DOM.botonGuardar.classList.add("inactivoVersion")
+				// Else -> activa
+				else DOM.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
+			}
 
-			// Si se cumple alguna de las anteriores -> inactiva
-			if (hayErrores || sonIguales) DOM.botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
-			// Else -> activa
-			else DOM.botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
 			// Fin
 			return;
 		},
