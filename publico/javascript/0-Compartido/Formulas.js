@@ -1,4 +1,45 @@
 "use strict";
+let keyPressed = () => {
+	// Previene el uso del 'enter'
+	if (e.key == "Enter") e.preventDefault();
+
+	// Limita el uso del teclado solamente a los caracteres que nos interesan
+	let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+	if (!formato.test(e.key)) e.preventDefault();
+
+	// Fin
+	return;
+};
+let input = (target) => {
+	// Variables
+	let valor = target.value;
+	let posicCursor = target.selectionStart;
+
+	// Validaciones
+	if (valor.length) {
+		// Limita el uso del teclado solamente a los caracteres que nos interesan
+		valor = valor
+			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/ +/g, " ") // previene repetición de espacios
+			.replace(/\n/g, "") // previene el uso de 'return'
+
+		// El primer caracter no puede ser un espacio
+		if (valor.slice(0, 1) == " ") {
+			valor = valor.slice(1);
+			posicCursor--;
+		}
+
+		// Primera letra en mayúscula
+		valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+
+		// Reemplaza el valor del DOM
+		target.value = valor;
+		target.selectionEnd = posicCursor;
+	}
+
+	// Fin
+	return
+};
 let desplazamHoriz = () => {
 	// Definir variables
 	let izquierda = document.querySelector(".fa-caret-left");
