@@ -4,7 +4,7 @@ let keyPressed = () => {
 	if (e.key == "Enter") e.preventDefault();
 
 	// Limita el uso del teclado solamente a los caracteres que nos interesan
-	let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+	const formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
 	if (!formato.test(e.key)) e.preventDefault();
 
 	// Fin
