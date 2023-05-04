@@ -364,8 +364,7 @@ window.addEventListener("load", async () => {
 
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {
-				// Actualiza el avatar
-				version.edicN.avatar = version.edicG.avatar;
+				// Vuelve al status original la condición del avatar
 				varias.esImagen = true;
 
 				// Elimina Session y Cookies
