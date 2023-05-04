@@ -318,18 +318,16 @@ window.addEventListener("load", async () => {
 			FN.actualizaPaisesID();
 			FN.actualizaPaisesNombre();
 		}
-		// Primera letra en mayúscula
-		if ((e.target.localName == "input" && e.target.type == "text") || e.target.localName == "textarea") {
-			console.log(e.target.selectionStart);
-			const aux = e.target.value;
-			const posicCursor = e.target.selectionStart;
-			e.target.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
-			e.target.selectionEnd = posicCursor;
-		}
 
 		// Acciones si se cambió el avatar
 		if (e.target == DOM.inputAvatarEdicN) FN.revisaAvatarNuevo();
 		else FN.actualizaVarios();
+
+		// Validaciones estándar
+		input(e)
+
+		// Fin
+		return
 	});
 
 	// Botones - 1. Activa las versiones
