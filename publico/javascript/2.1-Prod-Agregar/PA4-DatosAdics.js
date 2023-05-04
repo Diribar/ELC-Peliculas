@@ -83,7 +83,7 @@ window.addEventListener("load", async () => {
 		//Busca todos los valores 'input'
 		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
-			if (v.rutaGuardaDatosAdics.includes(input.name) && DOM.checkRCLV.checked) return;
+			if (rutas.guardaDatosAdics.includes(input.name) && DOM.checkRCLV.checked) return;
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
 		});
@@ -251,7 +251,7 @@ window.addEventListener("load", async () => {
 		let url = "";
 		checkRCLV
 			? (url += campo + "=on" + "&")
-			: v.rutaGuardaDatosAdics.forEach((n, i) => {
+			: rutas.guardaDatosAdics.forEach((n, i) => {
 					url += n + "=" + DOM.inputsRCLV[i].value + "&";
 			  });
 		// Agrega 'ocurrió'
@@ -284,11 +284,11 @@ window.addEventListener("load", async () => {
 			DOM.selectHecho.value = "1";
 		}
 		// 2. Para campos 'RCLV'
-		if (v.rutaGuardaDatosAdics.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
-		if (campo == "sinRCLV" || v.rutaGuardaDatosAdics.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
+		if (rutas.guardaDatosAdics.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
+		if (campo == "sinRCLV" || rutas.guardaDatosAdics.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...v.rutaGuardaDatosAdics, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
+		if ([...rutas.guardaDatosAdics, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
