@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 	// FUNCIONES *******************************************
 	let PC = {
 		particsInput: async () => {
-			// Actualiza el botón 'submit'
+			// Actualiza el botón 'submit' a 'Verificar'
 			DOM.submit.classList.remove("fa-circle-check", "verde");
 			DOM.submit.classList.add("fa-circle-question", "naranja");
 			DOM.submit.title = "Verificar";
@@ -211,7 +211,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		actualizaBotonSubmit: () => {
-			// Detectar la cantidad de 'errores' ocultos
+			// Detecta la cantidad de 'errores' ocultos
 			let hayErrores = Array.from(DOM.iconosError)
 				.map((n) => n.className)
 				.some((n) => n.includes("error"));
