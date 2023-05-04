@@ -154,7 +154,9 @@ window.addEventListener("load", () => {
 			// Primera letra en mayúscula
 			if (tarea != "login" && input.localName == "input" && input.type == "text") {
 				let aux = input.value;
+				const posicCursor = input.selectionStart;
 				input.value = aux.slice(0, 1).toUpperCase() + aux.slice(1);
+				input.selectionEnd = posicCursor;
 			}
 
 			// Acciones si se cambió el avatar

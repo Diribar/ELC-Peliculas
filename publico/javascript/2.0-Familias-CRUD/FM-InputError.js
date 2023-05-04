@@ -51,7 +51,9 @@ window.addEventListener("load", async () => {
 			if (valor.slice(0, 1) == " ") valor = valor.slice(1);
 
 			// Primera letra en mayúscula
+			const posicCursor = DOM.comentario.selectionStart;
 			valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+			DOM.comentario.selectionEnd = posicCursor;
 
 			// Fin
 			DOM.comentario.value = valor;
