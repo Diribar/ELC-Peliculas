@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 
 	// Comentario
 	DOM.comentario.addEventListener("keypress", (e) => {
-		keyPressed();
+		keyPressed(e);
 		return;
 	});
 	DOM.comentario.addEventListener("input", (e) => {

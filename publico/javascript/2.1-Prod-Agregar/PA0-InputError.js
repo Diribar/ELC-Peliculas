@@ -239,6 +239,7 @@ window.addEventListener("load", async () => {
 	// ADD EVENT LISTENERS *********************************
 	DOM.form.addEventListener("keypress", (e) => {
 		keyPressed(e);
+		return;
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
