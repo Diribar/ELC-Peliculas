@@ -203,13 +203,16 @@ module.exports = {
 		const datosAPI = await Promise.all(resultados).then(([a, b]) => ({...a, ...b}));
 
 		// Procesa la información
-		if (Object.keys(datosAPI).length) datos = {...datos, ...DS_tv_info(datosAPI, datos)};
+		if (Object.keys(datosAPI).length) datos = {...datos, ...DS_tv_info(datosAPI)};
 		datos = comp.convierteLetrasAlCastellano(datos);
 
 		// Fin
 		return datos;
 	},
-	DS_tv_info: (datosAPI, datos) => {
+	DS_tv_info: (datosAPI) => {
+		// Variables
+		let datos = {};
+
 		// nombre_original, nombre_castellano, duración de capítulos
 		if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
 		if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
