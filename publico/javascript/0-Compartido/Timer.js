@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 
 	// Otras variables
 	const tipoUsuario = location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
-	const codigo = new URL(location.href).pathname;
+	const codigo = location.pathname;
 	let timer = document.querySelector("#timer");
 
 	// Horario Inicial

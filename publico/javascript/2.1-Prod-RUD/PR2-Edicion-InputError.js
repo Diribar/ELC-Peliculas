@@ -37,6 +37,7 @@ window.addEventListener("load", async () => {
 		// Pointer del producto
 		entidad: new URL(location.href).searchParams.get("entidad"),
 		prodID: new URL(location.href).searchParams.get("id"),
+		origen: new URL(location.href).searchParams.get("origen"),
 		paisesListado: Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
 			return {id: n.value, nombre: n.innerHTML};
 		}),
@@ -314,7 +315,7 @@ window.addEventListener("load", async () => {
 		if (varias.versionActual != varias.versiones[0]) return;
 
 		// Validaciones estándar
-		input(e)
+		input(e);
 
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {
@@ -327,7 +328,7 @@ window.addEventListener("load", async () => {
 		else FN.actualizaVarios();
 
 		// Fin
-		return
+		return;
 	});
 
 	// Botones - 1. Activa las versiones
@@ -358,7 +359,7 @@ window.addEventListener("load", async () => {
 	});
 	// Botones - 3. Elimina la edición
 	DOM.botonesEliminar.forEach((boton, indice) => {
-		boton.addEventListener("click", () => {
+		boton.addEventListener("click", async () => {
 			// Si está inactivo aborta la operación
 			if (boton.className.includes("inactivo")) return;
 
@@ -376,7 +377,11 @@ window.addEventListener("load", async () => {
 				version.edicG_existe = false;
 
 				// Elimina los datos de edicG en la BD
-				fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + varias.entidad + "&id=" + varias.prodID);
+				await fetch("/producto/api/edicion-guardada/eliminar/?entidad=" + varias.entidad + "&id=" + varias.prodID);
+
+				// Recarga la vista para actualizar el url sin el ID de la edición
+				const origen = varias.origen ? "&origen=" + varias.origen : "";
+				location.href = location.pathname + "?entidad=" + varias.entidad + "&id=" + varias.prodID + origen;
 			}
 
 			// Vuelve al status de la versión anterior

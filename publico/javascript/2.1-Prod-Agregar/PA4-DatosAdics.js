@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let v = {
+	let DOM = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
@@ -21,7 +21,6 @@ window.addEventListener("load", async () => {
 		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
 		// RCLV
-		camposRCLV: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epoca_del_ano_id"],
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 		checkRCLV: document.querySelector("#RCLV #checkbox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
@@ -43,20 +42,24 @@ window.addEventListener("load", async () => {
 		// RCLV - Links
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
-		// Rutas
-		rutaValidar: "/producto/agregar/api/valida/datos-adicionales/?",
-		rutaGuardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
+	};
+	let rutas = {
+		validar: "/producto/agregar/api/valida/datos-adicionales/?",
+		guardaDatosAdics: "/producto/agregar/api/DA-guarda-datos-adics/?",
+	};
+	let v = {
+		camposRCLV: ["personaje_id", "hecho_id", "tema_id"],
 	};
 
 	// Campos de error
-	v.camposError = [...Array.from(v.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
+	DOM.camposError = [...Array.from(DOM.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
 
 	// Opciones para personajes
-	v.opcionesPers = [];
-	for (let grupo of v.optgroupPers) v.opcionesPers.push([...grupo.children]);
+	DOM.opcionesPers = [];
+	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push([...grupo.children]);
 	// Opciones para hechos
-	v.opcionesHechos = [];
-	for (let grupo of v.optgroupHecho) v.opcionesHechos.push([...grupo.children]);
+	DOM.opcionesHechos = [];
+	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push([...grupo.children]);
 
 	// FUNCIONES *******************************************
 	// Comunes a todos los campos
@@ -64,23 +67,23 @@ window.addEventListener("load", async () => {
 		// Variables
 		let datosUrl = "";
 		//Busca todos los valores 'radio'
-		v.radioSI.forEach((radioSI, i) => {
+		DOM.radioSI.forEach((radioSI, i) => {
 			// Variables
-			let respuesta = radioSI.checked ? "1" : v.radioNO[i].checked ? "0" : "";
+			let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
 			// Acción
 			datosUrl += radioSI.name + "=" + respuesta + "&";
-			if (radioSI.name == "ocurrio" && respuesta) v.errorRCLV.classList.remove("ocultar");
+			if (radioSI.name == "ocurrio" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
 		});
 		//Busca todos los valores 'tipoActuacion'
 		let respuesta = "";
-		for (let tipo of v.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
+		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
 		datosUrl += "tipo_actuacion_id=" + respuesta + "&";
 		// Busca el checkbox
-		if (v.checkbox.checked) datosUrl += "sinRCLV=on&";
+		if (DOM.checkbox.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'
-		v.inputs.forEach((input, i) => {
+		DOM.inputs.forEach((input, i) => {
 			// Particularidad para RCLV
-			if (v.camposRCLV.includes(input.name) && v.checkRCLV.checked) return;
+			if (v.camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
 			// Agrega el campo y el valor
 			datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
 		});
@@ -99,17 +102,19 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let muestraLosErrores = async (datos, mostrarIconoError) => {
-		let errores = await fetch(v.rutaValidar + datos).then((n) => n.json());
+		let errores = await fetch(rutas.validar + datos).then((n) => n.json());
 		// return;
-		v.camposError.forEach((campo, indice) => {
+		DOM.camposError.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
-				v.mensajesError[indice].innerHTML = errores[campo];
+				DOM.mensajesError[indice].innerHTML = errores[campo];
 				// Acciones en función de si hay o no mensajes de error
-				errores[campo] ? v.iconosError[indice].classList.add("error") : v.iconosError[indice].classList.remove("error");
+				errores[campo]
+					? DOM.iconosError[indice].classList.add("error")
+					: DOM.iconosError[indice].classList.remove("error");
 				errores[campo] && mostrarIconoError
-					? v.iconosError[indice].classList.remove("ocultar")
-					: v.iconosError[indice].classList.add("ocultar");
-				errores[campo] ? v.iconosOK[indice].classList.add("ocultar") : v.iconosOK[indice].classList.remove("ocultar");
+					? DOM.iconosError[indice].classList.remove("ocultar")
+					: DOM.iconosError[indice].classList.add("ocultar");
+				errores[campo] ? DOM.iconosOK[indice].classList.add("ocultar") : DOM.iconosOK[indice].classList.remove("ocultar");
 			}
 		});
 		// Fin
@@ -117,16 +122,16 @@ window.addEventListener("load", async () => {
 	};
 	let actualizaBotonSubmit = () => {
 		// Detectar la cantidad de 'errores' ocultos
-		let hayErrores = Array.from(v.iconosError)
+		let hayErrores = Array.from(DOM.iconosError)
 			.map((n) => n.className)
 			.some((n) => n.includes("error"));
 		// Consecuencias
-		hayErrores ? v.submit.classList.add("inactivo") : v.submit.classList.remove("inactivo");
+		hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();
-		if (v.submit.classList.contains("inactivo")) statusInicial(true);
-		else v.form.submit();
+		if (DOM.submit.classList.contains("inactivo")) statusInicial(true);
+		else DOM.form.submit();
 	};
 	// RCLV
 	let impactoVisualEnRCLV = {
@@ -134,38 +139,39 @@ window.addEventListener("load", async () => {
 			// Variables
 			let categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
 			// Si no hay respuesta, agrega el 'oculta' de RCLVs
-			if (!categoria) v.sectorRCLV.classList.add("ocultaCfc");
+			if (!categoria) DOM.sectorRCLV.classList.add("ocultaCfc");
 			// Acciones si hay respuesta
 			else {
 				// Opciones para Personajes
-				v.selectPers.innerHTML = "";
-				v.optgroupPers.forEach((grupo, i) => {
+				DOM.selectPers.innerHTML = "";
+				DOM.optgroupPers.forEach((grupo, i) => {
 					// Acciones si el grupo tiene la clase
 					if (grupo.className.includes(categoria)) {
 						// Borra todas las opciones y agrega las que van
 						grupo.innerHTML = "";
-						for (let opcion of v.opcionesPers[i]) if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
+						for (let opcion of DOM.opcionesPers[i])
+							if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
 						// Si tiene opciones, agrega el grupo
-						if (grupo.childElementCount) v.selectPers.appendChild(grupo);
+						if (grupo.childElementCount) DOM.selectPers.appendChild(grupo);
 					}
 				});
 
 				// Opciones para Hechos
-				v.selectHecho.innerHTML = "";
-				v.optgroupHecho.forEach((grupo, i) => {
+				DOM.selectHecho.innerHTML = "";
+				DOM.optgroupHecho.forEach((grupo, i) => {
 					// Acciones si el grupo tiene la clase
 					if (grupo.className.includes(categoria)) {
 						// Borra todas las opciones y agrega las que van
 						grupo.innerHTML = "";
-						for (let opcion of v.opcionesHechos[i])
+						for (let opcion of DOM.opcionesHechos[i])
 							if (opcion.className.includes(categoria)) grupo.appendChild(opcion);
 						// Si tiene opciones, agrega el grupo
-						if (grupo.childElementCount) v.selectHecho.appendChild(grupo);
+						if (grupo.childElementCount) DOM.selectHecho.appendChild(grupo);
 					}
 				});
 
 				// Quita el 'oculta' de RCLVs
-				v.sectorRCLV.classList.remove("ocultaCfc");
+				DOM.sectorRCLV.classList.remove("ocultaCfc");
 				// Fin
 				return;
 			}
@@ -175,39 +181,39 @@ window.addEventListener("load", async () => {
 			let ocurrio = ocurrioSI.checked ? "1" : ocurrioNO.checked ? "0" : "";
 
 			// Oculta o muestra el sector de RCLVs
-			ocurrio ? v.sectorRCLV.classList.remove("ocultaOcurrio") : v.sectorRCLV.classList.add("ocultaOcurrio");
+			ocurrio ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
 			if (ocurrio == "1") {
 				// Muestra 'personaje_id' y 'hecho_id'
-				v.sectorPers.classList.remove("ocultar");
-				v.sectorHecho.classList.remove("ocultar");
+				DOM.sectorPers.classList.remove("ocultar");
+				DOM.sectorHecho.classList.remove("ocultar");
 				// Ayudas
-				v.ayudaRCLV[0].classList.remove("ocultaAyudaRCLV");
-				v.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
+				DOM.ayudaRCLV[0].classList.remove("ocultaAyudaRCLV");
+				DOM.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
 			if (ocurrio == "0") {
 				// Oculta 'personaje_id' y 'hecho_id'
-				v.sectorPers.classList.add("ocultar");
-				v.sectorHecho.classList.add("ocultar");
+				DOM.sectorPers.classList.add("ocultar");
+				DOM.sectorHecho.classList.add("ocultar");
 				// Ayudas
-				v.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
-				v.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
+				DOM.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
+				DOM.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
 			}
 		},
 		sinRCLV: () => {
 			// Muestra u oculta el sector RCLV
-			v.checkRCLV.checked ? v.selectsRCLV.classList.add("ocultar") : v.selectsRCLV.classList.remove("ocultar");
+			DOM.checkRCLV.checked ? DOM.selectsRCLV.classList.add("ocultar") : DOM.selectsRCLV.classList.remove("ocultar");
 			// Fin
 			return;
 		},
 		edicJesusNinguno: () => {
 			// Acciones si el valor es 'Ninguno' o 'Jesús'
-			v.inputsRCLV.forEach((inputRCLV, indice) => {
+			DOM.inputsRCLV.forEach((inputRCLV, indice) => {
 				inputRCLV.value == "1" || (indice == 0 && inputRCLV.value == "11")
-					? v.linksRCLV_Edic[indice].classList.add("ocultar")
-					: v.linksRCLV_Edic[indice].classList.remove("ocultar");
+					? DOM.linksRCLV_Edic[indice].classList.add("ocultar")
+					: DOM.linksRCLV_Edic[indice].classList.remove("ocultar");
 			});
 			// Fin
 			return;
@@ -218,36 +224,34 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambia el personaje
 		if (campo == "personaje_id") {
 			// Obtiene del personaje, el 'id' de la Aparición Mariana
-			for (var opcion of v.opcionesPers) if (opcion.value == v.inputsRCLV[0].value) break;
+			for (var opcion of DOM.opcionesPers) if (opcion.value == DOM.inputsRCLV[0].value) break;
 			let clases = opcion.className.split(" ");
 			let indice = clases.indexOf("AMA");
 			clases.splice(indice, 1);
 			let id = clases[indice].slice(2);
 			// Cambia el contenido del Hecho
-			v.inputsRCLV[1].value = id;
+			DOM.inputsRCLV[1].value = id;
 		}
 		// Acciones si se cambia el hecho
 		if (campo == "hecho_id") {
 			// Muestra los personajes que hayan presenciado la aparición y oculta los demás
-			v.opcionesPers.forEach((opcion) => {
-				if (opcion.className.includes("AM" + v.inputsRCLV[1].value)) opcion.classList.remove("ocultar");
+			for (let opcion of DOM.opcionesPers) {
+				if (opcion.className.includes("AM" + DOM.inputsRCLV[1].value)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
-			});
+			}
 			// Cambia el contenido del Personaje
 			verificaUnaSolaOpcionRCLV();
 		}
 	};
 	let urlRCLV = (campo) => {
 		// Variables
-		let ocurrio = v.ocurrioSI.checked ? "1" : v.ocurrioNO.checked ? "0" : "";
-		let checkRCLV = v.checkRCLV.checked;
+		let ocurrio = DOM.ocurrioSI.checked ? "1" : DOM.ocurrioNO.checked ? "0" : "";
+		let checkRCLV = DOM.checkRCLV.checked;
 		// Agrega el valor del campo 'sin' o de los demás campos
 		let url = "";
 		checkRCLV
 			? (url += campo + "=on" + "&")
-			: v.camposRCLV.forEach((n, i) => {
-					url += n + "=" + v.inputsRCLV[i].value + "&";
-			  });
+			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
 		// Agrega 'ocurrió'
 		if (ocurrio) url += "ocurrio=" + ocurrio;
 		// Fin
@@ -256,14 +260,14 @@ window.addEventListener("load", async () => {
 	let guardaLosValoresEnSessionCookies = () => {
 		let params = obtieneLosDatos();
 		// Guardar los valores en session y cookies
-		if (params.length) fetch(v.rutaGuardaDatosAdics + params);
+		if (params.length) fetch(rutas.guardaDatosAdics + params);
 		// Fin
 		return;
 	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averigua si hubieron cambios
-	v.form.addEventListener("change", async (e) => {
+	DOM.form.addEventListener("change", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = encodeURIComponent(e.target.value);
@@ -274,12 +278,12 @@ window.addEventListener("load", async () => {
 		if (campo == "cfc" || campo == "ocurrio" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
 		if (campo == "cfc") {
 			// Le asigna a los selects un valor estandar
-			v.selectPers.value = "1";
-			v.selectHecho.value = "1";
+			DOM.selectPers.value = "1";
+			DOM.selectHecho.value = "1";
 		}
 		// 2. Para campos 'RCLV'
 		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
-		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) v.errorRCLV.classList.remove("ocultar");
+		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
 		if ([...v.camposRCLV, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
@@ -292,7 +296,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Links a RCLV - Alta
-	v.linksRCLV_Alta.forEach((link) => {
+	DOM.linksRCLV_Alta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			guardaLosValoresEnSessionCookies();
@@ -303,27 +307,27 @@ window.addEventListener("load", async () => {
 		});
 	});
 	// Links a RCLV - Edición
-	v.linksRCLV_Edic.forEach((link, i) => {
+	DOM.linksRCLV_Edic.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Obtiene el RCLV_id
-			let id = "&id=" + v.inputsRCLV[i].value;
+			let id = "&id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
 			location.href = "/rclv/edicion/" + entidad + id + "&origen=DA";
 		});
 	});
 
 	// Submit
-	v.form.addEventListener("submit", async (e) => {
+	DOM.form.addEventListener("submit", async (e) => {
 		submitForm(e);
 	});
-	v.submit.addEventListener("click", async (e) => {
+	DOM.submit.addEventListener("click", async (e) => {
 		submitForm(e);
 	});
-	v.submit.addEventListener("keydown", async (e) => {
+	DOM.submit.addEventListener("keydown", async (e) => {
 		if (e.key == "Enter" || e.key == "Space") submitForm(e);
 	});
 

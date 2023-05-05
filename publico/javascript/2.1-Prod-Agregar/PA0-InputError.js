@@ -28,25 +28,25 @@ window.addEventListener("load", async () => {
 		validarDatos: "/producto/agregar/api/valida/" + paso + "/?",
 		caracteresCastellano: "/producto/agregar/api/convierte-letras-al-castellano/?valor=",
 	};
-	let varios = {
+	let v = {
 		PC: paso == "palabras-clave",
 		DD: paso == "datos-duros",
 		campos: Array.from(DOM.inputs).map((n) => n.name),
 	};
-	if (varios.DD) {
-		varios.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
-		varios.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
+	if (v.DD) {
+		v.entidad = document.querySelector("#dataEntry #entidad").innerHTML;
+		v.sinAvatar = document.querySelector("#imgDerecha img").src.includes("imagenes/0-Base");
 		if (DOM.paisesSelect) {
 			DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 			DOM.paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 			DOM.paisesOpciones = document.querySelectorAll("#paises_id select option");
-			varios.paisesListado = Array.from(DOM.paisesOpciones).map((n) => ({id: n.value, nombre: n.innerHTML}));
+			v.paisesListado = Array.from(DOM.paisesOpciones).map((n) => ({id: n.value, nombre: n.innerHTML}));
 		}
 	}
 
 	// FUNCIONES *******************************************
 	let PC = {
-		particsInput: async () => {
+		particsInput: async (e) => {
 			// Actualiza el botón 'submit' a 'Verificar'
 			DOM.submit.classList.remove("fa-circle-check", "verde");
 			DOM.submit.classList.add("fa-circle-question", "naranja");
@@ -164,7 +164,7 @@ window.addEventListener("load", async () => {
 			if (DOM.paisesID.value) {
 				let paises_idArray = DOM.paisesID.value.split(" ");
 				paises_idArray.forEach((pais_id) => {
-					let paisNombre = varios.paisesListado.find((n) => n.id == pais_id).nombre;
+					let paisNombre = v.paisesListado.find((n) => n.id == pais_id).nombre;
 					paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
 				});
 			}
@@ -177,10 +177,10 @@ window.addEventListener("load", async () => {
 	let FN = {
 		statusInicial: async function (mostrarIconoError) {
 			//Busca todos los valores
-			let datosUrl = "entidad=" + (varios.entidad ? varios.entidad : "");
+			let datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
 			DOM.inputs.forEach((input, i) => {
 				// Particularidad para DD avatar
-				if (varios.DD && input.name == "avatar" && !varios.sinAvatar) return;
+				if (v.DD && input.name == "avatar" && !v.sinAvatar) return;
 				// Agrega el campo y el valor
 				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
 			});
@@ -192,7 +192,7 @@ window.addEventListener("load", async () => {
 		},
 		muestraLosErrores: async (datos, mostrarIconoError) => {
 			let errores = await fetch(rutas.validarDatos + datos).then((n) => n.json());
-			varios.campos.forEach((campo, indice) => {
+			v.campos.forEach((campo, indice) => {
 				if (errores[campo] !== undefined) {
 					DOM.mensajesError[indice].innerHTML = errores[campo];
 					// Acciones en función de si hay o no mensajes de error
@@ -220,7 +220,7 @@ window.addEventListener("load", async () => {
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (varios.PC)
+			if (v.PC)
 				if (DOM.submit.classList.contains("fa-circle-question")) {
 					if (!DOM.submit.classList.contains("inactivo")) {
 						DOM.submit.classList.add("inactivo");
@@ -243,17 +243,18 @@ window.addEventListener("load", async () => {
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
+		const respetarMinus = PC;
 		// Validaciones estándar
-		input(e);
+		input(e, respetarMinus);
 
 		// Validaciones particulares
-		if (varios.PC) await PC.particsInput();
+		if (v.PC) await PC.particsInput(e);
 
 		// Fin
 		return;
 	});
 
-	if (varios.DD) {
+	if (v.DD) {
 		DOM.form.addEventListener("change", async (e) => {
 			// Variables
 			let campo = e.target.name;
@@ -272,12 +273,12 @@ window.addEventListener("load", async () => {
 				if (DOM.ano_fin) adicionales += "&ano_fin=" + encodeURIComponent(DOM.ano_fin.value);
 				adicionales += "&nombre_original=" + encodeURIComponent(DOM.nombre_original.value);
 				adicionales += "&nombre_castellano=" + encodeURIComponent(DOM.nombre_castellano.value);
-				adicionales += "&entidad=" + encodeURIComponent(varios.entidad);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
 			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
 			if (campo == "nombre_original" || campo == "nombre_castellano") {
 				adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
-				adicionales += "&entidad=" + encodeURIComponent(varios.entidad);
+				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
 
 			// Prepara los datosUrl con los datos a validar
@@ -302,7 +303,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	FN.statusInicial(varios.DD);
+	FN.statusInicial(v.DD);
 });
 
 // Variables

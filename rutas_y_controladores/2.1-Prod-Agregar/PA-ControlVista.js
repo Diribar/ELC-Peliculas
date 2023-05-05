@@ -211,29 +211,24 @@ module.exports = {
 		});
 	},
 	confirmaGuardar: async (req, res) => {
-		// 1. Obtiene el Data Entry de session y cookies
+		// Variables
+		const userID = req.session.usuario.id;
+		const entidad = req.cookies.datosOriginales.entidad;
+
+		// Obtiene el Data Entry de session y cookies
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
-		// Si no existe algún RCLV, vuelve a la instancia anterior
+
+		// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) {
 			let existe = procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
 		}
 		// ORIGINAL ------------------------------------
-		// Guarda los datos
-		let original = {
-			...req.cookies.datosOriginales,
-			creado_por_id: req.session.usuario.id,
-			sugerido_por_id: req.session.usuario.id,
-		};
-		let registro = await BD_genericas.agregaRegistro(original.entidad, original);
-		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
-		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
-			confirma.TMDB_entidad == "collection"
-				? procesos.agregaCapitulosDeCollection({...confirma, ...registro})
-				: procesos.agregaCapitulosDeTV({...confirma, ...registro});
-		}
+		// Guarda el registro original
+		let original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
+		let registro = await BD_genericas.agregaRegistro(entidad, original);
 
-		// EDICION -------------------------------------
+		// AVATAR -------------------------------------
 		// Acciones para el avatar
 		if (!confirma.avatar) {
 			// Descarga el avatar en la carpeta 'Prods-Revisar'
@@ -241,20 +236,25 @@ module.exports = {
 			let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
 			comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		}
-		// Mueve el avatar de 'provisorio' a 'revisar'
+		// Si ya se había descargado el avatar, lo mueve de 'provisorio' a 'revisar'
 		else comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
-		// Guarda los datos de 'edición'
-		await procsCRUD.guardaActEdicCRUD({
-			original: {...registro},
-			edicion: {...confirma}, // es clave escribirlo así, para que la función no lo cambie
-			entidad: original.entidad,
-			userID: req.session.usuario.id,
-		});
+		// EDICION -------------------------------------
+		// Guarda los datos de 'edición' - es clave escribirlo así, para que la función no lo cambie
+		await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
-		// PRODUCTO EN RCLV
+		// CAPÍTULOS -----------------------------------
+		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
+		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
+			confirma.TMDB_entidad == "collection"
+				? procesos.agregaCaps_Colec({...registro, ...confirma})
+				: procesos.agregaCaps_TV({...registro, ...confirma});
+		}
+
+		// RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) procsCRUD.cambioDeStatus(confirma.entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
+		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) procsCRUD.cambioDeStatus(entidad, registro);
+		// No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES
 		// Establece como vista anterior la vista del primer paso
@@ -263,7 +263,7 @@ module.exports = {
 		// Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// Crea la cookie para 'Terminaste' para la vista siguiente
-		let terminaste = {entidad: confirma.entidad, id: registro.id};
+		let terminaste = {entidad, id: registro.id};
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 
