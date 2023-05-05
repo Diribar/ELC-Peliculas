@@ -127,7 +127,11 @@ app.set("views", [
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
-	// 2. Otros
+	// 2. Tipos de actuación
+	global.anime_id = tipos_actuacion.find((n) => n.anime).id;
+	global.documental_id = tipos_actuacion.find((n) => n.documental).id;
+	global.actuada_id = tipos_actuacion.find((n) => !n.anime && !n.documental).id;
+	// 3. Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");

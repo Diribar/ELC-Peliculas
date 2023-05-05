@@ -160,7 +160,7 @@ module.exports = {
 		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
 		// Valor para actores
-		if (!datosAdics.actores) datosAdics.actores = procesos.valorParaActores(datosAdics);
+		datosAdics.actores = procesos.valorParaActores(datosAdics);
 		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
 		res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
