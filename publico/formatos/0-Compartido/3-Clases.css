@@ -14,7 +14,7 @@
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left, 
 .fa-circle-right {background: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check {color: var(--verde-oscuro);}
-.fa-circle-xmark {color: var(--rojo-oscuro);}
+.fa-circle-xmark, .fa-trash-can {color: var(--rojo-oscuro);}
 .inactivo, .inactivo *, .inactivoErrores, .inactivoErrores *, .inactivoVersion, .inactivoVersion * 
 {opacity: .65 !important; cursor: not-allowed !important;}
 .inactivo *, .inactivoErrores *, .inactivoVersion * {border-color: transparent !important;}
