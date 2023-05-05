@@ -9,7 +9,7 @@ let keyPressed = (e) => {
 
 	// Limita el uso del teclado solamente a los caracteres que nos interesan
 	if ((localName == "input" && type == "text") || localName == "textarea") {
-		const formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
+		const formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
 		if (!formato.test(e.key)) e.preventDefault();
 	}
 
@@ -27,7 +27,7 @@ let input = (e, respetarMinusc) => {
 	if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		valor = valor
-			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+			.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
 			.replace(/ +/g, " ") // previene repetición de espacios
 			.replace(/\t/g, "") // previene el uso de 'tab'
 			.replace(/\n/g, ""); // previene el uso de 'return'
