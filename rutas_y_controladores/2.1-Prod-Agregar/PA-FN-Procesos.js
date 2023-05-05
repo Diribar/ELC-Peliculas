@@ -167,7 +167,6 @@ module.exports = {
 
 		// Toma información de cada capítulo, para alimentar la colección
 		for (let capitulo of capitulos) {
-			console.log(168, capitulo);
 			// Paises_id
 			if (capitulo.production_countries.length)
 				paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
