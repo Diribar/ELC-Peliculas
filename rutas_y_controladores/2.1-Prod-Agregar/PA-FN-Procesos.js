@@ -260,10 +260,6 @@ module.exports = {
 		return datos;
 	},
 	valorParaActores: (datos) => {
-		// Variables
-		const anime_id = tipos_actuacion.find((n) => n.anime).id;
-		const documental_id = tipos_actuacion.find((n) => n.documental).id;
-
 		// Acciones si no hay un valor para actores
 		return datos.tipo_actuacion_id == anime_id
 			? "Dibujos Animados"
@@ -390,13 +386,17 @@ module.exports = {
 			musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 			if (musica) datos.musica = musica;
 		}
-		actores = [];
-		if (datosTemp.cast.length) actores = [...datosTemp.cast];
-		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-		if (actores.length) datos.actores = FN_actores(actores);
+		if (tipo_actuacion_id == actuada_id) {
+			actores = [];
+			if (datosTemp.cast.length) actores = [...datosTemp.cast];
+			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
+			if (actores.length) datos.actores = FN_actores(actores);
+		}
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
+
+		// Fin
 		return datos;
 	},
 
