@@ -520,7 +520,7 @@ module.exports = {
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 		// 3. Final
-		let final = " ya se encuentra en nuestra base de dats";
+		let final = " ya se encuentra en nuestra base de datos";
 
 		// Fin
 		return inicio + anchor + final;
