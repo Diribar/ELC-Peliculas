@@ -144,16 +144,16 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	datosCaps: async (datos) => {
+	datosCaps: async (capitulosID_TMDB) => {
 		// Variables
 		let paises_id, produccion, direccion, guion, musica, actores;
 		paises_id = produccion = direccion = guion = musica = actores = "";
-		let resultado = {};
 		let datosAPI = [];
 		let capitulos = [];
+		let datos = {};
 
 		// Obtiene la info de los capítulos
-		datos.capitulosID_TMDB.forEach((capTMDB_id, orden) => {
+		capitulosID_TMDB.forEach((capTMDB_id, orden) => {
 			const details = APIsTMDB.details("movie", capTMDB_id);
 			const credits = APIsTMDB.credits("movie", capTMDB_id);
 			datosAPI.push([details, credits, {orden}]);
@@ -182,15 +182,15 @@ module.exports = {
 
 		// Procesa los resultados
 		let cantCaps = capitulos.length;
-		if (paises_id) resultado.paises_id = consolidaValoresColeccion(paises_id, cantCaps).replace(/,/g, "");
-		if (produccion) resultado.produccion = consolidaValoresColeccion(produccion, cantCaps);
-		if (direccion) resultado.direccion = consolidaValoresColeccion(direccion, cantCaps);
-		if (guion) resultado.guion = consolidaValoresColeccion(guion, cantCaps);
-		if (musica) resultado.musica = consolidaValoresColeccion(musica, cantCaps);
-		if (actores) resultado.actores = consolidaValoresColeccion(actores, cantCaps);
+		if (paises_id) datos.paises_id = consolidaValoresColeccion(paises_id, cantCaps).replace(/,/g, "");
+		if (produccion) datos.produccion = consolidaValoresColeccion(produccion, cantCaps);
+		if (direccion) datos.direccion = consolidaValoresColeccion(direccion, cantCaps);
+		if (guion) datos.guion = consolidaValoresColeccion(guion, cantCaps);
+		if (musica) datos.musica = consolidaValoresColeccion(musica, cantCaps);
+		if (actores) datos.actores = consolidaValoresColeccion(actores, cantCaps);
 
 		// Fin
-		return resultado;
+		return datos;
 	},
 
 	// 3. Colecciones de series de TV
