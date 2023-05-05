@@ -331,6 +331,7 @@ module.exports = {
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			.then((n) => (n = {...datosCap, ...n}))
 			.then((n) => (tipo_actuacion_id != 1 ? (n = {...n, actores}) : n))
+			.then((n) => (n = comp.convierteLetrasAlCastellano(n)))
 			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
 
 		// Fin
@@ -347,6 +348,7 @@ module.exports = {
 		for (let episode of datosTemp.episodes) {
 			// Obtiene la información del registro
 			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
+			datosCap = comp.convierteLetrasAlCastellano(datosCap);
 
 			// Guarda el registro
 			await BD_genericas.agregaRegistro("capitulos", datosCap);
