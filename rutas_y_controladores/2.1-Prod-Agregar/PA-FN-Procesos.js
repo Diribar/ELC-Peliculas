@@ -154,17 +154,20 @@ module.exports = {
 
 		// Obtiene la info de los capítulos
 		capitulosID_TMDB.forEach((capTMDB_id, orden) => {
-			const details = APIsTMDB.details("movie", capTMDB_id);
-			const credits = APIsTMDB.credits("movie", capTMDB_id);
-			datosAPI.push([details, credits, {orden}]);
+			const detalles = APIsTMDB.details("movie", capTMDB_id);
+			const creditos = APIsTMDB.credits("movie", capTMDB_id);
+			datosAPI.push(detalles, creditos, {orden});
 		});
-		await Promise.all(datosAPI).then((n) => n.map(([a, b, c]) => capitulos.push({...a, ...b, ...c})));
+		await Promise.all(datosAPI).then((n) => {
+			for (let i = 0; i < n.length; i += 3) capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
+		});
 
 		// Ordena los registros
 		capitulos.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 
 		// Toma información de cada capítulo, para alimentar la colección
 		for (let capitulo of capitulos) {
+			console.log(168, capitulo);
 			// Paises_id
 			if (capitulo.production_countries.length)
 				paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
@@ -194,7 +197,7 @@ module.exports = {
 	},
 
 	// 3. Colecciones de series de TV
-	DS_tv: async (datos) => {
+	DS_tv: async function (datos) {
 		// Datos obtenidos sin la API
 		datos = {...datos, entidadNombre: "Colección", entidad: "colecciones", fuente: "TMDB", TMDB_entidad: "tv"};
 
@@ -203,7 +206,7 @@ module.exports = {
 		const datosAPI = await Promise.all(resultados).then(([a, b]) => ({...a, ...b}));
 
 		// Procesa la información
-		if (Object.keys(datosAPI).length) datos = {...datos, ...DS_tv_info(datosAPI)};
+		if (Object.keys(datosAPI).length) datos = {...datos, ...this.DS_tv_info(datosAPI)};
 		datos = comp.convierteLetrasAlCastellano(datos);
 
 		// Fin
@@ -265,8 +268,8 @@ module.exports = {
 			? "Dibujos Animados"
 			: datos.tipo_actuacion_id == documental_id
 			? "Documental"
-			: datosAdics.actores
-			? datosAdics.actores
+			: datos.actores
+			? datos.actores
 			: "Desconocido";
 	},
 
