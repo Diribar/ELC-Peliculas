@@ -243,7 +243,8 @@ window.addEventListener("load", async () => {
 	});
 
 	DOM.form.addEventListener("input", async (e) => {
-		const respetarMinus = PC;
+		const respetarMinus = v.PC;
+		
 		// Validaciones estándar
 		input(e, respetarMinus);
 
