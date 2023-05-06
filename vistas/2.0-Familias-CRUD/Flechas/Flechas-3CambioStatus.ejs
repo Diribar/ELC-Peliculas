@@ -47,7 +47,7 @@
 				<i class="fa-solid fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 			<% if (locals.revisor) { %>
-				<a href="<%= '/' + familia + '/eliminar-definitivamente/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 					<i class="fa-solid fa-trash-can" tabindex="-1" title="Ir a 'Eliminar definitivamente'"></i>
 				</a>
 			<% } %>

@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
 				? [creado_id, creado_aprob_id, aprobado_id]
 				: ruta == "/inactivar/"
 				? [creado_aprob_id, aprobado_id]
-				: ruta == "/recuperar/" || ruta == "/eliminar-definitivamente/"
+				: ruta == "/recuperar/" || ruta == "/eliminar/"
 				? [inactivo_id]
 				: [99]
 			: baseUrl == "/links" && ruta == "/abm/"
