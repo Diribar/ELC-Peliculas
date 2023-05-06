@@ -29,85 +29,95 @@ module.exports = async (req, res, next) => {
 
 	// VERIFICACIÓN 3: Revisa si está dentro de su Nivel de Confianza
 	if (!informacion) {
+		// Funciones
+		const FN = {
+			entidades: () => {
+				// Variables
+				const {entidad} = req.query;
+				const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+
+				// Resultados
+				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";
+				const rclv = originalUrl.startsWith("/rclv/agregar") || familia == "rclv";
+				const links = originalUrl.startsWith("/links/abm/") || familia == "links";
+				const entidades = producto ? variables.entidadesProd : rclv ? variables.entidadesRCLV : links ? ["links"] : "";
+
+				// Fin
+				return {entidades, producto, rclv, links};
+			},
+			// Cuenta los registros pendientes de revisar
+			registrosPends: async function () {
+				// Variables
+				const {entidades} = this.entidades();
+
+				// Fin
+				return edicion
+					? // Cuenta registros de edición
+					  await BD_especificas.usuario_regsConEdicion(usuario.id)
+					: // Cuenta registros originales con status 'a revisar'
+					  await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
+			},
+			// Obtiene el nivel de confianza
+			nivelDeConfianza: function () {
+				// Variables
+				const {producto, rclv, links} = this.entidades();
+
+				// Obtiene la cantidad de aprobaciones
+				const aprob = producto
+					? usuario.prods_aprob
+					: rclv
+					? usuario.rclvs_aprob
+					: links
+					? usuario.links_aprob
+					: edicion
+					? usuario.edics_aprob
+					: 0;
+
+				// Obtiene la cantidad de rechazos
+				const rech = producto
+					? usuario.prods_rech
+					: rclv
+					? usuario.rclvs_rech
+					: links
+					? usuario.links_rech
+					: edicion
+					? usuario.edics_rech
+					: 0;
+
+				// Prepara los parámetros
+				const cantMinima = parseInt(process.env.cantMinima);
+				const acelerador = parseInt(process.env.acelerador);
+				const cantDesempeno = aprob - rech + acelerador;
+
+				// Fin
+				return Math.max(cantMinima, cantDesempeno);
+			},
+		};
+
 		// Variables
-		let cuentaRegistros, nivelDeConfianza;
-		// Obtiene la tarea
 		const originalUrl = req.originalUrl;
 		const edicion = originalUrl.includes("/edicion/");
-		let producto = originalUrl.startsWith("/producto/agregar/");
-		let rclv = originalUrl.startsWith("/rclv/agregar");
-		let links = originalUrl.startsWith("/links/abm/");
+		const registrosPends =await FN.registrosPends();
+		const nivelDeConfianza = FN.nivelDeConfianza();
 
-		// Cuenta los registros pendientes de revisar
-		await (async () => {
-			// Cuenta registros de edición
-			if (edicion) cuentaRegistros = await BD_especificas.usuario_regsConEdicion(usuario.id);
-			// Cuenta registros originales con status 'a revisar'
-			else {
-				let entidades
-				let FN_entidades = ({producto, rclv, links}) => {
-					if (producto) entidades = variables.entidadesProd;
-					else if (rclv) entidades = variables.entidadesRCLV;
-					else if (links) entidades = ["links"];
-				};
-				FN_entidades({producto, rclv, links});
-				if (!entidades) {
-					let {entidad} = req.query;
-					let familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-					let {producto, rclv, links} = {[familia]: true};
-					FN_entidades({producto, rclv, links});
-				}
-				cuentaRegistros = await BD_especificas.usuario_regsConStatusARevisar(usuario.id, entidades);
-			}
-		})();
-
-		// Obtiene el nivel de confianza
-		(() => {
-			// Obtiene la cantidad de aprobaciones
-			const aprob = producto
-				? usuario.prods_aprob
-				: rclv
-				? usuario.rclvs_aprob
-				: links
-				? usuario.links_aprob
-				: edicion
-				? usuario.edics_aprob
-				: 0;
-			// Obtiene la cantidad de rechazos
-			const rech = producto
-				? usuario.prods_rech
-				: rclv
-				? usuario.rclvs_rech
-				: links
-				? usuario.links_rech
-				: edicion
-				? usuario.edics_rech
-				: 0;
-			// Prepara los parámetros
-			const cantMinima = parseInt(process.env.cantMinima);
-			const acelerador = parseInt(process.env.acelerador);
-			const cantDesempeno = aprob - rech + acelerador;
-			// Obtiene el nivel de confianza
-			nivelDeConfianza = Math.max(cantMinima, cantDesempeno);
-		})();
-
+		// Validación
+		console.log(registrosPends, nivelDeConfianza);
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
-		let mensajes = edicion
-			? [
-					"Gracias por los ediciones sugeridas anteriormente.",
-					"Queremos analizarlas, antes de que sigas editando otros registros.",
-					"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
-					"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-			  ]
-			: [
-					"Gracias por los registros agregados anteriormente.",
-					"Queremos analizarlos, antes de que sigas agregando otros.",
-					"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
-					"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-			  ];
-		if (cuentaRegistros >= nivelDeConfianza)
+		if (registrosPends >= nivelDeConfianza)
 			informacion = {
-				mensajes,
+				mensajes: edicion
+					? [
+							"Gracias por los ediciones sugeridas anteriormente.",
+							"Queremos analizarlas, antes de que sigas editando otros registros.",
+							"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
+							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+					  ]
+					: [
+							"Gracias por los registros agregados anteriormente.",
+							"Queremos analizarlos, antes de que sigas agregando otros.",
+							"Cuando los hayamos analizado, te habilitaremos para que ingreses más.",
+							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+					  ],
 				iconos: [vistaAnterior],
 			};
 	}
