@@ -455,10 +455,6 @@ module.exports = {
 			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
 			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 		},
-		sinopsis: (dato) => {
-			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\r\n\-]+$/i;
-			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
-		},
 	},
 	inicial: {
 		basico: (dato) => {
@@ -509,6 +505,7 @@ module.exports = {
 	cartelRepetido: function (datos) {
 		// Variables
 		const {entidad, id} = datos;
+
 		let entidadNombre = datos.entidadNombre; // Para links
 		if (entidadNombre) entidadNombre = this.obtieneEntidadNombreDesdeEntidad(entidad).toLowerCase();
 

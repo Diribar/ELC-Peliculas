@@ -115,8 +115,8 @@ module.exports = {
 
 	// Agregar Productos
 	camposDD: [
-		{titulo: "Título original", nombre: "nombre_original", productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Título en castellano", nombre: "nombre_castellano", productos: true, antesDePais: true, campoInput: true},
+		{titulo: "Título original", nombre: "nombre_original", productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Año de estreno", nombre: "ano_estreno", numero: true, productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Año de finalización", nombre: "ano_fin", numero: true, colecciones: true, antesDePais: true, campoInput: true},
 		{
@@ -290,8 +290,8 @@ module.exports = {
 		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
 			// Todos
-			{titulo: "Título original", nombre: "nombre_original", input: true, productos: true},
 			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true, productos: true},
+			{titulo: "Título original", nombre: "nombre_original", input: true, productos: true},
 			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true, productos: true},
 			{titulo: "País/es", nombre: "paises_id", productos: true},
 			{

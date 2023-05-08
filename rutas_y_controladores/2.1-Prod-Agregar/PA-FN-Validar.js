@@ -19,24 +19,25 @@ module.exports = {
 	// ControllerAPI (validaDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
-		// Definir variables
+		// Variables
 		let errores = {};
-		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "No tiene música"';
+		if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(datos.entidad);
+		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
 		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
 		let camposPosibles = [
-			{nombre: "nombre_original", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{nombre: "nombre_castellano", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{nombre: "direccion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "guion", idioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-			{nombre: "produccion", idioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 100},
-			{nombre: "actores", idioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
-			{nombre: "sinopsis", idioma: "sinopsis", cartel: variables.inputVacio, corto: 11, largo: 1004},
+			{nombre: "nombre_original", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
+			{nombre: "nombre_castellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
+			{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
+			{nombre: "guion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
+			{nombre: "musica", tipoIdioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
+			{nombre: "produccion", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 100},
+			{nombre: "actores", tipoIdioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
+			{nombre: "sinopsis", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 11, largo: 1004},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
 			let nombre = campo.nombre;
-			let idioma = campo.idioma;
+			let tipoIdioma = campo.tipoIdioma;
 			if (campos.includes(nombre)) {
 				// Variables
 				let dato = datos[nombre];
@@ -44,8 +45,8 @@ module.exports = {
 				// Validaciones
 				if (datos[nombre]) {
 					if (!respuesta) respuesta = comp.longitud(dato, campo.corto, campo.largo);
-					if (!respuesta) respuesta = comp.castellano[idioma](dato);
-					if (!respuesta) respuesta = comp.inicial[idioma](dato);
+					if (!respuesta) respuesta = comp.castellano[tipoIdioma](dato);
+					if (!respuesta) respuesta = comp.inicial[tipoIdioma](dato);
 				} else respuesta = variables.inputVacio;
 				// Excepción para actores
 				// if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
