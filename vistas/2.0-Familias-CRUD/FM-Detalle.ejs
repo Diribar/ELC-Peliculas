@@ -23,7 +23,7 @@
 				<div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
 					
 					<!-- PRODUCTO: Detalle y Revisión de Alta -->
-					<% if (familia == "producto" && (codigo == "detalle" || codigo == "producto/alta")) { %><%- include("PR1-Detalle") %>
+					<% if (familia == "producto" && ["detalle", "producto/alta"].includes(codigo)) { %><%- include("PR1-Detalle") %>
 					
 					<!-- RCLV: Detalle -->
 					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
@@ -35,7 +35,7 @@
 					<% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
 					
 					<!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
-					<% } else if (codigo == "recuperar" || codigo == "eliminar" || codigo == "inactivar-o-recuperar") { %><%- include("FM1-Recuperar") %>
+					<% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM1-Recuperar") %>
 
 					<!-- Fin -->
 					<% } %>
