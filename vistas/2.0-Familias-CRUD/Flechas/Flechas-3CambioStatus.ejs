@@ -4,12 +4,12 @@
 	<!-- VISTA CRUD AGREGAR/EDICION RCLV - Para Aprobar -->
 	<div class="flechas">
 		<!-- Eliminar edición -->
-		<% if (codigo == "edicion" && edicID) { %>
+		<% if (tema == "rclv_crud" && codigo == "edicion" && edicID) { %>
 			<label for="eliminaEdicion" title="Eliminar la Edición">
 				<i class="fa-solid fa-trash-can"></i>
 			</label>
-			<input id="eliminaEdicion" type="submit" class="submit" formaction="<%= urlActual %>/?ingreso_fa=true" formmethod="post" >
-		<% } %> 
+			<input id="eliminaEdicion" type="submit" class="submit" formaction="<%= originalUrl %>&eliminar=true" formmethod="post" >
+		<% } %>
 		<!-- Aprobar -->
 		<button type="submit" autofocus class="inactivo">
 			<i class="fa-solid fa-circle-check" title="Guardar"></i>
@@ -17,7 +17,7 @@
 	</div>
 <% } %>
 
-<% if (locals.statusCreado) { %>
+<% if (tema == "revisionEnts" && locals.statusCreado) { %>
 	<!-- VISTA REVISION ALTA - Para Aprobar o ir a la vista Rechazar -->
 	<div class="flechas">
 		<!-- Aprobar -->
@@ -57,16 +57,19 @@
 	</div>
 <% } %>
 
-<% if (tema == "crud" || tema == "revisionEnts" && codigo == "rechazo") {  %>
+<% if (tema == "crud" && codigo != "eliminar" || tema == "revisionEnts" && codigo == "rechazo") {  %>
 	<!-- VISTAS CRUD INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
 	<!-- VISTAS REVISION RECHAZO - Para completar el feedback y enviar a Revisión -->
 	<!-- Confirma el cambio de status -->
-	<button type="submit" class="flechas inactivo">
-		<% if (codigo == "eliminar") { %>
-			<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
-		<% } else { %>
-			<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
-		<% } %>
+	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
+	</button>
+<% } %>
+<% if (tema == "crud" && codigo == "eliminar") {  %>
+	<!-- VISTA ELIMINAR -->
+	<!-- Elimina definitivamente -->
+	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
+		<i class="fa-solid fa-trash-can" tabindex="-1" title="Eliminar definitivamente"></i>
 	</button>
 <% } %>
 
