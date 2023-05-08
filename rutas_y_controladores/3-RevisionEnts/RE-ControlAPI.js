@@ -68,7 +68,6 @@ module.exports = {
 				// Actualiza los dias_del_ano
 				const desde = datosDDA.dia_del_ano_id;
 				const duracion = datosDDA.dias_de_duracion - 1;
-				console.log(68, {desde, duracion, id: entID});
 				await procesos.guardar.actualizaDiasDelAno({desde, duracion, id: entID});
 			}
 		}

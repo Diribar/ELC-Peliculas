@@ -18,7 +18,6 @@ module.exports = async (req, res, next) => {
 	// Status Esperado
 	(() => {
 		const ruta = req.path;
-		console.log(ruta);
 		statusEsperados_id = false
 			? false
 			 // Preguntas para 'CRUD'

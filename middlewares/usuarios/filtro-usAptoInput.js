@@ -97,11 +97,9 @@ module.exports = async (req, res, next) => {
 		// Variables
 		const originalUrl = req.originalUrl;
 		const edicion = originalUrl.includes("/edicion/");
-		const registrosPends =await FN.registrosPends();
+		const registrosPends = await FN.registrosPends();
 		const nivelDeConfianza = FN.nivelDeConfianza();
 
-		// Validación
-		console.log(registrosPends, nivelDeConfianza);
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
 		if (registrosPends >= nivelDeConfianza)
 			informacion = {

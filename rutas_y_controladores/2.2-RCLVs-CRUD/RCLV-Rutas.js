@@ -46,7 +46,7 @@ router.post("/inactivar", controles, capturaInactivar, vistaCRUD.inacRecup_Guard
 router.get("/recuperar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
 router.post("/recuperar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
 router.get("/eliminar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/eliminar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.post("/eliminar", controles, capturaInactivar, vistaCRUD.eliminarGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;

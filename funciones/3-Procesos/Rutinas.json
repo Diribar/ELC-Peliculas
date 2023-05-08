@@ -1,1 +1,20 @@
-{"FechaUTC":"Lun. 8/may","HoraUTC":"2:54","FechaSemUTC":"Lun. 8/may","HoraSemUTC":"2:54","semanaUTC":18,"RutinasHorarias":["ProdsEnRCLV","LinksEnProd"],"TitulosImgDer":{"07-may-23":"Pascua de Resurrección","08-may-23":"Milagro de Luján","09-may-23":"Pascua de Resurrección"},"FechaHoraUTC":"SI","ImagenDerecha":"SI","HorariosUTC":{"FechaHoraUTC":"00:00","ImagenDerecha":"06:00"},"SemanaUTC":"SI","LinksVencidos":"SI","BorraImagenesSinRegistro":"NO","DiasUTC":{"SemanaUTC":"Sun","LinksVencidos":"Mon","BorraImagenesSinRegistro":"Tue"}}
+{
+	"FechaUTC": "Lun. 8/may",
+	"HoraUTC": "2:54",
+	"FechaSemUTC": "Lun. 8/may",
+	"HoraSemUTC": "2:54",
+	"semanaUTC": 18,
+	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
+	"TitulosImgDer": {
+		"07-may-23": "Pascua de Resurrección",
+		"08-may-23": "Milagro de Luján",
+		"09-may-23": "Pascua de Resurrección"
+	},
+	"FechaHoraUTC": "SI",
+	"ImagenDerecha": "SI",
+	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
+	"SemanaUTC": "SI",
+	"LinksVencidos": "SI",
+	"BorraImagenesSinRegistro": "NO",
+	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon", "BorraImagenesSinRegistro": "Tue"}
+}
