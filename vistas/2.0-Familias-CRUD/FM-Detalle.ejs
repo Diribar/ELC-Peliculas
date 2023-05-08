@@ -12,7 +12,7 @@
 
 			<!-- Contenido apertura (Form o Div) -->
 			<% let operacCRUD = tema == "crud" || tema == "revisionEnts" %>
-			<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Revisión de Inactivar o Recuperar) -->
+			<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Eliminar o Revisión de Inactivar o Recuperar) -->
 			<% if (operacCRUD) { %><form method="POST" id="contenido" class="flexCol grow">
 			<!-- Las demás requieren que no sea form -->
 			<% } else { %><div id="contenido" class="flexCol grow">
@@ -34,8 +34,8 @@
 					<!-- AMBOS: Inactivar y Rechazo -->
 					<% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
 					
-					<!-- AMBOS: Recuperar y Revisión de Inactivar/Recuperar -->
-					<% } else if (codigo == "recuperar" || codigo == "inactivar-o-recuperar") { %><%- include("FM1-Recuperar") %>
+					<!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
+					<% } else if (codigo == "recuperar" || codigo == "eliminar" || codigo == "inactivar-o-recuperar") { %><%- include("FM1-Recuperar") %>
 
 					<!-- Fin -->
 					<% } %>
