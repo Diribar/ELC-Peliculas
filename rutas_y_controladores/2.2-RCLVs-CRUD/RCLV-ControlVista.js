@@ -120,7 +120,7 @@ module.exports = {
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
-		const urlActual = req.path.slice(1);
+		const originalUrl = req.originalUrl;
 		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
@@ -131,7 +131,7 @@ module.exports = {
 			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
 			...{dataEntry, DE, statusCreado},
-			...{roles_igl, ap_mars, urlActual, revisor},
+			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
 		});
@@ -139,7 +139,7 @@ module.exports = {
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, origen, prodEntidad, prodID} = req.query;
+		const {entidad, id, origen, prodEntidad, prodID, eliminar} = req.query;
 		let datos = {...req.body, ...req.query, opcional: true};
 		const codigo = req.baseUrl + req.path;
 		const userID = req.session.usuario.id;
@@ -152,13 +152,18 @@ module.exports = {
 
 		// Averigua si hay errores de validación y toma acciones
 		const errores = await valida.consolidado(datos);
-		if (errores.hay) {
+		if (errores.hay || eliminar) {
 			// Guarda session y cookie
 			req.session[entidad] = datos;
 			res.cookie(entidad, datos, {maxAge: unDia});
 
 			// Si se agregó un archivo avatar, lo elimina
 			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+			// Si se eliminó la edición, la borra de la BD
+			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const condiciones = {[campo_id]: id, editado_por_id: userID};
+			if (eliminar) await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
 
 			// Redirige a la vista 'form'
 			return res.redirect(req.originalUrl);
