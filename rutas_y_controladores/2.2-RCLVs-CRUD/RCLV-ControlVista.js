@@ -18,7 +18,6 @@ module.exports = {
 		let usuario = req.session.usuario ? req.session.usuario : "";
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		// const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		if (!origen) origen = "DTR";
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
