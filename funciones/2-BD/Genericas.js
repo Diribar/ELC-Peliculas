@@ -42,13 +42,13 @@ module.exports = {
 		return db[entidad].update(datos, {where: {id}});
 	},
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => {
-		return db[entidad].update(datos, {where: condicion});
+		return db[entidad].update(datos, {where: condicion}).then(() => true);
 	},
 	eliminaPorId: (entidad, id) => {
 		return db[entidad].destroy({where: {id}});
 	},
 	eliminaTodosPorCondicion: (entidad, condicion) => {
-		return db[entidad].destroy({where: condicion});
+		return db[entidad].destroy({where: condicion}).then(() => true);
 	},
 	aumentaElValorDeUnCampo: (entidad, id, campo, aumento) => {
 		return db[entidad].increment(campo, {by: aumento, where: {id}});
