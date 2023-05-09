@@ -12,12 +12,11 @@ module.exports = {
 	inacRecup_Form: async (req, res) => {
 		// Tema y Código
 		const tema = "crud";
-		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar'y 'recuperar'
+		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar', 'recuperar', 'eliminar'
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -68,7 +67,7 @@ module.exports = {
 
 		// Comentario del rechazo
 		const comentarios =
-			codigo == "recuperar"
+			codigo == "recuperar" || codigo == "eliminar"
 				? await BD_genericas.obtieneTodosPorCondicion("historial_cambios_de_status", {
 						entidad,
 						entidad_id: id,
@@ -140,5 +139,18 @@ module.exports = {
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 
 		return res.redirect(destino);
+	},
+	eliminarGuardar: async (req, res) => {
+		// Variables
+		// Se fija si tiene ediciones y las elimina
+		// Acciones si es un producto
+		// Se fija si tiene links y los elimina
+		// Se fija si tiene links_edic y los elimina
+		// Acciones si es un RCLV
+		// Se fija si tiene algún producto, y borra el vínculo
+		// Se fija si tiene alguna edición-producto, y borra el vínculo
+		// Si es un "epoca_del_ano", se fija si tiene algún dia_del_ano y borra el vínculo
+		// Elimina el registro
+		// Cartel de registro eliminado
 	},
 };

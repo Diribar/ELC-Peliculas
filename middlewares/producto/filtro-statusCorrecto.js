@@ -20,13 +20,20 @@ module.exports = async (req, res, next) => {
 		const ruta = req.path;
 		statusEsperados_id = false
 			? false
-			: (baseUrl == "/producto" && ruta == "/edicion/") || (baseUrl == "/links" && ruta == "/abm/")
-			? [creado_id, creado_aprob_id, aprobado_id]
-			: baseUrl == "/rclv" && ruta == "/edicion/"
+			 // Preguntas para 'CRUD'
+			: baseUrl == "/producto" || baseUrl == "/rclv"
+			? ruta == "/edicion/"
+				? [creado_id, creado_aprob_id, aprobado_id]
+				: ruta == "/inactivar/"
+				? [creado_aprob_id, aprobado_id]
+				: ruta == "/recuperar/" || ruta == "/eliminar/"
+				? [inactivo_id]
+				: [99]
+			: baseUrl == "/links" && ruta == "/abm/"
 			? [creado_id, aprobado_id]
-			: baseUrl == "/revision"
-			? // Preguntas para 'Revisión'
-			  ruta.includes("/alta/") // para 'producto' y 'rclv'
+			: // Preguntas para 'Revisión'
+			baseUrl == "/revision"
+			? ruta.includes("/alta/") // para 'producto' y 'rclv'
 				? [creado_id]
 				: ruta.includes("/edicion/")
 				? [creado_aprob_id, aprobado_id]
@@ -37,13 +44,8 @@ module.exports = async (req, res, next) => {
 				: ruta.includes("/rechazo/")
 				? [creado_id]
 				: ruta.includes("/solapamiento/")
-				? [aprobado_id]				
+				? [creado_id, aprobado_id]
 				: [99]
-			: // Preguntas para 'CRUD'
-			(baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/inactivar/"
-			? [creado_aprob_id, aprobado_id]
-			: (baseUrl == "/producto" || baseUrl == "/rclv") && ruta == "/recuperar/"
-			? [inactivo_id]
 			: [99];
 	})();
 

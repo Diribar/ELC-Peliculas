@@ -1,14 +1,14 @@
 {
-	"FechaUTC": "Vie. 5/may",
-	"HoraUTC": "7:06",
-	"FechaSemUTC": "Dom. 30/abr",
-	"HoraSemUTC": "3:15",
-	"semanaUTC": 17,
+	"FechaUTC": "Lun. 8/may",
+	"HoraUTC": "2:54",
+	"FechaSemUTC": "Lun. 8/may",
+	"HoraSemUTC": "2:54",
+	"semanaUTC": 18,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
 	"TitulosImgDer": {
-		"04-may-23": "Pascua de Resurrección",
-		"05-may-23": "Pascua de Resurrección",
-		"06-may-23": "Pascua de Resurrección"
+		"07-may-23": "Pascua de Resurrección",
+		"08-may-23": "Milagro de Luján",
+		"09-may-23": "Pascua de Resurrección"
 	},
 	"FechaHoraUTC": "SI",
 	"ImagenDerecha": "SI",

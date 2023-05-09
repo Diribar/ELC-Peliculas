@@ -31,10 +31,10 @@
 			</div>
 			<!-- Registros -->
 			<div class="registros">
-				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", origen: "MT"}) %>
 				<% if (revisor) { %>
 					<%- include("RE0-Registros", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", origen: "MT"}) %>
 				<% } %>
+				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", origen: "MT"}) %>
 			</div>
 		</div>
 	</div>

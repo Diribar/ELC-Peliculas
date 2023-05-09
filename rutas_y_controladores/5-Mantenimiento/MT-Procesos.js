@@ -13,14 +13,13 @@ module.exports = {
 		let entidades = variables.entidadesProd;
 
 		// PRODUCTOS
-		// 1. Aprobados sin calificar (peliculas y colecciones)
+		// Productos Inactivos (peliculas y colecciones)
+		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})
+			.then((n) => n.filter((m) => m.entidad != "capitulos"))
+		// Aprobados sin calificar (peliculas y colecciones)
 		let SC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
 			.then((n) => n.filter((m) => !m.calificacion));
-		// 2. Productos Inactivos (peliculas y colecciones)
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "capitulos"))
-			.then((n) => n.filter((m) => m.sugerido_por_id != userID));
 
 		// LINKS
 		// 1. Sin links (peliculas y capítulos)
@@ -47,9 +46,7 @@ module.exports = {
 		let entidades = variables.entidadesRCLV;
 
 		// 1. RCLVs inactivos
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID}).then((n) =>
-			n.filter((m) => m.sugerido_por_id != userID)
-		);
+		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})
 
 		// 2. Aprobados
 		const include = ["ediciones"];

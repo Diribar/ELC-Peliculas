@@ -73,7 +73,6 @@ module.exports = {
 	momentoDelAno: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
-		// console.log(78, datos);
 
 		// Obtiene los RCLVs (sin repeticiones)
 		const rclvs = await procesos.momento.obtieneRCLVs(datos);

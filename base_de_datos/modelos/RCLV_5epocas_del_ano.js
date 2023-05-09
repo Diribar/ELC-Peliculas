@@ -62,6 +62,8 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.prods_edicion, {as: "prods_edicion", foreignKey: "epoca_del_ano_id"});
 
 		entidad.hasMany(n.rclvs_edicion, {as: "ediciones", foreignKey: "epoca_del_ano_id"});
+
+		entidad.hasMany(n.dias_del_ano, {as: "epocas_del_ano", foreignKey: "epoca_del_ano_id"});
 	};
 	return entidad;
 };

@@ -61,7 +61,7 @@ module.exports = {
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen},
+			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
 			//familias,
 			...{imgDerPers, bloqueDer},
