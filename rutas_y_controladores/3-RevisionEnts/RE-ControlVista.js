@@ -229,7 +229,7 @@ module.exports = {
 					res.cookie(entidad, datos, {maxAge: unDia});
 
 					// Si se agregó un archivo avatar, lo elimina
-					if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+					if (req.file) comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 					// Fin
 					return res.redirect(req.originalUrl);
@@ -241,19 +241,19 @@ module.exports = {
 				// Acciones si recibimos un avatar
 				if (req.file) {
 					// Lo mueve de 'Provisorio' a 'Final'
-					comp.mueveUnArchivoImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+					comp.gestionArchivos.mueveImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
 					// Elimina el eventual anterior
-					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+					if (original.avatar) comp.gestionArchivos.borra("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no recibimos un avatar y hay avatar en original, lo mueve de 'Revisar' a 'Final'
-				else if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+				else if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 
 				// Acciones si es un registro de 'epocas_del_ano'
 				if (entidad == "epocas_del_ano") {
 					// Si tiene imagen, la copia en su carpeta
 					if (datos.avatar) {
 						const archivo_avatar = "3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar;
-						comp.copiaUnArchivoDeImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
 					}
 
 					// Actualiza los dias_del_ano
@@ -266,9 +266,9 @@ module.exports = {
 			// Acciones para rechazo
 			if (subcodigo == "rechazo") {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-				if (original.avatar) comp.mueveUnArchivoImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 				// Si se había agregado un archivo, lo elimina
-				if (req.file) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+				if (req.file) comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", datos.avatar);
 			}
 
 			// Acciones si es un RCLV inactivo

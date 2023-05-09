@@ -111,7 +111,7 @@ module.exports = {
 				!datos.docum_avatar
 					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 					: // Que exista el archivo
-					!comp.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
+					!comp.gestionArchivos.existe(datos.ruta + datos.docum_avatar)
 					? "El archivo de imagen no existe"
 					: "";
 

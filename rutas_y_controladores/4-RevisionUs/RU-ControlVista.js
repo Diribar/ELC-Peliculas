@@ -119,7 +119,7 @@ module.exports = {
 			let rolPermInputs_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
 			objeto.rol_usuario_id = rolPermInputs_id;
 			// Mueve la imagen del documento a su carpeta definitiva
-			comp.mueveUnArchivoImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");
+			comp.gestionArchivos.mueveImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");
 		}
 		// Actualiza el usuario
 		objeto = {...objeto, status_registro_id};

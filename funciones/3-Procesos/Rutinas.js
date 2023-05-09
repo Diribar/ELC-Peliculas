@@ -206,7 +206,7 @@ module.exports = {
 				TitulosImgDer[fecha] = titulo;
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.copiaUnArchivoDeImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 
@@ -299,7 +299,7 @@ module.exports = {
 let lecturaRutinasJSON = () => {
 	// Obtiene información del archivo 'json'
 	const rutaNombre = path.join(__dirname, "Rutinas.json");
-	const existe = comp.averiguaSiExisteUnArchivo(rutaNombre);
+	const existe = comp.gestionArchivos.existe(rutaNombre);
 	const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
 	let info = json ? JSON.parse(json) : {};
 
@@ -333,7 +333,7 @@ let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	for (let archivo of archivosDeImagen) {
 		const dot = archivo.lastIndexOf(".");
 		if (dot < 0) dato = archivo.length;
-		if (!fechas.includes(archivo.slice(0, dot))) comp.borraUnArchivo(carpetaImagen, archivo);
+		if (!fechas.includes(archivo.slice(0, dot))) comp.gestionArchivos.borra(carpetaImagen, archivo);
 	}
 
 	// Fin
@@ -434,7 +434,7 @@ let datosImgDerecha = (resultado) => {
 			imgDerecha.nombre_archivo = resultado.avatar;
 		} else {
 			imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpeta_avatars + "/";
-			imgDerecha.nombre_archivo = comp.imagenAlAzar(imgDerecha.carpeta);
+			imgDerecha.nombre_archivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
 		}
 	}
 	// Acciones si no encontró una imagen para la fecha
@@ -515,7 +515,7 @@ let borraImagenesSinRegistro = async (nombresDeAvatar, carpeta) => {
 
 	// Rutina para borrar archivos
 	for (let archivo of archivosDeAvatar)
-		if (!nombresDeAvatar.includes(archivo)) comp.borraUnArchivo("./publico/imagenes/" + carpeta, archivo);
+		if (!nombresDeAvatar.includes(archivo)) comp.gestionArchivos.borra("./publico/imagenes/" + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
 	for (let nombre of nombresDeAvatar) if (!archivosDeAvatar.includes(nombre)) console.log(nombre);

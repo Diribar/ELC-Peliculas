@@ -234,7 +234,7 @@ module.exports = {
 			// Fin
 			return objeto;
 		},
-		convierteLetrasAlCastellano_campo: (valor) => {
+		alCastellano_campo: (valor) => {
 			return valor
 				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 				.replace(/[àâãäåāăą]/g, "a")
@@ -338,109 +338,98 @@ module.exports = {
 			return datos;
 		},
 	},
-
-	// Gestión de archivos
-	averiguaSiExisteUnArchivo: (rutaNombre) => {
-		return rutaNombre && fs.existsSync(rutaNombre);
-	},
-	garantizaLaCarpetaProvisorio: function () {
-		// Averigua si existe la carpeta
-		if (!this.averiguaSiExisteUnArchivo("./publico/imagenes/9-Provisorio"))
-			// Si no existe, la crea
-			fs.mkdirSync("./publico/imagenes/9-Provisorio");
-		// Fin
-		return;
-	},
-	mueveUnArchivoImagen: function (nombre, origen, destino, output) {
-		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-		let carpetaDestino = "./publico/imagenes/" + destino + "/";
-		let archivoDestino = carpetaDestino + nombre;
-		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
-			console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
-		else
-			fs.renameSync(archivoOrigen, archivoDestino, (error) => {
-				if (!error) {
-					if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-				} else throw error;
+	gestionArchivos:{
+		existe: (rutaNombre) => {
+			return rutaNombre && fs.existsSync(rutaNombre);
+		},
+		carpetaProvisorio: function () {
+			// Averigua si existe la carpeta
+			if (!this.existe("./publico/imagenes/9-Provisorio"))
+				// Si no existe, la crea
+				fs.mkdirSync("./publico/imagenes/9-Provisorio");
+			// Fin
+			return;
+		},
+		mueveImagen: function (nombre, origen, destino, output) {
+			let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
+			let carpetaDestino = "./publico/imagenes/" + destino + "/";
+			let archivoDestino = carpetaDestino + nombre;
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(archivoOrigen))
+				console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			else
+				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+		},
+		copiaImagen: function (archivoOrigen, archivoDestino, output) {
+			let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
+			let nombreDestino = "./publico/imagenes/" + archivoDestino;
+			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(nombreOrigen))
+				console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+			else
+				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+		},
+		borra: async function (ruta, archivo, output) {
+			// Arma el nombre del archivo
+			let rutaArchivo = path.join(ruta, archivo);
+	
+			// Se fija si encuentra el archivo
+			if (this.existe(rutaArchivo)) {
+				// Borra el archivo
+				await fs.unlinkSync(rutaArchivo);
+				// Avisa que lo borra
+				if (output) console.log("Archivo '" + archivo + "' borrado");
+			}
+			// Mensaje si no lo encuentra
+			else if (output) console.log("Archivo " + archivo + " no encontrado para borrar");
+			// Fin
+			return;
+		},
+		descarga: async (url, rutaYnombre, output) => {
+			// Carpeta donde descargar
+			let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+			let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
+			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+			// Realiza la descarga
+			let writer = fs.createWriteStream(rutaYnombre);
+			let response = await axios({method: "GET", url, responseType: "stream"});
+			response.data.pipe(writer);
+			// Obtiene el resultado de la descarga
+			let resultado = await new Promise((resolve, reject) => {
+				writer.on("finish", () => {
+					if (output) console.log("Imagen '" + nombre + "' guardada");
+					resolve("OK");
+				});
+				writer.on("error", (error) => {
+					console.log(388, error);
+					reject("Error");
+				});
 			});
-	},
-	cambiaElNombreDeUnArchivo: function (ruta, nombreOrig, nombreFinal, output) {
-		ruta = "./publico/imagenes/" + ruta + "/";
-		if (!this.averiguaSiExisteUnArchivo(ruta + nombreOrig))
-			console.log("No se encuentra el archivo " + nombreOrig + " para cambiarle el nombre");
-		else
-			fs.rename(ruta + nombreOrig, ruta + nombreFinal, (error) => {
-				if (!error) {
-					if (output) console.log("Archivo " + nombreOrig + " renombrado como " + nombreFinal);
-				} else throw error;
-			});
-	},
-	copiaUnArchivoDeImagen: function (archivoOrigen, archivoDestino, output) {
-		let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
-		let nombreDestino = "./publico/imagenes/" + archivoDestino;
-		let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
-		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-		if (!this.averiguaSiExisteUnArchivo(nombreOrigen))
-			console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
-		else
-			fs.copyFile(nombreOrigen, nombreDestino, (error) => {
-				if (!error) {
-					if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
-				} else throw error;
-			});
-	},
-	borraUnArchivo: async function (ruta, archivo, output) {
-		// Arma el nombre del archivo
-		let rutaArchivo = path.join(ruta, archivo);
-
-		// Se fija si encuentra el archivo
-		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
-			// Borra el archivo
-			await fs.unlinkSync(rutaArchivo);
-			// Avisa que lo borra
-			if (output) console.log("Archivo '" + archivo + "' borrado");
-		}
-		// Mensaje si no lo encuentra
-		else if (output) console.log("Archivo " + archivo + " no encontrado para borrar");
-		// Fin
-		return;
-	},
-	descarga: async (url, rutaYnombre, output) => {
-		// Carpeta donde descargar
-		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-		let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
-		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
-		// Realiza la descarga
-		let writer = fs.createWriteStream(rutaYnombre);
-		let response = await axios({method: "GET", url, responseType: "stream"});
-		response.data.pipe(writer);
-		// Obtiene el resultado de la descarga
-		let resultado = await new Promise((resolve, reject) => {
-			writer.on("finish", () => {
-				if (output) console.log("Imagen '" + nombre + "' guardada");
-				resolve("OK");
-			});
-			writer.on("error", (error) => {
-				console.log(388, error);
-				reject("Error");
-			});
-		});
-		// Fin
-		return resultado;
-	},
-	imagenAlAzar: (carpeta) => {
-		// Obtiene el listado de archivos
-		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
-
-		// Elije al azar el n° de imagen
-		const indice = parseInt(Math.random() * archivos.length);
-
-		// Genera el nombre del archivo
-		const imagenAlAzar = archivos[indice];
-
-		// Fin
-		return imagenAlAzar;
+			// Fin
+			return resultado;
+		},
+		imagenAlAzar: (carpeta) => {
+			// Obtiene el listado de archivos
+			const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+	
+			// Elije al azar el n° de imagen
+			const indice = parseInt(Math.random() * archivos.length);
+	
+			// Genera el nombre del archivo
+			const imagenAlAzar = archivos[indice];
+	
+			// Fin
+			return imagenAlAzar;
+		},
 	},
 
 	// Validaciones

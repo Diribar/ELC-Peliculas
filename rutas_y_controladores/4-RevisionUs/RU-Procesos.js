@@ -58,7 +58,7 @@ module.exports = {
 			!usuario.status_registro.ident_a_validar ||
 			usuario.status_registro.ident_validada ||
 			!avatar ||
-			!comp.averiguaSiExisteUnArchivo(avatar)
+			!comp.gestionArchivos.existe(avatar)
 		)
 			redireccionar = true;
 		// Fin

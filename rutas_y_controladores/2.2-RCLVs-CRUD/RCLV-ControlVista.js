@@ -158,7 +158,7 @@ module.exports = {
 			res.cookie(entidad, datos, {maxAge: unDia});
 
 			// Si se agregó un archivo avatar, lo elimina
-			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+			if (req.file && datos.avatar) comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 			// Si se eliminó la edición, la borra de la BD
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -176,16 +176,16 @@ module.exports = {
 		// Acciones si recibimos un avatar
 		if (req.file) {
 			// Lo mueve de 'Provisorio' a 'Revisar'
-			comp.mueveUnArchivoImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
+			comp.gestionArchivos.mueveImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
 
 			// Elimina el eventual anterior
 			if (codigo == "/rclv/edicion/") {
 				// Si es un registro propio y en status creado, borra el eventual avatar original
 				if (original.creado_por_id == userID && original.status_registro.creado) {
-					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+					if (original.avatar) comp.gestionArchivos.borra("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no está en status 'creado', borra el eventual avatar edicion
-				else if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+				else if (edicion && edicion.avatar) comp.gestionArchivos.borra("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 			}
 		}
 

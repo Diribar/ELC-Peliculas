@@ -446,7 +446,7 @@ module.exports = {
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.borraUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.borra("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id});
@@ -482,7 +482,7 @@ module.exports = {
 
 					// Descarga el url
 					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
-					await comp.descarga(url, rutaYnombre);
+					await comp.gestionArchivos.descarga(url, rutaYnombre);
 				}
 
 				// 2. Borra el campo 'avatar_url' en el registro de edicion
@@ -496,7 +496,7 @@ module.exports = {
 			if (entidad == "epocas_del_ano" && aprob) {
 				let carpeta_avatar = edicion.carpeta_avatars ? edicion.carpeta_avatars : original.carpeta_avatars;
 				carpeta_avatar = "3-EpocasDelAno/" + carpeta_avatar + "/";
-				comp.copiaUnArchivoDeImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
+				comp.gestionArchivos.copiaImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
 			}
 
 			// Fin
@@ -722,7 +722,7 @@ module.exports = {
 		const avatar = Date.now() + path.extname(original.avatar);
 		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
-		comp.descarga(original.avatar, ruta + avatar);
+		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
 		// Actualiza el registro 'original'
 		await BD_genericas.actualizaPorId(entidad, original.id, {avatar});
@@ -766,14 +766,14 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
-		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
+		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig)) comp.gestionArchivos.borra(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.mueveUnArchivoImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
+		comp.gestionArchivos.mueveImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
 	}
 
 	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
+	else if (!aprob) comp.gestionArchivos.borra("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;

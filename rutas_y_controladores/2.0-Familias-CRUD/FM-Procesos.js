@@ -149,10 +149,10 @@ module.exports = {
 			? original.avatar
 			: localhost +
 			  "/imagenes/" +
-			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + final + original.avatar)
+			  (comp.gestionArchivos.existe("./publico/imagenes/" + final + original.avatar)
 					? final + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + revisar + original.avatar)
+					comp.gestionArchivos.existe("./publico/imagenes/" + revisar + original.avatar)
 					? revisar + original.avatar
 					: sinAvatar);
 
