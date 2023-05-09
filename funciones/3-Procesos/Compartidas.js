@@ -8,57 +8,9 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	obtieneLeadTime: (desdeOrig, hastaOrig) => {
-		// Variables
-		let desdeFinal = desdeOrig;
-		let hastaFinal = hastaOrig;
-		// Pasa el 'desde' del sábado/domingo al lunes siguiente
-		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
-		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
-		// Pasa el 'hasta' del sábado/domingo al viernes anterior
-		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
-		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
-		// Calcula la cantidad de horas
-		let diferencia = hastaFinal - desdeFinal;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / unaHora;
-		// Averigua la cantidad de fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		horasDif -= semanas * 2 * 24;
-		// Resultado
-		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
-		leadTime = Math.min(96, leadTime);
-		// Fin
-		return leadTime;
-	},
-	obtieneTodosLosCamposInclude: function (entidad) {
-		// Obtiene la familia
-		let familias = this.obtieneDesdeEntidad.familias(entidad);
-
-		// Obtiene todos los campos de la familia
-		let campos = [...variables.camposRevisar[familias]];
-
-		// Deja solamente los que tienen que ver con la entidad
-		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
-
-		// Deja solamente los campos con vínculo
-		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
-
-		// Obtiene una matriz con los vínculos
-		let include = camposConVinculo.map((n) => n.relacInclude);
-
-		// Fin
-		return include;
-	},
 	obtieneDesdeEntidad: {
 		familia: (entidad) => {
-			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
-				? "producto"
-				: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
-				? "rclv"
-				: ["links", "links_edicion"].includes(entidad)
-				? "link"
-				: "";
+			return FN.familia(entidad)
 		},
 		familias: (entidad) => {
 			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
@@ -83,27 +35,7 @@ module.exports = {
 				: "";
 		},
 		entidadNombre: (entidad) => {
-			return entidad == "peliculas"
-				? "Película"
-				: entidad == "colecciones"
-				? "Colección"
-				: entidad == "capitulos"
-				? "Capítulo"
-				: entidad == "personajes"
-				? "Personaje"
-				: entidad == "hechos"
-				? "Hecho"
-				: entidad == "temas"
-				? "Tema"
-				: entidad == "eventos"
-				? "Evento del Año"
-				: entidad == "epocas_del_ano"
-				? "Epoca del Año"
-				: entidad == "links"
-				? "Links"
-				: entidad == "usuarios"
-				? "Usuarios"
-				: "";
+			return FN.entidadNombre(entidad);
 		},
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
@@ -195,17 +127,17 @@ module.exports = {
 				: "";
 		},
 		campo_idRCLV: (edicion) => {
-			return edicion.personaje_id 
-			? "personaje_id" 
-			: edicion.hecho_id 
-			? "hecho_id" 
-			: edicion.tema_id 
-			? "tema_id" 
-			: edicion.evento_id 
-			? "evento_id" 
-			: edicion.epoca_del_ano_id 
-			? "epoca_del_ano_id" 
-			: "";
+			return edicion.personaje_id
+				? "personaje_id"
+				: edicion.hecho_id
+				? "hecho_id"
+				: edicion.tema_id
+				? "tema_id"
+				: edicion.evento_id
+				? "evento_id"
+				: edicion.epoca_del_ano_id
+				? "epoca_del_ano_id"
+				: "";
 		},
 	},
 	convierteLetras: {
@@ -226,11 +158,11 @@ module.exports = {
 			// Variables
 			let campos = Object.keys(objeto);
 			let valores = Object.values(objeto);
-	
+
 			// Rutina por campo
 			for (let campo in objeto)
 				if (typeof objeto[campo] == "string") objeto[campo] = this.alCastellano_campo(objeto[campo]);
-	
+
 			// Fin
 			return objeto;
 		},
@@ -295,12 +227,12 @@ module.exports = {
 				.replace(/#/g, "");
 		},
 	},
-	fechaHora:{
+	fechaHora: {
 		ahora: () => {
-			return FN_ahora();
+			return FN.ahora();
 		},
 		nuevoHorario: (delay, horario) => {
-			return nuevoHorario(delay, horario);
+			return FN.nuevoHorario(delay, horario);
 		},
 		fechaDiaMes: (fecha) => {
 			fecha = new Date(fecha);
@@ -315,7 +247,7 @@ module.exports = {
 			return this.fechaDiaMes(fecha) + "/" + ano;
 		},
 		fechaHorario: (horario) => {
-			horario = horario ? new Date(horario) : FN_ahora();
+			horario = horario ? new Date(horario) : FN.ahora();
 			return (
 				horario.getDate() +
 				"/" +
@@ -338,7 +270,7 @@ module.exports = {
 			return datos;
 		},
 	},
-	gestionArchivos:{
+	gestionArchivos: {
 		existe: (rutaNombre) => {
 			return rutaNombre && fs.existsSync(rutaNombre);
 		},
@@ -355,8 +287,7 @@ module.exports = {
 			let carpetaDestino = "./publico/imagenes/" + destino + "/";
 			let archivoDestino = carpetaDestino + nombre;
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(archivoOrigen))
-				console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
 			else
 				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
 					if (!error) {
@@ -369,8 +300,7 @@ module.exports = {
 			let nombreDestino = "./publico/imagenes/" + archivoDestino;
 			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
 			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(nombreOrigen))
-				console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
 			else
 				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
 					if (!error) {
@@ -381,7 +311,7 @@ module.exports = {
 		borra: async function (ruta, archivo, output) {
 			// Arma el nombre del archivo
 			let rutaArchivo = path.join(ruta, archivo);
-	
+
 			// Se fija si encuentra el archivo
 			if (this.existe(rutaArchivo)) {
 				// Borra el archivo
@@ -420,19 +350,17 @@ module.exports = {
 		imagenAlAzar: (carpeta) => {
 			// Obtiene el listado de archivos
 			const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
-	
+
 			// Elije al azar el n° de imagen
 			const indice = parseInt(Math.random() * archivos.length);
-	
+
 			// Genera el nombre del archivo
 			const imagenAlAzar = archivos[indice];
-	
+
 			// Fin
 			return imagenAlAzar;
 		},
 	},
-
-	// Validaciones
 	validacs: {
 		longitud: (dato, corto, largo) => {
 			return dato.length < corto
@@ -471,12 +399,12 @@ module.exports = {
 			const avatar = datos.avatar ? datos.avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
 			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 			let respuesta = "";
-	
+
 			// Mensajes si existe un avatar
 			if (avatar) {
 				// Valida si es una imagen
 				if (!respuesta && esImagen == "NO") respuesta = "El archivo no es una imagen";
-	
+
 				// Valida la extensión
 				if (!respuesta)
 					respuesta = !ext
@@ -486,37 +414,38 @@ module.exports = {
 						  ext.slice(1).toUpperCase() +
 						  "'. Las extensiones válidas son JPG, JPEG y PNG"
 						: "";
-	
+
 				// Valida el tamaño
 				if (!respuesta && tamano && tamano > 1100000)
 					respuesta = "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB";
 			}
 			// Mensajes si no existe un avatar
 			else if (!opcional) respuesta = "Necesitamos que agregues una imagen";
-	
+
 			// Fin
 			return respuesta;
 		},
 		cartelRepetido: function (datos) {
 			// Variables
 			const {entidad, id} = datos;
-	
-			let entidadNombre = datos.entidadNombre; // Para links
-			if (entidadNombre) entidadNombre = obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
-	
+
+			const entidadNombre = datos.entidadNombre
+				? datos.entidadNombre // Para links
+				: FN.entidadNombre(entidad).toLowerCase();
+
 			// 1. Inicio
 			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
 			let inicio = "Est" + genero + " ";
-	
+
 			// 2. Anchor
 			let url = "?entidad=" + entidad + "&id=" + id;
-			let link = "/" + this.obtieneDesdeEntidad.familia(entidad) + "/detalle/" + url;
+			let link = "/" + FN.familia(entidad) + "/detalle/" + url;
 			let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
-	
+
 			// 3. Final
 			let final = " ya se encuentra en nuestra base de datos";
-	
+
 			// Fin
 			return inicio + anchor + final;
 		},
@@ -614,6 +543,48 @@ module.exports = {
 	},
 
 	// Varias
+	obtieneLeadTime: (desdeOrig, hastaOrig) => {
+		// Variables
+		let desdeFinal = desdeOrig;
+		let hastaFinal = hastaOrig;
+		// Pasa el 'desde' del sábado/domingo al lunes siguiente
+		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
+		// Pasa el 'hasta' del sábado/domingo al viernes anterior
+		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
+		// Calcula la cantidad de horas
+		let diferencia = hastaFinal - desdeFinal;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+		// Averigua la cantidad de fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		horasDif -= semanas * 2 * 24;
+		// Resultado
+		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
+		leadTime = Math.min(96, leadTime);
+		// Fin
+		return leadTime;
+	},
+	obtieneTodosLosCamposInclude: function (entidad) {
+		// Obtiene la familia
+		let familias = this.obtieneDesdeEntidad.familias(entidad);
+
+		// Obtiene todos los campos de la familia
+		let campos = [...variables.camposRevisar[familias]];
+
+		// Deja solamente los que tienen que ver con la entidad
+		let camposEntidad = campos.filter((n) => n[entidad] || n[familias]);
+
+		// Deja solamente los campos con vínculo
+		let camposConVinculo = camposEntidad.filter((n) => n.relacInclude);
+
+		// Obtiene una matriz con los vínculos
+		let include = camposConVinculo.map((n) => n.relacInclude);
+
+		// Fin
+		return include;
+	},
 	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
 	},
@@ -624,42 +595,6 @@ module.exports = {
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
 		// Fin
 		return resultado;
-	},
-	rutaSalir: (tema, codigo, datos) => {
-		// Variables
-		let rutaSalir;
-		// Obtiene la ruta
-		if (tema == "rclv_crud" && codigo == "agregar") {
-			// Desde vista 'agregar' no hace falta inactivar
-
-			// 1. Obtiene la ruta a la cual ir
-			let rutaOrigen =
-				datos.origen == "DA" ? "/producto/agregar/datos-adicionales" : datos.origen == "EDP" ? "/producto/edicion/" : "/";
-			// Obtiene los parámetros de entidad + ID, en la ruta de origen
-			let entidadIdOrigen =
-				datos.origen && datos.origen != "DA" ? "?entidad=" + datos.prodEntidad + "&id=" + datos.prodID : "";
-
-			// Fin - Consolida la información
-			rutaSalir = rutaOrigen + entidadIdOrigen;
-		} else {
-			// Desde otras vistas, hace falta inactivar
-			// Obtiene la ruta a la cual ir
-			let rutaOrigen = "/inactivar-captura/";
-
-			// Obtiene la vista de origen
-			let vistaOrigen = "?origen=" + (datos.origen ? datos.origen : "TE");
-
-			// Obtiene los parámetros de entidad + ID, a inactivar
-			let entidadId_inactivar = "&entidad=" + datos.entidad + "&id=" + datos.id;
-
-			// Datos sólo si el origen es 'EDP'
-			let soloSiOrigenED = datos.origen == "EDP" ? "&prodEntidad=" + datos.prodEntidad + "&prodID=" + datos.prodID : "";
-
-			// Fin - Consolida la información
-			rutaSalir = rutaOrigen + vistaOrigen + entidadId_inactivar + soloSiOrigenED;
-		}
-		// Fin
-		return rutaSalir;
 	},
 	inicialMayus: (texto) => {
 		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
@@ -681,12 +616,46 @@ module.exports = {
 };
 
 // Funciones
-let FN_ahora = () => {
-	return new Date(new Date().toUTCString()); // <-- para convertir en 'horario local'
-};
-let nuevoHorario = (delay, horario) => {
-	horario = horario ? horario : FN_ahora();
-	let nuevoHorario = new Date(horario);
-	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
-	return nuevoHorario;
+let FN = {
+	ahora: () => {
+		return new Date(new Date().toUTCString()); // <-- para convertir en 'horario local'
+	},
+	nuevoHorario: (delay, horario) => {
+		horario = horario ? horario : FN.ahora();
+		let nuevoHorario = new Date(horario);
+		nuevoHorario.setHours(nuevoHorario.getHours() + delay);
+		return nuevoHorario;
+	},
+	entidadNombre: (entidad) => {
+		return entidad == "peliculas"
+			? "Película"
+			: entidad == "colecciones"
+			? "Colección"
+			: entidad == "capitulos"
+			? "Capítulo"
+			: entidad == "personajes"
+			? "Personaje"
+			: entidad == "hechos"
+			? "Hecho"
+			: entidad == "temas"
+			? "Tema"
+			: entidad == "eventos"
+			? "Evento del Año"
+			: entidad == "epocas_del_ano"
+			? "Epoca del Año"
+			: entidad == "links"
+			? "Links"
+			: entidad == "usuarios"
+			? "Usuarios"
+			: "";
+	},
+	familia: (entidad) => {
+		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
+			? "producto"
+			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
+			? "rclv"
+			: ["links", "links_edicion"].includes(entidad)
+			? "link"
+			: "";
+	},
 };
