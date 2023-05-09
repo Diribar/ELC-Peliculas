@@ -58,7 +58,7 @@ module.exports = {
 		// Fin
 		return [edicion, camposNull];
 	},
-	puleEdicionesProd: async (ediciones) => {
+	puleEdicionesProd: async function (ediciones) {
 		// Achica las ediciones a su mínima expresión
 		for (let edicion of ediciones) {
 			// Variables
