@@ -50,7 +50,7 @@ module.exports = {
 		}
 
 		// RCLV
-		let RCLVs = variables.entidadesRCLV;
+		let RCLVs = variables.entidades.rclvs;
 		RCLVs = RCLVs.map((n) => ({
 			entidad: n,
 			campo_id: comp.obtieneDesdeEntidad.campo_id(n),

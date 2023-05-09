@@ -112,7 +112,7 @@ module.exports = {
 	// 1. Rutinas horarias
 	LinksEnProd: async function () {
 		// return;
-		const entidadesProd = variables.entidadesProd;
+		const entidadesProd = variables.entidades.prods;
 
 		// Rutina por entidad
 		for (let entidad of entidadesProd) {
@@ -132,7 +132,7 @@ module.exports = {
 	},
 	ProdsEnRCLV: async function () {
 		// Obtiene las entidadesRCLV
-		const entidadesRCLV = variables.entidadesRCLV;
+		const entidadesRCLV = variables.entidades.rclvs;
 
 		// Rutina por entidad
 		for (let entidad of entidadesRCLV) {
@@ -282,7 +282,7 @@ module.exports = {
 		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
 
 		// Obtiene el nombre de todas las imagenes de los registros de productos
-		const entidades = variables.entidadesProd;
+		const entidades = variables.entidades.prods;
 		nombresDeAvatar = [];
 		let consolidado = [];
 		for (let entidad of entidades) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
@@ -390,7 +390,7 @@ let obtieneLosRCLV = async (dia_del_ano) => {
 	let resultados = [];
 
 	// Obtiene los RCLV de las primeras cuatro entidades
-	for (let entidad of variables.entidadesRCLV) {
+	for (let entidad of variables.entidades.rclvs) {
 		// Salteo de la rutina para 'epocas_del_ano'
 		if (entidad == "epocas_del_ano") continue;
 

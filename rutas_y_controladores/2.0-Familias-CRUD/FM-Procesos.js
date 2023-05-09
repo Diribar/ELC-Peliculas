@@ -339,7 +339,7 @@ module.exports = {
 		if (familias == "productos") {
 			// 1. Variables
 			const stAprob = registro.status_registro_id == aprobado_id;
-			const entidadesRCLV = variables.entidadesRCLV;
+			const entidadesRCLV = variables.entidades.rclvs;
 
 			// 2. Rutina por entidad RCLV
 			for (let entidad of entidadesRCLV) {
@@ -369,7 +369,7 @@ module.exports = {
 		// La entidad y el ID son de un RCLV
 
 		// Variables
-		const entidadesProds = variables.entidadesProd;
+		const entidadesProds = variables.entidades.prods;
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -513,7 +513,7 @@ module.exports = {
 		let dia_del_ano_id = null;
 
 		// Obtiene los dias_del_ano_id válidos
-		const entidadesRCLV = variables.entidadesRCLV;
+		const entidadesRCLV = variables.entidades.rclvs;
 		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneDesdeEntidad.asociacion(n));
 		let dias_del_ano_id = [];
 		for (let asociacion of asociacionesRCLV)

@@ -13,9 +13,9 @@ module.exports = {
 			return FN.familia(entidad);
 		},
 		familias: (entidad) => {
-			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
+			return [...variables.entidades.prods, "prods_edicion"].includes(entidad)
 				? "productos"
-				: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
+				: [...variables.entidades.rclvs, "rclvs_edicion"].includes(entidad)
 				? "rclvs"
 				: ["links", "links_edicion"].includes(entidad)
 				? "links"
@@ -28,9 +28,9 @@ module.exports = {
 				? null
 				: entidad == "links"
 				? "links"
-				: variables.entidadesRCLV.includes(entidad)
+				: variables.entidades.rclvs.includes(entidad)
 				? "rclvs"
-				: variables.entidadesProd.includes(entidad)
+				: variables.entidades.prods.includes(entidad)
 				? "prods"
 				: "";
 		},
@@ -80,9 +80,9 @@ module.exports = {
 				: "";
 		},
 		nombreEdicion: (entidad) => {
-			return variables.entidadesProd.includes(entidad)
+			return variables.entidades.prods.includes(entidad)
 				? "prods_edicion"
-				: variables.entidadesRCLV.includes(entidad)
+				: variables.entidades.rclvs.includes(entidad)
 				? "rclvs_edicion"
 				: entidad == "links"
 				? "links_edicion"
@@ -652,9 +652,9 @@ let FN = {
 			: "";
 	},
 	familia: (entidad) => {
-		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
+		return [...variables.entidades.prods, "prods_edicion"].includes(entidad)
 			? "producto"
-			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
+			: [...variables.entidades.rclvs, "rclvs_edicion"].includes(entidad)
 			? "rclv"
 			: ["links", "links_edicion"].includes(entidad)
 			? "link"

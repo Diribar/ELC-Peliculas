@@ -22,6 +22,12 @@ module.exports = {
 		},
 	],
 
+	// Productos y RCLVs
+	entidades: {
+		prods: ["peliculas", "colecciones", "capitulos"],
+		rclvs: ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"],
+	},
+
 	// Consulta de Productos
 	filtrosConsultas: {
 		// Producto
@@ -217,10 +223,8 @@ module.exports = {
 			},
 		];
 	},
-	entidadesProd: ["peliculas", "colecciones", "capitulos"],
 
 	// RCLV
-	entidadesRCLV: ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"],
 	prioridadesRCLV: [
 		{id: 1, nombre: "Menor"},
 		{id: 2, nombre: "Estándar"},

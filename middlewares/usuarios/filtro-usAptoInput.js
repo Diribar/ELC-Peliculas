@@ -40,7 +40,7 @@ module.exports = async (req, res, next) => {
 				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";
 				const rclv = originalUrl.startsWith("/rclv/agregar") || familia == "rclv";
 				const links = originalUrl.startsWith("/links/abm/") || familia == "links";
-				const entidades = producto ? variables.entidadesProd : rclv ? variables.entidadesRCLV : links ? ["links"] : "";
+				const entidades = producto ? variables.entidades.prods : rclv ? variables.entidades.rclvs : links ? ["links"] : "";
 
 				// Fin
 				return {entidades, producto, rclv, links};

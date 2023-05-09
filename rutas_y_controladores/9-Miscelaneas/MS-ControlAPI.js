@@ -11,8 +11,8 @@ module.exports = {
 	quickSearch: async (req, res) => {
 		// Variables
 		const userID = req.session.usuario ? req.session.usuario.id : 0;
-		const entidadesProd = variables.entidadesProd;
-		const entidadesRCLV = variables.entidadesRCLV;
+		const entidadesProd = variables.entidades.prods;
+		const entidadesRCLV = variables.entidades.rclvs;
 		const camposProds = ["nombre_castellano", "nombre_original"];
 		const camposPers = ["nombre", "apodo"];
 		let resultados = [];
