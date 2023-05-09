@@ -6,8 +6,10 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Bloques - Título */
 .bloques .tituloSecundario {position: relative; min-width: 270px;}
-.bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background: var(--verde-oscuro); color: var(--gris-claro);}
+.bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
 .bloques .tituloSecundario .ayudaMostrar p {margin-bottom: 3px;}
+#cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); color: var(--gris-claro);}
+#cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 
 /* Bloques - Registros */
 .bloques .registros {padding: 0 10px;}

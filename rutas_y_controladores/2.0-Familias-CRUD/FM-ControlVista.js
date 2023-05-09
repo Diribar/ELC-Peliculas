@@ -141,8 +141,10 @@ module.exports = {
 		return res.redirect(destino);
 	},
 	eliminarGuardar: async (req, res) => {
+		return res.send("OK")
 		// Variables
-		// Se fija si tiene ediciones y las elimina
+		// Se fija si tiene avatar y lo elimina
+		// Se fija si tiene ediciones y avatar-edicion y los elimina
 		// Acciones si es un producto
 		// Se fija si tiene links y los elimina
 		// Se fija si tiene links_edic y los elimina
