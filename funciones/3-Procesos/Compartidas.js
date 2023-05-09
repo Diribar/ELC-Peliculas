@@ -10,7 +10,7 @@ const variables = require("./Variables");
 module.exports = {
 	obtieneDesdeEntidad: {
 		familia: (entidad) => {
-			return FN.familia(entidad)
+			return FN.familia(entidad);
 		},
 		familias: (entidad) => {
 			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
@@ -429,9 +429,11 @@ module.exports = {
 			// Variables
 			const {entidad, id} = datos;
 
-			const entidadNombre = datos.entidadNombre
-				? datos.entidadNombre // Para links
-				: FN.entidadNombre(entidad).toLowerCase();
+			const entidadNombre = (
+				datos.entidadNombre
+					? datos.entidadNombre // Para links
+					: FN.entidadNombre(entidad)
+			).toLowerCase();
 
 			// 1. Inicio
 			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
