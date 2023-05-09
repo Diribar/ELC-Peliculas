@@ -254,7 +254,7 @@ module.exports = {
 		// Prepara la información
 		const objeto = {
 			status_registro_id: creado_aprob_id,
-			sugerido_en: comp.ahora(),
+			sugerido_en: comp.fechaHora.ahora(),
 			sugerido_por_id: 2,
 		};
 		// Actualiza el status de los links vencidos
@@ -453,7 +453,7 @@ let datosImgDerecha = (resultado) => {
 let fechaHoraUTC = () => {
 	// Obtiene la fecha y la hora y las procesa
 	const ahora = new Date();
-	const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaDiaMes(ahora);
+	const FechaUTC = diasSemana[ahora.getUTCDay()] + ". " + comp.fechaHora.fechaDiaMes(ahora);
 	const HoraUTC = ahora.getUTCHours() + ":" + ("0" + ahora.getUTCMinutes()).slice(-2);
 
 	// Fin

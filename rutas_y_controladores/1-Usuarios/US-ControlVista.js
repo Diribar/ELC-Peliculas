@@ -139,7 +139,7 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Agrega la fecha en la que se completa el alta del usuario
-		req.body.completado_en = comp.ahora();
+		req.body.completado_en = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
@@ -230,7 +230,7 @@ module.exports = {
 			req.body.docum_avatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
-		req.body.fecha_revisores = comp.ahora();
+		req.body.fecha_revisores = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElStatusDelUsuario(
 			usuario,

@@ -155,11 +155,11 @@ module.exports = {
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
 			// Detecta si ya se envió un mail en las últimas 24hs
-			let ahora = comp.ahora();
+			let ahora = comp.fechaHora.ahora();
 			let fechaContr = usuario.fecha_contrasena;
 			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
 			if (diferencia < 24) {
-				let fechaContrHorario = comp.fechaHorario(usuario.fecha_contrasena);
+				let fechaContrHorario = comp.fechaHora.fechaHorario(usuario.fecha_contrasena);
 				informacion = {
 					mensajes: [
 						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",
@@ -204,8 +204,8 @@ let largoContrasena = (dato) => {
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);
-	let max = comp.ahora();
-	let min = comp.ahora();
+	let max = comp.fechaHora.ahora();
+	let min = comp.fechaHora.ahora();
 	max.setFullYear(max.getFullYear() - 5);
 	min.setFullYear(min.getFullYear() - 100);
 	return fecha > max || fecha < min ? true : false;

@@ -17,7 +17,7 @@ module.exports = {
 		const codigo = "tableroControl";
 		let revID = req.session.usuario.id;
 		// Definir variables
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		// Productos y Ediciones
 		let productos = {
 			// Altas y Ediciones
@@ -201,7 +201,7 @@ module.exports = {
 		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
 		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
@@ -346,7 +346,7 @@ module.exports = {
 		// Variables
 		const {entidad, id} = req.query;
 		const revID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		let datos = {...req.body, entidad}; // la 'entidad' hace falta para una función posterior
 
 		// Averigua si hay errores de validación y toma acciones

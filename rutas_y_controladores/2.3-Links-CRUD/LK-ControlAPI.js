@@ -89,7 +89,7 @@ module.exports = {
 				// Inactivar
 				let datos = {
 					sugerido_por_id: userID,
-					sugerido_en: comp.ahora(),
+					sugerido_en: comp.fechaHora.ahora(),
 					motivo_id,
 					status_registro_id: inactivar_id,
 				};

@@ -106,7 +106,7 @@ module.exports = {
 			// Pisa el data entry de session
 			dataEntry = {...original, ...edicion, id, edicID: edicion.id};
 			// Obtiene el día y el mes
-			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
+			dataEntry = {...comp.fechaHora.diaDelAno(dataEntry), ...dataEntry};
 		}
 
 		// Tipo de fecha

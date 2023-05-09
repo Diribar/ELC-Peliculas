@@ -100,7 +100,7 @@ module.exports = {
 		// Más variables
 		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const revID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const alta_revisada_en = ahora;
 		const status_registro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";

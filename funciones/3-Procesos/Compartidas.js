@@ -8,7 +8,6 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Temas de Entidades
 	obtieneLeadTime: (desdeOrig, hastaOrig) => {
 		// Variables
 		let desdeFinal = desdeOrig;
@@ -51,8 +50,6 @@ module.exports = {
 		// Fin
 		return include;
 	},
-
-	// Conversiones
 	obtieneDesdeEntidad: {
 		familia: (entidad) => {
 			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
@@ -160,8 +157,8 @@ module.exports = {
 				: "";
 		},
 	},
-	datosDesdeEdicion: {
-		obtieneProdEntidadDesdeProd_id: (edicion) => {
+	obtieneDesdeEdicion: {
+		entidadProd: (edicion) => {
 			return edicion.pelicula_id
 				? "peliculas"
 				: edicion.coleccion_id
@@ -170,7 +167,7 @@ module.exports = {
 				? "capitulos"
 				: "";
 		},
-		obtieneRclvEntidadDesdeRclv_id: (edicion) => {
+		entidadRCLV: (edicion) => {
 			return edicion.personaje_id
 				? "personajes"
 				: edicion.hecho_id
@@ -183,12 +180,12 @@ module.exports = {
 				? "epocas_del_ano"
 				: "";
 		},
-		obtieneEntidadDesdeEnt_id: function (edicion) {
-			const producto = this.obtieneProdEntidadDesdeProd_id(edicion);
-			const RCLV = this.obtieneRclvEntidadDesdeRclv_id(edicion);
+		entidad: function (edicion) {
+			const producto = this.entidadProd(edicion);
+			const RCLV = this.entidadRCLV(edicion);
 			return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
 		},
-		obtieneProducto_id: (edicion) => {
+		campo_idProd: (edicion) => {
 			return edicion.pelicula_id
 				? "pelicula_id"
 				: edicion.coleccion_id
@@ -197,152 +194,149 @@ module.exports = {
 				? "capitulo_id"
 				: "";
 		},
-		obtieneRCLV_id: (edicion) => {
-			return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.tema_id ? "tema_id" : "";
+		campo_idRCLV: (edicion) => {
+			return edicion.personaje_id 
+			? "personaje_id" 
+			: edicion.hecho_id 
+			? "hecho_id" 
+			: edicion.tema_id 
+			? "tema_id" 
+			: edicion.evento_id 
+			? "evento_id" 
+			: edicion.epoca_del_ano_id 
+			? "epoca_del_ano_id" 
+			: "";
 		},
 	},
-	convierteLetras: {},
-	convierteLetrasAlIngles: (resultado) => {
-		return resultado
-			.toLowerCase()
-			.replace(/-/g, " ")
-			.replace(/á/g, "a")
-			.replace(/é/g, "e")
-			.replace(/í/g, "i")
-			.replace(/ó/g, "o")
-			.replace(/úü/g, "u")
-			.replace(/ñ/g, "n")
-			.replace(/:¿![.][?]/g, "")
-			.replace(/ +/g, " ");
+	convierteLetras: {
+		alIngles: (resultado) => {
+			return resultado
+				.toLowerCase()
+				.replace(/-/g, " ")
+				.replace(/á/g, "a")
+				.replace(/é/g, "e")
+				.replace(/í/g, "i")
+				.replace(/ó/g, "o")
+				.replace(/úü/g, "u")
+				.replace(/ñ/g, "n")
+				.replace(/:¿![.][?]/g, "")
+				.replace(/ +/g, " ");
+		},
+		alCastellano: function (objeto) {
+			// Variables
+			let campos = Object.keys(objeto);
+			let valores = Object.values(objeto);
+	
+			// Rutina por campo
+			for (let campo in objeto)
+				if (typeof objeto[campo] == "string") objeto[campo] = this.alCastellano_campo(objeto[campo]);
+	
+			// Fin
+			return objeto;
+		},
+		convierteLetrasAlCastellano_campo: (valor) => {
+			return valor
+				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+				.replace(/[àâãäåāăą]/g, "a")
+				.replace(/á/g, "á")
+				.replace(/Æ/g, "Ae")
+				.replace(/æ/g, "ae")
+				.replace(/ß/g, "b")
+				.replace(/[ÇĆĈĊČ]/g, "C")
+				.replace(/[çćĉċč]/g, "c")
+				.replace(/[ÐĎĐ]/g, "D")
+				.replace(/[đď]/g, "d")
+				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+				.replace(/[èêëēĕėęě]/g, "e")
+				.replace(/[ĜĞĠĢ]/g, "G")
+				.replace(/[ĝğġģ]/g, "g")
+				.replace(/[ĦĤ]/g, "H")
+				.replace(/[ħĥ]/g, "h")
+				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+				.replace(/[ìîïĩīĭįı]/g, "i")
+				.replace(/í/g, "í")
+				.replace(/Ĳ/g, "Ij")
+				.replace(/ĳ/g, "ij")
+				.replace(/Ĵ/g, "J")
+				.replace(/ĵ/g, "j")
+				.replace(/Ķ/g, "K")
+				.replace(/[ķĸ]/g, "k")
+				.replace(/[ĹĻĽĿŁ]/g, "L")
+				.replace(/[ĺļľŀł]/g, "l")
+				.replace(/[ŃŅŇ]/g, "N")
+				.replace(/[ńņňŉ]/g, "n")
+				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+				.replace(/[òôõōðōŏőö]/g, "o")
+				.replace(/ó/g, "ó")
+				.replace(/[ÖŒ]/g, "Oe")
+				.replace(/[œ]/g, "oe")
+				.replace(/[ŔŖŘ]/g, "R")
+				.replace(/[ŕŗř]/g, "r")
+				.replace(/[ŚŜŞŠ]/g, "S")
+				.replace(/[śŝşš]/g, "s")
+				.replace(/[ŢŤŦ]/g, "T")
+				.replace(/[ţťŧ]/g, "t")
+				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+				.replace(/[ùûũūŭůűų]/g, "u")
+				.replace(/Ŵ/g, "W")
+				.replace(/ŵ/g, "w")
+				.replace(/[ÝŶŸ]/g, "Y")
+				.replace(/[ýŷÿ]/g, "y")
+				.replace(/[ŽŹŻŽ]/g, "Z")
+				.replace(/[žźżž]/g, "z")
+				.replace(/[`‘“’”«»]/g, '"')
+				.replace(/[º]/g, "°")
+				.replace(/ +/g, " ")
+				.replace(/\t/g, " ")
+				.replace(/ /g, "")
+				.replace(/–/g, "-")
+				.replace("[", "(")
+				.replace("]", ")")
+				.replace(/#/g, "");
+		},
 	},
-	convierteLetrasAlCastellano: function (objeto) {
-		// Variables
-		let campos = Object.keys(objeto);
-		let valores = Object.values(objeto);
-
-		// Rutina por campo
-		for (let campo in objeto)
-			if (typeof objeto[campo] == "string") objeto[campo] = this.convierteLetrasAlCastellano_campo(objeto[campo]);
-
-		// Fin
-		return objeto;
-	},
-	convierteLetrasAlCastellano_campo: (valor) => {
-		return valor
-			.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
-			.replace(/[àâãäåāăą]/g, "a")
-			.replace(/á/g, "á")
-			.replace(/Æ/g, "Ae")
-			.replace(/æ/g, "ae")
-			.replace(/ß/g, "b")
-			.replace(/[ÇĆĈĊČ]/g, "C")
-			.replace(/[çćĉċč]/g, "c")
-			.replace(/[ÐĎĐ]/g, "D")
-			.replace(/[đď]/g, "d")
-			.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-			.replace(/[èêëēĕėęě]/g, "e")
-			.replace(/[ĜĞĠĢ]/g, "G")
-			.replace(/[ĝğġģ]/g, "g")
-			.replace(/[ĦĤ]/g, "H")
-			.replace(/[ħĥ]/g, "h")
-			.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
-			.replace(/[ìîïĩīĭįı]/g, "i")
-			.replace(/í/g, "í")
-			.replace(/Ĳ/g, "Ij")
-			.replace(/ĳ/g, "ij")
-			.replace(/Ĵ/g, "J")
-			.replace(/ĵ/g, "j")
-			.replace(/Ķ/g, "K")
-			.replace(/[ķĸ]/g, "k")
-			.replace(/[ĹĻĽĿŁ]/g, "L")
-			.replace(/[ĺļľŀł]/g, "l")
-			.replace(/[ŃŅŇ]/g, "N")
-			.replace(/[ńņňŉ]/g, "n")
-			.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-			.replace(/[òôõōðōŏőö]/g, "o")
-			.replace(/ó/g, "ó")
-			.replace(/[ÖŒ]/g, "Oe")
-			.replace(/[œ]/g, "oe")
-			.replace(/[ŔŖŘ]/g, "R")
-			.replace(/[ŕŗř]/g, "r")
-			.replace(/[ŚŜŞŠ]/g, "S")
-			.replace(/[śŝşš]/g, "s")
-			.replace(/[ŢŤŦ]/g, "T")
-			.replace(/[ţťŧ]/g, "t")
-			.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
-			.replace(/[ùûũūŭůűų]/g, "u")
-			.replace(/Ŵ/g, "W")
-			.replace(/ŵ/g, "w")
-			.replace(/[ÝŶŸ]/g, "Y")
-			.replace(/[ýŷÿ]/g, "y")
-			.replace(/[ŽŹŻŽ]/g, "Z")
-			.replace(/[žźżž]/g, "z")
-			.replace(/[`‘“’”«»]/g, '"')
-			.replace(/[º]/g, "°")
-			.replace(/ +/g, " ")
-			.replace(/\t/g, " ")
-			.replace(/ /g, "")
-			.replace(/–/g, "-")
-			.replace("[", "(")
-			.replace("]", ")")
-			.replace(/#/g, "");
-	},
-	paises_idToNombre: (paises_id) => {
-		// Función para convertir 'string de ID' en 'string de nombres'
-		let paisesNombre = [];
-		if (paises_id.length) {
-			let paises_idArray = paises_id.split(" ");
-			// Convertir 'IDs' en 'nombres'
-			for (let pais_id of paises_idArray) {
-				let paisNombre = paises.find((n) => n.id == pais_id);
-				if (paisNombre) paisesNombre.push(paisNombre.nombre);
+	fechaHora:{
+		ahora: () => {
+			return FN_ahora();
+		},
+		nuevoHorario: (delay, horario) => {
+			return nuevoHorario(delay, horario);
+		},
+		fechaDiaMes: (fecha) => {
+			fecha = new Date(fecha);
+			let dia = fecha.getUTCDate();
+			let mes = mesesAbrev[fecha.getUTCMonth()];
+			fecha = dia + "/" + mes;
+			return fecha;
+		},
+		fechaDiaMesAno: function (fecha) {
+			fecha = new Date(fecha);
+			let ano = fecha.getUTCFullYear().toString().slice(-2);
+			return this.fechaDiaMes(fecha) + "/" + ano;
+		},
+		fechaHorario: (horario) => {
+			horario = horario ? new Date(horario) : FN_ahora();
+			return (
+				horario.getDate() +
+				"/" +
+				mesesAbrev[horario.getMonth()] +
+				" a las " +
+				horario.getHours() +
+				":" +
+				String(horario.getMinutes()).padStart(2, "0") +
+				"hs"
+			);
+		},
+		diaDelAno: (dataEntry) => {
+			let datos = {};
+			if (dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id <= 366) {
+				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
+				datos.dia = dia_del_ano.dia;
+				datos.mes_id = dia_del_ano.mes_id;
 			}
-		}
-		// Fin
-		return paisesNombre.join(", ");
-	},
-
-	// Fecha y Hora
-	ahora: () => {
-		return FN_ahora();
-	},
-	nuevoHorario: (delay, horario) => {
-		return nuevoHorario(delay, horario);
-	},
-	fechaDiaMes: (fecha) => {
-		fecha = new Date(fecha);
-		let dia = fecha.getUTCDate();
-		let mes = mesesAbrev[fecha.getUTCMonth()];
-		fecha = dia + "/" + mes;
-		return fecha;
-	},
-	fechaDiaMesAno: function (fecha) {
-		fecha = new Date(fecha);
-		let ano = fecha.getUTCFullYear().toString().slice(-2);
-		return this.fechaDiaMes(fecha) + "/" + ano;
-	},
-	fechaHorario: (horario) => {
-		horario = horario ? new Date(horario) : FN_ahora();
-		return (
-			horario.getDate() +
-			"/" +
-			mesesAbrev[horario.getMonth()] +
-			" a las " +
-			horario.getHours() +
-			":" +
-			String(horario.getMinutes()).padStart(2, "0") +
-			"hs"
-		);
-	},
-	diaDelAno: (dataEntry) => {
-		let datos = {};
-		if (dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id <= 366) {
-			let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
-			datos.dia = dia_del_ano.dia;
-			datos.mes_id = dia_del_ano.mes_id;
-		}
-		// Fin
-		return datos;
+			// Fin
+			return datos;
+		},
 	},
 
 	// Gestión de archivos
@@ -678,6 +672,20 @@ module.exports = {
 	},
 	inicialMayus: (texto) => {
 		return texto.slice(0, 1).toUpperCase() + texto.slice(1);
+	},
+	paises_idToNombre: (paises_id) => {
+		// Función para convertir 'string de ID' en 'string de nombres'
+		let paisesNombre = [];
+		if (paises_id.length) {
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
+			for (let pais_id of paises_idArray) {
+				let paisNombre = paises.find((n) => n.id == pais_id);
+				if (paisNombre) paisesNombre.push(paisNombre.nombre);
+			}
+		}
+		// Fin
+		return paisesNombre.join(", ");
 	},
 };
 

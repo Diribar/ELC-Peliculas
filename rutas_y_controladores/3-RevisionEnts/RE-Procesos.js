@@ -32,7 +32,7 @@ module.exports = {
 			// 4. Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
-					let entidad = comp.obtieneProdEntidadDesdeProd_id(n);
+					let entidad = comp.obtieneDesdeEdicion.entidadProd(n);
 					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					// Carga los productos excepto los aprobados y editados por el revisor
 					if (n[asociacion].status_registro_id != aprobado_id || n.editado_por_id != revID)
@@ -41,7 +41,7 @@ module.exports = {
 							entidad,
 							edicID: n.id,
 							fechaRef: n[campoFecha],
-							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
 						});
 				});
 
@@ -149,7 +149,7 @@ module.exports = {
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
-					let entidad = comp.obtieneRclvEntidadDesdeRclv_id(n);
+					let entidad = comp.obtieneDesdeEdicion.entidadRCLV(n);
 					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					rclvs.push({
 						...n[asociacion],
@@ -157,7 +157,7 @@ module.exports = {
 						editado_en: n.editado_en,
 						edicID: n.id,
 						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -236,7 +236,7 @@ module.exports = {
 		// Alta Guardar
 		rclvEdicAprobRech: async (entidad, original, revID) => {
 			// Variables
-			const ahora = comp.ahora();
+			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
 			let familia = comp.obtieneDesdeEntidad.familias(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
@@ -561,7 +561,7 @@ module.exports = {
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
-			const ahora = comp.ahora();
+			const ahora = comp.fechaHora.ahora();
 			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
@@ -693,7 +693,7 @@ module.exports = {
 	// Varios
 	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const include = "rol_iglesia";
 		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		let bloque = [];
@@ -744,7 +744,7 @@ let TC_obtieneRegs = async (campos) => {
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
 			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
-			const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
 
@@ -802,11 +802,11 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 2. Obtiene los prods
 	links.map((link) => {
 		// Variables
-		let entidad = comp.obtieneProdEntidadDesdeProd_id(link);
+		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
+		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en VN y OT
 		if (link.status_registro && link.status_registro.creado_aprob)
@@ -838,8 +838,8 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 };
 let sinProblemasDeCaptura = (familia, revID, ahora) => {
 	// Variables
-	const haceUnaHora = comp.nuevoHorario(-1, ahora);
-	const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	const haceUnaHora = comp.fechaHora.nuevoHorario(-1, ahora);
+	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
 	// Fin
 	return familia.filter(
 		(n) =>
@@ -881,7 +881,7 @@ let creadosSinEdicion = async () => {
 		.then((n) =>
 			n.map((m) => {
 				const fechaRef = m.creado_en;
-				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);
@@ -890,7 +890,7 @@ let creadosSinEdicion = async () => {
 		.then((n) =>
 			n.map((m) => {
 				const fechaRef = m.creado_en;
-				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);

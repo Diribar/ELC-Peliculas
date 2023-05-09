@@ -120,7 +120,7 @@ module.exports = {
 					edicion.editado_por_id = userID;
 					// 2. producto_id (links)
 					if (entidad == "links") {
-						let producto_id = entidad == "links" ? comp.obtieneProducto_id(original) : "";
+						let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
 						edicion[producto_id] = original[producto_id];
 					}
 					// Se agrega el registro
@@ -305,7 +305,7 @@ module.exports = {
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;
-				const ahora = comp.ahora();
+				const ahora = comp.fechaHora.ahora();
 				const datos = {
 					alta_term_en: ahora,
 					lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
@@ -354,8 +354,8 @@ module.exports = {
 		// linksEnProds
 		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneProdEntidadDesdeProd_id(registro);
-			const campo_id = comp.obtieneProducto_id(registro);
+			const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
+			const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
 			const prodID = registro[campo_id];
 			// Actualiza el producto
 			this.linksEnProd({entidad: prodEntidad, id: prodID});
@@ -557,15 +557,15 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
+		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creado_en)});
 		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 
 		if (registro.alta_revisada_en) {
-			bloque.push({titulo: "Revisado el", valor: comp.fechaDiaMesAno(registro.alta_revisada_en)});
+			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.alta_revisada_en)});
 			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
 		}
 		if (registro.alta_revisada_en && registro.alta_revisada_en - registro.sugerido_en) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.sugerido_en)});
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 

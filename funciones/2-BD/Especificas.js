@@ -88,8 +88,8 @@ module.exports = {
 	// Revisar - Tablero
 	TC_obtieneRegs: ({entidad, status_id, revID, campoFecha, campoRevID, include}) => {
 		// Variables
-		const haceUnaHora = comp.nuevoHorario(-1);
-		const haceDosHoras = comp.nuevoHorario(-2);
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 
 		// Condiciones
 		let condiciones = {
@@ -121,7 +121,7 @@ module.exports = {
 			.then((n) => n.map((m) => ({...m, entidad})));
 	},
 	TC_obtieneEdicsAptas: (entidad, include) => {
-		const haceUnaHora = comp.nuevoHorario(-1);
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		// Obtiene las ediciones que cumplan ciertas condiciones
 		return (
 			db[entidad]
@@ -157,7 +157,7 @@ module.exports = {
 	},
 	// Revisar - producto/edicion y rclv/edicion
 	obtieneEdicAjenaDeUnProd: (entEdicion, datos, include) => {
-		const haceUnaHora = comp.nuevoHorario(-1);
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const {campo_id, entID, userID} = datos;
 		// Obtiene un registro que cumpla ciertas condiciones
 		return db[entEdicion]
@@ -203,8 +203,8 @@ module.exports = {
 
 	// Otros
 	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {
-		const haceUnaHora = comp.nuevoHorario(-1);
-		const haceDosHoras = comp.nuevoHorario(-2);
+		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 		return db[entidad]
 			.findAll({
 				where: {
@@ -228,13 +228,13 @@ module.exports = {
 			})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n.map((m) => (m = {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto: comp.fechaDiaMes(m[campoFecha])}))
+				n.map((m) => (m = {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto: comp.fechaHora.fechaDiaMes(m[campoFecha])}))
 			);
 	},
 	linksVencidos: () => {
 		// Obtiene la fecha de corte
 		const vidaUtil = 6 * unMes;
-		const fechaCorte = new Date(comp.ahora().getTime() - vidaUtil);
+		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
 
 		// Obtiene la condición
 		let condicion = {

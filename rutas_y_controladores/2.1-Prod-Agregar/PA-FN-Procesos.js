@@ -40,7 +40,7 @@ module.exports = {
 
 		// Procesa la información
 		if (Object.keys(datosAPI).length) datos = {...datos, ...this.datosPelis(datosAPI)};
-		datos = comp.convierteLetrasAlCastellano(datos);
+		datos = comp.convierteLetras.alCastellano(datos);
 
 		// Fin
 		return datos;
@@ -110,7 +110,7 @@ module.exports = {
 		}
 
 		// Convierte las letras al castellano
-		datos = comp.convierteLetrasAlCastellano(datos);
+		datos = comp.convierteLetras.alCastellano(datos);
 
 		// Fin
 		return datos;
@@ -206,7 +206,7 @@ module.exports = {
 
 		// Procesa la información
 		if (Object.keys(datosAPI).length) datos = {...datos, ...this.DS_tv_info(datosAPI)};
-		datos = comp.convierteLetrasAlCastellano(datos);
+		datos = comp.convierteLetras.alCastellano(datos);
 
 		// Fin
 		return datos;
@@ -331,7 +331,7 @@ module.exports = {
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			.then((n) => (n = {...datosCap, ...n}))
 			.then((n) => (tipo_actuacion_id != 1 ? (n = {...n, actores}) : n))
-			.then((n) => (n = comp.convierteLetrasAlCastellano(n)))
+			.then((n) => (n = comp.convierteLetras.alCastellano(n)))
 			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
 
 		// Fin
@@ -348,7 +348,7 @@ module.exports = {
 		for (let episode of datosTemp.episodes) {
 			// Obtiene la información del registro
 			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
-			datosCap = comp.convierteLetrasAlCastellano(datosCap);
+			datosCap = comp.convierteLetras.alCastellano(datosCap);
 
 			// Guarda el registro
 			await BD_genericas.agregaRegistro("capitulos", datosCap);
@@ -441,7 +441,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return comp.convierteLetrasAlCastellano(respuesta);
+		return comp.convierteLetras.alCastellano(respuesta);
 	},
 	// Función validar (FA)
 	contenidoFA: (texto) => {

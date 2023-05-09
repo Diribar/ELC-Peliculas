@@ -93,7 +93,7 @@ module.exports = {
 		const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
 		const codigo = req.path.slice(1, -1);
 		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
