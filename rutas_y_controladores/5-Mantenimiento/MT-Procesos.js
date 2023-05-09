@@ -14,8 +14,9 @@ module.exports = {
 
 		// PRODUCTOS
 		// Productos Inactivos (peliculas y colecciones)
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "capitulos"))
+		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID}).then((n) =>
+			n.filter((m) => m.entidad != "capitulos")
+		);
 		// Aprobados sin calificar (peliculas y colecciones)
 		let SC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
 			.then((n) => n.filter((m) => m.entidad != "capitulos"))
@@ -43,18 +44,30 @@ module.exports = {
 	},
 	TC_obtieneRCLVs: async (userID) => {
 		// Variables
-		let entidades = variables.entidades.rclvs;
+		const entidades = variables.entidades.rclvs;
+		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
+		let include, objeto;
+		let IN = [];
+		let INP = [];
 
 		// 1. RCLVs inactivos
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})
+		objeto = {entidades, campoFecha: "sugerido_en", status_id: inactivo_id, include: includeProds};
+		let inactivos = obtienePorEntidad({...objeto, userID});
 
 		// 2. Aprobados
-		const include = ["ediciones"];
+		include = ["ediciones"];
 		let campoFecha = "alta_revisada_en";
 		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID: 1, include});
 
 		// Await
-		[IN, aprobados] = await Promise.all([IN, aprobados]);
+		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
+
+		// Inactivos c/producto
+		inactivos.map((n) => {
+			n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_ediciones.length
+				? INP.push(n)
+				: IN.push(n);
+		});
 
 		// 2.1. Sin Avatar
 		const SA = aprobados.filter((m) => !m.avatar && m.id > 10 && !m.ediciones.length);
@@ -66,7 +79,7 @@ module.exports = {
 		const FM = aprobados.filter((m) => m.fecha_movil);
 
 		// Fin
-		return {IN, SA, SF, FM};
+		return {INP, IN, SA, SF, FM};
 	},
 };
 

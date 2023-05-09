@@ -61,6 +61,7 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% if (revisor) { %>
+					<%- include("RE0-Registros", {titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", origen: "MT"}) %>
 					<%- include("RE0-Registros", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
 				<% } %>
 				<%- include("RE0-Registros", {titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", origen: "MT"}) %>
