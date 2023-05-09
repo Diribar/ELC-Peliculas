@@ -58,6 +58,23 @@ module.exports = {
 		// Fin
 		return [edicion, camposNull];
 	},
+	puleEdicionesProd: async function (ediciones) {
+		// Achica las ediciones a su mínima expresión
+		for (let edicion of ediciones) {
+			// Variables
+			const entidad = comp.obtieneDesdeEdicion.entidadProd(edicion);
+			const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(edicion);
+			const id = edicion[campo_idProd];
+			const campo_idRCLV = comp.obtieneDesdeEdicion.campo_idRCLV(edicion);
+
+			// Pule la edición
+			const original = await BD_genericas.obtienePorId(entidad, id);
+			delete edicion[campo_idRCLV];
+			await this.puleEdicion(entidad, original, edicion);
+		}
+		// Fin
+		return;
+	},
 	// Lectura de edicion
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
@@ -557,7 +574,8 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creado_en)});
+		if (!registro.alta_revisada_en)
+			bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creado_en)});
 		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 
 		if (registro.alta_revisada_en) {

@@ -5,5 +5,5 @@ module.exports = (req, res, next) => {
 		res.clearCookie("email");
 		return res.redirect(req.session.urlSinLogin);
 	}
-	next();
+	else next();
 };
