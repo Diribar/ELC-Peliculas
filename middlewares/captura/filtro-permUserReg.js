@@ -231,5 +231,5 @@ module.exports = async (req, res, next) => {
 
 	// Fin
 	if (informacion) res.render("CMP-0Estructura", {informacion});
-	next();
+	else next();
 };
