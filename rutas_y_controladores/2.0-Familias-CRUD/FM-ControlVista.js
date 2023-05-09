@@ -141,25 +141,91 @@ module.exports = {
 		return res.redirect(destino);
 	},
 	eliminarGuardar: async (req, res) => {
-		// return res.send(req.query)
 		// Variables
 		const {entidad, id, origen} = req.query;
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, id,asocEdiciones);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const original = await BD_genericas.obtienePorId(entidad, id);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		let acumulado = [];
 
 		// Se fija si tiene avatar y lo elimina
-		// if (original.avatar&&!original.avatar.includes("/"))
-		 	// comp.
+		if (original.avatar && !original.avatar.includes("/")) {
+			console.log(familia, original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familia + "/Final", original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familia + "/Revisar", original.avatar);
+		}
 
-		// Se fija si tiene ediciones y avatar-edicion y los elimina
-		// Acciones si es un producto
-		// Se fija si tiene links y los elimina
-		// Se fija si tiene links_edic y los elimina
-		// Acciones si es un RCLV
-		// Se fija si tiene algún producto, y borra el vínculo
-		// Se fija si tiene alguna edición-producto, y borra el vínculo
-		// Si es un "epoca_del_ano", se fija si tiene algún dia_del_ano y borra el vínculo
+		// Elimina todas las ediciones que tenga
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id}));
+
 		// Elimina el historial de cambios de status
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion("historial_cambios_de_status", {entidad, entidad_id: id}));
+
+		// Acciones si es un producto
+		if (familia == "producto") {
+			// Se fija si tiene links_edicion y links, y los elimina
+			acumulado.push(BD_genericas.eliminaTodosPorCondicion("links_edicion", {[campo_id]: id}));
+			acumulado.push(BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id}));
+		}
+
+		// Acciones si es un RCLV
+		if (familia == "rclv") {
+			// Se fija si tiene alguna edición de producto, y borra el vínculo
+			const prodEdiciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[campo_id]: id});
+			if (prodEdiciones.length) {
+				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: 1});
+				procesos.puleEdicionesProd(prodEdiciones);
+			}
+
+			// Borra el vínculo en los productos
+			for (let entProd of variables.entidades.prods)
+				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {[campo_id]: id}, {[campo_id]: 1}));
+
+			// Si es un "epoca_del_ano", borra el vínculo en los dias_del_ano
+			if (entidad == "epocas_del_ano")
+				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {epoca_del_ano_id: id}, {[campo_id]: 1}));
+		}
+
 		// Elimina el registro
+		acumulado = await Promise.all(acumulado);
+		BD_genericas.eliminaPorId(entidad, id);
+
+		// Prepara información para la próxima vista
+		const nombre = original.nombre_castellano
+			? original.nombre_castellano
+			: original.nombre_original
+			? original.nombre_original
+			: original.nombre
+			? original.nombre
+			: "¿ ?";
+
+		// Guarda la información
+		let objeto = {entidad, nombre};
+		if (origen == "MT") objeto.origen = "MT";
+		res.cookie("eliminado", objeto, {maxAge: 5000});
+
+		// Fin
+		return res.redirect("/" + familia + "/eliminado");
+	},
+	eliminadoForm: (req, res) => {
+		// Variables
+		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
+		if (!entidad) return res.redirect("/");
+
+		// Más variables
+		const articulo = ["peliculas", "colecciones", "epocas_del_ano"].includes(entidad) ? "La " : "El ";
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const link = origen == "MT" ? "/mantenimiento" : "/";
+
 		// Cartel de registro eliminado
+		const informacion = {
+			mensajes: [articulo + entidadNombre + " " + nombre + " fue eliminado/a de nuestra base de datos."],
+			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
+			check: true,
+		};
+
+		// Fin
+		return res.render("CMP-0Estructura", {informacion});
 	},
 };
