@@ -24,6 +24,6 @@ module.exports = async (req, res, next) => {
 	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones
-	if (informacion) return res.render("CMP-0Estructura", {informacion});
+	if (informacion) res.render("CMP-0Estructura", {informacion});
 	else next();
 };

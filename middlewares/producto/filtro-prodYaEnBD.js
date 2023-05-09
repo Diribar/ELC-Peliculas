@@ -36,7 +36,7 @@ module.exports = async (req, res, next) => {
 			// Elimina los hallazgos anteriores
 			req.session.desambiguar = "";
 			// Envía a la vista
-			return res.render("CMP-0Estructura", {informacion});
+			res.render("CMP-0Estructura", {informacion});
 		}
 	}
 

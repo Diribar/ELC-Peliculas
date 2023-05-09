@@ -33,6 +33,6 @@ module.exports = (req, res, next) => {
 			};
 	}
 	// Conclusiones
-	if (informacion) return res.render("CMP-0Estructura", {informacion});
+	if (informacion) res.render("CMP-0Estructura", {informacion});
 	else next();
 };
