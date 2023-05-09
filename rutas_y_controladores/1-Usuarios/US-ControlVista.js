@@ -127,14 +127,14 @@ module.exports = {
 		// Averigua si hay errores de validación
 		let errores = await valida.editables(datos);
 		if (errores.hay) {
-			if (req.file) comp.gestionArchivos.borra(req.file.destination, req.file.filename);
+			if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
-			if (usuario.avatar) comp.gestionArchivos.borra(req.file.destination, usuario.avatar);
+			if (usuario.avatar) comp.gestionArchivos.elimina(req.file.destination, usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
@@ -217,7 +217,7 @@ module.exports = {
 		let errores = await valida.identidadBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
-			if (req.file) comp.gestionArchivos.borra(req.file.destination, req.file.filename);
+			if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/identidad");
@@ -225,7 +225,7 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				comp.gestionArchivos.borra("./publico/imagenes/1-Usuarios/2-DNI-Revisar/", usuario.docum_avatar);
+				comp.gestionArchivos.elimina("./publico/imagenes/1-Usuarios/2-DNI-Revisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}

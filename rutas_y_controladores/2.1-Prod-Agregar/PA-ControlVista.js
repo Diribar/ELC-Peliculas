@@ -57,7 +57,7 @@ module.exports = {
 		// 2. Obtiene el Data Entry de session y cookies
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (datosDuros.avatarBorrar) comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
 		// Obtiene los errores
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
@@ -357,7 +357,7 @@ module.exports = {
 		// 2. Obtiene el Data Entry de session y cookies
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
 		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (FA.avatarBorrar) comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", FA.avatarBorrar);
+		if (FA.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", FA.avatarBorrar);
 		// 4. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,

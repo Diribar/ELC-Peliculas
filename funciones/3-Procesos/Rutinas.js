@@ -333,7 +333,7 @@ let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	for (let archivo of archivosDeImagen) {
 		const dot = archivo.lastIndexOf(".");
 		if (dot < 0) dato = archivo.length;
-		if (!fechas.includes(archivo.slice(0, dot))) comp.gestionArchivos.borra(carpetaImagen, archivo);
+		if (!fechas.includes(archivo.slice(0, dot))) comp.gestionArchivos.elimina(carpetaImagen, archivo);
 	}
 
 	// Fin
@@ -515,7 +515,7 @@ let borraImagenesSinRegistro = async (nombresDeAvatar, carpeta) => {
 
 	// Rutina para borrar archivos
 	for (let archivo of archivosDeAvatar)
-		if (!nombresDeAvatar.includes(archivo)) comp.gestionArchivos.borra("./publico/imagenes/" + carpeta, archivo);
+		if (!nombresDeAvatar.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
 	for (let nombre of nombresDeAvatar) if (!archivosDeAvatar.includes(nombre)) console.log(nombre);

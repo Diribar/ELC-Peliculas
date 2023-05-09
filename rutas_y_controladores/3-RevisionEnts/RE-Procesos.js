@@ -446,7 +446,7 @@ module.exports = {
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.gestionArchivos.borra("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id});
@@ -766,14 +766,14 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
-		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig)) comp.gestionArchivos.borra(rutaFinal, avatarOrig);
+		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig)) comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
 		comp.gestionArchivos.mueveImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
 	}
 
 	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.gestionArchivos.borra("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
+	else if (!aprob) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;

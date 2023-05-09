@@ -282,33 +282,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		mueveImagen: function (nombre, origen, destino, output) {
-			let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-			let carpetaDestino = "./publico/imagenes/" + destino + "/";
-			let archivoDestino = carpetaDestino + nombre;
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
-			else
-				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-		},
-		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
-			let nombreDestino = "./publico/imagenes/" + archivoDestino;
-			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
-			else
-				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-		},
-		borra: async function (ruta, archivo, output) {
+		elimina: async function (ruta, archivo, output) {
 			// Arma el nombre del archivo
 			let rutaArchivo = path.join(ruta, archivo);
 
@@ -346,6 +320,32 @@ module.exports = {
 			});
 			// Fin
 			return resultado;
+		},
+		mueveImagen: function (nombre, origen, destino, output) {
+			let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
+			let carpetaDestino = "./publico/imagenes/" + destino + "/";
+			let archivoDestino = carpetaDestino + nombre;
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			else
+				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+		},
+		copiaImagen: function (archivoOrigen, archivoDestino, output) {
+			let nombreOrigen = "./publico/imagenes/" + archivoOrigen;
+			let nombreDestino = "./publico/imagenes/" + archivoDestino;
+			let carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+			else
+				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+					} else throw error;
+				});
 		},
 		imagenAlAzar: (carpeta) => {
 			// Obtiene el listado de archivos

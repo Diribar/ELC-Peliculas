@@ -195,17 +195,17 @@ module.exports = {
 					// Mueve el archivo de la edición para reemplazar el original
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
 					// Elimina el anterior archivo de imagen original
-					if (original.avatar) comp.gestionArchivos.borra("./publico/imagenes/2-Productos/Final/", original.avatar);
+					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
 				} else {
 					// Mueve el archivo de la edición para su revisión
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar) comp.gestionArchivos.borra("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
+					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
 				}
 			}
 			// Si hay errores, borra el archivo avatar editado
 			else {
-				comp.gestionArchivos.borra("./publico/imagenes/9-Provisorio/", req.file.filename);
+				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
 				// return res.send([{errores}, {...prodComb, entidad}]);
 			}
 		}
