@@ -184,7 +184,9 @@ module.exports = {
 
 			// Si es un "epoca_del_ano", borra el vínculo en los dias_del_ano
 			if (entidad == "epocas_del_ano")
-				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {epoca_del_ano_id: id}, {[campo_id]: 1}));
+				acumulado.push(
+					BD_genericas.actualizaTodosPorCondicion("epocas_del_ano", {epoca_del_ano_id: id}, {[campo_id]: 1})
+				);
 		}
 
 		// Elimina el registro
