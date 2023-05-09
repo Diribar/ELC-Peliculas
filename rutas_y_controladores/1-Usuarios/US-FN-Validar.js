@@ -21,16 +21,16 @@ module.exports = {
 			let dato = datos.apodo;
 			let respuesta = "";
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicial.basico(dato);
-				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
 			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.apodo = respuesta;
 		}
 		if (campos.includes("sexo_id")) errores.sexo_id = !datos.sexo_id ? variables.selectVacio : "";
 		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
-		if (campos.includes("avatar")) errores.avatar = comp.validaAvatar(datos);
+		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 		errores.hay = Object.values(errores).some((n) => !!n);
 		// Fin
 		return errores;
@@ -46,9 +46,9 @@ module.exports = {
 			let dato = datos.nombre;
 			// Validaciones
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicial.basico(dato);
-				if (!respuesta) respuesta = comp.longitud(dato, 2, 30);
+				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
+				if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
 			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.nombre = respuesta;
@@ -59,9 +59,9 @@ module.exports = {
 			let dato = datos.apellido;
 			// Validaciones
 			if (dato) {
-				if (!respuesta) respuesta = comp.castellano.basico(dato);
-				if (!respuesta) respuesta = comp.inicial.basico(dato);
-				if (!respuesta) comp.longitud(dato, 2, 30);
+				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
+				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
+				if (!respuesta) comp.validacs.longitud(dato, 2, 30);
 			} else respuesta = variables.inputVacio;
 			// Fin
 			errores.apellido = respuesta;
@@ -80,7 +80,7 @@ module.exports = {
 			let dato = datos.docum_numero;
 			let respuesta = "";
 			// Validaciones
-			if (dato) respuesta = comp.longitud(dato, 4, 15);
+			if (dato) respuesta = comp.validacs.longitud(dato, 4, 15);
 			else respuesta = variables.inputVacio;
 			// Fin
 			errores.docum_numero = respuesta;
@@ -89,7 +89,7 @@ module.exports = {
 		if (campos.includes("docum_pais_id"))
 			errores.docum_pais_id = !datos.docum_pais_id ? variables.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.validaAvatar(datos);
+		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.validacs.avatar(datos);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -111,7 +111,7 @@ module.exports = {
 				!datos.docum_avatar
 					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 					: // Que exista el archivo
-					!comp.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
+					!comp.gestionArchivos.existe(datos.ruta + datos.docum_avatar)
 					? "El archivo de imagen no existe"
 					: "";
 
@@ -155,11 +155,11 @@ module.exports = {
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
 			// Detecta si ya se envió un mail en las últimas 24hs
-			let ahora = comp.ahora();
+			let ahora = comp.fechaHora.ahora();
 			let fechaContr = usuario.fecha_contrasena;
 			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
 			if (diferencia < 24) {
-				let fechaContrHorario = comp.fechaHorario(usuario.fecha_contrasena);
+				let fechaContrHorario = comp.fechaHora.fechaHorario(usuario.fecha_contrasena);
 				informacion = {
 					mensajes: [
 						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",
@@ -204,8 +204,8 @@ let largoContrasena = (dato) => {
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let fecha = new Date(dato);
-	let max = comp.ahora();
-	let min = comp.ahora();
+	let max = comp.fechaHora.ahora();
+	let min = comp.fechaHora.ahora();
 	max.setFullYear(max.getFullYear() - 5);
 	min.setFullYear(min.getFullYear() - 100);
 	return fecha > max || fecha < min ? true : false;

@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id, edicID} = req.query;
 	let origen = req.query.origen;
-	let entEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+	let entEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 	let informacion;
 
 	// 1. Acciones en caso de que exista el 'edicID' en el url
@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	// 2. Acciones en caso de que no exista el 'edicID' en el url
 	else {
 		// Variables
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let revision = req.baseUrl == "/revision";
 		let edicion;
 

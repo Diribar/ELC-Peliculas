@@ -127,24 +127,24 @@ module.exports = {
 		// Averigua si hay errores de validación
 		let errores = await valida.editables(datos);
 		if (errores.hay) {
-			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		}
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
-			if (usuario.avatar) comp.borraUnArchivo(req.file.destination, usuario.avatar);
+			if (usuario.avatar) comp.gestionArchivos.elimina(req.file.destination, usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
 		// Agrega la fecha en la que se completa el alta del usuario
-		req.body.completado_en = comp.ahora();
+		req.body.completado_en = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios/1-Avatar");
+		if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/1-Avatar");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
@@ -217,7 +217,7 @@ module.exports = {
 		let errores = await valida.identidadBE(datos);
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
-			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/identidad");
@@ -225,12 +225,12 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				comp.borraUnArchivo("./publico/imagenes/1-Usuarios/2-DNI-Revisar/", usuario.docum_avatar);
+				comp.gestionArchivos.elimina("./publico/imagenes/1-Usuarios/2-DNI-Revisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
-		req.body.fecha_revisores = comp.ahora();
+		req.body.fecha_revisores = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElStatusDelUsuario(
 			usuario,
@@ -238,7 +238,7 @@ module.exports = {
 			req.body
 		);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) comp.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios/2-DNI-Revisar");
+		if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/2-DNI-Revisar");
 		// Redirecciona
 		return res.redirect("/usuarios/validacion-en-proceso");
 	},

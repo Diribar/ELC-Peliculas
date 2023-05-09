@@ -37,7 +37,7 @@ module.exports = {
 		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
-		let fecha_nacim = comp.fechaDiaMesAno(usuario.fecha_nacim);
+		let fecha_nacim = comp.fechaHora.fechaDiaMesAno(usuario.fecha_nacim);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
@@ -89,7 +89,7 @@ module.exports = {
 		let st_ident_validada_ID = status_registro_us.find((n) => n.ident_validada).id;
 		let status_registro_id = st_ident_validada_ID;
 		// Informacion a agregarle al usuario
-		let objeto = {fecha_revisores: comp.ahora()};
+		let objeto = {fecha_revisores: comp.fechaHora.ahora()};
 
 		// Acciones si la imagen del documento fue aprobada
 		if (datos.motivo_docum_id == "0") {
@@ -119,7 +119,7 @@ module.exports = {
 			let rolPermInputs_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
 			objeto.rol_usuario_id = rolPermInputs_id;
 			// Mueve la imagen del documento a su carpeta definitiva
-			comp.mueveUnArchivoImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");
+			comp.gestionArchivos.mueveImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");
 		}
 		// Actualiza el usuario
 		objeto = {...objeto, status_registro_id};

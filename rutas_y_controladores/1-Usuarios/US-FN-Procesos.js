@@ -21,7 +21,7 @@ module.exports = {
 	// ControlVista: loginGuardar
 	actualizaElContadorDeLogins: (usuario) => {
 		// Variables
-		const ahoraUTC = comp.ahora().getTime();
+		const ahoraUTC = comp.fechaHora.ahora().getTime();
 		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zona_horaria;
 		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
 		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10)
@@ -47,7 +47,7 @@ module.exports = {
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		let feedbackEnvioMail = await comp.enviarMail(asunto, email, comentario, req);
 		// Obtiene el horario de envío de mail
-		let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario
+		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
 		// Genera el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		// Fin
@@ -85,7 +85,7 @@ module.exports = {
 				informacion = {
 					mensajes: [
 						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tus datos el " + comp.fechaHorario(usuario.fecha_revisores) + ".",
+						"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fecha_revisores) + ".",
 						"Tenés que esperar a que el equipo de Revisores haga la validación.",
 						"Luego de la validación, recibirás un mail de feedback.",
 						"En caso de estar aprobado, podrás ingresarnos información.",

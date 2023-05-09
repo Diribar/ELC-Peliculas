@@ -32,8 +32,8 @@ module.exports = {
 			// 4. Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
-					let entidad = comp.obtieneProdEntidadDesdeProd_id(n);
-					let asociacion = comp.obtieneAsociacion(entidad);
+					let entidad = comp.obtieneDesdeEdicion.entidadProd(n);
+					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					// Carga los productos excepto los aprobados y editados por el revisor
 					if (n[asociacion].status_registro_id != aprobado_id || n.editado_por_id != revID)
 						productos.push({
@@ -41,7 +41,7 @@ module.exports = {
 							entidad,
 							edicID: n.id,
 							fechaRef: n[campoFecha],
-							fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
 						});
 				});
 
@@ -149,15 +149,15 @@ module.exports = {
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
-					let entidad = comp.obtieneRclvEntidadDesdeRclv_id(n);
-					let asociacion = comp.obtieneAsociacion(entidad);
+					let entidad = comp.obtieneDesdeEdicion.entidadRCLV(n);
+					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					rclvs.push({
 						...n[asociacion],
 						entidad,
 						editado_en: n.editado_en,
 						edicID: n.id,
 						fechaRef: n[campoFecha],
-						fechaRefTexto: comp.fechaDiaMes(n[campoFecha]),
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
@@ -236,9 +236,9 @@ module.exports = {
 		// Alta Guardar
 		rclvEdicAprobRech: async (entidad, original, revID) => {
 			// Variables
-			const ahora = comp.ahora();
+			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamiliasDesdeEntidad(entidad);
+			let familia = comp.obtieneDesdeEntidad.familias(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
@@ -330,7 +330,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, desaprueba} = req.query;
-			const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
@@ -405,7 +405,7 @@ module.exports = {
 		prodsAsocs: async (entidad, id) => {
 			// Variables
 			const entidadesProd = variables.entidadesProd;
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
@@ -437,16 +437,16 @@ module.exports = {
 		// Productos Alta
 		prodRclvRech: async (entidad, id) => {
 			// Obtiene la edicion
-			const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdicion, condicion);
-			const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.borraUnArchivo("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id});
@@ -466,7 +466,7 @@ module.exports = {
 			// - Impacto en los archivos de avatar (original y edicion)
 
 			// Variables
-			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			if (familias == "productos") {
 				// Variables
@@ -482,7 +482,7 @@ module.exports = {
 
 					// Descarga el url
 					let rutaYnombre = "./publico/imagenes/2-Productos/Final/" + original.avatar;
-					await comp.descarga(url, rutaYnombre);
+					await comp.gestionArchivos.descarga(url, rutaYnombre);
 				}
 
 				// 2. Borra el campo 'avatar_url' en el registro de edicion
@@ -496,7 +496,7 @@ module.exports = {
 			if (entidad == "epocas_del_ano" && aprob) {
 				let carpeta_avatar = edicion.carpeta_avatars ? edicion.carpeta_avatars : original.carpeta_avatars;
 				carpeta_avatar = "3-EpocasDelAno/" + carpeta_avatar + "/";
-				comp.copiaUnArchivoDeImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
+				comp.gestionArchivos.copiaImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);
 			}
 
 			// Fin
@@ -558,10 +558,10 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
-			const ahora = comp.ahora();
+			const ahora = comp.fechaHora.ahora();
 			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
@@ -693,7 +693,7 @@ module.exports = {
 	// Varios
 	fichaDelUsuario: async (userID, petitFamilia) => {
 		// Variables
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const include = "rol_iglesia";
 		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		let bloque = [];
@@ -720,9 +720,9 @@ module.exports = {
 	descargaAvatar: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const avatar = Date.now() + path.extname(original.avatar);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
-		comp.descarga(original.avatar, ruta + avatar);
+		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
 		// Actualiza el registro 'original'
 		await BD_genericas.actualizaPorId(entidad, original.id, {avatar});
@@ -744,7 +744,7 @@ let TC_obtieneRegs = async (campos) => {
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
 			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
-			const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
 
@@ -760,20 +760,20 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;
 	const avatarEdic = edicion.avatar;
-	const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 	// Reemplazo
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
-		if (avatarOrig && comp.averiguaSiExisteUnArchivo(rutaFinal + avatarOrig)) comp.borraUnArchivo(rutaFinal, avatarOrig);
+		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig)) comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
-		comp.mueveUnArchivoImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
+		comp.gestionArchivos.mueveImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");
 	}
 
 	// Rechazo - Elimina el archivo de edicion
-	else if (!aprob) comp.borraUnArchivo("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
+	else if (!aprob) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar/", avatarEdic);
 
 	// Fin
 	return;
@@ -802,11 +802,11 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 2. Obtiene los prods
 	links.map((link) => {
 		// Variables
-		let entidad = comp.obtieneProdEntidadDesdeProd_id(link);
-		let asociacion = comp.obtieneAsociacion(entidad);
+		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
-		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);
+		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en VN y OT
 		if (link.status_registro && link.status_registro.creado_aprob)
@@ -838,8 +838,8 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 };
 let sinProblemasDeCaptura = (familia, revID, ahora) => {
 	// Variables
-	const haceUnaHora = comp.nuevoHorario(-1, ahora);
-	const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	const haceUnaHora = comp.fechaHora.nuevoHorario(-1, ahora);
+	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
 	// Fin
 	return familia.filter(
 		(n) =>
@@ -881,7 +881,7 @@ let creadosSinEdicion = async () => {
 		.then((n) =>
 			n.map((m) => {
 				const fechaRef = m.creado_en;
-				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);
@@ -890,7 +890,7 @@ let creadosSinEdicion = async () => {
 		.then((n) =>
 			n.map((m) => {
 				const fechaRef = m.creado_en;
-				const fechaRefTexto = comp.fechaDiaMes(fechaRef);
+				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);

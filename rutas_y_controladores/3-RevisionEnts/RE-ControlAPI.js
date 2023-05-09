@@ -15,7 +15,7 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		const revID = req.session.usuario.id;
 		const camposDDA = ["dia_del_ano_id", "dias_de_duracion"];
 		let statusAprob;
@@ -47,7 +47,7 @@ module.exports = {
 
 		// Cuando se termina de revisar una edicion, se fija si existen otras ediciones con los mismos valores que el original, y en caso afirmativo elimina el valor de esos campos y eventualmente el registro de edicion
 		if (!edicion) {
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
 			if (ediciones.length) {
@@ -98,9 +98,9 @@ module.exports = {
 		const recuperar = original.status_registro.recuperar;
 
 		// Más variables
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const revID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const alta_revisada_en = ahora;
 		const status_registro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";

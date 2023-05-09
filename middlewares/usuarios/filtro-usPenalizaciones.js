@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
 
 		if (diasPenalizacion) {
 			// Variables
-			let ahora = comp.ahora().setHours(0, 0, 0);
+			let ahora = comp.fechaHora.ahora().setHours(0, 0, 0);
 			// Agregar valores en datos
 			let penalizadoDesde = Math.max(ahora, usuario.penalizado_hasta);
 			datos.penalizado_hasta = penalizadoDesde + diasPenalizacion * unDia;
@@ -52,8 +52,8 @@ module.exports = async (req, res, next) => {
 	})();
 
 	// VERIFICACIÓN 1: Se fija si el usuario está penalizado
-	if (!informacion && usuario.penalizado_hasta && usuario.penalizado_hasta > comp.ahora()) {
-		let fecha = comp.fechaDiaMesAno(usuario.penalizado_hasta);
+	if (!informacion && usuario.penalizado_hasta && usuario.penalizado_hasta > comp.fechaHora.ahora()) {
+		let fecha = comp.fechaHora.fechaDiaMesAno(usuario.penalizado_hasta);
 		informacion = {
 			mensajes: [
 				"Hemos procesado la información que nos fuiste brindando.",
@@ -73,7 +73,7 @@ module.exports = async (req, res, next) => {
 		req.session.usuario = usuario;
 
 		// Cartel de "Fin de la Penalización"
-		let fecha = comp.fechaDiaMesAno(usuario.penalizado_hasta);
+		let fecha = comp.fechaHora.fechaDiaMesAno(usuario.penalizado_hasta);
 		informacion = {
 			mensajes: ["La penalización concluyó el día " + fecha + ".", "Ya podés ingresar información en nuestro sistema."],
 			iconos: [vistaEntendido],

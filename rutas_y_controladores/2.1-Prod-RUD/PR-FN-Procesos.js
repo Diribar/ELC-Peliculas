@@ -37,7 +37,7 @@ module.exports = {
 	},
 	obtieneLinksDelProducto: async (entidad, id, status_registro_id) => {
 		// Variables
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
 
 		// Declara las variables de links de tipo 'Película' y 'Trailer'

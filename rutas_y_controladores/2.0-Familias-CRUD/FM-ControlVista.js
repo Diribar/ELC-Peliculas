@@ -16,7 +16,7 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id, origen} = req.query;
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -30,7 +30,7 @@ module.exports = {
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
@@ -61,7 +61,7 @@ module.exports = {
 
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
-			let petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			let petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 			motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
 		}
 
@@ -93,7 +93,7 @@ module.exports = {
 		const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
 		const codigo = req.path.slice(1, -1);
 		const userID = req.session.usuario.id;
-		const ahora = comp.ahora();
+		const ahora = comp.fechaHora.ahora();
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
@@ -132,7 +132,7 @@ module.exports = {
 		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
 
 		// 3. Actualiza los RCLV, en el campo 'prods_aprob'
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		if (familia == "producto") procesos.cambioDeStatus(entidad, original);
 
 		// 4. Regresa a la vista de detalle
@@ -141,9 +141,15 @@ module.exports = {
 		return res.redirect(destino);
 	},
 	eliminarGuardar: async (req, res) => {
-		return res.send("OK")
+		// return res.send(req.query)
 		// Variables
+		const {entidad, id, origen} = req.query;
+		const original = await BD_genericas.obtienePorIdConInclude(entidad, id,asocEdiciones);
+
 		// Se fija si tiene avatar y lo elimina
+		// if (original.avatar&&!original.avatar.includes("/"))
+		 	// comp.
+
 		// Se fija si tiene ediciones y avatar-edicion y los elimina
 		// Acciones si es un producto
 		// Se fija si tiene links y los elimina
@@ -152,6 +158,7 @@ module.exports = {
 		// Se fija si tiene algún producto, y borra el vínculo
 		// Se fija si tiene alguna edición-producto, y borra el vínculo
 		// Si es un "epoca_del_ano", se fija si tiene algún dia_del_ano y borra el vínculo
+		// Elimina el historial de cambios de status
 		// Elimina el registro
 		// Cartel de registro eliminado
 	},

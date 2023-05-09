@@ -10,8 +10,8 @@ module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
 
@@ -83,7 +83,7 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
+			let nombreEdicion = comp.obtieneDesdeEntidad.petitFamilia(entidad) + "_edicion";
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
@@ -100,7 +100,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		let camposNull;
 
 		// Quita la info que no agrega valor
@@ -115,12 +115,12 @@ module.exports = {
 				await (async () => {
 					// Se le agregan los campos necesarios: campo_id, editado_por_id, producto_id (links)
 					// 1. campo_id, editado_por_id
-					let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					edicion[campo_id] = original.id;
 					edicion.editado_por_id = userID;
 					// 2. producto_id (links)
 					if (entidad == "links") {
-						let producto_id = entidad == "links" ? comp.obtieneProducto_id(original) : "";
+						let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
 						edicion[producto_id] = original[producto_id];
 					}
 					// Se agrega el registro
@@ -149,10 +149,10 @@ module.exports = {
 			? original.avatar
 			: localhost +
 			  "/imagenes/" +
-			  (comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + final + original.avatar)
+			  (comp.gestionArchivos.existe("./publico/imagenes/" + final + original.avatar)
 					? final + original.avatar
 					: // Si el avatar está 'a revisar'
-					comp.averiguaSiExisteUnArchivo("./publico/imagenes/" + revisar + original.avatar)
+					comp.gestionArchivos.existe("./publico/imagenes/" + revisar + original.avatar)
 					? revisar + original.avatar
 					: sinAvatar);
 
@@ -305,7 +305,7 @@ module.exports = {
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;
-				const ahora = comp.ahora();
+				const ahora = comp.fechaHora.ahora();
 				const datos = {
 					alta_term_en: ahora,
 					lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
@@ -333,7 +333,7 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+		let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 		// prodsEnRCLV
 		if (familias == "productos") {
@@ -343,7 +343,7 @@ module.exports = {
 
 			// 2. Rutina por entidad RCLV
 			for (let entidad of entidadesRCLV) {
-				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				if (registro[campo_id])
 					stAprob
 						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prods_aprob: SI})
@@ -354,8 +354,8 @@ module.exports = {
 		// linksEnProds
 		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneProdEntidadDesdeProd_id(registro);
-			const campo_id = comp.obtieneProducto_id(registro);
+			const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
+			const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
 			const prodID = registro[campo_id];
 			// Actualiza el producto
 			this.linksEnProd({entidad: prodEntidad, id: prodID});
@@ -372,7 +372,7 @@ module.exports = {
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 		// Acciones si el producto tiene ese 'campo_id'
 		if (id && id > 10) {
@@ -415,7 +415,7 @@ module.exports = {
 	// Actualiza los campos de 'links' en el producto
 	linksEnProd: async function ({entidad, id}) {
 		// Variables
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		if (entidad == "colecciones") return;
 
 		// Más variables
@@ -514,7 +514,7 @@ module.exports = {
 
 		// Obtiene los dias_del_ano_id válidos
 		const entidadesRCLV = variables.entidadesRCLV;
-		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
+		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneDesdeEntidad.asociacion(n));
 		let dias_del_ano_id = [];
 		for (let asociacion of asociacionesRCLV)
 			if (producto[asociacion].dia_del_ano_id <= 366) dias_del_ano_id.push(producto[asociacion].dia_del_ano_id);
@@ -557,15 +557,15 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaDiaMesAno(registro.creado_en)});
+		if (!registro.alta_revisada_en) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creado_en)});
 		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 
 		if (registro.alta_revisada_en) {
-			bloque.push({titulo: "Revisado el", valor: comp.fechaDiaMesAno(registro.alta_revisada_en)});
+			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.alta_revisada_en)});
 			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
 		}
 		if (registro.alta_revisada_en && registro.alta_revisada_en - registro.sugerido_en) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaDiaMesAno(registro.sugerido_en)});
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.sugerido_en)});
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 

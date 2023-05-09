@@ -13,7 +13,7 @@ module.exports = {
 		let errores = {};
 		// url
 		if (campos.includes("url")) {
-			let longitud = datos.url ? comp.longitud(datos.url, 5, 100) : "";
+			let longitud = datos.url ? comp.validacs.longitud(datos.url, 5, 100) : "";
 			errores.url = !datos.url
 				? variables.inputVacio
 				: longitud
@@ -89,11 +89,11 @@ let validaLinkRepetidos = async (datos) => {
 	let id = await BD_especificas.validaRepetidos(["url"], datos);
 	if (id) {
 		let link = await BD_genericas.obtienePorId("links", id);
-		let prodEntidad = comp.obtieneProdEntidadDesdeProd_id(link);
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(prodEntidad);
+		let prodEntidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(prodEntidad);
 		let prodID = link[campo_id];
 		datos = {entidad: prodEntidad, id: prodID, entidadNombre: "link"};
-		respuesta = comp.cartelRepetido(datos);
+		respuesta = comp.validacs.cartelRepetido(datos);
 	}
 	// Fin
 	return respuesta;

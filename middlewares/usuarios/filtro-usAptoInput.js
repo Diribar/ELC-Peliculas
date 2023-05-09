@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 			entidades: () => {
 				// Variables
 				const {entidad} = req.query;
-				const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+				const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 				// Resultados
 				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";

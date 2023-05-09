@@ -36,7 +36,7 @@ module.exports = {
 		// Le corrije el formato
 		let TC_formatoUsuarios = (campoFecha) => {
 			return usuarios.map((n) => {
-				let fecha = comp.fechaHorario(n[campoFecha]).replace("a las", "-");
+				let fecha = comp.fechaHora.fechaHorario(n[campoFecha]).replace("a las", "-");
 				return {id: n.id, apodo: n.apodo, fecha};
 			});
 		};
@@ -58,7 +58,7 @@ module.exports = {
 			!usuario.status_registro.ident_a_validar ||
 			usuario.status_registro.ident_validada ||
 			!avatar ||
-			!comp.averiguaSiExisteUnArchivo(avatar)
+			!comp.gestionArchivos.existe(avatar)
 		)
 			redireccionar = true;
 		// Fin
@@ -80,7 +80,7 @@ module.exports = {
 			editado_por_id: usuario.id,
 			editado_en: usuario.fecha_revisores,
 			edic_revisada_por_id: revID,
-			edic_revisada_en: comp.ahora(),
+			edic_revisada_en: comp.fechaHora.ahora(),
 		};
 		BD_genericas.agregaRegistro("edics_rech", datos);
 

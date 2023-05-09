@@ -10,8 +10,8 @@ module.exports = async (req, res, next) => {
 		// Generales
 		entidad: req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "",
 		entID: req.query.id,
-		haceUnaHora: comp.nuevoHorario(-1),
-		haceDosHoras: comp.nuevoHorario(-2),
+		haceUnaHora: comp.fechaHora.nuevoHorario(-1),
+		haceDosHoras: comp.fechaHora.nuevoHorario(-2),
 		usuario: req.session.usuario,
 		userID: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
@@ -30,13 +30,13 @@ module.exports = async (req, res, next) => {
 	// Variables - Registro
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	v.entidadNombreMinuscula = comp.obtieneEntidadNombreDesdeEntidad(v.entidad).toLowerCase();
+	v.entidadNombreMinuscula = comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase();
 	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturado_en = v.registro.capturado_en;
-	v.horarioFinalCaptura = comp.fechaHorario(comp.nuevoHorario(1, v.registro.capturado_en));
+	v.horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.registro.capturado_en));
 	v.creado_en = v.registro.creado_en;
-	v.horarioFinalCreado = comp.fechaHorario(comp.nuevoHorario(1, v.creado_en));
+	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creado_en));
 	if (v.creado_en) v.creado_en.setSeconds(0);
 	v.vistaAnteriorTablero = (() => {
 		let vista = [v.vistaAnterior];
@@ -162,7 +162,7 @@ module.exports = async (req, res, next) => {
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidad = prodCapturado.entidad;
-			const pc_entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(pc_entidad);
+			const pc_entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(pc_entidad);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
@@ -173,7 +173,7 @@ module.exports = async (req, res, next) => {
 				titulo: "Liberar automáticamente",
 				autofocus: true,
 			};
-			const horario = comp.fechaHorario(prodCapturado.capturado_en);
+			const horario = comp.fechaHora.fechaHorario(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
 				pc_entidad == "peliculas" || pc_entidad == "colecciones"

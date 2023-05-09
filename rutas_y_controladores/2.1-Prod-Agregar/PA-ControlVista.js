@@ -57,7 +57,7 @@ module.exports = {
 		// 2. Obtiene el Data Entry de session y cookies
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (datosDuros.avatarBorrar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
 		// Obtiene los errores
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
@@ -234,10 +234,10 @@ module.exports = {
 			// Descarga el avatar en la carpeta 'Prods-Revisar'
 			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
 			let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
-			comp.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+			comp.gestionArchivos.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		}
 		// Si ya se había descargado el avatar, lo mueve de 'provisorio' a 'revisar'
-		else comp.mueveUnArchivoImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
+		else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 		// EDICION -------------------------------------
 		// Guarda los datos de 'edición' - es clave escribirlo así, para que la función no lo cambie
@@ -286,10 +286,10 @@ module.exports = {
 		// Obtiene los demás datos del producto
 		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Obtiene el nombre del producto
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		const carpetaMG = "0-Base/Muchas-gracias/";
-		const imagenMG = "/imagenes/" + carpetaMG + comp.imagenAlAzar(carpetaMG);
+		const imagenMG = "/imagenes/" + carpetaMG + comp.gestionArchivos.imagenAlAzar(carpetaMG);
 		// Imagen derecha
 		let imgDerPers = procsCRUD.obtieneAvatar(registroProd);
 		imgDerPers = registroProd.avatar ? imgDerPers.orig : imgDerPers.edic;
@@ -330,7 +330,7 @@ module.exports = {
 		let IM = {
 			...req.body,
 			...req.query,
-			entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(req.body.entidad),
+			entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 		};
 		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
 		req.session.IM = IM;
@@ -357,7 +357,7 @@ module.exports = {
 		// 2. Obtiene el Data Entry de session y cookies
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
 		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (FA.avatarBorrar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", FA.avatarBorrar);
+		if (FA.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", FA.avatarBorrar);
 		// 4. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -399,7 +399,7 @@ module.exports = {
 		// 2. Descarga la imagen
 		datos.avatar = Date.now() + path.extname(FA.avatar_url);
 		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
-		await comp.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
+		await comp.gestionArchivos.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
 
 		// 3. Actualiza algunas session y cookie
 		// 3.1. Datos Originales

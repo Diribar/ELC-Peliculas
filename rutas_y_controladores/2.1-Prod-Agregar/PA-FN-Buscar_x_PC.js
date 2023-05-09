@@ -62,8 +62,8 @@ module.exports = {
 						ano_estreno = ano_fin = parseInt(prod.release_date.slice(0, 4));
 					}
 					// Define el título sin "distractores", para encontrar duplicados
-					let desempate1 = comp.convierteLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-					let desempate2 = comp.convierteLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+					let desempate1 = comp.convierteLetras.alIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+					let desempate2 = comp.convierteLetras.alIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 					// Deja sólo algunos campos
 					productos.push({
 						TMDB_entidad,
@@ -93,9 +93,9 @@ module.exports = {
 					if (prod)
 						for (let palabra of palabras)
 							if (
-								comp.convierteLetrasAlIngles(prod.nombre_original).includes(palabra) ||
-								comp.convierteLetrasAlIngles(prod.nombre_castellano).includes(palabra) ||
-								comp.convierteLetrasAlIngles(prod.sinopsis).includes(palabra)
+								comp.convierteLetras.alIngles(prod.nombre_original).includes(palabra) ||
+								comp.convierteLetras.alIngles(prod.nombre_castellano).includes(palabra) ||
+								comp.convierteLetras.alIngles(prod.sinopsis).includes(palabra)
 							) {
 								delete prod.sinopsis;
 								productos.push(prod);
@@ -109,7 +109,7 @@ module.exports = {
 			return lote;
 		};
 		// Variables
-		palabrasClave = comp.convierteLetrasAlIngles(palabrasClave);
+		palabrasClave = comp.convierteLetras.alIngles(palabrasClave);
 		let entidadesTMDB = ["collection", "tv", "movie"];
 		let acumulador = {productos: [], cantPaginasAPI: {}, cantPaginasUsadas: {}};
 		let pagina = 0;

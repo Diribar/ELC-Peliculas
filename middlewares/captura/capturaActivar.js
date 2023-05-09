@@ -15,12 +15,12 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtienePorIdConInclude(entidad, prodID, "status_registro");
 	const urlBase = req.baseUrl;
 	// Variables - De tiempo
-	let ahora = comp.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
-	const haceDosHoras = comp.nuevoHorario(-2, ahora);
+	let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
+	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
 	let capturado_en = registro.capturado_en;
 	capturado_en ? capturado_en.setSeconds(0) : (capturado_en = 0);
-	let horarioFinal = comp.nuevoHorario(1, capturado_en);
-	horarioFinal = comp.fechaHorario(horarioFinal);
+	let horarioFinal = comp.fechaHora.nuevoHorario(1, capturado_en);
+	horarioFinal = comp.fechaHora.fechaHorario(horarioFinal);
 
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
 	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)

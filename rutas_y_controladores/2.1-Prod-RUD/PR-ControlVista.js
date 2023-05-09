@@ -20,7 +20,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -53,8 +53,8 @@ module.exports = {
 		let RCLVs = variables.entidadesRCLV;
 		RCLVs = RCLVs.map((n) => ({
 			entidad: n,
-			campo_id: comp.obtieneCampo_idDesdeEntidad(n),
-			asociacion: comp.obtieneAsociacion(n),
+			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
+			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
 		}));
 		if (prodComb.personaje_id != 1)
 			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
@@ -95,7 +95,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let imgDerPers, avatarsExternos, gruposPers, gruposHechos;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 
@@ -193,19 +193,19 @@ module.exports = {
 			if (!errores.hay) {
 				if (actualizaOrig) {
 					// Mueve el archivo de la edición para reemplazar el original
-					comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
+					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
 					// Elimina el anterior archivo de imagen original
-					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-Productos/Final/", original.avatar);
+					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
 				} else {
 					// Mueve el archivo de la edición para su revisión
-					comp.mueveUnArchivoImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
+					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
+					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
 				}
 			}
 			// Si hay errores, borra el archivo avatar editado
 			else {
-				comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", req.file.filename);
+				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
 				// return res.send([{errores}, {...prodComb, entidad}]);
 			}
 		}
@@ -216,7 +216,7 @@ module.exports = {
 			if (actualizaOrig) {
 				// Completa los datos a guardar
 				prodComb.alta_revisada_por_id = userID;
-				prodComb.alta_revisada_en = comp.ahora();
+				prodComb.alta_revisada_en = comp.fechaHora.ahora();
 				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 				// Se fija si corresponde cambiar el status

@@ -16,9 +16,8 @@ module.exports = {
 		// Variables
 		let {entidad, id, origen} = req.query;
 		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		if (!origen) origen = "DTR";
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
@@ -29,7 +28,7 @@ module.exports = {
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
@@ -79,8 +78,8 @@ module.exports = {
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const personajes = entidad == "personajes";
 		const hechos = entidad == "hechos";
 		const temas = entidad == "temas";
@@ -106,7 +105,7 @@ module.exports = {
 			// Pisa el data entry de session
 			dataEntry = {...original, ...edicion, id, edicID: edicion.id};
 			// Obtiene el día y el mes
-			dataEntry = {...comp.diaDelAno(dataEntry), ...dataEntry};
+			dataEntry = {...comp.fechaHora.diaDelAno(dataEntry), ...dataEntry};
 		}
 
 		// Tipo de fecha
@@ -158,10 +157,10 @@ module.exports = {
 			res.cookie(entidad, datos, {maxAge: unDia});
 
 			// Si se agregó un archivo avatar, lo elimina
-			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
+			if (req.file && datos.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 			// Si se eliminó la edición, la borra de la BD
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condiciones = {[campo_id]: id, editado_por_id: userID};
 			if (eliminar) await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
 
@@ -176,16 +175,16 @@ module.exports = {
 		// Acciones si recibimos un avatar
 		if (req.file) {
 			// Lo mueve de 'Provisorio' a 'Revisar'
-			comp.mueveUnArchivoImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
+			comp.gestionArchivos.mueveImagen(DE.avatar, "9-Provisorio", "2-RCLVs/Revisar");
 
 			// Elimina el eventual anterior
 			if (codigo == "/rclv/edicion/") {
 				// Si es un registro propio y en status creado, borra el eventual avatar original
 				if (original.creado_por_id == userID && original.status_registro.creado) {
-					if (original.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
+					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no está en status 'creado', borra el eventual avatar edicion
-				else if (edicion && edicion.avatar) comp.borraUnArchivo("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+				else if (edicion && edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 			}
 		}
 
