@@ -1,14 +1,14 @@
 {
-	"FechaUTC": "Lun. 8/may",
-	"HoraUTC": "2:54",
+	"FechaUTC": "Mar. 9/may",
+	"HoraUTC": "12:48",
 	"FechaSemUTC": "Lun. 8/may",
 	"HoraSemUTC": "2:54",
 	"semanaUTC": 18,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
 	"TitulosImgDer": {
-		"07-may-23": "Pascua de Resurrección",
 		"08-may-23": "Milagro de Luján",
-		"09-may-23": "Pascua de Resurrección"
+		"09-may-23": "Pascua de Resurrección",
+		"10-may-23": "Padre Damián de Molokai"
 	},
 	"FechaHoraUTC": "SI",
 	"ImagenDerecha": "SI",
