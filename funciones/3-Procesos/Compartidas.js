@@ -433,91 +433,93 @@ module.exports = {
 	},
 
 	// Validaciones
-	longitud: (dato, corto, largo) => {
-		return dato.length < corto
-			? "El contenido debe ser más largo"
-			: dato.length > largo
-			? "El contenido debe ser más corto"
-			: "";
-	},
-	castellano: {
-		basico: (dato) => {
-			let formato = /^[a-záéíóúüñ ,.'\-]+$/i;
-			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+	validacs: {
+		longitud: (dato, corto, largo) => {
+			return dato.length < corto
+				? "El contenido debe ser más largo"
+				: dato.length > largo
+				? "El contenido debe ser más corto"
+				: "";
 		},
-		completo: (dato) => {
-			let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
-			return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+		castellano: {
+			basico: (dato) => {
+				let formato = /^[a-záéíóúüñ ,.'\-]+$/i;
+				return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+			},
+			completo: (dato) => {
+				let formato = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+				return !formato.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
+			},
 		},
-	},
-	inicial: {
-		basico: (dato) => {
-			let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
-			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		inicial: {
+			basico: (dato) => {
+				let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+				return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+			},
+			completo: (dato) => {
+				let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+				return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+			},
+			sinopsis: (dato) => {
+				let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
+				return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+			},
 		},
-		completo: (dato) => {
-			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		avatar: (datos) => {
+			// Variables
+			const {avatar_url, docum_avatar, tamano, esImagen, opcional} = datos;
+			const avatar = datos.avatar ? datos.avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
+			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
+			let respuesta = "";
+	
+			// Mensajes si existe un avatar
+			if (avatar) {
+				// Valida si es una imagen
+				if (!respuesta && esImagen == "NO") respuesta = "El archivo no es una imagen";
+	
+				// Valida la extensión
+				if (!respuesta)
+					respuesta = !ext
+						? "El archivo debe tener alguna extensión"
+						: ![".jpg", ".png", ".jpeg"].includes(ext)
+						? "Usaste un archivo con la extensión '" +
+						  ext.slice(1).toUpperCase() +
+						  "'. Las extensiones válidas son JPG, JPEG y PNG"
+						: "";
+	
+				// Valida el tamaño
+				if (!respuesta && tamano && tamano > 1100000)
+					respuesta = "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB";
+			}
+			// Mensajes si no existe un avatar
+			else if (!opcional) respuesta = "Necesitamos que agregues una imagen";
+	
+			// Fin
+			return respuesta;
 		},
-		sinopsis: (dato) => {
-			let formato = /^[A-ZÁÉÍÓÚÜÑ¡¿"\d]/;
-			return !formato.test(dato) ? "La primera letra debe ser en mayúscula" : "";
+		cartelRepetido: function (datos) {
+			// Variables
+			const {entidad, id} = datos;
+	
+			let entidadNombre = datos.entidadNombre; // Para links
+			if (entidadNombre) entidadNombre = this.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+	
+			// 1. Inicio
+			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			let inicio = "Est" + genero + " ";
+	
+			// 2. Anchor
+			let url = "?entidad=" + entidad + "&id=" + id;
+			let link = "/" + this.obtieneDesdeEntidad.familia(entidad) + "/detalle/" + url;
+			let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
+			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
+	
+			// 3. Final
+			let final = " ya se encuentra en nuestra base de datos";
+	
+			// Fin
+			return inicio + anchor + final;
 		},
-	},
-	validaAvatar: (datos) => {
-		// Variables
-		const {avatar_url, docum_avatar, tamano, esImagen, opcional} = datos;
-		const avatar = datos.avatar ? datos.avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
-		const ext = avatar ? path.extname(avatar).toLowerCase() : "";
-		let respuesta = "";
-
-		// Mensajes si existe un avatar
-		if (avatar) {
-			// Valida si es una imagen
-			if (!respuesta && esImagen == "NO") respuesta = "El archivo no es una imagen";
-
-			// Valida la extensión
-			if (!respuesta)
-				respuesta = !ext
-					? "El archivo debe tener alguna extensión"
-					: ![".jpg", ".png", ".jpeg"].includes(ext)
-					? "Usaste un archivo con la extensión '" +
-					  ext.slice(1).toUpperCase() +
-					  "'. Las extensiones válidas son JPG, JPEG y PNG"
-					: "";
-
-			// Valida el tamaño
-			if (!respuesta && tamano && tamano > 1100000)
-				respuesta = "El archivo tiene " + parseInt(tamano / 10000) / 100 + " MB. Necesitamos que no supere 1 MB";
-		}
-		// Mensajes si no existe un avatar
-		else if (!opcional) respuesta = "Necesitamos que agregues una imagen";
-
-		// Fin
-		return respuesta;
-	},
-	cartelRepetido: function (datos) {
-		// Variables
-		const {entidad, id} = datos;
-
-		let entidadNombre = datos.entidadNombre; // Para links
-		if (entidadNombre) entidadNombre = this.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
-
-		// 1. Inicio
-		let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-		let inicio = "Est" + genero + " ";
-
-		// 2. Anchor
-		let url = "?entidad=" + entidad + "&id=" + id;
-		let link = "/" + this.obtieneDesdeEntidad.familia(entidad) + "/detalle/" + url;
-		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
-		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
-
-		// 3. Final
-		let final = " ya se encuentra en nuestra base de datos";
-
-		// Fin
-		return inicio + anchor + final;
 	},
 
 	// Usuarios

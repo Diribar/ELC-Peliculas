@@ -13,7 +13,7 @@ module.exports = {
 		let errores = {};
 		// url
 		if (campos.includes("url")) {
-			let longitud = datos.url ? comp.longitud(datos.url, 5, 100) : "";
+			let longitud = datos.url ? comp.validacs.longitud(datos.url, 5, 100) : "";
 			errores.url = !datos.url
 				? variables.inputVacio
 				: longitud
@@ -93,7 +93,7 @@ let validaLinkRepetidos = async (datos) => {
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(prodEntidad);
 		let prodID = link[campo_id];
 		datos = {entidad: prodEntidad, id: prodID, entidadNombre: "link"};
-		respuesta = comp.cartelRepetido(datos);
+		respuesta = comp.validacs.cartelRepetido(datos);
 	}
 	// Fin
 	return respuesta;

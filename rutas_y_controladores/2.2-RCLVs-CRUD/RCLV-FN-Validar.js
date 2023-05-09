@@ -41,7 +41,7 @@ module.exports = {
 	},
 	// Campos comunes a todos los RCLV
 	avatar: (datos) => {
-		return comp.validaAvatar(datos);
+		return comp.validacs.avatar(datos);
 	},
 	nombre: async (datos) => {
 		// Variables
@@ -83,7 +83,7 @@ module.exports = {
 			if (!respuesta && datos.tipoFecha == "FM") {
 				// Valida si existe un comentario adecuado para la fecha móvil
 				if (!datos.comentario_movil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
-				const aux = !respuesta ? comp.longitud(datos.comentario_movil, 4, 70) : "";
+				const aux = !respuesta ? comp.validacs.longitud(datos.comentario_movil, 4, 70) : "";
 				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
 			}
 
@@ -98,7 +98,7 @@ module.exports = {
 				// Valida el comentario para la cantidad de días
 				if (!respuesta) {
 					if (!datos.comentario_duracion) respuesta = cartelCriterioSobre + sufijo;
-					const aux = !respuesta ? comp.longitud(datos.comentario_duracion, 4, 70) : "";
+					const aux = !respuesta ? comp.validacs.longitud(datos.comentario_duracion, 4, 70) : "";
 					if (aux) respuesta = aux.replace("contenido", "comentario sobre " + sufijo);
 				}
 			}
@@ -212,13 +212,13 @@ let nombreApodo = async ({datos, campo}) => {
 	// Validaciones cuando existe un dato
 	if (!mensaje && dato) {
 		// Idioma castellano
-		if (!mensaje) mensaje = comp.castellano.completo(dato);
-		if (!mensaje) mensaje = comp.inicial.basico(dato);
+		if (!mensaje) mensaje = comp.validacs.castellano.completo(dato);
+		if (!mensaje) mensaje = comp.validacs.inicial.basico(dato);
 		if (mensaje && campo == "apodo") mensaje += " (nombre alternativo)";
 
 		// Prefijo y longitud
 		if (!mensaje && entidad == "personajes" && campo == "nombre") mensaje = prefijo(dato);
-		if (!mensaje) mensaje = comp.longitud(dato, 4, 35);
+		if (!mensaje) mensaje = comp.validacs.longitud(dato, 4, 35);
 
 		// Revisa si es una aparición mariana
 		if (!mensaje && ama == 1 && !dato.startsWith(apMar)) mensaje = "El nombre debe comenzar con '" + apMar + "'";
@@ -226,7 +226,7 @@ let nombreApodo = async ({datos, campo}) => {
 		// Nombre repetido
 		if (!mensaje) {
 			let id = await BD_especificas.validaRepetidos([campo], datos);
-			if (id) mensaje = comp.cartelRepetido({...datos, id});
+			if (id) mensaje = comp.validacs.cartelRepetido({...datos, id});
 		}
 	}
 

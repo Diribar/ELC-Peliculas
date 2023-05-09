@@ -10,7 +10,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		let longitud = dato ? comp.longitud(dato, 3, 35) : "";
+		let longitud = dato ? comp.validacs.longitud(dato, 3, 35) : "";
 		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -44,9 +44,9 @@ module.exports = {
 				let respuesta = "";
 				// Validaciones
 				if (datos[nombre]) {
-					if (!respuesta) respuesta = comp.longitud(dato, campo.corto, campo.largo);
-					if (!respuesta) respuesta = comp.castellano[tipoIdioma](dato);
-					if (!respuesta) respuesta = comp.inicial[tipoIdioma](dato);
+					if (!respuesta) respuesta = comp.validacs.longitud(dato, campo.corto, campo.largo);
+					if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
+					if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
 				} else respuesta = variables.inputVacio;
 				// Excepción para actores
 				// if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
@@ -92,7 +92,7 @@ module.exports = {
 		if (campos.includes("idioma_original_id"))
 			errores.idioma_original_id = !datos.idioma_original_id ? variables.inputVacio : "";
 		// Personas
-		if (campos.includes("avatar")) errores.avatar = comp.validaAvatar(datos);
+		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
@@ -102,12 +102,12 @@ module.exports = {
 		// Nombre Original y Año de Estreno
 		if (datos.nombre_original && !errores.nombre_original && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
 			let id = await BD_especificas.validaRepetidos(["nombre_original", "ano_estreno"], datos);
-			if (id) errores.nombre_original = comp.cartelRepetido({...datos, id});
+			if (id) errores.nombre_original = comp.validacs.cartelRepetido({...datos, id});
 		}
 		// Nombre Castellano y Año de Estreno
 		if (datos.nombre_castellano && !errores.nombre_castellano && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
 			let id = await BD_especificas.validaRepetidos(["nombre_castellano", "ano_estreno"], datos);
-			if (id) errores.nombre_castellano = comp.cartelRepetido({...datos, id});
+			if (id) errores.nombre_castellano = comp.validacs.cartelRepetido({...datos, id});
 		}
 
 		// ***** RESUMEN *******
