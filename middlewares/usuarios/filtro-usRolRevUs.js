@@ -21,5 +21,5 @@ module.exports = (req, res, next) => {
 	if (informacion) res.render("CMP-0Estructura", {informacion});
 
 	// Fin
-	next();
+	else next();
 };
