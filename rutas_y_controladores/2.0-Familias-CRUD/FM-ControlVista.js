@@ -144,6 +144,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
@@ -152,8 +153,8 @@ module.exports = {
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
 			console.log(familia, original.avatar);
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familia + "/Final", original.avatar);
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familia + "/Revisar", original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
 		}
 
 		// Elimina todas las ediciones que tenga
@@ -216,13 +217,14 @@ module.exports = {
 		if (!entidad) return res.redirect("/");
 
 		// Más variables
-		const articulo = ["peliculas", "colecciones", "epocas_del_ano"].includes(entidad) ? "La " : "El ";
+		const articulo1 = ["peliculas", "colecciones", "epocas_del_ano"].includes(entidad) ? "La " : "El ";
+		const articulo2 = articulo1 == "La " ? "a" : "o";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const link = origen == "MT" ? "/mantenimiento" : "/";
 
 		// Cartel de registro eliminado
 		const informacion = {
-			mensajes: [articulo + entidadNombre + " " + nombre + " fue eliminado/a de nuestra base de datos."],
+			mensajes: [articulo1 + entidadNombre + ' "' + nombre + '" fue eliminad' + articulo2 + " de nuestra base de datos."],
 			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
 			check: true,
 		};
