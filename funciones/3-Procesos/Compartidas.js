@@ -502,7 +502,7 @@ module.exports = {
 			const {entidad, id} = datos;
 	
 			let entidadNombre = datos.entidadNombre; // Para links
-			if (entidadNombre) entidadNombre = this.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+			if (entidadNombre) entidadNombre = obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	
 			// 1. Inicio
 			let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
