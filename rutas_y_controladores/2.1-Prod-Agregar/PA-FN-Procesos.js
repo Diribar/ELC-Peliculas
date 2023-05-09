@@ -275,7 +275,7 @@ module.exports = {
 	// CONFIRMA - GUARDAR
 	verificaQueExistanLosRCLV: async (confirma) => {
 		// Variables
-		let entidadesRCLV = variables.entidadesRCLV;
+		let entidadesRCLV = variables.entidades.rclvs;
 		let resultado = true;
 		// Revisa que exista el RCLV
 		for (let entidad of entidadesRCLV) {

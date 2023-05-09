@@ -107,7 +107,7 @@ module.exports = {
 		obtieneRCLVs: async (ahora, revID) => {
 			// Obtiene rclvs en situaciones particulares
 			// Variables
-			const entidades = variables.entidadesRCLV;
+			const entidades = variables.entidades.rclvs;
 			const include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
 			let campos;
 
@@ -404,7 +404,7 @@ module.exports = {
 		},
 		prodsAsocs: async (entidad, id) => {
 			// Variables
-			const entidadesProd = variables.entidadesProd;
+			const entidadesProd = variables.entidades.prods;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Rutina por entidadProd

@@ -56,7 +56,7 @@ module.exports = async (req, res, next) => {
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
 		// Se revisa solamente en esa familia de entidades
 		// Asociaciones
-		let entidades = variables.entidadesProd.includes(v.entidad) ? variables.entidadesProd : variables.entidadesRCLV;
+		let entidades = variables.entidades.prods.includes(v.entidad) ? variables.entidades.prods : variables.entidades.rclvs;
 		// Variables
 		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;

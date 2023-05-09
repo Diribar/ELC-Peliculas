@@ -41,8 +41,8 @@ module.exports = {
 	momento: {
 		obtieneRCLVs: async (datos) => {
 			// Variables
-			const entidadesRCLV = variables.entidadesRCLV;
-			const include = variables.entidadesProd;
+			const entidadesRCLV = variables.entidades.rclvs;
+			const include = variables.entidades.prods;
 			let rclvs = [];
 			let condicion;
 
@@ -106,7 +106,7 @@ module.exports = {
 			// Obtiene los productos y los procesa
 			// Obtiene sus productos
 			for (let rclv of rclvs)
-				for (let entidad of variables.entidadesProd) {
+				for (let entidad of variables.entidades.prods) {
 					// Variables
 					let registros;
 

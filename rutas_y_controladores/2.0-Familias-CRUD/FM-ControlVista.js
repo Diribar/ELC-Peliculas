@@ -25,7 +25,7 @@ module.exports = {
 		include.push("status_registro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
-		if (familia == "rclv") include.push(...variables.entidadesProd);
+		if (familia == "rclv") include.push(...variables.entidades.prods);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el título

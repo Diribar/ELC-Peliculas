@@ -10,7 +10,7 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	TC_obtieneProds: async (userID) => {
 		// Variables
-		let entidades = variables.entidadesProd;
+		let entidades = variables.entidades.prods;
 
 		// PRODUCTOS
 		// Productos Inactivos (peliculas y colecciones)
@@ -43,7 +43,7 @@ module.exports = {
 	},
 	TC_obtieneRCLVs: async (userID) => {
 		// Variables
-		let entidades = variables.entidadesRCLV;
+		let entidades = variables.entidades.rclvs;
 
 		// 1. RCLVs inactivos
 		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID})

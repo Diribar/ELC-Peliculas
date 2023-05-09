@@ -10,7 +10,7 @@ module.exports = {
 		prodsDelRCLV: async function (RCLV, usuario) {
 			// Variables
 			let userID = usuario ? usuario.id : "";
-			for (let entidad of variables.entidadesProd) if (!RCLV[entidad]) RCLV[entidad] = [];
+			for (let entidad of variables.entidades.prods) if (!RCLV[entidad]) RCLV[entidad] = [];
 
 			// Convierte las ediciones propias de productos en productos
 			if (usuario) {
@@ -45,7 +45,7 @@ module.exports = {
 			}
 			// Completa la información de cada tipo de producto y une los productos en una sola array
 			let prodsDelRCLV = [];
-			for (let entidad of variables.entidadesProd) {
+			for (let entidad of variables.entidades.prods) {
 				// Completa la información de cada producto dentro del tipo de producto
 				let aux = RCLV[entidad].map((registro) => {
 					// Averigua la ruta y el nombre del avatar
