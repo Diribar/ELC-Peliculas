@@ -21,7 +21,7 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		// Variables
 		let errores = {};
-		if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(datos.entidad);
+		if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
 		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
 		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
 		let camposPosibles = [

@@ -32,7 +32,7 @@ module.exports = {
 					for (let edicion of edicionesPropias) {
 						// Obtiene la entidad con la que está asociada la edición del RCLV, y su campo 'producto_id'
 						let entProd = comp.obtieneProdEntidadDesdeProd_id(edicion);
-						let campo_id = comp.obtieneCampo_idDesdeEntidad(entProd);
+						let campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
 						let entID = edicion[campo_id];
 						// Obtiene los registros del producto original y su edición por el usuario
 						let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(entProd, entID, userID);
@@ -51,7 +51,7 @@ module.exports = {
 					// Averigua la ruta y el nombre del avatar
 					let avatar = procsCRUD.obtieneAvatar(registro).edic;
 					// Agrega la entidad, el avatar, y el nombre de la entidad
-					return {...registro, entidad, avatar, entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad)};
+					return {...registro, entidad, avatar, entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad)};
 				});
 				prodsDelRCLV.push(...aux);
 			}
@@ -218,7 +218,7 @@ module.exports = {
 			// Variables
 			const {entidad, origen} = req.query;
 			let {id} = req.query;
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
 			let original, edicion, edicN;

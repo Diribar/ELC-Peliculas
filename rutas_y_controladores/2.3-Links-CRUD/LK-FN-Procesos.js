@@ -10,7 +10,7 @@ module.exports = {
 	obtieneLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let include = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
@@ -31,7 +31,7 @@ module.exports = {
 	},
 	datosLink: (datos) => {
 		// Datos del producto
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(datos.prodEntidad);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
 		datos[campo_id] = datos.prodID;
 
 		// Obtiene el proveedor

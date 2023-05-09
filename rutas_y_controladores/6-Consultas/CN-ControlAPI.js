@@ -102,7 +102,7 @@ module.exports = {
 						return {
 							id: m.id,
 							entidad,
-							entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(entidad),
+							entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
 							nombre_original: m.nombre_original,
 							direccion: m.direccion,
 							avatar: m.avatar,

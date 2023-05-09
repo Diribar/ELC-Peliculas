@@ -16,9 +16,9 @@ module.exports = {
 		// Variables
 		let {entidad, id, origen} = req.query;
 		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		// const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		// const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		if (!origen) origen = "DTR";
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
@@ -29,7 +29,7 @@ module.exports = {
 		let include = [...variables.entidadesProd, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_edicion", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
@@ -79,8 +79,8 @@ module.exports = {
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const personajes = entidad == "personajes";
 		const hechos = entidad == "hechos";
 		const temas = entidad == "temas";
@@ -161,7 +161,7 @@ module.exports = {
 			if (req.file && datos.avatar) comp.borraUnArchivo("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 			// Si se eliminó la edición, la borra de la BD
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condiciones = {[campo_id]: id, editado_por_id: userID};
 			if (eliminar) await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
 

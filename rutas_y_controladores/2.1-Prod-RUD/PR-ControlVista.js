@@ -20,7 +20,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Obtiene el producto 'Original' y 'Editado'
@@ -53,8 +53,8 @@ module.exports = {
 		let RCLVs = variables.entidadesRCLV;
 		RCLVs = RCLVs.map((n) => ({
 			entidad: n,
-			campo_id: comp.obtieneCampo_idDesdeEntidad(n),
-			asociacion: comp.obtieneAsociacion(n),
+			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
+			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
 		}));
 		if (prodComb.personaje_id != 1)
 			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
@@ -95,7 +95,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let imgDerPers, avatarsExternos, gruposPers, gruposHechos;
 		let camposInput1, camposInput2, produccion, camposDA, paisesTop5;
 

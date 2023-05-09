@@ -25,7 +25,7 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			datos = await BD_genericas.obtienePorCondicion("cal_registros", {
 				usuario_id: userID,
 				[campo_id]: prodID,

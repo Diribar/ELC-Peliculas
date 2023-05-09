@@ -286,7 +286,7 @@ module.exports = {
 		// Obtiene los demás datos del producto
 		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
 		// Obtiene el nombre del producto
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS
 		const carpetaMG = "0-Base/Muchas-gracias/";
 		const imagenMG = "/imagenes/" + carpetaMG + comp.imagenAlAzar(carpetaMG);
@@ -330,7 +330,7 @@ module.exports = {
 		let IM = {
 			...req.body,
 			...req.query,
-			entidadNombre: comp.obtieneEntidadNombreDesdeEntidad(req.body.entidad),
+			entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 		};
 		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
 		req.session.IM = IM;

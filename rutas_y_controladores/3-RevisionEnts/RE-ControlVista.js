@@ -54,8 +54,8 @@ module.exports = {
 		const codigo = "producto/alta";
 		// Variables
 		let {entidad, id} = req.query;
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -68,7 +68,7 @@ module.exports = {
 			? (!imgDerPers.includes("/") ? "/imagenes/2-Productos/Revisar/" : "") + imgDerPers
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
 		// Configura el título de la vista
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Ayuda para el titulo
 		const ayudasTitulo = [
@@ -120,8 +120,8 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -140,7 +140,7 @@ module.exports = {
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
@@ -202,8 +202,8 @@ module.exports = {
 		const userID = original.sugerido_por_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.ahora();
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		datos = {};
@@ -385,11 +385,11 @@ module.exports = {
 
 		// Variables
 		const {entidad, id, edicID} = req.query;
-		const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
-		const edicEntidad = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const edicEntidad = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
-		const entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
 		let avatarExterno, avatarsExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
@@ -446,7 +446,7 @@ module.exports = {
 				procesos.descargaAvatar(original, entidad);
 				// Actualiza el registro 'edición'
 				edicion.avatar_url = null;
-				const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+				const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
 			}
 			// Variables
@@ -483,7 +483,7 @@ module.exports = {
 		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const revID = req.session.usuario.id;
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo = "avatar";
@@ -512,7 +512,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let include;
 		// Configurar el título
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		include = ["links", "status_registro"];
@@ -525,7 +525,7 @@ module.exports = {
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Obtiene todos los links
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);

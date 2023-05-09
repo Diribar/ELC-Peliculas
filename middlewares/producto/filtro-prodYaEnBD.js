@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 			let linkAnterior = "/producto/agregar/desambiguar";
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 			// Nombre de la entidad
-			let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(datos.entidad);
+			let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
 			// Información para el cartel
 			informacion = {
 				mensajes: [

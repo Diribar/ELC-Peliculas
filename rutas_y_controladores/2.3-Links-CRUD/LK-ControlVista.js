@@ -28,7 +28,7 @@ module.exports = {
 		let links = await procesos.obtieneLinksActualizados(entidad, id, userID);
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Obtiene el producto y el título
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Actualiza linksEnProd
 		procsCRUD.linksEnProd({entidad, id});

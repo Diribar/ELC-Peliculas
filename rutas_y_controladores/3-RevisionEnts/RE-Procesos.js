@@ -33,7 +33,7 @@ module.exports = {
 			if (ediciones.length)
 				ediciones.map((n) => {
 					let entidad = comp.obtieneProdEntidadDesdeProd_id(n);
-					let asociacion = comp.obtieneAsociacion(entidad);
+					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					// Carga los productos excepto los aprobados y editados por el revisor
 					if (n[asociacion].status_registro_id != aprobado_id || n.editado_por_id != revID)
 						productos.push({
@@ -150,7 +150,7 @@ module.exports = {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
 					let entidad = comp.obtieneRclvEntidadDesdeRclv_id(n);
-					let asociacion = comp.obtieneAsociacion(entidad);
+					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					rclvs.push({
 						...n[asociacion],
 						entidad,
@@ -238,7 +238,7 @@ module.exports = {
 			// Variables
 			const ahora = comp.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneFamiliasDesdeEntidad(entidad);
+			let familia = comp.obtieneDesdeEntidad.familias(entidad);
 			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
@@ -330,7 +330,7 @@ module.exports = {
 
 			// Variables
 			const {entidad, id, desaprueba} = req.query;
-			const familia = comp.obtieneFamiliaDesdeEntidad(entidad);
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const rclv = familia == "rclv";
 
 			// Obtiene el registro original y el subcodigo
@@ -405,7 +405,7 @@ module.exports = {
 		prodsAsocs: async (entidad, id) => {
 			// Variables
 			const entidadesProd = variables.entidadesProd;
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
@@ -437,11 +437,11 @@ module.exports = {
 		// Productos Alta
 		prodRclvRech: async (entidad, id) => {
 			// Obtiene la edicion
-			const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
-			const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdicion, condicion);
-			const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+			const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
@@ -466,7 +466,7 @@ module.exports = {
 			// - Impacto en los archivos de avatar (original y edicion)
 
 			// Variables
-			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			if (familias == "productos") {
 				// Variables
@@ -558,8 +558,8 @@ module.exports = {
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
 
 			// Variables
-			const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-			const nombreEdic = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.ahora();
 			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
@@ -720,7 +720,7 @@ module.exports = {
 	descargaAvatar: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const avatar = Date.now() + path.extname(original.avatar);
-		const petitFamilia = comp.obtienePetitFamiliaDesdeEntidad(entidad);
+		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
 		comp.descarga(original.avatar, ruta + avatar);
 
@@ -760,7 +760,7 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;
 	const avatarEdic = edicion.avatar;
-	const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 	// Reemplazo
 	if (aprob) {
@@ -803,7 +803,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	links.map((link) => {
 		// Variables
 		let entidad = comp.obtieneProdEntidadDesdeProd_id(link);
-		let asociacion = comp.obtieneAsociacion(entidad);
+		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaDiaMes(link[campoFecha]);

@@ -279,7 +279,7 @@ module.exports = {
 		let resultado = true;
 		// Revisa que exista el RCLV
 		for (let entidad of entidadesRCLV) {
-			let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			// Averigua si existe, para los RCLV_id que existan y no sean 'ninguno' ni 'varios'
 			if (confirma[campo_id] && confirma[campo_id] > 2) {
 				let existe = await BD_genericas.obtienePorId(entidad, confirma[campo_id]);
@@ -410,7 +410,7 @@ module.exports = {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
 		// Generar la información
-		let entidadNombre = comp.obtieneEntidadNombreDesdeEntidad(entidad);
+		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			let paisNombreToId = (pais_nombre) => {

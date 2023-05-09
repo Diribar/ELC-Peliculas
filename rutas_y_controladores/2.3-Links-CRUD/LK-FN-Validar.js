@@ -90,7 +90,7 @@ let validaLinkRepetidos = async (datos) => {
 	if (id) {
 		let link = await BD_genericas.obtienePorId("links", id);
 		let prodEntidad = comp.obtieneProdEntidadDesdeProd_id(link);
-		let campo_id = comp.obtieneCampo_idDesdeEntidad(prodEntidad);
+		let campo_id = comp.obtieneDesdeEntidad.campo_id(prodEntidad);
 		let prodID = link[campo_id];
 		datos = {entidad: prodEntidad, id: prodID, entidadNombre: "link"};
 		respuesta = comp.cartelRepetido(datos);

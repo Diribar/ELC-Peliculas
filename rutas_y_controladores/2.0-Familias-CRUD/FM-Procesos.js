@@ -10,8 +10,8 @@ module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
-		const familias = comp.obtieneFamiliasDesdeEntidad(entidad);
-		const nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
 
@@ -83,7 +83,7 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let nombreEdicion = comp.obtienePetitFamiliaDesdeEntidad(entidad) + "_edicion";
+			let nombreEdicion = comp.obtieneDesdeEntidad.petitFamilia(entidad) + "_edicion";
 			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
@@ -100,7 +100,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneNombreEdicionDesdeEntidad(entidad);
+		let nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 		let camposNull;
 
 		// Quita la info que no agrega valor
@@ -115,7 +115,7 @@ module.exports = {
 				await (async () => {
 					// Se le agregan los campos necesarios: campo_id, editado_por_id, producto_id (links)
 					// 1. campo_id, editado_por_id
-					let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					edicion[campo_id] = original.id;
 					edicion.editado_por_id = userID;
 					// 2. producto_id (links)
@@ -333,7 +333,7 @@ module.exports = {
 	// Cambia el status de un registro
 	cambioDeStatus: async function (entidad, registro) {
 		// Variables
-		let familias = comp.obtieneFamiliasDesdeEntidad(entidad);
+		let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 		// prodsEnRCLV
 		if (familias == "productos") {
@@ -343,7 +343,7 @@ module.exports = {
 
 			// 2. Rutina por entidad RCLV
 			for (let entidad of entidadesRCLV) {
-				let campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				if (registro[campo_id])
 					stAprob
 						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prods_aprob: SI})
@@ -372,7 +372,7 @@ module.exports = {
 		const entidadesProds = variables.entidadesProd;
 		const statusAprobado = {status_registro_id: aprobado_id};
 		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 		// Acciones si el producto tiene ese 'campo_id'
 		if (id && id > 10) {
@@ -415,7 +415,7 @@ module.exports = {
 	// Actualiza los campos de 'links' en el producto
 	linksEnProd: async function ({entidad, id}) {
 		// Variables
-		const campo_id = comp.obtieneCampo_idDesdeEntidad(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		if (entidad == "colecciones") return;
 
 		// Más variables
@@ -514,7 +514,7 @@ module.exports = {
 
 		// Obtiene los dias_del_ano_id válidos
 		const entidadesRCLV = variables.entidadesRCLV;
-		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneAsociacion(n));
+		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneDesdeEntidad.asociacion(n));
 		let dias_del_ano_id = [];
 		for (let asociacion of asociacionesRCLV)
 			if (producto[asociacion].dia_del_ano_id <= 366) dias_del_ano_id.push(producto[asociacion].dia_del_ano_id);

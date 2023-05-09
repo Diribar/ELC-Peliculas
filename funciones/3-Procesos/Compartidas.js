@@ -34,7 +34,7 @@ module.exports = {
 	},
 	obtieneTodosLosCamposInclude: function (entidad) {
 		// Obtiene la familia
-		let familias = this.obtieneFamiliasDesdeEntidad(entidad);
+		let familias = this.obtieneDesdeEntidad.familias(entidad);
 
 		// Obtiene todos los campos de la familia
 		let campos = [...variables.camposRevisar[familias]];
@@ -53,144 +53,155 @@ module.exports = {
 	},
 
 	// Conversiones
-	obtieneFamiliaDesdeEntidad: (entidad) => {
-		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
-			? "producto"
-			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
-			? "rclv"
-			: ["links", "links_edicion"].includes(entidad)
-			? "link"
-			: "";
+	obtieneDesdeEntidad: {
+		familia: (entidad) => {
+			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
+				? "producto"
+				: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
+				? "rclv"
+				: ["links", "links_edicion"].includes(entidad)
+				? "link"
+				: "";
+		},
+		familias: (entidad) => {
+			return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
+				? "productos"
+				: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
+				? "rclvs"
+				: ["links", "links_edicion"].includes(entidad)
+				? "links"
+				: entidad == "usuarios"
+				? "usuarios"
+				: "";
+		},
+		petitFamilia: (entidad) => {
+			return false
+				? null
+				: entidad == "links"
+				? "links"
+				: variables.entidadesRCLV.includes(entidad)
+				? "rclvs"
+				: variables.entidadesProd.includes(entidad)
+				? "prods"
+				: "";
+		},
+		entidadNombre: (entidad) => {
+			return entidad == "peliculas"
+				? "Película"
+				: entidad == "colecciones"
+				? "Colección"
+				: entidad == "capitulos"
+				? "Capítulo"
+				: entidad == "personajes"
+				? "Personaje"
+				: entidad == "hechos"
+				? "Hecho"
+				: entidad == "temas"
+				? "Tema"
+				: entidad == "eventos"
+				? "Evento del Año"
+				: entidad == "epocas_del_ano"
+				? "Epoca del Año"
+				: entidad == "links"
+				? "Links"
+				: entidad == "usuarios"
+				? "Usuarios"
+				: "";
+		},
+		campo_id: (entidad) => {
+			return entidad == "peliculas"
+				? "pelicula_id"
+				: entidad == "colecciones"
+				? "coleccion_id"
+				: entidad == "capitulos"
+				? "capitulo_id"
+				: entidad == "personajes"
+				? "personaje_id"
+				: entidad == "hechos"
+				? "hecho_id"
+				: entidad == "temas"
+				? "tema_id"
+				: entidad == "eventos"
+				? "evento_id"
+				: entidad == "epocas_del_ano"
+				? "epoca_del_ano_id"
+				: entidad == "links"
+				? "link_id"
+				: "";
+		},
+		asociacion: (entidad) => {
+			return entidad == "peliculas"
+				? "pelicula"
+				: entidad == "colecciones"
+				? "coleccion"
+				: entidad == "capitulos"
+				? "capitulo"
+				: entidad == "personajes"
+				? "personaje"
+				: entidad == "hechos"
+				? "hecho"
+				: entidad == "temas"
+				? "tema"
+				: entidad == "eventos"
+				? "evento"
+				: entidad == "epocas_del_ano"
+				? "epoca_del_ano"
+				: entidad == "links"
+				? "link"
+				: "";
+		},
+		nombreEdicion: (entidad) => {
+			return variables.entidadesProd.includes(entidad)
+				? "prods_edicion"
+				: variables.entidadesRCLV.includes(entidad)
+				? "rclvs_edicion"
+				: entidad == "links"
+				? "links_edicion"
+				: "";
+		},
 	},
-	obtieneFamiliasDesdeEntidad: (entidad) => {
-		return [...variables.entidadesProd, "prods_edicion"].includes(entidad)
-			? "productos"
-			: [...variables.entidadesRCLV, "rclvs_edicion"].includes(entidad)
-			? "rclvs"
-			: ["links", "links_edicion"].includes(entidad)
-			? "links"
-			: entidad == "usuarios"
-			? "usuarios"
-			: "";
+	datosDesdeEdicion: {
+		obtieneProdEntidadDesdeProd_id: (edicion) => {
+			return edicion.pelicula_id
+				? "peliculas"
+				: edicion.coleccion_id
+				? "colecciones"
+				: edicion.capitulo_id
+				? "capitulos"
+				: "";
+		},
+		obtieneRclvEntidadDesdeRclv_id: (edicion) => {
+			return edicion.personaje_id
+				? "personajes"
+				: edicion.hecho_id
+				? "hechos"
+				: edicion.tema_id
+				? "temas"
+				: edicion.evento_id
+				? "eventos"
+				: edicion.epoca_del_ano_id
+				? "epocas_del_ano"
+				: "";
+		},
+		obtieneEntidadDesdeEnt_id: function (edicion) {
+			const producto = this.obtieneProdEntidadDesdeProd_id(edicion);
+			const RCLV = this.obtieneRclvEntidadDesdeRclv_id(edicion);
+			return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
+		},
+		obtieneProducto_id: (edicion) => {
+			return edicion.pelicula_id
+				? "pelicula_id"
+				: edicion.coleccion_id
+				? "coleccion_id"
+				: edicion.capitulo_id
+				? "capitulo_id"
+				: "";
+		},
+		obtieneRCLV_id: (edicion) => {
+			return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.tema_id ? "tema_id" : "";
+		},
 	},
-	obtienePetitFamiliaDesdeEntidad: (entidad) => {
-		return false
-			? null
-			: entidad == "links"
-			? "links"
-			: variables.entidadesRCLV.includes(entidad)
-			? "rclvs"
-			: variables.entidadesProd.includes(entidad)
-			? "prods"
-			: "";
-	},
-	obtieneEntidadNombreDesdeEntidad: (entidad) => {
-		return entidad == "peliculas"
-			? "Película"
-			: entidad == "colecciones"
-			? "Colección"
-			: entidad == "capitulos"
-			? "Capítulo"
-			: entidad == "personajes"
-			? "Personaje"
-			: entidad == "hechos"
-			? "Hecho"
-			: entidad == "temas"
-			? "Tema"
-			: entidad == "eventos"
-			? "Evento del Año"
-			: entidad == "epocas_del_ano"
-			? "Epoca del Año"
-			: entidad == "links"
-			? "Links"
-			: entidad == "usuarios"
-			? "Usuarios"
-			: "";
-	},
-	obtieneCampo_idDesdeEntidad: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula_id"
-			: entidad == "colecciones"
-			? "coleccion_id"
-			: entidad == "capitulos"
-			? "capitulo_id"
-			: entidad == "personajes"
-			? "personaje_id"
-			: entidad == "hechos"
-			? "hecho_id"
-			: entidad == "temas"
-			? "tema_id"
-			: entidad == "eventos"
-			? "evento_id"
-			: entidad == "epocas_del_ano"
-			? "epoca_del_ano_id"
-			: entidad == "links"
-			? "link_id"
-			: "";
-	},
-	obtieneAsociacion: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula"
-			: entidad == "colecciones"
-			? "coleccion"
-			: entidad == "capitulos"
-			? "capitulo"
-			: entidad == "personajes"
-			? "personaje"
-			: entidad == "hechos"
-			? "hecho"
-			: entidad == "temas"
-			? "tema"
-			: entidad == "eventos"
-			? "evento"
-			: entidad == "epocas_del_ano"
-			? "epoca_del_ano"
-			: entidad == "links"
-			? "link"
-			: "";
-	},
-	obtieneNombreEdicionDesdeEntidad: (entidad) => {
-		return variables.entidadesProd.includes(entidad)
-			? "prods_edicion"
-			: variables.entidadesRCLV.includes(entidad)
-			? "rclvs_edicion"
-			: entidad == "links"
-			? "links_edicion"
-			: "";
-	},
-	obtieneProdEntidadDesdeProd_id: (edicion) => {
-		return edicion.pelicula_id ? "peliculas" : edicion.coleccion_id ? "colecciones" : edicion.capitulo_id ? "capitulos" : "";
-	},
-	obtieneRclvEntidadDesdeRclv_id: (edicion) => {
-		return edicion.personaje_id
-			? "personajes"
-			: edicion.hecho_id
-			? "hechos"
-			: edicion.tema_id
-			? "temas"
-			: edicion.evento_id
-			? "eventos"
-			: edicion.epoca_del_ano_id
-			? "epocas_del_ano"
-			: "";
-	},
-	obtieneEntidadDesdeEnt_id: function (edicion) {
-		const producto = this.obtieneProdEntidadDesdeProd_id(edicion);
-		const RCLV = this.obtieneRclvEntidadDesdeRclv_id(edicion);
-		return edicion.link_id ? "links" : RCLV ? RCLV : producto ? producto : "";
-	},
-	obtieneProducto_id: (edicion) => {
-		return edicion.pelicula_id
-			? "pelicula_id"
-			: edicion.coleccion_id
-			? "coleccion_id"
-			: edicion.capitulo_id
-			? "capitulo_id"
-			: "";
-	},
-	obtieneRCLV_id: (edicion) => {
-		return edicion.personaje_id ? "personaje_id" : edicion.hecho_id ? "hecho_id" : edicion.tema_id ? "tema_id" : "";
-	},
+	convierteLetras: {},
 	convierteLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()
@@ -507,7 +518,7 @@ module.exports = {
 		const {entidad, id} = datos;
 
 		let entidadNombre = datos.entidadNombre; // Para links
-		if (entidadNombre) entidadNombre = this.obtieneEntidadNombreDesdeEntidad(entidad).toLowerCase();
+		if (entidadNombre) entidadNombre = this.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 
 		// 1. Inicio
 		let genero = ["capitulos", "links"].includes(entidad) ? "e" : "a";
@@ -515,7 +526,7 @@ module.exports = {
 
 		// 2. Anchor
 		let url = "?entidad=" + entidad + "&id=" + id;
-		let link = "/" + this.obtieneFamiliaDesdeEntidad(entidad) + "/detalle/" + url;
+		let link = "/" + this.obtieneDesdeEntidad.familia(entidad) + "/detalle/" + url;
 		let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
 		let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
