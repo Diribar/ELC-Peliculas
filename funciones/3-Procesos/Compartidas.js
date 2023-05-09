@@ -295,6 +295,7 @@ module.exports = {
 			}
 			// Mensaje si no lo encuentra
 			else if (output) console.log("Archivo " + archivo + " no encontrado para borrar");
+			
 			// Fin
 			return;
 		},
