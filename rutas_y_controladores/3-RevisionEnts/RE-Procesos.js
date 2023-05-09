@@ -13,7 +13,7 @@ module.exports = {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
 			const campoFecha = "editado_en";
-			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema"];
+			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epoca_del_ano"];
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
@@ -108,7 +108,7 @@ module.exports = {
 			// Obtiene rclvs en situaciones particulares
 			// Variables
 			const entidades = variables.entidades.rclvs;
-			const include = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
+			const include = ["peliculas", "colecciones", "capitulos", "prods_ediciones"];
 			let campos;
 
 			// AL: Altas
@@ -766,7 +766,8 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	if (aprob) {
 		// ARCHIVO ORIGINAL: si el 'avatar original' es un archivo, lo elimina
 		const rutaFinal = "./publico/imagenes/2-" + familias + "/Final/";
-		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig)) comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
+		if (avatarOrig && comp.gestionArchivos.existe(rutaFinal + avatarOrig))
+			comp.gestionArchivos.elimina(rutaFinal, avatarOrig);
 
 		// ARCHIVO NUEVO: mueve el archivo de edición a la carpeta definitiva
 		comp.gestionArchivos.mueveImagen(avatarEdic, "2-" + familias + "/Revisar", "2-" + familias + "/Final");

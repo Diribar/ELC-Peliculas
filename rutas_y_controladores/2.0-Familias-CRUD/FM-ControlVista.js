@@ -219,7 +219,7 @@ module.exports = {
 		// Más variables
 		const articulo1 = ["peliculas", "colecciones", "epocas_del_ano"].includes(entidad) ? "La " : "El ";
 		const articulo2 = articulo1 == "La " ? "a" : "o";
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase()
 		const link = origen == "MT" ? "/mantenimiento" : "/";
 
 		// Cartel de registro eliminado

@@ -15,7 +15,7 @@ module.exports = {
 			// Convierte las ediciones propias de productos en productos
 			if (usuario) {
 				// Obtiene las ediciones
-				let ediciones = RCLV.prods_edicion ? RCLV.prods_edicion : [];
+				let ediciones = RCLV.prods_ediciones ? RCLV.prods_ediciones : [];
 
 				let edicionesPropias =
 					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
