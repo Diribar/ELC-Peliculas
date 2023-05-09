@@ -20,8 +20,8 @@ module.exports = async (req, res, next) => {
 		const ruta = req.path;
 		statusEsperados_id = false
 			? false
-			 // Preguntas para 'CRUD'
-			: baseUrl == "/producto" || baseUrl == "/rclv"
+			: // Preguntas para 'CRUD'
+			baseUrl == "/producto" || baseUrl == "/rclv"
 			? ruta == "/edicion/"
 				? [creado_id, creado_aprob_id, aprobado_id]
 				: ruta == "/inactivar/"
@@ -80,7 +80,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Conclusiones
-	if (informacion) res.render("CMP-0Estructura", {informacion});
+	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else next();
 };
 
