@@ -174,7 +174,7 @@ module.exports = {
 			// Se fija si tiene alguna edición de producto, y borra el vínculo
 			const prodEdiciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[campo_id]: id});
 			if (prodEdiciones.length) {
-				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: 1});
+				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 				procesos.puleEdicionesProd(prodEdiciones);
 			}
 
