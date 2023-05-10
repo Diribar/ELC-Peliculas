@@ -2,9 +2,9 @@
 // Requires
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const variables = require("../../funciones/3-Procesos/Variables");
+const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("../../rutas_y_controladores/1-Usuarios/US-FN-Procesos");
-const comp = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/1-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
