@@ -278,16 +278,22 @@ module.exports = {
 		// Variables
 		const ruta = "./publico/imagenes/2-Productos/Final/";
 		const condicion = {status_registro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		const entidad = "peliculas";
+		let verificador = [];
 
 		// Revisa, descarga, actualiza
-		await BD_genericas.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
-			n.map((m) => {
-				const nombre = Date.now() + path.extname(m.avatar);
-				comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
-				BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
-			})
-		);
+		for (let entidad of ["peliculas", "colecciones"])
+			verificador.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) =>
+						n.map((m) => {
+							const nombre = Date.now() + path.extname(m.avatar);
+							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
+							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+						})
+					)
+					.then(() => true)
+			);
+		await Promise.all(verificador)
 
 		// Actualiza el archivo JSON
 		actualizaRutinasJSON({AprobadoConAvatarUrl: "SI"});
