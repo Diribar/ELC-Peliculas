@@ -285,7 +285,6 @@ module.exports = {
 		elimina: function (ruta, archivo, output) {
 			// Arma el nombre del archivo
 			let rutaArchivo = path.join(ruta, archivo);
-			console.log(288, rutaArchivo);
 			output = true;
 
 			// Se fija si encuentra el archivo

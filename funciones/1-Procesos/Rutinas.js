@@ -176,6 +176,21 @@ module.exports = {
 		// Fin
 		return;
 	},
+	BorraImagenesSinRegistro: async () => {
+		// Funciones
+		borraImagenesSinRegistro1("peliculas");
+		borraImagenesSinRegistro1("personajes");
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({BorraImagenesSinRegistro: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'BorraImagenesSinRegistro' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
 	ImagenDerecha: async function () {
 		// Variables
 		let info = lecturaRutinasJSON();
@@ -185,7 +200,7 @@ module.exports = {
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		borraLosArchivosDeImgDerechaObsoletos(fechas);
 
-		// Limpia el historial de titulos
+		// Limpia el historial de titulos en 'global'
 		TitulosImgDer = {};
 
 		// Actualiza los títulos de la imagen derecha para cada fecha
@@ -216,30 +231,6 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	BorraImagenesSinRegistro: async () => {
-		let entidad, carpeta, nombresDeAvatar;
-
-		// Obtiene el nombre de todas las imagenes de los registros de edicion
-		entidad = "prods_edicion";
-		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
-
-		// Borra los avatar de Revisar
-		carpeta = "2-Productos/Revisar";
-		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
-
-		// Obtiene el nombre de todas las imagenes de los registros de productos
-		nombresDeAvatar = [];
-		let consolidado = [];
-		for (let entidad of variables.entidades.prods) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
-		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
-		
-		// Borra los avatar de Final
-		carpeta = "2-Productos/Final";
-		borraImagenesSinRegistro(consolidado, carpeta);
 
 		// Fin
 		return;
@@ -509,7 +500,30 @@ let medicionDelTiempo = (horarioInicial) => {
 	// Fin
 	return horarioFinal;
 };
-let borraImagenesSinRegistro = async (nombresDeAvatar, carpeta) => {
+let borraImagenesSinRegistro1 = async (entidad) => {
+	// Variables
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+	let consolidado = [];
+	let carpeta, nombresDeAvatar;
+
+	// Borra los avatar de EDICIONES
+	carpeta = "2-" + familias + "/Revisar";
+	nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
+	borraImagenesSinRegistro2(nombresDeAvatar, carpeta);
+
+	// Borra los avatar de ORIGINAL
+	carpeta = "2-" + familias + "/Final";
+	nombresDeAvatar = [];
+	for (let entidad of variables.entidades[petitFamilia]) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+	await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
+	borraImagenesSinRegistro2(consolidado, carpeta);
+
+	// Fin
+	return;
+};
+let borraImagenesSinRegistro2 = async (nombresDeAvatar, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta "Revisar"
 	let archivosDeAvatar = fs.readdirSync("./publico/imagenes/" + carpeta);
 
