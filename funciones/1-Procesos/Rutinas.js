@@ -221,25 +221,9 @@ module.exports = {
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
-		let entidad, carpeta, nombresDeAvatar;
-
-		// Obtiene el nombre de todas las imagenes de los registros de edicion
-		entidad = "prods_edicion";
-		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
-
-		// Borra los avatar de Revisar
-		carpeta = "2-Productos/Revisar";
-		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
-
-		// Obtiene el nombre de todas las imagenes de los registros de productos
-		nombresDeAvatar = [];
-		let consolidado = [];
-		for (let entidad of variables.entidades.prods) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
-		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
-		
-		// Borra los avatar de Final
-		carpeta = "2-Productos/Final";
-		borraImagenesSinRegistro(consolidado, carpeta);
+		// Funciones
+		borraImagenesSinRegistro1("peliculas")
+		borraImagenesSinRegistro1("personajes")
 
 		// Fin
 		return;
@@ -509,7 +493,29 @@ let medicionDelTiempo = (horarioInicial) => {
 	// Fin
 	return horarioFinal;
 };
-let borraImagenesSinRegistro = async (nombresDeAvatar, carpeta) => {
+let borraImagenesSinRegistro1 = async (entidad) => {
+	// Variables
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad)
+	let carpeta, nombresDeAvatar;
+
+	// Borra los avatar de EDICIONES
+	carpeta = "2-" + familias + "/Revisar";
+	nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
+	borraImagenesSinRegistro2(nombresDeAvatar, carpeta);
+
+	// Borra los avatar de ORIGINAL
+	carpeta = "2-" + familias + "/Final";
+	nombresDeAvatar = [];
+	for (let entidad of variables.entidades[petitFamilia]) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+	nombresDeAvatar = await Promise.all(nombresDeAvatar);
+	borraImagenesSinRegistro2(nombresDeAvatar, carpeta);
+
+	// Fin
+	return;
+};
+let borraImagenesSinRegistro2 = async (nombresDeAvatar, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta "Revisar"
 	let archivosDeAvatar = fs.readdirSync("./publico/imagenes/" + carpeta);
 
