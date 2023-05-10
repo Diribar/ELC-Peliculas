@@ -494,33 +494,33 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 	const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
 	let consolidado = [];
-	let carpeta, nombresDeAvatar;
+	let carpeta, avatars;
 
 	// Borra los avatar de EDICIONES
 	carpeta = "2-" + familias + "/Revisar";
-	nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
-	borraImagenesSinRegistro2(nombresDeAvatar, carpeta);
+	avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
+	borraImagenesSinRegistro2(avatars, carpeta);
 
 	// Borra los avatar de ORIGINAL
 	carpeta = "2-" + familias + "/Final";
-	nombresDeAvatar = [];
-	for (let entidad of variables.entidades[petitFamilia]) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
-	await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
+	avatars = [];
+	for (let entidad of variables.entidades[petitFamilia]) avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+	await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
 	borraImagenesSinRegistro2(consolidado, carpeta);
 
 	// Fin
 	return;
 };
-let borraImagenesSinRegistro2 = (nombresDeAvatar, carpeta) => {
+let borraImagenesSinRegistro2 = (avatars, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 	const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
 
 	// Rutina para borrar archivos
 	for (let archivo of archivos)
-		if (!nombresDeAvatar.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
+		if (!avatars.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
-	for (let nombre of nombresDeAvatar) if (!archivos.includes(nombre)) console.log(nombre);
+	for (let nombre of avatars) if (!archivos.includes(nombre)) console.log("Avatars sin archivo:", nombre);
 
 	// Fin
 	return;
