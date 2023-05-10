@@ -4,17 +4,17 @@
 	"FechaSemUTC": "Lun. 8/may",
 	"HoraSemUTC": "2:54",
 	"semanaUTC": 18,
-	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "BorraImagenesSinRegistro"],
+	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
 	"TitulosImgDer": {
 		"09-may-23": "Pascua de Resurrección",
 		"10-may-23": "Padre Damián de Molokai",
 		"11-may-23": "Mamerto Esquiú"
 	},
 	"FechaHoraUTC": "SI",
+    "BorraImagenesSinRegistro": "SI",
 	"ImagenDerecha": "SI",
-	"HorariosUTC": {"FechaHoraUTC": "00:00", "ImagenDerecha": "06:00"},
+	"HorariosUTC": {"FechaHoraUTC": "00:00", "BorraImagenesSinRegistro": "01:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
 	"LinksVencidos": "SI",
-	"BorraImagenesSinRegistro": "NO",
 	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon"}
 }
