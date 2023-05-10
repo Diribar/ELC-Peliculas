@@ -11,7 +11,7 @@
 		"11-may-23": "Mamerto Esquiú"
 	},
 	"FechaHoraUTC": "SI",
-    "BorraImagenesSinRegistro": "SI",
+	"BorraImagenesSinRegistro": "SI",
 	"ImagenDerecha": "SI",
 	"HorariosUTC": {"FechaHoraUTC": "00:00", "BorraImagenesSinRegistro": "01:00", "ImagenDerecha": "06:00"},
 	"SemanaUTC": "SI",
