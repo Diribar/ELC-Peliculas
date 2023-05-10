@@ -178,8 +178,8 @@ module.exports = {
 	},
 	BorraImagenesSinRegistro: async () => {
 		// Funciones
-		borraImagenesSinRegistro1("peliculas")
-		borraImagenesSinRegistro1("personajes")
+		borraImagenesSinRegistro1("peliculas");
+		borraImagenesSinRegistro1("personajes");
 
 		// Actualiza el archivo JSON
 		actualizaRutinasJSON({BorraImagenesSinRegistro: "SI"});
@@ -200,7 +200,7 @@ module.exports = {
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		borraLosArchivosDeImgDerechaObsoletos(fechas);
 
-		// Limpia el historial de titulos
+		// Limpia el historial de titulos en 'global'
 		TitulosImgDer = {};
 
 		// Actualiza los títulos de la imagen derecha para cada fecha
@@ -504,8 +504,8 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 	// Variables
 	const familias = comp.obtieneDesdeEntidad.familias(entidad);
 	const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad)
-	let consolidado=[]
+	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+	let consolidado = [];
 	let carpeta, nombresDeAvatar;
 
 	// Borra los avatar de EDICIONES
