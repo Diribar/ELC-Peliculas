@@ -513,7 +513,7 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 };
 let borraImagenesSinRegistro2 = (nombresDeAvatar, carpeta) => {
 	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-	let archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+	const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
 
 	// Rutina para borrar archivos
 	for (let archivo of archivos)
