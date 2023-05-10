@@ -176,6 +176,21 @@ module.exports = {
 		// Fin
 		return;
 	},
+	BorraImagenesSinRegistro: async () => {
+		// Funciones
+		borraImagenesSinRegistro1("peliculas")
+		borraImagenesSinRegistro1("personajes")
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({BorraImagenesSinRegistro: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'BorraImagenesSinRegistro' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
 	ImagenDerecha: async function () {
 		// Variables
 		let info = lecturaRutinasJSON();
@@ -216,14 +231,6 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	BorraImagenesSinRegistro: async () => {
-		// Funciones
-		borraImagenesSinRegistro1("peliculas")
-		borraImagenesSinRegistro1("personajes")
 
 		// Fin
 		return;
@@ -498,6 +505,7 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 	const familias = comp.obtieneDesdeEntidad.familias(entidad);
 	const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
 	const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad)
+	let consolidado=[]
 	let carpeta, nombresDeAvatar;
 
 	// Borra los avatar de EDICIONES
@@ -509,8 +517,8 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 	carpeta = "2-" + familias + "/Final";
 	nombresDeAvatar = [];
 	for (let entidad of variables.entidades[petitFamilia]) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
-	nombresDeAvatar = await Promise.all(nombresDeAvatar);
-	borraImagenesSinRegistro2(nombresDeAvatar, carpeta);
+	await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
+	borraImagenesSinRegistro2(consolidado, carpeta);
 
 	// Fin
 	return;
