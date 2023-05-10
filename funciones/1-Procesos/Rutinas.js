@@ -178,8 +178,9 @@ module.exports = {
 	},
 	BorraImagenesSinRegistro: async () => {
 		// Funciones
-		borraImagenesSinRegistro1("peliculas");
-		borraImagenesSinRegistro1("personajes");
+		await borraImagenesSinRegistro1("peliculas");
+		await borraImagenesSinRegistro1("personajes");
+		borraImagenesProvisorio();
 
 		// Actualiza el archivo JSON
 		actualizaRutinasJSON({BorraImagenesSinRegistro: "SI"});
@@ -481,19 +482,6 @@ let obtieneLaHora = (dato) => {
 	// Fin
 	return hora;
 };
-let diaActualID = () => {
-	// Obtiene el mes y dia
-	const milisegs = new Date().getTime() - 12 * unaHora;
-	const fecha = new Date(milisegs);
-	const dia = fecha.getDate();
-	const mes = fecha.getMonth() + 1;
-
-	// Obtiene el dia_actual_id
-	dia_actual_id = dias_del_ano.find((n) => n.dia == dia && n.mes_id == mes).id;
-
-	// Fin
-	return;
-};
 let medicionDelTiempo = (horarioInicial) => {
 	const horarioFinal = new Date().getTime();
 
@@ -523,16 +511,30 @@ let borraImagenesSinRegistro1 = async (entidad) => {
 	// Fin
 	return;
 };
-let borraImagenesSinRegistro2 = async (nombresDeAvatar, carpeta) => {
-	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta "Revisar"
-	let archivosDeAvatar = fs.readdirSync("./publico/imagenes/" + carpeta);
+let borraImagenesSinRegistro2 = (nombresDeAvatar, carpeta) => {
+	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
+	let archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
 
 	// Rutina para borrar archivos
-	for (let archivo of archivosDeAvatar)
+	for (let archivo of archivos)
 		if (!nombresDeAvatar.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 	// Rutina para detectar nombres sin archivo
-	for (let nombre of nombresDeAvatar) if (!archivosDeAvatar.includes(nombre)) console.log(nombre);
+	for (let nombre of nombresDeAvatar) if (!archivos.includes(nombre)) console.log(nombre);
+
+	// Fin
+	return;
+};
+let borraImagenesProvisorio = () => {
+	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
+	let archivos = fs.readdirSync("./publico/imagenes/9-Provisorio");
+
+	// Rutina para borrar archivos
+	for (let archivo of archivos) {
+		const fechaHora = fs.statSync("./publico/imagenes/9-Provisorio/" + archivo).birthtime;
+		console.log("File created at: ", fechaHora, fechaHora < Date.now() - unDia * 3);
+		if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio", archivo);
+	}
 
 	// Fin
 	return;
