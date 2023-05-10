@@ -159,10 +159,15 @@ module.exports = {
 			// Si se agregó un archivo avatar, lo elimina
 			if (req.file && datos.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 
-			// Si se eliminó la edición, la borra de la BD
+			// Acciones si se eliminó la edición
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condiciones = {[campo_id]: id, editado_por_id: userID};
-			if (eliminar) await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
+			if (eliminar) {
+				// La elimina de la BD
+				await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
+				// Quita la porción de texto referida a 'eliminar=true'
+				req.originalUrl = req.originalUrl.replace("&eliminar=true", "");
+			}
 
 			// Redirige a la vista 'form'
 			return res.redirect(req.originalUrl);
@@ -184,7 +189,8 @@ module.exports = {
 					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no está en status 'creado', borra el eventual avatar edicion
-				else if (edicion && edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+				else if (edicion && edicion.avatar)
+					comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 			}
 		}
 

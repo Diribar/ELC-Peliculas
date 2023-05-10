@@ -78,8 +78,11 @@ module.exports = {
 		// 2.3. Con fecha móvil
 		const FM = aprobados.filter((m) => m.fecha_movil);
 
+		// 2.4. Con epoca igual a 'pst' y sin ano
+		const PST = aprobados.filter((m) => m.epoca_id == "pst" && !m.ano);
+
 		// Fin
-		return {INP, IN, SA, SF, FM};
+		return {INP, IN, SA, SF, FM, PST};
 	},
 };
 
