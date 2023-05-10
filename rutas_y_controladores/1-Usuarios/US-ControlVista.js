@@ -2,8 +2,8 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const comp = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
+const comp = require("../../funciones/1-Procesos/Compartidas");
+const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("./US-FN-Procesos");
 const valida = require("./US-FN-Validar");
 

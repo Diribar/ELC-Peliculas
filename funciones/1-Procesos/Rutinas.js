@@ -2,7 +2,7 @@
 // Variables
 const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
-const comp = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/1-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
 const variables = require("./Variables");

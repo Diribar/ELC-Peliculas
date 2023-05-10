@@ -1,5 +1,5 @@
 "use strict";
-const variables = require("../../funciones/3-Procesos/Variables");
+const variables = require("../../funciones/1-Procesos/Variables");
 
 // *********** Controlador ***********
 module.exports = {

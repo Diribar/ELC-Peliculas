@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const comp = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/1-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
