@@ -532,7 +532,6 @@ let borraImagenesProvisorio = () => {
 	// Rutina para borrar archivos
 	for (let archivo of archivos) {
 		const fechaHora = fs.statSync("./publico/imagenes/9-Provisorio/" + archivo).birthtime;
-		console.log("File created at: ", fechaHora, fechaHora < Date.now() - unDia * 3);
 		if (fechaHora < Date.now() - unDia * 3) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio", archivo);
 	}
 
