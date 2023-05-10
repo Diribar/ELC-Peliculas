@@ -314,7 +314,6 @@ let actualizaRutinasJSON = function (datos) {
 	// Fin
 	return;
 };
-
 // Funciones - Imagen Derecha
 let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	// Variables
