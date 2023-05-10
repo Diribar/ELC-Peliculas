@@ -9,11 +9,13 @@
 		"FechaHoraUTC": "00:00",
 		"PaisesConMasProductos": "01:00",
 		"BorraImagenesSinRegistro": "02:00",
+		"AprobadoConAvatarUrl": "03:00",
 		"ImagenDerecha": "06:00"
 	},
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",
 	"BorraImagenesSinRegistro": "SI",
+	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon"},
 	"SemanaUTC": "SI",
