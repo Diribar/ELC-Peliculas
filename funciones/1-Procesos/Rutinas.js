@@ -220,6 +220,30 @@ module.exports = {
 		// Fin
 		return;
 	},
+	BorraImagenesSinRegistro: async () => {
+		let entidad, carpeta, nombresDeAvatar;
+
+		// Obtiene el nombre de todas las imagenes de los registros de edicion
+		entidad = "prods_edicion";
+		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
+
+		// Borra los avatar de Revisar
+		carpeta = "2-Productos/Revisar";
+		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
+
+		// Obtiene el nombre de todas las imagenes de los registros de productos
+		nombresDeAvatar = [];
+		let consolidado = [];
+		for (let entidad of variables.entidades.prods) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
+		
+		// Borra los avatar de Final
+		carpeta = "2-Productos/Final";
+		borraImagenesSinRegistro(consolidado, carpeta);
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: function () {
@@ -266,30 +290,6 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
-
-		// Fin
-		return;
-	},
-	BorraImagenesSinRegistro: async () => {
-		let entidad, carpeta, nombresDeAvatar;
-
-		// Obtiene el nombre de todas las imagenes de los registros de edicion
-		entidad = "prods_edicion";
-		nombresDeAvatar = await BD_especificas.nombresDeAvatarEnBD(entidad);
-
-		// Borra los avatar de Revisar
-		carpeta = "2-Productos/Revisar";
-		borraImagenesSinRegistro(nombresDeAvatar, carpeta);
-
-		// Obtiene el nombre de todas las imagenes de los registros de productos
-		nombresDeAvatar = [];
-		let consolidado = [];
-		for (let entidad of variables.entidades.prods) nombresDeAvatar.push(BD_especificas.nombresDeAvatarEnBD(entidad));
-		await Promise.all(nombresDeAvatar).then((n) => n.map((m) => consolidado.push(...m)));
-		
-		// Borra los avatar de Final
-		carpeta = "2-Productos/Final";
-		borraImagenesSinRegistro(consolidado, carpeta);
 
 		// Fin
 		return;
