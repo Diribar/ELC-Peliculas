@@ -1,20 +1,20 @@
 {
 	"FechaUTC": "Mié. 10/may",
-	"HoraUTC": "9:52",
+	"HoraUTC": "9:59",
 	"FechaSemUTC": "Lun. 8/may",
 	"HoraSemUTC": "2:54",
 	"semanaUTC": 18,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
+	"HorariosUTC": {"FechaHoraUTC": "00:00", "BorraImagenesSinRegistro": "01:00", "ImagenDerecha": "06:00"},
+	"FechaHoraUTC": "SI",
+	"BorraImagenesSinRegistro": "SI",
+	"ImagenDerecha": "SI",
+	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon"},
+	"SemanaUTC": "SI",
+	"LinksVencidos": "SI",
 	"TitulosImgDer": {
 		"09-may-23": "Pascua de Resurrección",
 		"10-may-23": "Padre Damián de Molokai",
 		"11-may-23": "Mamerto Esquiú"
-	},
-	"FechaHoraUTC": "SI",
-	"BorraImagenesSinRegistro": "SI",
-	"ImagenDerecha": "SI",
-	"HorariosUTC": {"FechaHoraUTC": "00:00", "BorraImagenesSinRegistro": "01:00", "ImagenDerecha": "06:00"},
-	"SemanaUTC": "SI",
-	"LinksVencidos": "SI",
-	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon"}
+	}
 }
