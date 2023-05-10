@@ -5,8 +5,14 @@
 	"HoraSemUTC": "2:54",
 	"semanaUTC": 18,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
-	"HorariosUTC": {"FechaHoraUTC": "00:00", "BorraImagenesSinRegistro": "01:00", "ImagenDerecha": "06:00"},
+	"HorariosUTC": {
+		"FechaHoraUTC": "00:00",
+		"PaisesConMasProductos": "01:00",
+		"BorraImagenesSinRegistro": "02:00",
+		"ImagenDerecha": "06:00"
+	},
 	"FechaHoraUTC": "SI",
+	"PaisesConMasProductos": "SI",
 	"BorraImagenesSinRegistro": "SI",
 	"ImagenDerecha": "SI",
 	"DiasUTC": {"SemanaUTC": "Sun", "LinksVencidos": "Mon"},

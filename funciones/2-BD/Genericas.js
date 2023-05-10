@@ -39,7 +39,7 @@ module.exports = {
 		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
 	actualizaPorId: (entidad, id, datos) => {
-		return db[entidad].update(datos, {where: {id}});
+		return db[entidad].update(datos, {where: {id}}).then(() => true);
 	},
 	actualizaTodosPorCondicion: (entidad, condicion, datos) => {
 		return db[entidad].update(datos, {where: condicion}).then(() => true);

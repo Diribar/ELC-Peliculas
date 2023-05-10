@@ -236,6 +236,42 @@ module.exports = {
 		// Fin
 		return;
 	},
+	PaisesConMasProductos: async () => {
+		// Variables
+		const condicion = {status_registro_id: aprobado_id};
+		const entidades = ["peliculas", "colecciones"];
+		let paisesID = {};
+		let verificador = [];
+
+		// Obtiene la frecuencia por país
+		for (let entidad of entidades) {
+			// Obtiene todos los registros de la entidad
+			await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				.then((n) => n.filter((m) => m.paises_id))
+				.then((n) =>
+					n.map((m) => {
+						for (let a of m.paises_id.split(" ")) paisesID[a] ? paisesID[a]++ : (paisesID[a] = 1);
+					})
+				);
+		}
+
+		// Actualiza la frecuencia por país
+		for (let pais of paises) {
+			const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
+			verificador.push(BD_genericas.actualizaPorId("paises", pais.id, {cantProds}));
+		}
+		await Promise.all(verificador);
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({PaisesConMasProductos: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'PaisesConMasProductos' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: function () {
