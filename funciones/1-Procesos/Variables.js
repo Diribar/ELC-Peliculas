@@ -159,7 +159,7 @@ module.exports = {
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
-		const entidadesRCLV = this.entidadesRCLV;
+		const entidadesRCLV = this.entidades.rclvs;
 		const registrosRCLV = await regsRCLV(entidadesRCLV, userID);
 
 		// Mensajes

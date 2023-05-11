@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const Op = require("../../base_de_datos/modelos").Sequelize.Op;
 const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../../funciones/1-Procesos/Compartidas");
@@ -236,6 +237,74 @@ module.exports = {
 		// Fin
 		return;
 	},
+	PaisesConMasProductos: async () => {
+		// Variables
+		const condicion = {status_registro_id: aprobado_id};
+		const entidades = ["peliculas", "colecciones"];
+		let paisesID = {};
+		let verificador = [];
+
+		// Obtiene la frecuencia por país
+		for (let entidad of entidades) {
+			// Obtiene todos los registros de la entidad
+			await BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				.then((n) => n.filter((m) => m.paises_id))
+				.then((n) =>
+					n.map((m) => {
+						for (let a of m.paises_id.split(" ")) paisesID[a] ? paisesID[a]++ : (paisesID[a] = 1);
+					})
+				);
+		}
+
+		// Actualiza la frecuencia por país
+		for (let pais of paises) {
+			const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
+			verificador.push(BD_genericas.actualizaPorId("paises", pais.id, {cantProds}));
+		}
+		await Promise.all(verificador);
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({PaisesConMasProductos: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'PaisesConMasProductos' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	AprobadoConAvatarUrl: async () => {
+		// Descarga el avatar en la carpeta 'Prods-Final'
+		// Variables
+		const ruta = "./publico/imagenes/2-Productos/Final/";
+		const condicion = {status_registro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
+		let verificador = [];
+
+		// Revisa, descarga, actualiza
+		for (let entidad of ["peliculas", "colecciones"])
+			verificador.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) =>
+						n.map((m) => {
+							const nombre = Date.now() + path.extname(m.avatar);
+							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
+							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+						})
+					)
+					.then(() => true)
+			);
+		await Promise.all(verificador)
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({AprobadoConAvatarUrl: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'AprobadoConAvatarUrl' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: function () {
@@ -314,7 +383,6 @@ let actualizaRutinasJSON = function (datos) {
 	// Fin
 	return;
 };
-
 // Funciones - Imagen Derecha
 let borraLosArchivosDeImgDerechaObsoletos = (fechas) => {
 	// Variables
