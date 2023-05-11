@@ -5,18 +5,22 @@
 	"HoraSemUTC": "2:54",
 	"semanaUTC": 18,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
+	"ProdsEnRCLV": "SI",
+	"LinksEnProd": "SI",
 	"HorariosUTC": {
 		"FechaHoraUTC": "00:00",
 		"PaisesConMasProductos": "01:00",
 		"BorraImagenesSinRegistro": "02:00",
 		"AprobadoConAvatarUrl": "03:00",
-		"ImagenDerecha": "06:00"
+		"ImagenDerecha": "06:00",
+		"E_MailBackupUsuarios": "12:00"
 	},
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",
 	"BorraImagenesSinRegistro": "SI",
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
+	"E_MailBackupUsuarios": "SI",
 	"TitulosImgDer": {
 		"10-may-23": "Padre Damián de Molokai",
 		"11-may-23": "Mamerto Esquiú",
