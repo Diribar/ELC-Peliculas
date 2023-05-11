@@ -245,10 +245,10 @@ module.exports = {
 			let datos = {
 				entidad,
 				entidad_id: original.id,
-				editado_por_id: original.creado_por_id,
-				editado_en: original.creado_en,
-				edic_revisada_por_id: revID,
-				edic_revisada_en: ahora,
+				sugerido_por_id: original.creado_por_id,
+				sugerido_en: original.creado_en,
+				revisado_por_id: revID,
+				revisado_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
 			};
 
@@ -570,10 +570,10 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				editado_por_id: edicion.editado_por_id,
-				editado_en: edicion.editado_en,
-				edic_revisada_por_id: revID,
-				edic_revisada_en: ahora,
+				sugerido_por_id: edicion.editado_por_id,
+				sugerido_en: edicion.editado_en,
+				revisado_por_id: revID,
+				revisado_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
 			};
 
