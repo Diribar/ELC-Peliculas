@@ -4,11 +4,8 @@ module.exports = (sequelize, dt) => {
 		entidad: {type: dt.STRING(11)},
 		entidad_id: {type: dt.INTEGER},
 
-		sugerido_por_id: {type: dt.INTEGER},
-		sugerido_en: {type: dt.DATE},
-		revisado_por_id: {type: dt.INTEGER},
-		revisado_en: {type: dt.DATE},
 		motivo_id: {type: dt.INTEGER},
+		comentario: {type: dt.STRING(150)},
 
 		status_original_id: {type: dt.INTEGER},
 		status_final_id: {type: dt.INTEGER},
@@ -16,8 +13,11 @@ module.exports = (sequelize, dt) => {
 		aprobado: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
 
+		sugerido_por_id: {type: dt.INTEGER},
+		sugerido_en: {type: dt.DATE},
+		revisado_por_id: {type: dt.INTEGER},
+		revisado_en: {type: dt.DATE},
 		comunicado_en: {type: dt.DATE},
-		comentario: {type: dt.STRING(150)},
 		};
 	const config = {
 		tableName: "aux_hist_cambios_status",
