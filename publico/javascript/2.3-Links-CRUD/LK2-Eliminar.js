@@ -1,66 +1,69 @@
 "use strict";
 window.addEventListener("load", () => {
-	// Producto y ID
-	let prodEntidad = new URL(location.href).searchParams.get("entidad");
-	let prodID = new URL(location.href).searchParams.get("id");
-	let condiciones = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables
-	let filas_yaExistentes = document.querySelectorAll(".yaExistentes");
-	let botonesOut = document.querySelectorAll(".yaExistentes .out");
-	let botonesEditar = document.querySelectorAll(".yaExistentes .editar");
-	let taparMotivo = document.querySelectorAll(".yaExistentes .taparMotivo");
-	let motivosFila = document.querySelectorAll(".yaExistentes .motivo");
-	let motivosSelect = document.querySelectorAll(".yaExistentes .motivo select");
-	let columnas = taparMotivo.length / filas_yaExistentes.length;
-	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
-	let pasivos = document.querySelector("#tabla #tags #inactivo");
-	// Ruta
-	let entorno = location.pathname;
-	let ruta = entorno.startsWith("/links/")
-		? "/links/api/eliminar/"
-		: entorno.startsWith("/revision/")
-		? "/revision/api/link/alta-baja"
-		: "";
+	const prodEntidad = new URL(location.href).searchParams.get("entidad");
+	const prodID = new URL(location.href).searchParams.get("id");
+	let DOM = {
+		filas_yaExistentes: document.querySelectorAll(".yaExistentes"),
+		botonesOut: document.querySelectorAll(".yaExistentes .out"),
+		botonesEditar: document.querySelectorAll(".edicion"), // No lleva 'yaExistentes'
+		taparMotivo: document.querySelectorAll(".yaExistentes .taparMotivo"),
+		motivosFila: document.querySelectorAll(".yaExistentes .motivo"),
+		motivosSelect: document.querySelectorAll(".yaExistentes .motivo select"),
+		links_url: document.querySelectorAll(".yaExistentes input[name='url'"),
+		pasivos: document.querySelector("#tabla #tags #inactivo"),
+	};
+	let v = {
+		condiciones: "?prodEntidad=" + prodEntidad + "&prodID=" + prodID,
+		columnas: DOM.taparMotivo.length / DOM.filas_yaExistentes.length,
+	};
+	let rutas = {
+		eliminar: location.pathname.startsWith("/links/")
+			? "/links/api/eliminar/"
+			: location.pathname.startsWith("/revision/")
+			? "/revision/api/link/alta-baja"
+			: "",
+	};
 
 	// Listener de 'inactivar'
-	botonesOut.forEach((botonOut, fila) => {
+	DOM.botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
 			// Eliminar permanentemente
 			if (botonOut.classList.contains("fa-trash-can") && !botonOut.classList.contains("inactivo")) {
-				let motivo_id = motivosSelect[fila].value;
-				let url = condiciones;
-				url += "&url=" + encodeURIComponent(links_url[fila].value);
+				let motivo_id = DOM.motivosSelect[fila].value;
+				let url = v.condiciones;
+				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
 				url += "&IN=NO";
 				url += "&aprob=NO";
-				let respuesta = await fetch(ruta + url).then((n) => n.json());
-				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
+				let respuesta = await fetch(rutas.eliminar + url).then((n) => n.json());
+				if (respuesta.ocultar) DOM.filas_yaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) location.reload();
-				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
+				if (respuesta.pasivos) DOM.pasivos.innerHTML = "* Pasivos";
 			}
 			// Inactivar
 			else {
 				// Ocultar el botón de editar
-				botonesEditar[fila].classList.add("ocultar");
+				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
 				// Reemplazar por el tacho
 				botonOut.classList.remove("fa-circle-xmark");
 				botonOut.classList.add("fa-trash-can");
 				botonOut.classList.add("inactivo");
 				// Ocultar los 6 campos
-				for (let columna = 0; columna < columnas; columna++)
-					taparMotivo[fila * columnas + columna].classList.add("ocultar");
+				for (let columna = 0; columna < v.columnas; columna++)
+					DOM.taparMotivo[fila * v.columnas + columna].classList.add("ocultar");
 				// Mostrar el select
-				motivosFila[fila].classList.remove("ocultar");
-				motivosSelect[fila].focus();
+				DOM.motivosFila[fila].classList.remove("ocultar");
+				DOM.motivosSelect[fila].focus();
 			}
 		});
 	});
 
 	// Listener de motivo
-	motivosSelect.forEach((motivoSelect, fila) => {
+	DOM.motivosSelect.forEach((motivoSelect, fila) => {
 		motivoSelect.addEventListener("change", () => {
 			let motivo = motivoSelect.value;
-			if (motivo) botonesOut[fila].classList.remove("inactivo");
+			if (motivo) DOM.botonesOut[fila].classList.remove("inactivo");
 		});
 	});
 });
