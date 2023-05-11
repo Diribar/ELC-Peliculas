@@ -124,11 +124,8 @@ module.exports = {
 			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
 		}
 
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Links en Producto' actualizados y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("LinksEnProd");
 		return;
 	},
 	ProdsEnRCLV: async function () {
@@ -144,19 +141,13 @@ module.exports = {
 			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
 		}
 
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Prods en RCLV' actualizados y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("ProdsEnRCLV");
 		return;
 	},
 
 	// 2. Rutinas diarias
 	FechaHoraUTC: function () {
-		// Obtiene la fecha y la hora procesados
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-
 		// Obtiene las rutinas del archivo JSON
 		let info = lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -169,12 +160,10 @@ module.exports = {
 		statusRutinas.FechaHoraUTC = "SI";
 
 		// Actualiza el archivo JSON
-		actualizaRutinasJSON({FechaUTC, HoraUTC, ...statusRutinas});
-
-		// Feedback del proceso
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Fecha y Hora' actualizadas y datos guardados en JSON");
+		actualizaRutinasJSON(statusRutinas);
 
 		// Fin
+		rutinasFinales("FechaHoraUTC");
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
@@ -183,14 +172,8 @@ module.exports = {
 		await borraImagenesSinRegistro1("personajes");
 		borraImagenesProvisorio();
 
-		// Actualiza el archivo JSON
-		actualizaRutinasJSON({BorraImagenesSinRegistro: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'BorraImagenesSinRegistro' actualizada y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("BorraImagenesSinRegistro");
 		return;
 	},
 	ImagenDerecha: async function () {
@@ -228,13 +211,10 @@ module.exports = {
 		}
 
 		// Actualiza el archivo JSON
-		actualizaRutinasJSON({TitulosImgDer, ImagenDerecha: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Imagen Derecha' actualizada y datos guardados en JSON");
+		actualizaRutinasJSON({TitulosImgDer});
 
 		// Fin
+		rutinasFinales("ImagenDerecha");
 		return;
 	},
 	PaisesConMasProductos: async () => {
@@ -263,14 +243,8 @@ module.exports = {
 		}
 		await Promise.all(verificador);
 
-		// Actualiza el archivo JSON
-		actualizaRutinasJSON({PaisesConMasProductos: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'PaisesConMasProductos' actualizada y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("PaisesConMasProductos");
 		return;
 	},
 	AprobadoConAvatarUrl: async () => {
@@ -295,15 +269,23 @@ module.exports = {
 			);
 		await Promise.all(verificador);
 
-		// Actualiza el archivo JSON
-		actualizaRutinasJSON({AprobadoConAvatarUrl: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'AprobadoConAvatarUrl' actualizada y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("AprobadoConAvatarUrl");
 		return;
+	},
+	E_MailBackupUsuarios: async () => {
+		// Variables
+		let datos = {historial_cambios_de_status: [], edics_aprob: [], edics_rech: []};
+		for (let tabla of Object.keys(datos)) datos[tabla] = await obtieneRegistrosParaMail(tabla);
+		let historial_cambios_de_status = BD_genericas.obtieneTodos("historial_cambios_de_status", "sugerido_en");
+		let edics_aprob = BD_genericas.obtieneTodos("edics_aprob", "editado_en");
+		let edics_rech = BD_genericas.obtieneTodos("edics_rech", "editado_en");
+		[historial_cambios_de_status, edics_aprob, edics_rech] = await Promise.all([
+			historial_cambios_de_status,
+			edics_aprob,
+			edics_rech,
+		]);
+		console.log(285, historial_cambios_de_status[0], edics_aprob[0], edics_rech[0]);
 	},
 
 	// 3. Rutinas semanales
@@ -345,14 +327,8 @@ module.exports = {
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
-		// Actualiza el archivo JSON
-		actualizaRutinasJSON({LinksVencidos: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("LinksVencidos");
 		return;
 	},
 	RclvsSinEpocaPSTyConAno: async () => {
@@ -369,14 +345,8 @@ module.exports = {
 			);
 		await Promise.all(verificador);
 
-		// Actualiza el archivo JSON
-		actualizaRutinasJSON({RclvsSinEpocaPSTyConAno: "SI"});
-
-		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "'RclvsSinEpocaPSTyConAno' actualizada y datos guardados en JSON");
-
 		// Fin
+		rutinasFinales("RclvsSinEpocaPSTyConAno");
 		return;
 	},
 };
@@ -403,6 +373,17 @@ let actualizaRutinasJSON = function (datos) {
 	fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 		if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
 	});
+
+	// Fin
+	return;
+};
+let rutinasFinales = (campo) => {
+	// Actualiza el archivo JSON
+	actualizaRutinasJSON({[campo]: "SI"});
+
+	// Feedback del proceso
+	const {FechaUTC, HoraUTC} = fechaHoraUTC();
+	console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' actualizada y datos guardados en JSON");
 
 	// Fin
 	return;
@@ -629,4 +610,11 @@ let borraImagenesProvisorio = () => {
 
 	// Fin
 	return;
+};
+let obtieneRegistrosParaMail =async (tabla) => {
+	// Obtiene los registros
+	let registros = await BD_genericas.obtieneTodos(tabla, "sugerido_en")
+	// Agrega el nombre de la tabla
+	.then(n)
+
 };
