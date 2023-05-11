@@ -293,7 +293,7 @@ module.exports = {
 					)
 					.then(() => true)
 			);
-		await Promise.all(verificador)
+		await Promise.all(verificador);
 
 		// Actualiza el archivo JSON
 		actualizaRutinasJSON({AprobadoConAvatarUrl: "SI"});
@@ -351,6 +351,30 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "'Links vencidos' actualizados y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	RclvsSinEpocaPSTyConAno: async () => {
+		// Variables
+		const condicion = {status_registro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
+		const entidades = ["personajes", "hechos"];
+		let verificador = [];
+
+		for (let entidad of entidades)
+			verificador.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) => n.map((m) => BD_genericas.actualizaPorId(entidad, m.id, {ano: null})))
+					.then(() => true)
+			);
+		await Promise.all(verificador);
+
+		// Actualiza el archivo JSON
+		actualizaRutinasJSON({RclvsSinEpocaPSTyConAno: "SI"});
+
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "'RclvsSinEpocaPSTyConAno' actualizada y datos guardados en JSON");
 
 		// Fin
 		return;

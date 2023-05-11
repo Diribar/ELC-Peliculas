@@ -816,8 +816,9 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	});
 
 	// 3. Ordena por la fecha más antigua
-	prods.VN.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-	prods.OT.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+	prods.VN.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	prods.OT.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+
 	// 4. Elimina repetidos
 	prods.VN = comp.eliminaRepetidos(prods.VN);
 	prods.OT = comp.eliminaRepetidos(prods.OT);
