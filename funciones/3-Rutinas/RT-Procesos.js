@@ -233,19 +233,41 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		mensajeCS: async (regsAB) => {
-			let mensaje = "<h1>Altas y Bajas</h1>";
+		hoyUsuario: (usuario) => {
+			// Variables
+			const ahora = new Date();
 
-			// Aprobadas
-			const regsAprob = regsAB.filter((m) => m.aprobado);
-			if (regsAprob.length) {
-				mensaje += "<h2>SUGERENCIAS APROBADAS</h2>";
-				for (let regAprob of regsAprob) {
-					const regEntidad = await BD_genericas.obtienePorId(regAprob.entidad, regAprob.entidad_id);
-					const nombre=reg.entidad
-					mensaje += "<p>" + nombre + "</p>";
-				}
+			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
+			const horaUsuario = ahora.getUTCHours() + usuario.pais.zona_horaria;
+
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
+			const aux = ahora.getTime() + usuario.pais.zona_horaria * unaHora;
+			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
+
+			// Fin
+			return {hoyUsuario, saltear: horaUsuario % 24 || usuario.fecha_revisores == hoyUsuario};
+		},
+		mensajeAB: async (regsAB) => {
+			// Variables
+			const titulo = "<h2>Altas y Bajas</h2>";
+			let mensajesAprob = "";
+			let mensajesRech = "";
+
+			// Proceso de los mensajes
+			for (let regAB of regsAB) {
+				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+				let nombre = comp.nombresPosibles(regEntidad);
+				let mensaje = "<p>" + nombre + "</p>";
+				regAB.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			}
+
+			// Detalles finales
+			if (mensajesAprob) mensajesAprob = "<h2>SUGERENCIAS APROBADAS</h2>" + mensajesAprob;
+			if (mensajesRech) mensajesRech = "<h2>SUGERENCIAS RECHAZADAS</h2>" + mensajesRech;
+			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
+
+			// Fin
+			return mensajeGlobal;
 		},
 		enviaMail: async (usuario) => {
 			// Prepara los datos
