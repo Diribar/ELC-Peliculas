@@ -153,6 +153,8 @@ module.exports = {
 
 		// Los consolida
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
+
+		// Fin
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion

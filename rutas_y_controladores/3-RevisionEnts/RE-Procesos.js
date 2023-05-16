@@ -245,10 +245,10 @@ module.exports = {
 			let datos = {
 				entidad,
 				entidad_id: original.id,
-				editado_por_id: original.creado_por_id,
-				editado_en: original.creado_en,
-				edic_revisada_por_id: revID,
-				edic_revisada_en: ahora,
+				sugerido_por_id: original.creado_por_id,
+				sugerido_en: original.creado_en,
+				revisado_por_id: revID,
+				revisado_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
 			};
 
@@ -570,10 +570,10 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				editado_por_id: edicion.editado_por_id,
-				editado_en: edicion.editado_en,
-				edic_revisada_por_id: revID,
-				edic_revisada_en: ahora,
+				sugerido_por_id: edicion.editado_por_id,
+				sugerido_en: edicion.editado_en,
+				revisado_por_id: revID,
+				revisado_en: ahora,
 				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
 			};
 
@@ -816,8 +816,9 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	});
 
 	// 3. Ordena por la fecha más antigua
-	prods.VN.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
-	prods.OT.sort((a, b) => new Date(a.fechaRef) - new Date(b.fechaRef));
+	prods.VN.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	prods.OT.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+
 	// 4. Elimina repetidos
 	prods.VN = comp.eliminaRepetidos(prods.VN);
 	prods.OT = comp.eliminaRepetidos(prods.OT);
