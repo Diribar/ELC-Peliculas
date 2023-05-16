@@ -155,13 +155,16 @@ module.exports = {
 		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
 		const rutinas = Object.keys(info.HorariosUTC);
 
+		// Obtiene la fecha UTC actual
+		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
+
 		// Establece el status de los procesos de rutina
-		const statusRutinas = {};
-		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
-		statusRutinas.FechaHoraUTC = "SI";
+		const archJSON = {FechaUTC, HoraUTC};
+		for (let rutina of rutinas) archJSON[rutina] = "NO";
+		archJSON.FechaHoraUTC = "SI";
 
 		// Actualiza el archivo JSON
-		procesos.actualizaRutinasJSON(statusRutinas);
+		procesos.actualizaRutinasJSON(archJSON);
 
 		// Fin
 		procesos.rutinasFinales("FechaHoraUTC");
@@ -276,22 +279,13 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// Obtiene información de la base de datos
-		let cambios_de_status = BD_genericas.obtieneTodos("cambios_de_status", "sugerido_por_id");
-		let edics_aprob = BD_genericas.obtieneTodos("edics_aprob", "sugerido_por_id");
-		let edics_rech = BD_genericas.obtieneTodos("edics_rech", "sugerido_por_id");
-		[cambios_de_status, edics_aprob, edics_rech] = await Promise.all([cambios_de_status, edics_aprob, edics_rech]);
+		const registros = await procesos.mailDeFeedback.obtieneRegistros();
 
 		// Otras variables
-		let usuarios_id = [
-			...new Set([
-				...cambios_de_status.map((n) => n.sugerido_por_id),
-				...edics_aprob.map((n) => n.sugerido_por_id),
-				...edics_rech.map((n) => n.sugerido_por_id),
-			]),
-		];
+		let usuarios_id = [...new Set(registros.map((n) => n.sugerido_por_id))];
 
 		// Rutina por usuario
-		console.log(usuarios_id);
+		console.log(285, usuarios_id);
 		// for (let usuario of usuarios) {
 
 		// }

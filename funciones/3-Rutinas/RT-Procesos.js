@@ -212,6 +212,29 @@ module.exports = {
 		return;
 	},
 
+	// Mail de Feedback
+	mailDeFeedback: {
+		obtieneRegistros: async () => {
+			// Variables
+			const entidades = ["cambios_de_status", "edics_aprob", "edics_rech"];
+			let registros = [];
+			let resultado = [];
+
+			// Obtiene los registros
+			for (let entidad of entidades)
+				registros.push(
+					BD_genericas.obtieneTodos(entidad, "sugerido_por_id").then((n) => n.map((m) => ({...m, entidad})))
+				);
+			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
+
+			// Ordena los registros por usuario, de menor a mayor
+			resultado.sort((a, b) => a.sugerido_por_id - b.sugerido_por_id);
+
+			// Fin
+			return resultado
+		},
+	},
+
 	// Funciones - Otras
 	fechaHoraUTC: () => {
 		// Obtiene la fecha y la hora y las procesa
