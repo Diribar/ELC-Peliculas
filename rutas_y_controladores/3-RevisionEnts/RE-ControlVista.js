@@ -173,7 +173,7 @@ module.exports = {
 
 		// Comentario del rechazo
 		const comentarios = inactivarRecuperar
-			? await BD_genericas.obtieneTodosPorCondicion("historial_cambios_de_status", {entidad, entidad_id: id}).then((n) =>
+			? await BD_genericas.obtieneTodosPorCondicion("cambios_de_status", {entidad, entidad_id: id}).then((n) =>
 					n.map((m) => m.comentario)
 			  )
 			: [];
@@ -303,7 +303,7 @@ module.exports = {
 		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
-		// 4. Agrega un registro en el historial_cambios_de_status
+		// 4. Agrega un registro en el cambios_de_status
 		// 4.A. Genera la información
 		let datosHist = {
 			...{entidad, entidad_id: id},
@@ -316,7 +316,7 @@ module.exports = {
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
 		// 4.C. Guarda los datos históricos
-		BD_genericas.agregaRegistro("historial_cambios_de_status", datosHist);
+		BD_genericas.agregaRegistro("cambios_de_status", datosHist);
 
 		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
