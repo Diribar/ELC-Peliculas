@@ -279,7 +279,6 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// Variables
-		const ahora = new Date();
 		let regsUsuario;
 
 		// Obtiene información de la base de datos
@@ -293,28 +292,24 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
-			const horaUsuario = ahora.getUTCHours() + usuario.pais.zona_horaria;
-			if (horaUsuario % 24) continue;
-
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
-			const aux = ahora.getTime() + usuario.pais.zona_horaria * unaHora;
-			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
-			if (usuario.fecha_revisores == hoyUsuario) continue;
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
+			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
+			// if (saltear) continue;
 
 			// Variables
 			let cuerpoDelMail = "<h1>Resultado de las sugerencias realizadas</h1>";
 			console.log("pasó");
 
 			// Obtiene la información de los cambios de status
-			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && entidad == "cambios_de_status");
-			if (regsUsuario.length) cuerpoDelMail += procesos.enviaMailFeedback.mensajeCS(regsUsuario);
+			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && n.entidad == "cambios_de_status");
+			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
 
 			// Obtiene la información de los cambios de edición
-			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && entidad != "cambios_de_status");
+			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && n.entidad != "cambios_de_status");
 			if (regsUsuario.length) cuerpoDelMail += "";
 
 			// Envía el mail
+			console.log(318, cuerpoDelMail);
 
 			// Actualiza la hora_revisor en el usuario
 
