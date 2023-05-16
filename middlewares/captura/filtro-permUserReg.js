@@ -109,13 +109,7 @@ module.exports = async (req, res, next) => {
 			v.registro.status_registro.creado && // en status creado
 			v.urlBase != "/revision" // la ruta no es de revisión
 		) {
-			let nombre = v.registro.nombre_castellano
-				? v.registro.nombre_castellano
-				: v.registro.nombre_original
-				? v.registro.nombre_original
-				: v.registro.nombre
-				? v.registro.nombre
-				: "";
+			let nombre = comp.nombresPosibles(v.registro)
 			if (nombre) nombre = "'" + nombre + "'";
 			let mensajes = creadoPorElUsuario
 				? [
@@ -179,18 +173,14 @@ module.exports = async (req, res, next) => {
 				pc_entidad == "peliculas" || pc_entidad == "colecciones"
 					? {entidad: "la ", reservado: "a"}
 					: {entidad: "el ", reservado: "o"};
-			const nombre = prodCapturado.nombre
-				? "nombre"
-				: prodCapturado.nombre_castellano
-				? "nombre_castellano"
-				: "nombre_original";
+			const nombre =comp.nombresPosibles(prodCapturado)
 			informacion = {
 				mensajes: [
 					"Tenés que liberar " +
 						terminacion.entidad +
 						pc_entidadNombre.toLowerCase() +
 						" '" +
-						prodCapturado[nombre] +
+						nombre +
 						"', que está reservad" +
 						terminacion.reservado +
 						" desde el " +
