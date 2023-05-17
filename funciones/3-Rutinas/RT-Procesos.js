@@ -268,7 +268,11 @@ module.exports = {
 			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
 			ol: (texto) => "<ol " + normalize + "font-size: 14px'>" + texto + "</ol>",
 			ul: (texto) => "<ul " + normalize + "font-size: 14px'>" + texto + "</ul>",
-			li: (texto) => "<li " + normalize + "font-size: 14px'>" + texto + "</li>",
+			li: (texto, color) => {
+				let formato = normalize;
+				if (color) formato = formato.replace("rgb(37,64,97)", color);
+				return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
+			},
 		},
 		mensajeAB: async function (regsAB) {
 			// Variables
@@ -346,7 +350,7 @@ module.exports = {
 			// Obtiene información clave de los registros
 			for (let regEdic of regsEdic) {
 				// Variables
-				const aprobado = !regEdic.motivo_id
+				const aprobado = !regEdic.motivo_id;
 				const familia = comp.obtieneDesdeEntidad.familia(regEdic.entidad);
 				const {nombreOrden, nombreVisual} = await this.nombres(regEdic, familia);
 				if (!nombreOrden) continue;
@@ -358,7 +362,7 @@ module.exports = {
 					entidad_id: regEdic.entidad_id,
 					campo: regEdic.titulo,
 					valorAprob: regEdic.valorAprob,
-					valorRech: !aprobado ? regEdic.valorRech : "",
+					valorDesc: regEdic.valorDesc,
 					motivo: !aprobado ? regEdic.motivo.descripcion : "",
 				});
 			}
@@ -401,22 +405,45 @@ module.exports = {
 			);
 
 			// Arma el mensaje
-			let mensajes = "";
-			let mensajesParcial = "";
+			let mensajesAcum = "";
+			let mensajesCampo, mensaje, color;
 			resultados.forEach((n, i) => {
-				// Acciones si cambió la entidad o la entidad_id
+				// Acciones por nueva entidad/entidad_id
 				if (
 					!i ||
 					(i && (n.entidadNombre != resultados[i - 1].entidadNombre || n.entidad_id != resultados[i - 1].entidad_id))
 				) {
-					let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>";
-					mensajes += this.formatos.li(mensaje);
+					mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>";
+					mensajesAcum += this.formatos.li(mensaje);
+					mensajesCampo = "";
 				}
+
+				// Agregado de la info por campo
+				mensaje = "<u>" + n.campo + "</u>: ";
+				mensaje += n.aprobado
+					? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
+					: "se mantuvo <em>" +
+					  n.valorAprob +
+					  "</em> como mejor opción que <em><b>" +
+					  n.valorDesc +
+					  "</b></em>. Motivo: " +
+					  n.motivo.toLowerCase()
+					  
+				color = !n.aprobado ? "red" : "";
+				mensajesCampo += this.formatos.li(mensaje, color);
+
+				// Acciones por fin de la entidad/entidad_id
+				if (
+					i == resultados.length - 1 ||
+					n.entidadNombre != resultados[i + 1].entidadNombre ||
+					n.entidad_id != resultados[i + 1].entidad_id
+				)
+					mensajesAcum += this.formatos.ul(mensajesCampo);
 			});
 
 			// Detalles finales
-			mensajes = this.formatos.ol(mensajes)
-			const mensajeGlobal = titulo + mensajes;
+			mensajesAcum = this.formatos.ol(mensajesAcum);
+			const mensajeGlobal = titulo + mensajesAcum;
 
 			// Fin
 			return mensajeGlobal;
