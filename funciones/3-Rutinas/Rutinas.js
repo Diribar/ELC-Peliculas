@@ -178,12 +178,12 @@ module.exports = {
 			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Obtiene la información de los cambios de status
-			const regsUsuarioAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
-			if (regsUsuarioAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsUsuarioAB);
+			const regsAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
 
 			// Obtiene la información de los cambios de edición
-			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
-			// if (regsUsuario.length) cuerpoMail += "";
+			const regsEdic = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "ediciones");
+			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
 
 			// Envía el mail y registra si fue enviado
 			const asunto = "DADI - Resultado de las sugerencias realizadas";
@@ -194,7 +194,8 @@ module.exports = {
 					.then((n) => n.OK)
 					.then(async (n) => {
 						if (n) {
-							procesos.mailDeFeedback.eliminaLosRegistrosAB(regsUsuarioAB);
+							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
+							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
 							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
 						}
 						return n;
@@ -204,7 +205,7 @@ module.exports = {
 
 		// Fin
 		console.log("Esperando...");
-		await Promise.all(mailsEnviados)
+		await Promise.all(mailsEnviados);
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
 	},
