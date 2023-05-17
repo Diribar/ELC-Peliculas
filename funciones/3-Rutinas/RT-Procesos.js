@@ -250,15 +250,21 @@ module.exports = {
 		mensajeAB: async (regsAB) => {
 			// Variables
 			const titulo = "<h2>Altas y Bajas</h2>";
+			let regsEntidad=[]
 			let mensajesAprob = "";
 			let mensajesRech = "";
 
 			// Proceso de los mensajes
-			for (let regAB of regsAB) {
-				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
-				let nombre = comp.nombresPosibles(regEntidad);
-				let mensaje = "<p>" + nombre + "</p>";
-				regAB.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+			for (let regAB of regsAB)
+				regsEntidad.push(
+					BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id).then((n) => (n.aprobado = regAB.aprobado))
+				);
+			regsEntidad=await Promise.all(regsEntidad)
+
+			for (let regEntidad of regsEntidad) {
+				const nombre = comp.nombresPosibles(regEntidad);
+				const mensaje = "<p>" + nombre + "</p>";
+				regEntidad.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			}
 
 			// Detalles finales
