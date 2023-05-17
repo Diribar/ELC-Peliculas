@@ -1,10 +1,10 @@
 {
-	"FechaUTC": "Mar. 16/may",
-	"HoraUTC": "17:35",
+	"FechaUTC": "Mié. 17/may",
+	"HoraUTC": "0:41",
 	"FechaSemUTC": "Mar. 16/may",
 	"HoraSemUTC": "17:02",
 	"semanaUTC": 19,
-	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd"],
+	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"ProdsEnRCLV": "SI",
 	"LinksEnProd": "SI",
 	"HorariosUTC": {
@@ -12,8 +12,7 @@
 		"PaisesConMasProductos": "01:00",
 		"BorraImagenesSinRegistro": "02:00",
 		"AprobadoConAvatarUrl": "03:00",
-		"ImagenDerecha": "06:00",
-		"MailDeFeedback": "12:00"
+		"ImagenDerecha": "06:00"
 	},
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",
@@ -22,9 +21,9 @@
 	"ImagenDerecha": "SI",
 	"MailDeFeedback": "NO",
 	"TitulosImgDer": {
-		"15-may-23": "Isidro Labrador",
 		"16-may-23": "Pascua de Resurrección",
-		"17-may-23": "Pascua de Resurrección"
+		"17-may-23": "Pascua de Resurrección",
+		"18-may-23": "Pascua de Resurrección"
 	},
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
 	"SemanaUTC": "SI",

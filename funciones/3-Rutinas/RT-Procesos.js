@@ -223,7 +223,11 @@ module.exports = {
 			// Obtiene los registros
 			for (let entidad of entidades)
 				registros.push(
-					BD_genericas.obtieneTodos(entidad, "sugerido_por_id").then((n) => n.map((m) => ({...m, entidad})))
+					BD_genericas.obtieneTodos(entidad, "sugerido_por_id")
+						// Quita los cambios del usuario que no se validan
+						.then((n) => n.filter((m) => m.aprobado !== null))
+						// Agrega el nombre de la tabla
+						.then((n) => n.map((m) => ({...m, tabla: entidad})))
 				);
 			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
 
@@ -233,33 +237,133 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		mensajeCS: async (regsAB) => {
-			let mensaje = "<h1>Altas y Bajas</h1>";
+		hoyUsuario: (usuario) => {
+			// Variables
+			const ahora = new Date();
 
-			// Aprobadas
-			const regsAprob = regsAB.filter((m) => m.aprobado);
-			if (regsAprob.length) {
-				mensaje += "<h2>SUGERENCIAS APROBADAS</h2>";
-				for (let regAprob of regsAprob) {
-					const regEntidad = await BD_genericas.obtienePorId(regAprob.entidad, regAprob.entidad_id);
-					const nombre=reg.entidad
-					mensaje += "<p>" + nombre + "</p>";
-				}
-			}
-		},
-		enviaMail: async (usuario) => {
-			// Prepara los datos
-			const asunto = "Feedback de la revisión de sugerencias";
-			const direccionMail = usuario.email;
-			// Envía el mail al usuario con la contraseña
-			let comentario = "";
-			let feedbackEnvioMail = await comp.enviarMail(asunto, direccionMail, comentario, req);
-			// Obtiene el horario de envío de mail
-			let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
-			// Genera el registro
-			contrasena = bcryptjs.hashSync(contrasena, 10);
+			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
+			const horaUsuario = ahora.getUTCHours() + usuario.pais.zona_horaria;
+
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
+			const aux = ahora.getTime() + usuario.pais.zona_horaria * unaHora;
+			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
+
 			// Fin
-			return {ahora, contrasena, feedbackEnvioMail};
+			return {hoyUsuario, saltear: !!(horaUsuario % 24) || usuario.fecha_revisores == hoyUsuario};
+		},
+		formatos: {
+			normalize: "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ",
+			h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
+			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
+			p: (texto) => "<li " + normalize + "font-size: 14px'>" + texto + "</li>",
+		},
+		mensajeAB: async function (regsAB) {
+			// Variables
+			const titulo = this.formatos.h2("Altas y Bajas");
+			let resultados = [];
+			let mensajesAprob = "";
+			let mensajesRech = "";
+
+			// Proceso de los registros
+			for (let regAB of regsAB) {
+				// Variables
+				const aprobado = regAB.aprobado;
+				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regAB.entidad);
+				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
+				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
+				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
+				const {nombreOrden, nombreVisual} = await this.nombres({regAB,familia});
+				if (!nombreOrden) continue;
+
+				// Alimenta el resultado
+				resultados.push({
+					familia,
+					entidadNombre,
+					nombreOrden,
+					nombreVisual,
+					statusInicial,
+					statusFinal,
+					aprobado,
+					motivo,
+				});
+			}
+			resultados.sort((a, b) =>
+				a.familia < b.familia
+					? -1
+					: a.familia > b.familia
+					? 1
+					: a.entidadNombre < b.entidadNombre
+					? -1
+					: a.entidadNombre > b.entidadNombre
+					? 1
+					: a.nombreOrden < b.nombreOrden
+					? -1
+					: a.nombreOrden > b.nombreOrden
+					? 1
+					: a.statusFinal.id < b.statusFinal.id
+					? -1
+					: a.statusFinal.id > b.statusFinal.id
+					? 1
+					: 0
+			);
+
+			resultados.map((n) => {
+				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
+				mensaje += " de status '<em>" + n.statusInicial.nombre.toLowerCase() + "</em>'";
+				mensaje += " a status '<em>" + n.statusFinal.nombre.toLowerCase() + "</em>'";
+				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				mensaje = this.formatos.p(mensaje);
+				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+			});
+
+			// Detalles finales
+			if (mensajesAprob) mensajesAprob = this.formatos.h3("SUGERENCIAS APROBADAS") + "<ol>" + mensajesAprob + "</ol>";
+			if (mensajesRech) mensajesRech = this.formatos.h3("SUGERENCIAS RECHAZADAS") + "<ol>" + mensajesRech + "</ol>";
+			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
+
+			// Fin
+			return mensajeGlobal;
+		},
+		nombres: async ({regAB,familia}) => {
+			if (regAB.entidad != "links") {
+				// Obtiene el registro
+				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+				if (!regEntidad.id) return {};
+
+				// Obtiene los nombres
+				nombreOrden = comp.nombresPosibles(regEntidad);
+				nombreVisual =
+					"<a href='http:" +
+					localhost +
+					"/" +
+					familia +
+					"/detalle/?entidad=" +
+					regAB.entidad +
+					"&id=" +
+					regAB.entidad_id +
+					"' style='color: inherit; text-decoration: none'>" +
+					nombreOrden +
+					"</a>";
+			} else {
+				// Obtiene el registro
+				const asociaciones = ["pelicula", "coleccion", "capitulo"];
+				const regEntidad = await BD_genericas.obtienePorIdConInclude("links", regAB.entidad_id, asociaciones);
+				if (!regEntidad.id) return {};
+
+				// Obtiene los nombres
+				const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+				nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
+				nombreVisual =
+					"<a href='http://" +
+					regEntidad.url +
+					"' style='color: inherit; text-decoration: none'>" +
+					nombreOrden +
+					"</a>";
+			}
+
+			// Fin
+			return {nombreOrden, nombreVisual}
 		},
 	},
 
@@ -322,3 +426,4 @@ module.exports = {
 		return;
 	},
 };
+let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
