@@ -515,7 +515,7 @@ module.exports = {
 						"' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
 				: "Imagen aprobada";
 		},
-		eliminaRegsAB: (regsAB) => {
+		eliminaRegsAB: (regs) => {
 			// Variables
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
@@ -526,16 +526,23 @@ module.exports = {
 			condicStatus.links = condicStatus.rclvs;
 
 			// Elimina los registros
-			for (let regAB of regsAB) {
+			for (let reg of regs) {
 				// Condiciones
-				const familias = comp.obtieneDesdeEntidad.familias(regAB.entidad);
-				const condicStatusOrig = regAB.status_original_id == condicStatus[familias].status_original_id;
-				const condicStatusFinal = regAB.status_final_id == condicStatus[familias].status_final_id;
+				const familias = comp.obtieneDesdeEntidad.familias(reg.entidad);
+				const condicStatusOrig = reg.status_original_id == condicStatus[familias].status_original_id;
+				const condicStatusFinal = reg.status_final_id == condicStatus[familias].status_final_id;
 
 				// Elimina los registros
-				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(regAB.tabla, regAB.id);
-				else BD_genericas.actualizaPorId(regAB.tabla, regAB.id, {comunicado_en: new Date()});
+				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(reg.tabla, reg.id);
+				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en: new Date()});
 			}
+
+			// Fin
+			return;
+		},
+		eliminaRegsEdic: (regs) => {
+			// Elimina los registros
+			for (let reg of regs) BD_genericas.eliminaPorId(reg.tabla, reg.id);
 
 			// Fin
 			return;
