@@ -433,7 +433,7 @@ module.exports = {
 				}
 
 				// Agregado de la info por campo
-				mensaje = "" + n.campo + ": ";
+				mensaje = n.campo + ": ";
 				mensaje += n.aprobado
 					? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
 					: "se mantuvo <em><b>" +
