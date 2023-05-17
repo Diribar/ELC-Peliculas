@@ -191,6 +191,8 @@ module.exports = {
 		}
 
 		// Fin
+		procesos.rutinasFinales("MailDeFeedback");
+		return;
 	},
 
 	// 2. Rutinas diarias
