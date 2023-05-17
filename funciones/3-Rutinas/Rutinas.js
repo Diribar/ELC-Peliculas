@@ -204,7 +204,7 @@ module.exports = {
 
 		// Fin
 		console.log("Esperando...");
-		// await Promise.all(mailsEnviados)
+		await Promise.all(mailsEnviados)
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
 	},
