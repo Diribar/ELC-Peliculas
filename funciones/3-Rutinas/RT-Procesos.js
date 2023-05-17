@@ -273,44 +273,8 @@ module.exports = {
 				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
 				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
 				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
-
-				// Nombre del registro
-				let nombreOrden, nombreVisual;
-				if (regAB.entidad != "links") {
-					// Obtiene el registro
-					const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
-					if (!regEntidad.id) continue;
-
-					// Obtiene los nombres
-					nombreOrden = comp.nombresPosibles(regEntidad);
-					nombreVisual =
-						"<a href='http:" +
-						localhost +
-						"/" +
-						familia +
-						"/detalle/?entidad=" +
-						regAB.entidad +
-						"&id=" +
-						regEntidad.id +
-						"' style='color: inherit; text-decoration: none'>" +
-						nombreOrden +
-						"</a>";
-				} else {
-					// Obtiene el registro
-					const asociaciones = ["pelicula", "coleccion", "capitulo"];
-					const regEntidad = await BD_genericas.obtienePorIdConInclude("links", regAB.entidad_id, asociaciones);
-					if (!regEntidad.id) continue;
-
-					// Obtiene los nombres
-					const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
-					nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
-					nombreVisual =
-						"<a href='http://" +
-						regEntidad.url +
-						"' style='color: inherit; text-decoration: none'>" +
-						nombreOrden +
-						"</a>";
-				}
+				const {nombreOrden, nombreVisual} = await this.nombres({regAB,familia});
+				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
 				resultados.push({
@@ -361,19 +325,45 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		enviaMail: async (usuario) => {
-			// Prepara los datos
-			const asunto = "Feedback de la revisión de sugerencias";
-			const direccionMail = usuario.email;
-			// Envía el mail al usuario con la contraseña
-			let comentario = "";
-			let feedbackEnvioMail = await comp.enviarMail(asunto, direccionMail, comentario, req);
-			// Obtiene el horario de envío de mail
-			let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
-			// Genera el registro
-			contrasena = bcryptjs.hashSync(contrasena, 10);
+		nombres: async ({regAB,familia}) => {
+			if (regAB.entidad != "links") {
+				// Obtiene el registro
+				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+				if (!regEntidad.id) return {};
+
+				// Obtiene los nombres
+				nombreOrden = comp.nombresPosibles(regEntidad);
+				nombreVisual =
+					"<a href='http:" +
+					localhost +
+					"/" +
+					familia +
+					"/detalle/?entidad=" +
+					regAB.entidad +
+					"&id=" +
+					regAB.entidad_id +
+					"' style='color: inherit; text-decoration: none'>" +
+					nombreOrden +
+					"</a>";
+			} else {
+				// Obtiene el registro
+				const asociaciones = ["pelicula", "coleccion", "capitulo"];
+				const regEntidad = await BD_genericas.obtienePorIdConInclude("links", regAB.entidad_id, asociaciones);
+				if (!regEntidad.id) return {};
+
+				// Obtiene los nombres
+				const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+				nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
+				nombreVisual =
+					"<a href='http://" +
+					regEntidad.url +
+					"' style='color: inherit; text-decoration: none'>" +
+					nombreOrden +
+					"</a>";
+			}
+
 			// Fin
-			return {ahora, contrasena, feedbackEnvioMail};
+			return {nombreOrden, nombreVisual}
 		},
 	},
 
