@@ -393,7 +393,7 @@ module.exports = {
 
 			// Elimina los registros
 			for (let regAB of regsAB) {
-				// Condiciones adicionales: el id del registro
+				// Condiciones
 				const familias = comp.obtieneDesdeEntidad.familias(regAB.entidad);
 				const condicStatusOrig = regAB.status_original_id == condicStatus[familias].status_original_id;
 				const condicStatusFinal = regAB.status_final_id == condicStatus[familias].status_final_id;
