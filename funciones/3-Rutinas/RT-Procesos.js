@@ -223,7 +223,7 @@ module.exports = {
 			// Obtiene los registros
 			for (let entidad of entidades)
 				registros.push(
-					BD_genericas.obtieneTodos(entidad, "sugerido_por_id").then((n) => n.map((m) => ({...m, entidad})))
+					BD_genericas.obtieneTodos(entidad, "sugerido_por_id").then((n) => n.map((m) => ({...m, tabla: entidad})))
 				);
 			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
 
@@ -245,31 +245,56 @@ module.exports = {
 			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
 
 			// Fin
-			return {hoyUsuario, saltear: horaUsuario % 24 || usuario.fecha_revisores == hoyUsuario};
+			return {hoyUsuario, saltear: !!(horaUsuario % 24) || usuario.fecha_revisores == hoyUsuario};
 		},
 		mensajeAB: async (regsAB) => {
 			// Variables
 			const titulo = "<h2>Altas y Bajas</h2>";
-			let regsEntidad=[]
+			let resultados = [];
 			let mensajesAprob = "";
 			let mensajesRech = "";
 
-			// Proceso de los mensajes
-			for (let regAB of regsAB)
-				regsEntidad.push(
-					BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id).then((n) => (n.aprobado = regAB.aprobado))
-				);
-			regsEntidad=await Promise.all(regsEntidad)
-
-			for (let regEntidad of regsEntidad) {
-				const nombre = comp.nombresPosibles(regEntidad);
-				const mensaje = "<p>" + nombre + "</p>";
-				regEntidad.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+			// Proceso de los registros
+			for (let regAB of regsAB) {
+				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+				if (!regEntidad.id) continue;
+				const nombre = regAB.entidad != "links" ? comp.nombresPosibles(regEntidad) : regEntidad.url;
+				const aprobado = regAB.aprobado;
+				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regAB.entidad);
+				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
+				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
+				resultados.push({familia, entidadNombre, nombre, statusInicial, statusFinal, aprobado});
 			}
+			resultados.sort((a, b) => {
+				if (
+					a.aprobado > b.aprobado ||
+					a.familia < b.familia ||
+					a.entidadNombre < b.entidadNombre ||
+					a.statusFinal.id < b.statusFinal.id ||
+					a.nombre < b.nombre
+				)
+					-1;
+				else 1;
+			});
+
+			resultados.map((n) => {
+				const mensaje =
+					"<p>" +
+					n.entidadNombre +
+					": <b>" +
+					n.nombre +
+					"</b>, de status '" +
+					n.statusInicial.nombre.toLowerCase() +
+					"' a status '" +
+					n.statusFinal.nombre.toLowerCase() +
+					"'</p>";
+				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
+			});
 
 			// Detalles finales
-			if (mensajesAprob) mensajesAprob = "<h2>SUGERENCIAS APROBADAS</h2>" + mensajesAprob;
-			if (mensajesRech) mensajesRech = "<h2>SUGERENCIAS RECHAZADAS</h2>" + mensajesRech;
+			if (mensajesAprob) mensajesAprob = "<h3>SUGERENCIAS APROBADAS</h3>" + mensajesAprob;
+			if (mensajesRech) mensajesRech = "<h3>SUGERENCIAS RECHAZADAS</h3>" + mensajesRech;
 			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
 
 			// Fin
