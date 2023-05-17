@@ -183,9 +183,9 @@ module.exports = {
 			const email = usuario.email;
 			const mailEnviado = await comp.enviarMail(asunto, email, cuerpoDelMail);
 			if (!mailEnviado.OK) continue;
+			console.log("Éxito");
 
 			// Actualiza la hora_revisor en el usuario
-			console.log("Éxito");
 
 			// Borra los registros de la BD
 		}
