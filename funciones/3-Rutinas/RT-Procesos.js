@@ -374,6 +374,30 @@ module.exports = {
 			// Fin
 			return {nombreOrden, nombreVisual};
 		},
+		eliminaLosRegistrosDeStatus: (regsUsuario) => {
+			// Variables
+			const condicStatus = {
+				// Condición 1: creado a creado-aprobado (productos)
+				productos: {status_original_id: creado_id, status_final_id: creado_aprob_id},
+				// Condición 2: creado a aprobado (rclvs y links)
+				rclvs: {status_original_id: creado_id, status_final_id: aprobado_id},
+			};
+			condicStatus.links = condicStatus.rclvs;
+
+			// Elimina los registros
+			for (let regUsuario of regsUsuario) {
+				// Condiciones adicionales: el id del registro
+				const familias = comp.obtieneDesdeEntidad.familias(regUsuario.entidad);
+				const condiciones = {id: regUsuario.id, ...condicStatus[familias]};
+				// continue;
+
+				// Elimina los registros
+				BD_genericas.eliminaTodosPorCondicion(regUsuario.tabla, condiciones);
+			}
+
+			// Fin
+			return;
+		},
 	},
 
 	// Funciones - Otras
