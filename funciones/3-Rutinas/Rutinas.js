@@ -160,7 +160,8 @@ module.exports = {
 		let mailsEnviados = [];
 
 		// Usuarios
-		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
+		let usuarios_id = [...new Set([...regsTodos.map((n) => n.sugerido_por_id)])];
+		console.log(164, usuarios_id);
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
 		);
