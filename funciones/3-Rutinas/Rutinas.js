@@ -172,8 +172,8 @@ module.exports = {
 			let cuerpoDelMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Obtiene la información de los cambios de status
-			const regsUsuarioStatus = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
-			if (regsUsuarioStatus.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuarioStatus);
+			const regsUsuarioAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			if (regsUsuarioAB.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuarioAB);
 
 			// Obtiene la información de los cambios de edición
 			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
@@ -186,7 +186,7 @@ module.exports = {
 				.then((n) => n.OK)
 				.then(async (n) => {
 					if (n) {
-						procesos.mailDeFeedback.eliminaLosRegistrosDeStatus(regsUsuarioStatus);
+						procesos.mailDeFeedback.eliminaLosRegistrosAB(regsUsuarioAB);
 						// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
 					}
 					return n;
@@ -195,7 +195,7 @@ module.exports = {
 
 		// Fin
 		console.log("Esperando...");
-		await Promise.all(mailsEnviados)
+		// await Promise.all(mailsEnviados)
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
 	},
