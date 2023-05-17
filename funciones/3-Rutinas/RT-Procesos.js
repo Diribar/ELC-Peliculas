@@ -242,14 +242,19 @@ module.exports = {
 			const ahora = new Date();
 
 			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
-			const horaUsuario = ahora.getUTCHours() + usuario.pais.zona_horaria;
+			const zona_horaria = usuario.pais.zona_horaria;
+			const horaUsuario = ahora.getUTCHours() + zona_horaria;
 
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
 			const aux = ahora.getTime() + usuario.pais.zona_horaria * unaHora;
 			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
 
+			// Saltear
+			let saltear = usuario.fecha_revisores == hoyUsuario; // Si ya envió un mail en el día
+			if (!saltear) saltear = zona_horaria < 0 ? horaUsuario < 0 : horaUsuario < 24; // Si todavía no son las 24hs
+
 			// Fin
-			return {hoyUsuario, saltear: !!(horaUsuario % 24) || usuario.fecha_revisores == hoyUsuario};
+			return {hoyUsuario, saltear};
 		},
 		formatos: {
 			normalize: "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ",
@@ -273,7 +278,7 @@ module.exports = {
 				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
 				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
 				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
-				const {nombreOrden, nombreVisual} = await this.nombres({regAB,familia});
+				const {nombreOrden, nombreVisual} = await this.nombres({regAB, familia});
 				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
@@ -325,7 +330,11 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		nombres: async ({regAB,familia}) => {
+		nombres: async ({regAB, familia}) => {
+			// Variables
+			let nombreOrden, nombreVisual;
+
+			// Fórmulas
 			if (regAB.entidad != "links") {
 				// Obtiene el registro
 				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
@@ -363,7 +372,7 @@ module.exports = {
 			}
 
 			// Fin
-			return {nombreOrden, nombreVisual}
+			return {nombreOrden, nombreVisual};
 		},
 	},
 
