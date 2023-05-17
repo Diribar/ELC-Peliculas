@@ -47,7 +47,7 @@ module.exports = {
 
 		// Acciones cuando se termina de revisar una edicion
 		// Si existen otras ediciones con los mismos valores que el original, elimina el valor de esos campos y eventualmente el registro de edicion
-		// Si corresponde, actualiza el status del registro original. No alimenta el historial de cambio de status
+		// Para productos, actualiza el status del registro original si corresponde. No alimenta el historial de cambio de status
 		if (!edicion) {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};
