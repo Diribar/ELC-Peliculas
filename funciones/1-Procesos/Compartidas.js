@@ -496,11 +496,12 @@ module.exports = {
 				return {OK: true};
 			})
 			.catch(async () => {
+				const link = req ? req.originalUrl : "/";
 				return {
 					OK: false,
 					informacion: {
 						mensajes: ["No hay conexión a internet"],
-						iconos: [{nombre: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}],
+						iconos: [{nombre: "fa-rotate-right", link, titulo: "Volver a intentarlo"}],
 					},
 				};
 			});
@@ -520,10 +521,10 @@ module.exports = {
 			},
 		});
 		let datos = {
-			from: '"Emprendimiento a bautizar" <' + process.env.direccMail + ">",
+			from: '"DADI" <' + process.env.direccMail + ">",
 			to: mail,
 			subject: asunto, // Subject line
-			text: comentario, // plain text body
+			//text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
