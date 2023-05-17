@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const Op = require("../../base_de_datos/modelos").Sequelize.Op;
 const comp = require("../1-Procesos/Compartidas");
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
@@ -216,23 +217,29 @@ module.exports = {
 	mailDeFeedback: {
 		obtieneRegistros: async () => {
 			// Variables
-			const entidades = ["cambios_de_status", "edics_aprob", "edics_rech"];
 			let registros = [];
 			let resultado = [];
+			let condiciones;
 
-			// Obtiene los registros
-			for (let entidad of entidades)
+			// Obtiene los registros de "cambios_de_status"
+			condiciones = {aprobado: {[Op.ne]: null}, comunicado_en: null};
+			registros.push(
+				BD_genericas.obtieneTodosPorCondicion("cambios_de_status", condiciones)
+					// Agrega el nombre de la tabla
+					.then((n) => n.map((m) => ({...m, tabla: "cambios_de_status"})))
+			);
+
+			// Obtiene los registros de "edics"
+			condiciones = {comunicado_en: null};
+			for (let entidad of ["edics_aprob", "edics_rech"])
 				registros.push(
-					BD_genericas.obtieneTodos(entidad, "sugerido_por_id")
-						// Quita los cambios del usuario que no se validan
-						.then((n) => n.filter((m) => m.aprobado !== null))
+					BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
 						// Agrega el nombre de la tabla
 						.then((n) => n.map((m) => ({...m, tabla: entidad})))
 				);
-			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
 
-			// Ordena los registros por usuario, de menor a mayor
-			resultado.sort((a, b) => a.sugerido_por_id - b.sugerido_por_id);
+			// Espera a que se reciba la info
+			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
 
 			// Fin
 			return resultado;
@@ -374,7 +381,7 @@ module.exports = {
 			// Fin
 			return {nombreOrden, nombreVisual};
 		},
-		eliminaLosRegistrosDeStatus: (regsUsuario) => {
+		eliminaLosRegistrosAB: (regsAB) => {
 			// Variables
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
@@ -385,14 +392,15 @@ module.exports = {
 			condicStatus.links = condicStatus.rclvs;
 
 			// Elimina los registros
-			for (let regUsuario of regsUsuario) {
+			for (let regAB of regsAB) {
 				// Condiciones adicionales: el id del registro
-				const familias = comp.obtieneDesdeEntidad.familias(regUsuario.entidad);
-				const condiciones = {id: regUsuario.id, ...condicStatus[familias]};
-				// continue;
+				const familias = comp.obtieneDesdeEntidad.familias(regAB.entidad);
+				const condicStatusOrig = regAB.status_original_id == condicStatus[familias].status_original_id;
+				const condicStatusFinal = regAB.status_final_id == condicStatus[familias].status_final_id;
 
 				// Elimina los registros
-				BD_genericas.eliminaTodosPorCondicion(regUsuario.tabla, condiciones);
+				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(regAB.tabla, regAB.id);
+				else BD_genericas.actualizaPorId(regAB.tabla, regAB.id, {comunicado_en: new Date()});
 			}
 
 			// Fin
