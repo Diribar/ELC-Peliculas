@@ -547,7 +547,7 @@ module.exports = {
 
 			// Elimina los registros
 			for (let reg of regs) {
-				// Elimina los registros
+				// Condición: sin duración
 				if (!reg.duracion) BD_genericas.eliminaPorId(reg.tabla, reg.id);
 				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
 			}

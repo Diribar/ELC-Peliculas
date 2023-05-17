@@ -152,6 +152,7 @@ module.exports = {
 		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
 		const regsTodos = [...regsAB, ...regsEdic];
 		if (!regsTodos.length) {
+			console.log("Sin mails para enviar");
 			procesos.rutinasFinales("MailDeFeedback");
 			return;
 		}
