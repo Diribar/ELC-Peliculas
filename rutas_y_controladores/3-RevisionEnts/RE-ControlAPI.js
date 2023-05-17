@@ -125,7 +125,7 @@ module.exports = {
 		// 1. Actualiza el status en el registro original
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 2. Agrega un registro en el cambios_de_status
+		// 2. Agrega un registro en el hist_cambios_de_status
 		let datosHist;
 		let sugerido_por_id = original.sugerido_por_id;
 		(() => {
@@ -148,7 +148,7 @@ module.exports = {
 			return;
 		})();
 		// return res.json({});
-		BD_genericas.agregaRegistro("cambios_de_status", datosHist);
+		BD_genericas.agregaRegistro("hist_cambios_de_status", datosHist);
 
 		// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
