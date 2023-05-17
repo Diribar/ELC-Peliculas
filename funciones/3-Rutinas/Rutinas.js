@@ -194,7 +194,7 @@ module.exports = {
 						if (n) {
 							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
 							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
-							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario,hoyUsuario);
+							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario);
 						}
 						return n;
 					})
