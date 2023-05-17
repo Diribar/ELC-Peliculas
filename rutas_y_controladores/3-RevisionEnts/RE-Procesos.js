@@ -615,7 +615,7 @@ module.exports = {
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
 			// 7. PROCESOS DE CIERRE
-			// - Si corresponde: cambia el status del registro, y eventualmente de las colecciones
+			// - Si corresponde: cambia el status del registro, y eventualmente de los capítulos
 			// - Actualiza 'prodsEnRCLV'
 			const statusAprob =
 				familias == "rclvs"
