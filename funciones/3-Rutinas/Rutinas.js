@@ -149,7 +149,7 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// Variables
-		const normalize = procesos.mailDeFeedback.normalize
+		const normalize = procesos.mailDeFeedback.normalize;
 		let regsUsuario;
 
 		// Obtiene información de la base de datos
@@ -178,12 +178,14 @@ module.exports = {
 			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
 			// if (regsUsuario.length) cuerpoDelMail += "";
 
-			// Envía el mail
+			// Envía el mail y si ocurre un imprevisto, saltea los próximos pasos
 			const asunto = "DADI - Resultado de las sugerencias realizadas";
 			const email = usuario.email;
-			comp.enviarMail(asunto, email, cuerpoDelMail);
+			const mailEnviado = await comp.enviarMail(asunto, email, cuerpoDelMail);
+			if (!mailEnviado.OK) continue;
 
 			// Actualiza la hora_revisor en el usuario
+			console.log("Éxito");
 
 			// Borra los registros de la BD
 		}
