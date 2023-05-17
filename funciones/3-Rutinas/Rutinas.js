@@ -195,7 +195,7 @@ module.exports = {
 					.then(async (n) => {
 						if (n) {
 							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
-							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
+							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
 							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
 						}
 						return n;
