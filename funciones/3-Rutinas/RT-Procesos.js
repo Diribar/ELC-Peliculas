@@ -218,7 +218,6 @@ module.exports = {
 		obtieneRegistros: async () => {
 			// Variables
 			let registros = [];
-			let resultado = [];
 			let condiciones;
 
 			// Obtiene los registros de "cambios_de_status"
@@ -238,10 +237,10 @@ module.exports = {
 			);
 
 			// Espera a que se reciba la info
-			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
+			const [regsAB, regsEdic] = await Promise.all(registros);
 
 			// Fin
-			return resultado;
+			return {regsAB, regsEdic};
 		},
 		hoyUsuario: (usuario) => {
 			// Variables
@@ -276,10 +275,11 @@ module.exports = {
 		},
 		mensajeAB: async function (regsAB) {
 			// Variables
-			const titulo = this.formatos.h2("Altas y Bajas");
 			let resultados = [];
+			let mensajesAcum = "";
 			let mensajesAprob = "";
 			let mensajesRech = "";
+			let color;
 
 			// Proceso de los registros
 			for (let regAB of regsAB) {
@@ -330,22 +330,23 @@ module.exports = {
 				mensaje += " de status '<em>" + n.statusInicial.nombre.toLowerCase() + "</em>'";
 				mensaje += " a status '<em>" + n.statusFinal.nombre.toLowerCase() + "</em>'";
 				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
-				mensaje = this.formatos.li(mensaje);
+				color = n.aprobado ? "green" : "firebrick";
+				mensaje = this.formatos.li(mensaje, color);
 				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			});
 
-			// Detalles finales
-			if (mensajesAprob) mensajesAprob = this.formatos.h3("SUGERENCIAS APROBADAS") + this.formatos.ol(mensajesAprob);
-			if (mensajesRech) mensajesRech = this.formatos.h3("SUGERENCIAS RECHAZADAS") + this.formatos.ol(mensajesRech);
-			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
-
+			// Ajustes finales
+			if (mensajesAprob) mensajesAcum += this.formatos.h2("Altas y Bajas - APROBADAS") + this.formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesAcum += this.formatos.h2("Altas y Bajas - RECHAZADAS") + this.formatos.ol(mensajesRech);
+			const mensajeGlobal = mensajesAcum
 			// Fin
 			return mensajeGlobal;
 		},
 		mensajeEdic: async function (regsEdic) {
 			// Variables
-			const titulo = this.formatos.h2("Ediciones");
 			let resultados = [];
+			let mensajesAcum = "";
+			let mensajesCampo, mensaje, color;
 
 			// Obtiene información clave de los registros
 			for (let regEdic of regsEdic) {
@@ -405,8 +406,6 @@ module.exports = {
 			);
 
 			// Arma el mensaje
-			let mensajesAcum = "";
-			let mensajesCampo, mensaje, color;
 			resultados.forEach((n, i) => {
 				// Acciones por nueva entidad/entidad_id
 				if (
@@ -423,13 +422,13 @@ module.exports = {
 					n.valorAprob = n.valorAprob.includes("/")
 						? "<a href='" +
 						  n.valorAprob +
-						  "' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
+						  "' style='color: inherit; text-decoration: none'>'<u>Imagen aprobada</u>'</a>"
 						: this.avatar(n.familia, n.valorAprob);
 					n.valorDesc = n.valorDesc.includes("/")
 						? "<a href='" +
 						  n.valorDesc +
-						  "' style='color: inherit; text-decoration: none'><u>Imagen descartada</u></a>"
-						: "Imagen descartada";
+						  "' style='color: inherit; text-decoration: none'>'<u>Imagen descartada</u>'</a>"
+						: "'Imagen descartada'";
 				}
 
 				// Agregado de la info por campo
@@ -443,7 +442,7 @@ module.exports = {
 					  "</em>. Motivo: " +
 					  n.motivo.toLowerCase();
 
-				color = !n.aprobado ? "firebrick" : "green";
+				color = n.aprobado ? "green" : "firebrick";
 				mensajesCampo += this.formatos.li(mensaje, color);
 
 				// Acciones por fin de la entidad/entidad_id
@@ -456,6 +455,7 @@ module.exports = {
 			});
 
 			// Detalles finales
+			const titulo = this.formatos.h2("Ediciones");
 			mensajesAcum = this.formatos.ol(mensajesAcum);
 			const mensajeGlobal = titulo + mensajesAcum;
 
@@ -512,11 +512,12 @@ module.exports = {
 
 			return existe
 				? "<a href='http:".concat(localhost, rutaArchivo) +
-						"' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
-				: "Imagen aprobada";
+						"' style='color: inherit; text-decoration: none'>'<u>Imagen aprobada</u>'</a>"
+				: "'Imagen aprobada'";
 		},
 		eliminaRegsAB: (regs) => {
 			// Variables
+			const comunicado_en = new Date();
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
 				productos: {status_original_id: creado_id, status_final_id: creado_aprob_id},
@@ -534,15 +535,22 @@ module.exports = {
 
 				// Elimina los registros
 				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(reg.tabla, reg.id);
-				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en: new Date()});
+				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
 			}
 
 			// Fin
 			return;
 		},
 		eliminaRegsEdic: (regs) => {
+			// Variables
+			const comunicado_en = new Date();
+
 			// Elimina los registros
-			for (let reg of regs) BD_genericas.eliminaPorId(reg.tabla, reg.id);
+			for (let reg of regs) {
+				// Elimina los registros
+				if (!reg.duracion) BD_genericas.eliminaPorId(reg.tabla, reg.id);
+				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
+			}
 
 			// Fin
 			return;
