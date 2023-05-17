@@ -42,6 +42,7 @@ module.exports = {
 		// Start-up
 		await this.conjuntoDeRutinasDiarias();
 		await this.conjuntoDeRutinasSemanales();
+		this.MailDeFeedback();
 	},
 
 	// 0.B. Conjunto de tareas
@@ -145,6 +146,49 @@ module.exports = {
 		// Fin
 		procesos.rutinasFinales("ProdsEnRCLV");
 		return;
+	},
+	MailDeFeedback: async () => {
+		// Variables
+		const normalize = procesos.mailDeFeedback.normalize
+		let regsUsuario;
+
+		// Obtiene información de la base de datos
+		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
+
+		// Usuarios
+		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
+		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
+			n.filter((m) => usuarios_id.includes(m.id))
+		);
+
+		// Rutina por usuario
+		for (let usuario of usuarios) {
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
+			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
+			// if (saltear) continue;
+
+			// Variables
+			let cuerpoDelMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
+
+			// Obtiene la información de los cambios de status
+			regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
+
+			// Obtiene la información de los cambios de edición
+			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
+			// if (regsUsuario.length) cuerpoDelMail += "";
+
+			// Envía el mail
+			const asunto = "DADI - Resultado de las sugerencias realizadas";
+			const email = usuario.email;
+			comp.enviarMail(asunto, email, cuerpoDelMail);
+
+			// Actualiza la hora_revisor en el usuario
+
+			// Borra los registros de la BD
+		}
+
+		// Fin
 	},
 
 	// 2. Rutinas diarias
@@ -276,60 +320,6 @@ module.exports = {
 		// Fin
 		procesos.rutinasFinales("AprobadoConAvatarUrl");
 		return;
-	},
-	MailDeFeedback: async () => {
-		// Variables
-		let regsUsuario;
-
-		// Obtiene información de la base de datos
-		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
-
-		// Usuarios
-		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
-		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
-			n.filter((m) => usuarios_id.includes(m.id))
-		);
-
-		// Rutina por usuario
-		console.log(294, usuarios.length);
-		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
-			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
-			// if (saltear) continue;
-
-			// Variables
-			let cuerpoDelMail = "<h1>Resultado de las sugerencias realizadas</h1>";
-			cuerpoDelMail += `
-				<style>
-					* {font-family: sans-serif; line-height 1}
-					h1 {font-size: 20px}
-					h2 {font-size: 18px}
-					h3 {font-size: 16px}
-					p {font-size: 14px}
-				</style>
-			`;
-
-			// Obtiene la información de los cambios de status
-			regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
-			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
-			console.log(305, cuerpoDelMail);
-
-			// Obtiene la información de los cambios de edición
-			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
-			// if (regsUsuario.length) cuerpoDelMail += "";
-
-			// Envía el mail
-			const asunto = "DADI - Resultado de las sugerencias realizadas";
-			const email = usuario.email;
-			comp.enviarMail(asunto, email, cuerpoDelMail);
-			// console.log(318, cuerpoDelMail);
-
-			// Actualiza la hora_revisor en el usuario
-
-			// Borra los registros de la BD
-		}
-
-		// Fin
 	},
 
 	// 3. Rutinas semanales

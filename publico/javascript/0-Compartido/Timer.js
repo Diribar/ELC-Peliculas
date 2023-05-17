@@ -83,7 +83,7 @@ window.addEventListener("load", async () => {
 			? [
 					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
 					"Quedó a disposición de los demás " + tipoUsuario + ".",
-					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
+					"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
 			  ]
 			: [
 					"Se cumplió el plazo de 1 hora desde que se creó el registro.",

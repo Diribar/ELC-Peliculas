@@ -145,7 +145,7 @@ module.exports = async (req, res, next) => {
 				mensajes: [
 					"Esta captura terminó el " + v.horarioFinalCaptura,
 					"Quedó a disposición de los demás " + v.tipoUsuario + ".",
-					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
+					"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
 				],
 				iconos: [v.vistaEntendido],
 			};

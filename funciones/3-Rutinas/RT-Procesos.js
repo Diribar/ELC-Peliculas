@@ -223,7 +223,11 @@ module.exports = {
 			// Obtiene los registros
 			for (let entidad of entidades)
 				registros.push(
-					BD_genericas.obtieneTodos(entidad, "sugerido_por_id").then((n) => n.map((m) => ({...m, tabla: entidad})))
+					BD_genericas.obtieneTodos(entidad, "sugerido_por_id")
+						// Quita los cambios del usuario que no se validan
+						.then((n) => n.filter((m) => m.aprobado !== null))
+						// Agrega el nombre de la tabla
+						.then((n) => n.map((m) => ({...m, tabla: entidad})))
 				);
 			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
 
@@ -247,54 +251,111 @@ module.exports = {
 			// Fin
 			return {hoyUsuario, saltear: !!(horaUsuario % 24) || usuario.fecha_revisores == hoyUsuario};
 		},
-		mensajeAB: async (regsAB) => {
+		formatos: {
+			normalize: "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ",
+			h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
+			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
+			p: (texto) => "<li " + normalize + "font-size: 14px'>" + texto + "</li>",
+		},
+		mensajeAB: async function (regsAB) {
 			// Variables
-			const titulo = "<h2>Altas y Bajas</h2>";
+			const titulo = this.formatos.h2("Altas y Bajas");
 			let resultados = [];
 			let mensajesAprob = "";
 			let mensajesRech = "";
 
 			// Proceso de los registros
 			for (let regAB of regsAB) {
-				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
-				if (!regEntidad.id) continue;
-				const nombre = regAB.entidad != "links" ? comp.nombresPosibles(regEntidad) : regEntidad.url;
+				// Variables
 				const aprobado = regAB.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regAB.entidad);
 				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
 				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
-				resultados.push({familia, entidadNombre, nombre, statusInicial, statusFinal, aprobado});
+				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
+
+				// Nombre del registro
+				let nombreOrden, nombreVisual;
+				if (regAB.entidad != "links") {
+					// Obtiene el registro
+					const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+					if (!regEntidad.id) continue;
+
+					// Obtiene los nombres
+					nombreOrden = comp.nombresPosibles(regEntidad);
+					nombreVisual =
+						"<a href='http:" +
+						localhost +
+						"/" +
+						familia +
+						"/detalle/?entidad=" +
+						regAB.entidad +
+						"&id=" +
+						regEntidad.id +
+						"' style='color: inherit; text-decoration: none'>" +
+						nombreOrden +
+						"</a>";
+				} else {
+					// Obtiene el registro
+					const asociaciones = ["pelicula", "coleccion", "capitulo"];
+					const regEntidad = await BD_genericas.obtienePorIdConInclude("links", regAB.entidad_id, asociaciones);
+					if (!regEntidad.id) continue;
+
+					// Obtiene los nombres
+					const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+					nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
+					nombreVisual =
+						"<a href='http://" +
+						regEntidad.url +
+						"' style='color: inherit; text-decoration: none'>" +
+						nombreOrden +
+						"</a>";
+				}
+
+				// Alimenta el resultado
+				resultados.push({
+					familia,
+					entidadNombre,
+					nombreOrden,
+					nombreVisual,
+					statusInicial,
+					statusFinal,
+					aprobado,
+					motivo,
+				});
 			}
-			resultados.sort((a, b) => {
-				if (
-					a.aprobado > b.aprobado ||
-					a.familia < b.familia ||
-					a.entidadNombre < b.entidadNombre ||
-					a.statusFinal.id < b.statusFinal.id ||
-					a.nombre < b.nombre
-				)
-					-1;
-				else 1;
-			});
+			resultados.sort((a, b) =>
+				a.familia < b.familia
+					? -1
+					: a.familia > b.familia
+					? 1
+					: a.entidadNombre < b.entidadNombre
+					? -1
+					: a.entidadNombre > b.entidadNombre
+					? 1
+					: a.nombreOrden < b.nombreOrden
+					? -1
+					: a.nombreOrden > b.nombreOrden
+					? 1
+					: a.statusFinal.id < b.statusFinal.id
+					? -1
+					: a.statusFinal.id > b.statusFinal.id
+					? 1
+					: 0
+			);
 
 			resultados.map((n) => {
-				const mensaje =
-					"<p>" +
-					n.entidadNombre +
-					": <b>" +
-					n.nombre +
-					"</b>, de status '" +
-					n.statusInicial.nombre.toLowerCase() +
-					"' a status '" +
-					n.statusFinal.nombre.toLowerCase() +
-					"'</p>";
+				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
+				mensaje += " de status '<em>" + n.statusInicial.nombre.toLowerCase() + "</em>'";
+				mensaje += " a status '<em>" + n.statusFinal.nombre.toLowerCase() + "</em>'";
+				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				mensaje = this.formatos.p(mensaje);
 				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			});
 
 			// Detalles finales
-			if (mensajesAprob) mensajesAprob = "<h3>SUGERENCIAS APROBADAS</h3>" + mensajesAprob;
-			if (mensajesRech) mensajesRech = "<h3>SUGERENCIAS RECHAZADAS</h3>" + mensajesRech;
+			if (mensajesAprob) mensajesAprob = this.formatos.h3("SUGERENCIAS APROBADAS") + "<ol>" + mensajesAprob + "</ol>";
+			if (mensajesRech) mensajesRech = this.formatos.h3("SUGERENCIAS RECHAZADAS") + "<ol>" + mensajesRech + "</ol>";
 			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
 
 			// Fin
@@ -375,3 +436,4 @@ module.exports = {
 		return;
 	},
 };
+let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";

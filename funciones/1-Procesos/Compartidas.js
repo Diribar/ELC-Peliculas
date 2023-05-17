@@ -139,6 +139,28 @@ module.exports = {
 				? "epoca_del_ano_id"
 				: "";
 		},
+		asocProd: (edicion) => {
+			return edicion.pelicula_id
+				? "pelicula"
+				: edicion.coleccion_id
+				? "coleccion"
+				: edicion.capitulo_id
+				? "capitulo"
+				: "";
+		},
+		asocRCLV: (edicion) => {
+			return  edicion.personaje_id
+				? "personaje"
+				: edicion.hecho_id
+				? "hecho"
+				: edicion.tema_id
+				? "tema"
+				: edicion.evento_id
+				? "evento"
+				: edicion.epoca_del_ano_id
+				? "epoca_del_ano"
+				: "";
+		},
 	},
 	convierteLetras: {
 		alIngles: (resultado) => {
@@ -525,7 +547,7 @@ module.exports = {
 			to: mail,
 			subject: asunto, // Subject line
 			//text: comentario, // plain text body
-			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+			html: comentario,//.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
 		let mailEnviado = transporter
@@ -665,7 +687,7 @@ let FN = {
 			: entidad == "epocas_del_ano"
 			? "Epoca del Año"
 			: entidad == "links"
-			? "Links"
+			? "Link"
 			: entidad == "usuarios"
 			? "Usuarios"
 			: "";
