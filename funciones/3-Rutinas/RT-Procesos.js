@@ -338,7 +338,7 @@ module.exports = {
 			// Ajustes finales
 			if (mensajesAprob) mensajesAcum += this.formatos.h2("Altas y Bajas - APROBADAS") + this.formatos.ol(mensajesAprob);
 			if (mensajesRech) mensajesAcum += this.formatos.h2("Altas y Bajas - RECHAZADAS") + this.formatos.ol(mensajesRech);
-			const mensajeGlobal = mensajesAcum
+			const mensajeGlobal = mensajesAcum;
 			// Fin
 			return mensajeGlobal;
 		},
@@ -553,6 +553,10 @@ module.exports = {
 			}
 
 			// Fin
+			return;
+		},
+		actualizaHoraRevisorEnElUsuario: (usuario, hoyUsuario) => {
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_revisores: hoyUsuario});
 			return;
 		},
 	},

@@ -174,7 +174,7 @@ module.exports = {
 
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
 			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
-			// if (saltear) continue;
+			if (saltear) continue;
 
 			// Variables
 			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
@@ -192,9 +192,9 @@ module.exports = {
 					.then((n) => n.OK)
 					.then(async (n) => {
 						if (n) {
-							// if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
-							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
-							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
+							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
+							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
+							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario,hoyUsuario);
 						}
 						return n;
 					})
