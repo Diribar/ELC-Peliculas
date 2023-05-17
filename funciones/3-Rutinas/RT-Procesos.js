@@ -231,12 +231,11 @@ module.exports = {
 
 			// Obtiene los registros de "edics"
 			condiciones = {comunicado_en: null};
-			for (let entidad of ["edics_aprob", "edics_rech"])
-				registros.push(
-					BD_genericas.obtieneTodosPorCondicion(entidad, condiciones)
-						// Agrega el nombre de la tabla
-						.then((n) => n.map((m) => ({...m, tabla: entidad})))
-				);
+			registros.push(
+				BD_genericas.obtieneTodosPorCondicionConInclude("ediciones", condiciones, "motivo")
+					// Agrega el nombre de la tabla
+					.then((n) => n.map((m) => ({...m, tabla: "ediciones"})))
+			);
 
 			// Espera a que se reciba la info
 			await Promise.all(registros).then((n) => n.map((m) => resultado.push(...m)));
@@ -267,7 +266,13 @@ module.exports = {
 			normalize: "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ",
 			h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
 			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
-			p: (texto) => "<li " + normalize + "font-size: 14px'>" + texto + "</li>",
+			ol: (texto) => "<ol " + normalize + "font-size: 14px'>" + texto + "</ol>",
+			ul: (texto) => "<ul " + normalize + "font-size: 14px'>" + texto + "</ul>",
+			li: (texto, color) => {
+				let formato = normalize;
+				if (color) formato = formato.replace("rgb(37,64,97)", color);
+				return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
+			},
 		},
 		mensajeAB: async function (regsAB) {
 			// Variables
@@ -285,7 +290,7 @@ module.exports = {
 				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
 				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
 				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
-				const {nombreOrden, nombreVisual} = await this.nombres({regAB, familia});
+				const {nombreOrden, nombreVisual} = await this.nombres(regAB, familia);
 				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
@@ -325,26 +330,146 @@ module.exports = {
 				mensaje += " de status '<em>" + n.statusInicial.nombre.toLowerCase() + "</em>'";
 				mensaje += " a status '<em>" + n.statusFinal.nombre.toLowerCase() + "</em>'";
 				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
-				mensaje = this.formatos.p(mensaje);
+				mensaje = this.formatos.li(mensaje);
 				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			});
 
 			// Detalles finales
-			if (mensajesAprob) mensajesAprob = this.formatos.h3("SUGERENCIAS APROBADAS") + "<ol>" + mensajesAprob + "</ol>";
-			if (mensajesRech) mensajesRech = this.formatos.h3("SUGERENCIAS RECHAZADAS") + "<ol>" + mensajesRech + "</ol>";
+			if (mensajesAprob) mensajesAprob = this.formatos.h3("SUGERENCIAS APROBADAS") + this.formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesRech = this.formatos.h3("SUGERENCIAS RECHAZADAS") + this.formatos.ol(mensajesRech);
 			const mensajeGlobal = titulo + mensajesAprob + mensajesRech;
 
 			// Fin
 			return mensajeGlobal;
 		},
-		nombres: async ({regAB, familia}) => {
+		mensajeEdic: async function (regsEdic) {
+			// Variables
+			const titulo = this.formatos.h2("Ediciones");
+			let resultados = [];
+
+			// Obtiene información clave de los registros
+			for (let regEdic of regsEdic) {
+				// Variables
+				const aprobado = !regEdic.motivo_id;
+				const familia = comp.obtieneDesdeEntidad.familia(regEdic.entidad);
+				const {nombreOrden, nombreVisual} = await this.nombres(regEdic, familia);
+				if (!nombreOrden) continue;
+
+				// Alimenta el resultado
+				resultados.push({
+					...{aprobado, familia, nombreOrden, nombreVisual},
+					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(regEdic.entidad),
+					entidad_id: regEdic.entidad_id,
+					campo: regEdic.titulo,
+					valorAprob: regEdic.valorAprob,
+					valorDesc: regEdic.valorDesc,
+					motivo: !aprobado ? regEdic.motivo.descripcion : "",
+				});
+			}
+
+			// Ordena los registros según el criterio en que se mostrará en el mail
+			resultados.sort((a, b) =>
+				false
+					? false
+					: // Familia
+					a.familia < b.familia
+					? -1
+					: a.familia > b.familia
+					? 1
+					: // Entidad
+					a.entidadNombre < b.entidadNombre
+					? -1
+					: a.entidadNombre > b.entidadNombre
+					? 1
+					: // Nombre del Producto o RCLV, o url del Link
+					a.nombreOrden < b.nombreOrden
+					? -1
+					: a.nombreOrden > b.nombreOrden
+					? 1
+					: // Para nombres iguales, separa por id
+					a.entidad_id < b.entidad_id
+					? -1
+					: a.entidad_id > b.entidad_id
+					? 1
+					: // Primero los campos aprobados
+					a.aprobado > b.aprobado
+					? -1
+					: a.aprobado < b.aprobado
+					? 1
+					: // Orden alfabético de los campos
+					a.campo < b.campo
+					? -1
+					: a.campo > b.campo
+					? 1
+					: 0
+			);
+
+			// Arma el mensaje
+			let mensajesAcum = "";
+			let mensajesCampo, mensaje, color;
+			resultados.forEach((n, i) => {
+				// Acciones por nueva entidad/entidad_id
+				if (
+					!i ||
+					(i && (n.entidadNombre != resultados[i - 1].entidadNombre || n.entidad_id != resultados[i - 1].entidad_id))
+				) {
+					mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>";
+					mensajesAcum += this.formatos.li(mensaje);
+					mensajesCampo = "";
+				}
+
+				// Adecua la info para el avatar
+				if (n.campo == "Avatar") {
+					n.valorAprob = n.valorAprob.includes("/")
+						? "<a href='" +
+						  n.valorAprob +
+						  "' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
+						: this.avatar(n.familia, n.valorAprob);
+					n.valorDesc = n.valorDesc.includes("/")
+						? "<a href='" +
+						  n.valorDesc +
+						  "' style='color: inherit; text-decoration: none'><u>Imagen descartada</u></a>"
+						: "Imagen descartada";
+				}
+
+				// Agregado de la info por campo
+				mensaje = n.campo + ": ";
+				mensaje += n.aprobado
+					? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
+					: "se mantuvo <em><b>" +
+					  n.valorAprob +
+					  "</b></em> como mejor opción que <em>" +
+					  n.valorDesc +
+					  "</em>. Motivo: " +
+					  n.motivo.toLowerCase();
+
+				color = !n.aprobado ? "firebrick" : "green";
+				mensajesCampo += this.formatos.li(mensaje, color);
+
+				// Acciones por fin de la entidad/entidad_id
+				if (
+					i == resultados.length - 1 ||
+					n.entidadNombre != resultados[i + 1].entidadNombre ||
+					n.entidad_id != resultados[i + 1].entidad_id
+				)
+					mensajesAcum += this.formatos.ul(mensajesCampo);
+			});
+
+			// Detalles finales
+			mensajesAcum = this.formatos.ol(mensajesAcum);
+			const mensajeGlobal = titulo + mensajesAcum;
+
+			// Fin
+			return mensajeGlobal;
+		},
+		nombres: async (reg, familia) => {
 			// Variables
 			let nombreOrden, nombreVisual;
 
 			// Fórmulas
-			if (regAB.entidad != "links") {
+			if (reg.entidad != "links") {
 				// Obtiene el registro
-				const regEntidad = await BD_genericas.obtienePorId(regAB.entidad, regAB.entidad_id);
+				const regEntidad = await BD_genericas.obtienePorId(reg.entidad, reg.entidad_id);
 				if (!regEntidad.id) return {};
 
 				// Obtiene los nombres
@@ -355,16 +480,16 @@ module.exports = {
 					"/" +
 					familia +
 					"/detalle/?entidad=" +
-					regAB.entidad +
+					reg.entidad +
 					"&id=" +
-					regAB.entidad_id +
+					reg.entidad_id +
 					"' style='color: inherit; text-decoration: none'>" +
 					nombreOrden +
 					"</a>";
 			} else {
 				// Obtiene el registro
 				const asociaciones = ["pelicula", "coleccion", "capitulo"];
-				const regEntidad = await BD_genericas.obtienePorIdConInclude("links", regAB.entidad_id, asociaciones);
+				const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asociaciones);
 				if (!regEntidad.id) return {};
 
 				// Obtiene los nombres
@@ -381,7 +506,16 @@ module.exports = {
 			// Fin
 			return {nombreOrden, nombreVisual};
 		},
-		eliminaLosRegistrosAB: (regsAB) => {
+		avatar: (familia, valorAprob) => {
+			const rutaArchivo = "/imagenes/2-" + familia + "s/Final/" + valorAprob;
+			const existe = comp.gestionArchivos.existe("./publico" + rutaArchivo);
+
+			return existe
+				? "<a href='http:".concat(localhost, rutaArchivo) +
+						"' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
+				: "Imagen aprobada";
+		},
+		eliminaRegsAB: (regsAB) => {
 			// Variables
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
