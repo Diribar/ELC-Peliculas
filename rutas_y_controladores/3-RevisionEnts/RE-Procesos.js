@@ -268,31 +268,31 @@ module.exports = {
 
 				// Valor aprobado
 				let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
-				let valorRech = relacInclude ? original[relacInclude].nombre : original[campo];
+				let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
 
 				// Casos especiales
 				if (["solo_cfc", "ama"].includes(campo)) {
 					valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-					valorRech = original[campo] == 1 ? "SI" : "NO";
+					valorDesc = original[campo] == 1 ? "SI" : "NO";
 				}
 				if (campo == "epoca_id") {
 					valorAprob = RCLV_actual[relacInclude].nombre_pers;
-					valorRech = original[relacInclude].nombre_pers;
+					valorDesc = original[relacInclude].nombre_pers;
 				}
 
 				// Si ninguna de las variables tiene un valor, saltea la rutina
-				if (!valorAprob && !valorRech) continue;
+				if (!valorAprob && !valorDesc) continue;
 
 				// Genera la información
 				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
 
 				// Obtiene la entidad y completa los datos
 				let edicsAprobRech;
-				if (valorAprob != valorRech) {
+				if (valorAprob != valorDesc) {
 					// Obtiene la entidad
 					edicsAprobRech = "edics_rech";
 					// Completa los datos
-					datos.valorRech = valorRech;
+					datos.valorDesc = valorDesc;
 					let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
 					datos.motivo_id = motivo.id;
 					datos.duracion = motivo.duracion;
@@ -595,7 +595,7 @@ module.exports = {
 			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
 			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
-			datos.valorRech = aprob ? mostrarOrig : mostrarEdic;
+			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 			// Agrega el registro
 			BD_genericas.agregaRegistro(decision, datos);
 

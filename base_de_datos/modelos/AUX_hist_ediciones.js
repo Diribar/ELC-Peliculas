@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		entidad_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(25)},
 		titulo: {type: dt.STRING(35)},
-		valorRech: {type: dt.STRING(100)},
+		valorDesc: {type: dt.STRING(100)},
 		valorAprob: {type: dt.STRING(100)},
 
 		motivo_id: {type: dt.INTEGER},
