@@ -150,6 +150,7 @@ module.exports = {
 	MailDeFeedback: async () => {
 		// Variables
 		const normalize = procesos.mailDeFeedback.normalize;
+		let mailsEnviados = [];
 		let regsUsuario;
 
 		// Obtiene información de la base de datos
@@ -171,26 +172,30 @@ module.exports = {
 			let cuerpoDelMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Obtiene la información de los cambios de status
-			regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
-			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
+			const regsUsuarioStatus = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			if (regsUsuarioStatus.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuarioStatus);
 
 			// Obtiene la información de los cambios de edición
 			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
 			// if (regsUsuario.length) cuerpoDelMail += "";
 
-			// Envía el mail y si ocurre un imprevisto, saltea los próximos pasos
+			// Envía el mail y registra si fue enviado
 			const asunto = "DADI - Resultado de las sugerencias realizadas";
 			const email = usuario.email;
-			const mailEnviado = await comp.enviarMail(asunto, email, cuerpoDelMail);
-			if (!mailEnviado.OK) continue;
-			console.log("Éxito");
-
-			// Actualiza la hora_revisor en el usuario
-
-			// Borra los registros de la BD
+			mailsEnviados.push(comp.enviarMail(asunto, email, cuerpoDelMail)
+				.then((n) => n.OK)
+				.then(async (n) => {
+					if (n) {
+						procesos.mailDeFeedback.eliminaLosRegistrosDeStatus(regsUsuarioStatus);
+						// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
+					}
+					return n;
+				}));
 		}
 
 		// Fin
+		console.log("Esperando...");
+		await Promise.all(mailsEnviados)
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
 	},
