@@ -195,13 +195,7 @@ module.exports = {
 		BD_genericas.eliminaPorId(entidad, id);
 
 		// Prepara información para la próxima vista
-		const nombre = original.nombre_castellano
-			? original.nombre_castellano
-			: original.nombre_original
-			? original.nombre_original
-			: original.nombre
-			? original.nombre
-			: "¿ ?";
+		const nombre = comp.nombresPosibles(original)
 
 		// Guarda la información
 		let objeto = {entidad, nombre};

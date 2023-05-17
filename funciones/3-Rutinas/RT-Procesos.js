@@ -231,7 +231,35 @@ module.exports = {
 			resultado.sort((a, b) => a.sugerido_por_id - b.sugerido_por_id);
 
 			// Fin
-			return resultado
+			return resultado;
+		},
+		mensajeCS: async (regsAB) => {
+			let mensaje = "<h1>Altas y Bajas</h1>";
+
+			// Aprobadas
+			const regsAprob = regsAB.filter((m) => m.aprobado);
+			if (regsAprob.length) {
+				mensaje += "<h2>SUGERENCIAS APROBADAS</h2>";
+				for (let regAprob of regsAprob) {
+					const regEntidad = await BD_genericas.obtienePorId(regAprob.entidad, regAprob.entidad_id);
+					const nombre=reg.entidad
+					mensaje += "<p>" + nombre + "</p>";
+				}
+			}
+		},
+		enviaMail: async (usuario) => {
+			// Prepara los datos
+			const asunto = "Feedback de la revisión de sugerencias";
+			const direccionMail = usuario.email;
+			// Envía el mail al usuario con la contraseña
+			let comentario = "";
+			let feedbackEnvioMail = await comp.enviarMail(asunto, direccionMail, comentario, req);
+			// Obtiene el horario de envío de mail
+			let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
+			// Genera el registro
+			contrasena = bcryptjs.hashSync(contrasena, 10);
+			// Fin
+			return {ahora, contrasena, feedbackEnvioMail};
 		},
 	},
 
@@ -281,20 +309,6 @@ module.exports = {
 
 		// Fin
 		return horarioFinal;
-	},
-	enviaMailFeedback: async (usuario) => {
-		// Prepara los datos
-		const asunto = "Feedback de la revisión de sugerencias";
-		const direccionMail = usuario.email;
-		// Envía el mail al usuario con la contraseña
-		let comentario = "";
-		let feedbackEnvioMail = await comp.enviarMail(asunto, direccionMail, comentario, req);
-		// Obtiene el horario de envío de mail
-		let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario
-		// Genera el registro
-		contrasena = bcryptjs.hashSync(contrasena, 10);
-		// Fin
-		return {ahora, contrasena, feedbackEnvioMail};
 	},
 	rutinasFinales: function (campo) {
 		// Actualiza el archivo JSON
