@@ -418,18 +418,32 @@ module.exports = {
 					mensajesCampo = "";
 				}
 
+				// Adecua la info para el avatar
+				if (n.campo == "Avatar") {
+					n.valorAprob = n.valorAprob.includes("/")
+						? "<a href='" +
+						  n.valorAprob +
+						  "' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
+						: this.avatar(n.familia, n.valorAprob);
+					n.valorDesc = n.valorDesc.includes("/")
+						? "<a href='" +
+						  n.valorDesc +
+						  "' style='color: inherit; text-decoration: none'><u>Imagen descartada</u></a>"
+						: "Imagen descartada";
+				}
+
 				// Agregado de la info por campo
-				mensaje = "<u>" + n.campo + "</u>: ";
+				mensaje = "" + n.campo + ": ";
 				mensaje += n.aprobado
 					? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
-					: "se mantuvo <em>" +
+					: "se mantuvo <em><b>" +
 					  n.valorAprob +
-					  "</em> como mejor opción que <em><b>" +
+					  "</b></em> como mejor opción que <em>" +
 					  n.valorDesc +
-					  "</b></em>. Motivo: " +
-					  n.motivo.toLowerCase()
-					  
-				color = !n.aprobado ? "red" : "";
+					  "</em>. Motivo: " +
+					  n.motivo.toLowerCase();
+
+				color = !n.aprobado ? "firebrick" : "green";
 				mensajesCampo += this.formatos.li(mensaje, color);
 
 				// Acciones por fin de la entidad/entidad_id
@@ -491,6 +505,15 @@ module.exports = {
 
 			// Fin
 			return {nombreOrden, nombreVisual};
+		},
+		avatar: (familia, valorAprob) => {
+			const rutaArchivo = "/imagenes/2-" + familia + "s/Final/" + valorAprob;
+			const existe = comp.gestionArchivos.existe("./publico" + rutaArchivo);
+
+			return existe
+				? "<a href='http:".concat(localhost, rutaArchivo) +
+						"' style='color: inherit; text-decoration: none'><u>Imagen aprobada</u></a>"
+				: "Imagen aprobada";
 		},
 		eliminaRegsAB: (regsAB) => {
 			// Variables
