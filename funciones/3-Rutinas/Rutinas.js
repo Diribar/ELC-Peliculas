@@ -282,15 +282,16 @@ module.exports = {
 		let regsUsuario;
 
 		// Obtiene información de la base de datos
-		const regsAcum = await procesos.mailDeFeedback.obtieneRegistros();
+		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
 
 		// Usuarios
-		let usuarios_id = [...new Set(regsAcum.map((n) => n.sugerido_por_id))];
+		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
 		);
 
 		// Rutina por usuario
+		console.log(294, usuarios.length);
 		for (let usuario of usuarios) {
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
 			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
@@ -298,18 +299,30 @@ module.exports = {
 
 			// Variables
 			let cuerpoDelMail = "<h1>Resultado de las sugerencias realizadas</h1>";
-			console.log("pasó");
+			cuerpoDelMail += `
+				<style>
+					* {font-family: sans-serif; line-height 1}
+					h1 {font-size: 20px}
+					h2 {font-size: 18px}
+					h3 {font-size: 16px}
+					p {font-size: 14px}
+				</style>
+			`;
 
 			// Obtiene la información de los cambios de status
-			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && n.entidad == "cambios_de_status");
+			regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
 			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
+			console.log(305, cuerpoDelMail);
 
 			// Obtiene la información de los cambios de edición
-			regsUsuario = regsAcum.filter((n) => n.sugerido_por_id == usuario.id && n.entidad != "cambios_de_status");
-			if (regsUsuario.length) cuerpoDelMail += "";
+			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
+			// if (regsUsuario.length) cuerpoDelMail += "";
 
 			// Envía el mail
-			console.log(318, cuerpoDelMail);
+			const asunto = "DADI - Resultado de las sugerencias realizadas";
+			const email = usuario.email;
+			comp.enviarMail(asunto, email, cuerpoDelMail);
+			// console.log(318, cuerpoDelMail);
 
 			// Actualiza la hora_revisor en el usuario
 
