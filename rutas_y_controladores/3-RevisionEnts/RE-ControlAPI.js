@@ -45,7 +45,9 @@ module.exports = {
 		// PROCESOS COMUNES A TODOS LOS CAMPOS
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
-		// Cuando se termina de revisar una edicion, se fija si existen otras ediciones con los mismos valores que el original, y en caso afirmativo elimina el valor de esos campos y eventualmente el registro de edicion
+		// Acciones cuando se termina de revisar una edicion
+		// Si existen otras ediciones con los mismos valores que el original, elimina el valor de esos campos y eventualmente el registro de edicion
+		// Para productos, actualiza el status del registro original si corresponde. No alimenta el historial de cambio de status
 		if (!edicion) {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};

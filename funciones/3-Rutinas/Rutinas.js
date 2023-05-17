@@ -148,12 +148,16 @@ module.exports = {
 		return;
 	},
 	MailDeFeedback: async () => {
+		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
+		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
+		if (!regsTodos.length) {
+			procesos.rutinasFinales("MailDeFeedback");
+			return;
+		}
+
 		// Variables
 		const normalize = procesos.mailDeFeedback.normalize;
-		let regsUsuario;
-
-		// Obtiene información de la base de datos
-		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
+		let mailsEnviados = [];
 
 		// Usuarios
 		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
@@ -163,34 +167,46 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
+			// Variables
+			let cuerpoMail;
+
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
 			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
 			// if (saltear) continue;
 
 			// Variables
-			let cuerpoDelMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
+			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Obtiene la información de los cambios de status
-			regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
-			if (regsUsuario.length) cuerpoDelMail += await procesos.mailDeFeedback.mensajeAB(regsUsuario);
+			const regsUsuarioAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			if (regsUsuarioAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsUsuarioAB);
 
 			// Obtiene la información de los cambios de edición
 			// regsUsuario = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla != "cambios_de_status");
-			// if (regsUsuario.length) cuerpoDelMail += "";
+			// if (regsUsuario.length) cuerpoMail += "";
 
-			// Envía el mail y si ocurre un imprevisto, saltea los próximos pasos
+			// Envía el mail y registra si fue enviado
 			const asunto = "DADI - Resultado de las sugerencias realizadas";
 			const email = usuario.email;
-			const mailEnviado = await comp.enviarMail(asunto, email, cuerpoDelMail);
-			if (!mailEnviado.OK) continue;
-
-			// Actualiza la hora_revisor en el usuario
-			console.log("Éxito");
-
-			// Borra los registros de la BD
+			mailsEnviados.push(
+				comp
+					.enviarMail(asunto, email, cuerpoMail)
+					.then((n) => n.OK)
+					.then(async (n) => {
+						if (n) {
+							procesos.mailDeFeedback.eliminaLosRegistrosAB(regsUsuarioAB);
+							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
+						}
+						return n;
+					})
+			);
 		}
 
 		// Fin
+		console.log("Esperando...");
+		await Promise.all(mailsEnviados)
+		procesos.rutinasFinales("MailDeFeedback");
+		return;
 	},
 
 	// 2. Rutinas diarias
