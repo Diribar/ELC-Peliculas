@@ -149,7 +149,8 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
-		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
+		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
+		const regsTodos = [...regsAB, ...regsEdic];
 		if (!regsTodos.length) {
 			procesos.rutinasFinales("MailDeFeedback");
 			return;
@@ -160,7 +161,7 @@ module.exports = {
 		let mailsEnviados = [];
 
 		// Usuarios
-		let usuarios_id = [...new Set([...regsTodos.map((n) => n.sugerido_por_id)])];
+		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
 		console.log(164, usuarios_id);
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
@@ -178,12 +179,8 @@ module.exports = {
 			// Variables
 			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
-			// Obtiene la información de los cambios de status
-			const regsAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			// Arma el cuerpo del mail
 			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
-
-			// Obtiene la información de los cambios de edición
-			const regsEdic = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "ediciones");
 			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
 
 			// Envía el mail y registra si fue enviado
@@ -195,8 +192,8 @@ module.exports = {
 					.then((n) => n.OK)
 					.then(async (n) => {
 						if (n) {
-							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
-							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
+							// if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
+							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
 							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
 						}
 						return n;
@@ -205,7 +202,7 @@ module.exports = {
 		}
 
 		// Fin
-		console.log("Esperando...");
+		console.log("Enviando mails...");
 		await Promise.all(mailsEnviados);
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
