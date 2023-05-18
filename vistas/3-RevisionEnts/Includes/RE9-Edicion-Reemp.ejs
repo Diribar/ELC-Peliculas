@@ -1,13 +1,9 @@
 <div class="flexRowAlign">
 	<!-- Aprobar y Rechazar -->
-	<div class="aprobRech">
-		<i class="fa-solid fa-circle-check"></i>
-		<i class="fa-solid fa-circle-xmark mostrarMotivos"></i>
-	</div>
 	<div class="campoTitulo"><%= campo.titulo %>:</div>
 	<div class="infoMostrar flexRowAlign">
-		<div class="edic"><%= campo.mostrarEdic %></div>
-		<div class="orig"><%= campo.mostrarOrig %></div>
+		<div class="edic aprobar pointer"><%= campo.mostrarEdic %></div>
+		<div class="orig rechazar pointer"><%= campo.mostrarOrig %></div>
 	</div>
 </div>
 <div class="ocultar">

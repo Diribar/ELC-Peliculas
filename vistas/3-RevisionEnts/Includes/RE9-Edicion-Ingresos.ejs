@@ -1,11 +1,7 @@
-<!-- Aprobar y Rechazar -->
-<td class="aprobRech">
-	<i class="fa-solid fa-circle-check"></i>
-	<i class="fa-solid fa-circle-xmark rechazar"></i>
-</td>
 <td class="campoTitulo"><%= campo.titulo %>:</td>
 <td class="campoNombre ocultar"><%= campo.nombre %></td>
-<!-- Data-entry -->
-<td class="infoMostrar">
-	<div class="edic"><%= campo.mostrarEdic %></div>
+<!-- Data-entry Aprobar/Rechazar -->
+<td class="infoMostrar flexRowAlign">
+	<div class="edic aprobar pointer"><%= campo.mostrarEdic %></div>
+	<i class="fa-solid fa-circle-xmark rechazar pointer"></i>
 </td>
