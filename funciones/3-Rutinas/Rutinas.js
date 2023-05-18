@@ -149,8 +149,10 @@ module.exports = {
 	},
 	MailDeFeedback: async () => {
 		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
-		const regsTodos = await procesos.mailDeFeedback.obtieneRegistros();
+		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
+		const regsTodos = [...regsAB, ...regsEdic];
 		if (!regsTodos.length) {
+			console.log("Sin mails para enviar");
 			procesos.rutinasFinales("MailDeFeedback");
 			return;
 		}
@@ -172,17 +174,13 @@ module.exports = {
 
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
 			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
-			// if (saltear) continue;
+			if (saltear) continue;
 
 			// Variables
 			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
-			// Obtiene la información de los cambios de status
-			const regsAB = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "cambios_de_status");
+			// Arma el cuerpo del mail
 			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
-
-			// Obtiene la información de los cambios de edición
-			const regsEdic = regsTodos.filter((n) => n.sugerido_por_id == usuario.id && n.tabla == "ediciones");
 			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
 
 			// Envía el mail y registra si fue enviado
@@ -195,8 +193,8 @@ module.exports = {
 					.then(async (n) => {
 						if (n) {
 							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
-							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
-							// await procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(hoyUsuario);
+							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
+							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario);
 						}
 						return n;
 					})
@@ -204,7 +202,7 @@ module.exports = {
 		}
 
 		// Fin
-		console.log("Esperando...");
+		console.log("Enviando mails...");
 		await Promise.all(mailsEnviados);
 		procesos.rutinasFinales("MailDeFeedback");
 		return;
