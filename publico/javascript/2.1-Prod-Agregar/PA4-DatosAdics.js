@@ -10,35 +10,43 @@ window.addEventListener("load", async () => {
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
+
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
 		// CFC
 		cfcSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		cfcNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+
 		// Ocurrió
 		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+
 		// RCLV
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 		checkRCLV: document.querySelector("#RCLV #checkbox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
+
 		// RCLV - Sectores
 		sectorRCLV: document.querySelector("#RCLV"),
 		sectorPers: document.querySelector("#RCLV #personaje_id"),
 		sectorHecho: document.querySelector("#RCLV #hecho_id"),
 		sectorValor: document.querySelector("#RCLV #tema_id"),
+
 		// RCLV - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),
 		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
+
 		// RCLV - Varios
 		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-xmark"),
+
 		// RCLV - Links
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
