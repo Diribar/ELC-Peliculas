@@ -169,7 +169,7 @@ module.exports = {
 		imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_rech_altas.filter((n) => n[petitFamilia]);
+		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_status.filter((n) => n[petitFamilia]);
 
 		// Comentario del rechazo
 		const comentarios = inactivarRecuperar
@@ -313,7 +313,7 @@ module.exports = {
 		};
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
-			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_rech_altas.find((n) => n.id == motivo_id) : {};
+			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_status.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
 		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("hist_cambios_de_status", datosHist);
@@ -432,7 +432,7 @@ module.exports = {
 			// Reemplazo manual - Variables
 			codigo += "/avatar";
 			avatar = procsCRUD.obtieneAvatar(original, edicion);
-			motivos = motivos_rech_edic.filter((m) => m.avatar_prods);
+			motivos = motivos_edics.filter((m) => m.avatar_prods);
 			avatarExterno = !avatar.orig.includes("/imagenes/");
 			const nombre = petitFamilia == "prods" ? original.nombre_castellano : original.nombre;
 			avatarsExternos = variables.avatarsExternos[petitFamilia](nombre);
@@ -454,7 +454,7 @@ module.exports = {
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
 			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
-			motivos = motivos_rech_edic.filter((m) => m.prods);
+			motivos = motivos_edics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// Fin, si no quedan campos
@@ -534,7 +534,7 @@ module.exports = {
 		const avatar = producto.avatar
 			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
-		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivos_status.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 

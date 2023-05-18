@@ -46,7 +46,7 @@ module.exports = {
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim", valor: fecha_nacim},
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
-		let motivos_rech = await BD_genericas.obtieneTodos("motivos_rech_edic", "orden");
+		let motivos_rech = await BD_genericas.obtieneTodos("motivos_edics", "orden");
 		let motivos_docum = motivos_rech.filter((n) => n.avatar_us);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
@@ -82,7 +82,7 @@ module.exports = {
 		let usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 		let revID = req.session.usuario.id;
 		// Variables de motivos
-		let motivos = await BD_genericas.obtieneTodos("motivos_rech_edic", "orden");
+		let motivos = await BD_genericas.obtieneTodos("motivos_edics", "orden");
 		let durac_penalidad = 0;
 		// Variables de 'status de registro'
 		let st_editables_ID = status_registro_us.find((n) => n.editables).id;

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "motivos_rech_edic";
+	const alias = "motivos_edics";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		descripcion: {type: dt.STRING(40)},
@@ -9,13 +9,14 @@ module.exports = (sequelize, dt) => {
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
-		info_erronea: {type: dt.BOOLEAN},
 		version_actual: {type: dt.BOOLEAN},
+		info_erronea: {type: dt.BOOLEAN},
+		rev_edicion: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
 		bloqueoInput: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "motivos_rech_edic",
+		tableName: "motivos_edics",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
