@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		perHec:document.querySelectorAll("#segundaColumna .perHec"),
+		perHec: document.querySelectorAll("#segundaColumna .perHec"),
 	};
 	let varias = {
 		// Pointer del producto
@@ -145,7 +145,10 @@ window.addEventListener("load", async () => {
 
 			// Averigua si los campos input son iguales
 			let sonIguales = true;
-			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
+			const comparativa = version.edicG_existe ? version.edicG : version.orig;
+			for (let campo of varias.camposTodos)
+				if (version.edicN[campo] != comparativa[campo] && (version.edicN[campo] || comparativa[campo]))
+					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
 			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
@@ -403,7 +406,7 @@ window.addEventListener("load", async () => {
 
 	// Startup
 	FN.obtieneLosValoresEdicN();
-	 FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
+	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
 	FN.actualizaBotones();
 });
 
