@@ -1,13 +1,9 @@
 <div class="flexRowAlign">
 	<!-- Aprobar y Rechazar -->
-	<div class="aprobRech">
-		<i class="fa-solid fa-circle-check"></i>
-		<i class="fa-solid fa-circle-xmark mostrarMotivos"></i>
-	</div>
 	<div class="campoTitulo"><%= campo.titulo %>:</div>
 	<div class="infoMostrar flexRowAlign">
-		<div class="edic"><%= campo.mostrarEdic %></div>
-		<div class="orig"><%= campo.mostrarOrig %></div>
+		<div class="edic aprobar pointer"><%= campo.mostrarEdic %></div>
+		<div class="orig muestraMotivos pointer"><%= campo.mostrarOrig %></div>
 	</div>
 </div>
 <div class="ocultar">
@@ -20,7 +16,7 @@
 	<i class="fa-solid fa-trash-can rechazar" tabindex="-1" title='Rechazar'></i>
 	<select name="motivo_id" required>
 		<option value="">Elejí un motivo</option>
-		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
+		<% motivos = campo.input ? motivos : motivos.filter(n => n.rev_edicion) %>
 		<% for (motivo of motivos) { %>
 			<option value="<%= motivo.id %>" <% if (motivos.length==1) { %>selected<% } %>><%= motivo.descripcion %></option>
 		<% } %>

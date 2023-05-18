@@ -1,20 +1,15 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let v = {
-		// Datos del registro
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		entID: new URL(location.href).searchParams.get("id"),
-		edicID: new URL(location.href).searchParams.get("edicID"),
+	let DOM={
 		// Motivos para borrar
-		aprobar: document.querySelectorAll("#contenido .fa-circle-check"),
+		aprobar: document.querySelectorAll("#contenido .aprobar"),
 		muestraCartelMotivos: document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos"),
 		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
 		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
 		rechazar: document.querySelectorAll("#contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
-		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
 		filasIngrs: document.querySelectorAll("#contenido #ingrs .fila"),
@@ -24,15 +19,23 @@ window.addEventListener("load", async () => {
 		// Otras variables
 		filas: document.querySelectorAll("#contenido .fila"),
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
+	};
+	let v = {
+		// Datos del registro
+		entidad: new URL(location.href).searchParams.get("entidad"),
+		entID: new URL(location.href).searchParams.get("id"),
+		edicID: new URL(location.href).searchParams.get("edicID"),
+		// Otras variables
+		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
+		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
+		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
+		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
 
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
-	let sinMotivo = v.rechazar.length - v.motivoRechazos.length; // Son los reemplazos, donde no se le pregunta un motivo al usuario
-	let casos = v.aprobar.length == v.rechazar.length ? v.aprobar.length : 0;
-	v.campoNombres = Array.from(v.campoNombres).map((n) => n.innerHTML);
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuencias = (resultado) => {
@@ -51,12 +54,12 @@ window.addEventListener("load", async () => {
 		// Interrumpe si los resultados fueron insatisfactorios
 		if (!resultado.OK) return;
 		// Verifica si debe ocultar algún bloque
-		if (ocultaBloque(v.bloqueIngrs, v.filasIngrs)) v.bloqueIngrs.classList.add("ocultar");
-		if (ocultaBloque(v.bloqueReemps, v.filasReemps)) v.bloqueReemps.classList.add("ocultar");
+		if (ocultaBloque(DOM.bloqueIngrs, DOM.filasIngrs)) DOM.bloqueIngrs.classList.add("ocultar");
+		if (ocultaBloque(DOM.bloqueReemps, DOM.filasReemps)) DOM.bloqueReemps.classList.add("ocultar");
 
 		// Averigua si está todo procesado
-		let bloqueIngrsOculto = !v.bloqueIngrs || v.bloqueIngrs.className.includes("ocultar");
-		let bloqueReempsOculto = !v.bloqueReemps || v.bloqueReemps.className.includes("ocultar");
+		let bloqueIngrsOculto = !DOM.bloqueIngrs || DOM.bloqueIngrs.className.includes("ocultar");
+		let bloqueReempsOculto = !DOM.bloqueReemps || DOM.bloqueReemps.className.includes("ocultar");
 		let todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
 
 		// Si está todo procesado y quedan campos,
@@ -92,7 +95,7 @@ window.addEventListener("load", async () => {
 				flechas.innerHTML += "<a href='" + icono.link + "' tabindex='1' autofocus>" + icono.HTML + "</a>";
 
 				// Muestra el cartel
-				v.tapaElFondo.classList.remove("ocultar");
+				DOM.tapaElFondo.classList.remove("ocultar");
 				cartel.classList.remove("ocultar");
 			}
 			// 2. Si el registro no pasó al status 'aprobado', redirige a edicion
@@ -104,15 +107,15 @@ window.addEventListener("load", async () => {
 	};
 
 	// LISTENERS --------------------------------------------------------------------
-	for (let indice = 0; indice < casos; indice++) {
+	for (let indice = 0; indice < v.casos; indice++) {
 		// Variables
-		let indiceMotivo = indice - sinMotivo;
+		let indiceMotivo = indice - v.sinMotivo;
 		let campo = v.campoNombres[indice];
 
 		// Aprobar el nuevo valor
-		v.aprobar[indice].addEventListener("click", async () => {
+		DOM.aprobar[indice].addEventListener("click", async () => {
 			// Ocultar la fila
-			if (v.filas.length) v.filas[indice].classList.add("ocultar");
+			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
 			let ruta = v.rutaEdicion + "&aprob=true&campo=" + campo;
 			let resultado = await fetch(ruta).then((n) => n.json());
@@ -127,26 +130,26 @@ window.addEventListener("load", async () => {
 		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de terminarlos, se muestra el motivo
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
-			v.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
-				v.cartelRechazo[indiceMotivo].classList.remove("ocultar");
+			DOM.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
+				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
 				return;
 			});
 			// Activa la opción para rechazar
-			v.motivoRechazos[indiceMotivo].addEventListener("change", () => {
-				if (v.motivoRechazos[indiceMotivo].value) v.rechazar[indice].classList.remove("inactivo");
-				else v.rechazar[indice].classList.add("inactivo");
+			DOM.motivoRechazos[indiceMotivo].addEventListener("change", () => {
+				if (DOM.motivoRechazos[indiceMotivo].value) DOM.rechazar[indice].classList.remove("inactivo");
+				else DOM.rechazar[indice].classList.add("inactivo");
 				return;
 			});
 		}
 
 		// Rechaza el nuevo valor
-		v.rechazar[indice].addEventListener("click", async () => {
+		DOM.rechazar[indice].addEventListener("click", async () => {
 			// Variables
-			let motivo_id = indiceMotivo >= 0 ? v.motivoRechazos[indiceMotivo].value : v.motivoGenerico_id;
+			let motivo_id = indiceMotivo >= 0 ? DOM.motivoRechazos[indiceMotivo].value : v.motivoGenerico_id;
 			// Stopper
 			if (!motivo_id) return;
 			// Oculta la fila
-			if (v.filas.length) v.filas[indice].classList.add("ocultar");
+			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
 			// Descarta el valor editado y obtiene el resultado
 			let ruta = v.rutaEdicion + "&campo=" + campo + "&motivo_id=" + motivo_id;
 			let resultado = await fetch(ruta).then((n) => n.json());
