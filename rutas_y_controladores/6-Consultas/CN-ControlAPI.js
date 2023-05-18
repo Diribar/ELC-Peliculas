@@ -8,12 +8,6 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// API - Startup
 	layoutsOrdenes: async (req, res) => {
-		// Obtiene los valores
-		let layouts = BD_genericas.obtieneTodos("layouts", "orden");
-		let ordenes = BD_genericas.obtieneTodos("ordenes", "orden");
-		[layouts, ordenes] = await Promise.all([layouts, ordenes]);
-
-		// Fin
 		return res.json({layouts, opcionesOrdenBD: ordenes});
 	},
 	opcionesFiltro: async (req, res) => {

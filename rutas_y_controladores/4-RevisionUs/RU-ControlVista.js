@@ -46,8 +46,7 @@ module.exports = {
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim", valor: fecha_nacim},
 			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
-		let motivos_rech = await BD_genericas.obtieneTodos("motivos_edics", "orden");
-		let motivos_docum = motivos_rech.filter((n) => n.avatar_us);
+		let motivos_docum = motivos_edics.filter((n) => n.avatar_us);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
 		return res.render("CMP-0Estructura", {
@@ -82,7 +81,6 @@ module.exports = {
 		let usuario = await BD_genericas.obtienePorId("usuarios", datos.id);
 		let revID = req.session.usuario.id;
 		// Variables de motivos
-		let motivos = await BD_genericas.obtieneTodos("motivos_edics", "orden");
 		let durac_penalidad = 0;
 		// Variables de 'status de registro'
 		let st_editables_ID = status_registro_us.find((n) => n.editables).id;
@@ -96,7 +94,7 @@ module.exports = {
 			// Rutinas para los demás campos --> lleva al status 'editables'
 			let campos = ["docum_pais_id", "docum_numero", "nombre", "apellido", "sexo_id", "fecha_nacim"];
 			// Motivo genérico
-			let motivo = motivos.find((n) => n.info_erronea);
+			let motivo = motivos_edics.find((n) => n.info_erronea);
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
 					// Agrega un registro por la edición rechazada
@@ -108,7 +106,7 @@ module.exports = {
 		// Acciones si la imagen del documento NO fue aprobada
 		else {
 			// Rutinas para el campo
-			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
+			let motivo = motivos_edics.find((n) => n.id == datos.motivo_docum_id);
 			procesos.usuarioEdicRech("docum_avatar", usuario, revID, motivo);
 			status_registro_id = st_editables_ID;
 			durac_penalidad += motivo.duracion;
