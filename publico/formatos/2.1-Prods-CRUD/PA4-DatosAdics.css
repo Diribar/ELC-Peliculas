@@ -18,16 +18,16 @@
 #dataEntry #segundaColumna .errores {translate: -100% -50%; left: -5px; right: auto; position: absolute;}
 
 /* Selects */
-#dataEntry .label-select {display: flex; flex-direction: row; justify-content: space-between;}
-#dataEntry .label-select {margin-top: 5px;}
-#dataEntry .label-select label {margin: 0 15px 0 0; font-weight: bold;}
-#dataEntry .label-select select {padding: 0; width: 150px; margin-left: 5px;}
-#dataEntry .label-select .ayuda {left: -5px; right: auto; translate: -100% -50%;}
+#dataEntry .labelSelect {display: flex; flex-direction: row; justify-content: space-between;}
+#dataEntry .labelSelect {margin-top: 5px;}
+#dataEntry .labelSelect label {margin: 0 15px 0 0; font-weight: bold;}
+#dataEntry .labelSelect select {padding: 0; width: 150px; margin-left: 5px;}
+#dataEntry .labelSelect .ayuda {left: -5px; right: auto; translate: -100% -50%;}
 
 /* Temas RCLV */
 #dataEntry #checkbox {display: flex; flex-direction: row; align-items: center;}
 #dataEntry #checkbox label {padding-left: 5px; line-height: normal;}
-#dataEntry #selectsRCLV .label-select.ocultar {display: none;}
+#dataEntry #selectsRCLV .labelSelect.ocultar {display: none;}
 #dataEntry #selectsRCLV .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%;}
 #dataEntry #selectsRCLV .linkRCLV {width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry #selectsRCLV .linkRCLV.alta {right: -20px; font-size: 1rem;}
