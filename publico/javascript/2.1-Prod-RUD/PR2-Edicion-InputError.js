@@ -36,7 +36,6 @@ window.addEventListener("load", async () => {
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		perHec: document.querySelectorAll("#segundaColumna .perHec"),
 	};
 	let varias = {
 		// Pointer del producto
