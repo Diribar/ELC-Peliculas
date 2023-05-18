@@ -53,7 +53,7 @@ module.exports = {
 
 			// 6. Distribuye entre Altas y Ediciones
 			let ED = [];
-			let AL
+			let AL;
 			if (productos.length) {
 				// 6.A. Elimina los repetidos
 				productos = comp.eliminaRepetidos(productos);
@@ -260,8 +260,8 @@ module.exports = {
 			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
 
 			// Motivos posibles
-			let motivoVersionActual = motivos_rech_edic.find((n) => n.version_actual);
-			let motivoInfoErronea = motivos_rech_edic.find((n) => n.info_erronea);
+			let motivoVersionActual = motivos_edics.find((n) => n.version_actual);
+			let motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -296,7 +296,7 @@ module.exports = {
 					edicsAprobRech = "edics_rech";
 					// Completa los datos
 					datos.valorDesc = valorDesc;
-					let motivo = campo == "nombre" || campo == "apodo" ? motivoVersionActual : motivoInfoErronea;
+					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datos.motivo_id = motivo.id;
 					datos.duracion = motivo.duracion;
 				}
@@ -591,7 +591,7 @@ module.exports = {
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
-				motivo = motivos_rech_edic.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				motivo = motivos_edics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
 			// Asigna los valores 'aprob' y 'rech'
@@ -599,6 +599,11 @@ module.exports = {
 			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
+
+			// Reemplaza los vacíos
+			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
+			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
+
 			// Agrega el registro
 			BD_genericas.agregaRegistro("hist_ediciones", datos);
 
@@ -783,18 +788,20 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	return;
 };
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
+	// Variables
+	const campo = campoRevisar.nombre;
+	
 	// Obtiene una primera respuesta
 	let resultado = relacInclude
 		? registro[relacInclude] // El registro tiene un valor 'include'
 			? registro[relacInclude].nombre // Muestra el valor 'include'
-			: await BD_genericas.obtienePorId(campoRevisar.tabla, registro[campoRevisar.nombre]).then((n) => n.nombre) // Busca el valor include
-		: registro[campoRevisar.nombre]; // Muestra el valor 'simple'
+			: await BD_genericas.obtienePorId(campoRevisar.tabla, registro[campo]).then((n) => n.nombre) // Busca el valor include
+		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
-	if (["cfc", "ocurrio", "musical", "color", "fecha_movil", "solo_cfc", "ama"].includes(campoRevisar.nombre))
+	if (["cfc", "ocurrio", "musical", "color", "fecha_movil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	else if (["personaje_id", "hecho_id", "tema_id"].includes(campoRevisar.nombre) && registro[campoRevisar.nombre] == 1)
-		resultado = null;
+	else if (["personaje_id", "hecho_id", "tema_id"].includes(campo) && registro[campo] == 1) resultado = null;
 
 	// Fin
 	return resultado;
