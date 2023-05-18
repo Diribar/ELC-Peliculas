@@ -184,13 +184,15 @@ window.addEventListener("load", async () => {
 			// Pasa/no pasa
 			if (yaEligio) return;
 			else yaEligio = true;
+
 			// Obtiene los datos
 			let datos = {
 				TMDB_entidad: e.target[0].value,
 				TMDB_id: e.target[1].value,
-				nombre_original: e.target[2].value,
+				nombre_original: encodeURIComponent(e.target[2].value),
 				idioma_original_id: e.target[3].value,
 			};
+
 			// Muestra el cartel
 			let titulo = "Estamos procesando la información...";
 			let contenido = ["Obteniendo más información del producto", "Revisando la información disponible"];
