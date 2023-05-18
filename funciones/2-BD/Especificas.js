@@ -120,15 +120,22 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => ({...m, entidad})));
 	},
-	TC_obtieneEdicsAptas: (entidad, include) => {
+	TC_obtieneEdicsAjenas: (entidad, revID, include) => {
+		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		// Obtiene las ediciones que cumplan ciertas condiciones
-		return (
-			db[entidad]
-				// Que esté editado desde hace más de 1 hora
-				.findAll({where: {editado_en: {[Op.lt]: haceUnaHora}}, include})
-				.then((n) => n.map((m) => m.toJSON()))
-		);
+
+		// Fin
+		return db[entidad]
+			.findAll({
+				where: {
+					// Que esté editado desde hace más de 1 hora
+					editado_en: {[Op.lt]: haceUnaHora},
+					// Que sea ajeno
+					editado_por_id: {[Op.ne]: revID},
+				},
+				include,
+			})
+			.then((n) => n.map((m) => m.toJSON()));
 	},
 	TC_obtieneLinksAjenos: async (revID) => {
 		// Variables
@@ -229,8 +236,11 @@ module.exports = {
 				include,
 			})
 			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) =>
-				n.map((m) => (m = {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto: comp.fechaHora.fechaDiaMes(m[campoFecha])}))
+			.then((ns) =>
+				n.map((m) => {
+					const fechaRefTexto = comp.fechaHora.fechaDiaMes(m[campoFecha]);
+					return {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto};
+				})
 			);
 	},
 	linksVencidos: () => {

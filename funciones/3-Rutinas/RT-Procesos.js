@@ -548,7 +548,8 @@ module.exports = {
 			// Elimina los registros
 			for (let reg of regs) {
 				// Condición: sin duración
-				if (!reg.duracion) BD_genericas.eliminaPorId(reg.tabla, reg.id);
+				console.log(551, typeof reg.duracion);
+				if (!reg.duracion || reg.duracion == "0.0") BD_genericas.eliminaPorId(reg.tabla, reg.id);
 				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
 			}
 
