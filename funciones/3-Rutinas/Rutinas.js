@@ -42,7 +42,6 @@ module.exports = {
 		// Start-up
 		await this.conjuntoDeRutinasDiarias();
 		await this.conjuntoDeRutinasSemanales();
-		this.MailDeFeedback();
 	},
 
 	// 0.B. Conjunto de tareas

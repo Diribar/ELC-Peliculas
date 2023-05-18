@@ -220,20 +220,20 @@ module.exports = {
 			let registros = [];
 			let condiciones;
 
-			// Obtiene los registros de "cambios_de_status"
+			// Obtiene los registros de "hist_cambios_de_status"
 			condiciones = {aprobado: {[Op.ne]: null}, comunicado_en: null};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicion("cambios_de_status", condiciones)
+				BD_genericas.obtieneTodosPorCondicion("hist_cambios_de_status", condiciones)
 					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "cambios_de_status"})))
+					.then((n) => n.map((m) => ({...m, tabla: "hist_cambios_de_status"})))
 			);
 
 			// Obtiene los registros de "edics"
 			condiciones = {comunicado_en: null};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicionConInclude("ediciones", condiciones, "motivo")
+				BD_genericas.obtieneTodosPorCondicionConInclude("hist_ediciones", condiciones, "motivo")
 					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "ediciones"})))
+					.then((n) => n.map((m) => ({...m, tabla: "hist_ediciones"})))
 			);
 
 			// Espera a que se reciba la info
