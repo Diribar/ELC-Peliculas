@@ -177,7 +177,15 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		if (original.capitulos) delete original.capitulos
+
+		// Averigua si el usuario tiene el perfil de revisor
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+
+		// Averigua si corresponde actualizar el original
+		// 1. Tiene que ser un revisor
+		// 2. El registro debe estar en el status 'creado_aprob'
+		// 3. El registro original no debe tener otras ediciones
 		const actualizaOrig = revisor && original.status_registro.creado_aprob && !original.ediciones.length;
 
 		// Averigua si hay errores de validación
@@ -185,6 +193,7 @@ module.exports = {
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...edicion, ...req.body, id};
 		prodComb.publico = revisor;
+		console.log(188,prodComb);
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones sobre el archivo avatar, si recibimos uno
@@ -211,6 +220,7 @@ module.exports = {
 		}
 
 		// Acciones si no hay errores
+		console.log(214,errores);
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (actualizaOrig) {

@@ -28,9 +28,9 @@ let input = (e, respetarMinusc) => {
 		// Limita el uso del teclado solamente a los caracteres que nos interesan
 		valor = valor
 			.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
+			.replace(/\t/g, " ") // previene el uso de 'tab'
+			.replace(/\n/g, " ") // previene el uso de 'return'
 			.replace(/ +/g, " ") // previene repetición de espacios
-			.replace(/\t/g, "") // previene el uso de 'tab'
-			.replace(/\n/g, ""); // previene el uso de 'return'
 
 		// El primer caracter no puede ser un espacio
 		if (valor.slice(0, 1) == " ") {
