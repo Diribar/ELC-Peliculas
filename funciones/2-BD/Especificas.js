@@ -49,9 +49,7 @@ module.exports = {
 		let condicStatus = {
 			[Op.or]: [
 				{status_registro_id: aprobado_id},
-				{
-					[Op.and]: [{status_registro_id: statusGrCreado_id}, {[Op.or]: [{creado_por_id: userID}, {creado_por_id: 2}]}],
-				},
+				{[Op.and]: [{status_registro_id: statusGrCreado_id}, {creado_por_id: userID}]},
 			],
 		};
 		// Consolidado
