@@ -261,13 +261,16 @@ window.addEventListener("load", async () => {
 		// Variables
 		let ocurrio = DOM.ocurrioSI.checked ? "1" : DOM.ocurrioNO.checked ? "0" : "";
 		let checkRCLV = DOM.checkRCLV.checked;
+
 		// Agrega el valor del campo 'sin' o de los demás campos
 		let url = "";
 		checkRCLV
 			? (url += campo + "=on" + "&")
 			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
+
 		// Agrega 'ocurrió'
 		if (ocurrio) url += "ocurrio=" + ocurrio;
+
 		// Fin
 		return url;
 	};
@@ -301,7 +304,7 @@ window.addEventListener("load", async () => {
 		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...v.camposRCLV, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
+		if ([...v.camposRCLV, "sinRCLV", "ocurrio"].includes(campo)) datosUrl += urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
