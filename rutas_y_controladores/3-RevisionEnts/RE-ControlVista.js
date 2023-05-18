@@ -421,7 +421,7 @@ module.exports = {
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
-				await procesos.edicion.procsParticsAvatar({original, edicion, aprob: true});
+				await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob: true});
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 				await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
