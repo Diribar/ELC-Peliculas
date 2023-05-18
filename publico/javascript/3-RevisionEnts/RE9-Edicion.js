@@ -1,14 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM={
+	let DOM = {
 		// Motivos para borrar
 		aprobar: document.querySelectorAll("#contenido .aprobar"),
-		muestraCartelMotivos: document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos"),
+		rechazar: document.querySelectorAll("#contenido .rechazar"),
+		muestraMotivos: document.querySelectorAll("#contenido .muestraMotivos"),
 		cartelRechazo: document.querySelectorAll("#contenido #cartelRechazo"),
 		motivoRechazos: document.querySelectorAll("#contenido #cartelRechazo select"),
 		cancelar: document.querySelector("#cartelRechazo .flechas .fa-circle-left"),
-		rechazar: document.querySelectorAll("#contenido .rechazar"),
 		tapaElFondo: document.querySelector("#tapar-el-fondo"),
 		// Bloque Ingresos
 		bloqueIngrs: document.querySelector("#contenido #ingrs"),
@@ -33,7 +33,6 @@ window.addEventListener("load", async () => {
 		familia: location.pathname.slice(1),
 		rutaEdicion: "/revision/api/edicion/aprob-rech/?entidad=",
 	};
-
 	// Otras variables
 	v.rutaEdicion += v.entidad + "&id=" + v.entID + "&edicID=" + v.edicID;
 
@@ -80,7 +79,7 @@ window.addEventListener("load", async () => {
 				let alerta = document.querySelector("#cartel #alerta");
 				let check = document.querySelector("#cartel #check");
 				let mensajes = document.querySelector("#cartel ul#mensajes");
-				mensajes.style.listStyle ="none"
+				mensajes.style.listStyle = "none";
 				let flechas = document.querySelector("#cartel #flechasCartel");
 
 				// Formatos
@@ -114,6 +113,7 @@ window.addEventListener("load", async () => {
 
 		// Aprobar el nuevo valor
 		DOM.aprobar[indice].addEventListener("click", async () => {
+			console.log("SI");
 			// Ocultar la fila
 			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
@@ -127,10 +127,10 @@ window.addEventListener("load", async () => {
 			return;
 		});
 
-		// En EdicDemas, los primeros casos son 'sin motivo', por eso es que recién después de terminarlos, se muestra el motivo
+		// Sólo para los reemplazos
 		if (indiceMotivo >= 0) {
 			// Muestra cartel de motivos
-			DOM.muestraCartelMotivos[indiceMotivo].addEventListener("click", () => {
+			DOM.muestraMotivos[indiceMotivo].addEventListener("click", () => {
 				DOM.cartelRechazo[indiceMotivo].classList.remove("ocultar");
 				return;
 			});
@@ -146,7 +146,7 @@ window.addEventListener("load", async () => {
 		DOM.rechazar[indice].addEventListener("click", async () => {
 			// Variables
 			let motivo_id = indiceMotivo >= 0 ? DOM.motivoRechazos[indiceMotivo].value : v.motivoGenerico_id;
-			// Stopper
+			// Stopper (si el select no tiene ningún valor)
 			if (!motivo_id) return;
 			// Oculta la fila
 			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
