@@ -177,7 +177,7 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		if (original.capitulos) delete original.capitulos
+		if (original.capitulos) delete original.capitulos;
 
 		// Averigua si el usuario tiene el perfil de revisor
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
@@ -212,13 +212,11 @@ module.exports = {
 				}
 			}
 			// Si hay errores, borra el archivo avatar editado
-			else {
-				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
-				// return res.send([{errores}, {...prodComb, entidad}]);
-			}
+			else comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
 		}
 
 		// Acciones si no hay errores
+		console.log(214, errores);
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (actualizaOrig) {
@@ -231,7 +229,7 @@ module.exports = {
 				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;
-			} 
+			}
 			// De lo contrario, actualiza la edicion
 			else {
 				// Combina la información
