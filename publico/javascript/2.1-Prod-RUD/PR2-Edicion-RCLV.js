@@ -1,9 +1,17 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables generales
-	const linksAlta = document.querySelectorAll(".inputError i.linkRCLV#alta");
-	const linksEdicion = document.querySelectorAll(".inputError i.linkRCLV#edicion");
-	const inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
+	// Variables
+	let DOM = {
+		// Variables generales
+		linksAlta: document.querySelectorAll(".inputError i.linkRCLV#alta"),
+		linksEdicion: document.querySelectorAll(".inputError i.linkRCLV#edicion"),
+		inputsRCLV: document.querySelectorAll(".inputError .input.RCLV"),
+		
+		// Otras
+		inputs: document.querySelectorAll(".inputError .input"),
+		perHec:document.querySelectorAll(".label-input.perHec"),
+	};
+	console.log(perHec);
 
 	// Variables para el ruteo del origen
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
@@ -11,25 +19,24 @@ window.addEventListener("load", async () => {
 	const paramsOrigen = "&origen=EDP&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 	// Variables para guardar los datos
-	const inputs = document.querySelectorAll(".inputError .input");
 	const rutaRQ = "/producto/api/envia-a-req-session/";
 
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV
 	let mostrarOcultarIconos = (input, i) => {
 		// Oculta el link de alta para Jesús
-		if (input.value == "11" && i === 0) linksAlta[i].classList.add("ocultar");
-		else linksAlta[i].classList.remove("ocultar");
+		if (input.value == "11" && i === 0) DOM.linksAlta[i].classList.add("ocultar");
+		else DOM.linksAlta[i].classList.remove("ocultar");
 		// Oculta el link de edición cuando el valor es 'nada', 'ninguno' o 'Jesús
-		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) linksEdicion[i].classList.add("ocultar");
-		else linksEdicion[i].classList.remove("ocultar");
+		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) DOM.linksEdicion[i].classList.add("ocultar");
+		else DOM.linksEdicion[i].classList.remove("ocultar");
 		return;
 	};
 	//
 	// Guardar los valores del formulario
 	let guardarLosValoresEnSession = () => {
 		let objeto = "?entidad=" + prodEntidad + "&id=" + prodID;
-		for (let input of inputs) {
+		for (let input of DOM.inputs) {
 			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}
 		// Guardar los valores en session
@@ -38,9 +45,8 @@ window.addEventListener("load", async () => {
 		return;
 	};
 
-	// ADD EVENT LISTENERS
 	// Links a RCLV - Alta
-	linksAlta.forEach((link) => {
+	DOM.linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
 			if (link.className.includes("inactivo")) return;
@@ -54,7 +60,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Links a RCLV - Edición
-	linksEdicion.forEach((link, i) => {
+	DOM.linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
 			if (link.className.includes("inactivo")) return;
@@ -63,14 +69,14 @@ window.addEventListener("load", async () => {
 			// Obtiene la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Obtiene el RCLV_id
-			let id = "&id=" + inputsRCLV[i].value;
+			let id = "&id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
 			location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
 		});
 	});
 
 	// Activar links RCLV
-	inputsRCLV.forEach((input, i) => {
+	DOM.inputsRCLV.forEach((input, i) => {
 		mostrarOcultarIconos(input, i);
 		input.addEventListener("input", () => {
 			mostrarOcultarIconos(input, i);
