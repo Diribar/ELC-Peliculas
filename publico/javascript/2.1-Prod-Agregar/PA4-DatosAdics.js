@@ -185,14 +185,17 @@ window.addEventListener("load", async () => {
 			}
 		},
 		ocurrio: () => {
-			// Variables
-			let ocurrio = ocurrioSI.checked ? "1" : ocurrioNO.checked ? "0" : "";
+			// Averigua si es verdadero o falso
+			const ocurrioSI = DOM.ocurrioSI.checked && !DOM.ocurrioNO.checked;
+			const ocurrioNO = DOM.ocurrioNO.checked && !DOM.ocurrioSI.checked;
 
 			// Oculta o muestra el sector de RCLVs
-			ocurrio ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
+			ocurrioSI || ocurrioNO
+				? DOM.sectorRCLV.classList.remove("ocultaOcurrio")
+				: DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
-			if (ocurrio == "1") {
+			if (ocurrioSI) {
 				// Muestra 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.remove("ocultar");
 				DOM.sectorHecho.classList.remove("ocultar");
@@ -201,13 +204,16 @@ window.addEventListener("load", async () => {
 				DOM.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
-			if (ocurrio == "0") {
+			if (ocurrioNO) {
 				// Oculta 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.add("ocultar");
 				DOM.sectorHecho.classList.add("ocultar");
 				// Ayudas
 				DOM.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
 				DOM.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
+				// Valores de RCLV
+				DOM.selectPers.value = 1;
+				DOM.selectHecho.value = 1;
 			}
 		},
 		sinRCLV: () => {
@@ -289,6 +295,7 @@ window.addEventListener("load", async () => {
 			DOM.selectPers.value = "1";
 			DOM.selectHecho.value = "1";
 		}
+
 		// 2. Para campos 'RCLV'
 		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
 		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
