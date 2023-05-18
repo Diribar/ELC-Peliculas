@@ -9,9 +9,7 @@ window.addEventListener("load", async () => {
 		
 		// Otras
 		inputs: document.querySelectorAll(".inputError .input"),
-		perHec:document.querySelectorAll(".label-input.perHec"),
 	};
-	console.log(perHec);
 
 	// Variables para el ruteo del origen
 	const prodEntidad = new URL(location.href).searchParams.get("entidad");
