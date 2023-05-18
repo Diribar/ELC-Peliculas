@@ -43,8 +43,6 @@ module.exports = {
 
 		// Pule la edición
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
-
-		// PROCESOS COMUNES A TODOS LOS CAMPOS
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
 		// Acciones cuando se termina de revisar una edicion
