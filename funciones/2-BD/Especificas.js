@@ -46,7 +46,6 @@ module.exports = {
 		let condicPalabras = {[Op.or]: condicTodasLasPalabrasPresentesEnCampos};
 		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
 		let statusGrCreado_id = status_registros.filter((n) => n.gr_creado).map((n) => n.id);
-		console.log(49, statusGrCreado_id,userID);
 		let condicStatus = {
 			[Op.or]: [
 				{status_registro_id: aprobado_id},
