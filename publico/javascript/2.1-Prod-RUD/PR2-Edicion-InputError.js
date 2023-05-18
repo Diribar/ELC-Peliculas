@@ -7,9 +7,11 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),
 		inputsTodos: document.querySelectorAll(".inputError .input, .inputError input[type='radio']"),
+
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
 		// Variables de país
 		paisesID: document.querySelector("#paises_id input[name='paises_id']"), // Lugar donde almacenar los ID
 		paisesMostrar: document.querySelector("#paises_id #mostrarPaises"), // Lugar donde mostrar los nombres
@@ -19,6 +21,7 @@ window.addEventListener("load", async () => {
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
+
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
 		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
@@ -27,11 +30,13 @@ window.addEventListener("load", async () => {
 			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
 			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
 		},
+
 		// Varios
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		perHec: document.querySelectorAll("#segundaColumna .perHec"),
 	};
 	let varias = {
 		// Pointer del producto
@@ -61,6 +66,13 @@ window.addEventListener("load", async () => {
 
 	// Funciones Data-Entry
 	let FN = {
+		// Grupo "Novedades de Data Entry"
+		actualizaVarios: async function () {
+			this.obtieneLosValoresEdicN();
+			this.senalaLasDiferencias();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotones();
+		},
 		obtieneLosValoresEdicN: () => {
 			// Obtiene los valores
 			let inputsChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
@@ -140,7 +152,10 @@ window.addEventListener("load", async () => {
 
 			// Averigua si los campos input son iguales
 			let sonIguales = true;
-			for (let campo of varias.camposTodos) if (version.edicN[campo] != version.edicG[campo]) sonIguales = false;
+			const comparativa = version.edicG_existe ? version.edicG : version.orig;
+			for (let campo of varias.camposTodos)
+				if (version.edicN[campo] != comparativa[campo] && (version.edicN[campo] || comparativa[campo]))
+					sonIguales = false;
 
 			// Averigua si la imagen avatar es igual
 			if (sonIguales) sonIguales = DOM.imgAvatarInicial.src == varias.avatarInicial;
@@ -163,12 +178,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		actualizaVarios: async function () {
-			this.obtieneLosValoresEdicN();
-			this.senalaLasDiferencias();
-			await this.averiguaMuestraLosErrores();
-			this.actualizaBotones();
-		},
+		// Otros
 		accionesPorCambioDeVersion: async function () {
 			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
 			(() => {
@@ -314,7 +324,7 @@ window.addEventListener("load", async () => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
 		if (varias.versionActual != varias.versiones[0]) return;
 
-		// Validaciones estándar
+		// Validaciones estándar (función genérica)
 		input(e);
 
 		// Acciones si se cambió el país
@@ -398,7 +408,7 @@ window.addEventListener("load", async () => {
 
 	// Startup
 	FN.obtieneLosValoresEdicN();
-	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores
+	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
 	FN.actualizaBotones();
 });
 
