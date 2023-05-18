@@ -123,7 +123,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Averigua los errores
-			errores = await fetch(rutas.rutaValidar + objeto).then((n) => n.json());
+			errores = await fetch(rutas.rutaValidar + encodeURI(objeto)).then((n) => n.json());
+
 			// Actualiza los errores
 			varias.camposError.forEach((campo, indice) => {
 				// Variables
