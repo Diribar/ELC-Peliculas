@@ -74,6 +74,6 @@ module.exports = {
 		return res.json(datos);
 	},
 	motivosRechAltas: (req, res) => {
-		return res.json(motivos_rech_altas);
+		return res.json(motivos_status);
 	},
 };

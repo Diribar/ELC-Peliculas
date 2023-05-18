@@ -38,7 +38,7 @@ module.exports = {
 			let temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
-		const motivos = motivos_rech_altas.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivos_status.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const origen = req.query.origen ? req.query.origen : "DTP";
 		const status_id = original.status_registro_id;
 		// Va a la vista

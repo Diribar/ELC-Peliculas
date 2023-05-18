@@ -84,8 +84,8 @@ app.set("views", [
 		// Variable de entidades
 		status_registros: BD_genericas.obtieneTodos("status_registros", "orden"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
-		motivos_rech_altas: BD_genericas.obtieneTodos("motivos_rech_altas", "orden"),
-		motivos_rech_edic: BD_genericas.obtieneTodos("motivos_rech_edic", "orden"),
+		motivos_status: BD_genericas.obtieneTodos("motivos_status", "orden"),
+		motivos_edics: BD_genericas.obtieneTodos("motivos_edics", "orden"),
 
 		// Variables de productos
 		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),

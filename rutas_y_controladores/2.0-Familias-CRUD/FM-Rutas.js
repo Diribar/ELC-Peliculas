@@ -27,7 +27,7 @@ router.get("/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/averigua-capitulos", API.obtieneCapitulos);
-router.get("/api/motivos_rech_altas", API.motivosRechAltas);
+router.get("/api/motivos_status", API.motivosRechAltas);
 
 // Fin
 module.exports = router;

@@ -52,7 +52,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edic_revisada_por_id"});
 
 		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "status_registro_id"});
-		entidad.belongsTo(n.motivos_rech_altas, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.motivos_status, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 
 		entidad.hasMany(n.links_edicion, {as: "ediciones", foreignKey: "link_id"});

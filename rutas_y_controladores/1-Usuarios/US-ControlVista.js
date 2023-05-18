@@ -93,8 +93,6 @@ module.exports = {
 		const tema = "usuario";
 		const codigo = "editables";
 		let usuario = req.session.usuario;
-		let sexos = await BD_genericas.obtieneTodos("sexos", "orden");
-		sexos = sexos.filter((m) => m.letra_final);
 		let errores = req.session.errores ? req.session.errores : false;
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
@@ -108,7 +106,7 @@ module.exports = {
 			titulo: "Datos Editables",
 			dataEntry,
 			errores,
-			sexos,
+			sexos: sexos.filter((m) => m.letra_final),
 			hablaHispana,
 			hablaNoHispana,
 			avatar,
