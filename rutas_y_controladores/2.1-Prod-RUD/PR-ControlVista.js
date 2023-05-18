@@ -110,6 +110,8 @@ module.exports = {
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
+		if (req.session.edicProd) prodComb = {...prodComb, ...req.session.edicProd};
+		delete req.session.edicProd
 		// 5. Obtiene el nombre de los países
 		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
 		// 6. Info para la vista de Edicion o Detalle
@@ -216,7 +218,6 @@ module.exports = {
 		}
 
 		// Acciones si no hay errores
-		console.log(214, errores);
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (actualizaOrig) {
@@ -237,6 +238,10 @@ module.exports = {
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
+		} else {
+			req.session.edicProd = req.body;
+			delete req.session.edicProd.avatar;
+			return res.redirect(req.originalUrl); // Recarga la vista
 		}
 
 		// Fin
