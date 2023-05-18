@@ -66,6 +66,13 @@ window.addEventListener("load", async () => {
 
 	// Funciones Data-Entry
 	let FN = {
+		// Grupo "Novedades de Data Entry"
+		actualizaVarios: async function () {
+			this.obtieneLosValoresEdicN();
+			this.senalaLasDiferencias();
+			await this.averiguaMuestraLosErrores();
+			this.actualizaBotones();
+		},
 		obtieneLosValoresEdicN: () => {
 			// Obtiene los valores
 			let inputsChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
@@ -171,12 +178,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		actualizaVarios: async function () {
-			this.obtieneLosValoresEdicN();
-			this.senalaLasDiferencias();
-			await this.averiguaMuestraLosErrores();
-			this.actualizaBotones();
-		},
+		// Otros
 		accionesPorCambioDeVersion: async function () {
 			// Reemplaza los valores de 'input' e impide/permite que el usuario haga cambios según la versión
 			(() => {
