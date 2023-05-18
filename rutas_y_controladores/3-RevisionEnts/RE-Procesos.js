@@ -587,7 +587,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 			}
 
-			// 2. Actualiza la tabla de 'edics_aprob' o 'edics_rech'
+			// 2. Actualiza la tabla de 'historial de ediciones'
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
@@ -600,7 +600,7 @@ module.exports = {
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 			// Agrega el registro
-			BD_genericas.agregaRegistro(decision, datos);
+			BD_genericas.agregaRegistro("hist_ediciones", datos);
 
 			// 3. Aumenta el campo 'edics_aprob' o 'edics_rech' en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
