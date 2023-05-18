@@ -7,9 +7,11 @@ window.addEventListener("load", async () => {
 		form: document.querySelector("form"),
 		inputsSimples: document.querySelectorAll(".inputError .input"),
 		inputsTodos: document.querySelectorAll(".inputError .input, .inputError input[type='radio']"),
+
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
 		// Variables de país
 		paisesID: document.querySelector("#paises_id input[name='paises_id']"), // Lugar donde almacenar los ID
 		paisesMostrar: document.querySelector("#paises_id #mostrarPaises"), // Lugar donde mostrar los nombres
@@ -19,6 +21,7 @@ window.addEventListener("load", async () => {
 		imgsAvatar: document.querySelectorAll("#imgDerecha.inputError .imgAvatar"),
 		imgAvatarInicial: document.querySelector("#imgDerecha.inputError #avatarEdicN"),
 		inputAvatarEdicN: document.querySelector("#imgDerecha.inputError .input"),
+
 		// Botones
 		botonesActivarVersion: document.querySelectorAll("#cuerpo .flechas .activaVersion"),
 		botonGuardar: document.querySelector("#cuerpo .flechas #guardar"),
@@ -27,11 +30,13 @@ window.addEventListener("load", async () => {
 			edicN: document.querySelectorAll("#cuerpo .flechas .edicN"),
 			edicG: document.querySelectorAll("#cuerpo .flechas .edicG"),
 		},
+
 		// Varios
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		perHec:document.querySelectorAll("#segundaColumna .perHec"),
 	};
 	let varias = {
 		// Pointer del producto
@@ -314,7 +319,7 @@ window.addEventListener("load", async () => {
 		// Si la versión actual no es la esperada para 'inputs', interrumpe
 		if (varias.versionActual != varias.versiones[0]) return;
 
-		// Validaciones estándar
+		// Validaciones estándar (función genérica)
 		input(e);
 
 		// Acciones si se cambió el país
@@ -398,7 +403,7 @@ window.addEventListener("load", async () => {
 
 	// Startup
 	FN.obtieneLosValoresEdicN();
-	await FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores
+	 FN.accionesPorCambioDeVersion(); // Hace falta el await para leer los errores en el paso siguiente
 	FN.actualizaBotones();
 });
 
