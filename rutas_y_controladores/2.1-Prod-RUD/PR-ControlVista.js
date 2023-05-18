@@ -193,7 +193,6 @@ module.exports = {
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...edicion, ...req.body, id};
 		prodComb.publico = revisor;
-		console.log(188,prodComb);
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones sobre el archivo avatar, si recibimos uno
@@ -220,7 +219,6 @@ module.exports = {
 		}
 
 		// Acciones si no hay errores
-		console.log(214,errores);
 		if (!errores.hay) {
 			// 1. Actualiza el original
 			if (actualizaOrig) {
