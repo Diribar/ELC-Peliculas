@@ -790,7 +790,7 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Variables
 	const campo = campoRevisar.nombre;
-	
+
 	// Obtiene una primera respuesta
 	let resultado = relacInclude
 		? registro[relacInclude] // El registro tiene un valor 'include'
