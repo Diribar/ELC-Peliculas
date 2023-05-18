@@ -113,7 +113,6 @@ window.addEventListener("load", async () => {
 
 		// Aprobar el nuevo valor
 		DOM.aprobar[indice].addEventListener("click", async () => {
-			console.log("SI");
 			// Ocultar la fila
 			if (DOM.filas.length) DOM.filas[indice].classList.add("ocultar");
 			// Actualiza el valor original y obtiene el resultado
