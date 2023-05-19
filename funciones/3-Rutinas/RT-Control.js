@@ -157,7 +157,7 @@ module.exports = {
 		}
 
 		// Variables
-		const normalize = procesos.mailDeFeedback.normalize;
+		const asunto = "Resultado de las sugerencias realizadas";
 		let mailsEnviados = [];
 
 		// Usuarios
@@ -168,24 +168,21 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Variables
-			let cuerpoMail;
-
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
 			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
 			if (saltear) continue;
 
 			// Variables
-			// cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
-			cuerpoMail = ""
+			const email = usuario.email;
+			// const normalize = procesos.mailDeFeedback.normalize;
+			let cuerpoMail = "<p>" + email + "</p>";
+			// let cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Arma el cuerpo del mail
 			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
 			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
 
 			// Envía el mail y actualiza la BD
-			const asunto = "Resultado de las sugerencias realizadas";
-			const email = usuario.email;
 			mailsEnviados.push(
 				comp
 					.enviarMail(asunto, email, cuerpoMail) // Envía el mail
@@ -193,8 +190,8 @@ module.exports = {
 					.then(async (n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
-							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
-							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
+							// if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
+							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
 							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
 						return n; // Conserva el valor de si el mail fue enviado

@@ -139,7 +139,7 @@ app.set("views", [
 
 	// Procesos que dependen de la variable 'global'
 	// Rutinas
-	const rutinas = require("./funciones/3-Rutinas/Rutinas");
+	const rutinas = require("./funciones/3-Rutinas/RT-Control");
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares que dependen de procesos anteriores
