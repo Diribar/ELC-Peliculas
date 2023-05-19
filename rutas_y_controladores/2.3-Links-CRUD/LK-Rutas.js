@@ -17,6 +17,9 @@ const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto
 // Temas de captura
 const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
+// Varios
+const rutaCRUD = require("../../middlewares/varios/rutaCRUD");
+
 // Consolidados
 const ABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
@@ -32,7 +35,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links
-router.get("/abm", ...ABM, vista.linksForm);
+router.get("/abm", ...ABM, rutaCRUD, vista.linksForm);
 
 // Fin
 module.exports = router;
