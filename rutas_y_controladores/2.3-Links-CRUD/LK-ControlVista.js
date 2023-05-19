@@ -14,32 +14,33 @@ module.exports = {
 		// Tema y Código
 		const tema = "links_crud";
 		const codigo = "abmLinks";
-		// Obtiene los datos identificatorios del producto y del usuario
-		let entidad = req.query.entidad;
-		let id = req.query.id;
-		let userID = req.session.usuario.id;
+
+		// Variables
+		const entidad = req.query.entidad;
+		const id = req.query.id;
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		const userID = req.session.usuario.id;
+		const origen = req.query.origen ? req.query.origen : "";
+
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// Obtiene el avatar
-		let imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		// Combina los datos Editados con la versión Original
 		let producto = {...original, ...edicion, id};
 		// Obtiene información de BD
-		let links = await procesos.obtieneLinksActualizados(entidad, id, userID);
-		// Separar entre 'gr_activos' y 'gr_inactivos'
-		// Obtiene el producto y el título
-		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
+
 		// Actualiza linksEnProd
 		procsCRUD.linksEnProd({entidad, id});
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
-			let coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
-			let temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
+			const coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
+			const temporada = edicion && edicion.temporada ? edicion.temporada : original.temporada;
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
 		const motivos = motivos_status.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
-		const origen = req.query.origen ? req.query.origen : "DTP";
 		const status_id = original.status_registro_id;
 		// Va a la vista
 		//return res.send(links);
