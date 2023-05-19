@@ -76,15 +76,19 @@ module.exports = {
 		// Fin
 		return;
 	},
-	prodsConElRCLVeliminado: async ({campo_id,id}) => {
+	prodsConElRCLVeliminado: async function ({campo_id, id}) {
 		let prods = {};
-		// Obtiene los productos por tipo
-		for (let entProd of variables.entidades.prods) {
+		// Obtiene los productos por entidad y les quita el RCLV_id
+		for (let entProd of variables.entidades.prods)
 			prods[entProd] = BD_genericas.obtieneTodosPorCondicion(entProd, {
 				[campo_id]: id,
 				status_registro_id: aprobado_id,
-			});
-		}
+			}).then((n) =>
+				n.map((m) => {
+					m[campo_id] = 1;
+					return m;
+				})
+			);
 
 		// Obtiene los productos acumulados
 		let prodsAcum = [];
@@ -96,8 +100,26 @@ module.exports = {
 			})
 		);
 
+		//Revisa si se le debe cambiar el status a algún producto
+		// Averigua si existían productos vinculados al RCLV
+		if (prodsAcum.length)
+			// Acciones por cada ENTIDAD
+			for (let prodEntidad of variables.entidades.prods) {
+				// Averigua si existen registros por cada entidad
+				if (prods[prodEntidad].length)
+					// Acciones por cada PRODUCTO
+					for (let prod of prods[prodEntidad]) {
+						// Revisa si se le debe cambiar el status
+						this.revisaStatus(prod, prodEntidad);
+					}
+			}
+
 		// Fin
-		return
+		return;
+	},
+	revisaStatus: async (original, entidad) => {
+		// Averigua si hay errores
+		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
 	},
 
 	// Lectura de edicion
