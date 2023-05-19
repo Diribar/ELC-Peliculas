@@ -239,10 +239,13 @@ module.exports = {
 		// Alta Guardar
 		rclvEdicAprobRech: async (entidad, original, revID) => {
 			// Variables
+			const userID = original.creado_por_id;
+			const familia = comp.obtieneDesdeEntidad.familias(entidad);
+			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
+			const motivoVersionActual = motivos_edics.find((n) => n.version_actual);
+			const motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let familia = comp.obtieneDesdeEntidad.familias(entidad);
-			let camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 
 			// Prepara la información
 			let datos = {
@@ -255,69 +258,49 @@ module.exports = {
 				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
 			};
 
-			// RCLV actual
-			let include = comp.obtieneTodosLosCamposInclude(entidad);
-			let RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
-
-			// Motivos posibles
-			let motivoVersionActual = motivos_edics.find((n) => n.version_actual);
-			let motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
+			// Obtiene el RCLV actual
+			const include = comp.obtieneTodosLosCamposInclude(entidad);
+			const RCLV_actual = await BD_genericas.obtienePorIdConInclude(entidad, original.id, include);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
 				// Variables
-				let campo = campoRevisar.nombre;
-				let relacInclude = campoRevisar.relacInclude;
+				const campo = campoRevisar.nombre;
+				const relacInclude = campoRevisar.relacInclude;
 
-				// Valor aprobado
-				let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
-				let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
-
-				// Casos especiales
-				if (["solo_cfc", "ama"].includes(campo)) {
-					valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
-					valorDesc = original[campo] == 1 ? "SI" : "NO";
-				}
-				if (campo == "epoca_id") {
-					valorAprob = RCLV_actual[relacInclude].nombre_pers;
-					valorDesc = original[relacInclude].nombre_pers;
-				}
+				// Valores a comparar
+				const {valorAprob, valorDesc} = valoresComparar(original, RCLV_actual, relacInclude, campo);
 
 				// Si ninguna de las variables tiene un valor, saltea la rutina
 				if (!valorAprob && !valorDesc) continue;
 
 				// Genera la información
-				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob};
+				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob, valorDesc: "(vacío)"};
 
-				// Obtiene la entidad y completa los datos
-				let edicsAprobRech;
+				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
-					// Obtiene la entidad
-					edicsAprobRech = "edics_rech";
-					// Completa los datos
 					datos.valorDesc = valorDesc;
 					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datos.motivo_id = motivo.id;
 					datos.duracion = motivo.duracion;
 				}
-				// Obtiene la entidad
-				else edicsAprobRech = "edics_aprob";
 
-				// Guarda los registros en edics_aprob / edics_rech - se usa el 'await' para que conserve el orden
-				await BD_genericas.agregaRegistro(edicsAprobRech, datos);
-				// Aumenta la cantidad de edics_aprob / edics_rech para actualizar en el usuario
-				ediciones[edicsAprobRech]++;
+				// Guarda los registros en "hist_ediciones"
+				BD_genericas.agregaRegistro("hist_ediciones", datos);
+
+				// Aumenta la cantidad de edics_aprob / edics_rech
+				const aprobRech = valorAprob == valorDesc ? "aprob" : "rech";
+				ediciones["edics_" + aprobRech]++;
 			}
 
-			// Actualiza en el usuario los campos edics_aprob / edics_rech
-			let creaID = original.creado_por_id;
+			// Actualiza en el usuario el campo edics_aprob / edics_rech, según cuál tenga más
 			let campoEdic =
 				ediciones.edics_aprob > ediciones.edics_rech
 					? "edics_aprob"
 					: ediciones.edics_aprob < ediciones.edics_rech
 					? "edics_rech"
 					: "";
-			if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", creaID, campoEdic, 1);
+			if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
 
 			// Fin
 			return;
@@ -786,6 +769,25 @@ let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 
 	// Fin
 	return;
+};
+// Otras
+let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
+	// Valores a comparar
+	let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
+	let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
+
+	// Casos especiales
+	if (["solo_cfc", "ama"].includes(campo)) {
+		valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+		valorDesc = original[campo] == 1 ? "SI" : "NO";
+	}
+	if (campo == "epoca_id") {
+		valorAprob = RCLV_actual[relacInclude].nombre_pers;
+		valorDesc = original[relacInclude].nombre_pers;
+	}
+
+	// Fin
+	return {valorAprob, valorDesc};
 };
 let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Variables
