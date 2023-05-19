@@ -176,26 +176,28 @@ module.exports = {
 			if (saltear) continue;
 
 			// Variables
-			cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
+			// cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
+			cuerpoMail = ""
 
 			// Arma el cuerpo del mail
 			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
 			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
 
-			// Envía el mail y registra si fue enviado
-			const asunto = "DADI - Resultado de las sugerencias realizadas";
+			// Envía el mail y actualiza la BD
+			const asunto = "Resultado de las sugerencias realizadas";
 			const email = usuario.email;
 			mailsEnviados.push(
 				comp
-					.enviarMail(asunto, email, cuerpoMail)
-					.then((n) => n.OK)
+					.enviarMail(asunto, email, cuerpoMail) // Envía el mail
+					.then((n) => n.OK) // Averigua si el mail fue enviado
 					.then(async (n) => {
+						// Acciones si el mail fue enviado
 						if (n) {
-							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB);
-							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic);
-							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario);
+							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
+							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
+							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
-						return n;
+						return n; // Conserva el valor de si el mail fue enviado
 					})
 			);
 		}
