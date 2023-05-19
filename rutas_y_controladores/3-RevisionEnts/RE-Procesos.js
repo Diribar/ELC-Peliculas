@@ -571,7 +571,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 			}
 
-			// 2. Actualiza la tabla de 'historial de ediciones'
+			// 2. Actualiza la tabla de 'hist_ediciones'
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
