@@ -246,9 +246,10 @@ module.exports = {
 			const motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
+			let datosCompleto={}
 
 			// Prepara la información
-			let datos = {
+			let datosCabecera = {
 				entidad,
 				entidad_id: original.id,
 				sugerido_por_id: original.creado_por_id,
@@ -275,18 +276,18 @@ module.exports = {
 				if (!valorAprob && !valorDesc) continue;
 
 				// Genera la información
-				datos = {...datos, campo, titulo: campoRevisar.titulo, valorAprob, valorDesc: "(vacío)"};
+				datosCompleto = {...datosCabecera, campo, titulo: campoRevisar.titulo, valorAprob, valorDesc: "(vacío)"};
 
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
-					datos.valorDesc = valorDesc;
+					datosCompleto.valorDesc = valorDesc;
 					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
-					datos.motivo_id = motivo.id;
-					datos.duracion = motivo.duracion;
+					datosCompleto.motivo_id = motivo.id;
+					datosCompleto.duracion = motivo.duracion;
 				}
 
 				// Guarda los registros en "hist_ediciones"
-				BD_genericas.agregaRegistro("hist_ediciones", datos);
+				BD_genericas.agregaRegistro("hist_ediciones", datosCompleto);
 
 				// Aumenta la cantidad de edics_aprob / edics_rech
 				const aprobRech = valorAprob == valorDesc ? "aprob" : "rech";
