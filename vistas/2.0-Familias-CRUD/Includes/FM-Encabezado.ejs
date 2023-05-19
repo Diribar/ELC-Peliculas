@@ -11,7 +11,7 @@
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
 				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
-					<a href="<%= '/inactivar-captura/?entidad=' + entidad + '&id=' + id + '&prodEntidad=capitulos&prodID=' + prodID + '&origen=' + rutaCRUD %>">
+					<a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + prodID + '&origen=' + rutaCRUD %>">
 						<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
 					</a>
 				<% } %>
@@ -28,7 +28,7 @@
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
 				<p><strong>De la colección:</strong>
-					<a href="/producto/edicion/?entidad=colecciones&id=<%= registro.coleccion_id %>">
+					<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
 						<span><em><%= registro.coleccion.nombre_castellano %></em></span>
 					</a>
 				</p>
