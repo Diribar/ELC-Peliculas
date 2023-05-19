@@ -108,9 +108,9 @@ module.exports = {
 				// Averigua si existen registros por cada entidad
 				if (prods[prodEntidad].length)
 					// Acciones por cada PRODUCTO
-					for (let prod of prods[prodEntidad]) {
+					for (let original of prods[prodEntidad]) {
 						// Revisa si se le debe cambiar el status
-						this.revisaStatus(prod, prodEntidad);
+						await this.revisaStatus(original, prodEntidad);
 					}
 			}
 
@@ -120,6 +120,12 @@ module.exports = {
 	revisaStatus: async (original, entidad) => {
 		// Averigua si hay errores
 		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
+
+		// Si hay errores, le cambia el status
+		if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {status_registro_id: creado_aprob_id});
+
+		// Fin
+		return;
 	},
 
 	// Lectura de edicion
