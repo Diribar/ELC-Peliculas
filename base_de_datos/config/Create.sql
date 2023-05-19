@@ -30,35 +30,6 @@ CREATE TABLE `aux_dias_del_ano` (
   CONSTRAINT `aux_dias_del_ano_ibfk_1` FOREIGN KEY (`mes_id`) REFERENCES `aux_meses` (`id`),
   CONSTRAINT `aux_dias_del_ano_ibfk_2` FOREIGN KEY (`epoca_del_ano_id`) REFERENCES `rclv_5epocas_del_ano` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for table `aux_hist_cambios_status`
-
-CREATE TABLE `aux_hist_cambios_status` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `entidad` varchar(11) NOT NULL,
-  `entidad_id` int(10) unsigned NOT NULL,
-  `sugerido_por_id` int(10) unsigned NOT NULL,
-  `sugerido_en` datetime NOT NULL,
-  `revisado_por_id` int(10) unsigned NOT NULL,
-  `revisado_en` datetime NOT NULL,
-  `status_original_id` tinyint(3) unsigned NOT NULL,
-  `status_final_id` tinyint(3) unsigned NOT NULL,
-  `aprobado` tinyint(1) DEFAULT NULL,
-  `duracion` decimal(4,1) unsigned DEFAULT NULL,
-  `comunicado_en` datetime DEFAULT NULL,
-  `motivo_id` tinyint(3) unsigned DEFAULT NULL,
-  `comentario` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sugerido_por_id` (`sugerido_por_id`),
-  KEY `revisado_por_id` (`revisado_por_id`),
-  KEY `motivo_id` (`motivo_id`),
-  KEY `status_original_id` (`status_original_id`),
-  KEY `status_final_id` (`status_final_id`),
-  CONSTRAINT `aux_hist_cambios_status_ibfk_1` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `aux_hist_cambios_status_ibfk_2` FOREIGN KEY (`revisado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `aux_hist_cambios_status_ibfk_3` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
-  CONSTRAINT `aux_hist_cambios_status_ibfk_4` FOREIGN KEY (`status_original_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `aux_hist_cambios_status_ibfk_5` FOREIGN KEY (`status_final_id`) REFERENCES `aux_status_registros` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `aux_idiomas` (
   `id` varchar(2) NOT NULL,
@@ -67,7 +38,6 @@ CREATE TABLE `aux_idiomas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for table `aux_meses`
 
 CREATE TABLE `aux_meses` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -75,7 +45,6 @@ CREATE TABLE `aux_meses` (
   `abrev` varchar(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for table `aux_paises`
 
 CREATE TABLE `aux_paises` (
   `id` varchar(2) NOT NULL,
@@ -130,7 +99,7 @@ CREATE TABLE `aux_status_registros` (
   `recuperar` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cal_1registros` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -160,7 +129,7 @@ CREATE TABLE `cal_21fe_valores` (
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cal_22entretiene` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -168,7 +137,7 @@ CREATE TABLE `cal_22entretiene` (
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cal_23calidad_tecnica` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -176,7 +145,91 @@ CREATE TABLE `cal_23calidad_tecnica` (
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cam_hist_ediciones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `entidad` varchar(20) NOT NULL,
+  `entidad_id` int(10) unsigned NOT NULL,
+  `campo` varchar(20) NOT NULL,
+  `titulo` varchar(51) NOT NULL,
+  `valorDesc` varchar(100) DEFAULT NULL,
+  `valorAprob` varchar(100) DEFAULT NULL,
+  `duracion` decimal(4,1) unsigned DEFAULT NULL,
+  `motivo_id` tinyint(3) unsigned DEFAULT NULL,
+  `sugerido_por_id` int(10) unsigned NOT NULL,
+  `sugerido_en` datetime NOT NULL,
+  `revisado_por_id` int(10) unsigned NOT NULL,
+  `revisado_en` datetime NOT NULL,
+  `comunicado_en` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `motivo_id` (`motivo_id`),
+  KEY `editado_por_id` (`sugerido_por_id`),
+  KEY `edic_revisada_por_id` (`revisado_por_id`),
+  CONSTRAINT `cam_hist_ediciones_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_edics` (`id`),
+  CONSTRAINT `cam_hist_ediciones_ibfk_2` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `cam_hist_ediciones_ibfk_3` FOREIGN KEY (`revisado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cam_hist_status` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `entidad` varchar(14) NOT NULL,
+  `entidad_id` int(10) unsigned NOT NULL,
+  `status_original_id` tinyint(3) unsigned NOT NULL,
+  `status_final_id` tinyint(3) unsigned NOT NULL,
+  `aprobado` tinyint(1) DEFAULT NULL,
+  `duracion` decimal(4,1) unsigned DEFAULT NULL,
+  `motivo_id` tinyint(3) unsigned DEFAULT NULL,
+  `comentario` varchar(150) NOT NULL,
+  `sugerido_por_id` int(10) unsigned NOT NULL,
+  `sugerido_en` datetime NOT NULL,
+  `revisado_por_id` int(10) unsigned NOT NULL,
+  `revisado_en` datetime NOT NULL,
+  `comunicado_en` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sugerido_por_id` (`sugerido_por_id`),
+  KEY `revisado_por_id` (`revisado_por_id`),
+  KEY `motivo_id` (`motivo_id`),
+  KEY `status_original_id` (`status_original_id`),
+  KEY `status_final_id` (`status_final_id`),
+  CONSTRAINT `cam_hist_status_ibfk_1` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `cam_hist_status_ibfk_2` FOREIGN KEY (`revisado_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `cam_hist_status_ibfk_3` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`),
+  CONSTRAINT `cam_hist_status_ibfk_4` FOREIGN KEY (`status_original_id`) REFERENCES `aux_status_registros` (`id`),
+  CONSTRAINT `cam_hist_status_ibfk_5` FOREIGN KEY (`status_final_id`) REFERENCES `aux_status_registros` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cam_motivos_edics` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(3) unsigned NOT NULL,
+  `descripcion` varchar(40) NOT NULL,
+  `avatar_prods` tinyint(1) DEFAULT 0,
+  `avatar_rclvs` tinyint(1) DEFAULT 0,
+  `avatar_us` tinyint(1) DEFAULT 0,
+  `prods` tinyint(1) DEFAULT 0,
+  `rclvs` tinyint(1) DEFAULT 0,
+  `links` tinyint(1) DEFAULT 0,
+  `version_actual` tinyint(1) DEFAULT 0,
+  `info_erronea` tinyint(1) DEFAULT 0,
+  `rev_edicion` tinyint(1) DEFAULT 0,
+  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
+  `bloqueoInput` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cam_motivos_status` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(3) unsigned NOT NULL,
+  `descripcion` varchar(23) NOT NULL,
+  `bloqueoInput` tinyint(1) DEFAULT 0,
+  `prods` tinyint(1) DEFAULT 0,
+  `rclvs` tinyint(1) DEFAULT 0,
+  `links` tinyint(1) DEFAULT 0,
+  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
+  `coment_aut` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_filtros_cabecera` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -216,52 +269,7 @@ CREATE TABLE `cn_ordenes` (
   `asc_des` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `edics_aprob` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `entidad` varchar(20) NOT NULL,
-  `entidad_id` int(10) unsigned NOT NULL,
-  `campo` varchar(25) NOT NULL,
-  `titulo` varchar(35) NOT NULL,
-  `valorAprob` varchar(100) DEFAULT NULL,
-  `editado_por_id` int(10) unsigned NOT NULL,
-  `editado_en` datetime DEFAULT NULL,
-  `edic_revisada_por_id` int(10) unsigned NOT NULL,
-  `edic_revisada_en` datetime DEFAULT utc_timestamp(),
-  `comunicado_en` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `editado_por_id` (`editado_por_id`),
-  KEY `edic_revisada_por_id` (`edic_revisada_por_id`),
-  CONSTRAINT `edics_aprob_ibfk_1` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `edics_aprob_ibfk_2` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `edics_rech` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `entidad` varchar(20) NOT NULL,
-  `entidad_id` int(10) unsigned NOT NULL,
-  `campo` varchar(20) NOT NULL,
-  `titulo` varchar(21) NOT NULL,
-  `valorRech` varchar(100) DEFAULT NULL,
-  `valorAprob` varchar(100) DEFAULT NULL,
-  `motivo_id` tinyint(3) unsigned NOT NULL,
-  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
-  `editado_por_id` int(10) unsigned NOT NULL,
-  `editado_en` datetime NOT NULL,
-  `edic_revisada_por_id` int(10) unsigned NOT NULL,
-  `edic_revisada_en` datetime NOT NULL,
-  `comunicado_en` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `motivo_id` (`motivo_id`),
-  KEY `editado_por_id` (`editado_por_id`),
-  KEY `edic_revisada_por_id` (`edic_revisada_por_id`),
-  CONSTRAINT `edics_rech_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_edic` (`id`),
-  CONSTRAINT `edics_rech_ibfk_2` FOREIGN KEY (`editado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `edics_rech_ibfk_3` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `int_1registros` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -289,7 +297,7 @@ CREATE TABLE `int_opciones` (
   `nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -345,7 +353,7 @@ CREATE TABLE `links` (
   CONSTRAINT `links_ibfk_09` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `links_ibfk_10` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `links_ibfk_11` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `links_ibfk_12` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `links_ibfk_12` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links_edicion` (
@@ -405,36 +413,6 @@ CREATE TABLE `links_tipos` (
   `nombre` varchar(10) NOT NULL,
   `pelicula` tinyint(1) DEFAULT 0,
   `trailer` tinyint(1) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `motivos_rech_altas` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
-  `descripcion` varchar(23) NOT NULL,
-  `bloqueoInput` tinyint(1) DEFAULT 0,
-  `prods` tinyint(1) DEFAULT 0,
-  `rclvs` tinyint(1) DEFAULT 0,
-  `links` tinyint(1) DEFAULT 0,
-  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
-  `coment_aut` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `motivos_rech_edic` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
-  `descripcion` varchar(40) NOT NULL,
-  `avatar_prods` tinyint(1) DEFAULT 0,
-  `avatar_rclvs` tinyint(1) DEFAULT 0,
-  `avatar_us` tinyint(1) DEFAULT 0,
-  `prods` tinyint(1) DEFAULT 0,
-  `rclvs` tinyint(1) DEFAULT 0,
-  `links` tinyint(1) DEFAULT 0,
-  `info_erronea` tinyint(1) DEFAULT 0,
-  `version_actual` tinyint(1) DEFAULT 0,
-  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
-  `bloqueoInput` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -529,7 +507,7 @@ CREATE TABLE `prod_1peliculas` (
   CONSTRAINT `prod_1peliculas_ibfk_13` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_14` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_15` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `prod_1peliculas_ibfk_16` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `prod_1peliculas_ibfk_16` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_2colecciones` (
@@ -621,7 +599,7 @@ CREATE TABLE `prod_2colecciones` (
   CONSTRAINT `prod_2colecciones_ibfk_12` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_13` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_14` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `prod_2colecciones_ibfk_15` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `prod_2colecciones_ibfk_15` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_3capitulos` (
@@ -720,7 +698,7 @@ CREATE TABLE `prod_3capitulos` (
   CONSTRAINT `prod_3capitulos_ibfk_14` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_15` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_16` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `prod_3capitulos_ibfk_17` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `prod_3capitulos_ibfk_17` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_9edicion` (
@@ -805,7 +783,7 @@ CREATE TABLE `prod_tipos_actuac` (
   `anime` tinyint(1) NOT NULL,
   `documental` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_1personajes` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
@@ -863,7 +841,7 @@ CREATE TABLE `rclv_1personajes` (
   CONSTRAINT `rclv_1personajes_ibfk_03` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_04` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_05` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_1personajes_ibfk_06` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
+  CONSTRAINT `rclv_1personajes_ibfk_06` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_07` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_08` FOREIGN KEY (`ap_mar_id`) REFERENCES `rclv_2hechos` (`id`),
   CONSTRAINT `rclv_1personajes_ibfk_09` FOREIGN KEY (`sexo_id`) REFERENCES `aux_sexos` (`id`),
@@ -926,7 +904,7 @@ CREATE TABLE `rclv_2hechos` (
   CONSTRAINT `rclv_2hechos_ibfk_07` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_08` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_2hechos_ibfk_09` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `rclv_2hechos_ibfk_10` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `rclv_2hechos_ibfk_10` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_3temas` (
@@ -974,7 +952,7 @@ CREATE TABLE `rclv_3temas` (
   CONSTRAINT `rclv_3temas_ibfk_6` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_3temas_ibfk_7` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_3temas_ibfk_8` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_3temas_ibfk_9` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `rclv_3temas_ibfk_9` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_4eventos` (
@@ -1020,7 +998,7 @@ CREATE TABLE `rclv_4eventos` (
   CONSTRAINT `rclv_4eventos_ibfk_4` FOREIGN KEY (`edic_revisada_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_4eventos_ibfk_5` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
   CONSTRAINT `rclv_4eventos_ibfk_6` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `rclv_4eventos_ibfk_7` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`),
+  CONSTRAINT `rclv_4eventos_ibfk_7` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`),
   CONSTRAINT `rclv_4eventos_ibfk_8` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1073,7 +1051,7 @@ CREATE TABLE `rclv_5epocas_del_ano` (
   CONSTRAINT `rclv_5epocas_del_ano_ibfk_6` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_5epocas_del_ano_ibfk_7` FOREIGN KEY (`capturado_por_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `rclv_5epocas_del_ano_ibfk_8` FOREIGN KEY (`status_registro_id`) REFERENCES `aux_status_registros` (`id`),
-  CONSTRAINT `rclv_5epocas_del_ano_ibfk_9` FOREIGN KEY (`motivo_id`) REFERENCES `motivos_rech_altas` (`id`)
+  CONSTRAINT `rclv_5epocas_del_ano_ibfk_9` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rclv_9edicion` (
@@ -1137,7 +1115,6 @@ CREATE TABLE `rclv_canons` (
   `nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for table `rclv_epocas`
 
 CREATE TABLE `rclv_epocas` (
   `id` varchar(3) NOT NULL,
@@ -1148,7 +1125,6 @@ CREATE TABLE `rclv_epocas` (
   `ayuda_hecho` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for table `us_roles`
 
 CREATE TABLE `us_roles` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -1158,7 +1134,7 @@ CREATE TABLE `us_roles` (
   `revisor_ents` tinyint(1) NOT NULL,
   `revisor_us` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `us_status_registro` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -1170,7 +1146,7 @@ CREATE TABLE `us_status_registro` (
   `ident_a_validar` tinyint(1) DEFAULT NULL,
   `ident_validada` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `usuarios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1207,7 +1183,7 @@ CREATE TABLE `usuarios` (
   `penalizac_acum` decimal(4,1) unsigned DEFAULT 0.0,
   `fecha_ultimo_login` date DEFAULT utc_date(),
   `fecha_contrasena` datetime DEFAULT utc_timestamp(),
-  `fecha_revisores` datetime DEFAULT NULL,
+  `fecha_revisores` date DEFAULT NULL,
   `penalizado_en` datetime DEFAULT NULL,
   `penalizado_hasta` datetime DEFAULT NULL,
   `creado_en` datetime DEFAULT utc_timestamp(),
@@ -1235,6 +1211,7 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `usuarios_ibfk_7` FOREIGN KEY (`status_registro_id`) REFERENCES `us_status_registro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
@@ -1242,4 +1219,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-10 17:25:08
+-- Dump completed on 2023-05-19  9:46:56
