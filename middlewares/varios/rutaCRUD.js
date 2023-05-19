@@ -21,8 +21,7 @@ module.exports = async (req, res, next) => {
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
 		res.locals.prodID = await BD_genericas.obtienePorCondicion("capitulos", condicion).then((n) => n.id);
-	} else if (entidad == "capitulos")
-		res.locals.prodID = await BD_genericas.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
+	}
 
 	// Fin
 	next();
