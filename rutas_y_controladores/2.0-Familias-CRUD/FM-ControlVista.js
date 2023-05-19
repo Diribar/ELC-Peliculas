@@ -160,8 +160,11 @@ module.exports = {
 		// Elimina todas las ediciones que tenga
 		acumulado.push(BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id}));
 
-		// Elimina el historial de cambios de status
+		// Elimina el historial de status
 		acumulado.push(BD_genericas.eliminaTodosPorCondicion("hist_status", {entidad, entidad_id: id}));
+
+		// Elimina el historial de ediciones
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion("hist_edics", {entidad, entidad_id: id}));
 
 		// Acciones si es un producto
 		if (familia == "producto") {
