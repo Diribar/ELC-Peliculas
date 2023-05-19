@@ -8,18 +8,18 @@ const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
-const usRolRevEnts = require("../../middlewares/usuarios/filtro-usRolRevEnts");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
+const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevEnts");
 // Específicos de entidades
-const entValida = require("../../middlewares/producto/filtro-entidadValida");
-const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
-const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
-const existeEdicion = require("../../middlewares/producto/filtro-existeEdicion");
-const motivoNecesario = require("../../middlewares/producto/filtro-motivoNecesario");
-const motivoOpcional = require("../../middlewares/producto/filtro-motivoOpcional");
+const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
+const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
+const existeEdicion = require("../../middlewares/filtrosPorEntidad/filtro-existeEdicion");
+const motivoNecesario = require("../../middlewares/filtrosPorEntidad/filtro-motivoNecesario");
+const motivoOpcional = require("../../middlewares/filtrosPorEntidad/filtro-motivoOpcional");
 // Temas de captura
-const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado

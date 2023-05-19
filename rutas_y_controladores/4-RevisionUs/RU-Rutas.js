@@ -7,14 +7,14 @@ const vista = require("./RU-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
-const revisorEnts = require("../../middlewares/usuarios/filtro-usRolRevUs");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
+const revisorEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevUs");
 // Específicos de entidades
-const entValida = require("../../middlewares/producto/filtro-entidadValida");
-const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
+const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
 // Temas de captura
-const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
