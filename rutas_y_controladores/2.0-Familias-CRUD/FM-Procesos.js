@@ -58,23 +58,48 @@ module.exports = {
 		// Fin
 		return [edicion, camposNull];
 	},
-	puleEdicionesProd: async function (ediciones) {
+
+	// Eliminar RCLV
+	puleEdicionesProd: async function (prodEdics, campo_idRCLV) {
 		// Achica las ediciones a su mínima expresión
-		for (let edicion of ediciones) {
-			// Variables
-			const entidad = comp.obtieneDesdeEdicion.entidadProd(edicion);
-			const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(edicion);
-			const id = edicion[campo_idProd];
-			const campo_idRCLV = comp.obtieneDesdeEdicion.campo_idRCLV(edicion);
+		for (let prodEdic of prodEdics) {
+			// Obtiene el producto original
+			const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(prodEdic);
+			const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(prodEdic);
+			const prodID = prodEdic[campo_idProd];
+			const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
 
 			// Pule la edición
-			const original = await BD_genericas.obtienePorId(entidad, id);
-			delete edicion[campo_idRCLV];
-			await this.puleEdicion(entidad, original, edicion);
+			delete prodEdic[campo_idRCLV];
+			await this.puleEdicion(prodEntidad, original, prodEdic);
 		}
 		// Fin
 		return;
 	},
+	prodsConElRCLVeliminado: async ({campo_id,id}) => {
+		let prods = {};
+		// Obtiene los productos por tipo
+		for (let entProd of variables.entidades.prods) {
+			prods[entProd] = BD_genericas.obtieneTodosPorCondicion(entProd, {
+				[campo_id]: id,
+				status_registro_id: aprobado_id,
+			});
+		}
+
+		// Obtiene los productos acumulados
+		let prodsAcum = [];
+		const metodos = Object.keys(prods);
+		await Promise.all(Object.values(prods)).then((n) =>
+			n.forEach((m, i) => {
+				prods[metodos[i]] = m;
+				prodsAcum.push(...m);
+			})
+		);
+
+		// Fin
+		return
+	},
+
 	// Lectura de edicion
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
 		// Obtiene los campos include
