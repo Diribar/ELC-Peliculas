@@ -10,35 +10,43 @@ window.addEventListener("load", async () => {
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 		tiposActuacion: document.querySelectorAll(".inputError .tipoActuacion"),
+
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
 		// CFC
 		cfcSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		cfcNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+
 		// Ocurrió
 		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
 		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+
 		// RCLV
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
 		checkRCLV: document.querySelector("#RCLV #checkbox input"),
 		selectsRCLV: document.querySelector("#RCLV #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
+
 		// RCLV - Sectores
 		sectorRCLV: document.querySelector("#RCLV"),
 		sectorPers: document.querySelector("#RCLV #personaje_id"),
 		sectorHecho: document.querySelector("#RCLV #hecho_id"),
 		sectorValor: document.querySelector("#RCLV #tema_id"),
+
 		// RCLV - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),
 		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
+
 		// RCLV - Varios
 		ayudaRCLV: document.querySelectorAll("#RCLV .ocultaAyudaRCLV"),
 		iconosOK_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#RCLV .inputError .fa-circle-xmark"),
+
 		// RCLV - Links
 		linksRCLV_Alta: document.querySelectorAll("#RCLV .inputError .linkRCLV.alta"),
 		linksRCLV_Edic: document.querySelectorAll("#RCLV .inputError .linkRCLV.edicion"),
@@ -177,14 +185,17 @@ window.addEventListener("load", async () => {
 			}
 		},
 		ocurrio: () => {
-			// Variables
-			let ocurrio = ocurrioSI.checked ? "1" : ocurrioNO.checked ? "0" : "";
+			// Averigua si es verdadero o falso
+			const ocurrioSI = DOM.ocurrioSI.checked && !DOM.ocurrioNO.checked;
+			const ocurrioNO = DOM.ocurrioNO.checked && !DOM.ocurrioSI.checked;
 
 			// Oculta o muestra el sector de RCLVs
-			ocurrio ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
+			ocurrioSI || ocurrioNO
+				? DOM.sectorRCLV.classList.remove("ocultaOcurrio")
+				: DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
-			if (ocurrio == "1") {
+			if (ocurrioSI) {
 				// Muestra 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.remove("ocultar");
 				DOM.sectorHecho.classList.remove("ocultar");
@@ -193,13 +204,16 @@ window.addEventListener("load", async () => {
 				DOM.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
-			if (ocurrio == "0") {
+			if (ocurrioNO) {
 				// Oculta 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.add("ocultar");
 				DOM.sectorHecho.classList.add("ocultar");
 				// Ayudas
 				DOM.ayudaRCLV[0].classList.add("ocultaAyudaRCLV");
 				DOM.ayudaRCLV[1].classList.remove("ocultaAyudaRCLV");
+				// Valores de RCLV
+				DOM.selectPers.value = 1;
+				DOM.selectHecho.value = 1;
 			}
 		},
 		sinRCLV: () => {
@@ -247,13 +261,16 @@ window.addEventListener("load", async () => {
 		// Variables
 		let ocurrio = DOM.ocurrioSI.checked ? "1" : DOM.ocurrioNO.checked ? "0" : "";
 		let checkRCLV = DOM.checkRCLV.checked;
+
 		// Agrega el valor del campo 'sin' o de los demás campos
 		let url = "";
 		checkRCLV
 			? (url += campo + "=on" + "&")
 			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
+
 		// Agrega 'ocurrió'
 		if (ocurrio) url += "ocurrio=" + ocurrio;
+
 		// Fin
 		return url;
 	};
@@ -281,12 +298,13 @@ window.addEventListener("load", async () => {
 			DOM.selectPers.value = "1";
 			DOM.selectHecho.value = "1";
 		}
+
 		// 2. Para campos 'RCLV'
 		if (v.camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
 		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...v.camposRCLV, "sinRCLV"].includes(campo)) datosUrl += urlRCLV(campo);
+		if ([...v.camposRCLV, "sinRCLV", "ocurrio"].includes(campo)) datosUrl += urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
