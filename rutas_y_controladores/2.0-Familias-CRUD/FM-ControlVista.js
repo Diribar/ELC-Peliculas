@@ -193,8 +193,10 @@ module.exports = {
 				);
 		}
 
+		// Espera a que cumplan todas las rutinas anteriores
+		await Promise.all(acumulado);
+
 		// Elimina el registro
-		acumulado = await Promise.all(acumulado);
 		BD_genericas.eliminaPorId(entidad, id);
 
 		// Prepara información para la próxima vista
