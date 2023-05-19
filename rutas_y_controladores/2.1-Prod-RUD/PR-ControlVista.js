@@ -87,7 +87,7 @@ module.exports = {
 		});
 	},
 	prodEdicion_Form: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_rud";
 		const codigo = "edicion";
 
@@ -106,15 +106,16 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			entidadNombre;
 
-		// 2. Obtiene el producto 'Original' y 'Editado'
+		// Obtiene la versión más completa posible del producto
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
 		if (req.session.edicProd) prodComb = {...prodComb, ...req.session.edicProd};
-		delete req.session.edicProd
-		// 5. Obtiene el nombre de los países
+		delete req.session.edicProd;
+
+		// Obtiene el nombre de los países
 		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
-		// 6. Info para la vista de Edicion o Detalle
+
+		// Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let edicSession;
@@ -145,7 +146,8 @@ module.exports = {
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		}
-		// 7. Obtiene datos para la vista
+
+		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const ayudasTitulo = [
