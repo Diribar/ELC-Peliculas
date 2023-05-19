@@ -21,7 +21,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		const userID = req.session.usuario.id;
-		const origen = req.query.origen ? req.query.origen : "";
+		const origen = req.query.origen;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
