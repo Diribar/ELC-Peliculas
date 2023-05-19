@@ -231,9 +231,9 @@ module.exports = {
 			// Obtiene los registros de "edics"
 			condiciones = {comunicado_en: null};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicionConInclude("hist_ediciones", condiciones, "motivo")
+				BD_genericas.obtieneTodosPorCondicionConInclude("hist_edics", condiciones, "motivo")
 					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "hist_ediciones"})))
+					.then((n) => n.map((m) => ({...m, tabla: "hist_edics"})))
 			);
 
 			// Espera a que se reciba la info

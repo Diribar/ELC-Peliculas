@@ -18,7 +18,7 @@ module.exports = {
 
 		// Variables
 		const {entidad, id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "DTP";
+		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
@@ -93,7 +93,7 @@ module.exports = {
 
 		// Más variables
 		const {entidad, id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "DTP";
+		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let imgDerPers, avatarsExternos, gruposPers, gruposHechos;

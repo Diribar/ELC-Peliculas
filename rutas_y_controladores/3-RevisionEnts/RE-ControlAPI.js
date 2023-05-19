@@ -41,7 +41,7 @@ module.exports = {
 		datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
 		datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
 
-		// Pule la edición
+		// Procesa la edición
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
