@@ -87,7 +87,7 @@ module.exports = {
 		});
 	},
 	prodEdicion_Form: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_rud";
 		const codigo = "edicion";
 
@@ -106,13 +106,16 @@ module.exports = {
 			(entidad == "capitulos" ? " un " : " la ") +
 			entidadNombre;
 
-		// 2. Obtiene el producto 'Original' y 'Editado'
+		// Obtiene la versión más completa posible del producto
 		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
-		// 3. Obtiene la versión más completa posible del producto
 		let prodComb = {...original, ...edicion, id};
-		// 5. Obtiene el nombre de los países
+		if (req.session.edicProd) prodComb = {...prodComb, ...req.session.edicProd};
+		delete req.session.edicProd;
+
+		// Obtiene el nombre de los países
 		const paisesNombre = original.paises_id ? comp.paises_idToNombre(original.paises_id) : "";
-		// 6. Info para la vista de Edicion o Detalle
+
+		// Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
 			let edicSession;
@@ -143,7 +146,8 @@ module.exports = {
 			gruposPers = procsCRUD.gruposPers(camposDA, userID);
 			gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 		}
-		// 7. Obtiene datos para la vista
+
+		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const ayudasTitulo = [
@@ -177,7 +181,15 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		if (original.capitulos) delete original.capitulos;
+
+		// Averigua si el usuario tiene el perfil de revisor
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+
+		// Averigua si corresponde actualizar el original
+		// 1. Tiene que ser un revisor
+		// 2. El registro debe estar en el status 'creado_aprob'
+		// 3. El registro original no debe tener otras ediciones
 		const actualizaOrig = revisor && original.status_registro.creado_aprob && !original.ediciones.length;
 
 		// Averigua si hay errores de validación
@@ -204,10 +216,7 @@ module.exports = {
 				}
 			}
 			// Si hay errores, borra el archivo avatar editado
-			else {
-				comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
-				// return res.send([{errores}, {...prodComb, entidad}]);
-			}
+			else comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
 		}
 
 		// Acciones si no hay errores
@@ -223,7 +232,7 @@ module.exports = {
 				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;
-			} 
+			}
 			// De lo contrario, actualiza la edicion
 			else {
 				// Combina la información
@@ -231,6 +240,10 @@ module.exports = {
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
+		} else {
+			req.session.edicProd = req.body;
+			delete req.session.edicProd.avatar;
+			return res.redirect(req.originalUrl); // Recarga la vista
 		}
 
 		// Fin

@@ -140,16 +140,10 @@ module.exports = {
 				: "";
 		},
 		asocProd: (edicion) => {
-			return edicion.pelicula_id
-				? "pelicula"
-				: edicion.coleccion_id
-				? "coleccion"
-				: edicion.capitulo_id
-				? "capitulo"
-				: "";
+			return edicion.pelicula_id ? "pelicula" : edicion.coleccion_id ? "coleccion" : edicion.capitulo_id ? "capitulo" : "";
 		},
 		asocRCLV: (edicion) => {
-			return  edicion.personaje_id
+			return edicion.personaje_id
 				? "personaje"
 				: edicion.hecho_id
 				? "hecho"
@@ -240,13 +234,14 @@ module.exports = {
 				.replace(/[žźżž]/g, "z")
 				.replace(/[`‘“’”«»]/g, '"')
 				.replace(/[º]/g, "°")
-				.replace(/ +/g, " ")
-				.replace(/\t/g, " ")
 				.replace(/ /g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
-				.replace(/#/g, "");
+				.replace(/#/g, "")
+				.replace(/\t/g, " ") // previene el uso de 'tab'
+				.replace(/\n/g, " ") // previene el uso de 'return'
+				.replace(/ +/g, " ");
 		},
 	},
 	fechaHora: {
@@ -547,7 +542,7 @@ module.exports = {
 			to: mail,
 			subject: asunto, // Subject line
 			//text: comentario, // plain text body
-			html: comentario,//.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+			html: comentario, //.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		// Envío del mail
 		let mailEnviado = transporter

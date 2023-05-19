@@ -11,13 +11,16 @@
 #contenido #informacion h2 {margin-top: 15px; font-variant: small-caps}
 #contenido #informacion p {line-height: 1;}
 #contenido #informacion .campoTitulo {font-weight: bold; color: var(--gris-oscuro);}
-#contenido #informacion .infoMostrar :is(.orig, .edic) {padding: 2px 4px; margin-left: 5px; border-radius: 5px;}
+#contenido #informacion .infoMostrar :is(.orig, .edic) {padding: 2px 4px; border-radius: 5px;}
 #contenido #informacion .infoMostrar :is(.orig, .edic) {width: fit-content; font-style: italic;}
+#contenido #informacion .infoMostrar :is(.fa-circle-xmark.rechazar, .muestraMotivos) {margin-left: 5px;}
 #contenido #informacion .infoMostrar .edic {background: var(--verde-oscuro); color: white;}
 /* Ingresos */
 #informacion #ingrs {margin-top: 5px;}
 #informacion #ingrs tr:nth-of-type(even) {background: var(--amarillo-claro);}
 #informacion #ingrs tr #cartelRechazo select {background: inherit;}
+#informacion #ingrs .aprobar {margin-left: 5px; }
+
 /* Reemplazos */
 #informacion #reemps .fa-trash-can {color: var(--rojo-oscuro);}
 #informacion #reemps .infoMostrar .orig {background: var(--rojo-oscuro); color: white;}
