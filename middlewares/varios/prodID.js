@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 		? "LK"
 		: "";
 
-	// Averigua el id alternativo (de la colección o del primer capítulo de la colección)
+	// Averigua el id alternativo (del primer capítulo de la colección)
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
 		res.locals.prodID = await BD_genericas.obtienePorCondicion("capitulos", condicion).then((n) => n.id);

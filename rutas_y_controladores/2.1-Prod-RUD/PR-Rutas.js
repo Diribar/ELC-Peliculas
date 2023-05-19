@@ -23,7 +23,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const rutaCRUD = require("../../middlewares/varios/rutaCRUD");
+const prodID = require("../../middlewares/varios/prodID");
 
 // Consolida
 const edicion = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, existeEdicion, permUserReg];
@@ -41,8 +41,8 @@ router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
-router.get("/detalle", entValida, IDvalido, capturaInactivar, rutaCRUD, vista.prodDetalle_Form);
-router.get("/edicion", ...edicion, capturaActivar, rutaCRUD, vista.prodEdicion_Form);
+router.get("/detalle", entValida, IDvalido, capturaInactivar, prodID, vista.prodDetalle_Form);
+router.get("/edicion", ...edicion, capturaActivar, prodID, vista.prodEdicion_Form);
 router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdicion_Guardar);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
