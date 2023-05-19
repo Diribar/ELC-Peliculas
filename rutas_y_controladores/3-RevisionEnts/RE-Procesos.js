@@ -246,10 +246,10 @@ module.exports = {
 			const motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edics_aprob: 0, edics_rech: 0};
-			let datosCompleto={}
+			let datosCompleto = {};
 
 			// Prepara la información
-			let datosCabecera = {
+			const datosCabecera = {
 				entidad,
 				entidad_id: original.id,
 				sugerido_por_id: original.creado_por_id,
