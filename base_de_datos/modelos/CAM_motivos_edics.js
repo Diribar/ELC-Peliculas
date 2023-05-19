@@ -16,7 +16,7 @@ module.exports = (sequelize, dt) => {
 		bloqueoInput: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "motivos_edics",
+		tableName: "cam_motivos_edics",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
