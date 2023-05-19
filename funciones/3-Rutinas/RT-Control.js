@@ -174,8 +174,8 @@ module.exports = {
 
 			// Variables
 			const email = usuario.email;
-			// const normalize = procesos.mailDeFeedback.normalize;
 			let cuerpoMail = "<p>" + email + "</p>";
+			// const normalize = procesos.mailDeFeedback.normalize;
 			// let cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
 
 			// Arma el cuerpo del mail
