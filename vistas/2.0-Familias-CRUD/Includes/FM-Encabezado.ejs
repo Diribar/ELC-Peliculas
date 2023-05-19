@@ -5,16 +5,15 @@
 		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
 	<% } %>
 </div>
-<% if (entidad == "colecciones" || entidad == "capitulos") { %>
-	<% if (tema == "prod_rud" && entidad == "colecciones") { %>
-		<script src="/javascript/2.1-Prod-RUD/PR0-AlternarColCap.js"></script>
-	<% } %>
+<% if (entidad != "peliculas") { %>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<% if (tema == "prod_rud") { %>
-					<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
+				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
+					<a href="<%= '/inactivar-captura/?entidad=' + entidad + '&id=' + id + '&prodEntidad=capitulos&prodID=' + prodID + '&origen=' + rutaCRUD %>">
+						<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
+					</a>
 				<% } %>
 				<div>
 					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
