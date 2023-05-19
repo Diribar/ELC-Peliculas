@@ -8,16 +8,16 @@ const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/usuarios/filtro-usAptoInput");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
 // Específicos de RCLVs
-const entValida = require("../../middlewares/producto/filtro-entidadValida");
-const IDvalido = require("../../middlewares/producto/filtro-IDvalido");
-const accesoBloq = require("../../middlewares/producto/filtro-accesoBloq");
-const statusCorrecto = require("../../middlewares/producto/filtro-statusCorrecto");
+const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
+const accesoBloq = require("../../middlewares/filtrosPorEntidad/filtro-accesoBloq");
+const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
 // Temas de captura
-const permUserReg = require("../../middlewares/captura/filtro-permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado

@@ -6,13 +6,13 @@ const API = require("./US-ControlAPI");
 const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
-const visitas = require("../../middlewares/usuarios/filtro-visitas");
-const usuarios = require("../../middlewares/usuarios/filtro-usuarios");
-const stMailValidado = require("../../middlewares/usuarios/filtro-usSt2-MailVal");
-const stEditables = require("../../middlewares/usuarios/filtro-usSt3-Editables");
-const stIdentValidar = require("../../middlewares/usuarios/filtro-usSt4-IdentValidar");
-const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const visitas = require("../../middlewares/filtrosPorUsuario/filtro-visitas");
+const usuarios = require("../../middlewares/filtrosPorUsuario/filtro-usuarios");
+const stMailValidado = require("../../middlewares/filtrosPorUsuario/filtro-usSt2-MailVal");
+const stEditables = require("../../middlewares/filtrosPorUsuario/filtro-usSt3-Editables");
+const stIdentValidar = require("../../middlewares/filtrosPorUsuario/filtro-usSt4-IdentValidar");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************

@@ -7,8 +7,8 @@ const vista = require("./MT-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/usuarios/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/usuarios/filtro-usPenalizaciones");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
 // Varios
 const controles = [usAltaTerm, usPenalizaciones];
 
