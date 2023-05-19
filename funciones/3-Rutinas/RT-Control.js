@@ -46,8 +46,6 @@ module.exports = {
 
 	// 0.B. Conjunto de tareas
 	conjuntoDeRutinasHorarias: async function () {
-		let horarioInicial = new Date().getTime();
-
 		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		const rutinas = info.RutinasHorarias;
@@ -56,19 +54,12 @@ module.exports = {
 		const {FechaUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas horarias
-		if (info.FechaUTC != FechaUTC) {
-			for (let rutina of rutinas) {
-				await this[rutina]();
-				horarioInicial = procesos.medicionDelTiempo(horarioInicial);
-			}
-		}
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
 
 		// Fin
 		return;
 	},
 	conjuntoDeRutinasDiarias: async function () {
-		let horarioInicial = new Date().getTime();
-
 		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		const rutinas = Object.keys(info.HorariosUTC);
@@ -77,18 +68,9 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas diarias
-		if (info.FechaUTC != FechaUTC)
-			for (let rutina of rutinas) {
-				await this[rutina]();
-				horarioInicial = procesos.medicionDelTiempo(horarioInicial);
-			}
+		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
 		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
-		else
-			for (let rutina of rutinas)
-				if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) {
-					await this[rutina]();
-					horarioInicial = procesos.medicionDelTiempo(horarioInicial);
-				}
+		else for (let rutina of rutinas) if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
 
 		// Fin
 		return;
@@ -126,7 +108,7 @@ module.exports = {
 		}
 
 		// Fin
-		procesos.rutinasFinales("LinksEnProd");
+		procesos.rutinasSinGuardar("LinksEnProd");
 		return;
 	},
 	ProdsEnRCLV: async function () {
@@ -143,7 +125,7 @@ module.exports = {
 		}
 
 		// Fin
-		procesos.rutinasFinales("ProdsEnRCLV");
+		procesos.rutinasSinGuardar("ProdsEnRCLV");
 		return;
 	},
 	MailDeFeedback: async () => {
@@ -202,7 +184,7 @@ module.exports = {
 		// Fin
 		console.log("Enviando mails...");
 		await Promise.all(mailsEnviados);
-		procesos.rutinasFinales("MailDeFeedback");
+		procesos.rutinasSinGuardar("MailDeFeedback");
 		return;
 	},
 

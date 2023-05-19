@@ -603,12 +603,6 @@ module.exports = {
 		// Fin
 		return hora;
 	},
-	medicionDelTiempo: (horarioInicial) => {
-		const horarioFinal = new Date().getTime();
-
-		// Fin
-		return horarioFinal;
-	},
 	rutinasFinales: function (campo) {
 		// Actualiza el archivo JSON
 		this.actualizaRutinasJSON({[campo]: "SI"});
@@ -616,6 +610,14 @@ module.exports = {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' actualizada y datos guardados en JSON");
+
+		// Fin
+		return;
+	},
+	rutinasSinGuardar: function (campo) {
+		// Feedback del proceso
+		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' actualizada");
 
 		// Fin
 		return;
