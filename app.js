@@ -149,9 +149,6 @@ app.set("views", [
 	// Para tener el rastro de los últimos url
 	const urlsUsadas = require("./middlewares/urls/urlsUsadas");
 	app.use(urlsUsadas);
-	// Para tener en locals las variables necesarias
-	const locals = require("./middlewares/varios/locals");
-	app.use(locals);
 
 	// Rutas que dependen de la variable 'global'
 	const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/US-Rutas");
