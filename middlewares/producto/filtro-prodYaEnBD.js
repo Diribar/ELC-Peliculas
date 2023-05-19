@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: [
 					"La " + entidadNombre + " ya está en nuestra BD.",
-					"Podés ver el detalle haciendo click abajo, en el ícono de 'información'.",
+					"Podés ver el detalle, con el ícono de abajo a la derecha",
 				],
 				iconos: [
 					{nombre: "fa-circle-left", link: linkAnterior, titulo: "Regresar a 'Desambiguar'"},

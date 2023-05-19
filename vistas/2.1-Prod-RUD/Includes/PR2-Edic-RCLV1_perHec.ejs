@@ -1,27 +1,25 @@
 <% campo = camposDA.find(n => n.nombre == nombre) %>
 <% let {titulo, valores, grupo} = campo %>
-<section class="perHec ocultar">
-	<div id="<%= nombre %>" class="label-input">
-		<label><%= titulo %></label>
-		<div class="inputError">
-			<!-- Input -->
-			<select name="<%= nombre %>" class="input RCLV">
-				<% for (let grupo of grupos) { %>
-					<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
-						<% for (let valor of grupo.valores) { %>
-							<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (registro[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
-						<% } %>
-					</optgroup>
-				<% } %>
-			</select>
-	
-			<%- include("PA4-DA9-Ayuda") %>
-			<!-- Link a Relación con la vida -->
-			<i id="alta" class="fa-solid fa-circle-plus linkRCLV <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>
-			<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>
-	
-			<!-- Aviso de cambio en el data-entry -->
-			<i class="fa-solid fa-arrow-right-long ocultar"></i>
-		</div>
+<section id="<%= nombre %>" class="label-input">
+	<label><%= titulo %></label>
+	<div class="inputError">
+		<!-- Input -->
+		<select name="<%= nombre %>" class="input RCLV">
+			<% for (let grupo of grupos) { %>
+				<optgroup label="<%= grupo.label %>" class="<%= grupo.clase %>">
+					<% for (let valor of grupo.valores) { %>
+						<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (registro[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+					<% } %>
+				</optgroup>
+			<% } %>
+		</select>
+
+		<%- include("PA4-DA9-Ayuda") %>
+		<!-- Link a Relación con la vida -->
+		<i id="alta" class="fa-solid fa-circle-plus linkRCLV <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>
+		<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"' tabindex="-1"></i>
+
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>
 </section>

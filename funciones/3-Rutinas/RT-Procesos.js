@@ -220,12 +220,12 @@ module.exports = {
 			let registros = [];
 			let condiciones;
 
-			// Obtiene los registros de "hist_cambios_de_status"
+			// Obtiene los registros de "hist_status"
 			condiciones = {aprobado: {[Op.ne]: null}, comunicado_en: null};
 			registros.push(
-				BD_genericas.obtieneTodosPorCondicion("hist_cambios_de_status", condiciones)
+				BD_genericas.obtieneTodosPorCondicion("hist_status", condiciones)
 					// Agrega el nombre de la tabla
-					.then((n) => n.map((m) => ({...m, tabla: "hist_cambios_de_status"})))
+					.then((n) => n.map((m) => ({...m, tabla: "hist_status"})))
 			);
 
 			// Obtiene los registros de "edics"
@@ -327,8 +327,8 @@ module.exports = {
 
 			resultados.map((n) => {
 				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
-				mensaje += " de status '<em>" + n.statusInicial.nombre.toLowerCase() + "</em>'";
-				mensaje += " a status '<em>" + n.statusFinal.nombre.toLowerCase() + "</em>'";
+				mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
+				mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
 				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
 				color = n.aprobado ? "green" : "firebrick";
 				mensaje = this.formatos.li(mensaje, color);
