@@ -175,18 +175,24 @@ module.exports = {
 
 		// Acciones si es un RCLV
 		if (familia == "rclv") {
-			// Se fija si tiene alguna edición de producto, y borra el vínculo
+			// Ediciones de producto - Se fija si tiene alguna vinculada
 			const prodEdiciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[campo_id]: id});
 			if (prodEdiciones.length) {
-				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
-				procesos.puleEdicionesProd(prodEdiciones);
+				// Les borra el vínculo en la BD
+				acumulado.push(BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null}));
+
+				// Revisa si tiene que eliminar alguna edición
+				procesos.puleEdicionesProd(prodEdiciones, campo_id);
 			}
 
-			// Borra el vínculo en los productos
+			// Productos - Se fija si tiene alguno vinculado y en status aprobado, y si se le debe cambiar el status
+			procesos.prodsConElRCLVeliminado({campo_id, id});
+
+			// Productos - Borra el valor en el campo_id
 			for (let entProd of variables.entidades.prods)
 				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {[campo_id]: id}, {[campo_id]: 1}));
 
-			// Si es un "epoca_del_ano", borra el vínculo en los dias_del_ano
+			// epoca_del_ano - Borra el vínculo en los dias_del_ano
 			if (entidad == "epocas_del_ano")
 				acumulado.push(
 					BD_genericas.actualizaTodosPorCondicion("epocas_del_ano", {epoca_del_ano_id: id}, {[campo_id]: 1})
