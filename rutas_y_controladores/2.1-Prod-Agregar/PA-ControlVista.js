@@ -121,6 +121,7 @@ module.exports = {
 		if (datosDuros.fuente == "IM") {
 			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
 			datosOriginales = {...datosOriginales, nombre_original, nombre_castellano, ano_estreno, sinopsis};
+			// Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
 		}
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
@@ -404,6 +405,7 @@ module.exports = {
 		// 3. Actualiza algunas session y cookie
 		// 3.1. Datos Originales
 		let datosOriginales = {...datos};
+		delete datosOriginales.avatar // Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
 		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 		// 3.2. Film Affinity
