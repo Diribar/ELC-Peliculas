@@ -11,7 +11,7 @@ module.exports = {
 	puleEdicion: async (entidad, original, edicion) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
 
@@ -52,7 +52,7 @@ module.exports = {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 			// Si además había una edición guardada en la BD, la elimina
-			if (edicID) await BD_genericas.eliminaPorId(nombreEdicion, edicID);
+			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
 		} else edicion.id = edicID;
 
 		// Fin
@@ -153,15 +153,15 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let nombreEdicion = comp.obtieneDesdeEntidad.petitFamilia(entidad) + "_edicion";
-			edicion = await BD_genericas.obtienePorIdConInclude(nombreEdicion, edicion.id, includesEdic);
+			let entidadEdic = comp.obtieneDesdeEntidad.petitFamilia(entidad) + "_edicion";
+			edicion = await BD_genericas.obtienePorIdConInclude(entidadEdic, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			let camposNull;
 			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
 			if (edicion && Object.keys(camposNull).length)
-				await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, camposNull);
+				await BD_genericas.actualizaPorId(entidadEdic, edicion.id, camposNull);
 		} else edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
@@ -170,7 +170,7 @@ module.exports = {
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
-		let nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		let camposNull;
 
 		// Quita la info que no agrega valor
@@ -179,7 +179,7 @@ module.exports = {
 		// Acciones si quedan campos
 		if (edicion) {
 			// Si existe edicion.id --> se actualiza el registro
-			if (edicion.id) await BD_genericas.actualizaPorId(nombreEdicion, edicion.id, {...camposNull, ...edicion});
+			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, {...camposNull, ...edicion});
 			// Si no existe edicion.id --> se agrega el registro
 			else
 				await (async () => {
@@ -194,7 +194,7 @@ module.exports = {
 						edicion[producto_id] = original[producto_id];
 					}
 					// Se agrega el registro
-					await BD_genericas.agregaRegistro(nombreEdicion, edicion);
+					await BD_genericas.agregaRegistro(entidadEdic, edicion);
 				})();
 		}
 

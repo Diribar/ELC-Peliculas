@@ -8,6 +8,31 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	obtieneDesdeFamilias: {
+		familia: (familias) => {
+			return familias == "productos"
+				? "producto"
+				: familias == "rclvs"
+				? "rclv"
+				: familias == "links"
+				? "link"
+				: familias == "usuarios"
+				? "usuario"
+				: "";
+		},
+		petitFamilia: (familias) => {
+			return familias == "links" ? "links" : familias == "rclvs" ? "rclvs" : familias == "productos" ? "prods" : "";
+		},
+		entidadEdic: (familias) => {
+			return familias == "productos"
+				? "prods_edicion"
+				: familias == "rclvs"
+				? "rclvs_edicion"
+				: familias == "links"
+				? "links_edicion"
+				: "";
+		},
+	},
 	obtieneDesdeEntidad: {
 		familia: (entidad) => {
 			return FN.familia(entidad);
@@ -79,7 +104,7 @@ module.exports = {
 				? "link"
 				: "";
 		},
-		nombreEdicion: (entidad) => {
+		entidadEdic: (entidad) => {
 			return variables.entidades.prods.includes(entidad)
 				? "prods_edicion"
 				: variables.entidades.rclvs.includes(entidad)

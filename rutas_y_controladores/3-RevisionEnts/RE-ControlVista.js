@@ -387,7 +387,7 @@ module.exports = {
 		const {entidad, id, edicID} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-		const edicEntidad = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
@@ -446,8 +446,8 @@ module.exports = {
 				procesos.descargaAvatar(original, entidad);
 				// Actualiza el registro 'edición'
 				edicion.avatar_url = null;
-				const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
-				BD_genericas.actualizaPorId(nombreEdicion, edicID, {avatar: null, avatar_url: null});
+				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+				BD_genericas.actualizaPorId(entidadEdic, edicID, {avatar: null, avatar_url: null});
 			}
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);

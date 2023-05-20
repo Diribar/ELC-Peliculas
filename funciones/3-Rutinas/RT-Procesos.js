@@ -162,11 +162,10 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	borraImagenesSinRegistro1: async function (entidad) {
+	borraImagenesSinRegistro1: async function (familias) {
 		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		const petitFamilia = comp.obtieneDesdeFamilias.petitFamilia(familias);
+		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
 		let consolidado = [];
 		let carpeta, avatars;
 

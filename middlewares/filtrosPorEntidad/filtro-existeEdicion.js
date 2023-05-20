@@ -8,13 +8,13 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, id, edicID} = req.query;
 	let origen = req.query.origen;
-	let entEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
 
 	// 1. Acciones en caso de que exista el 'edicID' en el url
 	if (edicID) {
 		// Averigua si existe la edicID en la base de datos
-		let edicion = await BD_genericas.obtienePorId(entEdicion, edicID);
+		let edicion = await BD_genericas.obtienePorId(entidadEdic, edicID);
 
 		// En caso que no, mensaje de error
 		if (!edicion) {
@@ -42,11 +42,11 @@ module.exports = async (req, res, next) => {
 		if (revision) {
 			// Averigua si existe una edicion ajena
 			let datos = {campo_id, entID: id, userID: req.session.usuario.id};
-			edicion = await BD_especificas.obtieneEdicAjenaDeUnProd(entEdicion, datos);
+			edicion = await BD_especificas.obtieneEdicAjenaDeUnProd(entidadEdic, datos);
 		} else {
 			// Averigua si existe una edicion propia
 			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};
-			edicion = await BD_genericas.obtienePorCondicion(entEdicion, objeto);
+			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, objeto);
 		}
 
 		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url

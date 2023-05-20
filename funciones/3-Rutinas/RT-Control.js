@@ -213,8 +213,8 @@ module.exports = {
 	},
 	BorraImagenesSinRegistro: async () => {
 		// Funciones
-		await procesos.borraImagenesSinRegistro1("peliculas");
-		await procesos.borraImagenesSinRegistro1("personajes");
+		await procesos.borraImagenesSinRegistro1("productos");
+		await procesos.borraImagenesSinRegistro1("rclvs");
 		procesos.borraImagenesProvisorio();
 
 		// Fin
