@@ -266,7 +266,6 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
 				n.map((m) => {
-					// Variables
 					return {
 						imagen: m.avatar,
 						nombre: m.nombre ? m.nombre : m.nombre_castellano ? m.nombre_castellano : m.nombre_original,
