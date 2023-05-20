@@ -193,13 +193,15 @@ module.exports = {
 	eliminaLasImagenes: (avatars, carpeta) => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+		const imagenes = avatars.map((n) => n.imagen);
 
 		// Rutina para borrar archivos
 		for (let archivo of archivos)
-			if (!avatars.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
+			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 		// Rutina para detectar nombres sin archivo
-		for (let nombre of avatars) if (!archivos.includes(nombre)) console.log("Registros sin avatar:", nombre);
+		for (let avatar of avatars)
+			if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
 
 		// Fin
 		return;
