@@ -256,11 +256,23 @@ module.exports = {
 		return condicion;
 	},
 	nombresDeAvatarEnBD: (entidad, status_registro_id) => {
-		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}, status_registro_id};
+		// Variables
+		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
+		if (status_registro_id) condiciones.status_registro_id = status_registro_id;
+
+		// Fin
 		return db[entidad]
 			.findAll({where: condiciones})
 			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) => n.map((m) => m.avatar));
+			.then((n) =>
+				n.map((m) => {
+					return {
+						imagen: m.avatar,
+						nombre: m.nombre ? m.nombre : m.nombre_castellano ? m.nombre_castellano : m.nombre_original,
+						entidad,
+					};
+				})
+			);
 	},
 
 	// USUARIOS ---------------------------------------------------------
