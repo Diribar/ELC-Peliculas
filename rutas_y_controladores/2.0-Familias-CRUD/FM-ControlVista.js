@@ -61,8 +61,8 @@ module.exports = {
 
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
-			let petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-			motivos = motivos_status.filter((n) => n[petitFamilia]);
+			let petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			motivos = motivos_status.filter((n) => n[petitFamilias]);
 		}
 
 		// Comentario del rechazo

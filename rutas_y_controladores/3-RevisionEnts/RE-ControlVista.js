@@ -55,7 +55,7 @@ module.exports = {
 		// Variables
 		let {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -92,7 +92,7 @@ module.exports = {
 		}
 
 		// Bloque Derecho
-		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia)];
+		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilias)];
 		// Info para la vista
 		const status_registro_id = original.status_registro_id;
 		const statusCreado = status_registro_id == creado_id;
@@ -121,7 +121,7 @@ module.exports = {
 		// Más variables
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -162,14 +162,14 @@ module.exports = {
 		// Datos Breves
 		bloqueDer = [
 			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilia),
+			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilias),
 		];
 
 		// Imagen Personalizada
 		imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_status.filter((n) => n[petitFamilia]);
+		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_status.filter((n) => n[petitFamilias]);
 
 		// Comentario del rechazo
 		const comentarios = inactivarRecuperar
@@ -203,8 +203,8 @@ module.exports = {
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-		const campoDecision = petitFamilia + (aprob ? "_aprob" : "_rech");
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const campoDecision = petitFamilias + (aprob ? "_aprob" : "_rech");
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		datos = {};
 
@@ -322,7 +322,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
-		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilia);
+		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
 		// 7. Acciones si es un registro inactivo
 		// Elimina el archivo de avatar de la edicion
@@ -386,7 +386,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, edicID} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -434,8 +434,8 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatar(original, edicion);
 			motivos = motivos_edics.filter((m) => m.avatar_prods);
 			avatarExterno = !avatar.orig.includes("/imagenes/");
-			const nombre = petitFamilia == "prods" ? original.nombre_castellano : original.nombre;
-			avatarsExternos = variables.avatarsExternos[petitFamilia](nombre);
+			const nombre = petitFamilias == "prods" ? original.nombre_castellano : original.nombre;
+			avatarsExternos = variables.avatarsExternos[petitFamilias](nombre);
 			titulo = "Revisión de la Imagen: " + nombre;
 		}
 		// Acciones si el avatar no está presente en la edición
@@ -452,7 +452,7 @@ module.exports = {
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilia));
+			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_edics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
@@ -483,16 +483,16 @@ module.exports = {
 		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
 
 		// Variables
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revID = req.session.usuario.id;
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo = "avatar";
 		const aprob = !rechazo;
-		let edicion = await BD_genericas.obtienePorId(petitFamilia + "_edicion", edicID);
+		let edicion = await BD_genericas.obtienePorId(petitFamilias + "_edicion", edicID);
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
-		if (petitFamilia == "prods") delete edicion.avatar_url;
+		if (petitFamilias == "prods") delete edicion.avatar_url;
 
 		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
 		[edicion] = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});

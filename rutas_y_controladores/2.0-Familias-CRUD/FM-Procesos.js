@@ -153,7 +153,7 @@ module.exports = {
 		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
-			let entidadEdic = comp.obtieneDesdeEntidad.petitFamilia(entidad) + "_edicion";
+			let entidadEdic = comp.obtieneDesdeEntidad.petitFamilias(entidad) + "_edicion";
 			edicion = await BD_genericas.obtienePorIdConInclude(entidadEdic, edicion.id, includesEdic);
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];

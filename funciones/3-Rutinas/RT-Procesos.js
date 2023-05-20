@@ -162,9 +162,9 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	borraImagenesSinRegistro1: async function (familias) {
+	eliminaImagenesDeFamiliasSinRegistro: async function (familias) {
 		// Variables
-		const petitFamilia = comp.obtieneDesdeFamilias.petitFamilia(familias);
+		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
 		let consolidado = [];
 		let carpeta, avatars;
@@ -172,19 +172,19 @@ module.exports = {
 		// Borra los avatar de EDICIONES
 		carpeta = "2-" + familias + "/Revisar";
 		avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
-		this.borraImagenesSinRegistro2(avatars, carpeta);
+		this.eliminaLasImagenes(avatars, carpeta);
 
 		// Borra los avatar de ORIGINAL
 		carpeta = "2-" + familias + "/Final";
 		avatars = [];
-		for (let entidad of variables.entidades[petitFamilia]) avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+		for (let entidad of variables.entidades[petitFamilias]) avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
-		this.borraImagenesSinRegistro2(consolidado, carpeta);
+		this.eliminaLasImagenes(consolidado, carpeta);
 
 		// Fin
 		return;
 	},
-	borraImagenesSinRegistro2: (avatars, carpeta) => {
+	eliminaLasImagenes: (avatars, carpeta) => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
 
