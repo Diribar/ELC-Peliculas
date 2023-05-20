@@ -166,18 +166,24 @@ module.exports = {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
-		let consolidado = [];
-		let carpeta, avatars;
+		let carpeta, avatars, consolidado;
 
 		// Borra los avatar de EDICIONES
 		carpeta = "2-" + familias + "/Revisar";
-		avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
-		this.eliminaLasImagenes(avatars, carpeta);
+		avatars = [];
+		consolidado = [];
+		avatars.push(BD_especificas.nombresDeAvatarEnBD(entidadEdic));
+		for (let entidad of variables.entidades[petitFamilias])
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_id, creado_aprob_id]));
+		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
+		this.eliminaLasImagenes(consolidado, carpeta);
 
 		// Borra los avatar de ORIGINAL
 		carpeta = "2-" + familias + "/Final";
 		avatars = [];
-		for (let entidad of variables.entidades[petitFamilias]) avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+		consolidado = [];
+		for (let entidad of variables.entidades[petitFamilias])
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_aprob_id, aprobado_id]));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
 		this.eliminaLasImagenes(consolidado, carpeta);
 
@@ -193,7 +199,7 @@ module.exports = {
 			if (!avatars.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 		// Rutina para detectar nombres sin archivo
-		for (let nombre of avatars) if (!archivos.includes(nombre)) console.log("Avatars sin archivo:", nombre);
+		for (let nombre of avatars) if (!archivos.includes(nombre)) console.log("Registros sin avatar:", nombre);
 
 		// Fin
 		return;
