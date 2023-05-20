@@ -424,19 +424,19 @@ module.exports = {
 		// Productos Alta
 		prodRclvRech: async (entidad, id) => {
 			// Obtiene la edicion
-			const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdicion, condicion);
-			const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilia + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilias + "-Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
-			BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id});
+			BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
 
 			//Fin
 			return;
@@ -546,7 +546,7 @@ module.exports = {
 
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const decision = "edics_" + (aprob ? "aprob" : "rech");
 			const ahora = comp.fechaHora.ahora();
 			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
@@ -683,7 +683,7 @@ module.exports = {
 	},
 
 	// Varios
-	fichaDelUsuario: async (userID, petitFamilia) => {
+	fichaDelUsuario: async (userID, petitFamilias) => {
 		// Variables
 		const ahora = comp.fechaHora.ahora();
 		const include = "rol_iglesia";
@@ -704,7 +704,7 @@ module.exports = {
 		const antiguedad = ((ahora - new Date(usuario.creado_en).getTime()) / unAno).toFixed(1).replace(".", ",");
 		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
 		// Calidad de las altas
-		bloque.push(...usuarioCalidad(usuario, petitFamilia));
+		bloque.push(...usuarioCalidad(usuario, petitFamilias));
 
 		// Fin
 		return bloque;
@@ -712,8 +712,8 @@ module.exports = {
 	descargaAvatar: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const avatar = Date.now() + path.extname(original.avatar);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilia + "-Final/";
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilias + "-Final/";
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
 		// Actualiza el registro 'original'

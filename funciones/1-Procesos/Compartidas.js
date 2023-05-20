@@ -8,6 +8,31 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
+	obtieneDesdeFamilias: {
+		familia: (familias) => {
+			return familias == "productos"
+				? "producto"
+				: familias == "rclvs"
+				? "rclv"
+				: familias == "links"
+				? "link"
+				: familias == "usuarios"
+				? "usuario"
+				: "";
+		},
+		petitFamilias: (familias) => {
+			return familias == "links" ? "links" : familias == "rclvs" ? "rclvs" : familias == "productos" ? "prods" : "";
+		},
+		entidadEdic: (familias) => {
+			return familias == "productos"
+				? "prods_edicion"
+				: familias == "rclvs"
+				? "rclvs_edicion"
+				: familias == "links"
+				? "links_edicion"
+				: "";
+		},
+	},
 	obtieneDesdeEntidad: {
 		familia: (entidad) => {
 			return FN.familia(entidad);
@@ -23,7 +48,7 @@ module.exports = {
 				? "usuarios"
 				: "";
 		},
-		petitFamilia: (entidad) => {
+		petitFamilias: (entidad) => {
 			return false
 				? null
 				: entidad == "links"
@@ -79,7 +104,7 @@ module.exports = {
 				? "link"
 				: "";
 		},
-		nombreEdicion: (entidad) => {
+		entidadEdic: (entidad) => {
 			return variables.entidades.prods.includes(entidad)
 				? "prods_edicion"
 				: variables.entidades.rclvs.includes(entidad)
@@ -480,7 +505,7 @@ module.exports = {
 	},
 
 	// Usuarios
-	usuarioPenalizAcum: (userID, motivo, petitFamilia) => {
+	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
 		// Variables
 		let duracion = motivo.duracion;
 		let objeto = {};
@@ -489,8 +514,8 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
-		if (duracion > 1 && petitFamilia) {
-			let cartel = "cartel_resp_" + petitFamilia;
+		if (duracion > 1 && petitFamilias) {
+			let cartel = "cartel_resp_" + petitFamilias;
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'

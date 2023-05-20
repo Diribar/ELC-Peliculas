@@ -162,39 +162,46 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	borraImagenesSinRegistro1: async function (entidad) {
+	eliminaImagenesDeFamiliasSinRegistro: async function (familias) {
 		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
-		let consolidado = [];
-		let carpeta, avatars;
+		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
+		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
+		let carpeta, avatars, consolidado;
 
 		// Borra los avatar de EDICIONES
 		carpeta = "2-" + familias + "/Revisar";
-		avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
-		this.borraImagenesSinRegistro2(avatars, carpeta);
+		avatars = [];
+		consolidado = [];
+		avatars.push(BD_especificas.nombresDeAvatarEnBD(entidadEdic));
+		for (let entidad of variables.entidades[petitFamilias])
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_id, creado_aprob_id]));
+		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
+		this.eliminaLasImagenes(consolidado, carpeta);
 
 		// Borra los avatar de ORIGINAL
 		carpeta = "2-" + familias + "/Final";
 		avatars = [];
-		for (let entidad of variables.entidades[petitFamilia]) avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad));
+		consolidado = [];
+		for (let entidad of variables.entidades[petitFamilias])
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_aprob_id, aprobado_id]));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
-		this.borraImagenesSinRegistro2(consolidado, carpeta);
+		this.eliminaLasImagenes(consolidado, carpeta);
 
 		// Fin
 		return;
 	},
-	borraImagenesSinRegistro2: (avatars, carpeta) => {
+	eliminaLasImagenes: (avatars, carpeta) => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+		const imagenes = avatars.map((n) => n.imagen);
 
 		// Rutina para borrar archivos
 		for (let archivo of archivos)
-			if (!avatars.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
+			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
 
 		// Rutina para detectar nombres sin archivo
-		for (let nombre of avatars) if (!archivos.includes(nombre)) console.log("Avatars sin archivo:", nombre);
+		for (let avatar of avatars)
+			if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
 
 		// Fin
 		return;

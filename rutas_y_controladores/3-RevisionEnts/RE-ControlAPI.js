@@ -15,7 +15,7 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const nombreEdic = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
 		const camposDDA = ["dia_del_ano_id", "dias_de_duracion"];
 		let statusAprob;
@@ -100,13 +100,13 @@ module.exports = {
 		const recuperar = original.status_registro.recuperar;
 
 		// Más variables
-		const petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const alta_revisada_en = ahora;
 		const status_registro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
-		const campoDecision = petitFamilia + (decisAprob ? "_aprob" : "_rech");
+		const campoDecision = petitFamilias + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
 		let datos = {
@@ -154,7 +154,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
 
 		// 4. Penaliza al usuario si corresponde
-		if (datosHist.motivo) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilia);
+		if (datosHist.motivo) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilias);
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'links_gratuitos' y 'links_general'
 		procsCRUD.cambioDeStatus(entidad, {...original, status_registro_id});

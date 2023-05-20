@@ -163,11 +163,11 @@ module.exports = {
 		return links;
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicAjenaDeUnProd: (entEdicion, datos, include) => {
+	obtieneEdicAjenaDeUnProd: (entidadEdic, datos, include) => {
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const {campo_id, entID, userID} = datos;
 		// Obtiene un registro que cumpla ciertas condiciones
-		return db[entEdicion]
+		return db[entidadEdic]
 			.findOne({
 				where: {
 					// Que pertenezca a la entidad que nos interesa
@@ -255,12 +255,24 @@ module.exports = {
 		// Fin
 		return condicion;
 	},
-	nombresDeAvatarEnBD: (entidad) => {
+	nombresDeAvatarEnBD: (entidad, status_registro_id) => {
+		// Variables
 		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
+		if (status_registro_id) condiciones.status_registro_id = status_registro_id;
+
+		// Fin
 		return db[entidad]
 			.findAll({where: condiciones})
 			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) => n.map((m) => m.avatar));
+			.then((n) =>
+				n.map((m) => {
+					return {
+						imagen: m.avatar,
+						nombre: m.nombre ? m.nombre : m.nombre_castellano ? m.nombre_castellano : m.nombre_original,
+						entidad,
+					};
+				})
+			);
 	},
 
 	// USUARIOS ---------------------------------------------------------

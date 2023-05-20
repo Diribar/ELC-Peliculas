@@ -61,8 +61,8 @@ module.exports = {
 
 		// Motivos de rechazo
 		if (codigo == "inactivar") {
-			let petitFamilia = comp.obtieneDesdeEntidad.petitFamilia(entidad);
-			motivos = motivos_status.filter((n) => n[petitFamilia]);
+			let petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			motivos = motivos_status.filter((n) => n[petitFamilias]);
 		}
 
 		// Comentario del rechazo
@@ -147,7 +147,7 @@ module.exports = {
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const nombreEdicion = comp.obtieneDesdeEntidad.nombreEdicion(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		let acumulado = [];
 
 		// Se fija si tiene avatar y lo elimina
@@ -158,7 +158,7 @@ module.exports = {
 		}
 
 		// Elimina todas las ediciones que tenga
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion(nombreEdicion, {[campo_id]: id}));
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id}));
 
 		// Elimina el historial de status
 		acumulado.push(BD_genericas.eliminaTodosPorCondicion("hist_status", {entidad, entidad_id: id}));

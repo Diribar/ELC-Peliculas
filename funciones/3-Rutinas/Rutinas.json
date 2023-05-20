@@ -1,12 +1,12 @@
 {
-	"FechaUTC": "Vie. 19/may",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Sáb. 20/may",
+	"HoraUTC": "7:46",
 	"FechaSemUTC": "Mar. 16/may",
 	"HoraSemUTC": "17:02",
 	"semanaUTC": 19,
-    "Separador1:": "---------------- RUTINAS HORARIAS --------------------",
+	"Separador1:": "---------------- RUTINAS HORARIAS --------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
-    "Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
+	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
 	"HorariosUTC": {
 		"FechaHoraUTC": "00:00",
 		"PaisesConMasProductos": "01:00",
@@ -19,12 +19,12 @@
 	"BorraImagenesSinRegistro": "SI",
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
-    "TitulosImgDer": {
-        "18-may-23": "Ascensión de Nuestro Señor",
+	"TitulosImgDer": {
 		"19-may-23": "Pascua de Resurrección",
-		"20-may-23": "Pascua de Resurrección"
+		"20-may-23": "Pascua de Resurrección",
+		"21-may-23": "Pascua de Resurrección"
 	},
-    "Separador3:": "---------------- RUTINAS SEMANALES -------------------",
+	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
 	"SemanaUTC": "SI",
 	"LinksVencidos": "SI",
