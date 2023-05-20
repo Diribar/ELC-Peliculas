@@ -50,6 +50,8 @@ main #cuerpo {flex-direction: column;}
 #datos table .ancho_status {width: 75px;}
 #datos table .ancho_propio {width: 53px;}
 #datos table .ancho_accion {width: 70px;}
+.ancho_motivo {width: 497px;}
+
 
 /* Tablas - Columnas específicas */
 #datos table tbody tr td.url img {max-width: 100%; max-height: 20px; border-radius: 20px;}
