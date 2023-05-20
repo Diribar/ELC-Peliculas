@@ -16,7 +16,7 @@
 	},
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",
-	"BorraImagenesSinRegistro": "SI",
+	"BorraImagenesSinRegistro": "I",
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"TitulosImgDer": {
