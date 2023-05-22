@@ -32,10 +32,10 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rp = "revision/producto/" %>
-				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: productos.IR, url: rp + "inactivar-o-recuperar"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Ediciones", regs: productos.ED, url: rp + "edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas", regs: productos.AL, url: rp + "alta"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Inactivar y Recuperar", regs: productos.IR, url: rp + "inactivar-o-recuperar"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Ediciones", regs: productos.ED, url: rp + "edicion"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Altas", regs: productos.AL, url: rp + "alta"}) %>
 			</div>
 		</div>
 	</div>
@@ -62,11 +62,11 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% let rr = "revision/rclv/" %>
-				<%- include("RE0-Registros", {titulo: "Inactivo con Productos", regs: rclvs.IN, url: "rclv/detalle"}) %>
-				<%- include("RE0-Registros", {titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
-				<%- include("RE0-Registros", {titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
-				<%- include("RE0-Registros", {titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
-				<%- include("RE0-Registros", {titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Inactivo con Productos", regs: rclvs.IN, url: "rclv/detalle"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
 			</div>
 		</div>
 		<!-- Links -->
@@ -86,8 +86,8 @@
 			</div>
 			<div class="registros">
 				<% let rl = "revision/links" %>
-				<%- include("RE0-Registros", {titulo: "Vencidos", regs: productos.VN, url: rl}) %>
-				<%- include("RE0-Registros", {titulo: "ABM", regs: productos.OT, url: rl}) %>
+				<%- include("CMP-RegsTC", {titulo: "Vencidos", regs: productos.VN, url: rl}) %>
+				<%- include("CMP-RegsTC", {titulo: "ABM", regs: productos.OT, url: rl}) %>
 			</div>
 		</div>
 	</div>
