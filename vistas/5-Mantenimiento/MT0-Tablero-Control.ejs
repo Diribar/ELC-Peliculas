@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<!-- Registros -->
-			<div class="registros">
+			<div class="temas">
 				<% if (revisor) { %>
 					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", origen: "MT"}) %>
 				<% } %>
@@ -59,7 +59,7 @@
 				</div>
 			</div>
 			<!-- Registros -->
-			<div class="registros">
+			<div class="temas">
 				<% if (revisor) { %>
 					<%- include("CMP-RegsTC", {titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", origen: "MT"}) %>
 					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
@@ -85,7 +85,7 @@
 					</i>
 				</div>
 			</div>
-			<div class="registros">
+			<div class="temas">
 				<%- include("CMP-RegsTC", {titulo: "Sin links", regs: productos.SL, url: "links/abm", origen: "MT"}) %>
 				<%- include("CMP-RegsTC", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm", origen: "MT"}) %>
 				<%- include("CMP-RegsTC", {titulo: "Sin links en castellano", regs: productos.SLC, url: "links/abm", origen: "MT"}) %>
