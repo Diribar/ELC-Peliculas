@@ -168,22 +168,23 @@ module.exports = {
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
 		let carpeta, avatars, consolidado;
 
-		// Borra los avatar de EDICIONES
+		// Borra los avatar de Revisar - incluye: EDICIONES y Prods/RCLVs creados
 		carpeta = "2-" + familias + "/Revisar";
 		avatars = [];
 		consolidado = [];
 		avatars.push(BD_especificas.nombresDeAvatarEnBD(entidadEdic));
 		for (let entidad of variables.entidades[petitFamilias])
-			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_id, creado_aprob_id]));
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, creado_id));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
 		this.eliminaLasImagenes(consolidado, carpeta);
 
-		// Borra los avatar de ORIGINAL
+		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
 		carpeta = "2-" + familias + "/Final";
 		avatars = [];
 		consolidado = [];
+		const statusFinal = status_registros.filter((n) => n.id != creado_id).map((n) => n.id);
 		for (let entidad of variables.entidades[petitFamilias])
-			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, [creado_aprob_id, aprobado_id]));
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
 		this.eliminaLasImagenes(consolidado, carpeta);
 
@@ -201,7 +202,8 @@ module.exports = {
 
 		// Rutina para detectar nombres sin archivo
 		for (let avatar of avatars)
-			if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
+			if (!archivos.includes(avatar.imagen))
+				console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
 
 		// Fin
 		return;
