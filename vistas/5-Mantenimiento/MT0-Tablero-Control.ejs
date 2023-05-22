@@ -32,9 +32,9 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% if (revisor) { %>
-					<%- include("RE0-Registros", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", origen: "MT"}) %>
+					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", origen: "MT"}) %>
 				<% } %>
-				<%- include("RE0-Registros", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", origen: "MT"}) %>
 			</div>
 		</div>
 	</div>
@@ -61,13 +61,13 @@
 			<!-- Registros -->
 			<div class="registros">
 				<% if (revisor) { %>
-					<%- include("RE0-Registros", {titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", origen: "MT"}) %>
-					<%- include("RE0-Registros", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
+					<%- include("CMP-RegsTC", {titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", origen: "MT"}) %>
+					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", origen: "MT"}) %>
 				<% } %>
-				<%- include("RE0-Registros", {titulo: "Inconsistencia con el año", regs: rclvs.PST, url: "rclv/edicion", origen: "MT"}) %>
-				<%- include("RE0-Registros", {titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", origen: "MT"}) %>
-				<%- include("RE0-Registros", {titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", origen: "MT"}) %>
-				<!-- <%- include("RE0-Registros", {titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", origen: "MT"}) %> -->
+				<%- include("CMP-RegsTC", {titulo: "Inconsistencia con el año", regs: rclvs.PST, url: "rclv/edicion", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", origen: "MT"}) %>
+				<!-- <%- include("CMP-RegsTC", {titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", origen: "MT"}) %> -->
 			</div>
 		</div>
 		<!-- Links -->
@@ -86,9 +86,9 @@
 				</div>
 			</div>
 			<div class="registros">
-				<%- include("RE0-Registros", {titulo: "Sin links", regs: productos.SL, url: "links/abm", origen: "MT"}) %>
-				<%- include("RE0-Registros", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm", origen: "MT"}) %>
-				<%- include("RE0-Registros", {titulo: "Sin links en castellano", regs: productos.SLC, url: "links/abm", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Sin links", regs: productos.SL, url: "links/abm", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm", origen: "MT"}) %>
+				<%- include("CMP-RegsTC", {titulo: "Sin links en castellano", regs: productos.SLC, url: "links/abm", origen: "MT"}) %>
 			</div>
 		</div>
 	</div>
