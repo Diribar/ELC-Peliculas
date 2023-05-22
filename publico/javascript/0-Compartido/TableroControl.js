@@ -32,8 +32,8 @@ window.addEventListener("load", async () => {
 			console.log(varios.alturas[i]);
 			while (altura < varios.alturas[i]) {
 				// Cambia la altura
-				DOM.bloqueRegistros[i].style.height = altura + "px";
 				altura++
+				DOM.bloqueRegistros[i].style.height = altura + "px";
 			}
 		});
 	});
@@ -48,9 +48,9 @@ window.addEventListener("load", async () => {
 			let altura = varios.alturas[i];
 			DOM.bloqueRegistros[i].style.height = altura;
 			DOM.bloqueRegistros[i].classList.remove("ocultar");
-			while (altura >= 0) {
-				DOM.bloqueRegistros[i].style.height = altura + "px";
+			while (altura > 0) {
 				altura--;
+				DOM.bloqueRegistros[i].style.height = altura + "px";
 			}
 		});
 	});
