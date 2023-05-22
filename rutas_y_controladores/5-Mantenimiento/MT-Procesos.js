@@ -13,34 +13,35 @@ module.exports = {
 		let entidades = variables.entidades.prods;
 
 		// PRODUCTOS
-		// Productos Inactivos (peliculas y colecciones)
-		let IN = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID}).then((n) =>
-			n.filter((m) => m.entidad != "capitulos")
-		);
-		// Aprobados sin calificar (peliculas y colecciones)
-		let SC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "capitulos"))
-			.then((n) => n.filter((m) => !m.calificacion));
+		// Inactivos
+		let inactivos = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID});
 
-		// LINKS
-		// 1. Sin links (peliculas y capítulos)
-		let SL = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "colecciones"))
-			.then((n) => n.filter((m) => !m.links_general));
-		// 2. Sin links gratuitos (peliculas y capítulos)
-		let SLG = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "colecciones"))
-			.then((n) => n.filter((m) => m.links_general))
-			.then((n) => n.filter((m) => !m.links_gratuitos));
-		// 3. Sin links en castellano (peliculas y capítulos)
-		let SLC = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID})
-			.then((n) => n.filter((m) => m.entidad != "colecciones"))
-			.then((n) => n.filter((m) => m.links_general))
-			.then((n) => n.filter((m) => !m.castellano));
+		// Aprobados
+		let aprobados = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID});
+
+		// Espera las lecturas
+		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
+		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
+		const pelisCaps = aprobados.filter((m) => m.entidad != "colecciones");
+
+		// Inactivos (peliculas y colecciones)
+		const IN = inactivos.filter((n) => n.entidad != "capitulos");
+
+		// Aprobados - Sin calificar
+		let SC = pelisColes.filter((m) => !m.calificacion);
+
+		// Aprobados - Sin tema
+		let ST = pelisColes.filter((n) => n.tema_id == 1);
+
+		// Aprobados - Sin links
+		let SL = aprobados.filter((m) => !m.links_general);
+		// Aprobados - Sin links gratuitos
+		let SLG = aprobados.filter((m) => m.links_general).filter((m) => !m.links_gratuitos);
+		// Aprobados - Sin links en castellano
+		let SLC = aprobados.filter((m) => m.links_general).filter((m) => !m.castellano);
 
 		// Fin
-		[SC, IN, SL, SLG, SLC] = await Promise.all([SC, IN, SL, SLG, SLC]);
-		return {SC, IN, SL, SLG, SLC};
+		return {IN, SC, SL, SLG, SLC, ST};
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
@@ -123,7 +124,7 @@ let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, includ
 };
 let obtieneProdsDeLinks = function (links, ahora, userID) {
 	// 1. Variables
-	let LI = [] // Inactivos
+	let LI = []; // Inactivos
 
 	// 2. Obtiene los prods
 	links.map((link) => {
@@ -136,13 +137,13 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 
 		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
-	
+
 	// 3. Ordena por la fecha más antigua
 	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-	
+
 	// 4. Elimina repetidos
 	LI = comp.eliminaRepetidos(LI);
-	
+
 	// 5. Deja solamente los prods aprobados
 	if (LI.length) LI = LI.filter((n) => n.status_registro_id == aprobado_id);
 
