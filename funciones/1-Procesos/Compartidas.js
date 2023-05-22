@@ -654,8 +654,10 @@ module.exports = {
 	eliminaRepetidos: (prods) => {
 		// Variables
 		let resultado = [];
-		// Agrega los productos con edición más antigua
+
+		// Agrega los nuevos
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
+		
 		// Fin
 		return resultado;
 	},
@@ -675,6 +677,26 @@ module.exports = {
 		}
 		// Fin
 		return paisesNombre.join(", ");
+	},
+	sinProblemasDeCaptura: function (familia, revID, ahora) {
+		// Variables
+		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
+		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
+
+		// Fin
+		return familia.filter(
+			(n) =>
+				// Que no esté capturado
+				!n.capturado_en ||
+				// Que esté capturado hace más de dos horas
+				n.capturado_en < haceDosHoras ||
+				// Que la captura haya sido por otro usuario y hace más de una hora
+				(n.capturado_por_id != revID && n.capturado_en < haceUnaHora) ||
+				// Que la captura haya sido por otro usuario y esté inactiva
+				(n.capturado_por_id != revID && !n.captura_activa) ||
+				// Que esté capturado por este usuario hace menos de una hora
+				(n.capturado_por_id == revID && n.capturado_en > haceUnaHora)
+		);
 	},
 };
 
