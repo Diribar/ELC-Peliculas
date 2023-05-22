@@ -1,2 +1,4 @@
 /* Cuerpo */
-#cuerpo {background: var(--gris-claro); flex-direction: column;}
+#cuerpo {flex-direction: column;}
+#cuerpo:has(.revisionEnts) {background: var(--gris-claro);}
+#cuerpo:has(.mantenimiento) {background: var(--gris-claro);}
