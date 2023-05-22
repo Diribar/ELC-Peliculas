@@ -60,7 +60,7 @@ module.exports = {
 				// 6.B. Ordena por fecha descendente
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 				// 6.c. Deja solamente los sin problemas de captura
-				productos = sinProblemasDeCaptura(productos, revID, ahora);
+				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
 				// 6.D. Altas
 				AL = productos.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.links_general - a.links_general); // Primero los que tienen links
@@ -174,7 +174,7 @@ module.exports = {
 			}
 
 			// 5. Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = sinProblemasDeCaptura(rclvs, revID, ahora);
+			if (rclvs.length) rclvs = comp.sinProblemasDeCaptura(rclvs, revID, ahora);
 
 			// Fin
 			return rclvs;
@@ -813,7 +813,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	// 1. Variables
 	let prods = {VN: [], OT: []}; // Vencidos y otros
 
-	// 2. Obtiene los prods
+	// 2. Separa entre VN y OT
 	links.map((link) => {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
@@ -824,7 +824,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 
 		// Separa en VN y OT
 		if (link.status_registro && link.status_registro.creado_aprob)
-			prods.VN.push(prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto}));
+			prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
 
@@ -845,30 +845,11 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.status_registro_id == aprobado_id);
 
 	// 6. Deja solamente los sin problemas de captura
-	if (prods.VN.length) prods.VN = sinProblemasDeCaptura(prods.VN, revID, ahora);
-	if (prods.OT.length) prods.OT = sinProblemasDeCaptura(prods.OT, revID, ahora);
+	if (prods.VN.length) prods.VN = comp.sinProblemasDeCaptura(prods.VN, revID, ahora);
+	if (prods.OT.length) prods.OT = comp.sinProblemasDeCaptura(prods.OT, revID, ahora);
 
 	// Fin
 	return prods;
-};
-let sinProblemasDeCaptura = (familia, revID, ahora) => {
-	// Variables
-	const haceUnaHora = comp.fechaHora.nuevoHorario(-1, ahora);
-	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
-	// Fin
-	return familia.filter(
-		(n) =>
-			// Que no esté capturado
-			!n.capturado_en ||
-			// Que esté capturado hace más de dos horas
-			n.capturado_en < haceDosHoras ||
-			// Que la captura haya sido por otro usuario y hace más de una hora
-			(n.capturado_por_id != revID && n.capturado_en < haceUnaHora) ||
-			// Que la captura haya sido por otro usuario y esté inactiva
-			(n.capturado_por_id != revID && !n.captura_activa) ||
-			// Que esté capturado por este usuario hace menos de una hora
-			(n.capturado_por_id == revID && n.capturado_en > haceUnaHora)
-	);
 };
 let usuarioCalidad = (usuario, prefijo) => {
 	// Contar los casos aprobados y rechazados
