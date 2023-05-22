@@ -1,9 +1,10 @@
 <% if (regs && regs.length) { %>
 	<h3 class="relative">
-		<span class="absolute"><i class="fa-solid fa-circle-minus desplegarOcultar"></i></span>
+		<span class="absolute"><i class="fa-solid fa-circle-plus desplegar"></i></span>
+		<span class="absolute"><i class="fa-solid fa-circle-minus replegar ocultar"></i></span>
 		<%= titulo %> (<%= regs.length %>)
 	</h3>
-	<div class="registros bordeRojo">
+	<div class="bloqueRegistros ocultar bordeRojo">
 		<% for (let reg of regs) { %>
 			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + (reg.edicID ? ('&edicID=' + reg.edicID) : '') %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
