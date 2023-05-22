@@ -15,8 +15,6 @@
 .desaparece {animation-name: desaparece; animation-duration: .5s;}
 .aumenta {animation-name: aumenta;       animation-duration: .3s;}
 .disminuye {animation-name: disminuye;   animation-duration: .5s;}
-.despliega {animation-name: despliega;   animation-duration: 9s;}
-.repliega {animation-name: repliega;   animation-duration: 9s;}
 
 /* Animación - Estilos */
 .aparece, .desaparece, .aumenta, .disminuye 
