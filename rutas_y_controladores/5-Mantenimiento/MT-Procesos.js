@@ -123,7 +123,7 @@ let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, includ
 };
 let obtieneProdsDeLinks = function (links, ahora, userID) {
 	// 1. Variables
-	let prods = {LI: []}; // Inactivos
+	let LI = [] // Inactivos
 
 	// 2. Obtiene los prods
 	links.map((link) => {
@@ -133,22 +133,23 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		let campoFecha = "sugerido_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+		console.log(136, entidad, asociacion, campoFecha, fechaRef, fechaRefTexto);
 
-		prods.LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
-
+	
 	// 3. Ordena por la fecha más antigua
-	prods.LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-
+	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	
 	// 4. Elimina repetidos
-	prods.LI = comp.eliminaRepetidos(prods.LI);
-
+	LI = comp.eliminaRepetidos(LI);
+	
 	// 5. Deja solamente los prods aprobados
-	if (prods.LI.length) prods.LI = prods.LI.filter((n) => n.status_registro_id == aprobado_id);
+	if (LI.length) LI = LI.filter((n) => n.status_registro_id == aprobado_id);
 
 	// 6. Deja solamente los prods sin problemas de captura
-	if (prods.LI.length) prods.LI = comp.sinProblemasDeCaptura(prods.LI, userID, ahora);
+	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID, ahora);
 
 	// Fin
-	return prods;
+	return {LI};
 };
