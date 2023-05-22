@@ -16,7 +16,7 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 .bloques .temas h3 {margin: 10px 0 2px;}
 .bloques .temas h3 span {left: -18px}
 .bloques .temas h3 span i {font-size: .9rem;}
-.bloques .temas .despliega {transform-origin: top; scale: 1 0}
+.bloques .temas .bloqueRegistros {overflow-y: hidden;}
 
 /* Scroll */
 #primeraColumna .temas {max-height: 60vh; overflow-y: auto;}
