@@ -8,7 +8,7 @@ const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
 module.exports = {
-	TC_obtieneProds: async (userID) => {
+	obtieneProds: async (userID) => {
 		// Variables
 		let entidades = variables.entidades.prods;
 
@@ -42,7 +42,7 @@ module.exports = {
 		[SC, IN, SL, SLG, SLC] = await Promise.all([SC, IN, SL, SLG, SLC]);
 		return {SC, IN, SL, SLG, SLC};
 	},
-	TC_obtieneRCLVs: async (userID) => {
+	obtieneRCLVs: async (userID) => {
 		// Variables
 		const entidades = variables.entidades.rclvs;
 		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
@@ -84,6 +84,23 @@ module.exports = {
 		// Fin
 		return {INP, IN, SA, SF, FM, PST};
 	},
+	obtieneProds_Links: async (userID) => {
+		// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
+
+		// Variables
+		let include = ["pelicula", "coleccion", "capitulo"];
+		let ahora = comp.fechaHora.ahora();
+		let condicion = {status_registro_id: inactivo_id};
+
+		// Obtiene los links 'a revisar'
+		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
+
+		// Obtiene los productos
+		let productos = links.length ? obtieneProdsDeLinks(links, ahora, userID) : [];
+
+		// Fin
+		return productos;
+	},
 };
 
 let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, include}) => {
@@ -103,4 +120,35 @@ let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, includ
 
 	// Fin
 	return resultados2;
+};
+let obtieneProdsDeLinks = function (links, ahora, userID) {
+	// 1. Variables
+	let LI = [] // Inactivos
+
+	// 2. Obtiene los prods
+	links.map((link) => {
+		// Variables
+		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
+		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+		let campoFecha = "sugerido_en";
+		let fechaRef = link[campoFecha];
+		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
+
+		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+	});
+	
+	// 3. Ordena por la fecha más antigua
+	LI.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	
+	// 4. Elimina repetidos
+	LI = comp.eliminaRepetidos(LI);
+	
+	// 5. Deja solamente los prods aprobados
+	if (LI.length) LI = LI.filter((n) => n.status_registro_id == aprobado_id);
+
+	// 6. Deja solamente los prods sin problemas de captura
+	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID, ahora);
+
+	// Fin
+	return {LI};
 };

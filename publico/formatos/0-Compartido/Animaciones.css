@@ -4,19 +4,27 @@
 /* .sectorConDesplV {scrollbar-width: none; Firefox} */
 /* .sectorConDesplV::-webkit-scrollbar {display: none; Safari and Chrome} */
 
-/* Aparece */
+/* Animación - Estados */
 @keyframes aparece    {0% {opacity: 0} 100% {opacity: 1}}
 @keyframes desaparece {0% {opacity: 1} 100% {opacity: 0}}
 @keyframes aumenta    {0% {scale: 0}   100% {scale: 1}}
 @keyframes disminuye  {0% {scale: 1}   100% {scale: 0}}
+
+/* Animación - Duración */
 .aparece {animation-name: aparece;       animation-duration: .5s;}
 .desaparece {animation-name: desaparece; animation-duration: .5s;}
 .aumenta {animation-name: aumenta;       animation-duration: .3s;}
 .disminuye {animation-name: disminuye;   animation-duration: .5s;}
-.aparece, .desaparece, .aumenta, .disminuye {animation-timing-function: ease-in; animation-fill-mode: forwards;}
+
+/* Animación - Estilos */
+.aparece, .desaparece, .aumenta, .disminuye 
+    {animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Scale */
 .flechas i, .flechas img, .flechas button, #cuerpo a i, .scale {transition: 300ms;}
 
+/* Hover */
 .flechas i:hover, .flechas img:hover, .flechas button:hover, #cuerpo a i:hover, .scale:hover {scale: 1.3;}
+
+/* Inmoviliza 'hover' */
 .flechas i.inactivoVersion:hover, .flechas i.inactivo:hover, .flechas button i:hover {scale: 1;}
