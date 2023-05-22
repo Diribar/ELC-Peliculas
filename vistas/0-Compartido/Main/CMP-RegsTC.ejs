@@ -2,9 +2,10 @@
 	<h3 class="pointer"><%= titulo %> (<%= regs.length %>)</h3>
 	<div class="bloqueRegistros ocultar">
 		<% for (let reg of regs) { %>
-			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + (reg.edicID ? ('&edicID=' + reg.edicID) : '') %>">
+			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + (reg.edicID ? ('&edicID=' + reg.edicID) : '') + (tema == 'mantenimiento' ? '&origen=MT' : '') %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
 			</a>
 		<% } %>	
 	</div>
 <% } %>
+<% console.log(tema) %>
