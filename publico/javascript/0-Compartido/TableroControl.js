@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 			console.log(varios.alturas[i]);
 			while (altura < varios.alturas[i]) {
 				// Cambia la altura
-				altura++
+				altura++;
 				DOM.bloqueRegistros[i].style.height = altura + "px";
 			}
 		});
