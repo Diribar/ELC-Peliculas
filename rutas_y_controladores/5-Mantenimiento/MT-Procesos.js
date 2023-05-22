@@ -133,7 +133,6 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		let campoFecha = "sugerido_en";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
-		console.log(136, entidad, asociacion, campoFecha, fechaRef, fechaRefTexto);
 
 		LI.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
