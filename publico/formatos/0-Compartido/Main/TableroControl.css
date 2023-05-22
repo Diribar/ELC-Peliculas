@@ -12,10 +12,8 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 #cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 
 /* Bloques - Registros */
-.bloques .temas {padding: 0 10px 0 18px; min-width: 385px;}
+.bloques .temas {padding: 0 10px; min-width: 385px;}
 .bloques .temas h3 {margin: 10px 0 2px;}
-.bloques .temas h3 span {left: -18px}
-.bloques .temas h3 span i {font-size: .9rem;}
 .bloques .temas .bloqueRegistros {overflow-y: hidden;}
 
 /* Scroll */
