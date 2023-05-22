@@ -12,8 +12,12 @@ main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 #cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 
 /* Bloques - Registros */
-.bloques .registros {padding: 0 10px;}
+.bloques .registros {padding: 0 10px 0 18px;}
 .bloques .registros h3 {margin: 10px 0 2px;}
+.bloques .registros h3 span {left: -18px}
+.bloques .registros h3 span i {font-size: .9rem;}
+/* .bloques .registros .despliegaHaciaAbajo {transform-origin: top} */
+/* .bloques .registros .despliegaHaciaAbajo  */
 
 /* Scroll */
 #primeraColumna .registros {max-height: 60vh; overflow-y: auto;}
