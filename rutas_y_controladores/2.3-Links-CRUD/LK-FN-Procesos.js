@@ -74,6 +74,7 @@ module.exports = {
 		cond.inactivarPropio = cond.inactivar && cond.propio;
 		cond.recuperarPropio = cond.recuperar && cond.propio;
 
+		// Condiciones de status combinados y propio/ajeno
 		cond.provPropio = cond.provisorio && cond.propio;
 		cond.provAjeno = cond.provisorio && cond.ajeno;
 		cond.propios = cond.creadoPropio || cond.provPropio;
