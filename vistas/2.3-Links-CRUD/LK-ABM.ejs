@@ -45,14 +45,13 @@
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% links.forEach((link, fila)=> { %>
-						<% let cond = {} %>
-						<%- include("LK1-Datos", {link, cond, fila}) %>
+						<%- include("LK1-Datos", {link, fila}) %>
 						<% if (tema=="revisionEnts") { %>
-							<% link.ediciones.forEach((edicion) => { %>
-								<%- cond.creado || cond.aprobado ? include("RE3-LinksEdicion", {link, cond, fila, edicion}) : "" %> 
-							<% }) %>
+							<% for (let edicion of link.ediciones) { %>
+								<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %> 
+							<% } %>
 						<% } else { %>
-							<%- include("LK2-Edicion", {link, cond, fila}) %>
+							<%- include("LK2-Edicion", {link, fila}) %>
 						<% } %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
