@@ -16,7 +16,7 @@ module.exports = {
 		// Obtiene los linksOriginales
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
 		// Ordenar por ID
-		links.sort((a, b) => (a.id - b.id));
+		links.sort((a, b) => a.id - b.id);
 		// Los combina con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
@@ -46,5 +46,40 @@ module.exports = {
 		if (datos.completo == "1") datos.parte = "-";
 		// Fin
 		return datos;
+	},
+	condiciones: (link, userID) => {
+		// Variables
+		let cond = {};
+		cond.propio = link.sugerido_por_id == userID;
+		cond.ajeno = link.sugerido_por_id != userID;
+		cond.rud = tema == "links_crud";
+		cond.revision = tema == "revisionEnts";
+
+		// Condiciones de status
+		cond.creado = link.status_registro.creado;
+		cond.aprobado = link.status_registro.aprobado;
+		cond.inactivar = link.status_registro.inactivar;
+		cond.recuperar = link.status_registro.recuperar;
+		cond.inactivo = link.status_registro.inactivo;
+
+		// Condiciones de status combinados
+		cond.creadoAprob = cond.creado || cond.aprobado;
+		cond.estable = cond.aprobado || cond.inactivo;
+		cond.provisorio = cond.inactivar || cond.recuperar;
+		cond.inactivos = (cond.rud && cond.inactivar) || cond.inactivo;
+
+		// Condiciones de status y propio/ajeno
+		cond.creadoPropio = cond.creado && cond.propio;
+		cond.creadoAjeno = cond.creado && cond.ajeno;
+		cond.inactivarPropio = cond.inactivar && cond.propio;
+		cond.recuperarPropio = cond.recuperar && cond.propio;
+		
+		cond.provPropio = cond.provisorio && cond.propio;
+		cond.provAjeno = cond.provisorio && cond.ajeno;
+		cond.propios = cond.creadoPropio || cond.provPropio;
+		cond.ajenos = cond.creadoAjeno || cond.provAjeno;
+
+		// Fin
+		return cond
 	},
 };
