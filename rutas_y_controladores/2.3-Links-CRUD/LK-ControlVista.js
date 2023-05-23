@@ -21,6 +21,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		const origen = req.query.origen;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
@@ -49,10 +50,8 @@ module.exports = {
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{links_provs, links_tipos, calidades: variables.calidades, motivos},
-			userID,
+			...{userID, revisor, imgDerPers, cartelGenerico: true},
 			vista: req.baseUrl + req.path,
-			imgDerPers,
-			cartelGenerico: true,
 		});
 	},
 };
