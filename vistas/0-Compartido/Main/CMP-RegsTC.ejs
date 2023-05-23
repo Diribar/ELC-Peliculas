@@ -2,7 +2,7 @@
 	<h3 class="pointer"><%= titulo %> (<%= regs.length %>)</h3>
 	<div class="bloqueRegistros ocultar">
 		<% for (let reg of regs) { %>
-			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + (reg.edicID ? ('&edicID=' + reg.edicID) : '') + (tema == 'mantenimiento' ? '&origen=MT' : '') %>">
+			<a href="<%='/' + url + '/?entidad=' + reg.entidad + '&id=' + reg.id + (reg.edicID ? ('&edicID=' + reg.edicID) : '') + (locals.mostrarOrigen ? ('&origen=' + locals.origen) : '') %>">
 				<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
 			</a>
 		<% } %>	
