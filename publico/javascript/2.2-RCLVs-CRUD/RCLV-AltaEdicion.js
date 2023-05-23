@@ -16,6 +16,7 @@ window.addEventListener("load", async () => {
 		// Avatar
 		avatarImg: document.querySelector("form #imgDerecha img#imgAvatar"),
 		avatarInput: document.querySelector("form #imgDerecha .input[name='avatar']"),
+		googleIMG: document.querySelector("form #imgDerecha .agregados a"),
 
 		// Primera columna - Nombre
 		camposNombre: document.querySelectorAll("form #sectorNombre .input"),
@@ -94,7 +95,8 @@ window.addEventListener("load", async () => {
 		dias_del_ano: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
 
 		// Otros
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
+		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
+		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 		esImagen: "",
 		tamano: "",
@@ -167,14 +169,17 @@ window.addEventListener("load", async () => {
 			};
 		},
 		nombre: {
-			logosWikiSantopedia: () => {
-				// Mostrar logo de Wiki y Santopedia
-				if (varios.OK.nombre)
-					DOM.linksClick.forEach((link, i) => {
-						link.href = varios.linksUrl[i] + DOM.nombre.value;
-						link.classList.remove("ocultar");
-					});
-				else for (let link of DOM.linksClick) link.classList.add("ocultar");
+			logos: () => {
+				// Les asigna el url a los 'href'
+				if (varios.OK.nombre) {
+					DOM.linksClick.forEach((link, i) => (link.href = varios.linksUrl[i] + DOM.nombre.value));
+					DOM.googleIMG.href = varios.googleIMG.pre + DOM.nombre.value + varios.googleIMG.post;
+				}
+				// Les quita el url a los 'href'
+				else {
+					for (let link of DOM.linksClick) link.href = "";
+					DOM.googleIMG.href = "";
+				}
 				// Fin
 				return;
 			},
@@ -610,7 +615,7 @@ window.addEventListener("load", async () => {
 		// Nombre
 		if (DOM.nombre.value || (forzar && varios.errores.nombre == undefined))
 			varios.personajes ? await validacs.nombre.personajes() : await validacs.nombre.demas();
-		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
+		if (DOM.nombre.value && varios.OK.nombre) impactos.nombre.logos();
 
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
@@ -739,9 +744,9 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambia el sector Nombre
-		if (varios.camposNombre.includes(campo) && DOM.nombre.value) {
+		if (varios.camposNombre.includes(campo)) {
 			await validacs.nombre[varios.personajes ? "personajes" : "demas"]();
-			if (varios.OK.nombre) impactos.nombre.logosWikiSantopedia();
+			impactos.nombre.logos();
 		}
 
 		// Acciones si se cambia el sector Fecha
