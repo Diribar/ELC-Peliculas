@@ -212,7 +212,6 @@ module.exports = async (req, res, next) => {
 			!v.url.startsWith("/links/") &&
 			!v.url.startsWith("/producto/alta/")
 		) {
-			console.log(215,v.url);
 			informacion = {
 				mensajes: ["El registro tiene una sola edición y fue realizada por vos.", "La tiene que revisar otra persona"],
 				iconos: v.vistaAnteriorTablero,
