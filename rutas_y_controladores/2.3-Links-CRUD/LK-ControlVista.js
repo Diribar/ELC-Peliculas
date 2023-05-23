@@ -36,6 +36,7 @@ module.exports = {
 
 		// Actualiza linksEnProd
 		procsCRUD.linksEnProd({entidad, id});
+		
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
 			const coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
