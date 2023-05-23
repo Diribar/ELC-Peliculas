@@ -8,14 +8,14 @@
 	<% } %>
 	<% if (tema != "crud" && codigo != "detalle" && locals.id) { %>
 		<!-- Detalle -->
-		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<% if ((tema != "crud" && tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
 		<!-- Edición -->
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
-			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
 		<% } else { %>
@@ -25,7 +25,7 @@
 	<% if ((tema == "prod_agregar" || tema == "prod_rud") && locals.id) { %>
 		<!-- Links -->
 		<% if (status_id <= aprobado_id) { %>
-			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 			</a>
 		<% } else { %>

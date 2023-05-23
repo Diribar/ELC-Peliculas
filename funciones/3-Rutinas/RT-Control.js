@@ -172,8 +172,8 @@ module.exports = {
 					.then(async (n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
-							// if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
-							// if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
+							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
+							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
 							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
 						return n; // Conserva el valor de si el mail fue enviado

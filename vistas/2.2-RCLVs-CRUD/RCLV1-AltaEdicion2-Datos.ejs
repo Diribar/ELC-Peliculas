@@ -83,7 +83,7 @@
 			</div>
 			<!-- Mes y Día -->
 			<div id="mesDia" class="flexRow spaceBetween">
-				<div class="flexRow margenDebajo">
+				<div class="flexRowAlign margenDebajo">
 					<!-- Meses -->
 					<select name="mes_id" class="input">
 						<option value="" <% if (!dataEntry.mes_id) { %>selected<% } %>>Mes</option>
@@ -105,14 +105,14 @@
 							</option>
 						<% } %>
 					</select>
-					<a id="wiki" target="blank" class="links ocultar" tabindex="-1">
-						<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
-					</a>
-					<% if (personajes) { %>
-						<a id="santopedia" target="blank" class="links ocultar" tabindex="-1">
-							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Santopedia.jpg" title="Consultar en Santopedia">
+					<nav id="logos" class="flexRow spaceBetween">
+						<a id="wiki" href="" target="blank" class="links" tabindex="-1">
+							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
 						</a>
-					<% } %>
+						<a id="google" href="" target="blank" class="links" tabindex="-1">
+							<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Consultar en Google">
+						</a>
+					</nav>
 				</div>
 				<p class="caracteres ocultar"><span><%- dataEntry.comentario_movil ? 70 - dataEntry.comentario_movil.length : 70 %></span>/70</p>
 			</div>

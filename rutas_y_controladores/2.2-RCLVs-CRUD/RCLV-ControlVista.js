@@ -114,7 +114,6 @@ module.exports = {
 
 		// Avatar
 		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
-		const avatarsExternos = codigo != "agregar" ? variables.avatarsExternos.rclvs(dataEntry.nombre) : null;
 
 		// Info para la vista
 		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
@@ -132,7 +131,7 @@ module.exports = {
 			...{dataEntry, DE, statusCreado},
 			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers, avatarsExternos},
+			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers},
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV

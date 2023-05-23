@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Lun. 22/may",
-	"HoraUTC": "12:58",
+	"FechaUTC": "Mar. 23/may",
+	"HoraUTC": "10:50",
 	"FechaSemUTC": "Lun. 22/may",
 	"HoraSemUTC": "12:58",
 	"semanaUTC": 20,
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"TitulosImgDer": {
-		"21-may-23": "Pascua de Resurrección",
 		"22-may-23": "Rita de Casia",
-		"23-may-23": "Pascua de Resurrección"
+		"23-may-23": "Pascua de Resurrección",
+		"24-may-23": "Pascua de Resurrección"
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},

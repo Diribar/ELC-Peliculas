@@ -19,16 +19,12 @@
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Links a sitios externos para buscar imágenes alternativas -->
-		<% if (avatarsExternos) { %>
-			<nav class="agregados">
-				<% for (let registro of avatarsExternos) { %>
-					<a href="<%= registro.href %>" target="_blank">
-						<img src="<%= localhost %><%= registro.src %>" alt="<%= registro.alt %>" class="scale">
-					</a>
-				<% } %>
-			</nav>
-		<% } %>
-	<% } else { %>
+		<nav class="agregados">
+			<a href="" target="_blank">
+				<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Buscar en Google" class="scale">
+			</a>
+		</nav>
+	<% } else if (codigo == "rclv/solapamiento") { %>
 		<img src="<%= imgDerPers %>" id="imgAvatar">
 	<% } %>
 </section>

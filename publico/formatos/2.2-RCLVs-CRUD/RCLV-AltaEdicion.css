@@ -27,6 +27,10 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Temas particulares de dataEntry */
 #dataEntry .input.angosto {width: 50px; margin-left: 10px; text-align: center;}
 
+/* Links */
+#imgDerecha.inputError .agregados:has(a[href=""]) {display: none;}
+#inicio #sectorFecha nav:has(a[href=""]) {display: none;}
+
 /* Nombres */
 #inicio #sectorNombre label {margin-right: 7px;}
 #inicio #sectorNombre .input {padding-left: 5px; width: 180px;}
@@ -34,8 +38,8 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Fecha */
 #inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
 #inicio #sectorFecha :is(select[name="tipoFecha"], select[name="dia"], #inputDias) {margin-left: 15px;}
-#inicio #sectorFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
-#inicio #sectorFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
+#inicio #sectorFecha nav {margin-left: 10px; width: 50px;}
+#inicio #sectorFecha nav a img {max-height: 20px; border: 1px dotted var(--gris-oscuro); border-radius: 50%;}
 #inicio #sectorFecha .caracteres {align-self: flex-end;}
 #inicio #sectorFecha textarea {padding: 2px 5px; height: 34px; resize: none;}
 
