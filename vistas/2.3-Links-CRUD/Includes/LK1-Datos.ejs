@@ -77,7 +77,7 @@
 		
 			<!-- ELIMINAR -->
 			<% if (link.cond.creadoPropio || revisor&&link.cond.inactivo) { %>
-				<!-- Status creado y propio -> ELIMINAR PERMANENTEMENTE -->
+				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 			<% } else if (link.cond.aprobado) { %>
 				<!-- Status aprobado -> INACTIVAR -->
