@@ -209,9 +209,10 @@ module.exports = async (req, res, next) => {
 			v.registro.ediciones &&
 			v.registro.ediciones.length == 1 &&
 			v.registro.ediciones[0].editado_por_id == v.userID &&
-			!v.url.startsWith("links/") &&
+			!v.url.startsWith("/links/") &&
 			!v.url.startsWith("/producto/alta/")
 		) {
+			console.log(215,v.url);
 			informacion = {
 				mensajes: ["El registro tiene una sola edición y fue realizada por vos.", "La tiene que revisar otra persona"],
 				iconos: v.vistaAnteriorTablero,
