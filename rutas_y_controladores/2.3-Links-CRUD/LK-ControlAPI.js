@@ -70,27 +70,23 @@ module.exports = {
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		// El link no existe en la BD
 		else if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
-		// El link está en status 'creado" y por el usuario --> se elimina definitivamente
-		else if (link.status_registro.creado && link.creado_por_id == userID) {
+		// El link se elimina definitivamente
+		else if (
+			// El link está en status 'creado" y por el usuario
+			(link.status_registro.creado && link.creado_por_id == userID) ||
+			// El link está en status 'inactivo" y es un revisor
+			(link.status_registro.inactivo && revisor)
+		) {
 			await BD_genericas.eliminaPorId("links", link.id);
 			link.status_registro_id = inactivo_id;
 			procsCRUD.cambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
-
-		// El link está en status 'inactivo" y el usuario es revisor --> se elimina definitivamente
-		else if (link.status_registro.inactivo && revisor) {
-			await BD_genericas.eliminaPorId("links", link.id);
-			link = {...link, status_registro_id: inactivo_id};
-			procsCRUD.cambioDeStatus("links", link);
-			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
-		}
-
 		// El link existe y no tiene status 'aprobado'
 		else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
 		// No existe el motivo
 		else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
-		// El link existe y tiene status 'aprobado'
+		// El link existe, tiene status 'aprobado' y motivo
 		else {
 			// Inactivar
 			let datos = {
