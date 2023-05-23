@@ -29,9 +29,7 @@ module.exports = {
 
 		// Obtiene el link y el id de la edicion
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
-		let edicID = link
-			? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID})
-			: "";
+		let edicID = link ? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID}) : "";
 
 		// Si el link no existía, lo crea
 		if (!link) {
@@ -62,44 +60,53 @@ module.exports = {
 		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
 		// - Los demás --> se inactivan
 		// Variables
-		let {url, motivo_id} = req.query;
-		let userID = req.session.usuario.id;
+		const {url, motivo_id} = req.query;
+		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "status_registro") : "";
 		let respuesta = {};
-		let link;
-		// Averigua si no existe el 'url'
+
+		// Si el 'url' no existe, interrumpe la función
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
-		else {
-			// Obtiene el link
-			link = await BD_genericas.obtienePorCondicionConInclude("links", {url}, "status_registro");
-			// El link no existe en la BD
-			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
-			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
-			else if (link.status_registro.creado && link.creado_por_id == userID) {
-				await BD_genericas.eliminaPorId("links", link.id);
-				link = {...link, status_registro_id: inactivo_id};
-				procsCRUD.cambioDeStatus("links", link);
-				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
-			}
-			// El link existe y no tiene status 'aprobado'
-			else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
-			// No existe el motivo
-			else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
-			// El link existe y tiene status 'aprobado'
-			else {
-				// Inactivar
-				let datos = {
-					sugerido_por_id: userID,
-					sugerido_en: comp.fechaHora.ahora(),
-					motivo_id,
-					status_registro_id: inactivar_id,
-				};
-				await BD_genericas.actualizaPorId("links", link.id, datos);
-				link = {...link, ...datos};
-				procsCRUD.cambioDeStatus("links", link);
-				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
-			}
-			return res.json(respuesta);
+		// El link no existe en la BD
+		else if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
+		// El link está en status 'creado" y por el usuario --> se elimina definitivamente
+		else if (link.status_registro.creado && link.creado_por_id == userID) {
+			await BD_genericas.eliminaPorId("links", link.id);
+			link.status_registro_id = inactivo_id;
+			procsCRUD.cambioDeStatus("links", link);
+			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
+
+		// El link está en status 'inactivo" y el usuario es revisor --> se elimina definitivamente
+		else if (link.status_registro.inactivo && revisor) {
+			await BD_genericas.eliminaPorId("links", link.id);
+			link = {...link, status_registro_id: inactivo_id};
+			procsCRUD.cambioDeStatus("links", link);
+			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
+		}
+
+		// El link existe y no tiene status 'aprobado'
+		else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
+		// No existe el motivo
+		else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
+		// El link existe y tiene status 'aprobado'
+		else {
+			// Inactivar
+			let datos = {
+				sugerido_por_id: userID,
+				sugerido_en: comp.fechaHora.ahora(),
+				motivo_id,
+				status_registro_id: inactivar_id,
+			};
+			await BD_genericas.actualizaPorId("links", link.id, datos);
+			link = {...link, ...datos};
+			procsCRUD.cambioDeStatus("links", link);
+			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
+		}
+
+		// Fin
+		return res.json(respuesta);
 	},
 	recupera: async (req, res) => {
 		// Variables
