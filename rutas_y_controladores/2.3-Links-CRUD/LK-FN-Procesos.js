@@ -47,7 +47,7 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	condiciones: (link, userID) => {
+	condiciones: (link, userID, tema) => {
 		// Variables
 		let cond = {};
 		cond.propio = link.sugerido_por_id == userID;
@@ -73,13 +73,13 @@ module.exports = {
 		cond.creadoAjeno = cond.creado && cond.ajeno;
 		cond.inactivarPropio = cond.inactivar && cond.propio;
 		cond.recuperarPropio = cond.recuperar && cond.propio;
-		
+
 		cond.provPropio = cond.provisorio && cond.propio;
 		cond.provAjeno = cond.provisorio && cond.ajeno;
 		cond.propios = cond.creadoPropio || cond.provPropio;
 		cond.ajenos = cond.creadoAjeno || cond.provAjeno;
 
 		// Fin
-		return cond
+		return cond;
 	},
 };
