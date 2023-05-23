@@ -32,6 +32,7 @@ module.exports = {
 		let producto = {...original, ...edicion, id};
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
+		for (let link of links) link.cond = procesos.condiciones(link, userID, tema);
 
 		// Actualiza linksEnProd
 		procsCRUD.linksEnProd({entidad, id});
