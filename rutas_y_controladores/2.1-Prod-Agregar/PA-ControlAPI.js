@@ -68,9 +68,9 @@ module.exports = {
 		return res.json(resultado);
 	},
 	desambGuardar1: async (req, res) => {
-		let datos = JSON.parse(req.query.datos);
+		const datos = JSON.parse(req.query.datos);
 		// Obtiene más información del producto
-		let infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
+		const infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
 		// Guarda los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// Fin
