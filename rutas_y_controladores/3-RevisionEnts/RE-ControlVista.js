@@ -436,7 +436,7 @@ module.exports = {
 			motivos = motivos_edics.filter((m) => m.avatar_prods);
 			avatarExterno = !avatar.orig.includes("/imagenes/");
 			const nombre = petitFamilias == "prods" ? original.nombre_castellano : original.nombre;
-			avatarsExternos = variables.avatarsExternos[petitFamilias](nombre);
+			avatarsExternos = variables.avatarsExternos(nombre);
 			titulo = "Revisión de la Imagen: " + nombre;
 		}
 		// Acciones si el avatar no está presente en la edición
