@@ -58,21 +58,21 @@ module.exports = {
 		const rclv = req.path.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
 		const include = variables.entidades.prods;
+		let resultado1 = {};
+		let resultado2 = {};
 
 		// Lectura
 		const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
-			.then((n) =>
-				n.map((m) => {
-					return {
-						nombre: m.nombre,
-						cantidad: m.peliculas.length + m.colecciones.length,
-						peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombre_castellano),
-					};
-				})
-			)
-			.then((n) => n.sort((a, b) => b.cantidad - a.cantidad));
+			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length)))
+			.then(() => {
+				const campos = Object.keys(resultado1).sort((a, b) => resultado1[b] - resultado1[a]);
+				campos.map((n) => (resultado2[n] = resultado1[n]));
+			});
+
+		// peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombre_castellano),
+		// .then((n) => n.sort((a, b) => b.cantidad - a.cantidad));
 
 		// Fin
-		return res.send(rclvs);
+		return res.send(resultado2);
 	},
 };
