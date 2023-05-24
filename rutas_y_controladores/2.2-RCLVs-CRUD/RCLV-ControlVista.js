@@ -9,21 +9,18 @@ const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	detalle: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "rclv_crud";
 		const codigo = "detalle";
-
-		// Variables
 		const {entidad, id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
 		const usuario = req.session.usuario ? req.session.usuario : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
-
-		// Titulo
 		const articulo = entidad == "epocas_del_ano" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
+
 		// Obtiene RCLV con productos
 		let include = [...variables.entidades.prods, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_ediciones", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
@@ -32,6 +29,7 @@ module.exports = {
 		const edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
+		const producto = {...original, ...edicion, id};
 
 		// Productos
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
@@ -55,14 +53,13 @@ module.exports = {
 		const statusEstable =
 			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
-		const procCanoniz = procesos.detalle.procCanoniz(original);
-		const RCLVnombre = original.nombre;
+		const procCanoniz = procesos.detalle.procCanoniz(producto);
+		const RCLVnombre = producto.nombre;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
-			//familias,
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz, RCLVnombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
