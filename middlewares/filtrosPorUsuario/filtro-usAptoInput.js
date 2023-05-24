@@ -12,20 +12,20 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 	let usuario = req.session.usuario;
-	const usuarioSinRolDeInput = {
-		mensajes: [
-			"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
-			"Seguramente se te explicó el motivo vía mail.",
-		],
-		iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-		titulo: "Aviso",
-	};
 
 	// VERIFICACIÓN 1: Revisa si tiene validada su identidad
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
-	if (!informacion && !usuario.rol_usuario.perm_inputs) informacion = usuarioSinRolDeInput;
+	if (!informacion && !usuario.rol_usuario.perm_inputs)
+		informacion = {
+			mensajes: [
+				"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",
+				"Seguramente se te explicó el motivo vía mail.",
+			],
+			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+			titulo: "Aviso",
+		};
 
 	// VERIFICACIÓN 3: Revisa si está dentro de su Nivel de Confianza
 	if (!informacion) {
@@ -40,7 +40,13 @@ module.exports = async (req, res, next) => {
 				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";
 				const rclv = originalUrl.startsWith("/rclv/agregar") || familia == "rclv";
 				const links = originalUrl.startsWith("/links/abm/") || familia == "links";
-				const entidades = producto ? variables.entidades.prods : rclv ? variables.entidades.rclvs : links ? ["links"] : "";
+				const entidades = producto
+					? variables.entidades.prods
+					: rclv
+					? variables.entidades.rclvs
+					: links
+					? ["links"]
+					: "";
 
 				// Fin
 				return {entidades, producto, rclv, links};
