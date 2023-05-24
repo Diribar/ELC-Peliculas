@@ -1,6 +1,5 @@
 "use strict";
 // Variables
-const Op = require("../../base_de_datos/modelos").Sequelize.Op;
 const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../1-Procesos/Compartidas");

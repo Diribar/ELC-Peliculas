@@ -17,6 +17,9 @@ global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
 global.path = require("path");
 global.fetch = require("node-fetch");
+global.db = require("./base_de_datos/modelos");
+global.Op = db.Sequelize.Op;
+
 
 // MIDDLEWARES DE APLICACIÓN ------------------------------------------
 // Para usar propiedades de express
