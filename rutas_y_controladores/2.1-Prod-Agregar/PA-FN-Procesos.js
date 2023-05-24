@@ -294,10 +294,13 @@ module.exports = {
 	},
 	// Agrega capítulos de colección
 	agregaCaps_Colec: async function (datos) {
-		// Replica para todos los capítulos de la colección
-		datos.capitulosID_TMDB.forEach(async (capituloID_TMDB, indice) => {
+		// Replica para todos los capítulos de la colección - ¡No se debe usar 'forEach' porque no respeta el await!
+		let indice = 0;
+		for (let capituloID_TMDB of datos.capitulosID_TMDB) {
+			indice++;
 			await this.agregaUnCap_Colec(datos, capituloID_TMDB, indice);
-		});
+		}
+
 		// Fin
 		return;
 	},
@@ -319,7 +322,7 @@ module.exports = {
 
 		// Genera la información a guardar
 		const datosCap = {
-			...{fuente: "TMDB", coleccion_id: datosCol.id, temporada: 1, capitulo: indice + 1},
+			...{fuente: "TMDB", coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
 			...{paises_id, idioma_original_id},
 			...{direccion, guion, musica, actores, produccion},
 			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
@@ -327,12 +330,16 @@ module.exports = {
 			...{creado_por_id: 2, sugerido_por_id: 2},
 		};
 
-		// Guarda los datos del capítulo
+		// Obtiene los datos del capítulo
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
+			// Le agrega los datos de cabecera
 			.then((n) => (n = {...datosCap, ...n}))
+			// Le corrige los actores si no es actuada
 			.then((n) => (tipo_actuacion_id != 1 ? (n = {...n, actores}) : n))
+			// Quita los caracteres especiales
 			.then((n) => (n = comp.convierteLetras.alCastellano(n)))
-			.then((n) => BD_genericas.agregaRegistro("capitulos", n));
+			// Guarda los datos del capítulo
+			.then(async (n) => BD_genericas.agregaRegistro("capitulos", n))
 
 		// Fin
 		return;

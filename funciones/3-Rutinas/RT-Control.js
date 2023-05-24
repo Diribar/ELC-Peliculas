@@ -156,13 +156,13 @@ module.exports = {
 
 			// Variables
 			const email = usuario.email;
-			let cuerpoMail = "<p>" + email + "</p>";
-			// const normalize = procesos.mailDeFeedback.normalize;
-			// let cuerpoMail = "<h1 " + normalize + "font-size: 20px'>Resultado de las sugerencias realizadas</h1>";
+			const regsAB_user = regsAB.filter((n) => n.sugerido_por_id == usuario.id);
+			const regsEdic_user = regsEdic.filter((n) => n.sugerido_por_id == usuario.id);
+			let cuerpoMail = "";
 
 			// Arma el cuerpo del mail
-			if (regsAB.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB);
-			if (regsEdic.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic);
+			if (regsAB_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB_user);
+			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic_user);
 
 			// Envía el mail y actualiza la BD
 			mailsEnviados.push(
@@ -172,8 +172,8 @@ module.exports = {
 					.then(async (n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
-							if (regsAB.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB); // Borra los registros prescindibles
-							if (regsEdic.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic); // Borra los registros prescindibles
+							if (regsAB_user.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB_user); // Borra los registros prescindibles
+							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic_user); // Borra los registros prescindibles
 							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
 						return n; // Conserva el valor de si el mail fue enviado

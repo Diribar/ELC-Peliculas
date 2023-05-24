@@ -463,7 +463,7 @@ module.exports = {
 				// 1. Si la sugerencia fue rechazada
 				// 2. Si el avatar original es un url
 				// 3. Si el registro es una pelicula o coleccion,
-				if (!aprob && url.includes("/") && entidad != "capitulos") {
+				if (!aprob && url && url.includes("/") && entidad != "capitulos") {
 					// Asigna un nombre al archivo a descargar
 					original.avatar = Date.now() + path.extname(url);
 

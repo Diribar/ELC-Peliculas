@@ -152,7 +152,6 @@ module.exports = {
 
 		// Se fija si tiene avatar y lo elimina
 		if (original.avatar && !original.avatar.includes("/")) {
-			console.log(familia, original.avatar);
 			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
 			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
 		}

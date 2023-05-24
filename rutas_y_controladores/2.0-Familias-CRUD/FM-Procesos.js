@@ -160,8 +160,7 @@ module.exports = {
 			let camposNull;
 			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
 			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
-			if (edicion && Object.keys(camposNull).length)
-				await BD_genericas.actualizaPorId(entidadEdic, edicion.id, camposNull);
+			if (edicion && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, camposNull);
 		} else edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
@@ -236,24 +235,23 @@ module.exports = {
 	// Listados de RCLV
 	gruposPers: (camposDA, userID) => {
 		// Variables
-		let personajes = camposDA.find((n) => n.nombre == "personaje_id").valores;
-
-		// Deja solamente los aprobados o creados por el usuario
-		personajes = personajes.filter(
-			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
-		);
-
-		// Deja los datos necesarios
-		personajes = personajes.map((n) => {
-			return {
-				id: n.id,
-				nombre: n.nombre,
-				categoria_id: n.categoria_id,
-				epoca_id: n.epoca_id,
-				rol_iglesia_id: n.rol_iglesia_id,
-				ap_mar_id: n.ap_mar_id,
-			};
-		});
+		const personajes = camposDA
+			// Obtiene los personajes
+			.find((n) => n.nombre == "personaje_id")
+			.valores // Obtiene los valores
+			// Deja solamente los aprobados o creados por el usuario
+			.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID))
+			// Deja los datos necesarios
+			.map((n) => {
+				return {
+					id: n.id,
+					nombre: n.nombre,
+					categoria_id: n.categoria_id,
+					epoca_id: n.epoca_id,
+					rol_iglesia_id: n.rol_iglesia_id,
+					ap_mar_id: n.ap_mar_id,
+				};
+			});
 		let casosPuntuales = [];
 
 		// Grupos Estándar
@@ -261,9 +259,10 @@ module.exports = {
 			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento", clase: "CFC VPC"},
 			{orden: 3, codigo: "SF", campo: "rol_iglesia_id", label: "Sagrada Familia", clase: "CFC"},
 			{orden: 4, codigo: "AL", campo: "rol_iglesia_id", label: "Apóstoles", clase: "CFC"},
-			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Nuevo Testamento", clase: "CFC VPC"},
+			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
 			{orden: 6, codigo: "PP", campo: "rol_iglesia_id", label: "Papas", clase: "CFC"},
-			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Posterior a los Apóstoles", clase: "CFC VPC"},
+			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
+			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
 		];
 		for (let grupo of grupos) grupo.valores = [];
 
@@ -278,7 +277,7 @@ module.exports = {
 				let OK = false;
 				// Si es alguno de los 'grupos'
 				for (let grupo of grupos)
-					if (personaje[grupo.campo].startsWith(grupo.codigo)) {
+					if (personaje[grupo.campo].startsWith(grupo.codigo) && grupo.clase.includes(personaje.categoria_id)) {
 						grupo.valores.push(personaje);
 						OK = true;
 						break;

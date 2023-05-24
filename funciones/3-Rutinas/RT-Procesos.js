@@ -271,7 +271,6 @@ module.exports = {
 			return {hoyUsuario, saltear};
 		},
 		formatos: {
-			normalize: "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ",
 			h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
 			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
 			ol: (texto) => "<ol " + normalize + "font-size: 14px'>" + texto + "</ol>",
@@ -557,7 +556,6 @@ module.exports = {
 			// Elimina los registros
 			for (let reg of regs) {
 				// Condición: sin duración
-				console.log(551, typeof reg.duracion);
 				if (!reg.duracion || reg.duracion == "0.0") BD_genericas.eliminaPorId(reg.tabla, reg.id);
 				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
 			}
