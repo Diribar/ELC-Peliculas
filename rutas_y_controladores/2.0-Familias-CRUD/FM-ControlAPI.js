@@ -92,15 +92,16 @@ module.exports = {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		console.log(datos);
-		const {circuito, titulo, desplegar} = datos;
+		const {circuito, familia, titulo, desplegar} = datos;
 
 		// Crea el objeto si no existe
 		if (!req.session) req.session = {};
 		if (!req.session.tableros) req.session.tableros = {};
 		if (!req.session.tableros[circuito]) req.session.tableros[circuito] = {};
+		if (!req.session.tableros[circuito][familia]) req.session.tableros[circuito][familia] = {};
 
 		// Guarda la session
-		req.session.tableros[circuito][titulo] = desplegar;
+		req.session.tableros[circuito][familia][titulo] = desplegar;
 
 		// Fin
 		return res.json();
