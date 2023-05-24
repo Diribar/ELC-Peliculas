@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 		// Obtiene la temporada
 		let tempNum = temporada.value.slice(10);
 		// Obtiene los capítulos de la temporada
-		let ruta = "/crud/api/averigua-capitulos/";
+		let ruta = "/crud/api/obtiene-capitulos/";
 		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
 		// Elimina las opciones actuales
 		capSelect.innerHTML = "<option selected class='ocultar'>Elegí</option>";

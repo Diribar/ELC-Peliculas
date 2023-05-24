@@ -26,7 +26,7 @@ const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalid
 router.get("/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/api/obtiene-cap-id", API.obtieneCapID);
-router.get("/api/averigua-capitulos", API.obtieneCapitulos);
+router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/api/motivos-status", API.motivosRechAltas);
 router.get("/api/actualizar-visibles", API.actualizarVisibles);
 
