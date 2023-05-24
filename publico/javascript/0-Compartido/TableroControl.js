@@ -1,6 +1,5 @@
 "use strict";
 window.addEventListener("load", async () => {
-	console.log("SI");
 	// Variables
 	let DOM = {
 		mostrarOcultar: document.querySelectorAll(".bloques .temas h3"),
