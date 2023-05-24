@@ -90,11 +90,17 @@ module.exports = {
 	},
 	actualizarVisibles: (req, res) => {
 		// Variables
-		const {circuito, desplegar} = req.query;
-		console.log({circuito, desplegar}, req.query);
+		const datos = JSON.parse(req.query.datos);
+		console.log(datos);
+		const {circuito, titulo, desplegar} = datos;
 
-		// Guarda la session y cookie
-		// req.session.tablero=
+		// Crea el objeto si no existe
+		if (!req.session) req.session = {};
+		if (!req.session.tableros) req.session.tableros = {};
+		if (!req.session.tableros[circuito]) req.session.tableros[circuito] = {};
+
+		// Guarda la session
+		req.session.tableros[circuito][titulo] = desplegar;
 
 		// Fin
 		return res.json();
