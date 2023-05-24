@@ -32,6 +32,7 @@
 			</select>
 			<!-- Activo/Inactivo -->
 			<% let url = "?entidad=" + entidad + "&id=" + id %>
+			<% if (locals.origen) { url += "&origen=" + origen} %>			
 			<select id="activoInactivo" onchange="location = this.value;">
 				<option value="<%= url %>">Activos</option>
 				<option id="inactivos" value="<%= url + "&grupo=inactivos" %>">Inactivos</option>
@@ -45,15 +46,13 @@
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% links.forEach((link, fila)=> { %>
-						<% let cond = {} %>
-						<%- include("LK0-Condiciones", {link, cond}) %>
-						<%- include("LK1-Datos", {link, cond, fila}) %>
+						<%- include("LK1-Datos", {link, fila}) %>
 						<% if (tema=="revisionEnts") { %>
-							<% link.ediciones.forEach((edicion) => { %>
-								<%- cond.creado || cond.aprobado ? include("RE3-LinksEdicion", {link, cond, fila, edicion}) : "" %> 
-							<% }) %>
+							<% for (let edicion of link.ediciones) { %>
+								<%- link.cond.creado || link.cond.aprobado ? include("RE3-LinksEdicion", {link, fila, edicion}) : "" %> 
+							<% } %>
 						<% } else { %>
-							<%- include("LK2-Edicion", {link, cond, fila}) %>
+							<%- include("LK2-Edicion", {link, fila}) %>
 						<% } %>
 					<% }) %>
 					<!-- Fila para nuevo link -->

@@ -209,7 +209,7 @@ module.exports = async (req, res, next) => {
 			v.registro.ediciones &&
 			v.registro.ediciones.length == 1 &&
 			v.registro.ediciones[0].editado_por_id == v.userID &&
-			!v.url.startsWith("links/") &&
+			!v.url.startsWith("/links/") &&
 			!v.url.startsWith("/producto/alta/")
 		) {
 			informacion = {

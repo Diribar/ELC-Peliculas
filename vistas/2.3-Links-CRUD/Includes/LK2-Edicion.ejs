@@ -94,7 +94,7 @@
 	<!-- Status -->
 	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %></td>
 	<!-- Propio -->
-	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
+	<td class="ancho_propio taparMotivo"><%= link.cond.propios ? "SI" : link.cond.ajenos ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion accion">
 		<button type="button" class="inactivo" title='Guardar'>

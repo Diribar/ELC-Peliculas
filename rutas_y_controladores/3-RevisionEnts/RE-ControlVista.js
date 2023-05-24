@@ -8,6 +8,7 @@ const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const procsProd = require("../2.1-Prod-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Procesos");
 const validaRCLV = require("../2.2-RCLVs-CRUD/RCLV-FN-Validar");
+const procsLinks = require("../2.3-Links-CRUD/LK-FN-Procesos");
 
 module.exports = {
 	// TABLERO
@@ -529,6 +530,7 @@ module.exports = {
 		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
+		for (let link of links) link.cond = procsLinks.condiciones(link, userID, tema);
 
 		// Información para la vista
 		const avatar = producto.avatar

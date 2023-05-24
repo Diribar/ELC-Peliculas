@@ -3,11 +3,11 @@
 <!-- Revisión: propio o creado c/ediciones o aprobado/inactivo -->
 <tr class="
 	yaExistentes 
-	inactivo_<%= cond.inactivos %> 
-	<%- cond.inactivos ? 'ocultaInactivo' : '' %> 
-	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
+	inactivo_<%= link.cond.inactivos %> 
+	<%- link.cond.inactivos ? 'ocultaInactivo' : '' %> 
+	<%= link.tipo_id == 1 ? 'TR' : 'PL' %> 
 	fila<%= fila %>
-	oscuro_<%- cond.rud ? cond.provAjeno : (cond.propio || (cond.creado && !!link.ediciones.length) || cond.estable) %>
+	oscuro_<%- link.cond.rud ? link.cond.provAjeno : (link.cond.propios || (link.cond.creado && !!link.ediciones.length) || link.cond.estable) %>
 ">
 	<!-- 1. Url -->
 	<td class="ancho_url url">
@@ -57,49 +57,50 @@
 	<!-- 9. Status -->
 	<td class="ancho_status"><%= link.status_registro.nombre %></td>
 	<!-- 10. Propio -->
-	<td class="ancho_propio"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
+	<td class="ancho_propio"><%= link.cond.propios ? "SI" : link.cond.ajenos ? "NO" : "-" %></td>
 	<!-- 11. Acción -->
 	<td class="ancho_accion">
 		<% let ocultar, mostrar %>
 		<!-- Sólo para RUD -->
-		<% if (cond.rud) { %>
+		<% if (link.cond.rud) { %>
 			<!-- Status creado y propio, o status aprobado -> EDICION -->
-			<% mostrar = cond.creadoPropio || cond.aprobado %>
+			<% mostrar = link.cond.creadoPropio || link.cond.aprobado %>
 			<i class="fa-solid fa-pen editar <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 
 			<!-- Status provisorio y propio -> DESHACER -->
-			<% mostrar = cond.provPropio %>
-			<i class="fa-solid fa-rotate-left deshacer <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
+			<% mostrar = link.cond.provPropio %>
+			<i class="fa-solid fa-rotate-left deshacer <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- link.cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
 
 			<!-- Status inactivo -> RECUPERAR -->
-			<% mostrar = cond.inactivo %>
+			<% mostrar = link.cond.inactivo %>
 			<i class="fa-solid fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
 		
 			<!-- ELIMINAR -->
-			<% if (cond.creadoPropio) { %>
-				<!-- Status creado y propio -> ELIMINAR PERMANENTEMENTE -->
+			<% if (link.cond.creadoPropio || revisor&&link.cond.inactivo) { %>
+				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
-			<% } else if (cond.aprobado) { %>
+			<% } else if (link.cond.aprobado) { %>
 				<!-- Status aprobado -> INACTIVAR -->
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>
 			<% } else { %>
+				<!-- Sólo para que exista un 'out' -->
 				<i class="ocultar out"></i>
 			<% } %>
 		<% } %>
 
 		<!-- Sólo para Revisión -->
-		<% if (cond.revision) { %>
-			<% if (cond.creado && !cond.creadoPropio) { %>
+		<% if (link.cond.revision) { %>
+			<% if (link.cond.creado && !link.cond.creadoPropio) { %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-check in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar fuera"></i>
-			<% } else if (cond.inactivar && !cond.inactivarPropio) { %>
+			<% } else if (link.cond.inactivar && !link.cond.inactivarPropio) { %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-right fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar out"></i>
-			<% } else if (cond.recuperar && !cond.recuperarPropio) { %>
+			<% } else if (link.cond.recuperar && !link.cond.recuperarPropio) { %>
 				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-left fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="fa-solid fa-circle-right in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>

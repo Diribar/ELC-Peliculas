@@ -21,6 +21,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 		const origen = req.query.origen;
 
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
@@ -31,9 +32,11 @@ module.exports = {
 		let producto = {...original, ...edicion, id};
 		// Obtiene información de BD
 		const links = await procesos.obtieneLinksActualizados(entidad, id, userID);
+		for (let link of links) link.cond = procesos.condiciones(link, userID, tema);
 
 		// Actualiza linksEnProd
 		procsCRUD.linksEnProd({entidad, id});
+		
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {
 			const coleccion_id = edicion && edicion.coleccion_id ? edicion.coleccion_id : original.coleccion_id;
@@ -49,10 +52,8 @@ module.exports = {
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{links_provs, links_tipos, calidades: variables.calidades, motivos},
-			userID,
+			...{userID, revisor, imgDerPers, cartelGenerico: true},
 			vista: req.baseUrl + req.path,
-			imgDerPers,
-			cartelGenerico: true,
 		});
 	},
 };

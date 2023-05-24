@@ -12,7 +12,8 @@ module.exports = {
 		// Tema y Código
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
-		let userID = req.session.usuario.id;
+		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Productos
 		let productos = await procesos.obtieneProds(userID);
@@ -32,8 +33,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "MT"},
-			...{productos, rclvs},
-			revisor: req.session.usuario.rol_usuario.revisor_ents,
+			...{productos, rclvs, revisor},
 		});
 	},
 };

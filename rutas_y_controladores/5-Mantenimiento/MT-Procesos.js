@@ -86,8 +86,6 @@ module.exports = {
 		return {INP, IN, SA, SF, FM, PST};
 	},
 	obtieneProds_Links: async (userID) => {
-		// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
-
 		// Variables
 		let include = ["pelicula", "coleccion", "capitulo"];
 		let ahora = comp.fechaHora.ahora();

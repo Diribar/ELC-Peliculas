@@ -26,7 +26,7 @@
 			<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Wiki.jpg" title="Wikipedia">
 		</a>
 		<!-- Google -->
-		<% google = registro.nombre_castellano ? "search?q="+registro.nombre_castellano.toLowerCase() : "" %>
+		<% google = registro.nombre_castellano ? ("search?q=" + registro.nombre_castellano.toLowerCase()) : "" %>
 		<a class="logos" href="//google.com/<%= google %>" target="_blank">
 			<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
 		</a>		
