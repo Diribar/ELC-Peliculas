@@ -61,19 +61,42 @@ module.exports = {
 		return res.json([capAntID, capPostID]);
 	},
 	obtieneCapID: async (req, res) => {
-		let {coleccion_id, temporada, capitulo} = req.query;
-		let ID = await BD_genericas.obtienePorCondicion("capitulos", {
+		// Variables
+		const {coleccion_id, temporada, capitulo} = req.query;
+
+		// Obtiene el ID
+		const ID = await BD_genericas.obtienePorCondicion("capitulos", {
 			coleccion_id: coleccion_id,
 			temporada: temporada,
 			capitulo: capitulo,
 		}).then((n) => n.id);
+
+		// Fin
 		return res.json(ID);
 	},
 	obtieneCapitulos: async (req, res) => {
-		let datos = await BD_especificas.obtieneCapitulos(req.query.coleccion_id, req.query.temporada);
+		// Variables
+		const coleccion_id = req.query.coleccion_id;
+		const temporada = req.query.temporada;
+
+		// Obtiene los datos
+		const datos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
+
+		// Fin
 		return res.json(datos);
 	},
 	motivosRechAltas: (req, res) => {
 		return res.json(motivos_status);
+	},
+	actualizarVisibles: (req, res) => {
+		// Variables
+		const {circuito, desplegar} = req.query;
+		console.log({circuito, desplegar}, req.query);
+
+		// Guarda la session y cookie
+		// req.session.tablero=
+
+		// Fin
+		return res.json();
 	},
 };
