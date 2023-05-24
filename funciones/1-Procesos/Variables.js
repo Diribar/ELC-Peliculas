@@ -121,8 +121,8 @@ module.exports = {
 
 	// Agregar Productos
 	camposDD: [
-		{titulo: "Título en castellano", nombre: "nombre_castellano", productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Título original", nombre: "nombre_original", productos: true, antesDePais: true, campoInput: true},
+		{titulo: "Título en castellano", nombre: "nombre_castellano", productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Año de estreno", nombre: "ano_estreno", numero: true, productos: true, antesDePais: true, campoInput: true},
 		{titulo: "Año de finalización", nombre: "ano_fin", numero: true, colecciones: true, antesDePais: true, campoInput: true},
 		{
