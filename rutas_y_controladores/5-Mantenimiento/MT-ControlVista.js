@@ -31,6 +31,7 @@ module.exports = {
 		productos = {...productos, ...prodLinks};
 
 		// Va a la vista
+		// return res.send(productos)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "MT"},
 			...{productos, rclvs, revisor},
