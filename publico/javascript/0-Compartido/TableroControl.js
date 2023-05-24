@@ -21,11 +21,11 @@ window.addEventListener("load", async () => {
 			DOM.bloqueRegistros[i].classList.toggle("ocultar");
 
 			// Genera los datos a exportar
-			const familia = DOM.mostrarOcultar[i].parentNode.parentNode.children[0].children[0].innerText.toLowerCase();
+			const familias = DOM.mostrarOcultar[i].parentNode.parentNode.children[0].children[0].innerText.toLowerCase();
 			let titulo = DOM.mostrarOcultar[i].innerHTML.toLowerCase();
 			titulo = titulo.slice(0, titulo.indexOf("(") - 1);
 			const desplegar = !DOM.bloqueRegistros[i].className.includes("ocultar");
-			const datos = {circuito, familia, titulo, desplegar};
+			const datos = {circuito, familias, titulo, desplegar};
 
 			// Exporta los datos
 			fetch(ruta.actualizarVisibles + JSON.stringify(datos));
