@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		bloqueRegistros: document.querySelectorAll(".bloques .temas .bloqueRegistros"),
 	};
 	let ruta = {
-		actualizarVisibles: "/crud/api/actualizar-visibles/?circuito=",
+		actualizarVisibles: "/crud/api/actualiza-visibles/?circuito=",
 	};
 	let circuito = location.pathname.slice(1);
 	const indice = circuito.indexOf("/");
