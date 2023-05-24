@@ -14,11 +14,11 @@ module.exports = {
 		const codigo = "detalle";
 
 		// Variables
-		let {entidad, id, origen} = req.query;
-		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const {entidad, id} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTR";
+		const usuario = req.session.usuario ? req.session.usuario : "";
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		if (!origen) origen = "DTR";
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
 
 		// Titulo
@@ -29,13 +29,13 @@ module.exports = {
 		include.push("prods_ediciones", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		let edicion = usuario
+		const edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
 
 		// Productos
-		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
-		let cantProds = prodsDelRCLV.length;
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
+		const cantProds = prodsDelRCLV.length;
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
@@ -137,7 +137,8 @@ module.exports = {
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, origen, prodEntidad, prodID, eliminar} = req.query;
+		const {entidad, id, prodEntidad, prodID, eliminar} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTR";
 		let datos = {...req.body, ...req.query, opcional: true};
 		const codigo = req.baseUrl + req.path;
 		const userID = req.session.usuario.id;
@@ -199,7 +200,7 @@ module.exports = {
 
 		// Obtiene el url de la siguiente instancia
 		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+		if (origen == "EDP" || origen == "DTP") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);
