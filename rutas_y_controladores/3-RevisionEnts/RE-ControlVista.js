@@ -20,7 +20,7 @@ module.exports = {
 		// Definir variables
 		const ahora = comp.fechaHora.ahora();
 		// Productos y Ediciones
-		let productos = {
+		let prods = {
 			// Altas y Ediciones
 			...(await procesos.TC.obtieneProds_AL_ED(ahora, revID)),
 			// Sin Edición, Inactivar y Recuperar
@@ -34,17 +34,20 @@ module.exports = {
 		};
 
 		// Links
-		productos = {...productos, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
+		prods = {...prods, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
 
 		// Procesa los campos de las 2 familias de entidades
-		// return res.send(productos.AL)
-		productos = procesos.TC.prod_ProcesaCampos(productos);
+		prods = procesos.TC.prod_ProcesaCampos(prods);
 		rclvs = procesos.TC.RCLV_ProcesaCampos(rclvs);
+
+		// Obtiene información para la vista
+		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
-			...{productos, rclvs, origen: "TE"},
+			...{prods, rclvs, origen: "TE"},
+			dataEntry,
 		});
 	},
 
