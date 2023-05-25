@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Mié. 24/may",
-	"HoraUTC": "0:36",
+	"FechaUTC": "Jue. 25/may",
+	"HoraUTC": "4:18",
 	"FechaSemUTC": "Lun. 22/may",
 	"HoraSemUTC": "12:58",
 	"semanaUTC": 20,
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"TitulosImgDer": {
-		"23-may-23": "Pascua de Resurrección",
 		"24-may-23": "Pascua de Resurrección",
-		"25-may-23": "Pascua de Resurrección"
+		"25-may-23": "Pascua de Resurrección",
+		"26-may-23": "Felipe Neri"
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
