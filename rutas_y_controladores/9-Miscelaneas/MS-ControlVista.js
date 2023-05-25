@@ -53,7 +53,7 @@ module.exports = {
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},
-	rclvs: async (req, res) => {
+	listadoRCLVs: async (req, res) => {
 		// Variables
 		const rclv = req.path.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
@@ -62,7 +62,7 @@ module.exports = {
 		let resultado2 = {};
 
 		// Lectura
-		const rclvs = await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
+		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
 			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length)))
 			.then(() => {
 				const campos = Object.keys(resultado1).sort((a, b) => resultado1[b] - resultado1[a]);

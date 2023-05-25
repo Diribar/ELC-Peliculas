@@ -26,7 +26,7 @@ router.get("/cookies", vista.cookies);
 
 // Miscelaneas
 router.get("/inactivar-captura", capturaInactivar, vista.redireccionar);
-router.get("/:id", rclvs, vista.rclvs);
+router.get("/:id", rclvs, vista.listadoRCLVs);
 
 // Exportarlo **********************************************
 module.exports = router;
