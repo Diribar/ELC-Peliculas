@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
-	let motivos_status = await fetch("/crud/api/motivos_status").then((n) => n.json());
+	let motivos_status = await fetch("/crud/api/motivos-status").then((n) => n.json());
 
 	// Botón submit
 	let botonSubmit = () => {

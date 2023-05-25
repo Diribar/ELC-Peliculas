@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const db = require("../../base_de_datos/modelos");
 
 module.exports = {
 	// Obtiene todos

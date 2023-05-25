@@ -10,7 +10,7 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	obtieneProds: async (userID) => {
 		// Variables
-		let entidades = variables.entidades.prods;
+		const entidades = variables.entidades.prods;
 
 		// PRODUCTOS
 		// Inactivos
@@ -22,7 +22,6 @@ module.exports = {
 		// Espera las lecturas
 		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
-		const pelisCaps = aprobados.filter((m) => m.entidad != "colecciones");
 
 		// Inactivos (peliculas y colecciones)
 		const IN = inactivos.filter((n) => n.entidad != "capitulos");
@@ -56,9 +55,8 @@ module.exports = {
 		let inactivos = obtienePorEntidad({...objeto, userID});
 
 		// 2. Aprobados
-		include = ["ediciones"];
 		let campoFecha = "alta_revisada_en";
-		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID: 1, include});
+		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID});
 
 		// Await
 		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
@@ -71,7 +69,7 @@ module.exports = {
 		});
 
 		// 2.1. Sin Avatar
-		const SA = aprobados.filter((m) => !m.avatar && m.id > 10 && !m.ediciones.length);
+		const SA = aprobados.filter((m) => !m.avatar && m.id > 10);
 
 		// 2.2. Con solapamiento de fechas
 		const SF = aprobados.filter((m) => m.solapam_fechas);
@@ -104,12 +102,32 @@ module.exports = {
 
 let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, include}) => {
 	// Variables
-	let campos = {status_id, userID, include, campoFecha, include};
+	include ? include.push("ediciones") : (include = "ediciones");
+	const campos = {status_id, userID, include, campoFecha, include};
 	let resultados1 = [];
 	let resultados2 = [];
 
 	// Rutina
-	for (let entidad of entidades) resultados1.push(BD_especificas.MT_obtieneRegs({entidad, ...campos}));
+	for (let entidad of entidades)
+		resultados1.push(
+			BD_especificas.MT_obtieneRegs({entidad, ...campos}).then((n) =>
+				n.map((m) => {
+					// Obtiene la edición del usuario
+
+					let edicion = m.ediciones.length ? m.ediciones.find((m) => m.editado_por_id == userID) : null;
+					delete m.ediciones;
+
+					// Actualiza el original con la edición y elimina la edición
+					if (edicion) {
+						edicion = purgaEdicion(edicion, entidad);
+						m = {...m, ...edicion};
+					}
+
+					// Fin
+					return m;
+				})
+			)
+		);
 
 	// Espera hasta tener todos los resultados
 	await Promise.all(resultados1).then((resultados) => resultados.map((n) => resultados2.push(...n)));
@@ -150,4 +168,16 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 
 	// Fin
 	return {LI};
+};
+let purgaEdicion = (edicion, entidad) => {
+	// Quita de edición los campos 'null'
+	for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
+
+	// Quita de edición los campos que no se comparan
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const campos = variables.camposRevisar[familias].map((n) => n.nombre);
+	for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+
+	// Fin
+	return edicion;
 };

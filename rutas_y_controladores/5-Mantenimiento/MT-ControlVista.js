@@ -16,8 +16,8 @@ module.exports = {
 		const revisor = req.session.usuario.rol_usuario.revisor_ents;
 
 		// Productos
-		let productos = await procesos.obtieneProds(userID);
-		productos = procesosRE.TC.prod_ProcesaCampos(productos);
+		let prods = await procesos.obtieneProds(userID);
+		prods = procesosRE.TC.prod_ProcesaCampos(prods);
 
 		// RCLVs
 		let rclvs = await procesos.obtieneRCLVs(userID);
@@ -28,12 +28,17 @@ module.exports = {
 		prodLinks = procesosRE.TC.prod_ProcesaCampos(prodLinks);
 
 		// Une Productos y Links
-		productos = {...productos, ...prodLinks};
+		prods = {...prods, ...prodLinks};
+
+		// Obtiene información para la vista
+		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
 
 		// Va a la vista
+		// return res.send(productos)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Mantenimiento", origen: "MT"},
-			...{productos, rclvs, revisor},
+			...{prods, rclvs, revisor},
+			dataEntry,
 		});
 	},
 };

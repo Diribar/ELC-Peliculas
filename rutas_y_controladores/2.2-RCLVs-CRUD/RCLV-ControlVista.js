@@ -9,33 +9,31 @@ const valida = require("./RCLV-FN-Validar");
 
 module.exports = {
 	detalle: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "rclv_crud";
 		const codigo = "detalle";
-
-		// Variables
-		let {entidad, id, origen} = req.query;
-		let usuario = req.session.usuario ? req.session.usuario : "";
-		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const {entidad, id} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTR";
+		const usuario = req.session.usuario ? req.session.usuario : "";
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		if (!origen) origen = "DTR";
 		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
-
-		// Titulo
 		const articulo = entidad == "epocas_del_ano" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
+
 		// Obtiene RCLV con productos
 		let include = [...variables.entidades.prods, ...comp.obtieneTodosLosCamposInclude(entidad)];
 		include.push("prods_ediciones", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		let edicion = usuario
+		const edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
+		const producto = {...original, ...edicion, id};
 
 		// Productos
-		let prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
-		let cantProds = prodsDelRCLV.length;
+		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
+		const cantProds = prodsDelRCLV.length;
 
 		// Ayuda para el titulo
 		const ayudasTitulo = [
@@ -55,14 +53,13 @@ module.exports = {
 		const statusEstable =
 			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
-		const procCanoniz = procesos.detalle.procCanoniz(original);
-		const RCLVnombre = original.nombre;
+		const procCanoniz = procesos.detalle.procCanoniz(producto);
+		const RCLVnombre = producto.nombre;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
-			//familias,
 			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz, RCLVnombre},
 			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
@@ -137,7 +134,8 @@ module.exports = {
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, origen, prodEntidad, prodID, eliminar} = req.query;
+		const {entidad, id, prodEntidad, prodID, eliminar} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DTR";
 		let datos = {...req.body, ...req.query, opcional: true};
 		const codigo = req.baseUrl + req.path;
 		const userID = req.session.usuario.id;
@@ -199,7 +197,7 @@ module.exports = {
 
 		// Obtiene el url de la siguiente instancia
 		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
-		if (origen == "EDP" || origen == "DTP" || origen == "DTR") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+		if (origen == "EDP" || origen == "DTP") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect(destino);

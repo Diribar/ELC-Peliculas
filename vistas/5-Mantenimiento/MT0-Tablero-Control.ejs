@@ -11,14 +11,16 @@
 	</div>
 </div>
 <!-- Datos -->
+<% let familias, DE %>
 <section id="familias">
-	<!-- Productos -->
 	<div id="primeraColumna">
+		<!-- PRODUCTOS -->
 		<div class="bloques">
 			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
 				<!-- Título -->
-				<h2>PRODUCTOS</h2>
+				<% familias = "productos" %>
+				<h2><%= familias.toUpperCase() %></h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -31,21 +33,23 @@
 			</div>
 			<!-- Registros -->
 			<div class="temas">
+				<% DE = dataEntry[familias] %>
 				<% if (revisor) { %>
-					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: productos.IN, url: "producto/detalle", mostrarOrigen: true}) %>
+					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
 				<% } %>
-				<%- include("CMP-RegsTC", {titulo: "Aprobados sin calificar", regs: productos.SC, url: "producto/detalle", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {titulo: "Sin tema", regs: productos.ST, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Aprobados sin calificar", regs: prods.SC, url: "producto/detalle", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
 			</div>
 		</div>
 	</div>
 	<div id="segundaColumna">
-		<!-- RCLV -->
+		<!-- RCLVs -->
 		<div class="bloques" id="rclv">
 			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
 				<!-- Título -->
-				<h2>RCLV</h2>
+				<% familias = "rclvs" %>
+				<h2><%= familias.toUpperCase() %></h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -61,20 +65,24 @@
 			</div>
 			<!-- Registros -->
 			<div class="temas">
+				<% DE = dataEntry[familias] %>
 				<% if (revisor) { %>
-					<%- include("CMP-RegsTC", {titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", mostrarOrigen: true}) %>
-					<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
+					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", mostrarOrigen: true}) %>
+					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
 				<% } %>
-				<%- include("CMP-RegsTC", {titulo: "Inconsistencia con el año", regs: rclvs.PST, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<!-- <%- include("CMP-RegsTC", {titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %> -->
+				<%- include("CMP-RegsTC", {DE, titulo: "Inconsistencia con el año", regs: rclvs.PST, url: "rclv/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
+				<!-- <%- include("CMP-RegsTC", {DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion", mostrarOrigen: true}) %> -->
 			</div>
 		</div>
 		<!-- Links -->
 		<div class="bloques" id="links">
+			<!-- Título y ayuda -->
 			<div class="tituloSecundario">
-				<h2>LINKS</h2>
+				<!-- Título -->
+				<% familias = "links" %>
+				<h2><%= familias.toUpperCase() %></h2>
 				<!-- Ayuda -->
 				<div class="ayuda">
 					<i class="fa-solid fa-circle-question ayudaClick desplClick">
@@ -87,10 +95,11 @@
 				</div>
 			</div>
 			<div class="temas">
-				<%- include("CMP-RegsTC", {titulo: "Inactivos", regs: productos.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
-				<%- include("CMP-RegsTC", {titulo: "Sin links", regs: productos.SL, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {titulo: "Sin links gratuitos", regs: productos.SLG, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {titulo: "Sin links en castellano", regs: productos.SLC, url: "links/abm", mostrarOrigen: true}) %>
+				<% DE = dataEntry[familias] %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin links", regs: prods.SL, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin links gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin links en castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 			</div>
 		</div>
 	</div>

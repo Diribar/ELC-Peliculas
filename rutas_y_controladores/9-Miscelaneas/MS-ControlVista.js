@@ -1,11 +1,15 @@
 "use strict";
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const variables = require("../../funciones/1-Procesos/Variables");
 
 // *********** Controlador ***********
 module.exports = {
+	// Redireccionar a Inicio
 	redireccionarInicio: (req, res) => {
 		return res.redirect("/institucional/inicio");
 	},
 
+	// Session y Cookies
 	session: (req, res) => {
 		return res.send(req.session);
 	},
@@ -13,6 +17,7 @@ module.exports = {
 		return res.send(req.cookies);
 	},
 
+	// Miscelaneas
 	redireccionar: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
@@ -47,5 +52,27 @@ module.exports = {
 			: "/";
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
+	},
+	listadoRCLVs: async (req, res) => {
+		// Variables
+		const rclv = req.path.slice(1);
+		const condicion = {id: {[Op.ne]: 1}};
+		const include = variables.entidades.prods;
+		let resultado1 = {};
+		let resultado2 = {};
+
+		// Lectura
+		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
+			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length)))
+			.then(() => {
+				const campos = Object.keys(resultado1).sort((a, b) => resultado1[b] - resultado1[a]);
+				campos.map((n) => (resultado2[n] = resultado1[n]));
+			});
+
+		// peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombre_castellano),
+		// .then((n) => n.sort((a, b) => b.cantidad - a.cantidad));
+
+		// Fin
+		return res.send(resultado2);
 	},
 };

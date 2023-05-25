@@ -130,7 +130,7 @@ module.exports = {
 			// IN: Inactivo con producto
 			campos = {entidades, status_id: inactivo_id, revID, include};
 			const IN = TC_obtieneRegs(campos).then((n) =>
-				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_edicion.length)
+				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_ediciones.length)
 			);
 
 			// Aguarda las lecturas
