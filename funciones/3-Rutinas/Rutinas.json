@@ -19,19 +19,19 @@
 	"BorraImagenesSinRegistro": "SI",
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
-	"Imagenes": {
+	"ImagenesDerecha": {
 		"25-may-23": {
-			"Titulo": "Pascua de Resurrección", 
+			"titulo": "Pascua de Resurrección", 
 			"entidad":"epocas_del_ano",
 			"id": "24"
 		},
 		"26-may-23": {
-			"Titulo": "Felipe Neri", 
+			"titulo": "Felipe Neri", 
 			"entidad":"personajes",
 			"id": "74"
 		},
 		"27-may-23": {
-			"Titulo": "Pascua de Resurrección", 
+			"titulo": "Pascua de Resurrección", 
 			"entidad":"epocas_del_ano",
 			"id": "24"
 		}
