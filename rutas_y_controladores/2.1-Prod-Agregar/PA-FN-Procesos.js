@@ -271,18 +271,6 @@ module.exports = {
 			? datos.actores
 			: "Desconocido";
 	},
-	averiguaLaEpoca: (datos) => {
-		// Variables
-		const entsRCLV = variables.entidades.rclvs;
-
-		// Obtiene los camposRCLV
-		const camposRCLV = [];
-		for (let entRCLV of entsRCLV) camposRCLV.push(comp.obtieneDesdeEntidad.campo_id(entRCLV));
-		console.log(279, camposRCLV);
-
-		// Fin 
-		return datos
-	},
 
 	// CONFIRMA - GUARDAR
 	verificaQueExistanLosRCLV: async (confirma) => {
