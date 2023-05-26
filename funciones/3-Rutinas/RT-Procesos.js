@@ -13,7 +13,7 @@ module.exports = {
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-		let info = json ? JSON.parse(json) : {};
+		const info = json ? JSON.parse(json) : {};
 
 		// Fin
 		return info;
