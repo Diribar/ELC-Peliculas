@@ -51,36 +51,39 @@ module.exports = {
 		});
 	},
 	datosDurosForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "datosDuros";
-		// 2. Obtiene el Data Entry de session y cookies
-		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
+		// Obtiene el Data Entry de session y cookies
+		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		// Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
 		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+
 		// Obtiene los errores
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+		const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
+		const camposDD_nombre = camposDD.map((n) => n.nombre);
+		const errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+
 		// Variables
-		let camposInput = camposDD.filter((n) => n.campoInput);
-		// Obtiene los países
-		let paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
-		let paisesTop5 = !datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
+		const camposInput = camposDD.filter((n) => n.campoInput);
+		const paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
+		const paisesTop5 = !datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
+
 		// Imagen derecha
-		let imgDerPers = datosDuros.avatar
+		const imgDerPers = datosDuros.avatar
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
 			: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+
 		// Datos para la vista
-		let origen =
+		const origen =
 			req.session.FA || req.cookies.FA ? "ingreso-fa" : req.session.IM || req.cookies.IM ? "ingreso-manual" : "desambiguar";
 		// Render del formulario
 
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Agregar - Datos Duros", origen, imgDerPers},
-			...{dataEntry: datosDuros, errores},
+			...{tema, codigo, titulo: "Agregar - Datos Duros", origen},
+			...{dataEntry: datosDuros, imgDerPers, errores},
 			camposInput1: camposInput.filter((n) => n.antesDePais),
 			camposInput2: camposInput.filter((n) => !n.antesDePais),
 			...{paises, paisesTop5, paisesNombre, idiomas},
@@ -139,21 +142,19 @@ module.exports = {
 		const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 		const camposDA = await variables.camposDA_conValores(userID);
 		const camposDE = Object.keys(datosAdics);
-		
+
 		// Grupos RCLV
 		const gruposPers = procsCRUD.gruposPers(camposDA, userID);
 		const gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 
 		// Imagen derecha
 		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
-		const tituloImgDerPers = datosAdics.nombre_castellano;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
-			...{dataEntry: datosAdics, camposDA, camposDE},
+			...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE},
 			...{gruposPers, gruposHechos},
-			...{imgDerPers, tituloImgDerPers},
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
