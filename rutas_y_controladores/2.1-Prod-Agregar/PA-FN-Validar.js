@@ -124,27 +124,9 @@ module.exports = {
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
 		// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
-		// RCLV - Combinados
-		if (datos.ocurrio || datos.ocurrio === false) {
-			// Variables
-			let sinResponder =
-				(!datos.personaje_id || datos.personaje_id == 1) &&
-				(!datos.hecho_id || datos.hecho_id == 1) &&
-				(!datos.tema_id || datos.tema_id == 1);
-			// Resultado
-			errores.RCLV =
-				// Acciones para 'no lo voy a responder por ahora'
-				datos.sinRCLV
-					? ""
-					: // Acciones para "ocurrio"
-					datos.ocurrio == "1" && sinResponder
-					? "Necesitamos que respondas por el Personaje o el Hecho Histórico"
-					: // Acciones para "no ocurrió"
-					datos.ocurrio == "0" && (!datos.tema_id || datos.tema_id == 1)
-					? "Necesitamos que respondas por el Tema"
-					: // Acciones si no se cumple ninguna de las anteriores
-					  "";
-		}
+		// RCLV
+		errores.RCLV = !datos.sinRCLV ? "Necesitamos que respondas alguna de las opciones" : "";
+
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
