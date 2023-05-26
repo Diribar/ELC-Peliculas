@@ -168,9 +168,6 @@ module.exports = {
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
 		datosAdics.actores = procesos.valorParaActores(datosAdics);
 
-		// Averigua la época
-		datosAdics = procesos.averiguaLaEpoca(datosAdics);
-
 		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
 		res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
