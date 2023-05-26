@@ -129,27 +129,31 @@ module.exports = {
 		return res.redirect("datos-adicionales");
 	},
 	datosAdicsForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "datosAdics";
-		let userID = req.session.usuario.id;
-		// 2. Obtiene el Data Entry de session y cookies
-		let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
-		// 3. Prepara variables para la vista
-		let camposDA = await variables.camposDA_conValores(userID);
-		let camposDE = Object.keys(datosAdics);
-		// Grupos RCLV
-		let gruposPers = procsCRUD.gruposPers(camposDA, userID);
-		let gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
+		const userID = req.session.usuario.id;
 
-		// 4. Imagen derecha
-		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
-		// 5. Render del formulario
+		// Prepara variables para la vista
+		// Obtiene el Data Entry de session y cookies
+		const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+		const camposDA = await variables.camposDA_conValores(userID);
+		const camposDE = Object.keys(datosAdics);
+		
+		// Grupos RCLV
+		const gruposPers = procsCRUD.gruposPers(camposDA, userID);
+		const gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
+
+		// Imagen derecha
+		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
+		const tituloImgDerPers = datosAdics.nombre_castellano;
+
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
 			...{dataEntry: datosAdics, camposDA, camposDE},
 			...{gruposPers, gruposHechos},
-			...{imgDerPers, tituloImgDerPers: datosAdics.nombre_castellano},
+			...{imgDerPers, tituloImgDerPers},
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
