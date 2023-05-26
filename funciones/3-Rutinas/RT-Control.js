@@ -230,24 +230,24 @@ module.exports = {
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Limpia el historial de titulos en 'global'
-		TitulosImgDer = {};
+		ImagenesDerecha = {};
 
 		// Actualiza los títulos de la imagen derecha para cada fecha
 		for (let i = 0; i < fechas.length; i++) {
 			const fecha = fechas[i];
 
-			// Obtiene los 'TitulosImgDer'
-			if (info.TitulosImgDer && info.TitulosImgDer[fecha]) TitulosImgDer[fecha] = info.TitulosImgDer[fecha];
+			// Obtiene las 'ImagenesDerecha'
+			if (info.ImagenesDerecha && info.ImagenesDerecha[fecha]) ImagenesDerecha[fecha] = info.ImagenesDerecha[fecha];
 			else {
 				// Variables
 				const fechaNum = milisegs + (i - 1) * unDia;
 				const fechaArchivo = procesos.diaMesAno(fechaNum);
 
 				// Obtiene los datos de la imagen derecha
-				const {titulo, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
+				const {titulo, entidad, id, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
 
-				// Actualiza el titulo para esa fecha
-				TitulosImgDer[fecha] = titulo;
+				// Actualiza los datos para esa fecha
+				ImagenesDerecha[fecha] = {titulo, entidad, id};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
 				comp.gestionArchivos.copiaImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
@@ -255,7 +255,7 @@ module.exports = {
 		}
 
 		// Actualiza el archivo JSON
-		procesos.actualizaRutinasJSON({TitulosImgDer});
+		procesos.actualizaRutinasJSON({ImagenesDerecha});
 
 		// Fin
 		procesos.rutinasFinales("ImagenDerecha");
