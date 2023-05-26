@@ -37,8 +37,10 @@
 				<% if (revisor) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
 				<% } %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Aprobados sin calificar", regs: prods.SC, url: "producto/detalle", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin calificar", regs: prods.SC, url: "producto/detalle", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
+
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
 			</div>
 		</div>
 	</div>

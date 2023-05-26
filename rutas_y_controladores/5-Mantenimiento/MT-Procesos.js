@@ -27,26 +27,29 @@ module.exports = {
 		const IN = inactivos.filter((n) => n.entidad != "capitulos");
 
 		// Aprobados - Sin calificar
-		let SC = pelisColes.filter((m) => !m.calificacion);
+		const SC = pelisColes.filter((m) => !m.calificacion);
 
 		// Aprobados - Sin tema
-		let ST = pelisColes.filter((n) => n.tema_id == 1);
+		const ST = pelisColes.filter((n) => n.tema_id == 1);
+
+		// Aprobados - Sin epoca
+		// const SEP = pelisColes.filter((n) => !n.epoca_id);
 
 		// Aprobados - Sin links
-		let SL = aprobados.filter((m) => !m.links_general);
+		const SL = aprobados.filter((m) => !m.links_general);
 		// Aprobados - Sin links gratuitos
-		let SLG = aprobados.filter((m) => m.links_general).filter((m) => !m.links_gratuitos);
+		const SLG = aprobados.filter((m) => m.links_general).filter((m) => !m.links_gratuitos);
 		// Aprobados - Sin links en castellano
-		let SLC = aprobados.filter((m) => m.links_general).filter((m) => !m.castellano);
+		const SLC = aprobados.filter((m) => m.links_general).filter((m) => !m.castellano);
 
 		// Fin
-		return {IN, SC, SL, SLG, SLC, ST};
+		return {IN, SC, ST, SL, SLG, SLC};
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
 		const entidades = variables.entidades.rclvs;
 		const includeProds = [...variables.entidades.prods, "prods_ediciones"];
-		let include, objeto;
+		let objeto;
 		let IN = [];
 		let INP = [];
 
