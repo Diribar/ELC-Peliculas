@@ -20,21 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"25-may-23": {
-			"titulo": "Pascua de Resurrección", 
-			"entidad":"epocas_del_ano",
-			"id": "24"
-		},
-		"26-may-23": {
-			"titulo": "Felipe Neri", 
-			"entidad":"personajes",
-			"id": "74"
-		},
-		"27-may-23": {
-			"titulo": "Pascua de Resurrección", 
-			"entidad":"epocas_del_ano",
-			"id": "24"
-		}
+		"25-may-23": {"titulo": "Pascua de Resurrección", "entidad": "epocas_del_ano", "id": 24},
+		"26-may-23": {"titulo": "Felipe Neri", "entidad": "personajes", "id": 74},
+		"27-may-23": {"titulo": "Pascua de Resurrección", "entidad": "epocas_del_ano", "id": 24}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
