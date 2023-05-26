@@ -199,7 +199,7 @@ module.exports = {
 		});
 	},
 	prodRCLV_ARIR_guardar: async (req, res) => {
-		// Variables
+		// Variables - Alta, Rechazo, Inactivar, Recuperar
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
 		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};

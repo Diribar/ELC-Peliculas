@@ -196,6 +196,7 @@ module.exports = {
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...edicion, ...req.body, id};
+		prodComb.epoca = revisor;
 		prodComb.publico = revisor;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
