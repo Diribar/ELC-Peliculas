@@ -29,7 +29,7 @@ module.exports = {
 		const edicion = usuario
 			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
 			: {};
-		const producto = {...original, ...edicion, id};
+		const registro = {...original, ...edicion, id};
 
 		// Productos
 		const prodsDelRCLV = await procesos.detalle.prodsDelRCLV(original, usuario);
@@ -48,21 +48,23 @@ module.exports = {
 		};
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+		const tituloImgDerPers = registro.nombre;
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable =
 			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
-		const procCanoniz = procesos.detalle.procCanoniz(producto);
-		const RCLVnombre = producto.nombre;
+		const procCanoniz = procesos.detalle.procCanoniz(registro);
+		const RCLVnombre = registro.nombre;
+		const userIdentVal = req.session.usuario && req.session.usuario.status_registro.ident_validada;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
-			...{imgDerPers, bloqueDer},
+			...{imgDerPers, tituloImgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz, RCLVnombre},
-			userIdentVal: req.session.usuario && req.session.usuario.status_registro.ident_validada,
+			userIdentVal,
 		});
 	},
 	altaEdicForm: async (req, res) => {
