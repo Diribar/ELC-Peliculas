@@ -106,7 +106,7 @@ module.exports = {
 			if (entidad == "epocas_del_ano") continue;
 
 			// Condicion estandar: RCLVs del dia y en status aprobado
-			let condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
+			const condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
 
 			// Obtiene los RCLVs
 			rclvs.push(
@@ -123,7 +123,9 @@ module.exports = {
 		// Busca el registro de 'epoca_del_ano'
 		if (dia_del_ano.epoca_del_ano_id != 1) {
 			const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
-			rclvs.push(BD_genericas.obtieneTodosPorCondicion("epocas_del_ano", condicion));
+			const entidad = "epocas_del_ano";
+			const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+			rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
 		}
 
 		// Espera y consolida la informacion
