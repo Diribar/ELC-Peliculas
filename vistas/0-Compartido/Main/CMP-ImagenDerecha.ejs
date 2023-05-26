@@ -1,26 +1,35 @@
 <% if (mostrar) { %>
 	<!-- Mostrar la Imagen -->
 	<section id="imgDerecha">
-		<% let rutaImagen, tituloImagen %>
+		<% let ruta, titulo, destino %>
 		<% if (locals.tema == "institucional" || locals.institucional) { %>
 			<!-- 1. Imagen Institucional -->
-			<% rutaImagen = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; tituloImagen = "ELC-Películas" %>
+			<% ruta = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
+			<% destino = "/" %>
 		<% } %>
-		<% if (!rutaImagen && locals.imgDerPers) { %>
+		<% if (!ruta && locals.imgDerPers) { %>
 			<!-- 2. Imagen Personalizada -->
-			<% rutaImagen = imgDerPers; tituloImagen = locals.tituloImgDerPers %>
+			<% ruta = imgDerPers %>
+			<% titulo = tituloImgDerPers %>
 		<% } %>
-		<% if (!rutaImagen) { %>
+		<% if (!ruta) { %>
 			<!-- 3. Imagen Diaria -->
-			<!-- Averigua qué datos usar -->
 			<% const ahora = new Date() %>
 			<% const diaLocal = ("0" + ahora.getDate()).slice(-2) %>
 			<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 			<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
-			<% rutaImagen = localhost + "/imagenes/4-ImagenDerecha/" + hoyLocal + ".jpg" %>
-			<% tituloImagen = TitulosImgDer[hoyLocal] %>
+			<% ruta = localhost + "/imagenes/4-ImagenDerecha/" + hoyLocal + ".jpg" %>
+			<% titulo = ImagenesDerecha[hoyLocal].titulo %>
+			<% console.log(24,hoyLocal, titulo) %>
+			<% destino = "/rclv/detalle/?entidad=" + ImagenesDerecha[hoyLocal].entidad + "&id=" + ImagenesDerecha[hoyLocal].id %>
 		<% } %>
-		<img src="<%= rutaImagen %>" title="<%= tituloImagen %>">
+		<% if (destino) { %>
+			<a href="<%= destino %>">
+				<img src="<%= ruta %>" title="<%= titulo %>">
+			</a>
+		<% } else { %>
+			<img src="<%= ruta %>" title="<%= titulo %>">
+		<% } %>
 	</section>
 <% } %>
