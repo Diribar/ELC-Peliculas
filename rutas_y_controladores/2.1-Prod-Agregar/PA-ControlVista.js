@@ -226,17 +226,18 @@ module.exports = {
 		const entidad = req.cookies.datosOriginales.entidad;
 
 		// Obtiene el Data Entry de session y cookies
-		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+		const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 
 		// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
-		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) {
-			let existe = procesos.verificaQueExistanLosRCLV(confirma);
+		if (!datosAdics.sinRCLV) {
+			const {existe, epoca_id} = procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
+			else confirma.epoca_id = epoca_id;
 		}
 		// ORIGINAL ------------------------------------
 		// Guarda el registro original
-		let original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
-		let registro = await BD_genericas.agregaRegistro(entidad, original);
+		const original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
+		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
 		// AVATAR -------------------------------------
 		// Acciones para el avatar
@@ -250,7 +251,7 @@ module.exports = {
 		else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 		// EDICION -------------------------------------
-		// Guarda los datos de 'edición' - es clave escribirlo así, para que la función no lo cambie
+		// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 		await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
 		// CAPÍTULOS -----------------------------------
@@ -273,7 +274,7 @@ module.exports = {
 		// Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// Crea la cookie para 'Terminaste' para la vista siguiente
-		let terminaste = {entidad, id: registro.id};
+		const terminaste = {entidad, id: registro.id};
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 
