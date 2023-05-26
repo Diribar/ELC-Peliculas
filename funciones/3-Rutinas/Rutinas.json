@@ -19,7 +19,23 @@
 	"BorraImagenesSinRegistro": "SI",
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
-	"TitulosImgDer": {"25-may-23": "Pascua de Resurrección", "26-may-23": "Felipe Neri", "27-may-23": "Pascua de Resurrección"},
+	"Imagenes": {
+		"25-may-23": {
+			"Titulo": "Pascua de Resurrección", 
+			"entidad":"epocas_del_ano",
+			"id": "24"
+		},
+		"26-may-23": {
+			"Titulo": "Felipe Neri", 
+			"entidad":"personajes",
+			"id": "74"
+		},
+		"27-may-23": {
+			"Titulo": "Pascua de Resurrección", 
+			"entidad":"epocas_del_ano",
+			"id": "24"
+		}
+	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
 	"SemanaUTC": "SI",
