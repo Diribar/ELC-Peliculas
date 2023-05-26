@@ -8,7 +8,6 @@ global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
-global.TitulosImgDer = {};
 global.dia_actual_id = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
@@ -16,6 +15,8 @@ global.localhost = process.env.localhost;
 global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
 global.path = require("path");
+const procesos = require("./funciones/3-Rutinas/RT-Procesos");
+global.TitulosImgDer = procesos.lecturaRutinasJSON().TitulosImgDer
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
