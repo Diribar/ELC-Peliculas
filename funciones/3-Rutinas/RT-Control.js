@@ -229,7 +229,7 @@ module.exports = {
 		// Borra los archivos de imagen que no se corresponden con los titulos
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
-		// Limpia el historial de titulos en 'global'
+		// Limpia el historial de ImagenesDerecha en 'global'
 		ImagenesDerecha = {};
 
 		// Actualiza los títulos de la imagen derecha para cada fecha
