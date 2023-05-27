@@ -125,7 +125,13 @@ module.exports = {
 		// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLV
-		errores.RCLV = !datos.sinRCLV ? "Necesitamos que respondas alguna de las opciones" : "";
+		const entidadesRCLV = variables.entidades.rclvs;
+		let tieneRCLV_id;
+		for (let entidadRCLV of entidadesRCLV) {
+			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+			if (datos[campo_id] != 1 && datos[campo_id]) tieneRCLV_id = true;
+		}
+		errores.RCLV = datos.sinRCLV ? "" : !tieneRCLV_id ? "Necesitamos que respondas alguna de las opciones" : "";
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);

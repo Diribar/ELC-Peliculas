@@ -19,7 +19,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #primeraColumna .labelInput .inputError:has(.angosto, .numero) {max-width: 70px;}
 #segundaColumna {width: 380px; display: flex; flex-direction: column;}
 #segundaColumna .labelInput .inputError:not(:has(textarea)) {width: 240px;}
-#segundaColumna .labelInput .inputError:has(select[name="epoca_id"]) {width: 120px}
+#segundaColumna .labelInput .inputError:has(select[name="epoca_id"]) {width: 150px}
 #segundaColumna .labelInput .inputError {width: 100%;}
 
 /* Partes específicas del formulario */
@@ -40,13 +40,12 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos .labelInput .inputError .input:disabled, #datos .labelInput#paises_id 
 #datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 #datos .flexRowAlign #siNoTitulo {width: 210px;}
-#datos #tipoActuacion #tipos {margin-left: 10px; flex-wrap: wrap;}
 
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .inputError {width: 200px;}
 #datos #paises_id .inputError :is(input#mostrarPaises, select)
-    {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+{position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; z-index: 1; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
@@ -61,6 +60,9 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #datos .labelInput .inputError .linkRCLV {width: 15px; cursor: pointer;}
 #datos .labelInput .inputError #alta.linkRCLV {right: -40px;}
 #datos .labelInput .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
+
+/* Tipos de actuación */
+#datos #tipoActuacion #tipos {max-width: 240px; flex-wrap: wrap;}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}

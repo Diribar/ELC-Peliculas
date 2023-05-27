@@ -25,6 +25,10 @@
 			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
+			<% if (revisor) { %>
+				<!-- Público -->
+				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
+			<% } %>
 			<!-- Relación con la vida -->
 			<div class="labelInput">
 				<h3>Relación con la vida</h3>
@@ -43,7 +47,6 @@
 			<!--Época del año-->
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epoca_del_ano_id"}) %>
 			<% if (revisor) { %>
-				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
 				<!--Época respecto a Cristo -->
 				<%- include("PR2-Edic-Select", {nombre: "epoca_id"}) %>
 			<% } %>
