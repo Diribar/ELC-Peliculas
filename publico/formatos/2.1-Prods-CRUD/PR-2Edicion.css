@@ -12,31 +12,32 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* Partes del formulario */
 #edicionForm #datos {display: flex; flex-direction: row; justify-content: space-between; margin-top: 10px;}
 
-.label-input .inputError .input {width: 100%;}
+.labelInput .inputError .input {width: 100%;}
 #primeraColumna {width: 350px;}
 #primeraColumna .inputError {width: 100%;}
-#primeraColumna .label-input .inputError {max-width: 200px;}
-#primeraColumna .label-input .inputError:has(.angosto, .numero) {max-width: 70px;}
+#primeraColumna .labelInput .inputError {max-width: 200px;}
+#primeraColumna .labelInput .inputError:has(.angosto, .numero) {max-width: 70px;}
 #segundaColumna {width: 380px; display: flex; flex-direction: column;}
-#segundaColumna .label-input .inputError:not(:has(textarea)) {width: 240px;}
-#segundaColumna .label-input .inputError {width: 100%;}
+#segundaColumna .labelInput .inputError:not(:has(textarea)) {width: 240px;}
+#segundaColumna .labelInput .inputError:has(select[name="epoca_id"]) {width: 120px}
+#segundaColumna .labelInput .inputError {width: 100%;}
 
 /* Partes específicas del formulario */
 #datos .columna {display: flex; flex-direction: column; justify-content: space-between;}
 #datos .columna h3 {margin-top: 15px; color: var(--verde-oscuro); width: 100%;}
 #datos .columna h3:first-child {margin-top: 0;}
-#datos .columna .label-input:has(h3) {margin-top: 15px;}
+#datos .columna .labelInput:has(h3) {margin-top: 15px;}
 
-#datos .label-input {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;}
-#datos .label-input label {margin-right: 20px; font-weight: bold;}
-#datos .label-input .inputError {display: flex; flex-direction: row; margin-left: 5px;}
-#datos .label-input .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
-#datos .label-input .inputError .ayuda {right: -5px;}
-#datos .label-input .inputError .input {align-self: center;}
-#datos .label-input .inputError .input.numero {text-align: right;}
-#datos .label-input .inputError input {padding: 0px 5px;}
-#datos .label-input .inputError select {padding: 0;}
-#datos .label-input .inputError .input:disabled, #datos .label-input#paises_id 
+#datos .labelInput {display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px;}
+#datos .labelInput label {margin-right: 20px; font-weight: bold;}
+#datos .labelInput .inputError {display: flex; flex-direction: row; margin-left: 5px;}
+#datos .labelInput .inputError :is(.input, input#mostrarPaises) {border-width: .7px; border-radius: 5px; background: white;}
+#datos .labelInput .inputError .ayuda {right: -5px;}
+#datos .labelInput .inputError .input {align-self: center;}
+#datos .labelInput .inputError .input.numero {text-align: right;}
+#datos .labelInput .inputError input {padding: 0px 5px;}
+#datos .labelInput .inputError select {padding: 0;}
+#datos .labelInput .inputError .input:disabled, #datos .labelInput#paises_id 
 #datos :is(input#mostrarPaises:disabled, select:disabled) {background: var(--amarillo-claro); opacity: 1; color: inherit;}
 #datos .flexRowAlign #siNoTitulo {width: 210px;}
 #datos #tipoActuacion #tipos {margin-left: 10px; flex-wrap: wrap;}
@@ -44,22 +45,22 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .inputError {width: 200px;}
-#datos #paises_id .inputError 
-:is(input#mostrarPaises, select) {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+#datos #paises_id .inputError :is(input#mostrarPaises, select)
+    {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .inputError #mostrarPaises {max-width: 180px; width: 100%; z-index: 1; padding: 0 5px;}
 #datos #paises_id .inputError select {width: 100%; padding: 0;}
 
-/* RCLV */
-#datos .label-input .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-#datos .label-input .inputError .linkRCLV {width: 15px; cursor: pointer;}
-#datos .label-input .inputError #alta.linkRCLV {right: -40px;}
-#datos .label-input .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
-
 /* Sinopsis */
-#datos .label-input#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
-#datos .label-input#sinopsis .inputError {margin-left: 0; flex-grow: 1;}
-#datos #segundaColumna #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%;}
-#datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
+#datos .labelInput#sinopsis {display: flex; flex-direction: column; flex-grow: 1;}
+#datos .labelInput#sinopsis .inputError {margin-left: 0; flex-grow: 1; max-width: unset;}
+#datos #sinopsis textarea {padding: 5px 10px; resize: none; height: 100%; min-height: 50px;}
+#datos #sinopsis textarea.input::-webkit-scrollbar {display: none;}
+
+/* RCLV */
+#datos .labelInput .inputError .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#datos .labelInput .inputError .linkRCLV {width: 15px; cursor: pointer;}
+#datos .labelInput .inputError #alta.linkRCLV {right: -40px;}
+#datos .labelInput .inputError #edicion.linkRCLV {right: -60px; font-size: 1.15rem;}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; translate: -100% -50%; top: 50%;}

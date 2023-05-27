@@ -14,21 +14,19 @@
 			<%- include("PR2-Edic-Pais") %>
 			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idioma_original_id}) %>
 			<%- include("PR2-Edic-Input", {campo: produccion}) %>
-			<% if (revisor) { %>
-				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
-			<% } %>
+			<!-- Cast/Crew -->
+			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
+			<!--Sinopsis-->
+			<%- include("PR2-Edic-Sinopsis") %>
+		</div>
+		<div id="segundaColumna" class="columna">
 			<h3>Datos Adicionales</h3>
 			<!-- Campos SI / NO -->
 			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
 			<%- include("PR2-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
-		</div>
-		<div id="segundaColumna" class="columna">
-			<!-- Cast/Crew -->
-			<h3>Personas</h3>
-			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<!-- Relación con la vida -->
-			<div class="label-input">
+			<div class="labelInput">
 				<h3>Relación con la vida</h3>
 				<div id="errorRCLV" class="inputError">
 					<%- include("CMP-Errores", {nombre: "RCLV"}) %>
@@ -44,9 +42,11 @@
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "evento_id"}) %>
 			<!--Época del año-->
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epoca_del_ano_id"}) %>
-			<h3>Sinopsis</h3>
-			<!--Sinopsis-->
-			<%- include("PR2-Edic-Sinopsis") %>
+			<% if (revisor) { %>
+				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
+				<!--Época respecto a Cristo -->
+				<%- include("PR2-Edic-Select", {nombre: "epoca_id"}) %>
+			<% } %>
 		</div>
 	</div>
 </section>

@@ -35,7 +35,7 @@
 
 /* Filtros - Campos - Checkbox */
 #filtros .filtro.checkbox #label-inputs {justify-content: space-evenly; width: 100%;}
-#filtros .filtro.checkbox #label-input * {line-height: 0;}
+#filtros .filtro.checkbox #labelInput * {line-height: 0;}
 #filtros .filtro.checkbox #label-inputs label {margin-left: 4px;}
 #filtros .filtro.checkbox #label-inputs input {margin: 0 2px;}
 #filtros .filtro.checkbox.flexColAlign #label-inputs {margin-top: 5px;}

@@ -11,7 +11,7 @@
 /* Partes del formulario */
 #cuerpo form h1 {color: var(--amarillo-claro); margin-bottom: 10px;}
 #cuerpo form h1 {font-size: 1.5em; text-align: center;}
-#cuerpo form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
+#cuerpo form .labelInput {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
 
 /* Input del formulario */
 #cuerpo form label {color: white; margin-right: 30px; text-align: left;}
