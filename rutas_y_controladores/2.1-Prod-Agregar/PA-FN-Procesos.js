@@ -271,6 +271,18 @@ module.exports = {
 			? datos.actores
 			: "Desconocido";
 	},
+	averiguaLaEpoca: (datos) => {
+		// Variables
+		const entsRCLV = variables.entidades.rclvs;
+
+		// Obtiene los camposRCLV
+		const camposRCLV = [];
+		for (let entRCLV of entsRCLV) camposRCLV.push(comp.obtieneDesdeEntidad.campo_id(entRCLV));
+		console.log(279, camposRCLV);
+
+		// Fin 
+		return datos
+	},
 
 	// CONFIRMA - GUARDAR
 	verificaQueExistanLosRCLV: async (confirma) => {
@@ -339,7 +351,7 @@ module.exports = {
 			// Quita los caracteres especiales
 			.then((n) => (n = comp.convierteLetras.alCastellano(n)))
 			// Guarda los datos del capítulo
-			.then(async (n) => BD_genericas.agregaRegistro("capitulos", n))
+			.then(async (n) => BD_genericas.agregaRegistro("capitulos", n));
 
 		// Fin
 		return;

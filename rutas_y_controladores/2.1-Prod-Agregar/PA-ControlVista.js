@@ -129,50 +129,61 @@ module.exports = {
 		return res.redirect("datos-adicionales");
 	},
 	datosAdicsForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "datosAdics";
-		let userID = req.session.usuario.id;
-		// 2. Obtiene el Data Entry de session y cookies
-		let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
-		// 3. Prepara variables para la vista
-		let camposDA = await variables.camposDA_conValores(userID);
-		let camposDE = Object.keys(datosAdics);
-		// Grupos RCLV
-		let gruposPers = procsCRUD.gruposPers(camposDA, userID);
-		let gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
+		const userID = req.session.usuario.id;
 
-		// 4. Imagen derecha
-		let imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
-		// 5. Render del formulario
+		// Prepara variables para la vista
+		// Obtiene el Data Entry de session y cookies
+		const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+		const camposDA = await variables.camposDA_conValores(userID);
+		const camposDE = Object.keys(datosAdics);
+		
+		// Grupos RCLV
+		const gruposPers = procsCRUD.gruposPers(camposDA, userID);
+		const gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
+
+		// Imagen derecha
+		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
+		const tituloImgDerPers = datosAdics.nombre_castellano;
+
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
 			...{dataEntry: datosAdics, camposDA, camposDE},
 			...{gruposPers, gruposHechos},
-			...{imgDerPers, tituloImgDerPers: datosAdics.nombre_castellano},
+			...{imgDerPers, tituloImgDerPers},
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
-		// 1. Obtiene el Data Entry de session y cookies
+		// Obtiene el Data Entry de session y cookies
 		let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+
 		// Obtiene los DatosAdics y elimina los campos sin datos
 		delete datosAdics.sinRCLV;
 		datosAdics = {...datosAdics, ...req.body};
 		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
-		// Valor para actores
 		datosAdics.actores = procesos.valorParaActores(datosAdics);
+
+		// Averigua la época
+		datosAdics = procesos.averiguaLaEpoca(datosAdics);
+
 		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
 		res.cookie("datosAdics", req.session.datosAdics, {maxAge: unDia});
+
 		// Si hay errores de validación, redirecciona
 		let camposDA = variables.camposDA.map((m) => m.nombre);
 		let errores = await valida.datosAdics(camposDA, datosAdics);
 		if (errores.hay) return res.redirect(req.path.slice(1));
+
 		// Guarda el data entry en session y cookie para el siguiente paso
 		req.session.confirma = req.session.datosAdics;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
+
 		// Redirecciona a la siguiente instancia
 		return res.redirect("confirma");
 	},
@@ -405,7 +416,7 @@ module.exports = {
 		// 3. Actualiza algunas session y cookie
 		// 3.1. Datos Originales
 		let datosOriginales = {...datos};
-		delete datosOriginales.avatar // Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
+		delete datosOriginales.avatar; // Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
 		delete datosOriginales.avatar_url;
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 		// 3.2. Film Affinity

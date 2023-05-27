@@ -13,7 +13,7 @@ module.exports = {
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		const existe = comp.gestionArchivos.existe(rutaNombre);
 		const json = existe ? fs.readFileSync(rutaNombre, "utf8") : "";
-		let info = json ? JSON.parse(json) : {};
+		const info = json ? JSON.parse(json) : {};
 
 		// Fin
 		return info;
@@ -95,12 +95,54 @@ module.exports = {
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
+	obtieneLosRCLV: async (dia_del_ano) => {
+		// Variables
+		let rclvs = [];
+		let resultados = [];
+
+		// Obtiene los RCLV de las primeras cuatro entidades
+		for (let entidad of variables.entidades.rclvs) {
+			// Salteo de la rutina para 'epocas_del_ano'
+			if (entidad == "epocas_del_ano") continue;
+
+			// Condicion estandar: RCLVs del dia y en status aprobado
+			const condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
+
+			// Obtiene los RCLVs
+			rclvs.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					// Deja solo los que tienen avatar
+					.then((n) => n.filter((m) => m.avatar))
+					// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
+					.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
+					// Le agrega la entidad
+					.then((n) => n.map((m) => (m = {...m, entidad})))
+			);
+		}
+
+		// Busca el registro de 'epoca_del_ano'
+		if (dia_del_ano.epoca_del_ano_id != 1) {
+			const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
+			const entidad = "epocas_del_ano";
+			const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+			rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
+		}
+
+		// Espera y consolida la informacion
+		await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
+
+		// Fin
+		return resultados;
+	},
 	datosImgDerecha: (resultado) => {
 		// Variables
-		let imgDerecha = {};
+		let imgDerecha = {entidad: resultado.entidad};
 
 		// Acciones si se obtuvo un resultado
 		if (resultado) {
+			// Datos iniciales
+			imgDerecha = {entidad: resultado.entidad, id: resultado.id};
+
 			// Nombre de la imagen
 			imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
 
@@ -123,41 +165,6 @@ module.exports = {
 
 		// Fin
 		return imgDerecha;
-	},
-	obtieneLosRCLV: async (dia_del_ano) => {
-		// Variables
-		let rclvs = [];
-		let resultados = [];
-
-		// Obtiene los RCLV de las primeras cuatro entidades
-		for (let entidad of variables.entidades.rclvs) {
-			// Salteo de la rutina para 'epocas_del_ano'
-			if (entidad == "epocas_del_ano") continue;
-
-			// Condicion estandar: RCLVs del dia y en status aprobado
-			let condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
-
-			// Obtiene los RCLVs
-			rclvs.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					// Deja solo los que tienen avatar
-					.then((n) => n.filter((m) => m.avatar))
-					// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
-					.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
-			);
-		}
-
-		// Busca el registro de 'epoca_del_ano'
-		if (dia_del_ano.epoca_del_ano_id != 1) {
-			const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
-			rclvs.push(BD_genericas.obtieneTodosPorCondicion("epocas_del_ano", condicion));
-		}
-
-		// Espera y consolida la informacion
-		await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
-
-		// Fin
-		return resultados;
 	},
 
 	// Borra imágenes obsoletas
@@ -201,8 +208,7 @@ module.exports = {
 
 		// Rutina para detectar nombres sin archivo
 		for (let avatar of avatars)
-			if (!archivos.includes(avatar.imagen))
-				console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
+			if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
 
 		// Fin
 		return;
