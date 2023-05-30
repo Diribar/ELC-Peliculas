@@ -36,13 +36,13 @@ module.exports = {
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
-		// Procesa la edición
+		// Procesa la edición - Realiza muchísimas tareas
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
-		// Acciones cuando se termina de revisar una edicion
-		// Si existen otras ediciones con los mismos valores que el original, elimina el valor de esos campos y eventualmente el registro de edicion
-		// Para productos, actualiza el status del registro original si corresponde. No alimenta el historial de cambio de status
+		// Si existen otras ediciones con los mismos valores que el original
+		// 1. Elimina el valor de esos campos
+		// 2. Evalúa si corresponde eliminar cada registro de edición, y en caso afirmativo lo elimina
 		if (!edicion) {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};
