@@ -17,7 +17,7 @@ module.exports = {
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
 
 			// 3.Elimina las edicionesProd con RCLV no aprobado
 			if (ediciones.length)
@@ -81,29 +81,39 @@ module.exports = {
 			return {AL, ED};
 		},
 		obtieneProds_SE_IR: async (revID) => {
-			// Obtiene productos en situaciones particulares
 			// Variables
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
+
 			// SE: Sin Edición (en status creado_aprob)
 			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
-			let SE = await TC_obtieneRegs(campos);
-			SE = SE.filter((n) => !n.ediciones.length);
+			let SE = TC_obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
+
+			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
+			const condiciones = {status_coleccion_id: aprobado_id, status_registro_id: {[Op.ne]: aprobado_id}};
+			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones").then((n) =>
+				n.filter((m) => !m.ediciones.length)
+			);
+
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
-			const IN = await TC_obtieneRegs(campos);
+			let IN = TC_obtieneRegs(campos);
+
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
-			const RC = await TC_obtieneRegs(campos);
+			let RC = TC_obtieneRegs(campos);
+
+			// Espera los resultados
+			[SE, SEC, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
 
 			// Fin
-			return {SE, IR: [...IN, ...RC]};
+			return {SE, SEC, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
 
 			// Obtiene los links 'a revisar'
-			let links = await BD_especificas.TC_obtieneLinksAjenos(revID);
+			let links = await BD_especificas.TC.obtieneLinksAjenos(revID);
 			// Obtiene los productos
 			let productos = links.length ? obtieneProdsDeLinks(links, ahora, revID) : [];
 
@@ -148,7 +158,7 @@ module.exports = {
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("rclvs_edicion", revID, include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -743,7 +753,7 @@ let TC_obtieneRegs = async (campos) => {
 	let lecturas = [];
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC_obtieneRegs({entidad, ...campos}));
+	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC.obtieneRegs({entidad, ...campos}));
 	await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
 
 	if (resultados.length) {
