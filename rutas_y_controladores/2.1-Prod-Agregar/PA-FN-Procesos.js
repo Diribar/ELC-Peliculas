@@ -338,8 +338,6 @@ module.exports = {
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			// Le agrega los datos de cabecera
 			.then((n) => (n = {...datosCap, ...n}))
-			// Le corrige los actores si no es actuada
-			.then((n) => (tipo_actuacion_id != 1 ? (n = {...n, actores}) : n))
 			// Guarda los datos del capítulo
 			.then(async (n) => BD_genericas.agregaRegistro("capitulos", n));
 

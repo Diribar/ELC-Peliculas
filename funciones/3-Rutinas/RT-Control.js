@@ -41,7 +41,35 @@ module.exports = {
 		// Start-up
 		await this.conjuntoDeRutinasDiarias();
 		await this.conjuntoDeRutinasSemanales();
+		// this.epoca();
 	},
+	// epoca: async () => {
+	// 	// Variables
+	// 	const entidades = variables.entidades.prods;
+	// 	const condicion = {status_registro_id: aprobado_id, epoca_id: null};
+	// 	const include = ["personaje", "hecho"];
+	// 	const nuevoStatus = {status_registro_id: creado_aprob_id};
+
+	// 	// Revisa cada registro aprobado y sin epoca_id
+	// 	for (let entidad of entidades) {
+	// 		// Obtiene todos los registros con include personaje y hecho
+	// 		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include);
+
+	// 		for (let registro of registros) {
+	// 			const id = registro.id;
+	// 			// Revisa si tiene un personaje con epoca_id
+	// 			if (registro.personaje.epoca_id)
+	// 				// En caso afirmativo, le copia la epoca_id
+	// 				BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.personaje.epoca_id});
+	// 			// Revisa si tiene un hecho con epoca_id
+	// 			else if (registro.hecho.epoca_id)
+	// 				// En caso afirmativo, le copia la epoca_id
+	// 				BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.hecho.epoca_id});
+	// 			// En caso negativo, le cambia el status a creadoAprob
+	// 			else BD_genericas.actualizaPorId(entidad, id, nuevoStatus);
+	// 		}
+	// 	}
+	// },
 
 	// 0.B. Conjunto de tareas
 	conjuntoDeRutinasHorarias: async function () {
