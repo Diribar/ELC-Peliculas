@@ -36,11 +36,6 @@ module.exports = {
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
-		// Variable DDA
-		let datosDDA = {};
-		datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
-		datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
-
 		// Procesa la edición
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
@@ -63,6 +58,11 @@ module.exports = {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
 
+			// Variable 'dia_del_ano'
+			let datosDDA = {};
+			datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
+			datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
+			
 			// Si no quedan camposDDA, funcion 'dias_del_ano'
 			let quedan = false;
 			for (let campo of camposDDA) if (edicion && edicion[campo]) quedan = true;
