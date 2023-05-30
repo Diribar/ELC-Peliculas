@@ -291,6 +291,7 @@ module.exports = {
 				} else if (registro.epoca_id && !confirma.epoca_id) epoca_id = registro.epoca_id;
 			}
 		}
+
 		// Fin
 		return {existe, epoca_id};
 	},

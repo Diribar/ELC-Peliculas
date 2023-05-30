@@ -78,7 +78,7 @@ module.exports = {
 			const indice = parseInt(Math.random() * rclvs.length);
 			resultado = rclvs[indice];
 		}
-		// Si se encontro un solo resultado, lo asigna
+		// Si se encontró un solo resultado, lo asigna
 		else if (rclvs.length == 1) resultado = rclvs[0];
 
 		// Obtiene los datos para la imgDerecha
@@ -136,7 +136,7 @@ module.exports = {
 	},
 	datosImgDerecha: (resultado) => {
 		// Variables
-		let imgDerecha = {entidad: resultado.entidad};
+		let imgDerecha
 
 		// Acciones si se obtuvo un resultado
 		if (resultado) {

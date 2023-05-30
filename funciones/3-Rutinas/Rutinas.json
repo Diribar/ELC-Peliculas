@@ -1,9 +1,9 @@
 {
-	"FechaUTC": "Sáb. 27/may",
-	"HoraUTC": "0:00",
-	"FechaSemUTC": "Lun. 22/may",
-	"HoraSemUTC": "12:58",
-	"semanaUTC": 20,
+	"FechaUTC": "Mar. 30/may",
+	"HoraUTC": "2:07",
+	"FechaSemUTC": "Lun. 29/may",
+	"HoraSemUTC": "10:34",
+	"semanaUTC": 21,
 	"Separador1:": "---------------- RUTINAS HORARIAS --------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"26-may-23": {"titulo": "Felipe Neri", "entidad": "personajes", "id": 74},
-		"27-may-23": {"titulo": "Pascua de Resurrección", "entidad": "epocas_del_ano", "id": 24},
-		"28-may-23": {"titulo": "Stefan Wyszynski", "entidad": "personajes", "id": 142}
+		"29-may-23": {"titulo": "María, madre de la Iglesia", "entidad": "eventos", "id": 27},
+		"30-may-23": {"titulo": "Juana de Arco", "entidad": "personajes", "id": 71},
+		"31-may-23": {"titulo": "ELC - Películas"}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
