@@ -48,7 +48,6 @@ module.exports = {
 		};
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
-		const tituloImgDerPers = registro.nombre;
 		// Status de la entidad
 		const status_id = original.status_registro_id;
 		const statusEstable =
@@ -62,7 +61,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidad, entidadNombre, id, familia, status_id, statusEstable},
-			...{imgDerPers, tituloImgDerPers, bloqueDer},
+			...{imgDerPers, bloqueDer},
 			...{prodsDelRCLV, procCanoniz, RCLVnombre},
 			userIdentVal,
 		});
@@ -127,10 +126,10 @@ module.exports = {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE, statusCreado},
+			...{dataEntry, DE, imgDerPers, statusCreado},
 			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
-			...{omitirImagenDerecha: true, omitirFooter: true, imgDerPers},
+			...{omitirImagenDerecha: true, omitirFooter: true},
 		});
 	},
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV

@@ -5,13 +5,8 @@
 		<% if (locals.tema == "institucional" || locals.institucional) { %>
 			<!-- 1. Imagen Institucional -->
 			<% ruta = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
-			<% destino = "/" %>
 		<% } %>
-		<% if (!ruta && locals.imgDerPers) { %>
-			<!-- 2. Imagen Personalizada -->
-			<% ruta = imgDerPers %>
-			<% titulo = tituloImgDerPers %>
-		<% } %>
+		<% if (!ruta && locals.imgDerPers) { ruta = imgDerPers } %>
 		<% if (!ruta) { %>
 			<!-- 3. Imagen Diaria -->
 			<% const ahora = new Date() %>

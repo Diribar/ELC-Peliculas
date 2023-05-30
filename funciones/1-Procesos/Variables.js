@@ -151,6 +151,7 @@ module.exports = {
 		{nombre: "musical"},
 		{nombre: "tipo_actuacion_id"},
 		{nombre: "publico_id"},
+		{nombre: "epoca_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "tema_id", grupo: "RCLV"},
@@ -171,6 +172,7 @@ module.exports = {
 				"Menores apto familia: apuntado a un público infantil, pero también la puede disfrutar un adulto.",
 				"Menores solamente: apuntado a un público solamente infantil.",
 			],
+			epoca: ["Antes, durante o después de Cristo."],
 			personaje: ["Si son varias las personas, podés poner la más representativa, o un nombre que las englobe a todas."],
 			hecho: ["Si son varios los hechos, podés poner el más representativo, o uno genérico que los englobe a todos."],
 		};
@@ -181,6 +183,7 @@ module.exports = {
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", valores: tipos_actuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
+			{titulo: "Época respecto a Cristo", nombre: "epoca_id", valores: epocas, mensajes: mensajes.epoca},
 			{
 				titulo: "Personaje Histórico",
 				nombre: "personaje_id",
@@ -349,6 +352,13 @@ module.exports = {
 				relacInclude: "epoca_del_ano",
 				tabla: "epocas_del_ano",
 				rclv: true,
+				productos: true,
+			},
+			{
+				titulo: "Época respecto a Cristo",
+				nombre: "epoca_id",
+				relacInclude: "epoca",
+				tabla: "epocas",
 				productos: true,
 			},
 			// Películas y Capítulos

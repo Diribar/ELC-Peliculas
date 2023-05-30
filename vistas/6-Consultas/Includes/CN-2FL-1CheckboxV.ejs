@@ -2,7 +2,7 @@
 	<h3><%= tema.titulo %> </h3>
 	<div id="label-inputs" class="flexRowAlign">
 		<% for (let opcion of tema.opciones) { %>
-			<div class="label-input flexRowAlign">
+			<div class="labelInput flexRowAlign">
 				<% let nombre = opcion.nombre %>
 				<% if (nombre.length > 5) nombre = opcion.nombre.slice(0, 5)+"." %> 
 				<label for="<%= opcion.id %>"><%= nombre %></label>

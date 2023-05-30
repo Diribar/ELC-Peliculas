@@ -20,7 +20,8 @@ module.exports = {
 		let erroresDA = validaProd.datosAdics(campos, datos);
 		let errores = {...erroresDD, ...erroresDA};
 
-		// Si corresponde, agrega 'publico_id'
+		// Si corresponde, agrega campos particulares
+		if (datos.epoca) errores.epoca_id = !datos.epoca_id ? variables.selectVacio : "";
 		if (datos.publico) errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
 
 		// Terminar

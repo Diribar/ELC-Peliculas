@@ -338,6 +338,7 @@ module.exports = {
 			const aprob = subcodigo != "rechazo" && !desaprueba;
 
 			// Obtiene el status final
+			const adicionales = {publico: true, epoca: true};
 			const status_final_id =
 				// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
@@ -347,7 +348,7 @@ module.exports = {
 					rclv
 					? aprobado_id
 					: // Si es un producto, se revisa si tiene errores
-					(await validaPR.consolidado({datos: {...original, entidad}}).then((n) => n.hay))
+					(await validaPR.consolidado({datos: {...original, entidad, ...adicionales}}).then((n) => n.hay))
 					? creado_aprob_id
 					: aprobado_id;
 
@@ -407,7 +408,7 @@ module.exports = {
 				for (let prodVinculado of prodsVinculados) {
 					// Averigua si el producto tiene errores cuando se le actualiza el 'campo_id'
 					let objeto = {[campo_id]: 1};
-					prodVinculado = {...prodVinculado, ...objeto, publico: true};
+					prodVinculado = {...prodVinculado, ...objeto, publico: true, epoca: true};
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creado_aprob'

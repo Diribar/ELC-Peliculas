@@ -51,36 +51,39 @@ module.exports = {
 		});
 	},
 	datosDurosForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prod_agregar";
 		const codigo = "datosDuros";
-		// 2. Obtiene el Data Entry de session y cookies
-		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
+		// Obtiene el Data Entry de session y cookies
+		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		// Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
 		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+
 		// Obtiene los errores
-		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+		const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
+		const camposDD_nombre = camposDD.map((n) => n.nombre);
+		const errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+
 		// Variables
-		let camposInput = camposDD.filter((n) => n.campoInput);
-		// Obtiene los países
-		let paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
-		let paisesTop5 = !datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
+		const camposInput = camposDD.filter((n) => n.campoInput);
+		const paisesNombre = datosDuros.paises_id ? comp.paises_idToNombre(datosDuros.paises_id) : [];
+		const paisesTop5 = !datosDuros.paises_id ? paises.sort((a, b) => b.cantProds - a.cantProds).slice(0, 5) : [];
+
 		// Imagen derecha
-		let imgDerPers = datosDuros.avatar
+		const imgDerPers = datosDuros.avatar
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
 			: datosDuros.avatar_url
 			? datosDuros.avatar_url
 			: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
+
 		// Datos para la vista
-		let origen =
+		const origen =
 			req.session.FA || req.cookies.FA ? "ingreso-fa" : req.session.IM || req.cookies.IM ? "ingreso-manual" : "desambiguar";
 		// Render del formulario
 
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Agregar - Datos Duros", origen, imgDerPers},
-			...{dataEntry: datosDuros, errores},
+			...{tema, codigo, titulo: "Agregar - Datos Duros", origen},
+			...{dataEntry: datosDuros, imgDerPers, errores},
 			camposInput1: camposInput.filter((n) => n.antesDePais),
 			camposInput2: camposInput.filter((n) => !n.antesDePais),
 			...{paises, paisesTop5, paisesNombre, idiomas},
@@ -139,21 +142,19 @@ module.exports = {
 		const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 		const camposDA = await variables.camposDA_conValores(userID);
 		const camposDE = Object.keys(datosAdics);
-		
+
 		// Grupos RCLV
 		const gruposPers = procsCRUD.gruposPers(camposDA, userID);
 		const gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 
 		// Imagen derecha
 		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
-		const tituloImgDerPers = datosAdics.nombre_castellano;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Datos Personalizados"},
-			...{dataEntry: datosAdics, camposDA, camposDE},
+			...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE},
 			...{gruposPers, gruposHechos},
-			...{imgDerPers, tituloImgDerPers},
 		});
 	},
 	datosAdicsGuardar: async (req, res) => {
@@ -166,9 +167,6 @@ module.exports = {
 		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
 		datosAdics.actores = procesos.valorParaActores(datosAdics);
-
-		// Averigua la época
-		datosAdics = procesos.averiguaLaEpoca(datosAdics);
 
 		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
@@ -228,17 +226,18 @@ module.exports = {
 		const entidad = req.cookies.datosOriginales.entidad;
 
 		// Obtiene el Data Entry de session y cookies
-		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+		const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 
 		// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
-		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) {
-			let existe = procesos.verificaQueExistanLosRCLV(confirma);
+		if (!datosAdics.sinRCLV) {
+			const {existe, epoca_id} = procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
+			else confirma.epoca_id = epoca_id;
 		}
 		// ORIGINAL ------------------------------------
 		// Guarda el registro original
-		let original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
-		let registro = await BD_genericas.agregaRegistro(entidad, original);
+		const original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
+		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
 		// AVATAR -------------------------------------
 		// Acciones para el avatar
@@ -252,7 +251,7 @@ module.exports = {
 		else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 		// EDICION -------------------------------------
-		// Guarda los datos de 'edición' - es clave escribirlo así, para que la función no lo cambie
+		// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 		await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
 		// CAPÍTULOS -----------------------------------
@@ -275,7 +274,7 @@ module.exports = {
 		// Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 		// Crea la cookie para 'Terminaste' para la vista siguiente
-		let terminaste = {entidad, id: registro.id};
+		const terminaste = {entidad, id: registro.id};
 		req.session.terminaste = terminaste;
 		res.cookie("terminaste", terminaste, {maxAge: unDia});
 

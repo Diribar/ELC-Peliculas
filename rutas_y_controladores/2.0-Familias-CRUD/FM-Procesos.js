@@ -119,7 +119,7 @@ module.exports = {
 	},
 	revisaStatus: async (original, entidad) => {
 		// Averigua si hay errores
-		let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
+		const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
 
 		// Si hay errores, le cambia el status
 		if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {status_registro_id: creado_aprob_id});
@@ -370,7 +370,7 @@ module.exports = {
 		// - Averigua si el registro está en un status previo a 'aprobado'
 		if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
 			// Averigua si hay errores
-			let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true}});
+			let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;

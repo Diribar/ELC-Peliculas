@@ -271,38 +271,28 @@ module.exports = {
 			? datos.actores
 			: "Desconocido";
 	},
-	averiguaLaEpoca: (datos) => {
-		// Variables
-		const entsRCLV = variables.entidades.rclvs;
-
-		// Obtiene los camposRCLV
-		const camposRCLV = [];
-		for (let entRCLV of entsRCLV) camposRCLV.push(comp.obtieneDesdeEntidad.campo_id(entRCLV));
-		console.log(279, camposRCLV);
-
-		// Fin 
-		return datos
-	},
 
 	// CONFIRMA - GUARDAR
 	verificaQueExistanLosRCLV: async (confirma) => {
 		// Variables
-		let entidadesRCLV = variables.entidades.rclvs;
-		let resultado = true;
+		const entidadesRCLV = variables.entidades.rclvs;
+		let existe = true;
+		let epoca_id = null;
+
 		// Revisa que exista el RCLV
 		for (let entidad of entidadesRCLV) {
-			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			// Averigua si existe, para los RCLV_id que existan y no sean 'ninguno' ni 'varios'
 			if (confirma[campo_id] && confirma[campo_id] > 2) {
-				let existe = await BD_genericas.obtienePorId(entidad, confirma[campo_id]);
-				if (!existe) {
-					resultado = false;
+				const registro = await BD_genericas.obtienePorId(entidad, confirma[campo_id]);
+				if (!registro) {
+					existe = false;
 					break;
-				}
+				} else if (registro.epoca_id && !confirma.epoca_id) epoca_id = registro.epoca_id;
 			}
 		}
 		// Fin
-		return resultado;
+		return {existe, epoca_id};
 	},
 	// Agrega capítulos de colección
 	agregaCaps_Colec: async function (datos) {
