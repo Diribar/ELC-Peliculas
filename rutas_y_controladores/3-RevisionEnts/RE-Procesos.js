@@ -539,11 +539,14 @@ module.exports = {
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// TAREAS:
 			// - Si se aprobó, actualiza el registro de 'original'
-			// - Actualiza la tabla de edics_aprob/rech
+			// - Si es una colección, actualiza el registro 'original' de los capítulos
+			// - Actualiza la tabla de 'hist_edics'
 			// - Aumenta el campo aprob/rech en el registro del usuario
 			// - Si corresponde, penaliza al usuario
 			// - Actualiza el registro de 'edición'
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+			// - Para productos, actualiza el status del registro original si corresponde
+			// - No alimenta el historial de cambio de status
 
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -567,9 +570,18 @@ module.exports = {
 
 			// CONSECUENCIAS
 			// 1. Si se aprobó, actualiza el registro 'original'
+			// 2. Si es una colección, actualiza el registro 'original' de los capítulos
 			if (aprob) {
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+				if (entidad == "colecciones") {
+					const condiciones = {
+						coleccion_id: original.id, // que pertenezca a la colección
+						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
+					};
+					const novedad = {[campo]: edicion[campo]};
+					await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad); // debe ser con 'await', porque más adelante se lo evalúa
+				}
 			}
 
 			// 2. Actualiza la tabla de 'hist_edics'
@@ -584,11 +596,9 @@ module.exports = {
 			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
-
 			// Reemplaza los vacíos
 			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
 			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
-
 			// Agrega el registro
 			BD_genericas.agregaRegistro("hist_edics", datos);
 
