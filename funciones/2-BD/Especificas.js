@@ -82,83 +82,85 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	TC_obtieneRegs: ({entidad, status_id, revID, campoFecha, campoRevID, include}) => {
-		// Variables
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+	TC: {
+		obtieneRegs: ({entidad, status_id, revID, campoFecha, campoRevID, include}) => {
+			// Variables
+			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+			const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
 
-		// Condiciones
-		let condiciones = {
-			// Con status según parámetro
-			status_registro_id: status_id,
-			// Que cumpla alguno de los siguientes sobre la 'captura':
-			[Op.or]: [
-				// Que no esté capturado
-				{capturado_en: null},
-				// Que esté capturado hace más de dos horas
-				{capturado_en: {[Op.lt]: haceDosHoras}},
-				// Que la captura haya sido por otro usuario y hace más de una hora
-				{capturado_por_id: {[Op.ne]: revID}, capturado_en: {[Op.lt]: haceUnaHora}},
-				// Que la captura haya sido por otro usuario y esté inactiva
-				{capturado_por_id: {[Op.ne]: revID}, captura_activa: {[Op.ne]: 1}},
-				// Que esté capturado por este usuario hace menos de una hora
-				{capturado_por_id: revID, capturado_en: {[Op.gt]: haceUnaHora}},
-			],
-		};
-		// Que esté propuesto por otro usuario
-		if (campoRevID) condiciones[campoRevID] = {[Op.ne]: revID};
-		// Que esté propuesto hace más de una hora
-		if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
+			// Condiciones
+			let condiciones = {
+				// Con status según parámetro
+				status_registro_id: status_id,
+				// Que cumpla alguno de los siguientes sobre la 'captura':
+				[Op.or]: [
+					// Que no esté capturado
+					{capturado_en: null},
+					// Que esté capturado hace más de dos horas
+					{capturado_en: {[Op.lt]: haceDosHoras}},
+					// Que la captura haya sido por otro usuario y hace más de una hora
+					{capturado_por_id: {[Op.ne]: revID}, capturado_en: {[Op.lt]: haceUnaHora}},
+					// Que la captura haya sido por otro usuario y esté inactiva
+					{capturado_por_id: {[Op.ne]: revID}, captura_activa: {[Op.ne]: 1}},
+					// Que esté capturado por este usuario hace menos de una hora
+					{capturado_por_id: revID, capturado_en: {[Op.gt]: haceUnaHora}},
+				],
+			};
+			// Que esté propuesto por otro usuario
+			if (campoRevID) condiciones[campoRevID] = {[Op.ne]: revID};
+			// Que esté propuesto hace más de una hora
+			if (campoFecha) condiciones[campoFecha] = {[Op.lt]: haceUnaHora};
 
-		// Resultado
-		return db[entidad]
-			.findAll({where: condiciones, include})
-			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) => n.map((m) => ({...m, entidad})));
-	},
-	TC_obtieneEdicsAjenas: (entidad, revID, include) => {
-		// Variables
-		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+			// Resultado
+			return db[entidad]
+				.findAll({where: condiciones, include})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) => n.map((m) => ({...m, entidad})));
+		},
+		obtieneEdicsAjenas: (entidad, revID, include) => {
+			// Variables
+			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 
-		// Fin
-		return db[entidad]
-			.findAll({
-				where: {
-					// Que esté editado desde hace más de 1 hora
-					editado_en: {[Op.lt]: haceUnaHora},
-					// Que sea ajeno
-					editado_por_id: {[Op.ne]: revID},
-				},
-				include,
-			})
-			.then((n) => n.map((m) => m.toJSON()));
-	},
-	TC_obtieneLinksAjenos: async (revID) => {
-		// Variables
-		let include = ["pelicula", "coleccion", "capitulo"];
+			// Fin
+			return db[entidad]
+				.findAll({
+					where: {
+						// Que esté editado desde hace más de 1 hora
+						editado_en: {[Op.lt]: haceUnaHora},
+						// Que sea ajeno
+						editado_por_id: {[Op.ne]: revID},
+					},
+					include,
+				})
+				.then((n) => n.map((m) => m.toJSON()));
+		},
+		obtieneLinksAjenos: async (revID) => {
+			// Variables
+			const include = ["pelicula", "coleccion", "capitulo"];
 
-		// Obtiene los links en status 'a revisar'
-		let condiciones = {
-			[Op.or]: [
-				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: revID}}]},
-				{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: revID}}]},
-				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
-				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
-			],
-		};
-		let originales = db.links
-			.findAll({where: condiciones, include: [...include, "status_registro"]})
-			.then((n) => n.map((m) => m.toJSON()));
+			// Obtiene los links en status 'a revisar'
+			const condiciones = {
+				[Op.or]: [
+					{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
+				],
+			};
+			const originales = db.links
+				.findAll({where: condiciones, include: [...include, "status_registro"]})
+				.then((n) => n.map((m) => m.toJSON()));
 
-		// Obtiene todas las ediciones ajenas
-		let condicion = {editado_por_id: {[Op.ne]: revID}};
-		let ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
+			// Obtiene todas las ediciones ajenas
+			const condicion = {editado_por_id: {[Op.ne]: revID}};
+			const ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
 
-		// Los consolida
-		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
+			// Los consolida
+			const links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 
-		// Fin
-		return links;
+			// Fin
+			return links;
+		},
 	},
 	// Revisar - producto/edicion y rclv/edicion
 	obtieneEdicAjenaDeUnProd: (entidadEdic, datos, include) => {
