@@ -60,6 +60,7 @@ module.exports = (sequelize, dt) => {
 		edic_revisada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
+		status_coleccion_id: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
@@ -93,6 +94,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edic_revisada_por_id"});
 
+		entidad.belongsTo(n.status_registros, {as: "status_coleccion", foreignKey: "status_coleccion_id"});
 		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.motivos_status, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
