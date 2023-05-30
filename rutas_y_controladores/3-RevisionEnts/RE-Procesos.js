@@ -25,7 +25,9 @@ module.exports = {
 					if (
 						(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
 						(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
-						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id)
+						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id) ||
+						(ediciones[i].evento && ediciones[i].evento.status_registro_id != aprobado_id) ||
+						(ediciones[i].epoca_del_ano && ediciones[i].epoca_del_ano.status_registro_id != aprobado_id)
 					)
 						ediciones.splice(i, 1);
 
@@ -65,10 +67,10 @@ module.exports = {
 				AL = productos.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.links_general - a.links_general); // Primero los que tienen links
 				// 6.E. Ediciones - es la suma de:
-				// - En status 'creado_aprob' y que no sean 'capítulos'
+				// - En status 'creado_aprob'
 				// - En status 'aprobado'
 				ED.push(
-					...productos.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos"),
+					...productos.filter((n) => n.status_registro_id == creado_aprob_id),
 					...productos.filter((n) => n.status_registro_id == aprobado_id)
 				);
 				// 6.F. Primero los productos más recientes

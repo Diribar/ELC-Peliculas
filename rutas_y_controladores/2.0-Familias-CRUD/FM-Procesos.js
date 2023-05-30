@@ -365,34 +365,54 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
-	prodsPosibleAprobado: async function (entidad, original) {
-		let statusAprob = original.status_registro && original.status_registro.aprobado;
+	prodsPosibleAprobado: async function (entidad, registro) {
+		// Variables
+		let statusAprob = registro.status_registro_id == aprobado_id;
+
 		// - Averigua si el registro está en un status previo a 'aprobado'
-		if ([creado_id, creado_aprob_id].includes(original.status_registro_id)) {
+		if ([creado_id, creado_aprob_id].includes(registro.status_registro_id)) {
 			// Averigua si hay errores
-			let errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
+			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico: true, epoca: true}});
+
+			// Acciones si no hay errores
 			if (!errores.hay) {
 				// Variables
 				statusAprob = true;
 				const ahora = comp.fechaHora.ahora();
 				const datos = {
 					alta_term_en: ahora,
-					lead_time_creacion: comp.obtieneLeadTime(original.creado_en, ahora),
+					lead_time_creacion: comp.obtieneLeadTime(registro.creado_en, ahora),
 					status_registro_id: aprobado_id,
 				};
 
 				// Cambia el status del registro
-				BD_genericas.actualizaPorId(entidad, original.id, datos);
+				BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
-				// Si es una colección, le cambia el status también a los capítulos
+				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
 				if (entidad == "colecciones") {
+					// Variables
 					datos.alta_revisada_por_id = 2;
 					datos.alta_revisada_en = ahora;
-					BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: original.id}, datos);
+
+					// Actualiza el status de la coleccción en los capítulos
+					BD_genericas.actualizaPorId("capitulos", capitulo.id, {status_coleccion: aprobado_id});
+
+					// Obtiene los capitulos id
+					const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
+
+					// Rutina
+					for (let capitulo of capitulos) {
+						// Revisa si cada capítulo supera el test de errores
+						let validar = {...capitulo, entidad: "capitulos", publico: true, epoca: true};
+						const errores = await validaPR.consolidado({datos: validar});
+
+						// En caso afirmativo, actualiza el status
+						if (!errores.hay) BD_genericas.actualizaPorId("capitulos", capitulo.id, datos);
+					}
 				}
 
 				// Actualiza prodEnRCLV
-				this.cambioDeStatus(entidad, {...original, ...datos});
+				this.cambioDeStatus(entidad, {...registro, ...datos});
 			}
 		}
 
