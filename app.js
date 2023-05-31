@@ -1,14 +1,13 @@
 // VARIABLE 'GLOBAL' --------------------------------------------------------------
 // Simples
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
-global.unDia = 60 * 60 * 1000 * 24; // Para usar la variable en todo el proyecto
-global.unMes = 60 * 60 * 1000 * 24 * 30; // Para usar la variable en todo el proyecto
+global.unDia = unaHora * 24; // Para usar la variable en todo el proyecto
+global.unMes = unDia * 30; // Para usar la variable en todo el proyecto
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
-global.dia_actual_id = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
@@ -21,8 +20,6 @@ global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 
-
-// MIDDLEWARES DE LA APLICACIÓN ------------------------------------------
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
@@ -81,7 +78,6 @@ app.set("views", [
 (async () => {
 	// Lectura de la base de datos
 	const BD_genericas = require("./funciones/2-BD/Genericas");
-	let no_presencio_ninguna = {solo_cfc: true, epoca_id: null, ama: true};
 	let campos = {
 		// Variables de usuario
 		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
@@ -102,7 +98,6 @@ app.set("views", [
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
 		canons: BD_genericas.obtieneTodos("canons", "orden"),
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
-		no_presencio_ninguna_id: BD_genericas.obtienePorCondicion("hechos", no_presencio_ninguna).then((n) => n.id),
 
 		// Variables de links
 		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
