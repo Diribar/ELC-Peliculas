@@ -60,14 +60,15 @@ module.exports = {
 
 			// Averigua si en la edición quedan camposDDA
 			let quedan = false;
-			if (edicion) for (let campo of camposDDA) if (edicion[campo]) quedan = true;
-			
-			// Si en la edición no quedan camposDDA, ejecuta la funcion 'dias_del_ano'
-			if (!quedan) {
+			if (edicion) for (let campoDDA of camposDDA) if (edicion[campoDDA]) quedan = true;
+
+			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'dias_del_ano'
+			if (!quedan && camposDDA.includes(campo)) {
 				// Variables
-				const desde =  original.dia_del_ano_id;
-				const duracion = original.dias_de_duracion - 1;
-	
+				const orig = await BD_genericas.obtienePorId(entidad, entID);
+				const desde = orig.dia_del_ano_id;
+				const duracion = orig.dias_de_duracion - 1;
+
 				// Actualiza los dias_del_ano
 				await procesos.guardar.actualizaDiasDelAno({id: entID, desde, duracion});
 			}
