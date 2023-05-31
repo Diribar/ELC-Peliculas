@@ -601,32 +601,6 @@ module.exports = {
 		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
 		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
 	},
-	diaDelAno: ({entidad, producto}) => {
-		// Variables
-		let dia_del_ano_id = null;
-
-		// Obtiene los dias_del_ano_id válidos
-		const entidadesRCLV = variables.entidades.rclvs;
-		const asociacionesRCLV = entidadesRCLV.map((n) => comp.obtieneDesdeEntidad.asociacion(n));
-		let dias_del_ano_id = [];
-		for (let asociacion of asociacionesRCLV)
-			if (producto[asociacion].dia_del_ano_id <= 366) dias_del_ano_id.push(producto[asociacion].dia_del_ano_id);
-
-		// Si alguno es menor al vigente, le suma 366
-		if (dias_del_ano_id.length) {
-			dias_del_ano_id = dias_del_ano_id.map((n) => (n < dia_actual_id ? (n += 366) : n));
-
-			// Resta el menor menos el vigente
-			const menor = Math.min(...dias_del_ano_id);
-			dia_del_ano_id = menor - dia_actual_id;
-		}
-
-		// Le agrega la diferencia al registro del producto
-		BD_genericas.actualizaPorId(entidad, producto.id, {dia_del_ano_id});
-
-		// Fin
-		return;
-	},
 
 	// Varios
 	infoIncompleta: (datos) => {
