@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Mar. 30/may",
-	"HoraUTC": "2:07",
+	"FechaUTC": "Mié. 31/may",
+	"HoraUTC": "0:00",
 	"FechaSemUTC": "Lun. 29/may",
 	"HoraSemUTC": "10:34",
 	"semanaUTC": 21,
@@ -15,10 +15,10 @@
 		"ImagenDerecha": "06:00"
 	},
 	"FechaHoraUTC": "SI",
-	"PaisesConMasProductos": "SI",
-	"BorraImagenesSinRegistro": "SI",
-	"AprobadoConAvatarUrl": "SI",
-	"ImagenDerecha": "SI",
+	"PaisesConMasProductos": "NO",
+	"BorraImagenesSinRegistro": "NO",
+	"AprobadoConAvatarUrl": "NO",
+	"ImagenDerecha": "NO",
 	"ImagenesDerecha": {
 		"29-may-23": {"titulo": "María, madre de la Iglesia", "entidad": "eventos", "id": 27},
 		"30-may-23": {"titulo": "Juana de Arco", "entidad": "personajes", "id": 71},
