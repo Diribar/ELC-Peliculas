@@ -99,7 +99,7 @@ module.exports = {
 						const datos = {
 							...m,
 							entidad: "capitulos",
-							fechaRefTexto:comp.fechaHora.fechaDiaMes(n.creado_en),
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creado_en),
 						};
 
 						// Fin
@@ -119,7 +119,7 @@ module.exports = {
 			[SE, SEC, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
 
 			// Fin
-			return {SE, SEC, IR: [...IN, ...RC]};
+			return {SE: [...SE, ...SEC], IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
