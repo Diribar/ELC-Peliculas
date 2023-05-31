@@ -87,7 +87,7 @@ module.exports = {
 
 			// SE: Sin Edición (en status creado_aprob)
 			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
-			let SE = TC_obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
+			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
 
 			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
 			const condiciones = {status_coleccion_id: aprobado_id, status_registro_id: {[Op.ne]: aprobado_id}};
@@ -109,11 +109,11 @@ module.exports = {
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
-			let IN = TC_obtieneRegs(campos);
+			let IN = obtieneRegs(campos);
 
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
-			let RC = TC_obtieneRegs(campos);
+			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
 			[SE, SEC, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
@@ -141,19 +141,19 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const AL = TC_obtieneRegs(campos);
+			const AL = obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			const SL = TC_obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			const SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
-			const IR = TC_obtieneRegs(campos);
+			const IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
 			campos = {entidades, status_id: inactivo_id, revID, include};
-			const IN = TC_obtieneRegs(campos).then((n) =>
+			const IN = obtieneRegs(campos).then((n) =>
 				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_ediciones.length)
 			);
 
@@ -760,7 +760,7 @@ module.exports = {
 };
 
 // Funciones
-let TC_obtieneRegs = async (campos) => {
+let obtieneRegs = async (campos) => {
 	// Variables
 	let lecturas = [];
 	let resultados = [];
