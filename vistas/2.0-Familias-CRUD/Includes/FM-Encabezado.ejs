@@ -16,8 +16,8 @@
 					</a>
 				<% } %>
 				<div>
-					<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
-					<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
+					<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
+					<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 				</div>
 			</div>
 			<% } %>
@@ -27,7 +27,7 @@
 			<script src="/javascript/2.1-Prod-RUD/PR0-AvanzaRetrCap.js"></script>
 			<!-- Ir a la colección -->
 			<div id="tempCapI">
-				<p><strong>De la colección:</strong>
+				<p><b>De la colección:</b>
 					<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
 						<span><em><%= registro.coleccion.nombre_castellano %></em></span>
 					</a>
@@ -53,8 +53,8 @@
 				<% } else { %>
 					<!-- Temporada y Capítulo -->
 					<div class="flexRow">
-						<p style="margin-right: 15px;"><strong>Temporada:</strong> <%= registro.temporada %></p>
-						<p><strong>Capítulo:</strong> <%= registro.capitulo %></p>
+						<p style="margin-right: 15px;"><b>Temporada:</b> <%= registro.temporada %></p>
+						<p><b>Capítulo:</b> <%= registro.capitulo %></p>
 					</div>
 				<% } %>
 			</div>

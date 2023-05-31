@@ -5,9 +5,9 @@
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
 				<p><u>Significado del borde de los logos:</u></p>
-				<li><strong>Verde</strong>: en idioma <strong>castellano</strong></li>
-				<li><strong>Amarillo</strong>: <strong>subtitulos</strong> en castellano</li>
-				<li><strong>Rojo</strong>: en <strong>otro</strong> idioma</li>
+				<li><b>Verde</b>: en idioma <b>castellano</b></li>
+				<li><b>Amarillo</b>: <b>subtitulos</b> en castellano</li>
+				<li><b>Rojo</b>: en <b>otro</b> idioma</li>
 			</ul>
 		</i>
 	</div>
@@ -59,14 +59,14 @@
 			<% } else { %>
 				<div id="masInfoIzq">
 					<% for (let campo of bloqueIzq.masInfoIzq) { %>
-						<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
 					<% } %>
 				</div>
 			<% } %>
 			<% if (bloqueIzq.masInfoDer.length) { %>
 				<div id="masInfoDer">
 					<% for (let campo of bloqueIzq.masInfoDer) { %>
-						<p><%= campo.titulo %>: <strong><%= campo.valor %></strong></p>
+						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
 					<% } %>
 				</div>
 			<% } %>
@@ -79,7 +79,7 @@
 				<div id="rclv" class="datosParcial" style="display: none;">
 					<% for (let campo of bloqueIzq[RCLV.asociacion]) { %>
 						<p>
-							<%= campo.titulo %>: <strong><%= campo.valor %></strong>
+							<%= campo.titulo %>: <b><%= campo.valor %></b>
 							<% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
 								<span>
 									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
