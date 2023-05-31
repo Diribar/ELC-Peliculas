@@ -24,7 +24,7 @@ module.exports = {
 		const ahoraUTC = comp.fechaHora.ahora().getTime();
 		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zona_horaria;
 		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
-		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10)
+		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10);
 		const fechaUltimoLogin = usuario.fecha_ultimo_login;
 
 		// Acciones si el último login fue anterior a hoy
@@ -76,8 +76,14 @@ module.exports = {
 	},
 	feedbackSobreIdentidadValidada: (req) => {
 		// Variables
+		const usuario = req.session.usuario;
+		const {entidad, id, origen} = req.query;
+		const linkVolver =
+			entidad && id && origen
+				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen
+				: req.session.urlSinPermInput;
 		let informacion;
-		let usuario = req.session.usuario;
+
 		// Mensaje
 		if (!usuario.status_registro.ident_validada) {
 			// Mensaje si el usuario está en status "identidad a validar"
@@ -90,7 +96,7 @@ module.exports = {
 						"Luego de la validación, recibirás un mail de feedback.",
 						"En caso de estar aprobado, podrás ingresarnos información.",
 					],
-					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+					iconos: [variables.vistaEntendido(linkVolver)],
 					titulo: "Aviso",
 					trabajando: true,
 				};
@@ -106,7 +112,7 @@ module.exports = {
 					iconos: [
 						{
 							nombre: "fa-circle-left",
-							link: req.session.urlSinPermInput,
+							link: linkVolver,
 							titulo: "Ir a la vista anterior",
 						},
 						{

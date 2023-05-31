@@ -22,7 +22,7 @@ global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
 
 
-// MIDDLEWARES DE APLICACIÓN ------------------------------------------
+// MIDDLEWARES DE LA APLICACIÓN ------------------------------------------
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
