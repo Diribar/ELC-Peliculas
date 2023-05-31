@@ -240,7 +240,7 @@ module.exports = {
 		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
 		// CAPÍTULOS -----------------------------------
-		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
+		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
 		// No se guardan los datos editados, eso se realiza en la revisión
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie")
 			confirma.TMDB_entidad == "collection"
