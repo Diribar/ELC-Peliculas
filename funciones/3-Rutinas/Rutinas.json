@@ -15,14 +15,14 @@
 		"ImagenDerecha": "06:00"
 	},
 	"FechaHoraUTC": "SI",
-	"PaisesConMasProductos": "NO",
-	"BorraImagenesSinRegistro": "NO",
-	"AprobadoConAvatarUrl": "NO",
-	"ImagenDerecha": "NO",
+	"PaisesConMasProductos": "SI",
+	"BorraImagenesSinRegistro": "SI",
+	"AprobadoConAvatarUrl": "SI",
+	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"29-may-23": {"titulo": "María, madre de la Iglesia", "entidad": "eventos", "id": 27},
 		"30-may-23": {"titulo": "Juana de Arco", "entidad": "personajes", "id": 71},
-		"31-may-23": {"titulo": "ELC - Películas"}
+		"31-may-23": {"titulo": "ELC - Películas"},
+		"01-jun-23": {"titulo": "ELC - Películas"}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},

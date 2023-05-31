@@ -395,7 +395,11 @@ module.exports = {
 					datos.alta_revisada_en = ahora;
 
 					// Actualiza el status de la coleccción en los capítulos
-					BD_genericas.actualizaPorId("capitulos", capitulo.id, {status_coleccion: aprobado_id});
+					BD_genericas.actualizaTodosPorCondicion(
+						"capitulos",
+						{coleccion_id: registro.id},
+						{status_coleccion_id: aprobado_id}
+					);
 
 					// Obtiene los capitulos id
 					const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
