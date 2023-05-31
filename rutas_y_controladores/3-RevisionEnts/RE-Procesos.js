@@ -141,27 +141,27 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const AL = obtieneRegs(campos);
+			let AL = obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			const SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
-			const IR = obtieneRegs(campos);
+			let IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
 			campos = {entidades, status_id: inactivo_id, revID, include};
-			const IN = obtieneRegs(campos).then((n) =>
+			let IN = obtieneRegs(campos).then((n) =>
 				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_ediciones.length)
 			);
 
 			// Aguarda las lecturas
-			const resultado = await Promise.all([AL, SL, IR, IN]).then(([AL, SL, IR, IN]) => ({AL, SL, IR, IN}));
+			[AL, SL, IR, IN] = await Promise.all([AL, SL, IR, IN]);
 
 			// Fin
-			return resultado;
+			return {AL, SL, IR, IN};
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
