@@ -5,7 +5,7 @@
 			<button type="text" class="flexRow pointer <% if (prod.status_registro_id==inactivo_id) { %>rojo<% } %>" id= "prod" autofocus>
 				<img class="imagenChica" src="<%= prod.avatar %>" alt="<%= prod.nombre_original %>" title="<%= prod.nombre_original %>">
 				<div id="infoPeli" class="flexCol">
-					<p><strong><%= prod.nombre_original %></strong></p>
+					<p><b><%= prod.nombre_original %></b></p>
 					<p class="interlineadoChico"><em><%= prod.nombre_castellano %></em></p>	
 					<br>
 					<p class="interlineadoChico"><%= prod.ano_estreno + " - " + prod.entidadNombre %></p>

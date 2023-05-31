@@ -10,15 +10,15 @@
 	<% if (entidad == "colecciones") { %>
 		<div id="colecciones">
 			<div>
-				<p><strong>Cant. de Temporadas:</strong> <%= registro.cant_temps ? registro.cant_temps : "Sin temporada" %></p>
-				<p><strong>Cant. de Capítulos:</strong> <%= registro.capitulos.length %></p>
+				<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin temporada" %></p>
+				<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
 			</div>
 		</div>
 		<% } %>
 	<!-- Colección a la que pertenece -->
 	<% if (entidad == "capitulos") { %>
 		<div id="tempCapI">
-			<p><strong>De la colección:</strong>
+			<p><b>De la colección:</b>
 				<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion.id %>" target="_blank">
 					<span><%= registro.coleccion.nombre_castellano %></span>
 				</a>

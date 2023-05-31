@@ -69,9 +69,9 @@ window.addEventListener("load", async () => {
 					entidad +
 					"&id=" +
 					elc_id +
-					"' target='_blank'><u><strong>" +
+					"' target='_blank'><u><b>" +
 					entidad +
-					"</strong></u></a>" +
+					"</b></u></a>" +
 					" ya se encuentra en nuestra base de datos"
 			: "";
 	};

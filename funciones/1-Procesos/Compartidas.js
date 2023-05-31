@@ -493,7 +493,7 @@ module.exports = {
 			// 2. Anchor
 			let url = "?entidad=" + entidad + "&id=" + id;
 			let link = "/" + FN.familia(entidad) + "/detalle/" + url;
-			let entidadHTML = "<u><strong>" + entidadNombre + "</strong></u>";
+			let entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
 			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 			// 3. Final

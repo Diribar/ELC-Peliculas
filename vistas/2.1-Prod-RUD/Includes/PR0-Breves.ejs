@@ -13,7 +13,7 @@
 	<div id="texto">
 		<% for (campo of bloqueDer) { %>
 			<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status<%= campo.id %>"<% } %>>
-				<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+				<b><%= campo.titulo %>:</b> <span><%= campo.valor %></span>
 				<% if (campo.RCLV_entidad) { %>
 					<% let datosRCLV = "entidad=" + campo.RCLV_entidad + "&id=" + campo.RCLV_id %>
 					<a href="/rclv/detalle/?<%= datosRCLV %>">
