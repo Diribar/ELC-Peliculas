@@ -196,10 +196,6 @@ module.exports = {
 				.replace(/ +/g, " ");
 		},
 		alCastellano: function (objeto) {
-			// Variables
-			let campos = Object.keys(objeto);
-			let valores = Object.values(objeto);
-
 			// Rutina por campo
 			for (let campo in objeto)
 				if (typeof objeto[campo] == "string") objeto[campo] = this.alCastellano_campo(objeto[campo]);
@@ -257,7 +253,8 @@ module.exports = {
 				.replace(/[ýŷÿ]/g, "y")
 				.replace(/[ŽŹŻŽ]/g, "Z")
 				.replace(/[žźżž]/g, "z")
-				.replace(/[`‘“’”«»]/g, '"')
+				.replace(/[“”«»]/g, '"')
+				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
 				.replace(/ /g, "")
 				.replace(/–/g, "-")
