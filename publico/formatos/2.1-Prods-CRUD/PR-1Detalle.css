@@ -4,7 +4,7 @@
 #contenido #informacion {margin: 30px 40px 0;}
 #informacion #tituloLinks {margin-left: 0px; margin-bottom: 5px; width: min-content;}
 #tituloLinks ul p {margin-top: 3px;}
-#tituloLinks ul strong {color: snow;}
+#tituloLinks ul b {color: snow;}
 
 /* Links */
 #contenido #links {border-radius: 15px; border: var(--azul-oscuro) 1px solid; background: var(--amarillo-claro);}
@@ -37,7 +37,7 @@
 #marco #datosDetalle .datosParcial#masInfo {flex-direction: row; justify-content: space-between;}
 #marco #datosDetalle .datosParcial#masInfo #masInfoIzq {width: 40%;}
 #marco #datosDetalle .datosParcial#masInfo #masInfoDer {width: 50%;}
-#marco #datosDetalle .datosParcial strong {color: var(--gris-oscuro);}
+#marco #datosDetalle .datosParcial b {color: var(--gris-oscuro);}
 #marco #datosDetalle .datosParcial#actores {color: var(--gris-oscuro);}
 #marco #datosDetalle .datosParcial#actores p span{font-weight: normal; color: var(--azul-oscuro);}
 
