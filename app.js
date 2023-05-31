@@ -180,6 +180,6 @@ app.set("views", [
 
 	// Middleware que se debe informar después de los urls anteriores
 	// Mensaje si un usuario usa un url desconocido
-	const urlDescon = require("./middlewares/urls/urlDescon");
-	app.use(urlDescon);
+	const filtroPorUrlDescon = require("./middlewares/urls/filtroPorUrlDescon");
+	app.use(filtroPorUrlDescon);
 })();
