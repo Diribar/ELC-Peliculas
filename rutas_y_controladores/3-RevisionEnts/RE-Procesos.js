@@ -43,9 +43,9 @@ module.exports = {
 						productos.push({
 							...n[asociacion],
 							entidad,
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editado_en),
 							edicID: n.id,
-							fechaRef: n[campoFecha],
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
+							// fechaRef: n.editado_en,
 						});
 				});
 
@@ -91,9 +91,21 @@ module.exports = {
 
 			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
 			const condiciones = {status_coleccion_id: aprobado_id, status_registro_id: {[Op.ne]: aprobado_id}};
-			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones").then((n) =>
-				n.filter((m) => !m.ediciones.length)
-			);
+			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
+				.then((n) => n.filter((m) => !m.ediciones.length))
+				.then((n) =>
+					n.map((m) => {
+						// Variables
+						const datos = {
+							...m,
+							entidad: "capitulos",
+							fechaRefTexto:comp.fechaHora.fechaDiaMes(n.creado_en),
+						};
+
+						// Fin
+						return datos;
+					})
+				);
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
