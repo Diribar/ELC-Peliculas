@@ -25,6 +25,13 @@ module.exports = {
 			titulo: "Nuestra Misión y Visión",
 		});
 	},
+	enQueConsiste: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "enQueConsiste",
+			titulo: "En qué consiste este sitio",
+		});
+	},
 	valores: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
