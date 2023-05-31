@@ -71,7 +71,7 @@ module.exports = {
 					...productos.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos"),
 					...productos.filter((n) => n.status_registro_id == aprobado_id)
 				);
-				// 6.F. Primero los productos con menor status
+				// 6.F. Primero los productos más recientes
 				if (ED.length) ED.sort((a, b) => b.fechaRef - a.fechaRef);
 			}
 

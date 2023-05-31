@@ -229,8 +229,8 @@ module.exports = {
 		const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 
 		// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
-		if (!datosAdics.sinRCLV) {
-			const {existe, epoca_id} = procesos.verificaQueExistanLosRCLV(confirma);
+		if (!confirma.sinRCLV) {
+			const {existe, epoca_id} = await procesos.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
 			else confirma.epoca_id = epoca_id;
 		}

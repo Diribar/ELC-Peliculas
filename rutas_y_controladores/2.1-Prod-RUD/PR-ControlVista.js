@@ -201,26 +201,6 @@ module.exports = {
 		prodComb.publico = revisor;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
-		// Acciones sobre el archivo avatar, si recibimos uno
-		if (req.file) {
-			// Si no hay errores, actualiza el archivo avatar
-			if (!errores.hay) {
-				if (actualizaOrig) {
-					// Mueve el archivo de la edición para reemplazar el original
-					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
-					// Elimina el anterior archivo de imagen original
-					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
-				} else {
-					// Mueve el archivo de la edición para su revisión
-					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
-					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
-				}
-			}
-			// Si hay errores, borra el archivo avatar editado
-			else comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
-		}
-
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Actualiza el original
@@ -242,10 +222,30 @@ module.exports = {
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
+			// Acciones sobre el archivo avatar, si recibimos uno
+			if (req.file) {
+				if (actualizaOrig) {
+					// Mueve el archivo de la edición para reemplazar el original
+					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
+					// Elimina el anterior archivo de imagen original
+					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
+				} else {
+					// Mueve el archivo de la edición para su revisión
+					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
+					// Elimina el anterior archivo de imagen editada
+					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
+				}
+			}
 		} else {
+			// Si recibimos un archivo avatar editado, lo elimina
+			if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
+
+			// Guarda los datos editados, sin el de avatar
 			req.session.edicProd = req.body;
 			delete req.session.edicProd.avatar;
-			return res.redirect(req.originalUrl); // Recarga la vista
+
+			// Recarga la vista
+			return res.redirect(req.originalUrl);
 		}
 
 		// Fin

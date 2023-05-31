@@ -208,8 +208,11 @@ module.exports = {
 
 	// Otros
 	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {
+		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+
+		// Fin
 		return db[entidad]
 			.findAll({
 				where: {

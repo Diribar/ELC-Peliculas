@@ -248,7 +248,7 @@ module.exports = {
 				.replace(/[ŚŜŞŠ]/g, "S")
 				.replace(/[śŝşš]/g, "s")
 				.replace(/[ŢŤŦ]/g, "T")
-				.replace(/[ţťŧ]/g, "t")
+				.replace(/[țţťŧ]/g, "t")
 				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
 				.replace(/[ùûũūŭůűų]/g, "u")
 				.replace(/Ŵ/g, "W")

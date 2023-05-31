@@ -44,7 +44,7 @@ CREATE TABLE `aux_meses` (
   `nombre` varchar(10) NOT NULL,
   `abrev` varchar(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `aux_paises` (
   `id` varchar(2) NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE `cal_23calidad_tecnica` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cam_hist_ediciones` (
+CREATE TABLE `cam_hist_edics` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `entidad` varchar(20) NOT NULL,
   `entidad_id` int(10) unsigned NOT NULL,
@@ -167,9 +167,9 @@ CREATE TABLE `cam_hist_ediciones` (
   KEY `motivo_id` (`motivo_id`),
   KEY `editado_por_id` (`sugerido_por_id`),
   KEY `edic_revisada_por_id` (`revisado_por_id`),
-  CONSTRAINT `cam_hist_ediciones_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_edics` (`id`),
-  CONSTRAINT `cam_hist_ediciones_ibfk_2` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `cam_hist_ediciones_ibfk_3` FOREIGN KEY (`revisado_por_id`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `cam_hist_edics_ibfk_1` FOREIGN KEY (`motivo_id`) REFERENCES `cam_motivos_edics` (`id`),
+  CONSTRAINT `cam_hist_edics_ibfk_2` FOREIGN KEY (`sugerido_por_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `cam_hist_edics_ibfk_3` FOREIGN KEY (`revisado_por_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cam_hist_status` (
@@ -216,20 +216,20 @@ CREATE TABLE `cam_motivos_edics` (
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
   `bloqueoInput` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cam_motivos_status` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `orden` tinyint(3) unsigned NOT NULL,
-  `descripcion` varchar(23) NOT NULL,
+  `descripcion` varchar(25) NOT NULL,
   `bloqueoInput` tinyint(1) DEFAULT 0,
   `prods` tinyint(1) DEFAULT 0,
   `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
   `duracion` decimal(4,1) unsigned DEFAULT 0.0,
-  `coment_aut` tinyint(1) DEFAULT NULL,
+  `coment_aut` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cn_filtros_cabecera` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -414,7 +414,7 @@ CREATE TABLE `links_tipos` (
   `pelicula` tinyint(1) DEFAULT 0,
   `trailer` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_1peliculas` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -446,6 +446,7 @@ CREATE TABLE `prod_1peliculas` (
   `tema_id` smallint(5) unsigned DEFAULT 1,
   `evento_id` smallint(5) unsigned DEFAULT 1,
   `epoca_del_ano_id` smallint(5) unsigned DEFAULT 1,
+  `epoca_id` varchar(3) DEFAULT NULL,
   `castellano` tinyint(1) unsigned DEFAULT NULL,
   `subtitulos` tinyint(1) unsigned DEFAULT NULL,
   `links_general` tinyint(1) unsigned DEFAULT NULL,
@@ -492,6 +493,8 @@ CREATE TABLE `prod_1peliculas` (
   KEY `prod_1peliculas_ibfk_14` (`capturado_por_id`),
   KEY `prod_1peliculas_ibfk_15` (`status_registro_id`),
   KEY `prod_1peliculas_ibfk_16` (`motivo_id`),
+  KEY `prod_1peliculas_FK` (`epoca_id`),
+  CONSTRAINT `prod_1peliculas_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_01` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_02` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `prod_1peliculas_ibfk_03` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
@@ -541,6 +544,7 @@ CREATE TABLE `prod_2colecciones` (
   `tema_id` smallint(5) unsigned DEFAULT 1,
   `evento_id` smallint(5) unsigned DEFAULT 1,
   `epoca_del_ano_id` smallint(5) unsigned DEFAULT 1,
+  `epoca_id` varchar(3) DEFAULT NULL,
   `castellano` tinyint(1) unsigned DEFAULT NULL,
   `subtitulos` tinyint(1) unsigned DEFAULT NULL,
   `links_general` tinyint(1) unsigned DEFAULT NULL,
@@ -585,6 +589,8 @@ CREATE TABLE `prod_2colecciones` (
   KEY `prod_2colecciones_ibfk_13` (`capturado_por_id`),
   KEY `prod_2colecciones_ibfk_14` (`status_registro_id`),
   KEY `prod_2colecciones_ibfk_15` (`motivo_id`),
+  KEY `prod_2colecciones_FK` (`epoca_id`),
+  CONSTRAINT `prod_2colecciones_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_01` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_02` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `prod_2colecciones_ibfk_03` FOREIGN KEY (`personaje_id`) REFERENCES `rclv_1personajes` (`id`),
@@ -635,6 +641,7 @@ CREATE TABLE `prod_3capitulos` (
   `tema_id` smallint(5) unsigned NOT NULL DEFAULT 1,
   `evento_id` smallint(5) unsigned DEFAULT 1,
   `epoca_del_ano_id` smallint(5) unsigned DEFAULT 1,
+  `epoca_id` varchar(3) DEFAULT NULL,
   `castellano` tinyint(1) unsigned DEFAULT NULL,
   `subtitulos` tinyint(1) unsigned DEFAULT NULL,
   `links_general` tinyint(1) unsigned DEFAULT NULL,
@@ -682,6 +689,8 @@ CREATE TABLE `prod_3capitulos` (
   KEY `prod_3capitulos_ibfk_15` (`capturado_por_id`),
   KEY `prod_3capitulos_ibfk_16` (`status_registro_id`),
   KEY `prod_3capitulos_ibfk_17` (`motivo_id`),
+  KEY `prod_3capitulos_FK` (`epoca_id`),
+  CONSTRAINT `prod_3capitulos_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_01` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_02` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `prod_3capitulos_ibfk_03` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
@@ -732,6 +741,7 @@ CREATE TABLE `prod_9edicion` (
   `tema_id` smallint(5) unsigned DEFAULT NULL,
   `evento_id` smallint(5) unsigned DEFAULT NULL,
   `epoca_del_ano_id` smallint(5) unsigned DEFAULT NULL,
+  `epoca_id` varchar(3) DEFAULT NULL,
   `editado_por_id` int(10) unsigned NOT NULL,
   `editado_en` datetime NOT NULL DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`),
@@ -748,6 +758,8 @@ CREATE TABLE `prod_9edicion` (
   KEY `prod_9edicion_ibfk_10` (`evento_id`),
   KEY `prod_9edicion_ibfk_11` (`epoca_del_ano_id`),
   KEY `prod_9edicion_ibfk_12` (`editado_por_id`),
+  KEY `prod_9edicion_FK` (`epoca_id`),
+  CONSTRAINT `prod_9edicion_FK` FOREIGN KEY (`epoca_id`) REFERENCES `rclv_epocas` (`id`),
   CONSTRAINT `prod_9edicion_ibfk_01` FOREIGN KEY (`tipo_actuacion_id`) REFERENCES `prod_tipos_actuac` (`id`),
   CONSTRAINT `prod_9edicion_ibfk_02` FOREIGN KEY (`idioma_original_id`) REFERENCES `aux_idiomas` (`id`),
   CONSTRAINT `prod_9edicion_ibfk_03` FOREIGN KEY (`publico_id`) REFERENCES `prod_publicos` (`id`),
@@ -1219,4 +1231,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-19  9:46:56
+-- Dump completed on 2023-05-27  9:09:57
