@@ -1,1 +1,0 @@
-En general, se usa «san», incluso ante algunos nombres que empiezan por «to-» («san Torcuato», «san Tobías», «san Tolomeo»…). Se usa «santo» ante «Domingo», «Tomás», «Tomé» y «Toribio».
