@@ -311,6 +311,7 @@ module.exports = {
 	agregaCaps_TV: function (datosCol) {
 		// Loop de TEMPORADAS
 		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) this.agregaUnCap_TV(datosCol, temporada);
+
 		// Fin
 		return;
 	},
@@ -320,16 +321,16 @@ module.exports = {
 		// Toma los datos de la colección
 		const {paises_id, idioma_original_id} = datosCol;
 		const {direccion, guion, musica, actores, produccion} = datosCol;
-		const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
-		const {personaje_id, hecho_id, tema_id} = datosCol;
+		// const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 		// Genera la información a guardar
 		const datosCap = {
 			...{fuente: "TMDB", coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
 			...{paises_id, idioma_original_id},
 			...{direccion, guion, musica, actores, produccion},
-			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
-			...{personaje_id, hecho_id, tema_id},
+			// ...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			// ...{personaje_id, hecho_id, tema_id},
 			...{creado_por_id: 2, sugerido_por_id: 2},
 		};
 
@@ -337,10 +338,6 @@ module.exports = {
 		await this.DS_movie({TMDB_id: capituloID_TMDB})
 			// Le agrega los datos de cabecera
 			.then((n) => (n = {...datosCap, ...n}))
-			// Le corrige los actores si no es actuada
-			.then((n) => (tipo_actuacion_id != 1 ? (n = {...n, actores}) : n))
-			// Quita los caracteres especiales
-			.then((n) => (n = comp.convierteLetras.alCastellano(n)))
 			// Guarda los datos del capítulo
 			.then(async (n) => BD_genericas.agregaRegistro("capitulos", n));
 
@@ -358,11 +355,11 @@ module.exports = {
 		for (let episode of datosTemp.episodes) {
 			// Obtiene la información del registro
 			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
-			datosCap = comp.convierteLetras.alCastellano(datosCap);
 
 			// Guarda el registro
 			await BD_genericas.agregaRegistro("capitulos", datosCap);
 		}
+
 		// Fin
 		return;
 	},
@@ -370,16 +367,16 @@ module.exports = {
 		// Toma los datos de la colección
 		const {paises_id, idioma_original_id} = datosCol;
 		let {direccion, guion, musica, actores, produccion} = datosCol;
-		const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
-		const {personaje_id, hecho_id, tema_id} = datosCol;
+		// const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 		// Genera la información a guardar
 		let datos = {
 			...{fuente: "TMDB", coleccion_id: datosCol.id},
 			...{paises_id, idioma_original_id},
 			...{direccion, guion, musica, actores, produccion},
-			...{cfc, ocurrio, musical, color, tipo_actuacion_id},
-			...{personaje_id, hecho_id, tema_id},
+			// ...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			// ...{personaje_id, hecho_id, tema_id},
 			...{creado_por_id: 2, sugerido_por_id: 2},
 		};
 		if (datosCap.runtime) datos.duracion = datosCap.runtime;
@@ -409,6 +406,9 @@ module.exports = {
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
+
+		// Procesa la información
+		datos = comp.convierteLetras.alCastellano(datos);
 
 		// Fin
 		return datos;

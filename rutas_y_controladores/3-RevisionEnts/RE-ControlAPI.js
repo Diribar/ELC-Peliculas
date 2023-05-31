@@ -36,18 +36,13 @@ module.exports = {
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
 
-		// Variable DDA
-		let datosDDA = {};
-		datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
-		datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
-
-		// Procesa la edición
+		// Procesa la edición - Realiza muchísimas tareas
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
 
-		// Acciones cuando se termina de revisar una edicion
-		// Si existen otras ediciones con los mismos valores que el original, elimina el valor de esos campos y eventualmente el registro de edicion
-		// Para productos, actualiza el status del registro original si corresponde. No alimenta el historial de cambio de status
+		// Si existen otras ediciones con los mismos valores que el original
+		// 1. Elimina el valor de esos campos
+		// 2. Evalúa si corresponde eliminar cada registro de edición, y en caso afirmativo lo elimina
 		if (!edicion) {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};
@@ -63,14 +58,19 @@ module.exports = {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
 
-			// Si no quedan camposDDA, funcion 'dias_del_ano'
+			// Averigua si en la edición quedan camposDDA
 			let quedan = false;
-			for (let campo of camposDDA) if (edicion && edicion[campo]) quedan = true;
-			if (!quedan) {
+			if (edicion) for (let campoDDA of camposDDA) if (edicion[campoDDA]) quedan = true;
+
+			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'dias_del_ano'
+			if (!quedan && camposDDA.includes(campo)) {
+				// Variables
+				const orig = await BD_genericas.obtienePorId(entidad, entID);
+				const desde = orig.dia_del_ano_id;
+				const duracion = orig.dias_de_duracion - 1;
+
 				// Actualiza los dias_del_ano
-				const desde = datosDDA.dia_del_ano_id;
-				const duracion = datosDDA.dias_de_duracion - 1;
-				await procesos.guardar.actualizaDiasDelAno({desde, duracion, id: entID});
+				await procesos.guardar.actualizaDiasDelAno({id: entID, desde, duracion});
 			}
 		}
 

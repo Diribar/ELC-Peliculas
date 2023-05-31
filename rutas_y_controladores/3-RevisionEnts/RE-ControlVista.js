@@ -44,6 +44,7 @@ module.exports = {
 		const dataEntry = req.session.tableros && req.session.tableros.revision ? req.session.tableros.revision : {};
 
 		// Va a la vista
+		return res.send(prods)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, origen: "TE"},

@@ -17,7 +17,7 @@ module.exports = {
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("prods_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
 
 			// 3.Elimina las edicionesProd con RCLV no aprobado
 			if (ediciones.length)
@@ -25,7 +25,9 @@ module.exports = {
 					if (
 						(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
 						(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
-						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id)
+						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id) ||
+						(ediciones[i].evento && ediciones[i].evento.status_registro_id != aprobado_id) ||
+						(ediciones[i].epoca_del_ano && ediciones[i].epoca_del_ano.status_registro_id != aprobado_id)
 					)
 						ediciones.splice(i, 1);
 
@@ -41,9 +43,9 @@ module.exports = {
 						productos.push({
 							...n[asociacion],
 							entidad,
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editado_en),
 							edicID: n.id,
-							fechaRef: n[campoFecha],
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
+							// fechaRef: n.editado_en,
 						});
 				});
 
@@ -65,10 +67,10 @@ module.exports = {
 				AL = productos.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.links_general - a.links_general); // Primero los que tienen links
 				// 6.E. Ediciones - es la suma de:
-				// - En status 'creado_aprob' y que no sean 'capítulos'
+				// - En status 'creado_aprob'
 				// - En status 'aprobado'
 				ED.push(
-					...productos.filter((n) => n.status_registro_id == creado_aprob_id && n.entidad != "capitulos"),
+					...productos.filter((n) => n.status_registro_id == creado_aprob_id),
 					...productos.filter((n) => n.status_registro_id == aprobado_id)
 				);
 				// 6.F. Primero los productos más recientes
@@ -79,29 +81,51 @@ module.exports = {
 			return {AL, ED};
 		},
 		obtieneProds_SE_IR: async (revID) => {
-			// Obtiene productos en situaciones particulares
 			// Variables
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
+
 			// SE: Sin Edición (en status creado_aprob)
 			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
-			let SE = await TC_obtieneRegs(campos);
-			SE = SE.filter((n) => !n.ediciones.length);
+			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
+
+			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
+			const condiciones = {status_coleccion_id: aprobado_id, status_registro_id: {[Op.ne]: aprobado_id}};
+			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
+				.then((n) => n.filter((m) => !m.ediciones.length))
+				.then((n) =>
+					n.map((m) => {
+						// Variables
+						const datos = {
+							...m,
+							entidad: "capitulos",
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creado_en),
+						};
+
+						// Fin
+						return datos;
+					})
+				);
+
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
-			const IN = await TC_obtieneRegs(campos);
+			let IN = obtieneRegs(campos);
+
 			// RC: En status 'recuperar'
 			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
-			const RC = await TC_obtieneRegs(campos);
+			let RC = obtieneRegs(campos);
+
+			// Espera los resultados
+			[SE, SEC, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
 
 			// Fin
-			return {SE, IR: [...IN, ...RC]};
+			return {SE: [...SE, ...SEC], IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
 
 			// Obtiene los links 'a revisar'
-			let links = await BD_especificas.TC_obtieneLinksAjenos(revID);
+			let links = await BD_especificas.TC.obtieneLinksAjenos(revID);
 			// Obtiene los productos
 			let productos = links.length ? obtieneProdsDeLinks(links, ahora, revID) : [];
 
@@ -117,27 +141,27 @@ module.exports = {
 
 			// AL: Altas
 			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
-			const AL = TC_obtieneRegs(campos);
+			let AL = obtieneRegs(campos);
 
 			// SL: Con solapamiento
 			campos = {entidades, status_id: aprobado_id, revID, include: "ediciones"};
-			const SL = TC_obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
+			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
-			const IR = TC_obtieneRegs(campos);
+			let IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
 			campos = {entidades, status_id: inactivo_id, revID, include};
-			const IN = TC_obtieneRegs(campos).then((n) =>
+			let IN = obtieneRegs(campos).then((n) =>
 				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_ediciones.length)
 			);
 
 			// Aguarda las lecturas
-			const resultado = await Promise.all([AL, SL, IR, IN]).then(([AL, SL, IR, IN]) => ({AL, SL, IR, IN}));
+			[AL, SL, IR, IN] = await Promise.all([AL, SL, IR, IN]);
 
 			// Fin
-			return resultado;
+			return {AL, SL, IR, IN};
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
@@ -146,7 +170,7 @@ module.exports = {
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
-			let ediciones = await BD_especificas.TC_obtieneEdicsAjenas("rclvs_edicion", revID, include);
+			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("rclvs_edicion", revID, include);
 
 			// 3. Obtiene los rclvs originales y deja solamente los rclvs aprobados
 			if (ediciones.length) {
@@ -539,11 +563,14 @@ module.exports = {
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// TAREAS:
 			// - Si se aprobó, actualiza el registro de 'original'
-			// - Actualiza la tabla de edics_aprob/rech
+			// - Si es una colección, actualiza el registro 'original' de los capítulos
+			// - Actualiza la tabla de 'hist_edics'
 			// - Aumenta el campo aprob/rech en el registro del usuario
 			// - Si corresponde, penaliza al usuario
 			// - Actualiza el registro de 'edición'
 			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
+			// - Para productos, actualiza el status del registro original si corresponde
+			// - No alimenta el historial de cambio de status
 
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
@@ -567,9 +594,18 @@ module.exports = {
 
 			// CONSECUENCIAS
 			// 1. Si se aprobó, actualiza el registro 'original'
+			// 2. Si es una colección, actualiza el registro 'original' de los capítulos
 			if (aprob) {
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
+				if (entidad == "colecciones") {
+					const condiciones = {
+						coleccion_id: original.id, // que pertenezca a la colección
+						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
+					};
+					const novedad = {[campo]: edicion[campo]};
+					await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad); // debe ser con 'await', porque más adelante se lo evalúa
+				}
 			}
 
 			// 2. Actualiza la tabla de 'hist_edics'
@@ -584,11 +620,9 @@ module.exports = {
 			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
 			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
-
 			// Reemplaza los vacíos
 			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
 			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
-
 			// Agrega el registro
 			BD_genericas.agregaRegistro("hist_edics", datos);
 
@@ -726,12 +760,12 @@ module.exports = {
 };
 
 // Funciones
-let TC_obtieneRegs = async (campos) => {
+let obtieneRegs = async (campos) => {
 	// Variables
 	let lecturas = [];
 	let resultados = [];
 	// Obtiene el resultado por entidad
-	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC_obtieneRegs({entidad, ...campos}));
+	for (let entidad of campos.entidades) lecturas.push(BD_especificas.TC.obtieneRegs({entidad, ...campos}));
 	await Promise.all(lecturas).then((n) => n.map((m) => resultados.push(...m)));
 
 	if (resultados.length) {

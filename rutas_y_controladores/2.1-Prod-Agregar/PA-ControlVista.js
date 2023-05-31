@@ -239,6 +239,14 @@ module.exports = {
 		const original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
 		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
+		// CAPÍTULOS -----------------------------------
+		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
+		// No se guardan los datos editados, eso se realiza en la revisión
+		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie")
+			confirma.TMDB_entidad == "collection"
+				? procesos.agregaCaps_Colec({...registro})
+				: procesos.agregaCaps_TV({...registro});
+
 		// AVATAR -------------------------------------
 		// Acciones para el avatar
 		if (!confirma.avatar) {
@@ -253,14 +261,6 @@ module.exports = {
 		// EDICION -------------------------------------
 		// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 		await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
-
-		// CAPÍTULOS -----------------------------------
-		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática  (no hace falta esperar a que concluya)
-		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
-			confirma.TMDB_entidad == "collection"
-				? procesos.agregaCaps_Colec({...registro, ...confirma})
-				: procesos.agregaCaps_TV({...registro, ...confirma});
-		}
 
 		// RCLV
 		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
