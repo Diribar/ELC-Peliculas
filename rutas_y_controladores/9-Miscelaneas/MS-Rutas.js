@@ -7,7 +7,7 @@ const vista = require("./MS-ControlVista");
 
 //************************ Middlewares ******************************
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-const rclvs = require("../../middlewares/varios/rclvs");
+const entidadRclv = require("../../middlewares/varios/filtro-entidadRclv");
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -26,7 +26,7 @@ router.get("/cookies", vista.cookies);
 
 // Miscelaneas
 router.get("/inactivar-captura", capturaInactivar, vista.redireccionar);
-router.get("/:id", rclvs, vista.listadoRCLVs);
+router.get("/:id", entidadRclv, vista.listadoRCLVs);
 
 // Exportarlo **********************************************
 module.exports = router;
