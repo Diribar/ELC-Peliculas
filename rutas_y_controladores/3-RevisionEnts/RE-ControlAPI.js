@@ -58,19 +58,18 @@ module.exports = {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
 
-			// Variable 'dia_del_ano'
-			let datosDDA = {};
-			datosDDA.dia_del_ano_id = edicion.dia_del_ano_id ? edicion.dia_del_ano_id : original.dia_del_ano_id;
-			datosDDA.dias_de_duracion = edicion.dias_de_duracion ? edicion.dias_de_duracion : original.dias_de_duracion;
-			
-			// Si no quedan camposDDA, funcion 'dias_del_ano'
+			// Averigua si en la edición quedan camposDDA
 			let quedan = false;
-			for (let campo of camposDDA) if (edicion && edicion[campo]) quedan = true;
+			if (edicion) for (let campo of camposDDA) if (edicion[campo]) quedan = true;
+			
+			// Si en la edición no quedan camposDDA, ejecuta la funcion 'dias_del_ano'
 			if (!quedan) {
+				// Variables
+				const desde =  original.dia_del_ano_id;
+				const duracion = original.dias_de_duracion - 1;
+	
 				// Actualiza los dias_del_ano
-				const desde = datosDDA.dia_del_ano_id;
-				const duracion = datosDDA.dias_de_duracion - 1;
-				await procesos.guardar.actualizaDiasDelAno({desde, duracion, id: entID});
+				await procesos.guardar.actualizaDiasDelAno({id: entID, desde, duracion});
 			}
 		}
 
