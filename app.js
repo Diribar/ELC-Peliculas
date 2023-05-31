@@ -74,6 +74,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/6-Consultas"),
 	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
 	path.resolve(__dirname, "./vistas/7-Institucional"),
+	path.resolve(__dirname, "./vistas/7-Institucional/Includes"),
 ]);
 
 // Procesos que requieren de 'async' y 'await'

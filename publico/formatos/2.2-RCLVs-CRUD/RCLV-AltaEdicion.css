@@ -33,7 +33,7 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 
 /* Nombres */
 #inicio #sectorNombre label {margin-right: 7px;}
-#inicio #sectorNombre .input {padding-left: 5px; width: 180px;}
+#inicio #sectorNombre .input {padding-left: 5px; width: 235px;}
 
 /* Fecha */
 #inicio #sectorFecha h3 {align-self: flex-start; margin-top: 1px;}
