@@ -18,10 +18,11 @@ const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrec
 const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Varios
-const prodID = require("../../middlewares/varios/prodID");
+const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Consolidados
-const aptoABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
+const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar, rutaCRUD_ID];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -35,7 +36,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links
-router.get("/abm", ...aptoABM, prodID, vista.linksForm);
+router.get("/abm", ...aptoABM, vista.linksForm);
 
 // Fin
 module.exports = router;

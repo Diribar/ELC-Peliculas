@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		? req.cookies.datosOriginales
 		: "";
 	// Controles
-	if (!datos) return res.redirect("/producto/agregar/palabras-clave");
+	if (!datos) return res.redirect("/producto/agregar/desambiguar");
 	else if (datos.fuente != "IM") {
 		let fuente_id = datos.fuente + "_id";
 		let elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
@@ -33,8 +33,10 @@ module.exports = async (req, res, next) => {
 					{nombre: "fa-circle-info", link: linkDetalle, titulo: "Ir a la vista Detalle"},
 				],
 			};
+
 			// Elimina los hallazgos anteriores
 			req.session.desambiguar = "";
+
 			// Envía a la vista
 			return res.render("CMP-0Estructura", {informacion});
 		}
