@@ -18,7 +18,7 @@ const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
 const edicion = require("../../middlewares/filtrosPorEntidad/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrecto");
 const motivoNecesario = require("../../middlewares/filtrosPorEntidad/motivoNecesario");
-const accesoBloq = require("../../middlewares/filtrosPorEntidad/accesoBloq");
+const rclvNoEditable = require("../../middlewares/filtrosPorEntidad/rclvNoEditable");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
@@ -31,7 +31,7 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoAgregar = [entValida, ...aptoUsuario];
 const aptoDetalle = [entValida, IDvalido, capturaInactivar];
 const base = [entValida, IDvalido, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...base, edicion, permUserReg, accesoBloq];
+const aptoEdicion = [...base, edicion, permUserReg, rclvNoEditable];
 const aptoCRUD = [...base, permUserReg];
 const aptoEliminar = [...base, usRolRevEnts, permUserReg];
 
