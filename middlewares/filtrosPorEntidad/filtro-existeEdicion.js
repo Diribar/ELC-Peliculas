@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
 		if (revision) {
 			// Averigua si existe una edicion ajena
 			let datos = {campo_id, entID: id, userID: req.session.usuario.id};
-			edicion = await BD_especificas.obtieneEdicAjenaDeUnProd(entidadEdic, datos);
+			edicion = await BD_especificas.obtieneEdicionAjena(entidadEdic, datos);
 		} else {
 			// Averigua si existe una edicion propia
 			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};

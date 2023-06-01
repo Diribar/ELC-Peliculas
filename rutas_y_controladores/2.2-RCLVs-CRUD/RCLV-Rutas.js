@@ -14,6 +14,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoIn
 // Específicos de RCLVs
 const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
+const existeEdicion = require("../../middlewares/filtrosPorEntidad/filtro-existeEdicion");
 const accesoBloq = require("../../middlewares/filtrosPorEntidad/filtro-accesoBloq");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
 // Temas de captura
@@ -21,10 +22,10 @@ const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUser
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
-const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
-const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq, statusCorrecto];
-const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
-const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
+const agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
+const editar = [...agregar, IDvalido, existeEdicion, statusCorrecto, permUserReg, accesoBloq];
+const detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
+const controles = [...agregar, IDvalido, statusCorrecto, permUserReg];
 // Otros
 const multer = require("../../middlewares/varios/multer");
 
@@ -35,11 +36,11 @@ router.get("/api/valida-sector", API.validaSector);
 router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
-router.get("/agregar", ...DE_agregar, vista.altaEdicForm);
-router.post("/agregar", ...DE_agregar, multer.single("avatar"), vista.altaEdicGuardar);
-router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", ...DE_editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
-router.get("/detalle", ...DE_detalle, vista.detalle);
+router.get("/agregar", ...agregar, vista.altaEdicForm);
+router.post("/agregar", ...agregar, multer.single("avatar"), vista.altaEdicGuardar);
+router.get("/edicion", ...editar, capturaActivar, vista.altaEdicForm);
+router.post("/edicion", ...editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
+router.get("/detalle", ...detalle, vista.detalle);
 
 router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
 router.post("/inactivar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
