@@ -18,7 +18,10 @@ module.exports = async (req, res, next) => {
 
 		// En caso que no, mensaje de error
 		if (!edicion) {
-			if (!origen) origen = "TE";
+			if (!origen) {
+				const baseUrl = req.baseUrl;
+				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
+			}
 			informacion = {
 				mensajes: ["No encontramos esa edición."],
 				iconos: [
@@ -43,26 +46,25 @@ module.exports = async (req, res, next) => {
 			// Averigua si existe una edicion ajena
 			let datos = {campo_id, entID: id, userID: req.session.usuario.id};
 			edicion = await BD_especificas.obtieneEdicionAjena(entidadEdic, datos);
+			if (!edicion)
+				informacion = {
+					mensajes: ["No encontramos ninguna edición ajena para revisar"],
+					iconos: [
+						{
+							nombre: "fa-spell-check ",
+							link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
+							titulo: "Regresar al Tablero de Control",
+						},
+					],
+				};
 		} else {
 			// Averigua si existe una edicion propia
 			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};
 			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, objeto);
 		}
 
-		// 2.1. En caso que exista, redirige incluyendo esa edicID en el url
+		// En caso que exista una edición, redirige incluyendo esa edicID en el url
 		if (edicion) return res.redirect(req.originalUrl + "&edicID=" + edicion.id);
-		// 2.2. En caso que no exista, mensaje de error para revisión
-		else if (revision)
-			informacion = {
-				mensajes: ["No encontramos ninguna edición ajena para revisar"],
-				iconos: [
-					{
-						nombre: "fa-spell-check ",
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
-						titulo: "Regresar al Tablero de Control",
-					},
-				],
-			};
 	}
 
 	// Conclusiones
