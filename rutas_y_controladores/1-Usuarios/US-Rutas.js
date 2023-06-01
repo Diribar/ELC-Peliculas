@@ -11,8 +11,8 @@ const usuarios = require("../../middlewares/filtrosPorUsuario/filtro-usuarios");
 const stMailValidado = require("../../middlewares/filtrosPorUsuario/filtro-usSt2-MailVal");
 const stEditables = require("../../middlewares/filtrosPorUsuario/filtro-usSt3-Editables");
 const stIdentValidar = require("../../middlewares/filtrosPorUsuario/filtro-usSt4-IdentValidar");
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************

@@ -7,9 +7,9 @@ const vista = require("./LK-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 // Específicos de productos
 const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");

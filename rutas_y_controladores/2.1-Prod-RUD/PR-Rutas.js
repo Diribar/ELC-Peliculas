@@ -8,10 +8,10 @@ const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevEnts");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
+const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de productos
 const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");

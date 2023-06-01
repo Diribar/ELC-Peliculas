@@ -8,9 +8,9 @@ const vistaRCLV = require("../2.2-RCLVs-CRUD/RCLV-ControlVista");
 
 // Middlewares ***********************************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevEnts");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");

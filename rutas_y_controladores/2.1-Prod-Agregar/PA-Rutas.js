@@ -7,11 +7,11 @@ const vista = require("./PA-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
+const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
+const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
+const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const prodAgregar = require("../../middlewares/varios/prodAgregar");
-const usAutorizFA = require("../../middlewares/filtrosPorUsuario/filtro-usAutorizFA");
+const usAutorizFA = require("../../middlewares/filtrosPorUsuario/usAutorizFA");
 // Específicos de productos
 const prodYaEnBD = require("../../middlewares/filtrosPorEntidad/prodYaEnBD");
 // Consolidados
