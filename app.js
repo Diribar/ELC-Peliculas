@@ -179,6 +179,6 @@ app.set("views", [
 	app.use("/", rutaMiscelaneas);
 
 	// Middleware si un usuario usa un url desconocido - se debe informar después de los urls anteriores
-	const filtroPorUrlDescon = require("./middlewares/transversales/filtroPorUrlDescon");
-	app.use(filtroPorUrlDescon);
+	const urlDesconocida = require("./middlewares/transversales/urlDesconocida");
+	app.use(urlDesconocida);
 })();

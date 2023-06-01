@@ -3,22 +3,6 @@
 const express = require("express");
 const router = express.Router();
 const API = require("./FM-ControlAPI");
-const vista = require("./FM-ControlVista");
-
-//************************ Middlewares ******************************
-// Específicos de usuarios
-const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
-const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
-const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
-// Específicos de productos
-const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
-const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
-// Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
-const capturaActivar = require("../../middlewares/captura/capturaActivar");
-// Varios
-const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
