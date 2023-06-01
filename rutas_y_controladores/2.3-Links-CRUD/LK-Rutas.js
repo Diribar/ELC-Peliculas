@@ -11,11 +11,11 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTer
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
 // Específicos de productos
-const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
-const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
+const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
+const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrecto");
 // Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Varios
 const prodID = require("../../middlewares/varios/prodID");
