@@ -90,7 +90,7 @@ let FN_origen = (baseUrl) => {
 		? "TU"
 		: baseUrl == "/revision"
 		? "TE"
-		: baseUrl == "/producto"
+		: baseUrl == "/producto" || baseUrl == "/links"
 		? "DTP"
 		: baseUrl == "/rclv"
 		? "DTR"

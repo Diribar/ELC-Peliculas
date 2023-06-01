@@ -21,7 +21,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const prodID = require("../../middlewares/varios/prodID");
 
 // Consolidados
-const ABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
+const aptoABM = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -35,7 +35,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Rutas de vistas
 // Links
-router.get("/abm", ...ABM, prodID, vista.linksForm);
+router.get("/abm", ...aptoABM, prodID, vista.linksForm);
 
 // Fin
 module.exports = router;
