@@ -15,7 +15,7 @@ const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRe
 const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
-const existeEdicion = require("../../middlewares/filtrosPorEntidad/filtro-existeEdicion");
+const edicion = require("../../middlewares/filtrosPorEntidad/filtro-edicion");
 const motivoNecesario = require("../../middlewares/filtrosPorEntidad/filtro-motivoNecesario");
 const motivoOpcional = require("../../middlewares/filtrosPorEntidad/filtro-motivoOpcional");
 // Temas de captura
@@ -25,7 +25,7 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, existeEdicion, permUserReg];
+const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, edicion, permUserReg];
 // Otros
 const multer = require("../../middlewares/varios/multer");
 

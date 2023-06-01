@@ -11,23 +11,28 @@ const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
+const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevEnts");
 // Específicos de productos
 const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
-const existeEdicion = require("../../middlewares/filtrosPorEntidad/filtro-existeEdicion");
+const edicion = require("../../middlewares/filtrosPorEntidad/filtro-edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
 const motivoNecesario = require("../../middlewares/filtrosPorEntidad/filtro-motivoNecesario");
+const prodID = require("../../middlewares/varios/prodID");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const prodID = require("../../middlewares/varios/prodID");
 
 // Consolida
-const edicion = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, existeEdicion, permUserReg];
-const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
+const aptoDetalle = [entValida, IDvalido, capturaInactivar, prodID];
+const base = [entValida, IDvalido, statusCorrecto, ...aptoUsuario];
+const aptoEdicion = [...base, edicion, permUserReg, prodID];
+const aptoCRUD = [...base, permUserReg];
+const aptoEliminar = [...base, usRolRevEnts, permUserReg];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -41,16 +46,16 @@ router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
-router.get("/detalle", entValida, IDvalido, capturaInactivar, prodID, vista.prodDetalle_Form);
-router.get("/edicion", ...edicion, capturaActivar, prodID, vista.prodEdicion_Form);
-router.post("/edicion", ...edicion, multer.single("avatar"), vista.prodEdicion_Guardar);
+router.get("/detalle", ...aptoDetalle, vista.prodDetalle_Form);
+router.get("/edicion", ...aptoEdicion, capturaActivar, prodID, vista.prodEdicion_Form);
+router.post("/edicion", ...aptoEdicion, multer.single("avatar"), vista.prodEdicion_Guardar);
 
-router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/inactivar", controles, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/recuperar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/recuperar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/eliminar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/eliminar", controles, capturaInactivar, vistaCRUD.eliminarGuardar);
+router.get("/inactivar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/inactivar", ...aptoCRUD, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/recuperar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/recuperar", ...aptoCRUD, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/eliminar", ...aptoEliminar, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/eliminar", ...aptoEliminar, capturaInactivar, vistaCRUD.eliminarGuardar);
 router.get("/eliminado", vistaCRUD.eliminadoForm);
 
 // Fin
