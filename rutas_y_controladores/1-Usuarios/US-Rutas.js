@@ -6,7 +6,7 @@ const API = require("./US-ControlAPI");
 const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
-const visitas = require("../../middlewares/filtrosPorUsuario/filtro-visitas");
+const visitas = require("../../middlewares/filtrosPorUsuario/visitas");
 
 const statusCorrecto = require("../../middlewares/filtrosPorUsuario/statusCorrecto");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
