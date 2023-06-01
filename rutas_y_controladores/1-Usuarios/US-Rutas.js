@@ -7,7 +7,6 @@ const vista = require("./US-ControlVista");
 
 //************************ Middlewares ******************************
 const visitas = require("../../middlewares/filtrosPorUsuario/visitas");
-
 const statusCorrecto = require("../../middlewares/filtrosPorUsuario/statusCorrecto");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
