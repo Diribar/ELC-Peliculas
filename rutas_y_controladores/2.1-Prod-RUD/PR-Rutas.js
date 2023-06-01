@@ -18,7 +18,7 @@ const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
 const edicion = require("../../middlewares/filtrosPorEntidad/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrecto");
 const motivoNecesario = require("../../middlewares/filtrosPorEntidad/motivoNecesario");
-const prodID = require("../../middlewares/varios/prodID");
+const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
@@ -28,9 +28,9 @@ const multer = require("../../middlewares/varios/multer");
 
 // Consolida
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoDetalle = [entValida, IDvalido, capturaInactivar, prodID];
+const aptoDetalle = [entValida, IDvalido, capturaInactivar, rutaCRUD_ID];
 const base = [entValida, IDvalido, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...base, edicion, permUserReg, prodID];
+const aptoEdicion = [...base, edicion, permUserReg];
 const aptoCRUD = [...base, permUserReg];
 const aptoEliminar = [...base, usRolRevEnts, permUserReg];
 
@@ -47,7 +47,7 @@ router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
 router.get("/detalle", ...aptoDetalle, vista.prodDetalle_Form);
-router.get("/edicion", ...aptoEdicion, capturaActivar, prodID, vista.prodEdicion_Form);
+router.get("/edicion", ...aptoEdicion, capturaActivar, rutaCRUD_ID, vista.prodEdicion_Form);
 router.post("/edicion", ...aptoEdicion, multer.single("avatar"), vista.prodEdicion_Guardar);
 
 router.get("/inactivar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);

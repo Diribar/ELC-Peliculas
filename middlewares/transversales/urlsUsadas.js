@@ -3,7 +3,7 @@
 
 module.exports = (req, res, next) => {
 	// Valores de startup
-	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinCaptura", "urlAnterior", "urlActual"];
+	const urlsGuardadas = ["urlSinLogin", "urlFueraDeUsuarios", "urlSinCaptura", "urlSinPermInput", "urlAnterior", "urlActual"];
 	urlsGuardadas.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
