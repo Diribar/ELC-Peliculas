@@ -9,7 +9,7 @@ const vista = require("./RU-ControlVista");
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const revisorEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevUs");
+const revisorEnts = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
 // Específicos de entidades
 const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
