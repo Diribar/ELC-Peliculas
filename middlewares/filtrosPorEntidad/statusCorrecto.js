@@ -64,7 +64,8 @@ module.exports = async (req, res, next) => {
 
 		// Variables para el ícono
 		let origen = req.query.origen;
-		if (!origen) origen = FN_origen(baseUrl);
+		if (!origen)
+			origen = baseUrl == "/revision/usuarios" ? "TU" : baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
 		let link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
 		let vistaEntendido = variables.vistaEntendido(link);
 
@@ -82,17 +83,4 @@ module.exports = async (req, res, next) => {
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else next();
-};
-
-// Funciones
-let FN_origen = (baseUrl) => {
-	return baseUrl == "/revision/usuarios"
-		? "TU"
-		: baseUrl == "/revision"
-		? "TE"
-		: baseUrl == "/producto" || baseUrl == "/links"
-		? "DTP"
-		: baseUrl == "/rclv"
-		? "DTR"
-		: "";
 };
