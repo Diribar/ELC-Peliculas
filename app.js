@@ -144,10 +144,10 @@ app.set("views", [
 
 	// Middlewares que dependen de procesos anteriores
 	// Para estar siempre logueado, si existe el cookie
-	const loginConCookie = require("./middlewares/varios/loginConCookie");
+	const loginConCookie = require("./middlewares/transversales/loginConCookie");
 	app.use(loginConCookie);
 	// Para tener el rastro de los últimos url
-	const urlsUsadas = require("./middlewares/urls/urlsUsadas");
+	const urlsUsadas = require("./middlewares/transversales/urlsUsadas");
 	app.use(urlsUsadas);
 
 	// Rutas que dependen de la variable 'global'
@@ -178,8 +178,7 @@ app.set("views", [
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
 
-	// Middleware que se debe informar después de los urls anteriores
-	// Mensaje si un usuario usa un url desconocido
-	const urlDescon = require("./middlewares/urls/urlDescon");
-	app.use(urlDescon);
+	// Middleware si un usuario usa un url desconocido - se debe informar después de los urls anteriores
+	const filtroPorUrlDescon = require("./middlewares/transversales/filtroPorUrlDescon");
+	app.use(filtroPorUrlDescon);
 })();

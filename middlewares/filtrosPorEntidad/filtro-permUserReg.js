@@ -38,11 +38,8 @@ module.exports = async (req, res, next) => {
 	v.creado_en = v.registro.creado_en;
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creado_en));
 	if (v.creado_en) v.creado_en.setSeconds(0);
-	v.vistaAnteriorTablero = (() => {
-		let vista = [v.vistaAnterior];
-		if (v.usuario.rol_usuario.revisor_ents) vista.push(v.vistaTablero);
-		return vista;
-	})();
+	v.vistaAnteriorTablero = [v.vistaAnterior];
+	if (v.usuario.rol_usuario.revisor_ents) v.vistaAnteriorTablero.push(v.vistaTablero);
 	// Otras variables
 	v.vistaAnteriorInactivar = [v.vistaAnterior, v.vistaInactivar];
 	let informacion;
@@ -109,7 +106,7 @@ module.exports = async (req, res, next) => {
 			v.registro.status_registro.creado && // en status creado
 			v.urlBase != "/revision" // la ruta no es de revisión
 		) {
-			let nombre = comp.nombresPosibles(v.registro)
+			let nombre = comp.nombresPosibles(v.registro);
 			if (nombre) nombre = "'" + nombre + "'";
 			let mensajes = creadoPorElUsuario
 				? [
@@ -173,7 +170,7 @@ module.exports = async (req, res, next) => {
 				pc_entidad == "peliculas" || pc_entidad == "colecciones"
 					? {entidad: "la ", reservado: "a"}
 					: {entidad: "el ", reservado: "o"};
-			const nombre =comp.nombresPosibles(prodCapturado)
+			const nombre = comp.nombresPosibles(prodCapturado);
 			informacion = {
 				mensajes: [
 					"Tenés que liberar " +
