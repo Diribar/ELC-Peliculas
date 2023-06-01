@@ -11,22 +11,29 @@ const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/filtro-usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/filtro-usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/filtro-usAptoInput");
+const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/filtro-usRolRevEnts");
 // Específicos de RCLVs
 const entValida = require("../../middlewares/filtrosPorEntidad/filtro-entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/filtro-IDvalido");
-const accesoBloq = require("../../middlewares/filtrosPorEntidad/filtro-accesoBloq");
+const edicion = require("../../middlewares/filtrosPorEntidad/filtro-edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorEntidad/filtro-statusCorrecto");
+const motivoNecesario = require("../../middlewares/filtrosPorEntidad/filtro-motivoNecesario");
+const accesoBloq = require("../../middlewares/filtrosPorEntidad/filtro-accesoBloq");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/filtro-permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-// Consolidado
-const DE_agregar = [usAltaTerm, usPenalizaciones, usAptoInput, entValida];
-const DE_editar = [...DE_agregar, IDvalido, permUserReg, accesoBloq, statusCorrecto];
-const DE_detalle = [entValida, IDvalido, capturaInactivar, accesoBloq];
-const controles = [usAltaTerm, usPenalizaciones, usAptoInput, entValida, IDvalido, statusCorrecto, permUserReg];
-// Otros
+// Varios
 const multer = require("../../middlewares/varios/multer");
+
+// Consolidado
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
+const aptoAgregar = [entValida, ...aptoUsuario];
+const aptoDetalle = [entValida, IDvalido, capturaInactivar];
+const base = [entValida, IDvalido, statusCorrecto, ...aptoUsuario];
+const aptoEdicion = [...base, edicion, permUserReg, accesoBloq];
+const aptoCRUD = [...base, permUserReg];
+const aptoEliminar = [...base, usRolRevEnts, permUserReg];
 
 // Rutas *******************************************
 // Rutas de APIs Agregar/Editar
@@ -35,18 +42,18 @@ router.get("/api/valida-sector", API.validaSector);
 router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
-router.get("/agregar", ...DE_agregar, vista.altaEdicForm);
-router.post("/agregar", ...DE_agregar, multer.single("avatar"), vista.altaEdicGuardar);
-router.get("/edicion", ...DE_editar, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", ...DE_editar, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
-router.get("/detalle", ...DE_detalle, vista.detalle);
+router.get("/agregar", ...aptoAgregar, vista.altaEdicForm);
+router.post("/agregar", ...aptoAgregar, multer.single("avatar"), vista.altaEdicGuardar);
+router.get("/edicion", ...aptoEdicion, capturaActivar, vista.altaEdicForm);
+router.post("/edicion", ...aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
+router.get("/detalle", ...aptoDetalle, vista.detalle);
 
-router.get("/inactivar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/inactivar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/recuperar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/recuperar", controles, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/eliminar", controles, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/eliminar", controles, capturaInactivar, vistaCRUD.eliminarGuardar);
+router.get("/inactivar", aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/recuperar", aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/recuperar", aptoCRUD, capturaInactivar, vistaCRUD.inacRecup_Guardar);
+router.get("/eliminar", aptoEliminar, capturaActivar, vistaCRUD.inacRecup_Form);
+router.post("/eliminar", aptoEliminar, capturaInactivar, vistaCRUD.eliminarGuardar);
 router.get("/eliminado", vistaCRUD.eliminadoForm);
 
 // Exportarlo **********************************************

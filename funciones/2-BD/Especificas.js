@@ -163,7 +163,7 @@ module.exports = {
 		},
 	},
 	// Revisar - producto/edicion y rclv/edicion
-	obtieneEdicAjenaDeUnProd: (entidadEdic, datos, include) => {
+	obtieneEdicionAjena: (entidadEdic, datos, include) => {
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const {campo_id, entID, userID} = datos;
 		// Obtiene un registro que cumpla ciertas condiciones
