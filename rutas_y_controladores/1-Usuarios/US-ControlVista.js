@@ -27,12 +27,7 @@ module.exports = {
 		// Tema y código
 		const tema = "usuario";
 		const codigo = req.path.slice(1);
-		let titulo =
-			codigo == "alta-mail"
-				? "Alta de Mail"
-				: codigo == "olvido-contrasena"
-				? "Olvido de Contraseña"
-				: "";
+		let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
 		// Obtiene el e-mail de session
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
@@ -72,8 +67,7 @@ module.exports = {
 		// Envía un mail con la contraseña
 		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
 		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-		if (!feedbackEnvioMail.OK)
-			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+		if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Agrega el usuario
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
@@ -82,7 +76,7 @@ module.exports = {
 			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
-		req.session.email = email;
+		req.session.usuario = {email};
 		// Datos para la vista
 		let informacion = procesos.cartelAltaExitosa;
 		// Redireccionar
@@ -151,12 +145,8 @@ module.exports = {
 		let usuario = req.session.usuario;
 		let informacion = {
 			mensajes: [
-				"Estimad" +
-					usuario.sexo.letra_final +
-					" " +
-					usuario.apodo +
-					", completaste el alta satisfactoriamente.",
-				"Bienvenid" + usuario.sexo.letra_final + " a la familia de usuarios de nuestro sitio.",
+				"Estimad" + usuario.sexo.letra_final + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+				"Bienvenid" + usuario.sexo.letra_final + " a nuestro sitio como usuario.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
 			titulo: "Bienvenido/a a la familia ELC",
@@ -208,9 +198,7 @@ module.exports = {
 			id: usuario.id,
 		};
 		if (req.file) datos.tamano = req.file.size;
-		datos.ruta = req.file
-			? "./publico/imagenes/9-Provisorio/"
-			: "./publico/imagenes/1-Usuarios/2-DNI-Revisar/";
+		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/1-Usuarios/2-DNI-Revisar/";
 		// Averigua si hay errores de validación
 		let errores = await valida.identidadBE(datos);
 		// Redirecciona si hubo algún error de validación
@@ -230,11 +218,7 @@ module.exports = {
 		// Prepara la información a actualizar
 		req.body.fecha_revisores = comp.fechaHora.ahora();
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElStatusDelUsuario(
-			usuario,
-			"ident_a_validar",
-			req.body
-		);
+		req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "ident_a_validar", req.body);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) comp.gestionArchivos.mueveImagen(req.file.filename, "9-Provisorio", "1-Usuarios/2-DNI-Revisar");
 		// Redirecciona
@@ -278,14 +262,11 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "usuario";
 		const codigo = "login";
-		// Toma el mail desde cookies, si no está en session. Esto sirve para complementar el alta de usuario.
-		if (!req.session.email)
-			req.session.email = req.cookies && req.cookies.email ? req.cookies.email : undefined;
-		// 2. Obtiene el Data Entry ya realizado
-		let dataEntry =
-			req.session.email && req.session.contrasena
-				? {email: req.session.email, contrasena: req.session.contrasena}
-				: "";
+		let dataEntry = {};
+
+		// 2. Obtiene el Data Entry ya realizado en 'loginGuardar'
+		if (req.session.email && req.session.contrasena)
+			dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
 		delete req.session.email, req.session.contrasena;
 		// 3. Variables para la vista
 		let errores = dataEntry ? await valida.login(dataEntry) : "";
@@ -347,8 +328,7 @@ module.exports = {
 		// Envía la contraseña por mail
 		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
 		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
-		if (!feedbackEnvioMail.OK)
-			return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+		if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
 		// Actualiza la contraseña en la BD
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
