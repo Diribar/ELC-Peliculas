@@ -24,12 +24,15 @@ module.exports = {
 	// Circuito de alta de usuario
 	altaMailForm: async (req, res) => {
 		// Sirve también para olvido de contraseña
+
 		// Tema y código
 		const tema = "usuario";
 		const codigo = req.path.slice(1);
 		let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
+
 		// Obtiene el e-mail de session
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
+
 		// Errores
 		let errores =
 			codigo == "alta-mail"
@@ -37,7 +40,7 @@ module.exports = {
 				: codigo == "olvido-contrasena"
 				? {...req.session.erroresOC}
 				: false;
-		// Generar la info para la vista 'olvido de contraseña'
+
 		// Vista
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -51,23 +54,33 @@ module.exports = {
 		});
 	},
 	altaMailGuardar: async (req, res) => {
+		// Variables
+		const email = req.body.email;
+		let errores, ELC_id;
+
 		// Averigua si hay errores de validación
-		let email = req.body.email;
-		let errores = await valida.altaMail(email);
-		// Si no hay errores, verificar si ya existe en la BD
-		if (!errores.hay && (await BD_especificas.obtieneELC_id("usuarios", {email})))
-			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
-		// Redireccionar si hubo algún error de validación
+		errores = await valida.altaMail(email);
+
+		// Si no hay errores, verifica si ya existe en la BD
+		if (!errores.hay) {
+			ELC_id = await BD_especificas.obtieneELC_id("usuarios", {email});
+			if (ELC_id) errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
+		}
+
+		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.erroresAM = errores;
 			return res.redirect(req.originalUrl);
 		}
+
 		// Si no hubieron errores de validación...
 		// Envía un mail con la contraseña
 		let {ahora, contrasena, feedbackEnvioMail} = await procesos.enviaMailConContrasena(req);
+
 		// Si el mail no pudo ser enviado, lo avisa y sale de la rutina
 		if (!feedbackEnvioMail.OK) return res.render("CMP-0Estructura", {informacion: feedbackEnvioMail.informacion});
+
 		// Agrega el usuario
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
