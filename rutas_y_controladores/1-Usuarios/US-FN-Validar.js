@@ -72,8 +72,7 @@ module.exports = {
 				: fechaRazonable(datos.fecha_nacim)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
-		if (campos.includes("rol_iglesia_id"))
-			errores.rol_iglesia_id = !datos.rol_iglesia_id ? variables.selectVacio : "";
+		if (campos.includes("rol_iglesia_id")) errores.rol_iglesia_id = !datos.rol_iglesia_id ? variables.selectVacio : "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			// Variables
@@ -86,8 +85,7 @@ module.exports = {
 			errores.docum_numero = respuesta;
 		}
 		// Revisar 'docum_pais_id'
-		if (campos.includes("docum_pais_id"))
-			errores.docum_pais_id = !datos.docum_pais_id ? variables.selectVacio : "";
+		if (campos.includes("docum_pais_id")) errores.docum_pais_id = !datos.docum_pais_id ? variables.selectVacio : "";
 		// Revisar 'avatar'
 		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.validacs.avatar(datos);
 		// Fin
@@ -123,20 +121,21 @@ module.exports = {
 	},
 	login: async (datos) => {
 		// Variables
-		let {email, contrasena} = datos;
-		let errores = {},
-			largoContr;
-		if (contrasena) largoContr = largoContrasena(contrasena);
-		// Verificar errores
+		const {email, contrasena} = datos;
+		const largoContr = contrasena ? largoContrasena(contrasena) : null;
+		let errores = {};
+
+		// Verifica errores
 		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
+
 		// Verifica credenciales
 		if (!errores.hay) {
 			let usuario = await BD_genericas.obtienePorCondicion("usuarios", {email});
 			// Credenciales Inválidas: si el usuario no existe o la contraseña no es válida
 			errores.credenciales = !usuario || !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
-			errores.hay = errores.credenciales;
+			errores.hay = !!errores.credenciales;
 		}
 
 		// Fin
@@ -146,11 +145,7 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let informacion;
-		let usuario = await BD_genericas.obtienePorCondicionConInclude(
-			"usuarios",
-			{email: datos.email},
-			"status_registro"
-		);
+		let usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "status_registro");
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
