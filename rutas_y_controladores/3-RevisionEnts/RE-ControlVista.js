@@ -127,7 +127,7 @@ module.exports = {
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro
@@ -210,7 +210,7 @@ module.exports = {
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const campoDecision = petitFamilias + (aprob ? "_aprob" : "_rech");
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		datos = {};
 
 		// Acciones si es un RCLV
@@ -393,7 +393,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
 		let avatarExterno, avatarsExternos, avatar, imgDerPers;

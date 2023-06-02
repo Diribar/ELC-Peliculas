@@ -17,7 +17,7 @@ module.exports = {
 		// Más variables
 		const {entidad, id, origen} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
 		// Obtiene el registro

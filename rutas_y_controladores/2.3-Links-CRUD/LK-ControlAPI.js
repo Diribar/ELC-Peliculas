@@ -62,7 +62,7 @@ module.exports = {
 		// Variables
 		const {url, motivo_id} = req.query;
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario.rolUsuario.revisorEnts;
 		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "status_registro") : "";
 		let respuesta = {};
 

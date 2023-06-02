@@ -31,7 +31,7 @@ module.exports = {
 		const codigo = "validaIdentidad";
 		// Temas del usuario
 		let userID = req.query.id;
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rol_usuario", "status_registro"]);
+		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "status_registro"]);
 		// Redireccionar si no existe el usuario o el avatar
 		let docum_avatar = usuario ? "./publico/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar : false;
 		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
@@ -114,7 +114,7 @@ module.exports = {
 		// Acciones si se aprueba la validación
 		if (status_registro_id == st_ident_validada_ID) {
 			// Asigna el rol 'permInputs'
-			let rolPermInputs_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id;
+			let rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
 			objeto.rol_usuario_id = rolPermInputs_id;
 			// Mueve la imagen del documento a su carpeta definitiva
 			comp.gestionArchivos.mueveImagen(usuario.docum_avatar, "1-Usuarios/2-DNI-Revisar", "1-Usuarios/2-DNI-Final");

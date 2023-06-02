@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// Revisa si el usuario tiene el rol necesario
-	if (!informacion && !usuario.rol_usuario.revisor_us) informacion = usuarioSinRolDeRevisor;
+	if (!informacion && !usuario.rolUsuario.revisorUs) informacion = usuarioSinRolDeRevisor;
 
 	// Si corresponde, muestra el mensaje de error
 	if (informacion) res.render("CMP-0Estructura", {informacion});

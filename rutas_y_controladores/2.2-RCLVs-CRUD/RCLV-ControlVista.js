@@ -17,7 +17,7 @@ module.exports = {
 		const usuario = req.session.usuario ? req.session.usuario : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		const articulo = entidad == "epocas_del_ano" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 
@@ -119,7 +119,7 @@ module.exports = {
 		const originalUrl = req.originalUrl;
 		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
