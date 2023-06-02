@@ -262,18 +262,21 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "usuario";
 		const codigo = "login";
-		let dataEntry = {};
+		let dataEntry;
 
-		// 2. Obtiene el Data Entry ya realizado en 'loginGuardar'
-		if (req.session.email && req.session.contrasena)
+		// 2. Obtiene el Data Entry procesado en 'loginGuardar'
+		if (req.session.email || req.session.contrasena) {
 			dataEntry = {email: req.session.email, contrasena: req.session.contrasena};
-		delete req.session.email, req.session.contrasena;
+			delete req.session.email, req.session.contrasena;
+		}
+
 		// 3. Variables para la vista
 		let errores = dataEntry ? await valida.login(dataEntry) : "";
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 		];
+
 		// 4. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
