@@ -229,7 +229,7 @@ module.exports = {
 			req.body.docum_avatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
-		req.body.fecha_revisores = comp.fechaHora.ahora();
+		req.body.fechaRevisores = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElStatusDelUsuario(usuario, "ident_a_validar", req.body);
 		// Mueve el archivo a la carpeta definitiva

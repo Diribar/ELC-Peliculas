@@ -89,7 +89,7 @@ module.exports = {
 			informacion = {
 				mensajes: [
 					"Para ingresar información, se requiere tener tus datos validados.",
-					"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fecha_revisores) + ".",
+					"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fechaRevisores) + ".",
 					"Tenés que esperar a que el equipo de Revisores haga la validación.",
 					"Luego de la validación, recibirás un mail de feedback.",
 					"En caso de estar aprobado, podrás ingresarnos información.",

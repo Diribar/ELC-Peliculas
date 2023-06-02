@@ -269,7 +269,7 @@ module.exports = {
 			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
 
 			// Saltear
-			let saltear = usuario.fecha_revisores == hoyUsuario; // Si ya envió un mail en el día
+			let saltear = usuario.fechaRevisores == hoyUsuario; // Si ya envió un mail en el día
 			if (!saltear) saltear = zona_horaria < 0 ? horaUsuario < 0 : horaUsuario < 24; // Si todavía no son las 24hs
 
 			// Fin
@@ -569,7 +569,7 @@ module.exports = {
 			return;
 		},
 		actualizaHoraRevisorEnElUsuario: (usuario, hoyUsuario) => {
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_revisores: hoyUsuario});
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario});
 			return;
 		},
 	},
