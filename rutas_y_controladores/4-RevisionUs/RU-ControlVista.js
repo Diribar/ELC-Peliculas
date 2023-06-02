@@ -14,7 +14,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let usuarios = {};
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.validaIdentidades = await procesos.TC_validaIdentidades(userID);
+		usuarios.validaIdentidades = await procesos.TC.validaIdentidades(userID);
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("CMP-0Estructura", {
