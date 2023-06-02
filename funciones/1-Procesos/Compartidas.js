@@ -508,7 +508,7 @@ module.exports = {
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizac_acum", duracion);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", duracion);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (duracion > 1 && petitFamilias) {

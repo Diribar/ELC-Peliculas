@@ -9,7 +9,7 @@ module.exports = {
 	TC: {
 		validaIdentidades: async (userID) => {
 			// Variables
-			const condicion = {rol_usuario_id: rol_consultas_id, status_registro_id: st_ident_a_validar, id: {[Op.ne]: userID}};
+			const condicion = {rol_usuario_id: rol_consultas_id, status_registro_id: st_ident_a_validar_id, id: {[Op.ne]: userID}};
 
 			// Obtiene los usuarios
 			let usuarios = await db.usuarios.findAll({where: condicion}).then((n) => n.map((m) => m.toJSON()));
@@ -24,7 +24,7 @@ module.exports = {
 			return usuarios;
 		},
 	},
-	IF: {
+	VI: {
 		validaUsuario: (usuario, campos) => {
 			// Variables
 			const link = "/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=TU";
@@ -44,7 +44,7 @@ module.exports = {
 
 			// Valida que exista el archivo del docum_avatar
 			if (!informacion) {
-				docum_avatar = "/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar;
+				docum_avatar = "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.docum_avatar;
 				if (!comp.gestionArchivos.existe("./publico" + docum_avatar))
 					informacion = {
 						mensajes: ["No existe el archivo de imagen del documento."],
@@ -69,28 +69,28 @@ module.exports = {
 			// Fin
 			return {informacion, docum_avatar};
 		},
-	},
-	usuarioEdicRech: (campo, usuario, revID, motivo) => {
-		// Alimenta la tabla 'edics_rech'
-		let datos = {
-			entidad: "usuarios",
-			entidad_id: usuario.id,
-			campo,
-			titulo: campo,
-			valor_rech: usuario[campo],
-			valor_aprob: null,
-
-			motivo_id: motivo.id,
-			duracion: motivo.duracion,
-
-			editado_por_id: usuario.id,
-			editado_en: usuario.fecha_revisores,
-			edic_revisada_por_id: revID,
-			edic_revisada_en: comp.fechaHora.ahora(),
-		};
-		BD_genericas.agregaRegistro("edics_rech", datos);
-
-		// Fin
-		return;
+		hist_edics: (campo, usuario, revID, motivo) => {
+			// Alimenta la tabla 'hist_edics'
+			let datos = {
+				entidad: "usuarios",
+				entidad_id: usuario.id,
+				campo,
+				titulo: campo,
+				valor_rech: usuario[campo],
+				valor_aprob: "(vacío)",
+	
+				motivo_id: motivo.id,
+				duracion: motivo.duracion,
+	
+				editado_por_id: usuario.id,
+				editado_en: usuario.fecha_revisores,
+				edic_revisada_por_id: revID,
+				edic_revisada_en: comp.fechaHora.ahora(),
+			};
+			BD_genericas.agregaRegistro("hist_edics", datos);
+	
+			// Fin
+			return;
+		},
 	},
 };
