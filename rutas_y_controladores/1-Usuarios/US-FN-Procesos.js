@@ -84,48 +84,46 @@ module.exports = {
 				: req.session.urlSinPermInput;
 		let informacion;
 
-		// Mensaje
-		if (!usuario.status_registro.ident_validada) {
-			// Mensaje si el usuario está en status "identidad a validar"
-			if (usuario.status_registro.ident_a_validar)
-				informacion = {
-					mensajes: [
-						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fecha_revisores) + ".",
-						"Tenés que esperar a que el equipo de Revisores haga la validación.",
-						"Luego de la validación, recibirás un mail de feedback.",
-						"En caso de estar aprobado, podrás ingresarnos información.",
-					],
-					iconos: [variables.vistaEntendido(linkVolver)],
-					titulo: "Aviso",
-					trabajando: true,
-				};
-			// Mensaje si el usuario está en status "editable"
-			else if (usuario.status_registro.editables)
-				informacion = {
-					mensajes: [
-						"El ingreso de información para otras personas, requiere responsabilidad.",
-						"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
-						"Por eso, necesitamos validar tu identidad con tu documento.",
-						"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
-					],
-					iconos: [
-						{
-							nombre: "fa-circle-left",
-							link: linkVolver,
-							titulo: "Ir a la vista anterior",
-						},
-						{
-							nombre: "fa-circle-right",
-							link: "/usuarios/identidad",
-							titulo: "Ir a 'Solicitud de Validación de Identidad'",
-							autofocus: true,
-						},
-					],
-					titulo: "Aviso",
-					trabajando: true,
-				};
-		}
+		// Mensaje si el usuario está en status "identidad a validar"
+		if (usuario.status_registro.ident_a_validar)
+			informacion = {
+				mensajes: [
+					"Para ingresar información, se requiere tener tus datos validados.",
+					"Nos informaste tus datos el " + comp.fechaHora.fechaHorario(usuario.fecha_revisores) + ".",
+					"Tenés que esperar a que el equipo de Revisores haga la validación.",
+					"Luego de la validación, recibirás un mail de feedback.",
+					"En caso de estar aprobado, podrás ingresarnos información.",
+				],
+				iconos: [variables.vistaEntendido(linkVolver)],
+				titulo: "Aviso",
+				trabajando: true,
+			};
+		// Mensaje si el usuario está en status "editable"
+		else if (usuario.status_registro.editables)
+			informacion = {
+				mensajes: [
+					"El ingreso de información para otras personas, requiere responsabilidad.",
+					"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
+					"Por eso, necesitamos validar tu identidad con tu documento.",
+					"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
+				],
+				iconos: [
+					{
+						nombre: "fa-circle-left",
+						link: linkVolver,
+						titulo: "Ir a la vista anterior",
+					},
+					{
+						nombre: "fa-circle-right",
+						link: "/usuarios/identidad",
+						titulo: "Ir a 'Solicitud de Validación de Identidad'",
+						autofocus: true,
+					},
+				],
+				titulo: "Aviso",
+				trabajando: true,
+			};
+
 		// Fin
 		return informacion;
 	},

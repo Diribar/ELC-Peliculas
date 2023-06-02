@@ -131,9 +131,13 @@ app.set("views", [
 	global.anime_id = tipos_actuacion.find((n) => n.anime).id;
 	global.documental_id = tipos_actuacion.find((n) => n.documental).id;
 	global.actuada_id = tipos_actuacion.find((n) => !n.anime && !n.documental).id;
-	// 3. Roles y status de usuario
+	// 3. Roles de usuario
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
-	global.st_ident_a_validar = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
+	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
+	// 4. Status de usuario
+	global.st_editables_id = status_registro_us.find((n) => n.editables).id
+	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar ).id;
+	global.st_ident_validada_id = status_registro_us.find((n) => n.ident_validada).id;
 
 	// 4. Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
