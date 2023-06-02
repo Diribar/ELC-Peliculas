@@ -3,7 +3,7 @@
 	<h1>Login</h1>
 	<!-- Datos -->
 	<section id="datos">
-		<% for (variable of variables) { %>
+		<% for (let variable of variables) { %>
 			<div class="labelInput flexRow">
 				<label for="<%= variable.name %>"><%= variable.titulo %></label>
 				<div class="inputError">
@@ -14,8 +14,9 @@
 						name="<%= variable.name %>" 
 						placeholder="<%= variable.placeholder %>" 
 						<% if (dataEntry && errores[variable.name]) { %>autofocus<% } %> 
-						<% if (dataEntry) { %>autocomplete= 'new-password'<% } %>
-					>
+						<% if (dataEntry) { %>autocomplete= 'new-password'<% } %> 
+						>
+						<!-- El autocomplete= 'new-password' es para prevenir el 'autocomplete' -->
 					<!-- Ojito contraseña -->
 					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 					<!-- Error/OK -->
