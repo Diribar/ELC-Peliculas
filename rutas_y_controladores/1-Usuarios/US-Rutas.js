@@ -11,7 +11,8 @@ const statusCorrecto = require("../../middlewares/filtrosPorUsuario/usStatusCorr
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const multer = require("../../middlewares/varios/multer");
-
+// Grupos
+const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 //************************ Rutas ****************************
 // Rutas de APIs
 router.get("/api/valida-login", API.validaLogin);
@@ -30,8 +31,8 @@ router.post("/editables", statusCorrecto, multer.single("avatar"), vista.editabl
 // 3. Solo usuarios con status 'editables'
 router.get("/bienvenido", statusCorrecto, vista.bienvenido);
 // 4. Solo usuarios con status 'editables' y no penalizadas
-router.get("/identidad", statusCorrecto, usPenalizaciones, vista.identidadForm);
-router.post("identidad", statusCorrecto, usPenalizaciones, multer.single("avatar"), vista.identidadGuardar);
+router.get("/identidad", ...validarIdentidad, vista.identidadForm);
+router.post("identidad", ...validarIdentidad, multer.single("avatar"), vista.identidadGuardar);
 // 5. Solo usuarios con status 'ident_a_validar'
 router.get("/validacion-en-proceso", statusCorrecto, vista.validacionEnProceso);
 
