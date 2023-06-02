@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 	informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// VERIFICACIÓN 2: Revisa si tiene el rol "Permiso input"
-	if (!informacion && !usuario.rol_usuario.perm_inputs)
+	if (!informacion && !usuario.rolUsuario.permInputs)
 		informacion = {
 			mensajes: [
 				"Por alguna razón no tenés este permiso a pesar de que tenés validada tu identidad.",

@@ -10,7 +10,7 @@ module.exports = {
 		// Variables
 		let campos;
 		// Rol no permInputs
-		let rol_consultas_id = roles_us.find((n) => !n.perm_inputs).id;
+		let rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 		// Status 'Documento'
 		let st_ident_a_validar = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
 		// Campos para filtrar

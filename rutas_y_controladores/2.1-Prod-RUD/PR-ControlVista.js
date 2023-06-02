@@ -21,7 +21,7 @@ module.exports = {
 		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
@@ -154,7 +154,7 @@ module.exports = {
 			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 		];
 		const status_id = original.status_registro_id;
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Va a la vista
 		// return res.send(prodComb)
@@ -185,7 +185,7 @@ module.exports = {
 		if (original.capitulos) delete original.capitulos;
 
 		// Averigua si el usuario tiene el perfil de revisor
-		const revisor = req.session.usuario && req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Averigua si corresponde actualizar el original
 		// 1. Tiene que ser un revisor

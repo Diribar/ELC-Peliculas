@@ -13,7 +13,7 @@ module.exports = {
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
-		const revisor = req.session.usuario.rol_usuario.revisor_ents;
+		const revisor = req.session.usuario.rolUsuario.revisorEnts;
 
 		// Productos
 		let prods = await procesos.obtieneProds(userID);

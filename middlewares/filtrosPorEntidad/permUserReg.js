@@ -39,7 +39,7 @@ module.exports = async (req, res, next) => {
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creado_en));
 	if (v.creado_en) v.creado_en.setSeconds(0);
 	v.vistaAnteriorTablero = [v.vistaAnterior];
-	if (v.usuario.rol_usuario.revisor_ents) v.vistaAnteriorTablero.push(v.vistaTablero);
+	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	// Otras variables
 	v.vistaAnteriorInactivar = [v.vistaAnterior, v.vistaInactivar];
 	let informacion;

@@ -19,7 +19,7 @@ module.exports = {
 
 				let edicionesPropias =
 					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
-					!RCLV.status_registro.aprobado && usuario.rol_usuario.revisor_ents
+					!RCLV.status_registro.aprobado && usuario.rolUsuario.revisorEnts
 						? ediciones
 						: // Obtiene las ediciones propias
 						ediciones

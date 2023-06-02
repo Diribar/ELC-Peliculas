@@ -288,7 +288,7 @@ module.exports = {
 		return db.usuarios
 			.findOne({
 				where: {email},
-				include: ["rol_usuario", "rol_iglesia", "status_registro", "sexo"],
+				include: ["rolUsuario", "rol_iglesia", "status_registro", "sexo"],
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
