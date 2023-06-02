@@ -26,7 +26,7 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	validarIdentForm: async (req, res) => {
+	validaIdentForm: async (req, res) => {
 		// Variables
 		const tema = "revisionUs";
 		const codigo = "validaIdentidad";
@@ -76,7 +76,7 @@ module.exports = {
 			cartelGenerico: true,
 		});
 	},
-	validarIdentGuardar: async (req, res) => {
+	validaIdentGuardar: async (req, res) => {
 		// Variables
 		const datos = {...req.query, ...req.body};
 		const campos = ["apellido", "docum_pais_id", "docum_numero", "fecha_nacim", "nombre", "sexo_id"];

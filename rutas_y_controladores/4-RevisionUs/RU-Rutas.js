@@ -25,8 +25,8 @@ const aptoRevMasRegistro = [...aptoRevisor, IDvalido, permUserReg];
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Identidad
-router.get("/validar-identidad", ...aptoRevMasRegistro, capturaActivar, vista.validarIdentForm);
-router.post("/validar-identidad", ...aptoRevMasRegistro, capturaInactivar, vista.validarIdentGuardar);
+router.get("/validar-identidad", ...aptoRevMasRegistro, capturaActivar, vista.validaIdentForm);
+router.post("/validar-identidad", ...aptoRevMasRegistro, capturaInactivar, vista.validaIdentGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;
