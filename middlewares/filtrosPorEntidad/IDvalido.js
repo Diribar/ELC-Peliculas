@@ -4,19 +4,13 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
-	// Variables - Generales
-	const entidad = req.query.entidad
-		? req.query.entidad
-		: req.originalUrl.startsWith("/revision/usuarios")
-		? "usuarios"
-		: "";
+	// Variables
+	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
 	const id = req.query.id;
-	let informacion;
-	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+	let informacion;
 
 	// PROBLEMA 1: No existe el ID
-	// Verificar los datos
 	if (!id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 
 	// PROBLEMA 2: ID inválido

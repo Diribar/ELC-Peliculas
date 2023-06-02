@@ -6,43 +6,23 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 
 module.exports = {
 	// Tablero
-	TC_validaIdentidades: async (userID) => {
-		// Variables
-		let campos;
-		// Rol no permInputs
-		let rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
-		// Status 'Documento'
-		let st_ident_a_validar = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
-		// Campos para filtrar
-		campos = {
-			rol_usuario_id: rol_consultas_id,
-			status_registro_id: st_ident_a_validar,
-		};
-		// Obtiene el usuario
-		// let include = [];
-		let usuarios = await BD_especificas.obtieneUsuarioDistintoIdMasFiltros(userID, campos);
-		// Quita los usuarios incompletos
-		campos = ["apellido", "nombre", "sexo_id", "fecha_nacim", "docum_numero", "docum_avatar"];
-		// Valida que todos los campos necesarios de 'usuario' tengan valor
-		for (let i = usuarios.length - 1; i >= 0; i--) {
-			for (let campo of campos) {
-				if (!usuarios[i][campo]) {
-					usuarios.splice(i, 1);
-					break;
-				}
-			}
-		}
+	TC: {
+		validaIdentidades: async (userID) => {
+			// Variables
+			const condicion = {rol_usuario_id: rol_consultas_id, status_registro_id: st_ident_a_validar, id: {[Op.ne]: userID}};
 
-		// Le corrije el formato
-		let TC_formatoUsuarios = (campoFecha) => {
-			return usuarios.map((n) => {
-				let fecha = comp.fechaHora.fechaHorario(n[campoFecha]).replace("a las", "-");
+			// Obtiene los usuarios
+			let usuarios = await db.usuarios.findAll({where: condicion}).then((n) => n.map((m) => m.toJSON()));
+
+			// Procesa la información
+			usuarios = usuarios.map((n) => {
+				let fecha = comp.fechaHora.fechaHorario(n.fecha_revisores).replace("a las", "-");
 				return {id: n.id, apodo: n.apodo, fecha};
 			});
-		};
-		usuarios = TC_formatoUsuarios("fecha_revisores");
-		// Fin
-		return usuarios;
+
+			// Fin
+			return usuarios;
+		},
 	},
 	validaContenidoIF: (usuario, avatar) => {
 		// Variables

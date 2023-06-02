@@ -11,14 +11,13 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const revisorEnts = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
 // Específicos de entidades
-const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
-const aptoRevMasEnt = [...aptoRevisor, entValida, IDvalido, permUserReg, capturaActivar];
+const aptoRevMasEnt = [...aptoRevisor, IDvalido, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 

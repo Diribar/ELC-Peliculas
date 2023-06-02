@@ -120,7 +120,7 @@ app.set("views", [
 	Object.keys(campos).forEach((campo, i) => (global[campo] = valores[i]));
 
 	// Variables que dependen de las lecturas de BD
-	// 1. Status
+	// 1. Status de productos
 	global.creado_id = global.status_registros.find((n) => n.creado).id;
 	global.creado_aprob_id = status_registros.find((n) => n.creado_aprob).id;
 	global.aprobado_id = global.status_registros.find((n) => n.aprobado).id;
@@ -131,7 +131,11 @@ app.set("views", [
 	global.anime_id = tipos_actuacion.find((n) => n.anime).id;
 	global.documental_id = tipos_actuacion.find((n) => n.documental).id;
 	global.actuada_id = tipos_actuacion.find((n) => !n.anime && !n.documental).id;
-	// 3. Otros
+	// 3. Roles y status de usuario
+	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
+	global.st_ident_a_validar = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
+
+	// 4. Otros
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");

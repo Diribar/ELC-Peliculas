@@ -325,18 +325,23 @@ module.exports = {
 		return res.redirect("/usuarios/garantiza-login-y-completo");
 	},
 	olvidoContrGuardar: async (req, res) => {
-		// Averigua si hay errores de validación
+		// Variables
 		let dataEntry = req.body;
-		let errores = await valida.altaMail(dataEntry.email);
 		let usuario, informacion;
+
+		// Averigua si hay errores 'superficiales' de validación
+		let errores = await valida.altaMail(dataEntry.email);
+
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
 		if (!errores.hay) [errores, informacion, usuario] = await valida.olvidoContrBE(dataEntry, req);
-		// Redireccionar si hubo algún error de validación
+
+		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.erroresOC = errores;
 			return res.redirect(req.originalUrl);
 		}
+
 		// Interrumpe si hay un mensaje con información
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 

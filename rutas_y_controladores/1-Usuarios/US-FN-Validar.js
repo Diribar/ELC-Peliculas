@@ -143,9 +143,12 @@ module.exports = {
 	},
 	olvidoContrBE: async (datos, req) => {
 		// Variables
-		let errores = {};
+		let errores={} // Necesitamos que sea un objeto 
 		let informacion;
-		let usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "status_registro");
+
+		// Obtiene el usuario
+		const usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "status_registro");
+
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
 		else {
@@ -163,6 +166,7 @@ module.exports = {
 					iconos: [variables.vistaEntendido(req.session.urlSinLogin)],
 				};
 			}
+
 			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
 			else if (usuario.status_registro.ident_a_validar || usuario.status_registro.ident_validada) {
 				// Verifica los posibles errores
@@ -179,6 +183,7 @@ module.exports = {
 				errores.documento = !!errores.docum_numero || !!errores.docum_pais_id;
 			}
 		}
+
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return [errores, informacion, usuario];
