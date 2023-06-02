@@ -17,10 +17,10 @@
 		<div id="feedback">
 			<!-- ¿Imagen válida? -->
 			<div>
-				<h2>Respecto a la imagen</h2>
+				<h2>Cómo es la imagen</h2>
 				<select name="motivo_docum_id" id="motivo_docum" autofocus required>
 					<option value="" selected>Elegí una opción</option>
-					<option value="0">Corresponde a un documento nacional</option>
+					<option value="0">La imagen es correcta</option>
 					<% for (motivo of motivos_docum) { %>
 						<option value="<%= motivo.id %>" class="rojo"><%= motivo.descripcion %></option>
 					<% } %>

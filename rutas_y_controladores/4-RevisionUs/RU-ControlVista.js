@@ -11,10 +11,11 @@ module.exports = {
 		// Tema y Código
 		const tema = "revisionUs";
 		const codigo = "tableroControl";
-		let userID = req.session.usuario.id;
-		let usuarios = {};
+		const revID = req.session.usuario.id;
+
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.validaIdentidades = await procesos.TC.validaIdentidades(userID);
+		const usuarios = {validaIdentidades: await procesos.TC.validaIdentidades(revID)};
+
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("CMP-0Estructura", {
@@ -26,36 +27,49 @@ module.exports = {
 	},
 	// Revisar Permiso Data-Entry
 	identidadForm: async (req, res) => {
-		// 1. Tema y Código
+		// Variables
 		const tema = "revisionUs";
 		const codigo = "validaIdentidad";
-		// Temas del usuario
-		let userID = req.query.id;
-		let usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "status_registro"]);
-		// Redireccionar si no existe el usuario o el avatar
-		let docum_avatar = usuario ? "./publico/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar : false;
-		if (procesos.validaContenidoIF(usuario, docum_avatar)) return res.redirect("/revision/usuarios/tablero-de-control");
-		// 3. Otras variables
-		let pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
-		let fecha_nacim = comp.fechaHora.fechaDiaMesAno(usuario.fecha_nacim);
-		let campos = [
-			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
-			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
-			{titulo: "Nombre", nombre: "nombre", valor: usuario.nombre},
-			{titulo: "Sexo", nombre: "sexo_id", valor: usuario.sexo.nombre},
-			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim", valor: fecha_nacim},
-			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
+		const userID = req.query.id;
+		const campos = [
+			{titulo: "País de Expedición", nombre: "docum_pais_id"},
+			{titulo: "Apellido", nombre: "apellido"},
+			{titulo: "Nombre", nombre: "nombre"},
+			{titulo: "Sexo", nombre: "sexo_id"},
+			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim"},
+			{titulo: "N° de Documento", nombre: "docum_numero"},
 		];
-		let motivos_docum = motivos_edics.filter((n) => n.avatar_us);
+
+		// Obtiene el usuario
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "status_registro"]);
+
+		// Validaciones
+		const {informacion, docum_avatar} = procesos.IF.validaUsuario(usuario, campos);
+		if (informacion) return res.render("CMP-0Estructura", {informacion});
+
+		// Otras variables
+		const pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
+		const fecha_nacim = comp.fechaHora.fechaDiaMesAno(usuario.fecha_nacim);
+		const valores = {
+			docum_pais_id: pais,
+			apellido: usuario.apellido,
+			nombre: usuario.nombre,
+			sexo_id: usuario.sexo.nombre,
+			fecha_nacim: fecha_nacim,
+			docum_numero: usuario.docum_numero,
+		};
+		for (let campo of campos) campo.valor = valores[campo.nombre];
+		const motivos_docum = motivos_edics.filter((n) => n.avatar_us);
+
 		// 4. Va a la vista
-		// return res.send(motivos_docum)
+		// return res.send(campos)
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Validación de Identidad",
 			usuario,
 			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
-			docum_avatar: "/imagenes/1-Usuarios/2-DNI-Revisar/" + usuario.docum_avatar,
+			docum_avatar,
 			title: usuario.apodo,
 			campos,
 			userID,
