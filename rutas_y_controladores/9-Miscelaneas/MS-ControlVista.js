@@ -45,7 +45,7 @@ module.exports = {
 			: // Otros
 			origen == "TU"
 			? "/revision/usuarios/tablero-de-control"
-			: origen == "MT"
+			: origen == "TM"
 			? "/mantenimiento"
 			: urlDestino
 			? urlDestino

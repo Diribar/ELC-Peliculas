@@ -15,17 +15,18 @@ const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
-const aptoRevMasEnt = [...aptoRevisor, IDvalido, permUserReg, capturaActivar];
+const aptoRevMasRegistro = [...aptoRevisor, IDvalido, permUserReg];
 
 // APIs -------------------------------------------------
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Identidad
-router.get("/identidad", ...aptoRevMasEnt, vista.identidadForm);
-router.post("/identidad", ...aptoRevMasEnt, vista.identidadGuardar);
+router.get("/validar-identidad", ...aptoRevMasRegistro, capturaActivar, vista.identidadForm);
+router.post("/validar-identidad", ...aptoRevMasRegistro, capturaInactivar, vista.identidadGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;
