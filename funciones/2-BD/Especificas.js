@@ -279,10 +279,6 @@ module.exports = {
 	},
 
 	// USUARIOS ---------------------------------------------------------
-	// Controlador/Usuario/Login
-	obtieneUsuarioDistintoIdMasFiltros: (userID, filtros) => {
-		return db.usuarios.findAll({where: {...filtros, id: {[Op.ne]: userID}}}).then((n) => n.map((m) => m.toJSON()));
-	},
 	// Middleware/Usuario/loginConCookie - Controlador/Usuario/Login
 	obtieneUsuarioPorMail: (email) => {
 		return db.usuarios
