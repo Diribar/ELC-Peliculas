@@ -131,7 +131,7 @@ module.exports = {
 		BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 
 		// Aplica la durac_penalidad
-		if (durac_penalidad) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
+		if (durac_penalidad) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizacAcum", durac_penalidad);
 
 		// Vuelve al tablero
 		return res.redirect("/revision/usuarios/tablero-de-control");

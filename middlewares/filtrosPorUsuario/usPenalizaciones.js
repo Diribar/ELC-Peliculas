@@ -18,10 +18,10 @@ module.exports = async (req, res, next) => {
 	await (async () => {
 		// Variables
 		let datos = {};
-		let diasPenalizacion = parseInt(usuario.penalizac_acum);
+		let diasPenalizacion = parseInt(usuario.penalizacAcum);
 
 		// Actualiza la penalizacion acumulada
-		datos.penalizac_acum = usuario.penalizac_acum - diasPenalizacion;
+		datos.penalizacAcum = usuario.penalizacAcum - diasPenalizacion;
 
 		// Si la penalización es de 1 día y es un usuario con buen desempeño, se lo perdona
 		if (diasPenalizacion == 1) {

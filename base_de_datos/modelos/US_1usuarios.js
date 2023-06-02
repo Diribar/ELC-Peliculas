@@ -44,7 +44,7 @@ module.exports = (sequelize, dt) => {
 		edics_aprob: {type: dt.INTEGER},
 		edics_rech: {type: dt.INTEGER},
 
-		penalizac_acum: {type: dt.DECIMAL},
+		penalizacAcum: {type: dt.DECIMAL},
 		penalizado_en: {type: dt.DATE},
 		penalizado_hasta: {type: dt.DATE},
 
