@@ -1,17 +1,17 @@
 /* Contexto */
 #subCuerpo {flex-grow: 1; justify-content: space-evenly;}
 #subCuerpo #datos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#subCuerpo #datos {border: var(--gris-oscuro) 7px solid; background: var(--gris-intermedio);}
+#subCuerpo #datos {border: var(--gris-oscuro) 7px solid; background: var(--verde-claro);}
 #subCuerpo #datos {margin: 0 50px; padding: 20px; height: 70%; border-radius: 20px;}
 #subCuerpo #datos * {line-height: 1;}
 
 /* Datos a validar */
 #subCuerpo #datos #feedback {display: flex; flex-direction: column; padding: 0 20px;}
-#subCuerpo #datos #feedback h2 {font-size: 1.5rem; text-decoration: underline;margin-bottom: 5px;}
+#subCuerpo #datos #feedback h2 {text-decoration: underline;margin-bottom: 5px;}
 #subCuerpo #datos #feedback select {margin-bottom: 15px;}
 #subCuerpo #datos #feedback #texto {display: flex; flex-direction: column;}
 #subCuerpo #datos #feedback #texto .campos {margin: 5px 0; margin-left: 52px; position: relative;}
-#subCuerpo #datos #feedback #texto .campos p {font-size: 1.2rem;}
+/* #subCuerpo #datos #feedback #texto .campos p {font-size: 1.2rem;} */
 
 /* Documento */
 #subCuerpo #datos #documento {width: 60%; height: 100%; position: relative;}
