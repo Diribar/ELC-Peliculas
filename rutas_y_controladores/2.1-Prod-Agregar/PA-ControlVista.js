@@ -56,8 +56,8 @@ module.exports = {
 		const codigo = "datosDuros";
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+		// Si existe un valor para el campo 'avatar' elimina el archivo descargado
+		if (datosDuros.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
 
 		// Obtiene los errores
 		const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -90,43 +90,43 @@ module.exports = {
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
-		// 1. Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
+		// Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		datosDuros = {...datosDuros, ...req.body};
 
-		// 2. Acciones si se ingresó un archivo de imagen
-		let avatar = {};
+		// Acciones si se ingresó un archivo de imagen (IM)
 		if (req.file) {
 			// Obtiene la información sobre el avatar
-			avatar.avatar = req.file.filename;
-			avatar.tamano = req.file.size;
-			avatar.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
+			datosDuros.avatar = req.file.filename;
+			datosDuros.tamano = req.file.size;
+			datosDuros.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
 		}
+		// Elimina la información que hubiera previamente sobre el avatar
+		else delete datosDuros.avatar, datosDuros.tamano;
 
-		// 3. Acciones si hay errores de validación
+		// Guarda Session y Cookie de Datos Duros
+		req.session.datosDuros = {...datosDuros};
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
+		// Acciones si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombre, {...datosDuros, ...avatar});
+		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
 		if (errores.hay) {
-			// Guarda Session y Cookie
-			if (avatar.avatar) datosDuros.avatarBorrar = avatar.avatar;
-			req.session.datosDuros = datosDuros;
-			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-
 			// Elimina el archivo descargado (IM)
 			const carpetaImagen = "./publico/imagenes/9-Provisorio/";
-			if (req.file) comp.gestionArchivos.elimina(carpetaImagen, avatar.avatar)
+			if (datosDuros.avatar) comp.gestionArchivos.elimina(carpetaImagen, datosDuros.avatar);
 
 			// Redirecciona
 			return res.redirect(req.path.slice(1));
 		}
 
-		// 4. Guarda data entrys en algunas session y cookie
-		// 4.1. Datos Adicionales
-		let datosAdics = {...datosDuros, ...avatar};
-		req.session.datosAdics = datosAdics;
-		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
-		// 4.2 Datos Originales
+		// Guarda session y cookie de Datos Adicionales
+		delete datosDuros.avatar, datosDuros.tamano;
+		req.session.datosAdics = datosDuros;
+		res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+
+		// Guarda session y cookie de Datos Originales
 		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 		if (datosDuros.fuente == "IM") {
 			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
@@ -413,12 +413,12 @@ module.exports = {
 		req.session.FA = {...FA}; // Debe escribirse así para que no se pierda info en 'session' cuando se elimina info de FA
 		res.cookie("FA", FA, {maxAge: unDia});
 
-		// Actualiza Session y Cookies de datosOriginales y datosDuros
-		delete FA.url;
-		delete FA.contenido;
+		// Actualiza Session y Cookies de datosDuros
+		delete FA.url, FA.contenido;
 		req.session.datosDuros = FA;
 		res.cookie("datosDuros", FA, {maxAge: unDia});
-		// No se guarda el campo 'avatar', para revisarlo manualmente
+
+		// Actualiza Cookies de datosOriginales - no se guarda el campo 'avatar', para revisarlo manualmente
 		delete FA.avatar_url;
 		res.cookie("datosOriginales", FA, {maxAge: unDia});
 
