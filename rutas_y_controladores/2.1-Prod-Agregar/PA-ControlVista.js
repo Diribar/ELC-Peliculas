@@ -93,8 +93,6 @@ module.exports = {
 		// 1. Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		datosDuros = {...datosDuros, ...req.body};
-		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// 2. Acciones si se ingresó un archivo de imagen
 		let avatar = {};
@@ -103,16 +101,25 @@ module.exports = {
 			avatar.avatar = req.file.filename;
 			avatar.tamano = req.file.size;
 			avatar.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
-			// Actualiza en Datos Duros la session y cookie
-			req.session.datosDuros = {...datosDuros, avatarBorrar: avatar.avatar};
-			res.cookie("datosDuros", {...datosDuros, avatarBorrar: avatar.avatar}, {maxAge: unDia});
 		}
 
 		// 3. Acciones si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, {...datosDuros, ...avatar});
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		if (errores.hay) {
+			// Guarda Session y Cookie
+			if (avatar.avatar) datosDuros.avatarBorrar = avatar.avatar;
+			req.session.datosDuros = datosDuros;
+			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
+			// Elimina el archivo descargado (IM)
+			const carpetaImagen = "./publico/imagenes/9-Provisorio/";
+			if (req.file) comp.gestionArchivos.elimina(carpetaImagen, avatar.avatar)
+
+			// Redirecciona
+			return res.redirect(req.path.slice(1));
+		}
 
 		// 4. Guarda data entrys en algunas session y cookie
 		// 4.1. Datos Adicionales
@@ -397,7 +404,7 @@ module.exports = {
 		}
 		if (errores.hay) {
 			req.session.FA = FA;
-			res.cookie("FA", FA, {maxAge: unDia});	
+			res.cookie("FA", FA, {maxAge: unDia});
 			return res.redirect(req.originalUrl);
 		}
 
@@ -405,14 +412,14 @@ module.exports = {
 		FA = {...FA, ...procesos.infoFAparaDD(FA)};
 		req.session.FA = {...FA}; // Debe escribirse así para que no se pierda info en 'session' cuando se elimina info de FA
 		res.cookie("FA", FA, {maxAge: unDia});
-		
+
 		// Actualiza Session y Cookies de datosOriginales y datosDuros
 		delete FA.url;
 		delete FA.contenido;
 		req.session.datosDuros = FA;
 		res.cookie("datosDuros", FA, {maxAge: unDia});
 		// No se guarda el campo 'avatar', para revisarlo manualmente
-		delete FA.avatar_url
+		delete FA.avatar_url;
 		res.cookie("datosOriginales", FA, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
