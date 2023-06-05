@@ -174,6 +174,7 @@ module.exports = {
 		const userID = req.session.usuario.id;
 
 		// Si recibimos un avatar, se completa la información
+		console.log(177, req.file);
 		if (req.file) {
 			req.body.avatar = req.file.filename;
 			req.body.avatar_url = req.file.originalname;
@@ -182,6 +183,7 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const avatarEdicInicial = edicion.avatar;
 		if (original.capitulos) delete original.capitulos;
 
 		// Averigua si el usuario tiene el perfil de revisor
@@ -228,15 +230,18 @@ module.exports = {
 					// Mueve el archivo de la edición para reemplazar el original
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Final");
 					// Elimina el anterior archivo de imagen original
+					console.log(231);
 					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Final/", original.avatar);
 				} else {
 					// Mueve el archivo de la edición para su revisión
-					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
+					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar", true);
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
+					if (edicion.avatar)
+						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
 		} else {
+			console.log(242, errores);
 			// Si recibimos un archivo avatar editado, lo elimina
 			if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
 
