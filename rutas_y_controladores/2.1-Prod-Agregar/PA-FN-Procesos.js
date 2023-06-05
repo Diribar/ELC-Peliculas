@@ -480,7 +480,7 @@ module.exports = {
 		if (indice("Dirección") > 0) resultado.direccion = contenidos[indice("Dirección") + 1];
 		if (indice("Guion") > 0) resultado.guion = contenidos[indice("Guion") + 1];
 		if (indice("Música") > 0) resultado.musica = contenidos[indice("Música") + 1];
-		if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1];
+		// if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1]; // Cambió el formato
 		if (indice("Productora") > 0) resultado.produccion = contenidos[indice("Productora") + 1];
 		else if (indice("Compañías") > 0) resultado.produccion = contenidos[indice("Compañías") + 1];
 		if (indice("Sinopsis") > 0) {
