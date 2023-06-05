@@ -13,7 +13,7 @@ const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const circuitoProdAgregar = require("../../middlewares/varios/circuitoProdAgregar");
 const usAutorizFA = require("../../middlewares/filtrosPorUsuario/usAutorizFA");
 // Específicos de productos
-const prodYaEnBD = require("../../middlewares/filtrosPorEntidad/prodYaEnBD");
+const prodYaEnBD = require("../../middlewares/filtrosPorRegistro/prodYaEnBD");
 // Consolidados
 const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, circuitoProdAgregar];
 const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];

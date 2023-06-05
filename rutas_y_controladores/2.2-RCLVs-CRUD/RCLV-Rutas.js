@@ -13,14 +13,14 @@ const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenaliza
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de RCLVs
-const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
-const edicion = require("../../middlewares/filtrosPorEntidad/edicion");
-const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrecto");
-const motivoNecesario = require("../../middlewares/filtrosPorEntidad/motivoNecesario");
-const rclvNoEditable = require("../../middlewares/filtrosPorEntidad/rclvNoEditable");
+const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
+const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
+const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
+const rclvNoEditable = require("../../middlewares/filtrosPorRegistro/rclvNoEditable");
 // Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios

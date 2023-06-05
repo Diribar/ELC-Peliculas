@@ -7,7 +7,7 @@ const vista = require("./MS-ControlVista");
 
 //************************ Middlewares ******************************
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
-const entidadRclv = require("../../middlewares/filtrosPorEntidad/entidadRclv");
+const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
 
 //************************ Rutas ****************************
 // Rutas de APIs

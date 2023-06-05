@@ -12,14 +12,14 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de entidades
-const entValida = require("../../middlewares/filtrosPorEntidad/entidadValida");
-const IDvalido = require("../../middlewares/filtrosPorEntidad/IDvalido");
-const statusCorrecto = require("../../middlewares/filtrosPorEntidad/statusCorrecto");
-const edicion = require("../../middlewares/filtrosPorEntidad/edicion");
-const motivoNecesario = require("../../middlewares/filtrosPorEntidad/motivoNecesario");
-const motivoOpcional = require("../../middlewares/filtrosPorEntidad/motivoOpcional");
+const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
+const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
+const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
+const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
+const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
+const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
 // Temas de captura
-const permUserReg = require("../../middlewares/filtrosPorEntidad/permUserReg");
+const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Consolidado
