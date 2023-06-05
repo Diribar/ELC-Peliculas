@@ -378,7 +378,7 @@ module.exports = {
 		});
 	},
 	copiarFA_Guardar: async (req, res) => {
-		// 1. Obtiene el Data Entry de session y cookies y actualiza la información
+		// Obtiene el Data Entry de session y cookies y actualiza la información
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
 
 		// Guarda el data entry en session y cookie
@@ -401,28 +401,26 @@ module.exports = {
 		}
 		if (errores.hay) return res.redirect(req.originalUrl);
 
-		// Si NO hay errores...
-		// 1. Genera la variable 'datos' y le asigna los valores disponibles que necesita
+		// Genera la variable 'datos'
 		let datos = {...FA, ...procesos.infoFAparaDD(FA)};
 		delete datos.url;
 		delete datos.contenido;
 
-		// 2. Descarga la imagen
+		// Actualiza Datos Originales - no se guarda 'avatar' porque su lectura es incompatible con el navegador
+		let datosOriginales = {...datos};
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
+
+		// Descarga la imagen
 		datos.avatar = Date.now() + path.extname(FA.avatar_url);
 		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
 		await comp.gestionArchivos.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
 
-		// 3. Actualiza algunas session y cookie
-		// 3.1. Datos Originales
-		let datosOriginales = {...datos};
-		delete datosOriginales.avatar; // Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
-		delete datosOriginales.avatar_url;
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
-		// 3.2. Film Affinity
+		// Actualiza Film Affinity
 		FA.avatarBorrar = datos.avatar;
 		req.session.FA = FA;
 		res.cookie("FA", FA, {maxAge: unDia});
-		// 3.3. Datos Duros
+
+		// Actualiza Datos Duros
 		req.session.datosDuros = datos;
 		res.cookie("datosDuros", datos, {maxAge: unDia});
 
