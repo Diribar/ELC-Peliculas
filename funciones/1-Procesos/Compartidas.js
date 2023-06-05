@@ -347,7 +347,6 @@ module.exports = {
 			return;
 		},
 		descarga: async (url, rutaYnombre, output) => {
-			console.log(350,"descarga");
 			// Carpeta donde descargar
 			let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
 			let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
@@ -357,7 +356,7 @@ module.exports = {
 			let writer = fs.createWriteStream(rutaYnombre);
 			let response = await axios({method: "GET", url, responseType: "stream"});
 			response.data.pipe(writer);
-			
+
 			// Obtiene el resultado de la descarga
 			let resultado = await new Promise((resolve, reject) => {
 				writer.on("finish", () => {
