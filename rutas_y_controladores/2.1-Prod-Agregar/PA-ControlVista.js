@@ -123,7 +123,7 @@ module.exports = {
 
 		// Guarda session y cookie de Datos Adicionales
 		delete datosDuros.avatar, datosDuros.tamano;
-		req.session.datosAdics = datosDuros;
+		req.session.datosAdics = {...datosDuros};
 		res.cookie("datosAdics", datosDuros, {maxAge: unDia});
 
 		// Guarda session y cookie de Datos Originales
@@ -386,7 +386,7 @@ module.exports = {
 		// Obtiene el Data Entry de session y cookies y actualiza la información
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
 
-		// Guarda el data entry en session y cookie
+		// Actualiza la información
 		FA = {...FA, ...req.body};
 
 		// Si hay errores de validación, redirecciona
@@ -418,7 +418,7 @@ module.exports = {
 		req.session.datosDuros = FA;
 		res.cookie("datosDuros", FA, {maxAge: unDia});
 
-		// Actualiza Cookies de datosOriginales - no se guarda el campo 'avatar', para revisarlo manualmente
+		// Actualiza Cookies de datosOriginales - no se guarda el campo 'avatar_url', para revisarlo manualmente
 		delete FA.avatar_url;
 		res.cookie("datosOriginales", FA, {maxAge: unDia});
 
