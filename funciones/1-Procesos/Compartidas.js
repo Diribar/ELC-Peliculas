@@ -325,6 +325,7 @@ module.exports = {
 			if (!this.existe("./publico/imagenes/9-Provisorio"))
 				// Si no existe, la crea
 				fs.mkdirSync("./publico/imagenes/9-Provisorio");
+
 			// Fin
 			return;
 		},
@@ -346,11 +347,10 @@ module.exports = {
 			// Fin
 			return;
 		},
-		descarga: async (url, rutaYnombre, output) => {
+		descarga: async function (url, rutaYnombre, output) {
 			// Carpeta donde descargar
-			let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-			let nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
-			if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+			const ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+			if (!this.existe(ruta)) fs.mkdirSync(ruta);
 
 			// Realiza la descarga
 			let writer = fs.createWriteStream(rutaYnombre);
@@ -360,6 +360,7 @@ module.exports = {
 			// Obtiene el resultado de la descarga
 			let resultado = await new Promise((resolve, reject) => {
 				writer.on("finish", () => {
+					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
 					if (output) console.log("Imagen '" + nombre + "' guardada");
 					resolve("OK");
 				});
@@ -656,7 +657,7 @@ module.exports = {
 
 		// Agrega los nuevos
 		for (let prod of prods) if (!resultado.find((n) => n.id == prod.id && n.entidad == prod.entidad)) resultado.push(prod);
-		
+
 		// Fin
 		return resultado;
 	},
