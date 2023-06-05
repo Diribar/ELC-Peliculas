@@ -92,7 +92,7 @@ module.exports = {
 		const revID = req.session.usuario.id;
 		let durac_penalidad = 0;
 		let status_registro_id = st_ident_validada_id;
-		let objeto = {fecha_revisores: comp.fechaHora.ahora()};
+		let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 
 		// Obtiene el usuario
 		const usuario = await BD_genericas.obtienePorId("usuarios", datos.id);

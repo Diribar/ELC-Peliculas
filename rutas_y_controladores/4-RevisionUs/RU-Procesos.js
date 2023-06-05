@@ -16,7 +16,7 @@ module.exports = {
 
 			// Procesa la información
 			usuarios = usuarios.map((n) => {
-				let fecha = comp.fechaHora.fechaHorario(n.fecha_revisores).replace("a las", "-");
+				let fecha = comp.fechaHora.fechaHorario(n.fechaRevisores).replace("a las", "-");
 				return {id: n.id, apodo: n.apodo, fecha};
 			});
 
@@ -83,7 +83,7 @@ module.exports = {
 				duracion: motivo.duracion,
 	
 				editado_por_id: usuario.id,
-				editado_en: usuario.fecha_revisores,
+				editado_en: usuario.fechaRevisores,
 				edic_revisada_por_id: revID,
 				edic_revisada_en: comp.fechaHora.ahora(),
 			};
