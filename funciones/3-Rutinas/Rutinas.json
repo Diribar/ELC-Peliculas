@@ -1,9 +1,9 @@
 {
-	"FechaUTC": "Vie. 2/jun",
-	"HoraUTC": "9:22",
-	"FechaSemUTC": "Lun. 29/may",
-	"HoraSemUTC": "10:34",
-	"semanaUTC": 21,
+	"FechaUTC": "Lun. 5/jun",
+	"HoraUTC": "17:16",
+	"FechaSemUTC": "Lun. 5/jun",
+	"HoraSemUTC": "17:16",
+	"semanaUTC": 22,
 	"Separador1:": "---------------- RUTINAS HORARIAS --------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"01-jun-23": {"titulo": "ELC - Películas"},
-		"02-jun-23": {"titulo": "ELC - Películas"},
-		"03-jun-23": {"titulo": "ELC - Películas"}
+		"04-jun-23": {"titulo": "Santísima Trinidad", "entidad": "eventos", "id": 24},
+		"05-jun-23": {"titulo": "ELC - Películas"},
+		"06-jun-23": {"titulo": "ELC - Películas"}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
