@@ -182,6 +182,7 @@ module.exports = {
 
 		// Obtiene el producto 'Original' y 'Editado'
 		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const avatarEdicInicial = edicion.avatar;
 		if (original.capitulos) delete original.capitulos;
 
 		// Averigua si el usuario tiene el perfil de revisor
@@ -233,7 +234,8 @@ module.exports = {
 					// Mueve el archivo de la edición para su revisión
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", edicion.avatar);
+					if (edicion.avatar)
+						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
 		} else {

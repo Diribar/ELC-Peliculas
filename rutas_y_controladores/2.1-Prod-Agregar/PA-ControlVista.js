@@ -56,8 +56,8 @@ module.exports = {
 		const codigo = "datosDuros";
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (datosDuros.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatarBorrar);
+		// Si existe un valor para el campo 'avatar' elimina el archivo descargado
+		if (datosDuros.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
 
 		// Obtiene los errores
 		const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -90,36 +90,43 @@ module.exports = {
 		});
 	},
 	datosDurosGuardar: async (req, res) => {
-		// 1. Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
+		// Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		datosDuros = {...datosDuros, ...req.body};
-		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
-		// 2. Acciones si se ingresó un archivo de imagen
-		let avatar = {};
+		// Acciones si se ingresó un archivo de imagen (IM)
 		if (req.file) {
 			// Obtiene la información sobre el avatar
-			avatar.avatar = req.file.filename;
-			avatar.tamano = req.file.size;
-			avatar.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
-			// Actualiza en Datos Duros la session y cookie
-			req.session.datosDuros = {...datosDuros, avatarBorrar: avatar.avatar};
-			res.cookie("datosDuros", {...datosDuros, avatarBorrar: avatar.avatar}, {maxAge: unDia});
+			datosDuros.avatar = req.file.filename;
+			datosDuros.tamano = req.file.size;
+			datosDuros.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
 		}
+		// Elimina la información que hubiera previamente sobre el avatar
+		else delete datosDuros.avatar, datosDuros.tamano;
 
-		// 3. Acciones si hay errores de validación
+		// Guarda Session y Cookie de Datos Duros
+		req.session.datosDuros = {...datosDuros};
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
+		// Acciones si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombre, {...datosDuros, ...avatar});
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+		if (errores.hay) {
+			// Elimina el archivo descargado (IM)
+			const carpetaImagen = "./publico/imagenes/9-Provisorio/";
+			if (datosDuros.avatar) comp.gestionArchivos.elimina(carpetaImagen, datosDuros.avatar);
 
-		// 4. Guarda data entrys en algunas session y cookie
-		// 4.1. Datos Adicionales
-		let datosAdics = {...datosDuros, ...avatar};
-		req.session.datosAdics = datosAdics;
-		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
-		// 4.2 Datos Originales
+			// Redirecciona
+			return res.redirect(req.path.slice(1));
+		}
+
+		// Guarda session y cookie de Datos Adicionales
+		delete datosDuros.avatar, datosDuros.tamano;
+		req.session.datosAdics = {...datosDuros};
+		res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+
+		// Guarda session y cookie de Datos Originales
 		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 		if (datosDuros.fuente == "IM") {
 			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
@@ -255,7 +262,7 @@ module.exports = {
 			let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
 			comp.gestionArchivos.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		}
-		// Si ya se había descargado el avatar, lo mueve de 'provisorio' a 'revisar'
+		// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'
 		else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
 
 		// EDICION -------------------------------------
@@ -362,14 +369,12 @@ module.exports = {
 		return res.redirect(req.baseUrl + sigPaso.url);
 	},
 	copiarFA_Form: async (req, res) => {
-		// 1. Tema y Código
+		// Variables
 		const tema = "prod_agregar";
 		const codigo = "FA";
-		// 2. Obtiene el Data Entry de session y cookies
-		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
-		// 3. Si existe un valor para el campo 'avatarBorrar' elimina el archivo descargado
-		if (FA.avatarBorrar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", FA.avatarBorrar);
-		// 4. Render del formulario
+		const FA = req.session.FA ? req.session.FA : req.cookies.FA;
+
+		// Fin
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -378,13 +383,11 @@ module.exports = {
 		});
 	},
 	copiarFA_Guardar: async (req, res) => {
-		// 1. Obtiene el Data Entry de session y cookies y actualiza la información
+		// Obtiene el Data Entry de session y cookies y actualiza la información
 		let FA = req.session.FA ? req.session.FA : req.cookies.FA;
 
-		// Guarda el data entry en session y cookie
+		// Actualiza la información
 		FA = {...FA, ...req.body};
-		req.session.FA = FA;
-		res.cookie("FA", FA, {maxAge: unDia});
 
 		// Si hay errores de validación, redirecciona
 		let errores = valida.FA(FA);
@@ -399,32 +402,25 @@ module.exports = {
 				errores.hay = true;
 			}
 		}
-		if (errores.hay) return res.redirect(req.originalUrl);
+		if (errores.hay) {
+			req.session.FA = FA;
+			res.cookie("FA", FA, {maxAge: unDia});
+			return res.redirect(req.originalUrl);
+		}
 
-		// Si NO hay errores...
-		// 1. Genera la variable 'datos' y le asigna los valores disponibles que necesita
-		let datos = {...FA, ...procesos.infoFAparaDD(FA)};
-		delete datos.url;
-		delete datos.contenido;
-
-		// 2. Descarga la imagen
-		datos.avatar = Date.now() + path.extname(FA.avatar_url);
-		let rutaYnombre = "./publico/imagenes/9-Provisorio/" + datos.avatar;
-		await comp.gestionArchivos.descarga(datos.avatar_url, rutaYnombre); // Hace falta el 'await' porque el proceso espera un resultado
-
-		// 3. Actualiza algunas session y cookie
-		// 3.1. Datos Originales
-		let datosOriginales = {...datos};
-		delete datosOriginales.avatar; // Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
-		delete datosOriginales.avatar_url;
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
-		// 3.2. Film Affinity
-		FA.avatarBorrar = datos.avatar;
-		req.session.FA = FA;
+		// Actualiza Session y Cookies FA
+		FA = {...FA, ...procesos.infoFAparaDD(FA)};
+		req.session.FA = {...FA}; // Debe escribirse así para que no se pierda info en 'session' cuando se elimina info de FA
 		res.cookie("FA", FA, {maxAge: unDia});
-		// 3.3. Datos Duros
-		req.session.datosDuros = datos;
-		res.cookie("datosDuros", datos, {maxAge: unDia});
+
+		// Actualiza Session y Cookies de datosDuros
+		delete FA.url, FA.contenido;
+		req.session.datosDuros = FA;
+		res.cookie("datosDuros", FA, {maxAge: unDia});
+
+		// Actualiza Cookies de datosOriginales - no se guarda el campo 'avatar_url', para revisarlo manualmente
+		delete FA.avatar_url;
+		res.cookie("datosOriginales", FA, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");

@@ -308,9 +308,9 @@ module.exports = {
 		return;
 	},
 	// Agregado de Capítulos de TV
-	agregaCaps_TV: function (datosCol) {
+	agregaCaps_TV: async function (datosCol) {
 		// Loop de TEMPORADAS
-		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) this.agregaUnCap_TV(datosCol, temporada);
+		for (let temporada = 1; temporada <= datosCol.cant_temps; temporada++) await this.agregaUnaTemp_TV(datosCol, temporada);
 
 		// Fin
 		return;
@@ -326,7 +326,7 @@ module.exports = {
 
 		// Genera la información a guardar
 		const datosCap = {
-			...{fuente: "TMDB", coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
+			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
 			...{paises_id, idioma_original_id},
 			...{direccion, guion, musica, actores, produccion},
 			// ...{cfc, ocurrio, musical, color, tipo_actuacion_id},
@@ -344,20 +344,20 @@ module.exports = {
 		// Fin
 		return;
 	},
-	agregaUnCap_TV: async function (datosCol, temporada) {
+	agregaUnaTemp_TV: async function (datosCol, temporada) {
 		// Datos de UNA TEMPORADA
 		let datosTemp = await Promise.all([
 			APIsTMDB.details(temporada, datosCol.TMDB_id),
 			APIsTMDB.credits(temporada, datosCol.TMDB_id),
 		]).then(([a, b]) => ({...a, ...b}));
 
-		// Loop de CAPITULOS ********************************************
-		for (let episode of datosTemp.episodes) {
+		// Rutina para CAPITULOS
+		for (let datosCap of datosTemp.episodes) {
 			// Obtiene la información del registro
-			let datosCap = this.infoTMDB_capsTV(datosCol, datosTemp, episode);
+			const capitulo = this.infoTMDB_capsTV(datosCol, datosTemp, datosCap);
 
 			// Guarda el registro
-			await BD_genericas.agregaRegistro("capitulos", datosCap);
+			await BD_genericas.agregaRegistro("capitulos", capitulo);
 		}
 
 		// Fin
@@ -480,7 +480,7 @@ module.exports = {
 		if (indice("Dirección") > 0) resultado.direccion = contenidos[indice("Dirección") + 1];
 		if (indice("Guion") > 0) resultado.guion = contenidos[indice("Guion") + 1];
 		if (indice("Música") > 0) resultado.musica = contenidos[indice("Música") + 1];
-		if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1];
+		// if (indice("Reparto") > 0) resultado.actores = contenidos[indice("Reparto") + 1]; // Cambió el formato
 		if (indice("Productora") > 0) resultado.produccion = contenidos[indice("Productora") + 1];
 		else if (indice("Compañías") > 0) resultado.produccion = contenidos[indice("Compañías") + 1];
 		if (indice("Sinopsis") > 0) {
