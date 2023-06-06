@@ -125,10 +125,10 @@ module.exports = {
 
 		// Guarda session y cookie de Datos Originales
 		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
-		if (datosDuros.fuente == "IM") {
+		if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
 			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
 			datosOriginales = {...datosOriginales, nombre_original, nombre_castellano, ano_estreno, sinopsis};
-			// Para estandarizar con los demás tipos de ingreso, en el original sólo van urls
+			// No se guarda el link en el avatar, para revisarlo en Revisión
 		}
 		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
@@ -357,6 +357,7 @@ module.exports = {
 
 		// Guarda en 'cookie' de datosOriginales
 		res.cookie("datosOriginales", IM, {maxAge: unDia});
+
 		// Guarda en 'session' y 'cookie' del siguiente paso
 		let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
 		req.session[sigPaso.codigo] = IM;
@@ -386,40 +387,26 @@ module.exports = {
 		// Actualiza la información
 		FA = {...FA, ...req.body};
 
+		// Actualiza Session y Cookies FA
+		req.session.FA = FA;
+		res.cookie("FA", FA, {maxAge: unDia});
+
 		// Si hay errores de validación, redirecciona
 		let errores = valida.FA(FA);
-		if (!errores.url) {
+		if (!errores.url && !errores.hay) {
 			// Obtiene el FA_id
 			FA.FA_id = procesos.obtieneFA_id(FA.url);
 			// Averigua si el FA_id ya está en la BD
 			let elc_id = await BD_especificas.obtieneELC_id(FA.entidad, {FA_id: FA.FA_id});
-			if (elc_id) {
-				errores.url = "Ya la tenemos en nuestra base de datos";
-				errores.elc_id = elc_id;
-				errores.hay = true;
-			}
+			if (elc_id) errores.hay = true;
 		}
-		if (errores.hay) {
-			req.session.FA = FA;
-			res.cookie("FA", FA, {maxAge: unDia});
-			return res.redirect(req.originalUrl);
-		}
-
-		// Actualiza Session y Cookies FA
-		FA = {...FA, ...procesos.infoFAparaDD(FA)};
-		req.session.FA = FA;
-		res.cookie("FA", FA, {maxAge: unDia});
+		if (errores.hay) return res.redirect(req.originalUrl);
 
 		// Actualiza Session y Cookies de datosDuros
-		const datosDuros = {...FA};
+		const datosDuros = {...FA, ...procesos.infoFAparaDD(FA)};
 		delete datosDuros.url, datosDuros.contenido;
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-
-		// Actualiza Cookies de datosOriginales
-		const datosOriginales = {...datosDuros};
-		delete datosOriginales.avatar_url; // Se descarta el campo 'avatar_url' porque no se lo incluye en el registro original
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia}); // No se guarda el campo 'avatar', para revisarlo manualmente
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
