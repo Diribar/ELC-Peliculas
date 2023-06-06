@@ -108,26 +108,19 @@ module.exports = {
 		}
 
 		// Guarda Session y Cookie de Datos Duros
-		req.session.datosDuros = {...datosDuros};
+		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// Acciones si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
-		if (errores.hay) {
-			// Elimina el archivo descargado (IM)
-			const carpetaImagen = "./publico/imagenes/9-Provisorio/";
-			if (datosDuros.avatar) comp.gestionArchivos.elimina(carpetaImagen, datosDuros.avatar);
-
-			// Redirecciona
-			return res.redirect(req.path.slice(1));
-		}
+		if (errores.hay) return res.redirect(req.path.slice(1));
 
 		// Guarda session y cookie de Datos Adicionales
 		const datosAdics = {...datosDuros};
 		delete datosAdics.tamano;
-		req.session.datosAdics = {...datosAdics};
+		req.session.datosAdics = datosAdics;
 		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 
 		// Guarda session y cookie de Datos Originales
