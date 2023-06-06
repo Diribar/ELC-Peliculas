@@ -124,15 +124,15 @@ module.exports = {
 		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 
 		// Guarda session y cookie de Datos Originales
-		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 		if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
-			let {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
+			const {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
+			let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 			datosOriginales = {...datosOriginales, nombre_original, nombre_castellano, ano_estreno, sinopsis};
+			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 			// No se guarda el link en el avatar, para revisarlo en Revisión
 		}
-		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
-		// 5. Redirecciona a la siguiente instancia
+		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-adicionales");
 	},
 	datosAdicsForm: async (req, res) => {
