@@ -57,7 +57,12 @@ module.exports = {
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		// Si existe un valor para el campo 'avatar' elimina el archivo descargado
-		if (datosDuros.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
+		if (datosDuros.avatar) {
+			comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
+			delete datosDuros.avatar, datosDuros.tamano;
+			req.session.datosDuros = datosDuros;
+			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+		}
 
 		// Obtiene los errores
 		const camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -101,30 +106,22 @@ module.exports = {
 			datosDuros.tamano = req.file.size;
 			datosDuros.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
 		}
-		// Elimina la información que hubiera previamente sobre el avatar
-		else delete datosDuros.avatar, datosDuros.tamano;
 
 		// Guarda Session y Cookie de Datos Duros
-		req.session.datosDuros = {...datosDuros};
+		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// Acciones si hay errores de validación
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
-		if (errores.hay) {
-			// Elimina el archivo descargado (IM)
-			const carpetaImagen = "./publico/imagenes/9-Provisorio/";
-			if (datosDuros.avatar) comp.gestionArchivos.elimina(carpetaImagen, datosDuros.avatar);
-
-			// Redirecciona
-			return res.redirect(req.path.slice(1));
-		}
+		if (errores.hay) return res.redirect(req.path.slice(1));
 
 		// Guarda session y cookie de Datos Adicionales
-		delete datosDuros.avatar, datosDuros.tamano;
-		req.session.datosAdics = {...datosDuros};
-		res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+		const datosAdics = {...datosDuros};
+		delete datosAdics.tamano;
+		req.session.datosAdics = datosAdics;
+		res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 
 		// Guarda session y cookie de Datos Originales
 		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
@@ -410,17 +407,19 @@ module.exports = {
 
 		// Actualiza Session y Cookies FA
 		FA = {...FA, ...procesos.infoFAparaDD(FA)};
-		req.session.FA = {...FA}; // Debe escribirse así para que no se pierda info en 'session' cuando se elimina info de FA
+		req.session.FA = FA;
 		res.cookie("FA", FA, {maxAge: unDia});
 
 		// Actualiza Session y Cookies de datosDuros
-		delete FA.url, FA.contenido;
-		req.session.datosDuros = FA;
-		res.cookie("datosDuros", FA, {maxAge: unDia});
+		const datosDuros = {...FA};
+		delete datosDuros.url, datosDuros.contenido;
+		req.session.datosDuros = datosDuros;
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
-		// Actualiza Cookies de datosOriginales - no se guarda el campo 'avatar_url', para revisarlo manualmente
-		delete FA.avatar_url;
-		res.cookie("datosOriginales", FA, {maxAge: unDia});
+		// Actualiza Cookies de datosOriginales
+		const datosOriginales = {...datosDuros};
+		delete datosOriginales.avatar_url; // Se descarta el campo 'avatar_url' porque no se lo incluye en el registro original
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia}); // No se guarda el campo 'avatar', para revisarlo manualmente
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
