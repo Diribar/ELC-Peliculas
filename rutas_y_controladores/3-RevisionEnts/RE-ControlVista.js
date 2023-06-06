@@ -257,7 +257,7 @@ module.exports = {
 				if (entidad == "epocas_del_ano") {
 					// Si tiene imagen, la copia en su carpeta
 					if (datos.avatar) {
-						const archivo_avatar = "3-EpocasDelAno/" + datos.carpeta_avatars + "/" + datos.avatar;
+						const archivo_avatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
 						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
 					}
 

@@ -260,7 +260,7 @@ module.exports = {
 			"dias_de_duracion",
 			"comentario_duracion",
 			"prioridad_id",
-			"carpeta_avatars",
+			"carpetaAvatars",
 			"avatar",
 		],
 	},
@@ -403,7 +403,7 @@ module.exports = {
 			// Epocas del año
 			{nombre: "dias_de_duracion", titulo: "Días de Duración", epocas_del_ano: true},
 			{nombre: "comentario_duracion", titulo: "Comentario Duración", epocas_del_ano: true},
-			{nombre: "carpeta_avatars", titulo: "Carpeta de Imágenes", epocas_del_ano: true},
+			{nombre: "carpetaAvatars", titulo: "Carpeta de Imágenes", epocas_del_ano: true},
 		],
 		links: [
 			{nombre: "calidad", titulo: "Calidad", links: true},

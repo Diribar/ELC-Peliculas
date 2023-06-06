@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		// Específicos
 		dias_de_duracion: {type: dt.INTEGER},
 		comentario_duracion: {type: dt.STRING(70)},
-		carpeta_avatars: {type: dt.STRING(20)},
+		carpetaAvatars: {type: dt.STRING(20)},
 		solapamiento: {type: dt.BOOLEAN},
 
 		// Fechas y Usuarios
