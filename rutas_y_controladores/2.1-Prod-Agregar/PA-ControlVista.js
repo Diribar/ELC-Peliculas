@@ -407,19 +407,19 @@ module.exports = {
 
 		// Actualiza Session y Cookies FA
 		FA = {...FA, ...procesos.infoFAparaDD(FA)};
-		req.session.FA = {...FA}; // Debe escribirse así para que no se pierda info en 'session' cuando se elimina info de FA
+		req.session.FA = FA;
 		res.cookie("FA", FA, {maxAge: unDia});
 
 		// Actualiza Session y Cookies de datosDuros
-		delete FA.url, FA.contenido;
-		req.session.datosDuros = FA;
-		res.cookie("datosDuros", FA, {maxAge: unDia});
+		const datosDuros = {...FA};
+		delete datosDuros.url, datosDuros.contenido;
+		req.session.datosDuros = datosDuros;
+		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// Actualiza Cookies de datosOriginales
-		// Se descarta el campo 'avatar_url' porque no se lo incluye en el registro original
-		delete FA.avatar_url;
-		// No se guarda el campo 'avatar', para revisarlo manualmente
-		res.cookie("datosOriginales", FA, {maxAge: unDia});
+		const datosOriginales = {...datosDuros};
+		delete datosOriginales.avatar_url; // Se descarta el campo 'avatar_url' porque no se lo incluye en el registro original
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia}); // No se guarda el campo 'avatar', para revisarlo manualmente
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");
