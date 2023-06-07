@@ -7,11 +7,11 @@ module.exports = async (req, res, next) => {
 	const reqPath = req.path;
 	const statusEsperado =
 		reqPath == "/editables"
-			? usuario.status_registro.mail_validado
+			? usuario.statusRegistro.mail_validado
 			: reqPath == "/bienvenido" || reqPath == "/identidad"
-			? usuario.status_registro.editables
+			? usuario.statusRegistro.editables
 			: reqPath == "/validacion-en-proceso"
-			? usuario.status_registro.ident_a_validar
+			? usuario.statusRegistro.ident_a_validar
 			: reqPath == "/logout"
 			? true
 			: false;

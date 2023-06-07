@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 	let informacion;
 
 	// Revisa si el usuario tiene validada su identidad
-	if (!usuario.status_registro.ident_validada) informacion = procesos.feedbackSobreIdentidadValidada(req);
+	if (!usuario.statusRegistro.ident_validada) informacion = procesos.feedbackSobreIdentidadValidada(req);
 
 	// Revisa si el usuario tiene el rol necesario
 	if (!informacion && !usuario.rolUsuario.revisorEnts)
