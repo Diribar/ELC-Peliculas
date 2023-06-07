@@ -147,7 +147,7 @@ module.exports = {
 		let informacion;
 
 		// Obtiene el usuario
-		const usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "status_registro");
+		const usuario = await BD_genericas.obtienePorCondicionConInclude("usuarios", {email: datos.email}, "statusRegistro");
 
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
@@ -168,7 +168,7 @@ module.exports = {
 			}
 
 			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
-			else if (usuario.status_registro.ident_a_validar || usuario.status_registro.ident_validada) {
+			else if (usuario.statusRegistro.ident_a_validar || usuario.statusRegistro.ident_validada) {
 				// Verifica los posibles errores
 				errores.documNumero = !datos.documNumero
 					? variables.inputVacio
