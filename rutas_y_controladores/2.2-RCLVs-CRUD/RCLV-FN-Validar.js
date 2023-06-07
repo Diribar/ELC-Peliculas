@@ -156,7 +156,7 @@ module.exports = {
 			: datos.categoria_id == "CFC"
 			? !datos.sexo_id
 				? "Estamos a la espera de que nos informes el sexo"
-				: !datos.rol_iglesia_id
+				: !datos.rolIglesia_id
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.canon_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"

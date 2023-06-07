@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		fechaNacim: {type: dt.DATE},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
-		rol_iglesia_id: {type: dt.STRING(3)},
+		rolIglesia_id: {type: dt.STRING(3)},
 		rolUsuario_id: {type: dt.INTEGER},
 
 		cartelResp_prods: {type: dt.BOOLEAN},
@@ -63,7 +63,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
 		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 		entidad.belongsTo(n.roles_usuarios, {as: "rolUsuario", foreignKey: "rolUsuario_id"});
-		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
+		entidad.belongsTo(n.roles_iglesia, {as: "rolIglesia", foreignKey: "rolIglesia_id"});
 		entidad.belongsTo(n.status_registro_us, {as: "status_registro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.paises, {as: "docum_pais", foreignKey: "documPais_id"});
 

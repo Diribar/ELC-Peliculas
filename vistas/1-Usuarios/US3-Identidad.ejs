@@ -37,16 +37,16 @@
 			</div>
 			<!--Rol en la iglesia-->
 			<div class="labelInput flexCol">
-				<label for="rol_iglesia_id">Rol en la Iglesia<br>Católica</label>
+				<label for="rolIglesia_id">Rol en la Iglesia<br>Católica</label>
 				<div class="inputError">
-					<% rol_iglesia_id = dataEntry ? dataEntry.rol_iglesia_id : "" %>
-					<select name="rol_iglesia_id" class="input" required>
-						<option value="" <% if (!rol_iglesia_id) { %>selected<% } %>>Elejí una opción</option>
-						<% for (let rol_iglesia of roles_iglesia) { %>
-							<option value="<%= rol_iglesia.id %>" <% if (rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>><%= rol_iglesia.nombre %></option>
+					<% rolIglesia_id = dataEntry ? dataEntry.rolIglesia_id : "" %>
+					<select name="rolIglesia_id" class="input" required>
+						<option value="" <% if (!rolIglesia_id) { %>selected<% } %>>Elejí una opción</option>
+						<% for (let rolIglesia of roles_iglesia) { %>
+							<option value="<%= rolIglesia.id %>" <% if (rolIglesia_id == rolIglesia.id) { %>selected<% } %>><%= rolIglesia.nombre %></option>
 						<% } %> 
 					</select>
-					<%- include("CMP-Errores", {nombre: "rol_iglesia_id", display: true}) %>
+					<%- include("CMP-Errores", {nombre: "rolIglesia_id", display: true}) %>
 				</div>
 			</div>
 			<!--Fecha de Nacimiento-->

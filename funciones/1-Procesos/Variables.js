@@ -244,7 +244,7 @@ module.exports = {
 			"epoca_id",
 			"ano",
 			"categoria_id",
-			"rol_iglesia_id",
+			"rolIglesia_id",
 			"canon_id",
 			"apMar_id",
 			"avatar",
@@ -383,10 +383,10 @@ module.exports = {
 			{nombre: "sexo_id", titulo: "Sexo", personajes: true, relacInclude: "sexo", tabla: "sexos"},
 			{nombre: "categoria_id", titulo: "Categoría", personajes: true, relacInclude: "categoria", tabla: "categorias"},
 			{
-				nombre: "rol_iglesia_id",
+				nombre: "rolIglesia_id",
 				titulo: "Rol en la Iglesia",
 				personajes: true,
-				relacInclude: "rol_iglesia",
+				relacInclude: "rolIglesia",
 				tabla: "roles_iglesia",
 			},
 			{

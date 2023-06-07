@@ -248,7 +248,7 @@ module.exports = {
 					nombre: n.nombre,
 					categoria_id: n.categoria_id,
 					epoca_id: n.epoca_id,
-					rol_iglesia_id: n.rol_iglesia_id,
+					rolIglesia_id: n.rolIglesia_id,
 					apMar_id: n.apMar_id,
 				};
 			});
@@ -257,10 +257,10 @@ module.exports = {
 		// Grupos Estándar
 		let grupos = [
 			{orden: 2, codigo: "ant", campo: "epoca_id", label: "Antiguo Testamento", clase: "CFC VPC"},
-			{orden: 3, codigo: "SF", campo: "rol_iglesia_id", label: "Sagrada Familia", clase: "CFC"},
-			{orden: 4, codigo: "AL", campo: "rol_iglesia_id", label: "Apóstoles", clase: "CFC"},
+			{orden: 3, codigo: "SF", campo: "rolIglesia_id", label: "Sagrada Familia", clase: "CFC"},
+			{orden: 4, codigo: "AL", campo: "rolIglesia_id", label: "Apóstoles", clase: "CFC"},
 			{orden: 5, codigo: "cnt", campo: "epoca_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
-			{orden: 6, codigo: "PP", campo: "rol_iglesia_id", label: "Papas", clase: "CFC"},
+			{orden: 6, codigo: "PP", campo: "rolIglesia_id", label: "Papas", clase: "CFC"},
 			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
 			{orden: 7, codigo: "pst", campo: "epoca_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
 		];
@@ -272,8 +272,8 @@ module.exports = {
 			personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
 			if (personaje.apMar_id != 10) personaje.clase += " AMA AM" + personaje.apMar_id;
 
-			// Si tiene 'rol_iglesia_id'
-			if (personaje.rol_iglesia_id) {
+			// Si tiene 'rolIglesia_id'
+			if (personaje.rolIglesia_id) {
 				let OK = false;
 				// Si es alguno de los 'grupos'
 				for (let grupo of grupos)
@@ -283,7 +283,7 @@ module.exports = {
 						break;
 					}
 			}
-			// Si no tiene 'rol_iglesia_id' --> lo agrega a los casos puntuales
+			// Si no tiene 'rolIglesia_id' --> lo agrega a los casos puntuales
 			else casosPuntuales.push(personaje);
 		}
 		// Grupo 'Casos Puntuales'

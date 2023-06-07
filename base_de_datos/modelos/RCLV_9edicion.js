@@ -26,7 +26,7 @@ module.exports = (sequelize, dt) => {
 		categoria_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 		canon_id: {type: dt.STRING(3)},
-		rol_iglesia_id: {type: dt.STRING(3)},
+		rolIglesia_id: {type: dt.STRING(3)},
 
 		// Específico de 'hechos'
 		solo_cfc: {type: dt.BOOLEAN},
@@ -60,7 +60,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "apMar_id"});
 		entidad.belongsTo(n.canons, {as: "canon", foreignKey: "canon_id"});
-		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
+		entidad.belongsTo(n.roles_iglesia, {as: "rolIglesia", foreignKey: "rolIglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
 	};

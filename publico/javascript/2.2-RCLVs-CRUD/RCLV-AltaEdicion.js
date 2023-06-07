@@ -58,8 +58,8 @@ window.addEventListener("load", async () => {
 		camposRCLIC: document.querySelectorAll("form #sectorRCLIC .input"),
 		preguntasRCLIC: document.querySelectorAll("form #sectorRCLIC #preguntasRCLIC .input"),
 		categorias_id: document.querySelectorAll("form input[name='categoria_id']"),
-		rol_iglesia_id: document.querySelector("form select[name='rol_iglesia_id']"),
-		opcionesRolIglesia: document.querySelectorAll("form select[name='rol_iglesia_id'] option"),
+		rolIglesia_id: document.querySelector("form select[name='rolIglesia_id']"),
+		opcionesRolIglesia: document.querySelectorAll("form select[name='rolIglesia_id'] option"),
 		canon_id: document.querySelector("form select[name='canon_id']"),
 		opcionesProceso: document.querySelectorAll("form select[name='canon_id'] option"),
 		sectorApMar: document.querySelector("form #sectorApMar"),
@@ -329,7 +329,7 @@ window.addEventListener("load", async () => {
 					if (opcion.value.slice(-1) == sexo_id.value || opcion.value <= 2) select.appendChild(opcion);
 			};
 			// Opciones de 'Rol en la Iglesia'
-			FN(DOM.rol_iglesia_id, DOM.opcionesRolIglesia);
+			FN(DOM.rolIglesia_id, DOM.opcionesRolIglesia);
 			// Opciones de 'Proceso de Canonización'
 			FN(DOM.canon_id, DOM.opcionesProceso);
 
