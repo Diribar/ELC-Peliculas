@@ -352,11 +352,11 @@ window.addEventListener("load", async () => {
 
 			// Momento del ano
 			if (elegibles.layout_id == 1 && elegibles.orden_id == 1) {
-				// Obtiene el dia_del_ano
+				// Obtiene el diaDelAno
 				const ahora = new Date();
 				const diaUsuario = ahora.getDate();
 				const mes_idUsuario = ahora.getMonth() + 1;
-				elegibles.dia_del_ano_id = varias.diasDelAno.find((n) => n.dia == diaUsuario && n.mes_id == mes_idUsuario).id;
+				elegibles.diaDelAno_id = varias.diasDelAno.find((n) => n.dia == diaUsuario && n.mes_id == mes_idUsuario).id;
 
 				//resultados =
 				resultados = await fetch(rutas.momento + JSON.stringify(elegibles)).then((n) => n.json());

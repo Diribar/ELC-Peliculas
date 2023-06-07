@@ -114,18 +114,18 @@
 						</a>
 					</nav>
 				</div>
-				<p class="caracteres ocultar"><span><%- dataEntry.comentario_movil ? 70 - dataEntry.comentario_movil.length : 70 %></span>/70</p>
+				<p class="caracteres ocultar"><span><%- dataEntry.comentarioMovil ? 70 - dataEntry.comentarioMovil.length : 70 %></span>/70</p>
 			</div>
-			<textarea name="comentario_movil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentario_movil %></textarea>
+			<textarea name="comentarioMovil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentarioMovil %></textarea>
 			<% if (epocas_del_ano) { %>
-				<div id="dias_de_duracion" class="flexRow spaceBetween altoFila">
+				<div id="diasDeDuracion" class="flexRow spaceBetween altoFila">
 					<div class="flexRowAlign margenDebajo">
 						<label for="inputDias">Días de duración</label>
-						<input name="dias_de_duracion" id="inputDias" type="number" class="input" value="<%- dataEntry.dias_de_duracion ? dataEntry.dias_de_duracion : 2 %>">
+						<input name="diasDeDuracion" id="inputDias" type="number" class="input" value="<%- dataEntry.diasDeDuracion ? dataEntry.diasDeDuracion : 2 %>">
 					</div>
-					<p class="caracteres"><span><%- dataEntry.comentario_duracion ? 70 - dataEntry.comentario_duracion.length : 70 %></span>/70</p>
+					<p class="caracteres"><span><%- dataEntry.comentarioDuracion ? 70 - dataEntry.comentarioDuracion.length : 70 %></span>/70</p>
 				</div>
-				<textarea name="comentario_duracion" class="input margenDebajo" placeholder="Comentario sobre los días de duración"><%= dataEntry.comentario_duracion %></textarea>
+				<textarea name="comentarioDuracion" class="input margenDebajo" placeholder="Comentario sobre los días de duración"><%= dataEntry.comentarioDuracion %></textarea>
 			<% } %>
 		</div>
 	</div>
@@ -152,11 +152,11 @@
 				<div id="calendario" class="relative">
 					<table class="absolute">
 						<tbody>
-							<% for (let dia_del_ano of dias_del_ano) { %>
-								<% if (dia_del_ano.id > 366) {break} %>
+							<% for (let diaDelAno of diasDelAno) { %>
+								<% if (diaDelAno.id > 366) {break} %>
 								<tr>
-									<td style="width: 50px;"><%= dia_del_ano.nombre %></td>
-									<td><%= dia_del_ano.epoca_del_ano.nombre %></td>
+									<td style="width: 50px;"><%= diaDelAno.nombre %></td>
+									<td><%= diaDelAno.epoca_del_ano.nombre %></td>
 								</tr>
 							<% } %>
 						</tbody>
@@ -231,7 +231,7 @@
 		<% } %>
 		<% if (codigo != "rclv/solapamiento") { %>
 			<!-- Prioridad -->
-			<% if (tema == "revisionEnts" || (revisor && dataEntry.status_registro_id == aprobado_id)) { %>
+			<% if (tema == "revisionEnts" || (revisor && dataEntry.statusRegistro_id == aprobado_id)) { %>
 				<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
 					<h3>Prioridad</h3>
 					<select name="prioridad_id" class="input margenIzq">
@@ -379,10 +379,10 @@
 					</div>
 					<!-- Aparición Mariana -->
 					<div id="sectorApMar" class="flexRowAlign altoFila invisible">
-						<select name="ap_mar_id" class="input">
-							<option value="" <% if (!dataEntry.ap_mar_id) { %>selected<% } %>>Aparición Mariana</option>
+						<select name="apMar_id" class="input">
+							<option value="" <% if (!dataEntry.apMar_id) { %>selected<% } %>>Aparición Mariana</option>
 							<% for (let ap_mar of ap_mars) { %>
-								<option value="<%= ap_mar.id %>" <% if (dataEntry.ap_mar_id == ap_mar.id) { %>selected<% } %>>
+								<option value="<%= ap_mar.id %>" <% if (dataEntry.apMar_id == ap_mar.id) { %>selected<% } %>>
 									<%= ap_mar.nombre %>
 								</option>
 							<% } %>

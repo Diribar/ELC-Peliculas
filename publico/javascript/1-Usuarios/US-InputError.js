@@ -146,7 +146,7 @@ window.addEventListener("load", () => {
 			if (
 				tarea == "login" ||
 				(tarea == "documento" &&
-					(campo == "docum_numero" || campo == "docum_pais_id") &&
+					(campo == "documNumero" || campo == "documPais_id") &&
 					credencialesInvalidas)
 			)
 				credencialesInvalidas.classList.add("ocultar");

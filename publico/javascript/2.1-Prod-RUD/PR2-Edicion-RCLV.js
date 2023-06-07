@@ -91,7 +91,7 @@ let entidades = (link) => {
 		? "temas"
 		: link.className.includes("evento_id")
 		? "eventos"
-		: link.className.includes("epoca_del_ano_id")
+		: link.className.includes("epocaDelAno_id")
 		? "epocas_del_ano"
 		: "";
 };

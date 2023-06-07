@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 <div id="nombres">
-	<h2><%= familia == "rclv" ? registro.nombre : registro.nombre_castellano %></h2>
-	<% if (registro.nombre_original || registro.apodo) { %>
-		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
+	<h2><%= familia == "rclv" ? registro.nombre : registro.nombreCastellano %></h2>
+	<% if (registro.nombreOriginal || registro.apodo) { %>
+		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombreOriginal %></em></h3>
 	<% } %>
 </div>
 <div id="colCap">
@@ -20,7 +20,7 @@
 		<div id="tempCapI">
 			<p><b>De la colección:</b>
 				<a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion.id %>" target="_blank">
-					<span><%= registro.coleccion.nombre_castellano %></span>
+					<span><%= registro.coleccion.nombreCastellano %></span>
 				</a>
 			</p>
 		</div>

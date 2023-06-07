@@ -77,7 +77,7 @@ module.exports = {
 				{id: "NO", nombre: "En otro idioma"},
 			],
 		},
-		tipos_actuacion: {
+		tiposActuacion: {
 			titulo: "Tipo de Actuación",
 		},
 		musical: {
@@ -121,10 +121,10 @@ module.exports = {
 
 	// Agregar Productos
 	camposDD: [
-		{titulo: "Título original", nombre: "nombre_original", productos: true, antesDePais: true, campoInput: true},
-		{titulo: "Título en castellano", nombre: "nombre_castellano", productos: true, antesDePais: true, campoInput: true},
-		{titulo: "Año de estreno", nombre: "ano_estreno", numero: true, productos: true, antesDePais: true, campoInput: true},
-		{titulo: "Año de finalización", nombre: "ano_fin", numero: true, colecciones: true, antesDePais: true, campoInput: true},
+		{titulo: "Título original", nombre: "nombreOriginal", productos: true, antesDePais: true, campoInput: true},
+		{titulo: "Título en castellano", nombre: "nombreCastellano", productos: true, antesDePais: true, campoInput: true},
+		{titulo: "Año de estreno", nombre: "anoEstreno", numero: true, productos: true, antesDePais: true, campoInput: true},
+		{titulo: "Año de finalización", nombre: "anoFin", numero: true, colecciones: true, antesDePais: true, campoInput: true},
 		{
 			titulo: "Duración (minutos)",
 			nombre: "duracion",
@@ -135,7 +135,7 @@ module.exports = {
 			campoInput: true,
 		},
 		{nombre: "paises_id", productos: true},
-		{nombre: "idioma_original_id", productos: true},
+		{nombre: "idiomaOriginal_id", productos: true},
 		{titulo: "Dirección", nombre: "direccion", productos: true, campoInput: true},
 		{titulo: "Guión", nombre: "guion", productos: true, campoInput: true},
 		{titulo: "Música", nombre: "musica", productos: true, campoInput: true},
@@ -149,14 +149,14 @@ module.exports = {
 		{nombre: "ocurrio"},
 		{nombre: "color"},
 		{nombre: "musical"},
-		{nombre: "tipo_actuacion_id"},
+		{nombre: "tipoActuacion_id"},
 		{nombre: "publico_id"},
 		{nombre: "epoca_id"},
 		{nombre: "personaje_id", grupo: "RCLV"},
 		{nombre: "hecho_id", grupo: "RCLV"},
 		{nombre: "tema_id", grupo: "RCLV"},
 		{nombre: "evento_id", grupo: "RCLV"},
-		{nombre: "epoca_del_ano_id", grupo: "RCLV"},
+		{nombre: "epocaDelAno_id", grupo: "RCLV"},
 	],
 	camposDA_conValores: async function (userID) {
 		// Variables
@@ -181,7 +181,7 @@ module.exports = {
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
 			{titulo: "Es a color", nombre: "color", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
-			{titulo: "Tipo de Actuación", nombre: "tipo_actuacion_id", valores: tipos_actuacion},
+			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{titulo: "Público sugerido", nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{titulo: "Época respecto a Cristo", nombre: "epoca_id", valores: epocas, mensajes: mensajes.epoca},
 			{
@@ -218,7 +218,7 @@ module.exports = {
 			},
 			{
 				titulo: "Epoca del Año",
-				nombre: "epoca_del_ano_id",
+				nombre: "epocaDelAno_id",
 				valores: registrosRCLV.epocas_del_ano,
 				mensajes: ["Poné la fecha en la que comienza."],
 				link: "epocas_del_ano",
@@ -237,8 +237,8 @@ module.exports = {
 		personajes: [
 			"nombre",
 			"apodo",
-			"dia_del_ano_id",
-			"fecha_movil",
+			"diaDelAno_id",
+			"fechaMovil",
 			"prioridad_id",
 			"sexo_id",
 			"epoca_id",
@@ -246,19 +246,19 @@ module.exports = {
 			"categoria_id",
 			"rol_iglesia_id",
 			"canon_id",
-			"ap_mar_id",
+			"apMar_id",
 			"avatar",
 		],
-		hechos: ["nombre", "ano", "dia_del_ano_id", "fecha_movil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
-		temas: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
-		eventos: ["nombre", "dia_del_ano_id", "fecha_movil", "prioridad_id", "avatar"],
+		hechos: ["nombre", "ano", "diaDelAno_id", "fechaMovil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
+		temas: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
+		eventos: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		epocas_del_ano: [
 			"nombre",
-			"dia_del_ano_id",
-			"fecha_movil",
-			"comentario_movil",
-			"dias_de_duracion",
-			"comentario_duracion",
+			"diaDelAno_id",
+			"fechaMovil",
+			"comentarioMovil",
+			"diasDeDuracion",
+			"comentarioDuracion",
 			"prioridad_id",
 			"carpetaAvatars",
 			"avatar",
@@ -297,13 +297,13 @@ module.exports = {
 		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
 			// Todos
-			{titulo: "Título en castellano", nombre: "nombre_castellano", input: true, productos: true},
-			{titulo: "Título original", nombre: "nombre_original", input: true, productos: true},
-			{titulo: "Año de estreno", nombre: "ano_estreno", angosto: true, input: true, productos: true},
+			{titulo: "Título en castellano", nombre: "nombreCastellano", input: true, productos: true},
+			{titulo: "Título original", nombre: "nombreOriginal", input: true, productos: true},
+			{titulo: "Año de estreno", nombre: "anoEstreno", angosto: true, input: true, productos: true},
 			{titulo: "País/es", nombre: "paises_id", productos: true},
 			{
 				titulo: "Idioma Original",
-				nombre: "idioma_original_id",
+				nombre: "idiomaOriginal_id",
 				relacInclude: "idioma_original",
 				tabla: "idiomas",
 				productos: true,
@@ -315,16 +315,16 @@ module.exports = {
 			{titulo: "Producción", nombre: "produccion", input: true, productos: true},
 			{titulo: "Sinopsis", nombre: "sinopsis", input: true, productos: true},
 			{titulo: "Avatar", nombre: "avatar", productos: true},
-			{titulo: "Avatar_url", nombre: "avatar_url"}, // es necesario para 'agregar-prod'
+			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
 			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
 			{titulo: "Es a color", nombre: "color", productos: true},
 			{
 				titulo: "Tipo de Actuación",
-				nombre: "tipo_actuacion_id",
-				relacInclude: "tipo_actuacion",
-				tabla: "tipos_actuacion",
+				nombre: "tipoActuacion_id",
+				relacInclude: "tipoActuacion",
+				tabla: "tiposActuacion",
 				productos: true,
 			},
 			{titulo: "Público sugerido", nombre: "publico_id", relacInclude: "publico", tabla: "publicos", productos: true},
@@ -348,7 +348,7 @@ module.exports = {
 			},
 			{
 				titulo: "Época del año",
-				nombre: "epoca_del_ano_id",
+				nombre: "epocaDelAno_id",
 				relacInclude: "epoca_del_ano",
 				tabla: "epocas_del_ano",
 				rclv: true,
@@ -364,14 +364,14 @@ module.exports = {
 			// Películas y Capítulos
 			{titulo: "Duración", nombre: "duracion", angosto: true, input: true, peliculas: true, capitulos: true},
 			// Colecciones
-			{titulo: "Año de finalización", nombre: "ano_fin", angosto: true, input: true, colecciones: true},
+			{titulo: "Año de finalización", nombre: "anoFin", angosto: true, input: true, colecciones: true},
 		],
 		rclvs: [
 			// Todos
 			{nombre: "nombre", titulo: "Nombre", rclvs: true},
-			{nombre: "dia_del_ano_id", titulo: "Día del Año", rclvs: true, relacInclude: "dia_del_ano", tabla: "dias_del_ano"},
-			{nombre: "fecha_movil", titulo: "Fecha Móvil", rclvs: true},
-			{nombre: "comentario_movil", titulo: "Comentario Móvil", rclvs: true},
+			{nombre: "diaDelAno_id", titulo: "Día del Año", rclvs: true, relacInclude: "diaDelAno", tabla: "diasDelAno"},
+			{nombre: "fechaMovil", titulo: "Fecha Móvil", rclvs: true},
+			{nombre: "comentarioMovil", titulo: "Comentario Móvil", rclvs: true},
 			{nombre: "prioridad_id", titulo: "Prioridad", rclvs: true},
 			{nombre: "avatar", titulo: "Avatar", rclvs: true},
 
@@ -396,13 +396,13 @@ module.exports = {
 				relacInclude: "canon",
 				tabla: "canons",
 			},
-			{nombre: "ap_mar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
+			{nombre: "apMar_id", titulo: "Aparición Mariana", personajes: true, relacInclude: "ap_mar", tabla: "hechos"},
 			// Hechos
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 			// Epocas del año
-			{nombre: "dias_de_duracion", titulo: "Días de Duración", epocas_del_ano: true},
-			{nombre: "comentario_duracion", titulo: "Comentario Duración", epocas_del_ano: true},
+			{nombre: "diasDeDuracion", titulo: "Días de Duración", epocas_del_ano: true},
+			{nombre: "comentarioDuracion", titulo: "Comentario Duración", epocas_del_ano: true},
 			{nombre: "carpetaAvatars", titulo: "Carpeta de Imágenes", epocas_del_ano: true},
 		],
 		links: [
@@ -501,7 +501,7 @@ let regsRCLV = async (entidades, userID) => {
 	entidades.forEach((entidad, i) => {
 		// Deja solamente los registros aprobados o creados por el usuario
 		valores[i] = valores[i].filter(
-			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID)
+			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID)
 		);
 		// Los ordena por nombre
 		valores[i].sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));

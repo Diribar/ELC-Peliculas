@@ -7,52 +7,52 @@ module.exports = (sequelize, dt) => {
 		apellido: {type: dt.STRING(30)},
 		apodo: {type: dt.STRING(30)},
 		avatar: {type: dt.STRING(100)},
-		fecha_nacim: {type: dt.DATE},
+		fechaNacim: {type: dt.DATE},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},
-		rol_usuario_id: {type: dt.INTEGER},
+		rolUsuario_id: {type: dt.INTEGER},
 
-		cartel_resp_prods: {type: dt.BOOLEAN},
-		cartel_resp_rclvs: {type: dt.BOOLEAN},
-		cartel_resp_links: {type: dt.BOOLEAN},
-		cartel_fin_penaliz: {type: dt.BOOLEAN},
+		cartelResp_prods: {type: dt.BOOLEAN},
+		cartelResp_rclvs: {type: dt.BOOLEAN},
+		cartelResp_links: {type: dt.BOOLEAN},
+		cartelFinPenaliz: {type: dt.BOOLEAN},
 
-		autorizado_fa: {type: dt.BOOLEAN},
-		docum_numero: {type: dt.STRING(15)},
-		docum_pais_id: {type: dt.STRING(2)},
-		docum_avatar: {type: dt.STRING(18)},
+		autorizadoFA: {type: dt.BOOLEAN},
+		documNumero: {type: dt.STRING(15)},
+		documPais_id: {type: dt.STRING(2)},
+		documAvatar: {type: dt.STRING(18)},
 
-		dias_login: {type: dt.INTEGER},
-		version_elc_ultimo_login: {type: dt.STRING(4)},
+		diasLogin: {type: dt.INTEGER},
+		versionElcUltimoLogin: {type: dt.STRING(4)},
 
-		fecha_ultimo_login: {type: dt.DATE},
-		fecha_contrasena: {type: dt.DATE},
+		fechaUltimoLogin: {type: dt.DATE},
+		fechaContrasena: {type: dt.DATE},
 		fechaRevisores: {type: dt.DATE},
 		filtro_id: {type: dt.INTEGER},
 
-		creado_en: {type: dt.DATE},
-		completado_en: {type: dt.DATE},
-		editado_en: {type: dt.DATE},
+		creadoEn: {type: dt.DATE},
+		completadoEn: {type: dt.DATE},
+		editadoEn: {type: dt.DATE},
 
-		prods_aprob: {type: dt.INTEGER},
-		prods_rech: {type: dt.INTEGER},
-		rclvs_aprob: {type: dt.INTEGER},
-		rclvs_rech: {type: dt.INTEGER},
-		links_aprob: {type: dt.INTEGER},
-		links_rech: {type: dt.INTEGER},
-		edics_aprob: {type: dt.INTEGER},
-		edics_rech: {type: dt.INTEGER},
+		prodsAprob: {type: dt.INTEGER},
+		prodsRech: {type: dt.INTEGER},
+		rclvsAprob: {type: dt.INTEGER},
+		rclvsRech: {type: dt.INTEGER},
+		linksAprob: {type: dt.INTEGER},
+		linksRech: {type: dt.INTEGER},
+		edicsAprob: {type: dt.INTEGER},
+		edicsRech: {type: dt.INTEGER},
 
 		penalizacAcum: {type: dt.DECIMAL},
-		penalizado_en: {type: dt.DATE},
-		penalizado_hasta: {type: dt.DATE},
+		penalizadoEn: {type: dt.DATE},
+		penalizadoHasta: {type: dt.DATE},
 
-		capturado_por_id: {type: dt.INTEGER},
-		capturado_en: {type: dt.DATE},
-		captura_activa: {type: dt.BOOLEAN},
+		capturadoPor_id: {type: dt.INTEGER},
+		capturadoEn: {type: dt.DATE},
+		capturaActiva: {type: dt.BOOLEAN},
 
-		status_registro_id: {type: dt.INTEGER},
+		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "usuarios",
@@ -62,26 +62,26 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
 		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
-		entidad.belongsTo(n.roles_usuarios, {as: "rolUsuario", foreignKey: "rol_usuario_id"});
+		entidad.belongsTo(n.roles_usuarios, {as: "rolUsuario", foreignKey: "rolUsuario_id"});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
-		entidad.belongsTo(n.status_registro_us, {as: "status_registro", foreignKey: "status_registro_id"});
-		entidad.belongsTo(n.paises, {as: "docum_pais", foreignKey: "docum_pais_id"});
+		entidad.belongsTo(n.status_registro_us, {as: "status_registro", foreignKey: "statusRegistro_id"});
+		entidad.belongsTo(n.paises, {as: "docum_pais", foreignKey: "documPais_id"});
 
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "creado_por_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "creado_por_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "creado_por_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "creadoPor_id"});
+		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "creadoPor_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "creadoPor_id"});
 
-		entidad.hasMany(n.peliculas, {as: "captura_peliculas", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.colecciones, {as: "captura_colecciones", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.capitulos, {as: "captura_capitulos", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.personajes, {as: "captura_personajes", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.hechos, {as: "captura_hechos", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.temas, {as: "captura_temas", foreignKey: "capturado_por_id"});
+		entidad.hasMany(n.peliculas, {as: "captura_peliculas", foreignKey: "capturadoPor_id"});
+		entidad.hasMany(n.colecciones, {as: "captura_colecciones", foreignKey: "capturadoPor_id"});
+		entidad.hasMany(n.capitulos, {as: "captura_capitulos", foreignKey: "capturadoPor_id"});
+		entidad.hasMany(n.personajes, {as: "captura_personajes", foreignKey: "capturadoPor_id"});
+		entidad.hasMany(n.hechos, {as: "captura_hechos", foreignKey: "capturadoPor_id"});
+		entidad.hasMany(n.temas, {as: "captura_temas", foreignKey: "capturadoPor_id"});
 
 		entidad.hasMany(n.cal_registros, {as: "calificaciones", foreignKey: "usuario_id"});
 		entidad.hasMany(n.interes_registros, {as: "interes", foreignKey: "usuario_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturadoPor_id"});
 	};
 	return entidad;
 };

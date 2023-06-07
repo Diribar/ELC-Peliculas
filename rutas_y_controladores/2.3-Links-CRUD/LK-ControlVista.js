@@ -44,11 +44,11 @@ module.exports = {
 			producto.capitulos = await BD_especificas.obtieneCapitulos(coleccion_id, temporada);
 		}
 		const motivos = motivos_status.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 		// Va a la vista
 		//return res.send(links);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: producto.nombre_castellano},
+			...{tema, codigo, titulo, title: producto.nombreCastellano},
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
 			...{links_provs, links_tipos, calidades: variables.calidades, motivos},

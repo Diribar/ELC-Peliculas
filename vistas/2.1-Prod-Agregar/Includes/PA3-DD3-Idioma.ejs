@@ -1,8 +1,8 @@
 <section class="labelInput">
-	<% let inputOK = idioma_id && !errores.idioma_original_id %>
+	<% let inputOK = idioma_id && !errores.idiomaOriginal_id %>
 	<label>Idioma original</label>
 	<div class="inputError">
-		<select name="idioma_original_id" autofocus class="input<% if (inputOK) { %> desplClick<% } %>" <% if (inputOK) { %>disabled<% } %> required>
+		<select name="idiomaOriginal_id" autofocus class="input<% if (inputOK) { %> desplClick<% } %>" <% if (inputOK) { %>disabled<% } %> required>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %>>Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of idiomas.filter(n => n.mas_frecuente)) { %>
@@ -16,6 +16,6 @@
 			</optgroup>
 		</select>
 		<%- include("PA3-DD9-Ayuda", {inputOK}) %>
-		<%- include("CMP-Errores", {nombre: "idioma_original_id"}) %>
+		<%- include("CMP-Errores", {nombre: "idiomaOriginal_id"}) %>
 	</div>
 </section>

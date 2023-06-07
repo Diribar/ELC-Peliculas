@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-Encabezado.css">
 <div id="nombres">
-	<h2><%- registro.nombre_castellano ? registro.nombre_castellano : registro.nombre ? registro.nombre : '' %></h2>
-	<% if (registro.nombre_original || registro.apodo) { %>
-		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombre_original %></em></h3>
+	<h2><%- registro.nombreCastellano ? registro.nombreCastellano : registro.nombre ? registro.nombre : '' %></h2>
+	<% if (registro.nombreOriginal || registro.apodo) { %>
+		<h3><em><%= familia == "rclv" ? registro.apodo : registro.nombreOriginal %></em></h3>
 	<% } %>
 </div>
 <% if (entidad != "peliculas") { %>
@@ -29,7 +29,7 @@
 			<div id="tempCapI">
 				<p><b>De la colección:</b>
 					<a href="<%= '/inactivar-captura/?entidad=capitulos&id=' + id + '&prodEntidad=colecciones&prodID=' + registro.coleccion_id + '&origen=' + rutaCRUD %>">
-						<span><em><%= registro.coleccion.nombre_castellano %></em></span>
+						<span><em><%= registro.coleccion.nombreCastellano %></em></span>
 					</a>
 				</p>
 			</div>

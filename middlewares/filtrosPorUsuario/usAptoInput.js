@@ -70,24 +70,24 @@ module.exports = async (req, res, next) => {
 
 				// Obtiene la cantidad de aprobaciones
 				const aprob = producto
-					? usuario.prods_aprob
+					? usuario.prodsAprob
 					: rclv
-					? usuario.rclvs_aprob
+					? usuario.rclvsAprob
 					: links
-					? usuario.links_aprob
+					? usuario.linksAprob
 					: edicion
-					? usuario.edics_aprob
+					? usuario.edicsAprob
 					: 0;
 
 				// Obtiene la cantidad de rechazos
 				const rech = producto
-					? usuario.prods_rech
+					? usuario.prodsRech
 					: rclv
-					? usuario.rclvs_rech
+					? usuario.rclvsRech
 					: links
-					? usuario.links_rech
+					? usuario.linksRech
 					: edicion
-					? usuario.edics_rech
+					? usuario.edicsRech
 					: 0;
 
 				// Prepara los parámetros

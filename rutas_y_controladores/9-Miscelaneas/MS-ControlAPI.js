@@ -13,7 +13,7 @@ module.exports = {
 		const userID = req.session.usuario ? req.session.usuario.id : 0;
 		const entidadesProd = variables.entidades.prods;
 		const entidadesRCLV = variables.entidades.rclvs;
-		const camposProds = ["nombre_castellano", "nombre_original"];
+		const camposProds = ["nombreCastellano", "nombreOriginal"];
 		const camposPers = ["nombre", "apodo"];
 		let resultados = [];
 		let datos = [];
@@ -44,10 +44,10 @@ module.exports = {
 		// Obtiene el registro
 		let registro = await BD_genericas.obtienePorId(entidad, id);
 		let datos = {
-			creado_en: registro.creado_en,
-			creado_por_id: registro.creado_por_id,
-			capturado_en: registro.capturado_en,
-			capturado_por_id: registro.capturado_por_id,
+			creadoEn: registro.creadoEn,
+			creadoPor_id: registro.creadoPor_id,
+			capturadoEn: registro.capturadoEn,
+			capturadoPor_id: registro.capturadoPor_id,
 			userID: req.session.usuario.id,
 		};
 

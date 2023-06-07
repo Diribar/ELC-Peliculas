@@ -16,23 +16,23 @@ module.exports = (sequelize, dt) => {
 		completo: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
 
-		creado_por_id: {type: dt.INTEGER},
-		creado_en: {type: dt.DATE},
-		alta_revisada_por_id: {type: dt.INTEGER},
-		alta_revisada_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.DECIMAL},
+		creadoPor_id: {type: dt.INTEGER},
+		creadoEn: {type: dt.DATE},
+		altaRevisadaPor_id: {type: dt.INTEGER},
+		altaRevisadaEn: {type: dt.DATE},
+		leadTimeCreacion: {type: dt.DECIMAL},
 
-		editado_por_id: {type: dt.INTEGER},
-		editado_en: {type: dt.DATE},
-		edic_revisada_por_id: {type: dt.INTEGER},
-		edic_revisada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.DECIMAL},
+		editadoPor_id: {type: dt.INTEGER},
+		editadoEn: {type: dt.DATE},
+		edicRevisadaPor_id: {type: dt.INTEGER},
+		edicRevisadaEn: {type: dt.DATE},
+		leadTimeEdicion: {type: dt.DECIMAL},
 
-		vigencia_revisada_en: {type: dt.DATE},
-		status_registro_id: {type: dt.INTEGER},
+		vigenciaRevisadaEn: {type: dt.DATE},
+		statusRegistro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
-		sugerido_por_id: {type: dt.INTEGER},
-		sugerido_en: {type: dt.DATE},
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "links",
@@ -46,14 +46,14 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.links_tipos, {as: "tipo", foreignKey: "tipo_id"});
 		entidad.belongsTo(n.links_provs, {as: "prov", foreignKey: "prov_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "alta_revisada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edic_revisada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "altaRevisadaPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edicRevisadaPor_id"});
 
-		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.motivos_status, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugeridoPor_id"});
 
 		entidad.hasMany(n.links_edicion, {as: "ediciones", foreignKey: "link_id"});
 	};

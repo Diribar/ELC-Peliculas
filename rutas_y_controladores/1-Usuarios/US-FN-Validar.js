@@ -66,28 +66,28 @@ module.exports = {
 			// Fin
 			errores.apellido = respuesta;
 		}
-		if (campos.includes("fecha_nacim"))
-			errores.fecha_nacim = !datos.fecha_nacim
+		if (campos.includes("fechaNacim"))
+			errores.fechaNacim = !datos.fechaNacim
 				? "Necesitamos que ingreses la fecha"
-				: fechaRazonable(datos.fecha_nacim)
+				: fechaRazonable(datos.fechaNacim)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
 		if (campos.includes("rol_iglesia_id")) errores.rol_iglesia_id = !datos.rol_iglesia_id ? variables.selectVacio : "";
-		// Revisar 'docum_numero'
-		if (campos.includes("docum_numero")) {
+		// Revisar 'documNumero'
+		if (campos.includes("documNumero")) {
 			// Variables
-			let dato = datos.docum_numero;
+			let dato = datos.documNumero;
 			let respuesta = "";
 			// Validaciones
 			if (dato) respuesta = comp.validacs.longitud(dato, 4, 15);
 			else respuesta = variables.inputVacio;
 			// Fin
-			errores.docum_numero = respuesta;
+			errores.documNumero = respuesta;
 		}
-		// Revisar 'docum_pais_id'
-		if (campos.includes("docum_pais_id")) errores.docum_pais_id = !datos.docum_pais_id ? variables.selectVacio : "";
+		// Revisar 'documPais_id'
+		if (campos.includes("documPais_id")) errores.documPais_id = !datos.documPais_id ? variables.selectVacio : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar") || campos.includes("docum_avatar")) errores.avatar = comp.validacs.avatar(datos);
+		if (campos.includes("avatar") || campos.includes("documAvatar")) errores.avatar = comp.validacs.avatar(datos);
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -98,23 +98,23 @@ module.exports = {
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// 1. Verifica que el documento no exista ya en la Base de Datos
-			let docum_numero = datos.docum_numero;
-			let docum_pais_id = datos.docum_pais_id;
-			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {docum_numero, docum_pais_id});
+			let documNumero = datos.documNumero;
+			let documPais_id = datos.documPais_id;
+			let averigua = await BD_genericas.obtienePorCondicion("usuarios", {documNumero, documPais_id});
 			if (averigua && averigua.id != datos.id) errores.credenciales = true;
 
-			// 2. Verifica el docum_avatar
-			errores.docum_avatar =
+			// 2. Verifica el documAvatar
+			errores.documAvatar =
 				// Que tenga nombre
-				!datos.docum_avatar
+				!datos.documAvatar
 					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 					: // Que exista el archivo
-					!comp.gestionArchivos.existe(datos.ruta + datos.docum_avatar)
+					!comp.gestionArchivos.existe(datos.ruta + datos.documAvatar)
 					? "El archivo de imagen no existe"
 					: "";
 
 			// 3. Resumen
-			if (errores.credenciales || errores.docum_avatar) errores.hay = true;
+			if (errores.credenciales || errores.documAvatar) errores.hay = true;
 		}
 		// Fin
 		return errores;
@@ -154,10 +154,10 @@ module.exports = {
 		else {
 			// Detecta si ya se envió un mail en las últimas 24hs
 			let ahora = comp.fechaHora.ahora();
-			let fechaContr = usuario.fecha_contrasena;
+			let fechaContr = usuario.fechaContrasena;
 			let diferencia = (ahora.getTime() - fechaContr.getTime()) / unaHora;
 			if (diferencia < 24) {
-				let fechaContrHorario = comp.fechaHora.fechaHorario(usuario.fecha_contrasena);
+				let fechaContrHorario = comp.fechaHora.fechaHorario(usuario.fechaContrasena);
 				informacion = {
 					mensajes: [
 						"Ya enviamos un mail con la contraseña el día " + fechaContrHorario + ".",
@@ -170,17 +170,17 @@ module.exports = {
 			// Si el usuario ingresó un n° de documento, lo verifica antes de generar un nueva contraseña
 			else if (usuario.status_registro.ident_a_validar || usuario.status_registro.ident_validada) {
 				// Verifica los posibles errores
-				errores.docum_numero = !datos.docum_numero
+				errores.documNumero = !datos.documNumero
 					? variables.inputVacio
-					: datos.docum_numero != usuario.docum_numero
+					: datos.documNumero != usuario.documNumero
 					? "El número de documento no coincide con el de nuestra Base de Datos"
 					: "";
-				errores.docum_pais_id = !datos.docum_pais_id
+				errores.documPais_id = !datos.documPais_id
 					? variables.selectVacio
-					: datos.docum_pais_id != usuario.docum_pais_id
+					: datos.documPais_id != usuario.documPais_id
 					? "El país no coincide con el de nuestra Base de Datos"
 					: "";
-				errores.documento = !!errores.docum_numero || !!errores.docum_pais_id;
+				errores.documento = !!errores.documNumero || !!errores.documPais_id;
 			}
 		}
 

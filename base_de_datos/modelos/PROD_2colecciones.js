@@ -5,12 +5,12 @@ module.exports = (sequelize, dt) => {
 		FA_id: {type: dt.STRING(10)},
 		TMDB_entidad: {type: dt.STRING(10)},
 		fuente: {type: dt.STRING(5)},
-		nombre_castellano: {type: dt.STRING(70)},
-		nombre_original: {type: dt.STRING(70)},
+		nombreCastellano: {type: dt.STRING(70)},
+		nombreOriginal: {type: dt.STRING(70)},
 		paises_id: {type: dt.STRING(14)},
-		idioma_original_id: {type: dt.STRING(2)},
-		ano_estreno: {type: dt.INTEGER},
-		ano_fin: {type: dt.INTEGER},
+		idiomaOriginal_id: {type: dt.STRING(2)},
+		anoEstreno: {type: dt.INTEGER},
+		anoFin: {type: dt.INTEGER},
 		cant_temps: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
@@ -24,48 +24,48 @@ module.exports = (sequelize, dt) => {
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		color: {type: dt.BOOLEAN},
-		tipo_actuacion_id: {type: dt.INTEGER},
+		tipoActuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		tema_id: {type: dt.INTEGER},
 		evento_id: {type: dt.INTEGER},
-		epoca_del_ano_id: {type: dt.INTEGER},
+		epocaDelAno_id: {type: dt.INTEGER},
 
 		epoca_id: {type: dt.STRING(3)},
 
 		castellano: {type: dt.INTEGER},
 		subtitulos: {type: dt.INTEGER},
-		links_general: {type: dt.INTEGER},
-		links_gratuitos: {type: dt.INTEGER},
+		linksGeneral: {type: dt.INTEGER},
+		linksGratuitos: {type: dt.INTEGER},
 
-		fe_valores: {type: dt.INTEGER},
+		feValores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
-		calidad_tecnica: {type: dt.INTEGER},
+		calidadTecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
-		creado_por_id: {type: dt.INTEGER},
-		creado_en: {type: dt.DATE},
-		alta_revisada_por_id: {type: dt.INTEGER},
-		alta_revisada_en: {type: dt.DATE},
-		alta_term_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.DECIMAL},
+		creadoPor_id: {type: dt.INTEGER},
+		creadoEn: {type: dt.DATE},
+		altaRevisadaPor_id: {type: dt.INTEGER},
+		altaRevisadaEn: {type: dt.DATE},
+		altaTermEn: {type: dt.DATE},
+		leadTimeCreacion: {type: dt.DECIMAL},
 
-		editado_por_id: {type: dt.INTEGER},
-		editado_en: {type: dt.DATE},
-		edic_revisada_por_id: {type: dt.INTEGER},
-		edic_revisada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.DECIMAL},
+		editadoPor_id: {type: dt.INTEGER},
+		editadoEn: {type: dt.DATE},
+		edicRevisadaPor_id: {type: dt.INTEGER},
+		edicRevisadaEn: {type: dt.DATE},
+		leadTimeEdicion: {type: dt.DECIMAL},
 
-		status_registro_id: {type: dt.INTEGER},
+		statusRegistro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
-		sugerido_por_id: {type: dt.INTEGER},
-		sugerido_en: {type: dt.DATE},
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
 
-		capturado_por_id: {type: dt.INTEGER},
-		capturado_en: {type: dt.DATE},
-		captura_activa: {type: dt.BOOLEAN},
+		capturadoPor_id: {type: dt.INTEGER},
+		capturadoEn: {type: dt.DATE},
+		capturaActiva: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "prod_2colecciones",
@@ -73,26 +73,26 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
+		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idiomaOriginal_id"});
+		entidad.belongsTo(n.tiposActuacion, {as: "tipoActuacion", foreignKey: "tipoActuacion_id"});
 		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
-		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epoca_del_ano_id"});
+		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epocaDelAno_id"});
 		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "alta_revisada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edic_revisada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "altaRevisadaPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "edic_revisada_por", foreignKey: "edicRevisadaPor_id"});
 
-		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.status_registros, {as: "status_registro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.motivos_status, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugeridoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturadoPor_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "coleccion_id"});

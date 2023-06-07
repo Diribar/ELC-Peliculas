@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Campos de error
-	DOM.camposError = [...Array.from(DOM.radioSI).map((n) => n.name), ...["tipo_actuacion_id", "RCLV"]];
+	DOM.camposError = [...Array.from(DOM.radioSI).map((n) => n.name), ...["tipoActuacion_id", "RCLV"]];
 
 	// Opciones para personajes
 	DOM.opcionesPers = [];
@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 		//Busca todos los valores 'tipoActuacion'
 		let respuesta = "";
 		for (let tipo of DOM.tiposActuacion) if (tipo.checked) respuesta = tipo.value;
-		datosUrl += "tipo_actuacion_id=" + respuesta + "&";
+		datosUrl += "tipoActuacion_id=" + respuesta + "&";
 		// Busca el checkbox
 		if (DOM.checkbox.checked) datosUrl += "sinRCLV=on&";
 		//Busca todos los valores 'input'

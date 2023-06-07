@@ -5,11 +5,11 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		fe_valores: {type: dt.INTEGER},
+		feValores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
-		calidad_tecnica: {type: dt.INTEGER},
+		calidadTecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
-		creado_en: {type: dt.DATE},
+		creadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "cal_1registros",

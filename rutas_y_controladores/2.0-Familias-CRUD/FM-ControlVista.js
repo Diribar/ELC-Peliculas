@@ -77,7 +77,7 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
@@ -96,7 +96,7 @@ module.exports = {
 		const ahora = comp.fechaHora.ahora();
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-		const status_final_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
 
 		// Revisa errores
 		const informacion = procesos.infoIncompleta({motivo_id, comentario, codigo});
@@ -106,16 +106,16 @@ module.exports = {
 		}
 
 		// Comentario para la BD
-		let motivoComentario = status_registros.find((n) => n.id == status_final_id).nombre;
+		let motivoComentario = status_registros.find((n) => n.id == statusFinal_id).nombre;
 		if (comentario) motivoComentario += " - " + comentario;
 		if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0, -1);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		let datos = {
-			sugerido_por_id: userID,
-			sugerido_en: ahora,
-			status_registro_id: status_final_id,
+			sugeridoPor_id: userID,
+			sugeridoEn: ahora,
+			statusRegistro_id: statusFinal_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
@@ -123,15 +123,15 @@ module.exports = {
 		// 2. Agrega un registro en el hist_status
 		let datosHist = {
 			...{entidad, entidad_id: id},
-			...{sugerido_por_id: original.sugerido_por_id, sugerido_en: original.sugerido_en},
-			...{revisado_por_id: userID, revisado_en: ahora},
-			...{status_original_id: original.status_registro_id, status_final_id},
+			...{sugeridoPor_id: original.sugeridoPor_id, sugeridoEn: original.sugeridoEn},
+			...{revisadoPor_id: userID, revisadoEn: ahora},
+			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id},
 			...{aprobado: null, comentario: motivoComentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("hist_status", datosHist);
 
-		// 3. Actualiza los RCLV, en el campo 'prods_aprob'
+		// 3. Actualiza los RCLV, en el campo 'prodsAprob'
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		if (familia == "producto") procesos.cambioDeStatus(entidad, original);
 
@@ -191,7 +191,7 @@ module.exports = {
 			for (let entProd of variables.entidades.prods)
 				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {[campo_id]: id}, {[campo_id]: 1}));
 
-			// epoca_del_ano - Borra el vínculo en los dias_del_ano
+			// epoca_del_ano - Borra el vínculo en los diasDelAno
 			if (entidad == "epocas_del_ano")
 				acumulado.push(BD_genericas.actualizaTodosPorCondicion("epocas_del_ano", {[campo_id]: id}, {[campo_id]: 1}));
 		}

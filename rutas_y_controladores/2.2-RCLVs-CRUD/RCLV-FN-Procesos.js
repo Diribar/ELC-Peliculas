@@ -23,7 +23,7 @@ module.exports = {
 						? ediciones
 						: // Obtiene las ediciones propias
 						ediciones
-						? ediciones.filter((n) => n.editado_por_id == userID)
+						? ediciones.filter((n) => n.editadoPor_id == userID)
 						: [];
 
 				// Acciones si hay ediciones propias
@@ -65,10 +65,10 @@ module.exports = {
 				if (coleccionesId.includes(capitulos[i].coleccion_id)) capitulos.splice(i, 1);
 			// Ordena por año (decreciente)
 			prodsDelRCLV = [...capitulos, ...noCapitulos];
-			prodsDelRCLV.sort((a, b) => b.ano_estreno - a.ano_estreno);
+			prodsDelRCLV.sort((a, b) => b.anoEstreno - a.anoEstreno);
 			// Quita los inactivos
-			let resultado = prodsDelRCLV.filter((n) => n.status_registro_id != inactivo_id);
-			// resultado.push(...prodsDelRCLV.filter((n) => n.status_registro_id == inactivo_id));
+			let resultado = prodsDelRCLV.filter((n) => n.statusRegistro_id != inactivo_id);
+			// resultado.push(...prodsDelRCLV.filter((n) => n.statusRegistro_id == inactivo_id));
 
 			// Fin
 			return resultado;
@@ -79,7 +79,7 @@ module.exports = {
 
 			// Información
 			bloque.push({titulo: "Nombre", valor: registro.nombre});
-			if (registro.dia_del_ano) bloque.push({titulo: "Día del año", valor: registro.dia_del_ano.nombre});
+			if (registro.diaDelAno) bloque.push({titulo: "Día del año", valor: registro.diaDelAno.nombre});
 
 			// Particularidades para personajes
 			if (registro.entidad == "personajes") {
@@ -89,7 +89,7 @@ module.exports = {
 					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
 				if (registro.rol_iglesia_id && !registro.rol_iglesia_id.startsWith("NN") && registro.rol_iglesia)
 					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
-				if (registro.ap_mar_id && registro.ap_mar_id != 10 && registro.ap_mar)
+				if (registro.apMar_id && registro.apMar_id != 10 && registro.ap_mar)
 					bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
 			}
 
@@ -130,11 +130,11 @@ module.exports = {
 		tipoFecha_id: (dataEntry, entidad) => {
 			return false
 				? false
-				: dataEntry.fecha_movil
+				: dataEntry.fechaMovil
 				? "FM"
-				: dataEntry.dia_del_ano_id == 400
+				: dataEntry.diaDelAno_id == 400
 				? "SF"
-				: dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id < 400
+				: dataEntry.diaDelAno_id && dataEntry.diaDelAno_id < 400
 				? "FD"
 				: entidad == "personajes" || entidad == "hechos"
 				? "FD"
@@ -175,23 +175,23 @@ module.exports = {
 
 			// Datos comunes
 			if (datos.nombre) DE.nombre = datos.nombre;
-			DE.dia_del_ano_id =
-				datos.tipoFecha == "SF" ? 400 : dias_del_ano.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
-			DE.fecha_movil = datos.tipoFecha == "FM";
-			if (datos.tipoFecha == "FM") DE.comentario_movil = datos.comentario_movil;
+			DE.diaDelAno_id =
+				datos.tipoFecha == "SF" ? 400 : diasDelAno.find((n) => n.mes_id == datos.mes_id && n.dia == datos.dia).id;
+			DE.fechaMovil = datos.tipoFecha == "FM";
+			if (datos.tipoFecha == "FM") DE.comentarioMovil = datos.comentarioMovil;
 			if (datos.prioridad_id) DE.prioridad_id = datos.prioridad_id;
 			if (datos.avatar) DE.avatar = datos.avatar;
 
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				const {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, ap_mar_id} = datos;
+				const {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, apMar_id} = datos;
 				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
 				if (epoca_id == "pst") DE.ano = ano;
 				const CFC = categoria_id == "CFC";
 				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.ap_mar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? ap_mar_id : no_presencio_ninguna_id;
+				DE.apMar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? apMar_id : no_presencio_ninguna_id;
 			}
 
 			// Datos para hechos
@@ -206,8 +206,8 @@ module.exports = {
 
 			// Datos para epocas_del_ano
 			if (datos.entidad == "epocas_del_ano") {
-				DE.dias_de_duracion = datos.dias_de_duracion;
-				DE.comentario_duracion = datos.comentario_duracion;
+				DE.diasDeDuracion = datos.diasDeDuracion;
+				DE.comentarioDuracion = datos.comentarioDuracion;
 				if (datos.carpetaAvatars) DE.carpetaAvatars = datos.carpetaAvatars;
 			}
 
@@ -226,8 +226,8 @@ module.exports = {
 			// Tareas para un nuevo registro
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
-				DE.creado_por_id = userID;
-				DE.sugerido_por_id = userID;
+				DE.creadoPor_id = userID;
+				DE.sugeridoPor_id = userID;
 				original = await BD_genericas.agregaRegistro(entidad, DE);
 				id = original.id;
 
@@ -246,10 +246,10 @@ module.exports = {
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
 				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["status_registro", "ediciones"]);
-				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editado_por_id == userID);
+				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
-				if (original.creado_por_id == userID && original.status_registro.creado)
+				if (original.creadoPor_id == userID && original.status_registro.creado)
 					await BD_genericas.actualizaPorId(entidad, id, DE);
 				// Si no esta en status 'creado', guarda la edición
 				else edicN = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion: {...edicion, ...DE}, userID});

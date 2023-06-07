@@ -11,7 +11,7 @@ module.exports = {
 		// Obtiene el nuevo status
 		let statusNuevo = status_registro_us.find((n) => n[status]);
 		// Genera la info a actualizar
-		novedades = {...novedades, status_registro_id: statusNuevo.id};
+		novedades = {...novedades, statusRegistro_id: statusNuevo.id};
 		// Actualiza la info
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
 		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
@@ -25,12 +25,12 @@ module.exports = {
 		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zona_horaria;
 		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
 		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10);
-		const fechaUltimoLogin = usuario.fecha_ultimo_login;
+		const fechaUltimoLogin = usuario.fechaUltimoLogin;
 
 		// Acciones si el último login fue anterior a hoy
 		if (hoyUsuario != fechaUltimoLogin) {
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyUsuario});
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
+			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin: hoyUsuario});
 		}
 
 		// Fin

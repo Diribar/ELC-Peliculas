@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "fe_valores";
+	const alias = "feValores";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		valor: {type: dt.INTEGER},

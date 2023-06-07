@@ -78,8 +78,8 @@ module.exports = {
 	},
 	desambGuardar2: async (req, res) => {
 		let datosDuros = req.cookies.datosOriginales;
-		// Para datosDuros, da de alta el avatar_url y de baja el avatar
-		datosDuros.avatar_url = datosDuros.avatar;
+		// Para datosDuros, da de alta el avatarUrl y de baja el avatar
+		datosDuros.avatarUrl = datosDuros.avatar;
 		delete datosDuros.avatar;
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
@@ -135,12 +135,12 @@ module.exports = {
 	// Vista (IM)
 	averiguaColecciones: async (req, res) => {
 		// Obtiene todas las colecciones
-		let datos = await BD_genericas.obtieneTodos("colecciones", "nombre_castellano");
+		let datos = await BD_genericas.obtieneTodos("colecciones", "nombreCastellano");
 		// Deja solamente las que no son de TMDB
 		datos = datos.filter((n) => !n.TMDB_id);
-		// Deja solamente los campos 'id' y 'nombre_castellano'
+		// Deja solamente los campos 'id' y 'nombreCastellano'
 		datos = datos.map((m) => {
-			return {id: m.id, nombre_castellano: m.nombre_castellano};
+			return {id: m.id, nombreCastellano: m.nombreCastellano};
 		});
 		// Fin
 		return res.json(datos);

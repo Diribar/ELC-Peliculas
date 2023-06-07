@@ -54,15 +54,15 @@ module.exports = {
 			datos.entidadNombre = "Película";
 			datos.entidad = "peliculas";
 		}
-		// IMDB_id, nombre_original, nombre_castellano
+		// IMDB_id, nombreOriginal, nombreCastellano
 		if (datosAPI.imdb_id) datos.IMDB_id = datosAPI.imdb_id;
-		if (datosAPI.original_title) datos.nombre_original = datosAPI.original_title;
-		if (datosAPI.title) datos.nombre_castellano = datosAPI.title;
+		if (datosAPI.original_title) datos.nombreOriginal = datosAPI.original_title;
+		if (datosAPI.title) datos.nombreCastellano = datosAPI.title;
 		// Idioma
-		if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+		if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
 
 		// año de estreno, duración, país de origen
-		if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
+		if (datosAPI.release_date) datos.anoEstreno = parseInt(datosAPI.release_date.slice(0, 4));
 		if (datosAPI.runtime) datos.duracion = datosAPI.runtime;
 		if (datosAPI.production_countries.length > 0)
 			datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
@@ -119,8 +119,8 @@ module.exports = {
 		// Variables
 		let datos = {};
 
-		// nombre_castellano
-		if (datosColec.name) datos.nombre_castellano = datosColec.name;
+		// nombreCastellano
+		if (datosColec.name) datos.nombreCastellano = datosColec.name;
 
 		// año de estreno, año de fin
 		if (datosColec.parts.length) {
@@ -129,8 +129,8 @@ module.exports = {
 				.filter((n) => !!n)
 				.map((n) => parseInt(n.slice(0, 4)));
 			if (release_date.length) {
-				datos.ano_estreno = Math.min(...release_date);
-				datos.ano_fin = Math.max(...release_date);
+				datos.anoEstreno = Math.min(...release_date);
+				datos.anoFin = Math.max(...release_date);
 			}
 		}
 
@@ -215,15 +215,15 @@ module.exports = {
 		// Variables
 		let datos = {};
 
-		// nombre_original, nombre_castellano, duración de capítulos
-		if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
-		if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
+		// nombreOriginal, nombreCastellano, duración de capítulos
+		if (datosAPI.original_name) datos.nombreOriginal = datosAPI.original_name;
+		if (datosAPI.name) datos.nombreCastellano = datosAPI.name;
 		// Idioma
-		if (datosAPI.original_language) datos.idioma_original_id = datosAPI.original_language;
+		if (datosAPI.original_language) datos.idiomaOriginal_id = datosAPI.original_language;
 
 		// año de estreno, año de fin, país de origen
-		if (datosAPI.first_air_date) datos.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
-		if (datosAPI.last_air_date) datos.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
+		if (datosAPI.first_air_date) datos.anoEstreno = parseInt(datosAPI.first_air_date.slice(0, 4));
+		if (datosAPI.last_air_date) datos.anoFin = parseInt(datosAPI.last_air_date.slice(0, 4));
 		if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
 		// sinopsis, avatar
 		if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
@@ -263,9 +263,9 @@ module.exports = {
 	},
 	valorParaActores: (datos) => {
 		// Acciones si no hay un valor para actores
-		return datos.tipo_actuacion_id == anime_id
+		return datos.tipoActuacion_id == anime_id
 			? "Dibujos Animados"
-			: datos.tipo_actuacion_id == documental_id
+			: datos.tipoActuacion_id == documental_id
 			? "Documental"
 			: datos.actores
 			? datos.actores
@@ -322,19 +322,19 @@ module.exports = {
 	// AUXILIARES
 	agregaUnCap_Colec: async function (datosCol, capituloID_TMDB, indice) {
 		// Toma los datos de la colección
-		const {paises_id, idioma_original_id} = datosCol;
+		const {paises_id, idiomaOriginal_id} = datosCol;
 		const {direccion, guion, musica, actores, produccion} = datosCol;
-		// const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		// const {cfc, ocurrio, musical, color, tipoActuacion_id} = datosCol;
 		// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 		// Genera la información a guardar
 		const datosCap = {
 			...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
-			...{paises_id, idioma_original_id},
+			...{paises_id, idiomaOriginal_id},
 			...{direccion, guion, musica, actores, produccion},
-			// ...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
 			// ...{personaje_id, hecho_id, tema_id},
-			...{creado_por_id: 2, sugerido_por_id: 2},
+			...{creadoPor_id: 2, sugeridoPor_id: 2},
 		};
 
 		// Obtiene los datos del capítulo
@@ -368,19 +368,19 @@ module.exports = {
 	},
 	infoTMDB_capsTV: (datosCol, datosTemp, datosCap) => {
 		// Toma los datos de la colección
-		const {paises_id, idioma_original_id} = datosCol;
+		const {paises_id, idiomaOriginal_id} = datosCol;
 		let {direccion, guion, musica, actores, produccion} = datosCol;
-		// const {cfc, ocurrio, musical, color, tipo_actuacion_id} = datosCol;
+		// const {cfc, ocurrio, musical, color, tipoActuacion_id} = datosCol;
 		// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 		// Genera la información a guardar
 		let datos = {
 			...{fuente: "TMDB", coleccion_id: datosCol.id},
-			...{paises_id, idioma_original_id},
+			...{paises_id, idiomaOriginal_id},
 			...{direccion, guion, musica, actores, produccion},
-			// ...{cfc, ocurrio, musical, color, tipo_actuacion_id},
+			// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
 			// ...{personaje_id, hecho_id, tema_id},
-			...{creado_por_id: 2, sugerido_por_id: 2},
+			...{creadoPor_id: 2, sugeridoPor_id: 2},
 		};
 		if (datosCap.runtime) datos.duracion = datosCap.runtime;
 
@@ -390,8 +390,8 @@ module.exports = {
 		// Datos distintivos del capítulo
 		datos.capitulo = datosCap.episode_number;
 		datos.TMDB_id = datosCap.id;
-		if (datosCap.name) datos.nombre_castellano = datosCap.name;
-		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
+		if (datosCap.name) datos.nombreCastellano = datosCap.name;
+		if (datosCap.air_date) datos.anoEstreno = datosCap.air_date;
 		if (datosCap.crew.length > 0) {
 			direccion = limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
 			if (direccion) datos.direccion = direccion;
@@ -400,7 +400,7 @@ module.exports = {
 			musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 			if (musica) datos.musica = musica;
 		}
-		if (tipo_actuacion_id == actuada_id) {
+		if (tipoActuacion_id == actuada_id) {
 			actores = [];
 			if (datosTemp.cast.length) actores = [...datosTemp.cast];
 			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
@@ -421,7 +421,7 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
-		let {entidad, coleccion_id, avatar_url, contenido, FA_id} = datos;
+		let {entidad, coleccion_id, avatarUrl, contenido, FA_id} = datos;
 		// Generar la información
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
@@ -450,7 +450,7 @@ module.exports = {
 			fuente: "FA",
 			FA_id,
 			coleccion_id,
-			avatar_url,
+			avatarUrl,
 			...contenido,
 		};
 		// Fin
@@ -468,10 +468,10 @@ module.exports = {
 		let indice = (queBuscar) => {
 			return contenidos.findIndex((n) => n.startsWith(queBuscar));
 		};
-		if (indice("Ficha") > 0) resultado.nombre_castellano = eliminaParentesis(contenidos[indice("Ficha") - 1]);
+		if (indice("Ficha") > 0) resultado.nombreCastellano = eliminaParentesis(contenidos[indice("Ficha") - 1]);
 		if (indice("Título original") > 0)
-			resultado.nombre_original = eliminaParentesis(contenidos[indice("Título original") + 1]);
-		if (indice("Año") > 0) resultado.ano_estreno = parseInt(contenidos[indice("Año") + 1]);
+			resultado.nombreOriginal = eliminaParentesis(contenidos[indice("Título original") + 1]);
+		if (indice("Año") > 0) resultado.anoEstreno = parseInt(contenidos[indice("Año") + 1]);
 		if (indice("Duración") > 0) {
 			let duracion = contenidos[indice("Duración") + 1];
 			resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));

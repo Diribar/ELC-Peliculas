@@ -43,10 +43,10 @@ form #formCuerpoFooter {display: flex; flex-direction: column-reverse; flex-grow
 #inicio #sectorFecha .caracteres {align-self: flex-end;}
 #inicio #sectorFecha textarea {padding: 2px 5px; height: 34px; resize: none;}
 
-#inicio #sectorFecha #dias_de_duracion {margin-top: 7px;}
-#inicio #sectorFecha #dias_de_duracion input {width: 30px; text-align: center;}
-#inicio #sectorFecha #dias_de_duracion input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
-/* #inicio #sectorFecha #dias_de_duracion input[type=number] {-moz-appearance: textfield;} Firefox */
+#inicio #sectorFecha #diasDeDuracion {margin-top: 7px;}
+#inicio #sectorFecha #diasDeDuracion input {width: 30px; text-align: center;}
+#inicio #sectorFecha #diasDeDuracion input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;} /* Chrome, Safari, Edge, Opera */
+/* #inicio #sectorFecha #diasDeDuracion input[type=number] {-moz-appearance: textfield;} Firefox */
 
 /* Repetidos */
 #inicio #sectorRepetidos {display: flex; flex-direction: column; flex-grow: 1;}

@@ -46,9 +46,9 @@ module.exports = {
 	// epoca: async () => {
 	// 	// Variables
 	// 	const entidades = variables.entidades.prods;
-	// 	const condicion = {status_registro_id: aprobado_id, epoca_id: null};
+	// 	const condicion = {statusRegistro_id: aprobado_id, epoca_id: null};
 	// 	const include = ["personaje", "hecho"];
-	// 	const nuevoStatus = {status_registro_id: creado_aprob_id};
+	// 	const nuevoStatus = {statusRegistro_id: creado_aprob_id};
 
 	// 	// Revisa cada registro aprobado y sin epoca_id
 	// 	for (let entidad of entidades) {
@@ -170,7 +170,7 @@ module.exports = {
 		let mailsEnviados = [];
 
 		// Usuarios
-		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugerido_por_id))];
+		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
 		);
@@ -183,8 +183,8 @@ module.exports = {
 
 			// Variables
 			const email = usuario.email;
-			const regsAB_user = regsAB.filter((n) => n.sugerido_por_id == usuario.id);
-			const regsEdic_user = regsEdic.filter((n) => n.sugerido_por_id == usuario.id);
+			const regsAB_user = regsAB.filter((n) => n.sugeridoPor_id == usuario.id);
+			const regsEdic_user = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
 			let cuerpoMail = "";
 
 			// Arma el cuerpo del mail
@@ -291,7 +291,7 @@ module.exports = {
 	},
 	PaisesConMasProductos: async () => {
 		// Variables
-		const condicion = {status_registro_id: aprobado_id};
+		const condicion = {statusRegistro_id: aprobado_id};
 		const entidades = ["peliculas", "colecciones"];
 		let paisesID = {};
 		let verificador = [];
@@ -323,7 +323,7 @@ module.exports = {
 		// Descarga el avatar en la carpeta 'Prods-Final'
 		// Variables
 		const ruta = "./publico/imagenes/2-Productos/Final/";
-		const condicion = {status_registro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
+		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
 		let verificador = [];
 
 		// Revisa, descarga, actualiza
@@ -378,9 +378,9 @@ module.exports = {
 
 		// Prepara la información
 		const objeto = {
-			status_registro_id: creado_aprob_id,
-			sugerido_en: comp.fechaHora.ahora(),
-			sugerido_por_id: 2,
+			statusRegistro_id: creado_aprob_id,
+			sugeridoEn: comp.fechaHora.ahora(),
+			sugeridoPor_id: 2,
 		};
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
@@ -391,7 +391,7 @@ module.exports = {
 	},
 	RclvsSinEpocaPSTyConAno: async () => {
 		// Variables
-		const condicion = {status_registro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
+		const condicion = {statusRegistro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
 		const entidades = ["personajes", "hechos"];
 		let verificador = [];
 

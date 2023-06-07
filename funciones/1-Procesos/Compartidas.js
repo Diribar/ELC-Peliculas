@@ -78,7 +78,7 @@ module.exports = {
 				: entidad == "eventos"
 				? "evento_id"
 				: entidad == "epocas_del_ano"
-				? "epoca_del_ano_id"
+				? "epocaDelAno_id"
 				: entidad == "links"
 				? "link_id"
 				: "";
@@ -133,7 +133,7 @@ module.exports = {
 				? "temas"
 				: edicion.evento_id
 				? "eventos"
-				: edicion.epoca_del_ano_id
+				: edicion.epocaDelAno_id
 				? "epocas_del_ano"
 				: "";
 		},
@@ -160,8 +160,8 @@ module.exports = {
 				? "tema_id"
 				: edicion.evento_id
 				? "evento_id"
-				: edicion.epoca_del_ano_id
-				? "epoca_del_ano_id"
+				: edicion.epocaDelAno_id
+				? "epocaDelAno_id"
 				: "";
 		},
 		asocProd: (edicion) => {
@@ -176,7 +176,7 @@ module.exports = {
 				? "tema"
 				: edicion.evento_id
 				? "evento"
-				: edicion.epoca_del_ano_id
+				: edicion.epocaDelAno_id
 				? "epoca_del_ano"
 				: "";
 		},
@@ -307,10 +307,10 @@ module.exports = {
 		},
 		diaDelAno: (dataEntry) => {
 			let datos = {};
-			if (dataEntry.dia_del_ano_id && dataEntry.dia_del_ano_id <= 366) {
-				let dia_del_ano = dias_del_ano.find((n) => n.id == dataEntry.dia_del_ano_id);
-				datos.dia = dia_del_ano.dia;
-				datos.mes_id = dia_del_ano.mes_id;
+			if (dataEntry.diaDelAno_id && dataEntry.diaDelAno_id <= 366) {
+				let diaDelAno = diasDelAno.find((n) => n.id == dataEntry.diaDelAno_id);
+				datos.dia = diaDelAno.dia;
+				datos.mes_id = diaDelAno.mes_id;
 			}
 			// Fin
 			return datos;
@@ -446,8 +446,8 @@ module.exports = {
 		},
 		avatar: (datos) => {
 			// Variables
-			const {avatar_url, docum_avatar, tamano, esImagen, opcional} = datos;
-			const avatar = datos.avatar ? datos.avatar : avatar_url ? avatar_url : docum_avatar ? docum_avatar : "";
+			const {avatarUrl, documAvatar, tamano, esImagen, opcional} = datos;
+			const avatar = datos.avatar ? datos.avatar : avatarUrl ? avatarUrl : documAvatar ? documAvatar : "";
 			const ext = avatar ? path.extname(avatar).toLowerCase() : "";
 			let respuesta = "";
 
@@ -519,7 +519,7 @@ module.exports = {
 			objeto[cartel] = true;
 		}
 		// Si corresponde, se le baja el rol a 'Consultas'
-		if (motivo.bloqueoInput) objeto.rol_usuario_id = roles_us.find((n) => !n.permInputs).id;
+		if (motivo.bloqueoInput) objeto.rolUsuario_id = roles_us.find((n) => !n.permInputs).id;
 
 		// Si corresponde, actualiza el usuario
 		if (Object.keys(objeto).length) BD_genericas.actualizaPorId("usuarios", userID, objeto);
@@ -643,10 +643,10 @@ module.exports = {
 		return valor ? valor.nombre : alternativa;
 	},
 	nombresPosibles: (registro) => {
-		return registro.nombre_castellano
-			? registro.nombre_castellano
-			: registro.nombre_original
-			? registro.nombre_original
+		return registro.nombreCastellano
+			? registro.nombreCastellano
+			: registro.nombreOriginal
+			? registro.nombreOriginal
 			: registro.nombre
 			? registro.nombre
 			: "";
@@ -687,15 +687,15 @@ module.exports = {
 		return familia.filter(
 			(n) =>
 				// Que no esté capturado
-				!n.capturado_en ||
+				!n.capturadoEn ||
 				// Que esté capturado hace más de dos horas
-				n.capturado_en < haceDosHoras ||
+				n.capturadoEn < haceDosHoras ||
 				// Que la captura haya sido por otro usuario y hace más de una hora
-				(n.capturado_por_id != revID && n.capturado_en < haceUnaHora) ||
+				(n.capturadoPor_id != revID && n.capturadoEn < haceUnaHora) ||
 				// Que la captura haya sido por otro usuario y esté inactiva
-				(n.capturado_por_id != revID && !n.captura_activa) ||
+				(n.capturadoPor_id != revID && !n.capturaActiva) ||
 				// Que esté capturado por este usuario hace menos de una hora
-				(n.capturado_por_id == revID && n.capturado_en > haceUnaHora)
+				(n.capturadoPor_id == revID && n.capturadoEn > haceUnaHora)
 		);
 	},
 };

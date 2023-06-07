@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
 				};
 		} else {
 			// Averigua si existe una edicion propia
-			let objeto = {[campo_id]: id, editado_por_id: req.session.usuario.id};
+			let objeto = {[campo_id]: id, editadoPor_id: req.session.usuario.id};
 			edicion = await BD_genericas.obtienePorCondicion(entidadEdic, objeto);
 		}
 

@@ -82,7 +82,7 @@ module.exports = {
 		for (let entProd of variables.entidades.prods)
 			prods[entProd] = BD_genericas.obtieneTodosPorCondicion(entProd, {
 				[campo_id]: id,
-				status_registro_id: aprobado_id,
+				statusRegistro_id: aprobado_id,
 			}).then((n) =>
 				n.map((m) => {
 					m[campo_id] = 1;
@@ -122,7 +122,7 @@ module.exports = {
 		const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
 
 		// Si hay errores, le cambia el status
-		if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {status_registro_id: creado_aprob_id});
+		if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creado_aprob_id});
 
 		// Fin
 		return;
@@ -150,7 +150,7 @@ module.exports = {
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Obtiene la edición a partir del vínculo del original
-		let edicion = original.ediciones.find((n) => n.editado_por_id == userID);
+		let edicion = original.ediciones.find((n) => n.editadoPor_id == userID);
 		if (edicion) {
 			// Obtiene la edición con sus includes
 			let entidadEdic = comp.obtieneDesdeEntidad.petitFamilias(entidad) + "_edicion";
@@ -182,11 +182,11 @@ module.exports = {
 			// Si no existe edicion.id --> se agrega el registro
 			else
 				await (async () => {
-					// Se le agregan los campos necesarios: campo_id, editado_por_id, producto_id (links)
-					// 1. campo_id, editado_por_id
+					// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
+					// 1. campo_id, editadoPor_id
 					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 					edicion[campo_id] = original.id;
-					edicion.editado_por_id = userID;
+					edicion.editadoPor_id = userID;
 					// 2. producto_id (links)
 					if (entidad == "links") {
 						let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
@@ -240,7 +240,7 @@ module.exports = {
 			.find((n) => n.nombre == "personaje_id")
 			.valores // Obtiene los valores
 			// Deja solamente los aprobados o creados por el usuario
-			.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID))
+			.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID))
 			// Deja los datos necesarios
 			.map((n) => {
 				return {
@@ -249,7 +249,7 @@ module.exports = {
 					categoria_id: n.categoria_id,
 					epoca_id: n.epoca_id,
 					rol_iglesia_id: n.rol_iglesia_id,
-					ap_mar_id: n.ap_mar_id,
+					apMar_id: n.apMar_id,
 				};
 			});
 		let casosPuntuales = [];
@@ -270,7 +270,7 @@ module.exports = {
 		for (let personaje of personajes) {
 			// Clase
 			personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
-			if (personaje.ap_mar_id != 10) personaje.clase += " AMA AM" + personaje.ap_mar_id;
+			if (personaje.apMar_id != 10) personaje.clase += " AMA AM" + personaje.apMar_id;
 
 			// Si tiene 'rol_iglesia_id'
 			if (personaje.rol_iglesia_id) {
@@ -300,7 +300,7 @@ module.exports = {
 		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
 
 		// Deja solamente los aprobados o creados por el usuario
-		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creado_por_id == userID));
+		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID));
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
@@ -367,10 +367,10 @@ module.exports = {
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	prodsPosibleAprobado: async function (entidad, registro) {
 		// Variables
-		let statusAprob = registro.status_registro_id == aprobado_id;
+		let statusAprob = registro.statusRegistro_id == aprobado_id;
 
 		// - Averigua si el registro está en un status previo a 'aprobado'
-		if ([creado_id, creado_aprob_id].includes(registro.status_registro_id)) {
+		if ([creado_id, creado_aprob_id].includes(registro.statusRegistro_id)) {
 			// Averigua si hay errores
 			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico: true, epoca: true}});
 
@@ -380,9 +380,9 @@ module.exports = {
 				statusAprob = true;
 				const ahora = comp.fechaHora.ahora();
 				const datos = {
-					alta_term_en: ahora,
-					lead_time_creacion: comp.obtieneLeadTime(registro.creado_en, ahora),
-					status_registro_id: aprobado_id,
+					altaTermEn: ahora,
+					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+					statusRegistro_id: aprobado_id,
 				};
 
 				// Cambia el status del registro
@@ -391,14 +391,14 @@ module.exports = {
 				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
 				if (entidad == "colecciones") {
 					// Variables
-					datos.alta_revisada_por_id = 2;
-					datos.alta_revisada_en = ahora;
+					datos.altaRevisadaPor_id = 2;
+					datos.altaRevisadaEn = ahora;
 
 					// Actualiza el status de la coleccción en los capítulos
 					BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: registro.id},
-						{status_coleccion_id: aprobado_id}
+						{statusColeccion_id: aprobado_id}
 					);
 
 					// Obtiene los capitulos id
@@ -431,7 +431,7 @@ module.exports = {
 		// prodsEnRCLV
 		if (familias == "productos") {
 			// 1. Variables
-			const stAprob = registro.status_registro_id == aprobado_id;
+			const stAprob = registro.statusRegistro_id == aprobado_id;
 			const entidadesRCLV = variables.entidades.rclvs;
 
 			// 2. Rutina por entidad RCLV
@@ -439,7 +439,7 @@ module.exports = {
 				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 				if (registro[campo_id])
 					stAprob
-						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prods_aprob: SI})
+						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: SI})
 						: this.prodEnRCLV({entidad, id: registro[campo_id]});
 			}
 		}
@@ -463,43 +463,43 @@ module.exports = {
 
 		// Variables
 		const entidadesProds = variables.entidades.prods;
-		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		const statusAprobado = {statusRegistro_id: aprobado_id};
+		const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
 		// Acciones si el producto tiene ese 'campo_id'
 		if (id && id > 10) {
 			let objeto = {[campo_id]: id};
-			let prods_aprob;
+			let prodsAprob;
 
 			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
 			for (let entidadProd of entidadesProds) {
-				prods_aprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
-				if (prods_aprob) {
-					prods_aprob = SI;
+				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
+				if (prodsAprob) {
+					prodsAprob = SI;
 					break;
 				}
 			}
 
 			// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-			if (!prods_aprob)
+			if (!prodsAprob)
 				for (let entidadProd of entidadesProds) {
 					// Averigua si existe algún producto, con ese RCLV
-					prods_aprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
-					if (prods_aprob) {
-						prods_aprob = talVez;
+					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
+					if (prodsAprob) {
+						prodsAprob = talVez;
 						break;
 					}
 				}
 
 			// 3. Averigua si existe alguna edición
-			if (!prods_aprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prods_aprob = talVez;
+			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prodsAprob = talVez;
 
 			// 4. No encontró ningún caso
-			if (!prods_aprob) prods_aprob = NO;
+			if (!prodsAprob) prodsAprob = NO;
 
 			// Actualiza el campo en el RCLV
-			BD_genericas.actualizaPorId(entidad, id, {prods_aprob});
+			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
 		}
 
 		// Fin
@@ -513,12 +513,12 @@ module.exports = {
 
 		// Más variables
 		const tipo_id = link_pelicula_id; // El tipo de link 'película'
-		const statusAprobado = {status_registro_id: aprobado_id};
-		const statusPotencial = {status_registro_id: [creado_id, inactivar_id, recuperar_id]};
+		const statusAprobado = {statusRegistro_id: aprobado_id};
+		const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
 		let objeto = {[campo_id]: id, tipo_id};
 
 		// 1. Averigua si existe algún link, para ese producto
-		let links_general = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) => {
+		let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) => {
 			return n
 				? SI
 				: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => {
@@ -527,7 +527,7 @@ module.exports = {
 		});
 
 		// 2. Averigua si existe algún link gratuito, para ese producto
-		let links_gratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
+		let linksGratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
 			(n) => {
 				return n
 					? SI
@@ -556,15 +556,15 @@ module.exports = {
 		});
 
 		// Consolida
-		[links_general, links_gratuitos, castellano, subtitulos] = await Promise.all([
-			links_general,
-			links_gratuitos,
+		[linksGeneral, linksGratuitos, castellano, subtitulos] = await Promise.all([
+			linksGeneral,
+			linksGratuitos,
 			castellano,
 			subtitulos,
 		]);
 
 		// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
-		await BD_genericas.actualizaPorId(entidad, id, {links_general, links_gratuitos, castellano, subtitulos});
+		await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
 
 		// Colecciones - la actualiza en función de la mayoría de los capítulos
 		if (entidad == "capitulos") {
@@ -572,8 +572,8 @@ module.exports = {
 			const capitulo = await BD_genericas.obtienePorId("capitulos", id);
 			const colID = capitulo.coleccion_id;
 			// Rutinas
-			this.linksEnColeccion(colID, "links_general");
-			this.linksEnColeccion(colID, "links_gratuitos");
+			this.linksEnColeccion(colID, "linksGeneral");
+			this.linksEnColeccion(colID, "linksGratuitos");
 			this.linksEnColeccion(colID, "castellano");
 			this.linksEnColeccion(colID, "subtitulos");
 		}
@@ -624,16 +624,16 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.alta_revisada_en)
-			bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creado_en)});
+		if (!registro.altaRevisadaEn)
+			bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
 		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 
-		if (registro.alta_revisada_en) {
-			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.alta_revisada_en)});
+		if (registro.altaRevisadaEn) {
+			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)});
 			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
 		}
-		if (registro.alta_revisada_en && registro.alta_revisada_en - registro.sugerido_en) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.sugerido_en)});
+		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.sugeridoEn) {
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.sugeridoEn)});
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 

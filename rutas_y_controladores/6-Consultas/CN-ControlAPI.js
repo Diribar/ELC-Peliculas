@@ -23,7 +23,7 @@ module.exports = {
 		return res.json(opciones);
 	},
 	diasDelAno: (req, res) => {
-		return res.json(dias_del_ano);
+		return res.json(diasDelAno);
 	},
 
 	// API - Filtros personalizados
@@ -97,17 +97,17 @@ module.exports = {
 							id: m.id,
 							entidad,
 							entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(entidad),
-							nombre_original: m.nombre_original,
+							nombreOriginal: m.nombreOriginal,
 							direccion: m.direccion,
 							avatar: m.avatar,
 							personaje_id: m.personaje_id,
 							hecho_id: m.hecho_id,
 							tema_id: m.tema_id,
 							// Orden
-							dia_del_ano_id: m.dia_del_ano_id,
-							creado_en: m.creado_en,
-							ano_estreno: m.ano_estreno,
-							nombre_castellano: m.nombre_castellano,
+							diaDelAno_id: m.diaDelAno_id,
+							creadoEn: m.creadoEn,
+							anoEstreno: m.anoEstreno,
+							nombreCastellano: m.nombreCastellano,
 							calificacion: m.calificacion,
 						};
 					})

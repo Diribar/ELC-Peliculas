@@ -20,10 +20,10 @@ window.addEventListener("load", async () => {
 	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) => n.json());
 	let horarioInicial = false
 		? false
-		: !datos.capturado_en
-		? datos.creado_en
-		: datos.capturado_por_id == datos.userID
-		? datos.capturado_en
+		: !datos.capturadoEn
+		? datos.creadoEn
+		: datos.capturadoPor_id == datos.userID
+		? datos.capturadoEn
 		: new Date();
 
 	// Configurar el horario final
@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 		let horarioFinalTexto = fechaHorario(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
 		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
-		let mensajes = datos.capturado_en
+		let mensajes = datos.capturadoEn
 			? [
 					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
 					"Quedó a disposición de los demás " + tipoUsuario + ".",

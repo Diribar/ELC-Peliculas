@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
 		interes_id: {type: dt.INTEGER},
-		creado_en: {type: dt.DATE},
+		creadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "int_1registros",

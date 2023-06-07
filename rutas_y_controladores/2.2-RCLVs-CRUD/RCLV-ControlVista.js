@@ -27,7 +27,7 @@ module.exports = {
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const edicion = usuario
-			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editado_por_id: usuario.id})
+			? await BD_genericas.obtienePorCondicion("rclvs_edicion", {[campo_id]: id, editadoPor_id: usuario.id})
 			: {};
 		const registro = {...original, ...edicion, id};
 
@@ -49,7 +49,7 @@ module.exports = {
 		// Imagen Derecha
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 		// Status de la entidad
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 		const statusEstable =
 			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
@@ -114,7 +114,7 @@ module.exports = {
 		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
 
 		// Info para la vista
-		const statusCreado = tema == "revisionEnts" && dataEntry.status_registro_id == creado_id;
+		const statusCreado = tema == "revisionEnts" && dataEntry.statusRegistro_id == creado_id;
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 		const originalUrl = req.originalUrl;
 		const DE = !!Object.keys(dataEntry).length;
@@ -159,7 +159,7 @@ module.exports = {
 
 			// Acciones si se eliminó la edición
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condiciones = {[campo_id]: id, editado_por_id: userID};
+			const condiciones = {[campo_id]: id, editadoPor_id: userID};
 			if (eliminar) {
 				// La elimina de la BD
 				await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
@@ -183,7 +183,7 @@ module.exports = {
 			// Elimina el eventual anterior
 			if (codigo == "/rclv/edicion/") {
 				// Si es un registro propio y en status creado, borra el eventual avatar original
-				if (original.creado_por_id == userID && original.status_registro.creado) {
+				if (original.creadoPor_id == userID && original.status_registro.creado) {
 					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no está en status 'creado', borra el eventual avatar edicion

@@ -20,7 +20,7 @@ module.exports = {
 		// Los combina con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
-				let edicion = link.ediciones.find((n) => n.editado_por_id == userID);
+				let edicion = link.ediciones.find((n) => n.editadoPor_id == userID);
 				if (edicion)
 					for (let campo in edicion)
 						if (edicion[campo] !== null && camposARevisar.includes(campo)) links[i][campo] = edicion[campo];
@@ -50,8 +50,8 @@ module.exports = {
 	condiciones: (link, userID, tema) => {
 		// Variables
 		let cond = {};
-		cond.propio = link.sugerido_por_id == userID;
-		cond.ajeno = link.sugerido_por_id != userID;
+		cond.propio = link.sugeridoPor_id == userID;
+		cond.ajeno = link.sugeridoPor_id != userID;
 		cond.rud = tema == "links_crud";
 		cond.revision = tema == "revisionEnts";
 

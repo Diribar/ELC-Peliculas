@@ -4,7 +4,7 @@
 	<div id="tipos" class="flexRowAlign relative altoFila grow spaceBetween">
 		<% for (let valor of valores) { %>
 			<div class="flexRowAlign">
-				<input id="<%= valor.id %>" type="radio" name="tipo_actuacion_id" value="<%= valor.id %>" <% if (registro.tipo_actuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
+				<input id="<%= valor.id %>" type="radio" name="tipoActuacion_id" value="<%= valor.id %>" <% if (registro.tipoActuacion_id==valor.id) { %>checked<% } %> class="tipoActuacion">
 				<label for="<%= valor.id %>"><%= valor.nombre %></label>
 			</div>
 		<% } %>

@@ -92,7 +92,7 @@ app.set("views", [
 		idiomas: BD_genericas.obtieneTodos("idiomas", "nombre"),
 		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
-		tipos_actuacion: BD_genericas.obtieneTodos("tipos_actuacion", "orden"),
+		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
 
 		// Variables de RCLVs
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
@@ -112,7 +112,7 @@ app.set("views", [
 
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses", "id"),
-		dias_del_ano: BD_genericas.obtieneTodosConInclude("dias_del_ano", "epoca_del_ano"),
+		diasDelAno: BD_genericas.obtieneTodosConInclude("diasDelAno", "epoca_del_ano"),
 	};
 	// Procesa todas las lecturas
 	let valores = Object.values(campos);
@@ -128,9 +128,9 @@ app.set("views", [
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
 	// 2. Tipos de actuación
-	global.anime_id = tipos_actuacion.find((n) => n.anime).id;
-	global.documental_id = tipos_actuacion.find((n) => n.documental).id;
-	global.actuada_id = tipos_actuacion.find((n) => !n.anime && !n.documental).id;
+	global.anime_id = tiposActuacion.find((n) => n.anime).id;
+	global.documental_id = tiposActuacion.find((n) => n.documental).id;
+	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
 	// 3. Roles de usuario
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;

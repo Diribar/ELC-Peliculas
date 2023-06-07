@@ -6,9 +6,9 @@ let botonPelicula = async (producto) => {
 	let boton = {
 		anchor: clon.querySelector("a"),
 		avatar: clon.querySelector("img"),
-		nombre_original: clon.querySelector("#nombre_original"),
-		nombre_castellano: clon.querySelector("#nombre_castellano"),
-		ano_estreno: clon.querySelector("#ano_estreno"),
+		nombreOriginal: clon.querySelector("#nombreOriginal"),
+		nombreCastellano: clon.querySelector("#nombreCastellano"),
+		anoEstreno: clon.querySelector("#anoEstreno"),
 	};
 
 	// Dirección del link
@@ -18,13 +18,13 @@ let botonPelicula = async (producto) => {
 	const localhost = await fetch("/api/localhost").then((n) => n.json());
 	let avatar = localhost + "/imagenes/2-Productos/Final/" + producto.avatar;
 	boton.avatar.src = avatar;
-	boton.avatar.alt = producto.nombre_original;
-	boton.avatar.title = producto.nombre_original;
+	boton.avatar.alt = producto.nombreOriginal;
+	boton.avatar.title = producto.nombreOriginal;
 
 	// Demás datos
-	boton.nombre_castellano.innerHTML = producto.nombre_castellano;
-	if (producto.nombre_castellano != producto.nombre_original) boton.nombre_original.innerHTML = producto.nombre_original;
-	boton.ano_estreno.innerHTML = producto.ano_estreno + " - " + producto.entidadNombre;
+	boton.nombreCastellano.innerHTML = producto.nombreCastellano;
+	if (producto.nombreCastellano != producto.nombreOriginal) boton.nombreOriginal.innerHTML = producto.nombreOriginal;
+	boton.anoEstreno.innerHTML = producto.anoEstreno + " - " + producto.entidadNombre;
 
 	// Quitar la clase 'ocultar'
 	clon.classList.remove("ocultar");

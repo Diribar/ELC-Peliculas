@@ -97,21 +97,21 @@ module.exports = {
 		}
 
 		// Bloque Derecho
-		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilias)];
+		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
 		// Info para la vista
-		const status_registro_id = original.status_registro_id;
-		const statusCreado = status_registro_id == creado_id;
+		const statusRegistro_id = original.statusRegistro_id;
+		const statusCreado = statusRegistro_id == creado_id;
 		const links = await procsProd.obtieneLinksDelProducto(entidad, id, [creado_id, aprobado_id, recuperar_id]);
-		const status_id = status_registro_id;
+		const status_id = statusRegistro_id;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, status_id, statusCreado},
 			...{entidadNombre, registro: original, links},
-			...{imgDerPers, tituloImgDerPers: original.nombre_castellano},
+			...{imgDerPers, tituloImgDerPers: original.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs: []},
-			// title: original.nombre_castellano,motivos
+			// title: original.nombreCastellano,motivos
 			...{urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
@@ -139,9 +139,9 @@ module.exports = {
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// Obtiene el subcodigo
-		const status_original_id = original.status_registro_id;
+		const statusOriginal_id = original.statusRegistro_id;
 		const subcodigo =
-			status_original_id == inactivar_id ? "inactivar" : status_original_id == recuperar_id ? "recuperar" : "";
+			statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
@@ -167,7 +167,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer = [
 			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-			await procesos.fichaDelUsuario(original.sugerido_por_id, petitFamilias),
+			await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
 		];
 
 		// Imagen Personalizada
@@ -188,7 +188,7 @@ module.exports = {
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
 		const tituloMotivo =
 			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 
 		// Render del formulario
 		// return res.send({tema, codigo, subcodigo, tituloMotivo});
@@ -202,9 +202,9 @@ module.exports = {
 	prodRCLV_ARIR_guardar: async (req, res) => {
 		// Variables - Alta, Rechazo, Inactivar, Recuperar
 		let datos = await procesos.guardar.obtieneDatos(req);
-		const {entidad, id, original, status_original_id, status_final_id} = {...datos};
+		const {entidad, id, original, statusOriginal_id, statusFinal_id} = {...datos};
 		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
-		const userID = original.sugerido_por_id;
+		const userID = original.sugeridoPor_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -261,9 +261,9 @@ module.exports = {
 						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
 					}
 
-					// Actualiza los dias_del_ano
-					const desde = datos.dia_del_ano_id;
-					const duracion = parseInt(datos.dias_de_duracion) - 1;
+					// Actualiza los diasDelAno
+					const desde = datos.diaDelAno_id;
+					const duracion = parseInt(datos.diasDeDuracion) - 1;
 					await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 				}
 			}
@@ -277,7 +277,7 @@ module.exports = {
 			}
 
 			// Acciones si es un RCLV inactivo
-			if (status_final_id == inactivo_id) {
+			if (statusFinal_id == inactivo_id) {
 				// Borra su id de los campos rclv_id de las ediciones de producto
 				BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
 
@@ -291,29 +291,29 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
-		datos = {...datos, sugerido_por_id: revID, sugerido_en: ahora, status_registro_id: status_final_id, motivo_id};
+		datos = {...datos, sugeridoPor_id: revID, sugeridoEn: ahora, statusRegistro_id: statusFinal_id, motivo_id};
 		// 1.B. Datos sólo si es un alta/rechazo
 		if (!inactivarRecuperar) {
-			datos.alta_revisada_por_id = revID;
-			datos.alta_revisada_en = ahora;
-			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, ahora);
+			datos.altaRevisadaPor_id = revID;
+			datos.altaRevisadaEn = ahora;
+			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
 		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugerido_por_id: 2});
+			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edics_aprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edicsAprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el hist_status
 		// 4.A. Genera la información
 		let datosHist = {
 			...{entidad, entidad_id: id},
-			...{sugerido_por_id: userID, sugerido_en: original.sugerido_en, status_original_id},
-			...{revisado_por_id: revID, revisado_en: ahora, status_final_id},
+			...{sugeridoPor_id: userID, sugeridoEn: original.sugeridoEn, statusOriginal_id},
+			...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
 			...{aprobado: aprob, motivo_id, comentario},
 		};
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
@@ -332,9 +332,9 @@ module.exports = {
 		// 7. Acciones si es un registro inactivo
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (status_final_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
-		// 8. Si es un producto, actualiza los RCLV en el campo 'prods_aprob' --> debe estar después de que se grabó el original
+		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
@@ -369,13 +369,13 @@ module.exports = {
 		datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
 		for (let campo in datos) if (datos[campo] === null) delete datos[campo];
 
-		// Actualiza los dias_del_ano
-		const desde = datos.dia_del_ano_id;
-		const duracion = parseInt(datos.dias_de_duracion) - 1;
+		// Actualiza los diasDelAno
+		const desde = datos.diaDelAno_id;
+		const duracion = parseInt(datos.diasDeDuracion) - 1;
 		await procesos.guardar.actualizaDiasDelAno({desde, duracion, id});
 
 		// Actualiza el registro original
-		datos = {...datos, solapamiento: false, editado_por_id: revID, editado_en: ahora};
+		datos = {...datos, solapamiento: false, editadoPor_id: revID, editadoEn: ahora};
 		await BD_genericas.actualizaPorId("epocas_del_ano", id, datos);
 
 		// Fin
@@ -422,7 +422,7 @@ module.exports = {
 			let reemplAvatarAutomaticam =
 				edicion.avatar && // Que en la edición, el campo 'avatar' tenga un valor
 				original.avatar && // Que en el original, el campo 'avatar' tenga un valor
-				original.avatar == edicion.avatar_url; // Mismo url para los campos 'original.avatar' y 'edicion.avatar_url'
+				original.avatar == edicion.avatarUrl; // Mismo url para los campos 'original.avatar' y 'edicion.avatarUrl'
 			// Reemplazo automático
 			if (reemplAvatarAutomaticam) {
 				// Avatar: impacto en los archivos de avatar (original y edicion)
@@ -430,7 +430,7 @@ module.exports = {
 				// REGISTRO ORIGINAL: actualiza el campo 'avatar' en el registro original
 				await BD_genericas.actualizaPorId(entidad, original.id, {avatar: edicion.avatar});
 				// REGISTRO EDICION: borra los campos de 'avatar' en el registro de edicion
-				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar: null, avatar_url: null});
+				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar: null, avatarUrl: null});
 				// Recarga la ruta
 				return res.redirect(req.originalUrl);
 			}
@@ -439,7 +439,7 @@ module.exports = {
 			avatar = procsCRUD.obtieneAvatar(original, edicion);
 			motivos = motivos_edics.filter((m) => m.avatar_prods);
 			avatarExterno = !avatar.orig.includes("/imagenes/");
-			const nombre = petitFamilias == "prods" ? original.nombre_castellano : original.nombre;
+			const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 			avatarsExternos = variables.avatarsExternos(nombre);
 			titulo = "Revisión de la Imagen: " + nombre;
 		}
@@ -450,14 +450,14 @@ module.exports = {
 				// Descarga el archivo avatar y actualiza el registro 'original'
 				procesos.descargaAvatar(original, entidad);
 				// Actualiza el registro 'edición'
-				edicion.avatar_url = null;
+				edicion.avatarUrl = null;
 				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-				BD_genericas.actualizaPorId(entidadEdic, edicID, {avatar: null, avatar_url: null});
+				BD_genericas.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
 			}
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editado_por_id, petitFamilias));
+			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_edics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
@@ -475,7 +475,7 @@ module.exports = {
 		}
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, title: original.nombre_castellano, ayudasTitulo, origen: "TE"},
+			...{tema, codigo, titulo, title: original.nombreCastellano, ayudasTitulo, origen: "TE"},
 			...{entidad, id, familia, registro: original, prodOrig: original, prodEdic: edicion, entidadNombre, cantProds},
 			...{ingresos, reemplazos, motivos, bloqueDer, urlActual: req.session.urlActual},
 			...{avatar, avatarExterno, avatarsExternos, imgDerPers},
@@ -497,7 +497,7 @@ module.exports = {
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
-		if (petitFamilias == "prods") delete edicion.avatar_url;
+		if (petitFamilias == "prods") delete edicion.avatarUrl;
 
 		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
 		[edicion] = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});

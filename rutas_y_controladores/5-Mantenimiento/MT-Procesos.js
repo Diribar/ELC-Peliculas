@@ -14,10 +14,10 @@ module.exports = {
 
 		// PRODUCTOS
 		// Inactivos
-		let inactivos = obtienePorEntidad({entidades, campoFecha: "sugerido_en", status_id: inactivo_id, userID});
+		let inactivos = obtienePorEntidad({entidades, campoFecha: "sugeridoEn", status_id: inactivo_id, userID});
 
 		// Aprobados
-		let aprobados = obtienePorEntidad({entidades, campoFecha: "alta_term_en", status_id: aprobado_id, userID});
+		let aprobados = obtienePorEntidad({entidades, campoFecha: "altaTermEn", status_id: aprobado_id, userID});
 
 		// Espera las lecturas
 		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
@@ -36,11 +36,11 @@ module.exports = {
 		// const SEP = pelisColes.filter((n) => !n.epoca_id);
 
 		// Aprobados - Sin links
-		const SL = aprobados.filter((m) => !m.links_general);
+		const SL = aprobados.filter((m) => !m.linksGeneral);
 		// Aprobados - Sin links gratuitos
-		const SLG = aprobados.filter((m) => m.links_general).filter((m) => !m.links_gratuitos);
+		const SLG = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.linksGratuitos);
 		// Aprobados - Sin links en castellano
-		const SLC = aprobados.filter((m) => m.links_general).filter((m) => !m.castellano);
+		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
 
 		// Fin
 		return {IN, SC, ST, SL, SLG, SLC};
@@ -54,11 +54,11 @@ module.exports = {
 		let INP = [];
 
 		// 1. RCLVs inactivos
-		objeto = {entidades, campoFecha: "sugerido_en", status_id: inactivo_id, include: includeProds};
+		objeto = {entidades, campoFecha: "sugeridoEn", status_id: inactivo_id, include: includeProds};
 		let inactivos = obtienePorEntidad({...objeto, userID});
 
 		// 2. Aprobados
-		let campoFecha = "alta_revisada_en";
+		let campoFecha = "altaRevisadaEn";
 		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID});
 
 		// Await
@@ -78,7 +78,7 @@ module.exports = {
 		const SF = aprobados.filter((m) => m.solapam_fechas);
 
 		// 2.3. Con fecha móvil
-		const FM = aprobados.filter((m) => m.fecha_movil);
+		const FM = aprobados.filter((m) => m.fechaMovil);
 
 		// 2.4. Con epoca igual a 'pst' y sin ano
 		const PST = aprobados.filter((m) => m.epoca_id == "pst" && !m.ano);
@@ -90,7 +90,7 @@ module.exports = {
 		// Variables
 		let include = ["pelicula", "coleccion", "capitulo"];
 		let ahora = comp.fechaHora.ahora();
-		let condicion = {status_registro_id: inactivo_id};
+		let condicion = {statusRegistro_id: inactivo_id};
 
 		// Obtiene los links 'a revisar'
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", condicion, include);
@@ -117,7 +117,7 @@ let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, includ
 				n.map((m) => {
 					// Obtiene la edición del usuario
 
-					let edicion = m.ediciones.length ? m.ediciones.find((m) => m.editado_por_id == userID) : null;
+					let edicion = m.ediciones.length ? m.ediciones.find((m) => m.editadoPor_id == userID) : null;
 					delete m.ediciones;
 
 					// Actualiza el original con la edición y elimina la edición
@@ -150,7 +150,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = "sugerido_en";
+		let campoFecha = "sugeridoEn";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
@@ -164,7 +164,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 	LI = comp.eliminaRepetidos(LI);
 
 	// 5. Deja solamente los prods aprobados
-	if (LI.length) LI = LI.filter((n) => n.status_registro_id == aprobado_id);
+	if (LI.length) LI = LI.filter((n) => n.statusRegistro_id == aprobado_id);
 
 	// 6. Deja solamente los prods sin problemas de captura
 	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID, ahora);

@@ -42,17 +42,17 @@ window.addEventListener("load", () => {
 		let mensaje = errores[campo];
 		mostrarIconos(mensaje, 0);
 	});
-	let docum_numero = document.querySelector(".inputError .input#docum_numero");
-	let docum_pais_id = document.querySelector(".inputError .input#docum_pais_id");
-	if (docum_numero && docum_pais_id) {
-		docum_numero.addEventListener("input", () => {
+	let documNumero = document.querySelector(".inputError .input#documNumero");
+	let documPais_id = document.querySelector(".inputError .input#documPais_id");
+	if (documNumero && documPais_id) {
+		documNumero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos
-			docum_numero.value = docum_numero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
-			let mensaje = !docum_numero.value ? "Necesitamos que completes este campo" : "";
+			documNumero.value = documNumero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
+			let mensaje = !documNumero.value ? "Necesitamos que completes este campo" : "";
 			mostrarIconos(mensaje, 1);
 		});
-		docum_pais_id.addEventListener("input", () => {
-			let mensaje = !docum_pais_id.value ? "Necesitamos que elijas un país" : "";
+		documPais_id.addEventListener("input", () => {
+			let mensaje = !documPais_id.value ? "Necesitamos que elijas un país" : "";
 			mostrarIconos(mensaje, 2);
 		});
 	}

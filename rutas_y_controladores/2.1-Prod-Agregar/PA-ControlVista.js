@@ -77,8 +77,8 @@ module.exports = {
 		// Imagen derecha
 		const imgDerPers = datosDuros.avatar
 			? localhost + "/imagenes/9-Provisorio/" + datosDuros.avatar
-			: datosDuros.avatar_url
-			? datosDuros.avatar_url
+			: datosDuros.avatarUrl
+			? datosDuros.avatarUrl
 			: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
 
 		// Datos para la vista
@@ -104,7 +104,7 @@ module.exports = {
 			// Obtiene la información sobre el avatar
 			datosDuros.avatar = req.file.filename;
 			datosDuros.tamano = req.file.size;
-			datosDuros.avatar_url = "Avatar ingresado manualmente en 'Datos Duros'";
+			datosDuros.avatarUrl = "Avatar ingresado manualmente en 'Datos Duros'";
 		}
 
 		// Guarda Session y Cookie de Datos Duros
@@ -125,9 +125,9 @@ module.exports = {
 
 		// Guarda session y cookie de Datos Originales
 		if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
-			const {nombre_original, nombre_castellano, ano_estreno, sinopsis} = datosDuros;
+			const {nombreOriginal, nombreCastellano, anoEstreno, sinopsis} = datosDuros;
 			let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
-			datosOriginales = {...datosOriginales, nombre_original, nombre_castellano, ano_estreno, sinopsis};
+			datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, sinopsis};
 			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 			// No se guarda el link en el avatar, para revisarlo en Revisión
 		}
@@ -152,7 +152,7 @@ module.exports = {
 		const gruposHechos = procsCRUD.gruposHechos(camposDA, userID);
 
 		// Imagen derecha
-		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatar_url;
+		const imgDerPers = datosAdics.avatar ? localhost + "/imagenes/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
@@ -211,7 +211,7 @@ module.exports = {
 			if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
 		}
 		// 5. Imagen derecha
-		let imgDerPers = confirma.avatar ? localhost + "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatar_url;
+		let imgDerPers = confirma.avatar ? localhost + "/imagenes/9-Provisorio/" + confirma.avatar : confirma.avatarUrl;
 		// 6. Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -221,7 +221,7 @@ module.exports = {
 			direccion,
 			actores,
 			imgDerPers,
-			tituloImgDerPers: confirma.nombre_castellano,
+			tituloImgDerPers: confirma.nombreCastellano,
 		});
 	},
 	confirmaGuardar: async (req, res) => {
@@ -240,7 +240,7 @@ module.exports = {
 		}
 		// ORIGINAL ------------------------------------
 		// Guarda el registro original
-		const original = {...req.cookies.datosOriginales, creado_por_id: userID, sugerido_por_id: userID};
+		const original = {...req.cookies.datosOriginales, creadoPor_id: userID, sugeridoPor_id: userID};
 		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
 		// CAPÍTULOS -----------------------------------
@@ -255,9 +255,9 @@ module.exports = {
 		// Acciones para el avatar
 		if (!confirma.avatar) {
 			// Descarga el avatar en la carpeta 'Prods-Revisar'
-			confirma.avatar = Date.now() + path.extname(confirma.avatar_url);
+			confirma.avatar = Date.now() + path.extname(confirma.avatarUrl);
 			let rutaYnombre = "./publico/imagenes/2-Productos/Revisar/" + confirma.avatar;
-			comp.gestionArchivos.descarga(confirma.avatar_url, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
+			comp.gestionArchivos.descarga(confirma.avatarUrl, rutaYnombre); // No hace falta el 'await', el proceso no espera un resultado
 		}
 		// Si ya se había descargado el avatar (IM), lo mueve de 'provisorio' a 'revisar'
 		else comp.gestionArchivos.mueveImagen(confirma.avatar, "9-Provisorio", "2-Productos/Revisar");
@@ -267,7 +267,7 @@ module.exports = {
 		await procsCRUD.guardaActEdicCRUD({original: {...registro}, edicion: {...confirma}, entidad, userID});
 
 		// RCLV
-		// Actualiza prods_aprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+		// Actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) procsCRUD.cambioDeStatus(entidad, registro);
 		// No es necesario el 'await', el proceso no necesita ese resultado
 
@@ -312,7 +312,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Terminaste", imagenMG},
 			...{entidad, familia: "producto", id, dataEntry: registroProd, entidadNombre, ruta: "/producto/"},
-			...{imgDerPers, tituloImgDerPers: registroProd.nombre_castellano, status_id: creado_id},
+			...{imgDerPers, tituloImgDerPers: registroProd.nombreCastellano, status_id: creado_id},
 		});
 	},
 
@@ -335,7 +335,7 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Tipo de Producto",
 			dataEntry: IM,
-			autorizado_fa: req.session.usuario.autorizado_fa,
+			autorizadoFA: req.session.usuario.autorizadoFA,
 			entidades,
 			urlActual: req.session.urlActual,
 		});

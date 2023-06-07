@@ -17,9 +17,9 @@ module.exports = async (req, res, next) => {
 	// Variables - De tiempo
 	let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
 	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
-	let capturado_en = registro.capturado_en;
-	capturado_en ? capturado_en.setSeconds(0) : (capturado_en = 0);
-	let horarioFinal = comp.fechaHora.nuevoHorario(1, capturado_en);
+	let capturadoEn = registro.capturadoEn;
+	capturadoEn ? capturadoEn.setSeconds(0) : (capturadoEn = 0);
+	let horarioFinal = comp.fechaHora.nuevoHorario(1, capturadoEn);
 	horarioFinal = comp.fechaHora.fechaHorario(horarioFinal);
 
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
@@ -27,10 +27,10 @@ module.exports = async (req, res, next) => {
 	//	2. Se quiere acceder desde una vista de revisión
 	if (!registro.status_registro.creado || urlBase == "/revision") {
 		// Activa la entidad y el usuario
-		let datos = {captura_activa: true, capturado_por_id: userID};
+		let datos = {capturaActiva: true, capturadoPor_id: userID};
 		// Fija la nueva hora de captura si corresponde
-		if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
-			datos.capturado_en = ahora;
+		if (registro.capturadoPor_id != userID || registro.capturadoEn < haceDosHoras)
+			datos.capturadoEn = ahora;
 		// CAPTURA DEL REGISTRO
 		await BD_genericas.actualizaPorId(entidad, prodID, datos);
 	}

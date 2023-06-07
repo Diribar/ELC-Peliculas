@@ -33,46 +33,46 @@ module.exports = {
 				let productos = [];
 				for (let prod of lote.productos) {
 					// Variables
-					let entidadNombre, entidad, nombre_original, nombre_castellano, idioma_original_id, ano_estreno, ano_fin;
-					ano_estreno = ano_fin = "";
+					let entidadNombre, entidad, nombreOriginal, nombreCastellano, idiomaOriginal_id, anoEstreno, anoFin;
+					anoEstreno = anoFin = "";
 					// Colecciones
 					if (TMDB_entidad == "collection") {
 						entidadNombre = "Colección";
 						entidad = "colecciones";
-						nombre_original = prod.original_name;
-						nombre_castellano = prod.name;
-						idioma_original_id = prod.original_language;
+						nombreOriginal = prod.original_name;
+						nombreCastellano = prod.name;
+						idiomaOriginal_id = prod.original_language;
 					}
 					// TV
 					else if (TMDB_entidad == "tv") {
 						entidadNombre = "Colección";
 						entidad = "colecciones";
-						nombre_original = prod.original_name;
-						nombre_castellano = prod.name;
-						idioma_original_id = prod.original_language;
-						ano_estreno = parseInt(prod.first_air_date.slice(0, 4));
+						nombreOriginal = prod.original_name;
+						nombreCastellano = prod.name;
+						idiomaOriginal_id = prod.original_language;
+						anoEstreno = parseInt(prod.first_air_date.slice(0, 4));
 					}
 					// Películas
 					else if (TMDB_entidad == "movie") {
 						entidadNombre = "Película";
 						entidad = "peliculas";
-						nombre_original = prod.original_title;
-						nombre_castellano = prod.title;
-						idioma_original_id = prod.original_language;
-						ano_estreno = ano_fin = parseInt(prod.release_date.slice(0, 4));
+						nombreOriginal = prod.original_title;
+						nombreCastellano = prod.title;
+						idiomaOriginal_id = prod.original_language;
+						anoEstreno = anoFin = parseInt(prod.release_date.slice(0, 4));
 					}
 					// Define el título sin "distractores", para encontrar duplicados
-					let desempate1 = comp.convierteLetras.alIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-					let desempate2 = comp.convierteLetras.alIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+					let desempate1 = comp.convierteLetras.alIngles(nombreOriginal).replace(/ /g, "").replace(/'/g, "");
+					let desempate2 = comp.convierteLetras.alIngles(nombreCastellano).replace(/ /g, "").replace(/'/g, "");
 					// Deja sólo algunos campos
 					productos.push({
 						TMDB_entidad,
 						TMDB_id: prod.id,
-						nombre_original,
-						nombre_castellano,
-						ano_estreno,
-						ano_fin,
-						idioma_original_id,
+						nombreOriginal,
+						nombreCastellano,
+						anoEstreno,
+						anoFin,
+						idiomaOriginal_id,
 						avatar: prod.poster_path,
 						entidadNombre,
 						entidad,
@@ -93,8 +93,8 @@ module.exports = {
 					if (prod)
 						for (let palabra of palabras)
 							if (
-								comp.convierteLetras.alIngles(prod.nombre_original).includes(palabra) ||
-								comp.convierteLetras.alIngles(prod.nombre_castellano).includes(palabra) ||
+								comp.convierteLetras.alIngles(prod.nombreOriginal).includes(palabra) ||
+								comp.convierteLetras.alIngles(prod.nombreCastellano).includes(palabra) ||
 								comp.convierteLetras.alIngles(prod.sinopsis).includes(palabra)
 							) {
 								delete prod.sinopsis;
@@ -165,7 +165,7 @@ module.exports = {
 					coincidencias = resultados.productos.filter(
 						(n) =>
 							(n.desempate1 == registro.desempate1 || n.desempate2 == registro.desempate2) &&
-							n.ano_estreno == registro.ano_estreno
+							n.anoEstreno == registro.anoEstreno
 					).length;
 				// Procesa duplicados
 				if (coincidencias && coincidencias > 1) {
@@ -194,15 +194,15 @@ module.exports = {
 				// Si no pertenece a una colección, interrumpe
 				if (!coleccion || !coleccion.belongs_to_collection) return;
 				// Idioma original
-				let idioma_original_id = resultados.productos[indice].idioma_original_id;
-				idioma_original_id = idioma_original_id ? idioma_original_id : "";
+				let idiomaOriginal_id = resultados.productos[indice].idiomaOriginal_id;
+				idiomaOriginal_id = idiomaOriginal_id ? idiomaOriginal_id : "";
 				// Si es una película de colección, cambia sus datos por los de la colección
 				resultados.productos[indice] = {
 					TMDB_entidad: "collection",
 					TMDB_id: coleccion.belongs_to_collection.id,
-					nombre_original: "",
-					nombre_castellano: coleccion.belongs_to_collection.name,
-					idioma_original_id,
+					nombreOriginal: "",
+					nombreCastellano: coleccion.belongs_to_collection.name,
+					idiomaOriginal_id,
 					avatar: coleccion.belongs_to_collection.poster_path,
 					entidadNombre: "Colección",
 					entidad: "colecciones",
@@ -271,16 +271,16 @@ module.exports = {
 				if (coleccion.parts) {
 					// Variables para colecciones
 					let anos_estreno = coleccion.parts.map((n) => (n.release_date ? n.release_date : "-"));
-					let ano_estreno = anos_estreno.length
+					let anoEstreno = anos_estreno.length
 						? anos_estreno.reduce((a, b) => ((a < b && a != "-") || b == "-" ? a : b))
 						: "-";
-					let ano_fin = anos_estreno.length ? anos_estreno.reduce((a, b) => (a > b ? a : b)) : "-";
+					let anoFin = anos_estreno.length ? anos_estreno.reduce((a, b) => (a > b ? a : b)) : "-";
 					let capitulosID_TMDB = coleccion.parts.map((n) => n.id);
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
-						ano_estreno: ano_estreno != "-" ? parseInt(ano_estreno.slice(0, 4)) : "-",
-						ano_fin: ano_fin != "-" ? parseInt(ano_fin.slice(0, 4)) : "-",
+						anoEstreno: anoEstreno != "-" ? parseInt(anoEstreno.slice(0, 4)) : "-",
+						anoFin: anoFin != "-" ? parseInt(anoFin.slice(0, 4)) : "-",
 						capitulos: anos_estreno.length,
 						capitulosID_TMDB,
 					};
@@ -297,7 +297,7 @@ module.exports = {
 					// Agrega información
 					resultados.productos[indice] = {
 						...resultados.productos[indice],
-						ano_fin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
+						anoFin: coleccion.last_air_date ? parseInt(coleccion.last_air_date.slice(0, 4)) : "-",
 						capitulos,
 						cant_temps,
 					};
@@ -313,7 +313,7 @@ module.exports = {
 				// Criterio secundario: primero colecciones, luego películas
 				resultados.productos.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
 				// Criterio principal: primero la más reciente
-				resultados.productos.sort((a, b) => (a.ano_fin > b.ano_fin ? -1 : a.ano_fin < b.ano_fin ? 1 : 0));
+				resultados.productos.sort((a, b) => (a.anoFin > b.anoFin ? -1 : a.anoFin < b.anoFin ? 1 : 0));
 			}
 		})();
 
@@ -395,9 +395,9 @@ let agregaCapitulosTV = async (coleccion) => {
 				// Completar datos
 				datosCap = {
 					...datosCap,
-					alta_revisada_por_id: coleccion.alta_revisada_por_id,
-					alta_revisada_en: coleccion.alta_revisada_en,
-					status_registro_id: coleccion.status_registro_id,
+					altaRevisadaPor_id: coleccion.altaRevisadaPor_id,
+					altaRevisadaEn: coleccion.altaRevisadaEn,
+					statusRegistro_id: coleccion.statusRegistro_id,
 				};
 				// Guarda el registro
 				await BD_genericas.agregaRegistro(datosCap.entidad, datosCap);

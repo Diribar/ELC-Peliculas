@@ -48,9 +48,9 @@ module.exports = {
 			// Rutina para obtener los RCLVs de los días 0, +1, +2
 			for (let i = 0; i < 3; i++) {
 				// Variables
-				let dia_del_ano_id = datos.dia_del_ano_id + i;
-				let dia = dia_del_ano_id;
-				if (dia_del_ano_id > 366) dia_del_ano_id -= 366;
+				let diaDelAno_id = datos.diaDelAno_id + i;
+				let dia = diaDelAno_id;
+				if (diaDelAno_id > 366) diaDelAno_id -= 366;
 				let registros = [];
 
 				// Obtiene los RCLV de las primeras cuatro entidades
@@ -59,7 +59,7 @@ module.exports = {
 					if (entidad == "epocas_del_ano") continue;
 
 					// Condicion estandar: RCLVs del dia y en status aprobado
-					condicion = {id: {[Op.gt]: 10}, dia_del_ano_id, status_registro_id: aprobado_id};
+					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
 
 					// Obtiene los RCLVs
 					registros.push(
@@ -67,20 +67,20 @@ module.exports = {
 							// Deja solo los que tienen productos
 							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
 							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad, ...m, dia_del_ano_id: dia})))
+							.then((n) => n.map((m) => ({entidad, ...m, diaDelAno_id: dia})))
 					);
 				}
 
 				// Busca el registro de 'epoca_del_ano'
-				const epoca_del_ano_id = dias_del_ano.find((n) => n.id == dia_del_ano_id).epoca_del_ano_id;
-				if (epoca_del_ano_id != 1) {
-					const condicion = {id: epoca_del_ano_id, status_registro_id: aprobado_id};
+				const epocaDelAno_id = diasDelAno.find((n) => n.id == diaDelAno_id).epocaDelAno_id;
+				if (epocaDelAno_id != 1) {
+					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
 						BD_genericas.obtieneTodosPorCondicionConInclude("epocas_del_ano", condicion, include)
 							// Deja solo los que tienen productos
 							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
 							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, dia_del_ano_id: dia})))
+							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, diaDelAno_id: dia})))
 					);
 				}
 
@@ -117,9 +117,9 @@ module.exports = {
 						// Los procesa
 						registros = registros
 							// Filtra por los que estan aprobados
-							.filter((n) => n.status_registro_id == aprobado_id)
-							// Les agrega su entidad, dia_del_ano_id y prioridad_id
-							.map((n) => ({...n, entidad, dia_del_ano_id: rclv.dia_del_ano_id, prioridad_id: rclv.prioridad_id}));
+							.filter((n) => n.statusRegistro_id == aprobado_id)
+							// Les agrega su entidad, diaDelAno_id y prioridad_id
+							.map((n) => ({...n, entidad, diaDelAno_id: rclv.diaDelAno_id, prioridad_id: rclv.prioridad_id}));
 
 						// Los pasa a la variable que los acumula
 						if (registros.length) productos.push(...registros);
@@ -134,18 +134,18 @@ module.exports = {
 						productos.splice(i, 1);
 				}
 
-			// Ordenamiento por fecha, prioridad, calificación y alta_term_en
+			// Ordenamiento por fecha, prioridad, calificación y altaTermEn
 			productos.sort((a, b) => {
 				return false
 					? false
-					: a.dia_del_ano_id != b.dia_del_ano_id
-					? a.dia_del_ano_id - b.dia_del_ano_id
+					: a.diaDelAno_id != b.diaDelAno_id
+					? a.diaDelAno_id - b.diaDelAno_id
 					: a.prioridad_id != b.prioridad_id
 					? b.prioridad_id - a.prioridad_id
 					: a.calificacion != b.calificacion
 					? b.calificacion - a.calificacion
-					: a.alta_term_en != b.alta_term_en
-					? b.alta_term_en - a.alta_term_en
+					: a.altaTermEn != b.altaTermEn
+					? b.altaTermEn - a.altaTermEn
 					: 0;
 			});
 
@@ -203,12 +203,12 @@ module.exports = {
 		filtrosProd: (datos) => {
 			// Variables
 			let filtros = {};
-			let condics = {status_registro_id: aprobado_id};
+			let condics = {statusRegistro_id: aprobado_id};
 			let epocaEstreno;
 
 			// Arma el filtro
 			let campos = ["cfc", "ocurrio", "publicos", "epocasEstreno", "tiposLink"];
-			campos.push("castellano", "tipos_actuacion", "musical", "palabrasClave");
+			campos.push("castellano", "tiposActuacion", "musical", "palabrasClave");
 			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
 			// Proceso para épocas de estreno
@@ -225,15 +225,15 @@ module.exports = {
 			// Conversión de filtros de Producto
 			if (filtros.cfc) condics.cfc = filtros.cfc == "CFC";
 			if (filtros.publicos) condics.publico_id = filtros.publicos;
-			if (filtros.epocasEstreno) condics.ano_estreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
+			if (filtros.epocasEstreno) condics.anoEstreno = {[Op.gte]: epocaEstreno.desde, [Op.lte]: epocaEstreno.hasta};
 			if (filtros.tiposLink) {
 				const tipo_id = filtros.tiposLink;
-				if (tipo_id == "gratis") condics.links_gratuitos = SI;
-				if (tipo_id == "todos") condics.links_general = SI;
-				if (tipo_id == "sin") condics.links_general = NO;
+				if (tipo_id == "gratis") condics.linksGratuitos = SI;
+				if (tipo_id == "todos") condics.linksGeneral = SI;
+				if (tipo_id == "sin") condics.linksGeneral = NO;
 				if (tipo_id == "soloPagos") {
-					condics.links_gratuitos = {[Op.ne]: SI};
-					condics.links_general = SI;
+					condics.linksGratuitos = {[Op.ne]: SI};
+					condics.linksGeneral = SI;
 				}
 			}
 			if (filtros.castellano) {
@@ -243,7 +243,7 @@ module.exports = {
 				if (castellano == "cast") condics[Op.or] = [{castellano: SI}, {subtitulos: SI}];
 				if (castellano == "NO") condics[Op.and] = [{castellano: {[Op.ne]: SI}}, {subtitulos: {[Op.ne]: SI}}];
 			}
-			if (filtros.tipos_actuacion) condics.tipo_actuacion_id = filtros.tipos_actuacion;
+			if (filtros.tiposActuacion) condics.tipoActuacion_id = filtros.tiposActuacion;
 			if (filtros.musical) condics.musical = prod.musical == "SI";
 
 			// Fin
@@ -253,7 +253,7 @@ module.exports = {
 			// Variables
 			let filtros = {};
 			let condics = {
-				status_registro_id: aprobado_id,
+				statusRegistro_id: aprobado_id,
 				id: {[Op.gt]: 10},
 				[Op.and]: [],
 			};
@@ -265,7 +265,7 @@ module.exports = {
 			// Conversión de filtros de RCLV
 			if (filtros.epocas && datos.entidad != "temas") condics.epoca_id = filtros.epocas;
 			if (filtros.apMar) {
-				if (datos.entidad == "personajes") condics.ap_mar_id = {[Op.ne]: 10};
+				if (datos.entidad == "personajes") condics.apMar_id = {[Op.ne]: 10};
 				if (datos.entidad == "hechos") condics.ama = true;
 			}
 			if (filtros.canons) {

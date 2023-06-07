@@ -14,8 +14,8 @@ module.exports = (sequelize, dt) => {
 		completo: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
 
-		editado_por_id: {type: dt.INTEGER},
-		editado_en: {type: dt.DATE},
+		editadoPor_id: {type: dt.INTEGER},
+		editadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "links_edicion",
@@ -31,7 +31,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.links_tipos, {as: "tipo", foreignKey: "tipo_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
 	};
 	return entidad;
 };
