@@ -41,7 +41,7 @@ module.exports = {
 		];
 
 		// Obtiene el usuario
-		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "status_registro"]);
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "statusRegistro"]);
 
 		// Validaciones
 		const {informacion, documAvatar} = procesos.VI.validaUsuario(usuario, campos);

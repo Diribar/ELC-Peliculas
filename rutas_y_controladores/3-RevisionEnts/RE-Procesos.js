@@ -858,7 +858,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en VN y OT
-		if (link.status_registro && link.status_registro.creado_aprob)
+		if (link.statusRegistro && link.statusRegistro.creado_aprob)
 			prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
