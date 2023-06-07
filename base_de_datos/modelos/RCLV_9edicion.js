@@ -35,7 +35,7 @@ module.exports = (sequelize, dt) => {
 		// Específico de 'epocas_del_ano'
 		dias_de_duracion: {type: dt.INTEGER},
 		comentario_duracion: {type: dt.STRING(70)},
-		carpeta_avatars: {type: dt.STRING(20)},
+		carpetaAvatars: {type: dt.STRING(20)},
 
 		// Fechas y Usuarios
 		editado_por_id: {type: dt.INTEGER},

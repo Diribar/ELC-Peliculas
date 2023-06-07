@@ -147,11 +147,11 @@ module.exports = {
 			imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
 
 			// Datos del archivo, dependiendo de la entidad
-			if (!resultado.carpeta_avatars) {
+			if (!resultado.carpetaAvatars) {
 				imgDerecha.carpeta = "2-RCLVs/Final/";
 				imgDerecha.nombre_archivo = resultado.avatar;
 			} else {
-				imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpeta_avatars + "/";
+				imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpetaAvatars + "/";
 				imgDerecha.nombre_archivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
 			}
 		}

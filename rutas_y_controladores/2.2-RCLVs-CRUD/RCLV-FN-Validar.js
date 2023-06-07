@@ -31,7 +31,7 @@ module.exports = {
 		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
 
 		// Épocas del año
-		if (datos.entidad == "epocas_del_ano") errores.carpeta_avatars = this.carpeta_avatars(datos);
+		if (datos.entidad == "epocas_del_ano") errores.carpetaAvatars = this.carpetaAvatars(datos);
 
 		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -187,8 +187,8 @@ module.exports = {
 	},
 
 	// Épocas del año
-	carpeta_avatars: (datos) => {
-		return !datos.carpeta_avatars ? variables.selectVacio : "";
+	carpetaAvatars: (datos) => {
+		return !datos.carpetaAvatars ? variables.selectVacio : "";
 	},
 };
 

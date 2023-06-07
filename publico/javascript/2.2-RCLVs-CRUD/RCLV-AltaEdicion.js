@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 		// Segunda columna
 		posiblesRepetidos: document.querySelector("form #posiblesRepetidos"),
 		sexos_id: document.querySelectorAll("form input[name='sexo_id']"),
-		carpeta_avatars: document.querySelector("form .input[name='carpeta_avatars']"),
+		carpetaAvatars: document.querySelector("form .input[name='carpetaAvatars']"),
 		prioridad_id: document.querySelector("form .input[name='prioridad_id']"),
 		// Días del año
 		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
@@ -465,14 +465,14 @@ window.addEventListener("load", async () => {
 		},
 		carpetaAvatars: async () => {
 			// Variables
-			let params = "carpeta_avatars";
+			let params = "carpetaAvatars";
 
 			// Agrega los demás parámetros
-			params += "&carpeta_avatars=" + DOM.carpeta_avatars.value;
+			params += "&carpetaAvatars=" + DOM.carpetaAvatars.value;
 
 			// OK y Errores
-			varios.errores.carpeta_avatars = await fetch(rutas.validacion + params).then((n) => n.json());
-			varios.OK.carpeta_avatars = !varios.errores.carpeta_avatars;
+			varios.errores.carpetaAvatars = await fetch(rutas.validacion + params).then((n) => n.json());
+			varios.OK.carpetaAvatars = !varios.errores.carpetaAvatars;
 
 			// Fin
 			return;
@@ -638,7 +638,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Carpeta Avatars
-		if (DOM.carpeta_avatars && (DOM.carpeta_avatars.value || (forzar && varios.errores.carpeta_avatars == undefined)))
+		if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && varios.errores.carpetaAvatars == undefined)))
 			await validacs.carpetaAvatars();
 
 		// Prioridad
@@ -780,7 +780,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambia el sector Carpeta Avatars
-		if (campo == "carpeta_avatars") await validacs.carpetaAvatars();
+		if (campo == "carpetaAvatars") await validacs.carpetaAvatars();
 
 		// Acciones si se cambia el sector Prioridad
 		if (campo == "prioridad_id") await validacs.prioridad();
