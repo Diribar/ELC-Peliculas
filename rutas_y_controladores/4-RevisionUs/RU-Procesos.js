@@ -53,7 +53,7 @@ module.exports = {
 			}
 
 			// Valida que el archivo esté en el status correcto
-			if (!informacion && !usuario.status_registro.ident_a_validar) {
+			if (!informacion && !usuario.statusRegistro.ident_a_validar) {
 				const statusActualNombre = status_registro_us.find((n) => n.id == usuario.statusRegistro_id).nombre;
 
 				informacion = {

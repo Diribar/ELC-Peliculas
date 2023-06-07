@@ -11,7 +11,7 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		let include = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
+		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		// Obtiene los linksOriginales
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: prodID}, include);
@@ -56,11 +56,11 @@ module.exports = {
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status
-		cond.creado = link.status_registro.creado;
-		cond.aprobado = link.status_registro.aprobado;
-		cond.inactivar = link.status_registro.inactivar;
-		cond.recuperar = link.status_registro.recuperar;
-		cond.inactivo = link.status_registro.inactivo;
+		cond.creado = link.statusRegistro.creado;
+		cond.aprobado = link.statusRegistro.aprobado;
+		cond.inactivar = link.statusRegistro.inactivar;
+		cond.recuperar = link.statusRegistro.recuperar;
+		cond.inactivo = link.statusRegistro.inactivo;
 
 		// Condiciones de status combinados
 		cond.creadoAprob = cond.creado || cond.aprobado;

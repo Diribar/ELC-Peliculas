@@ -12,7 +12,7 @@ module.exports = {
 		// Enviar a Login si no está logueado
 		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
-		let status_usuario = req.session.usuario.status_registro;
+		let status_usuario = req.session.usuario.statusRegistro;
 		status_usuario.mail_a_validar
 			? res.redirect("/usuarios/login")
 			: status_usuario.mail_validado
@@ -313,7 +313,7 @@ module.exports = {
 		// Obtiene el usuario con los include
 		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
-		if (usuario.status_registro.mail_a_validar)
+		if (usuario.statusRegistro.mail_a_validar)
 			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Inicia la sesión del usuario
 		req.session.usuario = usuario;

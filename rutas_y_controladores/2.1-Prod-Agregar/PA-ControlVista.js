@@ -299,7 +299,7 @@ module.exports = {
 		// Obtiene los datos clave del producto
 		const {entidad, id} = terminaste;
 		// Obtiene los demás datos del producto
-		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "status_registro");
+		const registroProd = await BD_genericas.obtienePorIdConInclude(entidad, id, "statusRegistro");
 		// Obtiene el nombre del producto
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		// Prepara la información sobre las imágenes de MUCHAS GRACIAS

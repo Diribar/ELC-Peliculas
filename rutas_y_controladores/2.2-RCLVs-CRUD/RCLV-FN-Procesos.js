@@ -19,7 +19,7 @@ module.exports = {
 
 				let edicionesPropias =
 					// Si el RCLV no está aprobado y el userID es un revisor, deja todas las ediciones
-					!RCLV.status_registro.aprobado && usuario.rolUsuario.revisorEnts
+					!RCLV.statusRegistro.aprobado && usuario.rolUsuario.revisorEnts
 						? ediciones
 						: // Obtiene las ediciones propias
 						ediciones
@@ -245,11 +245,11 @@ module.exports = {
 			// Tareas para edición
 			else if (codigo == "/rclv/edicion/") {
 				// Obtiene el registro original
-				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["status_registro", "ediciones"]);
+				original = await BD_genericas.obtienePorIdConInclude(entidad, id, ["statusRegistro", "ediciones"]);
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == userID);
 
 				// Si es un registro propio y en status creado, actualiza el registro original
-				if (original.creadoPor_id == userID && original.status_registro.creado)
+				if (original.creadoPor_id == userID && original.statusRegistro.creado)
 					await BD_genericas.actualizaPorId(entidad, id, DE);
 				// Si no esta en status 'creado', guarda la edición
 				else edicN = await procsCRUD.guardaActEdicCRUD({entidad, original, edicion: {...edicion, ...DE}, userID});

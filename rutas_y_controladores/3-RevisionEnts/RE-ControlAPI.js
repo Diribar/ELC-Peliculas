@@ -34,7 +34,7 @@ module.exports = {
 
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
-		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "status_registro"]);
+		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
 
 		// Procesa la edición - Realiza muchísimas tareas
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
@@ -87,17 +87,17 @@ module.exports = {
 		// Averigua si existe el dato del 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
-		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["status_registro", "tipo"]);
+		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["statusRegistro", "tipo"]);
 		const id = original.id;
 		// El link no existe en la BD
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y tiene un status 'estable'
-		if (original.status_registro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		if (original.statusRegistro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
 		// Variables de status
-		const creado = original.status_registro.creado;
-		const inactivar = original.status_registro.inactivar;
-		const recuperar = original.status_registro.recuperar;
+		const creado = original.statusRegistro.creado;
+		const inactivar = original.statusRegistro.inactivar;
+		const recuperar = original.statusRegistro.recuperar;
 
 		// Más variables
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);

@@ -420,7 +420,7 @@ let versiones = async (rutaVersiones) => {
 	let edicG_existe = !!edicG.id;
 	edicG = {...orig, ...edicG};
 	// Averigua si el original está pendiente de ser aprobado
-	let origPendAprobar = orig.status_registro.gr_creado;
+	let origPendAprobar = orig.statusRegistro.gr_creado;
 	// Fin
 	return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
 };

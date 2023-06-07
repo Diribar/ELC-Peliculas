@@ -28,7 +28,7 @@ module.exports = {
 		let mensaje;
 
 		// Obtiene el link y el id de la edicion
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
 		let edicID = link ? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editadoPor_id: userID}) : "";
 
 		// Si el link no existía, lo crea
@@ -40,7 +40,7 @@ module.exports = {
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
-		else if (link.creadoPor_id == userID && link.status_registro.creado) {
+		else if (link.creadoPor_id == userID && link.statusRegistro.creado) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.cambioDeStatus("links", link);
@@ -63,7 +63,7 @@ module.exports = {
 		const {url, motivo_id} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario.rolUsuario.revisorEnts;
-		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "status_registro") : "";
+		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
 		let respuesta = {};
 
 		// Si el 'url' no existe, interrumpe la función
@@ -73,9 +73,9 @@ module.exports = {
 		// El link se elimina definitivamente
 		else if (
 			// El link está en status 'creado" y por el usuario
-			(link.status_registro.creado && link.creadoPor_id == userID) ||
+			(link.statusRegistro.creado && link.creadoPor_id == userID) ||
 			// El link está en status 'inactivo" y es un revisor
-			(link.status_registro.inactivo && revisor)
+			(link.statusRegistro.inactivo && revisor)
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
 			link.statusRegistro_id = inactivo_id;
@@ -83,7 +83,7 @@ module.exports = {
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
-		else if (!link.status_registro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
+		else if (!link.statusRegistro.aprobado) respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
 		// No existe el motivo
 		else if (!motivo_id) respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 		// El link existe, tiene status 'aprobado' y motivo
@@ -111,11 +111,11 @@ module.exports = {
 		let respuesta = {};
 		// Completar la info
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: link.status_registro.recuperar // El link ya estaba en status recuperar
+			: link.statusRegistro.recuperar // El link ya estaba en status recuperar
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
@@ -134,22 +134,22 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Obtiene el link
-		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
+		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: link.status_registro.creado
+			: link.statusRegistro.creado
 			? {mensaje: "El link está en status creado", reload: true}
-			: link.status_registro.aprobado
+			: link.statusRegistro.aprobado
 			? {mensaje: "El link está en status aprobado", reload: true}
-			: link.status_registro.inactivo
+			: link.statusRegistro.inactivo
 			? {mensaje: "El link está en status inactivo", reload: true}
 			: link.sugeridoPor_id != userID
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
-			let datos = link.status_registro.inactivar
+			let datos = link.statusRegistro.inactivar
 				? {statusRegistro_id: aprobado_id, motivo_id: null}
 				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);

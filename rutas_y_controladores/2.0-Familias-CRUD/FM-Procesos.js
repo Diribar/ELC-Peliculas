@@ -138,7 +138,7 @@ module.exports = {
 			"creado_por",
 			"alta_revisada_por",
 			"sugerido_por",
-			"status_registro",
+			"statusRegistro",
 			"motivo",
 		];
 		let includesEdic = [...includesEstandar];
@@ -240,7 +240,7 @@ module.exports = {
 			.find((n) => n.nombre == "personaje_id")
 			.valores // Obtiene los valores
 			// Deja solamente los aprobados o creados por el usuario
-			.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID))
+			.filter((n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID))
 			// Deja los datos necesarios
 			.map((n) => {
 				return {
@@ -300,7 +300,7 @@ module.exports = {
 		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
 
 		// Deja solamente los aprobados o creados por el usuario
-		hechos = hechos.filter((n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID));
+		hechos = hechos.filter((n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID));
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
@@ -644,11 +644,11 @@ module.exports = {
 		return bloque;
 	},
 	statusResumido: (registro) => {
-		return registro.status_registro.gr_creado
+		return registro.statusRegistro.gr_creado
 			? {id: 1, valor: "Creado"}
-			: registro.status_registro.aprobado
+			: registro.statusRegistro.aprobado
 			? {id: 2, valor: "Aprobado"}
-			: registro.status_registro.inactivo
+			: registro.statusRegistro.inactivo
 			? {id: 3, valor: "Inactivo"}
 			: {id: 1, valor: "Para Revisar"};
 	},

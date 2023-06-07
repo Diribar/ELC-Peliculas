@@ -14,7 +14,7 @@ module.exports = {
 		novedades = {...novedades, statusRegistro_id: statusNuevo.id};
 		// Actualiza la info
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, novedades);
-		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
+		usuario = {...usuario, ...novedades, statusRegistro: statusNuevo};
 		// Fin
 		return usuario;
 	},
@@ -85,7 +85,7 @@ module.exports = {
 		let informacion;
 
 		// Mensaje si el usuario está en status "identidad a validar"
-		if (usuario.status_registro.ident_a_validar)
+		if (usuario.statusRegistro.ident_a_validar)
 			informacion = {
 				mensajes: [
 					"Para ingresar información, se requiere tener tus datos validados.",
@@ -99,7 +99,7 @@ module.exports = {
 				trabajando: true,
 			};
 		// Mensaje si el usuario está en status "editable"
-		else if (usuario.status_registro.editables)
+		else if (usuario.statusRegistro.editables)
 			informacion = {
 				mensajes: [
 					"El ingreso de información para otras personas, requiere responsabilidad.",

@@ -148,7 +148,7 @@ module.exports = {
 				],
 			};
 			const originales = db.links
-				.findAll({where: condiciones, include: [...include, "status_registro"]})
+				.findAll({where: condiciones, include: [...include, "statusRegistro"]})
 				.then((n) => n.map((m) => m.toJSON()));
 
 			// Obtiene todas las ediciones ajenas
@@ -284,7 +284,7 @@ module.exports = {
 		return db.usuarios
 			.findOne({
 				where: {email},
-				include: ["rolUsuario", "rolIglesia", "status_registro", "sexo"],
+				include: ["rolUsuario", "rolIglesia", "statusRegistro", "sexo"],
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
