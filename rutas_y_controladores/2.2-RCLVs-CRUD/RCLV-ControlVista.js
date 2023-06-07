@@ -23,7 +23,7 @@ module.exports = {
 
 		// Obtiene RCLV con productos
 		let include = [...variables.entidades.prods, ...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("prods_ediciones", "status_registro", "creado_por", "sugerido_por", "alta_revisada_por");
+		include.push("prods_ediciones", "statusRegistro", "creado_por", "sugerido_por", "alta_revisada_por");
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const edicion = usuario
@@ -55,7 +55,7 @@ module.exports = {
 		// Datos para la vista
 		const procCanoniz = procesos.detalle.procCanoniz(registro);
 		const RCLVnombre = registro.nombre;
-		const userIdentVal = req.session.usuario && req.session.usuario.status_registro.ident_validada;
+		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
@@ -100,8 +100,16 @@ module.exports = {
 			// Obtiene el original y edicion
 			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			edicID = edicion.id;
-			// Pisa el data entry de session
+
+			// Actualiza el data entry de session
 			dataEntry = {...original, ...edicion, id, edicID: edicion.id};
+			const session = req.session[entidad] ? req.session[entidad] : req.cookies ? req.cookies[entidad] : null;
+			if (session) {
+				dataEntry = {...dataEntry, ...session};
+				req.session[entidad] = null;
+				res.clearCookie(entidad);
+			}
+
 			// Obtiene el día y el mes
 			dataEntry = {...comp.fechaHora.diaDelAno(dataEntry), ...dataEntry};
 		}
@@ -117,7 +125,6 @@ module.exports = {
 		const statusCreado = tema == "revisionEnts" && dataEntry.statusRegistro_id == creado_id;
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 		const originalUrl = req.originalUrl;
-		const DE = !!Object.keys(dataEntry).length;
 		const prioridades = variables.prioridadesRCLV;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
@@ -126,7 +133,7 @@ module.exports = {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
-			...{dataEntry, DE, imgDerPers, statusCreado},
+			...{dataEntry, imgDerPers, statusCreado},
 			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true},
@@ -135,11 +142,12 @@ module.exports = {
 	// Puede venir de agregarProd, edicionProd, o detalleRCLV
 	altaEdicGuardar: async (req, res) => {
 		// Variables
-		const {entidad, id, prodEntidad, prodID, eliminar} = req.query;
+		const {entidad, id, prodEntidad, prodID, eliminarEdic} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DTR";
-		let datos = {...req.body, ...req.query, opcional: true};
 		const codigo = req.baseUrl + req.path;
 		const userID = req.session.usuario.id;
+		let datos = {...req.body, ...req.query, opcional: true};
+		let errores;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -147,25 +155,42 @@ module.exports = {
 			datos.tamano = req.file.size;
 		}
 
-		// Averigua si hay errores de validación y toma acciones
-		const errores = await valida.consolidado(datos);
-		if (errores.hay || eliminar) {
-			// Guarda session y cookie
-			req.session[entidad] = datos;
-			res.cookie(entidad, datos, {maxAge: unDia});
-
-			// Si se agregó un archivo avatar, lo elimina
-			if (req.file && datos.avatar) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
-
-			// Acciones si se eliminó la edición
+		// Acciones si se elimina la edición
+		if (eliminarEdic) {
+			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condiciones = {[campo_id]: id, editadoPor_id: userID};
-			if (eliminar) {
-				// La elimina de la BD
-				await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
-				// Quita la porción de texto referida a 'eliminar=true'
-				req.originalUrl = req.originalUrl.replace("&eliminar=true", "");
+
+			// Borra el eventual avatar guardado en la edicion
+			const edicion = await BD_genericas.obtienePorCondicion("rclvs_edicion", condiciones);
+			if (edicion && edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
+
+			// Elimina la edición de la BD
+			await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
+
+			// Actualiza el 'originalUrl'
+			const posicion = req.originalUrl.indexOf("&edicID");
+			const urlInicial = req.originalUrl.slice(0, posicion);
+			let urlFinal = req.originalUrl.slice(posicion + 1);
+			posicion = urlFinal.indexOf("&");
+			urlFinal = posicion > 0 ? urlFinal.slice(posicion) : "";
+			req.originalUrl = urlInicial + urlFinal;
+			req.originalUrl = req.originalUrl.replace("&eliminarEdic=true", "");
+		} else {
+			// Averigua si hay errores de validación
+			errores = await valida.consolidado(datos);
+			if (errores.hay) {
+				// Guarda session y cookie
+				const session = {...req.body};
+				req.session[entidad] = session;
+				res.cookie(entidad, session, {maxAge: unDia});
 			}
+		}
+
+		// Acciones si hay errores o se eliminó la edición
+		if ((errores && errores.hay) || eliminarEdic) {
+			// Si se agregó un archivo avatar, lo elimina
+			if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 
 			// Redirige a la vista 'form'
 			return res.redirect(req.originalUrl);
@@ -183,10 +208,10 @@ module.exports = {
 			// Elimina el eventual anterior
 			if (codigo == "/rclv/edicion/") {
 				// Si es un registro propio y en status creado, borra el eventual avatar original
-				if (original.creadoPor_id == userID && original.status_registro.creado) {
+				if (original.creadoPor_id == userID && original.statusRegistro.creado) {
 					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
-				// Si no está en status 'creado', borra el eventual avatar edicion
+				// Si no está en status 'creado', borra el eventual avatar_edicion anterior
 				else if (edicion && edicion.avatar)
 					comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
 			}
