@@ -87,8 +87,8 @@ module.exports = {
 				if (registro.ano) bloque.push({titulo: "Año de nacimiento", valor: registro.ano});
 				if (registro.canon_id && !registro.canon_id.startsWith("NN") && registro.canon)
 					bloque.push({titulo: "Proceso Canonizac.", valor: registro.canon.nombre});
-				if (registro.rol_iglesia_id && !registro.rol_iglesia_id.startsWith("NN") && registro.rol_iglesia)
-					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rol_iglesia.nombre});
+				if (registro.rolIglesia_id && !registro.rolIglesia_id.startsWith("NN") && registro.rolIglesia)
+					bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia.nombre});
 				if (registro.apMar_id && registro.apMar_id != 10 && registro.ap_mar)
 					bloque.push({titulo: "Aparición Mariana", valor: registro.ap_mar.nombre});
 			}
@@ -184,12 +184,12 @@ module.exports = {
 
 			// Datos para personajes
 			if (datos.entidad == "personajes") {
-				const {apodo, sexo_id, epoca_id, ano, categoria_id, rol_iglesia_id, canon_id, apMar_id} = datos;
+				const {apodo, sexo_id, epoca_id, ano, categoria_id, rolIglesia_id, canon_id, apMar_id} = datos;
 				DE = {...DE, sexo_id, epoca_id, categoria_id};
 				DE.apodo = apodo ? apodo : "";
 				if (epoca_id == "pst") DE.ano = ano;
 				const CFC = categoria_id == "CFC";
-				DE.rol_iglesia_id = CFC ? rol_iglesia_id : "NN" + sexo_id;
+				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
 				DE.apMar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? apMar_id : no_presencio_ninguna_id;
 			}

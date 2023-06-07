@@ -721,7 +721,7 @@ module.exports = {
 	fichaDelUsuario: async (userID, petitFamilias) => {
 		// Variables
 		const ahora = comp.fechaHora.ahora();
-		const include = "rol_iglesia";
+		const include = "rolIglesia";
 		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
 		let bloque = [];
 
@@ -734,7 +734,7 @@ module.exports = {
 			bloque.push({titulo: "Edad", valor: edad + " años"});
 		}
 		// Rol en la iglesia
-		if (usuario.rol_iglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rol_iglesia.nombre});
+		if (usuario.rolIglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rolIglesia.nombre});
 		// Tiempo en ELC
 		const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
 		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});

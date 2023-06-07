@@ -276,13 +276,13 @@ module.exports = {
 				if (filtros.canons == "nn") condics.canon_id = {[Op.like]: "NN%"};
 			}
 			if (filtros.rolesIglesia) {
-				if (filtros.rolesIglesia == "la") condics.rol_iglesia_id = {[Op.like]: "L%"};
-				if (filtros.rolesIglesia == "lc") condics.rol_iglesia_id = {[Op.like]: "LC%"};
+				if (filtros.rolesIglesia == "la") condics.rolIglesia_id = {[Op.like]: "L%"};
+				if (filtros.rolesIglesia == "lc") condics.rolIglesia_id = {[Op.like]: "LC%"};
 				if (filtros.rolesIglesia == "rs")
-					condics[Op.and].push({[Op.or]: [{rol_iglesia_id: {[Op.like]: "RE%"}}, {rol_iglesia_id: "SCV"}]});
-				if (filtros.rolesIglesia == "pp") condics.rol_iglesia_id = "PPV";
-				if (filtros.rolesIglesia == "ap") condics.rol_iglesia_id = "ALV";
-				if (filtros.rolesIglesia == "sf") condics.rol_iglesia_id = {[Op.like]: "SF%"};
+					condics[Op.and].push({[Op.or]: [{rolIglesia_id: {[Op.like]: "RE%"}}, {rolIglesia_id: "SCV"}]});
+				if (filtros.rolesIglesia == "pp") condics.rolIglesia_id = "PPV";
+				if (filtros.rolesIglesia == "ap") condics.rolIglesia_id = "ALV";
+				if (filtros.rolesIglesia == "sf") condics.rolIglesia_id = {[Op.like]: "SF%"};
 			}
 			if (!condics[Op.and].length) delete condics[Op.and];
 

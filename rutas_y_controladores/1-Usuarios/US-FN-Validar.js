@@ -72,7 +72,7 @@ module.exports = {
 				: fechaRazonable(datos.fechaNacim)
 				? "¿Estás seguro de que introdujiste la fecha correcta?"
 				: "";
-		if (campos.includes("rol_iglesia_id")) errores.rol_iglesia_id = !datos.rol_iglesia_id ? variables.selectVacio : "";
+		if (campos.includes("rolIglesia_id")) errores.rolIglesia_id = !datos.rolIglesia_id ? variables.selectVacio : "";
 		// Revisar 'documNumero'
 		if (campos.includes("documNumero")) {
 			// Variables

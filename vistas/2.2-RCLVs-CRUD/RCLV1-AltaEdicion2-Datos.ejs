@@ -353,14 +353,14 @@
 				<div id="preguntasRCLIC" class="flexRowAlign altoFila grow spaceBetween invisible">
 					<!-- Rol en la Iglesia -->
 					<div class="flexRowAlign altoFila segunSexo_id invisible">
-						<select name="rol_iglesia_id" class="input">
-							<option value="" <% if (!dataEntry.rol_iglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
-							<% for (let rol_iglesia of roles_igl) { %>
+						<select name="rolIglesia_id" class="input">
+							<option value="" <% if (!dataEntry.rolIglesia_id) { %>selected<% } %>>Rol en la Iglesia</option>
+							<% for (let rolIglesia of roles_igl) { %>
 								<option 
-									value="<%= rol_iglesia.id %>" 
-									<% if (dataEntry.rol_iglesia_id == rol_iglesia.id) { %>selected<% } %>
+									value="<%= rolIglesia.id %>" 
+									<% if (dataEntry.rolIglesia_id == rolIglesia.id) { %>selected<% } %>
 								>
-									<%= rol_iglesia.nombre %>
+									<%= rolIglesia.nombre %>
 								</option>
 							<% } %>
 						</select>
