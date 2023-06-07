@@ -4,13 +4,13 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		nombre_original: {type: dt.STRING(70)},
-		nombre_castellano: {type: dt.STRING(70)},
+		nombreOriginal: {type: dt.STRING(70)},
+		nombreCastellano: {type: dt.STRING(70)},
 		duracion: {type: dt.INTEGER},
-		ano_estreno: {type: dt.INTEGER},
-		ano_fin: {type: dt.INTEGER},
+		anoEstreno: {type: dt.INTEGER},
+		anoFin: {type: dt.INTEGER},
 		paises_id: {type: dt.STRING(14)},
-		idioma_original_id: {type: dt.STRING(2)},
+		idiomaOriginal_id: {type: dt.STRING(2)},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
@@ -18,23 +18,23 @@ module.exports = (sequelize, dt) => {
 		produccion: {type: dt.STRING(100)},
 		sinopsis: {type: dt.STRING(900)},
 		avatar: {type: dt.STRING(18)},
-		avatar_url: {type: dt.STRING(100)},
+		avatarUrl: {type: dt.STRING(100)},
 
 		cfc: {type: dt.BOOLEAN},
 		ocurrio: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		color: {type: dt.BOOLEAN},
-		tipo_actuacion_id: {type: dt.INTEGER},
+		tipoActuacion_id: {type: dt.INTEGER},
 		publico_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		tema_id: {type: dt.INTEGER},
 		evento_id: {type: dt.INTEGER},
-		epoca_del_ano_id: {type: dt.INTEGER},
+		epocaDelAno_id: {type: dt.INTEGER},
 
-		editado_por_id: {type: dt.INTEGER},
-		editado_en: {type: dt.DATE},
+		editadoPor_id: {type: dt.INTEGER},
+		editadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "prod_9edicion",
@@ -46,18 +46,18 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
-		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
-		entidad.belongsTo(n.tipos_actuacion, {as: "tipo_actuacion", foreignKey: "tipo_actuacion_id"});
+		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idiomaOriginal_id"});
+		entidad.belongsTo(n.tiposActuacion, {as: "tipoActuacion", foreignKey: "tipoActuacion_id"});
 		entidad.belongsTo(n.publicos, {as: "publico", foreignKey: "publico_id"});
 
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
-		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epoca_del_ano_id"});
+		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epocaDelAno_id"});
 		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editadoPor_id"});
 	};
 	return entidad;
 };

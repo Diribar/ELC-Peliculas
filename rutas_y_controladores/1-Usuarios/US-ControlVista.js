@@ -84,9 +84,9 @@ module.exports = {
 		// Agrega el usuario
 		await BD_genericas.agregaRegistro("usuarios", {
 			contrasena,
-			fecha_contrasena: ahora,
+			fechaContrasena: ahora,
 			email,
-			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
+			statusRegistro_id: status_registro_us.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
 		req.session.usuario = {email};
@@ -144,7 +144,7 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Agrega la fecha en la que se completa el alta del usuario
-		req.body.completado_en = comp.fechaHora.ahora();
+		req.body.completadoEn = comp.fechaHora.ahora();
 		// Actualiza el usuario
 		await procesos.actualizaElStatusDelUsuario(usuario, "editables", req.body);
 		req.session.usuario = await BD_especificas.obtieneUsuarioPorMail(usuario.email);
@@ -181,8 +181,8 @@ module.exports = {
 		roles_iglesia = roles_iglesia.filter((n) => n.id.length == 3 && n.id.slice(-1) == usuario.sexo_id);
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Avatar
-		let avatar = usuario.docum_avatar
-			? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.docum_avatar
+		let avatar = usuario.documAvatar
+			? "/imagenes/1-Usuarios/DNI-Revisar/" + usuario.documAvatar
 			: "/imagenes/0-Base/Avatar/DNI-Generico.jpg";
 		// Crear la carpeta si no existe
 		const ruta = "./publico/imagenes/9-Provisorio";
@@ -207,7 +207,7 @@ module.exports = {
 		// Obtiene los datos
 		let datos = {
 			...req.body,
-			docum_avatar: req.file ? req.file.filename : usuario.docum_avatar,
+			documAvatar: req.file ? req.file.filename : usuario.documAvatar,
 			id: usuario.id,
 		};
 		if (req.file) datos.tamano = req.file.size;
@@ -217,16 +217,16 @@ module.exports = {
 		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			if (req.file) comp.gestionArchivos.elimina(req.file.destination, req.file.filename);
-			req.session.dataEntry = req.body; // No guarda el docum_avatar
+			req.session.dataEntry = req.body; // No guarda el documAvatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/identidad");
 		}
 		if (req.file) {
-			// Elimina el archivo 'docum_avatar' anterior
-			if (usuario.docum_avatar)
-				comp.gestionArchivos.elimina("./publico/imagenes/1-Usuarios/DNI-Revisar/", usuario.docum_avatar);
-			// Agrega el campo 'docum_avatar' a los datos
-			req.body.docum_avatar = req.file.filename;
+			// Elimina el archivo 'documAvatar' anterior
+			if (usuario.documAvatar)
+				comp.gestionArchivos.elimina("./publico/imagenes/1-Usuarios/DNI-Revisar/", usuario.documAvatar);
+			// Agrega el campo 'documAvatar' a los datos
+			req.body.documAvatar = req.file.filename;
 		}
 		// Prepara la información a actualizar
 		req.body.fechaRevisores = comp.fechaHora.ahora();
@@ -353,7 +353,7 @@ module.exports = {
 		// Actualiza la contraseña en la BD
 		await BD_genericas.actualizaPorId("usuarios", usuario.id, {
 			contrasena,
-			fecha_contrasena: ahora,
+			fechaContrasena: ahora,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = req.body.email;

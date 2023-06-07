@@ -82,8 +82,8 @@ module.exports = {
 			// Validaciones para Fecha Movil
 			if (!respuesta && datos.tipoFecha == "FM") {
 				// Valida si existe un comentario adecuado para la fecha móvil
-				if (!datos.comentario_movil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
-				const aux = !respuesta ? comp.validacs.longitud(datos.comentario_movil, 4, 70) : "";
+				if (!datos.comentarioMovil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
+				const aux = !respuesta ? comp.validacs.longitud(datos.comentarioMovil, 4, 70) : "";
 				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
 			}
 
@@ -92,13 +92,13 @@ module.exports = {
 				// Variables
 				const sufijo = "los Días de Duración";
 				// Valida la cantidad de días
-				if (!respuesta && !datos.dias_de_duracion) respuesta = cartelFaltaElDatoSobre + sufijo;
-				if (!respuesta && datos.dias_de_duracion < 2) respuesta = "La cantidad de dias debe ser mayor a dos";
+				if (!respuesta && !datos.diasDeDuracion) respuesta = cartelFaltaElDatoSobre + sufijo;
+				if (!respuesta && datos.diasDeDuracion < 2) respuesta = "La cantidad de dias debe ser mayor a dos";
 
 				// Valida el comentario para la cantidad de días
 				if (!respuesta) {
-					if (!datos.comentario_duracion) respuesta = cartelCriterioSobre + sufijo;
-					const aux = !respuesta ? comp.validacs.longitud(datos.comentario_duracion, 4, 70) : "";
+					if (!datos.comentarioDuracion) respuesta = cartelCriterioSobre + sufijo;
+					const aux = !respuesta ? comp.validacs.longitud(datos.comentarioDuracion, 4, 70) : "";
 					if (aux) respuesta = aux.replace("contenido", "comentario sobre " + sufijo);
 				}
 			}
@@ -160,7 +160,7 @@ module.exports = {
 				? "Necesitamos saber el rol de la persona en la Iglesia"
 				: !datos.canon_id
 				? "Necesitamos saber si está en proceso de canonización, y en caso afirmativo su status actual"
-				: datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.ap_mar_id
+				: datos.epoca_id == "pst" && datos.ano && datos.ano > 1100 && !datos.apMar_id
 				? "Necesitamos saber si participó en una Aparición Mariana, y en caso afirmativo en cuál"
 				: ""
 			: datos.categoria_id != "VPC"

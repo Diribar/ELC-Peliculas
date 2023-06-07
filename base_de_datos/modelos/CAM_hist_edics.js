@@ -11,11 +11,11 @@ module.exports = (sequelize, dt) => {
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.DECIMAL},
 
-		sugerido_por_id: {type: dt.INTEGER},
-		sugerido_en: {type: dt.DATE},
-		revisado_por_id: {type: dt.INTEGER},
-		revisado_en: {type: dt.DATE},
-		comunicado_en: {type: dt.DATE},
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
+		revisadoPor_id: {type: dt.INTEGER},
+		revisadoEn: {type: dt.DATE},
+		comunicadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "cam_hist_edics",
@@ -24,8 +24,8 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.motivos_edics, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "sugerido_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisado_por_id"});	
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "sugeridoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisadoPor_id"});	
 	};
 	return entidad;
 };

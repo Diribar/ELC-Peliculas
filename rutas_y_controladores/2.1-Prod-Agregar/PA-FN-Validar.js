@@ -25,8 +25,8 @@ module.exports = {
 		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
 		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
 		let camposPosibles = [
-			{nombre: "nombre_original", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-			{nombre: "nombre_castellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
+			{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
+			{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "guion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", tipoIdioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
@@ -55,24 +55,24 @@ module.exports = {
 			}
 		}
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
-		if (campos.includes("ano_estreno"))
-			errores.ano_estreno = !datos.ano_estreno
+		if (campos.includes("anoEstreno"))
+			errores.anoEstreno = !datos.anoEstreno
 				? variables.inputVacio
-				: formatoAno(datos.ano_estreno)
+				: formatoAno(datos.anoEstreno)
 				? "Debe ser un número de 4 dígitos"
-				: datos.ano_estreno < 1900
+				: datos.anoEstreno < 1900
 				? "El año debe ser mayor a 1900"
-				: datos.ano_estreno > new Date().getFullYear()
+				: datos.anoEstreno > new Date().getFullYear()
 				? "El número no puede superar al año actual"
 				: "";
-		if (campos.includes("ano_fin"))
-			errores.ano_fin = !datos.ano_fin
+		if (campos.includes("anoFin"))
+			errores.anoFin = !datos.anoFin
 				? variables.inputVacio
-				: formatoAno(datos.ano_fin)
+				: formatoAno(datos.anoFin)
 				? "Debe ser un número de 4 dígitos"
-				: datos.ano_fin < 1900
+				: datos.anoFin < 1900
 				? "El año debe ser mayor a 1900"
-				: datos.ano_fin > new Date().getFullYear()
+				: datos.anoFin > new Date().getFullYear()
 				? "El número no puede superar al año actual"
 				: "";
 		if (campos.includes("duracion"))
@@ -89,25 +89,25 @@ module.exports = {
 				: datos.paises_id.length > 2 * 1 + 3 * 3
 				? "Se aceptan hasta 4 países."
 				: "";
-		if (campos.includes("idioma_original_id"))
-			errores.idioma_original_id = !datos.idioma_original_id ? variables.inputVacio : "";
+		if (campos.includes("idiomaOriginal_id"))
+			errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
 		// Personas
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin
-		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin && datos.ano_estreno > datos.ano_fin) {
-			errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
+		if (datos.anoEstreno && !errores.anoEstreno && datos.anoFin && !errores.anoFin && datos.anoEstreno > datos.anoFin) {
+			errores.anoEstreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
 		// Nombre Original y Año de Estreno
-		if (datos.nombre_original && !errores.nombre_original && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
-			let id = await BD_especificas.validaRepetidos(["nombre_original", "ano_estreno"], datos);
-			if (id) errores.nombre_original = comp.validacs.cartelRepetido({...datos, id});
+		if (datos.nombreOriginal && !errores.nombreOriginal && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
+			let id = await BD_especificas.validaRepetidos(["nombreOriginal", "anoEstreno"], datos);
+			if (id) errores.nombreOriginal = comp.validacs.cartelRepetido({...datos, id});
 		}
 		// Nombre Castellano y Año de Estreno
-		if (datos.nombre_castellano && !errores.nombre_castellano && datos.ano_estreno && !errores.ano_estreno && datos.entidad) {
-			let id = await BD_especificas.validaRepetidos(["nombre_castellano", "ano_estreno"], datos);
-			if (id) errores.nombre_castellano = comp.validacs.cartelRepetido({...datos, id});
+		if (datos.nombreCastellano && !errores.nombreCastellano && datos.anoEstreno && !errores.anoEstreno && datos.entidad) {
+			let id = await BD_especificas.validaRepetidos(["nombreCastellano", "anoEstreno"], datos);
+			if (id) errores.nombreCastellano = comp.validacs.cartelRepetido({...datos, id});
 		}
 
 		// ***** RESUMEN *******
@@ -118,7 +118,7 @@ module.exports = {
 	datosAdics: (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipo_actuacion_id"];
+		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
@@ -157,11 +157,11 @@ module.exports = {
 			? "No parece ser una dirección de Film Affinity"
 			: "";
 		// Avatar
-		errores.avatar_url = !datos.avatar_url
+		errores.avatarUrl = !datos.avatarUrl
 			? "Necesitamos que agregues una imagen"
-			: !datos.avatar_url.includes("pics.filmaffinity.com/")
+			: !datos.avatarUrl.includes("pics.filmaffinity.com/")
 			? "No parece ser una imagen de FilmAffinity"
-			: !datos.avatar_url.includes("large.jpg")
+			: !datos.avatarUrl.includes("large.jpg")
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido

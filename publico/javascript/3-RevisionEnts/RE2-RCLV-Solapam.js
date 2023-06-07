@@ -21,14 +21,14 @@ window.addEventListener("load", async () => {
 		mes_id: document.querySelector("form .input[name='mes_id']"),
 		dia: document.querySelector("form .input[name='dia']"),
 		linksClick: document.querySelectorAll("form #sectorFecha .links"),
-		dias_de_duracion: document.querySelector("form .input[name='dias_de_duracion']"),
+		diasDeDuracion: document.querySelector("form .input[name='diasDeDuracion']"),
 		// Primera columna - Fecha comentarios móvil
 		sectorContadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres"),
 		contadorMovil: document.querySelector("form #dataEntry #mesDia .caracteres span"),
-		comentario_movil: document.querySelector("form .input[name='comentario_movil']"),
+		comentarioMovil: document.querySelector("form .input[name='comentarioMovil']"),
 		// Primera columna - Fecha comentarios duración
-		contadorDuracion: document.querySelector("form #dataEntry #dias_de_duracion .caracteres span"),
-		comentario_duracion: document.querySelector("form .input[name='comentario_duracion']"),
+		contadorDuracion: document.querySelector("form #dataEntry #diasDeDuracion .caracteres span"),
+		comentarioDuracion: document.querySelector("form .input[name='comentarioDuracion']"),
 
 		// Segunda columna
 		// Días del año
@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 
 		// Temas de fecha
 		meses: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
-		dias_del_ano: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
+		diasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
 
 		// Otros
 		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
@@ -148,10 +148,10 @@ window.addEventListener("load", async () => {
 				// Fecha móvil
 				if (tipoFecha == "FM") {
 					DOM.sectorContadorMovil.classList.remove("ocultar");
-					DOM.comentario_movil.classList.remove("ocultar");
+					DOM.comentarioMovil.classList.remove("ocultar");
 				} else {
 					DOM.sectorContadorMovil.classList.add("ocultar");
-					DOM.comentario_movil.classList.add("ocultar");
+					DOM.comentarioMovil.classList.add("ocultar");
 				}
 
 				// Fin
@@ -161,21 +161,21 @@ window.addEventListener("load", async () => {
 				// Variables
 				const dia = DOM.dia.value;
 				const mes_id = DOM.mes_id.value;
-				const dias_de_duracion = parseInt(DOM.dias_de_duracion.value);
+				const diasDeDuracion = parseInt(DOM.diasDeDuracion.value);
 
 				// Si la información está incompleta/incorrecta, sale de la función
 				if (!mes_id || !dia) return;
 				if (mes_id < 1 || mes_id > 12) return;
-				if (!dias_de_duracion || dias_de_duracion < 2 || dias_de_duracion > 366) return;
+				if (!diasDeDuracion || diasDeDuracion < 2 || diasDeDuracion > 366) return;
 
 				// Obtiene la fecha de inicio
 				const mes = varios.meses[mes_id - 1];
 				const fechaInicio = dia + "/" + mes;
 
 				// Obtiene los ID de inicio y de fin
-				const idInicio = varios.dias_del_ano.indexOf(fechaInicio);
+				const idInicio = varios.diasDelAno.indexOf(fechaInicio);
 				if (idInicio < 0) return;
-				let idFin = idInicio + dias_de_duracion - 1;
+				let idFin = idInicio + diasDeDuracion - 1;
 				if (idFin > 365) idFin -= 366;
 
 				// Actualiza el color de todos los días del año
@@ -190,7 +190,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Centra el día 'desde'
-				if (campo != "dias_de_duracion") {
+				if (campo != "diasDeDuracion") {
 					const porcentajeCalendario = idInicio / 365;
 					const alturaMarco = DOM.marcoCalendario.offsetHeight;
 					const alturaCalendario = DOM.tablaCalendario.offsetHeight;
@@ -295,8 +295,8 @@ window.addEventListener("load", async () => {
 				if (largoMaximo && valor.length > largoMaximo) valor = valor.slice(0, largoMaximo);
 
 				// Si se cambia un 'textarea', actualiza el contador
-				if (campo == "comentario_movil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
-				if (campo == "comentario_duracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
+				if (campo == "comentarioMovil") DOM.contadorMovil.innerHTML = largoMaximo - valor.length;
+				if (campo == "comentarioDuracion") DOM.contadorDuracion.innerHTML = largoMaximo - valor.length;
 
 				// Limpia el ícono de error/OK
 				DOM.mensajesError[0].innerHTML = "";
@@ -338,10 +338,10 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 
 		// Impactos
-		if (campo == "dias_de_duracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
+		if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 		if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 		if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-		if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "dias_de_duracion"))
+		if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
 			impactos.fecha.epocas_del_ano(campo);
 
 		// Valida las fechas

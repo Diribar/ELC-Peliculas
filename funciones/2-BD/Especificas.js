@@ -46,8 +46,8 @@ module.exports = {
 		let statusGrCreado_id = status_registros.filter((n) => n.gr_creado).map((n) => n.id);
 		let condicStatus = {
 			[Op.or]: [
-				{status_registro_id: aprobado_id},
-				{[Op.and]: [{status_registro_id: statusGrCreado_id}, {creado_por_id: userID}]},
+				{statusRegistro_id: aprobado_id},
+				{[Op.and]: [{statusRegistro_id: statusGrCreado_id}, {creadoPor_id: userID}]},
 			],
 		};
 		// Consolidado
@@ -64,7 +64,7 @@ module.exports = {
 				n.map((m) => {
 					return {
 						id: m.id,
-						ano: m.ano_estreno,
+						ano: m.anoEstreno,
 						nombre: m[dato.campos[0]],
 						entidad: dato.entidad,
 						familia: dato.familia,
@@ -91,19 +91,19 @@ module.exports = {
 			// Condiciones
 			let condiciones = {
 				// Con status según parámetro
-				status_registro_id: status_id,
+				statusRegistro_id: status_id,
 				// Que cumpla alguno de los siguientes sobre la 'captura':
 				[Op.or]: [
 					// Que no esté capturado
-					{capturado_en: null},
+					{capturadoEn: null},
 					// Que esté capturado hace más de dos horas
-					{capturado_en: {[Op.lt]: haceDosHoras}},
+					{capturadoEn: {[Op.lt]: haceDosHoras}},
 					// Que la captura haya sido por otro usuario y hace más de una hora
-					{capturado_por_id: {[Op.ne]: revID}, capturado_en: {[Op.lt]: haceUnaHora}},
+					{capturadoPor_id: {[Op.ne]: revID}, capturadoEn: {[Op.lt]: haceUnaHora}},
 					// Que la captura haya sido por otro usuario y esté inactiva
-					{capturado_por_id: {[Op.ne]: revID}, captura_activa: {[Op.ne]: 1}},
+					{capturadoPor_id: {[Op.ne]: revID}, capturaActiva: {[Op.ne]: 1}},
 					// Que esté capturado por este usuario hace menos de una hora
-					{capturado_por_id: revID, capturado_en: {[Op.gt]: haceUnaHora}},
+					{capturadoPor_id: revID, capturadoEn: {[Op.gt]: haceUnaHora}},
 				],
 			};
 			// Que esté propuesto por otro usuario
@@ -126,9 +126,9 @@ module.exports = {
 				.findAll({
 					where: {
 						// Que esté editado desde hace más de 1 hora
-						editado_en: {[Op.lt]: haceUnaHora},
+						editadoEn: {[Op.lt]: haceUnaHora},
 						// Que sea ajeno
-						editado_por_id: {[Op.ne]: revID},
+						editadoPor_id: {[Op.ne]: revID},
 					},
 					include,
 				})
@@ -141,10 +141,10 @@ module.exports = {
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
 				[Op.or]: [
-					{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{status_registro_id: creado_aprob_id}, {creado_por_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: creado_aprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: inactivar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: recuperar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
 				],
 			};
 			const originales = db.links
@@ -152,7 +152,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()));
 
 			// Obtiene todas las ediciones ajenas
-			const condicion = {editado_por_id: {[Op.ne]: revID}};
+			const condicion = {editadoPor_id: {[Op.ne]: revID}};
 			const ediciones = db.links_edicion.findAll({where: condicion, include}).then((n) => n.map((m) => m.toJSON()));
 
 			// Los consolida
@@ -173,9 +173,9 @@ module.exports = {
 					// Que pertenezca a la entidad que nos interesa
 					[campo_id]: entID,
 					// Que esté editado por otro usuario
-					editado_por_id: {[Op.ne]: userID},
+					editadoPor_id: {[Op.ne]: userID},
 					// Que esté editado desde hace más de 1 hora
-					editado_en: {[Op.lt]: haceUnaHora},
+					editadoEn: {[Op.lt]: haceUnaHora},
 				},
 				include,
 			})
@@ -183,11 +183,11 @@ module.exports = {
 	},
 	// Revisar - Inactivo
 	actualizaLosProdsVinculadosNoAprobados: ({entidad, campo_id, id}) => {
-		const condicion = {[campo_id]: id, status_registro_id: {[Op.ne]: aprobado_id}};
+		const condicion = {[campo_id]: id, statusRegistro_id: {[Op.ne]: aprobado_id}};
 		const objeto = {[campo_id]: 1};
 		return db[entidad].update(objeto, {where: condicion});
 	},
-	// Revisar dias_del_ano
+	// Revisar diasDelAno
 	condicsDDA: ({desde, duracion}) => {
 		// Primera Condicion
 		let condicion = {id: {[Op.between]: [desde, Math.min(desde + duracion, 366)]}};
@@ -219,19 +219,19 @@ module.exports = {
 			.findAll({
 				where: {
 					// Con status según parámetro
-					status_registro_id: status_id,
+					statusRegistro_id: status_id,
 					// Que cumpla alguno de los siguientes sobre la 'captura':
 					[Op.or]: [
 						// Que no esté capturado
-						{capturado_en: null},
+						{capturadoEn: null},
 						// Que esté capturado hace más de dos horas
-						{capturado_en: {[Op.lt]: haceDosHoras}},
+						{capturadoEn: {[Op.lt]: haceDosHoras}},
 						// Que la captura haya sido por otro usuario y hace más de una hora
-						{capturado_por_id: {[Op.ne]: userID}, capturado_en: {[Op.lt]: haceUnaHora}},
+						{capturadoPor_id: {[Op.ne]: userID}, capturadoEn: {[Op.lt]: haceUnaHora}},
 						// Que la captura haya sido por otro usuario y esté inactiva
-						{capturado_por_id: {[Op.ne]: userID}, captura_activa: {[Op.ne]: 1}},
+						{capturadoPor_id: {[Op.ne]: userID}, capturaActiva: {[Op.ne]: 1}},
 						// Que esté capturado por este usuario hace menos de una hora
-						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
+						{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
 					],
 				},
 				include,
@@ -251,17 +251,17 @@ module.exports = {
 
 		// Obtiene la condición
 		let condicion = {
-			sugerido_en: {[Op.lt]: fechaCorte},
-			status_registro_id: aprobado_id,
+			sugeridoEn: {[Op.lt]: fechaCorte},
+			statusRegistro_id: aprobado_id,
 		};
 
 		// Fin
 		return condicion;
 	},
-	nombresDeAvatarEnBD: (entidad, status_registro_id) => {
+	nombresDeAvatarEnBD: (entidad, statusRegistro_id) => {
 		// Variables
 		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
-		if (status_registro_id) condiciones.status_registro_id = status_registro_id;
+		if (statusRegistro_id) condiciones.statusRegistro_id = statusRegistro_id;
 
 		// Fin
 		return db[entidad]
@@ -271,7 +271,7 @@ module.exports = {
 				n.map((m) => {
 					return {
 						imagen: m.avatar,
-						nombre: m.nombre ? m.nombre : m.nombre_castellano ? m.nombre_castellano : m.nombre_original,
+						nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
 						entidad,
 					};
 				})
@@ -290,7 +290,7 @@ module.exports = {
 	},
 	// Middleware/Usuario/usAutorizFA
 	obtieneAutorizFA: (id) => {
-		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
+		return db.usuarios.findByPk(id).then((n) => n.autorizadoFA);
 	},
 	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
@@ -299,9 +299,9 @@ module.exports = {
 		// Rutina para contar
 		let condiciones = {
 			[Op.or]: [
-				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: userID}]},
-				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: userID}]},
-				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: inactivar_id}, {sugeridoPor_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: recuperar_id}, {sugeridoPor_id: userID}]},
 			],
 		};
 		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
@@ -314,7 +314,7 @@ module.exports = {
 		const entidades = ["prods_edicion", "rclvs_edicion", "links_edicion"];
 		let contarRegistros = 0;
 		// Rutina para contar
-		let condicion = {editado_por_id: userID};
+		let condicion = {editadoPor_id: userID};
 		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});
 
 		// Fin

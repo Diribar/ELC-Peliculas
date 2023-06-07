@@ -18,10 +18,10 @@ window.addEventListener("load", async () => {
 		resultado: document.querySelector("#dataEntry #resultado"),
 
 		// Específicos de Datos Duros
-		nombre_original: document.querySelector("#dataEntry input[name='nombre_original']"),
-		nombre_castellano: document.querySelector("#dataEntry input[name='nombre_castellano']"),
-		ano_estreno: document.querySelector("#dataEntry input[name='ano_estreno']"),
-		ano_fin: document.querySelector("#dataEntry input[name='ano_fin']"),
+		nombreOriginal: document.querySelector("#dataEntry input[name='nombreOriginal']"),
+		nombreCastellano: document.querySelector("#dataEntry input[name='nombreCastellano']"),
+		anoEstreno: document.querySelector("#dataEntry input[name='anoEstreno']"),
+		anoFin: document.querySelector("#dataEntry input[name='anoFin']"),
 		paisesSelect: document.querySelector("#paises_id select"),
 	};
 	let rutas = {
@@ -270,15 +270,15 @@ window.addEventListener("load", async () => {
 				valor = DOM.paisesID.value;
 			}
 			// Campos combinados
-			if (campo == "ano_estreno") {
-				if (DOM.ano_fin) adicionales += "&ano_fin=" + encodeURIComponent(DOM.ano_fin.value);
-				adicionales += "&nombre_original=" + encodeURIComponent(DOM.nombre_original.value);
-				adicionales += "&nombre_castellano=" + encodeURIComponent(DOM.nombre_castellano.value);
+			if (campo == "anoEstreno") {
+				if (DOM.anoFin) adicionales += "&anoFin=" + encodeURIComponent(DOM.anoFin.value);
+				adicionales += "&nombreOriginal=" + encodeURIComponent(DOM.nombreOriginal.value);
+				adicionales += "&nombreCastellano=" + encodeURIComponent(DOM.nombreCastellano.value);
 				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
-			if (campo == "ano_fin") adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
-			if (campo == "nombre_original" || campo == "nombre_castellano") {
-				adicionales += "&ano_estreno=" + encodeURIComponent(DOM.ano_estreno.value);
+			if (campo == "anoFin") adicionales += "&anoEstreno=" + encodeURIComponent(DOM.anoEstreno.value);
+			if (campo == "nombreOriginal" || campo == "nombreCastellano") {
+				adicionales += "&anoEstreno=" + encodeURIComponent(DOM.anoEstreno.value);
 				adicionales += "&entidad=" + encodeURIComponent(v.entidad);
 			}
 

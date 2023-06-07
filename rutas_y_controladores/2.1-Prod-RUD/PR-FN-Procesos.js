@@ -16,10 +16,10 @@ module.exports = {
 		if (producto.publico) infoGral.push({titulo: "Público sugerido", valor: producto.publico.nombre});
 		if (producto.castellano !== null)
 			infoGral.push({titulo: "Tenemos links en castellano", valor: producto.castellano ? "SI" : "NO"});
-		if (producto.tipo_actuacion) infoGral.push({titulo: "Tipo de actuación", valor: producto.tipo_actuacion.nombre});
-		if (producto.ano_estreno) infoGral.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+		if (producto.tipoActuacion) infoGral.push({titulo: "Tipo de actuación", valor: producto.tipoActuacion.nombre});
+		if (producto.anoEstreno) infoGral.push({titulo: "Año de estreno", valor: producto.anoEstreno});
 		if (producto.cant_temps) {
-			if (producto.ano_fin) infoGral.push({titulo: "Año de fin", valor: producto.ano_fin});
+			if (producto.anoFin) infoGral.push({titulo: "Año de fin", valor: producto.anoFin});
 		} else if (producto.duracion) infoGral.push({titulo: "Duracion", valor: producto.duracion + " min."});
 		if (producto.color !== null) infoGral.push({titulo: "Es a color", valor: producto.color ? "SI" : "NO"});
 		if (paisesNombre) infoGral.push({titulo: "País" + (paisesNombre.includes(",") ? "es" : ""), valor: paisesNombre});
@@ -36,7 +36,7 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async (entidad, id, status_registro_id) => {
+	obtieneLinksDelProducto: async (entidad, id, statusRegistro_id) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
@@ -46,8 +46,8 @@ module.exports = {
 		let TR = [];
 
 		// Obtiene los links
-		if (!status_registro_id) status_registro_id = aprobado_id;
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, status_registro_id}, include);
+		if (!statusRegistro_id) statusRegistro_id = aprobado_id;
+		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, statusRegistro_id}, include);
 
 		// Procesos si hay links
 		if (links.length) {

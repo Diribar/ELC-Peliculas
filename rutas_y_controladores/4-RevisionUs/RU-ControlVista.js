@@ -32,31 +32,31 @@ module.exports = {
 		const codigo = "validaIdentidad";
 		const userID = req.query.id;
 		const campos = [
-			{titulo: "País de Expedición", nombre: "docum_pais_id"},
+			{titulo: "País de Expedición", nombre: "documPais_id"},
 			{titulo: "Apellido", nombre: "apellido"},
 			{titulo: "Nombre", nombre: "nombre"},
 			{titulo: "Sexo", nombre: "sexo_id"},
-			{titulo: "Fecha de Nacim.", nombre: "fecha_nacim"},
-			{titulo: "N° de Documento", nombre: "docum_numero"},
+			{titulo: "Fecha de Nacim.", nombre: "fechaNacim"},
+			{titulo: "N° de Documento", nombre: "documNumero"},
 		];
 
 		// Obtiene el usuario
 		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "status_registro"]);
 
 		// Validaciones
-		const {informacion, docum_avatar} = procesos.VI.validaUsuario(usuario, campos);
+		const {informacion, documAvatar} = procesos.VI.validaUsuario(usuario, campos);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Otras variables
-		const pais = paises.find((n) => n.id == usuario.docum_pais_id).nombre;
-		const fecha_nacim = comp.fechaHora.fechaDiaMesAno(usuario.fecha_nacim);
+		const pais = paises.find((n) => n.id == usuario.documPais_id).nombre;
+		const fechaNacim = comp.fechaHora.fechaDiaMesAno(usuario.fechaNacim);
 		const valores = {
-			docum_pais_id: pais,
+			documPais_id: pais,
 			apellido: usuario.apellido,
 			nombre: usuario.nombre,
 			sexo_id: usuario.sexo.nombre,
-			fecha_nacim: fecha_nacim,
-			docum_numero: usuario.docum_numero,
+			fechaNacim: fechaNacim,
+			documNumero: usuario.documNumero,
 		};
 		for (let campo of campos) campo.valor = valores[campo.nombre];
 		const motivos_docum = motivos_edics.filter((n) => n.avatar_us);
@@ -68,7 +68,7 @@ module.exports = {
 			codigo,
 			titulo: "Validación de Identidad",
 			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
-			docum_avatar,
+			documAvatar,
 			title: usuario.apodo,
 			campos,
 			userID,
@@ -79,7 +79,7 @@ module.exports = {
 	validaIdentGuardar: async (req, res) => {
 		// Variables
 		const datos = {...req.query, ...req.body};
-		const campos = ["apellido", "docum_pais_id", "docum_numero", "fecha_nacim", "nombre", "sexo_id"];
+		const campos = ["apellido", "documPais_id", "documNumero", "fechaNacim", "nombre", "sexo_id"];
 
 		// Si hubo algún error en el data-entry reenvía el formulario
 		let redireccionar;
@@ -91,7 +91,7 @@ module.exports = {
 		// Más variables
 		const revID = req.session.usuario.id;
 		let durac_penalidad = 0;
-		let status_registro_id = st_ident_validada_id;
+		let statusRegistro_id = st_ident_validada_id;
 		let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 
 		// Obtiene el usuario
@@ -104,7 +104,7 @@ module.exports = {
 				if (datos[campo] == "NO") {
 					// Agrega un registro por la edición rechazada
 					procesos.VI.hist_edics(campo, usuario, revID, motivo);
-					status_registro_id = st_editables_id;
+					statusRegistro_id = st_editables_id;
 					durac_penalidad += Number(motivo.duracion);
 				}
 		}
@@ -112,22 +112,22 @@ module.exports = {
 		else {
 			// Rutinas para el campo
 			const motivo = motivos_edics.find((n) => n.id == datos.motivo_docum_id);
-			procesos.VI.hist_edics("docum_avatar", usuario, revID, motivo);
-			status_registro_id = st_editables_id;
+			procesos.VI.hist_edics("documAvatar", usuario, revID, motivo);
+			statusRegistro_id = st_editables_id;
 			durac_penalidad += Number(motivo.duracion);
 		}
 
 		// Acciones si se aprueba la validación
-		if (status_registro_id == st_ident_validada_id) {
+		if (statusRegistro_id == st_ident_validada_id) {
 			// Asigna el rol 'permInputs'
-			objeto.rol_usuario_id = rolPermInputs_id;
+			objeto.rolUsuario_id = rolPermInputs_id;
 
 			// Mueve la imagen del documento a su carpeta definitiva
-			comp.gestionArchivos.mueveImagen(usuario.docum_avatar, "1-Usuarios/DNI-Revisar", "1-Usuarios/DNI-Final");
+			comp.gestionArchivos.mueveImagen(usuario.documAvatar, "1-Usuarios/DNI-Revisar", "1-Usuarios/DNI-Final");
 		}
 
 		// Actualiza el usuario
-		objeto.status_registro_id = status_registro_id;
+		objeto.statusRegistro_id = statusRegistro_id;
 		BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 
 		// Aplica la durac_penalidad

@@ -98,23 +98,23 @@ window.addEventListener("load", async () => {
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
 			li.children[0][1].value = prod.TMDB_id;
-			li.children[0][2].value = prod.nombre_original;
-			li.children[0][3].value = prod.idioma_original_id;
+			li.children[0][2].value = prod.nombreOriginal;
+			li.children[0][3].value = prod.idiomaOriginal_id;
 			// Imagen
 			li.children[0][4].children[0].src = prod.avatar
 				? "https://image.tmdb.org/t/p/original" + prod.avatar
 				: localhost + "/imagenes/0-Base/Avatar/Sin-Avatar.jpg";
-			li.children[0][4].children[0].alt = prod.nombre_original;
-			li.children[0][4].children[0].title = prod.nombre_original;
+			li.children[0][4].children[0].alt = prod.nombreOriginal;
+			li.children[0][4].children[0].title = prod.nombreOriginal;
 			// Información a mostrar
-			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombre_original;
-			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
+			li.children[0][4].children[1].children[0].children[0].innerHTML = prod.nombreOriginal;
+			li.children[0][4].children[1].children[1].children[0].innerHTML = prod.nombreCastellano;
 			// Completa los años
 			if (prod.entidad == "colecciones") {
-				let ano = prod.ano_fin > prod.ano_estreno ? prod.ano_fin + "-" + prod.ano_estreno : prod.ano_estreno;
+				let ano = prod.anoFin > prod.anoEstreno ? prod.anoFin + "-" + prod.anoEstreno : prod.anoEstreno;
 				li.children[0][4].children[1].children[3].innerHTML = ano;
 				li.children[0][4].children[1].children[4].innerHTML = "Capítulos: " + prod.capitulos;
-			} else li.children[0][4].children[1].children[3].innerHTML = prod.ano_estreno;
+			} else li.children[0][4].children[1].children[3].innerHTML = prod.anoEstreno;
 			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
 
 			// Quitar la clase 'ocultar'
@@ -140,12 +140,12 @@ window.addEventListener("load", async () => {
 				? prod.avatar
 				: localhost + "/imagenes/2-Productos/Final/" + prod.avatar;
 			li.children[0].children[0].children[0].src = avatar;
-			li.children[0].children[0].children[0].alt = prod.nombre_original;
-			li.children[0].children[0].children[0].title = prod.nombre_original;
+			li.children[0].children[0].children[0].alt = prod.nombreOriginal;
+			li.children[0].children[0].children[0].title = prod.nombreOriginal;
 			// Información a mostrar
-			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombre_original;
-			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombre_castellano;
-			li.children[0].children[0].children[1].children[3].innerHTML = prod.ano_estreno + " - " + prod.entidadNombre;
+			li.children[0].children[0].children[1].children[0].children[0].innerHTML = prod.nombreOriginal;
+			li.children[0].children[0].children[1].children[1].children[0].innerHTML = prod.nombreCastellano;
+			li.children[0].children[0].children[1].children[3].innerHTML = prod.anoEstreno + " - " + prod.entidadNombre;
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 
@@ -189,8 +189,8 @@ window.addEventListener("load", async () => {
 			let datos = {
 				TMDB_entidad: e.target[0].value,
 				TMDB_id: e.target[1].value,
-				nombre_original: encodeURIComponent(e.target[2].value),
-				idioma_original_id: e.target[3].value,
+				nombreOriginal: encodeURIComponent(e.target[2].value),
+				idiomaOriginal_id: e.target[3].value,
 			};
 
 			// Muestra el cartel

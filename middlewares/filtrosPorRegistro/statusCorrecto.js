@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 
 	// Obtiene el registro
 	const registro = await BD_genericas.obtienePorId(entidad, id);
-	const statusActual = status_registros.find((n) => n.id == registro.status_registro_id);
+	const statusActual = status_registros.find((n) => n.id == registro.statusRegistro_id);
 
 	// Status Esperado
 	(() => {

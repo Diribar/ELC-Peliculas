@@ -69,7 +69,7 @@ module.exports = {
 				campos.map((n) => (resultado2[n] = resultado1[n]));
 			});
 
-		// peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombre_castellano),
+		// peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombreCastellano),
 		// .then((n) => n.sort((a, b) => b.cantidad - a.cantidad));
 
 		// Fin

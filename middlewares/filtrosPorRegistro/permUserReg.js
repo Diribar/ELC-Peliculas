@@ -33,11 +33,11 @@ module.exports = async (req, res, next) => {
 	v.entidadNombreMinuscula = comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase();
 	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
-	v.capturado_en = v.registro.capturado_en;
-	v.horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.registro.capturado_en));
-	v.creado_en = v.registro.creado_en;
-	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creado_en));
-	if (v.creado_en) v.creado_en.setSeconds(0);
+	v.capturadoEn = v.registro.capturadoEn;
+	v.horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.registro.capturadoEn));
+	v.creadoEn = v.registro.creadoEn;
+	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
+	if (v.creadoEn) v.creadoEn.setSeconds(0);
 	v.vistaAnteriorTablero = [v.vistaAnterior];
 	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	// Otras variables
@@ -45,8 +45,8 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Creado por el usuario
-	let creadoPorElUsuario1 = v.registro.creado_por_id == v.userID;
-	let creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creado_por_id == v.userID;
+	let creadoPorElUsuario1 = v.registro.creadoPor_id == v.userID;
+	let creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userID;
 	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmula
@@ -55,28 +55,28 @@ module.exports = async (req, res, next) => {
 		// Asociaciones
 		let entidades = variables.entidades.prods.includes(v.entidad) ? variables.entidades.prods : variables.entidades.rclvs;
 		// Variables
-		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
+		let objetoNull = {capturadoEn: null, capturadoPor_id: null, capturaActiva: null};
 		let resultado;
 		// Rutina por cada asociación
 		for (let entidad of entidades) {
-			let registros = await BD_genericas.obtieneTodosPorCondicion(entidad, {capturado_por_id: v.userID});
+			let registros = await BD_genericas.obtieneTodosPorCondicion(entidad, {capturadoPor_id: v.userID});
 			for (let registro of registros) {
 				// Si fue capturado hace más de 2 horas y no es el registro actual, limpia los tres campos
-				if (registro.capturado_en < v.haceDosHoras && registro.id != v.entID)
+				if (registro.capturadoEn < v.haceDosHoras && registro.id != v.entID)
 					BD_genericas.actualizaPorId(entidad, registro.id, objetoNull);
 				// Si fue capturado hace menos de 1 hora, está activo y no es el registro actual, informa el caso
 				else if (
-					registro.capturado_en > v.haceUnaHora &&
-					registro.captura_activa &&
+					registro.capturadoEn > v.haceUnaHora &&
+					registro.capturaActiva &&
 					(entidad != v.entidad || registro.id != v.entID)
 				) {
 					resultado = {
 						entidad,
 						id: registro.id,
-						capturado_en: registro.capturado_en,
+						capturadoEn: registro.capturadoEn,
 						nombre: registro.nombre,
-						nombre_castellano: registro.nombre_castellano,
-						nombre_original: registro.nombre_original,
+						nombreCastellano: registro.nombreCastellano,
+						nombreOriginal: registro.nombreOriginal,
 					};
 					break;
 				}
@@ -89,7 +89,7 @@ module.exports = async (req, res, next) => {
 	// CAMINO CRÍTICO
 	// 1. El registro fue creado hace menos de una hora y otro usuario quiere acceder como escritura
 	if (!informacion) {
-		if (v.entidad != "usuarios" && v.creado_en > v.haceUnaHora && !creadoPorElUsuario)
+		if (v.entidad != "usuarios" && v.creadoEn > v.haceUnaHora && !creadoPorElUsuario)
 			informacion = {
 				mensajes: [
 					"Por ahora, el registro sólo está accesible para su creador.",
@@ -102,7 +102,7 @@ module.exports = async (req, res, next) => {
 	//    El registro está en status creado y la vista no es de revisión
 	if (!informacion) {
 		if (
-			v.creado_en < v.haceUnaHora && // creado hace más de una hora
+			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 			v.registro.status_registro.creado && // en status creado
 			v.urlBase != "/revision" // la ruta no es de revisión
 		) {
@@ -126,7 +126,7 @@ module.exports = async (req, res, next) => {
 	}
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
 	if (!informacion) {
-		if (v.capturado_en > v.haceUnaHora && v.registro.capturado_por_id != v.userID && v.registro.captura_activa)
+		if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
 			informacion = {
 				mensajes: [
 					"El registro está capturado por " + (v.registro.capturado_por ? v.registro.capturado_por.apodo : "") + ".",
@@ -137,7 +137,7 @@ module.exports = async (req, res, next) => {
 	}
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	if (!informacion) {
-		if (v.capturado_en < v.haceUnaHora && v.capturado_en > v.haceDosHoras && v.registro.capturado_por_id == v.userID)
+		if (v.capturadoEn < v.haceUnaHora && v.capturadoEn > v.haceDosHoras && v.registro.capturadoPor_id == v.userID)
 			informacion = {
 				mensajes: [
 					"Esta captura terminó el " + v.horarioFinalCaptura,
@@ -164,7 +164,7 @@ module.exports = async (req, res, next) => {
 				titulo: "Liberar automáticamente",
 				autofocus: true,
 			};
-			const horario = comp.fechaHora.fechaHorario(prodCapturado.capturado_en);
+			const horario = comp.fechaHora.fechaHorario(prodCapturado.capturadoEn);
 			// Preparar la información
 			const terminacion =
 				pc_entidad == "peliculas" || pc_entidad == "colecciones"
@@ -196,7 +196,7 @@ module.exports = async (req, res, next) => {
 				iconos: v.vistaAnteriorTablero,
 			};
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
-		else if (v.registro.status_registro.gr_provisorios && v.registro.sugerido_por_id == v.userID)
+		else if (v.registro.status_registro.gr_provisorios && v.registro.sugeridoPor_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,
@@ -205,7 +205,7 @@ module.exports = async (req, res, next) => {
 		else if (
 			v.registro.ediciones &&
 			v.registro.ediciones.length == 1 &&
-			v.registro.ediciones[0].editado_por_id == v.userID &&
+			v.registro.ediciones[0].editadoPor_id == v.userID &&
 			!v.url.startsWith("/links/") &&
 			!v.url.startsWith("/producto/alta/")
 		) {

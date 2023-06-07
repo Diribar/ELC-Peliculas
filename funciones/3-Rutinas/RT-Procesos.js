@@ -56,14 +56,14 @@ module.exports = {
 		const fecha = new Date(fechaNum);
 		let resultado;
 
-		// Obtiene el 'dia_del_ano_id'
+		// Obtiene el 'diaDelAno_id'
 		const dia = fecha.getDate();
 		const mes_id = fecha.getMonth() + 1;
-		const dia_del_ano = dias_del_ano.find((n) => n.dia == dia && n.mes_id == mes_id);
-		delete dia_del_ano.epoca_del_ano;
+		const diaDelAno = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
+		delete diaDelAno.epoca_del_ano;
 
 		// Obtiene los RCLV
-		let rclvs = await this.obtieneLosRCLV(dia_del_ano);
+		let rclvs = await this.obtieneLosRCLV(diaDelAno);
 
 		// Acciones si se encontraron rclvs
 		if (rclvs.length > 1) {
@@ -95,7 +95,7 @@ module.exports = {
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
-	obtieneLosRCLV: async (dia_del_ano) => {
+	obtieneLosRCLV: async (diaDelAno) => {
 		// Variables
 		let rclvs = [];
 		let resultados = [];
@@ -106,7 +106,7 @@ module.exports = {
 			if (entidad == "epocas_del_ano") continue;
 
 			// Condicion estandar: RCLVs del dia y en status aprobado
-			const condicion = {dia_del_ano_id: dia_del_ano.id, status_registro_id: aprobado_id};
+			const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id};
 
 			// Obtiene los RCLVs
 			rclvs.push(
@@ -121,8 +121,8 @@ module.exports = {
 		}
 
 		// Busca el registro de 'epoca_del_ano'
-		if (dia_del_ano.epoca_del_ano_id != 1) {
-			const condicion = {id: dia_del_ano.epoca_del_ano_id, status_registro_id: aprobado_id};
+		if (diaDelAno.epocaDelAno_id != 1) {
+			const condicion = {id: diaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
 			const entidad = "epocas_del_ano";
 			const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
 			rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
@@ -235,7 +235,7 @@ module.exports = {
 			let condiciones;
 
 			// Obtiene los registros de "hist_status"
-			condiciones = {aprobado: {[Op.ne]: null}, comunicado_en: null};
+			condiciones = {aprobado: {[Op.ne]: null}, comunicadoEn: null};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicion("hist_status", condiciones)
 					// Agrega el nombre de la tabla
@@ -243,7 +243,7 @@ module.exports = {
 			);
 
 			// Obtiene los registros de "edics"
-			condiciones = {comunicado_en: null};
+			condiciones = {comunicadoEn: null};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicionConInclude("hist_edics", condiciones, "motivo")
 					// Agrega el nombre de la tabla
@@ -300,8 +300,8 @@ module.exports = {
 				const aprobado = regAB.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regAB.entidad);
-				const statusFinal = status_registros.find((n) => n.id == regAB.status_final_id);
-				const statusInicial = status_registros.find((n) => n.id == regAB.status_original_id);
+				const statusFinal = status_registros.find((n) => n.id == regAB.statusFinal_id);
+				const statusInicial = status_registros.find((n) => n.id == regAB.statusOriginal_id);
 				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
 				const {nombreOrden, nombreVisual} = await this.nombres(regAB, familia);
 				if (!nombreOrden) continue;
@@ -530,12 +530,12 @@ module.exports = {
 		},
 		eliminaRegsAB: (regs) => {
 			// Variables
-			const comunicado_en = new Date();
+			const comunicadoEn = new Date();
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
-				productos: {status_original_id: creado_id, status_final_id: creado_aprob_id},
+				productos: {statusOriginal_id: creado_id, statusFinal_id: creado_aprob_id},
 				// Condición 2: creado a aprobado (rclvs y links)
-				rclvs: {status_original_id: creado_id, status_final_id: aprobado_id},
+				rclvs: {statusOriginal_id: creado_id, statusFinal_id: aprobado_id},
 			};
 			condicStatus.links = condicStatus.rclvs;
 
@@ -543,12 +543,12 @@ module.exports = {
 			for (let reg of regs) {
 				// Condiciones
 				const familias = comp.obtieneDesdeEntidad.familias(reg.entidad);
-				const condicStatusOrig = reg.status_original_id == condicStatus[familias].status_original_id;
-				const condicStatusFinal = reg.status_final_id == condicStatus[familias].status_final_id;
+				const condicStatusOrig = reg.statusOriginal_id == condicStatus[familias].statusOriginal_id;
+				const condicStatusFinal = reg.statusFinal_id == condicStatus[familias].statusFinal_id;
 
 				// Elimina los registros
 				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(reg.tabla, reg.id);
-				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
+				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
 			}
 
 			// Fin
@@ -556,13 +556,13 @@ module.exports = {
 		},
 		eliminaRegsEdic: (regs) => {
 			// Variables
-			const comunicado_en = new Date();
+			const comunicadoEn = new Date();
 
 			// Elimina los registros
 			for (let reg of regs) {
 				// Condición: sin duración
 				if (!reg.duracion || reg.duracion == "0.0") BD_genericas.eliminaPorId(reg.tabla, reg.id);
-				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicado_en});
+				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
 			}
 
 			// Fin

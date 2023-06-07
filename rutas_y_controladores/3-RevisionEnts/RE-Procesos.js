@@ -12,7 +12,7 @@ module.exports = {
 	TC: {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
-			const campoFecha = "editado_en";
+			const campoFecha = "editadoEn";
 			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epoca_del_ano"];
 			let productos = [];
 
@@ -23,11 +23,11 @@ module.exports = {
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
 					if (
-						(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
-						(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
-						(ediciones[i].tema && ediciones[i].tema.status_registro_id != aprobado_id) ||
-						(ediciones[i].evento && ediciones[i].evento.status_registro_id != aprobado_id) ||
-						(ediciones[i].epoca_del_ano && ediciones[i].epoca_del_ano.status_registro_id != aprobado_id)
+						(ediciones[i].personaje && ediciones[i].personaje.statusRegistro_id != aprobado_id) ||
+						(ediciones[i].hecho && ediciones[i].hecho.statusRegistro_id != aprobado_id) ||
+						(ediciones[i].tema && ediciones[i].tema.statusRegistro_id != aprobado_id) ||
+						(ediciones[i].evento && ediciones[i].evento.statusRegistro_id != aprobado_id) ||
+						(ediciones[i].epoca_del_ano && ediciones[i].epoca_del_ano.statusRegistro_id != aprobado_id)
 					)
 						ediciones.splice(i, 1);
 
@@ -39,13 +39,13 @@ module.exports = {
 					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 
 					// Carga los productos en status menor o igual a aprobado
-					if (n[asociacion].status_registro_id <= aprobado_id)
+					if (n[asociacion].statusRegistro_id <= aprobado_id)
 						productos.push({
 							...n[asociacion],
 							entidad,
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editado_en),
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
 							edicID: n.id,
-							// fechaRef: n.editado_en,
+							// fechaRef: n.editadoEn,
 						});
 				});
 
@@ -64,14 +64,14 @@ module.exports = {
 				// 6.c. Deja solamente los sin problemas de captura
 				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
 				// 6.D. Altas
-				AL = productos.filter((n) => n.status_registro_id == creado_id && n.entidad != "capitulos");
-				if (AL.length) AL.sort((a, b) => b.links_general - a.links_general); // Primero los que tienen links
+				AL = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
+				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
 				// 6.E. Ediciones - es la suma de:
 				// - En status 'creado_aprob'
 				// - En status 'aprobado'
 				ED.push(
-					...productos.filter((n) => n.status_registro_id == creado_aprob_id),
-					...productos.filter((n) => n.status_registro_id == aprobado_id)
+					...productos.filter((n) => n.statusRegistro_id == creado_aprob_id),
+					...productos.filter((n) => n.statusRegistro_id == aprobado_id)
 				);
 				// 6.F. Primero los productos más recientes
 				if (ED.length) ED.sort((a, b) => b.fechaRef - a.fechaRef);
@@ -90,7 +90,7 @@ module.exports = {
 			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
 
 			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
-			const condiciones = {status_coleccion_id: aprobado_id, status_registro_id: {[Op.ne]: aprobado_id}};
+			const condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
 			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
 				.then((n) => n.filter((m) => !m.ediciones.length))
 				.then((n) =>
@@ -99,7 +99,7 @@ module.exports = {
 						const datos = {
 							...m,
 							entidad: "capitulos",
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creado_en),
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creadoEn),
 						};
 
 						// Fin
@@ -108,11 +108,11 @@ module.exports = {
 				);
 
 			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "sugerido_por_id", revID};
+			campos = {entidades, status_id: inactivar_id, campoRevID: "sugeridoPor_id", revID};
 			let IN = obtieneRegs(campos);
 
 			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "sugerido_por_id", revID};
+			campos = {entidades, status_id: recuperar_id, campoRevID: "sugeridoPor_id", revID};
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
@@ -140,7 +140,7 @@ module.exports = {
 			let campos;
 
 			// AL: Altas
-			campos = {entidades, status_id: creado_id, campoFecha: "creado_en", campoRevID: "creado_por_id", revID, include};
+			campos = {entidades, status_id: creado_id, campoFecha: "creadoEn", campoRevID: "creadoPor_id", revID, include};
 			let AL = obtieneRegs(campos);
 
 			// SL: Con solapamiento
@@ -148,7 +148,7 @@ module.exports = {
 			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
-			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugerido_por_id", revID};
+			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
@@ -165,7 +165,7 @@ module.exports = {
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
-			const campoFecha = "editado_en";
+			const campoFecha = "editadoEn";
 			let include = ["personaje", "hecho", "tema", "evento", "epoca_del_ano"];
 			let rclvs = [];
 
@@ -181,14 +181,14 @@ module.exports = {
 					rclvs.push({
 						...n[asociacion],
 						entidad,
-						editado_en: n.editado_en,
+						editadoEn: n.editadoEn,
 						edicID: n.id,
 						fechaRef: n[campoFecha],
 						fechaRefTexto: comp.fechaHora.fechaDiaMes(n[campoFecha]),
 					});
 				});
 				// Deja solamente los rclvs aprobados
-				rclvs = rclvs.filter((n) => n.status_registro_id == aprobado_id);
+				rclvs = rclvs.filter((n) => n.statusRegistro_id == aprobado_id);
 			}
 
 			// 4. Elimina los repetidos
@@ -213,11 +213,11 @@ module.exports = {
 			for (let rubro of rubros)
 				productos[rubro] = productos[rubro].map((n) => {
 					let nombre =
-						(n.nombre_castellano.length > anchoMax
-							? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
-							: n.nombre_castellano) +
+						(n.nombreCastellano.length > anchoMax
+							? n.nombreCastellano.slice(0, anchoMax - 1) + "…"
+							: n.nombreCastellano) +
 						" (" +
-						n.ano_estreno +
+						n.anoEstreno +
 						")";
 					let datos = {
 						id: n.id,
@@ -263,24 +263,24 @@ module.exports = {
 		// Alta Guardar
 		rclvEdicAprobRech: async (entidad, original, revID) => {
 			// Variables
-			const userID = original.creado_por_id;
+			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 			const motivoVersionActual = motivos_edics.find((n) => n.version_actual);
 			const motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
-			let ediciones = {edics_aprob: 0, edics_rech: 0};
+			let ediciones = {edicsAprob: 0, edicsRech: 0};
 			let datosCompleto = {};
 
 			// Prepara la información
 			const datosCabecera = {
 				entidad,
 				entidad_id: original.id,
-				sugerido_por_id: original.creado_por_id,
-				sugerido_en: original.creado_en,
-				revisado_por_id: revID,
-				revisado_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(original.creado_en, ahora),
+				sugeridoPor_id: original.creadoPor_id,
+				sugeridoEn: original.creadoEn,
+				revisadoPor_id: revID,
+				revisadoEn: ahora,
+				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
 			};
 
 			// Obtiene el RCLV actual
@@ -313,17 +313,17 @@ module.exports = {
 				// Guarda los registros en "hist_edics"
 				BD_genericas.agregaRegistro("hist_edics", datosCompleto);
 
-				// Aumenta la cantidad de edics_aprob / edics_rech
+				// Aumenta la cantidad de edicsAprob / edicsRech
 				const aprobRech = valorAprob == valorDesc ? "aprob" : "rech";
 				ediciones["edics_" + aprobRech]++;
 			}
 
-			// Actualiza en el usuario el campo edics_aprob / edics_rech, según cuál tenga más
+			// Actualiza en el usuario el campo edicsAprob / edicsRech, según cuál tenga más
 			let campoEdic =
-				ediciones.edics_aprob > ediciones.edics_rech
-					? "edics_aprob"
-					: ediciones.edics_aprob < ediciones.edics_rech
-					? "edics_rech"
+				ediciones.edicsAprob > ediciones.edicsRech
+					? "edicsAprob"
+					: ediciones.edicsAprob < ediciones.edicsRech
+					? "edicsRech"
 					: "";
 			if (campoEdic) BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoEdic, 1);
 
@@ -347,11 +347,11 @@ module.exports = {
 			// Obtiene el registro original y el subcodigo
 			const include = comp.obtieneTodosLosCamposInclude(entidad);
 			const original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-			const status_original_id = original.status_registro_id;
+			const statusOriginal_id = original.statusRegistro_id;
 
 			// Obtiene el 'subcodigo'
 			const subcodigo = inactivarRecuperar
-				? status_original_id == inactivar_id
+				? statusOriginal_id == inactivar_id
 					? "inactivar"
 					: "recuperar"
 				: req.path.endsWith("/alta/")
@@ -363,7 +363,7 @@ module.exports = {
 
 			// Obtiene el status final
 			const adicionales = {publico: true, epoca: true};
-			const status_final_id =
+			const statusFinal_id =
 				// Si es un rechazo, un recuperar desaprobado, o un inactivar aprobado
 				(!aprob && subcodigo != "inactivar") || (aprob && subcodigo == "inactivar")
 					? inactivo_id
@@ -378,13 +378,13 @@ module.exports = {
 
 			// Obtiene el motivo_id y el comentario
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-			let comentario = status_registros.find((n) => n.id == status_final_id).nombre;
+			let comentario = status_registros.find((n) => n.id == statusFinal_id).nombre;
 			if (req.body.comentario) comentario += " - " + req.body.comentario;
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 
 			// Fin
 			return {
-				...{entidad, id, original, status_original_id, status_final_id},
+				...{entidad, id, original, statusOriginal_id, statusFinal_id},
 				...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 			};
 		},
@@ -393,23 +393,23 @@ module.exports = {
 			const condicion = BD_especificas.condicsDDA({desde, duracion});
 
 			// Se fija si en ese rango hay alguna epoca distinta a '1' y el ID actual
-			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("dias_del_ano", condicion)
-				.then((n) => n.filter((m) => m.epoca_del_ano_id != 1 && m.epoca_del_ano_id != id))
-				.then((n) => n.map((n) => n.epoca_del_ano_id))
+			const IDs_solapam = await BD_genericas.obtieneTodosPorCondicion("diasDelAno", condicion)
+				.then((n) => n.filter((m) => m.epocaDelAno_id != 1 && m.epocaDelAno_id != id))
+				.then((n) => n.map((n) => n.epocaDelAno_id))
 				.then((n) => [...new Set(n)]);
 
 			// En caso afirmativo, activa 'solapamiento' para esas epocas
 			if (IDs_solapam.length) await BD_especificas.activaSolapam(IDs_solapam);
 
-			// Limpia la tabla 'dias_del_ano' del registro 'epoca_del_ano_id'
-			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", {epoca_del_ano_id: id}, {epoca_del_ano_id: 1});
+			// Limpia la tabla 'diasDelAno' del registro 'epocaDelAno_id'
+			await BD_genericas.actualizaTodosPorCondicion("diasDelAno", {epocaDelAno_id: id}, {epocaDelAno_id: 1});
 
-			// Actualiza la tabla 'dias_del_ano' con la 'epoca_del_ano_id'
-			const datos = {epoca_del_ano_id: id};
-			await BD_genericas.actualizaTodosPorCondicion("dias_del_ano", condicion, datos);
+			// Actualiza la tabla 'diasDelAno' con la 'epocaDelAno_id'
+			const datos = {epocaDelAno_id: id};
+			await BD_genericas.actualizaTodosPorCondicion("diasDelAno", condicion, datos);
 
-			// Actualiza la variable 'dias_del_ano'
-			dias_del_ano = await BD_genericas.obtieneTodosConInclude("dias_del_ano", "epoca_del_ano");
+			// Actualiza la variable 'diasDelAno'
+			diasDelAno = await BD_genericas.obtieneTodosConInclude("diasDelAno", "epoca_del_ano");
 
 			// Fin
 			return;
@@ -426,7 +426,7 @@ module.exports = {
 
 				// Similar rutina para los productos aprobados
 				// Obtiene los productos aprobados con ese 'campo_id'
-				const condicion = {[campo_id]: id, status_registro_id: aprobado_id};
+				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
 				let prodsVinculados = await BD_genericas.obtieneTodosPorCondicion(entidadProd, condicion);
 				// Los actualiza, fijándose si tiene errores
 				for (let prodVinculado of prodsVinculados) {
@@ -436,7 +436,7 @@ module.exports = {
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creado_aprob'
-					if (errores.hay) objeto.status_registro_id = creado_aprob_id;
+					if (errores.hay) objeto.statusRegistro_id = creado_aprob_id;
 
 					// Actualiza el registro del producto
 					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
@@ -474,7 +474,7 @@ module.exports = {
 		procsParticsAvatar: async ({entidad, original, edicion, aprob}) => {
 			// TAREAS:
 			// - Si se cumplen ciertas condiciones, descarga el avatar del original
-			// - Borra el campo 'avatar_url' en el registro de edicion
+			// - Borra el campo 'avatarUrl' en el registro de edicion
 			// - Impacto en los archivos de avatar (original y edicion)
 
 			// Variables
@@ -497,8 +497,8 @@ module.exports = {
 					await comp.gestionArchivos.descarga(url, rutaYnombre);
 				}
 
-				// 2. Borra el campo 'avatar_url' en el registro de edicion
-				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatar_url: null});
+				// 2. Borra el campo 'avatarUrl' en el registro de edicion
+				await BD_genericas.actualizaPorId("prods_edicion", edicion.id, {avatarUrl: null});
 			}
 
 			// Impacto en los archivos de avatar (original y edicion)
@@ -585,11 +585,11 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				sugerido_por_id: edicion.editado_por_id,
-				sugerido_en: edicion.editado_en,
-				revisado_por_id: revID,
-				revisado_en: ahora,
-				lead_time_edicion: comp.obtieneLeadTime(edicion.editado_en, ahora),
+				sugeridoPor_id: edicion.editadoPor_id,
+				sugeridoEn: edicion.editadoEn,
+				revisadoPor_id: revID,
+				revisadoEn: ahora,
+				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
 			// CONSECUENCIAS
@@ -626,11 +626,11 @@ module.exports = {
 			// Agrega el registro
 			BD_genericas.agregaRegistro("hist_edics", datos);
 
-			// 3. Aumenta el campo 'edics_aprob' o 'edics_rech' en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editado_por_id, decision, 1);
+			// 3. Aumenta el campo 'edicsAprob' o 'edicsRech' en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
-			if (motivo) comp.usuarioPenalizAcum(edicion.editado_por_id, motivo, familias);
+			if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
@@ -729,14 +729,14 @@ module.exports = {
 		// Nombre
 		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
 		// Edad
-		if (usuario.fecha_nacim) {
-			let edad = parseInt((ahora - new Date(usuario.fecha_nacim).getTime()) / unAno);
+		if (usuario.fechaNacim) {
+			let edad = parseInt((ahora - new Date(usuario.fechaNacim).getTime()) / unAno);
 			bloque.push({titulo: "Edad", valor: edad + " años"});
 		}
 		// Rol en la iglesia
 		if (usuario.rol_iglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rol_iglesia.nombre});
 		// Tiempo en ELC
-		const antiguedad = ((ahora - new Date(usuario.creado_en).getTime()) / unAno).toFixed(1).replace(".", ",");
+		const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
 		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
 		// Calidad de las altas
 		bloque.push(...usuarioCalidad(usuario, petitFamilias));
@@ -770,7 +770,7 @@ let obtieneRegs = async (campos) => {
 
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
-			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugerido_en;
+			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugeridoEn;
 			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
@@ -837,7 +837,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
-	if (["cfc", "ocurrio", "musical", "color", "fecha_movil", "solo_cfc", "ama"].includes(campo))
+	if (["cfc", "ocurrio", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 	else if (["personaje_id", "hecho_id", "tema_id"].includes(campo) && registro[campo] == 1) resultado = null;
 
@@ -853,7 +853,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = link.status_registro_id ? "sugerido_en" : "editado_en";
+		let campoFecha = link.statusRegistro_id ? "sugeridoEn" : "editadoEn";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
@@ -876,8 +876,8 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 			if (prods.OT.find((n) => n.id == prods.VN[i].id && n.entidad == prods.VN[i].entidad)) prods.VN.splice(i, 1);
 
 	// 5. Deja solamente los prods aprobados
-	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.status_registro_id == aprobado_id);
-	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.status_registro_id == aprobado_id);
+	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.statusRegistro_id == aprobado_id);
+	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.statusRegistro_id == aprobado_id);
 
 	// 6. Deja solamente los sin problemas de captura
 	if (prods.VN.length) prods.VN = comp.sinProblemasDeCaptura(prods.VN, revID, ahora);
@@ -907,20 +907,20 @@ let usuarioCalidad = (usuario, prefijo) => {
 };
 let creadosSinEdicion = async () => {
 	// Obtiene los productos en status 'creado' y sin edicion
-	const PL = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {status_registro_id: creado_id}, "ediciones")
+	const PL = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {
-				const fechaRef = m.creado_en;
+				const fechaRef = m.creadoEn;
 				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);
-	const CL = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {status_registro_id: creado_id}, "ediciones")
+	const CL = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {
-				const fechaRef = m.creado_en;
+				const fechaRef = m.creadoEn;
 				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})

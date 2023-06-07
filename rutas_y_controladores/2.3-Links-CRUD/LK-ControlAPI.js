@@ -29,18 +29,18 @@ module.exports = {
 
 		// Obtiene el link y el id de la edicion
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "status_registro");
-		let edicID = link ? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editado_por_id: userID}) : "";
+		let edicID = link ? await BD_especificas.obtieneELC_id("links_edicion", {link_id: link.id, editadoPor_id: userID}) : "";
 
 		// Si el link no existía, lo crea
 		if (!link) {
-			datos.creado_por_id = userID;
-			datos.sugerido_por_id = userID;
+			datos.creadoPor_id = userID;
+			datos.sugeridoPor_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.cambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
-		else if (link.creado_por_id == userID && link.status_registro.creado) {
+		else if (link.creadoPor_id == userID && link.status_registro.creado) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.cambioDeStatus("links", link);
@@ -73,12 +73,12 @@ module.exports = {
 		// El link se elimina definitivamente
 		else if (
 			// El link está en status 'creado" y por el usuario
-			(link.status_registro.creado && link.creado_por_id == userID) ||
+			(link.status_registro.creado && link.creadoPor_id == userID) ||
 			// El link está en status 'inactivo" y es un revisor
 			(link.status_registro.inactivo && revisor)
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
-			link.status_registro_id = inactivo_id;
+			link.statusRegistro_id = inactivo_id;
 			procsCRUD.cambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
@@ -90,10 +90,10 @@ module.exports = {
 		else {
 			// Inactivar
 			let datos = {
-				sugerido_por_id: userID,
-				sugerido_en: comp.fechaHora.ahora(),
+				sugeridoPor_id: userID,
+				sugeridoEn: comp.fechaHora.ahora(),
 				motivo_id,
-				status_registro_id: inactivar_id,
+				statusRegistro_id: inactivar_id,
 			};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
@@ -119,7 +119,7 @@ module.exports = {
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			datos = {status_registro_id: recuperar_id, sugerido_por_id: userID};
+			datos = {statusRegistro_id: recuperar_id, sugeridoPor_id: userID};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.cambioDeStatus("links", link);
@@ -144,14 +144,14 @@ module.exports = {
 			? {mensaje: "El link está en status aprobado", reload: true}
 			: link.status_registro.inactivo
 			? {mensaje: "El link está en status inactivo", reload: true}
-			: link.sugerido_por_id != userID
+			: link.sugeridoPor_id != userID
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
 			// Actualiza el status del link
 			let datos = link.status_registro.inactivar
-				? {status_registro_id: aprobado_id, motivo_id: null}
-				: {status_registro_id: inactivo_id};
+				? {statusRegistro_id: aprobado_id, motivo_id: null}
+				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			// Actualiza los campos del producto asociado
 			link = {...link, ...datos};

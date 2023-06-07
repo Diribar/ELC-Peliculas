@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 			for (let coleccion of colecciones) {
 				let opcion = document.createElement("option");
 				opcion.value = coleccion.id;
-				opcion.innerHTML = coleccion.nombre_castellano;
+				opcion.innerHTML = coleccion.nombreCastellano;
 				coleccion_id.appendChild(opcion);
 			}
 		}

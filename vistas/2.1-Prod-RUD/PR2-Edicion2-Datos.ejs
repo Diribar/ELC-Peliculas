@@ -12,7 +12,7 @@
 			<% for (let campo of camposInput1) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
 			<!-- Otros -->
 			<%- include("PR2-Edic-Pais") %>
-			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idioma_original_id}) %>
+			<%- include("PR2-Edic-Idioma", {idioma_id: registro.idiomaOriginal_id}) %>
 			<%- include("PR2-Edic-Input", {campo: produccion}) %>
 			<!-- Cast/Crew -->
 			<% for (let campo of camposInput2) { %><%- include("PR2-Edic-Input", {campo}) %><% } %>
@@ -24,7 +24,7 @@
 			<!-- Campos SI / NO -->
 			<% for (let campo of camposDA.filter(n => n.siNo)) { %><%- include("PR2-Edic-SI_NO", {campo}) %><% } %>
 			<!-- Tipo de Actuación -->
-			<%- include("PR2-Edic-TipoActuac", {nombre: "tipo_actuacion_id"}) %>
+			<%- include("PR2-Edic-TipoActuac", {nombre: "tipoActuacion_id"}) %>
 			<% if (revisor) { %>
 				<!-- Público -->
 				<%- include("PR2-Edic-Select", {nombre: "publico_id"}) %>
@@ -45,7 +45,7 @@
 			<!--Evento-->
 			<%- include("PR2-Edic-RCLV2_demas", {nombre: "evento_id"}) %>
 			<!--Época del año-->
-			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epoca_del_ano_id"}) %>
+			<%- include("PR2-Edic-RCLV2_demas", {nombre: "epocaDelAno_id"}) %>
 			<% if (revisor) { %>
 				<!--Época respecto a Cristo -->
 				<%- include("PR2-Edic-Select", {nombre: "epoca_id"}) %>

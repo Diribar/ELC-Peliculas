@@ -71,7 +71,7 @@ module.exports = {
 		const links = await procesos.obtieneLinksDelProducto(entidad, id);
 
 		// Status de la entidad
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 		const statusEstable = [creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
 		// Info para la vista
@@ -82,7 +82,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links},
-			...{imgDerPers, tituloImgDerPers: prodComb.nombre_castellano},
+			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs},
 		});
 	},
@@ -153,7 +153,7 @@ module.exports = {
 		const ayudasTitulo = [
 			"Los íconos de la barra azul de más abajo, te permiten editar los datos de esta vista y crear/editar los links.",
 		];
-		const status_id = original.status_registro_id;
+		const status_id = original.statusRegistro_id;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Va a la vista
@@ -176,7 +176,7 @@ module.exports = {
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
 			req.body.avatar = req.file.filename;
-			req.body.avatar_url = req.file.originalname;
+			req.body.avatarUrl = req.file.originalname;
 			req.body.tamano = req.file.size;
 		}
 
@@ -207,8 +207,8 @@ module.exports = {
 			// 1. Actualiza el original
 			if (actualizaOrig) {
 				// Completa los datos a guardar
-				prodComb.alta_revisada_por_id = userID;
-				prodComb.alta_revisada_en = comp.fechaHora.ahora();
+				prodComb.altaRevisadaPor_id = userID;
+				prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 				// Se fija si corresponde cambiar el status

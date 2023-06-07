@@ -17,7 +17,7 @@ module.exports = {
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
-		const camposDDA = ["dia_del_ano_id", "dias_de_duracion"];
+		const camposDDA = ["diaDelAno_id", "diasDeDuracion"];
 		let statusAprob;
 
 		// Obtiene el registro editado
@@ -53,7 +53,7 @@ module.exports = {
 			}
 		}
 
-		// Solapamiento y dias_del_ano
+		// Solapamiento y diasDelAno
 		if (entidad == "epocas_del_ano" && camposDDA.includes(campo)) {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
@@ -62,14 +62,14 @@ module.exports = {
 			let quedan = false;
 			if (edicion) for (let campoDDA of camposDDA) if (edicion[campoDDA]) quedan = true;
 
-			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'dias_del_ano'
+			// Si el campo editado fue un campoDDA y en la edición no quedan más camposDDA, actualiza los 'diasDelAno'
 			if (!quedan && camposDDA.includes(campo)) {
 				// Variables
 				const orig = await BD_genericas.obtienePorId(entidad, entID);
-				const desde = orig.dia_del_ano_id;
-				const duracion = orig.dias_de_duracion - 1;
+				const desde = orig.diaDelAno_id;
+				const duracion = orig.diasDeDuracion - 1;
 
-				// Actualiza los dias_del_ano
+				// Actualiza los diasDelAno
 				await procesos.guardar.actualizaDiasDelAno({id: entID, desde, duracion});
 			}
 		}
@@ -103,21 +103,21 @@ module.exports = {
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
-		const alta_revisada_en = ahora;
-		const status_registro_id = IN == "SI" ? aprobado_id : inactivo_id;
+		const altaRevisadaEn = ahora;
+		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
 		const campoDecision = petitFamilias + (decisAprob ? "_aprob" : "_rech");
 
 		// Arma los datos
 		let datos = {
-			status_registro_id,
-			sugerido_por_id: revID,
-			sugerido_en: alta_revisada_en,
+			statusRegistro_id,
+			sugeridoPor_id: revID,
+			sugeridoEn: altaRevisadaEn,
 		};
 		if (creado) {
-			datos.alta_revisada_por_id = revID;
-			datos.alta_revisada_en = alta_revisada_en;
-			datos.lead_time_creacion = comp.obtieneLeadTime(original.creado_en, alta_revisada_en);
+			datos.altaRevisadaPor_id = revID;
+			datos.altaRevisadaEn = altaRevisadaEn;
+			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, altaRevisadaEn);
 		}
 		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
 
@@ -127,17 +127,17 @@ module.exports = {
 
 		// 2. Agrega un registro en el hist_status
 		let datosHist;
-		let sugerido_por_id = original.sugerido_por_id;
+		let sugeridoPor_id = original.sugeridoPor_id;
 		(() => {
 			datosHist = {
 				entidad_id: id,
 				entidad,
-				sugerido_por_id,
-				sugerido_en: creado ? original.creado_en : original.sugerido_en,
-				revisado_por_id: revID,
-				revisado_en: ahora,
-				status_original_id: original.status_registro_id,
-				status_final_id: status_registro_id,
+				sugeridoPor_id,
+				sugeridoEn: creado ? original.creadoEn : original.sugeridoEn,
+				revisadoPor_id: revID,
+				revisadoEn: ahora,
+				statusOriginal_id: original.statusRegistro_id,
+				statusFinal_id: statusRegistro_id,
 				aprobado: decisAprob,
 			};
 			if (datos.motivo_id) {
@@ -150,14 +150,14 @@ module.exports = {
 		// return res.json({});
 		BD_genericas.agregaRegistro("hist_status", datosHist);
 
-		// 3. Aumenta el valor de links_aprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugerido_por_id, campoDecision, 1);
+		// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
 
 		// 4. Penaliza al usuario si corresponde
-		if (datosHist.motivo) comp.usuarioPenalizAcum(sugerido_por_id, datosHist.motivo, petitFamilias);
+		if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
 
-		// 5. Actualiza los productos, en los campos 'castellano', 'links_gratuitos' y 'links_general'
-		procsCRUD.cambioDeStatus(entidad, {...original, status_registro_id});
+		// 5. Actualiza los productos, en los campos 'castellano', 'linksGratuitos' y 'linksGeneral'
+		procsCRUD.cambioDeStatus(entidad, {...original, statusRegistro_id});
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
