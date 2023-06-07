@@ -64,7 +64,7 @@ module.exports = {
 
 		// Obtiene el registro original
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "sugerido_por");
+		include.push("statusRegistro", "creado_por", "sugerido_por");
 		if (entidad == "colecciones") include.push("capitulos");
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 		// Obtiene avatar original
@@ -132,7 +132,7 @@ module.exports = {
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("status_registro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
+		include.push("statusRegistro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		if (familia == "rclv") include.push(...variables.entidades.prods);
@@ -402,7 +402,7 @@ module.exports = {
 		// Obtiene la versión original con include
 		let include = [
 			...comp.obtieneTodosLosCamposInclude(entidad),
-			"status_registro",
+			"statusRegistro",
 			"creado_por",
 			"sugerido_por",
 			"alta_revisada_por",
@@ -520,7 +520,7 @@ module.exports = {
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
-		include = ["links", "status_registro"];
+		include = ["links", "statusRegistro"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
 		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
@@ -531,7 +531,7 @@ module.exports = {
 
 		// Obtiene todos los links
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		include = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
+		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
 		for (let link of links) link.cond = procsLinks.condiciones(link, userID, tema);
