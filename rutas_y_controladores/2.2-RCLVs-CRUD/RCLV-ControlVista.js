@@ -167,7 +167,7 @@ module.exports = {
 			if (edicion) await BD_genericas.eliminaPorId("rclvs_edicion", edicion.id);
 
 			// Actualiza el 'originalUrl'
-			const posicion = req.originalUrl.indexOf("&edicID");
+			let posicion = req.originalUrl.indexOf("&edicID");
 			const urlInicial = req.originalUrl.slice(0, posicion);
 			let urlFinal = req.originalUrl.slice(posicion + 1);
 			posicion = urlFinal.indexOf("&");
