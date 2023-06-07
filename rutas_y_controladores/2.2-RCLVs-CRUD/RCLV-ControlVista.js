@@ -161,12 +161,10 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condiciones = {[campo_id]: id, editadoPor_id: userID};
 
-			// Borra el eventual avatar guardado en la edicion
+			// Borra el eventual avatar guardado en la edicion y elimina la edición de la BD
 			const edicion = await BD_genericas.obtienePorCondicion("rclvs_edicion", condiciones);
 			if (edicion && edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", edicion.avatar);
-
-			// Elimina la edición de la BD
-			await BD_genericas.eliminaTodosPorCondicion("rclvs_edicion", condiciones);
+			if (edicion) await BD_genericas.eliminaPorId("rclvs_edicion", edicion.id);
 
 			// Actualiza el 'originalUrl'
 			const posicion = req.originalUrl.indexOf("&edicID");
