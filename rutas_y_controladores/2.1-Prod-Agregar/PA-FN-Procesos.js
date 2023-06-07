@@ -281,14 +281,17 @@ module.exports = {
 
 		// Revisa que exista el RCLV
 		for (let entidad of entidadesRCLV) {
+			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			// Averigua si existe, para los RCLV_id que existan y no sean 'ninguno' ni 'varios'
-			if (confirma[campo_id] && confirma[campo_id] > 2) {
-				const registro = await BD_genericas.obtienePorId(entidad, confirma[campo_id]);
+			const RCLV_id = confirma[campo_id];
+
+			// Averigua si existen los RCLV_id
+			if (RCLV_id && RCLV_id > 2) {
+				const registro = await BD_genericas.obtienePorId(entidad, RCLV_id);
 				if (!registro) {
 					existe = false;
 					break;
-				} else if (registro.epoca_id && !confirma.epoca_id) epoca_id = registro.epoca_id;
+				} else if (registro.epoca_id && !confirma.epoca_id && !epoca_id) epoca_id = registro.epoca_id;
 			}
 		}
 
