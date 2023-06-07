@@ -494,14 +494,14 @@ let regsRCLV = async (entidades, userID) => {
 	let registrosRCLV = {};
 
 	// Obtiene los registrosRCLV
-	for (let entidad of entidades) valores.push(BD_genericas.obtieneTodosConInclude(entidad, "status_registro"));
+	for (let entidad of entidades) valores.push(BD_genericas.obtieneTodosConInclude(entidad, "statusRegistro"));
 	valores = await Promise.all(valores);
 
 	// Pule la información
 	entidades.forEach((entidad, i) => {
 		// Deja solamente los registros aprobados o creados por el usuario
 		valores[i] = valores[i].filter(
-			(n) => n.status_registro.aprobado || (n.status_registro.creado && n.creadoPor_id == userID)
+			(n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID)
 		);
 		// Los ordena por nombre
 		valores[i].sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
