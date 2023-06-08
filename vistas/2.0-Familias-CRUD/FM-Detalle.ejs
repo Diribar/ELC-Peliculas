@@ -4,7 +4,6 @@
 <section id="datos" class="flexRow grow">
 	<section id="datosLargos">
 		<div id="recuadro">
-
 			<!-- Encabezado -->
 			<div id="encabezado">
 				<%- include(tema == "rclv_crud" ? "RCLV-Encabezado" : tema == "revisionEnts" ? "RE-Encabezado" : "FM-Encabezado") %>
@@ -13,59 +12,35 @@
 			<!-- Contenido apertura (Form o Div) -->
 			<% let operacCRUD = tema == "crud" || tema == "revisionEnts" %>
 			<!-- Las operaciones CRUD requieren form (Inactivar/Recuperar/Rechazo/Eliminar o Revisión de Inactivar o Recuperar) -->
-			<% if (operacCRUD) { %><form method="POST" id="contenido" class="flexCol grow">
+			<% if (operacCRUD) { %>
+				<form method="POST" id="contenido" class="flexCol grow">
+					<%- include("FM-Informacion") %>
+				</form>
+			
 			<!-- Las demás requieren que no sea form -->
-			<% } else { %><div id="contenido" class="flexCol grow">
-			<!-- Fin -->
-			<% } %>
-
-				<!-- Información -->
-				<div id="informacion" class="<%= locals.subcodigo ? subcodigo : codigo %>">
-					
-					<!-- PRODUCTO: Detalle y Revisión de Alta -->
-					<% if (familia == "producto" && ["detalle", "producto/alta"].includes(codigo)) { %><%- include("PR1-Detalle") %>
-					
-					<!-- RCLV: Detalle -->
-					<% } else if (tema == "rclv_crud") { %><%- include("RCLV-DT1-Largos") %>
-
-					<!-- AMBOS: Revisión de Edición -->
-					<% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
-
-					<!-- AMBOS: Inactivar y Rechazo -->
-					<% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
-					
-					<!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
-					<% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM1-Recuperar") %>
-
-					<!-- Fin -->
-					<% } %>
+			<% } else { %>
+				<div id="contenido" class="flexCol grow">
+					<%- include("FM-Informacion") %>
 				</div>
-				<!-- Botones -->
-				<div id="botones">
-					<%- include("Flechas-1Estandar") %>
-					<%- include("Flechas-2ProdRUD") %>
-					<%- include("Flechas-3CambioStatus") %>
-					<%- include("Flechas-4ProdsPortales") %>
-				</div>
-
-			<!-- Contenido cierre (Form o Div) -->
-			<% if (operacCRUD) { %></form>
-			<% } else { %></div>
 			<% } %>
-
 		</div>
 	</section>
 	<section id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
-		<!-- CRUD para Productos -->
-		<% if (familia == "producto" && tema != "revisionEnts") { %><%- include("PR0-Breves") %>
-		
-		<!-- CRUD para RCLVs -->
-		<% } else if (familia == "rclv" && tema != "revisionEnts") { %><%- include("RCLV-Breves") %>
-
 		<!-- Revisión -->
-		<% } else if (tema == "revisionEnts") { %><%- include("RE0-Breves") %>
+		<% if (tema == "revisionEnts") { %>
+			<%- include("RE0-Breves") %>
 
-		<!-- Fin -->
+		<!-- CRUD -->
+		<% } else if (tema != "revisionEnts") { %>
+			<!-- CRUD para Productos -->
+			<% if (familia == "producto") { %>
+				<%- include("PR0-Breves") %>
+
+			<!-- CRUD para RCLVs -->
+			<% } else if (familia == "rclv") { %>
+				<%- include("RCLV-Breves") %>
+			<% } %>
 		<% } %>
+		<% console.log(70,familia,tema) %>
 	</section>
 </section>

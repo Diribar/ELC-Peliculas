@@ -266,8 +266,8 @@ module.exports = {
 			const userID = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
-			const motivoVersionActual = motivos_edics.find((n) => n.version_actual);
-			const motivoInfoErronea = motivos_edics.find((n) => n.info_erronea);
+			const motivoVersionActual = motivosEdics.find((n) => n.version_actual);
+			const motivoInfoErronea = motivosEdics.find((n) => n.info_erronea);
 			const ahora = comp.fechaHora.ahora();
 			let ediciones = {edicsAprob: 0, edicsRech: 0};
 			let datosCompleto = {};
@@ -612,7 +612,7 @@ module.exports = {
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
-				motivo = motivos_edics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+				motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 			}
 			// Asigna los valores 'aprob' y 'rech'

@@ -8,7 +8,7 @@ window.addEventListener("load", async () => {
 		pendiente: document.querySelector("#comentario #pendiente"),
 		submit: document.querySelector("#botones button[type='submit']"),
 	};
-	let motivos_status = await fetch("/crud/api/motivos-status").then((n) => n.json());
+	let motivosStatus = await fetch("/crud/api/motivos-status").then((n) => n.json());
 
 	// Botón submit
 	let botonSubmit = () => {
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 	if (DOM.motivos.length)
 		for (let motivo of DOM.motivos)
 			motivo.addEventListener("change", async () => {
-				const motivo_rech_altas = motivos_status.find((n) => n.id == motivo.value);
+				const motivo_rech_altas = motivosStatus.find((n) => n.id == motivo.value);
 				DOM.comentario.value = motivo_rech_altas.coment_aut ? motivo_rech_altas.descripcion : "";
 				botonSubmit();
 			});
