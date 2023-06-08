@@ -624,8 +624,7 @@ module.exports = {
 		let bloque = [];
 
 		// Datos CRUD
-		if (!registro.altaRevisadaEn)
-			bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
+		if (!registro.altaRevisadaEn) bloque.push({titulo: "Creado el", valor: comp.fechaHora.fechaDiaMesAno(registro.creadoEn)});
 		if (revisor) bloque.push({titulo: "Creado por", valor: comp.nombreApellido(registro.creado_por)});
 
 		if (registro.altaRevisadaEn) {
@@ -651,5 +650,50 @@ module.exports = {
 			: registro.statusRegistro.inactivo
 			? {id: 3, valor: "Inactivo"}
 			: {id: 1, valor: "Para Revisar"};
+	},
+	fichaDelUsuario: async function (userID, petitFamilias) {
+		// Variables
+		const ahora = comp.fechaHora.ahora();
+		const include = "rolIglesia";
+		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
+		let bloque = [];
+
+		// Datos del usuario
+		// Nombre
+		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
+		// Edad
+		if (usuario.fechaNacim) {
+			let edad = parseInt((ahora - new Date(usuario.fechaNacim).getTime()) / unAno);
+			bloque.push({titulo: "Edad", valor: edad + " años"});
+		}
+		// Rol en la iglesia
+		if (usuario.rolIglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rolIglesia.nombre});
+		// Tiempo en ELC
+		const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
+		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
+		// Calidad de las altas
+		bloque.push(...this.usuarioCalidad(usuario, petitFamilias));
+
+		// Fin
+		return bloque;
+	},
+	usuarioCalidad: (usuario, prefijo) => {
+		// Contar los casos aprobados y rechazados
+		const cantAprob = usuario[prefijo + "Aprob"];
+		const cantRech = usuario[prefijo + "Rech"];
+
+		// Mediciones
+		const cantidad = cantAprob + cantRech;
+		const calidad = cantidad ? parseInt((cantAprob / cantidad) * 100) + "%" : "-";
+
+		// Prepara el resultado
+		const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
+		const resultados = [
+			{titulo: "Calidad de " + sufijo, valor: calidad},
+			{titulo: "Cant. de " + sufijo, valor: cantidad},
+		];
+
+		// Fin
+		return resultados;
 	},
 };
