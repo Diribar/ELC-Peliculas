@@ -453,12 +453,12 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilias + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
