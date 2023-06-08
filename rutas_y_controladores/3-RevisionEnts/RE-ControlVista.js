@@ -111,7 +111,6 @@ module.exports = {
 			...{entidadNombre, registro: original, links},
 			...{imgDerPers, tituloImgDerPers: original.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs: []},
-			// title: original.nombreCastellano,motivos
 			...{urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
@@ -140,8 +139,7 @@ module.exports = {
 
 		// Obtiene el subcodigo
 		const statusOriginal_id = original.statusRegistro_id;
-		const subcodigo =
-			statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
+		const subcodigo = statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
 
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
@@ -209,8 +207,9 @@ module.exports = {
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const campoDecision = petitFamilias + (aprob ? "_aprob" : "_rech");
+		const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+		// Limpia la variable 'datos'
 		datos = {};
 
 		// Acciones si es un RCLV
@@ -305,7 +304,7 @@ module.exports = {
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla de edicsAprob/rech y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		// 3. Si es un RCLV y es aprobado, actualiza la tabla 'hist_edics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el hist_status

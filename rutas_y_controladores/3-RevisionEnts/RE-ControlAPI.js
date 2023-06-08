@@ -106,7 +106,7 @@ module.exports = {
 		const altaRevisadaEn = ahora;
 		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
-		const campoDecision = petitFamilias + (decisAprob ? "_aprob" : "_rech");
+		const campoDecision = petitFamilias + (decisAprob ? "Aprob" : "Rech");
 
 		// Arma los datos
 		let datos = {
