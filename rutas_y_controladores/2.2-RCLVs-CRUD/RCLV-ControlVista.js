@@ -215,10 +215,6 @@ module.exports = {
 			}
 		}
 
-		// Borra el RCLV en session y cookies
-		if (req.session[entidad]) delete req.session[entidad];
-		if (req.cookies[entidad]) res.clearCookie(entidad);
-
 		// Obtiene el url de la siguiente instancia
 		let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
 		if (origen == "EDP" || origen == "DTP") destino += "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
