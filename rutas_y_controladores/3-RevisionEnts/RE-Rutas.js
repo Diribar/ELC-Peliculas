@@ -52,8 +52,8 @@ router.get("/:familia/rechazo", aptoStatus, capturaActivar, vista.inacRecup_Form
 // Altas Guardar
 router.post("/producto/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar);
 router.post("/rclv/alta", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.prodRCLV_ARIR_guardar);
-router.post("/rclv/solapamiento", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.solapamGuardar);
 router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_ARIR_guardar);
+router.post("/rclv/solapamiento", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.solapamGuardar);
 // Inactivar o Recuperar
 router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vista.inacRecup_Form);
 router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar); // Va sin 'motivo'

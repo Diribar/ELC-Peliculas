@@ -55,7 +55,7 @@ module.exports = {
 				});
 				prodsDelRCLV.push(...aux);
 			}
-			// Separa entre colecciones y resto
+			// Separa entre capitulos y resto
 			let capitulos = prodsDelRCLV.filter((n) => n.entidad == "capitulos");
 			let noCapitulos = prodsDelRCLV.filter((n) => n.entidad != "capitulos");
 			// Elimina capitulos si las colecciones están presentes

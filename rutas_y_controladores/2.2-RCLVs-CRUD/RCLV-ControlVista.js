@@ -70,24 +70,26 @@ module.exports = {
 		// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
-		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar' o 'edicion'
+		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar', 'edicion', alta
 
 		// Más variables
 		const {entidad, id, prodEntidad, prodID} = req.query;
 		const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? "TE" : "";
 		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario.rolUsuario.revisorEnts;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const personajes = entidad == "personajes";
 		const hechos = entidad == "hechos";
 		const temas = entidad == "temas";
 		const eventos = entidad == "eventos";
 		const epocasDelAno = entidad == "epocasDelAno";
 		let dataEntry = {};
-		let ap_mars, roles_igl, edicID;
+		let ap_mars, roles_igl, edicID, bloqueDer;
 
 		// Configura el título de la vista
-		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisar - ") + entidadNombre;
+		const titulo = (codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición - " : "Revisión - ") + entidadNombre;
 
 		// Variables específicas para personajes
 		if (personajes) {
@@ -98,7 +100,7 @@ module.exports = {
 		// Pasos exclusivos para edición y revisión
 		if (codigo != "agregar") {
 			// Obtiene el original y edicion
-			let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+			const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 			edicID = edicion.id;
 
 			// Actualiza el data entry de session
@@ -112,13 +114,20 @@ module.exports = {
 
 			// Obtiene el día y el mes
 			dataEntry = {...comp.fechaHora.diaDelAno(dataEntry), ...dataEntry};
+
+			// Datos Breves
+			if (tema == "revisionEnts")
+				bloqueDer = [
+					procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds: 0}),
+					await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+				];
 		}
 
 		// Tipo de fecha
 		dataEntry.tipoFecha_id = procesos.altaEdicForm.tipoFecha_id(dataEntry, entidad);
 		if (!dataEntry.prioridad_id) dataEntry.prioridad_id = procesos.altaEdicForm.prioridad_id(dataEntry, entidad);
 
-		// Avatar
+		// Imagen Personalizada
 		const imgDerPers = procsCRUD.obtieneAvatar(dataEntry).edic;
 
 		// Info para la vista
@@ -126,14 +135,13 @@ module.exports = {
 		const ent = personajes ? "pers" : hechos ? "hecho" : "";
 		const originalUrl = req.originalUrl;
 		const prioridades = variables.prioridadesRCLV;
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
 			...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
-			...{dataEntry, imgDerPers, statusCreado},
+			...{dataEntry, imgDerPers, statusCreado, bloqueDer},
 			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
 			...{omitirImagenDerecha: true, omitirFooter: true},

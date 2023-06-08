@@ -97,7 +97,7 @@ module.exports = {
 		}
 
 		// Bloque Derecho
-		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
+		const bloqueDer = [[], await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
 		// Info para la vista
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
@@ -165,7 +165,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer = [
 			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-			await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+			await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
 		];
 
 		// Imagen Personalizada
@@ -257,8 +257,8 @@ module.exports = {
 				if (entidad == "epocasDelAno") {
 					// Si tiene imagen, la copia en su carpeta
 					if (datos.avatar) {
-						const archivo_avatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
-						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+						const archivoAvatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
+						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivoAvatar);
 					}
 
 					// Actualiza los diasDelAno
@@ -272,6 +272,7 @@ module.exports = {
 			if (subcodigo == "rechazo") {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 			}
@@ -305,7 +306,7 @@ module.exports = {
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		// 3. Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el histStatus
@@ -329,17 +330,17 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-		// 7. Acciones si es un registro inactivo
+		// 7. Acciones si es un registro que se mueve de 'inactivarRecuperar' a 'inactivo'
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
-			procesos.descargaAvatar(original, entidad);
+			procesos.orignalAvatar(original, entidad);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
@@ -457,7 +458,7 @@ module.exports = {
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
+			bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_edics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión

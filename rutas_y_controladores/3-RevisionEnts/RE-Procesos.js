@@ -453,12 +453,12 @@ module.exports = {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
 				if (edicion.avatar)
-					comp.gestionArchivos.elimina("./publico/imagenes/2-Avatar-" + petitFamilias + "-Revisar", edicion.avatar);
+					comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
@@ -718,33 +718,7 @@ module.exports = {
 	},
 
 	// Varios
-	fichaDelUsuario: async (userID, petitFamilias) => {
-		// Variables
-		const ahora = comp.fechaHora.ahora();
-		const include = "rolIglesia";
-		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, include);
-		let bloque = [];
-
-		// Datos del usuario
-		// Nombre
-		bloque.push({titulo: "Nombre", valor: usuario.nombre + " " + usuario.apellido});
-		// Edad
-		if (usuario.fechaNacim) {
-			let edad = parseInt((ahora - new Date(usuario.fechaNacim).getTime()) / unAno);
-			bloque.push({titulo: "Edad", valor: edad + " años"});
-		}
-		// Rol en la iglesia
-		if (usuario.rolIglesia) bloque.push({titulo: "Rol en la Iglesia", valor: usuario.rolIglesia.nombre});
-		// Tiempo en ELC
-		const antiguedad = ((ahora - new Date(usuario.creadoEn).getTime()) / unAno).toFixed(1).replace(".", ",");
-		bloque.push({titulo: "Tiempo en ELC", valor: antiguedad + " años"});
-		// Calidad de las altas
-		bloque.push(...usuarioCalidad(usuario, petitFamilias));
-
-		// Fin
-		return bloque;
-	},
-	descargaAvatar: async (original, entidad) => {
+	orignalAvatar: async (original, entidad) => {
 		// Descarga el archivo avatar
 		const avatar = Date.now() + path.extname(original.avatar);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
@@ -885,25 +859,6 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 
 	// Fin
 	return prods;
-};
-let usuarioCalidad = (usuario, prefijo) => {
-	// Contar los casos aprobados y rechazados
-	const cantAprob = usuario[prefijo + "Aprob"];
-	const cantRech = usuario[prefijo + "Rech"];
-
-	// Mediciones
-	const cantidad = cantAprob + cantRech;
-	const calidad = cantidad ? parseInt((cantAprob / cantidad) * 100) + "%" : "-";
-
-	// Prepara el resultado
-	const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
-	const resultados = [
-		{titulo: "Calidad de " + sufijo, valor: calidad},
-		{titulo: "Cant. de " + sufijo, valor: cantidad},
-	];
-
-	// Fin
-	return resultados;
 };
 let creadosSinEdicion = async () => {
 	// Obtiene los productos en status 'creado' y sin edicion
