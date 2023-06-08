@@ -187,11 +187,11 @@ module.exports = {
 
 			// Acciones para rechazo
 			if (subcodigo == "rechazo") {
-				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
-
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 			}
 
 			// Acciones si es un RCLV inactivo
@@ -201,7 +201,7 @@ module.exports = {
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
-				// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
+				// Si no pasan el control de error y estaban aprobados, pasan al status 'creadoAprob'
 				await procesos.guardar.prodsAsocs(entidad, id);
 			}
 		}
@@ -223,8 +223,8 @@ module.exports = {
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el histStatus
 		// 4.A. Genera la información
@@ -241,7 +241,7 @@ module.exports = {
 		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
-		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
+		// 5. Aumenta el valor de aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
