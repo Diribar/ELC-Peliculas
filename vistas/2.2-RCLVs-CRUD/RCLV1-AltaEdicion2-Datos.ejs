@@ -63,7 +63,7 @@
 				<select name="tipoFecha" class="input">
 					<option value="FD" <% if (dataEntry.tipoFecha_id == "FD") { %>selected<% } %>>Fecha definida</option>
 					<option value="FM" <% if (dataEntry.tipoFecha_id == "FM") { %>selected<% } %>>Fecha móvil</option>
-					<% if (entidad != "epocas_del_ano") { %>
+					<% if (entidad != "epocasDelAno") { %>
 						<option value="SF" <% if (dataEntry.tipoFecha_id == "SF") { %>selected<% } %>>Sin Fecha</option>
 					<% } %>
 				</select>
@@ -117,7 +117,7 @@
 				<p class="caracteres ocultar"><span><%- dataEntry.comentarioMovil ? 70 - dataEntry.comentarioMovil.length : 70 %></span>/70</p>
 			</div>
 			<textarea name="comentarioMovil" class="input margenDebajo ocultar" placeholder="Comentario sobre la fecha móvil"><%= dataEntry.comentarioMovil %></textarea>
-			<% if (epocas_del_ano) { %>
+			<% if (epocasDelAno) { %>
 				<div id="diasDeDuracion" class="flexRow spaceBetween altoFila">
 					<div class="flexRowAlign margenDebajo">
 						<label for="inputDias">Días de duración</label>
@@ -131,7 +131,7 @@
 	</div>
 	<!--Segunda columna-->
 	<div id="segundaCol">
-		<% if (epocas_del_ano) { %>
+		<% if (epocasDelAno) { %>
 			<!-- Días del año -->
 			<div id="sectorDiasDelAno">
 				<!-- Título, Ayuda y Error/OK -->
@@ -156,7 +156,7 @@
 								<% if (diaDelAno.id > 366) {break} %>
 								<tr>
 									<td style="width: 50px;"><%= diaDelAno.nombre %></td>
-									<td><%= diaDelAno.epoca_del_ano.nombre %></td>
+									<td><%= diaDelAno.epocaDelAno.nombre %></td>
 								</tr>
 							<% } %>
 						</tbody>
@@ -256,7 +256,7 @@
 								<% } else if (eventos) { %>
 									<li>VPC: Menor Importancia</li>
 									<li>CFC: Mayor importancia</li>
-								<% } else if (epocas_del_ano) { %>
+								<% } else if (epocasDelAno) { %>
 									<li>Menor Importancia</li>
 									<li>Mayor importancia: algunas cortas como Semana Santa y Adviento</li>
 								<% } %>

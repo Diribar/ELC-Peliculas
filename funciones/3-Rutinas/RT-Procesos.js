@@ -60,7 +60,7 @@ module.exports = {
 		const dia = fecha.getDate();
 		const mes_id = fecha.getMonth() + 1;
 		const diaDelAno = diasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
-		delete diaDelAno.epoca_del_ano;
+		delete diaDelAno.epocaDelAno;
 
 		// Obtiene los RCLV
 		let rclvs = await this.obtieneLosRCLV(diaDelAno);
@@ -102,8 +102,8 @@ module.exports = {
 
 		// Obtiene los RCLV de las primeras cuatro entidades
 		for (let entidad of variables.entidades.rclvs) {
-			// Salteo de la rutina para 'epocas_del_ano'
-			if (entidad == "epocas_del_ano") continue;
+			// Salteo de la rutina para 'epocasDelAno'
+			if (entidad == "epocasDelAno") continue;
 
 			// Condicion estandar: RCLVs del dia y en status aprobado
 			const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id};
@@ -120,10 +120,10 @@ module.exports = {
 			);
 		}
 
-		// Busca el registro de 'epoca_del_ano'
+		// Busca el registro de 'epocaDelAno'
 		if (diaDelAno.epocaDelAno_id != 1) {
 			const condicion = {id: diaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
-			const entidad = "epocas_del_ano";
+			const entidad = "epocasDelAno";
 			const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
 			rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
 		}

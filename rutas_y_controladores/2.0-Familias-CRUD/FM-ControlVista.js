@@ -191,9 +191,9 @@ module.exports = {
 			for (let entProd of variables.entidades.prods)
 				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {[campo_id]: id}, {[campo_id]: 1}));
 
-			// epoca_del_ano - Borra el vínculo en los diasDelAno
-			if (entidad == "epocas_del_ano")
-				acumulado.push(BD_genericas.actualizaTodosPorCondicion("epocas_del_ano", {[campo_id]: id}, {[campo_id]: 1}));
+			// epocaDelAno - Borra el vínculo en los diasDelAno
+			if (entidad == "epocasDelAno")
+				acumulado.push(BD_genericas.actualizaTodosPorCondicion("epocasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
 		}
 
 		// Espera a que cumplan todas las rutinas anteriores
@@ -219,7 +219,7 @@ module.exports = {
 		if (!entidad) return res.redirect("/");
 
 		// Más variables
-		const articulo1 = ["peliculas", "colecciones", "epocas_del_ano"].includes(entidad) ? "La " : "El ";
+		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
 		const articulo2 = articulo1 == "La " ? "a" : "o";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 		const link = origen == "TM" ? "/mantenimiento" : "/";

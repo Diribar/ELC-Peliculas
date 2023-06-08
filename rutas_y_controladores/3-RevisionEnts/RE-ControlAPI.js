@@ -54,7 +54,7 @@ module.exports = {
 		}
 
 		// Solapamiento y diasDelAno
-		if (entidad == "epocas_del_ano" && camposDDA.includes(campo)) {
+		if (entidad == "epocasDelAno" && camposDDA.includes(campo)) {
 			// Si es necesario, actualiza el original quitándole el solapamiento
 			if (original.solapamiento) BD_genericas.actualizaPorId(entidad, id, {solapamiento: false});
 

@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 	};
 	let varios = {
 		// Variables de entidad
-		epocas_del_ano: entidad == "epocas_del_ano",
+		epocasDelAno: entidad == "epocasDelAno",
 
 		// Campos por sector
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
@@ -157,7 +157,7 @@ window.addEventListener("load", async () => {
 				// Fin
 				return;
 			},
-			epocas_del_ano: (campo) => {
+			epocasDelAno: (campo) => {
 				// Variables
 				const dia = DOM.dia.value;
 				const mes_id = DOM.mes_id.value;
@@ -262,10 +262,10 @@ window.addEventListener("load", async () => {
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
 			if (varios.OK.fecha)
-				if (entidad != "epocas_del_ano") {
+				if (entidad != "epocasDelAno") {
 					await impactos.fecha.muestraPosiblesRepetidos();
 					validacs.repetido();
-				} else impactos.fecha.epocas_del_ano();
+				} else impactos.fecha.epocasDelAno();
 		}
 
 		// Fin
@@ -341,8 +341,8 @@ window.addEventListener("load", async () => {
 		if (campo == "diasDeDuracion") e.target.value = Math.max(2, Math.min(e.target.value, 366));
 		if (campo == "mes_id") impactos.fecha.muestraLosDiasDelMes();
 		if (campo == "tipoFecha") impactos.fecha.muestraOcultaCamposFecha();
-		if (varios.epocas_del_ano && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
-			impactos.fecha.epocas_del_ano(campo);
+		if (varios.epocasDelAno && (campo == "mes_id" || campo == "dia" || campo == "diasDeDuracion"))
+			impactos.fecha.epocasDelAno(campo);
 
 		// Valida las fechas
 		await validacs.fecha();

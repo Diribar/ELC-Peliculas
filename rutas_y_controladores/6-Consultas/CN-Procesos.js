@@ -55,8 +55,8 @@ module.exports = {
 
 				// Obtiene los RCLV de las primeras cuatro entidades
 				for (let entidad of entidadesRCLV) {
-					// Salteo de la rutina para 'epocas_del_ano'
-					if (entidad == "epocas_del_ano") continue;
+					// Salteo de la rutina para 'epocasDelAno'
+					if (entidad == "epocasDelAno") continue;
 
 					// Condicion estandar: RCLVs del dia y en status aprobado
 					condicion = {id: {[Op.gt]: 10}, diaDelAno_id, statusRegistro_id: aprobado_id};
@@ -71,16 +71,16 @@ module.exports = {
 					);
 				}
 
-				// Busca el registro de 'epoca_del_ano'
+				// Busca el registro de 'epocaDelAno'
 				const epocaDelAno_id = diasDelAno.find((n) => n.id == diaDelAno_id).epocaDelAno_id;
 				if (epocaDelAno_id != 1) {
 					const condicion = {id: epocaDelAno_id, statusRegistro_id: aprobado_id};
 					registros.push(
-						BD_genericas.obtieneTodosPorCondicionConInclude("epocas_del_ano", condicion, include)
+						BD_genericas.obtieneTodosPorCondicionConInclude("epocasDelAno", condicion, include)
 							// Deja solo los que tienen productos
 							.then((n) => n.filter((m) => m.peliculas || m.colecciones || m.capitulos))
 							// Le agrega su entidad
-							.then((n) => n.map((m) => ({entidad: "epocas_del_ano", ...m, diaDelAno_id: dia})))
+							.then((n) => n.map((m) => ({entidad: "epocasDelAno", ...m, diaDelAno_id: dia})))
 					);
 				}
 

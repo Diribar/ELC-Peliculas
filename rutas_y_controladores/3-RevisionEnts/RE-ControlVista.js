@@ -246,14 +246,15 @@ module.exports = {
 				if (req.file) {
 					// Lo mueve de 'Provisorio' a 'Final'
 					comp.gestionArchivos.mueveImagen(datos.avatar, "9-Provisorio", "2-RCLVs/Final");
+
 					// Elimina el eventual anterior
 					if (original.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-RCLVs/Revisar/", original.avatar);
 				}
 				// Si no recibimos un avatar y hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				else if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 
-				// Acciones si es un registro de 'epocas_del_ano'
-				if (entidad == "epocas_del_ano") {
+				// Acciones si es un registro de 'epocasDelAno'
+				if (entidad == "epocasDelAno") {
 					// Si tiene imagen, la copia en su carpeta
 					if (datos.avatar) {
 						const archivo_avatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
@@ -357,8 +358,8 @@ module.exports = {
 		let errores = await validaRCLV.fecha(datos);
 		if (errores) {
 			// Guarda session y cookie
-			req.session.epocas_del_ano = datos;
-			res.cookie("epocas_del_ano", datos, {maxAge: unDia});
+			req.session.epocasDelAno = datos;
+			res.cookie("epocasDelAno", datos, {maxAge: unDia});
 
 			// Fin
 			return res.redirect(req.originalUrl);
@@ -375,7 +376,7 @@ module.exports = {
 
 		// Actualiza el registro original
 		datos = {...datos, solapamiento: false, editadoPor_id: revID, editadoEn: ahora};
-		await BD_genericas.actualizaPorId("epocas_del_ano", id, datos);
+		await BD_genericas.actualizaPorId("epocasDelAno", id, datos);
 
 		// Fin
 		return res.redirect("/revision/tablero-de-control");
@@ -394,7 +395,7 @@ module.exports = {
 		const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocas_del_ano" ? " la " : "l ";
+		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocasDelAno" ? " la " : "l ";
 		let avatarExterno, avatarsExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
 

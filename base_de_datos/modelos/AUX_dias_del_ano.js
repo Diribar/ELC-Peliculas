@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.meses, {as: "mes", foreignKey: "mes_id"});
-		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epocaDelAno_id"});
+		entidad.belongsTo(n.epocasDelAno, {as: "epocaDelAno", foreignKey: "epocaDelAno_id"});
 
 		entidad.hasMany(n.personajes, {as: "personajes", foreignKey: "diaDelAno_id"});
 		entidad.hasMany(n.hechos, {as: "hechos", foreignKey: "diaDelAno_id"});

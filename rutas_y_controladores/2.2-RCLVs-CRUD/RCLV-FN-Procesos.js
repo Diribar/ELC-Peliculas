@@ -138,7 +138,7 @@ module.exports = {
 				? "FD"
 				: entidad == "personajes" || entidad == "hechos"
 				? "FD"
-				: entidad == "eventos" || entidad == "epocas_del_ano"
+				: entidad == "eventos" || entidad == "epocasDelAno"
 				? "FM"
 				: entidad == "temas"
 				? "SF"
@@ -160,7 +160,7 @@ module.exports = {
 				? dataEntry.solo_cfc
 					? prioridades.mayor
 					: prioridades.menor
-				: entidad == "epocas_del_ano"
+				: entidad == "epocasDelAno"
 				? prioridades.menor
 				: "";
 		},
@@ -204,8 +204,8 @@ module.exports = {
 				DE.ama = solo_cfc == "1" ? ama : 0;
 			}
 
-			// Datos para epocas_del_ano
-			if (datos.entidad == "epocas_del_ano") {
+			// Datos para epocasDelAno
+			if (datos.entidad == "epocasDelAno") {
 				DE.diasDeDuracion = datos.diasDeDuracion;
 				DE.comentarioDuracion = datos.comentarioDuracion;
 				if (datos.carpetaAvatars) DE.carpetaAvatars = datos.carpetaAvatars;

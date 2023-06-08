@@ -77,7 +77,7 @@ module.exports = {
 				? "tema_id"
 				: entidad == "eventos"
 				? "evento_id"
-				: entidad == "epocas_del_ano"
+				: entidad == "epocasDelAno"
 				? "epocaDelAno_id"
 				: entidad == "links"
 				? "link_id"
@@ -98,8 +98,8 @@ module.exports = {
 				? "tema"
 				: entidad == "eventos"
 				? "evento"
-				: entidad == "epocas_del_ano"
-				? "epoca_del_ano"
+				: entidad == "epocasDelAno"
+				? "epocaDelAno"
 				: entidad == "links"
 				? "link"
 				: "";
@@ -134,7 +134,7 @@ module.exports = {
 				: edicion.evento_id
 				? "eventos"
 				: edicion.epocaDelAno_id
-				? "epocas_del_ano"
+				? "epocasDelAno"
 				: "";
 		},
 		entidad: function (edicion) {
@@ -177,7 +177,7 @@ module.exports = {
 				: edicion.evento_id
 				? "evento"
 				: edicion.epocaDelAno_id
-				? "epoca_del_ano"
+				? "epocaDelAno"
 				: "";
 		},
 	},
@@ -727,7 +727,7 @@ let FN = {
 			? "Tema"
 			: entidad == "eventos"
 			? "Evento del Año"
-			: entidad == "epocas_del_ano"
+			: entidad == "epocasDelAno"
 			? "Epoca del Año"
 			: entidad == "links"
 			? "Link"

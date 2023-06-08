@@ -15,8 +15,8 @@ module.exports = {
 			prioridad: this.prioridad(datos),
 		};
 
-		// Campos de todos menos 'epocas_del_ano'
-		if (datos.entidad != "epocas_del_ano") errores.repetidos = this.repetidos(datos);
+		// Campos de todos menos 'epocasDelAno'
+		if (datos.entidad != "epocasDelAno") errores.repetidos = this.repetidos(datos);
 
 		// Campos de personajes y hechos
 		if (datos.entidad == "personajes" || datos.entidad == "hechos") errores.epoca = this.epoca(datos);
@@ -31,7 +31,7 @@ module.exports = {
 		if (datos.entidad == "hechos") errores.RCLIC = this.RCLIC_hechos(datos);
 
 		// Épocas del año
-		if (datos.entidad == "epocas_del_ano") errores.carpetaAvatars = this.carpetaAvatars(datos);
+		if (datos.entidad == "epocasDelAno") errores.carpetaAvatars = this.carpetaAvatars(datos);
 
 		// ¿Hay errores?
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -87,8 +87,8 @@ module.exports = {
 				if (aux) respuesta = aux.replace("contenido", "comentario sobre la Fecha Móvil");
 			}
 
-			// Validaciones para 'epocas_del_ano'
-			if (!respuesta && datos.entidad == "epocas_del_ano") {
+			// Validaciones para 'epocasDelAno'
+			if (!respuesta && datos.entidad == "epocasDelAno") {
 				// Variables
 				const sufijo = "los Días de Duración";
 				// Valida la cantidad de días
@@ -111,7 +111,7 @@ module.exports = {
 		return !datos.prioridad_id && datos.revisor ? variables.selectVacio : "";
 	},
 
-	// Entidades distintas a 'epocas_del_ano'
+	// Entidades distintas a 'epocasDelAno'
 	repetidos: (datos) => {
 		return datos.repetidos ? cartelRegistroDuplicado : "";
 	},

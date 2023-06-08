@@ -18,7 +18,7 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-		const articulo = entidad == "epocas_del_ano" ? "a" : "";
+		const articulo = entidad == "epocasDelAno" ? "a" : "";
 		const titulo = "Detalle de un" + articulo + " " + entidadNombre;
 
 		// Obtiene RCLV con productos
@@ -82,7 +82,7 @@ module.exports = {
 		const hechos = entidad == "hechos";
 		const temas = entidad == "temas";
 		const eventos = entidad == "eventos";
-		const epocas_del_ano = entidad == "epocas_del_ano";
+		const epocasDelAno = entidad == "epocasDelAno";
 		let dataEntry = {};
 		let ap_mars, roles_igl, edicID;
 
@@ -132,7 +132,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, origen, titulo},
 			...{entidad, id, prodEntidad, prodID, edicID, familia: "rclv", ent, familia},
-			...{personajes, hechos, temas, eventos, epocas_del_ano, prioridades},
+			...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
 			...{dataEntry, imgDerPers, statusCreado},
 			...{roles_igl, ap_mars, originalUrl, revisor},
 			...{cartelGenerico: codigo == "edicion", cartelRechazo: tema == "revisionEnts"},
