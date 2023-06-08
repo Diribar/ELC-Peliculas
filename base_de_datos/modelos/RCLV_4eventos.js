@@ -10,9 +10,6 @@ module.exports = (sequelize, dt) => {
 		prioridad_id: {type: dt.INTEGER},
 		avatar: {type: dt.STRING(15)},
 
-		// Específicos
-		categoria_id: {type: dt.STRING(3)},
-
 		// Fechas y Usuarios
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},

@@ -306,7 +306,7 @@ module.exports = {
 				if (valorAprob != valorDesc) {
 					datosCompleto.valorDesc = valorDesc;
 					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
-					datosCompleto.motivo_id = motivo.id;
+					datosCompleto.motivo_id = motivo.id; // con este campo se sabe si fue rechazado
 					datosCompleto.duracion = motivo.duracion;
 				}
 
@@ -314,12 +314,12 @@ module.exports = {
 				BD_genericas.agregaRegistro("hist_edics", datosCompleto);
 
 				// Aumenta la cantidad de edicsAprob / edicsRech
-				const aprobRech = valorAprob == valorDesc ? "aprob" : "rech";
-				ediciones["edics_" + aprobRech]++;
+				const aprobRech = valorAprob == valorDesc ? "Aprob" : "Rech";
+				ediciones["edics" + aprobRech]++;
 			}
 
 			// Actualiza en el usuario el campo edicsAprob / edicsRech, según cuál tenga más
-			let campoEdic =
+			const campoEdic =
 				ediciones.edicsAprob > ediciones.edicsRech
 					? "edicsAprob"
 					: ediciones.edicsAprob < ediciones.edicsRech
@@ -575,7 +575,7 @@ module.exports = {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-			const decision = "edics_" + (aprob ? "aprob" : "rech");
+			const decision = "edics" + (aprob ? "Aprob" : "Rech");
 			const ahora = comp.fechaHora.ahora();
 			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
@@ -888,8 +888,8 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 };
 let usuarioCalidad = (usuario, prefijo) => {
 	// Contar los casos aprobados y rechazados
-	const cantAprob = usuario[prefijo + "_aprob"];
-	const cantRech = usuario[prefijo + "_rech"];
+	const cantAprob = usuario[prefijo + "Aprob"];
+	const cantRech = usuario[prefijo + "Rech"];
 
 	// Mediciones
 	const cantidad = cantAprob + cantRech;
