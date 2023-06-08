@@ -1,5 +1,5 @@
-<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 <% if (locals.userIdentVal && locals.statusEstable) { %>
+	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div class="flechas">
 		<% if ([creado_aprob_id, aprobado_id].includes(locals.status_id)) { %>
@@ -24,10 +24,11 @@
 	</div>
 <% } %>
 
-<!-- VISTA CRUD AGREGAR/EDICION/ELIMINAR EDICIÓN RCLV - Para Aprobar -->
-<% const condic1 = tema == "rclv_crud" && (codigo == "agregar" || codigo == "edicion") %>
-<% const condic2 = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
+<% condic1 = tema == "rclv_crud" && (codigo == "agregar" || codigo == "edicion") %>
+<% condic2 = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
 <% if (condic1 || condic2) { %>
+	<!-- VISTA CRUD     - AGREGAR/EDICION/ELIMINAR EDICIÓN RCLV -->
+	<!-- VISTA REVISIÓN - SOLAPAMIENTO -->
 	<div class="flechas">
 		<!-- Eliminar edición -->
 		<% if (tema == "rclv_crud" && codigo == "edicion" && edicID) { %>
@@ -42,15 +43,17 @@
 		</button>
 	</div>
 <% } %>
-<!-- VISTAS CRUD INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
-<!-- VISTAS REVISION RECHAZO - Para completar el feedback y enviar a Revisión -->
-<% if (tema == "crud" && codigo != "eliminar" || tema == "revisionEnts" && codigo == "rechazo") {  %>
+<% condic1 = tema == "crud" && codigo != "eliminar" %>
+<% condic2 = tema == "revisionEnts" && codigo == "rechazo" %>
+<% if (condic1 || condic2) {  %>
+	<!-- VISTAS CRUD     - INACTIVAR Y RECUPERAR - Para completar el feedback y enviar a Revisión -->
+	<!-- VISTAS REVISION - RECHAZO - Para completar el feedback y enviar a Revisión -->
 	<!-- Confirma el cambio de status -->
 	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<i class="fa-solid fa-circle-right" tabindex="-1" title="Confirma el cambio de status"></i>
 	</button>
 <% } %>
-<!-- VISTA ELIMINAR -->
+<!-- VISTAS CRUD - ELIMINAR -->
 <% if (tema == "crud" && codigo == "eliminar") {  %>
 	<!-- Elimina definitivamente -->
 	<button type="submit" class="flechas <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
