@@ -310,8 +310,8 @@ module.exports = {
 					datosCompleto.duracion = motivo.duracion;
 				}
 
-				// Guarda los registros en "hist_edics"
-				BD_genericas.agregaRegistro("hist_edics", datosCompleto);
+				// Guarda los registros en "histEdics"
+				BD_genericas.agregaRegistro("histEdics", datosCompleto);
 
 				// Aumenta la cantidad de edicsAprob / edicsRech
 				const aprobRech = valorAprob == valorDesc ? "Aprob" : "Rech";
@@ -564,7 +564,7 @@ module.exports = {
 			// TAREAS:
 			// - Si se aprobó, actualiza el registro de 'original'
 			// - Si es una colección, actualiza el registro 'original' de los capítulos
-			// - Actualiza la tabla de 'hist_edics'
+			// - Actualiza la tabla de 'histEdics'
 			// - Aumenta el campo aprob/rech en el registro del usuario
 			// - Si corresponde, penaliza al usuario
 			// - Actualiza el registro de 'edición'
@@ -608,7 +608,7 @@ module.exports = {
 				}
 			}
 
-			// 2. Actualiza la tabla de 'hist_edics'
+			// 2. Actualiza la tabla de 'histEdics'
 			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 			// Agrega el motivo del rechazo
 			if (!aprob) {
@@ -624,7 +624,7 @@ module.exports = {
 			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
 			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
 			// Agrega el registro
-			BD_genericas.agregaRegistro("hist_edics", datos);
+			BD_genericas.agregaRegistro("histEdics", datos);
 
 			// 3. Aumenta el campo 'edicsAprob' o 'edicsRech' en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);

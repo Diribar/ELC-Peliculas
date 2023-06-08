@@ -69,8 +69,8 @@ module.exports = {
 			// Fin
 			return {informacion, documAvatar};
 		},
-		hist_edics: (campo, usuario, revID, motivo) => {
-			// Alimenta la tabla 'hist_edics'
+		histEdics: (campo, usuario, revID, motivo) => {
+			// Alimenta la tabla 'histEdics'
 			let datos = {
 				entidad: "usuarios",
 				entidad_id: usuario.id,
@@ -87,7 +87,7 @@ module.exports = {
 				edicRevisadaPor_id: revID,
 				edicRevisadaEn: comp.fechaHora.ahora(),
 			};
-			BD_genericas.agregaRegistro("hist_edics", datos);
+			BD_genericas.agregaRegistro("histEdics", datos);
 	
 			// Fin
 			return;
