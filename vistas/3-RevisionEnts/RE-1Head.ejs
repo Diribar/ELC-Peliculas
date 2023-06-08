@@ -1,8 +1,8 @@
 <!-- General -->
 <link rel="stylesheet" href="/formatos/3-RevisionEnts/RE0-Revision.css">
 
-<!-- TABLERO -->
 <% if (codigo == "tableroControl") { %>
+	<!-- TABLERO -->
 	<link rel="stylesheet" href="/formatos/0-Compartido/Main/TableroControl.css">
 	<script src="/javascript/0-Compartido/TableroControl.js"></script>
 
@@ -18,6 +18,7 @@
 		<link rel="stylesheet" href="/formatos/2.0-Familias-CRUD/FM-EdicionAvatar.css">
 		<link rel="stylesheet" href="/formatos/2.2-RCLVs-CRUD/RCLV-AltaEdicion.css">
 		<% if (codigo == "rclv/alta") { %>
+			<link rel="stylesheet" href="/formatos/0-Compartido/Main/DatosBreves.css">
 			<script src="/javascript/2.2-RCLVs-CRUD/RCLV-AltaEdicion.js"></script>
 		<% } else if (codigo == "rclv/solapamiento") { %>
 			<script src="/javascript/3-RevisionEnts/RE2-RCLV-Solapam.js"></script>

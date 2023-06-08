@@ -3,6 +3,7 @@
 	<section id="formCuerpoFooter">
 		<%- include('CMP-3Footer', {mostrar: true}) %>
 		<!--**************************** CUERPO ************************-->
+		
 		<div id="formCuerpo">
 			<%- codigo != "agregar" ? include('CMP-TimerContador') : "" %>
 			<div id="tituloPrincipal">
@@ -16,8 +17,16 @@
 					</i>
 				</div>
 			</div>
-			<div id="dataEntry">
-				<%- include('RCLV1-AltaEdicion2-Datos') %>
+			<div id="datos" class="flexRow grow spaceEvenly">
+				<div id="dataEntry">
+					<%- include('RCLV1-AltaEdicion2-Datos') %>
+				</div>
+				<% if (locals.bloqueDer) { %>
+					<div id="datosBreves" class="sectorConDesplV bordeConSombra aparece">
+						<%- include("RE0-Breves") %>
+						<% console.log(70,familia,tema) %>
+					</div>
+				<% } %>
 			</div>
 		</div>
 		<!--****************************** FIN *************************-->
