@@ -11,12 +11,16 @@ const procesos = require("./FM-Procesos");
 module.exports = {
 	inacRecup_Form: async (req, res) => {
 		// Tema y Código
-		const tema = "crud";
-		const codigo = req.path.slice(1, -1); // códigos posibles: 'inactivar', 'recuperar', 'eliminar'
+		const tema = req.baseUrl == "/revision" ? "revisionEnts" : "crud";
+		const codigo1 = req.path.slice(1, -1);
+		const codigo = tema == "revisionEnts" ? codigo1.slice(codigo1.indexOf("/") + 1) : codigo1; // Resultados  posibles: 'inactivar', 'recuperar', 'eliminar', 'rechazo', 'inactivar-o-recuperar'
+		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
 		// Más variables
-		const {entidad, id, origen} = req.query;
+		const {entidad, id} = req.query;
+		const origen = req.query.origen ? req.query.origen : "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
 
@@ -28,6 +32,10 @@ module.exports = {
 		if (familia == "rclv") include.push(...variables.entidades.prods);
 		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
+		// Obtiene el subcodigo
+		const statusOriginal_id = original.statusRegistro_id;
+		const subcodigo = statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
+
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -35,7 +43,9 @@ module.exports = {
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Ayuda para el titulo
-		const ayudasTitulo = ["Por favor decinos por qué sugerís " + codigo + " este registro."];
+		const ayudasTitulo = inactivarRecuperar
+			? ["Para tomar una decisión contraria a la del usuario, necesitamos tu comentario para darle feedback."]
+			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
 
 		// Cantidad de productos asociados al RCLV
 		if (familia == "rclv") {
@@ -46,45 +56,49 @@ module.exports = {
 		}
 
 		// Datos Breves
-		bloqueDer =
-			familia == "producto"
-				? procesos.bloqueRegistro({registro: original, revisor})
-				: familia == "rclv"
-				? {
-						rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
-						registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-				  }
-				: [];
+		bloqueDer = false
+			? false
+			: tema == "revisionEnts"
+			? [
+					procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
+					await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+			  ]
+			: familia == "producto"
+			? procesos.bloqueRegistro({registro: original, revisor})
+			: familia == "rclv"
+			? {
+					rclv: procsRCLV.detalle.bloqueRCLV({...original, entidad}),
+					registro: procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
+			  }
+			: [];
 
 		// Imagen Derecha
 		imgDerPers = procesos.obtieneAvatar(original).orig;
 
 		// Motivos de rechazo
-		if (codigo == "inactivar") {
-			let petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			motivos = motivos_status.filter((n) => n[petitFamilias]);
-		}
+		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivosStatus.filter((n) => n[petitFamilias]);
 
 		// Comentario del rechazo
 		const comentarios =
-			codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicion("histStatus", {
-						entidad,
-						entidad_id: id,
-				  }).then((n) => n.map((m) => m.comentario))
+			inactivarRecuperar || codigo == "recuperar" || codigo == "eliminar"
+				? await BD_genericas.obtieneTodosPorCondicion("histStatus", {entidad, entidad_id: id}).then((n) =>
+						n.map((m) => m.comentario)
+				  )
 				: [];
 
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
+		const tituloMotivo =
+			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "está Inactivo";
 		const status_id = original.statusRegistro_id;
+		const urlActual = req.originalUrl;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo, origen, tituloMotivo: "está Inactivo"},
-			...{entidad, id, entidadNombre, familia, comentarios},
-			//familias,
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id},
+			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen, tituloMotivo},
+			...{entidad, id, entidadNombre, familia, comentarios, urlActual},
+			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id, cantProds},
 			cartelGenerico: true,
 		});
 	},
