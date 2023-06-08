@@ -121,7 +121,6 @@ module.exports = {
 		let codigo = req.path.slice(1, -1);
 		codigo = codigo.slice(codigo.indexOf("/") + 1);
 		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
-		console.log(124,tema,codigo);
 
 		// Más variables
 		const {entidad, id} = req.query;
