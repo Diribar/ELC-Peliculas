@@ -25,7 +25,7 @@ module.exports = {
 	// Productos y RCLVs
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
-		rclvs: ["personajes", "hechos", "temas", "eventos", "epocas_del_ano"],
+		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 	},
 
 	// Consulta de Productos
@@ -219,9 +219,9 @@ module.exports = {
 			{
 				titulo: "Epoca del Año",
 				nombre: "epocaDelAno_id",
-				valores: registrosRCLV.epocas_del_ano,
+				valores: registrosRCLV.epocasDelAno,
 				mensajes: ["Poné la fecha en la que comienza."],
-				link: "epocas_del_ano",
+				link: "epocasDelAno",
 				grupo: "RCLV",
 			},
 		];
@@ -252,7 +252,7 @@ module.exports = {
 		hechos: ["nombre", "ano", "diaDelAno_id", "fechaMovil", "prioridad_id", "epoca_id", "solo_cfc", "ama", "avatar"],
 		temas: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
 		eventos: ["nombre", "diaDelAno_id", "fechaMovil", "prioridad_id", "avatar"],
-		epocas_del_ano: [
+		epocasDelAno: [
 			"nombre",
 			"diaDelAno_id",
 			"fechaMovil",
@@ -349,8 +349,8 @@ module.exports = {
 			{
 				titulo: "Época del año",
 				nombre: "epocaDelAno_id",
-				relacInclude: "epoca_del_ano",
-				tabla: "epocas_del_ano",
+				relacInclude: "epocaDelAno",
+				tabla: "epocasDelAno",
 				rclv: true,
 				productos: true,
 			},
@@ -401,9 +401,9 @@ module.exports = {
 			{nombre: "solo_cfc", titulo: "Hecho de la Iglesia", hechos: true},
 			{nombre: "ama", titulo: "Es una aparición mariana", hechos: true},
 			// Epocas del año
-			{nombre: "diasDeDuracion", titulo: "Días de Duración", epocas_del_ano: true},
-			{nombre: "comentarioDuracion", titulo: "Comentario Duración", epocas_del_ano: true},
-			{nombre: "carpetaAvatars", titulo: "Carpeta de Imágenes", epocas_del_ano: true},
+			{nombre: "diasDeDuracion", titulo: "Días de Duración", epocasDelAno: true},
+			{nombre: "comentarioDuracion", titulo: "Comentario Duración", epocasDelAno: true},
+			{nombre: "carpetaAvatars", titulo: "Carpeta de Imágenes", epocasDelAno: true},
 		],
 		links: [
 			{nombre: "calidad", titulo: "Calidad", links: true},

@@ -32,7 +32,7 @@ module.exports = (sequelize, dt) => {
 		solo_cfc: {type: dt.BOOLEAN},
 		ama: {type: dt.BOOLEAN},
 
-		// Específico de 'epocas_del_ano'
+		// Específico de 'epocasDelAno'
 		diasDeDuracion: {type: dt.INTEGER},
 		comentarioDuracion: {type: dt.STRING(70)},
 		carpetaAvatars: {type: dt.STRING(20)},
@@ -51,7 +51,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.temas, {as: "tema", foreignKey: "tema_id"});
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
-		entidad.belongsTo(n.epocas_del_ano, {as: "epoca_del_ano", foreignKey: "epocaDelAno_id"});
+		entidad.belongsTo(n.epocasDelAno, {as: "epocaDelAno", foreignKey: "epocaDelAno_id"});
 
 		entidad.belongsTo(n.diasDelAno, {as: "diaDelAno", foreignKey: "diaDelAno_id"});
 

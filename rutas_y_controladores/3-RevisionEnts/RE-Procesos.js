@@ -13,7 +13,7 @@ module.exports = {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
 			const campoFecha = "editadoEn";
-			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epoca_del_ano"];
+			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epocaDelAno"];
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
@@ -27,7 +27,7 @@ module.exports = {
 						(ediciones[i].hecho && ediciones[i].hecho.statusRegistro_id != aprobado_id) ||
 						(ediciones[i].tema && ediciones[i].tema.statusRegistro_id != aprobado_id) ||
 						(ediciones[i].evento && ediciones[i].evento.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].epoca_del_ano && ediciones[i].epoca_del_ano.statusRegistro_id != aprobado_id)
+						(ediciones[i].epocaDelAno && ediciones[i].epocaDelAno.statusRegistro_id != aprobado_id)
 					)
 						ediciones.splice(i, 1);
 
@@ -166,7 +166,7 @@ module.exports = {
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
 			const campoFecha = "editadoEn";
-			let include = ["personaje", "hecho", "tema", "evento", "epoca_del_ano"];
+			let include = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas
@@ -409,7 +409,7 @@ module.exports = {
 			await BD_genericas.actualizaTodosPorCondicion("diasDelAno", condicion, datos);
 
 			// Actualiza la variable 'diasDelAno'
-			diasDelAno = await BD_genericas.obtieneTodosConInclude("diasDelAno", "epoca_del_ano");
+			diasDelAno = await BD_genericas.obtieneTodosConInclude("diasDelAno", "epocaDelAno");
 
 			// Fin
 			return;
@@ -504,8 +504,8 @@ module.exports = {
 			// Impacto en los archivos de avatar (original y edicion)
 			await actualizaArchivoAvatar({entidad, original, edicion, aprob});
 
-			// Si es un registro de 'epocas_del_ano', guarda el avatar en la carpeta tematica
-			if (entidad == "epocas_del_ano" && aprob) {
+			// Si es un registro de 'epocasDelAno', guarda el avatar en la carpeta tematica
+			if (entidad == "epocasDelAno" && aprob) {
 				let carpeta_avatar = edicion.carpetaAvatars ? edicion.carpetaAvatars : original.carpetaAvatars;
 				carpeta_avatar = "3-EpocasDelAno/" + carpeta_avatar + "/";
 				comp.gestionArchivos.copiaImagen("2-RCLVs/Final/" + edicion.avatar, carpeta_avatar + edicion.avatar);

@@ -205,7 +205,7 @@ module.exports = {
 		const condicion = {id: {[Op.or]: IDs_solapam}};
 
 		// Fin
-		return db.epocas_del_ano.update(datos, {where: condicion});
+		return db.epocasDelAno.update(datos, {where: condicion});
 	},
 
 	// Otros
