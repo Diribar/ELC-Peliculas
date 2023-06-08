@@ -97,7 +97,7 @@ module.exports = {
 		}
 
 		// Bloque Derecho
-		const bloqueDer = [[], await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
+		const bloqueDer = [[], await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
 		// Info para la vista
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
@@ -165,7 +165,7 @@ module.exports = {
 		// Datos Breves
 		bloqueDer = [
 			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-			await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+			await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
 		];
 
 		// Imagen Personalizada
@@ -272,7 +272,7 @@ module.exports = {
 			if (subcodigo == "rechazo") {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
-				
+
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 			}
@@ -330,10 +330,10 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-		// 7. Acciones si es un registro inactivo
+		// 7. Acciones si es un registro que se mueve de 'inactivarRecuperar' a 'inactivo'
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
 		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
@@ -458,7 +458,7 @@ module.exports = {
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
-			bloqueDer.push(await procesos.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
+			bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivos_edics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
