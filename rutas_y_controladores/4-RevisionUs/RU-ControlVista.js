@@ -103,7 +103,7 @@ module.exports = {
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
 					// Agrega un registro por la edición rechazada
-					procesos.VI.hist_edics(campo, usuario, revID, motivo);
+					procesos.VI.histEdics(campo, usuario, revID, motivo);
 					statusRegistro_id = st_editables_id;
 					durac_penalidad += Number(motivo.duracion);
 				}
@@ -112,7 +112,7 @@ module.exports = {
 		else {
 			// Rutinas para el campo
 			const motivo = motivos_edics.find((n) => n.id == datos.motivo_docum_id);
-			procesos.VI.hist_edics("documAvatar", usuario, revID, motivo);
+			procesos.VI.histEdics("documAvatar", usuario, revID, motivo);
 			statusRegistro_id = st_editables_id;
 			durac_penalidad += Number(motivo.duracion);
 		}

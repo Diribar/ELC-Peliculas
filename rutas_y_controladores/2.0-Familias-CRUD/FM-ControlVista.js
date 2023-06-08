@@ -68,7 +68,7 @@ module.exports = {
 		// Comentario del rechazo
 		const comentarios =
 			codigo == "recuperar" || codigo == "eliminar"
-				? await BD_genericas.obtieneTodosPorCondicion("hist_status", {
+				? await BD_genericas.obtieneTodosPorCondicion("histStatus", {
 						entidad,
 						entidad_id: id,
 				  }).then((n) => n.map((m) => m.comentario))
@@ -120,7 +120,7 @@ module.exports = {
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 2. Agrega un registro en el hist_status
+		// 2. Agrega un registro en el histStatus
 		let datosHist = {
 			...{entidad, entidad_id: id},
 			...{sugeridoPor_id: original.sugeridoPor_id, sugeridoEn: original.sugeridoEn},
@@ -129,7 +129,7 @@ module.exports = {
 			...{aprobado: null, comentario: motivoComentario},
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
-		BD_genericas.agregaRegistro("hist_status", datosHist);
+		BD_genericas.agregaRegistro("histStatus", datosHist);
 
 		// 3. Actualiza los RCLV, en el campo 'prodsAprob'
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -160,10 +160,10 @@ module.exports = {
 		acumulado.push(BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id}));
 
 		// Elimina el historial de status
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion("hist_status", {entidad, entidad_id: id}));
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id}));
 
 		// Elimina el historial de ediciones
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion("hist_edics", {entidad, entidad_id: id}));
+		acumulado.push(BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id}));
 
 		// Acciones si es un producto
 		if (familia == "producto") {

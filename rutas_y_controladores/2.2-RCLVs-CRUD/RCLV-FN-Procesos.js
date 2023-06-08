@@ -217,7 +217,7 @@ module.exports = {
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
 			const {entidad, origen} = req.query;
-			let {id} = req.query;
+			let {id} = req.query; // Si es un 'agregar', el 'id' es undefined
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const userID = req.session.usuario.id;
 			const codigo = req.baseUrl + req.path;
