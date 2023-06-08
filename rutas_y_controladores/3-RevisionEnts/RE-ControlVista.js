@@ -340,7 +340,7 @@ module.exports = {
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
-			procesos.descargaAvatar(original, entidad);
+			procesos.orignalAvatar(original, entidad);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
