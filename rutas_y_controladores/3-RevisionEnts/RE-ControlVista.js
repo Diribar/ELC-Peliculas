@@ -257,8 +257,8 @@ module.exports = {
 				if (entidad == "epocasDelAno") {
 					// Si tiene imagen, la copia en su carpeta
 					if (datos.avatar) {
-						const archivo_avatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
-						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivo_avatar);
+						const archivoAvatar = "3-EpocasDelAno/" + datos.carpetaAvatars + "/" + datos.avatar;
+						comp.gestionArchivos.copiaImagen("2-RCLVs/Final" + datos.avatar, archivoAvatar);
 					}
 
 					// Actualiza los diasDelAno
@@ -272,6 +272,7 @@ module.exports = {
 			if (subcodigo == "rechazo") {
 				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
 				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
+				
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
 			}
@@ -305,7 +306,7 @@ module.exports = {
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es aprobado, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		// 3. Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el histStatus
