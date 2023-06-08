@@ -59,7 +59,7 @@ module.exports = {
 			documNumero: usuario.documNumero,
 		};
 		for (let campo of campos) campo.valor = valores[campo.nombre];
-		const motivos_docum = motivos_edics.filter((n) => n.avatar_us);
+		const motivos_docum = motivosEdics.filter((n) => n.avatar_us);
 
 		// 4. Va a la vista
 		// return res.send(campos)
@@ -99,7 +99,7 @@ module.exports = {
 
 		// Acciones si la imagen del documento fue aprobada
 		if (datos.motivo_docum_id == "0") {
-			const motivo = motivos_edics.find((n) => n.info_erronea);
+			const motivo = motivosEdics.find((n) => n.info_erronea);
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
 					// Agrega un registro por la edición rechazada
@@ -111,7 +111,7 @@ module.exports = {
 		// Acciones si la imagen del documento NO fue aprobada
 		else {
 			// Rutinas para el campo
-			const motivo = motivos_edics.find((n) => n.id == datos.motivo_docum_id);
+			const motivo = motivosEdics.find((n) => n.id == datos.motivo_docum_id);
 			procesos.VI.histEdics("documAvatar", usuario, revID, motivo);
 			statusRegistro_id = st_editables_id;
 			durac_penalidad += Number(motivo.duracion);
