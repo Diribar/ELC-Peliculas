@@ -2,7 +2,7 @@
 	<!-- VISTA DETALLE - Para ir a las vistas de Inactivar o Recuperar -->
 	<!-- Usuario validado, vista 'Detalle' y status 'Estable' -->
 	<div class="flechas">
-		<% if ([creado_aprob_id, aprobado_id].includes(locals.status_id)) { %>
+		<% if ([creadoAprob_id, aprobado_id].includes(locals.status_id)) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + (locals.origen ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>

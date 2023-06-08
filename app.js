@@ -122,7 +122,7 @@ app.set("views", [
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
 	global.creado_id = global.status_registros.find((n) => n.creado).id;
-	global.creado_aprob_id = status_registros.find((n) => n.creado_aprob).id;
+	global.creadoAprob_id = status_registros.find((n) => n.creadoAprob).id;
 	global.aprobado_id = global.status_registros.find((n) => n.aprobado).id;
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
