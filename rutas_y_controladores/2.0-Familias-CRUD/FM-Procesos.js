@@ -14,36 +14,38 @@ module.exports = {
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const edicID = edicion.id;
 		let camposNull = {};
-
-		// 1. Quita de edición los campos que no se comparan
 		let camposRevisar = [];
+
+		// Obtiene los campos a revisar
 		for (let campo of variables.camposRevisar[familias]) {
+			// Agrega el campo simple
 			camposRevisar.push(campo.nombre);
+			// Agrega el campo include
 			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
 		}
-		for (let campo in edicion) if (!camposRevisar.includes(campo)) delete edicion[campo];
 
-		// 2. Quita de edición las coincidencias con el original y los campos 'null'
+		// Quita de edición los campos que correspondan
 		for (let campo in edicion) {
 			// Corrige errores de data-entry
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-			// CONDICION 1: La edición es 'null'
-			let condicion1 = edicion[campo] === null;
+			// CONDICION 1: El campo tiene valor 'null'
+			const condic1 = edicion[campo] === null;
 
-			// CONDICION 2: El original y la edición no son 'undefined' y son 'iguales'
-			// El original no puede ser 'null', porque ya habría sido eliminado
-			// El original no puede ser 'undefined', porque ya lo estamos preguntando
-			// La edición no puede ser 'null', porque ya habría sido eliminada
-			// La edición no puede ser 'undefined', porque existe el método
-			let condicion2 = original[campo] !== undefined && edicion[campo] !== undefined && edicion[campo] == original[campo];
+			// CONDICION 2: Los valores de original y edición son 'iguales'
+			// La edición necesariamente es un valor, no es 'null' ni 'undefined'
+			// Hay que asegurarse de que el original también sea un valor
+			const condic2 = edicion[campo] == original[campo] && original[campo] !== undefined && original[campo] !== null;
 
 			// CONDICION 3: El objeto vinculado tiene el mismo ID
-			let condicion3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
+			const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
+
+			// CONDICION 4: Quita de edición los campos que no se comparan
+			const condic4 = !camposRevisar.includes(campo);
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
-			if (condicion1 || condicion2 || condicion3) delete edicion[campo];
-			if (condicion2) camposNull[campo] = null;
+			if (condic1 || condic2 || condic3||condic4) delete edicion[campo];
+			if (cond2) camposNull[campo] = null;
 		}
 
 		// 3. Acciones en función de si quedan campos
