@@ -1,18 +1,20 @@
 <!-- Logo de Portales de información de Películas -->
 <% if (tema == "revisionEnts"&&(codigo == "producto/alta"||codigo == "producto/edicion") || (tema=="prod_rud"&&codigo=="edicion")) { %>
 	<style>
-		#sectorLogos a.logos {width: 30px; height: 30px; position: relative; }
+		#sectorLogos a.logos {width: 30px; height: 30px; position: relative;}
 		#sectorLogos a.logos img {width: 100%; height: 100%; position: absolute; object-fit: contain; border-radius: 8px;}
+		#sectorLogos a.logos.true img {border: 3px solid var(--verde-oscuro)}
 	</style>
 	<div id="sectorLogos" class="flechas">
+		<% console.log(9, registro.fuente) %>
 		<!-- TMDB -->
 		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
-		<a class="logos" href="//themoviedb.org/<%= tmdb %>" target="_blank">
+		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank">
 			<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-TMDB.jpg" title="The Movie Database">
 		</a>
 		<!-- FA -->
 		<% fa = registro.nombreOriginal ? "search.php?stext=" + registro.nombreOriginal : "" %>
-		<a class="logos" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
+		<a class="logos <%= registro.fuente=='FA' %>" href="//filmaffinity.com/es/<%= fa %>" target="_blank">
 			<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-FA.jpg" title="Film Affinity">
 		</a>
 		<!-- IMDB -->
@@ -27,7 +29,7 @@
 		</a>
 		<!-- Google -->
 		<% google = registro.nombreCastellano ? ("search?q=" + registro.nombreCastellano.toLowerCase()) : "" %>
-		<a class="logos" href="//google.com/<%= google %>" target="_blank">
+		<a class="logos <%= registro.fuente=='IM' %>" href="//google.com/<%= google %>" target="_blank">
 			<img src="<%= localhost %>/imagenes/0-Base/Logos/BD-Google.jpg" title="Google">
 		</a>		
 	</div>
