@@ -313,6 +313,7 @@ module.exports = {
 		const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 		const articulo = entidad == "peliculas" || entidad == "colecciones" || entidad == "epocasDelAno" ? " la " : "l ";
 		let avatarExterno, avatarsExternos, avatar, imgDerPers;
 		let ingresos, reemplazos, bloqueDer, motivos, cantProds, titulo, ayudasTitulo;
@@ -359,7 +360,7 @@ module.exports = {
 			avatarExterno = !avatar.orig.includes("/imagenes/");
 			const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 			avatarsExternos = variables.avatarsExternos(nombre);
-			titulo = "Revisión de la Imagen: " + nombre;
+			titulo = "Revisión" + delLa + entidadNombre + ": " + nombre;
 		}
 		// Acciones si el avatar no está presente en la edición
 		else if (!edicion.avatar) {
