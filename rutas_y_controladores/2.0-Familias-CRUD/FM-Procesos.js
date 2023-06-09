@@ -36,6 +36,7 @@ module.exports = {
 			// La edición necesariamente es un valor, no es 'null' ni 'undefined'
 			// Hay que asegurarse de que el original también sea un valor
 			const condic2 = edicion[campo] == original[campo] && original[campo] !== undefined && original[campo] !== null;
+			if (condic2) camposNull[campo] = null;
 
 			// CONDICION 3: El objeto vinculado tiene el mismo ID
 			const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
@@ -45,7 +46,6 @@ module.exports = {
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
 			if (condic1 || condic2 || condic3||condic4) delete edicion[campo];
-			if (cond2) camposNull[campo] = null;
 		}
 
 		// 3. Acciones en función de si quedan campos
