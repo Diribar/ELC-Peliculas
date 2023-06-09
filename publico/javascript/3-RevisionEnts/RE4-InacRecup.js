@@ -27,17 +27,13 @@ window.addEventListener("load", async () => {
 		// Validaciones estándar
 		input(e);
 
-		// Acciones si el comentario tiene alguna letra
-		if (comentario.value) {
-			comentario.value = comentario.value
-				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
-				.slice(0, 100);
-		
-			// Fin
-			pendiente.innerHTML = 100 - comentario.value.length;
-		}
+		// Quita caracteres indeseados
+		if (comentario.value) comentario.value = comentario.value.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "").slice(0, 100);
 
-		// Actualiza el botón submit
+		// Actualiza el contador
+		pendiente.innerHTML = 100 - comentario.value.length;
+
+		// Actualiza el botón desaprobar
 		botonDesaprobar();
 	});
 
