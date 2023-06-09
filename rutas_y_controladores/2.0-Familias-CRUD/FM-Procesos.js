@@ -45,7 +45,7 @@ module.exports = {
 			const condic4 = !camposRevisar.includes(campo);
 
 			// Si se cumple alguna de las condiciones, se elimina ese método
-			if (condic1 || condic2 || condic3||condic4) delete edicion[campo];
+			if (condic1 || condic2 || condic3 || condic4) delete edicion[campo];
 		}
 
 		// 3. Acciones en función de si quedan campos
@@ -366,57 +366,47 @@ module.exports = {
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	prodsPosibleAprobado: async function (entidad, registro) {
 		// Variables
-		let statusAprob = registro.statusRegistro_id == aprobado_id;
+		const publico = true;
+		const epoca = true;
+		let statusAprob = false;
+		
+		// Acciones si no hay errores
+		const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epoca}});
+		if (!errores.hay) {
+			// Variables
+			statusAprob = true;
+			const ahora = comp.fechaHora.ahora();
+			const datos = {
+				altaTermEn: ahora,
+				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+				statusRegistro_id: aprobado_id,
+			};
 
-		// - Averigua si el registro está en un status previo a 'aprobado'
-		if ([creado_id, creadoAprob_id].includes(registro.statusRegistro_id)) {
-			// Averigua si hay errores
-			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico: true, epoca: true}});
+			// Cambia el status del registro
+			BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
-			// Acciones si no hay errores
-			if (!errores.hay) {
+			// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
+			if (entidad == "colecciones") {
 				// Variables
-				statusAprob = true;
-				const ahora = comp.fechaHora.ahora();
-				const datos = {
-					altaTermEn: ahora,
-					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-					statusRegistro_id: aprobado_id,
-				};
+				datos.altaRevisadaPor_id = 2;
+				datos.altaRevisadaEn = ahora;
 
-				// Cambia el status del registro
-				BD_genericas.actualizaPorId(entidad, registro.id, datos);
+				// Obtiene los capitulos id
+				const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
 
-				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
-				if (entidad == "colecciones") {
-					// Variables
-					datos.altaRevisadaPor_id = 2;
-					datos.altaRevisadaEn = ahora;
+				// Rutina
+				for (let capitulo of capitulos) {
+					// Revisa si cada capítulo supera el test de errores
+					let validar = {...capitulo, entidad: "capitulos", publico, epoca};
+					const errores = await validaPR.consolidado({datos: validar});
 
-					// Actualiza el status de la coleccción en los capítulos
-					BD_genericas.actualizaTodosPorCondicion(
-						"capitulos",
-						{coleccion_id: registro.id},
-						{statusColeccion_id: aprobado_id}
-					);
-
-					// Obtiene los capitulos id
-					const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
-
-					// Rutina
-					for (let capitulo of capitulos) {
-						// Revisa si cada capítulo supera el test de errores
-						let validar = {...capitulo, entidad: "capitulos", publico: true, epoca: true};
-						const errores = await validaPR.consolidado({datos: validar});
-
-						// En caso afirmativo, actualiza el status
-						if (!errores.hay) BD_genericas.actualizaPorId("capitulos", capitulo.id, datos);
-					}
+					// En caso afirmativo, actualiza el status
+					if (!errores.hay) BD_genericas.actualizaPorId("capitulos", capitulo.id, datos);
 				}
-
-				// Actualiza prodEnRCLV
-				this.cambioDeStatus(entidad, {...registro, ...datos});
 			}
+
+			// Actualiza prodEnRCLV
+			this.cambioDeStatus(entidad, {...registro, ...datos});
 		}
 
 		// Fin
