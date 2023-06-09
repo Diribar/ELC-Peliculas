@@ -457,8 +457,7 @@ module.exports = {
 
 			// 1. Elimina el archivo avatar de las ediciones
 			for (let edicion of ediciones)
-				if (edicion.avatar)
-					comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
+				if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
 
 			// 2. Elimina las ediciones
 			BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
@@ -593,12 +592,14 @@ module.exports = {
 			};
 
 			// CONSECUENCIAS
-			// 1. Si se aprobó, actualiza el registro 'original'
-			// 2. Si es una colección, actualiza el registro 'original' de los capítulos
 			if (aprob) {
+				// 1. Si se aprobó, actualiza el registro 'original'
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
-				if (entidad == "colecciones") {
+
+				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
+				// Condición 1: que sea un campo cuyo valor se pueda heredar
+				if (entidad == "colecciones" && !variables.camposCapsQueNoSeHeredan.includes(campo)) {
 					const condiciones = {
 						coleccion_id: original.id, // que pertenezca a la colección
 						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
@@ -626,7 +627,7 @@ module.exports = {
 			// Agrega el registro
 			BD_genericas.agregaRegistro("histEdics", datos);
 
-			// 3. Aumenta el campo 'edicsAprob' o 'edicsRech' en el registro del usuario
+			// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
 			// 4. Si corresponde, penaliza al usuario
@@ -641,15 +642,18 @@ module.exports = {
 			if (relacInclude) delete edicion[relacInclude];
 			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
-			// 7. PROCESOS DE CIERRE
-			// - Si corresponde: cambia el status del registro, y eventualmente de los capítulos
+			// 7. Si se cumplen ciertas condiciones, realiza varias tareas:
+			// - Si está en un status anterior a 'aprobado' y aprueba el test de errores, lo pasa a 'aprobado'
+			// - Si es una colección, realiza lo mismo para los capítulos
 			// - Actualiza 'prodsEnRCLV'
+			// - Informa si el status actual es 'aprobado'
 			const statusAprob =
-				familias == "rclvs"
+				familias == "rclvs" || edicion // Condición 1: que la edición haya sido toda procesada
 					? true
-					: familias == "productos" && !edicion
+					: // Condición 2: que la entidad sea un producto y esté en status 'creadoAprob_id'
+					familias == "productos" && original.statusRegistro_id == creadoAprob_id
 					? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
-					: false;
+					: null;
 
 			// Fin
 			return [edicion, statusAprob];
