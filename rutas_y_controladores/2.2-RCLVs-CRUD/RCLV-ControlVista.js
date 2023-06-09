@@ -71,7 +71,6 @@ module.exports = {
 		// Tema y Código
 		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
 		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar', 'edicion', 'alta'
-		console.log(74,tema,codigo);
 
 		// Más variables
 		const {entidad, id, prodEntidad, prodID} = req.query;

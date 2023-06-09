@@ -22,7 +22,7 @@ module.exports = {
 	actualizaElContadorDeLogins: (usuario) => {
 		// Variables
 		const ahoraUTC = comp.fechaHora.ahora().getTime();
-		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zona_horaria;
+		const zonaHorariaUsuario = paises.find((n) => n.id == usuario.pais_id).zonaHoraria;
 		const ahoraUsuario = ahoraUTC + zonaHorariaUsuario * unaHora;
 		const hoyUsuario = new Date(ahoraUsuario).toISOString().slice(0, 10);
 		const fechaUltimoLogin = usuario.fechaUltimoLogin;

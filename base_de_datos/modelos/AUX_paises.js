@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(100)},
 		continente: {type: dt.STRING(20)},
 		idioma: {type: dt.STRING(50)},
-		zona_horaria: {type: dt.STRING(10)},
+		zonaHoraria: {type: dt.STRING(10)},
 		// bandera: {type: dt.STRING(10)},
 		cantProds: {type: dt.INTEGER}
 	};
