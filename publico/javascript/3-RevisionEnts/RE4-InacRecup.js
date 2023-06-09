@@ -23,19 +23,19 @@ window.addEventListener("load", async () => {
 		let formato = /^[a-záéíóúüñ ,.'"\d\-]+$/i;
 		if (!formato.test(e.key)) e.preventDefault();
 	});
-	comentario.addEventListener("input", () => {
-		// Corrige el doble espacio
-		let com = comentario.value
-			.replace(/ +/g, " ")
-			.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
-			.replace(/\n/g, "")
-			.slice(0, 100);
+	comentario.addEventListener("input", (e) => {
+		// Validaciones estándar
+		input(e);
 
-		// Primera letra en mayúscula
-		const posicCursor = e.target.selectionStart;
-		if (com.length) comentario.value = com.slice(0, 1).toUpperCase() + com.slice(1);
-		e.target.selectionEnd = posicCursor;
-		pendiente.innerHTML = 100 - com.length;
+		// Acciones si el comentario tiene alguna letra
+		if (comentario.value) {
+			comentario.value = comentario.value
+				.replace(/[^a-záéíóúüñ ,.'"\d\-]+$/gi, "")
+				.slice(0, 100);
+		
+			// Fin
+			pendiente.innerHTML = 100 - comentario.value.length;
+		}
 
 		// Actualiza el botón submit
 		botonDesaprobar();
