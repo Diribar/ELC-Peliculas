@@ -136,7 +136,7 @@ module.exports = {
 	},
 	datosImgDerecha: (resultado) => {
 		// Variables
-		let imgDerecha
+		let imgDerecha;
 
 		// Acciones si se obtuvo un resultado
 		if (resultado) {
@@ -261,16 +261,17 @@ module.exports = {
 			const ahora = new Date();
 
 			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
-			const zona_horaria = usuario.pais.zona_horaria;
-			const horaUsuario = ahora.getUTCHours() + zona_horaria;
+			const zonaHoraria = usuario.pais.zonaHoraria;
+			// const horaUsuario = ahora.getUTCHours() + zonaHoraria;
 
 			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
-			const aux = ahora.getTime() + usuario.pais.zona_horaria * unaHora;
+			const aux = ahora.getTime() + usuario.pais.zonaHoraria * unaHora;
 			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
 
 			// Saltear
 			let saltear = usuario.fechaRevisores == hoyUsuario; // Si ya envió un mail en el día
-			if (!saltear) saltear = zona_horaria < 0 ? horaUsuario < 0 : horaUsuario < 24; // Si todavía no son las 24hs
+			// console.log(274, usuario.id, usuario.fechaRevisores, hoyUsuario);
+			// if (!saltear) saltear = zonaHoraria < 0 ? horaUsuario < 0 : horaUsuario < 24; // Si todavía no son las 24hs
 
 			// Fin
 			return {hoyUsuario, saltear};
@@ -349,8 +350,8 @@ module.exports = {
 			});
 
 			// Ajustes finales
-			if (mensajesAprob) mensajesAcum += this.formatos.h2("Altas y Bajas - APROBADAS") + this.formatos.ol(mensajesAprob);
-			if (mensajesRech) mensajesAcum += this.formatos.h2("Altas y Bajas - RECHAZADAS") + this.formatos.ol(mensajesRech);
+			if (mensajesAprob) mensajesAcum += this.formatos.h2("Cambios de Status - APROBADOS") + this.formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesAcum += this.formatos.h2("Cambios de Status - RECHAZADOS") + this.formatos.ol(mensajesRech);
 			const mensajeGlobal = mensajesAcum;
 			// Fin
 			return mensajeGlobal;
@@ -382,41 +383,7 @@ module.exports = {
 			}
 
 			// Ordena los registros según el criterio en que se mostrará en el mail
-			resultados.sort((a, b) =>
-				false
-					? false
-					: // Familia
-					a.familia < b.familia
-					? -1
-					: a.familia > b.familia
-					? 1
-					: // Entidad
-					a.entidadNombre < b.entidadNombre
-					? -1
-					: a.entidadNombre > b.entidadNombre
-					? 1
-					: // Nombre del Producto o RCLV, o url del Link
-					a.nombreOrden < b.nombreOrden
-					? -1
-					: a.nombreOrden > b.nombreOrden
-					? 1
-					: // Para nombres iguales, separa por id
-					a.entidad_id < b.entidad_id
-					? -1
-					: a.entidad_id > b.entidad_id
-					? 1
-					: // Primero los campos aprobados
-					a.aprobado > b.aprobado
-					? -1
-					: a.aprobado < b.aprobado
-					? 1
-					: // Orden alfabético de los campos
-					a.campo < b.campo
-					? -1
-					: a.campo > b.campo
-					? 1
-					: 0
-			);
+			resultados = ordenar(resultados);
 
 			// Arma el mensaje
 			resultados.forEach((n, i) => {
@@ -437,11 +404,12 @@ module.exports = {
 						  n.valorAprob +
 						  "' style='color: inherit; text-decoration: none'>'<u>Imagen aprobada</u>'</a>"
 						: this.avatar(n.familia, n.valorAprob);
-					n.valorDesc = n.valorDesc.includes("/")
-						? "<a href='" +
-						  n.valorDesc +
-						  "' style='color: inherit; text-decoration: none'>'<u>Imagen descartada</u>'</a>"
-						: "'Imagen descartada'";
+					n.valorDesc =
+						n.valorDesc && n.valorDesc.includes("/")
+							? "<a href='" +
+							  n.valorDesc +
+							  "' style='color: inherit; text-decoration: none'>'<u>Imagen descartada</u>'</a>"
+							: "'Imagen descartada'";
 				}
 
 				// Agregado de la info por campo
@@ -636,3 +604,41 @@ module.exports = {
 	},
 };
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
+
+let ordenar = (resultados) => {
+	return resultados.sort((a, b) =>
+		false
+			? false
+			: // Familia
+			a.familia < b.familia
+			? -1
+			: a.familia > b.familia
+			? 1
+			: // Entidad
+			a.entidadNombre < b.entidadNombre
+			? -1
+			: a.entidadNombre > b.entidadNombre
+			? 1
+			: // Nombre del Producto o RCLV, o url del Link
+			a.nombreOrden < b.nombreOrden
+			? -1
+			: a.nombreOrden > b.nombreOrden
+			? 1
+			: // Para nombres iguales, separa por id
+			a.entidad_id < b.entidad_id
+			? -1
+			: a.entidad_id > b.entidad_id
+			? 1
+			: // Primero los campos aprobados
+			a.aprobado > b.aprobado
+			? -1
+			: a.aprobado < b.aprobado
+			? 1
+			: // Orden alfabético de los campos
+			a.campo < b.campo
+			? -1
+			: a.campo > b.campo
+			? 1
+			: 0
+	);
+};
