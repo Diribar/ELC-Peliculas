@@ -159,9 +159,14 @@ module.exports = {
 		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
 		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
 		const regsTodos = [...regsAB, ...regsEdic];
+
+		// Si no hay registros a comunicar, termina el proceso
 		if (!regsTodos.length) {
+			// Outputs
 			console.log("Sin mails para enviar");
 			procesos.rutinasFinales("MailDeFeedback");
+
+			// Fin
 			return;
 		}
 
