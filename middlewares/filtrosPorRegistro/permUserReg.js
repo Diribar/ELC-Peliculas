@@ -26,28 +26,28 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
+	v = {
+		...v,
+		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
+		articulo: v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ",
+		horarioFinalCreado: comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn)),
+		vistaAnteriorTablero: [v.vistaAnterior],
+		vistaAnteriorInactivar: [v.vistaAnterior, v.vistaInactivar],
+	};
 
-	// Variables - Registro
+	// Más variables
 	if (v.entidad != "usuarios") v.include.push("ediciones");
 	if (v.entidad == "capitulos") v.include.push("coleccion");
-	v.entidadNombreMinuscula = comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase();
-	v.articulo = v.entidad == "peliculas" || v.entidad == "colecciones" ? " la " : " el ";
+	if (v.creadoEn) v.creadoEn.setSeconds(0);
+	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
 	v.registro = await BD_genericas.obtienePorIdConInclude(v.entidad, v.entID, v.include);
 	v.capturadoEn = v.registro.capturadoEn;
 	v.horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.registro.capturadoEn));
 	v.creadoEn = v.registro.creadoEn;
-	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
-	if (v.creadoEn) v.creadoEn.setSeconds(0);
-	v.vistaAnteriorTablero = [v.vistaAnterior];
-	if (v.usuario.rolUsuario.revisorEnts) v.vistaAnteriorTablero.push(v.vistaTablero);
-	// Otras variables
-	v.vistaAnteriorInactivar = [v.vistaAnterior, v.vistaInactivar];
+	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userID;
+	const creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userID;
+	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	let informacion;
-
-	// Creado por el usuario
-	let creadoPorElUsuario1 = v.registro.creadoPor_id == v.userID;
-	let creadoPorElUsuario2 = v.entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userID;
-	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmula
 	let buscaOtrasCapturasActivasDelUsuario = async () => {
@@ -98,8 +98,8 @@ module.exports = async (req, res, next) => {
 				iconos: [v.vistaAnterior],
 			};
 	}
-	// 2. El registro fue creado hace más de una hora
-	//    El registro está en status creado y la vista no es de revisión
+	// El registro fue creado hace más de una hora
+	// 2. El registro está en status 'creado' y la vista no es de revisión
 	if (!informacion) {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
@@ -201,7 +201,7 @@ module.exports = async (req, res, next) => {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,
 			};
-		// 3. El registro sólo tiene una edición y es del Revisor
+		// 3. El registro sólo tiene una edición, es del Revisor, y quiere acceder a una vista de edición
 		else if (
 			v.registro.ediciones &&
 			v.registro.ediciones.length == 1 &&
