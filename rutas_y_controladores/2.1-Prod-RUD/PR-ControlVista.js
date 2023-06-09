@@ -161,10 +161,9 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
-			...{imgDerPers},
+			...{imgDerPers, status_id},
 			...{camposInput1, camposInput2, produccion},
 			...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos},
-			...{dataEntry: {}, status_id},
 			...{omitirImagenDerecha: true, omitirFooter: true, cartelGenerico: true},
 		});
 	},
