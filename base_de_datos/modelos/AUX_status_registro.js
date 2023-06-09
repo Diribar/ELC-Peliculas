@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		gr_inactivos: {type: dt.BOOLEAN},
 		
 		creado: {type: dt.BOOLEAN},
-		creado_aprob: {type: dt.BOOLEAN},
+		creadoAprob: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
 		inactivar: {type: dt.BOOLEAN},
 		inactivo: {type: dt.BOOLEAN},

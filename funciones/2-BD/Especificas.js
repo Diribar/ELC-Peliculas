@@ -142,7 +142,7 @@ module.exports = {
 			const condiciones = {
 				[Op.or]: [
 					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: creado_aprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: creadoAprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
 					{[Op.and]: [{statusRegistro_id: inactivar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
 					{[Op.and]: [{statusRegistro_id: recuperar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
 				],

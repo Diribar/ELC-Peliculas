@@ -114,89 +114,6 @@ module.exports = {
 			...{urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
-	inacRecup_Form: async (req, res) => {
-		// Tema y Código
-		const tema = "revisionEnts";
-		// códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-		let codigo = req.path.slice(1, -1);
-		codigo = codigo.slice(codigo.indexOf("/") + 1);
-		const inactivarRecuperar = codigo == "inactivar-o-recuperar";
-
-		// Más variables
-		const {entidad, id} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-		let imgDerPers, bloqueDer, cantProds, motivos, procCanoniz, RCLVnombre, prodsDelRCLV;
-
-		// Obtiene el registro
-		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
-		include.push("statusRegistro", "creado_por", "sugerido_por", "alta_revisada_por", "motivo");
-		if (entidad == "capitulos") include.push("coleccion");
-		if (entidad == "colecciones") include.push("capitulos");
-		if (familia == "rclv") include.push(...variables.entidades.prods);
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
-
-		// Obtiene el subcodigo
-		const statusOriginal_id = original.statusRegistro_id;
-		const subcodigo = statusOriginal_id == inactivar_id ? "inactivar" : statusOriginal_id == recuperar_id ? "recuperar" : "";
-
-		// Obtiene el título
-		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const preTitulo = inactivarRecuperar ? "Revisión de " + comp.inicialMayus(subcodigo) : comp.inicialMayus(codigo);
-		const titulo = preTitulo + " un" + a + entidadNombre;
-
-		// Ayuda para el titulo
-		const ayudasTitulo = inactivarRecuperar
-			? [
-					"Para tomar una decisión contraria a la del usuario, vamos a necesitar que escribas un comentario para darle feedback.",
-			  ]
-			: ["Por favor decinos por qué sugerís " + codigo + " este registro."];
-
-		// Cantidad de productos asociados al RCLV
-		if (familia == "rclv") {
-			prodsDelRCLV = await procsRCLV.detalle.prodsDelRCLV(original);
-			cantProds = prodsDelRCLV.length;
-			procCanoniz = procsRCLV.detalle.procCanoniz(original);
-			RCLVnombre = original.nombre;
-		}
-
-		// Datos Breves
-		bloqueDer = [
-			procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-			await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
-		];
-
-		// Imagen Personalizada
-		imgDerPers = procsCRUD.obtieneAvatar(original).orig;
-
-		// Motivos de rechazo
-		if (codigo == "inactivar" || codigo == "rechazo") motivos = motivos_status.filter((n) => n[petitFamilias]);
-
-		// Comentario del rechazo
-		const comentarios = inactivarRecuperar
-			? await BD_genericas.obtieneTodosPorCondicion("histStatus", {entidad, entidad_id: id}).then((n) =>
-					n.map((m) => m.comentario)
-			  )
-			: [];
-
-		// Obtiene datos para la vista
-		if (entidad == "capitulos")
-			original.capitulos = await BD_especificas.obtieneCapitulos(original.coleccion_id, original.temporada);
-		const tituloMotivo =
-			subcodigo == "recuperar" ? "estuvo 'Inactivo'" : subcodigo == "inactivar" ? "está en 'Inactivar'" : "";
-		const status_id = original.statusRegistro_id;
-
-		// Render del formulario
-		// return res.send({tema, codigo, subcodigo, tituloMotivo});
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, subcodigo, titulo, ayudasTitulo, origen: "TE", tituloMotivo},
-			...{entidad, id, entidadNombre, familia, comentarios, urlActual: req.originalUrl},
-			...{registro: original, imgDerPers, bloqueDer, motivos, procCanoniz, RCLVnombre, prodsDelRCLV, status_id, cantProds},
-			cartelGenerico: true,
-		});
-	},
 	prodRCLV_ARIR_guardar: async (req, res) => {
 		// Variables - Alta, Rechazo, Inactivar, Recuperar
 		let datos = await procesos.guardar.obtieneDatos(req);
@@ -270,11 +187,11 @@ module.exports = {
 
 			// Acciones para rechazo
 			if (subcodigo == "rechazo") {
-				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
-				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
-
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
+
+				// Si hay avatar en original, lo mueve de 'Revisar' a 'Final'
+				if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "2-RCLVs/Revisar", "2-RCLVs/Final");
 			}
 
 			// Acciones si es un RCLV inactivo
@@ -284,7 +201,7 @@ module.exports = {
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
-				// Si no pasan el control de error y estaban aprobados, pasan al status 'creado_aprob'
+				// Si no pasan el control de error y estaban aprobados, pasan al status 'creadoAprob'
 				await procesos.guardar.prodsAsocs(entidad, id);
 			}
 		}
@@ -306,8 +223,8 @@ module.exports = {
 		if (entidad == "colecciones")
 			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
 
-		// 3. Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
-		if (rclv && subcodigo == "alta") procesos.alta.rclvEdicAprobRech(entidad, original, revID);
+		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+		if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
 
 		// 4. Agrega un registro en el histStatus
 		// 4.A. Genera la información
@@ -319,12 +236,12 @@ module.exports = {
 		};
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
-			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivos_status.find((n) => n.id == motivo_id) : {};
+			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
 		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
 		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
-		// 5. Aumenta el valor de regs_aprob/rech en el registro del usuario
+		// 5. Aumenta el valor de aprob/rech en el registro del usuario
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
@@ -438,7 +355,7 @@ module.exports = {
 			// Reemplazo manual - Variables
 			codigo += "/avatar";
 			avatar = procsCRUD.obtieneAvatar(original, edicion);
-			motivos = motivos_edics.filter((m) => m.avatar_prods);
+			motivos = motivosEdics.filter((m) => m.avatar_prods);
 			avatarExterno = !avatar.orig.includes("/imagenes/");
 			const nombre = petitFamilias == "prods" ? original.nombreCastellano : original.nombre;
 			avatarsExternos = variables.avatarsExternos(nombre);
@@ -460,7 +377,7 @@ module.exports = {
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
 			bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
-			motivos = motivos_edics.filter((m) => m.prods);
+			motivos = motivosEdics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
 			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// Fin, si no quedan campos
@@ -541,7 +458,7 @@ module.exports = {
 		const avatar = producto.avatar
 			? (!producto.avatar.includes("/") ? "/imagenes/2-Productos/Final/" : "") + producto.avatar
 			: "/imagenes/0-Base/Avatar/Prod-Generico.jpg";
-		const motivos = motivos_status.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
+		const motivos = motivosStatus.filter((n) => n.links).map((n) => ({id: n.id, descripcion: n.descripcion}));
 		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 		const imgDerPers = procsCRUD.obtieneAvatar(producto).orig;
 

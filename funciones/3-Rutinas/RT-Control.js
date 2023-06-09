@@ -48,7 +48,7 @@ module.exports = {
 	// 	const entidades = variables.entidades.prods;
 	// 	const condicion = {statusRegistro_id: aprobado_id, epoca_id: null};
 	// 	const include = ["personaje", "hecho"];
-	// 	const nuevoStatus = {statusRegistro_id: creado_aprob_id};
+	// 	const nuevoStatus = {statusRegistro_id: creadoAprob_id};
 
 	// 	// Revisa cada registro aprobado y sin epoca_id
 	// 	for (let entidad of entidades) {
@@ -378,7 +378,7 @@ module.exports = {
 
 		// Prepara la información
 		const objeto = {
-			statusRegistro_id: creado_aprob_id,
+			statusRegistro_id: creadoAprob_id,
 			sugeridoEn: comp.fechaHora.ahora(),
 			sugeridoPor_id: 2,
 		};

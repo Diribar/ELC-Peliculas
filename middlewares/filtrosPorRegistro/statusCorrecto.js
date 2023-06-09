@@ -23,9 +23,9 @@ module.exports = async (req, res, next) => {
 			: // Preguntas para 'CRUD'
 			baseUrl == "/producto" || baseUrl == "/rclv"
 			? ruta == "/edicion/"
-				? [creado_id, creado_aprob_id, aprobado_id]
+				? [creado_id, creadoAprob_id, aprobado_id]
 				: ruta == "/inactivar/"
-				? [creado_aprob_id, aprobado_id]
+				? [creadoAprob_id, aprobado_id]
 				: ruta == "/recuperar/" || ruta == "/eliminar/"
 				? [inactivo_id]
 				: [99]
@@ -36,7 +36,7 @@ module.exports = async (req, res, next) => {
 			? ruta.includes("/alta/") // para 'producto' y 'rclv'
 				? [creado_id]
 				: ruta.includes("/edicion/")
-				? [creado_aprob_id, aprobado_id]
+				? [creadoAprob_id, aprobado_id]
 				: ruta.includes("/inactivar-o-recuperar/")
 				? [inactivar_id, recuperar_id]
 				: ruta.includes("/links/")

@@ -51,7 +51,7 @@ module.exports = {
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
 		const statusEstable =
-			codigo == "detalle" && ([creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
+			codigo == "detalle" && ([creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id);
 		// Datos para la vista
 		const procCanoniz = procesos.detalle.procCanoniz(registro);
 		const RCLVnombre = registro.nombre;

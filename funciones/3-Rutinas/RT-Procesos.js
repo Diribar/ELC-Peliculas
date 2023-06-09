@@ -533,7 +533,7 @@ module.exports = {
 			const comunicadoEn = new Date();
 			const condicStatus = {
 				// Condición 1: creado a creado-aprobado (productos)
-				productos: {statusOriginal_id: creado_id, statusFinal_id: creado_aprob_id},
+				productos: {statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id},
 				// Condición 2: creado a aprobado (rclvs y links)
 				rclvs: {statusOriginal_id: creado_id, statusFinal_id: aprobado_id},
 			};

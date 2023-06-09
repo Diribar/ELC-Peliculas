@@ -67,10 +67,10 @@ module.exports = {
 				AL = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
 				// 6.E. Ediciones - es la suma de:
-				// - En status 'creado_aprob'
+				// - En status 'creadoAprob'
 				// - En status 'aprobado'
 				ED.push(
-					...productos.filter((n) => n.statusRegistro_id == creado_aprob_id),
+					...productos.filter((n) => n.statusRegistro_id == creadoAprob_id),
 					...productos.filter((n) => n.statusRegistro_id == aprobado_id)
 				);
 				// 6.F. Primero los productos más recientes
@@ -85,8 +85,8 @@ module.exports = {
 			const entidades = ["peliculas", "colecciones"];
 			let campos;
 
-			// SE: Sin Edición (en status creado_aprob)
-			campos = {entidades, status_id: creado_aprob_id, revID, include: "ediciones"};
+			// SE: Sin Edición (en status creadoAprob)
+			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
 			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
 
 			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
@@ -373,7 +373,7 @@ module.exports = {
 					? aprobado_id
 					: // Si es un producto, se revisa si tiene errores
 					(await validaPR.consolidado({datos: {...original, entidad, ...adicionales}}).then((n) => n.hay))
-					? creado_aprob_id
+					? creadoAprob_id
 					: aprobado_id;
 
 			// Obtiene el motivo_id y el comentario
@@ -435,8 +435,8 @@ module.exports = {
 					prodVinculado = {...prodVinculado, ...objeto, publico: true, epoca: true};
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
-					// Si tiene errores, se le cambia el status a 'creado_aprob'
-					if (errores.hay) objeto.statusRegistro_id = creado_aprob_id;
+					// Si tiene errores, se le cambia el status a 'creadoAprob'
+					if (errores.hay) objeto.statusRegistro_id = creadoAprob_id;
 
 					// Actualiza el registro del producto
 					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
@@ -444,7 +444,7 @@ module.exports = {
 			}
 			// Sus productos asociados:
 			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status creado_aprob
+			// Si no pasan el control de error y estaban aprobados, pasan al status creadoAprob
 		},
 		// Productos Alta
 		prodRclvRech: async (entidad, id) => {
@@ -832,7 +832,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
 		// Separa en VN y OT
-		if (link.statusRegistro && link.statusRegistro.creado_aprob)
+		if (link.statusRegistro && link.statusRegistro.creadoAprob)
 			prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});

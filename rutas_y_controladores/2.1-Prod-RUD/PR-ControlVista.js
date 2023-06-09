@@ -72,7 +72,7 @@ module.exports = {
 
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
-		const statusEstable = [creado_aprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
+		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
 		// Info para la vista
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
@@ -190,9 +190,9 @@ module.exports = {
 
 		// Averigua si corresponde actualizar el original
 		// 1. Tiene que ser un revisor
-		// 2. El registro debe estar en el status 'creado_aprob'
+		// 2. El registro debe estar en el status 'creadoAprob'
 		// 3. El registro original no debe tener otras ediciones
-		const actualizaOrig = revisor && original.statusRegistro.creado_aprob && !original.ediciones.length;
+		const actualizaOrig = revisor && original.statusRegistro.creadoAprob && !original.ediciones.length;
 
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
