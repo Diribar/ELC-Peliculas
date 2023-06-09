@@ -6,7 +6,6 @@
 		#sectorLogos a.logos.true img {border: 3px solid var(--verde-oscuro)}
 	</style>
 	<div id="sectorLogos" class="flechas">
-		<% console.log(9, registro.fuente) %>
 		<!-- TMDB -->
 		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank">
