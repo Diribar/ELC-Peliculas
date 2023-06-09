@@ -130,36 +130,33 @@ module.exports = {
 
 	// Lectura de edicion
 	obtieneOriginalEdicion: async function (entidad, entID, userID) {
+		// Variables
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicionEdic = {[campo_id]: entID, editadoPor_id: userID};
+
 		// Obtiene los campos include
-		let includesEstandar = comp.obtieneTodosLosCamposInclude(entidad);
-		let includesOrig = [
-			"ediciones",
-			...includesEstandar,
-			"creado_por",
-			"alta_revisada_por",
-			"sugerido_por",
-			"statusRegistro",
-			"motivo",
-		];
-		let includesEdic = [...includesEstandar];
+		let includesEdic = comp.obtieneTodosLosCamposInclude(entidad);
+		let includesOrig = [...includesEdic, "creado_por", "alta_revisada_por", "sugerido_por", "statusRegistro", "motivo"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 
 		// Obtiene el registro original con sus includes y le quita los campos sin contenido
-		let original = await BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
+		let original = BD_genericas.obtienePorIdConInclude(entidad, entID, includesOrig);
+		let edicion = BD_genericas.obtienePorCondicionConInclude(entidadEdic, condicionEdic, includesEdic);
+		[original, edicion] = await Promise.all([original, edicion]);
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
-		// Obtiene la edición a partir del vínculo del original
-		let edicion = original.ediciones.find((n) => n.editadoPor_id == userID);
+		// Pule la edición
 		if (edicion) {
-			// Obtiene la edición con sus includes
-			let entidadEdic = comp.obtieneDesdeEntidad.petitFamilias(entidad) + "_edicion";
-			edicion = await BD_genericas.obtienePorIdConInclude(entidadEdic, edicion.id, includesEdic);
+			// Variables
+			let camposNull;
+
 			// Quita la info que no agrega valor
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-			let camposNull;
 			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
-			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores coincidentes del registro de edicion
+
+			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores en el registro de edicion
 			if (edicion && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, camposNull);
 		} else edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
