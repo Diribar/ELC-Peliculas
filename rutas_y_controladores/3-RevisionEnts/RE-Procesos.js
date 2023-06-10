@@ -599,7 +599,8 @@ module.exports = {
 
 				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
 				// Condición 1: que sea un campo cuyo valor se pueda heredar
-				if (entidad == "colecciones" && !variables.camposCapsQueNoSeHeredan.includes(campo)) {
+				const camposCapsQueNoSeHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
+				if (entidad == "colecciones" && !camposCapsQueNoSeHeredan.includes(campo)) {
 					const condiciones = {
 						coleccion_id: original.id, // que pertenezca a la colección
 						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
