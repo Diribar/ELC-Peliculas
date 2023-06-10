@@ -26,6 +26,7 @@ module.exports = {
 	entidades: {
 		prods: ["peliculas", "colecciones", "capitulos"],
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
 	},
 
 	// Consulta de Productos
@@ -500,9 +501,7 @@ let regsRCLV = async (entidades, userID) => {
 	// Pule la información
 	entidades.forEach((entidad, i) => {
 		// Deja solamente los registros aprobados o creados por el usuario
-		valores[i] = valores[i].filter(
-			(n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID)
-		);
+		valores[i] = valores[i].filter((n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID));
 		// Los ordena por nombre
 		valores[i].sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 		// Fin

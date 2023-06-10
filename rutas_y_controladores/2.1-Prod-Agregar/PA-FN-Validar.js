@@ -10,7 +10,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		// Campo palabrasClave
 		let errores = {};
-		let longitud = dato ? comp.validacs.longitud(dato, 3, 35) : "";
+		let longitud = dato ? comp.validacs.longitud(dato, 3, 55) : "";
 		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -121,17 +121,21 @@ module.exports = {
 		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
-			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : "";
-		// Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
+			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
-		// RCLV
-		const entidadesRCLV = variables.entidades.rclvs;
-		let tieneRCLV_id;
-		for (let entidadRCLV of entidadesRCLV) {
-			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
-			if (datos[campo_id] != 1 && datos[campo_id]) tieneRCLV_id = true;
+		// RCLVs
+		const rclvs_id = variables.entidades.rclvs_id;
+		const revisarRCLV = campos.some((n) => [...rclvs_id, "sinRCLV"].includes(n));
+		if (revisarRCLV) {
+			let tieneRCLV_id = false;
+			if (!datos.sinRCLV)
+				for (let rclv_id of rclvs_id)
+					if (datos[rclv_id] != 1 && datos[rclv_id]) {
+						tieneRCLV_id = true;
+						break;
+					}
+			errores.RCLV = datos.sinRCLV ? "" : !tieneRCLV_id ? "Necesitamos que respondas alguna de las opciones" : "";
 		}
-		errores.RCLV = datos.sinRCLV ? "" : !tieneRCLV_id ? "Necesitamos que respondas alguna de las opciones" : "";
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
