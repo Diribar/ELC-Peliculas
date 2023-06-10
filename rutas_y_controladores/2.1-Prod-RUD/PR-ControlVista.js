@@ -171,6 +171,7 @@ module.exports = {
 		// Variables
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -184,9 +185,6 @@ module.exports = {
 		const avatarEdicInicial = edicion.avatar;
 		if (original.capitulos) delete original.capitulos;
 
-		// Averigua si el usuario tiene el perfil de revisor
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-
 		// Averigua si corresponde actualizar el original
 		// 1. Tiene que ser un revisor
 		// 2. El registro debe estar en el status 'creadoAprob'
@@ -197,13 +195,15 @@ module.exports = {
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...edicion, ...req.body, id};
+
+		// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epoca_id' y 'publico_id'
 		prodComb.epoca = revisor;
 		prodComb.publico = revisor;
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			// 1. Actualiza el original
+			// 1. Si corresponde, actualiza el original
 			if (actualizaOrig) {
 				// Completa los datos a guardar
 				prodComb.altaRevisadaPor_id = userID;

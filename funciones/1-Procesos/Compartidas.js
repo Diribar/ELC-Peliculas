@@ -62,6 +62,15 @@ module.exports = {
 		entidadNombre: (entidad) => {
 			return FN.entidadNombre(entidad);
 		},
+		delLa: (entidad) => {
+			return false
+				? false
+				: ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
+				? " de la "
+				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
+				? " del "
+				: "";
+		},
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
 				? "pelicula_id"
