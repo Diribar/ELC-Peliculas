@@ -17,33 +17,35 @@ let keyPressed = (e) => {
 	return;
 };
 let input = (e, respetarMinusc) => {
-	// Variables
-	let valor = e.target.value;
-	const localName = e.target.localName;
-	const type = e.target.type;
-	let posicCursor = e.target.selectionStart;
-
-	// Validaciones
-	if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
-		// Limita el uso del teclado solamente a los caracteres que nos interesan
-		valor = valor
-			.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
-			.replace(/\t/g, " ") // previene el uso de 'tab'
-			.replace(/\n/g, " ") // previene el uso de 'return'
-			.replace(/ +/g, " ") // previene repetición de espacios
-
-		// El primer caracter no puede ser un espacio
-		if (valor.slice(0, 1) == " ") {
-			valor = valor.slice(1);
-			posicCursor--;
+	if (e.target.value) {
+		// Variables
+		const localName = e.target.localName;
+		const type = e.target.type;
+		let valor = e.target.value;
+		let posicCursor = e.target.selectionStart;
+	
+		// Validaciones
+		if (valor.length && ((localName == "input" && type == "text") || localName == "textarea")) {
+			// Limita el uso del teclado solamente a los caracteres que nos interesan
+			valor = valor
+				.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
+				.replace(/\t/g, " ") // previene el uso de 'tab'
+				.replace(/\n/g, " ") // previene el uso de 'return'
+				.replace(/ +/g, " ") // previene repetición de espacios
+	
+			// El primer caracter no puede ser un espacio
+			if (valor.slice(0, 1) == " ") {
+				valor = valor.slice(1);
+				posicCursor--;
+			}
+	
+			// Primera letra en mayúscula
+			if (!respetarMinusc) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
+	
+			// Reemplaza el valor del DOM
+			e.target.value = valor;
+			e.target.selectionEnd = posicCursor;
 		}
-
-		// Primera letra en mayúscula
-		if (!respetarMinusc) valor = valor.slice(0, 1).toUpperCase() + valor.slice(1);
-
-		// Reemplaza el valor del DOM
-		e.target.value = valor;
-		e.target.selectionEnd = posicCursor;
 	}
 
 	// Fin
