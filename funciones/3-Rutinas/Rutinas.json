@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Vie. 9/jun",
-	"HoraUTC": "0:59",
+	"FechaUTC": "Sáb. 10/jun",
+	"HoraUTC": "7:08",
 	"FechaSemUTC": "Lun. 5/jun",
 	"HoraSemUTC": "17:16",
 	"semanaUTC": 22,
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"08-jun-23": {"titulo": "Corpus Christi", "entidad": "eventos", "id": 25},
 		"09-jun-23": {"titulo": "ELC - Películas"},
-		"10-jun-23": {"titulo": "ELC - Películas"}
+		"10-jun-23": {"titulo": "ELC - Películas"},
+		"11-jun-23": {"titulo": "Corpus Christi", "entidad": "eventos", "id": 25}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
