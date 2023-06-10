@@ -246,10 +246,10 @@ module.exports = {
 		// CAPÍTULOS -----------------------------------
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
 		// No se guardan los datos editados, eso se realiza en la revisión
-		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie")
-			confirma.TMDB_entidad == "collection"
-				? procesos.agregaCaps_Colec({...registro})
-				: procesos.agregaCaps_TV({...registro});
+		if (confirma.fuente == "TMDB") {
+			if (confirma.TMDB_entidad == "collection") procesos.agregaCaps_Colec({...registro})
+			if (confirma.TMDB_entidad == "tv") procesos.agregaCaps_TV({...registro});
+		}
 
 		// AVATAR -------------------------------------
 		// Acciones para el avatar
