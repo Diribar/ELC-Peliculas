@@ -226,7 +226,6 @@ module.exports = {
 			},
 		];
 	},
-	camposCapsQueNoSeHeredan:["nombreOriginal","nombreCastellano","anoEstreno","sinopsis","avatar"],
 
 	// RCLV
 	prioridadesRCLV: [
