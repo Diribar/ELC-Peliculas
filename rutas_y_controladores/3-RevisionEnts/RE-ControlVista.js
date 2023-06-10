@@ -253,7 +253,7 @@ module.exports = {
 		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
-		if (!rclv) procsCRUD.cambioDeStatus(entidad, original);
+		if (!rclv) procsCRUD.accionesPorCambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))

@@ -369,7 +369,7 @@ module.exports = {
 		const publico = true;
 		const epoca = true;
 		let statusAprob = false;
-		
+
 		// Acciones si no hay errores
 		const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epoca}});
 		if (!errores.hay) {
@@ -391,6 +391,13 @@ module.exports = {
 				datos.altaRevisadaPor_id = 2;
 				datos.altaRevisadaEn = ahora;
 
+				// Actualiza el status de la coleccción en los capítulos
+				BD_genericas.actualizaTodosPorCondicion(
+					"capitulos",
+					{coleccion_id: registro.id},
+					{statusColeccion_id: aprobado_id}
+				);
+
 				// Obtiene los capitulos id
 				const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
 
@@ -405,15 +412,15 @@ module.exports = {
 				}
 			}
 
-			// Actualiza prodEnRCLV
-			this.cambioDeStatus(entidad, {...registro, ...datos});
+			// Actualiza prodsEnRCLV
+			this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
 		}
 
 		// Fin
 		return statusAprob;
 	},
 	// Cambia el status de un registro
-	cambioDeStatus: async function (entidad, registro) {
+	accionesPorCambioDeStatus: async function (entidad, registro) {
 		// Variables
 		let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -429,7 +436,7 @@ module.exports = {
 				if (registro[campo_id])
 					stAprob
 						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: SI})
-						: this.prodEnRCLV({entidad, id: registro[campo_id]});
+						: this.prodsEnRCLV({entidad, id: registro[campo_id]});
 			}
 		}
 
@@ -447,7 +454,7 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	prodEnRCLV: async function ({entidad, id}) {
+	prodsEnRCLV: async function ({entidad, id}) {
 		// La entidad y el ID son de un RCLV
 
 		// Variables

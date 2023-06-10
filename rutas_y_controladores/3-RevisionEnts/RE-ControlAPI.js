@@ -157,7 +157,7 @@ module.exports = {
 		if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'linksGratuitos' y 'linksGeneral'
-		procsCRUD.cambioDeStatus(entidad, {...original, statusRegistro_id});
+		procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});

@@ -147,8 +147,8 @@ module.exports = {
 			// Obtiene los ID de los registros de la entidad
 			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
 
-			// Rutina por ID: ejecuta la función prodEnRCLV
-			for (let id of IDs) procsCRUD.prodEnRCLV({entidad, id});
+			// Rutina por ID: ejecuta la función prodsEnRCLV
+			for (let id of IDs) procsCRUD.prodsEnRCLV({entidad, id});
 		}
 
 		// Fin
