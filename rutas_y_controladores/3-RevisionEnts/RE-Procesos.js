@@ -603,7 +603,21 @@ module.exports = {
 
 					// Actualiza ese campo en sus capítulos - debe ser con 'await', porque más adelante se lo evalúa
 					// Campos que necesariamente heredan el valor de la colección
-					if (campo == "tipoActuacion_id" || (campo == "epoca_id" && edicion[campo] != 2))
+					if (
+						campo == "tipoActuacion_id" ||
+						// Particularidad para actores
+						(campo == "actores" &&
+							((edicion.tipoActuacion_id && edicion.tipoActuacion_id != actuada_id) ||
+								(!edicion.tipoActuacion_id &&
+									original.tipoActuacion_id &&
+									original.tipoActuacion_id != actuada_id))) ||
+						// Particularidad para personaje_id
+						(campo == "personaje_id" && edicion.personaje_id != 2) ||
+						// Demas rclv_id
+						(campo != "personaje_id" && variables.entidades.rclvs_id.includes(campo)) ||
+						// Particularidad para epoca_id
+						(campo == "epoca_id" && edicion[campo] != 2)
+					)
 						await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: original.id}, novedad);
 					// Campos que dependen del valor del campo
 					else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
@@ -820,7 +834,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Casos especiales
 	if (["cfc", "ocurrio", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	else if (["personaje_id", "hecho_id", "tema_id"].includes(campo) && registro[campo] == 1) resultado = null;
+	else if (variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
 	// Fin
 	return resultado;
