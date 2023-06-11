@@ -45,7 +45,7 @@ module.exports = {
 							entidad,
 							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
 							edicID: n.id,
-							// fechaRef: n.editadoEn,
+							fechaRef: n.editadoEn,
 						});
 				});
 
@@ -59,22 +59,15 @@ module.exports = {
 			if (productos.length) {
 				// 6.A. Elimina los repetidos
 				productos = comp.eliminaRepetidos(productos);
-				// 6.B. Ordena por fecha descendente
-				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-				// 6.c. Deja solamente los sin problemas de captura
+				// 6.B. Deja solamente los sin problemas de captura
 				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
+				// 6.C. Ordena por fecha descendente
+				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 				// 6.D. Altas
 				AL = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
-				// 6.E. Ediciones - es la suma de:
-				// - En status 'creadoAprob'
-				// - En status 'aprobado'
-				ED.push(
-					...productos.filter((n) => n.statusRegistro_id == creadoAprob_id),
-					...productos.filter((n) => n.statusRegistro_id == aprobado_id)
-				);
-				// 6.F. Primero los productos más recientes
-				if (ED.length) ED.sort((a, b) => b.fechaRef - a.fechaRef);
+				// 6.E. Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
+				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
 			}
 
 			// Fin
