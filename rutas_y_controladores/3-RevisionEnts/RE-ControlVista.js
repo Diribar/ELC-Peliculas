@@ -119,6 +119,7 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, statusOriginal_id, statusFinal_id} = {...datos};
 		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
+		const producto = !rclv;
 		const userID = original.sugeridoPor_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
@@ -261,7 +262,8 @@ module.exports = {
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
-		if (!rclv && codigo == "alta") return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		if (producto && codigo == "alta")
+			return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
