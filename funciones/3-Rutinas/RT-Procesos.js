@@ -350,7 +350,8 @@ module.exports = {
 			});
 
 			// Ajustes finales
-			if (mensajesAprob) mensajesAcum += this.formatos.h2("Cambios de Status - APROBADOS") + this.formatos.ol(mensajesAprob);
+			if (mensajesAprob)
+				mensajesAcum += this.formatos.h2("Cambios de Status - APROBADOS") + this.formatos.ol(mensajesAprob);
 			if (mensajesRech) mensajesAcum += this.formatos.h2("Cambios de Status - RECHAZADOS") + this.formatos.ol(mensajesRech);
 			const mensajeGlobal = mensajesAcum;
 			// Fin
@@ -415,7 +416,11 @@ module.exports = {
 				// Agregado de la info por campo
 				mensaje = n.campo + ": ";
 				mensaje += n.aprobado
-					? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
+					? n.valorAprob && n.valorDesc
+						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
+						: n.valorAprob
+						? "se agregó el valor <em><b>" + n.valorAprob + "</b></em>"
+						: "se quitó el valor <em><b>" + n.valorDesc + "</b></em>"
 					: "se mantuvo <em><b>" +
 					  n.valorAprob +
 					  "</b></em> como mejor opción que <em>" +
