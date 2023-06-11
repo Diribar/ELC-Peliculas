@@ -584,18 +584,22 @@ module.exports = {
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
-			// Acciones si se aprobó el registro
+			// Acciones si se aprobó el campo
 			if (aprob) {
-				// 1. Si se aprobó, actualiza el registro 'original'
+				// 1. Actualiza el registro 'original'
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
-				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
+				// 2. Si es una colección, actualiza ese campo en sus capítulos
 				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, edicion, campo);
 			}
 
+			// Condiciones
+			const camposRevisor = ["epoca_id", "publico_id", "prioridad_id"]; // campos exclusivos del Revisor para aprobar un registro
+			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposRevisor.includes(campo);
+			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
 			// Tareas si el campo fue sugerido por el usuario
-			if (!["epoca_id", "publico_id", "prioridad_id"].includes(campo)) {
+			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
 				// 2. Actualiza la tabla de 'histEdics'
 				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 				// Agrega el motivo del rechazo
