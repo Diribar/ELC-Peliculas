@@ -591,37 +591,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
-				// Condición 1: que sea un campo cuyo valor se pueda heredar
-				const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-				if (entidad == "colecciones" && !camposCapsQueNoHeredan.includes(campo)) {
-					// Variables
-					const condiciones = {
-						coleccion_id: original.id, // que pertenezca a la colección
-						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
-					};
-					const novedad = {[campo]: edicion[campo]};
-
-					// Actualiza ese campo en sus capítulos - debe ser con 'await', porque más adelante se lo evalúa
-					// Campos que necesariamente heredan el valor de la colección
-					if (
-						campo == "tipoActuacion_id" ||
-						// Particularidad para actores
-						(campo == "actores" &&
-							((edicion.tipoActuacion_id && edicion.tipoActuacion_id != actuada_id) ||
-								(!edicion.tipoActuacion_id &&
-									original.tipoActuacion_id &&
-									original.tipoActuacion_id != actuada_id))) ||
-						// Particularidad para personaje_id
-						(campo == "personaje_id" && edicion.personaje_id != 2) ||
-						// Demas rclv_id
-						(campo != "personaje_id" && variables.entidades.rclvs_id.includes(campo)) ||
-						// Particularidad para epoca_id
-						(campo == "epoca_id" && edicion[campo] != 2)
-					)
-						await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: original.id}, novedad);
-					// Campos que dependen del valor del campo
-					else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
-				}
+				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, campo);
 			}
 
 			// Tareas si el campo fue sugerido por el usuario

@@ -419,6 +419,41 @@ module.exports = {
 		// Fin
 		return statusAprob;
 	},
+	heredaDatos: async (coleccion, campo) => {
+		// Condición 1: si el campo no se hereda, termina
+		const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
+		if (camposCapsQueNoHeredan.includes(campo)) return;
+
+		// Variables
+		const condiciones = {
+			coleccion_id: coleccion.id, // que pertenezca a la colección
+			[campo]: {[Op.or]: [null, coleccion[campo]]}, // que el campo esté vacío o coincida con el original
+		};
+		const novedad = {[campo]: edicion[campo]};
+
+		// Actualiza ese campo en sus capítulos
+		// Campos que necesariamente heredan el valor de la colección
+		if (
+			campo == "tipoActuacion_id" ||
+			// Particularidad para actores
+			(campo == "actores" &&
+				((edicion.tipoActuacion_id && edicion.tipoActuacion_id != actuada_id) ||
+					(!edicion.tipoActuacion_id && coleccion.tipoActuacion_id && coleccion.tipoActuacion_id != actuada_id))) ||
+			// Particularidad para personaje_id
+			(campo == "personaje_id" && edicion.personaje_id != 2) ||
+			// Demas rclv_id
+			(campo != "personaje_id" && variables.entidades.rclvs_id.includes(campo)) ||
+			// Particularidad para epoca_id
+			(campo == "epoca_id" && edicion[campo] != 2)
+		)
+			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, novedad);
+		// Campos que dependen del valor del campo
+		else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+
+		// Fin
+		return true
+	},
+
 	// Cambia el status de un registro
 	accionesPorCambioDeStatus: async function (entidad, registro) {
 		// Variables
