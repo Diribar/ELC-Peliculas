@@ -380,16 +380,10 @@ module.exports = {
 		// Campos que necesariamente heredan el valor de la colección
 		if (
 			campo == "tipoActuacion_id" ||
-			// Particularidad para actores
-			(campo == "actores" &&
-				((edicion.tipoActuacion_id && edicion.tipoActuacion_id != actuada_id) ||
-					(!edicion.tipoActuacion_id && coleccion.tipoActuacion_id && coleccion.tipoActuacion_id != actuada_id))) ||
-			// Particularidad para personaje_id
-			(campo == "personaje_id" && edicion.personaje_id != 2) ||
-			// Demas rclv_id
-			(campo != "personaje_id" && variables.entidades.rclvs_id.includes(campo)) ||
+			// Particularidad para // rclv_id
+			(variables.entidades.rclvs_id.includes(campo) && edicion[campo] > 2) ||
 			// Particularidad para epoca_id
-			(campo == "epoca_id" && edicion[campo] != 2)
+			campo == "epoca_id" //&& edicion[campo] != 2
 		)
 			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, novedad);
 		// Campos que dependen del valor del campo
