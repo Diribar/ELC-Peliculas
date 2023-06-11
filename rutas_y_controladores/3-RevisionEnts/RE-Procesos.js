@@ -300,7 +300,7 @@ module.exports = {
 				if (!valorAprob && !valorDesc) continue;
 
 				// Genera la información
-				datosCompleto = {...datosCabecera, campo, titulo: campoRevisar.titulo, valorAprob, valorDesc: "(vacío)"};
+				datosCompleto = {...datosCabecera, campo, titulo: campoRevisar.titulo, valorAprob};
 
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
@@ -591,9 +591,8 @@ module.exports = {
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
-			// CONSECUENCIAS
+			// 1. Si se aprobó, actualiza el registro 'original'
 			if (aprob) {
-				// 1. Si se aprobó, actualiza el registro 'original'
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
@@ -610,29 +609,29 @@ module.exports = {
 				}
 			}
 
-			// 2. Actualiza la tabla de 'histEdics'
-			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
-			// Agrega el motivo del rechazo
-			if (!aprob) {
-				motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+			// Tareas si el campo fue sugerido por el usuario
+			if (!["epoca_id", "publico_id", "prioridad_id"].includes(campo)) {
+				// 2. Actualiza la tabla de 'histEdics'
+				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
+				// Agrega el motivo del rechazo
+				if (!aprob) {
+					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+				}
+				// Asigna los valores 'aprob' y 'rech'
+				let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+				let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+				datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
+				datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
+				// Agrega el registro
+				BD_genericas.agregaRegistro("histEdics", datos);
+
+				// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
+
+				// 4. Si corresponde, penaliza al usuario
+				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
-			// Asigna los valores 'aprob' y 'rech'
-			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
-			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
-			// Reemplaza los vacíos
-			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
-			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
-			// Agrega el registro
-			BD_genericas.agregaRegistro("histEdics", datos);
-
-			// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
-
-			// 4. Si corresponde, penaliza al usuario
-			if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
