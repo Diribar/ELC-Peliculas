@@ -364,7 +364,7 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
-	heredaDatos: async (coleccion, campo) => {
+	heredaDatos: async (coleccion, edicion, campo) => {
 		// Condición 1: si el campo no se hereda, termina
 		const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
 		if (camposCapsQueNoHeredan.includes(campo)) return;
@@ -396,7 +396,7 @@ module.exports = {
 		else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
 		// Fin
-		return true
+		return true;
 	},
 	prodsPosibleAprobado: async function (entidad, registro) {
 		// Variables
