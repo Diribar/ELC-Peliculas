@@ -591,7 +591,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
-				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, campo);
+				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, edicion, campo);
 			}
 
 			// Tareas si el campo fue sugerido por el usuario
