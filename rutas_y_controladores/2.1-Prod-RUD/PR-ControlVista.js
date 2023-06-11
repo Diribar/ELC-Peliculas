@@ -188,8 +188,7 @@ module.exports = {
 		// Averigua si corresponde actualizar el original
 		// 1. Tiene que ser un revisor
 		// 2. El registro debe estar en el status 'creadoAprob'
-		// 3. El registro original no debe tener otras ediciones
-		const actualizaOrig = revisor && original.statusRegistro.creadoAprob && !original.ediciones.length;
+		const actualizaOrig = revisor && original.statusRegistro.creadoAprob
 
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
