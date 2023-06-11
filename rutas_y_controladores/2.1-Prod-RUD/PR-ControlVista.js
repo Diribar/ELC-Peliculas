@@ -188,12 +188,12 @@ module.exports = {
 		// Averigua si corresponde actualizar el original
 		// 1. Tiene que ser un revisor
 		// 2. El registro debe estar en el status 'creadoAprob'
-		const actualizaOrig = revisor && original.statusRegistro.creadoAprob
+		const actualizaOrig = revisor && original.statusRegistro.creadoAprob;
 
 		// Averigua si hay errores de validación
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
-		let prodComb = {...original, ...edicion, ...req.body, id};
+		let prodComb = {...original, ...req.body};
 
 		// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epoca_id' y 'publico_id'
 		prodComb.epoca = revisor;
@@ -211,7 +211,19 @@ module.exports = {
 				// Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 
-				// Actualiza los capítulos
+				// Actualiza los capítulos de una colección
+				if (entidad == "colecciones") {
+					// Variables
+					let esperar = [];
+
+					// Rutina por campo - sin 'await' y solo para los campos editados
+					for (let campo in req.body)
+						if (original[campo] != req.body[campo])
+							esperar.push(procsCRUD.heredaDatos(original, req.body[campo], campo));
+
+					// Espera a que se corran todos los campos
+					await Promise.all(esperar);
+				}
 
 				// Se fija si corresponde cambiar el status
 				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
