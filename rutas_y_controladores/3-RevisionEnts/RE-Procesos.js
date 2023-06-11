@@ -652,8 +652,10 @@ module.exports = {
 				familias == "rclvs" || edicion // Condición 1: que la edición haya sido toda procesada
 					? true
 					: // Condición 2: que la entidad sea un producto y esté en status 'creadoAprob_id'
-					familias == "productos" && original.statusRegistro_id == creadoAprob_id
-					? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
+					familias == "productos"
+					? original.statusRegistro_id == creadoAprob_id
+						? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
+						: true
 					: null;
 
 			// Fin
