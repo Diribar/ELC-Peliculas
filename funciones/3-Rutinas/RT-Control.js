@@ -208,6 +208,7 @@ module.exports = {
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic_user); // Borra los registros prescindibles
 							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
+						console.log("Mail enviado a " + email);
 						return n; // Conserva el valor de si el mail fue enviado
 					})
 			);

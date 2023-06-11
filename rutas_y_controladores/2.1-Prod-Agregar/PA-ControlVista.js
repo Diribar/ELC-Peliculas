@@ -246,10 +246,11 @@ module.exports = {
 		// CAPÍTULOS -----------------------------------
 		// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya)
 		// No se guardan los datos editados, eso se realiza en la revisión
-		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie")
-			confirma.TMDB_entidad == "collection"
-				? procesos.agregaCaps_Colec({...registro})
-				: procesos.agregaCaps_TV({...registro});
+		if (confirma.fuente == "TMDB") {
+			if (confirma.TMDB_entidad == "collection")
+				procesos.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
+			if (confirma.TMDB_entidad == "tv") procesos.agregaCaps_TV({...registro, cant_temps: confirma.cant_temps});
+		}
 
 		// AVATAR -------------------------------------
 		// Acciones para el avatar
@@ -268,7 +269,8 @@ module.exports = {
 
 		// RCLV
 		// Actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
-		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id) procsCRUD.accionesPorCambioDeStatus(entidad, registro);
+		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
+			procsCRUD.accionesPorCambioDeStatus(entidad, registro);
 		// No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES

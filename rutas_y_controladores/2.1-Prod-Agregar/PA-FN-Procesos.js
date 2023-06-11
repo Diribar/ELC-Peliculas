@@ -354,12 +354,9 @@ module.exports = {
 			APIsTMDB.credits(temporada, datosCol.TMDB_id),
 		]).then(([a, b]) => ({...a, ...b}));
 
-		// Rutina para CAPITULOS
+		// Guarda los CAPITULOS
 		for (let datosCap of datosTemp.episodes) {
-			// Obtiene la información del registro
 			const capitulo = this.infoTMDB_capsTV(datosCol, datosTemp, datosCap);
-
-			// Guarda el registro
 			await BD_genericas.agregaRegistro("capitulos", capitulo);
 		}
 
@@ -400,12 +397,10 @@ module.exports = {
 			musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 			if (musica) datos.musica = musica;
 		}
-		if (tipoActuacion_id == actuada_id) {
-			actores = [];
-			if (datosTemp.cast.length) actores = [...datosTemp.cast];
-			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-			if (actores.length) datos.actores = FN_actores(actores);
-		}
+		actores = [];
+		if (datosTemp.cast.length) actores = [...datosTemp.cast];
+		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
+		if (actores.length) datos.actores = FN_actores(actores);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
