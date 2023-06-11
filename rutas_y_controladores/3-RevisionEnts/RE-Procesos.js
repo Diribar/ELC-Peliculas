@@ -591,21 +591,29 @@ module.exports = {
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
-			// 1. Si se aprobó, actualiza el registro 'original'
+			// Acciones si se aprobó el registro
 			if (aprob) {
+				// 1. Si se aprobó, actualiza el registro 'original'
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
 				// Condición 1: que sea un campo cuyo valor se pueda heredar
-				const camposCapsQueNoSeHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-				if (entidad == "colecciones" && !camposCapsQueNoSeHeredan.includes(campo)) {
+				const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
+				if (entidad == "colecciones" && !camposCapsQueNoHeredan.includes(campo)) {
+					// Variables
 					const condiciones = {
 						coleccion_id: original.id, // que pertenezca a la colección
 						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
 					};
 					const novedad = {[campo]: edicion[campo]};
-					await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad); // debe ser con 'await', porque más adelante se lo evalúa
+
+					// Actualiza ese campo en sus capítulos - debe ser con 'await', porque más adelante se lo evalúa
+					// Campos que necesariamente heredan el valor de la colección
+					if (campo == "tipoActuacion_id" || (campo == "epoca_id" && edicion[campo] != 2))
+						await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: original.id}, novedad);
+					// Campos que dependen del valor del campo
+					else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 				}
 			}
 
