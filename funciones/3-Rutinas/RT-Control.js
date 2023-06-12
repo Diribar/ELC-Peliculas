@@ -164,7 +164,7 @@ module.exports = {
 		if (!regsTodos.length) {
 			// Outputs
 			console.log("Sin mails para enviar");
-			procesos.rutinasFinales("MailDeFeedback");
+			procesos.rutinasSinGuardar("MailDeFeedback");
 
 			// Fin
 			return;
