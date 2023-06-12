@@ -77,7 +77,6 @@ module.exports = {
 				campo,
 				titulo: campo,
 				valor_rech: usuario[campo],
-				valor_aprob: "(vacío)",
 	
 				motivo_id: motivo.id,
 				duracion: motivo.duracion,

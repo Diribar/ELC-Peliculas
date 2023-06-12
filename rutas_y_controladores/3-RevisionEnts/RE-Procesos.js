@@ -45,7 +45,7 @@ module.exports = {
 							entidad,
 							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
 							edicID: n.id,
-							// fechaRef: n.editadoEn,
+							fechaRef: n.editadoEn,
 						});
 				});
 
@@ -59,22 +59,15 @@ module.exports = {
 			if (productos.length) {
 				// 6.A. Elimina los repetidos
 				productos = comp.eliminaRepetidos(productos);
-				// 6.B. Ordena por fecha descendente
-				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-				// 6.c. Deja solamente los sin problemas de captura
+				// 6.B. Deja solamente los sin problemas de captura
 				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
+				// 6.C. Ordena por fecha descendente
+				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 				// 6.D. Altas
 				AL = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
 				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
-				// 6.E. Ediciones - es la suma de:
-				// - En status 'creadoAprob'
-				// - En status 'aprobado'
-				ED.push(
-					...productos.filter((n) => n.statusRegistro_id == creadoAprob_id),
-					...productos.filter((n) => n.statusRegistro_id == aprobado_id)
-				);
-				// 6.F. Primero los productos más recientes
-				if (ED.length) ED.sort((a, b) => b.fechaRef - a.fechaRef);
+				// 6.E. Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
+				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
 			}
 
 			// Fin
@@ -300,7 +293,7 @@ module.exports = {
 				if (!valorAprob && !valorDesc) continue;
 
 				// Genera la información
-				datosCompleto = {...datosCabecera, campo, titulo: campoRevisar.titulo, valorAprob, valorDesc: "(vacío)"};
+				datosCompleto = {...datosCabecera, campo, titulo: campoRevisar.titulo, valorAprob};
 
 				// Si hubo una edición del revisor, actualiza/completa los datos
 				if (valorAprob != valorDesc) {
@@ -591,48 +584,43 @@ module.exports = {
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
-			// CONSECUENCIAS
+			// Acciones si se aprobó el campo
 			if (aprob) {
-				// 1. Si se aprobó, actualiza el registro 'original'
+				// 1. Actualiza el registro 'original'
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
-				// 2. Si es una colección y se cumplen ciertas condiciones, actualiza ese campo en sus capítulos
-				// Condición 1: que sea un campo cuyo valor se pueda heredar
-				const camposCapsQueNoSeHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-				if (entidad == "colecciones" && !camposCapsQueNoSeHeredan.includes(campo)) {
-					const condiciones = {
-						coleccion_id: original.id, // que pertenezca a la colección
-						[campo]: {[Op.or]: [null, original[campo]]}, // que el campo esté vacío o coincida con el original
-					};
-					const novedad = {[campo]: edicion[campo]};
-					await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad); // debe ser con 'await', porque más adelante se lo evalúa
+				// 2. Si es una colección, actualiza ese campo en sus capítulos
+				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, edicion, campo);
+			}
+
+			// Condiciones
+			const camposRevisor = ["epoca_id", "publico_id", "prioridad_id"]; // campos exclusivos del Revisor para aprobar un registro
+			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposRevisor.includes(campo);
+			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
+			// Tareas si el campo fue sugerido por el usuario
+			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
+				// 2. Actualiza la tabla de 'histEdics'
+				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
+				// Agrega el motivo del rechazo
+				if (!aprob) {
+					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
 				}
+				// Asigna los valores 'aprob' y 'rech'
+				let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
+				let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
+				datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
+				datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
+				// Agrega el registro
+				BD_genericas.agregaRegistro("histEdics", datos);
+
+				// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
+				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
+
+				// 4. Si corresponde, penaliza al usuario
+				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
-
-			// 2. Actualiza la tabla de 'histEdics'
-			datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
-			// Agrega el motivo del rechazo
-			if (!aprob) {
-				motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-				datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
-			}
-			// Asigna los valores 'aprob' y 'rech'
-			let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-			let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-			datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
-			datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
-			// Reemplaza los vacíos
-			if (datos.valorAprob === null || datos.valorAprob === "") datos.valorAprob = "(vacío)";
-			if (datos.valorDesc === null || datos.valorDesc === "") datos.valorDesc = "(vacío)";
-			// Agrega el registro
-			BD_genericas.agregaRegistro("histEdics", datos);
-
-			// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
-			BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
-
-			// 4. Si corresponde, penaliza al usuario
-			if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 
 			// 5. Actualiza el registro de 'edición'
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
@@ -652,8 +640,10 @@ module.exports = {
 				familias == "rclvs" || edicion // Condición 1: que la edición haya sido toda procesada
 					? true
 					: // Condición 2: que la entidad sea un producto y esté en status 'creadoAprob_id'
-					familias == "productos" && original.statusRegistro_id == creadoAprob_id
-					? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
+					familias == "productos"
+					? original.statusRegistro_id == creadoAprob_id
+						? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
+						: true
 					: null;
 
 			// Fin
@@ -818,7 +808,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Casos especiales
 	if (["cfc", "ocurrio", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	else if (["personaje_id", "hecho_id", "tema_id"].includes(campo) && registro[campo] == 1) resultado = null;
+	else if (variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
 	// Fin
 	return resultado;

@@ -364,6 +364,34 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
+	heredaDatos: async (coleccion, edicion, campo) => {
+		// Condición 1: si el campo no se hereda, termina
+		const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
+		if (camposCapsQueNoHeredan.includes(campo)) return;
+
+		// Variables
+		const condiciones = {
+			coleccion_id: coleccion.id, // que pertenezca a la colección
+			[campo]: {[Op.or]: [null, coleccion[campo]]}, // que el campo esté vacío o coincida con el original
+		};
+		const novedad = {[campo]: edicion[campo]};
+
+		// Actualiza ese campo en sus capítulos
+		// Campos que necesariamente heredan el valor de la colección
+		if (
+			campo == "tipoActuacion_id" ||
+			// Particularidad para // rclv_id
+			(variables.entidades.rclvs_id.includes(campo) && edicion[campo] > 2) ||
+			// Particularidad para epoca_id
+			campo == "epoca_id" //&& edicion[campo] != 2
+		)
+			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, novedad);
+		// Campos que dependen del valor del campo
+		else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+
+		// Fin
+		return true;
+	},
 	prodsPosibleAprobado: async function (entidad, registro) {
 		// Variables
 		const publico = true;
