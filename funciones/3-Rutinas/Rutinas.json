@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Dom. 11/jun",
-	"HoraUTC": "7:39",
+	"FechaUTC": "Lun. 12/jun",
+	"HoraUTC": "11:17",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"10-jun-23": {"titulo": "ELC - Películas"},
 		"11-jun-23": {"titulo": "Corpus Christi", "entidad": "eventos", "id": 25},
-		"12-jun-23": {"titulo": "ELC - Películas"}
+		"12-jun-23": {"titulo": "ELC - Películas"},
+		"13-jun-23": {"titulo": "Antonio de Padua", "entidad": "personajes", "id": 67}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
