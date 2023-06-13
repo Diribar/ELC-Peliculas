@@ -655,8 +655,9 @@ module.exports = {
 			// Fin
 			return;
 		},
-		statusAprob: async ({familias, registro}) => {
-			// Obtiene el status aprobado
+		statusAprob: async ({entidad, registro}) => {
+			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
 
 			// Acciones si es un producto que no está en status 'aprobado':

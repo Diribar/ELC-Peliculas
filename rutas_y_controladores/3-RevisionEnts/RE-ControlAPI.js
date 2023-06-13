@@ -15,7 +15,6 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
 		const camposDDA = ["diaDelAno_id", "diasDeDuracion"];
@@ -45,7 +44,7 @@ module.exports = {
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
 			let edicsEliminadas = procesos.edicion.eliminaDemasEdiciones({entidad, entID});
-			statusAprob = procesos.edicion.statusAprob({familias, registro: originalGuardado});
+			statusAprob = procesos.edicion.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
