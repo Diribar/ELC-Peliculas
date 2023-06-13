@@ -356,7 +356,9 @@ module.exports = {
 
 		// Guarda los CAPITULOS
 		for (let datosCap of datosTemp.episodes) {
+			// Obtiene la información del capítulo
 			const capitulo = this.infoTMDB_capsTV(datosCol, datosTemp, datosCap);
+			// Guarda el capítulo
 			await BD_genericas.agregaRegistro("capitulos", capitulo);
 		}
 

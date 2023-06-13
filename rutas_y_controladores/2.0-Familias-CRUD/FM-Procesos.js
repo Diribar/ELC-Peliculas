@@ -415,17 +415,17 @@ module.exports = {
 				const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
 
 				// Rutina
-				let resultados = [];
+				let esperar = [];
 				for (let capitulo of capitulos) {
 					// Revisa si cada capítulo supera el test de errores
 					let validar = {...capitulo, entidad: "capitulos", publico, epoca};
 					const errores = await validaPR.consolidado({datos: validar});
 
 					// En caso afirmativo, actualiza el status
-					if (!errores.hay) resultados.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+					if (!errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 				}
 				// Espera hasta que se revisen todos los capítulos
-				await Promise.all(resultados);
+				await Promise.all(esperar);
 			}
 
 			// Actualiza prodsEnRCLV
