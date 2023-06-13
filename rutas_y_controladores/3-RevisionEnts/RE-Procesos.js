@@ -647,9 +647,9 @@ module.exports = {
 
 			// Acciones si existen ediciones
 			if (ediciones.length) {
-				let resultados = [];
-				for (let edic of ediciones) resultados.push(procsCRUD.puleEdicion(entidad, original, edic));
-				await Promise.all(resultados);
+				let esperar = [];
+				for (let edic of ediciones) esperar.push(procsCRUD.puleEdicion(entidad, original, edic));
+				await Promise.all(esperar);
 			}
 
 			// Fin
