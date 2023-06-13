@@ -365,7 +365,7 @@ module.exports = {
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	heredaDatos: async (coleccion, edicion, campo) => {
-		// Condición 1: si el campo no se hereda, termina
+		// Si el campo no hereda datos, termina
 		const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
 		if (camposCapsQueNoHeredan.includes(campo)) return;
 
@@ -380,10 +380,10 @@ module.exports = {
 		// Campos que necesariamente heredan el valor de la colección
 		if (
 			campo == "tipoActuacion_id" ||
-			// Particularidad para // rclv_id
-			(variables.entidades.rclvs_id.includes(campo) && edicion[campo] > 2) ||
+			// Particularidad para rclv_id
+			(variables.entidades.rclvs_id.includes(campo) && edicion[campo] != 2) ||
 			// Particularidad para epoca_id
-			campo == "epoca_id" //&& edicion[campo] != 2
+			campo == "epoca_id" && edicion[campo] != epocasVarias.id
 		)
 			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, novedad);
 		// Campos que dependen del valor del campo
