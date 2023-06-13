@@ -368,7 +368,7 @@ module.exports = {
 		// Variables
 		const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
 		const condicion = {coleccion_id: coleccion.id}; // que pertenezca a la colección
-		const condiciones = {...condicion, [campo]: {[Op.or]: [null, coleccion[campo]]}}; // que el campo esté vacío o coincida con el original
+		const condiciones = {...condicion, [campo]: {[Op.or]: [null, coleccion[campo], ""]}}; // que el campo esté vacío o coincida con el original
 		const novedad = {[campo]: edicion[campo]};
 
 		// 1. Si el campo no hereda datos, termina
