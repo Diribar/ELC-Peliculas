@@ -219,14 +219,14 @@ module.exports = {
 					// Rutina por campo - sin 'await' y solo para los campos editados
 					for (let campo in req.body)
 						if (original[campo] != req.body[campo])
-							esperar.push(procsCRUD.heredaDatos(original, req.body[campo], campo));
+							esperar.push(procsCRUD.transfiereDatos(original, req.body[campo], campo));
 
 					// Espera a que se corran todos los campos
 					await Promise.all(esperar);
 				}
 
 				// Se fija si corresponde cambiar el status
-				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
+				await procsCRUD.prodsPosibleAprob(entidad, prodComb);
 
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;

@@ -15,7 +15,6 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
 		const camposDDA = ["diaDelAno_id", "diasDeDuracion"];
@@ -38,15 +37,14 @@ module.exports = {
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
-		// Procesa la edición - Realiza muchísimas tareas
+		// Realiza muchísimas tareas y obtiene la edición en su mínima expresión
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
-		// Obtiene la edición en su mínima expresión
 		edicion = await procesos.edicion.edicAprobRech(objeto);
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			statusAprob = procesos.edicion.statusAprob({familias, registro: originalGuardado});
 			let edicsEliminadas = procesos.edicion.eliminaDemasEdiciones({entidad, entID});
+			statusAprob = procesos.edicion.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 

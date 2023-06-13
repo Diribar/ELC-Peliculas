@@ -647,16 +647,17 @@ module.exports = {
 
 			// Acciones si existen ediciones
 			if (ediciones.length) {
-				let resultados = [];
-				for (let edic of ediciones) resultados.push(procsCRUD.puleEdicion(entidad, original, edic));
-				await Promise.all(resultados);
+				let esperar = [];
+				for (let edic of ediciones) esperar.push(procsCRUD.puleEdicion(entidad, original, edic));
+				await Promise.all(esperar);
 			}
 
 			// Fin
 			return;
 		},
-		statusAprob: async ({familias, registro}) => {
-			// Obtiene el status aprobado
+		statusAprob: async ({entidad, registro}) => {
+			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
 
 			// Acciones si es un producto que no está en status 'aprobado':
@@ -665,7 +666,7 @@ module.exports = {
 			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
 			// 4. Obtiene el nuevo status del producto
 			if (!statusAprob && familias == "productos")
-				statusAprob = await procsCRUD.prodsPosibleAprobado(entidad, registro);
+				statusAprob = await procsCRUD.prodsPosibleAprob(entidad, registro);
 
 			// Fin
 			return statusAprob;
