@@ -601,7 +601,7 @@ module.exports = {
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
 			// Acciones si el campo fue sugerido por el usuario
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
-				// Actualiza la tabla de 'histEdics'
+				// 2. Actualiza la tabla de 'histEdics'
 				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
@@ -616,10 +616,10 @@ module.exports = {
 				// Agrega el registro
 				BD_genericas.agregaRegistro("histEdics", datos);
 
-				// Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
+				// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
-				// Si corresponde, penaliza al usuario
+				// 4. Si corresponde, penaliza al usuario
 				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
