@@ -30,9 +30,9 @@ module.exports = {
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
 			// CONDICION 1: El campo tiene valor 'null'
-			const condic1 = edicion[campo] === null || edicion[campo] === undefined;
+			const condic1 = edicion[campo] === null;
 
-			// CONDICION 2: Los valores de original y edición son 'iguales'
+			// CONDICION 2: Los valores de original y edición son significativos e idénticos
 			// 1. Son estrictamente iguales
 			// 1. El campo de la edición tiene algún valor
 			const condic2 = edicion[campo] === original[campo] && !condic1;
