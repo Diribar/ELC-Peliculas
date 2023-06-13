@@ -422,9 +422,9 @@ module.exports = {
 					const errores = await validaPR.consolidado({datos: validar});
 
 					// En caso afirmativo, actualiza el status
-					if (!errores.hay)
-						resultados.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos).then(() => true));
+					if (!errores.hay) resultados.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 				}
+				// Espera hasta que se revisen todos los capítulos
 				await Promise.all(resultados);
 			}
 
