@@ -15,13 +15,14 @@ module.exports = {
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
 		const camposDDA = ["diaDelAno_id", "diasDeDuracion"];
+		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		let statusAprob;
 
 		// Obtiene el registro editado
-		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		let edicion = await BD_genericas.obtienePorIdConInclude(nombreEdic, edicID, include);
 
 		// PROBLEMAS
@@ -35,23 +36,18 @@ module.exports = {
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
+		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
 		// Procesa la edición - Realiza muchísimas tareas
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
-		[edicion, statusAprob] = await procesos.edicion.edicAprobRech(objeto);
+		// Obtiene la edición en su mínima expresión
+		edicion = await procesos.edicion.edicAprobRech(objeto);
 
-		// Si existen otras ediciones con los mismos valores que el original
-		// 1. Elimina el valor de esos campos
-		// 2. Evalúa si corresponde eliminar cada registro de edición
+		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[campo_id]: entID};
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
-			if (ediciones.length) {
-				let resultados = [];
-				for (let edic of ediciones) resultados.push(procsCRUD.puleEdicion(entidad, original, edic));
-				await Promise.all(resultados);
-			}
+			statusAprob = procesos.edicion.statusAprob({familias, registro: originalGuardado});
+			let edicsEliminadas = procesos.edicion.eliminaDemasEdiciones({entidad, entID});
+			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
 		// Solapamiento y diasDelAno
