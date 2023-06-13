@@ -403,24 +403,27 @@ module.exports = {
 			...{cartelGenerico: true, cartelRechazo: codigo.includes("avatar")},
 		});
 	},
-	prod_AvatarGuardar: async (req, res) => {
-		// Obtiene la respuesta del usuario
-		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
-
+	avatarGuardar: async (req, res) => {
 		// Variables
+		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const revID = req.session.usuario.id;
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo = "avatar";
 		const aprob = !rechazo;
 		let edicion = await BD_genericas.obtienePorId(petitFamilias + "_edicion", edicID);
+		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
 		// 1. PROCESOS PARTICULARES PARA AVATAR
 		await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
 		if (petitFamilias == "prods") delete edicion.avatarUrl;
 
 		// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
-		[edicion] = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+		edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
+
+		// 3. Acciones si se terminó de revisar la edición de un producto
+		if (!edicion && familias == "productos") await procesos.edicion.statusAprob({familias, registro: originalGuardado});
 
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);

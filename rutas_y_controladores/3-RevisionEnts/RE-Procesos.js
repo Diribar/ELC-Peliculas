@@ -552,7 +552,7 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// TAREAS:
 			// - Si se aprobó, actualiza el registro de 'original'
@@ -670,7 +670,7 @@ module.exports = {
 			// Fin
 			return statusAprob;
 		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 			iconos: [
@@ -772,7 +772,7 @@ let obtieneRegs = async (campos) => {
 	// Fin
 	return resultados;
 };
-// VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
+// VISTA-prod_edicForm/avatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;

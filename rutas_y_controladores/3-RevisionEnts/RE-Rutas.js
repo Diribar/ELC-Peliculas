@@ -60,7 +60,7 @@ router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vis
 router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar); // Va sin 'motivo'
 // Edición
 router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
-router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.prod_AvatarGuardar);
+router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.avatarGuardar);
 
 // LINKS
 router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);

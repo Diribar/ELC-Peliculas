@@ -354,7 +354,7 @@ module.exports = {
 	},
 
 	// CAMBIOS DE STATUS
-	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
+	// Revisión: API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	transfiereDatos: async (original, edicion, campo) => {
 		// Variables
