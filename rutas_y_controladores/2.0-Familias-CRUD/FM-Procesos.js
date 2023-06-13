@@ -356,14 +356,14 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
-	heredaDatos: async (coleccion, edicion, campo) => {
+	transfiereDatos: async (original, edicion, campo) => {
 		// Variables
 		const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-		const condicion = {coleccion_id: coleccion.id}; // que pertenezca a la colección
-		const condiciones = {...condicion, [campo]: {[Op.or]: [null, coleccion[campo], ""]}}; // que el campo esté vacío o coincida con el original
+		const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
+		const condiciones = {...condicion, [campo]: {[Op.or]: [null, original[campo], ""]}}; // que el campo esté vacío o coincida con el original
 		const novedad = {[campo]: edicion[campo]};
 
-		// 1. Si el campo no hereda datos, termina
+		// 1. Si el campo no recibe datos, termina
 		if (camposQueNoSeReciben.includes(campo)) return;
 
 		// 2. Actualización condicional por campo
@@ -415,14 +415,17 @@ module.exports = {
 				const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
 
 				// Rutina
+				let resultados = [];
 				for (let capitulo of capitulos) {
 					// Revisa si cada capítulo supera el test de errores
 					let validar = {...capitulo, entidad: "capitulos", publico, epoca};
 					const errores = await validaPR.consolidado({datos: validar});
 
 					// En caso afirmativo, actualiza el status
-					if (!errores.hay) BD_genericas.actualizaPorId("capitulos", capitulo.id, datos);
+					if (!errores.hay)
+						resultados.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos).then(() => true));
 				}
+				await Promise.all(resultados);
 			}
 
 			// Actualiza prodsEnRCLV
