@@ -28,7 +28,8 @@ module.exports = {
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
-			if (err) return console.log("Actualiza Rutinas JSON:", err, datos);
+			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
+			return;
 		});
 
 		// Fin
@@ -51,7 +52,7 @@ module.exports = {
 		// Fin
 		return;
 	},
-	obtieneImgDerecha: async function (fechaNum) {
+	obtieneImgDerecha: async (fechaNum) => {
 		// Variables
 		const fecha = new Date(fechaNum);
 		let resultado;
@@ -63,7 +64,7 @@ module.exports = {
 		delete diaDelAno.epocaDelAno;
 
 		// Obtiene los RCLV
-		let rclvs = await this.obtieneLosRCLV(diaDelAno);
+		let rclvs = await obtieneLosRCLV(diaDelAno);
 
 		// Acciones si se encontraron rclvs
 		if (rclvs.length > 1) {
@@ -82,7 +83,7 @@ module.exports = {
 		else if (rclvs.length == 1) resultado = rclvs[0];
 
 		// Obtiene los datos para la imgDerecha
-		const imgDerecha = this.datosImgDerecha(resultado);
+		const imgDerecha = datosImgDerecha(resultado);
 
 		// Fin
 		return imgDerecha;
@@ -95,80 +96,9 @@ module.exports = {
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
-	obtieneLosRCLV: async (diaDelAno) => {
-		// Variables
-		let rclvs = [];
-		let resultados = [];
-
-		// Obtiene los RCLV de las primeras cuatro entidades
-		for (let entidad of variables.entidades.rclvs) {
-			// Salteo de la rutina para 'epocasDelAno'
-			if (entidad == "epocasDelAno") continue;
-
-			// Condicion estandar: RCLVs del dia y en status aprobado
-			const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id};
-
-			// Obtiene los RCLVs
-			rclvs.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					// Deja solo los que tienen avatar
-					.then((n) => n.filter((m) => m.avatar))
-					// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
-					.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
-					// Le agrega la entidad
-					.then((n) => n.map((m) => (m = {...m, entidad})))
-			);
-		}
-
-		// Busca el registro de 'epocaDelAno'
-		if (diaDelAno.epocaDelAno_id != 1) {
-			const condicion = {id: diaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
-			const entidad = "epocasDelAno";
-			const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
-			rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
-		}
-
-		// Espera y consolida la informacion
-		await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
-
-		// Fin
-		return resultados;
-	},
-	datosImgDerecha: (resultado) => {
-		// Variables
-		let imgDerecha;
-
-		// Acciones si se obtuvo un resultado
-		if (resultado) {
-			// Datos iniciales
-			imgDerecha = {entidad: resultado.entidad, id: resultado.id};
-
-			// Nombre de la imagen
-			imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
-
-			// Datos del archivo, dependiendo de la entidad
-			if (!resultado.carpetaAvatars) {
-				imgDerecha.carpeta = "2-RCLVs/Final/";
-				imgDerecha.nombre_archivo = resultado.avatar;
-			} else {
-				imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpetaAvatars + "/";
-				imgDerecha.nombre_archivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
-			}
-		}
-		// Acciones si no encontró una imagen para la fecha
-		else
-			imgDerecha = {
-				titulo: "ELC - Películas",
-				carpeta: "0-Base/Varios/",
-				nombre_archivo: "Institucional-Imagen.jpg",
-			};
-
-		// Fin
-		return imgDerecha;
-	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesDeFamiliasSinRegistro: async function (familias) {
+	eliminaImagenesDeFamiliasSinRegistro: async (familias) => {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
@@ -182,7 +112,7 @@ module.exports = {
 		for (let entidad of variables.entidades[petitFamilias])
 			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, creado_id));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
-		this.eliminaLasImagenes(consolidado, carpeta);
+		eliminaLasImagenes(consolidado, carpeta);
 
 		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
 		carpeta = "2-" + familias + "/Final";
@@ -192,23 +122,7 @@ module.exports = {
 		for (let entidad of variables.entidades[petitFamilias])
 			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
-		this.eliminaLasImagenes(consolidado, carpeta);
-
-		// Fin
-		return;
-	},
-	eliminaLasImagenes: (avatars, carpeta) => {
-		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-		const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
-		const imagenes = avatars.map((n) => n.imagen);
-
-		// Rutina para borrar archivos
-		for (let archivo of archivos)
-			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
-
-		// Rutina para detectar nombres sin archivo
-		for (let avatar of avatars)
-			if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
+		eliminaLasImagenes(consolidado, carpeta);
 
 		// Fin
 		return;
@@ -276,18 +190,7 @@ module.exports = {
 			// Fin
 			return {hoyUsuario, saltear};
 		},
-		formatos: {
-			h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
-			h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
-			ol: (texto) => "<ol " + normalize + "font-size: 14px'>" + texto + "</ol>",
-			ul: (texto) => "<ul " + normalize + "font-size: 14px'>" + texto + "</ul>",
-			li: (texto, color) => {
-				let formato = normalize;
-				if (color) formato = formato.replace("rgb(37,64,97)", color);
-				return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
-			},
-		},
-		mensajeAB: async function (regsAB) {
+		mensajeAB: async (regsAB) => {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
@@ -304,7 +207,7 @@ module.exports = {
 				const statusFinal = status_registros.find((n) => n.id == regAB.statusFinal_id);
 				const statusInicial = status_registros.find((n) => n.id == regAB.statusOriginal_id);
 				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
-				const {nombreOrden, nombreVisual} = await this.nombres(regAB, familia);
+				const {nombreOrden, nombreVisual} = await nombres(regAB, familia);
 				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
@@ -345,19 +248,18 @@ module.exports = {
 				mensaje += " a status <b><em>" + n.statusFinal.nombre.toLowerCase() + "</em></b>";
 				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
 				color = n.aprobado ? "green" : "firebrick";
-				mensaje = this.formatos.li(mensaje, color);
+				mensaje = formatos.li(mensaje, color);
 				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			});
 
 			// Ajustes finales
-			if (mensajesAprob)
-				mensajesAcum += this.formatos.h2("Cambios de Status - APROBADOS") + this.formatos.ol(mensajesAprob);
-			if (mensajesRech) mensajesAcum += this.formatos.h2("Cambios de Status - RECHAZADOS") + this.formatos.ol(mensajesRech);
+			if (mensajesAprob) mensajesAcum += formatos.h2("Cambios de Status - APROBADOS") + formatos.ol(mensajesAprob);
+			if (mensajesRech) mensajesAcum += formatos.h2("Cambios de Status - RECHAZADOS") + formatos.ol(mensajesRech);
 			const mensajeGlobal = mensajesAcum;
 			// Fin
 			return mensajeGlobal;
 		},
-		mensajeEdic: async function (regsEdic) {
+		mensajeEdic: async (regsEdic) => {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
@@ -368,7 +270,7 @@ module.exports = {
 				// Variables
 				const aprobado = !regEdic.motivo_id;
 				const familia = comp.obtieneDesdeEntidad.familia(regEdic.entidad);
-				const {nombreOrden, nombreVisual} = await this.nombres(regEdic, familia);
+				const {nombreOrden, nombreVisual} = await nombres(regEdic, familia);
 				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
@@ -393,34 +295,29 @@ module.exports = {
 					!i ||
 					(i && (n.entidadNombre != resultados[i - 1].entidadNombre || n.entidad_id != resultados[i - 1].entidad_id))
 				) {
+					// Título de la entidad y nombre del producto
 					mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>";
-					mensajesAcum += this.formatos.li(mensaje);
+					mensajesAcum += formatos.li(mensaje);
+					// Borra los mensajes anteriores que tuviera
 					mensajesCampo = "";
 				}
 
 				// Adecua la info para el avatar
 				if (n.campo == "Avatar") {
-					n.valorAprob = n.valorAprob.includes("/")
-						? "<a href='" +
-						  n.valorAprob +
-						  "' style='color: inherit; text-decoration: none'>'<u>Imagen aprobada</u>'</a>"
-						: this.avatar(n.familia, n.valorAprob);
-					n.valorDesc =
-						n.valorDesc && n.valorDesc.includes("/")
-							? "<a href='" +
-							  n.valorDesc +
-							  "' style='color: inherit; text-decoration: none'>'<u>Imagen descartada</u>'</a>"
-							: "'Imagen descartada'";
+					// Variables
+					const texto = n.aprobado ? {aprob: "sugerida", desc: "original"} : {aprob: "original", desc: "sugerida"};
+					n.valorAprob = avatarConLink(n.familia, n.valorAprob, texto.aprob);
+					n.valorDesc = avatarConLink(n.familia, n.valorDesc, texto.desc);
 				}
 
-				// Agregado de la info por campo
+				// Dots + campo
 				mensaje = n.campo + ": ";
 				mensaje += n.aprobado
 					? n.valorAprob && n.valorDesc
 						? "<em><b>" + n.valorAprob + "</b></em> reemplazó a <em>" + n.valorDesc + "</em>"
 						: n.valorAprob
-						? "se agregó el valor <em><b>" + n.valorAprob + "</b></em>"
-						: "se quitó el valor <em><b>" + n.valorDesc + "</b></em>"
+						? "<em><b>" + n.valorAprob + "</b></em> fue agregado/a"
+						: "<em><b>" + n.valorDesc + "</b></em> fue quitado/a"
 					: "se mantuvo <em><b>" +
 					  n.valorAprob +
 					  "</b></em> como mejor opción que <em>" +
@@ -429,7 +326,7 @@ module.exports = {
 					  n.motivo.toLowerCase();
 
 				color = n.aprobado ? "green" : "firebrick";
-				mensajesCampo += this.formatos.li(mensaje, color);
+				mensajesCampo += formatos.li(mensaje, color);
 
 				// Acciones por fin de la entidad/entidad_id
 				if (
@@ -437,69 +334,16 @@ module.exports = {
 					n.entidadNombre != resultados[i + 1].entidadNombre ||
 					n.entidad_id != resultados[i + 1].entidad_id
 				)
-					mensajesAcum += this.formatos.ul(mensajesCampo);
+					mensajesAcum += formatos.ul(mensajesCampo);
 			});
 
 			// Detalles finales
-			const titulo = this.formatos.h2("Ediciones");
-			mensajesAcum = this.formatos.ol(mensajesAcum);
+			const titulo = formatos.h2("Ediciones");
+			mensajesAcum = formatos.ol(mensajesAcum);
 			const mensajeGlobal = titulo + mensajesAcum;
 
 			// Fin
 			return mensajeGlobal;
-		},
-		nombres: async (reg, familia) => {
-			// Variables
-			let nombreOrden, nombreVisual;
-
-			// Fórmulas
-			if (reg.entidad != "links") {
-				// Obtiene el registro
-				const regEntidad = await BD_genericas.obtienePorId(reg.entidad, reg.entidad_id);
-				if (!regEntidad.id) return {};
-
-				// Obtiene los nombres
-				nombreOrden = comp.nombresPosibles(regEntidad);
-				nombreVisual =
-					"<a href='http:" +
-					localhost +
-					"/" +
-					familia +
-					"/detalle/?entidad=" +
-					reg.entidad +
-					"&id=" +
-					reg.entidad_id +
-					"' style='color: inherit; text-decoration: none'>" +
-					nombreOrden +
-					"</a>";
-			} else {
-				// Obtiene el registro
-				const asociaciones = ["pelicula", "coleccion", "capitulo"];
-				const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asociaciones);
-				if (!regEntidad.id) return {};
-
-				// Obtiene los nombres
-				const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
-				nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
-				nombreVisual =
-					"<a href='http://" +
-					regEntidad.url +
-					"' style='color: inherit; text-decoration: none'>" +
-					nombreOrden +
-					"</a>";
-			}
-
-			// Fin
-			return {nombreOrden, nombreVisual};
-		},
-		avatar: (familia, valorAprob) => {
-			const rutaArchivo = "/imagenes/2-" + familia + "s/Final/" + valorAprob;
-			const existe = comp.gestionArchivos.existe("./publico" + rutaArchivo);
-
-			return existe
-				? "<a href='http:".concat(localhost, rutaArchivo) +
-						"' style='color: inherit; text-decoration: none'>'<u>Imagen aprobada</u>'</a>"
-				: "'Imagen aprobada'";
 		},
 		eliminaRegsAB: (regs) => {
 			// Variables
@@ -646,4 +490,155 @@ let ordenar = (resultados) => {
 			? 1
 			: 0
 	);
+};
+let avatarConLink = (familia, valorAprob, texto) => {
+	// Variables
+	const link = valorAprob.includes("/");
+	const terminacion = "' style='color: inherit; text-decoration: none'><u>la imagen " + texto + "</u></a>";
+	const rutaArchivo = !link ? "/imagenes/2-" + familia + "s/Final/" + valorAprob : "";
+	const existe = !link ? comp.gestionArchivos.existe("./publico" + rutaArchivo) : "";
+
+	return link
+		? "<a href='" + valorAprob + terminacion
+		: existe
+		? "<a href='http:".concat(localhost, rutaArchivo) + terminacion
+		: "la imagen " + texto;
+};
+let formatos = {
+	h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
+	h3: (texto) => "<h3 " + normalize + "font-size: 16px'>" + texto + "</h3>",
+	ol: (texto) => "<ol " + normalize + "font-size: 14px'>" + texto + "</ol>",
+	ul: (texto) => "<ul " + normalize + "font-size: 14px'>" + texto + "</ul>",
+	li: (texto, color) => {
+		let formato = normalize;
+		if (color) formato = formato.replace("rgb(37,64,97)", color);
+		return "<li " + formato + "font-size: 14px'>" + texto + "</li>";
+	},
+};
+let nombres = async (reg, familia) => {
+	// Variables
+	let nombreOrden, nombreVisual;
+
+	// Fórmulas
+	if (reg.entidad != "links") {
+		// Obtiene el registro
+		const regEntidad = await BD_genericas.obtienePorId(reg.entidad, reg.entidad_id);
+		if (!regEntidad.id) return {};
+
+		// Obtiene los nombres
+		nombreOrden = comp.nombresPosibles(regEntidad);
+		nombreVisual =
+			"<a href='http:" +
+			localhost +
+			"/" +
+			familia +
+			"/detalle/?entidad=" +
+			reg.entidad +
+			"&id=" +
+			reg.entidad_id +
+			"' style='color: inherit; text-decoration: none'>" +
+			nombreOrden +
+			"</a>";
+	} else {
+		// Obtiene el registro
+		const asociaciones = ["pelicula", "coleccion", "capitulo"];
+		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asociaciones);
+		if (!regEntidad.id) return {};
+
+		// Obtiene los nombres
+		const asocProd = comp.obtieneDesdeEdicion.asocProd(regEntidad);
+		nombreOrden = comp.nombresPosibles(regEntidad[asocProd]);
+		nombreVisual =
+			"<a href='http://" + regEntidad.url + "' style='color: inherit; text-decoration: none'>" + nombreOrden + "</a>";
+	}
+
+	// Fin
+	return {nombreOrden, nombreVisual};
+};
+let obtieneLosRCLV = async (diaDelAno) => {
+	// Variables
+	let rclvs = [];
+	let resultados = [];
+
+	// Obtiene los RCLV de las primeras cuatro entidades
+	for (let entidad of variables.entidades.rclvs) {
+		// Salteo de la rutina para 'epocasDelAno'
+		if (entidad == "epocasDelAno") continue;
+
+		// Condicion estandar: RCLVs del dia y en status aprobado
+		const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id};
+
+		// Obtiene los RCLVs
+		rclvs.push(
+			BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+				// Deja solo los que tienen avatar
+				.then((n) => n.filter((m) => m.avatar))
+				// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
+				.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
+				// Le agrega la entidad
+				.then((n) => n.map((m) => (m = {...m, entidad})))
+		);
+	}
+
+	// Busca el registro de 'epocaDelAno'
+	if (diaDelAno.epocaDelAno_id != 1) {
+		const condicion = {id: diaDelAno.epocaDelAno_id, statusRegistro_id: aprobado_id};
+		const entidad = "epocasDelAno";
+		const registros = BD_genericas.obtieneTodosPorCondicion(entidad, condicion);
+		rclvs.push(registros.then((n) => n.map((m) => (m = {...m, entidad}))));
+	}
+
+	// Espera y consolida la informacion
+	await Promise.all(rclvs).then((n) => n.map((m) => resultados.push(...m)));
+
+	// Fin
+	return resultados;
+};
+let datosImgDerecha = (resultado) => {
+	// Variables
+	let imgDerecha;
+
+	// Acciones si se obtuvo un resultado
+	if (resultado) {
+		// Datos iniciales
+		imgDerecha = {entidad: resultado.entidad, id: resultado.id};
+
+		// Nombre de la imagen
+		imgDerecha.titulo = resultado.apodo ? resultado.apodo : resultado.nombre;
+
+		// Datos del archivo, dependiendo de la entidad
+		if (!resultado.carpetaAvatars) {
+			imgDerecha.carpeta = "2-RCLVs/Final/";
+			imgDerecha.nombre_archivo = resultado.avatar;
+		} else {
+			imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpetaAvatars + "/";
+			imgDerecha.nombre_archivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
+		}
+	}
+	// Acciones si no encontró una imagen para la fecha
+	else
+		imgDerecha = {
+			titulo: "ELC - Películas",
+			carpeta: "0-Base/Varios/",
+			nombre_archivo: "Institucional-Imagen.jpg",
+		};
+
+	// Fin
+	return imgDerecha;
+};
+let eliminaLasImagenes = (avatars, carpeta) => {
+	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
+	const archivos = fs.readdirSync("./publico/imagenes/" + carpeta);
+	const imagenes = avatars.map((n) => n.imagen);
+
+	// Rutina para borrar archivos
+	for (let archivo of archivos)
+		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina("./publico/imagenes/" + carpeta, archivo);
+
+	// Rutina para detectar nombres sin archivo
+	for (let avatar of avatars)
+		if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
+
+	// Fin
+	return;
 };
