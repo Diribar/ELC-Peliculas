@@ -30,12 +30,12 @@ module.exports = {
 			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
 			// CONDICION 1: El campo tiene valor 'null'
-			const condic1 = edicion[campo] === null;
+			const condic1 = edicion[campo] === null || edicion[campo] === undefined;
 
 			// CONDICION 2: Los valores de original y edición son 'iguales'
-			// La edición necesariamente es un valor, no es 'null' ni 'undefined'
-			// Hay que asegurarse de que el original también sea un valor
-			const condic2 = edicion[campo] == original[campo] && original[campo] !== undefined && original[campo] !== null;
+			// 1. Son estrictamente iguales
+			// 1. El campo de la edición tiene algún valor
+			const condic2 = edicion[campo] === original[campo] && !condic1;
 			if (condic2) camposNull[campo] = null;
 
 			// CONDICION 3: El objeto vinculado tiene el mismo ID
