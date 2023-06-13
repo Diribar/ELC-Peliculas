@@ -552,7 +552,7 @@ module.exports = {
 			// Fin
 			return [ingresos, reemplazos];
 		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
 			// TAREAS:
 			// - Si se aprobó, actualiza el registro de 'original'
@@ -574,6 +574,7 @@ module.exports = {
 			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
 			const relacInclude = campoRevisar.relacInclude;
 			const titulo = campoRevisar.titulo;
+			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 			let motivo;
 
 			// Genera la información a actualizar
@@ -591,17 +592,16 @@ module.exports = {
 				datos[campo] = edicion[campo];
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
-				// 2. Si es una colección, actualiza ese campo en sus capítulos
-				if (entidad == "colecciones") await procsCRUD.heredaDatos({...original, ...datos}, edicion, campo);
+				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
+				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
 			}
 
-			// Condiciones
+			// Acciones si el campo fue sugerido por el usuario
 			const camposNoPermInput = ["epoca_id", "publico_id", "prioridad_id"]; // campos que en 'creadoAprob_id' no se completan con el rol 'permInput'
 			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposNoPermInput.includes(campo);
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
-			// Acciones si el campo fue sugerido por el usuario
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
-				// 2. Actualiza la tabla de 'histEdics'
+				// 3. Actualiza la tabla de 'histEdics'
 				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
@@ -616,41 +616,61 @@ module.exports = {
 				// Agrega el registro
 				BD_genericas.agregaRegistro("histEdics", datos);
 
-				// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
+				// 4. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
-				// 4. Si corresponde, penaliza al usuario
+				// 5. Si corresponde, penaliza al usuario
 				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
-			// 5. Actualiza el registro de 'edición'
+			// 6. Elimina el valor del campo en el registro de 'edición' y en la variable
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+			delete edicion[campo];
+			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
-			// 6. Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
-			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
-			edicion[campo] = null;
-			if (relacInclude) delete edicion[relacInclude];
+			// 7. Disminuye la edición a su mínima expresión, y si corresponde la elimina
 			edicion = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
-			// 7. Si se cumplen ciertas condiciones, realiza varias tareas:
-			// - Si está en un status anterior a 'aprobado' y aprueba el test de errores, lo pasa a 'aprobado'
-			// - Si es una colección, realiza lo mismo para los capítulos
-			// - Actualiza 'prodsEnRCLV'
-			// - Informa si el status actual es 'aprobado'
-			const statusAprob =
-				familias == "rclvs" || edicion // Condición 1: que la edición haya sido toda procesada
-					? true
-					: // Condición 2: que la entidad sea un producto y esté en status 'creadoAprob_id'
-					familias == "productos"
-					? original.statusRegistro_id == creadoAprob_id
-						? await procsCRUD.prodsPosibleAprobado(entidad, originalGuardado)
-						: true
-					: null;
+			// Fin
+			return edicion;
+		},
+		eliminaDemasEdiciones: async ({entidad, entID}) => {
+			// Revisa cada registro de edición y decide si corresponde:
+			// - Eliminar el registro
+			// - Elimina el valor del campo
+
+			// Variables
+			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const condicion = {[campo_id]: entID};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
+
+			// Acciones si existen ediciones
+			if (ediciones.length) {
+				let resultados = [];
+				for (let edic of ediciones) resultados.push(procsCRUD.puleEdicion(entidad, original, edic));
+				await Promise.all(resultados);
+			}
 
 			// Fin
-			return [edicion, statusAprob];
+			return;
 		},
-		// API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba/rechaza un valor editado
+		statusAprob: async ({familias, registro}) => {
+			// Obtiene el status aprobado
+			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
+
+			// Acciones si es un producto que no está en status 'aprobado':
+			// 1. Averigua si corresponde cambiarlo al status 'aprobado'
+			// 2. Si es una colección, ídem para sus capítulos
+			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
+			// 4. Obtiene el nuevo status del producto
+			if (!statusAprob && familias == "productos")
+				statusAprob = await procsCRUD.prodsPosibleAprobado(entidad, registro);
+
+			// Fin
+			return statusAprob;
+		},
+		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 			iconos: [
@@ -752,7 +772,7 @@ let obtieneRegs = async (campos) => {
 	// Fin
 	return resultados;
 };
-// VISTA-prod_edicForm/prod_AvatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
+// VISTA-prod_edicForm/avatarGuardar - Cada vez que se aprueba/rechaza un avatar sugerido
 let actualizaArchivoAvatar = async ({entidad, original, edicion, aprob}) => {
 	// Variables
 	const avatarOrig = original.avatar;
