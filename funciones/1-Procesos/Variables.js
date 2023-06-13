@@ -89,7 +89,7 @@ module.exports = {
 			],
 		},
 		// RCLVs
-		epocas: {
+		epocasSinVarias: {
 			titulo: "Epoca",
 		},
 		apMar: {

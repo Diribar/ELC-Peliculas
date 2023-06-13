@@ -599,9 +599,9 @@ module.exports = {
 			const camposRevisor = ["epoca_id", "publico_id", "prioridad_id"]; // campos exclusivos del Revisor para aprobar un registro
 			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposRevisor.includes(campo);
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
-			// Tareas si el campo fue sugerido por el usuario
+			// Acciones si el campo fue sugerido por el usuario
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
-				// 2. Actualiza la tabla de 'histEdics'
+				// Actualiza la tabla de 'histEdics'
 				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
@@ -616,10 +616,10 @@ module.exports = {
 				// Agrega el registro
 				BD_genericas.agregaRegistro("histEdics", datos);
 
-				// 3. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
+				// Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
 
-				// 4. Si corresponde, penaliza al usuario
+				// Si corresponde, penaliza al usuario
 				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
