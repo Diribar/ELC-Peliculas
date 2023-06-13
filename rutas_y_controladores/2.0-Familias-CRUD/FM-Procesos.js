@@ -54,7 +54,7 @@ module.exports = {
 			// Devuelve el id a la variable de edicion
 			edicion.id = edicID;
 
-			// Si hubieron campos iguales entre la edición y el original, actualiza la edición
+			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
 			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
 		} else {
 			// Convierte en 'null' la variable de 'edicion'
