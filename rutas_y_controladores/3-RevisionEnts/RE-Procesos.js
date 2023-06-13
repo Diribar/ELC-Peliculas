@@ -92,7 +92,8 @@ module.exports = {
 						const datos = {
 							...m,
 							entidad: "capitulos",
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creadoEn),
+							fechaRef: m.sugeridoEn,
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
 						};
 
 						// Fin
@@ -595,10 +596,10 @@ module.exports = {
 			}
 
 			// Condiciones
-			const camposRevisor = ["epoca_id", "publico_id", "prioridad_id"]; // campos exclusivos del Revisor para aprobar un registro
-			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposRevisor.includes(campo);
+			const camposNoPermInput = ["epoca_id", "publico_id", "prioridad_id"]; // campos que en 'creadoAprob_id' no se completan con el rol 'permInput'
+			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposNoPermInput.includes(campo);
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
-			// Tareas si el campo fue sugerido por el usuario
+			// Acciones si el campo fue sugerido por el usuario
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
 				// 2. Actualiza la tabla de 'histEdics'
 				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};

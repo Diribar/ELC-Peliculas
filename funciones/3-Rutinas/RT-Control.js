@@ -72,20 +72,6 @@ module.exports = {
 	},
 
 	// 0.B. Conjunto de tareas
-	conjuntoDeRutinasHorarias: async function () {
-		// Obtiene la información del archivo JSON
-		let info = procesos.lecturaRutinasJSON();
-		const rutinas = info.RutinasHorarias;
-
-		// Obtiene la fecha UTC actual
-		const {FechaUTC} = procesos.fechaHoraUTC();
-
-		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas horarias
-		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
-
-		// Fin
-		return;
-	},
 	conjuntoDeRutinasDiarias: async function () {
 		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
@@ -164,7 +150,7 @@ module.exports = {
 		if (!regsTodos.length) {
 			// Outputs
 			console.log("Sin mails para enviar");
-			procesos.rutinasFinales("MailDeFeedback");
+			procesos.rutinasSinGuardar("MailDeFeedback");
 
 			// Fin
 			return;

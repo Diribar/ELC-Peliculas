@@ -6,6 +6,10 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(15)},
 		ayuda_pers: {type: dt.STRING(50)},
 		ayuda_hecho: {type: dt.STRING(50)},
+		varias: {type: dt.BOOLEAN},
+		ant: {type: dt.BOOLEAN},
+		cnt: {type: dt.BOOLEAN},
+		pst: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "rclv_epocas",

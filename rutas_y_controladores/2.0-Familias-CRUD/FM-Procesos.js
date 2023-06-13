@@ -365,28 +365,21 @@ module.exports = {
 	// Revisión: API-edicAprobRech / VISTA-prod_AvatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
 	heredaDatos: async (coleccion, edicion, campo) => {
-		// Condición 1: si el campo no se hereda, termina
-		const camposCapsQueNoHeredan = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-		if (camposCapsQueNoHeredan.includes(campo)) return;
-
 		// Variables
-		const condiciones = {
-			coleccion_id: coleccion.id, // que pertenezca a la colección
-			[campo]: {[Op.or]: [null, coleccion[campo]]}, // que el campo esté vacío o coincida con el original
-		};
+		const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
+		const condicion = {coleccion_id: coleccion.id}; // que pertenezca a la colección
+		const condiciones = {...condicion, [campo]: {[Op.or]: [null, coleccion[campo]]}}; // que el campo esté vacío o coincida con el original
 		const novedad = {[campo]: edicion[campo]};
 
-		// Actualiza ese campo en sus capítulos
-		// Campos que necesariamente heredan el valor de la colección
-		if (
-			campo == "tipoActuacion_id" ||
-			// Particularidad para // rclv_id
-			(variables.entidades.rclvs_id.includes(campo) && edicion[campo] > 2) ||
-			// Particularidad para epoca_id
-			campo == "epoca_id" //&& edicion[campo] != 2
-		)
-			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, novedad);
-		// Campos que dependen del valor del campo
+		// 1. Si el campo no hereda datos, termina
+		if (camposQueNoSeReciben.includes(campo)) return;
+
+		// 2. Actualización condicional por campo
+		const cond1 = campo == "tipoActuacion_id";
+		const cond2 = variables.entidades.rclvs_id.includes(campo) && edicion[campo] != 2; // Particularidad para rclv_id
+		const cond3 = campo == "epoca_id" && edicion[campo] != epocasVarias.id; // Particularidad para epoca_id
+		if (cond1 || cond2 || cond3) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+		// 3. Actualización condicional por valores
 		else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
 		// Fin

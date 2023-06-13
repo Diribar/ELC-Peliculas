@@ -15,7 +15,7 @@ global.fs = require("fs");
 global.carpetasImagen = fs.readdirSync("./publico/imagenes/3-EpocasDelAno");
 global.path = require("path");
 const procesos = require("./funciones/3-Rutinas/RT-Procesos");
-global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha
+global.ImagenesDerecha = procesos.lecturaRutinasJSON().ImagenesDerecha;
 global.fetch = require("node-fetch");
 global.db = require("./base_de_datos/modelos");
 global.Op = db.Sequelize.Op;
@@ -135,11 +135,13 @@ app.set("views", [
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
 	// 4. Status de usuario
-	global.st_editables_id = status_registro_us.find((n) => n.editables).id
-	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar ).id;
+	global.st_editables_id = status_registro_us.find((n) => n.editables).id;
+	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = status_registro_us.find((n) => n.ident_validada).id;
 
 	// 4. Otros
+	global.epocasVarias = global.epocas.find((n) => n.varias);
+	global.epocasSinVarias = global.epocas.filter((n) => !n.varias);
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
 	global.link_pelicula_id = links_tipos.find((n) => n.pelicula).id;
 	global.hablaHispana = paises.filter((n) => n.idioma == "Spanish");
