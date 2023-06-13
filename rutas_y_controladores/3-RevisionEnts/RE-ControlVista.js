@@ -335,7 +335,6 @@ module.exports = {
 
 		// Obtiene la edición
 		let edicion = await BD_genericas.obtienePorId(edicEntidad, edicID);
-		//return res.send({original,edicion})
 
 		// Acciones si el avatar está presente en la edición
 		if (edicion.avatar) {
@@ -382,7 +381,7 @@ module.exports = {
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivosEdics.filter((m) => m.prods);
 			// Achica la edición a su mínima expresión
-			[edicion] = await procsCRUD.puleEdicion(entidad, original, edicion);
+			edicion = await procsCRUD.puleEdicion(entidad, original, edicion);
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
 			// Obtiene los ingresos y reemplazos
