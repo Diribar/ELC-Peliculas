@@ -42,14 +42,15 @@ module.exports = {
 
 		// Si existen otras ediciones con los mismos valores que el original
 		// 1. Elimina el valor de esos campos
-		// 2. Evalúa si corresponde eliminar cada registro de edición, y en caso afirmativo lo elimina
+		// 2. Evalúa si corresponde eliminar cada registro de edición
 		if (!edicion) {
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: entID};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
 			if (ediciones.length) {
-				const originalGuardado = await BD_genericas.obtienePorId(entidad, entID);
-				for (let edic of ediciones) await procsCRUD.puleEdicion(entidad, originalGuardado, edic);
+				let resultados = [];
+				for (let edic of ediciones) resultados.push(procsCRUD.puleEdicion(entidad, original, edic));
+				await Promise.all(resultados);
 			}
 		}
 
