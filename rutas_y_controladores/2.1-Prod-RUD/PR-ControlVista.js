@@ -205,16 +205,9 @@ module.exports = {
 		if (!errores.hay) {
 			// Acciones si corresponde actualizar el original
 			if (actualizaOrig) {
-				// Variables
-				const ahora = comp.fechaHora.ahora();
-				prodComb = {
-					...prodComb,
-					altaRevisadaPor_id: userID,
-					altaRevisadaEn: ahora,
-					altaTermEn: ahora,
-					leadTimeCreacion: comp.obtieneLeadTime(original.creadoEn, ahora),
-					statusRegistro_id: aprobado_id,
-				};
+				// Completa los datos a guardar
+				prodComb.altaRevisadaPor_id = userID;
+				prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 
 				// 1. Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
