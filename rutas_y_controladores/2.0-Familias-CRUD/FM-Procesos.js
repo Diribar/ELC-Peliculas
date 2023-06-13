@@ -9,67 +9,11 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Soporte para lectura y guardado de edición
 	puleEdicion: async (entidad, original, edicion) => {
-		// Variables
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		const edicID = edicion.id;
-		let camposNull = {};
-		let camposRevisar = [];
-
-		// Obtiene los campos a revisar
-		for (let campo of variables.camposRevisar[familias]) {
-			// Agrega el campo simple
-			camposRevisar.push(campo.nombre);
-			// Agrega el campo include
-			if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
-		}
-
-		// Quita de edición los campos que correspondan
-		for (let campo in edicion) {
-			// Corrige errores de data-entry
-			if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
-
-			// CONDICION 1: El campo tiene valor 'null'
-			const condic1 = edicion[campo] === null;
-
-			// CONDICION 2: Los valores de original y edición son significativos e idénticos
-			// 1. Son estrictamente iguales
-			// 1. El campo de la edición tiene algún valor
-			const condic2 = edicion[campo] === original[campo] && !condic1;
-			if (condic2) camposNull[campo] = null;
-
-			// CONDICION 3: El objeto vinculado tiene el mismo ID
-			const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
-
-			// CONDICION 4: Quita de edición los campos que no se comparan
-			const condic4 = !camposRevisar.includes(campo);
-
-			// Si se cumple alguna de las condiciones, se elimina ese método
-			if (condic1 || condic2 || condic3 || condic4) delete edicion[campo];
-		}
-
-		// 3. Acciones en función de si quedan campos
-		let quedanCampos = !!Object.keys(edicion).length;
-		if (quedanCampos) {
-			// Devuelve el id a la variable de edicion
-			edicion.id = edicID;
-
-			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
-		} else {
-			// Convierte en 'null' la variable de 'edicion'
-			edicion = null;
-
-			// Si había una edición guardada en la BD, la elimina
-			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
-		}
-
-		// Fin
-		return edicion;
+		return await puleEdicion(entidad, original, edicion);
 	},
 
 	// Eliminar RCLV
-	puleEdicionesProd: async function (prodEdics, campo_idRCLV) {
+	puleEdicionesProd: async (prodEdics, campo_idRCLV) => {
 		// Achica las ediciones a su mínima expresión
 		for (let prodEdic of prodEdics) {
 			// Obtiene el producto original
@@ -80,7 +24,7 @@ module.exports = {
 
 			// Revisa si tiene que eliminar alguna edición
 			delete prodEdic[campo_idRCLV];
-			await this.puleEdicion(prodEntidad, original, prodEdic);
+			await puleEdicion(prodEntidad, original, prodEdic);
 		}
 		// Fin
 		return;
@@ -138,7 +82,7 @@ module.exports = {
 	},
 
 	// Lectura de edicion
-	obtieneOriginalEdicion: async function (entidad, entID, userID) {
+	obtieneOriginalEdicion: async (entidad, entID, userID) => {
 		// Variables
 		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -157,7 +101,7 @@ module.exports = {
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Pule la edición
-		if (edicion) edicion = await this.puleEdicion(entidad, original, edicion); // El output puede ser 'null'
+		if (edicion) edicion = await puleEdicion(entidad, original, edicion); // El output puede ser 'null'
 		if (!edicion) edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
@@ -165,12 +109,12 @@ module.exports = {
 	},
 
 	// Guardado de edición
-	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
+	guardaActEdicCRUD: async ({entidad, original, edicion, userID}) => {
 		// Variables
 		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 
 		// Quita la info que no agrega valor
-		edicion = await this.puleEdicion(entidad, original, edicion);
+		edicion = await puleEdicion(entidad, original, edicion);
 
 		// Si existe la edición pero no su 'ID' --> se agrega el registro
 		if (edicion && !edicion.id) {
@@ -356,121 +300,158 @@ module.exports = {
 	// CAMBIOS DE STATUS
 	// Revisión: API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba un valor editado
 	// Prod-RUD: Edición - Cuando la realiza un revisor
-	transfiereDatos: async (original, edicion, campo) => {
-		// Variables
-		const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar"];
-		const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
-		const condiciones = {...condicion, [campo]: {[Op.or]: [null, original[campo], ""]}}; // que el campo esté vacío o coincida con el original
-		const novedad = {[campo]: edicion[campo]};
-
-		// 1. Si el campo no recibe datos, termina
-		if (camposQueNoSeReciben.includes(campo)) return;
-
-		// 2. Actualización condicional por campo
-		const cond1 = campo == "tipoActuacion_id";
-		const cond2 = variables.entidades.rclvs_id.includes(campo) && edicion[campo] != 2; // Particularidad para rclv_id
-		const cond3 = campo == "epoca_id" && edicion[campo] != epocasVarias.id; // Particularidad para epoca_id
-		if (cond1 || cond2 || cond3) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
-		// 3. Actualización condicional por valores
-		else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
-
-		// Fin
-		return true;
-	},
-	prodsPosibleAprob: async function (entidad, registro) {
-		// Variables
-		const publico = true;
-		const epoca = true;
-		let statusAprob = false;
-
-		// Acciones si no hay errores
-		const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epoca}});
-		if (!errores.hay) {
+	revisiones: {
+		transfiereDatos: async (original, edicion, campo) => {
 			// Variables
-			statusAprob = true;
-			const ahora = comp.fechaHora.ahora();
-			const datos = {
-				altaTermEn: ahora,
-				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-				statusRegistro_id: aprobado_id,
-			};
+			const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar", "avatar_url"];
+			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
+			const condiciones = {...condicion, [campo]: {[Op.or]: [null, original[campo], ""]}}; // que el campo esté vacío o coincida con el original
+			const novedad = {[campo]: edicion[campo]};
 
-			// Cambia el status del registro
-			BD_genericas.actualizaPorId(entidad, registro.id, datos);
+			// 1. Si el campo no recibe datos, termina
+			if (camposQueNoSeReciben.includes(campo)) return;
 
-			// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
-			if (entidad == "colecciones") {
-				// Variables
-				datos.altaRevisadaPor_id = 2;
-				datos.altaRevisadaEn = ahora;
+			// 2. Actualización condicional por campo
+			const cond1 = campo == "tipoActuacion_id";
+			const cond2 = variables.entidades.rclvs_id.includes(campo) && edicion[campo] != 2; // Particularidad para rclv_id
+			const cond3 = campo == "epoca_id" && edicion[campo] != epocasVarias.id; // Particularidad para epoca_id
+			if (cond1 || cond2 || cond3) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+			// 3. Actualización condicional por valores
+			else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
-				// Actualiza el status de la coleccción en los capítulos
-				BD_genericas.actualizaTodosPorCondicion(
-					"capitulos",
-					{coleccion_id: registro.id},
-					{statusColeccion_id: aprobado_id}
-				);
+			// Fin
+			return true;
+		},
+		eliminaDemasEdiciones: async ({entidad, original, entID}) => {
+			// Revisa cada registro de edición y decide si corresponde:
+			// - Eliminar el registro
+			// - Elimina el valor del campo
 
-				// Obtiene los capitulos id
-				const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
+			// Variables
+			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const condicion = {[campo_id]: entID};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
 
-				// Rutina
+			// Acciones si existen ediciones
+			if (ediciones.length) {
 				let esperar = [];
-				for (let capitulo of capitulos) {
-					// Revisa si cada capítulo supera el test de errores
-					let validar = {...capitulo, entidad: "capitulos", publico, epoca};
-					const errores = await validaPR.consolidado({datos: validar});
-
-					// En caso afirmativo, actualiza el status
-					if (!errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
-				}
-				// Espera hasta que se revisen todos los capítulos
+				for (let edic of ediciones) esperar.push(puleEdicion(entidad, original, edic));
 				await Promise.all(esperar);
 			}
 
-			// Actualiza prodsEnRCLV
-			this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
-		}
+			// Fin
+			return;
+		},
+		statusAprob: async function ({entidad, registro}) {
+			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
 
-		// Fin
-		return statusAprob;
-	},
-	// Cambia el status de un registro
-	accionesPorCambioDeStatus: async function (entidad, registro) {
-		// Variables
-		let familias = comp.obtieneDesdeEntidad.familias(entidad);
+			// Acciones si es un producto que no está en status 'aprobado':
+			// 1. Averigua si corresponde cambiarlo al status 'aprobado'
+			// 2. Si es una colección, ídem para sus capítulos
+			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
+			// 4. Obtiene el nuevo status del producto
+			if (!statusAprob && familias == "productos") statusAprob = await this.prodsPosibleAprob(entidad, registro);
 
-		// prodsEnRCLV
-		if (familias == "productos") {
-			// 1. Variables
-			const stAprob = registro.statusRegistro_id == aprobado_id;
-			const entidadesRCLV = variables.entidades.rclvs;
+			// Fin
+			return statusAprob;
+		},
+		prodsPosibleAprob: async function (entidad, registro) {
+			// Variables
+			const publico = true;
+			const epoca = true;
+			let statusAprob = false;
 
-			// 2. Rutina por entidad RCLV
-			for (let entidad of entidadesRCLV) {
-				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-				if (registro[campo_id])
-					stAprob
-						? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: SI})
-						: this.prodsEnRCLV({entidad, id: registro[campo_id]});
+			// Acciones si no hay errores
+			const errores = await validaPR.consolidado({datos: {...registro, entidad, publico, epoca}});
+			if (!errores.hay) {
+				// Variables
+				statusAprob = true;
+				const ahora = comp.fechaHora.ahora();
+				const datos = {
+					altaTermEn: ahora,
+					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+					statusRegistro_id: aprobado_id,
+				};
+
+				// Cambia el status del registro
+				BD_genericas.actualizaPorId(entidad, registro.id, datos);
+
+				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
+				if (entidad == "colecciones") {
+					// Variables
+					datos.altaRevisadaPor_id = 2;
+					datos.altaRevisadaEn = ahora;
+
+					// Actualiza el status de la coleccción en los capítulos
+					BD_genericas.actualizaTodosPorCondicion(
+						"capitulos",
+						{coleccion_id: registro.id},
+						{statusColeccion_id: aprobado_id}
+					);
+
+					// Obtiene los capitulos id
+					const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
+
+					// Rutina
+					let esperar = [];
+					for (let capitulo of capitulos) {
+						// Revisa si cada capítulo supera el test de errores
+						let validar = {...capitulo, entidad: "capitulos", publico, epoca};
+						const errores = await validaPR.consolidado({datos: validar});
+
+						// En caso afirmativo, actualiza el status
+						if (!errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+					}
+					// Espera hasta que se revisen todos los capítulos
+					await Promise.all(esperar);
+				}
+
+				// Actualiza prodsEnRCLV
+				this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
 			}
-		}
 
-		// linksEnProds
-		if (familias == "links") {
-			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
-			const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
-			const prodID = registro[campo_id];
-			// Actualiza el producto
-			this.linksEnProd({entidad: prodEntidad, id: prodID});
-		}
+			// Fin
+			return statusAprob;
+		},
+		accionesPorCambioDeStatus: async function (entidad, registro) {
+			// Variables
+			let familias = comp.obtieneDesdeEntidad.familias(entidad);
 
-		// Fin
-		return;
+			// prodsEnRCLV
+			if (familias == "productos") {
+				// 1. Variables
+				const stAprob = registro.statusRegistro_id == aprobado_id;
+				const entidadesRCLV = variables.entidades.rclvs;
+
+				// 2. Rutina por entidad RCLV
+				for (let entidad of entidadesRCLV) {
+					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+					if (registro[campo_id])
+						stAprob
+							? BD_genericas.actualizaPorId(entidad, registro[campo_id], {prodsAprob: SI})
+							: this.prodsEnRCLV({entidad, id: registro[campo_id]});
+				}
+			}
+
+			// linksEnProds
+			if (familias == "links") {
+				// Obtiene los datos identificatorios del producto
+				const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
+				const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
+				const prodID = registro[campo_id];
+				// Actualiza el producto
+				this.linksEnProd({entidad: prodEntidad, id: prodID});
+			}
+
+			// Fin
+			return;
+		},
 	},
 	// Actualiza los campos de 'producto' en el RCLV
-	prodsEnRCLV: async function ({entidad, id}) {
+	prodsEnRCLV: async ({entidad, id}) => {
 		// La entidad y el ID son de un RCLV
 
 		// Variables
@@ -518,7 +499,7 @@ module.exports = {
 		return;
 	},
 	// Actualiza los campos de 'links' en el producto
-	linksEnProd: async function ({entidad, id}) {
+	linksEnProd: async ({entidad, id}) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		if (entidad == "colecciones") return;
@@ -631,7 +612,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: function ({registro, revisor}) {
+	bloqueRegistro: ({registro, revisor}) => {
 		// Variable
 		let bloque = [];
 
@@ -708,4 +689,65 @@ module.exports = {
 		// Fin
 		return resultados;
 	},
+};
+
+// Funciones
+let puleEdicion = async (entidad, original, edicion) => {
+	// Variables
+	const familias = comp.obtieneDesdeEntidad.familias(entidad);
+	const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+	const edicID = edicion.id;
+	let camposNull = {};
+	let camposRevisar = [];
+
+	// Obtiene los campos a revisar
+	for (let campo of variables.camposRevisar[familias]) {
+		// Agrega el campo simple
+		camposRevisar.push(campo.nombre);
+		// Agrega el campo include
+		if (campo.relacInclude) camposRevisar.push(campo.relacInclude);
+	}
+
+	// Quita de edición los campos que correspondan
+	for (let campo in edicion) {
+		// Corrige errores de data-entry
+		if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
+
+		// CONDICION 1: El campo tiene valor 'null'
+		const condic1 = edicion[campo] === null;
+
+		// CONDICION 2: Los valores de original y edición son significativos e idénticos
+		// 1. Son estrictamente iguales
+		// 1. El campo de la edición tiene algún valor
+		const condic2 = edicion[campo] === original[campo] && !condic1;
+		if (condic2) camposNull[campo] = null;
+
+		// CONDICION 3: El objeto vinculado tiene el mismo ID
+		const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
+
+		// CONDICION 4: Quita de edición los campos que no se comparan
+		const condic4 = !camposRevisar.includes(campo);
+
+		// Si se cumple alguna de las condiciones, se elimina ese método
+		if (condic1 || condic2 || condic3 || condic4) delete edicion[campo];
+	}
+
+	// 3. Acciones en función de si quedan campos
+	let quedanCampos = !!Object.keys(edicion).length;
+	if (quedanCampos) {
+		// Devuelve el id a la variable de edicion
+		edicion.id = edicID;
+
+		// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
+		if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+	} else {
+		// Convierte en 'null' la variable de 'edicion'
+		edicion = null;
+
+		// Si había una edición guardada en la BD, la elimina
+		if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
+	}
+
+	// Fin
+	return edicion;
 };
