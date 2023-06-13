@@ -124,18 +124,11 @@ module.exports = {
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLVs
-		const rclvs_id = variables.entidades.rclvs_id;
-		const revisarRCLV = campos.some((n) => [...rclvs_id, "sinRCLV"].includes(n));
-		if (revisarRCLV) {
-			let tieneRCLV_id = false;
-			if (!datos.sinRCLV)
-				for (let rclv_id of rclvs_id)
-					if (datos[rclv_id] != 1 && datos[rclv_id]) {
-						tieneRCLV_id = true;
-						break;
-					}
-			errores.RCLV = datos.sinRCLV ? "" : !tieneRCLV_id ? "Necesitamos que respondas alguna de las opciones" : "";
-		}
+		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
+		if (campos.some((n) => rclvs_id.includes(n)))
+			errores.RCLV = !rclvs_id.some((n) => datos[n] && datos[n] != 1)
+				? "Necesitamos que respondas alguna de las opciones"
+				: "";
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
