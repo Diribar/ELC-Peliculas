@@ -92,7 +92,8 @@ module.exports = {
 						const datos = {
 							...m,
 							entidad: "capitulos",
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.creadoEn),
+							fechaRef: m.sugeridoEn,
+							fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
 						};
 
 						// Fin
