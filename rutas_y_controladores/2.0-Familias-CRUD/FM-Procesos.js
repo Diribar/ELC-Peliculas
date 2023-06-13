@@ -50,15 +50,22 @@ module.exports = {
 
 		// 3. Acciones en función de si quedan campos
 		let quedanCampos = !!Object.keys(edicion).length;
-		if (!quedanCampos) {
+		if (quedanCampos) {
+			// Devuelve el id a la variable de edicion
+			edicion.id = edicID;
+
+			// Si hubieron campos iguales entre la edición y el original, actualiza la edición
+			if (edicID && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicID, camposNull);
+		} else {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
-			// Si además había una edición guardada en la BD, la elimina
+
+			// Si había una edición guardada en la BD, la elimina
 			if (edicID) await BD_genericas.eliminaPorId(entidadEdic, edicID);
-		} else edicion.id = edicID;
+		}
 
 		// Fin
-		return [edicion, camposNull];
+		return edicion;
 	},
 
 	// Eliminar RCLV
@@ -71,7 +78,7 @@ module.exports = {
 			const prodID = prodEdic[campo_idProd];
 			const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
 
-			// Pule la edición
+			// Revisa si tiene que eliminar alguna edición
 			delete prodEdic[campo_idRCLV];
 			await this.puleEdicion(prodEntidad, original, prodEdic);
 		}
@@ -150,50 +157,35 @@ module.exports = {
 		for (let campo in original) if (original[campo] === null) delete original[campo];
 
 		// Pule la edición
-		if (edicion) {
-			// Variables
-			let camposNull;
-
-			// Quita la info que no agrega valor
-			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-			[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
-
-			// Si quedan campos y hubo coincidencias con el original --> se eliminan esos valores en el registro de edicion
-			if (edicion && Object.keys(camposNull).length) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, camposNull);
-		} else edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
+		if (edicion) edicion = await this.puleEdicion(entidad, original, edicion); // El output puede ser 'null'
+		if (!edicion) edicion = {}; // Debe ser un objeto, porque más adelante se lo trata como tal
 
 		// Fin
 		return [original, edicion];
 	},
+
 	// Guardado de edición
 	guardaActEdicCRUD: async function ({entidad, original, edicion, userID}) {
 		// Variables
 		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		let camposNull;
 
 		// Quita la info que no agrega valor
-		[edicion, camposNull] = await this.puleEdicion(entidad, original, edicion);
+		edicion = await this.puleEdicion(entidad, original, edicion);
 
-		// Acciones si quedan campos
-		if (edicion) {
-			// Si existe edicion.id --> se actualiza el registro
-			if (edicion.id) await BD_genericas.actualizaPorId(entidadEdic, edicion.id, {...camposNull, ...edicion});
-			// Si no existe edicion.id --> se agrega el registro
-			else
-				await (async () => {
-					// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
-					// 1. campo_id, editadoPor_id
-					let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-					edicion[campo_id] = original.id;
-					edicion.editadoPor_id = userID;
-					// 2. producto_id (links)
-					if (entidad == "links") {
-						let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
-						edicion[producto_id] = original[producto_id];
-					}
-					// Se agrega el registro
-					await BD_genericas.agregaRegistro(entidadEdic, edicion);
-				})();
+		// Si existe la edición pero no su 'ID' --> se agrega el registro
+		if (edicion && !edicion.id) {
+			// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
+			// 1. campo_id, editadoPor_id
+			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			edicion[campo_id] = original.id;
+			edicion.editadoPor_id = userID;
+			// 2. producto_id (links)
+			if (entidad == "links") {
+				let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
+				edicion[producto_id] = original[producto_id];
+			}
+			// Se agrega el registro
+			await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		}
 
 		// Fin
