@@ -665,7 +665,7 @@ module.exports = {
 			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
 			// 4. Obtiene el nuevo status del producto
 			if (!statusAprob && familias == "productos")
-				statusAprob = await procsCRUD.prodsPosibleAprobado(entidad, registro);
+				statusAprob = await procsCRUD.prodsPosibleAprob(entidad, registro);
 
 			// Fin
 			return statusAprob;

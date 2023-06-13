@@ -226,7 +226,7 @@ module.exports = {
 				}
 
 				// Se fija si corresponde cambiar el status
-				await procsCRUD.prodsPosibleAprobado(entidad, prodComb);
+				await procsCRUD.prodsPosibleAprob(entidad, prodComb);
 
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;

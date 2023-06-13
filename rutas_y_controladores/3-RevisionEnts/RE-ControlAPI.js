@@ -45,8 +45,8 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			statusAprob = procesos.edicion.statusAprob({familias, registro: originalGuardado});
 			let edicsEliminadas = procesos.edicion.eliminaDemasEdiciones({entidad, entID});
+			statusAprob = procesos.edicion.statusAprob({familias, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 

@@ -377,7 +377,7 @@ module.exports = {
 		// Fin
 		return true;
 	},
-	prodsPosibleAprobado: async function (entidad, registro) {
+	prodsPosibleAprob: async function (entidad, registro) {
 		// Variables
 		const publico = true;
 		const epoca = true;
