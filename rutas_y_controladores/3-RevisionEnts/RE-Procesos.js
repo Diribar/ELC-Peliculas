@@ -630,7 +630,7 @@ module.exports = {
 			let originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 			edicion[campo] = null;
 			if (relacInclude) delete edicion[relacInclude];
-			[edicion] = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
+			edicion = await procsCRUD.puleEdicion(entidad, originalGuardado, edicion);
 
 			// 7. Si se cumplen ciertas condiciones, realiza varias tareas:
 			// - Si está en un status anterior a 'aprobado' y aprueba el test de errores, lo pasa a 'aprobado'
