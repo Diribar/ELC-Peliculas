@@ -82,25 +82,6 @@ module.exports = {
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
 			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
 
-			// SEC: Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
-			const condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
-			let SEC = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
-				.then((n) => n.filter((m) => !m.ediciones.length))
-				.then((n) =>
-					n.map((m) => {
-						// Variables
-						const datos = {
-							...m,
-							entidad: "capitulos",
-							fechaRef: m.sugeridoEn,
-							fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
-						};
-
-						// Fin
-						return datos;
-					})
-				);
-
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugeridoPor_id", revID};
 			let IN = obtieneRegs(campos);
@@ -110,10 +91,10 @@ module.exports = {
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
-			[SE, SEC, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
+			[SE, IN, RC] = await Promise.all([SE, IN, RC]);
 
 			// Fin
-			return {SE: [...SE, ...SEC], IR: [...IN, ...RC]};
+			return {SE, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (ahora, revID) => {
 			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio

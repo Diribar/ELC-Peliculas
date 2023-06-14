@@ -17,6 +17,7 @@ module.exports = {
 
 		// Productos
 		let prods = await procesos.obtieneProds(userID);
+		// return res.send(prods)
 		prods = procesosRE.TC.prod_ProcesaCampos(prods);
 
 		// RCLVs

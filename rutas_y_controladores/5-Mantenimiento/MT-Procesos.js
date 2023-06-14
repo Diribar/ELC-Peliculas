@@ -19,8 +19,61 @@ module.exports = {
 		// Aprobados
 		let aprobados = obtienePorEntidad({entidades, campoFecha: "altaTermEn", status_id: aprobado_id, userID});
 
+		// Sin Edición (en status creadoAprob)
+		let SE_pel = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creadoAprob_id}, "ediciones")
+			.then((n) => n.filter((m) => !m.ediciones.length))
+			.then((n) =>
+				n.map((m) => {
+					// Variables
+					const datos = {
+						...m,
+						entidad: "peliculas",
+						fechaRef: m.sugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+					};
+
+					// Fin
+					return datos;
+				})
+			);
+		let SE_col = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creadoAprob_id}, "ediciones")
+			.then((n) => n.filter((m) => !m.ediciones.length))
+			.then((n) =>
+				n.map((m) => {
+					// Variables
+					const datos = {
+						...m,
+						entidad: "colecciones",
+						fechaRef: m.sugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+					};
+
+					// Fin
+					return datos;
+				})
+			);
+
+		// Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
+		const condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
+		let SE_cap = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
+			.then((n) => n.filter((m) => !m.ediciones.length))
+			.then((n) =>
+				n.map((m) => {
+					// Variables
+					const datos = {
+						...m,
+						entidad: "capitulos",
+						fechaRef: m.sugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+					};
+
+					// Fin
+					return datos;
+				})
+			);
+
 		// Espera las lecturas
-		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
+		[inactivos, aprobados, SE_pel, SE_col, SE_cap] = await Promise.all([inactivos, aprobados, SE_pel, SE_col, SE_cap]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
 
 		// Inactivos (peliculas y colecciones)
@@ -43,7 +96,7 @@ module.exports = {
 		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
 
 		// Fin
-		return {IN, SC, ST, SL, SLG, SLC};
+		return {IN, SE_cap, SE: [...SE_pel, ...SE_col], SC, ST, SL, SLG, SLC};
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
@@ -116,11 +169,10 @@ let obtienePorEntidad = async ({entidades, campoFecha, status_id, userID, includ
 			BD_especificas.MT_obtieneRegs({entidad, ...campos}).then((n) =>
 				n.map((m) => {
 					// Obtiene la edición del usuario
-
 					let edicion = m.ediciones.length ? m.ediciones.find((m) => m.editadoPor_id == userID) : null;
 					delete m.ediciones;
 
-					// Actualiza el original con la edición y elimina la edición
+					// Miminiza la edicion y actualiza el original con la edición
 					if (edicion) {
 						edicion = purgaEdicion(edicion, entidad);
 						m = {...m, ...edicion};
