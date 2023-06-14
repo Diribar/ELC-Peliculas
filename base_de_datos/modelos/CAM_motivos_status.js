@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "motivosStatus";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		descripcion: {type: dt.STRING(23)},
+		descripcion: {type: dt.STRING(33)},
 		bloqueoInput: {type: dt.BOOLEAN},
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},

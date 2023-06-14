@@ -25,6 +25,13 @@ module.exports = {
 			titulo: "Nuestra Misión y Visión",
 		});
 	},
+	valores: (req, res) => {
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			codigo: "nuestrosValores",
+			titulo: "Nuestros Valores",
+		});
+	},
 	enQueConsiste: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
@@ -32,11 +39,11 @@ module.exports = {
 			titulo: "En qué consiste este sitio",
 		});
 	},
-	valores: (req, res) => {
+	perfilPelis: (req, res) => {
 		return res.render("CMP-0Estructura", {
 			tema: "institucional",
-			codigo: "nuestrosValores",
-			titulo: "Nuestros Valores",
+			codigo: "perfilPelis",
+			titulo: "Nuestro Perfil de Películas",
 		});
 	},
 	derechosAutor: (req, res) => {
