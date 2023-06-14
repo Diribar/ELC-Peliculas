@@ -449,54 +449,54 @@ module.exports = {
 			// Fin
 			return;
 		},
-	},
-	// Actualiza los campos de 'producto' en el RCLV
-	prodsEnRCLV: async ({entidad, id}) => {
-		// La entidad y el ID son de un RCLV
+		// Actualiza los campos de 'producto' en el RCLV
+		prodsEnRCLV: async ({entidad, id}) => {
+			// La entidad y el ID son de un RCLV
 
-		// Variables
-		const entidadesProds = variables.entidades.prods;
-		const statusAprobado = {statusRegistro_id: aprobado_id};
-		const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			// Variables
+			const entidadesProds = variables.entidades.prods;
+			const statusAprobado = {statusRegistro_id: aprobado_id};
+			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 
-		// Acciones si el producto tiene ese 'campo_id'
-		if (id && id > 10) {
-			let objeto = {[campo_id]: id};
-			let prodsAprob;
+			// Acciones si el producto tiene ese 'campo_id'
+			if (id && id > 10) {
+				let objeto = {[campo_id]: id};
+				let prodsAprob;
 
-			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
-			for (let entidadProd of entidadesProds) {
-				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
-				if (prodsAprob) {
-					prodsAprob = SI;
-					break;
-				}
-			}
-
-			// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-			if (!prodsAprob)
+				// 1. Averigua si existe algún producto aprobado, con ese rclv_id
 				for (let entidadProd of entidadesProds) {
-					// Averigua si existe algún producto, con ese RCLV
-					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
+					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
 					if (prodsAprob) {
-						prodsAprob = talVez;
+						prodsAprob = SI;
 						break;
 					}
 				}
 
-			// 3. Averigua si existe alguna edición
-			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prodsAprob = talVez;
+				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
+				if (!prodsAprob)
+					for (let entidadProd of entidadesProds) {
+						// Averigua si existe algún producto, con ese RCLV
+						prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
+						if (prodsAprob) {
+							prodsAprob = talVez;
+							break;
+						}
+					}
 
-			// 4. No encontró ningún caso
-			if (!prodsAprob) prodsAprob = NO;
+				// 3. Averigua si existe alguna edición
+				if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prodsAprob = talVez;
 
-			// Actualiza el campo en el RCLV
-			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
-		}
+				// 4. No encontró ningún caso
+				if (!prodsAprob) prodsAprob = NO;
 
-		// Fin
-		return;
+				// Actualiza el campo en el RCLV
+				BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
+			}
+
+			// Fin
+			return;
+		},
 	},
 	// Actualiza los campos de 'links' en el producto
 	linksEnProd: async ({entidad, id}) => {
@@ -565,34 +565,14 @@ module.exports = {
 			const capitulo = await BD_genericas.obtienePorId("capitulos", id);
 			const colID = capitulo.coleccion_id;
 			// Rutinas
-			this.linksEnColeccion(colID, "linksGeneral");
-			this.linksEnColeccion(colID, "linksGratuitos");
-			this.linksEnColeccion(colID, "castellano");
-			this.linksEnColeccion(colID, "subtitulos");
+			linksEnColeccion(colID, "linksGeneral");
+			linksEnColeccion(colID, "linksGratuitos");
+			linksEnColeccion(colID, "castellano");
+			linksEnColeccion(colID, "subtitulos");
 		}
 
 		// Fin
 		return;
-	},
-	// Actualiza para las colecciones
-	linksEnColeccion: async (colID, campo) => {
-		let objeto = {coleccion_id: colID};
-
-		// Cuenta la cantidad de casos true, false y null
-		let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
-		let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-		let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
-		[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-
-		// Averigua los porcentajes de OK y Potencial
-		let total = OK + potencial + no;
-		let resultadoOK = OK / total;
-		let resultadoPot = (OK + potencial) / total;
-
-		// En función de los resultados, actualiza la colección
-		if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
-		else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
-		else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
 	},
 
 	// Varios
@@ -612,7 +592,7 @@ module.exports = {
 	},
 
 	// Bloques a mostrar
-	bloqueRegistro: ({registro, revisor}) => {
+	bloqueRegistro: function ({registro, revisor}) {
 		// Variable
 		let bloque = [];
 
@@ -750,4 +730,24 @@ let puleEdicion = async (entidad, original, edicion) => {
 
 	// Fin
 	return edicion;
+};
+// Actualiza para las colecciones
+let linksEnColeccion = async (colID, campo) => {
+	let objeto = {coleccion_id: colID};
+
+	// Cuenta la cantidad de casos true, false y null
+	let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+	let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
+	let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+	[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+
+	// Averigua los porcentajes de OK y Potencial
+	let total = OK + potencial + no;
+	let resultadoOK = OK / total;
+	let resultadoPot = (OK + potencial) / total;
+
+	// En función de los resultados, actualiza la colección
+	if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
+	else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
+	else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
 };
