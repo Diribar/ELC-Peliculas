@@ -35,7 +35,7 @@ module.exports = {
 		for (let link of links) link.cond = procesos.condiciones(link, userID, tema);
 
 		// Actualiza linksEnProd
-		procsCRUD.linksEnProd({entidad, id});
+		procsCRUD.revisiones.linksEnProd({entidad, id});
 		
 		// Obtiene datos para la vista
 		if (entidad == "capitulos") {

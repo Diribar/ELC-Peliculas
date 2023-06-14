@@ -117,7 +117,7 @@ module.exports = {
 			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
 
 			// Rutina por ID: ejecuta la función linksEnProd
-			for (let id of IDs) procsCRUD.linksEnProd({entidad, id});
+			for (let id of IDs) procsCRUD.revisiones.linksEnProd({entidad, id});
 		}
 
 		// Fin
