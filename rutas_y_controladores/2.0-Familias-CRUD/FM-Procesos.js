@@ -116,20 +116,26 @@ module.exports = {
 		// Quita la info que no agrega valor
 		edicion = await puleEdicion(entidad, original, edicion);
 
-		// Si existe la edición pero no su 'ID' --> se agrega el registro
-		if (edicion && !edicion.id) {
-			// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
-			// 1. campo_id, editadoPor_id
-			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			edicion[campo_id] = original.id;
-			edicion.editadoPor_id = userID;
-			// 2. producto_id (links)
-			if (entidad == "links") {
-				let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
-				edicion[producto_id] = original[producto_id];
+		// Acciones si existe la edición
+		if (edicion) {
+			// Si existe la edición y su 'ID' --> actualiza el registro
+			if (edicion.id) BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
+
+			// Si existe la edición pero no su 'ID' --> se agrega el registro
+			if (!edicion.id) {
+				// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
+				// 1. campo_id, editadoPor_id
+				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+				edicion[campo_id] = original.id;
+				edicion.editadoPor_id = userID;
+				// 2. producto_id (links)
+				if (entidad == "links") {
+					let producto_id = comp.obtieneDesdeEdicion.campo_idProd(original);
+					edicion[producto_id] = original[producto_id];
+				}
+				// Se agrega el registro
+				await BD_genericas.agregaRegistro(entidadEdic, edicion);
 			}
-			// Se agrega el registro
-			await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		}
 
 		// Fin
@@ -316,7 +322,7 @@ module.exports = {
 			// Condiciones
 			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
 			const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
-			if (original[campo]) condiciones[campo][Op.or].push(original[campo]);// o que coincida con el valor original
+			if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
 
 			// 1. Si el campo no recibe datos, termina
 			if (camposQueNoRecibenDatos.includes(campo)) return;
