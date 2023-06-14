@@ -244,12 +244,17 @@ window.addEventListener("load", async () => {
 
 	DOM.form.addEventListener("input", async (e) => {
 		const respetarMinus = v.PC;
-		
+
 		// Validaciones estándar
 		input(e, respetarMinus);
 
 		// Validaciones particulares
 		if (v.PC) await PC.particsInput(e);
+
+		if (v.DD) {
+			const indice = v.campos.indexOf(e.target.name);
+			DOM.iconosError[indice].classList.add("ocultar");
+		}
 
 		// Fin
 		return;
