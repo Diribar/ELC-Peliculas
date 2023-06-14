@@ -220,14 +220,14 @@ module.exports = {
 					// Rutina por campo - sin 'await' y solo para los campos editados
 					for (let campo in req.body)
 						if (original[campo] != req.body[campo])
-							esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body[campo], campo));
+							esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body, campo));
 
 					// Espera a que se corran todos los campos
 					await Promise.all(esperar);
 				}
 
 				// 3. Elimina otras ediciones que tengan los mismos valores
-				let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, entID});
+				let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, id});
 
 				// 4. Se fija si corresponde cambiar el status
 				let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
