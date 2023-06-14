@@ -10,9 +10,9 @@ module.exports = async (req, res, next) => {
 		: req.originalUrl.startsWith("/revision/usuarios")
 		? "usuarios"
 		: "";
-	const prodID = req.query.id;
+	const entID = req.query.id;
 	const userID = req.session.usuario.id;
-	const registro = await BD_genericas.obtienePorIdConInclude(entidad, prodID, "statusRegistro");
+	const registro = await BD_genericas.obtienePorIdConInclude(entidad, entID, "statusRegistro");
 	const urlBase = req.baseUrl;
 	// Variables - De tiempo
 	let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
 		if (registro.capturadoPor_id != userID || registro.capturadoEn < haceDosHoras)
 			datos.capturadoEn = ahora;
 		// CAPTURA DEL REGISTRO
-		await BD_genericas.actualizaPorId(entidad, prodID, datos);
+		await BD_genericas.actualizaPorId(entidad, entID, datos);
 	}
 
 	// Continuar
