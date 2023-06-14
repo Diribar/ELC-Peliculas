@@ -311,20 +311,26 @@ module.exports = {
 				"avatar",
 				"avatar_url",
 			];
-			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
-			const condiciones = {...condicion, [campo]: {[Op.or]: [null, original[campo], ""]}}; // que el campo esté vacío o coincida con el original
 			const novedad = {[campo]: edicion[campo]};
+
+			// Condiciones
+			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
+			const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
+			if (original[campo]) condiciones[campo][Op.or].push(original[campo]);// o que coincida con el valor original
 
 			// 1. Si el campo no recibe datos, termina
 			if (camposQueNoRecibenDatos.includes(campo)) return;
 
 			// 2. Actualización condicional por campo
 			const cond1 = campo == "tipoActuacion_id";
-			const cond2 = variables.entidades.rclvs_id.includes(campo) && edicion[campo] != 2; // Particularidad para rclv_id
-			const cond3 = campo == "epoca_id" && edicion[campo] != epocasVarias.id; // Particularidad para epoca_id
-			if (cond1 || cond2 || cond3) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+			const cond21 = variables.entidades.rclvs_id.includes(campo);
+			const cond22 = cond21 && edicion[campo] != 2; // Particularidad para rclv_id
+			const cond31 = campo == "epoca_id";
+			const cond32 = cond31 && edicion.epoca_id != epocasVarias.id; // Particularidad para epoca_id
+			if (cond1 || cond22 || cond32) await BD_genericas.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+
 			// 3. Actualización condicional por valores
-			else await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
+			if (!cond1 && !cond21 && !cond31) await BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, novedad);
 
 			// Fin
 			return true;
