@@ -12,7 +12,7 @@ module.exports = {
 	TC: {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
-			const campoFecha = "editadoEn";
+			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epocaDelAno"];
 			let productos = [];
 
@@ -64,7 +64,9 @@ module.exports = {
 				// 6.C. Ordena por fecha descendente
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 				// 6.D. Altas
-				AL = productos.filter((n) => n.statusRegistro_id == creado_id && n.entidad != "capitulos");
+				AL = productos.filter(
+					(n) => n.statusRegistro_id == creado_id && n.creadoEn < haceUnaHora && n.entidad != "capitulos"
+				);
 				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
 				// 6.E. Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
 				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
