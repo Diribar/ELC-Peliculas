@@ -8,9 +8,13 @@ window.addEventListener("load", async () => {
 
 	// Botón submit
 	let botonDesaprobar = () => {
+		// Activa o desactiva
 		comentario.value && comentario.value.length > 3
 			? desaprueba.classList.remove("inactivo")
 			: desaprueba.classList.add("inactivo");
+
+		// Fin
+		return;
 	};
 
 	// Event listeners
