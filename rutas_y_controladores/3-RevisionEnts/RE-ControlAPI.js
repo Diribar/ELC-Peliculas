@@ -121,27 +121,23 @@ module.exports = {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Agrega un registro en el histStatus
-		let datosHist;
 		let sugeridoPor_id = original.sugeridoPor_id;
-		(() => {
-			datosHist = {
-				entidad_id: id,
-				entidad,
-				sugeridoPor_id,
-				sugeridoEn: creado ? original.creadoEn : original.sugeridoEn,
-				revisadoPor_id: revID,
-				revisadoEn: ahora,
-				statusOriginal_id: original.statusRegistro_id,
-				statusFinal_id: statusRegistro_id,
-				aprobado: decisAprob,
-			};
-			if (datos.motivo_id) {
-				datosHist.motivo_id = datos.motivo_id;
-				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
-				datosHist.duracion = Number(datosHist.motivo.duracion);
-			}
-			return;
-		})();
+		let datosHist = {
+			entidad_id: id,
+			entidad,
+			sugeridoPor_id,
+			sugeridoEn: creado ? original.creadoEn : original.sugeridoEn,
+			revisadoPor_id: revID,
+			revisadoEn: ahora,
+			statusOriginal_id: original.statusRegistro_id,
+			statusFinal_id: statusRegistro_id,
+			aprobado: decisAprob,
+		};
+		if (datos.motivo_id) {
+			datosHist.motivo_id = datos.motivo_id;
+			datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
+			datosHist.duracion = Number(datosHist.motivo.duracion);
+		}
 		// return res.json({});
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
