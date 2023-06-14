@@ -270,7 +270,7 @@ module.exports = {
 		// RCLV
 		// Actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 		if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-			procsCRUD.accionesPorCambioDeStatus(entidad, registro);
+			procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, registro);
 		// No es necesario el 'await', el proceso no necesita ese resultado
 
 		// SESSION Y COOKIES

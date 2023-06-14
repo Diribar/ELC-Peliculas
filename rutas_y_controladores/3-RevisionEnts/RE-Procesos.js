@@ -554,17 +554,6 @@ module.exports = {
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		edicAprobRech: async function ({entidad, original, edicion, revID, campo, aprob, motivo_id}) {
-			// TAREAS:
-			// - Si se aprobó, actualiza el registro de 'original'
-			// - Si es una colección, actualiza el registro 'original' de los capítulos
-			// - Actualiza la tabla de 'histEdics'
-			// - Aumenta el campo aprob/rech en el registro del usuario
-			// - Si corresponde, penaliza al usuario
-			// - Actualiza el registro de 'edición'
-			// - Pule la variable edición y si no quedan campos, elimina el registro de la tabla de ediciones
-			// - Para productos, actualiza el status del registro original si corresponde
-			// - No alimenta el historial de cambio de status
-
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -593,7 +582,7 @@ module.exports = {
 				await BD_genericas.actualizaPorId(entidad, original.id, datos);
 
 				// 2. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
-				if (entidad == "colecciones") await procsCRUD.transfiereDatos(original, edicion, campo);
+				if (entidad == "colecciones") await procsCRUD.revisiones.transfiereDatos(original, edicion, campo);
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
@@ -633,43 +622,6 @@ module.exports = {
 
 			// Fin
 			return edicion;
-		},
-		eliminaDemasEdiciones: async ({entidad, entID}) => {
-			// Revisa cada registro de edición y decide si corresponde:
-			// - Eliminar el registro
-			// - Elimina el valor del campo
-
-			// Variables
-			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[campo_id]: entID};
-			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
-
-			// Acciones si existen ediciones
-			if (ediciones.length) {
-				let esperar = [];
-				for (let edic of ediciones) esperar.push(procsCRUD.puleEdicion(entidad, original, edic));
-				await Promise.all(esperar);
-			}
-
-			// Fin
-			return;
-		},
-		statusAprob: async ({entidad, registro}) => {
-			// Variables
-			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
-
-			// Acciones si es un producto que no está en status 'aprobado':
-			// 1. Averigua si corresponde cambiarlo al status 'aprobado'
-			// 2. Si es una colección, ídem para sus capítulos
-			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
-			// 4. Obtiene el nuevo status del producto
-			if (!statusAprob && familias == "productos")
-				statusAprob = await procsCRUD.prodsPosibleAprob(entidad, registro);
-
-			// Fin
-			return statusAprob;
 		},
 		// API-edicAprobRech / VISTA-avatarGuardar - Cada vez que se aprueba/rechaza un valor editado
 		cartelNoQuedanCampos: {

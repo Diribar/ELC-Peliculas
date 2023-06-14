@@ -36,14 +36,14 @@ module.exports = {
 			datos.creadoPor_id = userID;
 			datos.sugeridoPor_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creadoPor_id == userID && link.statusRegistro.creado) {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
@@ -79,7 +79,7 @@ module.exports = {
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
 			link.statusRegistro_id = inactivo_id;
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
@@ -97,7 +97,7 @@ module.exports = {
 			};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 		}
 
@@ -122,7 +122,7 @@ module.exports = {
 			datos = {statusRegistro_id: recuperar_id, sugeridoPor_id: userID};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 		// Fin
@@ -155,7 +155,7 @@ module.exports = {
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			// Actualiza los campos del producto asociado
 			link = {...link, ...datos};
-			procsCRUD.accionesPorCambioDeStatus("links", link);
+			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			// Fin
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 		}

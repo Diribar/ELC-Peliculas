@@ -254,7 +254,7 @@ module.exports = {
 		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
-		if (!rclv) procsCRUD.accionesPorCambioDeStatus(entidad, original);
+		if (!rclv) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
@@ -406,7 +406,7 @@ module.exports = {
 	avatarGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, edicID, rechazo, motivo_id} = {...req.query, ...req.body};
-		const entidadEdic=comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const revID = req.session.usuario.id;
 		const original = await BD_genericas.obtienePorId(entidad, id);
 		const campo = "avatar";
@@ -422,7 +422,8 @@ module.exports = {
 		edicion = await procesos.edicion.edicAprobRech({entidad, original, edicion, revID, campo, aprob, motivo_id});
 
 		// 3. Acciones si se terminó de revisar la edición de un producto
-		if (!edicion && entidadEdic == "prods_edicion") await procesos.edicion.statusAprob({entidad, registro: originalGuardado});
+		if (!edicion && entidadEdic == "prods_edicion")
+			await procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
 
 		// Fin
 		if (edicion) return res.redirect(req.originalUrl);

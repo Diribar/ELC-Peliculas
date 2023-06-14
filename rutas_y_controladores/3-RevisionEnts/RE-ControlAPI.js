@@ -43,8 +43,8 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			let edicsEliminadas = procesos.edicion.eliminaDemasEdiciones({entidad, entID});
-			statusAprob = procesos.edicion.statusAprob({entidad, registro: originalGuardado});
+			let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: originalGuardado, entID});
+			statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 		}
 
@@ -152,7 +152,7 @@ module.exports = {
 		if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'linksGratuitos' y 'linksGeneral'
-		procsCRUD.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
+		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
 
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});

@@ -194,6 +194,7 @@ module.exports = {
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...req.body};
+		console.log(197,req.body);
 
 		// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epoca_id' y 'publico_id'
 		prodComb.epoca = revisor;
@@ -202,16 +203,16 @@ module.exports = {
 
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			// 1. Si corresponde, actualiza el original
+			// Acciones si corresponde actualizar el original
 			if (actualizaOrig) {
 				// Completa los datos a guardar
 				prodComb.altaRevisadaPor_id = userID;
 				prodComb.altaRevisadaEn = comp.fechaHora.ahora();
 
-				// Actualiza el registro original
+				// 1. Actualiza el registro original
 				await BD_genericas.actualizaPorId(entidad, id, prodComb);
 
-				// Actualiza los capítulos de una colección
+				// Actualiza los campos de los capítulos de una colección
 				if (entidad == "colecciones") {
 					// Variables
 					let esperar = [];
@@ -219,14 +220,20 @@ module.exports = {
 					// Rutina por campo - sin 'await' y solo para los campos editados
 					for (let campo in req.body)
 						if (original[campo] != req.body[campo])
-							esperar.push(procsCRUD.transfiereDatos(original, req.body[campo], campo));
+							esperar.push(procsCRUD.revisiones.transfiereDatos(original, req.body[campo], campo));
 
 					// Espera a que se corran todos los campos
 					await Promise.all(esperar);
 				}
 
-				// Se fija si corresponde cambiar el status
-				await procsCRUD.prodsPosibleAprob(entidad, prodComb);
+				// 3. Elimina otras ediciones que tengan los mismos valores
+				let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: prodComb, entID});
+
+				// 4. Se fija si corresponde cambiar el status
+				let statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: prodComb});
+
+				// Espera a que se completen las funciones con 'Promise'
+				[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 
 				// Limpia el valor de la edicion, para que no se recargue el url
 				edicion = null;
