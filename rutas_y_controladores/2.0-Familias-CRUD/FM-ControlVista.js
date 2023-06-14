@@ -147,7 +147,7 @@ module.exports = {
 
 		// 3. Actualiza los RCLV, en el campo 'prodsAprob'
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		if (familia == "producto") procesos.accionesPorCambioDeStatus(entidad, original);
+		if (familia == "producto") procesos.procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
 
 		// 4. Regresa a la vista de detalle
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
