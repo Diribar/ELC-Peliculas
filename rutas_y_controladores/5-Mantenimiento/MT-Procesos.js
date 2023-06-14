@@ -11,7 +11,6 @@ module.exports = {
 	obtieneProds: async (userID) => {
 		// Variables
 		const entidades = variables.entidades.prods;
-		let condiciones;
 
 		// PRODUCTOS
 		// Inactivos
@@ -55,7 +54,7 @@ module.exports = {
 			);
 
 		// Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
-		condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
+		const condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
 		let SE_cap = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
@@ -97,7 +96,6 @@ module.exports = {
 		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
 
 		// Fin
-		SE_pel, SE_col, SE_cap;
 		return {IN, SE_cap, SE: [...SE_pel, ...SE_col], SC, ST, SL, SLG, SLC};
 	},
 	obtieneRCLVs: async (userID) => {
