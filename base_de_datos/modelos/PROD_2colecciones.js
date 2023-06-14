@@ -58,14 +58,15 @@ module.exports = (sequelize, dt) => {
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		statusRegistro_id: {type: dt.INTEGER},
-		motivo_id: {type: dt.INTEGER},
 		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
 		capturaActiva: {type: dt.BOOLEAN},
+
+		motivo_id: {type: dt.INTEGER},
+		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "prod_2colecciones",

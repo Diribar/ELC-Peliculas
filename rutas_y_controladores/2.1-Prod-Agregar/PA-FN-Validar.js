@@ -47,7 +47,7 @@ module.exports = {
 					if (!respuesta) respuesta = comp.validacs.longitud(dato, campo.corto, campo.largo);
 					if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
 					if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
-				} else respuesta = variables.inputVacio;
+				} else respuesta = datos.entidad != "capitulos" ? variables.inputVacio : "";
 				// Excepción para actores
 				// if (nombre == "actores" && respuesta == variables.inputVacio) respuesta = "";
 				// Fin
