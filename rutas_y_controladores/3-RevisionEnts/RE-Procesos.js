@@ -91,7 +91,7 @@ module.exports = {
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
-			[SE, IN, RC] = await Promise.all([SE, SEC, IN, RC]);
+			[SE, IN, RC] = await Promise.all([SE, IN, RC]);
 
 			// Fin
 			return {SE, IR: [...IN, ...RC]};
