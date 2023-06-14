@@ -60,7 +60,7 @@ module.exports = (sequelize, dt) => {
 
 		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},
-		
+
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
 		capturaActiva: {type: dt.BOOLEAN},
