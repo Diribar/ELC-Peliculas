@@ -12,13 +12,17 @@
 			<div id="colecciones">
 				<% if (["prod_rud", "links_crud"].includes(tema)) { %>
 					<a href="<%= '/inactivar-captura/?entidad=colecciones&id=' + id + '&prodEntidad=capitulos&prodID=' + capID + '&origen=' + rutaCRUD %>">
-						<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un Capítulo" %>"></i>
+						<div>
+							<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
+							<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
+						</div>
 					</a>
+				<% } else { %>
+					<div>
+						<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
+						<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
+					</div>
 				<% } %>
-				<div>
-					<p><b>Cant. de Temporadas:</b> <%= registro.cant_temps ? registro.cant_temps : "Sin datos" %></p>
-					<p><b>Cant. de Capítulos:</b> <%= registro.capitulos.length %></p>
-				</div>
 			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->
