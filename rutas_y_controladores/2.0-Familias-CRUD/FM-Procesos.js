@@ -303,13 +303,20 @@ module.exports = {
 	revisiones: {
 		transfiereDatos: async (original, edicion, campo) => {
 			// Variables
-			const camposQueNoSeReciben = ["nombreOriginal", "nombreCastellano", "anoEstreno", "sinopsis", "avatar", "avatar_url"];
+			const camposQueNoRecibenDatos = [
+				"nombreOriginal",
+				"nombreCastellano",
+				"anoEstreno",
+				"sinopsis",
+				"avatar",
+				"avatar_url",
+			];
 			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
 			const condiciones = {...condicion, [campo]: {[Op.or]: [null, original[campo], ""]}}; // que el campo esté vacío o coincida con el original
 			const novedad = {[campo]: edicion[campo]};
 
 			// 1. Si el campo no recibe datos, termina
-			if (camposQueNoSeReciben.includes(campo)) return;
+			if (camposQueNoRecibenDatos.includes(campo)) return;
 
 			// 2. Actualización condicional por campo
 			const cond1 = campo == "tipoActuacion_id";
@@ -322,7 +329,7 @@ module.exports = {
 			// Fin
 			return true;
 		},
-		eliminaDemasEdiciones: async ({entidad, original, entID}) => {
+		eliminaDemasEdiciones: async ({entidad, original, id}) => {
 			// Revisa cada registro de edición y decide si corresponde:
 			// - Eliminar el registro
 			// - Elimina el valor del campo
@@ -330,7 +337,7 @@ module.exports = {
 			// Variables
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const condicion = {[campo_id]: entID};
+			const condicion = {[campo_id]: id};
 			const ediciones = await BD_genericas.obtieneTodosPorCondicion(nombreEdic, condicion);
 
 			// Acciones si existen ediciones
@@ -502,51 +509,48 @@ module.exports = {
 			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			if (entidad == "colecciones") return;
-	
+
 			// Más variables
 			const tipo_id = link_pelicula_id; // El tipo de link 'película'
 			const statusAprobado = {statusRegistro_id: aprobado_id};
 			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
 			let objeto = {[campo_id]: id, tipo_id};
-	
+
 			// 1. Averigua si existe algún link, para ese producto
-			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) => {
-				return n
-					? SI
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => {
-							return n ? talVez : NO;
-					  });
-			});
-	
+			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
+				n ? SI : BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => (n ? talVez : NO))
+			);
+
 			// 2. Averigua si existe algún link gratuito, para ese producto
 			let linksGratuitos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, gratuito: true}).then(
-				(n) => {
-					return n
+				(n) =>
+					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) => {
-								return n ? talVez : NO;
-						  });
-				}
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) =>
+								n ? talVez : NO
+						  )
 			);
-	
+
 			// 3. Averigua si existe algún link en castellano, para ese producto
-			let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then((n) => {
-				return n
-					? SI
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, castellano: true}).then((n) => {
-							return n ? talVez : NO;
-					  });
-			});
-	
+			let castellano = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, castellano: true}).then(
+				(n) =>
+					n
+						? SI
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, castellano: true}).then((n) =>
+								n ? talVez : NO
+						  )
+			);
+
 			// 4. Averigua si existe algún link con subtitulos, para ese producto
-			let subtitulos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, subtitulos: true}).then((n) => {
-				return n
-					? SI
-					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) => {
-							return n ? talVez : NO;
-					  });
-			});
-	
+			let subtitulos = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado, subtitulos: true}).then(
+				(n) =>
+					n
+						? SI
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) =>
+								n ? talVez : NO
+						  )
+			);
+
 			// Consolida
 			[linksGeneral, linksGratuitos, castellano, subtitulos] = await Promise.all([
 				linksGeneral,
@@ -554,10 +558,10 @@ module.exports = {
 				castellano,
 				subtitulos,
 			]);
-	
+
 			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
-	
+
 			// Colecciones - la actualiza en función de la mayoría de los capítulos
 			if (entidad == "capitulos") {
 				// Obtiene los datos para identificar la colección
@@ -569,7 +573,7 @@ module.exports = {
 				linksEnColeccion(colID, "castellano");
 				linksEnColeccion(colID, "subtitulos");
 			}
-	
+
 			// Fin
 			return;
 		},
