@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 				? [inactivo_id]
 				: [99]
 			: baseUrl == "/links" && ruta == "/abm/"
-			? [creado_id, aprobado_id]
+			? [creado_id, creadoAprob_id, aprobado_id]
 			: // Preguntas para 'Revisión'
 			baseUrl == "/revision"
 			? ruta.includes("/alta/") // para 'producto' y 'rclv'

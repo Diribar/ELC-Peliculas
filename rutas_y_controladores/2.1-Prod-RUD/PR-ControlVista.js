@@ -194,7 +194,6 @@ module.exports = {
 		// 1. Se debe agregar el id del original, para verificar que no esté repetido
 		// 2. Se debe agregar la edición, para que aporte su campo 'avatar'
 		let prodComb = {...original, ...req.body};
-		console.log(197,req.body);
 
 		// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epoca_id' y 'publico_id'
 		prodComb.epoca = revisor;
