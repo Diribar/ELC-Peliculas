@@ -50,6 +50,7 @@ module.exports = {
 		else {
 			if (edicID) datos.id = edicID;
 			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
+			if (mensaje) mensaje="Edición guardada"
 		}
 
 		// Fin
