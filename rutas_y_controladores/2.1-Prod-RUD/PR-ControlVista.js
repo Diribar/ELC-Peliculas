@@ -172,7 +172,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo]
+		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -245,6 +245,7 @@ module.exports = {
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
+
 			// Acciones sobre el archivo avatar, si recibimos uno
 			if (req.file) {
 				if (actualizaOrig) {
@@ -260,6 +261,9 @@ module.exports = {
 						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
+
+			// Elimina los datos de la session
+			delete req.session.edicProd;
 		} else {
 			// Si recibimos un archivo avatar editado, lo elimina
 			if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
