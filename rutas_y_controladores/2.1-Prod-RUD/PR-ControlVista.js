@@ -172,7 +172,10 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+
+		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+		for (let campo in req.body) if (typeof req.body[campo]=="string") req.body[campo] = req.body[campo].trim();
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
