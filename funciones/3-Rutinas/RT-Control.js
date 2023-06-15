@@ -42,6 +42,7 @@ module.exports = {
 		await this.conjuntoDeRutinasDiarias();
 		await this.conjuntoDeRutinasSemanales();
 		// this.epoca();
+		// this.BorraImagenesSinRegistro()
 	},
 	epoca: async () => {
 		// Variables
