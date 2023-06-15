@@ -154,6 +154,27 @@ module.exports = {
 
 		return res.redirect(destino);
 	},
+	eliminadoForm: (req, res) => {
+		// Variables
+		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
+		if (!entidad) return res.redirect("/");
+
+		// Más variables
+		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
+		const articulo2 = articulo1 == "La " ? "a" : "o";
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+		const link = origen == "TM" ? "/mantenimiento" : "/";
+
+		// Cartel de registro eliminado
+		const informacion = {
+			mensajes: [articulo1 + entidadNombre + ' "' + nombre + '" fue eliminad' + articulo2 + " de nuestra base de datos."],
+			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
+			check: true,
+		};
+
+		// Fin
+		return res.render("CMP-0Estructura", {informacion});
+	},
 	eliminarGuardar: async (req, res) => {
 		// Variables
 		const {entidad, id, origen} = req.query;
@@ -226,26 +247,5 @@ module.exports = {
 
 		// Fin
 		return res.redirect("/" + familia + "/eliminado");
-	},
-	eliminadoForm: (req, res) => {
-		// Variables
-		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
-		if (!entidad) return res.redirect("/");
-
-		// Más variables
-		const articulo1 = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "La " : "El ";
-		const articulo2 = articulo1 == "La " ? "a" : "o";
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
-		const link = origen == "TM" ? "/mantenimiento" : "/";
-
-		// Cartel de registro eliminado
-		const informacion = {
-			mensajes: [articulo1 + entidadNombre + ' "' + nombre + '" fue eliminad' + articulo2 + " de nuestra base de datos."],
-			iconos: [{nombre: "fa-thumbs-up", link, titulo: "Entendido"}],
-			check: true,
-		};
-
-		// Fin
-		return res.render("CMP-0Estructura", {informacion});
 	},
 };
