@@ -39,7 +39,7 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
+		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1).replaceAll("-"," ").replace("recup","Recup")
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Ayuda para el titulo
