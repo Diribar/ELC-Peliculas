@@ -790,7 +790,7 @@ let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
 	// Fin
 	return;
 };
-let siHayErroresBajaElStatus = async (prodsPorEnts) => {
+let siHayErroresBajaElStatus = (prodsPorEnts) => {
 	// Variables
 	const entidades = variables.entidades.prods;
 
