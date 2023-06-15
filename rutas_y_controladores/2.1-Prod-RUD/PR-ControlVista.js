@@ -256,7 +256,7 @@ module.exports = {
 					// Mueve el archivo de la edición para su revisión
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar)
+					if (avatarEdicInicial)
 						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
