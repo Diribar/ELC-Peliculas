@@ -520,6 +520,9 @@ module.exports = {
 			// Fin
 			return;
 		},
+	},
+
+	eliminar:{
 		eliminaRegsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
 			// Variables
 			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);

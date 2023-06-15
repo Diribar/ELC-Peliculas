@@ -191,24 +191,21 @@ module.exports = {
 
 		// 2. Elimina los links y sus ediciones
 		if (familia == "producto")
-			esperar.push(procesos.revisiones.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
 
 		// 3. Elimina los capítulos y sus ediciones
 		if (entidad == "colecciones")
-			esperar.push(procesos.revisiones.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
 
-		// Acciones si es un RCLV
-		if (familia == "rclv") {
-			// 3. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-			esperar.push(procesos.revisiones.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
+		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
 
-			// 4. Borra el vínculo de los productos y los baja de status si corresponde
-			esperar.push(procesos.revisiones.borraVinculoProds())
+		// 5. Borra el vínculo en los productos y les baja de status si corresponde
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
 
-			// epocaDelAno - Borra el vínculo en los diasDelAno
-			if (entidad == "epocasDelAno")
-				esperar.push(BD_genericas.actualizaTodosPorCondicion("epocasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
-		}
+		// 6. Borra el vínculo en los diasDelAno
+		if (entidad == "epocasDelAno")
+			esperar.push(BD_genericas.actualizaTodosPorCondicion("diasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
 
 		// TAREAS QUE NO IMPIDEN ELIMINAR EL REGISTRO
 		// 1. Elimina el historial de status
@@ -223,7 +220,7 @@ module.exports = {
 			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
 		}
 
-		// Espera a que cumplan todas las rutinas anteriores
+		// Espera a que se cumplan todas las rutinas anteriores
 		await Promise.all(esperar);
 
 		// Elimina el registro
