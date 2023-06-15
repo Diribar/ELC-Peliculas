@@ -276,11 +276,13 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 
+		const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+
 		// Fin
 		return edicion
 			? res.redirect(req.originalUrl) // Recarga la vista
-			: origen && origen == "TE"
-			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresa a Revisión
-			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
+			: origen == "TE"
+			? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
+			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
 };
