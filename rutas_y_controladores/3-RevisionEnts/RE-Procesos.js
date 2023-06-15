@@ -77,12 +77,14 @@ module.exports = {
 		},
 		obtieneProds_SE_IR: async (revID) => {
 			// Variables
-			const entidades = ["peliculas", "colecciones"];
+			const entidades = ["peliculas", "colecciones", "capitulos"];
 			let campos;
 
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
-			let SE = obtieneRegs(campos).then((n) => n.filter((m) => !m.ediciones.length));
+			let SE = obtieneRegs(campos)
+				.then((n) => n.filter((m) => m.entidad != "capitulos"))
+				.then((n) => n.filter((m) => !m.ediciones.length));
 
 			// IN: En staus 'inactivar'
 			campos = {entidades, status_id: inactivar_id, campoRevID: "sugeridoPor_id", revID};
