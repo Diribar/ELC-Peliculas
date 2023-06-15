@@ -191,7 +191,7 @@ module.exports = {
 				const CFC = categoria_id == "CFC";
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN" + sexo_id;
 				DE.canon_id = CFC ? canon_id : "NN" + sexo_id;
-				DE.apMar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? apMar_id : no_presencio_ninguna_id;
+				DE.apMar_id = CFC && epoca_id == "pst" && parseInt(ano) > 1100 ? apMar_id : 10;
 			}
 
 			// Datos para hechos
