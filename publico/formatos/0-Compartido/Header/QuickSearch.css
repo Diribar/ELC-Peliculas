@@ -6,6 +6,7 @@
 #busquedaRapida .menu_mostrar #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
 #busquedaRapida .menu_mostrar input {padding: 2px 5px; width: 200px;}
 #busquedaRapida .menu_mostrar #displayResultados {border-top-left-radius: 0; overflow: hidden;}
+#busquedaRapida .menu_mostrar #displayResultados tr td {padding: 0 5px;}
 
 /* Opciones de #displayResultados */
 #busquedaRapida #displayResultados table {border-collapse: collapse;}
@@ -17,11 +18,10 @@
 #busquedaRapida #displayResultados tr.rclv:nth-of-type(even) {background: var(--amarillo-claro);}
 
 /* Para que el anchor de la primera columna ocupe todo el ancho */
-#busquedaRapida #displayResultados tr td:first-child a {display: block; width: 100%;}
+#busquedaRapida #displayResultados tr td:first-child a {display: block; width: 100%; line-height: 1.3;}
 
 /* Alineación de la columna de 'familia' */
 #busquedaRapida #displayResultados tr td:nth-of-type(2) {text-align: left;}
 #busquedaRapida #displayResultados tr td:nth-of-type(2):first-letter {text-transform: uppercase;}
 /* Otros */
-#busquedaRapida #displayResultados tr td {padding: 2px 5px;}
 #busquedaRapida #escribiMas {background: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
