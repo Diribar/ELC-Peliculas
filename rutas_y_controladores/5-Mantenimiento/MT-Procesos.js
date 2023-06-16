@@ -85,9 +85,7 @@ module.exports = {
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
 
 		// Inactivos (peliculas y colecciones)
-		const IN = inactivos.filter(
-			(n) => n.entidad != "capitulos" || (n.entidad == "capitulos" && n.statusColeccion_id != inactivo_id)
-		);
+		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id != inactivo_id);
 
 		// Aprobados - Sin calificar
 		const SC = pelisColes.filter((m) => !m.calificacion);
