@@ -20,9 +20,11 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
+		"14-jun-23": {"titulo": "ELC - Películas"},
 		"15-jun-23": {"titulo": "ELC - Películas"},
 		"16-jun-23": {"titulo": "Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23},
-		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26}
+		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
+		"18-jun-23": {"titulo": "ELC - Películas"}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
