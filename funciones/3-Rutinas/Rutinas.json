@@ -7,7 +7,8 @@
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
-	"Subtitulo3": "-------------- RUTINAS -----------------------",
+    "SemanaUTC": "SI",
+    "Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
@@ -15,7 +16,7 @@
 		"PaisesConMasProductos": "SI",
 		"AprobadoConAvatarUrl": "SI"
 	},
-	"RutinasSemanales": {"SemanaUTC": "SI", "LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
+	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"14-jun-23": {"titulo": "ELC - Películas"},
