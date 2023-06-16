@@ -24,12 +24,6 @@
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
 			</div>
 		</a>
-		<!-- Mantenimiento -->
-		<% if (locals.usuario && usuario.rolUsuario.permInputs) { %>
-			<a href="/mantenimiento" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-tools scale iconoHeader revision" title="Mantenimiento de Entidades"></i>
-			</a>
-		<% } %>
 		<!-- Revisar Entidades -->
 		<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
 			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
@@ -37,6 +31,12 @@
 					<i class="fa-solid fa-video iconoHeader revision"></i>
 					<i class="fa-solid fa-check iconoHeader adentro"></i>
 				</div>
+			</a>
+		<% } %>
+		<!-- Mantenimiento -->
+		<% if (locals.usuario && usuario.rolUsuario.permInputs) { %>
+			<a href="/mantenimiento" tabindex="-1" class="grupos">
+				<i class="fa-solid fa-tools scale iconoHeader revision" title="Mantenimiento de Entidades"></i>
 			</a>
 		<% } %>
 		<!-- Revisar Usuarios -->
