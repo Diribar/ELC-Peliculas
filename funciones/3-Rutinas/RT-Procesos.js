@@ -18,9 +18,31 @@ module.exports = {
 		// Fin
 		return info;
 	},
-	actualizaRutinasJSON: function (datos) {
+	guardaArchivoDeRutinas: function (datos) {
 		// Obtiene la informacion vigente
 		let info = this.lecturaRutinasJSON();
+
+		// Averigua si hubo alguna novedad
+		let sonIguales = true;
+		// for (let campo1 in datos) {
+		// 	// Si los datos son iguales, saltea los controles posteriores
+		// 	if (datos[campo1] == info[campo1]) continue;
+
+		// 	// Acciones si es un string
+		// 	if (typeof datos[campo1] == "string") sonIguales = false;
+		// 	// Acciones si es un array
+		// 	else if (Array.isArray(datos[campo1])) {
+		// 		datos[campo1].forEach((campo, i) => (campo != info[campo1][i] ? (sonIguales = false) : null));
+		// 	}
+		// 	// Acciones si es un objeto
+		// 	else for (let campo2 in datos[campo1]) if (datos[campo1][campo2] != info[campo1][campo2]) sonIguales = false;
+
+		// 	// Fin
+		// 	if (!sonIguales) break;
+		// }
+
+		// Si no hubo ninguna novedad, sale de la función
+		// if (sonIguales) return true;
 
 		// Actualiza la información
 		info = {...info, ...datos};
@@ -46,6 +68,7 @@ module.exports = {
 		for (let archivo of archivosDeImagen) {
 			const dot = archivo.lastIndexOf(".");
 			if (dot < 0) dato = archivo.length;
+
 			if (!fechas.includes(archivo.slice(0, dot))) comp.gestionArchivos.elimina(carpetaImagen, archivo);
 		}
 
@@ -102,15 +125,20 @@ module.exports = {
 		// Variables
 		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
 		const entidadEdic = comp.obtieneDesdeFamilias.entidadEdic(familias);
-		let carpeta, avatars, consolidado;
+		let carpeta, avatars, consolidado, statusFinal;
 
 		// Borra los avatar de Revisar - incluye: EDICIONES y Prods/RCLVs creados
 		carpeta = "2-" + familias + "/Revisar";
 		avatars = [];
 		consolidado = [];
+
+		// Revisa los avatars que están en las ediciones
 		avatars.push(BD_especificas.nombresDeAvatarEnBD(entidadEdic));
+
+		// Revisa los avatars que están en los productos
+		statusFinal = status_registros.filter((n) => n.id == creado_id).map((n) => n.id); // Los avatar ingresados a mano pueden estar en 'Revisar'
 		for (let entidad of variables.entidades[petitFamilias])
-			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, creado_id));
+			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
 		eliminaLasImagenes(consolidado, carpeta);
 
@@ -118,7 +146,9 @@ module.exports = {
 		carpeta = "2-" + familias + "/Final";
 		avatars = [];
 		consolidado = [];
-		const statusFinal = status_registros.filter((n) => n.id != creado_id).map((n) => n.id);
+
+		// Revisa los avatars que están en los productos
+		statusFinal = status_registros.filter((n) => n.id != creado_id).map((n) => n.id);
 		for (let entidad of variables.entidades[petitFamilias])
 			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
@@ -434,11 +464,13 @@ module.exports = {
 	},
 	rutinasFinales: function (campo) {
 		// Actualiza el archivo JSON
-		this.actualizaRutinasJSON({[campo]: "SI"});
+		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"});
 
 		// Feedback del proceso
-		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' actualizada y datos guardados en JSON");
+		if (!sonIguales) {
+			const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+			console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada y datos guardados en JSON");
+		} else this.rutinasSinGuardar(campo);
 
 		// Fin
 		return;
@@ -446,7 +478,7 @@ module.exports = {
 	rutinasSinGuardar: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' actualizada");
+		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
 
 		// Fin
 		return;
@@ -637,7 +669,7 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Rutina para detectar nombres sin archivo
 	for (let avatar of avatars)
-		if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, avatar.entidad);
+		if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, "(" + avatar.entidad + ")");
 
 	// Fin
 	return;
