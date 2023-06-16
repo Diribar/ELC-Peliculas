@@ -8,11 +8,10 @@
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
 	"RutinasDiarias": [
-		"FechaHoraUTC",
-		"PaisesConMasProductos",
 		"BorraImagenesSinRegistro",
-		"AprobadoConAvatarUrl",
-		"ImagenDerecha"
+		"ImagenDerecha",
+		"PaisesConMasProductos",
+		"AprobadoConAvatarUrl"
 	],
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",

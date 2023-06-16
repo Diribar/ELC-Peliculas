@@ -20,13 +20,14 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
 		rutinasHorarias.forEach((rutina, i) => {
-			let horario = 1 + i;
-			cron.schedule(horario + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+			let minuto = 1 + i;
+			cron.schedule(minuto + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		});
 
 		// Rutinas diarias
 		if (!info.RutinasDiarias || !info.RutinasDiarias.length) return;
-		cron.schedule("0 0 * * *", async () => await this.RutinasDiarias(), {timezone: "Etc/Greenwich"});
+		cron.schedule("0 0 * * *", async () => await this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
+		cron.schedule("30 0 * * *", async () => await this.RutinasDiarias(), {timezone: "Etc/Greenwich"});
 
 		// Rutinas semanales
 		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
@@ -209,7 +210,7 @@ module.exports = {
 	},
 
 	// 2. Rutinas diarias
-	FechaHoraUTC: function () {
+	FechaHoraUTC: () => {
 		// Obtiene las rutinas del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
