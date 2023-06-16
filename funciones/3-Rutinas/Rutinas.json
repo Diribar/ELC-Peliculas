@@ -1,19 +1,19 @@
 {
 	"FechaUTC": "Vie. 16/jun",
-	"HoraUTC": "0:22",
+	"HoraUTC": "11:42",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
 	"Separador1:": "---------------- RUTINAS HORARIAS --------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
-	"HorariosUTC": {
-		"FechaHoraUTC": "00:00",
-		"PaisesConMasProductos": "01:00",
-		"BorraImagenesSinRegistro": "02:00",
-		"AprobadoConAvatarUrl": "03:00",
-		"ImagenDerecha": "06:00"
-	},
+	"RutinasDiarias": [
+		"FechaHoraUTC",
+		"PaisesConMasProductos",
+		"BorraImagenesSinRegistro",
+		"AprobadoConAvatarUrl",
+		"ImagenDerecha"
+	],
 	"FechaHoraUTC": "SI",
 	"PaisesConMasProductos": "SI",
 	"BorraImagenesSinRegistro": "SI",
