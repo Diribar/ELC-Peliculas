@@ -108,10 +108,10 @@ module.exports = {
 	RutinasDiarias: async function () {
 		// Obtiene la información del archivo JSON
 		const info = procesos.lecturaRutinasJSON();
-		const rutinas = info.RutinasDiarias;
+		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
-		for (let rutina in rutinas) await this[rutina]();
+		for (let rutinaDiaria in rutinasDiarias) await this[rutinaDiaria]();
 
 		// Fin
 		return;
