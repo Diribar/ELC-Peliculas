@@ -10,7 +10,7 @@ const procesos = require("./RT-Procesos");
 
 // Exportar ------------------------------------
 module.exports = {
-	// 0.A. Start-up y Configuracion de Rutinas periodicas
+	// 0. Start-up y Configuracion de Rutinas
 	startupMasConfiguracion: async function () {
 		// Rutinas programadas
 		const info = procesos.lecturaRutinasJSON();
@@ -35,6 +35,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
+		await this.SemanaUTC();
 
 		// this.epoca();
 		// this.BorraImagenesSinRegistro();
@@ -42,33 +43,6 @@ module.exports = {
 
 		// Fin
 		return;
-	},
-	epoca: async () => {
-		// Variables
-		const entidades = variables.entidades.prods;
-		const condicion = {statusRegistro_id: aprobado_id, epoca_id: null};
-		const include = ["personaje", "hecho"];
-		const nuevoStatus = {statusRegistro_id: creadoAprob_id};
-
-		// Revisa cada registro aprobado y sin epoca_id
-		for (let entidad of entidades) {
-			// Obtiene todos los registros con include personaje y hecho
-			const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include);
-
-			for (let registro of registros) {
-				const id = registro.id;
-				// Revisa si tiene un personaje con epoca_id
-				if (registro.personaje.epoca_id)
-					// En caso afirmativo, le copia la epoca_id
-					BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.personaje.epoca_id});
-				// Revisa si tiene un hecho con epoca_id
-				else if (registro.hecho.epoca_id)
-					// En caso afirmativo, le copia la epoca_id
-					BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.hecho.epoca_id});
-				// En caso negativo, le cambia el status a creadoAprob
-				else BD_genericas.actualizaPorId(entidad, id, nuevoStatus);
-			}
-		}
 	},
 
 	// 1. Rutinas horarias
@@ -180,7 +154,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		const rutinasDiarias = info.RutinasDiarias;
 
-		// Obtiene la fecha UTC actual
+		// Obtiene la fecha y hora UTC actual
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
@@ -192,15 +166,14 @@ module.exports = {
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
-		for (let campo in rutinasDiarias) feedback_RD[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
 
 		// Actualiza el archivo JSON
 		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
-		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
-		if (HoraUTC >= "00:45") await this.RutinasSemanales();
+		if (HoraUTC >= "00:30") await this.RutinasDiarias();
 
 		// Fin
 		return;
@@ -335,38 +308,45 @@ module.exports = {
 	},
 
 	// 3. Rutinas semanales
-	SemanaUTC: function () {
-		// Obtiene la fecha y la hora procesados
-		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-		const semanaUTC = procesos.semanaUTC();
-
+	SemanaUTC: async function () {
 		// Obtiene las rutinas del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
-		const rutinas = Object.keys(info.RutinasSemanales);
+		const rutinasSemanales = info.RutinasSemanales;
+
+		// Obtiene la fecha y hora UTC actual
+		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
+		const semanaUTC = procesos.semanaUTC();
+
+		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
+		if (info.semanaUTC == semanaUTC) return;
+
+		// Actualiza los campos de semana
+		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback);
 
 		// Establece el status de los procesos de rutina
-		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC};
-		for (let rutina of rutinas) feedback[rutina] = "NO";
-		feedback.SemanaUTC = "NO";
+		const feedback_RS = {};
+		for (let rutinaSemanal in rutinasSemanales) feedback_RS[rutinaSemanal] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback_RS, "RutinasSemanales");
 
 		// Actualiza el archivo JSON
-		const sonIguales = procesos.guardaArchivoDeRutinas(feedback);
+		procesos.rutinasFinales("SemanaUTC");
+
+		// Si ya pasó el horario de 'Rutinas Semanales', implementa esa rutina
+		if (HoraUTC >= "00:45") await this.RutinasSemanales();
 
 		// Fin
-		procesos.rutinasFinales("SemanaUTC", "RutinasSemanales");
 		return;
 	},
 	RutinasSemanales: async function () {
-		// Variables
-		const semanaUTC = procesos.semanaUTC();
+		// Obtiene la información del archivo JSON
 		const info = procesos.lecturaRutinasJSON();
-		const rutinasSemanales = Object.keys(info.RutinasSemanales);
+		const rutinasSemanales = info.RutinasSemanales;
 
 		// Si la 'semanaUTC' es distinta o la rutinaSemanal está pendiente, actualiza las rutinasSemanales
-		for (let rutinaSemanal of rutinasSemanales)
-			if (info.semanaUTC != semanaUTC || info.RutinasSemanales[rutinaSemanal] != "SI") await this[rutinaSemanal]();
+		for (let rutinaSemanal in rutinasSemanales) await this[rutinaSemanal]();
 
 		// Fin
 		return;
@@ -406,4 +386,31 @@ module.exports = {
 		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
+};
+let epoca = async () => {
+	// Variables
+	const entidades = variables.entidades.prods;
+	const condicion = {statusRegistro_id: aprobado_id, epoca_id: null};
+	const include = ["personaje", "hecho"];
+	const nuevoStatus = {statusRegistro_id: creadoAprob_id};
+
+	// Revisa cada registro aprobado y sin epoca_id
+	for (let entidad of entidades) {
+		// Obtiene todos los registros con include personaje y hecho
+		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion, include);
+
+		for (let registro of registros) {
+			const id = registro.id;
+			// Revisa si tiene un personaje con epoca_id
+			if (registro.personaje.epoca_id)
+				// En caso afirmativo, le copia la epoca_id
+				BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.personaje.epoca_id});
+			// Revisa si tiene un hecho con epoca_id
+			else if (registro.hecho.epoca_id)
+				// En caso afirmativo, le copia la epoca_id
+				BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.hecho.epoca_id});
+			// En caso negativo, le cambia el status a creadoAprob
+			else BD_genericas.actualizaPorId(entidad, id, nuevoStatus);
+		}
+	}
 };
