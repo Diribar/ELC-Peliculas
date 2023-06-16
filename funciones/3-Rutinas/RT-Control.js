@@ -87,11 +87,14 @@ module.exports = {
 		if (info.FechaUTC == FechaUTC) return;
 
 		// Establece el status de los procesos de rutina
-		const feedback_RD = {FechaUTC, HoraUTC, FechaHoraUTC: "NO", RutinasDiarias: {}}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
-		for (let campo in rutinasDiarias) feedback_RD.RutinasDiarias[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback);
 
 		// Actualiza el archivo JSON
-		procesos.guardaArchivoDeRutinas(feedback_RD);
+		const feedback_RD = {};
+		for (let campo in rutinasDiarias) feedback_RD[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
+
 		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina

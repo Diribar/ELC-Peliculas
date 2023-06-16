@@ -49,11 +49,10 @@ module.exports = {
 
 				// Revisa que tengan la misma cantidad de campos
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
-
 				// Revisa que tengan el mismo valor de string
 				else camposNuevo.forEach((campo, i) => (campo != camposGuardado[i] ? (sonIguales = false) : null));
 
-				// 
+				//
 			}
 
 			// Fin
@@ -64,7 +63,7 @@ module.exports = {
 		if (sonIguales) return true;
 
 		// Actualiza la información
-		info = {...info, [menu]: {...info[menu], ...datos}};
+		info = menu ? {...info, [menu]: {...info[menu], ...datos}} : {...info, ...datos};
 
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
