@@ -83,7 +83,6 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
-		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
 		if (info.FechaUTC == FechaUTC) return;
 
 		// Actualiza los campos de fecha
@@ -100,7 +99,7 @@ module.exports = {
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
 		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
-		// if (HoraUTC >= "00:45") await this.RutinasSemanales();
+		if (HoraUTC >= "00:45") await this.RutinasSemanales();
 
 		// Fin
 		return;
@@ -117,19 +116,14 @@ module.exports = {
 		return;
 	},
 	RutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
+		// Variables
+		const semanaUTC = procesos.semanaUTC();
 		const info = procesos.lecturaRutinasJSON();
-		const rutinas = Object.keys(info.RutinasSemanales);
+		const rutinasSemanales = Object.keys(info.RutinasSemanales);
 
-		// Obtiene la semana y el día de la semana
-		const SemanaUTC = procesos.semanaUTC();
-		const diaSem = new Date().getDay();
-
-		// Si la 'SemanaUTC' es distinta, actualiza todas las rutinas
-		if (info.semanaUTC != SemanaUTC) for (let rutina of rutinas) await this[rutina]();
-		// Si la 'SemanaUTC' está bien, actualiza las rutinas que correspondan en función del día de la semana
-		else
-			for (let rutina of rutinas) if (info[rutina] != "SI" && diaSem >= info.RutinasSemanales[rutina]) await this[rutina]();
+		// Si la 'semanaUTC' es distinta o la rutinaSemanal está pendiente, actualiza las rutinasSemanales
+		for (let rutinaSemanal of rutinasSemanales)
+			if (info.semanaUTC != semanaUTC || info.RutinasSemanales[rutinaSemanal] != "SI") await this[rutinaSemanal]();
 
 		// Fin
 		return;

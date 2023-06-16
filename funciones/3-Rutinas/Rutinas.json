@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Vie. 16/jun",
-	"HoraUTC": "17:29",
+	"HoraUTC": "18:36",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Dom. 11/jun",
@@ -16,7 +16,7 @@
 		"AprobadoConAvatarUrl": "SI"
 	},
 	"RutinasSemanales": {"SemanaUTC": "SI", "LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
-    "Subtitulo4":"------------ IMAGEN DERECHA -------------------",
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"14-jun-23": {"titulo": "ELC - Películas"},
 		"15-jun-23": {"titulo": "ELC - Películas"},
