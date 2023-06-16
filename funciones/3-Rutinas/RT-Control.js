@@ -34,7 +34,7 @@ module.exports = {
 		const rutinasSemanales = Object.keys(info.DiasUTC);
 		for (let rutina of rutinasSemanales) {
 			let diaSem = info.DiasUTC[rutina];
-			cron.schedule("30 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+			cron.schedule("45 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
 
 		// Start-up
