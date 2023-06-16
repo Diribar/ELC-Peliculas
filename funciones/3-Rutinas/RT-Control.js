@@ -42,7 +42,7 @@ module.exports = {
 		await this.RutinasSemanales();
 
 		// this.epoca();
-		//this.BorraImagenesSinRegistro();
+		// this.BorraImagenesSinRegistro();
 		// this.ImagenDerecha();
 
 		// Fin
