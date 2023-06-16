@@ -39,7 +39,6 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		await this.RutinasSemanales();
 
 		// this.epoca();
 		// this.BorraImagenesSinRegistro();
@@ -77,7 +76,7 @@ module.exports = {
 	},
 
 	// 0.B. Conjunto de tareas
-	FechaHoraUTC: () => {
+	FechaHoraUTC: async () => {
 		// Obtiene las rutinas del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
@@ -99,8 +98,9 @@ module.exports = {
 		procesos.guardaArchivoDeRutinas(feedback);
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
-		if (HoraUTC >= "00:30") RutinasDiarias()
-		
+		if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		if (HoraUTC >= "00:45") await this.RutinasSemanales();
+
 		// Fin
 		procesos.rutinasFinales("FechaHoraUTC");
 		return;
