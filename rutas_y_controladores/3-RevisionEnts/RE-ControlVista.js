@@ -262,7 +262,7 @@ module.exports = {
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
-			procesos.orignalAvatar(original, entidad);
+			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
@@ -372,7 +372,7 @@ module.exports = {
 			// Actualiza el avatar original si es un url
 			if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
 				// Descarga el archivo avatar y actualiza el registro 'original'
-				procesos.descargaAvatar(original, entidad);
+				procesos.descargaAvatarOriginal(original, entidad);
 				// Actualiza el registro 'edición'
 				edicion.avatarUrl = null;
 				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
