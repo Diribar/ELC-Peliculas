@@ -1,6 +1,6 @@
 {
 	"FechaUTC": "Vie. 16/jun",
-	"HoraUTC": "11:42",
+	"HoraUTC": "15:58",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
@@ -8,16 +8,16 @@
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
 	"RutinasDiarias": [
-		"BorraImagenesSinRegistro",
 		"ImagenDerecha",
+		"BorraImagenesSinRegistro",
 		"PaisesConMasProductos",
 		"AprobadoConAvatarUrl"
 	],
 	"FechaHoraUTC": "SI",
-	"PaisesConMasProductos": "SI",
-	"BorraImagenesSinRegistro": "SI",
-	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
+	"BorraImagenesSinRegistro": "NO",
+	"PaisesConMasProductos": "NO",
+	"AprobadoConAvatarUrl": "NO",
 	"ImagenesDerecha": {
 		"14-jun-23": {"titulo": "ELC - Películas"},
 		"15-jun-23": {"titulo": "ELC - Películas"},
