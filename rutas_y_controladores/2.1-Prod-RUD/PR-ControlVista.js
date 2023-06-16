@@ -172,7 +172,10 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
-		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo]
+
+		// Elimina los campos vacíos y pule los espacios innecesarios
+		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+		for (let campo in req.body) if (typeof req.body[campo]=="string") req.body[campo] = req.body[campo].trim();
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -245,6 +248,7 @@ module.exports = {
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
+
 			// Acciones sobre el archivo avatar, si recibimos uno
 			if (req.file) {
 				if (actualizaOrig) {
@@ -260,6 +264,9 @@ module.exports = {
 						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
+
+			// Elimina los datos de la session
+			delete req.session.edicProd;
 		} else {
 			// Si recibimos un archivo avatar editado, lo elimina
 			if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", req.file.filename);
@@ -272,11 +279,13 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 
+		const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+
 		// Fin
 		return edicion
 			? res.redirect(req.originalUrl) // Recarga la vista
-			: origen && origen == "TE"
-			? res.redirect("/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen) // Regresa a Revisión
-			: res.redirect(req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id); // Recarga la página sin la edición
+			: origen == "TE"
+			? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
+			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
 };

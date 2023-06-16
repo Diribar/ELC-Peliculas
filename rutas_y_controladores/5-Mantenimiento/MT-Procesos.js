@@ -20,7 +20,11 @@ module.exports = {
 		let aprobados = obtienePorEntidad({entidades, campoFecha: "altaTermEn", status_id: aprobado_id, userID});
 
 		// Sin Edición (en status creadoAprob)
-		let SE_pel = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creadoAprob_id}, "ediciones")
+		let SE_pel = BD_genericas.obtieneTodosPorCondicionConInclude(
+			"peliculas",
+			{statusRegistro_id: creadoAprob_id},
+			"ediciones"
+		)
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {
@@ -36,7 +40,11 @@ module.exports = {
 					return datos;
 				})
 			);
-		let SE_col = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creadoAprob_id}, "ediciones")
+		let SE_col = BD_genericas.obtieneTodosPorCondicionConInclude(
+			"colecciones",
+			{statusRegistro_id: creadoAprob_id},
+			"ediciones"
+		)
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) =>
 				n.map((m) => {
@@ -77,7 +85,7 @@ module.exports = {
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
 
 		// Inactivos (peliculas y colecciones)
-		const IN = inactivos;
+		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id != inactivo_id);
 
 		// Aprobados - Sin calificar
 		const SC = pelisColes.filter((m) => !m.calificacion);

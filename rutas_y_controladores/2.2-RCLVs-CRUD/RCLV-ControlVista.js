@@ -154,8 +154,14 @@ module.exports = {
 		const origen = req.query.origen ? req.query.origen : "DTR";
 		const codigo = req.baseUrl + req.path;
 		const userID = req.session.usuario.id;
-		let datos = {...req.body, ...req.query, opcional: true};
 		let errores;
+
+		// Elimina los campos vacíos y pule los espacios innecesarios
+		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+		for (let campo in req.body) if (typeof req.body[campo]=="string") req.body[campo] = req.body[campo].trim();
+
+		// Obtiene los datos
+		let datos = {...req.body, ...req.query, opcional: true};
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {

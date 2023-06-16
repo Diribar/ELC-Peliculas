@@ -222,7 +222,11 @@ module.exports = {
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: id}, {...datos, sugeridoPor_id: 2});
+			BD_genericas.actualizaTodosPorCondicion(
+				"capitulos",
+				{coleccion_id: id},
+				{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
+			);
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
@@ -248,17 +252,17 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-		// 7. Acciones si es un registro que se mueve de 'inactivarRecuperar' a 'inactivo'
+		// 7. Acciones si es un registro que se mueve a 'inactivo'
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
-		if (!rclv) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
+		if (producto) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
-			procesos.orignalAvatar(original, entidad);
+			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
@@ -368,7 +372,7 @@ module.exports = {
 			// Actualiza el avatar original si es un url
 			if (original.avatar && original.avatar.includes("/") && entidad != "capitulos") {
 				// Descarga el archivo avatar y actualiza el registro 'original'
-				procesos.descargaAvatar(original, entidad);
+				procesos.descargaAvatarOriginal(original, entidad);
 				// Actualiza el registro 'edición'
 				edicion.avatarUrl = null;
 				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);

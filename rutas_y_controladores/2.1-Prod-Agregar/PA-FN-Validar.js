@@ -25,8 +25,8 @@ module.exports = {
 		let cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
 		let cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
 		let camposPosibles = [
-			{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
+			{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
 			{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "guion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
 			{nombre: "musica", tipoIdioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
@@ -101,7 +101,8 @@ module.exports = {
 			errores.idiomaOriginal_id = !datos.idiomaOriginal_id && datos.entidad != "capitulos" ? variables.inputVacio : "";
 
 		// Personas
-		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
+		if (campos.includes("avatar"))
+			errores.avatar = datos.avatar || datos.entidad != "capitulos" ? comp.validacs.avatar(datos) : "";
 
 		// ***** CAMPOS COMBINADOS *******
 		// Año de Estreno y Año Fin

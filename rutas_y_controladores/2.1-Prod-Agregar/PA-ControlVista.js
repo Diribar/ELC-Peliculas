@@ -22,6 +22,10 @@ module.exports = {
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {
+		// Elimina los campos vacíos y pule los espacios innecesarios
+		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
+		for (let campo in req.body) req.body[campo] = req.body[campo].trim();
+
 		// 1. Obtiene el Data Entry
 		let palabrasClave = req.body.palabrasClave;
 		// 2. Guarda el Data Entry en session y cookie
@@ -99,6 +103,10 @@ module.exports = {
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		datosDuros = {...datosDuros, ...req.body};
 
+		// Elimina los campos vacíos y pule los espacios innecesarios
+		for (let campo in datosDuros) if (!datosDuros[campo]) delete datosDuros[campo];
+		for (let campo in datosDuros) if (typeof datosDuros[campo]=="string") datosDuros[campo] = datosDuros[campo].trim();
+
 		// Acciones si se ingresó un archivo de imagen (IM)
 		if (req.file) {
 			// Obtiene la información sobre el avatar
@@ -165,11 +173,16 @@ module.exports = {
 		// Obtiene el Data Entry de session y cookies
 		let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 
-		// Obtiene los DatosAdics y elimina los campos sin datos
+		// Obtiene los DatosAdics
 		delete datosAdics.sinRCLV;
 		datosAdics = {...datosAdics, ...req.body};
-		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
+
+		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
+		for (let campo in datosAdics) if (typeof datosAdics[campo]=="string") datosAdics[campo] = datosAdics[campo].trim();
+
+		// Procesa algunos datos
+		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
 		datosAdics.actores = procesos.valorParaActores(datosAdics);
 
 		// Guarda el data entry en session y cookie
