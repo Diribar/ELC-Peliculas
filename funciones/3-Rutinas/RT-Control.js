@@ -83,6 +83,7 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
+		if (HoraUTC >= "00:30") await this.RutinasDiarias();
 		if (info.FechaUTC == FechaUTC) return;
 
 		// Establece el status de los procesos de rutina
@@ -90,14 +91,12 @@ module.exports = {
 		for (let campo in rutinasDiarias) feedback_RD.RutinasDiarias[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 
 		// Actualiza el archivo JSON
-		const sonIguales = procesos.guardaArchivoDeRutinas(feedback_RD);
-		if (!sonIguales)
-			console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Rutinas Diarias' actualizados y  guardados en JSON");
+		procesos.guardaArchivoDeRutinas(feedback_RD);
 		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
-		if (HoraUTC >= "00:30") await this.RutinasDiarias();
-		if (HoraUTC >= "00:45") await this.RutinasSemanales();
+		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		// if (HoraUTC >= "00:45") await this.RutinasSemanales();
 
 		// Fin
 		return;
@@ -234,16 +233,6 @@ module.exports = {
 	},
 
 	// 2. Rutinas diarias
-	BorraImagenesSinRegistro: async () => {
-		// Funciones
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
-		procesos.borraImagenesProvisorio();
-
-		// Fin
-		procesos.rutinasFinales("BorraImagenesSinRegistro");
-		return;
-	},
 	ImagenDerecha: async function () {
 		// Variables
 		let info = procesos.lecturaRutinasJSON();
@@ -293,6 +282,16 @@ module.exports = {
 
 		// Fin
 		procesos.rutinasFinales("ImagenDerecha");
+		return;
+	},
+	BorraImagenesSinRegistro: async () => {
+		// Funciones
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
+		procesos.borraImagenesProvisorio();
+
+		// Fin
+		procesos.rutinasFinales("BorraImagenesSinRegistro");
 		return;
 	},
 	PaisesConMasProductos: async () => {
