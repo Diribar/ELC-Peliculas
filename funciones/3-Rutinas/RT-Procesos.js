@@ -18,7 +18,7 @@ module.exports = {
 		// Fin
 		return info;
 	},
-	guardaArchivoDeRutinas: function (datos) {
+	guardaArchivoDeRutinas: function (datos, menu) {
 		// Obtiene la informacion vigente
 		let info = this.lecturaRutinasJSON();
 
@@ -32,20 +32,24 @@ module.exports = {
 			// Si los datos son iguales, saltea los controles posteriores
 			if (datoNuevo == datoGuardado) continue;
 			else if (!datoGuardado) sonIguales = false;
-			// Acciones si es un string
+			// String - varios casos
 			else if (typeof datoNuevo == "string") sonIguales = false;
-			// Acciones si es un array
+			// Array - RutinasHorarias
 			else if (Array.isArray(datoNuevo)) {
 				if (!Array.isArray(datoGuardado)) sonIguales = false;
 				else if (datoNuevo.length != datoGuardado.length) sonIguales = false;
 				else datoNuevo.forEach((campo, i) => (campo != datoGuardado[i] ? (sonIguales = false) : null));
 			}
-			// Acciones si es un objeto
-			else if (Array.isArray(datoGuardado)) sonIguales = false;
+			// Objeto - 'RutinasDiarias' y 'RutinasSemanales' / la de 'ImagenesDerecha' se revisa en una función anterior a esta rutina
+			else if (Array.isArray(datoGuardado)) sonIguales = false; // Revisa si el original no es un objeto
 			else {
+				// Variables
 				const camposNuevo = Object.keys(datoNuevo);
 				const camposGuardado = Object.keys(datoGuardado);
+
+				// Revisa que tengan la misma cantidad de campos
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
+				// Revisa que tengan el mismo valor de string
 				else camposNuevo.forEach((campo, i) => (campo != camposGuardado[i] ? (sonIguales = false) : null));
 			}
 
@@ -57,7 +61,7 @@ module.exports = {
 		if (sonIguales) return true;
 
 		// Actualiza la información
-		info = {...info, ...datos};
+		info = menu ? {...info, [menu]: {...info[menu], ...datos}} : {...info, ...datos};
 
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
@@ -474,14 +478,14 @@ module.exports = {
 		// Fin
 		return hora;
 	},
-	rutinasFinales: function (campo) {
+	rutinasFinales: function (campo, menu) {
 		// Actualiza el archivo JSON
-		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"});
+		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
 
 		// Feedback del proceso
 		if (!sonIguales) {
 			const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-			console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada y datos guardados en JSON");
+			console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
 		} else this.rutinasSinGuardar(campo);
 
 		// Fin
@@ -490,7 +494,7 @@ module.exports = {
 	rutinasSinGuardar: function (campo) {
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
+		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada, sin novedades");
 
 		// Fin
 		return;

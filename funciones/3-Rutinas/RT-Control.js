@@ -83,15 +83,19 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
-		if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
 		if (info.FechaUTC == FechaUTC) return;
 
-		// Establece el status de los procesos de rutina
-		const feedback_RD = {FechaUTC, HoraUTC, FechaHoraUTC: "NO", RutinasDiarias: {}}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
-		for (let campo in rutinasDiarias) feedback_RD.RutinasDiarias[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		// Actualiza los campos de fecha
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback);
+
+		// Actualiza los campos de Rutinas Diarias
+		const feedback_RD = {};
+		for (let campo in rutinasDiarias) feedback_RD[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
 
 		// Actualiza el archivo JSON
-		procesos.guardaArchivoDeRutinas(feedback_RD);
 		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
@@ -104,10 +108,10 @@ module.exports = {
 	RutinasDiarias: async function () {
 		// Obtiene la información del archivo JSON
 		const info = procesos.lecturaRutinasJSON();
-		const rutinas = info.RutinasDiarias;
+		const rutinasDiarias = info.RutinasDiarias;
 
 		// Actualiza todas las rutinas diarias
-		for (let rutina of rutinas) await this[rutina]();
+		for (let rutinaDiaria in rutinasDiarias) await this[rutinaDiaria]();
 
 		// Fin
 		return;
@@ -281,7 +285,7 @@ module.exports = {
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Fin
-		procesos.rutinasFinales("ImagenDerecha");
+		procesos.rutinasFinales("ImagenDerecha", "RutinasDiarias");
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
@@ -291,7 +295,7 @@ module.exports = {
 		procesos.borraImagenesProvisorio();
 
 		// Fin
-		procesos.rutinasFinales("BorraImagenesSinRegistro");
+		procesos.rutinasFinales("BorraImagenesSinRegistro", "RutinasDiarias");
 		return;
 	},
 	PaisesConMasProductos: async () => {
@@ -321,7 +325,7 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.rutinasFinales("PaisesConMasProductos");
+		procesos.rutinasFinales("PaisesConMasProductos", "RutinasDiarias");
 		return;
 	},
 	AprobadoConAvatarUrl: async () => {
@@ -347,7 +351,7 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.rutinasFinales("AprobadoConAvatarUrl");
+		procesos.rutinasFinales("AprobadoConAvatarUrl", "RutinasDiarias");
 		return;
 	},
 
@@ -372,7 +376,7 @@ module.exports = {
 		const sonIguales = procesos.guardaArchivoDeRutinas(feedback);
 
 		// Fin
-		procesos.rutinasFinales("SemanaUTC");
+		procesos.rutinasFinales("SemanaUTC", "RutinasSemanales");
 		return;
 	},
 	LinksVencidos: async function () {
@@ -389,7 +393,7 @@ module.exports = {
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Fin
-		procesos.rutinasFinales("LinksVencidos");
+		procesos.rutinasFinales("LinksVencidos", "RutinasSemanales");
 		return;
 	},
 	RclvsSinEpocaPSTyConAno: async () => {
@@ -407,7 +411,7 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno");
+		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
 };
