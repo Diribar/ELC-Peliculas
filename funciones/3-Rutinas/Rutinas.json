@@ -1,10 +1,13 @@
 {
+	"Subtitulo1": "-------- FECHAS DE PROCESAMIENTO -------------",
 	"FechaUTC": "Vie. 16/jun",
 	"HoraUTC": "17:29",
-	"FechaHoraUTC": "SI",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
+	"Subtitulo2": "----------------DATOS ------------------------",
+	"FechaHoraUTC": "SI",
 	"semanaUTC": 23,
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
@@ -13,6 +16,7 @@
 		"AprobadoConAvatarUrl": "SI"
 	},
 	"RutinasSemanales": {"SemanaUTC": "SI", "LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
+    "Subtitulo4":"------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"14-jun-23": {"titulo": "ELC - Películas"},
 		"15-jun-23": {"titulo": "ELC - Películas"},
