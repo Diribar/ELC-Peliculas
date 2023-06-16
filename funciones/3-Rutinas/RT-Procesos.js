@@ -51,8 +51,6 @@ module.exports = {
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
 				// Revisa que tengan el mismo valor de string
 				else camposNuevo.forEach((campo, i) => (campo != camposGuardado[i] ? (sonIguales = false) : null));
-
-				//
 			}
 
 			// Fin
