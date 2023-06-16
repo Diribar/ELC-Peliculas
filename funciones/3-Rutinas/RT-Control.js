@@ -20,29 +20,32 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
 		rutinasHorarias.forEach((rutina, i) => {
-			let horario = 10 + i;
-			cron.schedule(horario + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+			let minuto = 1 + i;
+			cron.schedule(minuto + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		});
 
 		// Rutinas diarias
-		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		const rutinasDiarias = Object.keys(info.HorariosUTC);
-		for (let rutina of rutinasDiarias) {
-			let hora = procesos.obtieneLaHora(info.HorariosUTC[rutina]);
-			cron.schedule("0 " + hora + " * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
-		}
+		if (!info.RutinasDiarias || !info.RutinasDiarias.length) return;
+		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
+		cron.schedule("30 0 * * *", async () => await this.RutinasDiarias(), {timezone: "Etc/Greenwich"});
+
 		// Rutinas semanales
 		if (!info.DiasUTC || !Object.keys(info.DiasUTC).length) return;
 		const rutinasSemanales = Object.keys(info.DiasUTC);
 		for (let rutina of rutinasSemanales) {
 			let diaSem = info.DiasUTC[rutina];
-			cron.schedule("1 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
+			cron.schedule("45 0 * * " + diaSem, async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		}
+
 		// Start-up
-		await this.conjuntoDeRutinasDiarias();
-		await this.conjuntoDeRutinasSemanales();
+		await this.FechaHoraUTC();
+
 		// this.epoca();
-		// this.BorraImagenesSinRegistro()
+		// this.BorraImagenesSinRegistro();
+		// this.ImagenDerecha();
+
+		// Fin
+		return;
 	},
 	epoca: async () => {
 		// Variables
@@ -73,25 +76,49 @@ module.exports = {
 	},
 
 	// 0.B. Conjunto de tareas
-	conjuntoDeRutinasDiarias: async function () {
-		// Obtiene la información del archivo JSON
+	FechaHoraUTC: async () => {
+		// Obtiene las rutinas del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
-		const rutinas = Object.keys(info.HorariosUTC);
+		if (!Object.keys(info).length) return;
+		if (!info.RutinasDiarias || !info.RutinasDiarias.length) return;
+		const rutinas = info.RutinasDiarias;
 
 		// Obtiene la fecha UTC actual
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
-		// Si la 'FechaUTC' actual es distinta a la del archivo JSON, actualiza todas las rutinas diarias
-		if (info.FechaUTC != FechaUTC) for (let rutina of rutinas) await this[rutina]();
-		// Si la 'FechaUTC' está bien, actualiza las rutinas que correspondan en función del horario
-		else for (let rutina of rutinas) if (info[rutina] != "SI" && HoraUTC > info.HorariosUTC[rutina]) await this[rutina]();
+		// Si la 'FechaUTC' actual es igual a la del archivo JSON, termina la función
+		if (info.FechaUTC == FechaUTC) return;
+
+		// Establece el status de los procesos de rutina
+		const feedback = {FechaUTC, HoraUTC};
+		for (let rutina of rutinas) feedback[rutina] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
+		feedback.FechaHoraUTC = "NO"; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+
+		// Actualiza el archivo JSON
+		procesos.guardaArchivoDeRutinas(feedback);
+
+		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
+		if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		if (HoraUTC >= "00:45") await this.RutinasSemanales();
+
+		// Fin
+		procesos.rutinasFinales("FechaHoraUTC");
+		return;
+	},
+	RutinasDiarias: async function () {
+		// Obtiene la información del archivo JSON
+		const info = procesos.lecturaRutinasJSON();
+		const rutinas = info.RutinasDiarias;
+
+		// Actualiza todas las rutinas diarias
+		for (let rutina of rutinas) await this[rutina]();
 
 		// Fin
 		return;
 	},
-	conjuntoDeRutinasSemanales: async function () {
+	RutinasSemanales: async function () {
 		// Obtiene la información del archivo JSON
-		let info = procesos.lecturaRutinasJSON();
+		const info = procesos.lecturaRutinasJSON();
 		const rutinas = Object.keys(info.DiasUTC);
 
 		// Obtiene la semana y el día de la semana
@@ -209,28 +236,6 @@ module.exports = {
 	},
 
 	// 2. Rutinas diarias
-	FechaHoraUTC: function () {
-		// Obtiene las rutinas del archivo JSON
-		let info = procesos.lecturaRutinasJSON();
-		if (!Object.keys(info).length) return;
-		if (!info.HorariosUTC || !Object.keys(info.HorariosUTC).length) return;
-		const rutinas = Object.keys(info.HorariosUTC);
-
-		// Obtiene la fecha UTC actual
-		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-
-		// Establece el status de los procesos de rutina
-		const archJSON = {FechaUTC, HoraUTC};
-		for (let rutina of rutinas) archJSON[rutina] = "NO";
-		archJSON.FechaHoraUTC = "SI";
-
-		// Actualiza el archivo JSON
-		procesos.actualizaRutinasJSON(archJSON);
-
-		// Fin
-		procesos.rutinasFinales("FechaHoraUTC");
-		return;
-	},
 	BorraImagenesSinRegistro: async () => {
 		// Funciones
 		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
@@ -245,38 +250,42 @@ module.exports = {
 		// Variables
 		let info = procesos.lecturaRutinasJSON();
 		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
-		const fechas = [procesos.diaMesAno(milisegs - unDia), procesos.diaMesAno(milisegs), procesos.diaMesAno(milisegs + unDia)];
-
-		// Borra los archivos de imagen que no se corresponden con los titulos
-		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
+		const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
+		const cantFechas = 5; // Incluye 5 días
+		let fechas = [];
 
 		// Limpia el historial de ImagenesDerecha en 'global'
 		ImagenesDerecha = {};
 
 		// Actualiza los títulos de la imagen derecha para cada fecha
-		for (let i = 0; i < fechas.length; i++) {
-			const fecha = fechas[i];
+		for (let i = 0; i < cantFechas; i++) {
+			// Variables
+			const fechaNum = fechaInicial + unDia * i;
+			const fechaArchivo = procesos.diaMesAno(fechaNum);
+
+			// Arma el array de fechas
+			fechas.push(fechaArchivo);
 
 			// Obtiene las 'ImagenesDerecha'
-			if (info.ImagenesDerecha && info.ImagenesDerecha[fecha]) ImagenesDerecha[fecha] = info.ImagenesDerecha[fecha];
+			if (info.ImagenesDerecha && info.ImagenesDerecha[fechaArchivo])
+				ImagenesDerecha[fechaArchivo] = info.ImagenesDerecha[fechaArchivo];
 			else {
-				// Variables
-				const fechaNum = milisegs + (i - 1) * unDia;
-				const fechaArchivo = procesos.diaMesAno(fechaNum);
-
 				// Obtiene los datos de la imagen derecha
 				const {titulo, entidad, id, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
 
 				// Actualiza los datos para esa fecha
-				ImagenesDerecha[fecha] = {titulo, entidad, id};
+				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
 				comp.gestionArchivos.copiaImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 
-		// Actualiza el archivo JSON
-		procesos.actualizaRutinasJSON({ImagenesDerecha});
+		// Guarda los títulos de las imágenes
+		procesos.guardaArchivoDeRutinas({ImagenesDerecha});
+
+		// Borra los archivos de imagen que no se corresponden con los titulos
+		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Fin
 		procesos.rutinasFinales("ImagenDerecha");
@@ -343,7 +352,7 @@ module.exports = {
 	SemanaUTC: function () {
 		// Obtiene la fecha y la hora procesados
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
-		const semana = procesos.semanaUTC();
+		const semanaUTC = procesos.semanaUTC();
 
 		// Obtiene las rutinas del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
@@ -352,17 +361,15 @@ module.exports = {
 		const rutinas = Object.keys(info.DiasUTC);
 
 		// Establece el status de los procesos de rutina
-		const statusRutinas = {};
-		for (let rutina of rutinas) statusRutinas[rutina] = "NO";
-		statusRutinas.SemanaUTC = "SI";
+		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC};
+		for (let rutina of rutinas) feedback[rutina] = "NO";
+		feedback.SemanaUTC = "NO";
 
 		// Actualiza el archivo JSON
-		procesos.actualizaRutinasJSON({semanaUTC: semana, FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, ...statusRutinas});
-
-		// Feedback del proceso
-		console.log(FechaUTC, HoraUTC + "hs. -", "'Semana UTC' actualizada y datos guardados en JSON");
+		procesos.guardaArchivoDeRutinas(feedback);
 
 		// Fin
+		procesos.rutinasFinales("SemanaUTC");
 		return;
 	},
 	LinksVencidos: async function () {
