@@ -1,28 +1,23 @@
 {
 	"FechaUTC": "Vie. 16/jun",
-	"HoraUTC": "16:03",
-	"FechaHoraUTC": "SI",
+	"HoraUTC": "17:15",
+	"FechaHoraUTC": "NO",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
-	"Separador1:": "---------------- RUTINAS HORARIAS --------------------",
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
-	"Separador2:": "---------------- RUTINAS DIARIAS ---------------------",
-	"RutinasDiarias": ["ImagenDerecha", "BorraImagenesSinRegistro", "PaisesConMasProductos", "AprobadoConAvatarUrl"],
-	"ImagenDerecha": "SI",
-	"BorraImagenesSinRegistro": "SI",
-	"PaisesConMasProductos": "SI",
-	"AprobadoConAvatarUrl": "SI",
+	"RutinasDiarias": {
+		"ImagenDerecha": "NO",
+		"BorraImagenesSinRegistro": "NO",
+		"PaisesConMasProductos": "NO",
+		"AprobadoConAvatarUrl": "NO"
+	},
+	"RutinasSemanales": {"SemanaUTC": "SI", "LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"ImagenesDerecha": {
 		"14-jun-23": {"titulo": "ELC - Películas"},
 		"15-jun-23": {"titulo": "ELC - Películas"},
 		"16-jun-23": {"titulo": "Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23},
 		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
 		"18-jun-23": {"titulo": "ELC - Películas"}
-	},
-	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
-	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},
-	"SemanaUTC": "SI",
-	"LinksVencidos": "SI",
-	"RclvsSinEpocaPSTyConAno": "SI"
+	}
 }
