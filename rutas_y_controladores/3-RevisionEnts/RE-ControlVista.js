@@ -252,13 +252,13 @@ module.exports = {
 		// 6. Penaliza al usuario si corresponde
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
-		// 7. Acciones si es un registro que se mueve de 'inactivarRecuperar' a 'inactivo'
+		// 7. Acciones si es un registro que se mueve a 'inactivo'
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (inactivarRecuperar && statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
-		if (!rclv) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
+		if (producto) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);
 
 		// 9. Si se aprobó un 'recuperar' y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 		if (subcodigo == "recuperar" && aprob && original.avatar && original.avatar.includes("/"))
