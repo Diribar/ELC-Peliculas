@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 		let todoProcesado = bloqueIngrsOculto && bloqueReempsOculto;
 
 		// Si está todo procesado y quedan campos,
-		if (todoProcesado == resultado.quedanCampos) console.log("Error", todoProcesado, resultado.quedanCampos);
+		if (todoProcesado == resultado.quedanCampos) console.log("Error", {todoProcesado, quedanCampos: resultado.quedanCampos});
 		// Acciones si está todo procesado
 		else if (todoProcesado && !resultado.quedanCampos) {
 			// 1. Si el registro pasó al status 'aprobado', publica el cartel

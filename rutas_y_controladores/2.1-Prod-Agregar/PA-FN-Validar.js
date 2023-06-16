@@ -57,7 +57,9 @@ module.exports = {
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("anoEstreno"))
 			errores.anoEstreno = !datos.anoEstreno
-				? variables.inputVacio
+				? datos.entidad != "capitulos"
+					? variables.inputVacio
+					: ""
 				: formatoAno(datos.anoEstreno)
 				? "Debe ser un número de 4 dígitos"
 				: datos.anoEstreno < 1900
@@ -67,7 +69,9 @@ module.exports = {
 				: "";
 		if (campos.includes("anoFin"))
 			errores.anoFin = !datos.anoFin
-				? variables.inputVacio
+				? datos.entidad != "capitulos"
+					? variables.inputVacio
+					: ""
 				: formatoAno(datos.anoFin)
 				? "Debe ser un número de 4 dígitos"
 				: datos.anoFin < 1900
@@ -77,7 +81,9 @@ module.exports = {
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
-				? variables.inputVacio
+				? datos.entidad != "capitulos"
+					? variables.inputVacio
+					: ""
 				: formatoNumero(datos.duracion, 20)
 				? formatoNumero(datos.duracion, 20)
 				: datos.duracion > 300
@@ -85,12 +91,15 @@ module.exports = {
 				: "";
 		if (campos.includes("paises_id"))
 			errores.paises_id = !datos.paises_id
-				? variables.inputVacio
+				? datos.entidad != "capitulos"
+					? variables.inputVacio
+					: ""
 				: datos.paises_id.length > 2 * 1 + 3 * 3
 				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idiomaOriginal_id"))
-			errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
+			errores.idiomaOriginal_id = !datos.idiomaOriginal_id && datos.entidad != "capitulos" ? variables.inputVacio : "";
+
 		// Personas
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 
@@ -121,14 +130,17 @@ module.exports = {
 		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
-			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.selectVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
+			if (campos.includes(campo))
+				errores[campo] =
+					!datos[campo] && datos[campo] !== false && datos.entidad != "capitulos" ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 		// RCLVs
 		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 		if (campos.some((n) => rclvs_id.includes(n)))
-			errores.RCLV = !rclvs_id.some((n) => datos[n] && datos[n] != 1)
-				? "Necesitamos que respondas alguna de las opciones"
-				: "";
+			errores.RCLV =
+				datos.entidad != "capitulos" && rclvs_id.every((n) => !datos[n] || datos[n] == 1)
+					? "Necesitamos que respondas alguna de las opciones"
+					: "";
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);

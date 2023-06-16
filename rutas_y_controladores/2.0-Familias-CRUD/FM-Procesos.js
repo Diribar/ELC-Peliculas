@@ -12,75 +12,6 @@ module.exports = {
 		return await puleEdicion(entidad, original, edicion);
 	},
 
-	// Eliminar RCLV
-	puleEdicionesProd: async (prodEdics, campo_idRCLV) => {
-		// Achica las ediciones a su mínima expresión
-		for (let prodEdic of prodEdics) {
-			// Obtiene el producto original
-			const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(prodEdic);
-			const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(prodEdic);
-			const prodID = prodEdic[campo_idProd];
-			const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
-
-			// Revisa si tiene que eliminar alguna edición
-			delete prodEdic[campo_idRCLV];
-			await puleEdicion(prodEntidad, original, prodEdic);
-		}
-		// Fin
-		return;
-	},
-	prodsConElRCLVeliminado: async function ({campo_id, id}) {
-		let prods = {};
-		// Obtiene los productos por entidad y les quita el RCLV_id
-		for (let entProd of variables.entidades.prods)
-			prods[entProd] = BD_genericas.obtieneTodosPorCondicion(entProd, {
-				[campo_id]: id,
-				statusRegistro_id: aprobado_id,
-			}).then((n) =>
-				n.map((m) => {
-					m[campo_id] = 1;
-					return m;
-				})
-			);
-
-		// Obtiene los productos acumulados
-		let prodsAcum = [];
-		const metodos = Object.keys(prods);
-		await Promise.all(Object.values(prods)).then((n) =>
-			n.forEach((m, i) => {
-				prods[metodos[i]] = m;
-				prodsAcum.push(...m);
-			})
-		);
-
-		//Revisa si se le debe cambiar el status a algún producto
-		// Averigua si existían productos vinculados al RCLV
-		if (prodsAcum.length)
-			// Acciones por cada ENTIDAD
-			for (let prodEntidad of variables.entidades.prods) {
-				// Averigua si existen registros por cada entidad
-				if (prods[prodEntidad].length)
-					// Acciones por cada PRODUCTO
-					for (let original of prods[prodEntidad]) {
-						// Revisa si se le debe cambiar el status
-						await this.revisaStatus(original, prodEntidad);
-					}
-			}
-
-		// Fin
-		return;
-	},
-	revisaStatus: async (original, entidad) => {
-		// Averigua si hay errores
-		const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
-
-		// Si hay errores, le cambia el status
-		if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
-
-		// Fin
-		return;
-	},
-
 	// Lectura de edicion
 	obtieneOriginalEdicion: async (entidad, entID, userID) => {
 		// Variables
@@ -116,20 +47,26 @@ module.exports = {
 		// Quita la info que no agrega valor
 		edicion = await puleEdicion(entidad, original, edicion);
 
-		// Si existe la edición pero no su 'ID' --> se agrega el registro
-		if (edicion && !edicion.id) {
-			// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
-			// 1. campo_id, editadoPor_id
-			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			edicion[campo_id] = original.id;
-			edicion.editadoPor_id = userID;
-			// 2. producto_id (links)
-			if (entidad == "links") {
-				let producto_id = entidad == "links" ? comp.obtieneDesdeEdicion.campo_idProd(original) : "";
-				edicion[producto_id] = original[producto_id];
+		// Acciones si existe la edición
+		if (edicion) {
+			// Si existe la edición y su 'ID' --> actualiza el registro
+			if (edicion.id) BD_genericas.actualizaPorId(entidadEdic, edicion.id, edicion);
+
+			// Si existe la edición pero no su 'ID' --> se agrega el registro
+			if (!edicion.id) {
+				// Se le agregan los campos necesarios: campo_id, editadoPor_id, producto_id (links)
+				// 1. campo_id, editadoPor_id
+				let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+				edicion[campo_id] = original.id;
+				edicion.editadoPor_id = userID;
+				// 2. producto_id (links)
+				if (entidad == "links") {
+					let producto_id = comp.obtieneDesdeEdicion.campo_idProd(original);
+					edicion[producto_id] = original[producto_id];
+				}
+				// Se agrega el registro
+				await BD_genericas.agregaRegistro(entidadEdic, edicion);
 			}
-			// Se agrega el registro
-			await BD_genericas.agregaRegistro(entidadEdic, edicion);
 		}
 
 		// Fin
@@ -316,7 +253,7 @@ module.exports = {
 			// Condiciones
 			const condicion = {coleccion_id: original.id}; // que pertenezca a la colección
 			const condiciones = {...condicion, [campo]: {[Op.or]: [null, ""]}}; // que además el campo esté vacío
-			if (original[campo]) condiciones[campo][Op.or].push(original[campo]);// o que coincida con el valor original
+			if (original[campo]) condiciones[campo][Op.or].push(original[campo]); // o que coincida con el valor original
 
 			// 1. Si el campo no recibe datos, termina
 			if (camposQueNoRecibenDatos.includes(campo)) return;
@@ -585,6 +522,83 @@ module.exports = {
 		},
 	},
 
+	eliminar:{
+		eliminaRegsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
+			// Variables
+			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);
+			const campoHijo_id = comp.obtieneDesdeEntidad.campo_id(entidadHijo);
+			const edicHijo = comp.obtieneDesdeEntidad.entidadEdic(entidadHijo);
+			let esperar = [];
+
+			// Obtiene los hijos
+			const hijos = await BD_genericas.obtieneTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+
+			// Elimina las ediciones
+			for (let hijo of hijos) esperar.push(BD_genericas.eliminaTodosPorCondicion(edicHijo, {[campoHijo_id]: hijo.id}));
+			await Promise.all(esperar);
+
+			// Elimina los hijos
+			await BD_genericas.eliminaTodosPorCondicion(entidadHijo, {[campoPadre_id]: padreID});
+
+			// Fin
+			return true;
+		},
+		borraVinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
+			// Variables
+			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+
+			// Averigua si existen ediciones
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[rclv_id]: rclvID});
+			if (ediciones.length) {
+				// Les borra el vínculo
+				await BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
+
+				// Revisa si tiene que eliminar alguna edición - la rutina no necesita este resultado
+				eliminaEdicionesVacias(ediciones, rclv_id);
+			}
+
+			// Fin
+			return;
+		},
+		borraVinculoProds: async ({entidadRCLV, rclvID}) => {
+			// Variables
+			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+			const entidades = variables.entidades.prods;
+			let prodsPorEnts = [];
+			let prods = [];
+			let esperar = [];
+
+			// Obtiene los productos vinculados al RCLV, abierto por entidad
+			for (let entidad of entidades)
+				prodsPorEnts.push(
+					BD_genericas.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID}).then((n) =>
+						n.map((m) => ({...m, [campo_id]: 1}))
+					)
+				);
+			prodsPorEnts = await Promise.all(prodsPorEnts);
+
+			// Averigua si existían productos vinculados al RCLV
+			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
+
+			if (prods.length) {
+				console.log(776, prods[0][campo_idRCLV]);
+
+				// Les actualiza el campo_idRCLV al valor 'Ninguno'
+				for (let entidad of entidades)
+					esperar.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
+
+				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
+				siHayErroresBajaElStatus(prodsPorEnts);
+			}
+
+			// Espera a que concluyan las rutinas
+			await Promise.all(esperar);
+
+			// Fin
+			return;
+		},
+	},
+
 	// Varios
 	infoIncompleta: (datos) => {
 		// Variables
@@ -760,4 +774,41 @@ let linksEnColeccion = async (colID, campo) => {
 	if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
 	else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
 	else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
+};
+let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
+	// Revisa si tiene que eliminar alguna edición
+	for (let edicion of ediciones) {
+		// Variables
+		const campo_idProd = comp.obtieneDesdeEdicion.campo_idProd(edicion);
+		const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(edicion);
+		const prodID = edicion[campo_idProd];
+
+		// Obtiene el producto original
+		const original = await BD_genericas.obtienePorId(prodEntidad, prodID);
+
+		// Elimina la edición si está vacía
+		delete edicion[campo_idRCLV];
+		await puleEdicion(prodEntidad, original, edicion);
+	}
+	// Fin
+	return;
+};
+let siHayErroresBajaElStatus = (prodsPorEnts) => {
+	// Variables
+	const entidades = variables.entidades.prods;
+
+	// Acciones por cada ENTIDAD
+	entidades.forEach(async (entidad, i) => {
+		// Averigua si existen registros por cada entidad
+		if (prodsPorEnts[i].length)
+			// Acciones por cada PRODUCTO
+			for (let original of prodsPorEnts[i]) {
+				// Si hay errores, le cambia el status
+				const errores = await validaPR.consolidado({datos: {...original, entidad, publico: true, epoca: true}});
+				if (errores.hay) BD_genericas.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+			}
+	});
+
+	// Fin
+	return;
 };

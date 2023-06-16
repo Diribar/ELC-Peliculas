@@ -39,7 +39,7 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1);
+		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1).replaceAll("-", " ").replace("recup", "Recup");
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Ayuda para el titulo
@@ -154,79 +154,6 @@ module.exports = {
 
 		return res.redirect(destino);
 	},
-	eliminarGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, origen} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const original = await BD_genericas.obtienePorId(entidad, id);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		let acumulado = [];
-
-		// Se fija si tiene avatar y lo elimina
-		if (original.avatar && !original.avatar.includes("/")) {
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
-		}
-
-		// Elimina todas las ediciones que tenga
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id}));
-
-		// Elimina el historial de status
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id}));
-
-		// Elimina el historial de ediciones
-		acumulado.push(BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id}));
-
-		// Acciones si es un producto
-		if (familia == "producto") {
-			// Se fija si tiene links_edicion y links, y los elimina
-			acumulado.push(BD_genericas.eliminaTodosPorCondicion("links_edicion", {[campo_id]: id}));
-			acumulado.push(BD_genericas.eliminaTodosPorCondicion("links", {[campo_id]: id}));
-		}
-
-		// Acciones si es un RCLV
-		if (familia == "rclv") {
-			// Ediciones de producto - Se fija si tiene alguna vinculada
-			const prodEdiciones = await BD_genericas.obtieneTodosPorCondicion("prods_edicion", {[campo_id]: id});
-			if (prodEdiciones.length) {
-				// Les borra el vínculo en la BD
-				acumulado.push(BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null}));
-
-				// Revisa si tiene que eliminar alguna edición
-				procesos.puleEdicionesProd(prodEdiciones, campo_id);
-			}
-
-			// Productos - Se fija si tiene alguno vinculado y en status aprobado, y si se le debe cambiar el status
-			procesos.prodsConElRCLVeliminado({campo_id, id});
-
-			// Productos - Borra el valor en el campo_id
-			for (let entProd of variables.entidades.prods)
-				acumulado.push(BD_genericas.actualizaTodosPorCondicion(entProd, {[campo_id]: id}, {[campo_id]: 1}));
-
-			// epocaDelAno - Borra el vínculo en los diasDelAno
-			if (entidad == "epocasDelAno")
-				acumulado.push(BD_genericas.actualizaTodosPorCondicion("epocasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
-		}
-
-		// Espera a que cumplan todas las rutinas anteriores
-		await Promise.all(acumulado);
-
-		// Elimina el registro
-		BD_genericas.eliminaPorId(entidad, id);
-
-		// Prepara información para la próxima vista
-		const nombre = comp.nombresPosibles(original);
-
-		// Guarda la información
-		let objeto = {entidad, nombre};
-		if (origen == "TM") objeto.origen = "TM";
-		res.cookie("eliminado", objeto, {maxAge: 5000});
-
-		// Fin
-		return res.redirect("/" + familia + "/eliminado");
-	},
 	eliminadoForm: (req, res) => {
 		// Variables
 		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
@@ -247,5 +174,65 @@ module.exports = {
 
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
+	},
+	eliminarGuardar: async (req, res) => {
+		// Variables
+		const {entidad, id, origen} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const original = await BD_genericas.obtienePorId(entidad, id);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		let esperar = [];
+
+		// ELIMINA DEPENDIENTES
+		// 1. Elimina las ediciones propias
+		esperar.push(BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id}));
+
+		// 2. Elimina los links y sus ediciones
+		if (familia == "producto")
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
+
+		// 3. Elimina los capítulos y sus ediciones
+		if (entidad == "colecciones")
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
+
+		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
+
+		// 5. Borra el vínculo en los productos y les baja de status si corresponde
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
+
+		// 6. Borra el vínculo en los diasDelAno
+		if (entidad == "epocasDelAno")
+			esperar.push(BD_genericas.actualizaTodosPorCondicion("diasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+
+		// TAREAS QUE NO IMPIDEN ELIMINAR EL REGISTRO
+		// 1. Elimina el historial de status
+		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
+
+		// 2. Elimina el historial de ediciones
+		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
+
+		// 3. Se fija si tiene avatar y lo elimina
+		if (original.avatar && !original.avatar.includes("/")) {
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
+		}
+
+		// Espera a que se cumplan todas las rutinas anteriores
+		await Promise.all(esperar);
+
+		// Elimina el registro
+		BD_genericas.eliminaPorId(entidad, id);
+
+		// Guarda la información para la próxima vista
+		const nombre = comp.nombresPosibles(original);
+		let objeto = {entidad, nombre};
+		if (origen == "TM") objeto.origen = "TM";
+		res.cookie("eliminado", objeto, {maxAge: 5000});
+
+		// Fin
+		return res.redirect("/" + familia + "/eliminado");
 	},
 };

@@ -1,6 +1,6 @@
 {
-	"FechaUTC": "Mié. 14/jun",
-	"HoraUTC": "0:27",
+	"FechaUTC": "Jue. 15/jun",
+	"HoraUTC": "0:31",
 	"FechaSemUTC": "Dom. 11/jun",
 	"HoraSemUTC": "7:39",
 	"semanaUTC": 23,
@@ -20,9 +20,9 @@
 	"AprobadoConAvatarUrl": "SI",
 	"ImagenDerecha": "SI",
 	"ImagenesDerecha": {
-		"13-jun-23": {"titulo": "Antonio de Padua", "entidad": "personajes", "id": 67},
 		"14-jun-23": {"titulo": "ELC - Películas"},
-		"15-jun-23": {"titulo": "ELC - Películas"}
+		"15-jun-23": {"titulo": "ELC - Películas"},
+		"16-jun-23": {"titulo": "Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23}
 	},
 	"Separador3:": "---------------- RUTINAS SEMANALES -------------------",
 	"DiasUTC": {"SemanaUTC": "0", "LinksVencidos": "1", "RclvsSinEpocaPSTyConAno": "2"},

@@ -119,14 +119,14 @@ module.exports = {
 		},
 		obtieneEdicsAjenas: (entidad, revID, include) => {
 			// Variables
-			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
+			// const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 
 			// Fin
 			return db[entidad]
 				.findAll({
 					where: {
 						// Que esté editado desde hace más de 1 hora
-						editadoEn: {[Op.lt]: haceUnaHora},
+						// editadoEn: {[Op.lt]: haceUnaHora},
 						// Que sea ajeno
 						editadoPor_id: {[Op.ne]: revID},
 					},

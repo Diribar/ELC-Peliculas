@@ -172,6 +172,7 @@ module.exports = {
 		const {entidad, id, origen} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo]
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
@@ -255,7 +256,7 @@ module.exports = {
 					// Mueve el archivo de la edición para su revisión
 					comp.gestionArchivos.mueveImagen(prodComb.avatar, "9-Provisorio", "2-Productos/Revisar");
 					// Elimina el anterior archivo de imagen editada
-					if (edicion.avatar)
+					if (avatarEdicInicial)
 						comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", avatarEdicInicial);
 				}
 			}
