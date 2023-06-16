@@ -7,10 +7,10 @@
 	"semanaUTC": 23,
 	"RutinasHorarias": ["ProdsEnRCLV", "LinksEnProd", "MailDeFeedback"],
 	"RutinasDiarias": {
-		"ImagenDerecha": "NO",
-		"BorraImagenesSinRegistro": "NO",
-		"PaisesConMasProductos": "NO",
-		"AprobadoConAvatarUrl": "NO"
+		"ImagenDerecha": "SI",
+		"BorraImagenesSinRegistro": "SI",
+		"PaisesConMasProductos": "SI",
+		"AprobadoConAvatarUrl": "SI"
 	},
 	"RutinasSemanales": {"SemanaUTC": "SI", "LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"ImagenesDerecha": {
