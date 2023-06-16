@@ -66,11 +66,8 @@ module.exports = {
 			return;
 		});
 
-		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Imagen Derecha' actualizados y  guardados en JSON");
-
 		// Fin
-		return;
+		return false;
 	},
 
 	// Imagen Derecha
