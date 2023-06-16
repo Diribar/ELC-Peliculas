@@ -313,7 +313,7 @@ module.exports = {
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
-		const rutinasSemanales = Object.keys(info.RutinasSemanales);
+		const rutinasSemanales = info.RutinasSemanales;
 
 		// Obtiene la fecha y hora UTC actual
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
