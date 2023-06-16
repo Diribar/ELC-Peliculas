@@ -86,11 +86,11 @@ module.exports = {
 		// if (HoraUTC >= "00:30") await this.RutinasDiarias();
 		if (info.FechaUTC == FechaUTC) return;
 
-		// Establece el status de los procesos de rutina
+		// Actualiza los campos de fecha
 		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
 
-		// Actualiza el archivo JSON
+		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
 		for (let campo in rutinasDiarias) feedback_RD[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
