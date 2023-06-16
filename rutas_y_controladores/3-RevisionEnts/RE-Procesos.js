@@ -672,11 +672,11 @@ module.exports = {
 	},
 
 	// Varios
-	orignalAvatar: async (original, entidad) => {
+	descargaAvatarOriginal: async (original, entidad) => {
 		// Descarga el archivo avatar
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const ruta = "./publico/imagenes/2-" + familias + "/Final/";
 		const avatar = Date.now() + path.extname(original.avatar);
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-		const ruta = "./publico/imagenes/2-Avatar-" + petitFamilias + "-Final/";
 		comp.gestionArchivos.descarga(original.avatar, ruta + avatar);
 
 		// Actualiza el registro 'original'
