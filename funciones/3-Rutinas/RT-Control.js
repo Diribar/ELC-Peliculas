@@ -40,9 +40,10 @@ module.exports = {
 		// Start-up
 		await this.RutinasDiarias();
 		await this.RutinasSemanales();
+
 		// this.epoca();
 		//this.BorraImagenesSinRegistro();
-		this.ImagenDerecha();
+		// this.ImagenDerecha();
 
 		// Fin
 		return;
