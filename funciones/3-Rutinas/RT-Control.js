@@ -95,6 +95,7 @@ module.exports = {
 		for (let campo in rutinasDiarias) feedback_RD[campo] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
 
+		// Actualiza el archivo JSON
 		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
