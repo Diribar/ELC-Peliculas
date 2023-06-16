@@ -14,10 +14,10 @@
     <% } else if (tema == "revisionEnts" && codigo.endsWith("/edicion")) { %><%- include("RE9-Edic-Largos") %>
 
     <!-- AMBOS: Inactivar y Rechazo -->
-    <% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM1-Inactivar") %>
+    <% } else if (codigo == "inactivar" || codigo == "rechazo") { %><%- include("FM8-Inactivar") %>
     
     <!-- AMBOS: Recuperar/Eliminar y Revisión de Inactivar/Recuperar -->
-    <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM1-Recuperar") %>
+    <% } else if (["recuperar", "eliminar", "inactivar-o-recuperar"].includes(codigo)) { %><%- include("FM8-Recuperar") %>
 
     <!-- Fin -->
     <% } %>
