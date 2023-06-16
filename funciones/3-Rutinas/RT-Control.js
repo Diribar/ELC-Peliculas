@@ -269,20 +269,18 @@ module.exports = {
 				const {titulo, entidad, id, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
 
 				// Actualiza los datos para esa fecha
-				ImagenesDerecha[fechaArchivo] = entidad & id ? {titulo, entidad, id} : {titulo};
-
-				console.log(273, ImagenesDerecha);
+				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
 				comp.gestionArchivos.copiaImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 
-		// Borra los archivos de imagen que no se corresponden con los titulos
-		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
-
 		// Guarda los títulos de las imágenes
 		procesos.guardaArchivoDeRutinas({ImagenesDerecha});
+
+		// Borra los archivos de imagen que no se corresponden con los titulos
+		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Fin
 		procesos.rutinasFinales("ImagenDerecha");

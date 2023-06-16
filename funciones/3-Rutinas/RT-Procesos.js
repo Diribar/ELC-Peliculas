@@ -24,25 +24,37 @@ module.exports = {
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
-		// for (let campo1 in datos) {
-		// 	// Si los datos son iguales, saltea los controles posteriores
-		// 	if (datos[campo1] == info[campo1]) continue;
+		for (let campo1 in datos) {
+			// Variable
+			const datoNuevo = datos[campo1];
+			const datoGuardado = info[campo1];
 
-		// 	// Acciones si es un string
-		// 	if (typeof datos[campo1] == "string") sonIguales = false;
-		// 	// Acciones si es un array
-		// 	else if (Array.isArray(datos[campo1])) {
-		// 		datos[campo1].forEach((campo, i) => (campo != info[campo1][i] ? (sonIguales = false) : null));
-		// 	}
-		// 	// Acciones si es un objeto
-		// 	else for (let campo2 in datos[campo1]) if (datos[campo1][campo2] != info[campo1][campo2]) sonIguales = false;
+			// Si los datos son iguales, saltea los controles posteriores
+			if (datoNuevo == datoGuardado) continue;
+			else if (!datoGuardado) sonIguales = false;
+			// Acciones si es un string
+			else if (typeof datoNuevo == "string") sonIguales = false;
+			// Acciones si es un array
+			else if (Array.isArray(datoNuevo)) {
+				if (!Array.isArray(datoGuardado)) sonIguales = false;
+				else if (datoNuevo.length != datoGuardado.length) sonIguales = false;
+				else datoNuevo.forEach((campo, i) => (campo != datoGuardado[i] ? (sonIguales = false) : null));
+			}
+			// Acciones si es un objeto
+			else if (Array.isArray(datoGuardado)) sonIguales = false;
+			else {
+				const camposNuevo = Object.keys(datoNuevo);
+				const camposGuardado = Object.keys(datoGuardado);
+				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
+				else camposNuevo.forEach((campo, i) => (campo != camposGuardado[i] ? (sonIguales = false) : null));
+			}
 
-		// 	// Fin
-		// 	if (!sonIguales) break;
-		// }
+			// Fin
+			if (!sonIguales) break;
+		}
 
 		// Si no hubo ninguna novedad, sale de la función
-		// if (sonIguales) return true;
+		if (sonIguales) return true;
 
 		// Actualiza la información
 		info = {...info, ...datos};
@@ -53,6 +65,9 @@ module.exports = {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
 			return;
 		});
+
+		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Imagen Derecha' actualizados y  guardados en JSON");
 
 		// Fin
 		return;
