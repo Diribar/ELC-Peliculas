@@ -543,7 +543,7 @@ module.exports = {
 			//Fin
 			return true
 		},
-		eliminaRegsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
+		eliminaDependsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
 			// Variables
 			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);
 			const campoHijo_id = comp.obtieneDesdeEntidad.campo_id(entidadHijo);

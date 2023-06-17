@@ -180,11 +180,11 @@ module.exports = {
 
 		// 2. Elimina los links y sus ediciones
 		if (familia == "producto")
-			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
+			esperar.push(procesos.eliminar.eliminaDependsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
 
 		// 3. Elimina los capítulos y sus ediciones
 		if (entidad == "colecciones")
-			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
+			esperar.push(procesos.eliminar.eliminaDependsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
 
 		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
 		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
