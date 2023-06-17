@@ -320,7 +320,7 @@ module.exports = {
 				// Variables
 				statusAprob = true;
 				const ahora = comp.fechaHora.ahora();
-				const datos = {statusRegistro_id: aprobado_id};
+				let datos = {statusRegistro_id: aprobado_id};
 				if (!registro.altaTermEn)
 					datos = {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora)};
 
@@ -749,26 +749,26 @@ let puleEdicion = async (entidad, original, edicion) => {
 
 	// Quita de edición los campos que correspondan
 	for (let campo in edicion) {
+		// Quita de edición los campos que no se comparan
+		if (!camposRevisar.includes(campo) || edicion[campo] === null) {
+			delete edicion[campo];
+			continue;
+		}
+
 		// Corrige errores de data-entry
 		if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-		// CONDICION 1: El campo tiene valor 'null'
-		const condic1 = edicion[campo] === null;
-
-		// CONDICION 2: Los valores de original y edición son significativos e idénticos
+		// CONDICION 1: Los valores de original y edición son significativos e idénticos
 		// 1. Son estrictamente iguales
 		// 1. El campo de la edición tiene algún valor
-		const condic2 = edicion[campo] === original[campo] && !condic1;
-		if (condic2) camposNull[campo] = null;
+		const condic1 = edicion[campo] === original[campo] || parseInt(edicion[campo]) === original[campo];
+		if (condic1) camposNull[campo] = null;
 
-		// CONDICION 3: El objeto vinculado tiene el mismo ID
-		const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
-
-		// CONDICION 4: Quita de edición los campos que no se comparan
-		const condic4 = !camposRevisar.includes(campo);
+		// CONDICION 2: El objeto vinculado tiene el mismo ID
+		const condic2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 		// Si se cumple alguna de las condiciones, se elimina ese método
-		if (condic1 || condic2 || condic3 || condic4) delete edicion[campo];
+		if (condic1 || condic2) delete edicion[campo];
 	}
 
 	// 3. Acciones en función de si quedan campos
