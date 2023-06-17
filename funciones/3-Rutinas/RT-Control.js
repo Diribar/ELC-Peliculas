@@ -35,7 +35,6 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		await this.SemanaUTC();
 
 		// this.epoca();
 		// this.BorraImagenesSinRegistro();
@@ -174,6 +173,7 @@ module.exports = {
 
 		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
 		if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		await this.SemanaUTC();
 
 		// Fin
 		return;
