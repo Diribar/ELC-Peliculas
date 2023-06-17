@@ -296,14 +296,14 @@ module.exports = {
 		statusAprob: async function ({entidad, registro}) {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			let statusAprob = registro.statusRegistro_id != creadoAprob_id;
+			let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
 
 			// Acciones si es un producto que no está en status 'aprobado':
 			// 1. Averigua si corresponde cambiarlo al status 'aprobado'
 			// 2. Si es una colección, ídem para sus capítulos
 			// 3. Actualiza 'prodsEnRCLV' en sus RCLVs
 			// 4. Obtiene el nuevo status del producto
-			if (!statusAprob && familias == "productos") statusAprob = await this.prodsPosibleAprob(entidad, registro);
+			if (!statusAprob) statusAprob = await this.prodsPosibleAprob(entidad, registro);
 
 			// Fin
 			return statusAprob;
@@ -320,16 +320,32 @@ module.exports = {
 				// Variables
 				statusAprob = true;
 				const ahora = comp.fechaHora.ahora();
-				const datos = {statusRegistro_id: aprobado_id};
+				let datos = {statusRegistro_id: aprobado_id};
 				if (!registro.altaTermEn)
-					datos = {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora)};
+					datos = {
+						...datos,
+						altaTermEn: ahora,
+						leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+						sugeridoPor_id: 2,
+						sugerido_en: ahora,
+					};
 
 				// Cambia el status del registro
-				BD_genericas.actualizaPorId(entidad, registro.id, datos);
+				await BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
-				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
-				if (entidad == "colecciones")
-					await this.actualizaStatusDeCapitulos({...registro, statusRegistro_id: aprobado_id});
+				// Si es una colección, revisa si corresponde aprobar capítulos
+				if (entidad == "colecciones") await this.capsAprobs(registro.id);
+
+				// 4. Agrega un registro en el histStatus
+				// 4.A. Genera la información
+				let datosHist = {
+					...{entidad, entidad_id: registro.id},
+					...{sugeridoPor_id: registro.sugeridoPor_id, sugeridoEn: registro.sugeridoEn},
+					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
+					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true},
+				};
+				// 4.C. Guarda los datos históricos
+				BD_genericas.agregaRegistro("histStatus", datosHist);
 
 				// Actualiza prodsEnRCLV
 				this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
@@ -338,43 +354,36 @@ module.exports = {
 			// Fin
 			return statusAprob;
 		},
-		actualizaStatusDeCapitulos: async (registro) => {
+		capsAprobs: async (colID) => {
 			// Variables
-			const statusRegistro_id = registro.statusRegistro_id;
 			const ahora = comp.fechaHora.ahora();
 			const publico = true;
 			const epoca = true;
+			let esperar = [];
 
 			// Prepara los datos
-			let datos = {
-				sugerido_en: ahora,
-				sugeridoPor_id: 2,
-				statusColeccion_id: statusRegistro_id,
-				statusRegistro_id,
-			};
-			if (!datos.altaTermEn && statusRegistro_id == aprobado_id)
-				datos = {
-					...datos,
-					altaTermEn: ahora,
-					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-				};
-
-			// Actualiza los datos en los capítulos
-			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: registro.id}, datos);
+			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
+			const datosSugeridos = {sugeridoPor_id: 2, sugerido_en: ahora};
 
 			// Obtiene los capitulos id
-			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
+			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
 
-			// Rutina
-			let esperar = [];
-			datos = {altaTermEn: null, leadTimeCreacion: null, statusRegistro_id: creadoAprob_id};
+			// Actualiza el status de los capítulos
 			for (let capitulo of capitulos) {
+				// Variables
+				const datosTerm = !capitulo.altaTermEn
+					? {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
+					: {};
+
 				// Revisa si cada capítulo supera el test de errores
 				let validar = {entidad: "capitulos", ...capitulo, publico, epoca};
 				const errores = await validaPR.consolidado({datos: validar});
 
-				// En caso negativo, corrije el status
-				if (errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+				// Actualiza los datos
+				const datos = !errores.hay
+					? {...datosFijos, ...datosSugeridos, ...datosTerm}
+					: {...datosFijos, statusRegistro_id: creadoAprob_id};
+				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
 			// Espera hasta que se revisen todos los capítulos
 			await Promise.all(esperar);
@@ -749,26 +758,26 @@ let puleEdicion = async (entidad, original, edicion) => {
 
 	// Quita de edición los campos que correspondan
 	for (let campo in edicion) {
+		// Quita de edición los campos que no se comparan
+		if (!camposRevisar.includes(campo) || edicion[campo] === null) {
+			delete edicion[campo];
+			continue;
+		}
+
 		// Corrige errores de data-entry
 		if (typeof edicion[campo] == "string") edicion[campo] = edicion[campo].trim();
 
-		// CONDICION 1: El campo tiene valor 'null'
-		const condic1 = edicion[campo] === null;
-
-		// CONDICION 2: Los valores de original y edición son significativos e idénticos
+		// CONDICION 1: Los valores de original y edición son significativos e idénticos
 		// 1. Son estrictamente iguales
 		// 1. El campo de la edición tiene algún valor
-		const condic2 = edicion[campo] === original[campo] && !condic1;
-		if (condic2) camposNull[campo] = null;
+		const condic1 = edicion[campo] === original[campo] || parseInt(edicion[campo]) === original[campo];
+		if (condic1) camposNull[campo] = null;
 
-		// CONDICION 3: El objeto vinculado tiene el mismo ID
-		const condic3 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
-
-		// CONDICION 4: Quita de edición los campos que no se comparan
-		const condic4 = !camposRevisar.includes(campo);
+		// CONDICION 2: El objeto vinculado tiene el mismo ID
+		const condic2 = edicion[campo] && edicion[campo].id && original[campo] && edicion[campo].id == original[campo].id;
 
 		// Si se cumple alguna de las condiciones, se elimina ese método
-		if (condic1 || condic2 || condic3 || condic4) delete edicion[campo];
+		if (condic1 || condic2) delete edicion[campo];
 	}
 
 	// 3. Acciones en función de si quedan campos
