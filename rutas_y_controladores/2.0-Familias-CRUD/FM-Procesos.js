@@ -320,44 +320,16 @@ module.exports = {
 				// Variables
 				statusAprob = true;
 				const ahora = comp.fechaHora.ahora();
-				const datos = {
-					altaTermEn: ahora,
-					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-					statusRegistro_id: aprobado_id,
-				};
+				const datos = {statusRegistro_id: aprobado_id};
+				if (!registro.altaTermEn)
+					datos = {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora)};
 
 				// Cambia el status del registro
 				BD_genericas.actualizaPorId(entidad, registro.id, datos);
 
 				// Si es una colección, revisa si corresponde cambiarle el status a los capítulos
-				if (entidad == "colecciones") {
-					// Variables
-					datos.altaRevisadaPor_id = 2;
-					datos.altaRevisadaEn = ahora;
-
-					// Actualiza el status de la coleccción en los capítulos
-					BD_genericas.actualizaTodosPorCondicion(
-						"capitulos",
-						{coleccion_id: registro.id},
-						{statusColeccion_id: aprobado_id}
-					);
-
-					// Obtiene los capitulos id
-					const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
-
-					// Rutina
-					let esperar = [];
-					for (let capitulo of capitulos) {
-						// Revisa si cada capítulo supera el test de errores
-						let validar = {...capitulo, entidad: "capitulos", publico, epoca};
-						const errores = await validaPR.consolidado({datos: validar});
-
-						// En caso afirmativo, actualiza el status
-						if (!errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
-					}
-					// Espera hasta que se revisen todos los capítulos
-					await Promise.all(esperar);
-				}
+				if (entidad == "colecciones")
+					await this.actualizaStatusDeCapitulos({...registro, statusRegistro_id: aprobado_id});
 
 				// Actualiza prodsEnRCLV
 				this.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
@@ -365,6 +337,50 @@ module.exports = {
 
 			// Fin
 			return statusAprob;
+		},
+		actualizaStatusDeCapitulos: async (registro) => {
+			// Variables
+			const statusRegistro_id = registro.statusRegistro_id;
+			const ahora = comp.fechaHora.ahora();
+			const publico = true;
+			const epoca = true;
+
+			// Prepara los datos
+			let datos = {
+				sugerido_en: ahora,
+				sugeridoPor_id: 2,
+				statusColeccion_id: statusRegistro_id,
+				statusRegistro_id,
+			};
+			if (!datos.altaTermEn && statusRegistro_id == aprobado_id)
+				datos = {
+					...datos,
+					altaTermEn: ahora,
+					leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+				};
+
+			// Actualiza los datos en los capítulos
+			await BD_genericas.actualizaTodosPorCondicion("capitulos", {coleccion_id: registro.id}, datos);
+
+			// Obtiene los capitulos id
+			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: registro.id});
+
+			// Rutina
+			let esperar = [];
+			datos = {altaTermEn: null, leadTimeCreacion: null, statusRegistro_id: creadoAprob_id};
+			for (let capitulo of capitulos) {
+				// Revisa si cada capítulo supera el test de errores
+				let validar = {entidad: "capitulos", ...capitulo, publico, epoca};
+				const errores = await validaPR.consolidado({datos: validar});
+
+				// En caso negativo, corrije el status
+				if (errores.hay) esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
+			}
+			// Espera hasta que se revisen todos los capítulos
+			await Promise.all(esperar);
+
+			// Fin
+			return;
 		},
 		accionesPorCambioDeStatus: async function (entidad, registro) {
 			// Variables
@@ -522,7 +538,7 @@ module.exports = {
 		},
 	},
 
-	eliminar:{
+	eliminar: {
 		eliminaAvatarMasEdics: async (entidad, id) => {
 			// Obtiene la edicion
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -534,14 +550,15 @@ module.exports = {
 			if (ediciones.length) {
 				// 1. Elimina el archivo avatar de las ediciones
 				for (let edicion of ediciones)
-					if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
-	
+					if (edicion.avatar)
+						comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
+
 				// 2. Elimina las ediciones
 				BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
 			}
 
 			//Fin
-			return true
+			return true;
 		},
 		eliminaDependsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
 			// Variables
@@ -601,7 +618,6 @@ module.exports = {
 			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
 
 			if (prods.length) {
-
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)
 					esperar.push(BD_genericas.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));

@@ -223,11 +223,7 @@ module.exports = {
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCondicion(
-				"capitulos",
-				{coleccion_id: id},
-				{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
-			);
+			await procsCRUD.actualizaStatusDeCapitulos({...registro, statusRegistro_id: statusFinal_id});
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
