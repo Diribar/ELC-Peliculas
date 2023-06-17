@@ -29,10 +29,9 @@ const multer = require("../../middlewares/varios/multer");
 // Consolida
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
-const base = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...base, edicion, permUserReg];
-const aptoCRUD = [...base, permUserReg];
-const aptoEliminar = [...base, usRolRevEnts, permUserReg];
+const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoEdicion = [...aptoDetalle, edicion];
+const aptoEliminar = [...aptoDetalle, usRolRevEnts];
 
 //************************ Rutas ****************************
 // Rutas de APIs

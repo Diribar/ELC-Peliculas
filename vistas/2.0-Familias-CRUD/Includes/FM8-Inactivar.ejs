@@ -1,0 +1,13 @@
+<!-- Motivos -->
+<section id="motivos">
+    <h3>Elegí un Motivo de Rechazo:</h3>
+    <ul type="none">
+        <% for (let motivo of motivos) { %>
+            <li>
+                <input type="radio" name="motivo_id" value="<%= motivo.id %>" id="<%= motivo.id %>">
+                <label for="<%= motivo.id %>"><%= motivo.descripcion %></label>
+            </li>
+        <% } %>
+    </ul>
+</section>
+<%- include("FM1-Comentario") %>

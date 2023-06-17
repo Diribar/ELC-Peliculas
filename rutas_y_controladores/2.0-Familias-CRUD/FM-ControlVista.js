@@ -39,7 +39,9 @@ module.exports = {
 		// Obtiene el título
 		const a = entidad == "peliculas" || entidad == "colecciones" ? "a " : " ";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const preTitulo = codigo.slice(0, 1).toUpperCase() + codigo.slice(1).replaceAll("-", " ").replace("recup", "Recup");
+		const preTitulo = !inactivarRecuperar
+			? codigo.slice(0, 1).toUpperCase() + codigo.slice(1)
+			: "Revisión de " + subcodigo.slice(0, 1).toUpperCase() + subcodigo.slice(1);
 		const titulo = preTitulo + " un" + a + entidadNombre;
 
 		// Ayuda para el titulo
@@ -134,7 +136,15 @@ module.exports = {
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 2. Agrega un registro en el histStatus
+		// 2. Si es una colección, actualiza sus capítulos con el mismo status
+		if (entidad == "colecciones")
+			BD_genericas.actualizaTodosPorCondicion(
+				"capitulos",
+				{coleccion_id: id},
+				{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
+			);
+
+		// 3. Agrega un registro en el histStatus
 		let datosHist = {
 			...{entidad, entidad_id: id},
 			...{sugeridoPor_id: original.sugeridoPor_id, sugeridoEn: original.sugeridoEn},
@@ -145,11 +155,11 @@ module.exports = {
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
-		// 3. Actualiza los RCLV, en el campo 'prodsAprob'
+		// 4. Actualiza los RCLV, en el campo 'prodsAprob'
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		if (familia == "producto") procesos.revisiones.accionesPorCambioDeStatus(entidad, original);
 
-		// 4. Regresa a la vista de detalle
+		// 5. Regresa a la vista de detalle
 		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 
 		return res.redirect(destino);

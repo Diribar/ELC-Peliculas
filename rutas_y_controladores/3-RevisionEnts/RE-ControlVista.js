@@ -217,7 +217,7 @@ module.exports = {
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
-		// 1.C. Actualiza el registro --> es crítico el uso del 'await'
+		// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
