@@ -224,7 +224,7 @@ module.exports = {
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
 			statusFinal_id == aprobado_id
-				? await procsCRUD.actualizaStatusDeCapitulos({...original, statusRegistro_id: statusFinal_id})
+				? await procsCRUD.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
