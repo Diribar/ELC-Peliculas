@@ -255,7 +255,7 @@ module.exports = {
 		// 7. Acciones si es un registro que se mueve a 'inactivo'
 		// Elimina el archivo de avatar de la edicion
 		// Elimina las ediciones que tenga
-		if (statusFinal_id == inactivo_id) procesos.guardar.prodRclvRech(entidad, id);
+		if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
 		// 8. Si es un producto, actualiza los RCLV en el campo 'prodsAprob' --> debe estar después de que se grabó el original
 		if (producto) procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, original);

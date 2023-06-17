@@ -30,8 +30,8 @@ const multer = require("../../middlewares/varios/multer");
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [...aptoDetalle, edicion];
-const aptoEliminar = [...aptoDetalle, usRolRevEnts];
+const aptoEdicion = [...aptoCRUD, edicion];
+const aptoEliminar = [...aptoCRUD, usRolRevEnts];
 
 //************************ Rutas ****************************
 // Rutas de APIs
