@@ -362,10 +362,8 @@ module.exports = {
 			let esperar = [];
 
 			// Prepara los datos
-			const datosFijos = {
-				statusColeccion_id: aprobado_id,
-				statusRegistro_id: aprobado_id,
-			};
+			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
+			const datosSugeridos = {sugeridoPor_id: 2, sugerido_en: ahora};
 
 			// Obtiene los capitulos id
 			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
@@ -374,13 +372,7 @@ module.exports = {
 			for (let capitulo of capitulos) {
 				// Variables
 				const datosTerm = !capitulo.altaTermEn
-					? {
-							...datos,
-							altaTermEn: ahora,
-							leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora),
-							sugeridoPor_id: 2,
-							sugerido_en: ahora,
-					  }
+					? {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
 					: {};
 
 				// Revisa si cada capítulo supera el test de errores
@@ -388,7 +380,9 @@ module.exports = {
 				const errores = await validaPR.consolidado({datos: validar});
 
 				// Actualiza los datos
-				const datos = !errores.hay ? {...datosFijos, ...datosTerm} : {...datosFijos, statusRegistro_id: creadoAprob_id};
+				const datos = !errores.hay
+					? {...datosFijos, ...datosSugeridos, ...datosTerm}
+					: {...datosFijos, statusRegistro_id: creadoAprob_id};
 				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
 			// Espera hasta que se revisen todos los capítulos
