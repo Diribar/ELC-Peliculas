@@ -68,7 +68,7 @@ module.exports = {
 		// Obtiene datos para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		const links = await procesos.obtieneLinksDelProducto(entidad, id);
+		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
 
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
@@ -78,6 +78,7 @@ module.exports = {
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 
 		// Va a la vista
+		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
@@ -175,7 +176,7 @@ module.exports = {
 
 		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
-		for (let campo in req.body) if (typeof req.body[campo]=="string") req.body[campo] = req.body[campo].trim();
+		for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 		// Si recibimos un avatar, se completa la información
 		if (req.file) {
