@@ -35,10 +35,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-
-		// this.epoca();
-		// this.BorraImagenesSinRegistro();
-		// this.ImagenDerecha();
+		// this.MailDeFeedback()
 
 		// Fin
 		return;

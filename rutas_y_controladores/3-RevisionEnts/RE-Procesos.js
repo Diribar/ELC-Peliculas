@@ -403,11 +403,11 @@ module.exports = {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
 				BD_especificas.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
 
-				// Similar rutina para los productos aprobados
-				// Obtiene los productos aprobados con ese 'campo_id'
+				// Obtiene los productos aprobados vinculados
 				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
 				let prodsVinculados = await BD_genericas.obtieneTodosPorCondicion(entidadProd, condicion);
-				// Los actualiza, fijándose si tiene errores
+
+				// Actualiza los productos aprobados, quitándole el valor al 'campo_id' y fijándose si tiene errores
 				for (let prodVinculado of prodsVinculados) {
 					// Averigua si el producto tiene errores cuando se le actualiza el 'campo_id'
 					let objeto = {[campo_id]: 1};

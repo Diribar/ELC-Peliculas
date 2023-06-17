@@ -541,10 +541,10 @@ let ordenar = (resultados) => {
 };
 let avatarConLink = (familia, valorAprob, texto) => {
 	// Variables
-	const link = valorAprob.includes("/");
+	const link = valorAprob && valorAprob.includes("/");
 	const terminacion = "' style='color: inherit; text-decoration: none'><u>la imagen " + texto + "</u></a>";
-	const rutaArchivo = !link ? "/imagenes/2-" + familia + "s/Final/" + valorAprob : "";
-	const existe = !link ? comp.gestionArchivos.existe("./publico" + rutaArchivo) : "";
+	const rutaArchivo = !link && valorAprob ? "/imagenes/2-" + familia + "s/Final/" + valorAprob : "";
+	const existe = !link && valorAprob ? comp.gestionArchivos.existe("./publico" + rutaArchivo) : "";
 
 	return link
 		? "<a href='" + valorAprob + terminacion
