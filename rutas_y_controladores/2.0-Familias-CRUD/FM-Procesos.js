@@ -340,7 +340,7 @@ module.exports = {
 				// 4.A. Genera la información
 				let datosHist = {
 					...{entidad, entidad_id: registro.id},
-					...{sugeridoPor_id: registro.sugeridoPor_id, sugeridoEn: ahora},
+					...{sugeridoPor_id: registro.sugeridoPor_id, sugeridoEn: registro.sugeridoEn},
 					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
 					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true},
 				};
