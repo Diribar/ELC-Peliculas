@@ -216,17 +216,20 @@ module.exports = {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
+			if (original.statusRegistro_id == creado_id && statusFinal_id == creadoAprob_id) datos.sugeridoPor_id = userID; // Para que cuando concluya la aprobación, le llegue el mail al usuario
 		}
 		// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
-			BD_genericas.actualizaTodosPorCondicion(
-				"capitulos",
-				{coleccion_id: id},
-				{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
-			);
+			statusFinal_id == aprobado_id
+				? await procsCRUD.actualizaStatusDeCapitulos({...original, statusRegistro_id: statusFinal_id})
+				: await BD_genericas.actualizaTodosPorCondicion(
+						"capitulos",
+						{coleccion_id: id},
+						{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
+				  );
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 		if (rclv && subcodigo == "alta" && aprob) procesos.alta.rclvEdicAprobRech(entidad, original, revID);
