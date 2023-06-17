@@ -210,14 +210,19 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
-		datos = {...datos, sugeridoPor_id: revID, sugeridoEn: ahora, statusRegistro_id: statusFinal_id, motivo_id};
+		datos = {...datos, sugeridoEn: ahora, statusRegistro_id: statusFinal_id};
 		// 1.B. Datos sólo si es un alta/rechazo
-		if (!inactivarRecuperar) {
+		if (!original.altaTermEn) {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
-			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
-			if (original.statusRegistro_id == creado_id && statusFinal_id == creadoAprob_id) datos.sugeridoPor_id = userID; // Para que cuando concluya la aprobación, le llegue el mail al usuario
+			if (statusFinal_id != creadoAprob_id) {
+				datos.altaTermEn = ahora;
+				datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
+			}
 		}
+		datos.sugeridoPor_id = original.statusRegistro_id == creado_id && statusFinal_id == creadoAprob_id ? userID : revID;
+		if (motivo_id) datos.motivo_id = motivo_id;
+
 		// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
