@@ -373,15 +373,15 @@ module.exports = {
 			// Actualiza el status de los capítulos
 			for (let capitulo of capitulos) {
 				// Variables
-				let datosTerm = {};
-				if (!capitulo.altaTermEn)
-					datosTerm = {
-						...datos,
-						altaTermEn: ahora,
-						leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora),
-						sugeridoPor_id: 2,
-						sugerido_en: ahora,
-					};
+				const datosTerm = !capitulo.altaTermEn
+					? {
+							...datos,
+							altaTermEn: ahora,
+							leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora),
+							sugeridoPor_id: 2,
+							sugerido_en: ahora,
+					  }
+					: {};
 
 				// Revisa si cada capítulo supera el test de errores
 				let validar = {entidad: "capitulos", ...capitulo, publico, epoca};
