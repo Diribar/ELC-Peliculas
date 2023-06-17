@@ -216,6 +216,7 @@ module.exports = {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
+			if (original.statusRegistro_id == creado_id && statusFinal_id == creadoAprob_id) datos.sugeridoPor_id = userID; // Para que cuando concluya la aprobación, le llegue el mail al usuario
 		}
 		// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
 		await BD_genericas.actualizaPorId(entidad, id, datos);
