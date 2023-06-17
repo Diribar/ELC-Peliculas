@@ -523,6 +523,24 @@ module.exports = {
 	},
 
 	eliminar:{
+		eliminaAvatarMasEdics: async (entidad, id) => {
+			// Obtiene la edicion
+			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const condicion = {[campo_id]: id};
+			const ediciones = await BD_genericas.obtieneTodosPorCondicion(entidadEdic, condicion);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+			// 1. Elimina el archivo avatar de las ediciones
+			for (let edicion of ediciones)
+				if (edicion.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", edicion.avatar);
+
+			// 2. Elimina las ediciones
+			BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id});
+
+			//Fin
+			return;
+		},
 		eliminaRegsMasEdics: async ({entidadHijo, entidadPadre, padreID}) => {
 			// Variables
 			const campoPadre_id = comp.obtieneDesdeEntidad.campo_id(entidadPadre);
@@ -581,7 +599,6 @@ module.exports = {
 			for (let prodsPorEnt of prodsPorEnts) prods.push(...prodsPorEnt);
 
 			if (prods.length) {
-				console.log(776, prods[0][campo_idRCLV]);
 
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)

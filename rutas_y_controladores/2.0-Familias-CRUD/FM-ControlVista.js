@@ -164,6 +164,64 @@ module.exports = {
 
 		return res.redirect(destino);
 	},
+	eliminarGuardar: async (req, res) => {
+		// Variables
+		const {entidad, id, origen} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+		const original = await BD_genericas.obtienePorId(entidad, id);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		let esperar = [];
+
+		// ELIMINA DEPENDIENTES
+		// 1. Elimina las ediciones propias y sus archivos avatar
+		esperar.push(procesos.eliminar.eliminaAvatarMasEdics(entidad, id));
+
+		// 2. Elimina los links y sus ediciones
+		if (familia == "producto")
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
+
+		// 3. Elimina los capítulos y sus ediciones
+		if (entidad == "colecciones")
+			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
+
+		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
+
+		// 5. Borra el vínculo en los productos y les baja de status si corresponde
+		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
+
+		// 6. Borra el vínculo en los diasDelAno
+		if (entidad == "epocasDelAno")
+			esperar.push(BD_genericas.actualizaTodosPorCondicion("diasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+
+		// Elimina el registro
+		await Promise.all(esperar);
+		await BD_genericas.eliminaPorId(entidad, id);
+
+		// TAREAS QUE NO IMPIDEN ELIMINAR EL REGISTRO
+		// 1. Elimina el historial de status
+		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
+
+		// 2. Elimina el historial de ediciones
+		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
+
+		// 3. Se fija si tiene avatar y lo elimina
+		if (original.avatar && !original.avatar.includes("/")) {
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
+			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
+		}
+
+		// Guarda la información para la próxima vista
+		const nombre = comp.nombresPosibles(original);
+		let objeto = {entidad, nombre};
+		if (origen == "TM") objeto.origen = "TM";
+		res.cookie("eliminado", objeto, {maxAge: 5000});
+
+		// Fin
+		return res.redirect("/" + familia + "/eliminado");
+	},
 	eliminadoForm: (req, res) => {
 		// Variables
 		const {entidad, nombre, origen} = req.cookies && req.cookies.eliminado ? req.cookies.eliminado : {};
@@ -184,65 +242,5 @@ module.exports = {
 
 		// Fin
 		return res.render("CMP-0Estructura", {informacion});
-	},
-	eliminarGuardar: async (req, res) => {
-		// Variables
-		const {entidad, id, origen} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const familias = comp.obtieneDesdeEntidad.familias(entidad);
-		const original = await BD_genericas.obtienePorId(entidad, id);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-		let esperar = [];
-
-		// ELIMINA DEPENDIENTES
-		// 1. Elimina las ediciones propias
-		esperar.push(BD_genericas.eliminaTodosPorCondicion(entidadEdic, {[campo_id]: id}));
-
-		// 2. Elimina los links y sus ediciones
-		if (familia == "producto")
-			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "links"}));
-
-		// 3. Elimina los capítulos y sus ediciones
-		if (entidad == "colecciones")
-			esperar.push(procesos.eliminar.eliminaRegsMasEdics({entidadPadre: entidad, padreID: id, entidadHijo: "capitulos"}));
-
-		// 4. Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
-
-		// 5. Borra el vínculo en los productos y les baja de status si corresponde
-		if (familia == "rclv") esperar.push(procesos.eliminar.borraVinculoProds({entidadRCLV: entidad, rclvID: id}));
-
-		// 6. Borra el vínculo en los diasDelAno
-		if (entidad == "epocasDelAno")
-			esperar.push(BD_genericas.actualizaTodosPorCondicion("diasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
-
-		// TAREAS QUE NO IMPIDEN ELIMINAR EL REGISTRO
-		// 1. Elimina el historial de status
-		BD_genericas.eliminaTodosPorCondicion("histStatus", {entidad, entidad_id: id});
-
-		// 2. Elimina el historial de ediciones
-		BD_genericas.eliminaTodosPorCondicion("histEdics", {entidad, entidad_id: id});
-
-		// 3. Se fija si tiene avatar y lo elimina
-		if (original.avatar && !original.avatar.includes("/")) {
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Final", original.avatar);
-			comp.gestionArchivos.elimina("./publico/imagenes/2-" + familias + "/Revisar", original.avatar);
-		}
-
-		// Espera a que se cumplan todas las rutinas anteriores
-		await Promise.all(esperar);
-
-		// Elimina el registro
-		BD_genericas.eliminaPorId(entidad, id);
-
-		// Guarda la información para la próxima vista
-		const nombre = comp.nombresPosibles(original);
-		let objeto = {entidad, nombre};
-		if (origen == "TM") objeto.origen = "TM";
-		res.cookie("eliminado", objeto, {maxAge: 5000});
-
-		// Fin
-		return res.redirect("/" + familia + "/eliminado");
 	},
 };
