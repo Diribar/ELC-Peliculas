@@ -750,6 +750,9 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 	else if (variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
+	// Últimas correcciones
+	if (resultado === "") resultado = null;
+
 	// Fin
 	return resultado;
 };
