@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 17/jun",
-	"HoraUTC": "0:49",
+	"FechaUTC": "Dom. 18/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Vie. 16/jun",
@@ -19,10 +19,10 @@
 	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-jun-23": {"titulo": "ELC - Películas"},
 		"16-jun-23": {"titulo": "Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23},
 		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
 		"18-jun-23": {"titulo": "ELC - Películas"},
-		"19-jun-23": {"titulo": "ELC - Películas"}
+		"19-jun-23": {"titulo": "ELC - Películas"},
+		"20-jun-23": {"titulo": "ELC - Películas"}
 	}
 }
