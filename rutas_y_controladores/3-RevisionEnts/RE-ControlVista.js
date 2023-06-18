@@ -211,7 +211,7 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		// 1.A. Datos que se necesitan con seguridad
-		datos = {...datos, sugeridoEn: ahora, statusRegistro_id: statusFinal_id};
+		datos = {...datos, statusRegistro_id: statusFinal_id};
 		// 1.B. Datos sólo si es un alta/rechazo
 		if (!original.altaTermEn) {
 			datos.altaRevisadaPor_id = revID;
@@ -221,7 +221,10 @@ module.exports = {
 				datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 			}
 		}
-		datos.sugeridoPor_id = original.statusRegistro_id == creado_id && statusFinal_id == creadoAprob_id ? userID : revID;
+		if (statusFinal_id != creadoAprob_id) {
+			datos.statusSugeridoPor_id = revID;
+			datos.StatusSugeridoEn = ahora;
+		}
 		if (motivo_id) datos.motivo_id = motivo_id;
 
 		// 1.C. Actualiza el registro original --> es crítico el uso del 'await'
