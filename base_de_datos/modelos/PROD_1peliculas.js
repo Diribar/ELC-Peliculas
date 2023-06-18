@@ -51,14 +51,14 @@ module.exports = (sequelize, dt) => {
 		altaTermEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
 
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
+
 		editadoPor_id: {type: dt.INTEGER},
 		editadoEn: {type: dt.DATE},
 		edicRevisadaPor_id: {type: dt.INTEGER},
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
-
-		sugeridoPor_id: {type: dt.INTEGER},
-		sugeridoEn: {type: dt.DATE},
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},

@@ -21,6 +21,10 @@ module.exports = (sequelize, dt) => {
 		altaRevisadaPor_id: {type: dt.INTEGER},
 		altaRevisadaEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
+		vigenciaRevisadaEn: {type: dt.DATE},
+
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
 
 		editadoPor_id: {type: dt.INTEGER},
 		editadoEn: {type: dt.DATE},
@@ -28,11 +32,8 @@ module.exports = (sequelize, dt) => {
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		vigenciaRevisadaEn: {type: dt.DATE},
-		statusRegistro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
-		sugeridoPor_id: {type: dt.INTEGER},
-		sugeridoEn: {type: dt.DATE},
+		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "links",

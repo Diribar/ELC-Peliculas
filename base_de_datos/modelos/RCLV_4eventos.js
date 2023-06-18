@@ -17,20 +17,21 @@ module.exports = (sequelize, dt) => {
 		altaRevisadaEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
 
+		sugeridoPor_id: {type: dt.INTEGER},
+		sugeridoEn: {type: dt.DATE},
+
 		editadoPor_id: {type: dt.INTEGER},
 		editadoEn: {type: dt.DATE},
 		edicRevisadaPor_id: {type: dt.INTEGER},
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		sugeridoPor_id: {type: dt.INTEGER},
-		sugeridoEn: {type: dt.DATE},
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
 		capturaActiva: {type: dt.BOOLEAN},
 
-		statusRegistro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
+		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "rclv_4eventos",
