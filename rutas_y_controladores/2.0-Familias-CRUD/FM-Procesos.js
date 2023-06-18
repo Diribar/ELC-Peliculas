@@ -342,7 +342,7 @@ module.exports = {
 					...{entidad, entidad_id: registro.id},
 					...{sugeridoPor_id: registro.sugeridoPor_id, sugeridoEn: registro.sugeridoEn},
 					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
-					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true},
+					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
 				};
 				// 4.C. Guarda los datos históricos
 				BD_genericas.agregaRegistro("histStatus", datosHist);

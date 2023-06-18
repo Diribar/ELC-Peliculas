@@ -36,7 +36,7 @@ module.exports = {
 		// Fin
 		return {infoGral, actores};
 	},
-	obtieneLinksDelProducto: async (entidad, id, statusRegistro_id) => {
+	obtieneLinksDelProducto: async ({entidad, id, statusLink_id, userID}) => {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = ["tipo", "prov"];
@@ -46,8 +46,10 @@ module.exports = {
 		let TR = [];
 
 		// Obtiene los links
-		if (!statusRegistro_id) statusRegistro_id = aprobado_id;
-		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, statusRegistro_id}, include);
+		const condiciones = statusLink_id
+			? {statusRegistro_id: statusLink_id}
+			: {[Op.or]: [{statusRegistro_id: aprobado_id}, {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]}]};
+		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condiciones}, include);
 
 		// Procesos si hay links
 		if (links.length) {
