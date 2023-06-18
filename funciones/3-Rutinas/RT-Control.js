@@ -16,6 +16,10 @@ module.exports = {
 		const info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 
+		// Rutinas diarias
+		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
+		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
+
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
@@ -23,15 +27,6 @@ module.exports = {
 			let minuto = 1 + i;
 			cron.schedule(minuto + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
 		});
-
-		// Rutinas diarias
-		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
-		cron.schedule("0 0 * * *", async () => this.FechaHoraUTC(), {timezone: "Etc/Greenwich"});
-		cron.schedule("30 0 * * *", async () => await this.RutinasDiarias(), {timezone: "Etc/Greenwich"});
-
-		// Rutinas semanales
-		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
-		cron.schedule("45 0 * * 0", async () => await this.RutinasSemanales(), {timezone: "Etc/Greenwich"});
 
 		// Start-up
 		await this.FechaHoraUTC();
@@ -161,17 +156,15 @@ module.exports = {
 		// Actualiza los campos de fecha
 		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
+		procesos.rutinasFinales("FechaHoraUTC");
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
 		for (let rutinaDiaria in rutinasDiarias) feedback_RD[rutinaDiaria] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RD, "RutinasDiarias");
+		await this.RutinasDiarias();
 
-		// Actualiza el archivo JSON
-		procesos.rutinasFinales("FechaHoraUTC");
-
-		// Si ya pasó el horario de 'Rutinas Diarias', implementa esa rutina
-		if (HoraUTC >= "00:30") await this.RutinasDiarias();
+		// Verifica si se deben correr las rutinas semanales
 		await this.SemanaUTC();
 
 		// Fin
@@ -324,17 +317,13 @@ module.exports = {
 		// Actualiza los campos de semana
 		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
+		procesos.rutinasFinales("SemanaUTC");
 
 		// Establece el status de los procesos de rutina
 		const feedback_RS = {};
 		for (let rutinaSemanal in rutinasSemanales) feedback_RS[rutinaSemanal] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RS, "RutinasSemanales");
-
-		// Actualiza el archivo JSON
-		procesos.rutinasFinales("SemanaUTC");
-
-		// Si ya pasó el horario de 'Rutinas Semanales', implementa esa rutina
-		if (HoraUTC >= "00:45") await this.RutinasSemanales();
+		await this.RutinasSemanales();
 
 		// Fin
 		return;
