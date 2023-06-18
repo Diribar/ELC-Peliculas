@@ -364,7 +364,7 @@ module.exports = {
 			// Fin
 			return {
 				...{entidad, id, original, statusOriginal_id, statusFinal_id},
-				...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
+				...{codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 			};
 		},
 		actualizaDiasDelAno: async ({desde, duracion, id}) => {
