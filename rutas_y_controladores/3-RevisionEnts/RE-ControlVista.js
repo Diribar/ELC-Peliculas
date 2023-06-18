@@ -119,7 +119,7 @@ module.exports = {
 		// Variables - Alta, Rechazo, Inactivar, Recuperar
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, original, statusOriginal_id, statusFinal_id} = {...datos};
-		const {inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
+		const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
 		const producto = !rclv;
 		const userID = original.sugeridoPor_id;
 		const revID = req.session.usuario.id;
@@ -213,13 +213,10 @@ module.exports = {
 		// 1.A. Datos que se necesitan con seguridad
 		datos = {...datos, statusRegistro_id: statusFinal_id};
 		// 1.B. Datos sólo si es un alta/rechazo
-		if (!original.altaTermEn) {
+		if (!original.leadTimeCreacion) {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
-			if (statusFinal_id != creadoAprob_id) {
-				datos.altaTermEn = ahora;
-				datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
-			}
+			if (rclv) datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
 		if (statusFinal_id != creadoAprob_id) {
 			datos.statusSugeridoPor_id = revID;
