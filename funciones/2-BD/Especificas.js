@@ -143,8 +143,8 @@ module.exports = {
 				[Op.or]: [
 					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: {[Op.ne]: revID}}]},
 					{[Op.and]: [{statusRegistro_id: creadoAprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: inactivar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: recuperar_id}, {sugeridoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
+					{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
 				],
 			};
 			const originales = db.links
@@ -300,8 +300,8 @@ module.exports = {
 		let condiciones = {
 			[Op.or]: [
 				{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
-				{[Op.and]: [{statusRegistro_id: inactivar_id}, {sugeridoPor_id: userID}]},
-				{[Op.and]: [{statusRegistro_id: recuperar_id}, {sugeridoPor_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: userID}]},
 			],
 		};
 		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
