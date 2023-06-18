@@ -534,10 +534,10 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				sugeridoPor_id: edicion.editadoPor_id,
-				sugeridoEn: edicion.editadoEn,
-				revisadoPor_id: revID,
-				revisadoEn: ahora,
+				editadoPor_id: edicion.editadoPor_id,
+				editadoEn: edicion.editadoEn,
+				edicRevisadaPor_id: revID,
+				edicRevisadaEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
