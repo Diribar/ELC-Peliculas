@@ -242,20 +242,6 @@ module.exports = {
 				})
 			);
 	},
-	linksVencidos: () => {
-		// Obtiene la fecha de corte
-		const vidaUtil = 6 * unMes;
-		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
-
-		// Obtiene la condición
-		let condicion = {
-			statusSugeridoEn: {[Op.lt]: fechaCorte},
-			statusRegistro_id: aprobado_id,
-		};
-
-		// Fin
-		return condicion;
-	},
 	nombresDeAvatarEnBD: (entidad, statusRegistro_id) => {
 		// Variables
 		const condiciones = {avatar: {[Op.ne]: null}, avatar: {[Op.notLike]: "%/%"}};
