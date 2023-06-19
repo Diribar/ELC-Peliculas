@@ -341,7 +341,6 @@ module.exports = {
 		// Obtiene la fecha de corte
 		const vidaUtil = 6 * unMes;
 		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
-		console.log(346, new Date(fechaCorte));
 
 		// Obtiene las condiciones de cuáles son los links vencidos
 		const condiciones = {statusSugeridoEn: {[Op.lt]: fechaCorte}, statusRegistro_id: aprobado_id};
