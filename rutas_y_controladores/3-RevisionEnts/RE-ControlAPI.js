@@ -35,11 +35,11 @@ module.exports = {
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
-		
+
 		// Realiza muchísimas tareas y obtiene la edición en su mínima expresión
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
 		edicion = await procesos.edicion.edicAprobRech(objeto);
-		
+
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
 			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
@@ -91,7 +91,7 @@ module.exports = {
 
 		// Más variables
 		const creado = original.statusRegistro.creado;
-		const petitFamilias = "links"
+		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
