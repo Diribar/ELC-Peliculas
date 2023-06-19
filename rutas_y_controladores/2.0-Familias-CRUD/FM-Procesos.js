@@ -417,6 +417,7 @@ module.exports = {
 				const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
 				const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
 				const prodID = registro[campo_id];
+				
 				// Actualiza el producto
 				this.linksEnProd({entidad: prodEntidad, id: prodID});
 			}

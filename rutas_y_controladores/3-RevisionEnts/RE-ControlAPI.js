@@ -75,7 +75,7 @@ module.exports = {
 	// Links
 	linkAltaBaja: async (req, res) => {
 		// Variables
-		const {prodEntidad, prodID, url, IN, aprob, motivo_id} = req.query;
+		const {url, IN, aprob, motivo_id} = req.query;
 		const entidad = "links";
 
 		// PROBLEMAS
@@ -83,36 +83,31 @@ module.exports = {
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
 		// Se obtiene el status original del link
 		let original = await BD_genericas.obtienePorCondicionConInclude(entidad, {url}, ["statusRegistro", "tipo"]);
-		const id = original.id;
 		// El link no existe en la BD
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y tiene un status 'estable'
+		const id = original.id;
 		if (original.statusRegistro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
-		// Variables de status
-		const creado = original.statusRegistro.creado;
-		const inactivar = original.statusRegistro.inactivar;
-		const recuperar = original.statusRegistro.recuperar;
-
 		// Más variables
-		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+		const creado = original.statusRegistro.creado;
+		const petitFamilias = "links"
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
-		const altaRevisadaEn = ahora;
 		const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
 		const decisAprob = aprob == "SI";
-		const campoDecision = petitFamilias + (decisAprob ? "Aprob" : "Rech");
+		const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
 
 		// Arma los datos
 		let datos = {
 			statusSugeridoPor_id: revID,
-			statusSugeridoEn: altaRevisadaEn,
+			statusSugeridoEn: ahora,
 			statusRegistro_id,
 		};
 		if (creado) {
 			datos.altaRevisadaPor_id = revID;
-			datos.altaRevisadaEn = altaRevisadaEn;
-			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, altaRevisadaEn);
+			datos.altaRevisadaEn = ahora;
+			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		}
 		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
 
@@ -138,7 +133,6 @@ module.exports = {
 			datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
 			datosHist.duracion = Number(datosHist.motivo.duracion);
 		}
-		// return res.json({});
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
 		// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
