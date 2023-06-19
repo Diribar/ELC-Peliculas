@@ -559,6 +559,7 @@ module.exports = {
 				// 3. Actualiza la tabla de 'histEdics'
 				let datosEdic = {entidad, entidad_id: original.id, campo, titulo};
 				datosEdic = {
+					...datosEdic,
 					sugeridoPor_id: edicion.editadoPor_id,
 					sugeridoEn: edicion.editadoEn,
 					revisadoPor_id: revID,
@@ -567,7 +568,8 @@ module.exports = {
 				// Agrega el motivo del rechazo
 				if (!aprob) {
 					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-					datosEdic = {...datosEdic, duracion: motivo.duracion, motivo_id: motivo.id};
+					datosEdic.duracion = motivo.duracion;
+					datosEdic.motivo_id = motivo.id;
 				}
 				// Asigna los valores 'aprob' y 'rech'
 				let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
