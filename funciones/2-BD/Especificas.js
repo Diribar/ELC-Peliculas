@@ -140,11 +140,9 @@ module.exports = {
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
-				[Op.or]: [
-					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: creadoAprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
+				[Op.and]: [
+					{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}},
+					{statusSugeridoPor_id: {[Op.ne]: revID}},
 				],
 			};
 			const originales = db.links

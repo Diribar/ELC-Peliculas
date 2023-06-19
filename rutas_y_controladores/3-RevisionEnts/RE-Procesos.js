@@ -101,10 +101,9 @@ module.exports = {
 			return {SE, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (ahora, revID) => {
-			// Obtiene todos los productos aprobados, con algún link ajeno en status provisorio
-
-			// Obtiene los links 'a revisar'
+			// Obtiene los links ajenos 'a revisar'
 			let links = await BD_especificas.TC.obtieneLinksAjenos(revID);
+
 			// Obtiene los productos
 			let productos = links.length ? obtieneProdsDeLinks(links, ahora, revID) : [];
 
