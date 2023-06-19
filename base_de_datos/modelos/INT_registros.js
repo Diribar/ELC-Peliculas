@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "int_1registros",
+		tableName: "int_registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
