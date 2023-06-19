@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.DECIMAL},
 
-		editadoPor_id: {type: dt.INTEGER},
+		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},
 		revisadoPor_id: {type: dt.INTEGER},
 		revisadoEn: {type: dt.DATE},
