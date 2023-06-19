@@ -327,7 +327,7 @@ module.exports = {
 						altaTermEn: ahora,
 						leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
 						statusSugeridoPor_id: 2,
-						sugerido_en: ahora,
+						statusSugeridoEn: ahora,
 					};
 
 				// Cambia el status del registro
@@ -363,7 +363,7 @@ module.exports = {
 
 			// Prepara los datos
 			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-			const datosSugeridos = {statusSugeridoPor_id: 2, sugerido_en: ahora};
+			const datosSugeridos = {statusSugeridoPor_id: 2, statusSugeridoEn: ahora};
 
 			// Obtiene los capitulos id
 			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
