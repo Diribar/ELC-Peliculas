@@ -227,7 +227,7 @@ module.exports = {
 			if (codigo == "/rclv/agregar/") {
 				// Guarda el nuevo registro
 				DE.creadoPor_id = userID;
-				DE.sugeridoPor_id = userID;
+				DE.statusSugeridoPor_id = userID;
 				original = await BD_genericas.agregaRegistro(entidad, DE);
 				id = original.id;
 

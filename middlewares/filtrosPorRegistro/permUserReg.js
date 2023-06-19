@@ -196,7 +196,7 @@ module.exports = async (req, res, next) => {
 				iconos: v.vistaAnteriorTablero,
 			};
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
-		else if (v.registro.statusRegistro.gr_provisorios && v.registro.sugeridoPor_id == v.userID)
+		else if (v.registro.statusRegistro.gr_provisorios && v.registro.statusSugeridoPor_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,

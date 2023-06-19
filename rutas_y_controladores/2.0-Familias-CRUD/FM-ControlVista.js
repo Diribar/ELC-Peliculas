@@ -63,7 +63,7 @@ module.exports = {
 			: tema == "revisionEnts"
 			? [
 					procesos.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds}),
-					await procesos.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+					await procesos.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 			  ]
 			: familia == "producto"
 			? procesos.bloqueRegistro({registro: original, revisor})
@@ -129,8 +129,8 @@ module.exports = {
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
 		let datos = {
-			sugeridoPor_id: userID,
-			sugeridoEn: ahora,
+			statusSugeridoPor_id: userID,
+			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
 		};
 		if (codigo == "inactivar") datos.motivo_id = motivo_id;
@@ -141,13 +141,13 @@ module.exports = {
 			BD_genericas.actualizaTodosPorCondicion(
 				"capitulos",
 				{coleccion_id: id},
-				{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
+				{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: 2}
 			);
 
 		// 3. Agrega un registro en el histStatus
 		let datosHist = {
 			...{entidad, entidad_id: id},
-			...{sugeridoPor_id: original.sugeridoPor_id, sugeridoEn: original.sugeridoEn},
+			...{sugeridoPor_id: original.statusSugeridoPor_id, sugeridoEn: original.statusSugeridoEn},
 			...{revisadoPor_id: userID, revisadoEn: ahora},
 			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id},
 			...{aprobado: null, comentario: motivoComentario},

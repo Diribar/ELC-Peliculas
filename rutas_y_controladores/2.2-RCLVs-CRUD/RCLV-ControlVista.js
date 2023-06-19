@@ -119,7 +119,7 @@ module.exports = {
 			if (tema == "revisionEnts")
 				bloqueDer = [
 					procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor, cantProds: 0}),
-					await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias),
+					await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias),
 				];
 		}
 

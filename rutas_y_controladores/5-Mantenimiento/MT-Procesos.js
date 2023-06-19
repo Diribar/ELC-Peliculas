@@ -14,7 +14,7 @@ module.exports = {
 
 		// PRODUCTOS
 		// Inactivos
-		let inactivos = obtienePorEntidad({entidades, campoFecha: "sugeridoEn", status_id: inactivo_id, userID});
+		let inactivos = obtienePorEntidad({entidades, campoFecha: "statusSugeridoEn", status_id: inactivo_id, userID});
 
 		// Aprobados
 		let aprobados = obtienePorEntidad({entidades, campoFecha: "altaTermEn", status_id: aprobado_id, userID});
@@ -32,8 +32,8 @@ module.exports = {
 					const datos = {
 						...m,
 						entidad: "peliculas",
-						fechaRef: m.sugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+						fechaRef: m.statusSugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
 					};
 
 					// Fin
@@ -52,8 +52,8 @@ module.exports = {
 					const datos = {
 						...m,
 						entidad: "colecciones",
-						fechaRef: m.sugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+						fechaRef: m.statusSugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
 					};
 
 					// Fin
@@ -71,8 +71,8 @@ module.exports = {
 					const datos = {
 						...m,
 						entidad: "capitulos",
-						fechaRef: m.sugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.sugeridoEn),
+						fechaRef: m.statusSugeridoEn,
+						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
 					};
 
 					// Fin
@@ -115,7 +115,7 @@ module.exports = {
 		let INP = [];
 
 		// 1. RCLVs inactivos
-		objeto = {entidades, campoFecha: "sugeridoEn", status_id: inactivo_id, include: includeProds};
+		objeto = {entidades, campoFecha: "statusSugeridoEn", status_id: inactivo_id, include: includeProds};
 		let inactivos = obtienePorEntidad({...objeto, userID});
 
 		// 2. Aprobados
@@ -210,7 +210,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = "sugeridoEn";
+		let campoFecha = "statusSugeridoEn";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 

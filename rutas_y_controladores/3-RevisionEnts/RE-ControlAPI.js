@@ -105,9 +105,9 @@ module.exports = {
 
 		// Arma los datos
 		let datos = {
+			statusSugeridoPor_id: revID,
+			statusSugeridoEn: altaRevisadaEn,
 			statusRegistro_id,
-			sugeridoPor_id: revID,
-			sugeridoEn: altaRevisadaEn,
 		};
 		if (creado) {
 			datos.altaRevisadaPor_id = revID;
@@ -121,12 +121,12 @@ module.exports = {
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
 		// 2. Agrega un registro en el histStatus
-		let sugeridoPor_id = original.sugeridoPor_id;
+		let sugeridoPor_id = original.statusSugeridoPor_id;
 		let datosHist = {
 			entidad_id: id,
 			entidad,
 			sugeridoPor_id,
-			sugeridoEn: creado ? original.creadoEn : original.sugeridoEn,
+			sugeridoEn: creado ? original.creadoEn : original.statusSugeridoEn,
 			revisadoPor_id: revID,
 			revisadoEn: ahora,
 			statusOriginal_id: original.statusRegistro_id,

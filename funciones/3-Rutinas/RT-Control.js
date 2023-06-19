@@ -345,9 +345,9 @@ module.exports = {
 
 		// Prepara la información
 		const objeto = {
+			statusSugeridoEn: comp.fechaHora.ahora(),
+			statusSugeridoPor_id: 2,
 			statusRegistro_id: creadoAprob_id,
-			sugeridoEn: comp.fechaHora.ahora(),
-			sugeridoPor_id: 2,
 		};
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);

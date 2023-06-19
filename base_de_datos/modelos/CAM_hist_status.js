@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		aprobado: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
 
-		statusSugeridoPor_id: {type: dt.INTEGER},
+		statusSugeridoEn: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},
 		revisadoPor_id: {type: dt.INTEGER},
 		revisadoEn: {type: dt.DATE},

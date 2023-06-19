@@ -50,8 +50,8 @@ module.exports = {
 	condiciones: (link, userID, tema) => {
 		// Variables
 		let cond = {};
-		cond.propio = link.sugeridoPor_id == userID;
-		cond.ajeno = link.sugeridoPor_id != userID;
+		cond.propio = link.statusSugeridoPor_id == userID;
+		cond.ajeno = link.statusSugeridoPor_id != userID;
 		cond.rud = tema == "links_crud";
 		cond.revision = tema == "revisionEnts";
 

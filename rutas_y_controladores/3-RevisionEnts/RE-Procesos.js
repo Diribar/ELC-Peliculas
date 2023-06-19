@@ -87,11 +87,11 @@ module.exports = {
 				.then((n) => n.filter((m) => !m.ediciones.length));
 
 			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
 			let IN = obtieneRegs(campos);
 
 			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
@@ -127,7 +127,7 @@ module.exports = {
 			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
-			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
@@ -679,7 +679,7 @@ let obtieneRegs = async (campos) => {
 
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
-			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugeridoEn;
+			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
 			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
@@ -765,7 +765,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = link.statusRegistro_id ? "sugeridoEn" : "editadoEn";
+		let campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 

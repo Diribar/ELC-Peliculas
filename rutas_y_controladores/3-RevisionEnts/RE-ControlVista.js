@@ -97,7 +97,7 @@ module.exports = {
 		}
 
 		// Bloque Derecho
-		const bloqueDer = [[], await procsCRUD.fichaDelUsuario(original.sugeridoPor_id, petitFamilias)];
+		const bloqueDer = [[], await procsCRUD.fichaDelUsuario(original.statusSugeridoPor_id, petitFamilias)];
 		// Info para la vista
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
@@ -121,7 +121,7 @@ module.exports = {
 		const {entidad, id, original, statusOriginal_id, statusFinal_id} = {...datos};
 		const {codigo, subcodigo, rclv, motivo_id, comentario, aprob} = {...datos};
 		const producto = !rclv;
-		const userID = original.sugeridoPor_id;
+		const userID = original.statusSugeridoPor_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -234,7 +234,7 @@ module.exports = {
 				: await BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
-						{...datos, statusColeccion_id: statusFinal_id, sugeridoPor_id: 2}
+						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: 2}
 				  );
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
@@ -244,7 +244,7 @@ module.exports = {
 		// 4.A. Genera la información
 		let datosHist = {
 			...{entidad, entidad_id: id},
-			...{sugeridoPor_id: userID, sugeridoEn: original.sugeridoEn, statusOriginal_id},
+			...{sugeridoPor_id: userID, sugeridoEn: original.statusSugeridoEn, statusOriginal_id},
 			...{revisadoPor_id: revID, revisadoEn: ahora, statusFinal_id},
 			...{aprobado: aprob, motivo_id, comentario},
 		};

@@ -251,7 +251,7 @@ module.exports = {
 
 		// Obtiene la condición
 		let condicion = {
-			sugeridoEn: {[Op.lt]: fechaCorte},
+			statusSugeridoEn: {[Op.lt]: fechaCorte},
 			statusRegistro_id: aprobado_id,
 		};
 
