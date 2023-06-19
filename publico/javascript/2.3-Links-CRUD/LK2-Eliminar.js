@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 	};
 	let rutas = {
 		eliminar: location.pathname.startsWith("/links/")
-			? "/links/api/eliminar/"
+			? "/links/api/inactivar/"
 			: location.pathname.startsWith("/revision/")
 			? "/revision/api/link/alta-baja"
 			: "",
