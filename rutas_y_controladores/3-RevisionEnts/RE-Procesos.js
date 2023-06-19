@@ -557,19 +557,25 @@ module.exports = {
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
 				// 3. Actualiza la tabla de 'histEdics'
-				datos = {...datos, entidad, entidad_id: original.id, titulo, campo};
+				let datosEdic = {entidad, entidad_id: original.id, campo, titulo};
+				datosEdic = {
+					sugeridoPor_id: edicion.editadoPor_id,
+					sugeridoEn: edicion.editadoEn,
+					revisadoPor_id: revID,
+					revisadoEn: ahora,
+				};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
 					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-					datos = {...datos, duracion: motivo.duracion, motivo_id: motivo.id};
+					datosEdic = {...datosEdic, duracion: motivo.duracion, motivo_id: motivo.id};
 				}
 				// Asigna los valores 'aprob' y 'rech'
 				let mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
 				let mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-				datos.valorAprob = aprob ? mostrarEdic : mostrarOrig;
-				datos.valorDesc = aprob ? mostrarOrig : mostrarEdic;
+				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
+				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
-				BD_genericas.agregaRegistro("histEdics", datos);
+				BD_genericas.agregaRegistro("histEdics", datosEdic);
 
 				// 4. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 				BD_genericas.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);
