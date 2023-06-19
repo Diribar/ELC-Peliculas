@@ -150,7 +150,7 @@ module.exports = {
 			...{sugeridoPor_id: original.statusSugeridoPor_id, sugeridoEn: original.statusSugeridoEn},
 			...{revisadoPor_id: userID, revisadoEn: ahora},
 			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id},
-			...{aprobado: null, comentario: motivoComentario},
+			comentario: motivoComentario,
 		};
 		datosHist.motivo_id = codigo == "inactivar" ? motivo_id : original.motivo_id;
 		BD_genericas.agregaRegistro("histStatus", datosHist);

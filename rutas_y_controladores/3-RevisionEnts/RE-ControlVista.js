@@ -187,7 +187,7 @@ module.exports = {
 				}
 			}
 
-			// Acciones para rechazo
+			// Acciones para avatar por rechazo
 			if (subcodigo == "rechazo") {
 				// Si se había agregado un archivo, lo elimina
 				if (req.file) comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datos.avatar);
@@ -220,7 +220,7 @@ module.exports = {
 		}
 		if (statusFinal_id != creadoAprob_id) {
 			datos.statusSugeridoPor_id = revID;
-			datos.StatusSugeridoEn = ahora;
+			datos.statusSugeridoEn = ahora;
 		}
 		if (motivo_id) datos.motivo_id = motivo_id;
 
