@@ -86,10 +86,10 @@ module.exports = {
 		// El link no existe en la BD
 		if (!original) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
 		// El link existe y tiene un status 'estable'
-		const id = original.id;
 		if (original.statusRegistro.gr_estables) return res.json({mensaje: "En este status no se puede procesar", reload: true});
 
 		// Más variables
+		const id = original.id;
 		const creado = original.statusRegistro.creado;
 		const petitFamilias = "links";
 		const revID = req.session.usuario.id;
