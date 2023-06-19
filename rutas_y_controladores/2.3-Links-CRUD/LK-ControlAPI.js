@@ -19,6 +19,7 @@ module.exports = {
 	obtieneProvs: (req, res) => {
 		return res.json(links_provs);
 	},
+	// ABM
 	guarda: async (req, res) => {
 		// Variables
 		let datos = req.query;
@@ -50,13 +51,13 @@ module.exports = {
 		else {
 			if (edicID) datos.id = edicID;
 			mensaje = await procsCRUD.guardaActEdicCRUD({entidad: "links", original: link, edicion: datos, userID});
-			if (mensaje) mensaje="Edición guardada"
+			if (mensaje) mensaje = "Edición guardada";
 		}
 
 		// Fin
 		return res.json(mensaje);
 	},
-	elimina: async (req, res) => {
+	inactiva: async (req, res) => {
 		// Proceso
 		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
 		// - Los demás --> se inactivan
@@ -64,18 +65,19 @@ module.exports = {
 		const {url, motivo_id} = req.query;
 		const userID = req.session.usuario.id;
 		const revisor = req.session.usuario.rolUsuario.revisorEnts;
+		const ahora = comp.fechaHora.ahora();
 		let link = url ? await BD_genericas.obtienePorCondicionConInclude("links", {url}, "statusRegistro") : "";
 		let respuesta = {};
 
-		// Si el 'url' no existe, interrumpe la función
+		// Si el campo 'url' no tiene valor, interrumpe la función
 		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
 		// El link no existe en la BD
 		else if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 		// El link se elimina definitivamente
 		else if (
-			// El link está en status 'creado" y por el usuario
+			// El link está en status 'creado' y por el usuario
 			(link.statusRegistro.creado && link.creadoPor_id == userID) ||
-			// El link está en status 'inactivo" y es un revisor
+			// El link está en status 'inactivo' y es un revisor
 			(link.statusRegistro.inactivo && revisor)
 		) {
 			await BD_genericas.eliminaPorId("links", link.id);
@@ -92,7 +94,7 @@ module.exports = {
 			// Inactivar
 			let datos = {
 				statusSugeridoPor_id: userID,
-				statusSugeridoEn: comp.fechaHora.ahora(),
+				statusSugeridoEn: ahora,
 				motivo_id,
 				statusRegistro_id: inactivar_id,
 			};
@@ -110,17 +112,18 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		let respuesta = {};
-		// Completar la info
+
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
-			: link.statusRegistro.recuperar // El link ya estaba en status recuperar
-			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
+			: !link.statusRegistro.inactivo // El link no está en status 'inactivo'
+			? {mensaje: "El link no está en status 'inactivo'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			datos = {statusRegistro_id: recuperar_id, statusSugeridoPor_id: userID};
+			datos = {statusSugeridoEn: ahora, statusSugeridoPor_id: userID, statusRegistro_id: recuperar_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
@@ -134,8 +137,10 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		let respuesta = {};
+
 		// Obtiene el link
 		let link = await BD_genericas.obtienePorCondicionConInclude("links", {url: datos.url}, "statusRegistro");
+
 		// Obtiene el mensaje de la tarea realizada
 		respuesta = !link // El link original no existe
 			? {mensaje: "El link no existe", reload: true}
@@ -154,9 +159,11 @@ module.exports = {
 				? {statusRegistro_id: aprobado_id, motivo_id: null}
 				: {statusRegistro_id: inactivo_id};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
+
 			// Actualiza los campos del producto asociado
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
+
 			// Fin
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
 		}
