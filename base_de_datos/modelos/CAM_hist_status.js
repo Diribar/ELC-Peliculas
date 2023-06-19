@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		aprobado: {type: dt.BOOLEAN},
 		duracion: {type: dt.DECIMAL},
 
-		statusSugeridoEn: {type: dt.INTEGER},
+		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},
 		revisadoPor_id: {type: dt.INTEGER},
 		revisadoEn: {type: dt.DATE},
@@ -25,8 +25,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "statusSugeridoPor_id"});
-		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "revisadoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugeridoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "revisado_por", foreignKey: "revisadoPor_id"});
 
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.status_registros, {as: "status_original", foreignKey: "statusOriginal_id"});
