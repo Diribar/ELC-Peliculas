@@ -35,6 +35,7 @@ module.exports = {
 		// Obtiene la versión original con include
 		const entID = entidad == "links" ? edicion.link_id : req.query.id;
 		const original = await BD_genericas.obtienePorIdConInclude(entidad, entID, [...include, "statusRegistro"]);
+		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
 
 		// Realiza muchísimas tareas y obtiene la edición en su mínima expresión
 		const objeto = {entidad, original, edicion, revID, campo, aprob, motivo_id};
@@ -42,7 +43,6 @@ module.exports = {
 
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
-			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 			let edicsEliminadas = procsCRUD.revisiones.eliminaDemasEdiciones({entidad, original: originalGuardado, id: entID});
 			statusAprob = procsCRUD.revisiones.statusAprob({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
