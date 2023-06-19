@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 17/jun",
-	"HoraUTC": "0:49",
+	"FechaUTC": "Lun. 19/jun",
+	"HoraUTC": "1:02",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Vie. 16/jun",
-	"HoraSemUTC": "19:58",
-	"semanaUTC": 23,
+	"FechaSemUTC": "Dom. 18/jun",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 24,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["MailDeFeedback", "ProdsEnRCLV", "LinksEnProd"],
@@ -19,10 +19,10 @@
 	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-jun-23": {"titulo": "ELC - Películas"},
 		"16-jun-23": {"titulo": "Sagrado Corazón de Jesús", "entidad": "eventos", "id": 23},
 		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
 		"18-jun-23": {"titulo": "ELC - Películas"},
-		"19-jun-23": {"titulo": "ELC - Películas"}
+		"19-jun-23": {"titulo": "ELC - Películas"},
+		"20-jun-23": {"titulo": "ELC - Películas"}
 	}
 }

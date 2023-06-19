@@ -22,28 +22,27 @@ module.exports = (sequelize, dt) => {
 		canon_id: {type: dt.STRING(3)},
 		apMar_id: {type: dt.INTEGER},
 
-		// Común con todos los RCLVs
 		creadoPor_id: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 		altaRevisadaPor_id: {type: dt.INTEGER},
 		altaRevisadaEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
 
-		// Fechas y Usuarios
+		statusSugeridoPor_id: {type: dt.INTEGER},
+		statusSugeridoEn: {type: dt.DATE},
+
 		editadoPor_id: {type: dt.INTEGER},
 		editadoEn: {type: dt.DATE},
 		edicRevisadaPor_id: {type: dt.INTEGER},
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
 
-		sugeridoPor_id: {type: dt.INTEGER},
-		sugeridoEn: {type: dt.DATE},
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
 		capturaActiva: {type: dt.BOOLEAN},
 
-		statusRegistro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
+		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "rclv_1personajes",
@@ -67,7 +66,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.status_registros, {as: "statusRegistro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugeridoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "statusSugeridoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturadoPor_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "personaje_id"});

@@ -253,7 +253,7 @@ module.exports = {
 		}
 		// ORIGINAL ------------------------------------
 		// Guarda el registro original
-		const original = {...req.cookies.datosOriginales, creadoPor_id: userID, sugeridoPor_id: userID};
+		const original = {...req.cookies.datosOriginales, creadoPor_id: userID, statusSugeridoPor_id: userID};
 		const registro = await BD_genericas.agregaRegistro(entidad, original);
 
 		// CAPÍTULOS -----------------------------------

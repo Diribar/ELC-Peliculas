@@ -326,8 +326,8 @@ module.exports = {
 						...datos,
 						altaTermEn: ahora,
 						leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-						sugeridoPor_id: 2,
-						sugerido_en: ahora,
+						statusSugeridoPor_id: 2,
+						statusSugeridoEn: ahora,
 					};
 
 				// Cambia el status del registro
@@ -340,7 +340,7 @@ module.exports = {
 				// 4.A. Genera la información
 				let datosHist = {
 					...{entidad, entidad_id: registro.id},
-					...{sugeridoPor_id: registro.sugeridoPor_id, sugeridoEn: registro.sugeridoEn},
+					...{sugeridoPor_id: registro.statusSugeridoPor_id, sugeridoEn: registro.statusSugeridoEn},
 					...{statusOriginal_id: registro.statusRegistro_id, statusFinal_id: aprobado_id},
 					...{revisadoPor_id: 2, revisadoEn: ahora, aprobado: true, comentario: "Aprobado"},
 				};
@@ -363,7 +363,7 @@ module.exports = {
 
 			// Prepara los datos
 			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-			const datosSugeridos = {sugeridoPor_id: 2, sugerido_en: ahora};
+			const datosSugeridos = {statusSugeridoPor_id: 2, statusSugeridoEn: ahora};
 
 			// Obtiene los capitulos id
 			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
@@ -672,8 +672,8 @@ module.exports = {
 			bloque.push({titulo: "Revisado el", valor: comp.fechaHora.fechaDiaMesAno(registro.altaRevisadaEn)});
 			if (revisor) bloque.push({titulo: "Revisado por", valor: comp.nombreApellido(registro.alta_revisada_por)});
 		}
-		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.sugeridoEn) {
-			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.sugeridoEn)});
+		if (registro.altaRevisadaEn && registro.altaRevisadaEn - registro.statusSugeridoEn) {
+			bloque.push({titulo: "Actualizado el", valor: comp.fechaHora.fechaDiaMesAno(registro.statusSugeridoEn)});
 			if (revisor) bloque.push({titulo: "Actualizado por", valor: comp.nombreApellido(registro.sugerido_por)});
 		}
 

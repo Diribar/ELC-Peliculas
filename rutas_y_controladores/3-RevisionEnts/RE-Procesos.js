@@ -87,11 +87,11 @@ module.exports = {
 				.then((n) => n.filter((m) => !m.ediciones.length));
 
 			// IN: En staus 'inactivar'
-			campos = {entidades, status_id: inactivar_id, campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: inactivar_id, campoRevID: "statusSugeridoPor_id", revID};
 			let IN = obtieneRegs(campos);
 
 			// RC: En status 'recuperar'
-			campos = {entidades, status_id: recuperar_id, campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: recuperar_id, campoRevID: "statusSugeridoPor_id", revID};
 			let RC = obtieneRegs(campos);
 
 			// Espera los resultados
@@ -127,7 +127,7 @@ module.exports = {
 			let SL = obtieneRegs(campos).then((n) => n.filter((m) => m.solapamiento && !m.ediciones.length));
 
 			// IR: En staus 'inactivar' o 'recuperar'
-			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "sugeridoPor_id", revID};
+			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
 			// IN: Inactivo con producto
@@ -364,7 +364,7 @@ module.exports = {
 			// Fin
 			return {
 				...{entidad, id, original, statusOriginal_id, statusFinal_id},
-				...{inactivarRecuperar, codigo, subcodigo, rclv, motivo_id, comentario, aprob},
+				...{codigo, subcodigo, rclv, motivo_id, comentario, aprob},
 			};
 		},
 		actualizaDiasDelAno: async ({desde, duracion, id}) => {
@@ -534,10 +534,10 @@ module.exports = {
 
 			// Genera la información a actualizar
 			let datos = {
-				sugeridoPor_id: edicion.editadoPor_id,
-				sugeridoEn: edicion.editadoEn,
-				revisadoPor_id: revID,
-				revisadoEn: ahora,
+				editadoPor_id: edicion.editadoPor_id,
+				editadoEn: edicion.editadoEn,
+				edicRevisadaPor_id: revID,
+				edicRevisadaEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(edicion.editadoEn, ahora),
 			};
 
@@ -679,7 +679,7 @@ let obtieneRegs = async (campos) => {
 
 	if (resultados.length) {
 		resultados = resultados.map((n) => {
-			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.sugeridoEn;
+			const fechaRef = campos.campoFecha ? n[campos.campoFecha] : n.statusSugeridoEn;
 			const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
 			return {...n, fechaRef, fechaRefTexto};
 		});
@@ -750,6 +750,9 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 	else if (variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
+	// Últimas correcciones
+	if (resultado === "") resultado = null;
+
 	// Fin
 	return resultado;
 };
@@ -762,7 +765,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
 		let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
-		let campoFecha = link.statusRegistro_id ? "sugeridoEn" : "editadoEn";
+		let campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 

@@ -51,14 +51,14 @@ module.exports = (sequelize, dt) => {
 		altaTermEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
 
+		statusSugeridoPor_id: {type: dt.INTEGER},
+		statusSugeridoEn: {type: dt.DATE},
+
 		editadoPor_id: {type: dt.INTEGER},
 		editadoEn: {type: dt.DATE},
 		edicRevisadaPor_id: {type: dt.INTEGER},
 		edicRevisadaEn: {type: dt.DATE},
 		leadTimeEdicion: {type: dt.DECIMAL},
-
-		sugeridoPor_id: {type: dt.INTEGER},
-		sugeridoEn: {type: dt.DATE},
 
 		capturadoPor_id: {type: dt.INTEGER},
 		capturadoEn: {type: dt.DATE},
@@ -91,7 +91,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.status_registros, {as: "statusRegistro", foreignKey: "statusRegistro_id"});
 		entidad.belongsTo(n.motivosStatus, {as: "motivo", foreignKey: "motivo_id"});
-		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugeridoPor_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "statusSugeridoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturadoPor_id"});
 
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "pelicula_id"});

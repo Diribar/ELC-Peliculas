@@ -34,7 +34,7 @@ module.exports = {
 		// Si el link no existía, lo crea
 		if (!link) {
 			datos.creadoPor_id = userID;
-			datos.sugeridoPor_id = userID;
+			datos.statusSugeridoPor_id = userID;
 			link = await BD_genericas.agregaRegistro("links", datos);
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
@@ -91,8 +91,8 @@ module.exports = {
 		else {
 			// Inactivar
 			let datos = {
-				sugeridoPor_id: userID,
-				sugeridoEn: comp.fechaHora.ahora(),
+				statusSugeridoPor_id: userID,
+				statusSugeridoEn: comp.fechaHora.ahora(),
 				motivo_id,
 				statusRegistro_id: inactivar_id,
 			};
@@ -120,7 +120,7 @@ module.exports = {
 			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
-			datos = {statusRegistro_id: recuperar_id, sugeridoPor_id: userID};
+			datos = {statusRegistro_id: recuperar_id, statusSugeridoPor_id: userID};
 			await BD_genericas.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
 			procsCRUD.revisiones.accionesPorCambioDeStatus("links", link);
@@ -145,7 +145,7 @@ module.exports = {
 			? {mensaje: "El link está en status aprobado", reload: true}
 			: link.statusRegistro.inactivo
 			? {mensaje: "El link está en status inactivo", reload: true}
-			: link.sugeridoPor_id != userID
+			: link.statusSugeridoPor_id != userID
 			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
 			: respuesta;
 		if (!respuesta.mensaje) {
