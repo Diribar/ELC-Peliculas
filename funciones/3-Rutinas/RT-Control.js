@@ -221,7 +221,7 @@ module.exports = {
 		// Guarda los títulos de las imágenes
 		if (tituloNuevo) {
 			procesos.guardaArchivoDeRutinas({ImagenesDerecha});
-			const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+			const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 			console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Imagen Derecha' actualizados y  guardados en JSON");
 		}
 
