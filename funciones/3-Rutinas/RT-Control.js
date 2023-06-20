@@ -33,7 +33,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.LinksVencidos();
+		this.MailDeFeedback();
 	},
 
 	// 1. Rutinas horarias
@@ -347,6 +347,7 @@ module.exports = {
 
 		// Prepara la información
 		const objeto = {statusSugeridoPor_id: 2, statusRegistro_id: creadoAprob_id};
+
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 

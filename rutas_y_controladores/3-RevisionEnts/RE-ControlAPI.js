@@ -115,31 +115,36 @@ module.exports = {
 		// 1. Actualiza el status en el registro original
 		await BD_genericas.actualizaPorId(entidad, id, datos);
 
-		// 2. Agrega un registro en el histStatus
-		let sugeridoPor_id = original.statusSugeridoPor_id;
-		let datosHist = {
-			entidad_id: id,
-			entidad,
-			sugeridoPor_id,
-			sugeridoEn: creado ? original.creadoEn : original.statusSugeridoEn,
-			revisadoPor_id: revID,
-			revisadoEn: ahora,
-			statusOriginal_id: original.statusRegistro_id,
-			statusFinal_id: statusRegistro_id,
-			aprobado: decisAprob,
-		};
-		if (datos.motivo_id) {
-			datosHist.motivo_id = datos.motivo_id;
-			datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
-			datosHist.duracion = Number(datosHist.motivo.duracion);
-		}
-		BD_genericas.agregaRegistro("histStatus", datosHist);
+		// Acciones salvo que sea links sugerido por 'automático'
+		const sugeridoPor_id = original.statusSugeridoPor_id;
+		if (sugeridoPor_id != 2) {
+			// 2. Agrega un registro en el histStatus
+			let datosHist = {
+				entidad_id: id,
+				entidad,
+				sugeridoPor_id,
+				sugeridoEn: creado ? original.creadoEn : original.statusSugeridoEn,
+				revisadoPor_id: revID,
+				revisadoEn: ahora,
+				statusOriginal_id: original.statusRegistro_id,
+				statusFinal_id: statusRegistro_id,
+				aprobado: decisAprob,
+			};
+			datos.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
+			if (datos.motivo_id) {
+				datosHist.motivo_id = datos.motivo_id;
+				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
+				datosHist.duracion = Number(datosHist.motivo.duracion);
+				datos.comentario += " - " + datosHist.motivo.descripcion;
+			}
+			BD_genericas.agregaRegistro("histStatus", datosHist);
 
-		// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
-
-		// 4. Penaliza al usuario si corresponde
-		if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
+			// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
+			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
+	
+			// 4. Penaliza al usuario si corresponde
+			if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
+		}	
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'linksGratuitos' y 'linksGeneral'
 		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
