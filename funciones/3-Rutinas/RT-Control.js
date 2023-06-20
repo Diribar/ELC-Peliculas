@@ -4,7 +4,6 @@ const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../1-Procesos/Compartidas");
 const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
 const variables = require("../1-Procesos/Variables");
 const procesos = require("./RT-Procesos");
 
@@ -313,15 +312,18 @@ module.exports = {
 		return;
 	},
 	AprobadoConAvatarLink: async () => {
-		// Descarga el avatar en la carpeta 'Prods-Final'
 		// Variables
-		const ruta = "./publico/imagenes/2-Productos/Final/";
 		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		let verificador = [];
+		let espera = [];
 
 		// Revisa, descarga, actualiza
-		for (let entidad of ["peliculas", "colecciones"])
-			verificador.push(
+		for (let entidad of ["peliculas", "colecciones", ...variables.entidades.rclvs]) {
+			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const ruta = "./publico/imagenes/2-" + familias + "/Final/";
+			
+			// Descarga el avatar y actualiza el valor en el campo del registro original
+			espera.push(
 				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
 					.then((n) =>
 						n.map((m) => {
@@ -332,7 +334,8 @@ module.exports = {
 					)
 					.then(() => true)
 			);
-		await Promise.all(verificador);
+		}
+		await Promise.all(espera);
 
 		// Fin
 		procesos.rutinasFinales("AprobadoConAvatarLink", "RutinasDiarias");
