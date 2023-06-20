@@ -40,7 +40,11 @@ module.exports = {
 
 		// Procesa la información
 		if (Object.keys(datosAPI).length) datos = {...datos, ...this.datosPelis(datosAPI)};
+
+		// Limpia el resultado de caracteres especiales
+		const avatar = datos.avatar;
 		datos = comp.convierteLetras.alCastellano(datos);
+		if (avatar) datos.avatar = avatar;
 
 		// Fin
 		return datos;
@@ -109,8 +113,10 @@ module.exports = {
 			datos = {...datos, ...(await this.datosCaps(datos.capitulosID_TMDB))};
 		}
 
-		// Convierte las letras al castellano
+		// Limpia el resultado de caracteres especiales
+		const avatar = datos.avatar;
 		datos = comp.convierteLetras.alCastellano(datos);
+		if (avatar) datos.avatar = avatar;
 
 		// Fin
 		return datos;
@@ -159,6 +165,7 @@ module.exports = {
 			datosAPI.push(detalles, creditos, {orden});
 		});
 		await Promise.all(datosAPI).then((n) => {
+			// En una misma variable reúne los detalles, créditos y el orden
 			for (let i = 0; i < n.length; i += 3) capitulos.push({...n[i], ...n[i + 1], ...n[i + 2]});
 		});
 
@@ -206,7 +213,11 @@ module.exports = {
 
 		// Procesa la información
 		if (Object.keys(datosAPI).length) datos = {...datos, ...this.DS_tv_info(datosAPI)};
+
+		// Limpia el resultado de caracteres especiales
+		const avatar = datos.avatar;
 		datos = comp.convierteLetras.alCastellano(datos);
+		if (avatar) datos.avatar = avatar;
 
 		// Fin
 		return datos;
@@ -407,8 +418,10 @@ module.exports = {
 		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 
-		// Procesa la información
+		// Limpia el resultado de caracteres especiales
+		avatar = datos.avatar;
 		datos = comp.convierteLetras.alCastellano(datos);
+		if (avatar) datos.avatar = avatar;
 
 		// Fin
 		return datos;
@@ -422,7 +435,7 @@ module.exports = {
 
 		// Genera la información
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		contenido = this.contenidoFA(contenido.split("\r\n"));
+		contenido = this.contenidoFA(contenido);
 		if (contenido.pais_nombre) {
 			let paisNombreToId = (pais_nombre) => {
 				// Función para convertir 'string de nombre' en  'string de ID'
@@ -444,16 +457,19 @@ module.exports = {
 
 		// Genera el resultado
 		let respuesta = {entidadNombre, entidad, fuente: "FA", FA_id, coleccion_id, ...contenido};
+
+		// Limpia el resultado de caracteres especiales
 		respuesta = comp.convierteLetras.alCastellano(respuesta);
 		respuesta.avatarUrl = avatarUrl;
 
 		// Fin
-		return;
+		return respuesta;
 	},
 	// Función validar (FA)
 	contenidoFA: (texto) => {
 		// Convierte en array
-		let contenidos = typeof texto == "string" ? texto.split("\n") : texto;
+		let contenidos = texto.split("\r\n");
+
 		// Limpia espacios innecesarios
 		for (let contenido of contenidos) contenido = contenido.trim();
 
@@ -485,6 +501,7 @@ module.exports = {
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
+
 		// Fin
 		return resultado;
 	},
