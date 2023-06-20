@@ -425,54 +425,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		// Actualiza los campos de 'producto' en el RCLV
-		prodsEnRCLV: async ({entidad, id}) => {
-			// La entidad y el ID son de un RCLV
-
-			// Variables
-			const entidadesProds = variables.entidades.prods;
-			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-
-			// Acciones si el producto tiene ese 'campo_id'
-			if (id && id > 10) {
-				let objeto = {[campo_id]: id};
-				let prodsAprob;
-
-				// 1. Averigua si existe algún producto aprobado, con ese rclv_id
-				for (let entidadProd of entidadesProds) {
-					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
-					if (prodsAprob) {
-						prodsAprob = SI;
-						break;
-					}
-				}
-
-				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-				if (!prodsAprob)
-					for (let entidadProd of entidadesProds) {
-						// Averigua si existe algún producto, con ese RCLV
-						prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
-						if (prodsAprob) {
-							prodsAprob = talVez;
-							break;
-						}
-					}
-
-				// 3. Averigua si existe alguna edición
-				if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prodsAprob = talVez;
-
-				// 4. No encontró ningún caso
-				if (!prodsAprob) prodsAprob = NO;
-
-				// Actualiza el campo en el RCLV
-				BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
-			}
-
-			// Fin
-			return;
-		},
 		// Actualiza los campos de 'links' en el producto
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
@@ -481,12 +433,14 @@ module.exports = {
 			// Más variables
 			const tipo_id = link_pelicula_id; // El tipo de link 'película'
 			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
+			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
 			let objeto = {[campo_id]: id, tipo_id};
 
 			// 1. Averigua si existe algún link, para ese producto
 			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
-				n ? SI : BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => (n ? talVez : NO))
+				n
+					? SI
+					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio}).then((n) => (n ? talVez : NO))
 			);
 
 			// 2. Averigua si existe algún link gratuito, para ese producto
@@ -494,7 +448,7 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) =>
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, gratuito: true}).then((n) =>
 								n ? talVez : NO
 						  )
 			);
@@ -504,8 +458,8 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, castellano: true}).then((n) =>
-								n ? talVez : NO
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, castellano: true}).then(
+								(n) => (n ? talVez : NO)
 						  )
 			);
 
@@ -514,8 +468,8 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) =>
-								n ? talVez : NO
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, subtitulos: true}).then(
+								(n) => (n ? talVez : NO)
 						  )
 			);
 
@@ -551,6 +505,52 @@ module.exports = {
 				// Actualiza la colección
 				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
 			}
+
+			// Fin
+			return;
+		},
+		// Actualiza los campos de 'producto' en el RCLV
+		prodsEnRCLV: async ({entidad, id}) => {
+			// Variables
+			const entidadesProds = variables.entidades.prods;
+			const statusAprobado = {statusRegistro_id: aprobado_id};
+			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
+			let prodsAprob;
+
+			// Si el ID es menor o igual a 10, termina la función
+			if (id && id <= 10) return;
+
+			// Establece la condición perenne
+			const rclv_id = comp.obtieneDesdeEntidad.rclv(entidad);
+			const condicion = {[rclv_id]: id};
+
+			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
+			for (let entidadProd of entidadesProds) {
+				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+				if (prodsAprob) {
+					prodsAprob = SI;
+					break;
+				}
+			}
+
+			// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
+			if (!prodsAprob)
+				for (let entidadProd of entidadesProds) {
+					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusProvisorio});
+					if (prodsAprob) {
+						prodsAprob = talVez;
+						break;
+					}
+				}
+
+			// 3. Averigua si existe alguna edición con ese rclv_id
+			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", condicion))) prodsAprob = talVez;
+
+			// 4. No encontró ningún caso
+			if (!prodsAprob) prodsAprob = NO;
+
+			// Actualiza el campo en el RCLV
+			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
 
 			// Fin
 			return;
