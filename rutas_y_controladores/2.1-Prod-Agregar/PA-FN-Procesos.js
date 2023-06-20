@@ -419,7 +419,8 @@ module.exports = {
 	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
 		let {entidad, coleccion_id, avatarUrl, contenido, FA_id} = datos;
-		// Generar la información
+
+		// Genera la información
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
@@ -440,18 +441,14 @@ module.exports = {
 			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
-		// Generar el resultado
-		let respuesta = {
-			entidadNombre,
-			entidad,
-			fuente: "FA",
-			FA_id,
-			coleccion_id,
-			avatarUrl,
-			...contenido,
-		};
+
+		// Genera el resultado
+		let respuesta = {entidadNombre, entidad, fuente: "FA", FA_id, coleccion_id, ...contenido};
+		respuesta = comp.convierteLetras.alCastellano(respuesta);
+		respuesta.avatarUrl = avatarUrl;
+
 		// Fin
-		return comp.convierteLetras.alCastellano(respuesta);
+		return;
 	},
 	// Función validar (FA)
 	contenidoFA: (texto) => {
