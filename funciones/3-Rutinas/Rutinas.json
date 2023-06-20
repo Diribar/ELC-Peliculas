@@ -13,10 +13,9 @@
 	"RutinasDiarias": {
 		"ImagenDerecha": "SI",
 		"BorraImagenesSinRegistro": "SI",
-		"PaisesConMasProductos": "SI",
-		"AprobadoConAvatarUrl": "SI"
+		"PaisesConMasProductos": "SI"
 	},
-	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
+	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI", "AprobadoConAvatarLink": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"18-jun-23": {"titulo": "ELC - Películas"},

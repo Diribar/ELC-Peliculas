@@ -270,32 +270,6 @@ module.exports = {
 		procesos.rutinasFinales("PaisesConMasProductos", "RutinasDiarias");
 		return;
 	},
-	AprobadoConAvatarUrl: async () => {
-		// Descarga el avatar en la carpeta 'Prods-Final'
-		// Variables
-		const ruta = "./publico/imagenes/2-Productos/Final/";
-		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		let verificador = [];
-
-		// Revisa, descarga, actualiza
-		for (let entidad of ["peliculas", "colecciones"])
-			verificador.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) =>
-						n.map((m) => {
-							const nombre = Date.now() + path.extname(m.avatar);
-							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
-							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
-						})
-					)
-					.then(() => true)
-			);
-		await Promise.all(verificador);
-
-		// Fin
-		procesos.rutinasFinales("AprobadoConAvatarUrl", "RutinasDiarias");
-		return;
-	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
@@ -371,6 +345,32 @@ module.exports = {
 
 		// Fin
 		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
+		return;
+	},
+	AprobadoConAvatarLink: async () => {
+		// Descarga el avatar en la carpeta 'Prods-Final'
+		// Variables
+		const ruta = "./publico/imagenes/2-Productos/Final/";
+		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
+		let verificador = [];
+
+		// Revisa, descarga, actualiza
+		for (let entidad of ["peliculas", "colecciones"])
+			verificador.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) =>
+						n.map((m) => {
+							const nombre = Date.now() + path.extname(m.avatar);
+							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
+							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+						})
+					)
+					.then(() => true)
+			);
+		await Promise.all(verificador);
+
+		// Fin
+		procesos.rutinasFinales("AprobadoConAvatarLink", "RutinasDiarias");
 		return;
 	},
 };
