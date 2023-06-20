@@ -2,6 +2,7 @@
 	<!-- Mostrar la Imagen -->
 	<section id="imgDerecha">
 		<% let ruta, titulo, destino %>
+		<% console.log(5,locals.tema , locals.institucional) %>
 		<% if (locals.tema == "institucional" || locals.institucional) { %>
 			<!-- 1. Imagen Institucional -->
 			<% ruta = localhost + '/imagenes/0-Base/Varios/Institucional-Imagen.jpg'; titulo = "ELC-Películas" %>
@@ -16,8 +17,10 @@
 			<% const hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
 			<% ruta = localhost + "/imagenes/4-ImagenDerecha/" + hoyLocal + ".jpg" %>
 			<% titulo = ImagenesDerecha[hoyLocal].titulo %>
-			<% destino = "/rclv/detalle/?entidad=" + ImagenesDerecha[hoyLocal].entidad + "&id=" + ImagenesDerecha[hoyLocal].id %>
+			<% ID_entidad = ImagenesDerecha[hoyLocal].entidad; ID_id = ImagenesDerecha[hoyLocal].id %>
+			<% destino = ID_entidad && ID_id ? "/rclv/detalle/?entidad=" + ID_entidad + "&id=" + ID_id : null %>
 		<% } %>
+
 		<% if (destino) { %>
 			<a href="<%= destino %>">
 				<img src="<%= ruta %>" title="<%= titulo %>">
