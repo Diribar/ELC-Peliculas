@@ -40,7 +40,7 @@ module.exports = async (req, res, next) => {
 				: ruta.includes("/inactivar-o-recuperar/")
 				? [inactivar_id, recuperar_id]
 				: ruta.includes("/links/")
-				? [aprobado_id]
+				? [creadoAprob_id, aprobado_id]
 				: ruta.includes("/rechazo/")
 				? [creado_id]
 				: ruta.includes("/solapamiento/")
