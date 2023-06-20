@@ -149,13 +149,7 @@ module.exports = {
 		consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		avatars.push(BD_especificas.nombresDeAvatarEnBD(entidadEdic));
-
-		// Revisa los avatars que están en los productos
-		statusFinal = status_registros.filter((n) => n.id == creado_id).map((n) => n.id); // Los avatar ingresados a mano pueden estar en 'Revisar'
-		for (let entidad of variables.entidades[petitFamilias])
-			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
-		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
+		avatars.push(await BD_especificas.nombresDeAvatarEnBD(entidadEdic));
 		eliminaLasImagenes(consolidado, carpeta);
 
 		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
