@@ -54,23 +54,6 @@ module.exports = {
 		procesos.rutinasSinGuardar("LinksEnProd");
 		return;
 	},
-	ProdsEnRCLV: async function () {
-		// Obtiene las entidadesRCLV
-		const entidadesRCLV = variables.entidades.rclvs;
-
-		// Rutina por entidad
-		for (let entidad of entidadesRCLV) {
-			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
-
-			// Rutina por ID: ejecuta la función prodsEnRCLV
-			for (let id of IDs) procsCRUD.revisiones.prodsEnRCLV({entidad, id});
-		}
-
-		// Fin
-		procesos.rutinasSinGuardar("ProdsEnRCLV");
-		return;
-	},
 	MailDeFeedback: async () => {
 		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
 		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
@@ -134,6 +117,23 @@ module.exports = {
 		console.log("Enviando mails...");
 		await Promise.all(mailsEnviados);
 		procesos.rutinasSinGuardar("MailDeFeedback");
+		return;
+	},
+	ProdsEnRCLV: async function () {
+		// Obtiene las entidadesRCLV
+		const entidadesRCLV = variables.entidades.rclvs;
+
+		// Rutina por entidad
+		for (let entidad of entidadesRCLV) {
+			// Obtiene los ID de los registros de la entidad
+			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+
+			// Rutina por ID: ejecuta la función prodsEnRCLV
+			for (let id of IDs) procsCRUD.revisiones.prodsEnRCLV({entidad, id});
+		}
+
+		// Fin
+		procesos.rutinasSinGuardar("ProdsEnRCLV");
 		return;
 	},
 
@@ -230,16 +230,6 @@ module.exports = {
 		procesos.rutinasFinales("ImagenDerecha", "RutinasDiarias");
 		return;
 	},
-	BorraImagenesSinRegistro: async () => {
-		// Funciones
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
-		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
-		procesos.borraImagenesProvisorio();
-
-		// Fin
-		procesos.rutinasFinales("BorraImagenesSinRegistro", "RutinasDiarias");
-		return;
-	},
 	PaisesConMasProductos: async () => {
 		// Variables
 		const condicion = {statusRegistro_id: aprobado_id};
@@ -311,6 +301,42 @@ module.exports = {
 		// Fin
 		return;
 	},
+	AprobadoConAvatarLink: async () => {
+		// Descarga el avatar en la carpeta 'Prods-Final'
+		// Variables
+		const ruta = "./publico/imagenes/2-Productos/Final/";
+		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
+		let verificador = [];
+
+		// Revisa, descarga, actualiza
+		for (let entidad of ["peliculas", "colecciones"])
+			verificador.push(
+				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
+					.then((n) =>
+						n.map((m) => {
+							const nombre = Date.now() + path.extname(m.avatar);
+							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
+							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
+						})
+					)
+					.then(() => true)
+			);
+		await Promise.all(verificador);
+
+		// Fin
+		procesos.rutinasFinales("AprobadoConAvatarLink", "RutinasDiarias");
+		return;
+	},
+	BorraImagenesSinRegistro: async () => {
+		// Funciones
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("productos");
+		await procesos.eliminaImagenesDeFamiliasSinRegistro("rclvs");
+		procesos.borraImagenesProvisorio();
+
+		// Fin
+		procesos.rutinasFinales("BorraImagenesSinRegistro", "RutinasDiarias");
+		return;
+	},
 	LinksVencidos: async function () {
 		// Obtiene la fecha de corte
 		const vidaUtil = 6 * unMes;
@@ -345,32 +371,6 @@ module.exports = {
 
 		// Fin
 		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
-		return;
-	},
-	AprobadoConAvatarLink: async () => {
-		// Descarga el avatar en la carpeta 'Prods-Final'
-		// Variables
-		const ruta = "./publico/imagenes/2-Productos/Final/";
-		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		let verificador = [];
-
-		// Revisa, descarga, actualiza
-		for (let entidad of ["peliculas", "colecciones"])
-			verificador.push(
-				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) =>
-						n.map((m) => {
-							const nombre = Date.now() + path.extname(m.avatar);
-							comp.gestionArchivos.descarga(m.avatar, ruta + nombre);
-							BD_genericas.actualizaPorId(entidad, m.id, {avatar: nombre});
-						})
-					)
-					.then(() => true)
-			);
-		await Promise.all(verificador);
-
-		// Fin
-		procesos.rutinasFinales("AprobadoConAvatarLink", "RutinasDiarias");
 		return;
 	},
 };
