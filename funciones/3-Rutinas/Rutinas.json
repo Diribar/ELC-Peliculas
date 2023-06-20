@@ -9,14 +9,14 @@
 	"semanaUTC": 24,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
-	"RutinasHorarias": ["MailDeFeedback", "ProdsEnRCLV", "LinksEnProd"],
-	"RutinasDiarias": {
-		"ImagenDerecha": "SI",
+	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
 		"BorraImagenesSinRegistro": "SI",
-		"PaisesConMasProductos": "SI",
-		"AprobadoConAvatarUrl": "SI"
+		"LinksVencidos": "SI",
+		"RclvsSinEpocaPSTyConAno": "SI"
 	},
-	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
 		"18-jun-23": {"titulo": "ELC - Películas"},
