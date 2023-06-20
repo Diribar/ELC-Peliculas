@@ -452,16 +452,17 @@ module.exports = {
 		const fecha = new Date();
 		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
 
-		// Obtiene el dia de la semana (lun: 1 a dom: 7)
-		let diaSem = new Date(comienzoAno).getDay();
-		if (diaSem < 1) diaSem = diaSem + 7;
+		// Obtiene el dia de semana del primer día del año
+		let diaSem_primerDiaDelAno = new Date(comienzoAno).getDay();
+		// Lleva el día al formato lun: 1 - dom: 7
+		if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
 
-		// Obtiene el primer domingo del año
-		const adicionarDias = 7 - diaSem;
-		const primerDomingo = comienzoAno + adicionarDias * unDia;
+		// Obtiene el primer domingo del año (0 - 6)
+		const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
+		const fechaPrimerDomingo = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
 
 		// Obtiene la semana del año
-		const semana = parseInt((fecha.getTime() - primerDomingo) / unDia / 7);
+		const semana = parseInt((fecha.getTime() - fechaPrimerDomingo) / unDia / 7);
 
 		// Fin
 		return semana;

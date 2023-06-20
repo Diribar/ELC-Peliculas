@@ -23,10 +23,7 @@ module.exports = {
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
-		rutinasHorarias.forEach((rutina, i) => {
-			let minuto = 1 + i;
-			cron.schedule(minuto + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
-		});
+		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"});
 
 		// Start-up
 		await this.FechaHoraUTC();
@@ -37,6 +34,17 @@ module.exports = {
 	},
 
 	// 1. Rutinas horarias
+	RutinasHorarias: async function () {
+		// Obtiene la información del archivo JSON
+		const info = procesos.lecturaRutinasJSON();
+		const rutinasHorarias = info.RutinasHorarias;
+
+		// Actualiza todas las rutinas diarias
+		for (let rutinaHoraria of rutinasHorarias) await this[rutinaHoraria]();
+
+		// Fin
+		return;
+	},
 	LinksEnProd: async function () {
 		// return;
 		const entidadesProd = variables.entidades.prods;
