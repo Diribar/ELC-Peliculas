@@ -417,7 +417,7 @@ module.exports = {
 				const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
 				const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
 				const prodID = registro[campo_id];
-				
+
 				// Actualiza el producto
 				this.linksEnProd({entidad: prodEntidad, id: prodID});
 			}
@@ -477,7 +477,6 @@ module.exports = {
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			if (entidad == "colecciones") return;
 
 			// Más variables
 			const tipo_id = link_pelicula_id; // El tipo de link 'película'
@@ -521,26 +520,36 @@ module.exports = {
 			);
 
 			// Consolida
-			[linksGeneral, linksGratuitos, castellano, subtitulos] = await Promise.all([
-				linksGeneral,
-				linksGratuitos,
-				castellano,
-				subtitulos,
-			]);
+			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos]);
+			[linksGeneral, linksGratuitos, castellano, subtitulos] = respuesta;
 
 			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
 
-			// Colecciones - la actualiza en función de la mayoría de los capítulos
-			if (entidad == "capitulos") {
-				// Obtiene los datos para identificar la colección
-				const capitulo = await BD_genericas.obtienePorId("capitulos", id);
-				const colID = capitulo.coleccion_id;
-				// Rutinas
-				linksEnColeccion(colID, "linksGeneral");
-				linksEnColeccion(colID, "linksGratuitos");
-				linksEnColeccion(colID, "castellano");
-				linksEnColeccion(colID, "subtitulos");
+			// Fin
+			return;
+		},
+		linksEnColec: async (colID) => {
+			// Variables
+			const campos = ["linksGeneral", "linksGratuitos", "castellano", "subtitulos"];
+			const objeto = {coleccion_id: colID};
+
+			// Rutinas
+			for (let campo of campos) {
+				// Cuenta la cantidad de casos true, false y null
+				const OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+				const potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
+				const no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+
+				// Averigua los porcentajes de OK y Potencial
+				const total = OK + potencial + no;
+				const resultadoOK = OK / total;
+				const resultadoPot = (OK + potencial) / total;
+				const valor = resultadoOK >= 0.5 ? SI : resultadoPot >= 0.5 ? talVez : NO;
+
+				// Actualiza la colección
+				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
 			}
 
 			// Fin
@@ -801,25 +810,6 @@ let puleEdicion = async (entidad, original, edicion) => {
 	return edicion;
 };
 // Actualiza para las colecciones
-let linksEnColeccion = async (colID, campo) => {
-	let objeto = {coleccion_id: colID};
-
-	// Cuenta la cantidad de casos true, false y null
-	let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
-	let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-	let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
-	[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-
-	// Averigua los porcentajes de OK y Potencial
-	let total = OK + potencial + no;
-	let resultadoOK = OK / total;
-	let resultadoPot = (OK + potencial) / total;
-
-	// En función de los resultados, actualiza la colección
-	if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
-	else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
-	else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
-};
 let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
 	// Revisa si tiene que eliminar alguna edición
 	for (let edicion of ediciones) {

@@ -474,23 +474,22 @@ module.exports = {
 		// Fin
 		return hora;
 	},
-	rutinasFinales: function (campo, menu) {
-		// Actualiza el archivo JSON
-		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
-
+	finRutinasHorarias: function (campo) {
 		// Feedback del proceso
-		if (!sonIguales) {
-			const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-			console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
-		} else this.rutinasSinGuardar(campo);
+		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
+		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada");
 
 		// Fin
 		return;
 	},
-	rutinasSinGuardar: function (campo) {
+	finRutinasDiariasSemanales: function (campo, menu) {
+		// Actualiza el archivo JSON
+		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
+
 		// Feedback del proceso
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
-		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada, sin novedades");
+		const novedades = sonIguales ? ", sin novedades" : "";
+		console.log(FechaUTC, HoraUTC + "hs. -", "Rutina '" + campo + "' implementada" + novedades);
 
 		// Fin
 		return;
