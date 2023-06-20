@@ -67,9 +67,9 @@ module.exports = {
 		return;
 	},
 	MailDeFeedback: async () => {
-		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
-		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
-		const regsTodos = [...regsAB, ...regsEdic];
+		// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar, y si no hay pendientes interrumpe
+		const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
+		const regsTodos = [...regsStatus, ...regsEdic];
 
 		// Si no hay registros a comunicar, termina el proceso
 		if (!regsTodos.length) {
@@ -85,7 +85,7 @@ module.exports = {
 		const asunto = "Resultado de las sugerencias realizadas";
 		let mailsEnviados = [];
 
-		// Usuarios
+		// Obtiene los usuarios relacionados con esos registros
 		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
@@ -93,18 +93,20 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
-			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
-			if (saltear) continue;
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, saltea al siguiente usuario
+			const hoyUsuario = procesos.mailDeFeedback.hoyUsuario(usuario);
+
+			// Si la fecha local es igual que la fecha del último comunicado, se saltea el usuario
+			if (hoyUsuario == usuario.fechaRevisores) continue;
 
 			// Variables
 			const email = usuario.email;
-			const regsAB_user = regsAB.filter((n) => n.sugeridoPor_id == usuario.id);
+			const regsStatus_user = regsStatus.filter((n) => n.sugeridoPor_id == usuario.id);
 			const regsEdic_user = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
 			let cuerpoMail = "";
 
 			// Arma el cuerpo del mail
-			if (regsAB_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB_user);
+			if (regsStatus_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeStatus(regsStatus_user);
 			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic_user);
 
 			// Envía el mail y actualiza la BD
@@ -115,7 +117,7 @@ module.exports = {
 					.then(async (n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
-							if (regsAB_user.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB_user); // Borra los registros prescindibles
+							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatus(regsStatus_user); // Borra los registros prescindibles
 							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic_user); // Borra los registros prescindibles
 							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
@@ -125,9 +127,11 @@ module.exports = {
 			);
 		}
 
-		// Fin
-		console.log("Enviando mails...");
+		// Avisa que está procesando el envío de los mails
+		console.log("Procesando el envío de mails...");
 		await Promise.all(mailsEnviados);
+
+		// Fin
 		procesos.finRutinasHorarias("MailDeFeedback");
 		return;
 	},

@@ -183,7 +183,7 @@ module.exports = {
 
 	// Mail de Feedback
 	mailDeFeedback: {
-		obtieneRegistros: async () => {
+		obtieneElHistorial: async () => {
 			// Variables
 			let registros = [];
 			let condiciones;
@@ -196,7 +196,7 @@ module.exports = {
 					.then((n) => n.map((m) => ({...m, tabla: "histStatus"})))
 			);
 
-			// Obtiene los registros de "edics"
+			// Obtiene los registros de "histEdics"
 			condiciones = {comunicadoEn: null};
 			registros.push(
 				BD_genericas.obtieneTodosPorCondicionConInclude("histEdics", condiciones, "motivo")
@@ -205,32 +205,24 @@ module.exports = {
 			);
 
 			// Espera a que se reciba la info
-			const [regsAB, regsEdic] = await Promise.all(registros);
+			const [regsStatus, regsEdic] = await Promise.all(registros);
 
 			// Fin
-			return {regsAB, regsEdic};
+			return {regsStatus, regsEdic};
 		},
 		hoyUsuario: (usuario) => {
 			// Variables
 			const ahora = new Date();
 
-			// Obtiene la hora del usuario, y si no son las 0hs, interrumpe la rutina
+			// Obtiene la fecha local del usuario
 			const zonaHoraria = usuario.pais.zonaHoraria;
-			// const horaUsuario = ahora.getUTCHours() + zonaHoraria;
-
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, interrumpe la rutina
-			const aux = ahora.getTime() + usuario.pais.zonaHoraria * unaHora;
-			const hoyUsuario = comp.fechaHora.fechaFormatoBD(aux);
-
-			// Saltear
-			let saltear = usuario.fechaRevisores == hoyUsuario; // Si ya envió un mail en el día
-			// console.log(274, usuario.id, usuario.fechaRevisores, hoyUsuario);
-			// if (!saltear) saltear = zonaHoraria < 0 ? horaUsuario < 0 : horaUsuario < 24; // Si todavía no son las 24hs
+			const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
+			const hoyUsuario = comp.fechaHora.fechaFormatoBD_UTC(ahoraUsuario);
 
 			// Fin
-			return {hoyUsuario, saltear};
+			return hoyUsuario;
 		},
-		mensajeAB: async (regsAB) => {
+		mensajeStatus: async (regsStatus) => {
 			// Variables
 			let resultados = [];
 			let mensajesAcum = "";
@@ -239,7 +231,7 @@ module.exports = {
 			let color;
 
 			// Proceso de los registros
-			for (let regAB of regsAB) {
+			for (let regAB of regsStatus) {
 				// Variables
 				const aprobado = regAB.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
@@ -385,7 +377,7 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		eliminaRegsAB: (regs) => {
+		eliminaRegsStatus: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
 			const condicStatus = {
@@ -497,6 +489,7 @@ module.exports = {
 };
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
+// Funciones
 let ordenar = (resultados) => {
 	return resultados.sort((a, b) =>
 		false
