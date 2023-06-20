@@ -117,7 +117,7 @@ module.exports = {
 
 		// Acciones salvo que sea links sugerido por 'automático'
 		const sugeridoPor_id = original.statusSugeridoPor_id;
-		if (entidad != "links" || sugeridoPor_id != 2) {
+		if (sugeridoPor_id != 2) {
 			// 2. Agrega un registro en el histStatus
 			let datosHist = {
 				entidad_id: id,
