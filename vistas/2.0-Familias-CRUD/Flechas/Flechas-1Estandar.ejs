@@ -2,12 +2,13 @@
 <div class="flechas">
 	<% if (tema == "crud" || locals.origen && (!origen.startsWith("DT"))) { %>
 		<!-- Salir -->
-		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
+		<% let ruta = (tema != "revisionEnts" || codigo != "abmLinks" || registro.statusRegistro_id != creadoAprob_id) ? 'inactivar-captura' : 'revision/producto/edicion' %>
+		<a href="<%= '/' + ruta + '/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (tema != "crud" && codigo != "detalle" && locals.id) { %>
-		<!-- Detalle -->
+	<% if (tema != "crud" && codigo != "detalle" && locals.id && (tema != "revisionEnts" || codigo != "abmLinks" || registro.statusRegistro_id != creadoAprob_id)) { %>
+		<!-- Detalle - Excluye para la vista de consulta de links desde Revisión-Edición -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
@@ -31,5 +32,11 @@
 		<% } else { %>
 			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		<% } %>
+	<% } %>
+	<% if ((tema == "revisionEnts") && (codigo == "producto/edicion")) { %>
+		<!-- Link para Revisión de Edición -->
+		<a href="<%= '/revision/links/?entidad=' + entidad + '&id=' + id %>">
+			<i class="fa-solid fa-link" tabindex="-1" title="Para ver los links"></i>
+		</a>
 	<% } %>
 </div>
