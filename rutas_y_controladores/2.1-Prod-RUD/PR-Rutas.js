@@ -21,8 +21,8 @@ const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNece
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
+const capturaActivar = require("../../middlewares/varios/capturaActivar");
+const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
 

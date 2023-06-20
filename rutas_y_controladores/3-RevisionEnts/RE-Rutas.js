@@ -21,8 +21,8 @@ const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNece
 const motivoOpcional = require("../../middlewares/filtrosPorRegistro/motivoOpcional");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
+const capturaActivar = require("../../middlewares/varios/capturaActivar");
+const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidado
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
 const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];

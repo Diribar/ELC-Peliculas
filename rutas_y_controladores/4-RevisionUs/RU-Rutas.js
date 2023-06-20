@@ -14,8 +14,8 @@ const revisorEnts = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
+const capturaActivar = require("../../middlewares/varios/capturaActivar");
+const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidados
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
 const aptoRevMasRegistro = [...aptoRevisor, IDvalido, permUserReg];
