@@ -454,6 +454,7 @@ module.exports = {
 
 		// Obtiene el dia de semana del primer día del año
 		let diaSem_primerDiaDelAno = new Date(comienzoAno).getDay();
+
 		// Lleva el día al formato lun: 1 - dom: 7
 		if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
 
