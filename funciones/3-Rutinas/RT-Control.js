@@ -30,12 +30,10 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-
-		// this.MailDeFeedback()
-		// epoca();
-
+		
 		// Fin
 		return;
+		this.LinksVencidos();
 	},
 
 	// 1. Rutinas horarias
@@ -340,15 +338,15 @@ module.exports = {
 		return;
 	},
 	LinksVencidos: async function () {
-		// Obtiene la condición de cuáles son los links vencidos
-		const condiciones = await BD_especificas.linksVencidos();
+		// Obtiene la fecha de corte
+		const vidaUtil = 6 * unMes;
+		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
+
+		// Obtiene las condiciones de cuáles son los links vencidos
+		const condiciones = {statusSugeridoEn: {[Op.lt]: fechaCorte}, statusRegistro_id: aprobado_id};
 
 		// Prepara la información
-		const objeto = {
-			statusSugeridoEn: comp.fechaHora.ahora(),
-			statusSugeridoPor_id: 2,
-			statusRegistro_id: creadoAprob_id,
-		};
+		const objeto = {statusRegistro_id: creadoAprob_id};
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 

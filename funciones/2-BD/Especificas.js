@@ -140,11 +140,9 @@ module.exports = {
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
-				[Op.or]: [
-					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: creadoAprob_id}, {creadoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: inactivar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
-					{[Op.and]: [{statusRegistro_id: recuperar_id}, {statusSugeridoPor_id: {[Op.ne]: revID}}]},
+				[Op.and]: [
+					{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}},
+					{statusSugeridoPor_id: {[Op.ne]: revID}},
 				],
 			};
 			const originales = db.links
@@ -243,20 +241,6 @@ module.exports = {
 					return {...m, entidad, fechaRef: m[campoFecha], fechaRefTexto};
 				})
 			);
-	},
-	linksVencidos: () => {
-		// Obtiene la fecha de corte
-		const vidaUtil = 6 * unMes;
-		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
-
-		// Obtiene la condición
-		let condicion = {
-			statusSugeridoEn: {[Op.lt]: fechaCorte},
-			statusRegistro_id: aprobado_id,
-		};
-
-		// Fin
-		return condicion;
 	},
 	nombresDeAvatarEnBD: (entidad, statusRegistro_id) => {
 		// Variables
