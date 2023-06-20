@@ -30,7 +30,7 @@ module.exports = {
 
 		// Start-up
 		await this.FechaHoraUTC();
-		
+
 		// Fin
 		return;
 		this.LinksVencidos();
@@ -346,7 +346,7 @@ module.exports = {
 		const condiciones = {statusSugeridoEn: {[Op.lt]: fechaCorte}, statusRegistro_id: aprobado_id};
 
 		// Prepara la información
-		const objeto = {statusRegistro_id: creadoAprob_id};
+		const objeto = {statusSugeridoPor_id: 2, statusRegistro_id: creadoAprob_id};
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 

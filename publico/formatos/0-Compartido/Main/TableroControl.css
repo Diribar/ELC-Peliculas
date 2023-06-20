@@ -5,14 +5,15 @@ main #familias {display: flex; flex-direction: row; justify-content: space-aroun
 main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
 /* Bloques - Título */
-.bloques .tituloSecundario {position: relative; min-width: 270px;}
+.bloques {max-width: 30vw;}
+.bloques .tituloSecundario {position: relative;}
 .bloques .tituloSecundario h2 {padding: 5px 15px; border-radius: 15px; text-align: center;}
 .bloques .tituloSecundario .ayudaMostrar p {margin-bottom: 3px;}
 #cuerpo:has(.revisionEnts) .bloques .tituloSecundario h2 {background: var(--verde-oscuro); color: var(--gris-claro);}
 #cuerpo:has(.mantenimiento) .bloques .tituloSecundario h2 {background: var(--marron); color: var(--gris-claro);}
 
 /* Bloques - Registros */
-.bloques .temas {padding: 0 10px; min-width: 385px;}
+.bloques .temas {padding: 0 10px; width: 385px; max-width: 385px}
 .bloques .temas h3 {margin: 10px 0 2px;}
 .bloques .temas .bloqueRegistros {overflow-y: hidden;}
 

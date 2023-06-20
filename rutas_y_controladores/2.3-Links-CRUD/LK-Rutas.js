@@ -16,7 +16,7 @@ const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const capturaActivar = require("../../middlewares/varios/capturaActivar");
 // Varios
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 

@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 19/jun",
-	"HoraUTC": "2:20",
+	"FechaUTC": "Mar. 20/jun",
+	"HoraUTC": "5:01",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Dom. 18/jun",
@@ -19,10 +19,10 @@
 	"RutinasSemanales": {"LinksVencidos": "SI", "RclvsSinEpocaPSTyConAno": "SI"},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-jun-23": {"titulo": "Inmaculado Corazón de María", "entidad": "eventos", "id": 26},
 		"18-jun-23": {"titulo": "ELC - Películas"},
 		"19-jun-23": {"titulo": "ELC - Películas"},
 		"20-jun-23": {"titulo": "ELC - Películas"},
-		"21-jun-23": {"titulo": "ELC - Películas"}
+		"21-jun-23": {"titulo": "ELC - Películas"},
+		"22-jun-23": {"titulo": "Tomás Moro", "entidad": "personajes", "id": 102}
 	}
 }

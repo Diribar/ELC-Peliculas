@@ -141,7 +141,7 @@ module.exports = {
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
 				[Op.and]: [
-					{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}},
+					{statusRegistro_id: [creado_id, inactivar_id, recuperar_id]},
 					{statusSugeridoPor_id: {[Op.ne]: revID}},
 				],
 			};
