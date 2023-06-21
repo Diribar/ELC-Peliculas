@@ -13,9 +13,8 @@ module.exports = (sequelize, dt) => {
 		buscadorAutom: {type: dt.BOOLEAN},
 		url_buscarPre: {type: dt.STRING(25)},
 		trailer: {type: dt.BOOLEAN},
-		url_buscarPostTra: {type: dt.STRING(20)},
 		pelicula: {type: dt.BOOLEAN},
-		url_buscarPostPel: {type: dt.STRING(20)},	
+		url_buscarPost: {type: dt.STRING(20)},	
 	};
 	const config = {
 		tableName: "links_provs",

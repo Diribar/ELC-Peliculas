@@ -521,7 +521,7 @@ module.exports = {
 			if (id && id <= 10) return;
 
 			// Establece la condición perenne
-			const rclv_id = comp.obtieneDesdeEntidad.rclv(entidad);
+			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[rclv_id]: id};
 
 			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
