@@ -100,7 +100,7 @@ app.set("views", [
 		roles_iglesia: BD_genericas.obtieneTodos("roles_iglesia", "orden"),
 
 		// Variables de links
-		links_provs: BD_genericas.obtieneTodos("links_provs", "orden"),
+		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
 		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
 
 		// Consultas
@@ -127,13 +127,16 @@ app.set("views", [
 	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
+
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.anime).id;
 	global.documental_id = tiposActuacion.find((n) => n.documental).id;
 	global.actuada_id = tiposActuacion.find((n) => !n.anime && !n.documental).id;
+
 	// 3. Roles de usuario
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
+	
 	// 4. Status de usuario
 	global.st_editables_id = status_registro_us.find((n) => n.editables).id;
 	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar).id;

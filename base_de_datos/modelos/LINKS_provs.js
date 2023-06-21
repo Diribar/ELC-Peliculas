@@ -1,21 +1,21 @@
 module.exports = (sequelize, dt) => {
-	const alias = "links_provs";
+	const alias = "linksProvs";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
 		avatar: {type: dt.STRING(20)},
-		siempre_pago: {type: dt.BOOLEAN},
-		siempre_gratuito: {type: dt.BOOLEAN},
-		siempre_completa: {type: dt.BOOLEAN},
+		siemprePago: {type: dt.BOOLEAN},
+		siempreGratuito: {type: dt.BOOLEAN},
+		siempreCompleta: {type: dt.BOOLEAN},
 		calidad: {type: dt.INTEGER},
 		generico: {type: dt.BOOLEAN},
 		url_distintivo: {type: dt.STRING(20)},
-		buscador_autom: {type: dt.BOOLEAN},
-		url_buscar_pre: {type: dt.STRING(25)},
+		buscadorAutom: {type: dt.BOOLEAN},
+		url_buscarPre: {type: dt.STRING(25)},
 		trailer: {type: dt.BOOLEAN},
-		url_buscar_post_tra: {type: dt.STRING(20)},
+		url_buscarPostTra: {type: dt.STRING(20)},
 		pelicula: {type: dt.BOOLEAN},
-		url_buscar_post_pel: {type: dt.STRING(20)},	
+		url_buscarPostPel: {type: dt.STRING(20)},	
 	};
 	const config = {
 		tableName: "links_provs",

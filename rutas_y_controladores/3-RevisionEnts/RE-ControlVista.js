@@ -485,7 +485,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, origen: "TE"},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
-			...{links, links_provs, links_tipos, motivos},
+			...{links, linksProvs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
 			...{imgDerPers, cartelGenerico: true},
 		});
