@@ -491,9 +491,9 @@ module.exports = {
 			// Rutinas
 			for (let campo of campos) {
 				// Cuenta la cantidad de casos true, false y null
-				const OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
-				const potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-				const no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
+				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
 				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
 
 				// Averigua los porcentajes de OK y Potencial

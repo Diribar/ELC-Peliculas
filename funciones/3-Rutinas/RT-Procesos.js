@@ -615,15 +615,13 @@ let obtieneLosRCLV = async (diaDelAno) => {
 		if (entidad == "epocasDelAno") continue;
 
 		// Condicion estandar: RCLVs del dia y en status aprobado
-		const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id};
+		const condicion = {diaDelAno_id: diaDelAno.id, statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}};
 
 		// Obtiene los RCLVs
 		rclvs.push(
 			BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
-				// Deja solo los que tienen avatar
-				.then((n) => n.filter((m) => m.avatar))
 				// Para "personajes", deja solamente aquellos que tienen proceso de canonizacion
-				.then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
+				// .then((n) => (entidad == "personajes" ? n.filter((m) => m.canon_id && !m.canon_id.startsWith("NN")) : n))
 				// Le agrega la entidad
 				.then((n) => n.map((m) => (m = {...m, entidad})))
 		);
