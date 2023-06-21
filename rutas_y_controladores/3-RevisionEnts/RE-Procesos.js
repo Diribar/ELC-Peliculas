@@ -255,7 +255,7 @@ module.exports = {
 				entidad,
 				entidad_id: original.id,
 				sugeridoPor_id: original.creadoPor_id,
-				statusSugeridoEn: original.creadoEn,
+				sugeridoEn: original.creadoEn,
 				revisadoPor_id: revID,
 				revisadoEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
@@ -566,7 +566,7 @@ module.exports = {
 				datosEdic = {
 					...datosEdic,
 					sugeridoPor_id: edicion.editadoPor_id,
-					statusSugeridoEn: edicion.editadoEn,
+					sugeridoEn: edicion.editadoEn,
 					revisadoPor_id: revID,
 					revisadoEn: ahora,
 				};
