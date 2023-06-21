@@ -284,10 +284,6 @@ module.exports = {
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
-	// Middleware/Usuario/usAutorizFA
-	obtieneAutorizFA: (id) => {
-		return db.usuarios.findByPk(id).then((n) => n.autorizadoFA);
-	},
 	// Middlewares - Usuario habilitado
 	usuario_regsConStatusARevisar: async (userID, entidades) => {
 		// Variables
