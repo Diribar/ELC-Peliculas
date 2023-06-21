@@ -107,21 +107,21 @@ module.exports = {
 
 		// Acciones si se encontraron rclvs
 		if (rclvs.length > 1) {
-			// Ordena por prioridad_id
+			// Ordena por prioridad_id decreciente
 			rclvs.sort((a, b) => b.prioridad_id - a.prioridad_id);
 
-			// Filtra por los que tienen la maxima prioridad_id
+			// Filtra por los que tienen la máxima prioridad_id
 			const prioridad_id = rclvs[0].prioridad_id;
 			rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
 
-			// Asigna el resultado
+			// Elige al azar de entre los que tienen la máxima prioridad
 			const indice = parseInt(Math.random() * rclvs.length);
 			resultado = rclvs[indice];
 		}
 		// Si se encontró un solo resultado, lo asigna
 		else if (rclvs.length == 1) resultado = rclvs[0];
 
-		// Obtiene los datos para la imgDerecha
+		// Obtiene los datos de la imgDerecha
 		const imgDerecha = datosImgDerecha(resultado);
 
 		// Fin
@@ -656,10 +656,10 @@ let datosImgDerecha = (resultado) => {
 		// Datos del archivo, dependiendo de la entidad
 		if (!resultado.carpetaAvatars) {
 			imgDerecha.carpeta = "2-RCLVs/Final/";
-			imgDerecha.nombre_archivo = resultado.avatar;
+			imgDerecha.nombreArchivo = resultado.avatar;
 		} else {
 			imgDerecha.carpeta = "3-EpocasDelAno/" + resultado.carpetaAvatars + "/";
-			imgDerecha.nombre_archivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
+			imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(imgDerecha.carpeta);
 		}
 	}
 	// Acciones si no encontró una imagen para la fecha
@@ -667,7 +667,7 @@ let datosImgDerecha = (resultado) => {
 		imgDerecha = {
 			titulo: "ELC - Películas",
 			carpeta: "0-Base/Varios/",
-			nombre_archivo: "Institucional-Imagen.jpg",
+			nombreArchivo: "Institucional-Imagen.jpg",
 		};
 
 	// Fin

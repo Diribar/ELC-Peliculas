@@ -222,14 +222,14 @@ module.exports = {
 			// Obtiene los títulos nuevos de las 'ImagenesDerecha' y descarga los archivos
 			else {
 				// Variables
-				const {titulo, entidad, id, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
+				const {titulo, entidad, id, carpeta, nombreArchivo} = await procesos.obtieneImgDerecha(fechaNum);
 				tituloNuevo = true;
 
 				// Actualiza los datos para esa fecha
 				ImagenesDerecha[fechaArchivo] = entidad && id ? {titulo, entidad, id} : {titulo};
 
 				// Guarda el archivo de la 'imgDerecha' para esa fecha
-				comp.gestionArchivos.copiaImagen(carpeta + nombre_archivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
+				comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, "4-ImagenDerecha/" + fechaArchivo + ".jpg");
 			}
 		}
 
