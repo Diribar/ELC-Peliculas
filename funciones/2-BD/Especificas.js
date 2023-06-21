@@ -22,36 +22,48 @@ module.exports = {
 	quickSearchCondics: (palabras, dato, userID) => {
 		// Convierte las palabras en un array
 		palabras = palabras.split(" ");
+
 		// Crea el objeto literal con los valores a buscar
-		let condicTodasLasPalabrasPresentesEnCampos = [];
+		let condicTodasLasPalabrasPorCampos = [];
+
 		// Almacena la condición en una matriz
 		for (let campo of dato.campos) {
-			let condicPalabrasABuscarEnCampo = [];
+			// Variables
+			let condicPalabras = [];
+
+			// Rutina por palabra
 			for (let palabra of palabras) {
 				// Que encuentre la palabra en el campo
-				let condicPalabraABuscarEnCampo = {
-					[Op.or]: [{[campo]: {[Op.like]: "% " + palabra + "%"}}, {[campo]: {[Op.like]: palabra + "%"}}],
+				const condicPalabra = {
+					[Op.or]: [
+						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // Comienzo de la palabra
+						{[campo]: {[Op.like]: palabra + "%"}} // Comienzo del texto
+					],
 				};
 				// Agrega la palabra al conjunto de palabras a buscar
-				condicPalabrasABuscarEnCampo.push(condicPalabraABuscarEnCampo);
+				condicPalabras.push(condicPalabra);
 			}
+
 			// Exige que cada palabra del conjunto esté presente
-			let condicTodasLasPalabrasPresentesEnCampo = {[Op.and]: condicPalabrasABuscarEnCampo};
+			const condicTodasLasPalabras = {[Op.and]: condicPalabras};
 			// Consolida el resultado
-			condicTodasLasPalabrasPresentesEnCampos.push(condicTodasLasPalabrasPresentesEnCampo);
+			condicTodasLasPalabrasPorCampos.push(condicTodasLasPalabras);
 		}
+
 		// Se fija que la condición de palabras se cumpla en alguno de los campos
-		let condicPalabras = {[Op.or]: condicTodasLasPalabrasPresentesEnCampos};
+		const condicPalabras = {[Op.or]: condicTodasLasPalabrasPorCampos};
+
 		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
-		let statusGrCreado_id = status_registros.filter((n) => n.gr_creado).map((n) => n.id);
-		let condicStatus = {
+		const condicStatus = {
 			[Op.or]: [
 				{statusRegistro_id: aprobado_id},
-				{[Op.and]: [{statusRegistro_id: statusGrCreado_id}, {creadoPor_id: userID}]},
+				{[Op.and]: [{statusRegistro_id: [creado_id, creadoAprob_id]}, {creadoPor_id: userID}]},
 			],
 		};
+
 		// Consolidado
-		let condics = {[Op.and]: [condicPalabras, condicStatus]};
+		const condics = {[Op.and]: [condicPalabras, condicStatus]};
+
 		// Fin
 		return condics;
 	},
