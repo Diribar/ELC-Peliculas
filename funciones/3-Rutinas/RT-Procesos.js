@@ -302,7 +302,7 @@ module.exports = {
 				});
 			}
 
-			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
+			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
 			resultados = ordenarEdic(resultados);
 
 			// Crea el mensaje en formato texto para cada entidad, y sus campos
