@@ -124,7 +124,6 @@ module.exports = {
 		const userID = original.statusSugeridoPor_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
@@ -198,8 +197,8 @@ module.exports = {
 
 			// Acciones si es un RCLV inactivo
 			if (statusFinal_id == inactivo_id) {
-				// Borra su id de los campos rclv_id de las ediciones de producto
-				BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id})
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
