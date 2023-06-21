@@ -90,11 +90,7 @@
 
 		<!-- Sólo para Revisión -->
 		<% if (link.cond.revision) { %>
-			<% if (!registro.statusRegistro.aprobado) { %>
-				<i class="ocultar in"></i>
-				<i class="ocultar out"></i>
-				<i class="ocultar fuera"></i>
-			<% } else if (link.cond.creado && !link.cond.creadoPropio) { %>
+			<% if (link.cond.creado && !link.cond.creadoPropio) { %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="fa-solid fa-circle-check in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
