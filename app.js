@@ -8,6 +8,7 @@ global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 global.SI = 2;
 global.talVez = 1;
 global.NO = null;
+global.usAutom_id = 2;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
@@ -136,7 +137,7 @@ app.set("views", [
 	// 3. Roles de usuario
 	global.rol_consultas_id = roles_us.find((n) => !n.permInputs).id;
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
-	
+
 	// 4. Status de usuario
 	global.st_editables_id = status_registro_us.find((n) => n.editables).id;
 	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar).id;

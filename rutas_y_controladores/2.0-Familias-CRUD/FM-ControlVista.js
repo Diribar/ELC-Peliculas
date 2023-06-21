@@ -141,7 +141,7 @@ module.exports = {
 			BD_genericas.actualizaTodosPorCondicion(
 				"capitulos",
 				{coleccion_id: id},
-				{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: 2}
+				{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
 			);
 
 		// 3. Agrega un registro en el histStatus

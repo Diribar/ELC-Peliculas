@@ -230,11 +230,11 @@ module.exports = {
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
 			statusFinal_id == aprobado_id
-				? await procsCRUD.capsAprobs(id)
+				? await procsCRUD.revisiones.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
-						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: 2}
+						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usuarioAutom_id}
 				  );
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
@@ -262,7 +262,7 @@ module.exports = {
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
 		// 7. Acciones si es un registro que se mueve a 'inactivo'
-		// Elimina el archivo de avatar de la edicion
+		// Elimina el archivo de avatar de las ediciones
 		// Elimina las ediciones que tenga
 		if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
