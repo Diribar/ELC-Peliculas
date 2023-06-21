@@ -148,7 +148,7 @@ module.exports = {
 		avatars = [];
 
 		// Revisa los avatars que están en las ediciones
-		avatars=await BD_especificas.nombresDeAvatarEnBD(entidadEdic)
+		avatars = await BD_especificas.nombresDeAvatarEnBD(entidadEdic);
 		eliminaLasImagenes(avatars, carpeta);
 
 		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
