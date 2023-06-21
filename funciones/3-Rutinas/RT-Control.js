@@ -4,7 +4,6 @@ const cron = require("node-cron");
 const procsCRUD = require("../../rutas_y_controladores/2.0-Familias-CRUD/FM-Procesos");
 const comp = require("../1-Procesos/Compartidas");
 const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
 const variables = require("../1-Procesos/Variables");
 const procesos = require("./RT-Procesos");
 
@@ -23,10 +22,7 @@ module.exports = {
 		// Rutinas horarias
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 		const rutinasHorarias = info.RutinasHorarias;
-		rutinasHorarias.forEach((rutina, i) => {
-			let minuto = 1 + i;
-			cron.schedule(minuto + " * * * *", async () => await this[rutina](), {timezone: "Etc/Greenwich"});
-		});
+		cron.schedule("1 * * * *", async () => this.RutinasHorarias(), {timezone: "Etc/Greenwich"});
 
 		// Start-up
 		await this.FechaHoraUTC();
@@ -37,33 +33,49 @@ module.exports = {
 	},
 
 	// 1. Rutinas horarias
-	LinksEnProd: async function () {
-		// return;
-		const entidadesProd = variables.entidades.prods;
+	RutinasHorarias: async function () {
+		// Obtiene la información del archivo JSON
+		const info = procesos.lecturaRutinasJSON();
+		const rutinasHorarias = info.RutinasHorarias;
 
-		// Rutina por entidad
-		for (let entidad of entidadesProd) {
+		// Actualiza todas las rutinas horarias
+		for (let rutinaHoraria of rutinasHorarias) await this[rutinaHoraria]();
+
+		// Fin
+		return;
+	},
+	LinksEnProd: async function () {
+		// Variables
+		let esperar = [];
+
+		// Rutina por peliculas y capitulos
+		for (let entidad of ["peliculas", "capitulos"]) {
 			// Obtiene los ID de los registros de la entidad
 			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
 
-			// Rutina por ID: ejecuta la función linksEnProd
-			for (let id of IDs) procsCRUD.revisiones.linksEnProd({entidad, id});
+			// Ejecuta la función linksEnProd
+			for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
 		}
+		await Promise.all(esperar);
+
+		// Rutina por colecciones
+		let IDs = await BD_genericas.obtieneTodos("colecciones", "id").then((n) => n.map((m) => m.id));
+		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
-		procesos.rutinasSinGuardar("LinksEnProd");
+		procesos.finRutinasHorarias("LinksEnProd");
 		return;
 	},
 	MailDeFeedback: async () => {
-		// Obtiene información de la base de datos y si no hay pendientes, interrumpe
-		const {regsAB, regsEdic} = await procesos.mailDeFeedback.obtieneRegistros();
-		const regsTodos = [...regsAB, ...regsEdic];
+		// Obtiene de la base de datos, la información de todo el historial pendiente de comunicar, y si no hay pendientes interrumpe
+		const {regsStatus, regsEdic} = await procesos.mailDeFeedback.obtieneElHistorial();
+		const regsTodos = [...regsStatus, ...regsEdic];
 
 		// Si no hay registros a comunicar, termina el proceso
 		if (!regsTodos.length) {
 			// Outputs
 			console.log("Sin mails para enviar");
-			procesos.rutinasSinGuardar("MailDeFeedback");
+			procesos.finRutinasHorarias("MailDeFeedback");
 
 			// Fin
 			return;
@@ -73,7 +85,7 @@ module.exports = {
 		const asunto = "Resultado de las sugerencias realizadas";
 		let mailsEnviados = [];
 
-		// Usuarios
+		// Obtiene los usuarios relacionados con esos registros
 		let usuarios_id = [...new Set(regsTodos.map((n) => n.sugeridoPor_id))];
 		const usuarios = await BD_genericas.obtieneTodosConInclude("usuarios", "pais").then((n) =>
 			n.filter((m) => usuarios_id.includes(m.id))
@@ -81,18 +93,20 @@ module.exports = {
 
 		// Rutina por usuario
 		for (let usuario of usuarios) {
-			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, omite la rutina
-			const {hoyUsuario, saltear} = procesos.mailDeFeedback.hoyUsuario(usuario);
-			if (saltear) continue;
+			// Obtiene la fecha en que se le envió el último comunicado y si coincide con el día de hoy, saltea al siguiente usuario
+			const hoyUsuario = procesos.mailDeFeedback.hoyUsuario(usuario);
+
+			// Si la fecha local es igual que la fecha del último comunicado, se saltea el usuario
+			if (hoyUsuario == usuario.fechaRevisores) continue;
 
 			// Variables
 			const email = usuario.email;
-			const regsAB_user = regsAB.filter((n) => n.sugeridoPor_id == usuario.id);
+			const regsStatus_user = regsStatus.filter((n) => n.sugeridoPor_id == usuario.id);
 			const regsEdic_user = regsEdic.filter((n) => n.sugeridoPor_id == usuario.id);
 			let cuerpoMail = "";
 
 			// Arma el cuerpo del mail
-			if (regsAB_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeAB(regsAB_user);
+			if (regsStatus_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeStatus(regsStatus_user);
 			if (regsEdic_user.length) cuerpoMail += await procesos.mailDeFeedback.mensajeEdic(regsEdic_user);
 
 			// Envía el mail y actualiza la BD
@@ -103,9 +117,9 @@ module.exports = {
 					.then(async (n) => {
 						// Acciones si el mail fue enviado
 						if (n) {
-							if (regsAB_user.length) procesos.mailDeFeedback.eliminaRegsAB(regsAB_user); // Borra los registros prescindibles
-							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdic(regsEdic_user); // Borra los registros prescindibles
-							procesos.mailDeFeedback.actualizaHoraRevisorEnElUsuario(usuario, hoyUsuario); // Actualiza el registro de usuario en el campo fecha_revisor
+							if (regsStatus_user.length) procesos.mailDeFeedback.eliminaRegsStatusComunica(regsStatus_user); // Borra los registros prescindibles
+							if (regsEdic_user.length) procesos.mailDeFeedback.eliminaRegsEdicComunica(regsEdic_user); // Borra los registros prescindibles
+							BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario}); // Actualiza el registro de usuario en el campo fecha_revisor
 						}
 						console.log("Mail enviado a " + email);
 						return n; // Conserva el valor de si el mail fue enviado
@@ -113,10 +127,12 @@ module.exports = {
 			);
 		}
 
-		// Fin
-		console.log("Enviando mails...");
+		// Avisa que está procesando el envío de los mails
+		console.log("Procesando el envío de mails...");
 		await Promise.all(mailsEnviados);
-		procesos.rutinasSinGuardar("MailDeFeedback");
+
+		// Fin
+		procesos.finRutinasHorarias("MailDeFeedback");
 		return;
 	},
 	ProdsEnRCLV: async function () {
@@ -133,13 +149,13 @@ module.exports = {
 		}
 
 		// Fin
-		procesos.rutinasSinGuardar("ProdsEnRCLV");
+		procesos.finRutinasHorarias("ProdsEnRCLV");
 		return;
 	},
 
 	// 2. Rutinas diarias
 	FechaHoraUTC: async function () {
-		// Obtiene las rutinas del archivo JSON
+		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
@@ -152,9 +168,9 @@ module.exports = {
 		if (info.FechaUTC == FechaUTC) return;
 
 		// Actualiza los campos de fecha
-		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"}; // Con el paso de 'finRutinasDiariasSemanales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
-		procesos.rutinasFinales("FechaHoraUTC");
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC");
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
@@ -191,7 +207,7 @@ module.exports = {
 		// Limpia el historial de ImagenesDerecha en 'global'
 		ImagenesDerecha = {};
 
-		// Actualiza los títulos de la imagen derecha para cada fecha
+		// Actualiza los títulos de la imagen derecha para cada fecha y descarga las imágenes nuevas
 		for (let i = 0; i < cantFechas; i++) {
 			// Variables
 			const fechaNum = fechaInicial + unDia * i;
@@ -200,9 +216,10 @@ module.exports = {
 			// Arma el array de fechas
 			fechas.push(fechaArchivo);
 
-			// Obtiene las 'ImagenesDerecha'
+			// Obtiene los títulos ya vigentes de las 'ImagenesDerecha'
 			if (info.ImagenesDerecha && info.ImagenesDerecha[fechaArchivo])
 				ImagenesDerecha[fechaArchivo] = info.ImagenesDerecha[fechaArchivo];
+			// Obtiene los títulos nuevos de las 'ImagenesDerecha' y descarga los archivos
 			else {
 				// Variables
 				const {titulo, entidad, id, carpeta, nombre_archivo} = await procesos.obtieneImgDerecha(fechaNum);
@@ -216,18 +233,18 @@ module.exports = {
 			}
 		}
 
-		// Guarda los títulos de las imágenes
+		// Guarda los títulos de las imágenes nuevas
 		if (tituloNuevo) {
 			procesos.guardaArchivoDeRutinas({ImagenesDerecha});
 			const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 			console.log(FechaUTC, HoraUTC + "hs. -", "Titulos de 'Imagen Derecha' actualizados y  guardados en JSON");
 		}
 
-		// Borra los archivos de imagen que no se corresponden con los titulos
+		// Borra los archivos de imagen que no se corresponden con los títulos
 		procesos.borraLosArchivosDeImgDerechaObsoletos(fechas);
 
 		// Fin
-		procesos.rutinasFinales("ImagenDerecha", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("ImagenDerecha", "RutinasDiarias");
 		return;
 	},
 	PaisesConMasProductos: async () => {
@@ -235,7 +252,7 @@ module.exports = {
 		const condicion = {statusRegistro_id: aprobado_id};
 		const entidades = ["peliculas", "colecciones"];
 		let paisesID = {};
-		let verificador = [];
+		let espera = [];
 
 		// Obtiene la frecuencia por país
 		for (let entidad of entidades) {
@@ -244,7 +261,7 @@ module.exports = {
 				.then((n) => n.filter((m) => m.paises_id))
 				.then((n) =>
 					n.map((m) => {
-						for (let a of m.paises_id.split(" ")) paisesID[a] ? paisesID[a]++ : (paisesID[a] = 1);
+						for (let n of m.paises_id.split(" ")) paisesID[n] ? paisesID[n]++ : (paisesID[n] = 1);
 					})
 				);
 		}
@@ -252,18 +269,18 @@ module.exports = {
 		// Actualiza la frecuencia por país
 		for (let pais of paises) {
 			const cantProds = paisesID[pais.id] ? paisesID[pais.id] : 0;
-			verificador.push(BD_genericas.actualizaPorId("paises", pais.id, {cantProds}));
+			espera.push(BD_genericas.actualizaPorId("paises", pais.id, {cantProds}));
 		}
-		await Promise.all(verificador);
+		await Promise.all(espera);
 
 		// Fin
-		procesos.rutinasFinales("PaisesConMasProductos", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("PaisesConMasProductos", "RutinasDiarias");
 		return;
 	},
 
 	// 3. Rutinas semanales
 	SemanaUTC: async function () {
-		// Obtiene las rutinas del archivo JSON
+		// Obtiene la información del archivo JSON
 		let info = procesos.lecturaRutinasJSON();
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
@@ -271,17 +288,19 @@ module.exports = {
 
 		// Obtiene la fecha y hora UTC actual
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
+
+		// Obtiene la semanaUTC actual
 		const semanaUTC = procesos.semanaUTC();
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
 
 		// Actualiza los campos de semana
-		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'rutinasFinales', se actualiza a 'SI'
+		const feedback = {FechaSemUTC: FechaUTC, HoraSemUTC: HoraUTC, semanaUTC, SemanaUTC: "NO"}; // Con el paso de 'finRutinasDiariasSemanales', se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback);
-		procesos.rutinasFinales("SemanaUTC");
+		procesos.finRutinasDiariasSemanales("SemanaUTC");
 
-		// Establece el status de los procesos de rutina
+		// Actualiza los campos de Rutinas Semanales
 		const feedback_RS = {};
 		for (let rutinaSemanal in rutinasSemanales) feedback_RS[rutinaSemanal] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RS, "RutinasSemanales");
@@ -302,15 +321,18 @@ module.exports = {
 		return;
 	},
 	AprobadoConAvatarLink: async () => {
-		// Descarga el avatar en la carpeta 'Prods-Final'
 		// Variables
-		const ruta = "./publico/imagenes/2-Productos/Final/";
 		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.like]: "%/%"}};
-		let verificador = [];
+		let espera = [];
 
 		// Revisa, descarga, actualiza
-		for (let entidad of ["peliculas", "colecciones"])
-			verificador.push(
+		for (let entidad of ["peliculas", "colecciones", ...variables.entidades.rclvs]) {
+			// Variables
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
+			const ruta = "./publico/imagenes/2-" + familias + "/Final/";
+
+			// Descarga el avatar y actualiza el valor en el campo del registro original
+			espera.push(
 				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
 					.then((n) =>
 						n.map((m) => {
@@ -321,10 +343,11 @@ module.exports = {
 					)
 					.then(() => true)
 			);
-		await Promise.all(verificador);
+		}
+		await Promise.all(espera);
 
 		// Fin
-		procesos.rutinasFinales("AprobadoConAvatarLink", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("AprobadoConAvatarLink", "RutinasDiarias");
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
@@ -334,7 +357,7 @@ module.exports = {
 		procesos.borraImagenesProvisorio();
 
 		// Fin
-		procesos.rutinasFinales("BorraImagenesSinRegistro", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("BorraImagenesSinRegistro", "RutinasDiarias");
 		return;
 	},
 	LinksVencidos: async function () {
@@ -345,22 +368,25 @@ module.exports = {
 		// Obtiene las condiciones de cuáles son los links vencidos
 		const condiciones = {statusSugeridoEn: {[Op.lt]: fechaCorte}, statusRegistro_id: aprobado_id};
 
-		// Prepara la información
+		// Prepara la información a guardar
 		const objeto = {statusSugeridoPor_id: 2, statusRegistro_id: creadoAprob_id};
 
 		// Actualiza el status de los links vencidos
 		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Fin
-		procesos.rutinasFinales("LinksVencidos", "RutinasSemanales");
+		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
 		return;
 	},
 	RclvsSinEpocaPSTyConAno: async () => {
 		// Variables
-		const condicion = {statusRegistro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
 		const entidades = ["personajes", "hechos"];
 		let verificador = [];
 
+		// Establece la condición
+		const condicion = {statusRegistro_id: aprobado_id, epoca_id: {[Op.ne]: "pst"}, ano: {[Op.ne]: null}};
+
+		// Busca
 		for (let entidad of entidades)
 			verificador.push(
 				BD_genericas.obtieneTodosPorCondicion(entidad, condicion)
@@ -370,7 +396,7 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.rutinasFinales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
+		procesos.finRutinasDiariasSemanales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
 };

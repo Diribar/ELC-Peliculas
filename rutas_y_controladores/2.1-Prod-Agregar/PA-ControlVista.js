@@ -105,7 +105,7 @@ module.exports = {
 
 		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in datosDuros) if (!datosDuros[campo]) delete datosDuros[campo];
-		for (let campo in datosDuros) if (typeof datosDuros[campo]=="string") datosDuros[campo] = datosDuros[campo].trim();
+		for (let campo in datosDuros) if (typeof datosDuros[campo] == "string") datosDuros[campo] = datosDuros[campo].trim();
 
 		// Acciones si se ingresó un archivo de imagen (IM)
 		if (req.file) {
@@ -179,7 +179,7 @@ module.exports = {
 
 		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in datosAdics) if (!datosAdics[campo]) delete datosAdics[campo];
-		for (let campo in datosAdics) if (typeof datosAdics[campo]=="string") datosAdics[campo] = datosAdics[campo].trim();
+		for (let campo in datosAdics) if (typeof datosAdics[campo] == "string") datosAdics[campo] = datosAdics[campo].trim();
 
 		// Procesa algunos datos
 		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
@@ -402,6 +402,10 @@ module.exports = {
 		// Actualiza la información
 		FA = {...FA, ...req.body};
 
+		// Elimina los campos vacíos y pule los espacios innecesarios
+		for (let campo in FA) if (!FA[campo]) delete FA[campo];
+		for (let campo in FA) if (typeof FA[campo] == "string") FA[campo] = datosAdics[campo].trim();
+
 		// Actualiza Session y Cookies FA
 		req.session.FA = FA;
 		res.cookie("FA", FA, {maxAge: unDia});
@@ -418,8 +422,7 @@ module.exports = {
 		if (errores.hay) return res.redirect(req.originalUrl);
 
 		// Actualiza Session y Cookies de datosDuros
-		const datosDuros = {...FA, ...procesos.infoFAparaDD(FA)};
-		delete datosDuros.url, datosDuros.contenido;
+		const datosDuros = {...procesos.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 

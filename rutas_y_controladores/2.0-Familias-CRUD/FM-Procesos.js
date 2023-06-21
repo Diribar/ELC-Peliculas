@@ -417,57 +417,9 @@ module.exports = {
 				const prodEntidad = comp.obtieneDesdeEdicion.entidadProd(registro);
 				const campo_id = comp.obtieneDesdeEdicion.campo_idProd(registro);
 				const prodID = registro[campo_id];
-				
+
 				// Actualiza el producto
 				this.linksEnProd({entidad: prodEntidad, id: prodID});
-			}
-
-			// Fin
-			return;
-		},
-		// Actualiza los campos de 'producto' en el RCLV
-		prodsEnRCLV: async ({entidad, id}) => {
-			// La entidad y el ID son de un RCLV
-
-			// Variables
-			const entidadesProds = variables.entidades.prods;
-			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-
-			// Acciones si el producto tiene ese 'campo_id'
-			if (id && id > 10) {
-				let objeto = {[campo_id]: id};
-				let prodsAprob;
-
-				// 1. Averigua si existe algún producto aprobado, con ese rclv_id
-				for (let entidadProd of entidadesProds) {
-					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusAprobado});
-					if (prodsAprob) {
-						prodsAprob = SI;
-						break;
-					}
-				}
-
-				// 2. Averigua si existe algún producto 'potencial', en status distinto a aprobado e inactivo
-				if (!prodsAprob)
-					for (let entidadProd of entidadesProds) {
-						// Averigua si existe algún producto, con ese RCLV
-						prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...objeto, ...statusPotencial});
-						if (prodsAprob) {
-							prodsAprob = talVez;
-							break;
-						}
-					}
-
-				// 3. Averigua si existe alguna edición
-				if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", objeto))) prodsAprob = talVez;
-
-				// 4. No encontró ningún caso
-				if (!prodsAprob) prodsAprob = NO;
-
-				// Actualiza el campo en el RCLV
-				BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
 			}
 
 			// Fin
@@ -477,17 +429,18 @@ module.exports = {
 		linksEnProd: async ({entidad, id}) => {
 			// Variables
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			if (entidad == "colecciones") return;
 
 			// Más variables
 			const tipo_id = link_pelicula_id; // El tipo de link 'película'
 			const statusAprobado = {statusRegistro_id: aprobado_id};
-			const statusPotencial = {statusRegistro_id: [creado_id, inactivar_id, recuperar_id]};
+			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
 			let objeto = {[campo_id]: id, tipo_id};
 
 			// 1. Averigua si existe algún link, para ese producto
 			let linksGeneral = BD_genericas.obtienePorCondicion("links", {...objeto, ...statusAprobado}).then((n) =>
-				n ? SI : BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial}).then((n) => (n ? talVez : NO))
+				n
+					? SI
+					: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio}).then((n) => (n ? talVez : NO))
 			);
 
 			// 2. Averigua si existe algún link gratuito, para ese producto
@@ -495,7 +448,7 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, gratuito: true}).then((n) =>
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, gratuito: true}).then((n) =>
 								n ? talVez : NO
 						  )
 			);
@@ -505,8 +458,8 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, castellano: true}).then((n) =>
-								n ? talVez : NO
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, castellano: true}).then(
+								(n) => (n ? talVez : NO)
 						  )
 			);
 
@@ -515,33 +468,89 @@ module.exports = {
 				(n) =>
 					n
 						? SI
-						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusPotencial, subtitulos: true}).then((n) =>
-								n ? talVez : NO
+						: BD_genericas.obtienePorCondicion("links", {...objeto, ...statusProvisorio, subtitulos: true}).then(
+								(n) => (n ? talVez : NO)
 						  )
 			);
 
 			// Consolida
-			[linksGeneral, linksGratuitos, castellano, subtitulos] = await Promise.all([
-				linksGeneral,
-				linksGratuitos,
-				castellano,
-				subtitulos,
-			]);
+			const respuesta = await Promise.all([linksGeneral, linksGratuitos, castellano, subtitulos]);
+			[linksGeneral, linksGratuitos, castellano, subtitulos] = respuesta;
 
 			// Actualiza el registro - con 'await', para que dé bien el cálculo para la colección
 			await BD_genericas.actualizaPorId(entidad, id, {linksGeneral, linksGratuitos, castellano, subtitulos});
 
-			// Colecciones - la actualiza en función de la mayoría de los capítulos
-			if (entidad == "capitulos") {
-				// Obtiene los datos para identificar la colección
-				const capitulo = await BD_genericas.obtienePorId("capitulos", id);
-				const colID = capitulo.coleccion_id;
-				// Rutinas
-				linksEnColeccion(colID, "linksGeneral");
-				linksEnColeccion(colID, "linksGratuitos");
-				linksEnColeccion(colID, "castellano");
-				linksEnColeccion(colID, "subtitulos");
+			// Fin
+			return;
+		},
+		linksEnColec: async (colID) => {
+			// Variables
+			const campos = ["linksGeneral", "linksGratuitos", "castellano", "subtitulos"];
+			const objeto = {coleccion_id: colID};
+
+			// Rutinas
+			for (let campo of campos) {
+				// Cuenta la cantidad de casos true, false y null
+				let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
+				let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
+				let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
+				[OK, potencial, no] = await Promise.all([OK, potencial, no]);
+
+				// Averigua los porcentajes de OK y Potencial
+				const total = OK + potencial + no;
+				const resultadoOK = OK / total;
+				const resultadoPot = (OK + potencial) / total;
+				const valor = resultadoOK >= 0.5 ? SI : resultadoPot >= 0.5 ? talVez : NO;
+
+				// Actualiza la colección
+				BD_genericas.actualizaPorId("colecciones", colID, {[campo]: valor});
 			}
+
+			// Fin
+			return;
+		},
+		// Actualiza los campos de 'producto' en el RCLV
+		prodsEnRCLV: async ({entidad, id}) => {
+			// Variables
+			const entidadesProds = variables.entidades.prods;
+			const statusAprobado = {statusRegistro_id: aprobado_id};
+			const statusProvisorio = {statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}};
+			let prodsAprob;
+
+			// Si el ID es menor o igual a 10, termina la función
+			if (id && id <= 10) return;
+
+			// Establece la condición perenne
+			const rclv_id = comp.obtieneDesdeEntidad.rclv(entidad);
+			const condicion = {[rclv_id]: id};
+
+			// 1. Averigua si existe algún producto aprobado, con ese rclv_id
+			for (let entidadProd of entidadesProds) {
+				prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+				if (prodsAprob) {
+					prodsAprob = SI;
+					break;
+				}
+			}
+
+			// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
+			if (!prodsAprob)
+				for (let entidadProd of entidadesProds) {
+					prodsAprob = await BD_genericas.obtienePorCondicion(entidadProd, {...condicion, ...statusProvisorio});
+					if (prodsAprob) {
+						prodsAprob = talVez;
+						break;
+					}
+				}
+
+			// 3. Averigua si existe alguna edición con ese rclv_id
+			if (!prodsAprob && (await BD_genericas.obtienePorCondicion("prods_edicion", condicion))) prodsAprob = talVez;
+
+			// 4. No encontró ningún caso
+			if (!prodsAprob) prodsAprob = NO;
+
+			// Actualiza el campo en el RCLV
+			BD_genericas.actualizaPorId(entidad, id, {prodsAprob});
 
 			// Fin
 			return;
@@ -801,25 +810,6 @@ let puleEdicion = async (entidad, original, edicion) => {
 	return edicion;
 };
 // Actualiza para las colecciones
-let linksEnColeccion = async (colID, campo) => {
-	let objeto = {coleccion_id: colID};
-
-	// Cuenta la cantidad de casos true, false y null
-	let OK = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: SI});
-	let potencial = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: talVez});
-	let no = BD_genericas.contarCasos("capitulos", {...objeto, [campo]: NO});
-	[OK, potencial, no] = await Promise.all([OK, potencial, no]);
-
-	// Averigua los porcentajes de OK y Potencial
-	let total = OK + potencial + no;
-	let resultadoOK = OK / total;
-	let resultadoPot = (OK + potencial) / total;
-
-	// En función de los resultados, actualiza la colección
-	if (resultadoOK >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: SI});
-	else if (resultadoPot >= 0.5) BD_genericas.actualizaPorId("colecciones", colID, {[campo]: talVez});
-	else BD_genericas.actualizaPorId("colecciones", colID, {[campo]: NO});
-};
 let eliminaEdicionesVacias = async (ediciones, campo_idRCLV) => {
 	// Revisa si tiene que eliminar alguna edición
 	for (let edicion of ediciones) {
