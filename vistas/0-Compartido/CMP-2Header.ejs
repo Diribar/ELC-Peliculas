@@ -24,25 +24,25 @@
 				<i class="fa-solid fa-plus iconoHeader adentro"></i>
 			</div>
 		</a>
-		<!-- Revisar Entidades -->
+		<!-- Tablero de Entidades -->
 		<% if (locals.usuario && usuario.rolUsuario.revisorEnts) { %>
 			<a href="/revision/tablero-de-control" tabindex="-1" class="grupos">
-				<div class="scale iconoComb" title="Revisar Entidades">
+				<div class="scale iconoComb" title="Tablero de Entidades">
 					<i class="fa-solid fa-video iconoHeader revision"></i>
 					<i class="fa-solid fa-check iconoHeader adentro"></i>
 				</div>
 			</a>
 		<% } %>
-		<!-- Mantenimiento -->
+		<!-- Tablero de Mantenimiento -->
 		<% if (locals.usuario && usuario.rolUsuario.permInputs) { %>
 			<a href="/mantenimiento" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-tools scale iconoHeader revision" title="Mantenimiento de Entidades"></i>
+				<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 			</a>
 		<% } %>
-		<!-- Revisar Usuarios -->
+		<!-- Tablero de Usuarios -->
 		<% if (locals.usuario && locals.usuario.rolUsuario.revisorUs) { %>
 			<a href="/revision/usuarios/tablero-de-control" tabindex="-1" class="grupos">
-				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Revisar Usuarios"></i>
+				<i class="fa-solid fa-user-check scale iconoHeader revision" title="Tablero de Usuarios"></i>
 			</a>
 		<% } %>
 	</section>
