@@ -23,7 +23,7 @@
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		<% } %>
 	<% } %>
-	<% if ((tema == "prod_agregar" || tema == "prod_rud") && locals.id) { %>
+	<% if ((tema == "prodAgregar" || tema == "prod_rud") && locals.id) { %>
 		<!-- Links -->
 		<% if (status_id <= aprobado_id) { %>
 			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
