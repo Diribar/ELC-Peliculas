@@ -17,7 +17,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	obtieneProvs: (req, res) => {
-		return res.json(links_provs);
+		return res.json(linksProvs);
 	},
 	// ABM
 	guarda: async (req, res) => {

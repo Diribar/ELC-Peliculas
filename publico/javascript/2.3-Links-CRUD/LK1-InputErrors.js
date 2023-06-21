@@ -139,8 +139,8 @@ window.addEventListener("load", async () => {
 		},
 		controlesEnGratuito: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
-			let condicion1 = prov.siempre_gratuito == 1;
-			let condicion2 = prov.siempre_pago;
+			let condicion1 = prov.siempreGratuito == 1;
+			let condicion2 = prov.siemprePago;
 			if (condicion1) v.gratuitoInputs[fila].value = "1";
 			else if (condicion2) v.gratuitoInputs[fila].value = "0";
 			if (fila == filaAlta) v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
@@ -170,7 +170,7 @@ window.addEventListener("load", async () => {
 		controlesEnCompleto: async (fila, prov) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion =
-				(prov.trailer && !prov.pelicula) || prov.siempre_completa || v.colecciones || v.tipoInputs[fila].value == 1;
+				(prov.trailer && !prov.pelicula) || prov.siempreCompleta || v.colecciones || v.tipoInputs[fila].value == 1;
 			if (condicion) v.completoInputs[fila].value = "1";
 			v.completoInputs[fila].disabled = condicion;
 
