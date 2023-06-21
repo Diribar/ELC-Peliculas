@@ -230,16 +230,16 @@ module.exports = {
 			let mensajesRech = "";
 			let color;
 
-			// Proceso de los registros
-			for (let regAB of regsStatus) {
+			// De cada registro de status, obtiene los campos clave o los elabora
+			for (let regStatus of regsStatus) {
 				// Variables
-				const aprobado = regAB.aprobado;
-				const familia = comp.obtieneDesdeEntidad.familia(regAB.entidad);
-				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regAB.entidad);
-				const statusFinal = status_registros.find((n) => n.id == regAB.statusFinal_id);
-				const statusInicial = status_registros.find((n) => n.id == regAB.statusOriginal_id);
-				const motivo = regAB.comentario && !aprobado ? regAB.comentario : "";
-				const {nombreOrden, nombreVisual} = await nombres(regAB, familia);
+				const aprobado = regStatus.aprobado;
+				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
+				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
+				const statusFinal = status_registros.find((n) => n.id == regStatus.statusFinal_id);
+				const statusInicial = status_registros.find((n) => n.id == regStatus.statusOriginal_id);
+				const motivo = regStatus.comentario && !aprobado ? regStatus.comentario : "";
+				const {nombreOrden, nombreVisual} = await nombres(regStatus, familia);
 				if (!nombreOrden) continue;
 
 				// Alimenta el resultado
@@ -254,26 +254,11 @@ module.exports = {
 					motivo,
 				});
 			}
-			resultados.sort((a, b) =>
-				a.familia < b.familia
-					? -1
-					: a.familia > b.familia
-					? 1
-					: a.entidadNombre < b.entidadNombre
-					? -1
-					: a.entidadNombre > b.entidadNombre
-					? 1
-					: a.nombreOrden < b.nombreOrden
-					? -1
-					: a.nombreOrden > b.nombreOrden
-					? 1
-					: a.statusFinal.id < b.statusFinal.id
-					? -1
-					: a.statusFinal.id > b.statusFinal.id
-					? 1
-					: 0
-			);
 
+			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
+			resultados = ordenarStatus(resultados);
+
+			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
 			resultados.map((n) => {
 				let mensaje = n.entidadNombre + ": <b>" + n.nombreVisual + "</b>,";
 				mensaje += " de status <em>" + n.statusInicial.nombre.toLowerCase() + "</em>";
@@ -284,10 +269,11 @@ module.exports = {
 				n.aprobado ? (mensajesAprob += mensaje) : (mensajesRech += mensaje);
 			});
 
-			// Ajustes finales
+			// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
 			if (mensajesAprob) mensajesAcum += formatos.h2("Cambios de Status - APROBADOS") + formatos.ol(mensajesAprob);
 			if (mensajesRech) mensajesAcum += formatos.h2("Cambios de Status - RECHAZADOS") + formatos.ol(mensajesRech);
 			const mensajeGlobal = mensajesAcum;
+
 			// Fin
 			return mensajeGlobal;
 		},
@@ -297,7 +283,7 @@ module.exports = {
 			let mensajesAcum = "";
 			let mensajesCampo, mensaje, color;
 
-			// Obtiene información clave de los registros
+			// De cada registro, obtiene los campos clave o los elabora
 			for (let regEdic of regsEdic) {
 				// Variables
 				const aprobado = !regEdic.motivo_id;
@@ -317,10 +303,10 @@ module.exports = {
 				});
 			}
 
-			// Ordena los registros según el criterio en que se mostrará en el mail
-			resultados = ordenar(resultados);
+			// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
+			resultados = ordenarEdic(resultados);
 
-			// Arma el mensaje
+			// Crea el mensaje en formato texto para cada entidad, y sus campos
 			resultados.forEach((n, i) => {
 				// Acciones por nueva entidad/entidad_id
 				if (
@@ -369,7 +355,7 @@ module.exports = {
 					mensajesAcum += formatos.ul(mensajesCampo);
 			});
 
-			// Detalles finales
+			// Crea el mensajeGlobal
 			const titulo = formatos.h2("Ediciones");
 			mensajesAcum = formatos.ol(mensajesAcum);
 			const mensajeGlobal = titulo + mensajesAcum;
@@ -377,33 +363,32 @@ module.exports = {
 			// Fin
 			return mensajeGlobal;
 		},
-		eliminaRegsStatus: (regs) => {
+		eliminaRegsStatusComunica: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
-			const condicStatus = {
-				// Condición 1: creado a creado-aprobado (productos)
-				productos: {statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id},
-				// Condición 2: creado a aprobado (rclvs y links)
-				rclvs: {statusOriginal_id: creado_id, statusFinal_id: aprobado_id},
-			};
-			condicStatus.links = condicStatus.rclvs;
+			const condiciones = [
+				{statusOriginal_id: creado_id, statusFinal_id: creadoAprob_id},
+				{statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id},
+				{statusOriginal_id: creado_id, statusFinal_id: aprobado_id},
+			];
 
-			// Elimina los registros
+			// Elimina los registros o completa el campo 'comunicadoEn'
 			for (let reg of regs) {
-				// Condiciones
+				// Variables
 				const familias = comp.obtieneDesdeEntidad.familias(reg.entidad);
-				const condicStatusOrig = reg.statusOriginal_id == condicStatus[familias].statusOriginal_id;
-				const condicStatusFinal = reg.statusFinal_id == condicStatus[familias].statusFinal_id;
+				const condicOK = condiciones.some(
+					(n) => n.statusOriginal_id == reg.statusOriginal_id && n.statusFinal_id == reg.statusFinal_id
+				);
 
 				// Elimina los registros
-				if (condicStatusOrig && condicStatusFinal) BD_genericas.eliminaPorId(reg.tabla, reg.id);
-				else BD_genericas.actualizaPorId(reg.tabla, reg.id, {comunicadoEn});
+				if (condicOK) BD_genericas.eliminaPorId("histStatus", reg.id);
+				else BD_genericas.actualizaPorId("histStatus", reg.id, {comunicadoEn});
 			}
 
 			// Fin
 			return;
 		},
-		eliminaRegsEdic: (regs) => {
+		eliminaRegsEdicComunica: (regs) => {
 			// Variables
 			const comunicadoEn = new Date();
 
@@ -415,10 +400,6 @@ module.exports = {
 			}
 
 			// Fin
-			return;
-		},
-		actualizaHoraRevisorEnElUsuario: (usuario, hoyUsuario) => {
-			BD_genericas.actualizaPorId("usuarios", usuario.id, {fechaRevisores: hoyUsuario});
 			return;
 		},
 	},
@@ -490,7 +471,40 @@ module.exports = {
 let normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
 // Funciones
-let ordenar = (resultados) => {
+let ordenarStatus = (resultados) => {
+	return resultados.sort((a, b) =>
+		false
+			? false
+			: // Familia
+			a.familia < b.familia
+			? -1
+			: a.familia > b.familia
+			? 1
+			: // Entidad
+			a.entidadNombre < b.entidadNombre
+			? -1
+			: a.entidadNombre > b.entidadNombre
+			? 1
+			: // Nombre del Producto o RCLV, o url del Link
+			a.nombreOrden < b.nombreOrden
+			? -1
+			: a.nombreOrden > b.nombreOrden
+			? 1
+			: // Para nombres iguales, separa por id
+			a.entidad_id < b.entidad_id
+			? -1
+			: a.entidad_id > b.entidad_id
+			? 1
+			: // De status menor a mayor
+			a.statusFinal.id < b.statusFinal.id
+			? -1
+			: a.statusFinal.id > b.statusFinal.id
+			? 1
+			: 0
+	);
+};
+
+let ordenarEdic = (resultados) => {
 	return resultados.sort((a, b) =>
 		false
 			? false
