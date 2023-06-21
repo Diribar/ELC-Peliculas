@@ -255,7 +255,7 @@ module.exports = {
 				entidad,
 				entidad_id: original.id,
 				sugeridoPor_id: original.creadoPor_id,
-				sugeridoEn: original.creadoEn,
+				statusSugeridoEn: original.creadoEn,
 				revisadoPor_id: revID,
 				revisadoEn: ahora,
 				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
@@ -396,6 +396,9 @@ module.exports = {
 			// Variables
 			const entidadesProd = variables.entidades.prods;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+			const statusSugeridoPor_id = usAutom_id;
+			const statusSugeridoEn = comp.fechaHora.ahora();
+			const cambioStatus = {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id: creadoAprob_id};
 
 			// Rutina por entidadProd
 			for (let entidadProd of entidadesProd) {
@@ -414,15 +417,18 @@ module.exports = {
 					const errores = await validaPR.consolidado({datos: prodVinculado});
 
 					// Si tiene errores, se le cambia el status a 'creadoAprob'
-					if (errores.hay) objeto.statusRegistro_id = creadoAprob_id;
+					if (errores.hay) objeto = {...objeto, ...cambioStatus};
 
 					// Actualiza el registro del producto
 					BD_genericas.actualizaPorId(entidadProd, prodVinculado.id, objeto);
+
+					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
+					if (entidadProd == "colecciones" && errores.hay) {
+						const condiciones = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
+						BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, cambioStatus);
+					}
 				}
 			}
-			// Sus productos asociados:
-			// Dejan de estar vinculados
-			// Si no pasan el control de error y estaban aprobados, pasan al status creadoAprob
 		},
 	},
 
@@ -560,7 +566,7 @@ module.exports = {
 				datosEdic = {
 					...datosEdic,
 					sugeridoPor_id: edicion.editadoPor_id,
-					sugeridoEn: edicion.editadoEn,
+					statusSugeridoEn: edicion.editadoEn,
 					revisadoPor_id: revID,
 					revisadoEn: ahora,
 				};
