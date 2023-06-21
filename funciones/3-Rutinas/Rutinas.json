@@ -1,1 +1,28 @@
-{"Subtitulo1":"------------ TEMAS DE FECHA ------------------","FechaUTC":"Mié. 21/jun","HoraUTC":"0:00","FechaHoraUTC":"SI","Subtitulo2":"------------TEMAS DE SEMANA ------------------","FechaSemUTC":"Dom. 18/jun","HoraSemUTC":"0:00","semanaUTC":24,"SemanaUTC":"SI","Subtitulo3":"-------------- RUTINAS -----------------------","RutinasHorarias":["LinksEnProd","MailDeFeedback","ProdsEnRCLV"],"RutinasDiarias":{"ImagenDerecha":"SI","PaisesConMasProductos":"SI"},"RutinasSemanales":{"AprobadoConAvatarLink":"SI","BorraImagenesSinRegistro":"SI","LinksVencidos":"SI","RclvsSinEpocaPSTyConAno":"SI"},"Subtitulo4":"------------ IMAGEN DERECHA -------------------","ImagenesDerecha":{"19-jun-23":{"titulo":"ELC - Películas"},"20-jun-23":{"titulo":"ELC - Películas"},"21-jun-23":{"titulo":"ELC - Películas"},"22-jun-23":{"titulo":"Tomás Moro","entidad":"personajes","id":102},"23-jun-23":{"titulo":"ELC - Películas"}}}
+{
+	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
+	"FechaUTC": "Mié. 21/jun",
+	"HoraUTC": "0:00",
+	"FechaHoraUTC": "SI",
+	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
+	"FechaSemUTC": "Dom. 18/jun",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 24,
+	"SemanaUTC": "SI",
+	"Subtitulo3": "-------------- RUTINAS -----------------------",
+	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
+	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
+	"RutinasSemanales": {
+		"AprobadoConAvatarLink": "SI",
+		"BorraImagenesSinRegistro": "SI",
+		"LinksVencidos": "SI",
+		"RclvsSinEpocaPSTyConAno": "SI"
+	},
+	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
+	"ImagenesDerecha": {
+		"19-jun-23": {"titulo": "ELC - Películas"},
+		"20-jun-23": {"titulo": "ELC - Películas"},
+		"21-jun-23": {"titulo": "ELC - Películas"},
+		"22-jun-23": {"titulo": "Tomás Moro", "entidad": "personajes", "id": 102},
+		"23-jun-23": {"titulo": "ELC - Películas"}
+	}
+}
