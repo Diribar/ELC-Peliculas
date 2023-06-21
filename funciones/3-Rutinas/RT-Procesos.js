@@ -146,11 +146,10 @@ module.exports = {
 		// Borra los avatar de Revisar - incluye: EDICIONES y Prods/RCLVs creados
 		carpeta = "2-" + familias + "/Revisar";
 		avatars = [];
-		consolidado = [];
 
 		// Revisa los avatars que están en las ediciones
-		avatars.push(await BD_especificas.nombresDeAvatarEnBD(entidadEdic));
-		eliminaLasImagenes(consolidado, carpeta);
+		avatars=await BD_especificas.nombresDeAvatarEnBD(entidadEdic)
+		eliminaLasImagenes(avatars, carpeta);
 
 		// Borra los avatar de Final - incluye: Prods/RCLVs > creados
 		carpeta = "2-" + familias + "/Final";
