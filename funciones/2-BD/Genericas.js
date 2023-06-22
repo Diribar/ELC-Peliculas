@@ -4,7 +4,7 @@
 module.exports = {
 	// Obtiene todos
 	obtieneTodos: (entidad, orden) => {
-		return db[entidad].findAll({order: [[orden, "ASC"]]}).then((n) => n.map((m) => m.toJSON()));
+		return db[entidad].findAll({order: [[orden ? orden : "id", "ASC"]]}).then((n) => n.map((m) => m.toJSON()));
 	},
 	obtieneTodosConInclude: (entidad, include) => {
 		return db[entidad].findAll({include}).then((n) => n.map((m) => m.toJSON()));
