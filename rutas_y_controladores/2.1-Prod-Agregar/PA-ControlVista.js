@@ -383,7 +383,6 @@ module.exports = {
 		// Copia session y cookie
 		req.session.IM = IM;
 		res.cookie("IM", IM, {maxAge: unDia});
-		console.log(383, req.cookies.datosOriginales);
 
 		// 2. Si hay errores de validación, redirecciona al Form
 		let errores = await valida.IM(IM);
@@ -391,8 +390,6 @@ module.exports = {
 
 		// Guarda en 'cookie' de datosOriginales
 		res.cookie("datosOriginales", IM, {maxAge: unDia});
-		console.log(391, IM, req.cookies.IM);
-		return res.send(req.cookies.datosOriginales);
 
 		// Guarda en 'session' y 'cookie' del siguiente paso
 		let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
@@ -436,14 +433,8 @@ module.exports = {
 		let errores = valida.FA(FA);
 		if (errores.hay) return res.redirect(req.originalUrl);
 
-		// Actualiza Session y Cookies de datosOriginales
-		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
-		datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, sinopsis};
-		// res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
-
 		// Actualiza Session y Cookies de datosDuros
 		const datosDuros = {...procesos.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
-		console.log(427, datosDuros);
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
