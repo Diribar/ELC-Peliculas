@@ -51,22 +51,19 @@ module.exports = {
 		const tema = "prodAgregar";
 		const codigo = "desambiguar";
 
-		// Obtiene el Data Entry de session y cookies
-		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
-		const palabrasClave = desambiguar ? desambiguar.palabrasClave : "";
-
 		// Si no existe el cookie, redirecciona
-		if (!palabrasClave) return res.redirect("palabras-clave");
+		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
+		if (!desambiguar) return res.redirect("palabras-clave");
 
 		// Se asegura de que exista el session
-		if (!req.session.desambiguar) req.session.desambiguar = req.cookies.desambiguar
+		if (!req.session.desambiguar) req.session.desambiguar = desambiguar;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
-			palabrasClave,
+			palabrasClave: desambiguar.palabrasClave,
 			omitirImagenDerecha: true,
 			cartelGenerico: true,
 		});
