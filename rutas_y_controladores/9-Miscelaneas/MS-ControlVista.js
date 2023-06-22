@@ -63,14 +63,11 @@ module.exports = {
 
 		// Lectura
 		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
-			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length)))
+			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length + m.capitulos.length)))
 			.then(() => {
 				const campos = Object.keys(resultado1).sort((a, b) => resultado1[b] - resultado1[a]);
 				campos.map((n) => (resultado2[n] = resultado1[n]));
 			});
-
-		// peliculas: [...m.peliculas, ...m.colecciones].map((o) => o.nombreCastellano),
-		// .then((n) => n.sort((a, b) => b.cantidad - a.cantidad));
 
 		// Fin
 		return res.send(resultado2);
