@@ -251,10 +251,10 @@ module.exports = {
 		// Rutina
 		for (let entidad of entidades) {
 			// Variables
-			datos = {familia: "producto", entidad, campos};
+			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			let condiciones = BD_especificas.quickSearchCondics(req.query.palabras, campos, userID);
+			let condiciones = BD_especificas.quickSearchCondics(palabrasClave, campos, userID);
 			
 			// Agrega la condición de que no provenga de 'TMDB'
 			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});

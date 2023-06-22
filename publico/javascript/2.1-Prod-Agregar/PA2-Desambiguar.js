@@ -6,60 +6,48 @@ window.addEventListener("load", async () => {
 
 	// Variables
 	let DOM = {
-		// DOM - Opciones
+		// Opciones
 		listado: document.querySelector("#listado"),
 		ingrManual: document.querySelector("#listado #ingrManual"),
 		prodsNuevos: document.querySelector("#listado #prodsNuevos"),
 		prodsYaEnBD: document.querySelector("#listado #prodsYaEnBD"),
 
-		// DOM - Cartel
-		fondo: document.querySelector("#tapar-el-fondo"),
+		// Cartel
 		cartel: document.querySelector("#cartel"),
-		cartelTitulo: document.querySelector("#cartel #titulo"),
-		cartelUl: document.querySelector("#cartel ul"),
-		cartelAlerta: document.querySelector("#cartel #alerta"),
-		cartelTrabajando: document.querySelector("#cartel #trabajando"),
+		tituloCartel: document.querySelector("#cartel #titulo"),
+		progreso: document.querySelector("#cartel #progreso"),
 	};
 	const localhost = await fetch("/api/localhost").then((n) => (n ? n.json() : ""));
-	let lis_fa_circle;
-	return
-
-	// Cartel - configuración
-	cartel_Configuracion(DOM);
+	let productos = desambiguar.productos;
+	let ocultarCartel;
 
 	// Acciones si no hay productos en 'session'
-	let productos = desambiguar.productos;
 	if (!productos) {
+		// Variables
+		const rutasAPI = [
+			"busca-los-productos",
+			"reemplaza-las-peliculas-por-su-coleccion",
+			"pule-la-informacion",
+			"obtiene-los-hallazgos-de-origen-IM-y-FA",
+		];
+		const cantAPIs = rutasAPI.length + 1;
+		let api = 0;
+		ocultarCartel = true;
+
 		// Muestra el cartel
-		let titulo = "En proceso...";
-		const contenidos = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
-		lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
+		DOM.cartel.classList.remove("ocultar");
+		DOM.cartel.classList.remove("disminuye");
+		DOM.cartel.classList.add("aumenta");
 
-		// 1. Busca los productos y los guarda en session
-		lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
-		await fetch("api/desambiguar-busca-los-productos/");
-		lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
+		// Ejecuta las APIs iniciales
+		for (let rutaAPI of rutasAPI) {
+			await fetch("api/desambiguar-" + rutaAPI + "/");
+			api++;
+			DOM.progreso.style.width = parseInt((api / cantAPIs) * 100) + "%";
+		}
 
-		// 2. Reemplaza las películas por su colección
-		lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-		await fetch("api/desambiguar-reemplaza-las-peliculas-por-su-coleccion/");
-		lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
-
-		// 3. Pule la información
-		lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
-		productos = await fetch("api/desambiguar-pule-la-informacion/").then((n) => n.json());
-		lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
-
-		// 4. Obtiene los hallazgos de origen IM y FA
-		lis_fa_circle[3].classList.replace("fa-regular", "fa-solid");
-		productos = await fetch("api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA/").then((n) => n.json());
-		lis_fa_circle[3].classList.replace("fa-circle", "fa-circle-check");
-
-		// 5. Combina los hallazgos 'yaEnBD'
-		lis_fa_circle[4].classList.replace("fa-regular", "fa-solid");
+		// Combina los hallazgos 'yaEnBD'
 		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
-		lis_fa_circle[4].classList.replace("fa-circle", "fa-circle-check");
-
 	}
 
 	// Agrega los productos
@@ -137,12 +125,8 @@ window.addEventListener("load", async () => {
 	document.querySelector("#listado li button").focus();
 
 	// Desaparece el cartel
-	if (lis_fa_circle) {
-		// Actualiza los íconos
-		lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
-
+	if (ocultarCartel) {
 		// Oculta el cartel
-		DOM.fondo.classList.add("ocultar");
 		DOM.cartel.classList.remove("aumenta");
 		DOM.cartel.classList.add("disminuye");
 	}
@@ -154,52 +138,6 @@ window.addEventListener("load", async () => {
 	accionesLuegoDeElegirProdNuevo(DOM);
 });
 // Funciones
-let cartel_Configuracion = (DOM) => {
-	// Quita los dots del 'ul'
-	DOM.cartelUl.style.listStyleType = "none";
-
-	// Cambia el color de fondo
-	DOM.cartel.classList.add("trabajando");
-
-	// Cambia el ícono de encabezado
-	DOM.cartelAlerta.classList.add("ocultar");
-	DOM.cartelTrabajando.classList.remove("ocultar");
-
-	// Fin
-	return;
-};
-let cartel_Armado = ({DOM, titulo, contenidos}) => {
-	// Titulo
-	DOM.cartelTitulo.innerHTML = titulo;
-	DOM.cartelUl.innerHTML = "";
-
-	// Contenido
-	for (let contenido of contenidos) {
-		// Crea el 'li'
-		let li = document.createElement("li");
-
-		// Crea el círculo y lo agrega
-		let i = document.createElement("i");
-		i.classList.add("fa-regular", "fa-circle");
-		li.appendChild(i);
-
-		// Agrega el texto
-		li.innerHTML += contenido;
-		DOM.cartelUl.appendChild(li);
-	}
-
-	// DOM - íconos
-	const lis_fa_circle = document.querySelectorAll("#cartel li i.fa-circle");
-
-	// Hace visible el cartel
-	DOM.fondo.classList.remove("ocultar");
-	DOM.cartel.classList.remove("ocultar");
-	DOM.cartel.classList.remove("disminuye");
-	DOM.cartel.classList.add("aumenta");
-
-	// Fin
-	return lis_fa_circle;
-};
 let accionesLuegoDeElegirProdNuevo = (DOM) => {
 	// Variables
 	const forms = document.querySelectorAll("#prodsNuevos form");
@@ -209,7 +147,7 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 		form.addEventListener("submit", async (e) => {
 			// Frena el POST
 			e.preventDefault();
-			
+
 			// Pasa/no pasa
 			if (yaEligio) return;
 			else yaEligio = true;

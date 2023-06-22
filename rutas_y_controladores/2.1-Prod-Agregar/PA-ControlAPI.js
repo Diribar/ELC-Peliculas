@@ -80,7 +80,7 @@ module.exports = {
 	desambForm4: async (req, res) => {
 		// Obtiene los hallazgos de origen IM y FA - Variables
 		const userID = req.session.usuario ? req.session.usuario.id : 0;
-		const palabrasClave = desambiguar.palabrasClave;
+		const palabrasClave = req.session.desambiguar.palabrasClave;
 
 		// Obtiene los productos afines, ingresados por fuera de TMDB
 		const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
@@ -97,7 +97,7 @@ module.exports = {
 		const prodsIMFA = req.session.desambiguar.prodsIMFA;
 
 		// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
-		let prodsYaEnBD = {...yaEnBD, ...prodsIMFA};
+		let prodsYaEnBD = [...yaEnBD, ...prodsIMFA];
 		prodsYaEnBD.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
 
 		// Conserva la información en session para no tener que procesarla de nuevo
