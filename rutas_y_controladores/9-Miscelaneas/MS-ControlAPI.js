@@ -17,7 +17,6 @@ module.exports = {
 		const camposPers = ["nombre", "apodo"];
 		let resultados = [];
 		let datos = [];
-		let condiciones;
 
 		// Armado de la variable 'datos'
 		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos: camposProds});
@@ -27,16 +26,18 @@ module.exports = {
 		// Rutina
 		for (let dato of datos) {
 			// Obtiene las condiciones
-			condiciones = BD_especificas.quickSearchCondics(req.query.palabras, dato, userID);
+			const condiciones = BD_especificas.quickSearchCondics(req.query.palabras, dato.campos, userID);
 
 			// Obtiene los registros que cumplen las condiciones
 			let resultado = await BD_especificas.quickSearchRegistros(condiciones, dato);
 			if (resultado.length) resultados.push(...resultado);
 		}
+
 		// Ordena los resultados, 1a prioridad: familia, 2a prioridad: nombre
 		resultados.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 		resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
-		// Enviar la info al FE
+
+		// Envia la info al FE
 		return res.json(resultados);
 	},
 	horarioInicial: async (req, res) => {
