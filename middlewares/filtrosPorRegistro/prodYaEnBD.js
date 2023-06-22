@@ -12,7 +12,6 @@ module.exports = async (req, res, next) => {
 		? req.cookies.datosOriginales
 		: "";
 	let informacion;
-	console.log(15,datos);
 
 	// Controles
 	if (!datos)
