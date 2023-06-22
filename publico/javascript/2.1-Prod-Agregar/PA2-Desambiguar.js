@@ -48,6 +48,7 @@ window.addEventListener("load", async () => {
 
 		// Combina los hallazgos 'yaEnBD'
 		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
+		DOM.progreso.style.width = "100%";
 	}
 
 	// Agrega los productos
@@ -80,7 +81,7 @@ window.addEventListener("load", async () => {
 			} else li.children[0][4].children[1].children[3].innerHTML = prod.anoEstreno;
 			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
 
-			// Quitar la clase 'ocultar'
+			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
 			// Agrega el form
 			DOM.listado.insertBefore(li, DOM.ingrManual);
@@ -93,6 +94,7 @@ window.addEventListener("load", async () => {
 		for (let prod of prodsYaEnBD) {
 			// Crea el elemento 'li'
 			let li = DOM.prodsYaEnBD.cloneNode(true);
+
 			// Información a enviar al BE
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
@@ -124,18 +126,18 @@ window.addEventListener("load", async () => {
 	// Hace foco en el primer producto
 	document.querySelector("#listado li button").focus();
 
+	// Desplazamiento original
+	desplazamHoriz();
+
+	// Comienzo de Back-end - Acciones a partir del click en una opción
+	accionesLuegoDeElegirProdNuevo(DOM);
+
 	// Desaparece el cartel
 	if (ocultarCartel) {
 		// Oculta el cartel
 		DOM.cartel.classList.remove("aumenta");
 		DOM.cartel.classList.add("disminuye");
 	}
-
-	// Desplazamiento original
-	desplazamHoriz();
-
-	// Comienzo de Back-end - Acciones a partir del click en una opción
-	accionesLuegoDeElegirProdNuevo(DOM);
 });
 // Funciones
 let accionesLuegoDeElegirProdNuevo = (DOM) => {

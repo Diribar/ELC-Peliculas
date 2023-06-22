@@ -78,6 +78,10 @@ module.exports = {
 					nombre: m[dato.campos[0]],
 					entidad: dato.entidad,
 					familia: dato.familia,
+					// Específicos para desambiguar
+					avatar: m.avatar,
+					nombreOriginal:m.nombreOriginal,
+					
 				}))
 			);
 	},
