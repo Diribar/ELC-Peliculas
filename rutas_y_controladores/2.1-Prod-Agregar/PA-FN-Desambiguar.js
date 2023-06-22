@@ -248,14 +248,14 @@ module.exports = {
 		const campos = ["nombreCastellano", "nombreOriginal"];
 		let resultados = [];
 
-		// Rutina
+		// Rutina por entidad
 		for (let entidad of entidades) {
 			// Variables
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
 			let condiciones = BD_especificas.quickSearchCondics(palabrasClave, campos, userID);
-			
+
 			// Agrega la condición de que no provenga de 'TMDB'
 			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
 
@@ -263,6 +263,18 @@ module.exports = {
 			const resultadoPorEntidad = await BD_especificas.quickSearchRegistros(condiciones, datos);
 			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
 		}
+
+		// Rutina por producto
+		if (resultados.length)
+			resultados.forEach((resultado, i) => {
+				resultados[i] = {
+					...resultado,
+					yaEnBD_id: resultado.id,
+					anoEstreno: resultado.ano,
+					nombreCastellano: resultado.nombre,
+					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
+				};
+			});
 
 		// Envia
 		return resultados;
