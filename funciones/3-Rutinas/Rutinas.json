@@ -15,7 +15,8 @@
 		"AprobadoConAvatarLink": "SI",
 		"BorraImagenesSinRegistro": "SI",
 		"LinksVencidos": "SI",
-		"RclvsSinEpocaPSTyConAno": "SI"
+		"RCLV_idEnCapitulos":"SI",
+		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
