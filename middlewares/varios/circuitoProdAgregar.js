@@ -15,15 +15,18 @@ module.exports = (req, res, next) => {
 		{url: "datos-duros", codigo: "datosDuros"},
 		{url: "datos-adicionales", codigo: "datosAdics"},
 		{url: "confirma", codigo: "confirma"},
-		// {url: "terminaste", codigo: "terminaste", anterior: "palabras-clave"},
 	];
 
 	// Obtiene el código que corresponde al 'url'
-	const {codigo} = variables.find((n) => urlActual.startsWith(n.url));
+	const codigo = variables.find((n) => urlActual.startsWith(n.url)).codigo;
 
-	// Si no está la session/cookie actual, redirige a la url anterior
-	const sessionCookie = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
-	if (!sessionCookie && codigo != "palabrasClave" && codigo != "desambiguar" && codigo != "IM") {
+	// Averigua si está la session/cookie actual
+	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
+	const rutasSinSessionPrevio = ["palabrasClave", "IM"];
+	const redirigir = !datos && !rutasSinSessionPrevio.includes(codigo);
+
+	// Si no está, redirige a la url anterior
+	if (redirigir) {
 		const indice = variables.findIndex((n) => n.url == urlActual);
 		if (codigo != "datosDuros") return res.redirect(variables[indice - 1].url);
 		else {

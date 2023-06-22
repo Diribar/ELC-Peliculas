@@ -34,8 +34,8 @@ router.get("/api/desambiguar-busca-los-productos", API.desambForm1);
 router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm2);
 router.get("/api/desambiguar-pule-la-informacion", API.desambForm3);
 // Desambiguar - Guardar
-router.get("/api/desambiguar-guardar1", API.desambGuardar1);
-router.get("/api/desambiguar-guardar2", API.desambGuardar2);
+router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar1);
+router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar2);
 
 // Varias
 router.get("/api/PC-cant-prods", API.cantProductos);

@@ -77,16 +77,19 @@ module.exports = {
 		return res.json(productos);
 	},
 	desambGuardar1: async (req, res) => {
+		// Actualiza Datos Originales - Variables
 		const datos = JSON.parse(req.query.datos);
+
 		// Obtiene más información del producto
 		const infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
+
 		// Guarda los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// Fin
 		return res.json();
 	},
 	desambGuardar2: async (req, res) => {
-		// Variables
+		// Averigua si la info tiene errores - Variables
 		let datosDuros = req.cookies.datosOriginales;
 
 		// Para datosDuros, da de alta el avatarUrl y de baja el avatar
@@ -95,8 +98,8 @@ module.exports = {
 
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-		let camposDD_nombre = camposDD.map((n) => n.nombre);
-		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+		let camposNombre = camposDD.map((n) => n.nombre);
+		let errores = await valida.datosDuros(camposNombre, datosDuros);
 
 		// Genera la session y cookie para DatosDuros
 		req.session.datosDuros = datosDuros;
