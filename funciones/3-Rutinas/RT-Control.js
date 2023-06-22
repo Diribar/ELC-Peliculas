@@ -51,7 +51,7 @@ module.exports = {
 		// Rutina por peliculas y capitulos
 		for (let entidad of ["peliculas", "capitulos"]) {
 			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+			let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 			// Ejecuta la función linksEnProd
 			for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
@@ -59,7 +59,7 @@ module.exports = {
 		await Promise.all(esperar);
 
 		// Rutina por colecciones
-		let IDs = await BD_genericas.obtieneTodos("colecciones", "id").then((n) => n.map((m) => m.id));
+		let IDs = await BD_genericas.obtieneTodos("colecciones").then((n) => n.map((m) => m.id));
 		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
@@ -142,7 +142,7 @@ module.exports = {
 		// Rutina por entidad
 		for (let entidad of entidadesRCLV) {
 			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+			let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 			// Rutina por ID: ejecuta la función prodsEnRCLV
 			for (let id of IDs) procsCRUD.revisiones.prodsEnRCLV({entidad, id});
@@ -378,7 +378,7 @@ module.exports = {
 		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
 		return;
 	},
-	RclvsSinEpocaPSTyConAno: async () => {
+	RCLVsSinEpocaPSTyConAno: async () => {
 		// Variables
 		const entidades = ["personajes", "hechos"];
 		let verificador = [];
