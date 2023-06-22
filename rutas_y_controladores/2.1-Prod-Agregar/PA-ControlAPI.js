@@ -75,7 +75,7 @@ module.exports = {
 		req.session.desambiguar.productos = productos;
 
 		// Fin
-		return res.json(productos);
+		return res.json();
 	},
 	desambForm4: async (req, res) => {
 		// Obtiene los hallazgos de origen IM y FA - Variables
