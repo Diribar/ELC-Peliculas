@@ -37,7 +37,7 @@ module.exports = {
 
 		// Si hay errores de validación, redirecciona
 		const errores = valida.palabrasClave(palabrasClave);
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		if (errores.hay) return res.redirect(req.originalUrl);
 
 		// Guarda el Data Entry en session y cookie de desambiguar
 		req.session.desambiguar = {palabrasClave};
@@ -139,7 +139,7 @@ module.exports = {
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		if (errores.hay) return res.redirect(req.originalUrl);
 
 		// Guarda session y cookie de Datos Adicionales
 		const datosAdics = {...datosDuros};
@@ -208,7 +208,7 @@ module.exports = {
 		// Si hay errores de validación, redirecciona
 		let camposDA = variables.camposDA.map((m) => m.nombre);
 		let errores = await valida.datosAdics(camposDA, datosAdics);
-		if (errores.hay) return res.redirect(req.path.slice(1));
+		if (errores.hay) return res.redirect(req.originalUrl);
 
 		// Guarda el data entry en session y cookie para el siguiente paso
 		req.session.confirma = req.session.datosAdics;
