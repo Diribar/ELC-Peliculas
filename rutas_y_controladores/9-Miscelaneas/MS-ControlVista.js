@@ -57,25 +57,23 @@ module.exports = {
 		// Variables
 		const rclv = req.path.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
-		const include = [...variables.entidades.prods, "prods_ediciones"];
-		let resultado1 = {};
+		const includes = [...variables.entidades.prods, "prods_ediciones"];
+		let rclvs = {};
 		let resultado2 = {};
 
 		// Lectura
-		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
+		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, includes)
 			.then((n) =>
-				n.map(
-					(m) =>
-						(resultado1[m.nombre] =
-							m.peliculas.length + m.colecciones.length + m.capitulos.length + m.prods_ediciones.length)
-				)
+				n.map((m) => {
+					rclvs[m.nombre] = 0;
+					for (let entidad of includes) rclvs[m.nombre] += m[entidad].length;
+				})
 			)
 			.then(() => {
-				const metodos = Object.keys(resultado1).sort((a, b) =>
-					resultado1[b] != resultado1[a] ? resultado1[b] - resultado1[a] : a < b ? -1 : 1
-				);
-				// Ordena los métodos dentro de un objeto nuevo
-				metodos.map((n) => (resultado2[n] = resultado1[n]));
+				// Ordena los métodos
+				const metodos = Object.keys(rclvs).sort((a, b) => (rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1));
+				// Crea un objeto nuevo, con los métodos ordenados
+				metodos.map((n) => (resultado2[n] = rclvs[n]));
 			});
 
 		// Fin
