@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 	if (!productos) {
 		// Muestra el cartel
 		let titulo = "En proceso...";
-		let contenidos = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
+		const contenidos = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
 		lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
 
 		// Busca los productos y los guarda en session
@@ -156,7 +156,7 @@ window.addEventListener("load", async () => {
 
 			// Muestra el cartel
 			let titulo = "Estamos procesando la información...";
-			let contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
+			const contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
 			cartel_Armado({DOM, titulo, contenidos});
 
 			// 1. Obtiene más información del producto
