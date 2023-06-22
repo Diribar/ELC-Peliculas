@@ -65,10 +65,26 @@ module.exports = {
 	},
 	desambForm3: async (req, res) => {
 		// Pule la información - Variables
+		const palabrasClave = desambiguar.palabrasClave;
 		let productos = req.session.desambiguar.productos;
 
 		// Organiza la información
 		productos = await buscar_x_PC.organizaLaInformacion(productos);
+
+		// Conserva la información en session para no tener que procesarla de nuevo
+		req.session.desambiguar.productos = productos;
+
+		// Fin
+		return res.json(productos);
+	},
+	desambForm4: async (req, res) => {
+		// Pule la información - Variables
+		const palabrasClave = desambiguar.palabrasClave;
+		let productos = req.session.desambiguar.productos;
+
+		// Obtiene los productos afines, ingresados por fuera de TMDB
+		const objeto = {palabrasClave, prodsYaEnBD: productos.prodsYaEnBD};
+		productos.prodsYaEnBD= await procesos.prodsYaEnBD(objeto);		
 
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar.productos = productos;
