@@ -398,7 +398,6 @@ module.exports = {
 		return res.redirect(req.baseUrl + sigPaso.url);
 	},
 	copiarFA_Form: async (req, res) => {
-		console.log(391, req.method, "FA", {datosOriginales: req.cookies.datosOriginales});
 		// Variables
 		const tema = "prodAgregar";
 		const codigo = "FA";
