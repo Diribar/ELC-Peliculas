@@ -99,7 +99,8 @@ module.exports = {
 		const datos = JSON.parse(req.query.datos);
 
 		// Obtiene más información del producto
-		const infoTMDBparaDD = await procesos["DS_" + datos.TMDB_entidad](datos);
+		const TMDB_entidad = datos.TMDB_entidad;
+		const infoTMDBparaDD = await procesos[TMDB_entidad].obtieneInfo(datos);
 
 		// Guarda los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
@@ -192,7 +193,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	obtieneFA_id: (req, res) => {
-		let FA_id = procesos.obtieneFA_id(req.query.direccion);
+		let FA_id = procesos.FA.obtieneFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 	obtieneELC_id: async (req, res) => {

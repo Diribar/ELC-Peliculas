@@ -369,7 +369,7 @@ let agregaCapitulosCollection = async (coleccion) => {
 		// Averigua si algún capítulo es nuevo
 		if (!coleccion.capitulosID_ELC.includes(String(capituloID_TMDB))) {
 			// Si es nuevo, lo agrega
-			await procesos.agregaUnCap_Colec(coleccion, capituloID_TMDB, indice);
+			await procesos.confirma.agregaUnCap_Colec(coleccion, capituloID_TMDB, indice);
 		}
 	});
 	// Fin
@@ -392,7 +392,7 @@ let agregaCapitulosTV = async (coleccion) => {
 				datosTemp = {...datosTemp, ...(await APIsTMDB.credits(numTemp, coleccion.TMDB_id))};
 				// Procesa la información
 				let episodio = datosTemp.episodes.find((n) => n.id == capituloID_TMDB);
-				let datosCap = procesos.infoTMDB_capsTV(coleccion, datosTemp, episodio);
+				let datosCap = procesos.confirma.datosCap(coleccion, datosTemp, episodio);
 				// Completar datos
 				datosCap = {
 					...datosCap,
