@@ -29,10 +29,10 @@ router.get("/api/valida/datos-duros", API.validaDatosDuros);
 router.get("/api/valida/datos-adicionales", API.validaDatosAdics);
 router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
 // Desambiguar - Form
-router.get("/api/desambiguar-form0", API.desambForm0);
-router.get("/api/desambiguar-form1", API.desambForm1);
-router.get("/api/desambiguar-form2", API.desambForm2);
-router.get("/api/desambiguar-form3", API.desambForm3);
+router.get("/api/desambiguar-busca-valores-session", API.desambForm0);
+router.get("/api/desambiguar-busca-los-productos", API.desambForm1);
+router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm2);
+router.get("/api/desambiguar-pule-la-informacion", API.desambForm3);
 // Desambiguar - Guardar
 router.get("/api/desambiguar-guardar1", API.desambGuardar1);
 router.get("/api/desambiguar-guardar2", API.desambGuardar2);
