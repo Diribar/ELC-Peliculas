@@ -67,7 +67,6 @@ module.exports = {
 			titulo: "Agregar - Desambiguar",
 			palabrasClave: desambiguar.palabrasClave,
 			omitirImagenDerecha: true,
-			cartelGenerico: true,
 		});
 	},
 	datosDuros:{

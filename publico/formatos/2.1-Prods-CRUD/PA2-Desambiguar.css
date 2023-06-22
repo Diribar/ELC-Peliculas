@@ -1,13 +1,20 @@
 /* Aspectos generales */
 #dataEntry {display: flex; flex-direction: column;}
-#dataEntry #cuadroDeResultados {width: 86vw; position: relative; margin-top: 10px;}
-#dataEntry #cuadroDeResultados {background: var(--celeste-claro); border-radius: 10px;}
-#dataEntry #tituloSecundario ul li {max-width: 350px;}
 
-/* Partes particulares */
-#dataEntry #encabezado {display: flex; flex-direction: column;}
+/* Encabezado */
+#dataEntry #encabezado {display: flex; flex-direction: column; margin-bottom: 10px}
 #dataEntry #encabezado #tituloSecundario h2 {margin-bottom: 5px;}
 #dataEntry #encabezado #tituloSecundario .ayudaMostrar {max-width: none;}
+#dataEntry #encabezado #tituloSecundario ul li {max-width: 350px;}
+
+/* Cuadro de resultados */
+#dataEntry #cuadroDeResultados {width: 86vw; position: relative;}
+#dataEntry #cuadroDeResultados {background: var(--celeste-claro); border-radius: 10px;}
 
 /* Flechas */
 #dataEntry .flechas {margin-top: 20px;}
+
+/* Barra de progreso */
+#cartel #contorno {border: solid 1px var(--amarillo-claro); height: 18px; width: 200px;}
+#cartel #contorno {border-radius: 10px; overflow: hidden;}
+#cartel #contorno #interior {background: var(--amarillo-claro); width: 50%; height: 100%;}

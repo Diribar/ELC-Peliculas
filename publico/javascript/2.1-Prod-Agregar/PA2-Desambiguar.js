@@ -22,6 +22,7 @@ window.addEventListener("load", async () => {
 	};
 	const localhost = await fetch("/api/localhost").then((n) => (n ? n.json() : ""));
 	let lis_fa_circle;
+	return
 
 	// Cartel - configuración
 	cartel_Configuracion(DOM);
