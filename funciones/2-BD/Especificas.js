@@ -19,41 +19,40 @@ module.exports = {
 		return db[datos.entidad].findOne({where: condicion}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondics: (palabras, dato, userID) => {
+	quickSearchCondics: (palabras, campos, userID) => {
+		// Variables
+		let todasLasPalabrasEnAlgunCampo = [];
+
 		// Convierte las palabras en un array
 		palabras = palabras.split(" ");
 
-		// Crea el objeto literal con los valores a buscar
-		let condicTodasLasPalabrasPorCampos = [];
-
 		// Almacena la condición en una matriz
-		for (let campo of dato.campos) {
+		for (let campo of campos) {
 			// Variables
-			let condicPalabras = [];
+			let palabrasEnElCampo = [];
 
-			// Rutina por palabra
+			// Dónde debe buscar cada palabra
 			for (let palabra of palabras) {
-				// Que encuentre la palabra en el campo
-				const condicPalabra = {
+				const palabraEnElCampo = {
 					[Op.or]: [
-						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // Comienzo de la palabra
-						{[campo]: {[Op.like]: palabra + "%"}}, // Comienzo del texto
+						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // En el comienzo de una palabra
+						{[campo]: {[Op.like]: palabra + "%"}}, // En el comienzo del texto
 					],
 				};
-				// Agrega la palabra al conjunto de palabras a buscar
-				condicPalabras.push(condicPalabra);
+				palabrasEnElCampo.push(palabraEnElCampo);
 			}
 
 			// Exige que cada palabra del conjunto esté presente
-			const condicTodasLasPalabras = {[Op.and]: condicPalabras};
+			const todasLasPalabrasEnElCampo = {[Op.and]: palabrasEnElCampo};
+
 			// Consolida el resultado
-			condicTodasLasPalabrasPorCampos.push(condicTodasLasPalabras);
+			todasLasPalabrasEnAlgunCampo.push(todasLasPalabrasEnElCampo);
 		}
 
 		// Se fija que la condición de palabras se cumpla en alguno de los campos
-		const condicPalabras = {[Op.or]: condicTodasLasPalabrasPorCampos};
+		const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
 
-		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
+		// Se fija que el registro esté en statusAprobado, o statusGrCreado por el usuario
 		const condicStatus = {
 			[Op.or]: [
 				{statusRegistro_id: aprobado_id},
@@ -73,15 +72,13 @@ module.exports = {
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n.map((m) => {
-					return {
-						id: m.id,
-						ano: m.anoEstreno,
-						nombre: m[dato.campos[0]],
-						entidad: dato.entidad,
-						familia: dato.familia,
-					};
-				})
+				n.map((m) => ({
+					id: m.id,
+					ano: m.anoEstreno,
+					nombre: m[dato.campos[0]],
+					entidad: dato.entidad,
+					familia: dato.familia,
+				}))
 			);
 	},
 

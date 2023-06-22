@@ -2,6 +2,7 @@
 // Definir variables
 const APIsTMDB = require("../../funciones/1-Procesos/APIsTMDB");
 const comp = require("../../funciones/1-Procesos/Compartidas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 
 module.exports = {
 	movie: {
@@ -241,8 +242,31 @@ module.exports = {
 			return datos;
 		},
 	},
-	prodsIMFA: (palabrasClave) => {},
-	ordenaProdsYaEnBD: (prodsYaEnBD) => {},
+	prodsIMFA: async ({palabrasClave, userID}) => {
+		// Variables
+		const entidades = ["peliculas", "colecciones"];
+		const campos = ["nombreCastellano", "nombreOriginal"];
+		let resultados = [];
+
+		// Rutina
+		for (let entidad of entidades) {
+			// Variables
+			datos = {familia: "producto", entidad, campos};
+
+			// Obtiene las condiciones de palabras y status
+			let condiciones = BD_especificas.quickSearchCondics(req.query.palabras, campos, userID);
+			
+			// Agrega la condición de que no provenga de 'TMDB'
+			condiciones[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
+
+			// Obtiene los registros que cumplen las condiciones
+			const resultadoPorEntidad = await BD_especificas.quickSearchRegistros(condiciones, datos);
+			if (resultadoPorEntidad.length) resultados.push(...resultadoPorEntidad);
+		}
+
+		// Envia
+		return resultados;
+	},
 };
 
 // Funciones auxiliares

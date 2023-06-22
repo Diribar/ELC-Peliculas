@@ -78,22 +78,33 @@ module.exports = {
 		return res.json(productos);
 	},
 	desambForm4: async (req, res) => {
-		// Pule la información - Variables
+		// Obtiene los hallazgos de origen IM y FA - Variables
+		const userID = req.session.usuario ? req.session.usuario.id : 0;
 		const palabrasClave = desambiguar.palabrasClave;
-		let productos = req.session.desambiguar.productos;
 
 		// Obtiene los productos afines, ingresados por fuera de TMDB
-		const prodsIMFA = await procsDesamb.prodsIMFA(palabrasClave);
-
-		// Une y ordena los prodsYaEnBD
-		const prodsYaEnBD = {...productos.prodsYaEnBD, ...prodsIMFA};
-		productos.prodsYaEnBD = procsDesamb.ordenaProdsYaEnBD(prodsYaEnBD);
+		const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, userID});
 
 		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar.productos = productos;
+		req.session.desambiguar.prodsIMFA = prodsIMFA;
 
 		// Fin
-		return res.json(productos);
+		return res.json();
+	},
+	desambForm5: async (req, res) => {
+		// Combina los hallazgos 'yaEnBD' - Variables
+		const yaEnBD = req.session.desambiguar.productos.prodsYaEnBD;
+		const prodsIMFA = req.session.desambiguar.prodsIMFA;
+
+		// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
+		let prodsYaEnBD = {...yaEnBD, ...prodsIMFA};
+		prodsYaEnBD.sort((a, b) => (a.anoEstreno > b.anoEstreno ? -1 : 1));
+
+		// Conserva la información en session para no tener que procesarla de nuevo
+		req.session.desambiguar.productos.prodsYaEnBD = prodsYaEnBD;
+
+		// Fin
+		return res.json(req.session.desambiguar.productos);
 	},
 	desambGuardar1: async (req, res) => {
 		// Actualiza Datos Originales - Variables
