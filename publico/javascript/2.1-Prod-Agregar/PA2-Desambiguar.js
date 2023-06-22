@@ -134,54 +134,11 @@ window.addEventListener("load", async () => {
 		DOM.cartel.classList.add("disminuye");
 	}
 
-	// Comienzo de Back-end
-	// Acciones a partir del click en una opción
-	let forms = document.querySelectorAll("#prodsNuevos form");
-	let errores, yaEligio;
-	for (let form of forms) {
-		form.addEventListener("submit", async (e) => {
-			// Frena el POST
-			e.preventDefault();
-			// Pasa/no pasa
-			if (yaEligio) return;
-			else yaEligio = true;
-
-			// Obtiene los datos
-			let datos = {
-				TMDB_entidad: e.target[0].value,
-				TMDB_id: e.target[1].value,
-				nombreOriginal: encodeURIComponent(e.target[2].value),
-				idiomaOriginal_id: e.target[3].value,
-			};
-
-			// Muestra el cartel
-			let titulo = "Estamos procesando la información...";
-			const contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
-			cartel_Armado({DOM, titulo, contenidos});
-
-			// 1. Obtiene más información del producto
-			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
-			await fetch("api/desambiguar-guardar1/?datos=" + JSON.stringify(datos)); // El 'await' es para esperar a que se grabe la cookie en la controladora
-			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
-
-			// 2. Revisa la información disponible, para determinar los próximos pasos
-			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			errores = await fetch("api/desambiguar-guardar2").then((n) => n.json());
-			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
-
-			// Desaparece el cartel
-			DOM.fondo.classList.add("ocultar");
-			DOM.cartel.classList.remove("aumenta");
-			DOM.cartel.classList.add("disminuye");
-
-			// Fin
-			if (errores.hay) location.href = "datos-duros";
-			else location.href = "datos-adicionales";
-		});
-	}
-
 	// Desplazamiento original
 	desplazamHoriz();
+
+	// Comienzo de Back-end - Acciones a partir del click en una opción
+	accionesLuegoDeElegirProdNuevo(DOM);
 });
 // Funciones
 let cartel_Configuracion = (DOM) => {
@@ -229,4 +186,53 @@ let cartel_Armado = ({DOM, titulo, contenidos}) => {
 
 	// Fin
 	return lis_fa_circle;
+};
+let accionesLuegoDeElegirProdNuevo = (DOM) => {
+	// Variables
+	let forms = document.querySelectorAll("#prodsNuevos form");
+	let errores, yaEligio;
+
+	for (let form of forms) {
+		form.addEventListener("submit", async (e) => {
+			// Frena el POST
+			e.preventDefault();
+			
+			// Pasa/no pasa
+			if (yaEligio) return;
+			else yaEligio = true;
+
+			// Obtiene los datos
+			let datos = {
+				TMDB_entidad: e.target[0].value,
+				TMDB_id: e.target[1].value,
+				nombreOriginal: encodeURIComponent(e.target[2].value), // Es necesario porque sólo se consigue mediante 'search'
+				idiomaOriginal_id: e.target[3].value, // Es necesario porque sólo se consigue mediante 'search'
+			};
+
+			// Muestra el cartel
+			let titulo = "Estamos procesando la información...";
+			const contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
+			let lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
+
+			// 1. Actualiza Datos Originales
+			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
+			await fetch("api/desambiguar-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
+			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
+
+			// 2. Averigua si la info tiene errores
+			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
+			errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
+			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
+
+			// Desaparece el cartel
+			DOM.fondo.classList.add("ocultar");
+			DOM.cartel.classList.remove("aumenta");
+			DOM.cartel.classList.add("disminuye");
+
+			// Fin
+			console.log("SI");
+			if (errores.hay) location.href = "datos-duros";
+			else location.href = "datos-adicionales";
+		});
+	}
 };
