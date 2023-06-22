@@ -18,7 +18,7 @@ module.exports = {
 		{
 			href: "/consultas/listado/vpc",
 			src: "/imagenes/0-Base/Inicio/Valores.jpg",
-			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura (VPC)",
+			p: "Un paseo por nuestras peliculas que sin ser CFC, tienen Valores Presentes en nuestra Cultura",
 		},
 	],
 

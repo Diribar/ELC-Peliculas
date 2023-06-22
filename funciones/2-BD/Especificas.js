@@ -37,7 +37,7 @@ module.exports = {
 				const condicPalabra = {
 					[Op.or]: [
 						{[campo]: {[Op.like]: "% " + palabra + "%"}}, // Comienzo de la palabra
-						{[campo]: {[Op.like]: palabra + "%"}} // Comienzo del texto
+						{[campo]: {[Op.like]: palabra + "%"}}, // Comienzo del texto
 					],
 				};
 				// Agrega la palabra al conjunto de palabras a buscar
@@ -152,10 +152,7 @@ module.exports = {
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
-				[Op.and]: [
-					{statusRegistro_id: [creado_id, inactivar_id, recuperar_id]},
-					{statusSugeridoPor_id: {[Op.ne]: revID}},
-				],
+				[Op.and]: [{statusRegistro_id: {[Op.ne]: [aprobado_id, inactivo_id]}}, {statusSugeridoPor_id: {[Op.ne]: revID}}],
 			};
 			const originales = db.links
 				.findAll({where: condiciones, include: [...include, "statusRegistro"]})

@@ -786,17 +786,18 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 	prods.VN.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 	prods.OT.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 
-	// 4. Elimina repetidos
+	// 4. Elimina repetidos dentro del grupo
 	prods.VN = comp.eliminaRepetidos(prods.VN);
 	prods.OT = comp.eliminaRepetidos(prods.OT);
+
 	// Elimina repetidos entre grupos
 	if (prods.VN.length && prods.OT)
 		for (let i = prods.VN.length - 1; i >= 0; i--)
 			if (prods.OT.find((n) => n.id == prods.VN[i].id && n.entidad == prods.VN[i].entidad)) prods.VN.splice(i, 1);
 
 	// 5. Deja solamente los prods aprobados
-	if (prods.VN.length) prods.VN = prods.VN.filter((n) => n.statusRegistro_id == aprobado_id);
-	if (prods.OT.length) prods.OT = prods.OT.filter((n) => n.statusRegistro_id == aprobado_id);
+	if (prods.VN.length) prods.VN = prods.VN.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
+	if (prods.OT.length) prods.OT = prods.OT.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
 
 	// 6. Deja solamente los sin problemas de captura
 	if (prods.VN.length) prods.VN = comp.sinProblemasDeCaptura(prods.VN, revID, ahora);
