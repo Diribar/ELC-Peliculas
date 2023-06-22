@@ -82,8 +82,11 @@ module.exports = {
 		let productos = req.session.desambiguar.productos;
 
 		// Obtiene los productos afines, ingresados por fuera de TMDB
-		const objeto = {palabrasClave, prodsYaEnBD: productos.prodsYaEnBD};
-		productos.prodsYaEnBD= await procesos.prodsYaEnBD(objeto);		
+		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
+
+		// Une y ordena los prodsYaEnBD
+		const prodsYaEnBD = {...productos.prodsYaEnBD, ...prodsIMFA};
+		productos.prodsYaEnBD = procesos.ordenaProdsYaEnBD(prodsYaEnBD);
 
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar.productos = productos;
