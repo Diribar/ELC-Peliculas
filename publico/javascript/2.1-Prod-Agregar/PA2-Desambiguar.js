@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 			} else li.children[0][4].children[1].children[3].innerHTML = prod.anoEstreno;
 			li.children[0][4].children[1].children[3].innerHTML += " - " + prod.entidadNombre;
 
-			// Quitar la clase 'ocultar'
+			// Quita la clase 'ocultar'
 			li.classList.remove("ocultar");
 			// Agrega el form
 			DOM.listado.insertBefore(li, DOM.ingrManual);
