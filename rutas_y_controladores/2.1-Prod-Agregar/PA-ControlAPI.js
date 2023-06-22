@@ -34,8 +34,12 @@ module.exports = {
 
 	// Vista (desambiguar)
 	desambForm0: async (req, res) => {
-		let respuesta = req.session.desambiguar ? req.session.desambiguar : "";
-		return res.json(respuesta);
+		// Variables
+		let desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
+		let resultado = desambiguar ? desambiguar.resultado : "";
+
+		// Fin
+		return res.json(resultado);
 	},
 	desambForm1: async (req, res) => {
 		// Variables
@@ -60,10 +64,13 @@ module.exports = {
 	desambForm3: async (req, res) => {
 		// Variables
 		let resultado = req.session.desambiguar2;
+
 		// Organiza la información
 		resultado = await buscar_x_PC.organizaLaInformacion(resultado);
+
 		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar = resultado;
+		req.session.desambiguar = {...req.session.desambiguar, resultado};
+
 		// Fin
 		return res.json(resultado);
 	},
