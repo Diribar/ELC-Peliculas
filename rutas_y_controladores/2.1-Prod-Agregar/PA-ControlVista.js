@@ -69,8 +69,6 @@ module.exports = {
 		});
 	},
 	datosDurosForm: async (req, res) => {
-		console.log("datos duros");
-		return res.send("SI");
 		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "datosDuros";
