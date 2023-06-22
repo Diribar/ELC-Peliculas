@@ -92,6 +92,7 @@ window.addEventListener("load", async () => {
 	// Productos ya en BD
 	if (prodsYaEnBD.length)
 		for (let prod of prodsYaEnBD) {
+			console.log(prod);
 			// Crea el elemento 'li'
 			let li = DOM.prodsYaEnBD.cloneNode(true);
 			// Información a enviar al BE
@@ -125,18 +126,18 @@ window.addEventListener("load", async () => {
 	// Hace foco en el primer producto
 	document.querySelector("#listado li button").focus();
 
+	// Desplazamiento original
+	desplazamHoriz();
+
+	// Comienzo de Back-end - Acciones a partir del click en una opción
+	accionesLuegoDeElegirProdNuevo(DOM);
+
 	// Desaparece el cartel
 	if (ocultarCartel) {
 		// Oculta el cartel
 		DOM.cartel.classList.remove("aumenta");
 		DOM.cartel.classList.add("disminuye");
 	}
-
-	// Desplazamiento original
-	desplazamHoriz();
-
-	// Comienzo de Back-end - Acciones a partir del click en una opción
-	accionesLuegoDeElegirProdNuevo(DOM);
 });
 // Funciones
 let accionesLuegoDeElegirProdNuevo = (DOM) => {
