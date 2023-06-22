@@ -57,16 +57,25 @@ module.exports = {
 		// Variables
 		const rclv = req.path.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
-		const include = variables.entidades.prods;
+		const include = [...variables.entidades.prods, "prods_ediciones"];
 		let resultado1 = {};
 		let resultado2 = {};
 
 		// Lectura
 		await BD_genericas.obtieneTodosPorCondicionConInclude(rclv, condicion, include)
-			.then((n) => n.map((m) => (resultado1[m.nombre] = m.peliculas.length + m.colecciones.length + m.capitulos.length)))
+			.then((n) =>
+				n.map(
+					(m) =>
+						(resultado1[m.nombre] =
+							m.peliculas.length + m.colecciones.length + m.capitulos.length + m.prods_ediciones.length)
+				)
+			)
 			.then(() => {
-				const campos = Object.keys(resultado1).sort((a, b) => resultado1[b] - resultado1[a]);
-				campos.map((n) => (resultado2[n] = resultado1[n]));
+				const metodos = Object.keys(resultado1).sort((a, b) =>
+					resultado1[b] != resultado1[a] ? resultado1[b] - resultado1[a] : a < b ? -1 : 1
+				);
+				// Ordena los métodos dentro de un objeto nuevo
+				metodos.map((n) => (resultado2[n] = resultado1[n]));
 			});
 
 		// Fin
