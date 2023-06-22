@@ -386,18 +386,23 @@ module.exports = {
 				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 				BD_genericas.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
 			}
+
 			// Variables
 			if (familia == "rclv") cantProds = await procsRCLV.detalle.prodsDelRCLV(original).then((n) => n.length);
 			bloqueDer = [procsCRUD.bloqueRegistro({registro: {...original, entidad}, revisor})];
 			bloqueDer.push(await procsCRUD.fichaDelUsuario(edicion.editadoPor_id, petitFamilias));
 			imgDerPers = procsCRUD.obtieneAvatar(original).orig;
 			motivos = motivosEdics.filter((m) => m.prods);
+
 			// Achica la edición a su mínima expresión
 			edicion = await procsCRUD.puleEdicion(entidad, original, edicion);
+
 			// Fin, si no quedan campos
 			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+
 			// Obtiene los ingresos y reemplazos
 			[ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
+
 			// Variables para la vista
 			titulo = "Revisión de la Edición de" + articulo + entidadNombre;
 			ayudasTitulo = [

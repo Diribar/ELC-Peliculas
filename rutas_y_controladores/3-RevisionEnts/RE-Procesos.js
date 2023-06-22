@@ -491,14 +491,19 @@ module.exports = {
 			for (let campoEdicion in edicion) {
 				// Obtiene el campo con varios datos
 				let campoRevisar = camposRevisar.find((n) => n.nombre == campoEdicion);
+
 				// Si el campoRevisar no existe en los campos a revisar, saltea la rutina
 				if (!campoRevisar) continue;
+
 				// Obtiene las variables de include
 				let relacInclude = campoRevisar.relacInclude;
+
 				// Criterio para determinar qué valores originales mostrar
+				const esEdicion = true;
 				campoRevisar.mostrarOrig = await valoresParaMostrar(original, relacInclude, campoRevisar);
-				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar);
-				// Consolidar los resultados
+				campoRevisar.mostrarEdic = await valoresParaMostrar(edicion, relacInclude, campoRevisar, esEdicion);
+
+				// Consolida los resultados
 				resultado.push(campoRevisar);
 			}
 
@@ -747,7 +752,7 @@ let valoresComparar = (original, RCLV_actual, relacInclude, campo) => {
 	// Fin
 	return {valorAprob, valorDesc};
 };
-let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
+let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion) => {
 	// Variables
 	const campo = campoRevisar.nombre;
 
@@ -761,7 +766,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar) => {
 	// Casos especiales
 	if (["cfc", "ocurrio", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
-	else if (variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
+	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
 	// Últimas correcciones
 	if (resultado === "") resultado = null;
