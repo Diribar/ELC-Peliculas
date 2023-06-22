@@ -7,6 +7,7 @@ module.exports = (req, res, next) => {
 	urlsGuardadas.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
+
 	// Variables
 	const anterior =
 		req.session && req.session.urlActual ? req.session.urlActual : req.cookies.urlActual ? req.cookies.urlActual : "/";
@@ -33,14 +34,14 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/usuarios/logout") &&
 		!actual.includes("/api/");
 
+	// Función
+	let activaSessionCookie = (url) => {
+		req.session[url] = anterior;
+		res.cookie(url, anterior, {maxAge: unDia});
+	};
+
 	// Asignar urls
 	if (rutaAceptada) {
-		// Función
-		let activaSessionCookie = (url) => {
-			req.session[url] = anterior;
-			res.cookie(url, anterior, {maxAge: unDia});
-		};
-
 		// 1. urlSinLogin
 		// Cualquier ruta que no requiera login
 		if (
