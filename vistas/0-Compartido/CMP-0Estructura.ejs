@@ -6,7 +6,7 @@
 	<%- include('CMP-1Head') %>
 	<!-- Heads personalizados -->
 	<% if (tema == "usuario") { %><%- include("US-1Head") %><% } %>
-	<% if (tema == "prod_agregar") { %><%- include("PA-1Head") %><% } %>
+	<% if (tema == "prodAgregar") { %><%- include("PA-1Head") %><% } %>
 	<% if (tema == "prod_rud") { %><%- include("PR-1Head") %><% } %>
 	<% if (tema == "rclv_crud") { %><%- include("RCLV-1Head") %><% } %>
 	<% if (tema == "links_crud") { %><%- include("LK-1Head") %><% } %>
@@ -29,7 +29,7 @@
 			<section id="cuerpo">
 				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %>
 				<% } else if (tema == "crud") { %><%- include("FM-2Cuerpo") %>
-				<% } else if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %>
+				<% } else if (tema == "prodAgregar") { %><%- include("PA-2Cuerpo") %>
 				<% } else if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %>
 				<% } else if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %>
 				<% } else if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %>

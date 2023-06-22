@@ -77,22 +77,28 @@ module.exports = {
 		return res.json();
 	},
 	desambGuardar2: async (req, res) => {
+		// Variables
 		let datosDuros = req.cookies.datosOriginales;
+
 		// Para datosDuros, da de alta el avatarUrl y de baja el avatar
 		datosDuros.avatarUrl = datosDuros.avatar;
 		delete datosDuros.avatar;
+
 		// Averigua si falta completar algún campo de Datos Duros
 		let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
 		let camposDD_nombre = camposDD.map((n) => n.nombre);
 		let errores = await valida.datosDuros(camposDD_nombre, datosDuros);
+
 		// Genera la session y cookie para DatosDuros
-		req.session.datosDuros = {...datosDuros};
+		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
 		// Genera la session y cookie para datosAdics
 		if (!errores.hay) {
-			req.session.datosAdics = {...datosDuros};
+			req.session.datosAdics = datosDuros;
 			res.cookie("datosAdics", datosDuros, {maxAge: unDia});
 		}
+
 		// Fin
 		return res.json(errores);
 	},

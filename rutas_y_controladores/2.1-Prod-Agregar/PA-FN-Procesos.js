@@ -456,7 +456,8 @@ module.exports = {
 		}
 
 		// Genera el resultado
-		let respuesta = {entidadNombre, entidad, fuente: "FA", FA_id, coleccion_id, ...contenido};
+		let respuesta = {entidadNombre, entidad, fuente: "FA", FA_id, ...contenido};
+		if (coleccion_id) respuesta.coleccion_id = coleccion_id;
 
 		// Limpia el resultado de caracteres especiales
 		respuesta = comp.convierteLetras.alCastellano(respuesta);
@@ -468,10 +469,10 @@ module.exports = {
 	// Función validar (FA)
 	contenidoFA: (texto) => {
 		// Convierte en array
-		let contenidos = texto.split("\r\n");
+		let contenidos = texto.split("\n");
 
 		// Limpia espacios innecesarios
-		for (let contenido of contenidos) contenido = contenido.trim();
+		contenidos.forEach((contenido, i) => (contenidos[i] = contenido.trim()));
 
 		// Arma el objeto literal
 		let resultado = {};

@@ -156,7 +156,9 @@ module.exports = {
 	},
 	// ControllerAPI (validaIngresoFA)
 	FA: (datos) => {
+		// Variables
 		let errores = {};
+
 		// Dirección
 		let url = datos.url;
 		errores.url = !url
@@ -166,6 +168,7 @@ module.exports = {
 			  url.indexOf("/film") + 5 >= url.indexOf(".html")
 			? "No parece ser una dirección de Film Affinity"
 			: "";
+
 		// Avatar
 		errores.avatarUrl = !datos.avatarUrl
 			? "Necesitamos que agregues una imagen"
@@ -174,6 +177,7 @@ module.exports = {
 			: !datos.avatarUrl.includes("large.jpg")
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
+
 		// Contenido
 		let contenido = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
@@ -181,9 +185,12 @@ module.exports = {
 			: !Object.keys(contenido).length
 			? "No se obtuvo ningún dato"
 			: "";
-		// Final
+
+		// Ajustes finales
 		errores.hay = Object.values(errores).some((n) => !!n);
 		errores.campos = Object.keys(contenido).length;
+
+		// Final
 		return errores;
 	},
 };
