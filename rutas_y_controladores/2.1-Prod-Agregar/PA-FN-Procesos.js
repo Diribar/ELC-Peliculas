@@ -431,40 +431,27 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
-		let {entidad, coleccion_id, avatarUrl, contenido, FA_id} = datos;
+		const {entidad, avatarUrl, FA_id} = datos;
+		let contenido = datos.contenido;
 
 		// Genera la información
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		contenido = this.contenidoFA(contenido);
 		if (contenido.pais_nombre) {
-			let paisNombreToId = (pais_nombre) => {
-				// Función para convertir 'string de nombre' en  'string de ID'
-				let resultado = [];
-				if (pais_nombre.length) {
-					let pais_nombreArray = pais_nombre.split(", ");
-					// Convertir 'array de nombres' en 'string de ID"
-					for (let pais_nombre of pais_nombreArray) {
-						let aux = paises.find((n) => n.nombre == pais_nombre);
-						aux ? resultado.push(aux.id) : "";
-					}
-				}
-				resultado = resultado.length ? resultado.join(" ") : "";
-				return resultado;
-			};
 			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 
 		// Genera el resultado
-		let respuesta = {entidadNombre, entidad, fuente: "FA", FA_id, ...contenido};
-		if (coleccion_id) respuesta.coleccion_id = coleccion_id;
+		let resultado = {entidadNombre, entidad, fuente: "FA", FA_id, ...contenido};
+		if (datos.coleccion_id) resultado.coleccion_id = datos.coleccion_id;
 
 		// Limpia el resultado de caracteres especiales
-		respuesta = comp.convierteLetras.alCastellano(respuesta);
-		respuesta.avatarUrl = avatarUrl;
+		resultado = comp.convierteLetras.alCastellano(resultado);
+		resultado.avatarUrl = avatarUrl;
 
 		// Fin
-		return respuesta;
+		return resultado;
 	},
 	// Función validar (FA)
 	contenidoFA: (texto) => {
@@ -619,4 +606,18 @@ let FN_actores = (dato) => {
 	}
 	// Fin
 	return actores;
+};
+let paisNombreToId = (pais_nombre) => {
+	// Función para convertir 'string de nombre' en  'string de ID'
+	let resultado = [];
+	if (pais_nombre.length) {
+		let pais_nombreArray = pais_nombre.split(", ");
+		// Convertir 'array de nombres' en 'string de ID"
+		for (let pais_nombre of pais_nombreArray) {
+			let aux = paises.find((n) => n.nombre == pais_nombre);
+			aux ? resultado.push(aux.id) : "";
+		}
+	}
+	resultado = resultado.length ? resultado.join(" ") : "";
+	return resultado;
 };
