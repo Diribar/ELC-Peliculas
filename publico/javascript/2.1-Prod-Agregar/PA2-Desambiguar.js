@@ -92,9 +92,9 @@ window.addEventListener("load", async () => {
 	// Productos ya en BD
 	if (prodsYaEnBD.length)
 		for (let prod of prodsYaEnBD) {
-			console.log(prod);
 			// Crea el elemento 'li'
 			let li = DOM.prodsYaEnBD.cloneNode(true);
+
 			// Información a enviar al BE
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
