@@ -36,7 +36,7 @@ module.exports = {
 		res.cookie("palabrasClave", palabrasClave, {maxAge: unDia});
 
 		// Si hay errores de validación, redirecciona
-		const errores = await valida.palabrasClave(palabrasClave);
+		const errores = valida.palabrasClave(palabrasClave);
 		if (errores.hay) return res.redirect(req.path.slice(1));
 
 		// Guarda el Data Entry en session y cookie de desambiguar
