@@ -75,7 +75,7 @@ module.exports = {
 
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		
+
 		// Si existe un valor para el campo 'avatar' elimina el archivo descargado
 		if (datosDuros.avatar) {
 			comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
@@ -439,6 +439,11 @@ module.exports = {
 		const datosDuros = {...procesos.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
+		// Actualiza datosOriginales con FA_id
+		const FA_id = datosDuros.FA_id;
+		const datosOriginales = {...req.cookies.datosOriginales, FA_id};
+		res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
 		return res.redirect("datos-duros");

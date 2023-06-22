@@ -20,15 +20,15 @@ module.exports = async (req, res, next) => {
 			iconos: [variables.vistaEntendido(req.session.urlAnterior)],
 		};
 	else if (datos.fuente != "IM") {
-		let fuente_id = datos.fuente + "_id";
-		let elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
+		const fuente_id = datos.fuente + "_id";
+		const elc_id = await BD_especificas.obtieneELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
 		if (elc_id) {
 			// Links
-			let linkAnterior = "/producto/agregar/desambiguar";
-			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
+			const linkAnterior = "/producto/agregar/desambiguar";
+			const linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 
 			// Nombre de la entidad
-			let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
+			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
 
 			// Información para el cartel
 			informacion = {
