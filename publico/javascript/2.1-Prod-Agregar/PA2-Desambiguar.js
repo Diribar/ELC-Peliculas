@@ -1,100 +1,63 @@
 "use strict";
 window.addEventListener("load", async () => {
+	// Si no existe la información a desambiguar, redirige al paso anterior
+	const desambiguar = await fetch("api/desambiguar-busca-valores-session").then((n) => (n ? n.json() : ""));
+	console.log(desambiguar);
+	if (!desambiguar) location.href = "palabras-clave";
+
 	// Variables
-	let ruta = "api/desambiguar-form0";
-	let resultado = await fetch(ruta).then((n) => (n ? n.json() : ""));
-	ruta = "/api/localhost";
-	const localhost = await fetch(ruta).then((n) => (n ? n.json() : ""));
+	let DOM = {
+		// DOM - Opciones
+		listado: document.querySelector("#listado"),
+		ingrManual: document.querySelector("#listado #ingrManual"),
+		prodsNuevos: document.querySelector("#listado #prodsNuevos"),
+		prodsYaEnBD: document.querySelector("#listado #prodsYaEnBD"),
 
-	// DOM - Opciones
-	let listado = document.querySelector("#listado");
-	let ingrManual_DOM = document.querySelector("#listado #ingrManual");
-	let prodsNuevos_DOM = document.querySelector("#listado #prodsNuevos");
-	let prodsYaEnBD_DOM = document.querySelector("#listado #prodsYaEnBD");
-
-	// DOM - Cartel
-	let fondo = document.querySelector("#tapar-el-fondo");
-	let cartel = document.querySelector("#cartel");
-	let cartelTitulo = document.querySelector("#cartel #titulo");
-	let cartelUl = document.querySelector("#cartel ul");
-	let cartelAlerta = document.querySelector("#cartel #alerta");
-	let cartelTrabajando = document.querySelector("#cartel #trabajando");
+		// DOM - Cartel
+		fondo: document.querySelector("#tapar-el-fondo"),
+		cartel: document.querySelector("#cartel"),
+		cartelTitulo: document.querySelector("#cartel #titulo"),
+		cartelUl: document.querySelector("#cartel ul"),
+		cartelAlerta: document.querySelector("#cartel #alerta"),
+		cartelTrabajando: document.querySelector("#cartel #trabajando"),
+	};
+	const localhost = await fetch("/api/localhost").then((n) => (n ? n.json() : ""));
 	let lis_fa_circle;
 
 	// Cartel - configuración
-	(() => {
-		// Quita los dots del 'ul'
-		cartelUl.style.listStyleType = "none";
-		// Cambia el color de fondo
-		cartel.classList.add("trabajando");
-		// Cambia el ícono de encabezado
-		cartelAlerta.classList.add("ocultar");
-		cartelTrabajando.classList.remove("ocultar");
-	})();
+	cartel_Configuracion(DOM);
 
-	// Función de armado del cartel
-	let armadoDelCartel = (titulo, contenido) => {
-		// Titulo
-		cartelTitulo.innerHTML = titulo;
-		cartelUl.innerHTML = "";
-		// Contenido
-		for (let cont of contenido) {
-			let i;
-			// Crea el 'li'
-			let li = document.createElement("li");
-			// Crea el círculo y lo agrega
-			i = document.createElement("i");
-			i.classList.add("fa-regular", "fa-circle");
-			li.appendChild(i);
-			// Agrega el texto
-			li.innerHTML += cont;
-			cartelUl.appendChild(li);
-		}
-		// DOM - íconos
-		lis_fa_circle = document.querySelectorAll("#cartel li i.fa-circle");
-		// Hace visible el cartel
-		fondo.classList.remove("ocultar");
-		cartel.classList.remove("ocultar");
-		cartel.classList.remove("disminuye");
-		cartel.classList.add("aumenta");
-	};
-
-	// Acciones si no hay un resultado en 'session'
-	if (!resultado) {
-		// Obtiene las palabrasClave y si no existe, redirige
-		let palabrasClave = document.querySelector("#palabrasClave").innerHTML;
-		if (!palabrasClave) location.href = "palabras-clave";
-
+	// Acciones si no hay productos en 'session'
+	let productos = desambiguar.productos;
+	if (!productos) {
 		// Muestra el cartel
 		let titulo = "En proceso...";
-		let contenido = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
-		armadoDelCartel(titulo, contenido);
+		let contenidos = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
+		lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
 
-		// Busca los productos
+		// Busca los productos y los guarda en session
 		lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
-		ruta = "api/desambiguar-form1/?palabrasClave=";
-		await fetch(ruta + palabrasClave);
+		await fetch("api/desambiguar-busca-los-productos/");
 		lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 		// Reemplaza las películas por su colección
 		lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-		ruta = "api/desambiguar-form2/";
-		await fetch(ruta);
+		await fetch("api/desambiguar-reemplaza-las-peliculas-por-su-coleccion/");
 		lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 		// Pule la información
 		lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
-		ruta = "api/desambiguar-form3/";
-		resultado = await fetch(ruta).then((n) => n.json());
+		productos = await fetch("api/desambiguar-pule-la-informacion/").then((n) => n.json());
 	}
+
 	// Agrega los productos
-	let {prodsNuevos, prodsYaEnBD, mensaje} = resultado;
+	let {prodsNuevos, prodsYaEnBD, mensaje} = productos;
 
 	// Productos nuevos
 	if (prodsNuevos.length)
 		for (let prod of prodsNuevos) {
 			// Crea el elemento 'li'
-			let li = prodsNuevos_DOM.cloneNode(true);
+			let li = DOM.prodsNuevos.cloneNode(true);
 			// Información a enviar al BE
 			li.children[0][0].value = prod.TMDB_entidad;
 			li.children[0][1].value = prod.TMDB_id;
@@ -120,16 +83,16 @@ window.addEventListener("load", async () => {
 			// Quitar la clase 'ocultar'
 			li.classList.remove("ocultar");
 			// Agrega el form
-			listado.insertBefore(li, ingrManual_DOM);
+			DOM.listado.insertBefore(li, DOM.ingrManual);
 			// Elimina el form modelo, que ya no se necesita
-			prodsNuevos_DOM.remove();
+			DOM.prodsNuevos.remove();
 		}
 
 	// Productos ya en BD
 	if (prodsYaEnBD.length)
 		for (let prod of prodsYaEnBD) {
 			// Crea el elemento 'li'
-			let li = prodsYaEnBD_DOM.cloneNode(true);
+			let li = DOM.prodsYaEnBD.cloneNode(true);
 			// Información a enviar al BE
 			li.children[0].href += prod.entidad + "&id=" + prod.yaEnBD_id;
 
@@ -150,16 +113,15 @@ window.addEventListener("load", async () => {
 			li.classList.remove("ocultar");
 
 			// Agrega el form
-			listado.append(li);
+			DOM.listado.append(li);
 			// Elimina el form modelo, que ya no se necesita
-			prodsYaEnBD_DOM.remove();
+			DOM.prodsYaEnBD.remove();
 		}
 
-	// Terminaciones
 	// Agrega el mensaje
 	document.querySelector("#mensaje").innerHTML = mensaje;
 
-	// Hace foco en el primer resultado
+	// Hace foco en el primer producto
 	document.querySelector("#listado li button").focus();
 
 	// Desaparece el cartel
@@ -168,9 +130,9 @@ window.addEventListener("load", async () => {
 		lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
 
 		// Oculta el cartel
-		fondo.classList.add("ocultar");
-		cartel.classList.remove("aumenta");
-		cartel.classList.add("disminuye");
+		DOM.fondo.classList.add("ocultar");
+		DOM.cartel.classList.remove("aumenta");
+		DOM.cartel.classList.add("disminuye");
 	}
 
 	// Comienzo de Back-end
@@ -195,25 +157,23 @@ window.addEventListener("load", async () => {
 
 			// Muestra el cartel
 			let titulo = "Estamos procesando la información...";
-			let contenido = ["Obteniendo más información del producto", "Revisando la información disponible"];
-			armadoDelCartel(titulo, contenido);
+			let contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
+			cartel_Armado({DOM, titulo, contenidos});
 
 			// 1. Obtiene más información del producto
 			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar1/?datos=" + JSON.stringify(datos);
-			await fetch(ruta); // El 'await' es para esperar a que se grabe la cookie en la controladora
+			await fetch("api/desambiguar-guardar1/?datos=" + JSON.stringify(datos)); // El 'await' es para esperar a que se grabe la cookie en la controladora
 			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
 			// 2. Revisa la información disponible, para determinar los próximos pasos
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			ruta = "api/desambiguar-guardar2";
-			errores = await fetch(ruta).then((n) => n.json());
+			errores = await fetch("api/desambiguar-guardar2").then((n) => n.json());
 			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 			// Desaparece el cartel
-			fondo.classList.add("ocultar");
-			cartel.classList.remove("aumenta");
-			cartel.classList.add("disminuye");
+			DOM.fondo.classList.add("ocultar");
+			DOM.cartel.classList.remove("aumenta");
+			DOM.cartel.classList.add("disminuye");
 
 			// Fin
 			if (errores.hay) location.href = "datos-duros";
@@ -224,3 +184,50 @@ window.addEventListener("load", async () => {
 	// Desplazamiento original
 	desplazamHoriz();
 });
+// Funciones
+let cartel_Configuracion = (DOM) => {
+	// Quita los dots del 'ul'
+	DOM.cartelUl.style.listStyleType = "none";
+
+	// Cambia el color de fondo
+	DOM.cartel.classList.add("trabajando");
+
+	// Cambia el ícono de encabezado
+	DOM.cartelAlerta.classList.add("ocultar");
+	DOM.cartelTrabajando.classList.remove("ocultar");
+
+	// Fin
+	return;
+};
+let cartel_Armado = ({DOM, titulo, contenidos}) => {
+	// Titulo
+	DOM.cartelTitulo.innerHTML = titulo;
+	DOM.cartelUl.innerHTML = "";
+
+	// Contenido
+	for (let contenido of contenidos) {
+		// Crea el 'li'
+		let li = document.createElement("li");
+
+		// Crea el círculo y lo agrega
+		let i = document.createElement("i");
+		i.classList.add("fa-regular", "fa-circle");
+		li.appendChild(i);
+
+		// Agrega el texto
+		li.innerHTML += contenido;
+		DOM.cartelUl.appendChild(li);
+	}
+
+	// DOM - íconos
+	const lis_fa_circle = document.querySelectorAll("#cartel li i.fa-circle");
+
+	// Hace visible el cartel
+	DOM.fondo.classList.remove("ocultar");
+	DOM.cartel.classList.remove("ocultar");
+	DOM.cartel.classList.remove("disminuye");
+	DOM.cartel.classList.add("aumenta");
+
+	// Fin
+	return lis_fa_circle;
+};
