@@ -179,7 +179,7 @@ module.exports = {
 			: "";
 
 		// Contenido
-		let contenido = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
+		let contenido = datos.contenido ? procesos.FA.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? variables.inputVacio
 			: !Object.keys(contenido).length
