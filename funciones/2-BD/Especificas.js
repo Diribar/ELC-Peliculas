@@ -19,7 +19,7 @@ module.exports = {
 		return db[datos.entidad].findOne({where: condicion}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondics: (palabras, dato, userID) => {
+	quickSearchCondics: (palabras, campos, userID) => {
 		// Variables
 		let todasLasPalabrasEnAlgunCampo = [];
 
@@ -27,7 +27,7 @@ module.exports = {
 		palabras = palabras.split(" ");
 
 		// Almacena la condición en una matriz
-		for (let campo of dato.campos) {
+		for (let campo of campos) {
 			// Variables
 			let palabrasEnElCampo = [];
 
@@ -52,7 +52,7 @@ module.exports = {
 		// Se fija que la condición de palabras se cumpla en alguno de los campos
 		const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
 
-		// Se fija que el registro esté en statusAprobado, o statusCreado por el usuario
+		// Se fija que el registro esté en statusAprobado, o statusGrCreado por el usuario
 		const condicStatus = {
 			[Op.or]: [
 				{statusRegistro_id: aprobado_id},
@@ -72,15 +72,13 @@ module.exports = {
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) =>
-				n.map((m) => {
-					return {
-						id: m.id,
-						ano: m.anoEstreno,
-						nombre: m[dato.campos[0]],
-						entidad: dato.entidad,
-						familia: dato.familia,
-					};
-				})
+				n.map((m) => ({
+					id: m.id,
+					ano: m.anoEstreno,
+					nombre: m[dato.campos[0]],
+					entidad: dato.entidad,
+					familia: dato.familia,
+				}))
 			);
 	},
 
