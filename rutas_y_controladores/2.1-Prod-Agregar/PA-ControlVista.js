@@ -437,7 +437,6 @@ module.exports = {
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
-		console.log(439);
 		return res.redirect("datos-duros");
 	},
 };
