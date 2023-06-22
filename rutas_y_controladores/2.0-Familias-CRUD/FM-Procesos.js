@@ -326,7 +326,7 @@ module.exports = {
 						...datos,
 						altaTermEn: ahora,
 						leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
-						statusSugeridoPor_id: 2,
+						statusSugeridoPor_id: usAutom_id,
 						statusSugeridoEn: ahora,
 					};
 
@@ -363,7 +363,7 @@ module.exports = {
 
 			// Prepara los datos
 			const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-			const datosSugeridos = {statusSugeridoPor_id: 2, statusSugeridoEn: ahora};
+			const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
 
 			// Obtiene los capitulos id
 			const capitulos = await BD_genericas.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
@@ -385,6 +385,7 @@ module.exports = {
 					: {...datosFijos, statusRegistro_id: creadoAprob_id};
 				esperar.push(BD_genericas.actualizaPorId("capitulos", capitulo.id, datos));
 			}
+
 			// Espera hasta que se revisen todos los capítulos
 			await Promise.all(esperar);
 

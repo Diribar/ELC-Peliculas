@@ -345,7 +345,7 @@ module.exports = {
 			...{direccion, guion, musica, actores, produccion},
 			// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
 			// ...{personaje_id, hecho_id, tema_id},
-			...{creadoPor_id: 2, statusSugeridoPor_id: 2},
+			...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
 		};
 
 		// Obtiene los datos del capítulo
@@ -390,7 +390,7 @@ module.exports = {
 			...{direccion, guion, musica, actores, produccion},
 			// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
 			// ...{personaje_id, hecho_id, tema_id},
-			...{creadoPor_id: 2, statusSugeridoPor_id: 2},
+			...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
 		};
 		if (datosCap.runtime) datos.duracion = datosCap.runtime;
 

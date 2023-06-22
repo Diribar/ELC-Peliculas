@@ -124,7 +124,6 @@ module.exports = {
 		const userID = original.statusSugeridoPor_id;
 		const revID = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const campoDecision = petitFamilias + (aprob ? "Aprob" : "Rech");
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
@@ -198,8 +197,8 @@ module.exports = {
 
 			// Acciones si es un RCLV inactivo
 			if (statusFinal_id == inactivo_id) {
-				// Borra su id de los campos rclv_id de las ediciones de producto
-				BD_genericas.actualizaTodosPorCondicion("prods_edicion", {[campo_id]: id}, {[campo_id]: null});
+				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
+				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id})
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
@@ -230,11 +229,11 @@ module.exports = {
 		// 2. Si es una colección, actualiza sus capítulos con el mismo status
 		if (entidad == "colecciones")
 			statusFinal_id == aprobado_id
-				? await procsCRUD.capsAprobs(id)
+				? await procsCRUD.revisiones.capsAprobs(id)
 				: await BD_genericas.actualizaTodosPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
-						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: 2}
+						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usuarioAutom_id}
 				  );
 
 		// 3. Si es un RCLV y es un alta aprobada, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
@@ -262,7 +261,7 @@ module.exports = {
 		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
 		// 7. Acciones si es un registro que se mueve a 'inactivo'
-		// Elimina el archivo de avatar de la edicion
+		// Elimina el archivo de avatar de las ediciones
 		// Elimina las ediciones que tenga
 		if (statusFinal_id == inactivo_id) procsCRUD.eliminar.eliminaAvatarMasEdics(entidad, id);
 
