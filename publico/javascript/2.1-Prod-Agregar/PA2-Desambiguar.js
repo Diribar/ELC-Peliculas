@@ -189,8 +189,8 @@ let cartel_Armado = ({DOM, titulo, contenidos}) => {
 };
 let accionesLuegoDeElegirProdNuevo = (DOM) => {
 	// Variables
-	let forms = document.querySelectorAll("#prodsNuevos form");
-	let errores, yaEligio;
+	const forms = document.querySelectorAll("#prodsNuevos form");
+	let yaEligio;
 
 	for (let form of forms) {
 		form.addEventListener("submit", async (e) => {
@@ -221,7 +221,7 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 
 			// 2. Averigua si la info tiene errores
 			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
-			errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
+			const errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
 			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
 			// Desaparece el cartel
@@ -230,7 +230,6 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			DOM.cartel.classList.add("disminuye");
 
 			// Fin
-			console.log("SI");
 			if (errores.hay) location.href = "datos-duros";
 			else location.href = "datos-adicionales";
 		});
