@@ -104,7 +104,8 @@ module.exports = {
 			};
 
 			// Obtiene los datos del capítulo
-			await procsDesamb.obtieneInfo({TMDB_id: capituloID_TMDB})
+			await procsDesamb
+				.obtieneInfo({TMDB_id: capituloID_TMDB})
 				// Le agrega los datos de cabecera
 				.then((n) => (n = {...datosCap, ...n}))
 				// Guarda los datos del capítulo
@@ -167,17 +168,17 @@ module.exports = {
 			if (datosCap.name) datos.nombreCastellano = datosCap.name;
 			if (datosCap.air_date) datos.anoEstreno = datosCap.air_date;
 			if (datosCap.crew.length > 0) {
-				direccion = limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
+				direccion = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				guion = limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
+				guion = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				musica = limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
+				musica = comp.prodAgregar.limpiaValores(datosCap.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			actores = [];
 			if (datosTemp.cast.length) actores = [...datosTemp.cast];
 			if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-			if (actores.length) datos.actores = FN_actores(actores);
+			if (actores.length) datos.actores = comp.prodAgregar.FN_actores(actores);
 			if (datosCap.overview) datos.sinopsis = datosCap.overview;
 			let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 			if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
@@ -298,45 +299,4 @@ let eliminaParentesis = (dato) => {
 	let desde = dato.indexOf(" (");
 	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
-};
-let limpiaValores = (datos) => {
-	// Variables
-	let largo = 100;
-	let texto = "";
-
-	// Procesa si hay información
-	if (datos.length) {
-		// Obtiene el nombre y descarta lo demás
-		datos = datos.map((n) => n.name);
-
-		// Quita duplicados
-		let valores = [];
-		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
-
-		// Acorta el string excedente
-		texto = valores.join(", ");
-		if (texto.length > largo) {
-			texto = texto.slice(0, largo);
-			if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
-		}
-	}
-	// Fin
-	return texto;
-};
-let FN_actores = (dato) => {
-	// Variables
-	let actores = "";
-	let largo = 500;
-	// Acciones
-	if (dato.length) {
-		// Obtiene los nombres y convierte el array en string
-		actores = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
-		// Quita el excedente
-		if (actores.length > largo) {
-			actores = actores.slice(0, largo);
-			if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
-		}
-	}
-	// Fin
-	return actores;
 };

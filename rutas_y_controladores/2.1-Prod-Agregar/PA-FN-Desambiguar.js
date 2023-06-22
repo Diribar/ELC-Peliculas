@@ -1,9 +1,7 @@
 "use strict";
 // Definir variables
 const APIsTMDB = require("../../funciones/1-Procesos/APIsTMDB");
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
-const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
 	movie: {
@@ -52,18 +50,19 @@ module.exports = {
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
-			if (datosAPI.production_companies.length > 0) datos.produccion = limpiaValores(datosAPI.production_companies);
+			if (datosAPI.production_companies.length > 0)
+				datos.produccion = comp.prodAgregar.limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = comp.prodAgregar.FN_actores(datosAPI.cast);
 
 			// Fin
 			return datos;
@@ -156,15 +155,16 @@ module.exports = {
 				if (capitulo.production_countries.length)
 					paises_id += capitulo.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 				// Producción
-				if (capitulo.production_companies.length) produccion += limpiaValores(capitulo.production_companies) + ", ";
+				if (capitulo.production_companies.length)
+					produccion += comp.prodAgregar.limpiaValores(capitulo.production_companies) + ", ";
 				// Crew
 				if (capitulo.crew.length) {
-					direccion += limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
-					guion += limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
-					musica += limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
+					direccion += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Directing")) + ", ";
+					guion += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Writing")) + ", ";
+					musica += comp.prodAgregar.limpiaValores(capitulo.crew.filter((n) => n.department == "Sound")) + ", ";
 				}
 				// Cast
-				if (capitulo.cast.length) actores += FN_actores(capitulo.cast) + ", ";
+				if (capitulo.cast.length) actores += comp.prodAgregar.FN_actores(capitulo.cast) + ", ";
 			}
 
 			// Procesa los resultados
@@ -219,18 +219,19 @@ module.exports = {
 			if (datosAPI.poster_path) datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Guión, produccion
 			if (datosAPI.created_by.length > 0) datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
-			if (datosAPI.production_companies.length > 0) datos.produccion = limpiaValores(datosAPI.production_companies);
+			if (datosAPI.production_companies.length > 0)
+				datos.produccion = comp.prodAgregar.limpiaValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				const direccion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				const direccion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Directing"));
 				if (direccion) datos.direccion = direccion;
-				const guion = limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				const guion = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Writing"));
 				if (guion) datos.guion = guion;
-				const musica = limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				const musica = comp.prodAgregar.limpiaValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 				if (musica) datos.musica = musica;
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datos.actores = FN_actores(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actores = comp.prodAgregar.FN_actores(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
@@ -291,45 +292,4 @@ let consolidaValoresColeccion = (datos, cantCapitulos) => {
 
 	// Fin
 	return resultado;
-};
-let limpiaValores = (datos) => {
-	// Variables
-	let largo = 100;
-	let texto = "";
-
-	// Procesa si hay información
-	if (datos.length) {
-		// Obtiene el nombre y descarta lo demás
-		datos = datos.map((n) => n.name);
-
-		// Quita duplicados
-		let valores = [];
-		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
-
-		// Acorta el string excedente
-		texto = valores.join(", ");
-		if (texto.length > largo) {
-			texto = texto.slice(0, largo);
-			if (texto.includes(",")) texto = texto.slice(0, texto.lastIndexOf(","));
-		}
-	}
-	// Fin
-	return texto;
-};
-let FN_actores = (dato) => {
-	// Variables
-	let actores = "";
-	let largo = 500;
-	// Acciones
-	if (dato.length) {
-		// Obtiene los nombres y convierte el array en string
-		actores = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
-		// Quita el excedente
-		if (actores.length > largo) {
-			actores = actores.slice(0, largo);
-			if (actores.includes(",")) actores = actores.slice(0, actores.lastIndexOf(","));
-		}
-	}
-	// Fin
-	return actores;
 };
