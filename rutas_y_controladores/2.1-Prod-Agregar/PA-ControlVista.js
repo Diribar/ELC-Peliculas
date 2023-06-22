@@ -10,12 +10,14 @@ const valida = require("./PA-FN-Validar");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
-		// 1. Tema y Código
-		const tema = "prod_agregar";
+		// Tema y Código
+		const tema = "prodAgregar";
 		const codigo = "palabrasClave";
-		// 2. Obtiene el Data Entry de session y cookies
-		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
-		// 3. Render del formulario
+
+		// Obtiene el Data Entry de session y cookies
+		const palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Agregar - Palabras Clave"},
 			dataEntry: {palabrasClave},
@@ -26,24 +28,39 @@ module.exports = {
 		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
 		for (let campo in req.body) req.body[campo] = req.body[campo].trim();
 
-		// 1. Obtiene el Data Entry
-		let palabrasClave = req.body.palabrasClave;
-		// 2. Guarda el Data Entry en session y cookie
+		// Obtiene el Data Entry
+		const palabrasClave = req.body.palabrasClave;
+
+		// Guarda el Data Entry en session y cookie de palabrasClave
 		req.session.palabrasClave = palabrasClave;
 		res.cookie("palabrasClave", palabrasClave, {maxAge: unDia});
-		// 3. Si hay errores de validación, redirecciona
-		let errores = await valida.palabrasClave(palabrasClave);
+
+		// Si hay errores de validación, redirecciona
+		const errores = await valida.palabrasClave(palabrasClave);
 		if (errores.hay) return res.redirect(req.path.slice(1));
+
+		// Guarda el Data Entry en session y cookie de desambiguar
+		req.session.desambiguar = {palabrasClave};
+		res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
+
 		// 4. Redirecciona a la siguiente instancia
 		return res.redirect("desambiguar");
 	},
 	desambiguarForm: async (req, res) => {
 		// Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "desambiguar";
-		// 2. Obtiene el Data Entry de session y cookies
-		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
-		if (!palabrasClave) return res.redirect("palabras-clave"); // Es distinto a los demás
+
+		// Obtiene el Data Entry de session y cookies
+		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
+		const palabrasClave = desambiguar ? desambiguar.palabrasClave : "";
+
+		// Si no existe el cookie, redirecciona
+		if (!palabrasClave) return res.redirect("palabras-clave");
+
+		// Se asegura de que exista el session
+		if (!req.session.desambiguar) req.session.desambiguar = req.cookies.desambiguar
+
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
@@ -55,8 +72,10 @@ module.exports = {
 		});
 	},
 	datosDurosForm: async (req, res) => {
+		console.log("datos duros");
+		return res.send("SI");
 		// Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "datosDuros";
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
@@ -145,7 +164,7 @@ module.exports = {
 	},
 	datosAdicsForm: async (req, res) => {
 		// Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "datosAdics";
 		const userID = req.session.usuario.id;
 
@@ -204,7 +223,7 @@ module.exports = {
 	},
 	confirmaForm: (req, res) => {
 		// 1. Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "confirma";
 		let maximo;
 		// 2. Obtiene el Data Entry de session y cookies
@@ -302,7 +321,7 @@ module.exports = {
 	},
 	terminaste: async (req, res) => {
 		// Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "terminaste";
 		// Obtiene el Data Entry de session y cookies
 		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
@@ -334,7 +353,7 @@ module.exports = {
 	// Ingresos Manuales
 	IM_Form: async (req, res) => {
 		// 1. Tema y Código
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "IM";
 		// 2. Obtiene el Data Entry de session y cookies
 		let IM = req.session.IM ? req.session.IM : req.cookies.IM;
@@ -363,8 +382,11 @@ module.exports = {
 			entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(req.body.entidad),
 		};
 		IM.fuente = IM.ingreso_fa ? "FA" : "IM";
+
+		// Copia session y cookie
 		req.session.IM = IM;
 		res.cookie("IM", IM, {maxAge: unDia});
+		console.log(383, req.cookies.datosOriginales);
 
 		// 2. Si hay errores de validación, redirecciona al Form
 		let errores = await valida.IM(IM);
@@ -372,6 +394,8 @@ module.exports = {
 
 		// Guarda en 'cookie' de datosOriginales
 		res.cookie("datosOriginales", IM, {maxAge: unDia});
+		console.log(391, IM, req.cookies.IM);
+		return res.send(req.cookies.datosOriginales);
 
 		// Guarda en 'session' y 'cookie' del siguiente paso
 		let sigPaso = IM.ingreso_fa ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
@@ -382,8 +406,9 @@ module.exports = {
 		return res.redirect(req.baseUrl + sigPaso.url);
 	},
 	copiarFA_Form: async (req, res) => {
+		console.log(391, req.method, "FA", {datosOriginales: req.cookies.datosOriginales});
 		// Variables
-		const tema = "prod_agregar";
+		const tema = "prodAgregar";
 		const codigo = "FA";
 		const FA = req.session.FA ? req.session.FA : req.cookies.FA;
 
@@ -404,7 +429,7 @@ module.exports = {
 
 		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in FA) if (!FA[campo]) delete FA[campo];
-		for (let campo in FA) if (typeof FA[campo] == "string") FA[campo] = datosAdics[campo].trim();
+		for (let campo in FA) if (typeof FA[campo] == "string") FA[campo] = FA[campo].trim();
 
 		// Actualiza Session y Cookies FA
 		req.session.FA = FA;
@@ -412,21 +437,21 @@ module.exports = {
 
 		// Si hay errores de validación, redirecciona
 		let errores = valida.FA(FA);
-		if (!errores.url && !errores.hay) {
-			// Obtiene el FA_id
-			FA.FA_id = procesos.obtieneFA_id(FA.url);
-			// Averigua si el FA_id ya está en la BD
-			let elc_id = await BD_especificas.obtieneELC_id(FA.entidad, {FA_id: FA.FA_id});
-			if (elc_id) errores.hay = true;
-		}
 		if (errores.hay) return res.redirect(req.originalUrl);
+
+		// Actualiza Session y Cookies de datosOriginales
+		let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
+		datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, sinopsis};
+		// res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
 		// Actualiza Session y Cookies de datosDuros
 		const datosDuros = {...procesos.infoFAparaDD(FA), avatarUrl: FA.avatarUrl};
+		console.log(427, datosDuros);
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: unDia});
 
 		// Redirecciona a la siguiente instancia
+		console.log(439);
 		return res.redirect("datos-duros");
 	},
 };
