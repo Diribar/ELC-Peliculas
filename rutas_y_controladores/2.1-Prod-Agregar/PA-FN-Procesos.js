@@ -28,7 +28,8 @@ module.exports = {
 	},
 
 	// DESAMBIGUAR - GUARDAR
-	// 1. Películas
+	peliculas: {
+	},
 	DS_movie: async function (datos) {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
@@ -438,9 +439,26 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const FA_id = this.obtieneFA_id(url);
 		contenido = this.contenidoFA(contenido);
+
+		// Conversión de 'string de nombres' en  'string de IDs'
 		if (contenido.pais_nombre) {
-			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
+			// Variables
+			const pais_nombre = contenido.pais_nombre;
+			let resultado = [];
+
+			// Obtiene los paises_id
 			delete contenido.pais_nombre;
+			if (pais_nombre.length) {
+				// Convierte el string en array
+				const pais_nombreArray = pais_nombre.split(", ");
+
+				// Obtiene un 'string de IDs' a partir de un 'array de nombres'
+				for (let pais_nombre of pais_nombreArray) {
+					const aux = paises.find((n) => n.nombre == pais_nombre);
+					if (aux) resultado.push(aux.id);
+				}
+			}
+			contenido.paises_id = resultado.length ? resultado.join(" ") : "";
 		}
 
 		// Genera el resultado
@@ -607,18 +625,4 @@ let FN_actores = (dato) => {
 	}
 	// Fin
 	return actores;
-};
-let paisNombreToId = (pais_nombre) => {
-	// Función para convertir 'string de nombre' en  'string de ID'
-	let resultado = [];
-	if (pais_nombre.length) {
-		let pais_nombreArray = pais_nombre.split(", ");
-		// Convertir 'array de nombres' en 'string de ID"
-		for (let pais_nombre of pais_nombreArray) {
-			let aux = paises.find((n) => n.nombre == pais_nombre);
-			aux ? resultado.push(aux.id) : "";
-		}
-	}
-	resultado = resultado.length ? resultado.join(" ") : "";
-	return resultado;
 };
