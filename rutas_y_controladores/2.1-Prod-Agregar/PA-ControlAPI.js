@@ -34,44 +34,47 @@ module.exports = {
 
 	// Vista (desambiguar)
 	desambForm0: async (req, res) => {
-		// Variables
-		const desambiguar = req.session.desambiguar
+		// Busca valores 'session' - Variables
+		const desambiguar = req.session.desambiguar;
 
 		// Fin
 		return res.json(desambiguar);
 	},
 	desambForm1: async (req, res) => {
-		// Variables
-		let palabrasClave = req.query.palabrasClave;
-		// Obtiene los productos
-		let resultado = await buscar_x_PC.search(palabrasClave);
-		// Conserva la información en session
-		req.session.desambiguar1 = resultado;
+		// Busca los productos - Variables
+		const palabrasClave = req.session.desambiguar.palabrasClave;
+
+		// Obtiene los productos y los conserva en session
+		req.session.desambiguar.productos = await buscar_x_PC.search(palabrasClave);
+
 		// Fin
 		return res.json();
 	},
 	desambForm2: async (req, res) => {
-		// Variables
-		let resultado = req.session.desambiguar1;
+		// Reemplaza las películas por su colección - Variables
+		let productos = req.session.desambiguar.productos;
+
 		// Revisa si debe reemplazar una película por su colección
-		resultado = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado);
+		productos = await buscar_x_PC.reemplazoDePeliPorColeccion(productos);
+
 		// Conserva la información en session
-		req.session.desambiguar2 = resultado;
+		req.session.desambiguar.productos = productos;
+
 		// Fin
-		return res.json(resultado);
+		return res.json();
 	},
 	desambForm3: async (req, res) => {
-		// Variables
-		let resultado = req.session.desambiguar2;
+		// Pule la información - Variables
+		let productos = req.session.desambiguar.productos;
 
 		// Organiza la información
-		resultado = await buscar_x_PC.organizaLaInformacion(resultado);
+		productos = await buscar_x_PC.organizaLaInformacion(productos);
 
 		// Conserva la información en session para no tener que procesarla de nuevo
-		req.session.desambiguar = {...req.session.desambiguar, resultado};
+		req.session.desambiguar.productos = productos;
 
 		// Fin
-		return res.json(resultado);
+		return res.json(productos);
 	},
 	desambGuardar1: async (req, res) => {
 		const datos = JSON.parse(req.query.datos);
