@@ -431,11 +431,12 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	infoFAparaDD: function (datos) {
 		// Obtiene los campos del formulario
-		const {entidad, avatarUrl, FA_id} = datos;
+		const {entidad, url, avatarUrl} = datos;
 		let contenido = datos.contenido;
 
 		// Genera la información
-		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const FA_id = this.obtieneFA_id(url);
 		contenido = this.contenidoFA(contenido);
 		if (contenido.pais_nombre) {
 			contenido.paises_id = paisNombreToId(contenido.pais_nombre);
