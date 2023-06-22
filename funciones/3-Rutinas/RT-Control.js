@@ -29,7 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.MailDeFeedback();
+		this.RCLV_idEnCapitulos();
 	},
 
 	// 1. Rutinas horarias
@@ -376,6 +376,27 @@ module.exports = {
 
 		// Fin
 		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
+		return;
+	},
+	RCLV_idEnCapitulos: async () => {
+		// Variables
+		const rclvs_id = variables.entidades.rclvs_id;
+
+		// Obtiene todas las colecciones
+		const colecciones = await BD_genericas.obtieneTodos("colecciones");
+
+		for (let coleccion of colecciones) // Rutina por colección
+			for (let rclv_id of rclvs_id) // Rutina por rclv_id
+				if (coleccion[rclv_id] > 10) {
+					// Variables
+					const condiciones = {coleccion_id: coleccion.id, [rclv_id]: coleccion[rclv_id]}; // Averigua si alguno de sus capítulos tiene el mismo rclv_id
+					const objeto = {[rclv_id]: 1}; // En los casos que encuentra, convierte el rclv_id en 1
+
+					// Actualiza los capítulos que correspondan
+					BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, objeto);
+				}
+
+		// Fin
 		return;
 	},
 	RCLVsSinEpocaPSTyConAno: async () => {
