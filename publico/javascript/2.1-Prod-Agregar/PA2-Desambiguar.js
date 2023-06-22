@@ -34,19 +34,31 @@ window.addEventListener("load", async () => {
 		const contenidos = ["Buscando productos", "Reemplazando películas por su colección", "Completando la información"];
 		lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
 
-		// Busca los productos y los guarda en session
+		// 1. Busca los productos y los guarda en session
 		lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
 		await fetch("api/desambiguar-busca-los-productos/");
 		lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
 
-		// Reemplaza las películas por su colección
+		// 2. Reemplaza las películas por su colección
 		lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
 		await fetch("api/desambiguar-reemplaza-las-peliculas-por-su-coleccion/");
 		lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
 
-		// Pule la información
+		// 3. Pule la información
 		lis_fa_circle[2].classList.replace("fa-regular", "fa-solid");
 		productos = await fetch("api/desambiguar-pule-la-informacion/").then((n) => n.json());
+		lis_fa_circle[2].classList.replace("fa-circle", "fa-circle-check");
+
+		// 4. Obtiene los hallazgos de origen IM y FA
+		lis_fa_circle[3].classList.replace("fa-regular", "fa-solid");
+		productos = await fetch("api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA/").then((n) => n.json());
+		lis_fa_circle[3].classList.replace("fa-circle", "fa-circle-check");
+
+		// 5. Combina los hallazgos 'yaEnBD'
+		lis_fa_circle[4].classList.replace("fa-regular", "fa-solid");
+		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
+		lis_fa_circle[4].classList.replace("fa-circle", "fa-circle-check");
+
 	}
 
 	// Agrega los productos

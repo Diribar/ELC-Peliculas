@@ -33,6 +33,8 @@ router.get("/api/desambiguar-busca-session-desambiguar", API.desambForm0);
 router.get("/api/desambiguar-busca-los-productos", API.desambForm1);
 router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm2);
 router.get("/api/desambiguar-pule-la-informacion", API.desambForm3);
+router.get("/api/desambiguar-obtiene-los-hallazgos-de-origen-IM-y-FA", API.desambForm4);
+router.get("/api/desambiguar-combina-los-hallazgos-yaEnBD", API.desambForm5);
 // Desambiguar - Guardar
 router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar1);
 router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar2);
@@ -47,24 +49,24 @@ router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
 router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
 
 // VISTAS
-router.get("/palabras-clave", ...dataEntry, vista.palabrasClaveForm);
-router.post("/palabras-clave", ...dataEntry, vista.palabrasClaveGuardar);
-router.get("/desambiguar", ...dataEntry, vista.desambiguarForm);
+router.get("/palabras-clave", ...dataEntry, vista.palabrasClave.form);
+router.post("/palabras-clave", ...dataEntry, vista.palabrasClave.guardar);
+router.get("/desambiguar", ...dataEntry, vista.desambiguar);
 // Comienzo de "prodYaEnBD"
-router.get("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDurosForm);
-router.post("/datos-duros", ...dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsForm);
-router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdicsGuardar);
-router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirmaForm);
-router.post("/confirma", ...dataEntryMasYaEnBD, vista.confirmaGuardar);
+router.get("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDuros.form);
+router.post("/datos-duros", ...dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
+router.get("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdics.form);
+router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdics.guardar);
+router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirma.form);
+router.post("/confirma", ...dataEntryMasYaEnBD, vista.confirma.guardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", vista.terminaste);
 // Ingreso Manual
-router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM_Form);
-router.post("/ingreso-manual", ...dataEntry, vista.IM_Guardar);
+router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM.form);
+router.post("/ingreso-manual", ...dataEntry, vista.IM.guardar);
 // Ingreso FA
-router.get("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Form);
-router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA_Guardar);
+router.get("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA.form);
+router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA.guardar);
 
 // Fin
 module.exports = router;
