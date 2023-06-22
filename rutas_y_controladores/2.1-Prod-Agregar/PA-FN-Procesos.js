@@ -104,7 +104,7 @@ module.exports = {
 			};
 
 			// Obtiene los datos del capítulo
-			await procsDesamb
+			await procsDesamb.movie
 				.obtieneInfo({TMDB_id: capituloID_TMDB})
 				// Le agrega los datos de cabecera
 				.then((n) => (n = {...datosCap, ...n}))
