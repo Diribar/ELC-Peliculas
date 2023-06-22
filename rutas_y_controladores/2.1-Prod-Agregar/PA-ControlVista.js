@@ -43,7 +43,7 @@ module.exports = {
 		req.session.desambiguar = {palabrasClave};
 		res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
 
-		// 4. Redirecciona a la siguiente instancia
+		// Redirecciona a la siguiente instancia
 		return res.redirect("desambiguar");
 	},
 	desambiguarForm: async (req, res) => {
