@@ -36,10 +36,9 @@ module.exports = {
 	desambForm0: async (req, res) => {
 		// Variables
 		const desambiguar = req.session.desambiguar
-		const resultado = desambiguar ? desambiguar.resultado : "";
 
 		// Fin
-		return res.json(resultado);
+		return res.json(desambiguar);
 	},
 	desambForm1: async (req, res) => {
 		// Variables
