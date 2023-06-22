@@ -5,6 +5,7 @@ const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 const buscar_x_PC = require("./PA-FN-Buscar_x_PC");
+const procsDesamb = require("./PA-FN-Desambiguar");
 const procesos = require("./PA-FN-Procesos");
 const valida = require("./PA-FN-Validar");
 
@@ -82,11 +83,11 @@ module.exports = {
 		let productos = req.session.desambiguar.productos;
 
 		// Obtiene los productos afines, ingresados por fuera de TMDB
-		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
+		const prodsIMFA = await procsDesamb.prodsIMFA(palabrasClave);
 
 		// Une y ordena los prodsYaEnBD
 		const prodsYaEnBD = {...productos.prodsYaEnBD, ...prodsIMFA};
-		productos.prodsYaEnBD = procesos.ordenaProdsYaEnBD(prodsYaEnBD);
+		productos.prodsYaEnBD = procsDesamb.ordenaProdsYaEnBD(prodsYaEnBD);
 
 		// Conserva la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar.productos = productos;
@@ -100,7 +101,7 @@ module.exports = {
 
 		// Obtiene más información del producto
 		const TMDB_entidad = datos.TMDB_entidad;
-		const infoTMDBparaDD = await procesos[TMDB_entidad].obtieneInfo(datos);
+		const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
 
 		// Guarda los datos originales en una cookie
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
