@@ -182,6 +182,8 @@ module.exports = {
 			return datos;
 		},
 	},
+	prodsIMFA:(palabrasClave)=>{},
+	ordenaProdsYaEnBD:(prodsYaEnBD)=>{},
 };
 
 // Funciones de movies
