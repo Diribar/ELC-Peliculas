@@ -198,8 +198,8 @@ module.exports = {
 		for (let campo in datosAdics) if (typeof datosAdics[campo] == "string") datosAdics[campo] = datosAdics[campo].trim();
 
 		// Procesa algunos datos
-		if (datosAdics.sinRCLV) datosAdics = procesos.quitaCamposRCLV(datosAdics);
-		datosAdics.actores = procesos.valorParaActores(datosAdics);
+		if (datosAdics.sinRCLV) datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
+		datosAdics.actores = procesos.datosAdics.valorParaActores(datosAdics);
 
 		// Guarda el data entry en session y cookie
 		req.session.datosAdics = datosAdics;
@@ -263,7 +263,7 @@ module.exports = {
 
 		// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 		if (!confirma.sinRCLV) {
-			const {existe, epoca_id} = await procesos.verificaQueExistanLosRCLV(confirma);
+			const {existe, epoca_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
 			if (!existe) return res.redirect("datos-adicionales");
 			else confirma.epoca_id = epoca_id;
 		}
@@ -277,8 +277,8 @@ module.exports = {
 		// No se guardan los datos editados, eso se realiza en la revisión
 		if (confirma.fuente == "TMDB") {
 			if (confirma.TMDB_entidad == "collection")
-				procesos.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
-			if (confirma.TMDB_entidad == "tv") procesos.agregaCaps_TV({...registro, cant_temps: confirma.cant_temps});
+				procesos.confirma.agregaCaps_Colec({...registro, capitulosID_TMDB: confirma.capitulosID_TMDB});
+			if (confirma.TMDB_entidad == "tv") procesos.confirma.agregaCaps_TV({...registro, cant_temps: confirma.cant_temps});
 		}
 
 		// AVATAR -------------------------------------
