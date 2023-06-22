@@ -247,6 +247,7 @@ module.exports = {
 				"sinopsis",
 				"avatar",
 				"avatar_url",
+				...variables.entidades.rclvs_id,
 			];
 			const novedad = {[campo]: edicion[campo]};
 
