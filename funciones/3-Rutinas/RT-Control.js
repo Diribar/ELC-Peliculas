@@ -29,7 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.MailDeFeedback();
+		this.RCLV_idEnCapitulos();
 	},
 
 	// 1. Rutinas horarias
@@ -51,7 +51,7 @@ module.exports = {
 		// Rutina por peliculas y capitulos
 		for (let entidad of ["peliculas", "capitulos"]) {
 			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+			let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 			// Ejecuta la función linksEnProd
 			for (let id of IDs) esperar.push(procsCRUD.revisiones.linksEnProd({entidad, id}));
@@ -59,7 +59,7 @@ module.exports = {
 		await Promise.all(esperar);
 
 		// Rutina por colecciones
-		let IDs = await BD_genericas.obtieneTodos("colecciones", "id").then((n) => n.map((m) => m.id));
+		let IDs = await BD_genericas.obtieneTodos("colecciones").then((n) => n.map((m) => m.id));
 		for (let id of IDs) procsCRUD.revisiones.linksEnColec(id);
 
 		// Fin
@@ -142,7 +142,7 @@ module.exports = {
 		// Rutina por entidad
 		for (let entidad of entidadesRCLV) {
 			// Obtiene los ID de los registros de la entidad
-			let IDs = await BD_genericas.obtieneTodos(entidad, "id").then((n) => n.map((m) => m.id));
+			let IDs = await BD_genericas.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 			// Rutina por ID: ejecuta la función prodsEnRCLV
 			for (let id of IDs) procsCRUD.revisiones.prodsEnRCLV({entidad, id});
@@ -378,7 +378,28 @@ module.exports = {
 		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
 		return;
 	},
-	RclvsSinEpocaPSTyConAno: async () => {
+	RCLV_idEnCapitulos: async () => {
+		// Variables
+		const rclvs_id = variables.entidades.rclvs_id;
+
+		// Obtiene todas las colecciones
+		const colecciones = await BD_genericas.obtieneTodos("colecciones");
+
+		for (let coleccion of colecciones) // Rutina por colección
+			for (let rclv_id of rclvs_id) // Rutina por rclv_id
+				if (coleccion[rclv_id] > 10) {
+					// Variables
+					const condiciones = {coleccion_id: coleccion.id, [rclv_id]: coleccion[rclv_id]}; // Averigua si alguno de sus capítulos tiene el mismo rclv_id
+					const objeto = {[rclv_id]: 1}; // En los casos que encuentra, convierte el rclv_id en 1
+
+					// Actualiza los capítulos que correspondan
+					BD_genericas.actualizaTodosPorCondicion("capitulos", condiciones, objeto);
+				}
+
+		// Fin
+		return;
+	},
+	RCLVsSinEpocaPSTyConAno: async () => {
 		// Variables
 		const entidades = ["personajes", "hechos"];
 		let verificador = [];

@@ -102,7 +102,7 @@ app.set("views", [
 
 		// Variables de links
 		linksProvs: BD_genericas.obtieneTodos("linksProvs", "orden"),
-		links_tipos: BD_genericas.obtieneTodos("links_tipos", "id"),
+		links_tipos: BD_genericas.obtieneTodos("links_tipos"),
 
 		// Consultas
 		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
@@ -112,7 +112,7 @@ app.set("views", [
 		// interes_opciones: BD_genericas.obtieneTodos("interes_opciones", "orden"),
 
 		// Otros
-		meses: BD_genericas.obtieneTodos("meses", "id"),
+		meses: BD_genericas.obtieneTodos("meses"),
 		diasDelAno: BD_genericas.obtieneTodosConInclude("diasDelAno", "epocaDelAno"),
 	};
 	// Procesa todas las lecturas
