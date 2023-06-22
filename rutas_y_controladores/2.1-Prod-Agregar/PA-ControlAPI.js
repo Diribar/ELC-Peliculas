@@ -65,7 +65,6 @@ module.exports = {
 	},
 	desambForm3: async (req, res) => {
 		// Pule la información - Variables
-		const palabrasClave = desambiguar.palabrasClave;
 		let productos = req.session.desambiguar.productos;
 
 		// Organiza la información
