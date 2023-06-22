@@ -72,8 +72,10 @@ module.exports = {
 		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "datosDuros";
+
 		// Obtiene el Data Entry de session y cookies
 		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		
 		// Si existe un valor para el campo 'avatar' elimina el archivo descargado
 		if (datosDuros.avatar) {
 			comp.gestionArchivos.elimina("./publico/imagenes/9-Provisorio/", datosDuros.avatar);
@@ -347,18 +349,21 @@ module.exports = {
 
 	// Ingresos Manuales
 	IM_Form: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "prodAgregar";
 		const codigo = "IM";
-		// 2. Obtiene el Data Entry de session y cookies
+
+		// Obtiene el Data Entry de session y cookies
 		let IM = req.session.IM ? req.session.IM : req.cookies.IM;
-		// 3. Datos para la vista
+
+		// Datos para la vista
 		let entidades = [
 			{codigo: "peliculas", nombre: "Películas"},
 			{codigo: "colecciones", nombre: "Colecciones"},
 			{codigo: "capitulos", nombre: "Capítulo de una colección"},
 		];
-		// 4. Render del formulario
+
+		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
