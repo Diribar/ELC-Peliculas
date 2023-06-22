@@ -6,12 +6,13 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	let informacion;
-	let datos = req.session.datosOriginales
+	const datos = req.session.datosOriginales
 		? req.session.datosOriginales
 		: req.cookies.datosOriginales
 		? req.cookies.datosOriginales
 		: "";
+	let informacion;
+
 	// Controles
 	if (!datos)
 		informacion = {
@@ -43,12 +44,10 @@ module.exports = async (req, res, next) => {
 
 			// Elimina los hallazgos anteriores
 			req.session.desambiguar = "";
-
-			// Envía a la vista
-			return res.render("CMP-0Estructura", {informacion});
 		}
 	}
 
 	// Fin
-	next();
+	if (informacion) return res.render("CMP-0Estructura", {informacion});
+	else next();
 };
