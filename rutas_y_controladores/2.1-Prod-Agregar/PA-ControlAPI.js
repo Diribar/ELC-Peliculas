@@ -35,8 +35,8 @@ module.exports = {
 	// Vista (desambiguar)
 	desambForm0: async (req, res) => {
 		// Variables
-		let desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
-		let resultado = desambiguar ? desambiguar.resultado : "";
+		const desambiguar = req.session.desambiguar
+		const resultado = desambiguar ? desambiguar.resultado : "";
 
 		// Fin
 		return res.json(resultado);
