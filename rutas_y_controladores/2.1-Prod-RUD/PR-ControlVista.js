@@ -203,14 +203,11 @@ module.exports = {
 		// Si es un revisor, agrega la obligatoriedad de que haya completado los campos 'epoca_id' y 'publico_id'
 		prodComb.epoca = revisor;
 		prodComb.publico = revisor;
-
 		let errores = await valida.consolidado({datos: {...prodComb, entidad}});
 
 		// Acciones si no hay errores
-		console.log(errores);
 		if (!errores.hay) {
 			// Acciones si corresponde actualizar el original
-			console.log(211, {actualizaOrig});
 			if (actualizaOrig) {
 				// Completa los datos a guardar
 				prodComb.altaRevisadaPor_id = userID;
@@ -249,7 +246,6 @@ module.exports = {
 			else {
 				// Combina la información
 				edicion = {...edicion, ...req.body};
-				console.log(250, {edicion});
 				// 2. Guarda o actualiza la edición, y achica 'edición a su mínima expresión
 				edicion = await procsCRUD.guardaActEdicCRUD({original, edicion, entidad, userID});
 			}
