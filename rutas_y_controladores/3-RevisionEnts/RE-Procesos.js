@@ -22,14 +22,11 @@ module.exports = {
 			// 3.Elimina las ediciones con RCLV no aprobado
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
-					if (
-						(ediciones[i].personaje && ediciones[i].personaje.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].hecho && ediciones[i].hecho.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].tema && ediciones[i].tema.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].evento && ediciones[i].evento.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].epocaDelAno && ediciones[i].epocaDelAno.statusRegistro_id != aprobado_id)
-					)
-						ediciones.splice(i, 1);
+					for (let rclv of variables.asociaciones.rclvs)
+						if (ediciones[i][rclv] && ediciones[i][rclv].statusRegistro_id != aprobado_id) {
+							ediciones.splice(i, 1);
+							break
+						}
 
 			// 4. Obtiene los productos
 			if (ediciones.length)
