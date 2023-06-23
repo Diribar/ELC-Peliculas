@@ -22,29 +22,29 @@ module.exports = {
 			// Elimina las ediciones con RCLV no aprobado
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
-						for (let rclv of variables.asociaciones.rclvs)
+					for (let rclv of variables.asociaciones.rclvs)
 						if (ediciones[i][rclv] && ediciones[i][rclv].statusRegistro_id != aprobado_id) {
 							ediciones.splice(i, 1);
-							break
-							}
+							break;
+						}
 
 			// Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
-						// Variables
+					// Variables
 					let entidad = comp.obtieneDesdeEdicion.entidadProd(n);
-						let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 
-						// Carga los productos en status menor o igual a aprobado
+					// Carga los productos en status menor o igual a aprobado
 					if (n[asociacion].statusRegistro_id <= aprobado_id)
-							productos.push({
+						productos.push({
 							...n[asociacion],
-								entidad,
+							entidad,
 							fechaRefTexto: comp.fechaHora.fechaDiaMes(n.editadoEn),
 							edicID: n.id,
 							fechaRef: n.editadoEn,
-							});
-					});
+						});
+				});
 
 			// Distribuye entre Altas y Ediciones
 			let ED = [];
