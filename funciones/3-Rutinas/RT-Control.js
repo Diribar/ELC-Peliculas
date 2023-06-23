@@ -29,7 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.RCLV_idEnCapitulos();
+		this.LinksVencidos();
 	},
 
 	// 1. Rutinas horarias
