@@ -21,7 +21,7 @@ module.exports = (sequelize, dt) => {
 		altaRevisadaPor_id: {type: dt.INTEGER},
 		altaRevisadaEn: {type: dt.DATE},
 		leadTimeCreacion: {type: dt.DECIMAL},
-		primeraRevision: {type: dt.BOOLEAN},
+		yaTuvoPrimRev: {type: dt.BOOLEAN},
 
 		statusSugeridoPor_id: {type: dt.INTEGER},
 		statusSugeridoEn: {type: dt.DATE},

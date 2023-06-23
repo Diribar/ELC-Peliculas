@@ -767,10 +767,10 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	return resultado;
 };
 let obtieneProdsDeLinks = function (links, ahora, revID) {
-	// 1. Variables
-	let prods = {VN: [], OT: []}; // Vencidos y otros
+	// Variables
+	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
-	// 2. Separa entre VN y OT
+	// 2. Separa entre PR, VN y OT
 	links.map((link) => {
 		// Variables
 		let entidad = comp.obtieneDesdeEdicion.entidadProd(link);
@@ -781,58 +781,42 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 
 		// Separa en VN y OT
 		if (link.statusRegistro && link.statusRegistro.creadoAprob)
-			prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+			link.yaTuvoPrimRev
+				? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
+				: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
 
-	// 3. Ordena por la fecha más antigua
-	prods.VN.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-	prods.OT.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
+	// Pule los resultados
+	const metodos = Object.keys(prods);
+	for (let i = 0; i < metodos.length; i++) {
+		// Variables
+		const metodo = metodos[i];
 
-	// 4. Elimina repetidos dentro del grupo
-	prods.VN = comp.eliminaRepetidos(prods.VN);
-	prods.OT = comp.eliminaRepetidos(prods.OT);
+		// Elimina repetidos dentro del grupo
+		prods[metodo] = comp.eliminaRepetidos(prods[metodo]);
 
-	// Elimina repetidos entre grupos
-	if (prods.VN.length && prods.OT)
-		for (let i = prods.VN.length - 1; i >= 0; i--)
-			if (prods.OT.find((n) => n.id == prods.VN[i].id && n.entidad == prods.VN[i].entidad)) prods.VN.splice(i, 1);
+		// Elimina repetidos entre grupos - si está en el método actual, elimina de los siguientes
+		for (let j = i + 1; j < metodos.length; j++) {
+			const metodoEliminar = metodos[j];
+			for (let k = prods[metodoEliminar].length - 1; k >= 0; k--) {
+				const prodRevisar = prods[metodoEliminar][k];
+				const eliminar = prods[metodo].find((n) => n.id == prodRevisar.id && n.entidad == prodRevisar.entidad);
+				if (eliminar) prods[metodoEliminar].splice(k, 1);
+			}
+		}
 
-	// 5. Deja solamente los prods aprobados
-	if (prods.VN.length) prods.VN = prods.VN.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
-	if (prods.OT.length) prods.OT = prods.OT.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
+		// Ordena por la fecha más antigua
+		prods[metodo].sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
 
-	// 6. Deja solamente los sin problemas de captura
-	if (prods.VN.length) prods.VN = comp.sinProblemasDeCaptura(prods.VN, revID, ahora);
-	if (prods.OT.length) prods.OT = comp.sinProblemasDeCaptura(prods.OT, revID, ahora);
+		// Deja solamente los prods aprobados
+		if (prods[metodo].length)
+			prods[metodo] = prods[metodo].filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
+
+		// Deja solamente los sin problemas de captura
+		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID, ahora);
+	}
 
 	// Fin
 	return prods;
-};
-let creadosSinEdicion = async () => {
-	// Obtiene los productos en status 'creado' y sin edicion
-	const pel = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creado_id}, "ediciones")
-		.then((n) => n.filter((m) => !m.ediciones.length))
-		.then((n) =>
-			n.map((m) => {
-				const fechaRef = m.creadoEn;
-				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
-				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
-			})
-		);
-	const col = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creado_id}, "ediciones")
-		.then((n) => n.filter((m) => !m.ediciones.length))
-		.then((n) =>
-			n.map((m) => {
-				const fechaRef = m.creadoEn;
-				const fechaRefTexto = comp.fechaHora.fechaDiaMes(fechaRef);
-				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
-			})
-		);
-
-	// Consolida el resultado
-	const SE = await Promise.all([pel, col]).then(([a, b]) => [...a, ...b]);
-
-	// Fin
-	return SE;
 };
