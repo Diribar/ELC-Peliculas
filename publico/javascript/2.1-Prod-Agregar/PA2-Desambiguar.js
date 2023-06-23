@@ -39,7 +39,7 @@ window.addEventListener("load", async () => {
 		DOM.cartel.classList.remove("disminuye");
 		DOM.cartel.classList.add("aumenta");
 
-		// Ejecuta las APIs iniciales
+		// Ejecuta las APIs 'form'
 		for (let rutaAPI of rutasAPI) {
 			await fetch("api/desambiguar-" + rutaAPI + "/");
 			api++;
@@ -154,6 +154,13 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 			if (yaEligio) return;
 			else yaEligio = true;
 
+			// Muestra el cartel
+			DOM.tituloCartel.innerHTML = "Estamos procesando la información...";
+			DOM.progreso.style.width = "0%";
+			DOM.cartel.classList.remove("ocultar");
+			DOM.cartel.classList.remove("disminuye");
+			DOM.cartel.classList.add("aumenta");
+
 			// Obtiene los datos
 			let datos = {
 				TMDB_entidad: e.target[0].value,
@@ -162,23 +169,15 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 				idiomaOriginal_id: e.target[3].value, // Es necesario porque sólo se consigue mediante 'search'
 			};
 
-			// Muestra el cartel
-			let titulo = "Estamos procesando la información...";
-			const contenidos = ["Obteniendo más información del producto", "Revisando la información disponible"];
-			let lis_fa_circle = cartel_Armado({DOM, titulo, contenidos});
-
-			// 1. Actualiza Datos Originales
-			lis_fa_circle[0].classList.replace("fa-regular", "fa-solid");
+			// Actualiza Datos Originales
 			await fetch("api/desambiguar-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
-			lis_fa_circle[0].classList.replace("fa-circle", "fa-circle-check");
+			DOM.progreso.style.width = "50%";
 
 			// 2. Averigua si la info tiene errores
-			lis_fa_circle[1].classList.replace("fa-regular", "fa-solid");
 			const errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
-			lis_fa_circle[1].classList.replace("fa-circle", "fa-circle-check");
+			DOM.progreso.style.width = "100%";
 
 			// Desaparece el cartel
-			DOM.fondo.classList.add("ocultar");
 			DOM.cartel.classList.remove("aumenta");
 			DOM.cartel.classList.add("disminuye");
 

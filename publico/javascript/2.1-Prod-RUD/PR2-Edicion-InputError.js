@@ -150,9 +150,9 @@ window.addEventListener("load", async () => {
 				DOM.botonesEliminar[1].classList.add("inactivoVersion");
 			}
 
-			// Averigua si los campos input son iguales
-			let sonIguales = true;
+			// Averigua si los campos input son iguales entre la edicN y su referente anterior
 			const comparativa = version.edicG_existe ? version.edicG : version.orig;
+			let sonIguales = true;
 			for (let campo of varias.camposTodos)
 				if (version.edicN[campo] != comparativa[campo] && (version.edicN[campo] || comparativa[campo]))
 					sonIguales = false;

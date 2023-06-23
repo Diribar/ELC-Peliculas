@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 22/jun",
-	"HoraUTC": "0:54",
+	"FechaUTC": "Vie. 23/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Dom. 18/jun",
@@ -15,15 +15,15 @@
 		"AprobadoConAvatarLink": "SI",
 		"BorraImagenesSinRegistro": "SI",
 		"LinksVencidos": "SI",
-		"RCLV_idEnCapitulos":"SI",
+		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-jun-23": {"titulo": "ELC - Películas"},
 		"21-jun-23": {"titulo": "ELC - Películas"},
 		"22-jun-23": {"titulo": "Tomás Moro", "entidad": "personajes", "id": 102},
 		"23-jun-23": {"titulo": "ELC - Películas"},
-		"24-jun-23": {"titulo": "Ap. Mar. - Medjugorje", "entidad": "hechos", "id": 58}
+		"24-jun-23": {"titulo": "Ap. Mar. - Medjugorje", "entidad": "hechos", "id": 58},
+		"25-jun-23": {"titulo": "ELC - Películas"}
 	}
 }

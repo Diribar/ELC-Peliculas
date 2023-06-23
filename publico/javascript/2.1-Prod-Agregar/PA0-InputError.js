@@ -252,7 +252,8 @@ window.addEventListener("load", async () => {
 		if (v.PC) await PC.particsInput(e);
 
 		if (v.DD) {
-			const indice = v.campos.indexOf(e.target.name);
+			const campo = e.target.name == "paises" ? "paises_id" : e.target.name;
+			const indice = v.campos.indexOf(campo);
 			DOM.iconosError[indice].classList.add("ocultar");
 		}
 
