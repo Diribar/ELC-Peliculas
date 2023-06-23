@@ -108,7 +108,7 @@ module.exports = {
 			datos.altaRevisadaPor_id = revID;
 			datos.altaRevisadaEn = ahora;
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
-		}
+		} else datos.yaTuvoPrimRev = true;
 		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
 
 		// CONSECUENCIAS
@@ -141,10 +141,10 @@ module.exports = {
 
 			// 3. Aumenta el valor de linksAprob/rech en el registro del usuario
 			BD_genericas.aumentaElValorDeUnCampo("usuarios", sugeridoPor_id, campoDecision, 1);
-	
+
 			// 4. Penaliza al usuario si corresponde
 			if (datosHist.motivo) comp.usuarioPenalizAcum(sugeridoPor_id, datosHist.motivo, petitFamilias);
-		}	
+		}
 
 		// 5. Actualiza los productos, en los campos 'castellano', 'linksGratuitos' y 'linksGeneral'
 		procsCRUD.revisiones.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id});
