@@ -68,7 +68,6 @@
 			<div class="temas">
 				<% let rr = "revision/rclv/" %>
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Inactivo con Productos", regs: rclvs.IN, url: "rclv/detalle"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivar y Recuperar", regs: rclvs.IR, url: rr + "inactivar-o-recuperar"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>

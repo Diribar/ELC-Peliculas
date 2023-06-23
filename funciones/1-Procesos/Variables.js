@@ -28,6 +28,10 @@ module.exports = {
 		rclvs: ["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 		rclvs_id: ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"],
 	},
+	asociaciones: {
+		prods: ["pelicula", "coleccion", "capitulo"],
+		rclvs: ["personaje", "hecho", "tema", "evento", "epocaDelAno"],
+	},
 
 	// Consulta de Productos
 	filtrosConsultas: {

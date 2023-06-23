@@ -590,7 +590,7 @@ let nombres = async (reg, familia) => {
 			"</a>";
 	} else {
 		// Obtiene el registro
-		const asociaciones = ["pelicula", "coleccion", "capitulo"];
+		const asociaciones = variables.asociaciones.prods;
 		const regEntidad = await BD_genericas.obtienePorIdConInclude("links", reg.entidad_id, asociaciones);
 		if (!regEntidad.id) return {};
 

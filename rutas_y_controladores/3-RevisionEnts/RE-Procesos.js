@@ -13,13 +13,13 @@ module.exports = {
 		obtieneProds_AL_ED: async (ahora, revID) => {
 			// 1. Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
-			let include = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "tema", "evento", "epocaDelAno"];
+			let include = [...variables.asociaciones.prods, ...variables.asociaciones.rclvs];
 			let productos = [];
 
 			// 2. Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
 
-			// 3.Elimina las edicionesProd con RCLV no aprobado
+			// 3.Elimina las ediciones con RCLV no aprobado
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
 					if (
@@ -129,22 +129,15 @@ module.exports = {
 			campos = {entidades, status_id: [inactivar_id, recuperar_id], campoRevID: "statusSugeridoPor_id", revID};
 			let IR = obtieneRegs(campos);
 
-			// IN: Inactivo con producto
-			campos = {entidades, status_id: inactivo_id, revID, include};
-			let IN = obtieneRegs(campos).then((n) =>
-				n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length || m.prods_ediciones.length)
-			);
-
-			// Aguarda las lecturas
-			[AL, SL, IR, IN] = await Promise.all([AL, SL, IR, IN]);
+			[AL, SL, IR] = await Promise.all([AL, SL, IR]);
 
 			// Fin
-			return {AL, SL, IR, IN};
+			return {AL, SL, IR};
 		},
 		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
 			// 1. Variables
 			const campoFecha = "editadoEn";
-			let include = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
+			let include = variables.asociaciones.rclvs;
 			let rclvs = [];
 
 			// 2. Obtiene todas las ediciones ajenas

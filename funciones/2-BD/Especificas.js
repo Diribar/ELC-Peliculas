@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const comp = require("../1-Procesos/Compartidas");
+const variables = require("../1-Procesos/Variables");
 
 module.exports = {
 	// Varios
@@ -80,8 +81,7 @@ module.exports = {
 					familia: dato.familia,
 					// Específicos para desambiguar
 					avatar: m.avatar,
-					nombreOriginal:m.nombreOriginal,
-					
+					nombreOriginal: m.nombreOriginal,
 				}))
 			);
 	},
@@ -149,7 +149,7 @@ module.exports = {
 		},
 		obtieneLinksAjenos: async (revID) => {
 			// Variables
-			const include = ["pelicula", "coleccion", "capitulo"];
+			const include = variables.asociaciones.prods;
 
 			// Obtiene los links en status 'a revisar'
 			const condiciones = {
