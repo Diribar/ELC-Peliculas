@@ -361,18 +361,26 @@ module.exports = {
 		return;
 	},
 	LinksVencidos: async function () {
-		// Obtiene la fecha de corte
+		// Variables
+		const ahora = Date.now();
+		const fechaPrimeraRevision = new Date(ahora - unMes);
 		const vidaUtil = 6 * unMes;
-		const fechaCorte = new Date(comp.fechaHora.ahora().getTime() - vidaUtil);
+		const fechaCorte = new Date(ahora - vidaUtil);
 
-		// Obtiene las condiciones de cuáles son los links vencidos
-		const condiciones = {statusSugeridoEn: {[Op.lt]: fechaCorte}, statusRegistro_id: aprobado_id};
+		// Condiciones
+		const condiciones = [
+			{statusRegistro_id: aprobado_id},
+			{
+				[Op.or]: [
+					{altaRevisadaEn: {[Op.lt]: fechaPrimeraRevision}, primeraRevision: false}, // Necesita su primera revisión
+					{statusSugeridoEn: {[Op.lt]: fechaCorte}}, // Concluyó su vida útil
+				],
+			},
+		];
 
-		// Prepara la información a guardar
+		// Actualiza el status de los links
 		const objeto = {statusSugeridoPor_id: usAutom_id, statusRegistro_id: creadoAprob_id};
-
-		// Actualiza el status de los links vencidos
-		BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
+		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Fin
 		procesos.finRutinasDiariasSemanales("LinksVencidos", "RutinasSemanales");
