@@ -24,15 +24,15 @@ window.addEventListener("load", async () => {
 	// Acciones si no hay productos en 'session'
 	if (!productos) {
 		// Variables
-		const rutasAPI = [
-			"busca-los-productos",
-			"reemplaza-las-peliculas-por-su-coleccion",
-			"pule-la-informacion",
-			"obtiene-los-hallazgos-de-origen-IM-y-FA",
-		];
-		const cantAPIs = rutasAPI.length + 1;
-		let api = 0;
 		ocultarCartel = true;
+		const APIs = [
+			{ruta: "busca-los-productos", duracion: 1100},
+			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 700},
+			{ruta: "pule-la-informacion", duracion: 800},
+			{ruta: "obtiene-los-hallazgos-de-origen-IM-y-FA", duracion: 0},
+		];
+		let duracionTotal = 0;
+		for (let API of APIs) duracionTotal += API.duracion;
 
 		// Muestra el cartel
 		DOM.cartel.classList.remove("ocultar");
@@ -40,19 +40,22 @@ window.addEventListener("load", async () => {
 		DOM.cartel.classList.add("aumenta");
 
 		// Ejecuta las APIs 'form'
-		for (let rutaAPI of rutasAPI) {
-			await fetch("api/desambiguar-" + rutaAPI + "/");
-			api++;
-			DOM.progreso.style.width = parseInt((api / cantAPIs) * 100) + "%";
+		let duracionAcum = 0;
+		for (let API of APIs) {
+			await fetch("api/desambiguar-" + API.ruta + "/");
+			duracionAcum += API.duracion;
+			DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
 		}
 
 		// Combina los hallazgos 'yaEnBD'
 		productos = await fetch("api/desambiguar-combina-los-hallazgos-yaEnBD/").then((n) => n.json());
-		DOM.progreso.style.width = "100%";
 	}
 
 	// Agrega los productos
 	let {prodsNuevos, prodsYaEnBD, mensaje} = productos;
+
+	// Agrega el mensaje
+	document.querySelector("#mensaje").innerHTML = mensaje;
 
 	// Productos nuevos
 	if (prodsNuevos.length)
@@ -120,16 +123,13 @@ window.addEventListener("load", async () => {
 			DOM.prodsYaEnBD.remove();
 		}
 
-	// Agrega el mensaje
-	document.querySelector("#mensaje").innerHTML = mensaje;
-
 	// Hace foco en el primer producto
 	document.querySelector("#listado li button").focus();
 
 	// Desplazamiento original
 	desplazamHoriz();
 
-	// Comienzo de Back-end - Acciones a partir del click en una opción
+	// Acciones luego de elegir un producto nuevo
 	accionesLuegoDeElegirProdNuevo(DOM);
 
 	// Desaparece el cartel
@@ -171,11 +171,10 @@ let accionesLuegoDeElegirProdNuevo = (DOM) => {
 
 			// Actualiza Datos Originales
 			await fetch("api/desambiguar-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
-			DOM.progreso.style.width = "50%";
+			DOM.progreso.style.width = "100%";
 
 			// 2. Averigua si la info tiene errores
 			const errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
-			DOM.progreso.style.width = "100%";
 
 			// Desaparece el cartel
 			DOM.cartel.classList.remove("aumenta");

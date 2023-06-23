@@ -198,7 +198,7 @@ module.exports = {
 	ImagenDerecha: async function () {
 		// Variables
 		let info = procesos.lecturaRutinasJSON();
-		const milisegs = new Date().getTime() + (new Date().getTimezoneOffset() / 60) * unaHora;
+		const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 		const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 		const cantFechas = 5; // Incluye 5 días
 		let fechas = [];
