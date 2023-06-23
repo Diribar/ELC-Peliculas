@@ -372,7 +372,7 @@ module.exports = {
 			{statusRegistro_id: aprobado_id},
 			{
 				[Op.or]: [
-					{altaRevisadaEn: {[Op.lt]: fechaPrimeraRevision}, primeraRevision: false}, // Necesita su primera revisión
+					{altaRevisadaEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
 					{statusSugeridoEn: {[Op.lt]: fechaCorte}}, // Concluyó su vida útil
 				],
 			},
