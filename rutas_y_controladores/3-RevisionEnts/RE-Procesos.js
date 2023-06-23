@@ -11,27 +11,24 @@ module.exports = {
 	// Tablero
 	TC: {
 		obtieneProds_AL_ED: async (ahora, revID) => {
-			// 1. Variables
+			// Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			let include = [...variables.asociaciones.prods, ...variables.asociaciones.rclvs];
 			let productos = [];
 
-			// 2. Obtiene todas las ediciones ajenas
+			// Obtiene todas las ediciones ajenas
 			let ediciones = await BD_especificas.TC.obtieneEdicsAjenas("prods_edicion", revID, include);
 
-			// 3.Elimina las ediciones con RCLV no aprobado
+			// Elimina las ediciones con RCLV no aprobado
 			if (ediciones.length)
 				for (let i = ediciones.length - 1; i >= 0; i--)
-					if (
-						(ediciones[i].personaje && ediciones[i].personaje.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].hecho && ediciones[i].hecho.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].tema && ediciones[i].tema.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].evento && ediciones[i].evento.statusRegistro_id != aprobado_id) ||
-						(ediciones[i].epocaDelAno && ediciones[i].epocaDelAno.statusRegistro_id != aprobado_id)
-					)
-						ediciones.splice(i, 1);
+					for (let rclv of variables.asociaciones.rclvs)
+						if (ediciones[i][rclv] && ediciones[i][rclv].statusRegistro_id != aprobado_id) {
+							ediciones.splice(i, 1);
+							break;
+						}
 
-			// 4. Obtiene los productos
+			// Obtiene los productos
 			if (ediciones.length)
 				ediciones.map((n) => {
 					// Variables
@@ -49,26 +46,26 @@ module.exports = {
 						});
 				});
 
-			// 5. Les agrega los productos en status 'creado' y sin edicion
-			const SE = await creadosSinEdicion();
-			if (SE.length) productos = [...productos, ...SE];
-
-			// 6. Distribuye entre Altas y Ediciones
+			// Distribuye entre Altas y Ediciones
 			let ED = [];
-			let AL;
+			let AL = [];
 			if (productos.length) {
-				// 6.A. Elimina los repetidos
+				// Elimina los productos repetidos
 				productos = comp.eliminaRepetidos(productos);
-				// 6.B. Deja solamente los sin problemas de captura
+
+				// Deja solamente los productos sin problemas de captura
 				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
-				// 6.C. Ordena por fecha descendente
+
+				// Ordena por fecha descendente
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
-				// 6.D. Altas
+
+				// Altas
 				AL = productos.filter(
 					(n) => n.statusRegistro_id == creado_id && n.creadoEn < haceUnaHora && n.entidad != "capitulos"
 				);
 				if (AL.length) AL.sort((a, b) => b.linksGeneral - a.linksGeneral); // Primero los que tienen links
-				// 6.E. Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
+
+				// Ediciones - es la suma de: en status 'creadoAprob' o 'aprobado'
 				ED.push(...productos.filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id)));
 			}
 
@@ -83,7 +80,9 @@ module.exports = {
 			// SE: Sin Edición (en status creadoAprob)
 			campos = {entidades, status_id: creadoAprob_id, revID, include: "ediciones"};
 			let SE = obtieneRegs(campos)
-				.then((n) => n.filter((m) => m.entidad != "capitulos"))
+				// Deja solamente las películas, colecciones, y los capítulos con colección aprobada
+				.then((n) => n.filter((m) => m.entidad != "capitulos" || m.statusColeccion_id == aprobado_id))
+				// Deja solamente los registros sin edición
 				.then((n) => n.filter((m) => !m.ediciones.length));
 
 			// IN: En staus 'inactivar'
@@ -812,7 +811,7 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 };
 let creadosSinEdicion = async () => {
 	// Obtiene los productos en status 'creado' y sin edicion
-	const PL = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creado_id}, "ediciones")
+	const pel = BD_genericas.obtieneTodosPorCondicionConInclude("peliculas", {statusRegistro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {
@@ -821,7 +820,7 @@ let creadosSinEdicion = async () => {
 				return {...m, entidad: "peliculas", fechaRef, fechaRefTexto};
 			})
 		);
-	const CL = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creado_id}, "ediciones")
+	const col = BD_genericas.obtieneTodosPorCondicionConInclude("colecciones", {statusRegistro_id: creado_id}, "ediciones")
 		.then((n) => n.filter((m) => !m.ediciones.length))
 		.then((n) =>
 			n.map((m) => {
@@ -832,7 +831,7 @@ let creadosSinEdicion = async () => {
 		);
 
 	// Consolida el resultado
-	const SE = await Promise.all([PL, CL]).then(([a, b]) => [...a, ...b]);
+	const SE = await Promise.all([pel, col]).then(([a, b]) => [...a, ...b]);
 
 	// Fin
 	return SE;

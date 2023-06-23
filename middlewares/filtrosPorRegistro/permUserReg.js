@@ -98,6 +98,7 @@ module.exports = async (req, res, next) => {
 				iconos: [v.vistaAnterior],
 			};
 	}
+
 	// El registro fue creado hace más de una hora
 	// 2. El registro está en status 'creado' y la vista no es de revisión
 	if (!informacion) {
@@ -124,6 +125,7 @@ module.exports = async (req, res, next) => {
 			};
 		}
 	}
+
 	// 3. El registro está capturado en forma 'activa', y otro usuario quiere acceder a él
 	if (!informacion) {
 		if (v.capturadoEn > v.haceUnaHora && v.registro.capturadoPor_id != v.userID && v.registro.capturaActiva)
@@ -135,6 +137,7 @@ module.exports = async (req, res, next) => {
 				iconos: v.vistaAnteriorInactivar,
 			};
 	}
+
 	// 4. El usuario quiere acceder a la entidad que capturó hace más de una hora y menos de dos horas
 	if (!informacion) {
 		if (v.capturadoEn < v.haceUnaHora && v.capturadoEn > v.haceDosHoras && v.registro.capturadoPor_id == v.userID)
@@ -147,6 +150,7 @@ module.exports = async (req, res, next) => {
 				iconos: [v.vistaEntendido],
 			};
 	}
+
 	// 5. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) {
 		let prodCapturado = await buscaOtrasCapturasActivasDelUsuario();
@@ -187,6 +191,7 @@ module.exports = async (req, res, next) => {
 			};
 		}
 	}
+
 	// 6. Verificaciones exclusivas de las vistas de Revisión
 	if (!informacion && v.urlBase == "/revision" && !v.url.startsWith("/tablero-de-control")) {
 		// 1. El registro está en un status gr_creado, creado por el Revisor
@@ -195,12 +200,14 @@ module.exports = async (req, res, next) => {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
 				iconos: v.vistaAnteriorTablero,
 			};
+
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
 		else if (v.registro.statusRegistro.gr_provisorios && v.registro.statusSugeridoPor_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,
 			};
+			
 		// 3. El registro sólo tiene una edición, es del Revisor, y quiere acceder a una vista de edición
 		else if (
 			v.registro.ediciones &&
