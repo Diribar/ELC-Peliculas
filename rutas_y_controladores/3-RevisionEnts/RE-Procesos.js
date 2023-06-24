@@ -10,7 +10,7 @@ const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 module.exports = {
 	// Tablero
 	TC: {
-		obtieneProds_AL_ED: async (ahora, revID) => {
+		obtieneProds_AL_ED: async (revID) => {
 			// Variables
 			const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 			let include = [...variables.asociaciones.prods, ...variables.asociaciones.rclvs];
@@ -54,7 +54,7 @@ module.exports = {
 				productos = comp.eliminaRepetidos(productos);
 
 				// Deja solamente los productos sin problemas de captura
-				productos = comp.sinProblemasDeCaptura(productos, revID, ahora);
+				productos = comp.sinProblemasDeCaptura(productos, revID);
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => new Date(b.fechaRef) - new Date(a.fechaRef));
@@ -99,18 +99,38 @@ module.exports = {
 			// Fin
 			return {SE, IR: [...IN, ...RC]};
 		},
-		obtieneProds_Links: async (ahora, revID) => {
+		obtieneProds_Links: async (revID) => {
 			// Obtiene los links ajenos 'a revisar'
-			let links = await BD_especificas.TC.obtieneLinksAjenos(revID);
+			let linksRevisar = BD_especificas.TC.obtieneLinksAjenos(revID);
+
+			// Averigua el porcentaje de links
+			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
+				statusRegistro_id: aprobado_id,
+				statusSugeridoEn: {[Op.gt]: comienzoDelDomingo()},
+			}).then((n) => n.length);
+			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id}).then(
+				(n) => n.length
+			);
+
+			// Espera a que se actualicen los valores
+			[linksRevisar, linksAprobsEstaSem, linksAprobsTotal] = await Promise.all([
+				linksRevisar,
+				linksAprobsEstaSem,
+				linksAprobsTotal,
+			]);
+
+			// Averigua el porcentaje de links aprobados en la semana
+			const porcentaje = parseInt((linksAprobsEstaSem / linksAprobsTotal) * 100);
+			console.log(113, porcentaje + "%", linksAprobsEstaSem, linksAprobsTotal, linksRevisar.length);
 
 			// Obtiene los productos
-			let productos = links.length ? obtieneProdsDeLinks(links, ahora, revID) : [];
+			const aprobsPerms = porcentaje < 10 || linksAprobsEstaSem < 30;
+			const productos = linksRevisar.length ? obtieneProdsDeLinks(linksRevisar, revID, aprobsPerms) : [];
 
 			// Fin
-			return productos;
+			return {productos, porcentajeLinksAprobsEstaSem: porcentaje};
 		},
-		obtieneRCLVs: async (ahora, revID) => {
-			// Obtiene rclvs en situaciones particulares
+		obtieneRCLVs: async (revID) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
 			const include = ["peliculas", "colecciones", "capitulos", "prods_ediciones"];
@@ -133,7 +153,7 @@ module.exports = {
 			// Fin
 			return {AL, SL, IR};
 		},
-		obtieneRCLVsConEdicAjena: async function (ahora, revID) {
+		obtieneRCLVsConEdicAjena: async function (revID) {
 			// 1. Variables
 			const campoFecha = "editadoEn";
 			let include = variables.asociaciones.rclvs;
@@ -168,10 +188,10 @@ module.exports = {
 			}
 
 			// 5. Deja solamente los sin problemas de captura
-			if (rclvs.length) rclvs = comp.sinProblemasDeCaptura(rclvs, revID, ahora);
+			if (rclvs.length) rclvs = comp.sinProblemasDeCaptura(rclvs, revID);
 
 			// Fin
-			return rclvs;
+			return {ED: rclvs};
 		},
 		prod_ProcesaCampos: (productos) => {
 			// Procesar los registros
@@ -766,7 +786,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 	// Fin
 	return resultado;
 };
-let obtieneProdsDeLinks = function (links, ahora, revID) {
+let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	// Variables
 	let prods = {PR: [], VN: [], OT: []}; // Primera Revisión, Vencidos y otros
 
@@ -779,12 +799,13 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 		let fechaRef = link[campoFecha];
 		let fechaRefTexto = comp.fechaHora.fechaDiaMes(link[campoFecha]);
 
-		// Separa en VN y OT
-		if (link.statusRegistro && link.statusRegistro.creadoAprob)
-			link.yaTuvoPrimRev
-				? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
-				: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
-		else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+		// Separa en PR, VN y OT
+		if (link.statusRegistro && link.statusRegistro.creadoAprob) {
+			if (aprobsPerms)
+				link.yaTuvoPrimRev
+					? prods.VN.push({...link[asociacion], entidad, fechaRef, fechaRefTexto})
+					: prods.PR.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
+		} else prods.OT.push({...link[asociacion], entidad, fechaRef, fechaRefTexto});
 	});
 
 	// Pule los resultados
@@ -814,9 +835,33 @@ let obtieneProdsDeLinks = function (links, ahora, revID) {
 			prods[metodo] = prods[metodo].filter((n) => [creadoAprob_id, aprobado_id].includes(n.statusRegistro_id));
 
 		// Deja solamente los sin problemas de captura
-		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID, ahora);
+		if (prods[metodo].length) prods[metodo] = comp.sinProblemasDeCaptura(prods[metodo], revID);
 	}
 
 	// Fin
 	return prods;
+};
+let comienzoDelDomingo = () => {
+	// Obtiene el primer día del año
+	const fecha = new Date();
+	const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
+
+	// Obtiene el dia de semana del primer día del año
+	let diaSem_primerDiaDelAno = new Date(comienzoAno).getDay();
+
+	// Lleva el día al formato lun: 1 - dom: 7
+	if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
+
+	// Obtiene el primer domingo del año (0 - 6)
+	const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
+	const fechaPrimerDomingo = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
+
+	// Obtiene la semana del año
+	const semana = parseInt((fecha.getTime() - fechaPrimerDomingo) / unDia / 7);
+
+	// Obtiene el instante cero de la semana
+	const instanteCeroDeLaSemana = fechaPrimerDomingo + semana * 7 * unDia;
+
+	// Fin
+	return new Date(instanteCeroDeLaSemana);
 };

@@ -733,8 +733,9 @@ module.exports = {
 		// Fin
 		return paisesNombre.join(", ");
 	},
-	sinProblemasDeCaptura: function (familia, revID, ahora) {
+	sinProblemasDeCaptura: function (familia, revID) {
 		// Variables
+		const ahora = this.fechaHora.ahora();
 		const haceUnaHora = this.fechaHora.nuevoHorario(-1, ahora);
 		const haceDosHoras = this.fechaHora.nuevoHorario(-2, ahora);
 

@@ -373,7 +373,7 @@ module.exports = {
 			for (let capitulo of capitulos) {
 				// Variables
 				const datosTerm = !capitulo.altaTermEn
-					? {...datos, altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
+					? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
 					: {};
 
 				// Revisa si cada capítulo supera el test de errores

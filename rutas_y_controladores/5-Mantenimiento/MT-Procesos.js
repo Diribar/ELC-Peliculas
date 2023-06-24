@@ -225,7 +225,7 @@ let obtieneProdsDeLinks = function (links, ahora, userID) {
 	if (LI.length) LI = LI.filter((n) => n.statusRegistro_id == aprobado_id);
 
 	// 6. Deja solamente los prods sin problemas de captura
-	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID, ahora);
+	if (LI.length) LI = comp.sinProblemasDeCaptura(LI, userID);
 
 	// Fin
 	return {LI};

@@ -13,28 +13,24 @@ const procsLinks = require("../2.3-Links-CRUD/LK-FN-Procesos");
 module.exports = {
 	// TABLERO
 	tableroControl: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
-		let revID = req.session.usuario.id;
-		// Definir variables
-		const ahora = comp.fechaHora.ahora();
-		// Productos y Ediciones
-		let prods = {
-			// Altas y Ediciones
-			...(await procesos.TC.obtieneProds_AL_ED(ahora, revID)),
-			// Sin Edición, Inactivar y Recuperar
-			...(await procesos.TC.obtieneProds_SE_IR(revID)),
-		};
+		const revID = req.session.usuario.id;
+
+		// Productos, Ediciones y Links
+		let prods1 = procesos.TC.obtieneProds_AL_ED(revID); // Altas y Ediciones
+		let prods2 = procesos.TC.obtieneProds_SE_IR(revID); // Sin Edición, Inactivar y Recuperar
+		let links = procesos.TC.obtieneProds_Links(revID);
 
 		// RCLV
-		let rclvs = {
-			...(await procesos.TC.obtieneRCLVs(ahora, revID)),
-			ED: await procesos.TC.obtieneRCLVsConEdicAjena(ahora, revID),
-		};
+		let rclvs1 = procesos.TC.obtieneRCLVs(revID);
+		let rclvs2 = procesos.TC.obtieneRCLVsConEdicAjena(revID);
 
-		// Links
-		prods = {...prods, ...(await procesos.TC.obtieneProds_Links(ahora, revID))};
+		// Espera a que se actualicen todos los resultados y consolida
+		[prods1, prods2, links, rclvs1, rclvs2] = await Promise.all([prods1, prods2, links, rclvs1, rclvs2]);
+		let prods = {...prods1, ...prods2, ...links.productos};
+		let rclvs = {...rclvs1, ...rclvs2};
 
 		// Procesa los campos de las 2 familias de entidades
 		prods = procesos.TC.prod_ProcesaCampos(prods);
@@ -48,7 +44,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Revisión - Tablero de Entidades"},
 			...{prods, rclvs, origen: "TE"},
-			dataEntry,
+			...{dataEntry, porcentajeLinksAprobsEstaSem: links.porcentajeLinksAprobsEstaSem},
 		});
 	},
 
@@ -198,7 +194,7 @@ module.exports = {
 			// Acciones si es un RCLV inactivo
 			if (statusFinal_id == inactivo_id) {
 				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id})
+				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id});
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados

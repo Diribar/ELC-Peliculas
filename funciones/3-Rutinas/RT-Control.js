@@ -381,7 +381,7 @@ module.exports = {
 		// Actualiza el status de los links
 		const objeto = {
 			statusSugeridoPor_id: usAutom_id,
-			statusSugeridoEn: ahora,
+			// statusSugeridoEn: ahora, // no se lo pone, para poder observar la fecha original que deriva en este status
 			statusRegistro_id: creadoAprob_id,
 		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
