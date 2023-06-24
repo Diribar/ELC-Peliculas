@@ -283,6 +283,9 @@ module.exports = {
 				const campo = campoRevisar.nombre;
 				const relacInclude = campoRevisar.relacInclude;
 
+				// Si el campo no fue sugerido por el usuario, saltea la ruta
+				if (campo == "prioridad_id") continue;
+
 				// Valores a comparar
 				const {valorAprob, valorDesc} = valoresComparar(original, RCLV_actual, relacInclude, campo);
 
@@ -608,7 +611,7 @@ module.exports = {
 				if (motivo) comp.usuarioPenalizAcum(edicion.editadoPor_id, motivo, familias);
 			}
 
-			// 6. Elimina el valor del campo en el registro de 'edición' y en la variable
+			// Elimina el valor del campo en el registro de 'edición' y en la variable
 			await BD_genericas.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
 			delete edicion[campo];
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
