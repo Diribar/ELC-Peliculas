@@ -445,16 +445,19 @@ module.exports = {
 
 	// LINKS
 	linksForm: async (req, res) => {
-		// 1. Tema y Código
+		// Tema y Código
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
+
 		// Otras variables
 		const {entidad, id, origen} = req.query;
 		let userID = req.session.usuario.id;
 		let include;
+
 		// Configurar el título
 		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
 		include = ["links", "statusRegistro"];
 		if (entidad == "capitulos") include.push("coleccion");

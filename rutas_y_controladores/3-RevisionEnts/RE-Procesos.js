@@ -103,14 +103,16 @@ module.exports = {
 			// Obtiene los links ajenos 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinksAjenos(revID);
 
-			// Averigua el porcentaje de links
+			// Averigua la cantidad de links de esta semana y totales
 			let linksAprobsEstaSem = BD_genericas.obtieneTodosPorCondicion("links", {
-				statusRegistro_id: aprobado_id,
+				yaTuvoPrimRev: true,
 				statusSugeridoEn: {[Op.gt]: comienzoDelDomingo()},
+				statusRegistro_id: aprobado_id,
 			}).then((n) => n.length);
-			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {statusRegistro_id: aprobado_id}).then(
-				(n) => n.length
-			);
+			let linksAprobsTotal = BD_genericas.obtieneTodosPorCondicion("links", {
+				yaTuvoPrimRev: true,
+				statusRegistro_id: aprobado_id,
+			}).then((n) => n.length);
 
 			// Espera a que se actualicen los valores
 			[linksRevisar, linksAprobsEstaSem, linksAprobsTotal] = await Promise.all([
