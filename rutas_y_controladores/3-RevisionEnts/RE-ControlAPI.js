@@ -130,12 +130,12 @@ module.exports = {
 				statusFinal_id: statusRegistro_id,
 				aprobado: decisAprob,
 			};
-			datos.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
+			datosHist.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
 			if (datos.motivo_id) {
 				datosHist.motivo_id = datos.motivo_id;
 				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
-				datos.comentario += " - " + datosHist.motivo.descripcion;
+				datosHist.comentario += " - " + datosHist.motivo.descripcion;
 			}
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
