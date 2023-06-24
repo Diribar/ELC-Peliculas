@@ -29,7 +29,7 @@ module.exports = {
 
 		// Fin
 		return;
-		this.RCLV_idEnCapitulos();
+		this.LinksVencidos();
 	},
 
 	// 1. Rutinas horarias
@@ -373,13 +373,17 @@ module.exports = {
 			{
 				[Op.or]: [
 					{altaRevisadaEn: {[Op.lt]: fechaPrimeraRevision}, yaTuvoPrimRev: false}, // Necesita su primera revisión
-					{statusSugeridoEn: {[Op.lt]: fechaCorte}}, // Concluyó su vida útil
+					{statusSugeridoEn: {[Op.lt]: fechaCorte}, yaTuvoPrimRev: true}, // Concluyó su vida útil
 				],
 			},
 		];
 
 		// Actualiza el status de los links
-		const objeto = {statusSugeridoPor_id: usAutom_id, statusRegistro_id: creadoAprob_id};
+		const objeto = {
+			statusSugeridoPor_id: usAutom_id,
+			statusSugeridoEn: ahora,
+			statusRegistro_id: creadoAprob_id,
+		};
 		await BD_genericas.actualizaTodosPorCondicion("links", condiciones, objeto);
 
 		// Fin

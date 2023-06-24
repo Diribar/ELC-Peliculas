@@ -57,13 +57,14 @@ module.exports = {
 
 		// Condiciones de status
 		cond.creado = link.statusRegistro.creado;
+		cond.creadoAprob = link.statusRegistro.creadoAprob;
 		cond.aprobado = link.statusRegistro.aprobado;
 		cond.inactivar = link.statusRegistro.inactivar;
 		cond.recuperar = link.statusRegistro.recuperar;
 		cond.inactivo = link.statusRegistro.inactivo;
 
 		// Condiciones de status combinados
-		cond.creadoAprob = cond.creado || cond.aprobado;
+		cond.grCreado = cond.creado || cond.creadoAprob;
 		cond.estable = cond.aprobado || cond.inactivo;
 		cond.provisorio = cond.inactivar || cond.recuperar;
 		cond.inactivos = (cond.rud && cond.inactivar) || cond.inactivo;
