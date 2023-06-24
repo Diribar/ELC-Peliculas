@@ -502,7 +502,6 @@ let ordenarStatus = (resultados) => {
 			: 0
 	);
 };
-
 let ordenarEdic = (resultados) => {
 	return resultados.sort((a, b) =>
 		false
