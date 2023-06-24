@@ -42,6 +42,8 @@ module.exports = {
 			? "/revision/tablero-de-control"
 			: origen == "RLK"
 			? "/revision/links/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
+			: origen == "REP"
+			? "/revision/producto/edicion/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodID ? prodID : id)
 			: // Otros
 			origen == "TU"
 			? "/revision/usuarios/tablero-de-control"
