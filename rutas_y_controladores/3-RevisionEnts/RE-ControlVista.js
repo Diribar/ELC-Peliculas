@@ -13,12 +13,12 @@ const procsLinks = require("../2.3-Links-CRUD/LK-FN-Procesos");
 module.exports = {
 	// TABLERO
 	tableroControl: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
-		let revID = req.session.usuario.id;
-		// Definir variables
 		const ahora = comp.fechaHora.ahora();
+		const revID = req.session.usuario.id;
+
 		// Productos y Ediciones
 		let prods = {
 			// Altas y Ediciones
@@ -198,7 +198,7 @@ module.exports = {
 			// Acciones si es un RCLV inactivo
 			if (statusFinal_id == inactivo_id) {
 				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id})
+				procsCRUD.eliminar.borraVinculoEdicsProds({entidadRCLV: entidad, rclvID: id});
 
 				// Sus productos asociados:
 				// Dejan de estar vinculados
