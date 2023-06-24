@@ -110,6 +110,7 @@ module.exports = {
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		} else datos.yaTuvoPrimRev = true;
 		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
+		console.log(113, aprob != "SI", IN != "SI", datos.motivo_id, motivo_id);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
@@ -130,12 +131,12 @@ module.exports = {
 				statusFinal_id: statusRegistro_id,
 				aprobado: decisAprob,
 			};
-			datos.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
+			datosHist.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
 			if (datos.motivo_id) {
 				datosHist.motivo_id = datos.motivo_id;
 				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);
 				datosHist.duracion = Number(datosHist.motivo.duracion);
-				datos.comentario += " - " + datosHist.motivo.descripcion;
+				datosHist.comentario += " - " + datosHist.motivo.descripcion;
 			}
 			BD_genericas.agregaRegistro("histStatus", datosHist);
 
