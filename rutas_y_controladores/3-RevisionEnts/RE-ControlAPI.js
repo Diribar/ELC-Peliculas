@@ -110,7 +110,6 @@ module.exports = {
 			datos.leadTimeCreacion = comp.obtieneLeadTime(original.creadoEn, ahora);
 		} else datos.yaTuvoPrimRev = true;
 		if (aprob != "SI" && IN != "SI") datos.motivo_id = motivo_id ? motivo_id : original.motivo_id;
-		console.log(113, aprob != "SI", IN != "SI", datos.motivo_id, motivo_id);
 
 		// CONSECUENCIAS
 		// 1. Actualiza el status en el registro original
