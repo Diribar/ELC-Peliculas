@@ -2,7 +2,7 @@
 <div class="flechas">
 	<% if (tema == "crud" || locals.origen && (!origen.startsWith("DT"))) { %>
 		<!-- Salir -->
-		<% let ruta = (tema != "revisionEnts" || codigo != "abmLinks" || registro.statusRegistro_id != creadoAprob_id) ? 'inactivar-captura' : 'revision/producto/edicion' %>
+		<% let ruta = 'inactivar-captura' %>
 		<a href="<%= '/' + ruta + '/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
