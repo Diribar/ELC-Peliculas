@@ -397,6 +397,7 @@ module.exports = {
 		// Obtiene todas las colecciones
 		const colecciones = await BD_genericas.obtieneTodos("colecciones");
 
+		// Rutinas
 		for (let coleccion of colecciones) // Rutina por colección
 			for (let rclv_id of rclvs_id) // Rutina por rclv_id
 				if (coleccion[rclv_id] > 10) {
