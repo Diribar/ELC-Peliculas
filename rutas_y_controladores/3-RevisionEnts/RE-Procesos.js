@@ -690,6 +690,36 @@ module.exports = {
 		// Fin
 		return informacion;
 	},
+	siguienteProducto: async function ({producto, entidad, revID}) {
+		// Variables
+		const productos = await this.TC.obtieneProds_Links(revID)
+			.then((n) => n.productos) // Obtiene solamente la parte de productos
+			.then((n) => this.TC.prod_ProcesaCampos(n)); // Los ordena según corresponda
+
+		// Obtiene el siguiente producto
+		let siguienteProducto;
+		for (let opcion in productos) {
+			const prodsOpcion = productos[opcion];
+			siguienteProducto = prodsOpcion.length ? prodsOpcion.find((n) => n.entidad != entidad || n.id != producto.id) : ""; // Basta con que sea diferente alguno de los campos
+			if (siguienteProducto) break;
+		}
+
+		// Genera el link
+		const link = siguienteProducto
+			? "/inactivar-captura/?entidad=" +
+			  entidad +
+			  "&id=" +
+			  producto.id +
+			  "&prodEntidad=" +
+			  siguienteProducto.entidad +
+			  "&prodID=" +
+			  siguienteProducto.id+
+			  "&origen=RLK"
+			: "/revision/tablero-de-control";
+
+		// Fin
+		return link;
+	},
 
 	// Varios
 	descargaAvatarOriginal: async (original, entidad) => {
