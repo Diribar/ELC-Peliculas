@@ -13,7 +13,7 @@ module.exports = {
 		let errores = {};
 		// url
 		if (campos.includes("url")) {
-			let longitud = datos.url ? comp.validacs.longitud(datos.url, 5, 100) : "";
+			let longitud = datos.url ? comp.validacs.longitud(datos.url, 5, 120) : "";
 			errores.url = !datos.url
 				? variables.inputVacio
 				: longitud

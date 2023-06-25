@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
 
-		url: {type: dt.STRING(100)},
+		url: {type: dt.STRING(120)},
 		prov_id: {type: dt.INTEGER},
 
 		calidad: {type: dt.INTEGER},
