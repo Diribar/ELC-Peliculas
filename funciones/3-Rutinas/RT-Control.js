@@ -347,7 +347,7 @@ module.exports = {
 		await Promise.all(espera);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("AprobadoConAvatarLink", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("AprobadoConAvatarLink", "RutinasSemanales");
 		return;
 	},
 	BorraImagenesSinRegistro: async () => {
@@ -357,7 +357,7 @@ module.exports = {
 		procesos.borraImagenesProvisorio();
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("BorraImagenesSinRegistro", "RutinasDiarias");
+		procesos.finRutinasDiariasSemanales("BorraImagenesSinRegistro", "RutinasSemanales");
 		return;
 	},
 	LinksVencidos: async function () {
@@ -409,6 +409,7 @@ module.exports = {
 				}
 
 		// Fin
+		procesos.finRutinasDiariasSemanales("RCLV_idEnCapitulos", "RutinasSemanales");
 		return;
 	},
 	RCLVsSinEpocaPSTyConAno: async () => {

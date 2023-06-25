@@ -12,10 +12,10 @@
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
 	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
 	"RutinasSemanales": {
-		"AprobadoConAvatarLink": "NO",
-		"BorraImagenesSinRegistro": "NO",
+		"AprobadoConAvatarLink": "SI",
+		"BorraImagenesSinRegistro": "SI",
 		"LinksVencidos": "SI",
-		"RCLV_idEnCapitulos": "NO",
+		"RCLV_idEnCapitulos": "SI",
 		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
