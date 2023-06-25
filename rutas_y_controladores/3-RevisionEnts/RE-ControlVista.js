@@ -449,7 +449,7 @@ module.exports = {
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
 		// Otras variables
-		const {entidad, id} = req.query;
+		const {entidad, id, origen} = req.query;
 		let userID = req.session.usuario.id;
 		let include;
 		// Configurar el título
@@ -483,7 +483,7 @@ module.exports = {
 		// Va a la vista
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, origen: "TE"},
+			...{tema, codigo, titulo, origen: origen ? origen : "TE"},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
 			...{links, linksProvs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
