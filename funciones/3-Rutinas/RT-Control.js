@@ -429,7 +429,7 @@ module.exports = {
 		await Promise.all(verificador);
 
 		// Fin
-		procesos.finRutinasDiariasSemanales("RclvsSinEpocaPSTyConAno", "RutinasSemanales");
+		procesos.finRutinasDiariasSemanales("RCLVsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
 };

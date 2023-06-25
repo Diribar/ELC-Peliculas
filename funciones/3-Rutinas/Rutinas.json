@@ -1,29 +1,29 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 24/jun",
-	"HoraUTC": "0:37",
+	"FechaUTC": "Dom. 25/jun",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Dom. 18/jun",
+	"FechaSemUTC": "Dom. 25/jun",
 	"HoraSemUTC": "0:00",
-	"semanaUTC": 24,
+	"semanaUTC": 25,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
 	"RutinasDiarias": {"ImagenDerecha": "SI", "PaisesConMasProductos": "SI"},
 	"RutinasSemanales": {
-		"AprobadoConAvatarLink": "SI",
-		"BorraImagenesSinRegistro": "SI",
+		"AprobadoConAvatarLink": "NO",
+		"BorraImagenesSinRegistro": "NO",
 		"LinksVencidos": "SI",
-		"RCLV_idEnCapitulos": "SI",
+		"RCLV_idEnCapitulos": "NO",
 		"RCLVsSinEpocaPSTyConAno": "SI"
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"22-jun-23": {"titulo": "Tomás Moro", "entidad": "personajes", "id": 102},
 		"23-jun-23": {"titulo": "ELC - Películas"},
 		"24-jun-23": {"titulo": "Ap. Mar. - Medjugorje", "entidad": "hechos", "id": 58},
 		"25-jun-23": {"titulo": "ELC - Películas"},
-		"26-jun-23": {"titulo": "ELC - Películas"}
+		"26-jun-23": {"titulo": "ELC - Películas"},
+		"27-jun-23": {"titulo": "ELC - Películas"}
 	}
 }
