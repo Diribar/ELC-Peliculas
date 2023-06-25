@@ -4,6 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
+const procsRutinas = require("../../funciones/3-Rutinas/RT-Control");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
 const validaPR = require("../2.1-Prod-RUD/PR-FN-Validar");
 
@@ -100,6 +101,9 @@ module.exports = {
 			return {SE, IR: [...IN, ...RC]};
 		},
 		obtieneProds_Links: async (revID) => {
+			// Variables
+			if (!fechaPrimerDomingoDelAno) procsRutinas.FechaPrimerDomingoDelAno(); // En caso de que no exista la variable global, la obtiene con la FN
+
 			// Obtiene los links ajenos 'a revisar'
 			let linksRevisar = BD_especificas.TC.obtieneLinksAjenos(revID);
 
@@ -847,26 +851,12 @@ let obtieneProdsDeLinks = function (links, revID, aprobsPerms) {
 	return prods;
 };
 let comienzoDelDomingo = () => {
-	// Obtiene el primer día del año
-	const fecha = new Date();
-	const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
-
-	// Obtiene el dia de semana del primer día del año
-	let diaSem_primerDiaDelAno = new Date(comienzoAno).getDay();
-
-	// Lleva el día al formato lun: 1 - dom: 7
-	if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
-
-	// Obtiene el primer domingo del año (0 - 6)
-	const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
-	const fechaPrimerDomingo = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
-
 	// Obtiene la semana del año
-	const semana = parseInt((fecha.getTime() - fechaPrimerDomingo) / unDia / 7);
+	const semana = parseInt((Date.now() - fechaPrimerDomingoDelAno) / unDia / 7);
 
-	// Obtiene el instante cero de la semana
-	const instanteCeroDeLaSemana = fechaPrimerDomingo + semana * 7 * unDia;
+	// Obtiene el instante cero de la semana actual
+	const instanteCeroDeLaSemanaActual = fechaPrimerDomingoDelAno + semana * unDia * 7;
 
 	// Fin
-	return new Date(instanteCeroDeLaSemana);
+	return new Date(instanteCeroDeLaSemanaActual);
 };

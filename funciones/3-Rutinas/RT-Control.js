@@ -290,7 +290,8 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 
 		// Obtiene la semanaUTC actual
-		const semanaUTC = procesos.semanaUTC();
+		this.FechaPrimerDomingoDelAno();
+		const semanaUTC = parseInt((Date.now() - fechaPrimerDomingoDelAno) / unDia / 7);
 
 		// Si la 'semanaUTC' actual es igual a la del archivo JSON, termina la función
 		if (info.semanaUTC == semanaUTC) return;
@@ -305,6 +306,25 @@ module.exports = {
 		for (let rutinaSemanal in rutinasSemanales) feedback_RS[rutinaSemanal] = "NO"; // Cuando se ejecuta cada rutina, se actualiza a 'SI'
 		procesos.guardaArchivoDeRutinas(feedback_RS, "RutinasSemanales");
 		await this.RutinasSemanales();
+
+		// Fin
+		return;
+	},
+	FechaPrimerDomingoDelAno: () => {
+		// Obtiene el primer día del año
+		const fecha = new Date();
+		const diferenciaHoraria = (fecha.getTimezoneOffset() / 60) * unaHora;
+		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime() - diferenciaHoraria; // Resta la diferencia horaria para tener el 1/ene de Greenwich
+
+		// Obtiene el dia de semana del primer día del año
+		let diaSem_primerDiaDelAno = new Date(comienzoAno + diferenciaHoraria).getDay(); // Suma la diferencia horaria para tener el día de la semana correcto
+
+		// Lleva el día al formato lun: 1 - dom: 7
+		if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
+
+		// Obtiene el primer domingo del año (0 - 6)
+		const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
+		fechaPrimerDomingoDelAno = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
 
 		// Fin
 		return;
@@ -364,7 +384,7 @@ module.exports = {
 		// Variables
 		const ahora = Date.now();
 		const fechaPrimeraRevision = new Date(ahora - unMes);
-		const vidaUtil = 6 * unMes;
+		const vidaUtil = 7 * unDia * 26; // 26 semanas
 		const fechaCorte = new Date(ahora - vidaUtil);
 
 		// Condiciones
@@ -434,41 +454,4 @@ module.exports = {
 		procesos.finRutinasDiariasSemanales("RCLVsSinEpocaPSTyConAno", "RutinasSemanales");
 		return;
 	},
-};
-let epoca = async () => {
-	// Variables
-	const entidades = variables.entidades.prods;
-	const include = ["personaje", "hecho"];
-	const nuevoStatus = {statusRegistro_id: creadoAprob_id};
-	const condicion1 = {statusRegistro_id: aprobado_id, epoca_id: null};
-	const condicion2 = {[Op.or]: [{personaje_id: {[Op.ne]: null}}, {hecho_id: {[Op.ne]: null}}]};
-
-	// Revisa cada registro aprobado y sin epoca_id
-	for (let entidad of entidades) {
-		// Obtiene todos los registros con include personaje y hecho
-		const registros = await BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condicion1, include);
-
-		for (let registro of registros) {
-			const id = registro.id;
-			// Revisa si tiene un personaje con epoca_id, y en caso afirmativo se la copia
-			if (registro.personaje.epoca_id) BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.personaje.epoca_id});
-			// Revisa si tiene un hecho con epoca_id, y en caso afirmativo se la copia
-			else if (registro.hecho.epoca_id) BD_genericas.actualizaPorId(entidad, id, {epoca_id: registro.hecho.epoca_id});
-			// En caso negativo, le cambia el status a creadoAprob
-			else BD_genericas.actualizaPorId(entidad, id, nuevoStatus);
-		}
-	}
-
-	// Obtiene las ediciones que pueden aportar el valor de la época
-	const ediciones = await BD_genericas.obtieneTodosPorCondicionConInclude("prods_edicion", condicion2, include);
-
-	for (let edicion of ediciones) {
-		const id = edicion.id;
-		// Revisa si tiene un personaje con epoca_id, y en caso afirmativo se la copia
-		if (edicion.personaje && edicion.personaje.epoca_id)
-			BD_genericas.actualizaPorId("prods_edicion", id, {epoca_id: edicion.personaje.epoca_id});
-		// Revisa si tiene un hecho con epoca_id, y en caso afirmativo se la copia
-		else if (edicion.hecho && edicion.hecho.epoca_id)
-			BD_genericas.actualizaPorId("prods_edicion", id, {epoca_id: edicion.hecho.epoca_id});
-	}
 };

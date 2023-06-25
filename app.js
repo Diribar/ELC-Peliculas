@@ -9,6 +9,7 @@ global.SI = 2;
 global.talVez = 1;
 global.NO = null;
 global.usAutom_id = 2;
+global.fechaPrimerDomingoDelAno =null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
