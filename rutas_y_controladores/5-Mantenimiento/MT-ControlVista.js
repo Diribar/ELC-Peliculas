@@ -8,7 +8,7 @@ const procesosRE = require("../3-RevisionEnts/RE-Procesos");
 const procesos = require("./MT-Procesos");
 
 module.exports = {
-	mantenimiento: async (req, res) => {
+	tablero: async (req, res) => {
 		// Tema y Código
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";

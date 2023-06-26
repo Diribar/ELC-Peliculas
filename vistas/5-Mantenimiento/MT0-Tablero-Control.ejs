@@ -35,8 +35,8 @@
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin calificar", regs: prods.SC, url: "producto/detalle", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
 				<% if (omnipotente) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
@@ -99,9 +99,9 @@
 			</div>
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin links", regs: prods.SL, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin links gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Sin links en castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links", regs: prods.SL, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links Gratuitos", regs: prods.SLG, url: "links/abm", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Links en Castellano", regs: prods.SLC, url: "links/abm", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.LI, url: "links/abm", mostrarOrigen: true, grupo: "inactivo"}) %>
 			</div>
 		</div>
