@@ -105,14 +105,11 @@ module.exports = {
 	},
 
 	// Listados de RCLV
-	gruposPers: (camposDA, userID) => {
+	gruposPers: (camposDA) => {
 		// Variables
 		const personajes = camposDA
-			// Obtiene los personajes
-			.find((n) => n.nombre == "personaje_id")
+			.find((n) => n.nombre == "personaje_id") // Obtiene los personajes
 			.valores // Obtiene los valores
-			// Deja solamente los aprobados o creados por el usuario
-			.filter((n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID))
 			// Deja los datos necesarios
 			.map((n) => {
 				return {
@@ -167,12 +164,9 @@ module.exports = {
 		// Fin
 		return grupos;
 	},
-	gruposHechos: (camposDA, userID) => {
+	gruposHechos: (camposDA) => {
 		// Variables
 		let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
-
-		// Deja solamente los aprobados o creados por el usuario
-		hechos = hechos.filter((n) => n.statusRegistro.aprobado || (n.statusRegistro.creado && n.creadoPor_id == userID));
 
 		// Deja los datos necesarios
 		hechos = hechos.map((n) => {
