@@ -18,71 +18,16 @@ module.exports = {
 		let aprobados = obtienePorEntidad({entidades, campoFecha: "altaTermEn", status_id: aprobado_id, userID});
 
 		// Sin Edición (en status creadoAprob)
-		let SE_pel = BD_genericas.obtieneTodosPorCondicionConInclude(
-			"peliculas",
-			{statusRegistro_id: creadoAprob_id},
-			"ediciones"
-		)
-			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const datos = {
-						...m,
-						entidad: "peliculas",
-						fechaRef: m.statusSugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
-					};
-
-					// Fin
-					return datos;
-				})
-			);
-		let SE_col = BD_genericas.obtieneTodosPorCondicionConInclude(
-			"colecciones",
-			{statusRegistro_id: creadoAprob_id},
-			"ediciones"
-		)
-			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const datos = {
-						...m,
-						entidad: "colecciones",
-						fechaRef: m.statusSugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
-					};
-
-					// Fin
-					return datos;
-				})
-			);
-
-		// Capítulos sin edición (con colección 'aprobada' y en cualquier otro status)
-		const condiciones = {statusColeccion_id: aprobado_id, statusRegistro_id: {[Op.ne]: aprobado_id}};
-		let SE_cap = BD_genericas.obtieneTodosPorCondicionConInclude("capitulos", condiciones, "ediciones")
-			.then((n) => n.filter((m) => !m.ediciones.length))
-			.then((n) =>
-				n.map((m) => {
-					// Variables
-					const datos = {
-						...m,
-						entidad: "capitulos",
-						fechaRef: m.statusSugeridoEn,
-						fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
-					};
-
-					// Fin
-					return datos;
-				})
-			);
+		let SE_pel = obtieneSinEdicion("peliculas");
+		let SE_col = obtieneSinEdicion("colecciones");
+		let SE_cap = obtieneSinEdicion("capitulos");
 
 		// Espera las lecturas
 		[inactivos, aprobados, SE_pel, SE_col, SE_cap] = await Promise.all([inactivos, aprobados, SE_pel, SE_col, SE_cap]);
 		const pelisColes = aprobados.filter((m) => m.entidad != "capitulos");
+		const SE = [...SE_pel, ...SE_col, ...SE_cap];
 
-		// Inactivos (peliculas y colecciones)
+		// Inactivos (los tres productos)
 		const IN = inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id != inactivo_id);
 
 		// Aprobados - Sin calificar
@@ -91,18 +36,17 @@ module.exports = {
 		// Aprobados - Sin tema
 		const ST = pelisColes.filter((n) => n.tema_id == 1);
 
-		// Aprobados - Sin epoca
-		// const SEP = pelisColes.filter((n) => !n.epoca_id);
-
 		// Aprobados - Sin links
 		const SL = aprobados.filter((m) => !m.linksGeneral);
+
 		// Aprobados - Sin links gratuitos
 		const SLG = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.linksGratuitos);
+
 		// Aprobados - Sin links en castellano
 		const SLC = aprobados.filter((m) => m.linksGeneral).filter((m) => !m.castellano);
 
 		// Fin
-		return {IN, SE_cap, SE: [...SE_pel, ...SE_col], SC, ST, SL, SLG, SLC};
+		return {IN, SE, SC, ST, SL, SLG, SLC};
 	},
 	obtieneRCLVs: async (userID) => {
 		// Variables
@@ -112,31 +56,24 @@ module.exports = {
 		let IN = [];
 		let INP = [];
 
-		// 1. RCLVs inactivos
+		// Inactivos
 		objeto = {entidades, campoFecha: "statusSugeridoEn", status_id: inactivo_id, include: includeProds};
 		let inactivos = obtienePorEntidad({...objeto, userID});
 
-		// 2. Aprobados
+		// Aprobados
 		let campoFecha = "altaRevisadaEn";
 		let aprobados = obtienePorEntidad({entidades, campoFecha, status_id: aprobado_id, userID});
 
 		// Await
 		[inactivos, aprobados] = await Promise.all([inactivos, aprobados]);
 
-		// Inactivos c/producto
-		inactivos.map((n) => {
-			n.peliculas.length || n.colecciones.length || n.capitulos.length || n.prods_ediciones.length
-				? INP.push(n)
-				: IN.push(n);
-		});
-
-		// 2.1. Sin Avatar
+		// Sin Avatar
 		const SA = aprobados.filter((m) => !m.avatar && m.id > 10);
 
-		// 2.2. Con solapamiento de fechas
+		// Con solapamiento de fechas
 		const SF = aprobados.filter((m) => m.solapam_fechas);
 
-		// 2.3. Con fecha móvil
+		// Con fecha móvil
 		const FM = aprobados.filter((m) => m.fechaMovil);
 
 		// 2.4. Con epoca igual a 'pst' y sin ano
@@ -241,4 +178,27 @@ let purgaEdicion = (edicion, entidad) => {
 
 	// Fin
 	return edicion;
+};
+let obtieneSinEdicion = (entidad) => {
+	// Variables
+	const condiciones = {statusRegistro_id: creadoAprob_id};
+	if (entidad == "capitulos") condiciones.statusColeccion_id = aprobado_id;
+
+	// Obtiene la información
+	return BD_genericas.obtieneTodosPorCondicionConInclude(entidad, condiciones, "ediciones")
+		.then((n) => n.filter((m) => !m.ediciones.length))
+		.then((n) =>
+			n.map((m) => {
+				// Variables
+				const datos = {
+					...m,
+					entidad,
+					fechaRef: m.statusSugeridoEn,
+					fechaRefTexto: comp.fechaHora.fechaDiaMes(m.statusSugeridoEn),
+				};
+
+				// Fin
+				return datos;
+			})
+		);
 };
