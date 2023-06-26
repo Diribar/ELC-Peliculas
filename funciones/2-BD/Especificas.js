@@ -220,10 +220,11 @@ module.exports = {
 	},
 
 	// Otros
-	MT_obtieneRegs: ({entidad, status_id, userID, campoFecha, include}) => {
+	MT_obtieneRegs: ({petitFamilias, userID, campoFecha, status_id, include, entidad}) => {
 		// Variables
 		const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 		const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
+		const idMin = petitFamilias == "rclvs" ? 10 : 0;
 
 		// Fin
 		return db[entidad]
@@ -244,6 +245,8 @@ module.exports = {
 						// Que esté capturado por este usuario hace menos de una hora
 						{capturadoPor_id: userID, capturadoEn: {[Op.gt]: haceUnaHora}},
 					],
+					// Si es un rclv, que su id > 10
+					id: {[Op.gt]: idMin},
 				},
 				include,
 			})
