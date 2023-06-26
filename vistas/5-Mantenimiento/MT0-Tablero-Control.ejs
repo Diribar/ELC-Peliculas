@@ -34,12 +34,11 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Altas sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("CMP-RegsTC", {DE, titulo: "Capítulos sin Edición", regs: prods.SE_cap, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("CMP-RegsTC", {DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin calificar", regs: prods.SC, url: "producto/detalle", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
 				<%- include("CMP-RegsTC", {DE, titulo: "Sin época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
-				<% if (revisor) { %>
+				<% if (omnipotente) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
 				<% } %>
 			</div>
@@ -69,7 +68,7 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<% if (revisor) { %>
+				<% if (omnipotente) { %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos c/Producto", regs: rclvs.INP, url: "rclv/detalle", mostrarOrigen: true}) %>
 					<%- include("CMP-RegsTC", {DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
 				<% } %>
