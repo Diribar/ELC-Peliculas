@@ -271,7 +271,15 @@ CREATE TABLE `cn_ordenes` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `int_1registros` (
+CREATE TABLE `int_opciones` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(3) unsigned NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `int_registros` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `usuario_id` int(10) unsigned NOT NULL,
   `pelicula_id` int(10) unsigned DEFAULT NULL,
@@ -285,19 +293,11 @@ CREATE TABLE `int_1registros` (
   KEY `coleccion_id` (`coleccion_id`),
   KEY `capitulo_id` (`capitulo_id`),
   KEY `int_opciones_id` (`opciones_id`),
-  CONSTRAINT `int_1registros_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `int_1registros_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
-  CONSTRAINT `int_1registros_ibfk_3` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
-  CONSTRAINT `int_1registros_ibfk_4` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
-  CONSTRAINT `int_1registros_ibfk_5` FOREIGN KEY (`opciones_id`) REFERENCES `int_opciones` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `int_opciones` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
-  `nombre` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
+  CONSTRAINT `int_registros_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `int_registros_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
+  CONSTRAINT `int_registros_ibfk_3` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
+  CONSTRAINT `int_registros_ibfk_4` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
+  CONSTRAINT `int_registros_ibfk_5` FOREIGN KEY (`opciones_id`) REFERENCES `int_opciones` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links` (
@@ -305,7 +305,7 @@ CREATE TABLE `links` (
   `pelicula_id` int(10) unsigned DEFAULT NULL,
   `coleccion_id` int(10) unsigned DEFAULT NULL,
   `capitulo_id` int(10) unsigned DEFAULT NULL,
-  `url` varchar(100) NOT NULL,
+  `url` varchar(120) NOT NULL,
   `prov_id` tinyint(3) unsigned NOT NULL,
   `calidad` smallint(6) NOT NULL,
   `castellano` tinyint(1) NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE `links` (
   `altaRevisadaPor_id` int(10) unsigned DEFAULT NULL,
   `altaRevisadaEn` datetime DEFAULT NULL,
   `leadTimeCreacion` decimal(4,2) unsigned DEFAULT NULL,
-  `vigenciaRevisadaEn` datetime DEFAULT NULL,
+  `yaTuvoPrimRev` tinyint(1) NOT NULL DEFAULT 0,
   `statusSugeridoPor_id` int(10) unsigned NOT NULL,
   `statusSugeridoEn` datetime NOT NULL DEFAULT utc_timestamp(),
   `editadoPor_id` int(10) unsigned DEFAULT NULL,
@@ -392,18 +392,17 @@ CREATE TABLE `links_provs` (
   `orden` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `avatar` varchar(20) DEFAULT NULL,
-  `siempre_pago` tinyint(1) DEFAULT NULL,
-  `siempre_gratuito` tinyint(1) DEFAULT NULL,
-  `siempre_completa` tinyint(1) DEFAULT NULL,
+  `siemprePago` tinyint(1) DEFAULT NULL,
+  `siempreGratuito` tinyint(1) DEFAULT NULL,
+  `siempreCompleta` tinyint(1) DEFAULT NULL,
   `calidad` smallint(6) DEFAULT NULL,
   `generico` tinyint(1) DEFAULT 0,
   `url_distintivo` varchar(20) NOT NULL,
-  `buscador_autom` tinyint(1) NOT NULL,
-  `url_buscar_pre` varchar(25) DEFAULT NULL,
+  `buscadorAutom` tinyint(1) NOT NULL,
+  `url_buscarPre` varchar(25) DEFAULT NULL,
   `trailer` tinyint(1) NOT NULL,
-  `url_buscar_post_tra` varchar(20) DEFAULT NULL,
   `pelicula` tinyint(1) NOT NULL,
-  `url_buscar_post_pel` varchar(20) DEFAULT NULL,
+  `url_buscarPost` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`),
   UNIQUE KEY `url_distintivo` (`url_distintivo`)
@@ -1152,6 +1151,7 @@ CREATE TABLE `us_roles` (
   `permInputs` tinyint(1) NOT NULL,
   `revisorEnts` tinyint(1) NOT NULL,
   `revisorUs` tinyint(1) NOT NULL,
+  `omnipotente` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
@@ -1240,4 +1240,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-19 15:43:12
+-- Dump completed on 2023-06-26 12:45:53
