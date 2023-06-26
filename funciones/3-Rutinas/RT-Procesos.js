@@ -413,27 +413,6 @@ module.exports = {
 		// Fin
 		return {FechaUTC, HoraUTC};
 	},
-	semanaUTC: () => {
-		// Obtiene el primer día del año
-		const fecha = new Date();
-		const comienzoAno = new Date(fecha.getUTCFullYear(), 0, 1).getTime();
-
-		// Obtiene el dia de semana del primer día del año
-		let diaSem_primerDiaDelAno = new Date(comienzoAno).getDay();
-
-		// Lleva el día al formato lun: 1 - dom: 7
-		if (diaSem_primerDiaDelAno < 1) diaSem_primerDiaDelAno += 7;
-
-		// Obtiene el primer domingo del año (0 - 6)
-		const diaSemana_primerDomingoDelAno = 7 - diaSem_primerDiaDelAno;
-		const fechaPrimerDomingo = comienzoAno + diaSemana_primerDomingoDelAno * unDia;
-
-		// Obtiene la semana del año
-		const semana = parseInt((fecha.getTime() - fechaPrimerDomingo) / unDia / 7);
-
-		// Fin
-		return semana;
-	},
 	obtieneLaHora: (dato) => {
 		// Obtiene la ubicación de los dos puntos
 		const ubicDosPuntos = dato.indexOf(":");

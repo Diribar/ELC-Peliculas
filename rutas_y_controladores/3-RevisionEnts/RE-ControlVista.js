@@ -445,32 +445,35 @@ module.exports = {
 
 	// LINKS
 	linksForm: async (req, res) => {
-		// 1. Tema y Código
+		// Variables
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
-		// Otras variables
 		const {entidad, id, origen} = req.query;
-		let userID = req.session.usuario.id;
-		let include;
-		// Configurar el título
-		let entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		const revID = req.session.usuario.id;
+
+		// Configura el título
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+
 		// Obtiene el prodOrig con sus links originales para verificar que los tenga
-		include = ["links", "statusRegistro"];
+		let include = ["links", "statusRegistro"];
 		if (entidad == "capitulos") include.push("coleccion");
 		if (entidad == "colecciones") include.push("capitulos");
-		let producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
+		const producto = await BD_genericas.obtienePorIdConInclude(entidad, id, include);
 
 		// RESUMEN DE PROBLEMAS DE PRODUCTO A VERIFICAR
-		let informacion = procesos.problemasProd(producto, req.session.urlAnterior);
+		const informacion = procesos.problemasProd(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CMP-0Estructura", {informacion});
 
 		// Obtiene todos los links
-		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		include = ["statusRegistro", "ediciones", "prov", "tipo", "motivo"];
-		let links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
+		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id}, include);
 		links.sort((a, b) => a.id - b.id);
-		for (let link of links) link.cond = procsLinks.condiciones(link, userID, tema);
+		for (let link of links) link.cond = procsLinks.condiciones(link, revID, tema);
+
+		// Averigua cuál es el próximo producto
+		const siguienteProducto = !origen ? await procesos.siguienteProducto({producto, entidad, revID}) : "";
 
 		// Información para la vista
 		const avatar = producto.avatar
@@ -484,10 +487,10 @@ module.exports = {
 		//return res.send(links)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, origen: origen ? origen : "TE"},
-			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID, familia: "producto"},
+			...{entidad, id, registro: producto, prodOrig: producto, avatar, userID: revID, familia: "producto"},
 			...{links, linksProvs, links_tipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
-			...{imgDerPers, cartelGenerico: true},
+			...{imgDerPers, cartelGenerico: true, siguienteProducto},
 		});
 	},
 };
