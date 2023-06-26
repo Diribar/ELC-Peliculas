@@ -75,7 +75,9 @@ module.exports = {
 		const SF = aprobados.filter((m) => m.solapam_fechas);
 
 		// Sin producto
-		const SP = aprobados.filter((m) => !m.peliculas && !m.colecciones && !m.capitulos && !m.prods_ediciones);
+		const SP = aprobados.filter(
+			(m) => !m.peliculas.length && !m.colecciones.length && !m.capitulos.length && !m.prods_ediciones.length
+		);
 
 		// Con fecha móvil
 		const FM = aprobados.filter((m) => m.fechaMovil);
@@ -104,7 +106,6 @@ let obtienePorEntidad = async ({...objeto}) => {
 	// Variables
 	const petitFamilias = objeto.petitFamilias;
 	const entidades = variables.entidades[petitFamilias];
-	if (objeto.include) console.log(108, objeto);
 	objeto.include ? objeto.include.push("ediciones") : (objeto.include = "ediciones");
 
 	let resultados1 = [];
@@ -119,7 +120,7 @@ let obtienePorEntidad = async ({...objeto}) => {
 					let edicion = m.ediciones.find((m) => m.editadoPor_id == objeto.userID);
 					delete m.ediciones;
 
-					// Miminiza la edicion y actualiza el original con la edición
+					// Actualiza el original con la edición
 					if (edicion) {
 						edicion = purgaEdicion(edicion, entidad);
 						m = {...m, ...edicion};
