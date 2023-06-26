@@ -9,7 +9,7 @@ const vista = require("./RU-ControlVista");
 // Específicos de usuarios
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
-const revisorEnts = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
+const revisorUs = require("../../middlewares/filtrosPorUsuario/usRolRevUs");
 // Específicos de entidades
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 // Temas de captura
@@ -17,7 +17,7 @@ const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidados
-const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorEnts];
+const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorUs];
 const aptoRevMasRegistro = [...aptoRevisor, IDvalido, permUserReg];
 
 // APIs -------------------------------------------------
