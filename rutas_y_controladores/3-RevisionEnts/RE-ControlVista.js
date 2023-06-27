@@ -247,7 +247,7 @@ module.exports = {
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
-		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
+		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac);
 		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
@@ -255,7 +255,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
-		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
+		if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
 		// 7. Acciones si es un registro que se mueve a 'inactivo'
 		// Elimina el archivo de avatar de las ediciones

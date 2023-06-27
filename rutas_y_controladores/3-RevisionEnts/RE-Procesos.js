@@ -306,7 +306,7 @@ module.exports = {
 					datosCompleto.valorDesc = valorDesc;
 					let motivo = ["nombre", "apodo"].includes(campo) ? motivoVersionActual : motivoInfoErronea;
 					datosCompleto.motivo_id = motivo.id; // con este campo se sabe si fue rechazado
-					datosCompleto.duracion = motivo.duracion;
+					datosCompleto.penalizac = motivo.penalizac;
 				}
 
 				// Guarda los registros en "histEdics"
@@ -599,7 +599,7 @@ module.exports = {
 				// Agrega el motivo del rechazo
 				if (!aprob) {
 					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
-					datosEdic.duracion = motivo.duracion;
+					datosEdic.penalizac = motivo.penalizac;
 					datosEdic.motivo_id = motivo.id;
 				}
 				// Asigna los valores 'aprob' y 'rech'

@@ -77,7 +77,7 @@ module.exports = {
 
 		// Más variables
 		const revID = req.session.usuario.id;
-		let durac_penalidad = 0;
+		let penalizac = 0;
 		let statusRegistro_id = st_ident_validada_id;
 		let objeto = {fechaRevisores: comp.fechaHora.ahora()};
 
@@ -92,7 +92,7 @@ module.exports = {
 					// Agrega un registro por la edición rechazada
 					procesos.VI.histEdics(campo, usuario, revID, motivo);
 					statusRegistro_id = st_editables_id;
-					durac_penalidad += Number(motivo.duracion);
+					penalizac += Number(motivo.penalizac);
 				}
 		}
 		// Acciones si la imagen del documento NO fue aprobada
@@ -101,7 +101,7 @@ module.exports = {
 			const motivo = motivosEdics.find((n) => n.id == datos.motivo_docum_id);
 			procesos.VI.histEdics("documAvatar", usuario, revID, motivo);
 			statusRegistro_id = st_editables_id;
-			durac_penalidad += Number(motivo.duracion);
+			penalizac += Number(motivo.penalizac);
 		}
 
 		// Acciones si se aprueba la validación
@@ -117,8 +117,8 @@ module.exports = {
 		objeto.statusRegistro_id = statusRegistro_id;
 		BD_genericas.actualizaPorId("usuarios", datos.id, objeto);
 
-		// Aplica la durac_penalidad
-		if (durac_penalidad) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizacAcum", durac_penalidad);
+		// Aplica la penalizac
+		if (penalizac) BD_genericas.aumentaElValorDeUnCampo("usuarios", datos.id, "penalizacAcum", penalizac);
 
 		// Vuelve al tablero
 		return res.redirect("/revision/usuarios/tablero-de-control");
