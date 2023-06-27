@@ -159,7 +159,7 @@ module.exports = {
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Va a la vista
-		//return res.send(prodComb)
+		// return res.send(prodComb)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen, revisor},
 			...{entidadNombre, entidad, id, familia: "producto", registro: prodComb},
