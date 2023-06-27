@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
 					? statusRegistrosUs.find((n) => n.id == statusEsperado_id).nombre
 					: statusRegistros.find((n) => n.id == statusEsperado_id).nombre; // Le agrega un nombre de status
 		});
-		let articulo = statusEsperados_id.length == 1 ? "el" : "los"; 
+		let articulo = statusEsperados_id.length == 1 ? "el" : "los";
 
 		// Variables para el ícono
 		let origen = req.query.origen;
