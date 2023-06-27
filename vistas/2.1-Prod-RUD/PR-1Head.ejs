@@ -1,4 +1,4 @@
-<!-- Detalle para Producto -->
+<!-- Detalle -->
 <% if (codigo == "detalle") { %>
 	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
 	<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
@@ -16,4 +16,11 @@
 	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-2Edicion.css">
 	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-InputError.js"></script>
 	<script src="/javascript/2.1-Prod-RUD/PR2-Edicion-RCLV.js"></script>
+<% } %>
+
+<!-- Calificar -->
+<% if (codigo == "calificar") { %>
+	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Grafico.js"></script>
 <% } %>

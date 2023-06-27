@@ -12,7 +12,7 @@
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if ((tema != "crud" && tema != "revisionEnts") && (codigo != "edicion" && locals.id)) { %>
+	<% if (tema != "crud" && tema != "revisionEnts" && codigo != "edicion" && locals.id) { %>
 		<!-- Edición -->
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
@@ -28,11 +28,17 @@
 			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 			</a>
+		<% } else { %>
+			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+		<% } %>
+	<% } %>
+	<% if (tema != "crud" && tema != "revisionEnts" && codigo != "calificar" && locals.id) { %>
+		<!-- Calificar -->
+		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			</a>
 		<% } else { %>
-			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
 			<i class="fa-solid fa-user-graduate inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 		<% } %>
 	<% } %>

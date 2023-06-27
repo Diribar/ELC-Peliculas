@@ -292,7 +292,7 @@ module.exports = {
 			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
 	calificaProds: async (req, res) => {
-		const tema = "calificar";
+		const tema = "prod_rud";
 		const codigo = "calificar";
 
 		// Variables
