@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		statusFinal_id: {type: dt.INTEGER},
 
 		aprobado: {type: dt.BOOLEAN},
-		duracion: {type: dt.DECIMAL},
+		penalizac: {type: dt.DECIMAL},
 
 		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},

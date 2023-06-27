@@ -562,14 +562,14 @@ module.exports = {
 	// Usuarios
 	usuarioPenalizAcum: (userID, motivo, petitFamilias) => {
 		// Variables
-		let duracion = motivo.duracion;
+		let penalizac = motivo.penalizac;
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", duracion);
+		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
-		if (duracion > 1 && petitFamilias) {
+		if (penalizac > 1 && petitFamilias) {
 			let cartel = "cartel_resp_" + petitFamilias;
 			objeto[cartel] = true;
 		}

@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		valorAprob: {type: dt.STRING(100)},
 
 		motivo_id: {type: dt.INTEGER},
-		duracion: {type: dt.DECIMAL},
+		penalizac: {type: dt.DECIMAL},
 
 		sugeridoPor_id: {type: dt.INTEGER},
 		sugeridoEn: {type: dt.DATE},

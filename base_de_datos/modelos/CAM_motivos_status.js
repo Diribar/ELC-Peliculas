@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
-		duracion: {type: dt.DECIMAL},
+		penalizac: {type: dt.DECIMAL},
 		coment_aut: {type: dt.BOOLEAN},
 		};
 	const config = {
