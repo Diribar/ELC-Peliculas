@@ -781,7 +781,7 @@ let FN = {
 			: entidad == "temas"
 			? "Tema"
 			: entidad == "eventos"
-			? "Evento del Año"
+			? "Evento en el Año"
 			: entidad == "epocasDelAno"
 			? "Epoca del Año"
 			: entidad == "links"

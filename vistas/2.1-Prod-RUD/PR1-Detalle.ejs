@@ -39,14 +39,11 @@
 		<p class="resaltar">Sinopsis</p>
 		<p>Información General</p>
 		<p>Actores</p>
-		<% if (bloqueIzq.personaje) { %>
-			<p>Personaje Histórico</p>
-		<% } %>
-		<% if (bloqueIzq.hecho) { %>
-			<p>Hecho Histórico</p>
-		<% } %>
-		<% if (bloqueIzq.tema) { %>
-			<p>Tema</p>
+		<!-- RCLVs -->
+		<% for (let i=0; i < asocs.length; i++) { %>
+			<% if (bloqueIzq[asocs[i]]) { %>
+				<p><%= rclvsNombre[i] %></p>
+			<% } %>
 		<% } %>
 	</div>
 	<div id="datosDetalle">

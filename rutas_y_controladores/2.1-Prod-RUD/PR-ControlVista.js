@@ -50,16 +50,18 @@ module.exports = {
 		}
 
 		// RCLV
-		let RCLVs = variables.entidades.rclvs;
-		RCLVs = RCLVs.map((n) => ({
+		const entidadesRCLV = variables.entidades.rclvs;
+		const RCLVs = entidadesRCLV.map((n) => ({
 			entidad: n,
 			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
 			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
 		}));
-		if (prodComb.personaje_id != 1)
-			bloqueIzq.personaje = procsRCLV.detalle.bloqueRCLV({entidad: "personajes", ...prodComb.personaje});
-		if (prodComb.hecho_id != 1) bloqueIzq.hecho = procsRCLV.detalle.bloqueRCLV({entidad: "hechos", ...prodComb.hecho});
-		if (prodComb.tema_id != 1) bloqueIzq.valor = procsRCLV.detalle.bloqueRCLV({entidad: "temas", ...prodComb.tema});
+		const rclvs_id = variables.entidades.rclvs_id;
+		const asocs = variables.asociaciones.rclvs;
+		for (let i = 0; i < asocs.length; i++)
+			if (prodComb[rclvs_id[i]] != 1)
+				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
+		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
@@ -78,13 +80,13 @@ module.exports = {
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 
 		// Va a la vista
-		// return res.send(links);
+		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs},
+			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
 		});
 	},
 	prodEdicion_Form: async (req, res) => {
