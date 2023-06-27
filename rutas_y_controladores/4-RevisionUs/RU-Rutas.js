@@ -22,8 +22,6 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorUs];
 const aptoRevMasRegistro = [...aptoRevisor, IDvalido, statusCorrecto, usAptoValidaIdent, permUserReg];
 
-// APIs -------------------------------------------------
-
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
 // Identidad

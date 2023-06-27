@@ -306,7 +306,7 @@ module.exports = {
 		let prodComb = {...original, ...edicion, id};
 
 		// Info para el bloque Derecho
-		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
+		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb});
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
 		// Obtiene datos para la vista
@@ -316,17 +316,15 @@ module.exports = {
 
 		// Status de la entidad
 		const status_id = original.statusRegistro_id;
-		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 
 		// Info para la vista
-		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 
 		// Va a la vista
 		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
-			...{entidad, id, familia: "producto", status_id, statusEstable},
+			...{tema, codigo, titulo, ayudasTitulo: [], origen},
+			...{entidad, id, familia: "producto", status_id},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueDer},
