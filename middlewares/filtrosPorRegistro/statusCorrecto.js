@@ -18,10 +18,8 @@ module.exports = async (req, res, next) => {
 		entidad == "usuarios"
 			? statusRegistrosUs.find((n) => n.id == registro.statusRegistro_id)
 			: statusRegistros.find((n) => n.id == registro.statusRegistro_id);
-	console.log(16, entidad, id, statusActual, baseUrl, ruta);
 
 	// Verifica si el registro está en un status incorrecto
-	console.log(24, statusEsperados_id, statusActual);
 	if (!statusEsperados_id.includes(statusActual.id)) {
 		// Variables para el mensaje
 		const statusActualNombre = statusActual.nombre;
