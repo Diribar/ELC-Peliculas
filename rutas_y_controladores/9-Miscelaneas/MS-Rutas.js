@@ -11,7 +11,7 @@ const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
 // Varios
-const controlesUs = [usAltaTerm, usPenalizaciones, usAptoInput];
+const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const entidadRclv = require("../../middlewares/filtrosPorRegistro/entidadRclv");
 
@@ -26,10 +26,7 @@ router.get("/api/localhost", API.localhost);
 router.get("/inactivar-captura", capturaInactivar, vista.redireccionar);
 
 // Tablero de mantenimiento
-router.get("/mantenimiento", ...controlesUs, vista.tableroMantenim);
-
-// Calificar productos
-router.get("/producto/calificar", ...controlesUs, vista.calificarProds);
+router.get("/mantenimiento", ...aptoUsuario, vista.tableroMantenim);
 
 // Redireccionar a Inicio
 router.get("/", vista.redireccionarInicio);
