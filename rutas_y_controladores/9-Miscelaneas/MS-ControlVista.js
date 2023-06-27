@@ -7,6 +7,7 @@ const procesos = require("./MS-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
+	// Redireccionar después de inactivar una captura
 	redireccionar: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
@@ -44,6 +45,7 @@ module.exports = {
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},
+	// Tablero de mantenimiento
 	tableroMantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
