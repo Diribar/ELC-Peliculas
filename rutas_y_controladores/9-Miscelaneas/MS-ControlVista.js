@@ -48,7 +48,7 @@ module.exports = {
 
 	// Tablero de mantenimiento
 	tableroMantenim: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
@@ -83,6 +83,12 @@ module.exports = {
 		});
 	},
 
+	calificarProds: async (req,res) => {
+		const tema = "calificar";
+		const codigo = "calificar";
+		return res.send({tema,codigo})
+	},
+	
 	// Redireccionar a Inicio
 	redireccionarInicio: (req, res) => {
 		return res.redirect("/institucional/inicio");
