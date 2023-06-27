@@ -7,7 +7,6 @@ const procesos = require("./MS-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
-	// Redireccionar después de inactivar una captura
 	redireccionar: async (req, res) => {
 		// Variables
 		let {origen, prodEntidad, prodID, entidad, id, urlDestino} = req.query;
@@ -45,8 +44,6 @@ module.exports = {
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},
-
-	// Tablero de mantenimiento
 	tableroMantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
@@ -82,7 +79,6 @@ module.exports = {
 			dataEntry,
 		});
 	},
-
 	calificarProds: async (req,res) => {
 		const tema = "calificar";
 		const codigo = "calificar";
@@ -92,16 +88,12 @@ module.exports = {
 		const origen = req.query.origen;
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
-		// Obtiene el producto 'Original' y 'Editado'
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// Obtiene la versión más completa posible del producto
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let prodComb = {...original, ...edicion, id};
 		// Configura el título de la vista
-		let titulo =
-			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
-			" de" +
+		let titulo = "Calificar de" +
 			(entidad == "capitulos" ? " un " : " la ") +
 			entidadNombre;
 		// Info para el bloque Izquierdo
