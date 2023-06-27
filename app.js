@@ -69,11 +69,11 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
-	path.resolve(__dirname, "./vistas/5-Mantenimiento"),
-	path.resolve(__dirname, "./vistas/6-Consultas"),
-	path.resolve(__dirname, "./vistas/6-Consultas/Includes"),
-	path.resolve(__dirname, "./vistas/7-Institucional"),
-	path.resolve(__dirname, "./vistas/7-Institucional/Includes"),
+	path.resolve(__dirname, "./vistas/5-Consultas"),
+	path.resolve(__dirname, "./vistas/5-Consultas/Includes"),
+	path.resolve(__dirname, "./vistas/6-Institucional"),
+	path.resolve(__dirname, "./vistas/6-Institucional/Includes"),
+	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
 // Procesos que requieren de 'async' y 'await'
@@ -174,9 +174,8 @@ app.set("views", [
 	const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/LK-Rutas");
 	const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/RE-Rutas");
 	const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/RU-Rutas");
-	const rutaMantenimiento = require("./rutas_y_controladores/5-Mantenimiento/MT-Rutas");
-	const rutaConsultas = require("./rutas_y_controladores/6-Consultas/CN-Rutas");
-	const rutaInstitucional = require("./rutas_y_controladores/7-Institucional/IN-Rutas");
+	const rutaConsultas = require("./rutas_y_controladores/5-Consultas/CN-Rutas");
+	const rutaInstitucional = require("./rutas_y_controladores/6-Institucional/IN-Rutas");
 	const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/MS-Rutas");
 
 	// Urls que dependen de la variable 'global'
@@ -188,7 +187,6 @@ app.set("views", [
 	app.use("/usuarios", rutaUsuarios);
 	app.use("/revision/usuarios", rutaRevisarUs);
 	app.use("/revision", rutaRevisarEnts);
-	app.use("/mantenimiento", rutaMantenimiento);
 	app.use("/consultas", rutaConsultas);
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
