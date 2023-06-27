@@ -2,8 +2,8 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
+const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("./RU-Procesos");
-// const valida = require("./FN-Validar");
 
 module.exports = {
 	// Revisión
@@ -31,31 +31,18 @@ module.exports = {
 		const tema = "revisionUs";
 		const codigo = "validaIdentidad";
 		const userID = req.query.id;
-		const campos = [
-			{titulo: "País de Expedición", nombre: "documPais_id"},
-			{titulo: "Apellido", nombre: "apellido"},
-			{titulo: "Nombre", nombre: "nombre"},
-			{titulo: "Sexo", nombre: "sexo_id"},
-			{titulo: "Fecha de Nacim.", nombre: "fechaNacim"},
-			{titulo: "N° de Documento", nombre: "documNumero"},
-		];
+		const campos = variables.camposRevisar.usuarios
 
-		// Obtiene el usuario
+		// Obtiene el usuario y variables dependientes
 		const usuario = await BD_genericas.obtienePorIdConInclude("usuarios", userID, ["sexo", "rolUsuario", "statusRegistro"]);
-
-		// Validaciones
-		const {informacion, documAvatar} = procesos.VI.validaUsuario(usuario, campos);
-		if (informacion) return res.render("CMP-0Estructura", {informacion});
-
-		// Otras variables
-		const pais = paises.find((n) => n.id == usuario.documPais_id).nombre;
+		const documPais_id = paises.find((n) => n.id == usuario.documPais_id).nombre;
 		const fechaNacim = comp.fechaHora.fechaDiaMesAno(usuario.fechaNacim);
 		const valores = {
-			documPais_id: pais,
+			documPais_id,
 			apellido: usuario.apellido,
 			nombre: usuario.nombre,
 			sexo_id: usuario.sexo.nombre,
-			fechaNacim: fechaNacim,
+			fechaNacim,
 			documNumero: usuario.documNumero,
 		};
 		for (let campo of campos) campo.valor = valores[campo.nombre];
