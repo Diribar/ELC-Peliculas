@@ -48,7 +48,7 @@ module.exports = {
 
 	// Tablero de mantenimiento
 	tableroMantenim: async (req, res) => {
-		// Tema y Código
+		// Variables
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
 		const userID = req.session.usuario.id;
@@ -83,6 +83,84 @@ module.exports = {
 		});
 	},
 
+	calificarProds: async (req,res) => {
+		const tema = "calificar";
+		const codigo = "calificar";
+
+		// Variables
+		const {entidad, id} = req.query;
+		const origen = req.query.origen;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
+		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
+
+		// Obtiene el producto 'Original' y 'Editado'
+		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		// Obtiene la versión más completa posible del producto
+		let prodComb = {...original, ...edicion, id};
+		// Configura el título de la vista
+		let titulo =
+			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
+			" de" +
+			(entidad == "capitulos" ? " un " : " la ") +
+			entidadNombre;
+		// Info para el bloque Izquierdo
+		// Primer proceso: hace más legible la información
+		const infoProcesada = procesos.bloqueIzq(prodComb);
+		// Segundo proceso: reagrupa la información
+		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
+		if (infoProcesada.infoGral.length) {
+			let infoGral = infoProcesada.infoGral;
+			for (let i = 0; i < infoGral.length / 2; i++) {
+				// Agrega un dato en 'masInfoIzq'
+				bloqueIzq.masInfoIzq.push(infoGral[i]);
+				// Agrega un dato en 'masInfoDer'
+				let j = parseInt(infoGral.length / 2 + 0.5 + i);
+				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
+			}
+		}
+
+		// RCLV
+		const entidadesRCLV = variables.entidades.rclvs;
+		const RCLVs = entidadesRCLV.map((n) => ({
+			entidad: n,
+			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
+			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
+		}));
+		const rclvs_id = variables.entidades.rclvs_id;
+		const asocs = variables.asociaciones.rclvs;
+		for (let i = 0; i < asocs.length; i++)
+			if (prodComb[rclvs_id[i]] != 1)
+				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
+		const rclvsNombre = variables.entidades.rclvsNombre;
+
+		// Info para el bloque Derecho
+		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
+		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
+
+		// Obtiene datos para la vista
+		if (entidad == "capitulos")
+			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
+		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
+
+		// Status de la entidad
+		const status_id = original.statusRegistro_id;
+		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
+
+		// Info para la vista
+		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
+
+		// Va a la vista
+		// return res.send(prodComb);
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
+			...{entidad, id, familia: "producto", status_id, statusEstable},
+			...{entidadNombre, registro: prodComb, links},
+			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
+			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+		});
+	},
+	
 	// Redireccionar a Inicio
 	redireccionarInicio: (req, res) => {
 		return res.redirect("/institucional/inicio");

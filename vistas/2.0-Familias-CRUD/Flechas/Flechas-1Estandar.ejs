@@ -28,7 +28,7 @@
 			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 			</a>
-			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+			<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			</a>
 		<% } else { %>
