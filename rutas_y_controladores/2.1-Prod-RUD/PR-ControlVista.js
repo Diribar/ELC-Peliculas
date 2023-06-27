@@ -50,8 +50,8 @@ module.exports = {
 		}
 
 		// RCLV
-		const rclvs = variables.entidades.rclvs;
-		const RCLVs = rclvs.map((n) => ({
+		const entidadesRCLV = variables.entidades.rclvs;
+		const RCLVs = entidadesRCLV.map((n) => ({
 			entidad: n,
 			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
 			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
@@ -60,7 +60,8 @@ module.exports = {
 		const asocs = variables.asociaciones.rclvs;
 		for (let i = 0; i < asocs.length; i++)
 			if (prodComb[rclvs_id[i]] != 1)
-				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: rclvs[i], ...prodComb[asocs[i]]});
+				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
+		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
@@ -85,7 +86,7 @@ module.exports = {
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs},
+			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
 		});
 	},
 	prodEdicion_Form: async (req, res) => {
