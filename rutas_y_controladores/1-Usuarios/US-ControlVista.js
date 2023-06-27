@@ -86,7 +86,7 @@ module.exports = {
 			contrasena,
 			fechaContrasena: ahora,
 			email,
-			statusRegistro_id: status_registro_us.find((n) => n.mail_a_validar).id,
+			statusRegistro_id: statusRegistrosUs.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
 		req.session.usuario = {email};

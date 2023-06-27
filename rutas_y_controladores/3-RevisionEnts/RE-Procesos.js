@@ -377,7 +377,7 @@ module.exports = {
 
 			// Obtiene el motivo_id y el comentario
 			const motivo_id = inactivarRecuperar ? original.motivo_id : subcodigo == "rechazo" ? req.body.motivo_id : null;
-			let comentario = status_registros.find((n) => n.id == statusFinal_id).nombre;
+			let comentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
 			if (req.body.comentario) comentario += " - " + req.body.comentario;
 			if (comentario.endsWith(".")) comentario = comentario.slice(0, -1);
 

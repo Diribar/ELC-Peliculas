@@ -291,7 +291,7 @@ module.exports = {
 			? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
-	calificaProds: async (req,res) => {
+	calificaProds: async (req, res) => {
 		const tema = "calificar";
 		const codigo = "calificar";
 
@@ -302,41 +302,8 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 		// Obtiene la versión más completa posible del producto
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		let prodComb = {...original, ...edicion, id};
-		// Configura el título de la vista
-		let titulo = "Calificar de" +
-			(entidad == "capitulos" ? " un " : " la ") +
-			entidadNombre;
-		// Info para el bloque Izquierdo
-		// Primer proceso: hace más legible la información
-		const infoProcesada = procesos.bloqueIzq(prodComb);
-		// Segundo proceso: reagrupa la información
-		let bloqueIzq = {masInfoIzq: [], masInfoDer: [], actores: infoProcesada.actores};
-		if (infoProcesada.infoGral.length) {
-			let infoGral = infoProcesada.infoGral;
-			for (let i = 0; i < infoGral.length / 2; i++) {
-				// Agrega un dato en 'masInfoIzq'
-				bloqueIzq.masInfoIzq.push(infoGral[i]);
-				// Agrega un dato en 'masInfoDer'
-				let j = parseInt(infoGral.length / 2 + 0.5 + i);
-				if (j < infoGral.length) bloqueIzq.masInfoDer.push(infoGral[j]);
-			}
-		}
-
-		// RCLV
-		const entidadesRCLV = variables.entidades.rclvs;
-		const RCLVs = entidadesRCLV.map((n) => ({
-			entidad: n,
-			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
-			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
-		}));
-		const rclvs_id = variables.entidades.rclvs_id;
-		const asocs = variables.asociaciones.rclvs;
-		for (let i = 0; i < asocs.length; i++)
-			if (prodComb[rclvs_id[i]] != 1)
-				bloqueIzq[asocs[i]] = procsRCLV.detalle.bloqueRCLV({entidad: entidadesRCLV[i], ...prodComb[asocs[i]]});
-		const rclvsNombre = variables.entidades.rclvsNombre;
 
 		// Info para el bloque Derecho
 		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb, revisor});
@@ -353,6 +320,7 @@ module.exports = {
 
 		// Info para la vista
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
+		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 
 		// Va a la vista
 		// return res.send(prodComb);
@@ -361,8 +329,7 @@ module.exports = {
 			...{entidad, id, familia: "producto", status_id, statusEstable},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+			...{bloqueDer},
 		});
 	},
-
 };

@@ -82,10 +82,10 @@ app.set("views", [
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	let campos = {
 		// Variables de usuario
-		status_registro_us: BD_genericas.obtieneTodos("status_registro_us", "orden"),
+		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
 		// Variable de entidades
-		status_registros: BD_genericas.obtieneTodos("status_registros", "orden"),
+		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
 		motivosStatus: BD_genericas.obtieneTodos("motivosStatus", "orden"),
 		motivosEdics: BD_genericas.obtieneTodos("motivosEdics", "orden"),
@@ -123,12 +123,12 @@ app.set("views", [
 
 	// Variables que dependen de las lecturas de BD
 	// 1. Status de productos
-	global.creado_id = global.status_registros.find((n) => n.creado).id;
-	global.creadoAprob_id = status_registros.find((n) => n.creadoAprob).id;
-	global.aprobado_id = global.status_registros.find((n) => n.aprobado).id;
-	global.inactivar_id = global.status_registros.find((n) => n.inactivar).id;
-	global.recuperar_id = global.status_registros.find((n) => n.recuperar).id;
-	global.inactivo_id = global.status_registros.find((n) => n.inactivo).id;
+	global.creado_id = global.statusRegistros.find((n) => n.creado).id;
+	global.creadoAprob_id = statusRegistros.find((n) => n.creadoAprob).id;
+	global.aprobado_id = global.statusRegistros.find((n) => n.aprobado).id;
+	global.inactivar_id = global.statusRegistros.find((n) => n.inactivar).id;
+	global.recuperar_id = global.statusRegistros.find((n) => n.recuperar).id;
+	global.inactivo_id = global.statusRegistros.find((n) => n.inactivo).id;
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.anime).id;
@@ -140,9 +140,9 @@ app.set("views", [
 	global.rolPermInputs_id = roles_us.find((n) => n.permInputs && !n.revisorEnts && !n.revisorUs).id;
 
 	// 4. Status de usuario
-	global.st_editables_id = status_registro_us.find((n) => n.editables).id;
-	global.st_ident_a_validar_id = status_registro_us.find((n) => n.ident_a_validar).id;
-	global.st_ident_validada_id = status_registro_us.find((n) => n.ident_validada).id;
+	global.st_editables_id = statusRegistrosUs.find((n) => n.editables).id;
+	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
+	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
 	// 4. Otros
 	global.epocasVarias = global.epocas.find((n) => n.varias);

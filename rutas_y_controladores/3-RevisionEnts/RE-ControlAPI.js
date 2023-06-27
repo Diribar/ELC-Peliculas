@@ -130,7 +130,7 @@ module.exports = {
 				statusFinal_id: statusRegistro_id,
 				aprobado: decisAprob,
 			};
-			datosHist.comentario = status_registros.find((n) => n.id == statusRegistro_id).nombre;
+			datosHist.comentario = statusRegistros.find((n) => n.id == statusRegistro_id).nombre;
 			if (datos.motivo_id) {
 				datosHist.motivo_id = datos.motivo_id;
 				datosHist.motivo = motivosStatus.find((n) => n.id == motivo_id);

@@ -122,7 +122,7 @@ module.exports = {
 		}
 
 		// Comentario para la BD
-		let motivoComentario = status_registros.find((n) => n.id == statusFinal_id).nombre;
+		let motivoComentario = statusRegistros.find((n) => n.id == statusFinal_id).nombre;
 		if (comentario) motivoComentario += " - " + comentario;
 		if (motivoComentario.endsWith(".")) motivoComentario = motivoComentario.slice(0, -1);
 

@@ -157,7 +157,7 @@ module.exports = {
 		consolidado = [];
 
 		// Revisa los avatars que están en los productos
-		statusFinal = status_registros.filter((n) => n.id != creado_id).map((n) => n.id);
+		statusFinal = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
 		for (let entidad of variables.entidades[petitFamilias])
 			avatars.push(BD_especificas.nombresDeAvatarEnBD(entidad, statusFinal));
 		await Promise.all(avatars).then((n) => n.map((m) => consolidado.push(...m)));
@@ -235,8 +235,8 @@ module.exports = {
 				const aprobado = regStatus.aprobado;
 				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
 				const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(regStatus.entidad);
-				const statusFinal = status_registros.find((n) => n.id == regStatus.statusFinal_id);
-				const statusInicial = status_registros.find((n) => n.id == regStatus.statusOriginal_id);
+				const statusFinal = statusRegistros.find((n) => n.id == regStatus.statusFinal_id);
+				const statusInicial = statusRegistros.find((n) => n.id == regStatus.statusOriginal_id);
 				const motivo = regStatus.comentario && !aprobado ? regStatus.comentario : "";
 				const {nombreOrden, nombreVisual} = await nombres(regStatus, familia);
 				if (!nombreOrden) continue;
