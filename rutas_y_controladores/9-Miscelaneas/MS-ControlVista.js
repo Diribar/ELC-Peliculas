@@ -4,7 +4,6 @@ const variables = require("../../funciones/1-Procesos/Variables");
 const procesosRE = require("../3-RevisionEnts/RE-Procesos");
 const procesos = require("./MS-Procesos");
 
-
 // *********** Controlador ***********
 module.exports = {
 	// Redireccionar después de inactivar una captura
@@ -45,6 +44,7 @@ module.exports = {
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},
+
 	// Tablero de mantenimiento
 	tableroMantenim: async (req, res) => {
 		// Variables
@@ -81,7 +81,7 @@ module.exports = {
 			dataEntry,
 		});
 	},
-	
+
 	// Redireccionar a Inicio
 	redireccionarInicio: (req, res) => {
 		return res.redirect("/institucional/inicio");
