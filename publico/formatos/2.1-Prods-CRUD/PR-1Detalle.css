@@ -22,10 +22,10 @@
 .marco#links nav a img.rojo {border-color: var(--rojo-oscuro);}
 
 /* Marco - Particularidades */
-.marco#calificaciones {padding: 10px 25px; text-align: center;}
+.marco#calificaciones {padding: 10px 25px; text-align: right;}
 .marco#calificaciones div:first-child {margin-top: 15px;}
 .marco#calificaciones > div {margin-bottom: 15px; min-height: 20px;}
-.marco#calificaciones h4 {width: 95px;}
+.marco#calificaciones h4 {width: 90px; margin-right: 10px;}
 .marco#calificaciones div select {width: 168px; border-radius: 5px;}
 
 /* Marco de Detalle */
