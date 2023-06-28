@@ -1,5 +1,5 @@
 <% if (tema == "prod_rud") { %>
-	<% if (codigo == "detalle") { %>
+	<% if (["detalle", "calificar"].includes(codigo)) { %>
 		<div class="flechas inactivo">
 			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
 		</div>
