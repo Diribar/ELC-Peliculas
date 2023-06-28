@@ -9,11 +9,17 @@
 		</i>
 	</div>
 </div>
-<div id="calificaciones" class="flexCol">
-	<div class="flexRowAlign">
-		<h4></h4>
-		<select name="" id="">
-			
-		</select>
-	</div>
+<div id="calificaciones" class="marco flexColAlign">
+	<% let i = 0 %>
+	<% for (let atributo in atributosCalific) { %>
+		<div class="flexRowAlign">
+			<h4><%= atributosTitulo[i] %></h4>
+			<select name="<%= atributo %>" id="">
+				<% for (let opcion of atributosCalific[atributo]) { %>
+					<option value="<%= opcion.valor %>"><%= opcion.nombre %></option>
+				<% } %>
+			</select>
+		</div>
+		<% i++ %>
+	<% } %>
 </div>
