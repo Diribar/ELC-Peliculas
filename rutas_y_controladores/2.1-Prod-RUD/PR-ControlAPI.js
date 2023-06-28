@@ -28,7 +28,8 @@ module.exports = {
 			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			datos = await BD_genericas.obtienePorCondicion("cal_registros", {
 				usuario_id: userID,
-				[campo_id]: prodID,
+				entidad,
+				entidad_id: prodID,
 			}).then((n) => (n ? [n.feValores / 100, n.entretiene / 100, n.calidadTecnica / 100, n.calificacion / 100] : ""));
 			if (datos) {
 				let calificacionUsuario = {encabezado: "Tuya", valores: datos};
