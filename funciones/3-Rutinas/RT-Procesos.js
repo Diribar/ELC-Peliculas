@@ -322,7 +322,7 @@ module.exports = {
 				// Adecua la info para el avatar
 				if (n.campo == "Avatar") {
 					// Variables
-					const texto = n.aprobado ? {aprob: "sugerida", desc: "original"} : {aprob: "original", desc: "sugerida"};
+					const texto = n.aprobado ? {aprob: "sugerida", desc: "anterior"} : {aprob: "vigente", desc: "sugerida"};
 					n.valorAprob = avatarConLink(n.familia, n.valorAprob, texto.aprob);
 					n.valorDesc = avatarConLink(n.familia, n.valorDesc, texto.desc);
 				}

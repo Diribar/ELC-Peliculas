@@ -8,7 +8,7 @@
 					(n) => n.valor
 				),
 			]);
-			let calificacion = feValores * 0.5 + entretiene * 0.3 + calidadTecnica * 0.2;
+			let calificacion = feValores * 0.5 + entretiene * 0.35 + calidadTecnica * 0.15;
 			calificaciones = {feValores, entretiene, calidadTecnica, calificacion};
 		}
 		// 6. Guarda las calificaciones
