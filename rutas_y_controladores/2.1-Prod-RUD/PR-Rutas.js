@@ -48,7 +48,7 @@ router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 router.get("/detalle", ...aptoDetalle, capturaInactivar, vista.prodDetalle_Form);
 router.get("/edicion", ...aptoEdicion, capturaActivar, vista.prodEdicion_Form);
 router.post("/edicion", ...aptoEdicion, multer.single("avatar"), vista.prodEdicion_Guardar);
-router.get("/calificar", ...aptoCRUD, capturaActivar, vista.calificaProds);
+router.get("/calificar", ...aptoCRUD, vista.calificaProds);
 
 // Inactivar, Recuperar, Eliminar
 router.get("/inactivar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
