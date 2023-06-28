@@ -311,19 +311,20 @@ module.exports = {
 		// Info para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
-		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
 		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 		const status_id = original.statusRegistro_id;
 		const atributosTitulo = ["Deja huella", "Entretiene", "Calidad técnica"];
-
+		const condics = {entidad, entidad_id: id, usuario_id: userID};
+		const califUsuario = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+		
 		// Va a la vista
-		// return res.send(prodComb);
+		// return res.send(califUsuario)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen},
 			...{entidad, id, familia: "producto", status_id},
-			...{entidadNombre, registro: prodComb, links},
+			...{entidadNombre, registro: prodComb},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueDer, atributosTitulo},
+			...{bloqueDer, atributosTitulo, califUsuario},
 		});
 	},
 };
