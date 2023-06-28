@@ -24,11 +24,11 @@ module.exports = {
 		const revisor = req.session.usuario && req.session.usuario.rolUsuario.revisorEnts;
 
 		// Obtiene el producto 'Original' y 'Editado'
-		let [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
+		const [original, edicion] = await procsCRUD.obtieneOriginalEdicion(entidad, id, userID);
 		// Obtiene la versión más completa posible del producto
-		let prodComb = {...original, ...edicion, id};
+		const prodComb = {...original, ...edicion, id};
 		// Configura el título de la vista
-		let titulo =
+		const titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? " un " : " la ") +
