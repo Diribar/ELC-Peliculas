@@ -316,7 +316,7 @@ module.exports = {
 		const atributosTitulo = ["Deja huella", "Entretiene", "Calidad técnica"];
 		const condics = {entidad, entidad_id: id, usuario_id: userID};
 		const califUsuario = await BD_genericas.obtienePorCondicion("cal_registros", condics);
-		
+
 		// Va a la vista
 		// return res.send(califUsuario)
 		return res.render("CMP-0Estructura", {

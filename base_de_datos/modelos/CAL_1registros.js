@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		feValores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
 		calidadTecnica: {type: dt.INTEGER},
-		calificacion: {type: dt.INTEGER},
+		resultado: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {
