@@ -13,6 +13,8 @@ module.exports = async (req, res, next) => {
 		? "DTP"
 		: ruta == "/producto/edicion/"
 		? "EDP"
+		: ruta == "/producto/calificar/"
+		? "CAL"
 		: ruta == "/links/abm/"
 		? "LK"
 		: "";
