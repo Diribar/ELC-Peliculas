@@ -292,12 +292,11 @@ module.exports = {
 			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
 	calificaProds: async (req, res) => {
+		// Variables
 		const tema = "prod_rud";
 		const codigo = "calificar";
-
-		// Variables
 		const {entidad, id} = req.query;
-		const origen = req.query.origen;
+		const origen = req.query.origen ? req.query.origen : "CAL";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
@@ -309,16 +308,13 @@ module.exports = {
 		const bloqueDer = procsCRUD.bloqueRegistro({registro: prodComb});
 		const imgDerPers = procsCRUD.obtieneAvatar(original, edicion).edic;
 
-		// Obtiene datos para la vista
+		// Info para la vista
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
-
-		// Status de la entidad
-		const status_id = original.statusRegistro_id;
-
-		// Info para la vista
 		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
+		const status_id = original.statusRegistro_id;
+		const atributosTitulo = ["Deja huella", "Entretiene", "Calidad técnica"];
 
 		// Va a la vista
 		// return res.send(prodComb);
@@ -327,7 +323,7 @@ module.exports = {
 			...{entidad, id, familia: "producto", status_id},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueDer},
+			...{bloqueDer, atributosTitulo},
 		});
 	},
 };

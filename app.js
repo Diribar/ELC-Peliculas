@@ -133,7 +133,7 @@ app.set("views", [
 	global.inactivar_id = global.statusRegistros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.statusRegistros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.statusRegistros.find((n) => n.inactivo).id;
-	global.opcsCalific = {feValores, entretiene, calidadTecnica};
+	global.atributosCalific = {feValores, entretiene, calidadTecnica};
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.anime).id;
