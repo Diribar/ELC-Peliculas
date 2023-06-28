@@ -291,12 +291,12 @@ module.exports = {
 			? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 			: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 	},
-	calificaProds: async (req, res) => {		
+	calificaProds: async (req, res) => {
 		// Variables
 		const tema = "prod_rud";
 		const codigo = "calificar";
 		const {entidad, id} = req.query;
-		const origen = req.query.origen;
+		const origen = req.query.origen ? req.query.origen : "CAL";
 		const userID = req.session.usuario ? req.session.usuario.id : "";
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
@@ -314,6 +314,7 @@ module.exports = {
 		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
 		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 		const status_id = original.statusRegistro_id;
+		const atributosTitulo = ["Deja huella", "Entretiene", "Calidad técnica"];
 
 		// Va a la vista
 		// return res.send(prodComb);
@@ -322,7 +323,7 @@ module.exports = {
 			...{entidad, id, familia: "producto", status_id},
 			...{entidadNombre, registro: prodComb, links},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueDer},
+			...{bloqueDer, atributosTitulo},
 		});
 	},
 };
