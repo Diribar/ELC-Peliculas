@@ -1,93 +1,13 @@
-<div id="tituloLinks" class="relative">
-	<h3>Links</h3>
+<div id="tituloInfoDetalle" class="relative">
+	<h3>Tu calificación</h3>
 	<!-- Ayuda -->
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<p><u>Significado del borde de los logos:</u></p>
-				<li><b>Verde</b>: en idioma <b>castellano</b></li>
-				<li><b>Amarillo</b>: <b>subtitulos</b> en castellano</li>
-				<li><b>Rojo</b>: en <b>otro</b> idioma</li>
+				<li></li>
 			</ul>
 		</i>
 	</div>
 </div>
 <div id="links" class="flexCol">
-	<!-- Película -->
-	<% if (entidad != "colecciones") { %>
-		<div class="flexRowAlign">
-			<h4>Película</h4>
-			<% if (links.PL.length) { %>
-				<%- include("PR1-DetalleLinks", {linksProd: links.PL}) %>
-			<% } else { %>
-				<p><em>- No disponemos de links aprobados -</em></p>
-			<% } %>
-		</div>
-	<% } %>
-	<!-- Trailer -->
-	<div class="flexRowAlign">
-		<h4>Trailer</h4>
-		<% if (links.TR.length) { %>
-			<%- include("PR1-DetalleLinks", {linksProd: links.TR}) %>
-		<% } else { %>
-			<p><em>- No disponemos de links aprobados -</em></p>
-		<% } %>
-	</div>
-</div>
-<div id="marco">
-	<div id="etiquetas" class="flexRow">
-		<p class="resaltar">Sinopsis</p>
-		<p>Información General</p>
-		<p>Actores</p>
-		<!-- RCLVs -->
-		<% for (let i=0; i < asocs.length; i++) { %>
-			<% if (bloqueIzq[asocs[i]]) { %>
-				<p><%= rclvsNombre[i] %></p>
-			<% } %>
-		<% } %>
-	</div>
-	<div id="datosDetalle">
-		<div id="sinopsis" class="datosParcial">
-			<p><%= registro.sinopsis ? registro.sinopsis : 'No disponemos de esa información' %></p>
-		</div>
-		<div id="masInfo" class="datosParcial" style="display: none;">
-			<% if (!bloqueIzq.masInfoIzq.length) { %>
-				<p>No disponemos de esa información</p>
-			<% } else { %>
-				<div id="masInfoIzq">
-					<% for (let campo of bloqueIzq.masInfoIzq) { %>
-						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
-					<% } %>
-				</div>
-			<% } %>
-			<% if (bloqueIzq.masInfoDer.length) { %>
-				<div id="masInfoDer">
-					<% for (let campo of bloqueIzq.masInfoDer) { %>
-						<p><%= campo.titulo %>: <b><%= campo.valor %></b></p>
-					<% } %>
-				</div>
-			<% } %>
-		</div>
-		<div id="actores" class="datosParcial" style="display: none;">
-			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
-		</div>
-		<% for (RCLV of RCLVs) { %>
-			<% if (bloqueIzq[RCLV.asociacion]) { %>
-				<div id="rclv" class="datosParcial" style="display: none;">
-					<% for (let campo of bloqueIzq[RCLV.asociacion]) { %>
-						<p>
-							<%= campo.titulo %>: <b><%= campo.valor %></b>
-							<% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
-								<span>
-									<a href="/rclv/detalle/?entidad=<%= RCLV.entidad %>&id=<%= + registro[RCLV.campo_id] %>">
-										<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-									</a>
-								</span>
-							<% } %>
-						</p>
-					<% } %>
-				</div>
-			<% } %>
-		<% } %>
-	</div>
 </div>
