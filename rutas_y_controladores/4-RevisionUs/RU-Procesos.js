@@ -34,7 +34,7 @@ module.exports = {
 				valor_rech: usuario[campo],
 	
 				motivo_id: motivo.id,
-				duracion: motivo.duracion,
+				penalizac: motivo.penalizac,
 	
 				editadoPor_id: usuario.id,
 				editadoEn: usuario.fechaRevisores,

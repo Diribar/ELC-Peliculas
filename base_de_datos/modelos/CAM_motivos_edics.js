@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		version_actual: {type: dt.BOOLEAN},
 		info_erronea: {type: dt.BOOLEAN},
 		rev_edicion: {type: dt.BOOLEAN},
-		duracion: {type: dt.DECIMAL},
+		penalizac: {type: dt.DECIMAL},
 		bloqueoInput: {type: dt.BOOLEAN},
 	};
 	const config = {

@@ -9,7 +9,7 @@ global.SI = 2;
 global.talVez = 1;
 global.NO = null;
 global.usAutom_id = 2;
-global.fechaPrimerDomingoDelAno =null;
+global.fechaPrimerDomingoDelAno = null;
 // Con 'require'
 require("dotenv").config(); // Para usar el archivo '.env' --> se debe colocar al principio
 global.localhost = process.env.localhost;
@@ -84,6 +84,7 @@ app.set("views", [
 		// Variables de usuario
 		statusRegistrosUs: BD_genericas.obtieneTodos("statusRegistrosUs", "orden"),
 		roles_us: BD_genericas.obtieneTodos("roles_usuarios", "orden"),
+
 		// Variable de entidades
 		statusRegistros: BD_genericas.obtieneTodos("statusRegistros", "orden"),
 		sexos: BD_genericas.obtieneTodos("sexos", "orden"),
@@ -95,6 +96,9 @@ app.set("views", [
 		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
+		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
+		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
+		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
 
 		// Variables de RCLVs
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
@@ -129,6 +133,7 @@ app.set("views", [
 	global.inactivar_id = global.statusRegistros.find((n) => n.inactivar).id;
 	global.recuperar_id = global.statusRegistros.find((n) => n.recuperar).id;
 	global.inactivo_id = global.statusRegistros.find((n) => n.inactivo).id;
+	global.opcsCalific = {feValores, entretiene, calidadTecnica};
 
 	// 2. Tipos de actuación
 	global.anime_id = tiposActuacion.find((n) => n.anime).id;

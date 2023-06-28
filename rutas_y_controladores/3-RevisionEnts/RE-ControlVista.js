@@ -100,6 +100,7 @@ module.exports = {
 		const statusLink_id = [creado_id, aprobado_id, recuperar_id];
 		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id});
 		const status_id = statusRegistro_id;
+		const asocs = variables.asociaciones.rclvs;
 
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
@@ -107,7 +108,7 @@ module.exports = {
 			...{entidad, id, familia, status_id, statusCreado},
 			...{entidadNombre, registro: original, links},
 			...{imgDerPers, tituloImgDerPers: original.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs: []},
+			...{bloqueIzq, bloqueDer, RCLVs: [], asocs},
 			...{urlActual: req.session.urlActual, cartelRechazo: true},
 		});
 	},
@@ -246,7 +247,7 @@ module.exports = {
 		// 4.B. Agrega una 'duración' sólo si el usuario intentó un status "aprobado"
 		const motivo =
 			codigo == "rechazo" || (!aprob && codigo == "recuperar") ? motivosStatus.find((n) => n.id == motivo_id) : {};
-		if (motivo.duracion) datosHist.duracion = Number(motivo.duracion);
+		if (motivo.penalizac) datosHist.penalizac = Number(motivo.penalizac);
 		// 4.C. Guarda los datos históricos
 		BD_genericas.agregaRegistro("histStatus", datosHist);
 
@@ -254,7 +255,7 @@ module.exports = {
 		BD_genericas.aumentaElValorDeUnCampo("usuarios", userID, campoDecision, 1);
 
 		// 6. Penaliza al usuario si corresponde
-		if (datosHist.duracion) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
+		if (datosHist.penalizac) comp.usuarioPenalizAcum(userID, motivo, petitFamilias);
 
 		// 7. Acciones si es un registro que se mueve a 'inactivo'
 		// Elimina el archivo de avatar de las ediciones
