@@ -21,16 +21,16 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/barchart
 	function drawBarColors() {
 		// Arma los títulos
-		let encabezado = ["Aptitud"];
-		for (let columna of calificaciones) encabezado.push(columna.encabezado);
+		let encabezado = ["Atributo"];
+		for (let columna of calificaciones) encabezado.push(columna.autor);
 		// Arma las filas
-		let titulos = ["Deja H.", "Entr.", "Cal.T."];
+		let titulos = ["Deja Hue.", "Entr.", "Cal. Téc."];
 		let filas = [];
 		for (let fila = 0; fila < titulos.length; fila++) {
 			filas.push([]);
 			for (let columna = 0; columna < calificaciones.length; columna++) {
 				if (!columna) filas[fila].push(titulos[fila]);
-				filas[fila].push(calificaciones[columna].valores[fila]);
+				filas[fila].push(calificaciones[columna].valores[fila] / 100);
 			}
 		}
 		// Consolida el resultado
@@ -41,7 +41,9 @@ window.addEventListener("load", async () => {
 
 		// Opciones del gráfico
 		let options = {
-			fontSize: 5,
+			backgroundColor: "rgb(255,242,204)",
+			width: "100%",
+			fontSize: 8,
 			animation: {
 				duration: 100,
 				easing: "out",
@@ -58,10 +60,8 @@ window.addEventListener("load", async () => {
 			hAxis: {
 				minValue: 0,
 				maxValue: 1,
-				ticks: [0, 1],
+				ticks: [0, 0.5, 1],
 				format: "percent",
-				gridlines: {count: 2},
-				textStyle: {fontSize: 5},
 			},
 		};
 

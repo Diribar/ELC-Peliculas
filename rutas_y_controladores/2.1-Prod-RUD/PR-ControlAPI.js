@@ -20,7 +20,7 @@ module.exports = {
 			n.calidadTecnica,
 			n.calificacion,
 		]);
-		calificaciones.push({encabezado: "Gral.", valores: datos});
+		calificaciones.push({autor: "Gral.", valores: datos});
 
 		// Datos particulares
 		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
@@ -28,7 +28,7 @@ module.exports = {
 		datos = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
 		if (datos) {
 			datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
-			calificaciones.push({encabezado: "Tuya", valores: datos});
+			calificaciones.push({autor: "Tuya", valores: datos});
 		}
 
 		// Fin
