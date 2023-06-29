@@ -11,11 +11,9 @@ window.addEventListener("load", async () => {
 	// Mostrar el gráfico solamente si existen calificaciones
 	if (calificaciones.length) {
 		// Resultados de la calificación
-		// General: <span>77%</span> / Tuya: <span>78%</span>
 		let dondeUbicarLosResultados = document.querySelector("#calificacionesResultados");
 		let resultados = "General: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
-		if (calificaciones.length == 2)
-			resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3]) + "%</span>";
+		if (calificaciones.length == 2) resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3]) + "%</span>";
 		dondeUbicarLosResultados.innerHTML = resultados;
 
 		// Aspectos de la imagen de Google
@@ -24,11 +22,11 @@ window.addEventListener("load", async () => {
 
 		// https://developers.google.com/chart/interactive/docs/gallery/barchart
 		function drawBarColors() {
-			// Armar los títulos
+			// Arma los títulos
 			let encabezado = ["Aptitud"];
 			for (let columna of calificaciones) encabezado.push(columna.encabezado);
-			// Armar las filas
-			let titulos = ["IFV", "En.", "Cal"];
+			// Arma las filas
+			let titulos = ["Deja H.", "Entr.", "Cal.T."];
 			let filas = [];
 			for (let fila = 0; fila < titulos.length; fila++) {
 				filas.push([]);
@@ -37,42 +35,39 @@ window.addEventListener("load", async () => {
 					filas[fila].push(calificaciones[columna].valores[fila]);
 				}
 			}
-			// Consolidar el resultado
+			// Consolida el resultado
 			let resultado = [encabezado, ...filas];
 
-			// Especificar la información
+			// Especifica la información
 			let data = google.visualization.arrayToDataTable(resultado);
 
 			// Opciones del gráfico
-			let opcionesDelEjeDeValores = {
-				minValue: 0,
-				maxValue: 1,
-				ticks: [0, 0.5, 1],
-				format: "percent",
-				gridlines: {count: 3},
-				textStyle: {fontSize: 10},
-			};
 			let options = {
-				fontSize: 10,
+				fontSize: 5,
 				animation: {
-					duration: 500,
+					duration: 100,
 					easing: "out",
 					startup: true,
 				},
 				numberStyle: "percent",
-				chartArea: {
-					top: "10%",
-				},
+				chartArea: {top: "10%"},
 				colors: ["green", "lightgreen"],
 				legend: {
 					position: "bottom",
 					alignment: "start",
 					textStyle: {italic: true},
 				},
-				hAxis: opcionesDelEjeDeValores,
+				hAxis: {
+					minValue: 0,
+					maxValue: 1,
+					ticks: [0, 1],
+					format: "percent",
+					gridlines: {count: 2},
+					textStyle: {fontSize: 5},
+				},
 			};
 
-			// Hacer el gráfico visible
+			// Hace visible el gráfico
 			let grafico = new google.visualization.BarChart(document.getElementById("calificacionesGrafico"));
 			grafico.draw(data, options);
 		}
