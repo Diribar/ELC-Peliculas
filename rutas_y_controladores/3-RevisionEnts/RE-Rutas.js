@@ -25,7 +25,7 @@ const capturaActivar = require("../../middlewares/varios/capturaActivar");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 // Consolidado
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usRolRevEnts];
-const aptoStatus = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, edicion, permUserReg];
 // Otros
 const multer = require("../../middlewares/varios/multer");
@@ -46,24 +46,22 @@ router.get("/tablero-de-control", ...aptoUsuario, vista.tableroControl);
 
 // PRODUCTO y RCLV
 // Altas Form
-router.get("/producto/alta", ...aptoStatus, capturaActivar, vista.prod_altaForm);
-router.get("/rclv/alta", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
-router.get("/rclv/solapamiento", ...aptoStatus, capturaActivar, vistaRCLV.altaEdicForm);
-router.get("/:familia/rechazo", aptoStatus, capturaActivar, vistaCRUD.inacRecup_Form);
+router.get("/producto/alta", aptoCRUD, capturaActivar, vista.prod_altaForm);
+router.get("/rclv/alta", aptoCRUD, capturaActivar, vistaRCLV.altaEdicForm);
+router.get("/rclv/solapamiento", aptoCRUD, capturaActivar, vistaRCLV.altaEdicForm);
 // Altas Guardar
-router.post("/producto/alta", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar);
-router.post("/rclv/alta", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.prodRCLV_ARIR_guardar);
-router.post("/:familia/rechazo", ...aptoStatus, motivoNecesario, capturaInactivar, vista.prodRCLV_ARIR_guardar);
-router.post("/rclv/solapamiento", ...aptoStatus, multer.single("avatar"), capturaInactivar, vista.solapamGuardar);
+router.post("/producto/alta", aptoCRUD, capturaInactivar, vista.prodRCLV_ARIR_guardar);
+router.post("/rclv/alta", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.prodRCLV_ARIR_guardar);
+router.post("/:familia/rechazo", aptoCRUD, motivoNecesario, capturaInactivar, vista.prodRCLV_ARIR_guardar);
+router.post("/rclv/solapamiento", aptoCRUD, multer.single("avatar"), capturaInactivar, vista.solapamGuardar);
 // Inactivar o Recuperar
-router.get("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/:familia/inactivar-o-recuperar", ...aptoStatus, capturaInactivar, vista.prodRCLV_ARIR_guardar); // Va sin 'motivo'
+router.post("/:familia/inactivar-o-recuperar", aptoCRUD, capturaInactivar, vista.prodRCLV_ARIR_guardar); // Va sin 'motivo'
 // Edición
-router.get("/:familia/edicion", ...aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
-router.post("/:familia/edicion", ...aptoEdicion, motivoOpcional, capturaInactivar, vista.avatarGuardar);
+router.get("/:familia/edicion", aptoEdicion, capturaActivar, vista.prodRCLV_edicForm);
+router.post("/:familia/edicion", aptoEdicion, motivoOpcional, capturaInactivar, vista.avatarGuardar);
 
 // LINKS
-router.get("/links", ...aptoStatus, capturaActivar, vista.linksForm);
+router.get("/links", aptoCRUD, capturaActivar, vista.linksForm);
 
 // Exporta **********************************************
 module.exports = router;
