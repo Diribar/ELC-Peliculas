@@ -15,9 +15,6 @@ module.exports = async (req, res, next) => {
 		usuario: req.session.usuario,
 		userID: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
-		// url
-		urlBase: req.baseUrl,
-		url: req.url,
 		// Registro
 		include: ["statusRegistro", "capturado_por"],
 		// Vistas
@@ -26,6 +23,7 @@ module.exports = async (req, res, next) => {
 		vistaEntendido: variables.vistaEntendido(req.session.urlSinCaptura),
 		vistaTablero: variables.vistaTablero,
 	};
+	const {baseUrl, url} = comp.reqBasePathUrl(req);
 	v = {
 		...v,
 		entidadNombreMinuscula: comp.obtieneDesdeEntidad.entidadNombre(v.entidad).toLowerCase(),
@@ -105,7 +103,7 @@ module.exports = async (req, res, next) => {
 		if (
 			v.creadoEn < v.haceUnaHora && // creado hace más de una hora
 			v.registro.statusRegistro.creado && // en status creado
-			v.urlBase != "/revision" // la ruta no es de revisión
+			baseUrl != "/revision" // la ruta no es de revisión
 		) {
 			let nombre = comp.nombresPosibles(v.registro);
 			if (nombre) nombre = "'" + nombre + "'";
@@ -193,28 +191,26 @@ module.exports = async (req, res, next) => {
 	}
 
 	// 6. Verificaciones exclusivas de las vistas de Revisión
-	if (!informacion && v.urlBase == "/revision" && !v.url.startsWith("/tablero-de-control")) {
+	if (!informacion && baseUrl == "/revision" && !url.startsWith("/tablero-de-control")) {
 		// 1. El registro está en un status gr_creado, creado por el Revisor
 		if (v.registro.statusRegistro.gr_creado && creadoPorElUsuario)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
 				iconos: v.vistaAnteriorTablero,
 			};
-
 		// 2. El registro está en un status provisorio, sugerido por el Revisor
 		else if (v.registro.statusRegistro.gr_provisorios && v.registro.statusSugeridoPor_id == v.userID)
 			informacion = {
 				mensajes: ["El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status"],
 				iconos: v.vistaAnteriorTablero,
 			};
-			
 		// 3. El registro sólo tiene una edición, es del Revisor, y quiere acceder a una vista de edición
 		else if (
 			v.registro.ediciones &&
 			v.registro.ediciones.length == 1 &&
 			v.registro.ediciones[0].editadoPor_id == v.userID &&
-			!v.url.startsWith("/links/") &&
-			!v.url.startsWith("/producto/alta/")
+			!url.startsWith("/links/") &&
+			!url.startsWith("/producto/alta/")
 		) {
 			informacion = {
 				mensajes: ["El registro tiene una sola edición y fue realizada por vos.", "La tiene que revisar otra persona"],
