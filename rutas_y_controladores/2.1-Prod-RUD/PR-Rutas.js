@@ -47,6 +47,7 @@ router.get("/detalle", aptoDetalle, capturaInactivar, vista.prodDetalle);
 router.get("/edicion", aptoEdicion, capturaActivar, vista.prodEdicion.form);
 router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.prodEdicion.guardar);
 router.get("/calificar", aptoCalificar, vista.calificaProd.form);
+router.post("/calificar", aptoCalificar, vista.calificaProd.guardar);
 
 // Fin
 module.exports = router;

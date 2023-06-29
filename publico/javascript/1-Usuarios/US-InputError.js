@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 	const imgInicial = imgAvatar ? imgAvatar.src : "";
 	let esImagen = true;
 	// Varias
-	let ruta_api = "/usuarios/api/valida-" + tareas[tarea] + "/?";
+	let rutaApi = "/usuarios/api/valida-" + tareas[tarea] + "/?";
 
 	// FUNCIONES --------------------------------------------------------------
 	let FN = {
@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
 				inputs[indice].value ||
 				!esImagen ||
 				(tarea == "documento" && imgAvatar.src.includes("imagenes/0-Base"))
-					? await fetch(ruta_api + campo + "=" + valor).then((n) => n.json())
+					? await fetch(rutaApi + campo + "=" + valor).then((n) => n.json())
 					: "";
 			// Fin
 			return errores;
