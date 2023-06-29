@@ -14,24 +14,24 @@ module.exports = {
 		let datos;
 		let calificaciones = [];
 		// Datos generales
-		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) =>
-			n.calificacion != null ? [n.feValores, n.entretiene, n.calidadTecnica, n.calificacion] : ""
-		);
-		console.log(22, datos);
-		if (datos) {
-			let calificacionGral = {encabezado: "Gral.", valores: datos};
-			calificaciones.push(calificacionGral);
-		}
+		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
+			n.feValores,
+			n.entretiene,
+			n.calidadTecnica,
+			n.calificacion,
+		]);
+		calificaciones.push({encabezado: "Gral.", valores: datos});
+
 		// Datos particulares
-		datos = await BD_genericas.obtienePorCondicion("cal_registros", {
-			usuario_id: userID,
-			entidad,
-			entidad_id: prodID,
-		}).then((n) => (n ? [n.feValores, n.entretiene, n.calidadTecnica, n.resultado] : ""));
+		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+		const include = ["feValores", "entretiene", "calidadTecnica"];
+		datos = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
 		if (datos) {
-			let calificacionUsuario = {encabezado: "Tuya", valores: datos};
-			calificaciones.push(calificacionUsuario);
+			datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
+			calificaciones.push({encabezado: "Tuya", valores: datos});
 		}
+
+		// Fin
 		return res.json(calificaciones);
 	},
 
