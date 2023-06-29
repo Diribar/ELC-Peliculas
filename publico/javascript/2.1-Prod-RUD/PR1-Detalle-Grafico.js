@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 			filas.push([]);
 			for (let columna = 0; columna < calificaciones.length; columna++) {
 				if (!columna) filas[fila].push(titulos[fila]);
-				filas[fila].push(calificaciones[columna].valores[fila]/100);
+				filas[fila].push(calificaciones[columna].valores[fila] / 100);
 			}
 		}
 		// Consolida el resultado
@@ -41,8 +41,8 @@ window.addEventListener("load", async () => {
 
 		// Opciones del gráfico
 		let options = {
-			backgroundColor: 'rgb(255,242,204)',
-			width: '100%',
+			backgroundColor: "rgb(255,242,204)",
+			width: "100%",
 			fontSize: 8,
 			animation: {
 				duration: 100,
@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 			hAxis: {
 				minValue: 0,
 				maxValue: 1,
-				ticks: [0, 0.5,1],
+				ticks: [0, 0.5, 1],
 				format: "percent",
 			},
 		};
