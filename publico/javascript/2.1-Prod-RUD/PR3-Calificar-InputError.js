@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	let DOM = {
 		form: document.querySelector("form"),
 		calificaciones: document.querySelectorAll("form select"),
-		guardarCambios: document.querySelector("form #guardarCambios"),
-		eliminar: document.querySelector("form #eliminar"),
+		guardarCambios: document.querySelector("form #guardarCambios #guardar"),
+		eliminar: document.querySelector("form #guardarCambios #eliminar"),
 	};
 	let v = {
 		entidad: new URL(location.href).searchParams.get("entidad"),
@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let revisaErrores = () => {
 		// Se fija si alguna calificacion está incompleta
-		let errores = DOM.calificaciones.some((n) => !n.value);
+		let errores = Array.from(DOM.calificaciones).some((n) => !n.value);
 
 		// Si no hubo errores, se fija si todas las calificaciones coinciden con la guardada
 		if (califGuardada && !errores) {
@@ -28,7 +28,6 @@ window.addEventListener("load", async () => {
 			for (let calif of DOM.calificaciones) resultados.push(calif.value == califGuardada[calif.name]);
 			errores = resultados.every((n) => !!n);
 		}
-		console.log(errores);
 		errores ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
 		return;
 	};
@@ -39,7 +38,9 @@ window.addEventListener("load", async () => {
 	};
 
 	// Input
-	DOM.form.addEventListener("input", (e) => {});
+	DOM.form.addEventListener("input", (e) => {
+		revisaErrores()
+	});
 	DOM.form.addEventListener("submit", () => {
 		if (button.classList.contains("inactivo")) e.preventDefault();
 		return;
