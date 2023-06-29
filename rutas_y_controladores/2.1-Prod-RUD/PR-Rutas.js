@@ -29,7 +29,8 @@ const multer = require("../../middlewares/varios/multer");
 // Consolida
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
-const aptoCRUD = [...aptoDetalle, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
+const aptoCRUD = [...aptoCalificar, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion];
 const aptoEliminar = [...aptoCRUD, usRolRevEnts];
 
@@ -48,7 +49,7 @@ router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 router.get("/detalle", ...aptoDetalle, capturaInactivar, vista.prodDetalle_Form);
 router.get("/edicion", ...aptoEdicion, capturaActivar, vista.prodEdicion_Form);
 router.post("/edicion", ...aptoEdicion, multer.single("avatar"), vista.prodEdicion_Guardar);
-router.get("/calificar", ...aptoCRUD, vista.calificaProds);
+router.get("/calificar", ...aptoCalificar, vista.calificaProds);
 
 // Inactivar, Recuperar, Eliminar
 router.get("/inactivar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);

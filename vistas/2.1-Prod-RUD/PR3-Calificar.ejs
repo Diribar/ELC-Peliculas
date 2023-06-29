@@ -9,19 +9,30 @@
 		</i>
 	</div>
 </div>
-<form id="calificaciones" class="marco flexColAlign">
-	<% let i = 0 %>
-	<% for (let atributo in atributosCalific) { %>
-		<div class="flexRowAlign">
-			<h4><%= atributosTitulo[i] %></h4>
-			<select name="<%= atributo %>" id="">
-				<% for (let opcion of atributosCalific[atributo]) { %>
-					<option value="<%= opcion.valor %>"><%= opcion.nombre %></option>
-				<% } %>
-			</select>
+<form method="POST" class="marco flexColAlign">
+	<div class="flexRowAlign">
+		<div id="resultados" class="flexColAlign">
+			<% let i = 0 %>
+			<% for (let atributo in atributosCalific) { %>
+				<div class="flexRowAlign">
+					<h4><%= atributosTitulo[i] %></h4>
+					<% console.log(17, califUsuario[atributo], atributo) %>
+					<select name="<%= atributo %>" id="">
+						<option value="" <% if (!califUsuario[atributo]) { %>selected<% } %>>Elegí una opción</option>
+						<% for (let opcion of atributosCalific[atributo]) { %>
+							<% console.log(21,opcion.id) %>
+							<option value="<%= opcion.id %>" <% if (opcion.id == califUsuario[atributo]) {%>selected<% } %>><%= opcion.nombre %></option>
+						<% } %>
+					</select>
+				</div>
+				<% i++ %>
+			<% } %>
 		</div>
-		<% i++ %>
-	<% } %>
+		<div id="consolidado">
+			<div id="resultado">Resultado</div>
+			<div id="valor"><%= califUsuario.resultado ? califUsuario.resultado : "-" %>%</div>
+		</div>
+	</div>
 	<!-- Guardar cambios -->
 	<div id="guardarCambios" class="flechas">
 		<!-- Guarda la calificación -->

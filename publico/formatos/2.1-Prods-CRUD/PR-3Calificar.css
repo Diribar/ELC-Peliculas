@@ -1,10 +1,15 @@
-/* Marco - Particularidades */
-.marco#calificaciones {padding: 10px 25px; text-align: right;}
-.marco#calificaciones h4 {width: 90px; margin-right: 10px;}
-.marco#calificaciones > div:first-child {margin-top: 15px;}
-.marco#calificaciones > div {margin-bottom: 15px; min-height: 20px;}
-.marco#calificaciones > div:nth-child(3) {margin-bottom: 0;}
-.marco#calificaciones div select {width: 168px; border-radius: 5px;}
+/* Marco - Calificaciones */
+form.marco {padding: 25px 25px; padding-right: 0; text-align: right;}
+/* form #resultados > div:first-child {margin-top: 15px;} */
+form #resultados > div {margin-bottom: 15px; min-height: 20px;}
+form #resultados > div:nth-child(3) {margin-bottom: 0;}
+form #resultados div h4 {width: 90px; margin-right: 10px;}
+form #resultados div select {width: 168px; border-radius: 5px;}
+
+/* Marco - Consolidado */
+form #consolidado {margin: 30px; text-align: center; border-radius: 5px; overflow: hidden; border: var(--azul-oscuro) solid 1px;}
+form #consolidado #resultado {background: var(--azul-oscuro); color: white; font-size: 1.1rem; padding: 2px 5px;}
+form #consolidado #valor {font-size: 2rem; background: white; padding: 2px;}
 
 /* Guardar cambios */
-.marco#calificaciones #guardarCambios {margin-top: 30px;}
+form #guardarCambios {margin-top: 20px;}
