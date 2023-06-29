@@ -17,6 +17,7 @@
 		<div id="resultados" class="flexColAlign">
 			<% let i = 0 %>
 			<% for (let atributo in atributosCalific) { %>
+				<% const atributo_id = atributo + "_id" %>
 				<div class="flexRowAlign">
 					<h4>
 						<% if (!i) { %>
@@ -28,10 +29,10 @@
 						<% } %>
 						<%= atributosTitulo[i] %>
 					</h4>
-					<select name="<%= atributo %>">
-						<option value="" <% if (!califUsuario[atributo]) { %>selected<% } %>>Elegí una opción</option>
+					<select name="<%= atributo_id %>">
+						<option value="" <% if (!califUsuario[atributo_id]) { %>selected<% } %>>Elegí una opción</option>
 						<% for (let opcion of atributosCalific[atributo]) { %>
-							<option value="<%= opcion.id %>" <% if (opcion.id == califUsuario[atributo]) {%>selected<% } %>><%= opcion.nombre %></option>
+							<option value="<%= opcion.id %>" <% if (opcion.id == califUsuario[atributo_id]) {%>selected<% } %>><%= opcion.nombre %></option>
 						<% } %>
 					</select>
 				</div>
