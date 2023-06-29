@@ -271,8 +271,8 @@ module.exports = {
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
-		if (producto && codigo == "alta")
-			return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		const {baseUrl} = comp.reqBasePathUrl(req);
+		if (producto && codigo == "alta") return res.redirect(baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
