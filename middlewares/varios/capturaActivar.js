@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	const entID = req.query.id;
 	const userID = req.session.usuario.id;
 	const registro = await BD_genericas.obtienePorIdConInclude(entidad, entID, "statusRegistro");
-	const urlBase = req.baseUrl;
+	const {baseUrl} = comp.reqBasePathUrl(req);
 	// Variables - De tiempo
 	let ahora = comp.fechaHora.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
 	const haceDosHoras = comp.fechaHora.nuevoHorario(-2, ahora);
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
 	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)
 	//	2. Se quiere acceder desde una vista de revisión
-	if (!registro.statusRegistro.creado || urlBase == "/revision") {
+	if (!registro.statusRegistro.creado || baseUrl == "/revision") {
 		// Activa la entidad y el usuario
 		let datos = {capturaActiva: true, capturadoPor_id: userID};
 		// Fija la nueva hora de captura si corresponde
