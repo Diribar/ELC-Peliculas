@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 		// En caso que no, mensaje de error
 		if (!edicion) {
 			if (!origen) {
-				const baseUrl = req.baseUrl;
+				const {baseUrl} = comp.reqBasePathUrl(req);
 				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "DTR" : "DTP";
 			}
 			informacion = {
@@ -38,8 +38,9 @@ module.exports = async (req, res, next) => {
 	// 2. Acciones en caso de que no exista el 'edicID' en el url
 	else {
 		// Variables
-		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		let revision = req.baseUrl == "/revision";
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const {baseUrl} = comp.reqBasePathUrl(req);
+		const revision = baseUrl == "/revision";
 		let edicion;
 
 		if (revision) {

@@ -1,10 +1,12 @@
 "use strict";
 const variables = require("../../funciones/1-Procesos/Variables");
+const comp = require("../../funciones/1-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables
 	const rclvs = variables.entidades.rclvs;
-	const rclv = req.path.slice(1);
+	const {ruta} = comp.reqBasePathUrl(req);
+	const rclv = ruta.slice(1);
 
 	// Valida la entidad
 	if (!rclvs.includes(rclv)) {

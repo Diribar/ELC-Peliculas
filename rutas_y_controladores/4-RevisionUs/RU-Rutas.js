@@ -23,10 +23,10 @@ const aptoRevisor = [usAltaTerm, usPenalizaciones, revisorUs];
 const aptoRevMasRegistro = [...aptoRevisor, IDvalido, statusCorrecto, usAptoValidaIdent, permUserReg];
 
 // VISTAS --------------------------------------------------
-router.get("/tablero-de-control", ...aptoRevisor, vista.tableroControl);
+router.get("/tablero-de-control", aptoRevisor, vista.tableroControl);
 // Identidad
-router.get("/validar-identidad", ...aptoRevMasRegistro, capturaActivar, vista.validaIdentForm);
-router.post("/validar-identidad", ...aptoRevMasRegistro, capturaInactivar, vista.validaIdentGuardar);
+router.get("/validar-identidad", aptoRevMasRegistro, capturaActivar, vista.validaIdentForm);
+router.post("/validar-identidad", aptoRevMasRegistro, capturaInactivar, vista.validaIdentGuardar);
 
 // Exportarlo **********************************************
 module.exports = router;

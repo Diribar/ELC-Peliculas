@@ -26,7 +26,7 @@ router.get("/api/localhost", API.localhost);
 router.get("/inactivar-captura", capturaInactivar, vista.redireccionar);
 
 // Tablero de mantenimiento
-router.get("/mantenimiento", ...aptoUsuario, vista.tableroMantenim);
+router.get("/mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Redireccionar a Inicio
 router.get("/", vista.redireccionarInicio);

@@ -1,18 +1,19 @@
 "use strict";
-module.exports = async (req, res, next) => {
-	// Redirecciona si el usuario no está en el status esperado
+// Requires
+const comp = require("../../funciones/1-Procesos/Compartidas");
 
+module.exports = async (req, res, next) => {
 	// Variables
 	const usuario = req.session.usuario;
-	const reqPath = req.path;
+	const {ruta} = comp.reqBasePathUrl(req);
 	const statusEsperado =
-		reqPath == "/editables"
+		ruta == "/editables"
 			? usuario.statusRegistro.mail_validado
-			: reqPath == "/bienvenido" || reqPath == "/identidad"
+			: ruta == "/bienvenido" || ruta == "/identidad"
 			? usuario.statusRegistro.editables
-			: reqPath == "/validacion-en-proceso"
+			: ruta == "/validacion-en-proceso"
 			? usuario.statusRegistro.ident_a_validar
-			: reqPath == "/logout"
+			: ruta == "/logout"
 			? true
 			: false;
 

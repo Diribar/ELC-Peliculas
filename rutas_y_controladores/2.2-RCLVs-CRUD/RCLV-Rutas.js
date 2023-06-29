@@ -41,19 +41,11 @@ router.get("/api/valida-sector", API.validaSector);
 router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
-router.get("/agregar", ...aptoAgregar, vista.altaEdicForm);
-router.post("/agregar", ...aptoAgregar, multer.single("avatar"), vista.altaEdicGuardar);
-router.get("/edicion", ...aptoEdicion, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", ...aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
-router.get("/detalle", ...aptoDetalle, vista.detalle);
-
-router.get("/inactivar", aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/inactivar", aptoCRUD, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/recuperar", aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/recuperar", aptoCRUD, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/eliminar", aptoEliminar, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/eliminar", aptoEliminar, capturaInactivar, vistaCRUD.eliminarGuardar);
-router.get("/eliminado", vistaCRUD.eliminadoForm);
+router.get("/agregar", aptoAgregar, vista.altaEdicForm);
+router.post("/agregar", aptoAgregar, multer.single("avatar"), vista.altaEdicGuardar);
+router.get("/edicion", aptoEdicion, capturaActivar, vista.altaEdicForm);
+router.post("/edicion", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
+router.get("/detalle", aptoDetalle, vista.detalle);
 
 // Exportarlo **********************************************
 module.exports = router;

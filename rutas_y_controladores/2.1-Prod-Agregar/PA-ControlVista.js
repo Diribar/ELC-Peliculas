@@ -414,7 +414,8 @@ module.exports = {
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect(req.baseUrl + sigPaso.url);
+			const {baseUrl} = comp.reqBasePathUrl(req);
+			return res.redirect(baseUrl + sigPaso.url);
 		},
 	},
 	copiarFA: {

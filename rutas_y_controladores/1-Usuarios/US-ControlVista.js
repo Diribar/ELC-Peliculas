@@ -27,7 +27,8 @@ module.exports = {
 
 		// Tema y código
 		const tema = "usuario";
-		const codigo = req.path.slice(1);
+		const {ruta} = comp.reqBasePathUrl(req);
+		const codigo = ruta.slice(1);
 		let titulo = codigo == "alta-mail" ? "Alta de Mail" : codigo == "olvido-contrasena" ? "Olvido de Contraseña" : "";
 
 		// Obtiene el e-mail de session
@@ -313,8 +314,7 @@ module.exports = {
 		// Obtiene el usuario con los include
 		let usuario = await BD_especificas.obtieneUsuarioPorMail(req.body.email);
 		// Si corresponde, le cambia el status a 'mail_validado'
-		if (usuario.statusRegistro.mail_a_validar)
-			usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
+		if (usuario.statusRegistro.mail_a_validar) usuario = await procesos.actualizaElStatusDelUsuario(usuario, "mail_validado");
 		// Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookies

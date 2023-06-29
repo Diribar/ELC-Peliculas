@@ -1,12 +1,14 @@
 "use strict";
 // Requires
 const procesos = require("../../rutas_y_controladores/2.1-Prod-Agregar/PA-FN-Procesos");
+const comp = require("../../funciones/1-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
 	// Acciones comunes entre los pasos de 'producto agregar'
 
 	// Variables
-	const urlActual = req.path.slice(1);
+	const {ruta} = comp.reqBasePathUrl(req);
+	const codigoUrl = ruta.slice(1);
 	const variables = [
 		{url: "palabras-clave", codigo: "palabrasClave"},
 		{url: "desambiguar", codigo: "desambiguar"},
@@ -18,7 +20,7 @@ module.exports = (req, res, next) => {
 	];
 
 	// Obtiene el código que corresponde al 'url'
-	const codigo = variables.find((n) => urlActual.startsWith(n.url)).codigo;
+	const codigo = variables.find((n) => codigoUrl.startsWith(n.url)).codigo;
 
 	// Averigua si está la session/cookie actual
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
@@ -27,7 +29,7 @@ module.exports = (req, res, next) => {
 
 	// Si no está, redirige a la url anterior
 	if (redirigir) {
-		const indice = variables.findIndex((n) => n.url == urlActual);
+		const indice = variables.findIndex((n) => n.url == codigoUrl);
 		if (codigo != "datosDuros") return res.redirect(variables[indice - 1].url);
 		else {
 			// Obtiene el origen

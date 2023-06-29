@@ -129,12 +129,12 @@ module.exports = async (req, res, next) => {
 	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
 	if (!informacion) {
 		// Variables
-		let baseUrl = req.baseUrl.slice(1);
-		let familia = baseUrl.startsWith("producto")
+		const {baseUrl} = comp.reqBasePathUrl(req)
+		const familia = baseUrl.startsWith("/producto")
 			? {campo: "prods", vista: "PA"}
-			: // : baseUrl.startsWith("rclv")
+			: // : baseUrl.startsWith("/rclv")
 			  // ? {campo: "rclvs", vista: "RCLV"}
-			  // : baseUrl.startsWith("links")
+			  // : baseUrl.startsWith("/links")
 			  // ? {campo: "links", vista: "LK"}
 			  "";
 		let cartel = "cartel_resp_" + familia.campo;

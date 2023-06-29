@@ -49,24 +49,24 @@ router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
 router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
 
 // VISTAS
-router.get("/palabras-clave", ...dataEntry, vista.palabrasClave.form);
-router.post("/palabras-clave", ...dataEntry, vista.palabrasClave.guardar);
-router.get("/desambiguar", ...dataEntry, vista.desambiguar);
+router.get("/palabras-clave", dataEntry, vista.palabrasClave.form);
+router.post("/palabras-clave", dataEntry, vista.palabrasClave.guardar);
+router.get("/desambiguar", dataEntry, vista.desambiguar);
 // Comienzo de "prodYaEnBD"
-router.get("/datos-duros", ...dataEntryMasYaEnBD, vista.datosDuros.form);
-router.post("/datos-duros", ...dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
-router.get("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdics.form);
-router.post("/datos-adicionales", ...dataEntryMasYaEnBD, vista.datosAdics.guardar);
-router.get("/confirma", ...dataEntryMasYaEnBD, vista.confirma.form);
-router.post("/confirma", ...dataEntryMasYaEnBD, vista.confirma.guardar);
+router.get("/datos-duros", dataEntryMasYaEnBD, vista.datosDuros.form);
+router.post("/datos-duros", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
+router.get("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.form);
+router.post("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.guardar);
+router.get("/confirma", dataEntryMasYaEnBD, vista.confirma.form);
+router.post("/confirma", dataEntryMasYaEnBD, vista.confirma.guardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", vista.terminaste);
 // Ingreso Manual
-router.get("/ingreso-manual", ...dataEntry, usAutorizFA, vista.IM.form);
-router.post("/ingreso-manual", ...dataEntry, vista.IM.guardar);
+router.get("/ingreso-manual", dataEntry, usAutorizFA, vista.IM.form);
+router.post("/ingreso-manual", dataEntry, vista.IM.guardar);
 // Ingreso FA
-router.get("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA.form);
-router.post("/ingreso-fa", ...dataEntryMasFA, vista.copiarFA.guardar);
+router.get("/ingreso-fa", dataEntryMasFA, vista.copiarFA.form);
+router.post("/ingreso-fa", dataEntryMasFA, vista.copiarFA.guardar);
 
 // Fin
 module.exports = router;

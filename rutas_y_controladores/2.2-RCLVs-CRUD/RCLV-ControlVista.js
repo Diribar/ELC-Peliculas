@@ -69,8 +69,9 @@ module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 		// Tema y Código
-		const tema = req.baseUrl == "/rclv" ? "rclv_crud" : req.baseUrl == "/revision" ? "revisionEnts" : "";
-		const codigo = req.path.slice(1, -1); // Resultados posibles: 'agregar', 'edicion', 'alta'
+		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
+		const tema = baseUrl == "/rclv" ? "rclv_crud" : baseUrl == "/revision" ? "revisionEnts" : "";
+		const codigo = ruta.slice(1, -1); // Resultados posibles: 'agregar', 'edicion', 'alta'
 
 		// Más variables
 		const {entidad, id, prodEntidad, prodID} = req.query;
@@ -158,7 +159,7 @@ module.exports = {
 
 		// Elimina los campos vacíos y pule los espacios innecesarios
 		for (let campo in req.body) if (!req.body[campo]) delete req.body[campo];
-		for (let campo in req.body) if (typeof req.body[campo]=="string") req.body[campo] = req.body[campo].trim();
+		for (let campo in req.body) if (typeof req.body[campo] == "string") req.body[campo] = req.body[campo].trim();
 
 		// Obtiene los datos
 		let datos = {...req.body, ...req.query, opcional: true};

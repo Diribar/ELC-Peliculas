@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");
-const vistaCRUD = require("../2.0-Familias-CRUD/FM-ControlVista");
 
 //************************ Middlewares ******************************
 // Específicos de usuarios
@@ -17,7 +16,6 @@ const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
 const edicion = require("../../middlewares/filtrosPorRegistro/edicion");
 const statusCorrecto = require("../../middlewares/filtrosPorRegistro/statusCorrecto");
-const motivoNecesario = require("../../middlewares/filtrosPorRegistro/motivoNecesario");
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 // Temas de captura
 const permUserReg = require("../../middlewares/filtrosPorRegistro/permUserReg");
@@ -32,11 +30,10 @@ const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
 const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
 const aptoCRUD = [...aptoCalificar, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion];
-const aptoEliminar = [...aptoCRUD, usRolRevEnts];
 
 //************************ Rutas ****************************
 // Rutas de APIs
-// Detalle
+// Detalle y Calificar
 router.get("/api/obtiene-calificaciones", API.obtieneCalificaciones);
 // Edición
 router.get("/api/valida", API.validaEdicion);
@@ -46,19 +43,10 @@ router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
 router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
 
 // Rutas de vistas
-router.get("/detalle", ...aptoDetalle, capturaInactivar, vista.prodDetalle_Form);
-router.get("/edicion", ...aptoEdicion, capturaActivar, vista.prodEdicion_Form);
-router.post("/edicion", ...aptoEdicion, multer.single("avatar"), vista.prodEdicion_Guardar);
-router.get("/calificar", ...aptoCalificar, vista.calificaProds);
-
-// Inactivar, Recuperar, Eliminar
-router.get("/inactivar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/inactivar", ...aptoCRUD, motivoNecesario, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/recuperar", ...aptoCRUD, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/recuperar", ...aptoCRUD, capturaInactivar, vistaCRUD.inacRecup_Guardar);
-router.get("/eliminar", ...aptoEliminar, capturaActivar, vistaCRUD.inacRecup_Form);
-router.post("/eliminar", ...aptoEliminar, capturaInactivar, vistaCRUD.eliminarGuardar);
-router.get("/eliminado", vistaCRUD.eliminadoForm);
+router.get("/detalle", aptoDetalle, capturaInactivar, vista.prodDetalle);
+router.get("/edicion", aptoEdicion, capturaActivar, vista.prodEdicion.form);
+router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.prodEdicion.guardar);
+router.get("/calificar", aptoCalificar, vista.calificaProd.form);
 
 // Fin
 module.exports = router;

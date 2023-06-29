@@ -271,8 +271,8 @@ module.exports = {
 
 		// Fin
 		// Si es un producto creado y fue aprobado, redirecciona a una edición
-		if (producto && codigo == "alta")
-			return res.redirect(req.baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
+		const {baseUrl} = comp.reqBasePathUrl(req);
+		if (producto && codigo == "alta") return res.redirect(baseUrl + "/producto/edicion/?entidad=" + entidad + "&id=" + id);
 		// En los demás casos, redirecciona al tablero
 		else return res.redirect("/revision/tablero-de-control");
 	},
@@ -315,7 +315,8 @@ module.exports = {
 	prodRCLV_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		let codigo = req.path.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
+		const {ruta}=comp.reqBasePathUrl(req)
+		let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 		// Variables
 		const {entidad, id, edicID} = req.query;
