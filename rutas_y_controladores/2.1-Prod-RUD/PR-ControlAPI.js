@@ -36,6 +36,18 @@ module.exports = {
 		// Fin
 		return res.json(calificaciones);
 	},
+	califGuardada: async (req, res) => {
+		// Variables
+		let {entidad, id: prodID} = req.query;
+		let userID = req.session.usuario ? req.session.usuario.id : "";
+
+		// Datos particulares
+		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+		const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+
+		// Fin
+		return res.json({califGuardada, userID});
+	},
 
 	// Edición del Producto
 	validaEdicion: async (req, res) => {
