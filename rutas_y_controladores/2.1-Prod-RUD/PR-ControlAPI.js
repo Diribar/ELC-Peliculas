@@ -15,26 +15,22 @@ module.exports = {
 		let calificaciones = [];
 		// Datos generales
 		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) =>
-			n.feValores != null && n.entretiene != null && n.calidadTecnica != null && n.calificacion != null
-				? [n.feValores / 100, n.entretiene / 100, n.calidadTecnica / 100, n.calificacion / 100]
-				: ""
+			n.calificacion != null ? [n.feValores, n.entretiene, n.calidadTecnica, n.calificacion] : ""
 		);
+		console.log(22, datos);
 		if (datos) {
 			let calificacionGral = {encabezado: "Gral.", valores: datos};
 			calificaciones.push(calificacionGral);
 		}
 		// Datos particulares
-		if (detalle) {
-			let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			datos = await BD_genericas.obtienePorCondicion("cal_registros", {
-				usuario_id: userID,
-				entidad,
-				entidad_id: prodID,
-			}).then((n) => (n ? [n.feValores / 100, n.entretiene / 100, n.calidadTecnica / 100, n.calificacion / 100] : ""));
-			if (datos) {
-				let calificacionUsuario = {encabezado: "Tuya", valores: datos};
-				calificaciones.push(calificacionUsuario);
-			}
+		datos = await BD_genericas.obtienePorCondicion("cal_registros", {
+			usuario_id: userID,
+			entidad,
+			entidad_id: prodID,
+		}).then((n) => (n ? [n.feValores, n.entretiene, n.calidadTecnica, n.resultado] : ""));
+		if (datos) {
+			let calificacionUsuario = {encabezado: "Tuya", valores: datos};
+			calificaciones.push(calificacionUsuario);
 		}
 		return res.json(calificaciones);
 	},

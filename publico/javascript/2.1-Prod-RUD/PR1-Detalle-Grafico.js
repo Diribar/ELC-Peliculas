@@ -1,24 +1,21 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let detalle = location.pathname == "/producto/detalle/";
-	let entidad = new URL(location.href).searchParams.get("entidad");
-	let prodID = new URL(location.href).searchParams.get("id");
+	const entidad = new URL(location.href).searchParams.get("entidad");
+	const prodID = new URL(location.href).searchParams.get("id");
 
 	// Obtiene las calificaciones
-	let ruta = "/producto/api/obtiene-calificaciones/";
-	let calificaciones = await fetch(
-		ruta + "?entidad=" + entidad + "&id=" + prodID + "&detalle=" + detalle
-	).then((n) => n.json());
+	const ruta = "/producto/api/obtiene-calificaciones/";
+	let calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + prodID).then((n) => n.json());
 
 	// Mostrar el gráfico solamente si existen calificaciones
 	if (calificaciones.length) {
 		// Resultados de la calificación
 		// General: <span>77%</span> / Tuya: <span>78%</span>
 		let dondeUbicarLosResultados = document.querySelector("#calificacionesResultados");
-		let resultados = "General: <span>" + parseInt(calificaciones[0].valores[3] * 100) + "%</span>";
+		let resultados = "General: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
 		if (calificaciones.length == 2)
-			resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3] * 100) + "%</span>";
+			resultados += " / Tuya: <span>" + parseInt(calificaciones[1].valores[3]) + "%</span>";
 		dondeUbicarLosResultados.innerHTML = resultados;
 
 		// Aspectos de la imagen de Google
