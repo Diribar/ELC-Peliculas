@@ -108,7 +108,7 @@ module.exports = {
 							creadoEn: m.creadoEn,
 							anoEstreno: m.anoEstreno,
 							nombreCastellano: m.nombreCastellano,
-							calificacion: m.resultado,
+							calificacion: m.calificacion,
 						};
 					})
 				)
