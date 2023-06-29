@@ -335,7 +335,7 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			return res.send("SI")
+			return res.send("SI");
 		},
 	},
 };
