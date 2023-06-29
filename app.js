@@ -192,6 +192,7 @@ app.set("views", [
 	app.use("/usuarios", rutaUsuarios);
 	app.use("/revision/usuarios", rutaRevisarUs);
 	app.use("/revision", rutaRevisarEnts);
+	app.use("/", rutaCRUD);
 	app.use("/consultas", rutaConsultas);
 	app.use("/institucional", rutaInstitucional);
 	app.use("/", rutaMiscelaneas);
