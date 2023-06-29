@@ -114,7 +114,8 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {entidad, id, motivo_id, comentario} = {...req.query, ...req.body};
-			const codigo = req.path.slice(1, -1);
+			const {ruta} = comp.reqBasePathUrl(req);
+			const codigo = ruta.slice(1, -1);
 			const userID = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const include = comp.obtieneTodosLosCamposInclude(entidad);

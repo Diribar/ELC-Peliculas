@@ -100,7 +100,8 @@ module.exports = {
 	// Productos por RCLV
 	listadoRCLVs: async (req, res) => {
 		// Variables
-		const rclv = req.path.slice(1);
+		const {ruta} = comp.reqBasePathUrl(req);
+		const rclv = ruta.slice(1);
 		const condicion = {id: {[Op.ne]: 1}};
 		const includes = [...variables.entidades.prods, "prods_ediciones"];
 		let rclvs = {};

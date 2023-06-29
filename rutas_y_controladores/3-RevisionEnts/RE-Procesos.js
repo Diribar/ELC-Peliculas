@@ -334,7 +334,8 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Códigos posibles: 'rechazo', 'inactivar-o-recuperar'
-			let codigo = req.path.slice(1, -1);
+			const {ruta} = comp.reqBasePathUrl(req);
+			let codigo = ruta.slice(1, -1);
 			codigo = codigo.slice(codigo.indexOf("/") + 1);
 			const inactivarRecuperar = codigo == "inactivar-o-recuperar";
 
@@ -353,7 +354,7 @@ module.exports = {
 				? statusOriginal_id == inactivar_id
 					? "inactivar"
 					: "recuperar"
-				: req.path.endsWith("/alta/")
+				: ruta.endsWith("/alta/")
 				? "alta"
 				: "rechazo";
 
@@ -713,7 +714,7 @@ module.exports = {
 			  "&prodEntidad=" +
 			  siguienteProducto.entidad +
 			  "&prodID=" +
-			  siguienteProducto.id+
+			  siguienteProducto.id +
 			  "&origen=RLK"
 			: "/revision/tablero-de-control";
 

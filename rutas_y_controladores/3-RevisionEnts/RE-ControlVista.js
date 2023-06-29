@@ -315,7 +315,8 @@ module.exports = {
 	prodRCLV_edicForm: async (req, res) => {
 		// Tema y Código
 		const tema = "revisionEnts";
-		let codigo = req.path.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
+		const {ruta}=comp.reqBasePathUrl(req)
+		let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 		// Variables
 		const {entidad, id, edicID} = req.query;
