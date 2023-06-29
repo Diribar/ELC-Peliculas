@@ -71,12 +71,8 @@ module.exports = {
 		if (entidad == "capitulos")
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const links = await procesos.obtieneLinksDelProducto({entidad, id, userID});
-
-		// Status de la entidad
 		const status_id = original.statusRegistro_id;
 		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
-
-		// Info para la vista
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
 
 		// Va a la vista

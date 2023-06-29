@@ -48,7 +48,12 @@ module.exports = {
 		// Obtiene los links
 		const condiciones = statusLink_id
 			? {statusRegistro_id: statusLink_id}
-			: {[Op.or]: [{statusRegistro_id: aprobado_id}, {[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]}]};
+			: {
+					[Op.or]: [
+						{statusRegistro_id: [creadoAprob_id, aprobado_id]},
+						{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: userID}]},
+					],
+			  };
 		const links = await BD_genericas.obtieneTodosPorCondicionConInclude("links", {[campo_id]: id, ...condiciones}, include);
 
 		// Procesos si hay links
