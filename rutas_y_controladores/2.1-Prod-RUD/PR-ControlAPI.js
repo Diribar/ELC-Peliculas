@@ -9,10 +9,12 @@ const valida = require("./PR-FN-Validar");
 module.exports = {
 	// Detalle
 	obtieneCalificaciones: async (req, res) => {
-		let {entidad, id: prodID, detalle} = req.query;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		// Variables
+		const {entidad, id: prodID} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
+
 		// Datos generales
 		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
 			n.feValores,
@@ -33,6 +35,18 @@ module.exports = {
 
 		// Fin
 		return res.json(calificaciones);
+	},
+	califGuardada: async (req, res) => {
+		// Variables
+		const {entidad, id: prodID} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
+
+		// Datos particulares
+		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+		const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+
+		// Fin
+		return res.json({califGuardada, userID});
 	},
 
 	// Edición del Producto

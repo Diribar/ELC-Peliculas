@@ -35,6 +35,8 @@ const aptoEdicion = [...aptoCRUD, edicion];
 // Rutas de APIs
 // Detalle y Calificar
 router.get("/api/obtiene-calificaciones", API.obtieneCalificaciones);
+router.get("/api/calificacion-guardada", API.califGuardada);
+
 // Edición
 router.get("/api/valida", API.validaEdicion);
 router.get("/api/obtiene-original-y-edicion", API.obtieneVersionesProd);
@@ -47,6 +49,7 @@ router.get("/detalle", aptoDetalle, capturaInactivar, vista.prodDetalle);
 router.get("/edicion", aptoEdicion, capturaActivar, vista.prodEdicion.form);
 router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.prodEdicion.guardar);
 router.get("/calificar", aptoCalificar, vista.calificaProd.form);
+router.post("/calificar", aptoCalificar, vista.calificaProd.guardar);
 
 // Fin
 module.exports = router;

@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene las calificaciones
 	const ruta = "/producto/api/obtiene-calificaciones/";
-	let calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + prodID).then((n) => n.json());
+	const calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + prodID).then((n) => n.json());
 
 	// Resultados de la calificación
 	let dondeUbicarLosResultados = document.querySelector("#calificacionesResultados");

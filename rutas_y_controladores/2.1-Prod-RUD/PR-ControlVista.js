@@ -334,5 +334,8 @@ module.exports = {
 				...{bloqueDer, atributosTitulo, califUsuario},
 			});
 		},
+		guardar: async (req, res) => {
+			return res.send("SI")
+		},
 	},
 };
