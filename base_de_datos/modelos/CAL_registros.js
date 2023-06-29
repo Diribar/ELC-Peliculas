@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "cal_1registros",
+		tableName: "cal_registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
