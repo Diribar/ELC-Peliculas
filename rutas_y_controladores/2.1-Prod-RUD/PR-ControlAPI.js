@@ -9,10 +9,12 @@ const valida = require("./PR-FN-Validar");
 module.exports = {
 	// Detalle
 	obtieneCalificaciones: async (req, res) => {
-		let {entidad, id: prodID, detalle} = req.query;
+		// Variables
+		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
+
 		// Datos generales
 		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
 			n.feValores,
