@@ -4,7 +4,10 @@
 	<div class="ayuda">
 		<i class="fa-solid fa-circle-question ayudaClick desplClick">
 			<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
-				<li></li>
+				<p>El impacto de cada atributo en el resultado es el siguiente:</p>
+				<li>Deja Huella: 50%</li>
+				<li>Entretiene: 35%</li>
+				<li>Calidad Técnica: 15%</li>
 			</ul>
 		</i>
 	</div>
@@ -15,12 +18,19 @@
 			<% let i = 0 %>
 			<% for (let atributo in atributosCalific) { %>
 				<div class="flexRowAlign">
-					<h4><%= atributosTitulo[i] %></h4>
-					<% console.log(17, califUsuario[atributo], atributo) %>
-					<select name="<%= atributo %>" id="">
+					<h4>
+						<% if (!i) { %>
+							<i class="fa-solid fa-circle-question ayudaClick desplClick">
+								<ul type="dots" class="ayudaMostrar ocultar desplMostrar">
+									<p>Se refiere a si deja un impacto positivo en el espectador en su <em>Fe Católica</em> y/o sus <em>Valores</em>.</p>
+								</ul>
+							</i>
+						<% } %>
+						<%= atributosTitulo[i] %>
+					</h4>
+					<select name="<%= atributo %>">
 						<option value="" <% if (!califUsuario[atributo]) { %>selected<% } %>>Elegí una opción</option>
 						<% for (let opcion of atributosCalific[atributo]) { %>
-							<% console.log(21,opcion.id) %>
 							<option value="<%= opcion.id %>" <% if (opcion.id == califUsuario[atributo]) {%>selected<% } %>><%= opcion.nombre %></option>
 						<% } %>
 					</select>

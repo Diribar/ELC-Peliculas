@@ -313,9 +313,10 @@ module.exports = {
 			prodComb.capitulos = await BD_especificas.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		const titulo = "Calificar " + (entidad == "capitulos" ? "un " : "la ") + entidadNombre;
 		const status_id = original.statusRegistro_id;
-		const atributosTitulo = ["Deja huella", "Entretiene", "Calidad técnica"];
+		const atributosTitulo = ["Deja Huella", "Entretiene", "Calidad Técnica"];
 		const condics = {entidad, entidad_id: id, usuario_id: userID};
-		const califUsuario = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+		const include = ["feValores", "entretiene", "calidadTecnica"];
+		const califUsuario = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
 
 		// Va a la vista
 		// return res.send(califUsuario)
