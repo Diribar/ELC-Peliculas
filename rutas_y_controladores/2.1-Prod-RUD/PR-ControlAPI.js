@@ -10,8 +10,8 @@ module.exports = {
 	// Detalle
 	obtieneCalificaciones: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID} = req.query;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		const {entidad, id: prodID} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
 
@@ -38,8 +38,8 @@ module.exports = {
 	},
 	califGuardada: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID} = req.query;
-		let userID = req.session.usuario ? req.session.usuario.id : "";
+		const {entidad, id: prodID} = req.query;
+		const userID = req.session.usuario ? req.session.usuario.id : "";
 
 		// Datos particulares
 		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
