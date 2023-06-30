@@ -1,9 +1,7 @@
-Al ingresar a la página por primera vez, avisar:
-- Usamos cookies para estar seguros de darte la mejor experiencia en nuestro sitio web. 
-
 Interés en el producto
-- Favoritas			--> 'heart'
+- La quiero ver	    --> <i class="fa-solid fa-heart"></i>
+- No me interesa	--> <i class="fa-solid fa-heart-circle-xmark"></i><i class="fa-solid fa-thumbs-down"></i>
+- Nada              --> <i class="fa-regular fa-heart"></i>
 
-- Para ver  		--> 'question'
-- Ya la vi			--> 'check'
-- No me interesa	--> 'x-mark'
+- Ya la vi			--> <i class="fa-solid fa-couch"></i><i class="fa-solid fa-eye"></i>
+- No la vi          --> <i class="fa-solid fa-eye-slash"></i>

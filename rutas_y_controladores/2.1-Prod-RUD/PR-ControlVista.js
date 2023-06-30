@@ -332,11 +332,15 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			// return res.send({...req.query, ...req.body})
 			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
 			const userID = req.session.usuario.id;
 			const condics = {usuario_id: userID, entidad, entidad_id};
 			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
+
+			// Verifica errores
+			// const errores=valida
+			const errores = {};
+			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Obtiene el resultado
 			let resultado = 0;
@@ -350,12 +354,6 @@ module.exports = {
 				resultado += (valor * ponderacion) / 100;
 			}
 			valores.resultado = Math.round(resultado);
-			// console.log({campo_id, campo, ID, valor, ponderacion, resultado});
-
-			// Verifica errores
-			// const errores=valida
-			const errores = {};
-			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Averigua si existe la calificacion
 			const existe = await BD_genericas.obtienePorCondicion("cal_registros", condics);
