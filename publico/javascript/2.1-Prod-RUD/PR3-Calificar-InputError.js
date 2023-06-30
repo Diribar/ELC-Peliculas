@@ -17,23 +17,21 @@ window.addEventListener("load", async () => {
 	};
 
 	const {userID, califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
-	console.log(califGuardada);
-	console.log(atributosCalific);
 
 	// Funciones
 	let revisaErrores = () => {
 		// Se fija si alguna calificacion está incompleta
-		let errores = Array.from(DOM.calificaciones).some((n) => !n.value);
+		v.errores = Array.from(DOM.calificaciones).some((n) => !n.value);
 
 		// Si no hubo errores, se fija si todas las calificaciones coinciden con la guardada
-		if (califGuardada && !errores) {
+		if (califGuardada && !v.errores) {
 			let resultados = [];
 			for (let calif of DOM.calificaciones) resultados.push(calif.value == califGuardada[calif.name]);
-			errores = resultados.every((n) => !!n);
+			v.iguales = resultados.every((n) => !!n);
 		}
 
 		// Activa/Inactiva el botón guardar
-		errores ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
+		v.errores || v.iguales ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
 
 		// Fin
 		return;
@@ -43,9 +41,22 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let actualizaResultado = () => {
-		let resultado=0
-		for (let atributo in atributosCalific)
-		console.log(48,atributo);
+		if (v.errores) DOM.resultado.innerHTML = "-";
+		else {
+			let resultado = 0;
+			for (let criterio of criteriosCalif) {
+				const campo_id = criterio.atributo_id;
+				const campo = criterio.atributo;
+				const ponderacion = criterio.ponderacion;
+				const ID = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
+				const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
+				const valor = atributoCalif.valor;
+				resultado += (valor * ponderacion) / 100;
+				// console.log({campo_id, campo, ID, valor, ponderacion, resultado});
+			}
+			resultado = parseInt(resultado + 0.5);
+			DOM.resultado.innerHTML = resultado + "%";
+		}
 		// const
 		// atributosCalific
 	};
@@ -53,9 +64,10 @@ window.addEventListener("load", async () => {
 	// Input
 	DOM.form.addEventListener("input", (e) => {
 		revisaErrores();
+		actualizaResultado();
 	});
-	DOM.form.addEventListener("submit", () => {
-		if (button.classList.contains("inactivo")) e.preventDefault();
+	DOM.form.addEventListener("submit", (e) => {
+		if (DOM.guardarCambios.classList.contains("inactivo")) e.preventDefault();
 		return;
 	});
 	DOM.eliminar.addEventListener("click", () => {
