@@ -331,7 +331,43 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			return res.send("SI");
+			// Variables
+			// return res.send({...req.query, ...req.body})
+			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
+			const userID = req.session.usuario.id;
+			const condics = {usuario_id: userID, entidad, entidad_id};
+			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
+
+			// Obtiene el resultado
+			let resultado = 0;
+			for (let criterio of criteriosCalif) {
+				const campo_id = criterio.atributo_id;
+				const campo = criterio.atributo;
+				const ponderacion = criterio.ponderacion;
+				const ID = valores[campo_id];
+				const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
+				const valor = atributoCalif.valor;
+				resultado += (valor * ponderacion) / 100;
+			}
+			valores.resultado = Math.round(resultado);
+			// console.log({campo_id, campo, ID, valor, ponderacion, resultado});
+
+			// Verifica errores
+			// const errores=valida
+			const errores = {};
+			if (errores.hay) return res.redirect(req.originalUrl);
+
+			// Averigua si existe la calificacion
+			const existe = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+			existe
+				? await BD_genericas.actualizaPorId("cal_registros", existe.id, valores)
+				: await BD_genericas.agregaRegistro("cal_registros", valores);
+
+			// Actualiza las calificaciones del producto
+			await procesos.actualizaCalifProd({entidad, entidad_id});
+
+			// Fin
+			return res.redirect(req.originalUrl);
 		},
 	},
 };
