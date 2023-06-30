@@ -14,6 +14,7 @@ window.addEventListener("load", async () => {
 	};
 	let rutas = {
 		califGuardada: "/producto/api/calificacion-guardada/?entidad=" + v.entidad + "&id=" + v.entID,
+		eliminaCalifPropia:"/producto/api/elimina-calif-propia/?entidad=" + v.entidad + "&id=" + v.entID,
 	};
 
 	const {userID, califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
@@ -57,8 +58,6 @@ window.addEventListener("load", async () => {
 			resultado = parseInt(resultado + 0.5);
 			DOM.resultado.innerHTML = resultado + "%";
 		}
-		// const
-		// atributosCalific
 	};
 
 	// Input
