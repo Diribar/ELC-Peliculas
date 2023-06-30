@@ -42,7 +42,6 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let actualizaResultado = () => {
-		console.log(v.incompleto);
 		if (v.incompleto) DOM.resultado.innerHTML = "-";
 		else {
 			let resultado = 0;
