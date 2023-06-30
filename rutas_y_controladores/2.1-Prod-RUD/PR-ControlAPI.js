@@ -7,46 +7,59 @@ const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	// Detalle
-	obtieneCalificaciones: async (req, res) => {
-		// Variables
-		const {entidad, id: prodID} = req.query;
-		const userID = req.session.usuario ? req.session.usuario.id : "";
-		let datos;
-		let calificaciones = [];
+	califics: {
+		delProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+			let datos;
+			let calificaciones = [];
 
-		// Datos generales
-		datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
-			n.feValores,
-			n.entretiene,
-			n.calidadTecnica,
-			n.calificacion,
-		]);
-		calificaciones.push({autor: "Gral.", valores: datos});
+			// Datos generales
+			datos = await BD_genericas.obtienePorId(entidad, prodID).then((n) => [
+				n.feValores,
+				n.entretiene,
+				n.calidadTecnica,
+				n.calificacion,
+			]);
+			calificaciones.push({autor: "Gral.", valores: datos});
 
-		// Datos particulares
-		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-		const include = ["feValores", "entretiene", "calidadTecnica"];
-		datos = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
-		if (datos) {
-			datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
-			calificaciones.push({autor: "Tuya", valores: datos});
-		}
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const include = ["feValores", "entretiene", "calidadTecnica"];
+			datos = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
+			if (datos) {
+				datos = [datos.feValores.valor, datos.entretiene.valor, datos.calidadTecnica.valor, datos.resultado];
+				calificaciones.push({autor: "Tuya", valores: datos});
+			}
 
-		// Fin
-		return res.json(calificaciones);
-	},
-	califGuardada: async (req, res) => {
-		// Variables
-		const {entidad, id: prodID} = req.query;
-		const userID = req.session.usuario ? req.session.usuario.id : "";
+			// Fin
+			return res.json(calificaciones);
+		},
+		delUsuarioProducto: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
 
-		// Datos particulares
-		const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-		const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
+			// Datos particulares
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
 
-		// Fin
-		return res.json({califGuardada, userID, atributosCalific, criteriosCalif});
+			// Fin
+			return res.json({califGuardada, userID, atributosCalific, criteriosCalif});
+		},
+		elimina: async (req, res) => {
+			// Variables
+			const {entidad, id: prodID} = req.query;
+			const userID = req.session.usuario ? req.session.usuario.id : "";
+
+			// Elimina
+			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
+			await BD_genericas.eliminaTodosPorCondicion("cal_registros",condics)
+
+			// Fin
+			return res.json();
+		},
 	},
 
 	// Edición del Producto

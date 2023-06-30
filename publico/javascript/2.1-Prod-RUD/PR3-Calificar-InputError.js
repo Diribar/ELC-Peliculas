@@ -14,6 +14,7 @@ window.addEventListener("load", async () => {
 	};
 	let rutas = {
 		califGuardada: "/producto/api/calificacion-guardada/?entidad=" + v.entidad + "&id=" + v.entID,
+		eliminaCalifPropia: "/producto/api/elimina-calif-propia/?entidad=" + v.entidad + "&id=" + v.entID,
 	};
 
 	const {userID, califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
@@ -21,17 +22,17 @@ window.addEventListener("load", async () => {
 	// Funciones
 	let revisaErrores = () => {
 		// Se fija si alguna calificacion está incompleta
-		v.errores = Array.from(DOM.calificaciones).some((n) => !n.value);
+		v.incompleto = Array.from(DOM.calificaciones).some((n) => !n.value);
 
-		// Si no hubo errores, se fija si todas las calificaciones coinciden con la guardada
-		if (califGuardada && !v.errores) {
+		// Si existe una calificación guardada y no está incompleto, se fija si todas las calificaciones coinciden con la guardada
+		if (califGuardada && !v.incompleto) {
 			let resultados = [];
 			for (let calif of DOM.calificaciones) resultados.push(calif.value == califGuardada[calif.name]);
 			v.iguales = resultados.every((n) => !!n);
 		}
 
 		// Activa/Inactiva el botón guardar
-		v.errores || v.iguales ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
+		v.incompleto || v.iguales ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
 
 		// Fin
 		return;
@@ -41,7 +42,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let actualizaResultado = () => {
-		if (v.errores) DOM.resultado.innerHTML = "-";
+		if (v.incompleto) DOM.resultado.innerHTML = "-";
 		else {
 			let resultado = 0;
 			for (let criterio of criteriosCalif) {
@@ -57,8 +58,6 @@ window.addEventListener("load", async () => {
 			resultado = parseInt(resultado + 0.5);
 			DOM.resultado.innerHTML = resultado + "%";
 		}
-		// const
-		// atributosCalific
 	};
 
 	// Input
@@ -70,11 +69,12 @@ window.addEventListener("load", async () => {
 		if (DOM.guardarCambios.classList.contains("inactivo")) e.preventDefault();
 		return;
 	});
-	DOM.eliminar.addEventListener("click", () => {
+	DOM.eliminar.addEventListener("click", async () => {
 		// Si no está activo, termina la función
 		if (DOM.eliminar.classList.contains("inactivo")) return;
 
 		// Elimina la calificación
+		await fetch(rutas.eliminaCalifPropia);
 
 		// Recarga la vista
 		location.reload();
