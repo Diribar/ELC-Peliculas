@@ -46,7 +46,7 @@ module.exports = {
 		const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
 
 		// Fin
-		return res.json({califGuardada, userID});
+		return res.json({califGuardada, userID, atributosCalific, criteriosCalif});
 	},
 
 	// Edición del Producto
