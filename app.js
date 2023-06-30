@@ -96,6 +96,7 @@ app.set("views", [
 		paises: BD_genericas.obtieneTodos("paises", "nombre"),
 		publicos: BD_genericas.obtieneTodos("publicos", "orden"),
 		tiposActuacion: BD_genericas.obtieneTodos("tiposActuacion", "orden"),
+		criteriosCalif: BD_genericas.obtieneTodos("cal_criterio"),
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),

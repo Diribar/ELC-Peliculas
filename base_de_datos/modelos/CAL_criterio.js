@@ -1,9 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "cal_criterio";
 	const columns = {
-		entidad: {type: dt.STRING(20)},
-		entidad_id: {type: dt.STRING(20)},
-		valor: {type: dt.INTEGER},
+		atributo: {type: dt.STRING(20)},
+		atributo_id: {type: dt.STRING(20)},
+		ponderacion: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "cal_criterio",
