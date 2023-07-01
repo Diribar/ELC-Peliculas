@@ -9,7 +9,7 @@ const variables = require("../../funciones/1-Procesos/Variables");
 
 // *********** Controlador ***********
 module.exports = {
-	linksForm: async (req, res) => {
+	links: async (req, res) => {
 		// DETALLE - ABM
 		// Tema y Código
 		const tema = "links_crud";
