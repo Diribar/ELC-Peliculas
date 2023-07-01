@@ -8,8 +8,5 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
-	entidad.associate = (n) => {
-		entidad.hasMany(n.regs_interes, {as: "registros", foreignKey: "interes_id"});
-	};
 	return entidad;
 };
