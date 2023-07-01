@@ -28,4 +28,17 @@ module.exports = {
 		errores.hay = erroresDD.hay || erroresDA.hay || !!errores.publico_id;
 		return errores;
 	},
+	calificar: (datos) => {
+		// Variables
+		let errores = {};
+
+		// Verifica que ninguno esté vacío
+		for (let atributo in datos) errores[atributo] = !datos[atributo] ? "Necesitamos que respondas este atributo" : "";
+
+		// Consolida la información
+		errores.hay = Object.values.some((n) => !n);
+
+		// Fin
+		return errores;
+	},
 };

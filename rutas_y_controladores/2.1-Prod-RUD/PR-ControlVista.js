@@ -298,7 +298,7 @@ module.exports = {
 			const tema = "prod_rud";
 			const codigo = "calificar";
 			const {entidad, id} = req.query;
-			const origen = req.query.origen// ? req.query.origen : "CAL";
+			const origen = req.query.origen; // ? req.query.origen : "CAL";
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
@@ -338,8 +338,7 @@ module.exports = {
 			const valores = {usuario_id: userID, entidad, entidad_id, feValores_id, entretiene_id, calidadTecnica_id};
 
 			// Verifica errores
-			// const errores=valida
-			const errores = {};
+			const errores = valida.calificar({feValores_id, entretiene_id, calidadTecnica_id});
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Obtiene el resultado
