@@ -1,18 +1,24 @@
 <link rel="stylesheet" href="/formatos/0-Compartido/Main/Flechas.css">
+<% const detalle = (tema == "prod_rud" || tema == "rclv_crud") && codigo == "detalle" %>
+<% const ABMlinks = tema == "links_crud" && codigo == "abmLinks" %>
+<% const calificar = tema == "prod_rud" && codigo == "calificar" %>
+<% const IRE = tema == "crud" %><!-- Inactivar, Recuperar, Eliminar -->
+<% const consultaLinks = tema == "revisionEnts" && codigo == "abmLinks" && registro.statusRegistro_id == creadoAprob_id %>
+<% const terminaste = tema == "prodAgregar" && locals.id %>
 <div class="flechas">
-	<% if (tema == "crud" || locals.origen && (!origen.startsWith("DT"))) { %>
+	<% if (IRE || locals.origen) { %><!-- Cuando es IRE o tiene origen -->
 		<!-- Salir -->
 		<a href="<%= '/inactivar-captura/?entidad=' + (locals.prodEntidad ? prodEntidad : entidad) + (locals.prodID || locals.id ? ('&id=' + (locals.prodID?prodID:id)) : '') + '&origen=' + origen %>">
 			<i class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (tema != "crud" && codigo != "detalle" && locals.id && (tema != "revisionEnts" || codigo != "abmLinks" || registro.statusRegistro_id != creadoAprob_id)) { %>
-		<!-- Detalle - Excluye para la vista de consulta de links desde Revisión-Edición -->
+	<% if (!detalle && !IRE && !consultaLinks) { %>
+		<!-- Detalle -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
 			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
-	<% if (tema != "crud" && tema != "revisionEnts" && codigo != "edicion" && locals.id) { %>
+	<% if (terminaste || detalle || ABMlinks || calificar) { %>
 		<!-- Edición -->
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
@@ -21,25 +27,25 @@
 		<% } else { %>
 			<i class="fa-solid fa-pen inactivo" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		<% } %>
-	<% } %>
-	<% if ((tema == "prodAgregar" || tema == "prod_rud") && locals.id) { %>
-		<!-- Links -->
-		<% if (status_id <= aprobado_id) { %>
-			<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
-			</a>
-		<% } else { %>
-			<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+		<% if (!ABMlinks) { %>
+			<!-- Links -->
+			<% if (status_id <= aprobado_id) { %>
+				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
+				</a>
+			<% } else { %>
+				<i class="fa-solid fa-link inactivo" tabindex="-1" title="Ir a la vista 'Links'"></i>
+			<% } %>
 		<% } %>
-	<% } %>
-	<% if (tema != "crud" && tema != "revisionEnts" && codigo != "calificar" && locals.id) { %>
-		<!-- Calificar -->
-		<% if (locals.status_id && status_id <= aprobado_id) { %>
-			<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
-				<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
-			</a>
-		<% } else { %>
-			<i class="fa-solid fa-user-graduate inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+		<% if (!calificar) { %>
+			<!-- Calificar -->
+			<% if (locals.status_id && status_id <= aprobado_id) { %>
+				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + (locals.origen && !origen.startsWith("DT") ? ('&origen=' + origen) : '') %>">
+					<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+				</a>
+			<% } else { %>
+				<i class="fa-solid fa-user-graduate inactivo" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<% } %>
 		<% } %>
 	<% } %>
 	<% if (tema == "revisionEnts") { %>

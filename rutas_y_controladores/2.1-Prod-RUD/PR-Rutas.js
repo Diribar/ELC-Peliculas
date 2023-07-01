@@ -10,7 +10,6 @@ const vista = require("./PR-ControlVista");
 const usAltaTerm = require("../../middlewares/filtrosPorUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/filtrosPorUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/filtrosPorUsuario/usAptoInput");
-const usRolRevEnts = require("../../middlewares/filtrosPorUsuario/usRolRevEnts");
 // Específicos de productos
 const entValida = require("../../middlewares/filtrosPorRegistro/entidadValida");
 const IDvalido = require("../../middlewares/filtrosPorRegistro/IDvalido");
