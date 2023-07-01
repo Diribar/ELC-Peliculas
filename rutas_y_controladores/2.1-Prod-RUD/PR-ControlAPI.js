@@ -67,59 +67,61 @@ module.exports = {
 	},
 
 	// Edición del Producto
-	validaEdicion: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
+	edicion: {
+		valida: async (req, res) => {
+			// Obtiene los campos
+			let campos = Object.keys(req.query);
 
-		// Averigua los errores solamente para esos campos
-		req.query.epoca = req.session.usuario.rolUsuario.revisorEnts;
-		req.query.publico = req.session.usuario.rolUsuario.revisorEnts;
-		let errores = await valida.consolidado({campos, datos: req.query});
+			// Averigua los errores solamente para esos campos
+			req.query.epoca = req.session.usuario.rolUsuario.revisorEnts;
+			req.query.publico = req.session.usuario.rolUsuario.revisorEnts;
+			let errores = await valida.consolidado({campos, datos: req.query});
 
-		// Devuelve el resultado
-		return res.json(errores);
-	},
-	obtieneVersionesProd: async (req, res) => {
-		// Variables
-		let {entidad: producto, id: prodID} = req.query;
-		let userID = req.session.usuario.id;
+			// Devuelve el resultado
+			return res.json(errores);
+		},
+		obtieneVersionesProd: async (req, res) => {
+			// Variables
+			let {entidad: producto, id: prodID} = req.query;
+			let userID = req.session.usuario.id;
 
-		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
+			// Obtiene los datos ORIGINALES y EDITADOS del producto
+			let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
 
-		// Envía los datos
-		return res.json([prodOrig, prodEdic]);
-	},
-	eliminaEdicN: async (req, res) => {
-		// Elimina Session y Cookies
-		if (req.session.edicProd) delete req.session.edicProd;
-		if (req.cookies.edicProd) res.clearCookie("edicProd");
+			// Envía los datos
+			return res.json([prodOrig, prodEdic]);
+		},
+		eliminaNueva: async (req, res) => {
+			// Elimina Session y Cookies
+			if (req.session.edicProd) delete req.session.edicProd;
+			if (req.cookies.edicProd) res.clearCookie("edicProd");
 
-		// Terminar
-		return res.json();
-	},
-	eliminaEdicG: async (req, res) => {
-		// Obtiene los datos identificatorios del producto
-		const producto = req.query.entidad;
-		const prodID = req.query.id;
-		const userID = req.session.usuario.id;
+			// Terminar
+			return res.json();
+		},
+		eliminaGuardada: async (req, res) => {
+			// Obtiene los datos identificatorios del producto
+			const producto = req.query.entidad;
+			const prodID = req.query.id;
+			const userID = req.session.usuario.id;
 
-		// Obtiene los datos ORIGINALES y EDITADOS del producto
-		const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
-		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
-		const condicion = !prodOrig.statusRegistro.gr_creado || prodOrig.creadoPor_id != userID;
+			// Obtiene los datos ORIGINALES y EDITADOS del producto
+			const [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
+			// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
+			const condicion = !prodOrig.statusRegistro.gr_creado || prodOrig.creadoPor_id != userID;
 
-		if (condicion && prodEdic) {
-			if (prodEdic.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", prodEdic.avatar);
-			BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
-		}
-		// Terminar
-		return res.json();
-	},
-	enviarAReqSession: async (req, res) => {
-		if (req.query.avatar) delete req.query.avatar;
-		req.session.edicProd = req.query;
-		res.cookie("edicProd", req.query, {maxAge: unDia});
-		return res.json();
+			if (condicion && prodEdic) {
+				if (prodEdic.avatar) comp.gestionArchivos.elimina("./publico/imagenes/2-Productos/Revisar/", prodEdic.avatar);
+				BD_genericas.eliminaPorId("prods_edicion", prodEdic.id);
+			}
+			// Terminar
+			return res.json();
+		},
+		envioParaSession: async (req, res) => {
+			if (req.query.avatar) delete req.query.avatar;
+			req.session.edicProd = req.query;
+			res.cookie("edicProd", req.query, {maxAge: unDia});
+			return res.json();
+		},
 	},
 };

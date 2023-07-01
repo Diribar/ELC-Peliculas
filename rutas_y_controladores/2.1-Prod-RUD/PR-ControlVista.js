@@ -11,7 +11,7 @@ const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prodDetalle: async (req, res) => {
+	detalle: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "prod_rud";
 		const codigo = "detalle";
@@ -85,7 +85,7 @@ module.exports = {
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
 		});
 	},
-	prodEdicion: {
+	edicion: {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "prod_rud";
@@ -292,7 +292,7 @@ module.exports = {
 				: res.redirect(req.baseUrl + req.path + entidadIdOrigen); // Recarga la página sin la edición
 		},
 	},
-	calificaProd: {
+	califica: {
 		form: async (req, res) => {
 			// Variables
 			const tema = "prod_rud";
