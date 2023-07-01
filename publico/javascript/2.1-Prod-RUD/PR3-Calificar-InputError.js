@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 		eliminaCalifPropia: "/producto/api/elimina-calif-propia/?entidad=" + v.entidad + "&id=" + v.entID,
 	};
 
-	const {userID, califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
+	const {califGuardada, atributosCalific, criteriosCalif} = await fetch(rutas.califGuardada).then((n) => n.json());
 
 	// Funciones
 	let revisaErrores = () => {
@@ -32,7 +32,9 @@ window.addEventListener("load", async () => {
 		}
 
 		// Activa/Inactiva el botón guardar
-		v.incompleto || v.iguales ? DOM.guardarCambios.classList.add("inactivo") : DOM.guardarCambios.classList.remove("inactivo");
+		v.incompleto || v.iguales
+			? DOM.guardarCambios.classList.add("inactivo")
+			: DOM.guardarCambios.classList.remove("inactivo");
 
 		// Fin
 		return;
@@ -55,7 +57,7 @@ window.addEventListener("load", async () => {
 				resultado += (valor * ponderacion) / 100;
 				// console.log({campo_id, campo, ID, valor, ponderacion, resultado});
 			}
-			resultado = parseInt(resultado + 0.5);
+			resultado = Math.round(resultado);
 			DOM.resultado.innerHTML = resultado + "%";
 		}
 	};

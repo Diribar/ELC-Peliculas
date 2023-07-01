@@ -3,6 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const comp = require("../../funciones/1-Procesos/Compartidas");
 const procsCRUD = require("../2.0-Familias-CRUD/FM-Procesos");
+const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
 // *********** Controlador ***********
@@ -46,16 +47,19 @@ module.exports = {
 			const califGuardada = await BD_genericas.obtienePorCondicion("cal_registros", condics);
 
 			// Fin
-			return res.json({califGuardada, userID, atributosCalific, criteriosCalif});
+			return res.json({califGuardada, atributosCalific, criteriosCalif});
 		},
 		elimina: async (req, res) => {
 			// Variables
-			const {entidad, id: prodID} = req.query;
+			const {entidad, id: entidad_id} = req.query;
 			const userID = req.session.usuario ? req.session.usuario.id : "";
 
 			// Elimina
-			const condics = {usuario_id: userID, entidad, entidad_id: prodID};
-			await BD_genericas.eliminaTodosPorCondicion("cal_registros",condics)
+			const condics = {usuario_id: userID, entidad, entidad_id};
+			await BD_genericas.eliminaTodosPorCondicion("cal_registros", condics);
+
+			// Actualiza las calificaciones del producto
+			await procesos.actualizaCalifProd({entidad, entidad_id});
 
 			// Fin
 			return res.json();
@@ -76,11 +80,14 @@ module.exports = {
 		return res.json(errores);
 	},
 	obtieneVersionesProd: async (req, res) => {
+		// Variables
 		let {entidad: producto, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
+
 		// Obtiene los datos ORIGINALES y EDITADOS del producto
 		let [prodOrig, prodEdic] = await procsCRUD.obtieneOriginalEdicion(producto, prodID, userID);
-		// Enviar los datos
+
+		// Envía los datos
 		return res.json([prodOrig, prodEdic]);
 	},
 	eliminaEdicN: async (req, res) => {

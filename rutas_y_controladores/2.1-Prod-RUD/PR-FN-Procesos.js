@@ -79,4 +79,27 @@ module.exports = {
 		// Fin
 		return {PL, TR};
 	},
+	actualizaCalifProd: async ({entidad, entidad_id}) => {
+		// Variables
+		let datos = {feValores: null, entretiene: null, calidadTecnica: null, calificacion: null};
+
+		// Obtiene las calificaciones
+		const condics = {entidad, entidad_id};
+		const include = ["feValores", "entretiene", "calidadTecnica"];
+		const califics = await BD_genericas.obtieneTodosPorCondicionConInclude("cal_registros", condics, include);
+
+		// Si existen calificaciones, obtiene los promedios
+		if (califics.length)
+			for (let campo in datos)
+				datos[campo] =
+					campo != "calificacion"
+						? Math.round(califics.map((n) => n[campo].valor).reduce((acum, i) => acum + i) / califics.length)
+						: Math.round(califics.map((n) => n.resultado).reduce((acum, i) => acum + i) / califics.length);
+
+		// Actualiza la calificación en el producto
+		await BD_genericas.actualizaPorId(entidad, entidad_id, datos);
+
+		// Fin
+		return;
+	},
 };
