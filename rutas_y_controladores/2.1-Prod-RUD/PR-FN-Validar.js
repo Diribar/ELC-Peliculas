@@ -33,7 +33,7 @@ module.exports = {
 		let errores = {};
 
 		// Verifica que ninguno esté vacío
-		for (let atributo in atributosCalific) errores[atributo] = !datos[atributo] ? "Necesitamos que respondas este atributo" : "";
+		for (let atributo in datos) errores[atributo] = !datos[atributo] ? "Necesitamos que respondas este atributo" : "";
 
 		// Consolida la información
 		errores.hay = Object.values.some((n) => !n);
