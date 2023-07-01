@@ -41,10 +41,10 @@ router.get("/api/valida-sector", API.validaSector);
 router.get("/api/prefijos", API.prefijos);
 
 // Rutas de vistas - Relación con la vida
-router.get("/agregar", aptoAgregar, vista.altaEdicForm);
-router.post("/agregar", aptoAgregar, multer.single("avatar"), vista.altaEdicGuardar);
-router.get("/edicion", aptoEdicion, capturaActivar, vista.altaEdicForm);
-router.post("/edicion", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdicGuardar);
+router.get("/agregar", aptoAgregar, vista.altaEdic.form);
+router.post("/agregar", aptoAgregar, multer.single("avatar"), vista.altaEdic.guardar);
+router.get("/edicion", aptoEdicion, capturaActivar, vista.altaEdic.form);
+router.post("/edicion", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdic.guardar);
 router.get("/detalle", aptoDetalle, vista.detalle);
 
 // Exportarlo **********************************************
