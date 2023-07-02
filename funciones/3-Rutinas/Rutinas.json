@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 1/jul",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Dom. 2/jul",
+	"HoraUTC": "12:04",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Dom. 25/jun",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 25,
+	"FechaSemUTC": "Dom. 2/jul",
+	"HoraSemUTC": "12:04",
+	"semanaUTC": 26,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS -----------------------",
 	"RutinasHorarias": ["LinksEnProd", "MailDeFeedback", "ProdsEnRCLV"],
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-jun-23": {"titulo": "Pedro", "entidad": "personajes", "id": 65},
 		"30-jun-23": {"titulo": "ELC - Películas"},
 		"01-jul-23": {"titulo": "ELC - Películas"},
 		"02-jul-23": {"titulo": "Ap. Mar. - Garabandal", "entidad": "hechos", "id": 57},
-		"03-jul-23": {"titulo": "Tomás apóstol", "entidad": "personajes", "id": 59}
+		"03-jul-23": {"titulo": "Tomás apóstol", "entidad": "personajes", "id": 59},
+		"04-jul-23": {"titulo": "Isabel de Portugal", "entidad": "personajes", "id": 117}
 	}
 }

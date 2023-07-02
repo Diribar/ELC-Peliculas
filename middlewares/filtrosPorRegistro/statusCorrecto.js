@@ -64,7 +64,7 @@ let FN_statusEsperados_id = (baseUrl, ruta) => {
 		? ruta == "/edicion/"
 			? [creado_id, creadoAprob_id, aprobado_id]
 			: ruta == "/inactivar/"
-			? [aprobado_id]
+			? [creadoAprob_id, aprobado_id]
 			: ruta == "/recuperar/" || ruta == "/eliminar/"
 			? [inactivo_id]
 			: ruta == "/calificar/"
