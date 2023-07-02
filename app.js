@@ -114,7 +114,7 @@ app.set("views", [
 		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: 1}),
 		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
-		ordenes: BD_genericas.obtieneTodos("ordenes", "orden"),
+		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
 		int_opciones: BD_genericas.obtieneTodos("int_opciones"),
 
 		// Otros

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "ordenes";
+	const alias = "cn_ordenes";
 	const columns = {
 		codigo: {type: dt.STRING(20)},
 		orden: {type: dt.INTEGER},
