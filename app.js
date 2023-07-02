@@ -150,7 +150,12 @@ app.set("views", [
 	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
-	// 4. Otros
+	// Interés en el producto
+	laQuieroVer = int_opciones.find((n) => n.laQuieroVer);
+	yaLaVi = int_opciones.find((n) => n.yaLaVi);
+	noMeInteresa = int_opciones.find((n) => n.noMeInteresa);
+
+	// Otros
 	global.epocasVarias = global.epocas.find((n) => n.varias);
 	global.epocasSinVarias = global.epocas.filter((n) => !n.varias);
 	global.mesesAbrev = global.meses.map((n) => n.abrev);
