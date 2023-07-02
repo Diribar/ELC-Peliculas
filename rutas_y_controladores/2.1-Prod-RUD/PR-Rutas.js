@@ -38,19 +38,20 @@ router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
 router.get("/api/elimina-calif-propia", API.califics.elimina);
 
 
+
 // Edición
-router.get("/api/valida", API.validaEdicion);
-router.get("/api/obtiene-original-y-edicion", API.obtieneVersionesProd);
-router.get("/api/envia-a-req-session", API.enviarAReqSession);
-router.get("/api/edicion-nueva/eliminar", API.eliminaEdicN);
-router.get("/api/edicion-guardada/eliminar", API.eliminaEdicG);
+router.get("/api/valida", API.edicion.valida);
+router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
+router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
+router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
+router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);
 
 // Rutas de vistas
-router.get("/detalle", aptoDetalle, capturaInactivar, vista.prodDetalle);
-router.get("/edicion", aptoEdicion, capturaActivar, vista.prodEdicion.form);
-router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.prodEdicion.guardar);
-router.get("/calificar", aptoCalificar, vista.calificaProd.form);
-router.post("/calificar", aptoCalificar, vista.calificaProd.guardar);
+router.get("/detalle", aptoDetalle, capturaInactivar, vista.detalle);
+router.get("/edicion", aptoEdicion, capturaActivar, vista.edicion.form);
+router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
+router.get("/calificar", aptoCalificar, vista.califica.form);
+router.post("/calificar", aptoCalificar, vista.califica.guardar);
 
 // Fin
 module.exports = router;
