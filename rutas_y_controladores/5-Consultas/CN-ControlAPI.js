@@ -8,7 +8,7 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// API - Startup
 	layoutsOrdenes: async (req, res) => {
-		return res.json({layouts, opcionesOrdenBD: ordenes});
+		return res.json({cn_layouts, opcionesOrdenBD: ordenes});
 	},
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones

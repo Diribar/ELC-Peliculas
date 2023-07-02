@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 		impactosDeLayout: function () {
 			// Asigna valor a las variables
 			const SI = !!DOM.layout_idSelect.value;
-			varias.layout = SI ? varias.layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
+			varias.layout = SI ? varias.cn_layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
 			elegibles.codigo = SI ? varias.layout.codigo : null;
 			varias.ocurrio = SI ? varias.layout.ocurrio : null;
 			if (SI) elegibles.layout_id = DOM.layout_idSelect.value;

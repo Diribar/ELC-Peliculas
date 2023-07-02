@@ -2,7 +2,7 @@
 	<!-- Layout -->
 	<select name="layout_id" required class="elegibleSimple">
 		<!-- Opciones en base de datos -->
-		<% for (let layout of layouts) { %>
+		<% for (let layout of cn_layouts) { %>
 			<option 
 				value="<%= layout.id %>" 
 				<% if (layout.id == opcionesElegidas.layout_id) { %>selected<% } %>
