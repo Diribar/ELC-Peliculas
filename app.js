@@ -154,6 +154,7 @@ app.set("views", [
 	laQuieroVer = int_opciones.find((n) => n.laQuieroVer);
 	yaLaVi = int_opciones.find((n) => n.yaLaVi);
 	noMeInteresa = int_opciones.find((n) => n.noMeInteresa);
+	sinPreferencia = int_opciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
 
 	// Otros
 	global.epocasVarias = global.epocas.find((n) => n.varias);

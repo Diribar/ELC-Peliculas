@@ -102,4 +102,16 @@ module.exports = {
 		// Fin
 		return;
 	},
+	interesDelUsuario: async ({usuario_id, entidad, entidad_id}) => {
+		// Variables
+		const condics = {usuario_id, entidad, entidad_id};
+		const include = ["opcion"];
+
+		// Obtiene el interés del usuario
+		const interesDelUsuario = await BD_genericas.obtienePorCondicion("int_registros", condics, include);
+		const interesDetalle = interesDelUsuario ? interesDelUsuario.detalle : sinPreferencia;
+
+		// Fin
+		return interesDetalle;
+	},
 };
