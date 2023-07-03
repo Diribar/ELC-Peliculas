@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "int_registros";
+	const alias = "ppp_registros";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		entidad: {type: dt.STRING(20)},
@@ -8,13 +8,13 @@ module.exports = (sequelize, dt) => {
 		creadoEn: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "int_registros",
+		tableName: "ppp_registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.usuarios, {as: "usuario", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.int_opciones, {as: "detalle", foreignKey: "opcion_id"});
+		entidad.belongsTo(n.ppp_opciones, {as: "detalle", foreignKey: "opcion_id"});
 	};
 	return entidad;
 };

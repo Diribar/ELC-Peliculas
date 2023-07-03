@@ -37,9 +37,9 @@ router.get("/api/obtiene-calificaciones", API.califics.delProducto);
 router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
 router.get("/api/elimina-calif-propia", API.califics.elimina);
 
-// Interés en el producto
-router.get("/api/obtiene-opciones-de-interes", API.prefsPers.obtieneOpciones);
-router.get("/api/guarda-interes-del-usuario", API.prefsPers.guardaOpcion);
+// Preferencias por producto
+router.get("/api/obtiene-opciones-de-preferencia", API.prefsPers.obtieneOpciones);
+router.get("/api/guarda-la-preferencia-del-usuario", API.prefsPers.guardaLaPreferencia);
 
 // Edición
 router.get("/api/valida", API.edicion.valida);

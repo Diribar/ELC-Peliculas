@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	const entidad = new URL(location.href).searchParams.get("entidad");
 	const prod_id = new URL(location.href).searchParams.get("id");
 	const domIcono = document.querySelector(".flechas #preferenciasPersonales");
-	const opciones = await fetch("/producto/api/obtiene-opciones-de-interes").then((n) => n.json());
-	const rutaGuardar = "/producto/api/guarda-interes-del-usuario/?entidad=" + entidad + "&entidad_id=" + prod_id;
+	const opciones = await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json());
+	const rutaGuardar = "/producto/api/guarda-la-preferencia-del-usuario/?entidad=" + entidad + "&entidad_id=" + prod_id;
 	let guardado = true;
 
 	// Eventos
