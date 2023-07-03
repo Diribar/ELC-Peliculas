@@ -101,51 +101,59 @@ CREATE TABLE `aux_status_registros` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cal_1registros` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(10) unsigned NOT NULL,
-  `pelicula_id` int(10) unsigned DEFAULT NULL,
-  `coleccion_id` int(10) unsigned DEFAULT NULL,
-  `capitulo_id` int(10) unsigned DEFAULT NULL,
-  `feValores` tinyint(3) unsigned NOT NULL,
-  `entretiene` tinyint(3) unsigned NOT NULL,
-  `calidadTecnica` tinyint(3) unsigned NOT NULL,
-  `calificacion` tinyint(3) unsigned NOT NULL,
-  `creadoEn` datetime DEFAULT utc_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  KEY `pelicula_id` (`pelicula_id`),
-  KEY `coleccion_id` (`coleccion_id`),
-  KEY `capitulo_id` (`capitulo_id`),
-  CONSTRAINT `cal_1registros_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `cal_1registros_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
-  CONSTRAINT `cal_1registros_ibfk_3` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
-  CONSTRAINT `cal_1registros_ibfk_4` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cal_21fe_valores` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
+CREATE TABLE `cal_1fe_valores` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(1) unsigned NOT NULL,
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cal_22entretiene` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
+CREATE TABLE `cal_2entretiene` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(1) unsigned NOT NULL,
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `cal_23calidad_tecnica` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
+CREATE TABLE `cal_3calidad_tecnica` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `orden` tinyint(1) unsigned NOT NULL,
   `valor` tinyint(3) unsigned NOT NULL,
   `nombre` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cal_criterio` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `atributo` varchar(20) NOT NULL,
+  `atributo_id` varchar(20) NOT NULL,
+  `ponderacion` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cal_registros` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(10) unsigned NOT NULL,
+  `entidad` varchar(20) NOT NULL,
+  `entidad_id` int(10) unsigned NOT NULL,
+  `feValores_id` tinyint(1) unsigned NOT NULL,
+  `entretiene_id` tinyint(1) unsigned NOT NULL,
+  `calidadTecnica_id` tinyint(1) unsigned NOT NULL,
+  `resultado` tinyint(3) unsigned NOT NULL,
+  `creadoEn` datetime NOT NULL DEFAULT utc_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  KEY `cal_1registros_FK` (`feValores_id`),
+  KEY `entretiene` (`entretiene_id`),
+  KEY `cal_1registros_FK_1` (`calidadTecnica_id`),
+  CONSTRAINT `cal_1registros_FK` FOREIGN KEY (`feValores_id`) REFERENCES `cal_1fe_valores` (`id`),
+  CONSTRAINT `cal_1registros_FK_1` FOREIGN KEY (`calidadTecnica_id`) REFERENCES `cal_3calidad_tecnica` (`id`),
+  CONSTRAINT `cal_registros_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `entretiene` FOREIGN KEY (`entretiene_id`) REFERENCES `cal_2entretiene` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `cam_hist_edics` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -155,7 +163,7 @@ CREATE TABLE `cam_hist_edics` (
   `titulo` varchar(51) NOT NULL,
   `valorDesc` varchar(100) DEFAULT NULL,
   `valorAprob` varchar(100) DEFAULT NULL,
-  `duracion` decimal(4,1) unsigned DEFAULT NULL,
+  `penalizac` decimal(4,1) unsigned DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `sugeridoPor_id` int(10) unsigned NOT NULL,
   `sugeridoEn` datetime NOT NULL,
@@ -179,7 +187,7 @@ CREATE TABLE `cam_hist_status` (
   `statusOriginal_id` tinyint(3) unsigned NOT NULL,
   `statusFinal_id` tinyint(3) unsigned NOT NULL,
   `aprobado` tinyint(1) DEFAULT NULL,
-  `duracion` decimal(4,1) unsigned DEFAULT NULL,
+  `penalizac` decimal(4,1) unsigned DEFAULT NULL,
   `motivo_id` tinyint(3) unsigned DEFAULT NULL,
   `comentario` varchar(150) NOT NULL,
   `sugeridoPor_id` int(10) unsigned NOT NULL,
@@ -213,7 +221,7 @@ CREATE TABLE `cam_motivos_edics` (
   `version_actual` tinyint(1) DEFAULT 0,
   `info_erronea` tinyint(1) DEFAULT 0,
   `rev_edicion` tinyint(1) DEFAULT 0,
-  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
+  `penalizac` decimal(4,1) unsigned DEFAULT 0.0,
   `bloqueoInput` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -226,7 +234,7 @@ CREATE TABLE `cam_motivos_status` (
   `prods` tinyint(1) DEFAULT 0,
   `rclvs` tinyint(1) DEFAULT 0,
   `links` tinyint(1) DEFAULT 0,
-  `duracion` decimal(4,1) unsigned DEFAULT 0.0,
+  `penalizac` decimal(4,1) unsigned DEFAULT 0.0,
   `coment_aut` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -270,35 +278,6 @@ CREATE TABLE `cn_ordenes` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `int_opciones` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `orden` tinyint(3) unsigned NOT NULL,
-  `nombre` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `int_registros` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(10) unsigned NOT NULL,
-  `pelicula_id` int(10) unsigned DEFAULT NULL,
-  `coleccion_id` int(10) unsigned DEFAULT NULL,
-  `capitulo_id` int(10) unsigned DEFAULT NULL,
-  `opciones_id` tinyint(3) unsigned DEFAULT NULL,
-  `creadoEn` datetime DEFAULT utc_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  KEY `pelicula_id` (`pelicula_id`),
-  KEY `coleccion_id` (`coleccion_id`),
-  KEY `capitulo_id` (`capitulo_id`),
-  KEY `int_opciones_id` (`opciones_id`),
-  CONSTRAINT `int_registros_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `int_registros_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `prod_1peliculas` (`id`),
-  CONSTRAINT `int_registros_ibfk_3` FOREIGN KEY (`coleccion_id`) REFERENCES `prod_2colecciones` (`id`),
-  CONSTRAINT `int_registros_ibfk_4` FOREIGN KEY (`capitulo_id`) REFERENCES `prod_3capitulos` (`id`),
-  CONSTRAINT `int_registros_ibfk_5` FOREIGN KEY (`opciones_id`) REFERENCES `int_opciones` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `links` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -415,6 +394,33 @@ CREATE TABLE `links_tipos` (
   `trailer` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `ppp_opciones` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(25) NOT NULL,
+  `laQuieroVer` tinyint(1) DEFAULT 0,
+  `yaLaVi` tinyint(1) DEFAULT 0,
+  `noMeInteresa` tinyint(1) DEFAULT 0,
+  `icono` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `ppp_registros` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(10) unsigned NOT NULL,
+  `entidad` varchar(20) DEFAULT NULL,
+  `entidad_id` int(10) unsigned DEFAULT NULL,
+  `opcion_id` tinyint(3) unsigned DEFAULT NULL,
+  `creadoEn` datetime NOT NULL DEFAULT utc_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `coleccion_id` (`entidad_id`) USING BTREE,
+  KEY `int_opciones_id` (`opcion_id`) USING BTREE,
+  KEY `pelicula_id` (`entidad`) USING BTREE,
+  KEY `usuario_id` (`usuario_id`) USING BTREE,
+  CONSTRAINT `regs_favoritos_ibfk_1_copy` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `regs_favoritos_ibfk_5_copy` FOREIGN KEY (`opcion_id`) REFERENCES `ppp_opciones` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `prod_1peliculas` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1240,4 +1246,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-26 12:45:53
+-- Dump completed on 2023-07-03 13:24:28
