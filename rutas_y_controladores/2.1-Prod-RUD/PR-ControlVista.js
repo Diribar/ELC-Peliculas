@@ -74,13 +74,14 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const statusEstable = [creadoAprob_id, aprobado_id].includes(status_id) || status_id == inactivo_id;
 		const userIdentVal = req.session.usuario && req.session.usuario.statusRegistro.ident_validada;
+		const interesDelUsuario = userID ? await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id}) : "";
 
 		// Va a la vista
 		// return res.send(prodComb);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo: [], origen, revisor, userIdentVal},
 			...{entidad, id, familia: "producto", status_id, statusEstable},
-			...{entidadNombre, registro: prodComb, links},
+			...{entidadNombre, registro: prodComb, links, interesDelUsuario},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
 		});
@@ -319,13 +320,14 @@ module.exports = {
 			const condics = {entidad, entidad_id: id, usuario_id: userID};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			const califUsuario = await BD_genericas.obtienePorCondicionConInclude("cal_registros", condics, include);
+			const interesDelUsuario = await procesos.interesDelUsuario({usuario_id: userID, entidad, entidad_id: id});
 
 			// Va a la vista
-			// return res.send(califUsuario)
+			// return res.send(interesDelUsuario);
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo: [], origen},
 				...{entidad, id, familia: "producto", status_id},
-				...{entidadNombre, registro: prodComb},
+				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 				...{bloqueDer, atributosTitulo, califUsuario},
 			});

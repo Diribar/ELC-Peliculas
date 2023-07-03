@@ -4,6 +4,9 @@
 	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-1Detalle.css">
 	<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Etiquetas.js"></script>
 	<script src="/javascript/2.1-Prod-RUD/PR1-Detalle-Actores.js"></script>
+	<% if (interesDelUsuario) { %>
+		<script src="/javascript/2.1-Prod-RUD/PR4-Preferencias-Pers.js"></script>
+	<% } %>
 	<% if (registro.calificacion) { %>
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 		<script src="/javascript/2.1-Prod-RUD/PR0-Grafico.js"></script>
@@ -24,6 +27,7 @@
 	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-0CRUD.css">
 	<link rel="stylesheet" href="/formatos/2.1-Prods-CRUD/PR-3Calificar.css">
 	<script src="/javascript/2.1-Prod-RUD/PR3-Calificar-InputError.js"></script>
+	<script src="/javascript/2.1-Prod-RUD/PR4-Preferencias-Pers.js"></script>
 	<% if (registro.calificacion) { %>
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 		<script src="/javascript/2.1-Prod-RUD/PR0-Grafico.js"></script>

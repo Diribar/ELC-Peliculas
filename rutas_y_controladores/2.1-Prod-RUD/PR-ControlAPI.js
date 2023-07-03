@@ -124,4 +124,35 @@ module.exports = {
 			return res.json();
 		},
 	},
+
+	prefsPers: {
+		obtieneOpciones: (req, res) => {
+			return res.json(int_opciones);
+		},
+		guardaOpcion: async (req, res) => {
+			// Variables
+			const {entidad, entidad_id, opcion_id} = req.query;
+			const usuario_id = req.session.usuario.id;
+
+			// Averigua si existe el registro
+			const condics = {entidad, entidad_id, usuario_id};
+			const registro = await BD_genericas.obtienePorCondicion("int_registros", condics);
+
+			// Acciones si la opción es Sin preferencia personal
+			if (opcion_id == sinPreferencia.id) {
+				if (registro) BD_genericas.eliminaPorId("int_registros", registro.id);
+			} else {
+				// Variable
+				const datos = {entidad, entidad_id, opcion_id, usuario_id};
+
+				// Agrega o actualiza
+				registro
+					? BD_genericas.actualizaPorId("int_registros", registro.id, datos)
+					: BD_genericas.agregaRegistro("int_registros", datos);
+			}
+
+			// Fin
+			return res.json();
+		},
+	},
 };
