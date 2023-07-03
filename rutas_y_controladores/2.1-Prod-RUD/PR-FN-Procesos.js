@@ -108,7 +108,7 @@ module.exports = {
 		const include = "detalle";
 
 		// Obtiene el interés del usuario
-		const registro = await BD_genericas.obtienePorCondicionConInclude("int_registros", condics, include);
+		const registro = await BD_genericas.obtienePorCondicionConInclude("ppp_registros", condics, include);
 		const interesDelUsuario = registro ? registro.detalle : sinPreferencia;
 
 		// Fin

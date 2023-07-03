@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "int_opciones";
+	const alias = "ppp_opciones";
 	const columns = {
 		nombre: {type: dt.STRING(25)},
 		laQuieroVer: {type: dt.BOOLEAN},
@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		icono: {type: dt.STRING(25)},
 	};
 	const config = {
-		tableName: "int_opciones",
+		tableName: "ppp_opciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

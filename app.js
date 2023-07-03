@@ -115,7 +115,7 @@ app.set("views", [
 		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: 1}),
 		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
-		int_opciones: BD_genericas.obtieneTodos("int_opciones"),
+		ppp_opciones: BD_genericas.obtieneTodos("ppp_opciones"),
 
 		// Otros
 		meses: BD_genericas.obtieneTodos("meses"),
@@ -151,10 +151,10 @@ app.set("views", [
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
 	// Interés en el producto
-	laQuieroVer = int_opciones.find((n) => n.laQuieroVer);
-	yaLaVi = int_opciones.find((n) => n.yaLaVi);
-	noMeInteresa = int_opciones.find((n) => n.noMeInteresa);
-	sinPreferencia = int_opciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
+	laQuieroVer = ppp_opciones.find((n) => n.laQuieroVer);
+	yaLaVi = ppp_opciones.find((n) => n.yaLaVi);
+	noMeInteresa = ppp_opciones.find((n) => n.noMeInteresa);
+	sinPreferencia = ppp_opciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
 
 	// Otros
 	global.epocasVarias = global.epocas.find((n) => n.varias);
