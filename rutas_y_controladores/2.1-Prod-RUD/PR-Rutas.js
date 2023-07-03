@@ -38,8 +38,8 @@ router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
 router.get("/api/elimina-calif-propia", API.califics.elimina);
 
 // Interés en el producto
-// router.get("/api/obtiene-opciones-de-interes", API.califics.obtieneOpciones);
-// router.get("/api/guarda-interes-del-usuario", API.califics.obtieneOpciones);
+router.get("/api/obtiene-opciones-de-interes", API.prefsPers.obtieneOpciones);
+router.get("/api/guarda-interes-del-usuario", API.prefsPers.guardaOpcion);
 
 // Edición
 router.get("/api/valida", API.edicion.valida);
