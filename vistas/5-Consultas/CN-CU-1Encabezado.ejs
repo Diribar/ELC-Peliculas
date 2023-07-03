@@ -2,7 +2,7 @@
 	<!-- Layout -->
 	<select name="layout_id" required class="elegibleSimple">
 		<!-- Opciones en base de datos -->
-		<% for (let layout of layouts) { %>
+		<% for (let layout of cn_layouts) { %>
 			<option 
 				value="<%= layout.id %>" 
 				<% if (layout.id == opcionesElegidas.layout_id) { %>selected<% } %>
@@ -13,7 +13,7 @@
 	<select name="orden_id" required class="elegibleSimple">
 		<option value="" class="ocultar" selected>Ordenar por...</option>
 		<!-- Opciones en base de datos -->
-		<% for (let orden of ordenes) { %>
+		<% for (let orden of cn_ordenes) { %>
 			<option 
 				value="<%= orden.id %>" class="ocultar" 
 				<% if (orden.id == opcionesElegidas.orden_id) { %>selected <% } %>

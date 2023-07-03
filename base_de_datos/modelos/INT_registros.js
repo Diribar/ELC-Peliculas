@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
 		opcion_id: {type: dt.INTEGER},
+		creadoEn: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "int_registros",
@@ -13,7 +14,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.usuarios, {as: "usuario", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.int_opciones, {as: "interes", foreignKey: "opcion_id"});
+		entidad.belongsTo(n.int_opciones, {as: "detalle", foreignKey: "opcion_id"});
 	};
 	return entidad;
 };

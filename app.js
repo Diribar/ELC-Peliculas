@@ -113,8 +113,8 @@ app.set("views", [
 		// Consultas
 		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
 		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: 1}),
-		layouts: BD_genericas.obtieneTodos("layouts", "orden"),
-		ordenes: BD_genericas.obtieneTodos("ordenes", "orden"),
+		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
+		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
 		int_opciones: BD_genericas.obtieneTodos("int_opciones"),
 
 		// Otros
@@ -150,7 +150,13 @@ app.set("views", [
 	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
-	// 4. Otros
+	// Interés en el producto
+	laQuieroVer = int_opciones.find((n) => n.laQuieroVer);
+	yaLaVi = int_opciones.find((n) => n.yaLaVi);
+	noMeInteresa = int_opciones.find((n) => n.noMeInteresa);
+	sinPreferencia = int_opciones.find((n) => !n.laQuieroVer && !n.yaLaVi && !n.noMeInteresa);
+
+	// Otros
 	global.epocasVarias = global.epocas.find((n) => n.varias);
 	global.epocasSinVarias = global.epocas.filter((n) => !n.varias);
 	global.mesesAbrev = global.meses.map((n) => n.abrev);

@@ -32,12 +32,14 @@ const aptoEdicion = [...aptoCRUD, edicion];
 
 //************************ Rutas ****************************
 // Rutas de APIs
-// Detalle y Calificar
+// Calificaciones
 router.get("/api/obtiene-calificaciones", API.califics.delProducto);
 router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
 router.get("/api/elimina-calif-propia", API.califics.elimina);
 
-
+// Interés en el producto
+// router.get("/api/obtiene-opciones-de-interes", API.califics.obtieneOpciones);
+// router.get("/api/guarda-interes-del-usuario", API.califics.obtieneOpciones);
 
 // Edición
 router.get("/api/valida", API.edicion.valida);

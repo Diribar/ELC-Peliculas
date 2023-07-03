@@ -8,7 +8,7 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// API - Startup
 	layoutsOrdenes: async (req, res) => {
-		return res.json({layouts, opcionesOrdenBD: ordenes});
+		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 	},
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
@@ -85,7 +85,7 @@ module.exports = {
 
 		// Obtiene los filtros y el orden
 		const filtrosProd = procesos.API.filtrosProd(datos);
-		const ordenCampo = ordenes.find((n) => n.id == datos.orden_id).valor;
+		const ordenCampo = cn_ordenes.find((n) => n.id == datos.orden_id).valor;
 		const ordenAscDes = datos.asc_des == "ASC" ? -1 : 1;
 
 		// Obtiene los productos y elimina los que tienen 'null' en el campo de orden
