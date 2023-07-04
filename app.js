@@ -111,8 +111,8 @@ app.set("views", [
 		links_tipos: BD_genericas.obtieneTodos("links_tipos"),
 
 		// Consultas
-		filtroEstandarCabecera: BD_genericas.obtienePorId("filtros_cabecera", 1),
-		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: 1}),
+		filtroEstandarCabecera: BD_genericas.obtienePorId("filtrosCabecera", 1),
+		filtroEstandarCampos: BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: 1}),
 		cn_layouts: BD_genericas.obtieneTodos("cn_layouts", "orden"),
 		cn_ordenes: BD_genericas.obtieneTodos("cn_ordenes", "orden"),
 		ppp_opciones: BD_genericas.obtieneTodos("ppp_opciones"),
