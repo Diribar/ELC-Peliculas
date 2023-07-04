@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 3/jul",
-	"HoraUTC": "11:53",
+	"FechaUTC": "Mar. 4/jul",
+	"HoraUTC": "11:24",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Dom. 2/jul",
@@ -20,10 +20,10 @@
 	},
 	"Subtitulo4": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-jul-23": {"titulo": "ELC - Películas"},
 		"02-jul-23": {"titulo": "Ap. Mar. - Garabandal", "entidad": "hechos", "id": 57},
 		"03-jul-23": {"titulo": "Tomás apóstol", "entidad": "personajes", "id": 59},
 		"04-jul-23": {"titulo": "Isabel de Portugal", "entidad": "personajes", "id": 117},
-		"05-jul-23": {"titulo": "ELC - Películas"}
+		"05-jul-23": {"titulo": "ELC - Películas"},
+		"06-jul-23": {"titulo": "María Goretti", "entidad": "personajes", "id": 92}
 	}
 }
