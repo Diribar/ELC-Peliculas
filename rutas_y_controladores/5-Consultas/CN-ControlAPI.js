@@ -13,7 +13,7 @@ module.exports = {
 	opcionesFiltro: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
-		const aux = await BD_genericas.obtieneTodosPorCondicion("filtros_campos", {cabecera_id: filtro_id});
+		const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
 
 		// Convierte el array en objeto literal
 		let opciones = {};
@@ -48,7 +48,7 @@ module.exports = {
 		const cabecera_id = datos.filtro_id;
 
 		// Elimina la información guardada
-		await BD_genericas.eliminaTodosPorCondicion("filtros_campos", {cabecera_id});
+		await BD_genericas.eliminaTodosPorCondicion("filtrosCampos", {cabecera_id});
 
 		// Guarda la nueva información
 		for (let campo in datos) {
@@ -56,7 +56,7 @@ module.exports = {
 			if (campo == "filtro_id") continue;
 			// Crea el registro
 			let objeto = {cabecera_id, campo, valor: datos[campo]};
-			BD_genericas.agregaRegistro("filtros_campos", objeto);
+			BD_genericas.agregaRegistro("filtrosCampos", objeto);
 		}
 
 		// Fin

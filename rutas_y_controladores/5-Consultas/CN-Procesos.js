@@ -7,7 +7,7 @@ const variables = require("../../funciones/1-Procesos/Variables");
 module.exports = {
 	filtrosPers: async (userID) => {
 		// Obtiene los filtros personales
-		let resultado = userID ? await BD_genericas.obtieneTodosPorCondicion("filtros_cabecera", {usuario_id: userID}) : [];
+		let resultado = userID ? await BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: userID}) : [];
 		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
 		// Le agrega el filtro estándar
 		resultado.push(filtroEstandarCabecera);
