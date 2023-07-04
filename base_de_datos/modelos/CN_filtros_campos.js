@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "filtros_campos";
+	const alias = "filtrosCampos";
 	const columns = {
 		cabecera_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.filtros_cabecera, {as: "cabecera", foreignKey: "cabecera_id"});
+		entidad.belongsTo(n.filtrosCabecera, {as: "cabecera", foreignKey: "cabecera_id"});
 	};
 	return entidad;
 };
