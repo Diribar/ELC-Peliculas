@@ -7,6 +7,8 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	consultas: async (req, res) => {
 		// Variables
+		const tema = "consultas";
+		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const userID = req.session.usuario ? usuario.id : "";
 		const filtrosPers = await procesos.filtrosPers(userID);
@@ -26,14 +28,11 @@ module.exports = {
 		// Convierte el array en objeto literal
 		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 
-		// return res.send(filtros)
+		return res.send(filtros)
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
-			...{tema: "consultas", titulo: "Consulta de Películas"},
-			// Personalizaciones
-			...{filtro_id, opcionesElegidas, filtrosPers},
-			// Filtros
-			filtros,
+			...{tema, titulo},
+			...{filtro_id, opcionesElegidas, filtrosPers, filtros},
 		});
 	},
 };

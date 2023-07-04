@@ -1,9 +1,9 @@
-<div id="<%= tema.codigo %>" class="filtro select elegibleSimple <%= locals.class %>">
-	<select name="<%= tema.codigo %>" class="input">
-		<option value=""><%= tema.titulo %></option>
+<div id="<%= asunto.codigo %>" class="filtro select elegibleSimple <%= locals.class %>">
+	<select name="<%= asunto.codigo %>" class="input">
+		<option value=""><%= asunto.titulo %></option>
 		<% let label %>
-		<% let grupo = tema["grupo_" + tema.codigo] %>
-		<% let opciones = grupo ? grupo : tema.opciones %>
+		<% let grupo = asunto["grupo_" + asunto.codigo] %>
+		<% let opciones = grupo ? grupo : asunto.opciones %>
 		<% for (let opcion of opciones) { %>
 			<% if (!opcion.id) { %>
 				<!-- Acciones si es un cambio de 'rubro' -->
@@ -14,7 +14,7 @@
 				<!-- Acciones si es una opción dentro del mismo rubro -->
 				<option 
 					value="<%= opcion.id %>" class="<%= opcion.clase %>"
-					<% if (opcion.id == opcionesElegidas[tema.codigo]) { %>selected<% } %>
+					<% if (opcion.id == opcionesElegidas[asunto.codigo]) { %>selected<% } %>
 				><%= opcion.nombre %></option>
 			<% } %>
 		<% } %>

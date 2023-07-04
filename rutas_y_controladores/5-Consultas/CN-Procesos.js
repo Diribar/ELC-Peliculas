@@ -16,23 +16,25 @@ module.exports = {
 	},
 	filtros: function () {
 		// Variable 'filtros'
-		let filtros = variables.filtrosConsultas;
+		let filtros = {...variables.filtrosConsultas};
 
-		// Agrega las opciones de BD
+		// Agrega campos
 		for (let campo in filtros) {
-			// Le agrega el nombre del campo a cada bloque de información
+			// Le agrega el nombre del campo a cada método
 			filtros[campo].codigo = campo;
+
 			// Si no tiene opciones, le agrega las de la BD
 			if (!filtros[campo].opciones) {
-				filtros[campo].opciones = global[campo];
-				if (campo == "epocas")
-					filtros.epocas.opciones = filtros.epocas.opciones.map((n) => ({id: n.id, nombre: n.consulta}));
+				if (campo == "epocasSinVarias")
+					filtros.epocasSinVarias.opciones = epocas.map((n) => ({id: n.id, nombre: n.consulta}));
+				else filtros[campo].opciones = global[campo];
 			}
 		}
 
 		// Agrega las opciones grupales para los RCLV
 		for (let entidad in this.gruposConsultasRCLV)
-			if (filtros[entidad]) filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
+			// if (filtros[entidad])
+			filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
 
 		// Fin
 		return filtros;
