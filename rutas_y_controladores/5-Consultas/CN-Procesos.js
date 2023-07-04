@@ -31,9 +31,14 @@ module.exports = {
 			}
 		}
 
+		// Cambia el método a 'epocas'
+		filtros.epocas = filtros.epocasSinVarias;
+		filtros.epocas.codigo = "epocas";
+		delete filtros.epocasSinVarias;
+
 		// Agrega las opciones grupales para los RCLV
+		// if (filtros[entidad])
 		for (let entidad in this.gruposConsultasRCLV)
-			// if (filtros[entidad])
 			filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
 
 		// Fin

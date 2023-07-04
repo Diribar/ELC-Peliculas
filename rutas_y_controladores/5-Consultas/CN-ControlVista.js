@@ -28,8 +28,8 @@ module.exports = {
 		// Convierte el array en objeto literal
 		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 
-		return res.send(filtros)
 		// Va a la vista
+		// return res.send(filtros)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
 			...{filtro_id, opcionesElegidas, filtrosPers, filtros},
