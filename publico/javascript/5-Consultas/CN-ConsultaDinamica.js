@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
-		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple .input"),
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtro personalizado
 		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -238,8 +238,8 @@ window.addEventListener("load", async () => {
 			const opciones = await fetch(rutas.opcionesFiltroPers + filtro_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
-			for (let elegibleSimple of DOM.elegiblesSimple)
-				elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
+			for (let prefSimple of DOM.prefsSimples)
+				prefSimple.value = opciones[prefSimple.name] ? opciones[prefSimple.name] : "";
 
 			// Actualiza los elegibles 'AscDes'
 			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && input.value == opciones.ascDes;

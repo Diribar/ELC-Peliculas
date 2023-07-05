@@ -13,8 +13,8 @@ module.exports = {
 		},
 		prefsFP: async (req, res) => {
 			// Obtiene las opciones
-			const {filtro_id} = req.query;
-			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
+			const {fp_id} = req.query;
+			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: fp_id});
 
 			// Convierte el array en objeto literal
 			let opciones = {};
