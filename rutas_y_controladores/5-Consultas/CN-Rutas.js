@@ -14,7 +14,7 @@ router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 router.get("/api/actualiza-fp_id", API.actualiza.filtroPers_id);
 router.get("/api/actualiza-prefs-fp", API.actualiza.prefsFiltroPers);
 
-// API - Consultas
+// API - Resultados
 router.get("/api/obtiene-los-productos", API.resultados.prods);
 router.get("/api/obtiene-los-rclvs", API.resultados.rclvs);
 
