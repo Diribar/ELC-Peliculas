@@ -81,7 +81,7 @@ let FN = {
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
 		},
-		sessionCookieUsuarioConFiltroPers_id_: (configActual_id) => {
+		sessionCookieUsuarioCon_configActual_id: (configActual_id) => {
 			// Variables
 			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='configActual_id']")};
 			const configActual_id = DOM.filtroPers.value;
