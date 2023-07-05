@@ -28,9 +28,9 @@ const rutas = {
 
 // Funciones
 let FN = {
-	// Start-up
-	statusInicialBotonera: () => {
+	actualizaBotonera: ({}) => {
 		let DOM = {
+			
 			filtroPers: document.querySelector("#filtroPers select[name='filtroPers']"),
 			nuevo: document.querySelector("#filtroPers i#nuevo"),
 			reinicio: document.querySelector("#filtroPers i#reinicio"),
@@ -40,12 +40,15 @@ let FN = {
 			iconos: document.querySelectorAll("#filtroPers #iconos i"),
 		};
 
+		// Quita las clases crear y editar en el input
+
+
 		// Fin
 		return;
 	},
 
 	// Según necesidad del usuario
-	statusInicialPrefs: async (filtroPers_id) => {
+	actualizaPrefs: async (filtroPers_id) => {
 		// Variables
 		let DOM = {
 			prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),

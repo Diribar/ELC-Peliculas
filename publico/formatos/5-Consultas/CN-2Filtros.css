@@ -6,18 +6,17 @@
 #filtros * {font-size: 1rem;}
 #filtros :is(select, input[type="text"]) {border-radius: 5px; border-width: 1px;}
 
-/* Filtros - Personalizados */
+/* Filtros Personalizados */
 #filtros #filtroPers {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
 #filtros #filtroPers :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
-/* Input */
-#filtroPers #nuevoNombre input {padding-left: 5px; height: 20.8px; width: 100%;}
-
-/* Select */
+/* Filtros Personalizados - Input */
+#filtroPers input {padding-left: 5px; height: 20.8px; width: 100%;}
+/* Filtros Personalizados - Select */
 #filtroPers select {font-weight: bold;}
 #filtroPers #iconos {justify-content: space-around; margin-top: 9px; width: 80%; align-self: center;}
 #filtroPers #iconos i {cursor: pointer; color: snow;}
 
-/* Filtros - Campos - Filtros para enfocar tu búqueda */
+/* Filtros Campos - Filtros para enfocar tu búqueda */
 #filtros #campos div:has(h2) {padding: 3px 0; background: var(--amarillo-claro);}
 
 /* Filtros - Campos - General */
@@ -27,7 +26,7 @@
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
 #filtros #campos .bhrSI {display: none;}
 
-/* Filtros - Campos - Select e Input */
+/* Filtros Campos - Select e Input */
 #filtros #campos .filtro {padding: 7.5px 20px;}
 #filtros #campos .filtro#palabrasClave {padding-top: 10px; padding-bottom: 10px;}
 #filtros .filtro :is(select, input) {width: 100%;}
