@@ -30,7 +30,7 @@ let FN = {
 	obtiene: {
 		prefsDeCabecera: (DOM) => {
 			const configActual_id = DOM.configActual_id.value;
-			return fetch(rutas.obtiene.cabeceraFiltroPers + configActual_id).then((n) => n.json());
+			return fetch(rutas.obtiene.prefsDeCabecera + configActual_id).then((n) => n.json());
 		},
 	},
 	actualiza: {
