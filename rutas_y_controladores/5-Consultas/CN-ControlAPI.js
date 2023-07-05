@@ -7,10 +7,10 @@ const procesos = require("./CN-Procesos");
 
 module.exports = {
 	// Startup
-	layoutsMasOrdenes: async (req, res) => {
+	obtieneLayoutsMasOrdenes: async (req, res) => {
 		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 	},
-	prefsFP: async (req, res) => {
+	obtienePrefsFP: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
 		const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
@@ -22,7 +22,7 @@ module.exports = {
 		// Fin
 		return res.json(opciones);
 	},
-	diasDelAno: (req, res) => {
+	obtieneDiasDelAno: (req, res) => {
 		return res.json(diasDelAno);
 	},
 

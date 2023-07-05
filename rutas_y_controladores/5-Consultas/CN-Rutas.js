@@ -6,9 +6,9 @@ const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");
 
 // API - Startup
-router.get("/api/obtiene-layouts-y-ordenes", API.layoutsMasOrdenes);
-router.get("/api/obtiene-las-preferencias-del-fp", API.prefsFP);
-router.get("/api/obtiene-los-dias-del-ano", API.diasDelAno);
+router.get("/api/obtiene-layouts-y-ordenes", API.obtieneLayoutsMasOrdenes);
+router.get("/api/obtiene-las-preferencias-del-fp", API.obtienePrefsFP);
+router.get("/api/obtiene-los-dias-del-ano", API.obtieneDiasDelAno);
 
 // API - Filtros personalizados
 router.get("/api/actualiza-fp_id", API.actualizaFP_id);
