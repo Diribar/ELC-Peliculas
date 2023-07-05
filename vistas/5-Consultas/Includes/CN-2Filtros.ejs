@@ -5,11 +5,11 @@
 	</div>
 	<select name="filtrosPers">
 		<option value="">Filtros Guardados...</option>
-		<% for (filtro of filtrosPers) { %>
+		<% for (filtroPers of filtrosPers) { %>
 			<option 
-				value="<%= filtro.id %>"
-				<% if (filtro.id == filtro_id) { %>selected<% } %>
-			><%= filtro.nombre %></option>
+				value="<%= filtroPers.id %>"
+				<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
+			><%= filtroPers.nombre %></option>
 		<% } %>
 	</select>
 	<div id="iconos" class="flexRow">
