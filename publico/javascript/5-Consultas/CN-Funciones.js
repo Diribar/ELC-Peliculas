@@ -5,14 +5,18 @@ const rutas = {
 	// Obtiene
 	obtiene: {
 		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
-		prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=", // opcionesFiltroPers
+		prefsFiltroPers: ruta + "obtiene-las-preferencias-del-filtroPers/?filtroPers_id=", // opcionesFiltroPers
 		diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
+	},
+
+	guarda: {
+		nuevoFiltroPers: ruta + "guarda-nuevo-filtroPers/?datos=",
 	},
 
 	// Actualiza
 	actualiza: {
-		filtroPers_id: ruta + "actualiza-fp_id/?filtro_id=", // guardaFiltroID
-		prefsFiltroPers: ruta + "actualiza-prefs-fp/?datos=", // actualiza
+		filtroPers_id: ruta + "actualiza-filtroPers_id/?filtroPers_id=", // guardaFiltroID
+		prefsFiltroPers: ruta + "actualiza-prefs-filtroPers/?datos=", // actualiza
 	},
 
 	// Resultados
@@ -22,11 +26,58 @@ const rutas = {
 	},
 };
 
-// Funciones de start-up
-let statusInicialPrefs = async (producto) => {};
+// Funciones
+let FN = {
+	// Start-up
+	statusInicialBotonera: () => {
+		let DOM = {
+			filtroPers: document.querySelector("#filtroPers select[name='filtroPers']"),
+			nuevo: document.querySelector("#filtroPers i#nuevo"),
+			reinicio: document.querySelector("#filtroPers i#reinicio"),
+			actualiza: document.querySelector("#filtroPers i#actualiza"),
+			modificaNombre: document.querySelector("#filtroPers i#modificaNombre"),
+			elimina: document.querySelector("#filtroPers i#elimina"),
+			iconos: document.querySelectorAll("#filtroPers #iconos i"),
+		};
+
+		// Fin
+		return;
+	},
+
+	// Según necesidad del usuario
+	statusInicialPrefs: async (filtroPers_id) => {
+		// Variables
+		let DOM = {
+			prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
+			ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+		};
+		const prefsFiltroPers = await fetch(rutas.obtiene.prefsFiltroPers + filtroPers_id).then((n) => n.json());
+
+		// Actualiza las preferencias simples (Encabezado + Filtros)
+		for (let prefSimple of DOM.prefsSimples) prefSimple.value = prefsFiltroPers[prefSimple.name] ? prefsFiltroPers[prefSimple.name] : "";
+
+		// Actualiza las preferencias 'AscDes'
+		for (let ascDesInput of DOM.ascDesInputs) ascDesInput.checked = prefsFiltroPers.ascDes && ascDesInput.value == prefsFiltroPers.ascDes;
+	},
+	nuevoFiltroPers: (filtroPers_id) => {
+		// Variables
+		let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers']")};
+		const filtroPers_id = DOM.filtroPers.value;
+
+		// Actualiza el filtroPers_id en la session, cookie y el usuario
+		if (filtroPers_id) fetch(rutas.actualiza.filtroPers_id + filtroPers_id);
+		else return;
+
+		// Fin
+		return;
+	},
+};
 
 // Ejecuta las funciones de start-up
-window.addEventListener("load", () => {});
+window.addEventListener("load", () => {
+	// Fin
+	return;
+});
 
 let botonPelicula = async (producto) => {
 	// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
