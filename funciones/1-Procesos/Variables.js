@@ -36,12 +36,12 @@ module.exports = {
 
 	// Consulta de Productos
 	filtrosConsultas: {
-		// Preferencias que se muestran siempre
+		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
-				{id: "CFC", nombre: "Fe Católica"},
-				{id: "VPC", nombre: "Sin Fe Católica"},
+				{id: "CFC", nombre: "Con relac. c/Fe Católica"},
+				{id: "VPC", nombre: "Sin relac. c/Fe Católica"},
 			],
 		},
 		publicos: {
@@ -90,21 +90,11 @@ module.exports = {
 				{id: "NO", nombre: "Ficción"},
 			],
 		},
-
-		// RCLVs
 		apMar: {
 			titulo: "Aparición Mariana",
 			opciones: [
 				{id: "SI", nombre: "Aparición Mariana"},
 				{id: "NO", nombre: "Sin Aparición Mariana"},
-			],
-		},
-		canons: {
-			titulo: "Proceso de Canonización",
-			opciones: [
-				{id: "sb", nombre: "Santos y Beatos"},
-				{id: "vs", nombre: "Vener. y Siervos de Dios"},
-				{id: "nn", nombre: "Sin proceso de canonizac."},
 			],
 		},
 		rolesIglesia: {
@@ -116,6 +106,14 @@ module.exports = {
 				{id: "pp", nombre: "Papas"},
 				{id: "ap", nombre: "Apóstoles"},
 				{id: "sf", nombre: "Sagrada Familia"},
+			],
+		},
+		canons: {
+			titulo: "Proceso de Canonización",
+			opciones: [
+				{id: "sb", nombre: "Santos y Beatos"},
+				{id: "vs", nombre: "Vener. y Siervos de Dios"},
+				{id: "nn", nombre: "Sin proceso de canonizac."},
 			],
 		},
 	},
