@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	};
 	v = {
 		...v,
-		filtroDeUsuario: !!v.filtroPersCabecera.usuario_id,
+		filtroPropio: !!v.filtroPersCabecera.usuario_id,
 	};
 	// filtroPers:{
 	// 			cabecera=
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 
 	// Start-up
 
-	botoneraActivaInactiva({filtroDeUsuario, hayCambios, DOM});
+	botoneraActivaInactiva({filtroPropio, hayCambios, DOM});
 });
 
 // Obtiene el configActual_id
