@@ -12,7 +12,7 @@ router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
 router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 
 // API - Filtros personalizados
-router.get("/api/guarda-nuevo-filtroPers", API.guarda.nuevoFiltroPers);
+router.get("/api/guarda-nuevo-filtroPers", API.guarda.filtroPersNuevo);
 router.get("/api/actualiza-filtroPers_id", API.actualiza.filtroPers_id);
 router.get("/api/actualiza-prefs-filtroPers", API.actualiza.prefsFiltroPers);
 
