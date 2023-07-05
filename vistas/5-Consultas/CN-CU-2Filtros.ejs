@@ -1,5 +1,8 @@
 <!--Filtros Guardados-->
-<div id="filtrosPers"> 
+<div id="filtrosPers">
+	<div id="nuevoNombre" class="relative">
+		<input type="text" class="absolute">
+	</div>
 	<select name="filtrosPers">
 		<option value="">Filtros Guardados...</option>
 		<% for (filtro of filtrosPers) { %>
@@ -11,7 +14,7 @@
 	</select>
 	<div id="iconos" class="flexRow">
 		<i id="nuevo" class="fa-solid fa-file scale inactivo" title="Crea un filtro nuevo"></i>
-		<i id="reinicio" class="fa-solid fa-rotate-right scale inactivo" title="Reinicia el filtro actual"></i>
+		<i id="reinicio" class="fa-solid fa-rotate-left scale inactivo" title="Deshace los cambios"></i>
 		<i id="actualiza" class="fa-solid fa-floppy-disk scale inactivo" title="Guarda los cambios"></i>
 		<i id="modificaNombre" class="fa-solid fa-pen scale inactivo" title="Modifica el nombre"></i>
 		<i id="elimina" class="fa-solid fa-trash-can scale inactivo" title="Elimina el filtro actual"></i>
@@ -25,35 +28,41 @@
 	</div>
 	<div class="sectorConDesplV">
 		<nav class="ocultar flexCol">
-			<!-- CFC/VPC -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.cfc}) %>
+			<!-- Relación con la Iglesia Católica -->
+			<%- include('CN-FL-Selects', {asunto: filtros.cfc, mostrarSiempre: true}) %>
+			<!-- Epoca de Ocurrencia -->
+			<%- include('CN-FL-Selects', {asunto: filtros.epocasOcurrencia, mostrarSiempre: true}) %>
 			<hr>
-			<!-- Ocurrió -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.ocurrio, class: "ocultar"}) %>
-			<!-- Epoca -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.epocas, class: "ocurrioSI"}) %>
-			<!-- ApMar -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.apMar, class: "ocurrioSI ocultarApMar"}) %>
-			<!-- Proceso de Canonización -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.canons, class: "ocurrioSI ocultarCanons"}) %>
+
+			<!-- Basado en Hechos Reales -->
+			<%- include('CN-FL-Selects', {asunto: filtros.ocurrio, mostrarSiempre: false, class: "ocurrio ocultar"}) %>
+			<!-- Aparición Mariana -->
+			<%- include('CN-FL-Selects', {asunto: filtros.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
 			<!-- Roles Iglesia -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.rolesIglesia, class: "ocurrioSI ocultarRolesIglesia"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
+			<!-- Proceso de Canonización -->
+			<%- include('CN-FL-Selects', {asunto: filtros.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
 			<hr>
+
+			<!-- COLA DE PREFERENCIAS -->
 			<!-- Público Recomendado -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.publicos, class: "demasElegibles"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.publicos, mostrarSiempre: true}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.epocasEstreno, class: "demasElegibles"}) %>
-			<!-- Links -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.tiposLink, class: "demasElegibles"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.epocasEstreno, mostrarSiempre: true}) %>
+			<!-- Preferencia por Película -->
+			<%- include('CN-FL-Selects', {asunto: filtros.ppp_opciones, mostrarSiempre: true}) %>
+			<!-- Tipos de Link -->
+			<%- include('CN-FL-Selects', {asunto: filtros.tiposLink, mostrarSiempre: true}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.castellano, class: "demasElegibles"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.castellano, mostrarSiempre: true}) %>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.tiposActuacion, class: "demasElegibles"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.tiposActuacion, mostrarSiempre: true}) %>
 			<!-- Musical -->
-			<%- include('CN-2FL-3Selects', {asunto: filtros.musical, class: "demasElegibles"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtros.musical, mostrarSiempre: true}) %>
 			<hr>
+
 			<!-- Búsqueda -->
-			<div id="palabrasClave" class="filtro demasElegibles elegibleSimple"> 
+			<div id="palabrasClave" class="filtro mostrarSiempre elegibleSimple"> 
 				<input type="text" name="palabrasClave" placeholder="Buscar por palabras clave" class="input">
 				<i class="fa-solid fa-circle-right" title="Aplicar las palabras"></i>
 			</div>
