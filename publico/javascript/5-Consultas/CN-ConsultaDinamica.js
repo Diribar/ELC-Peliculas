@@ -3,8 +3,8 @@ window.addEventListener("load", async () => {
 	// Variables
 	let DOM = {
 		// Filtro Personalizado - Nombre
-		filtroPers_id: document.querySelector("#filtroPers select[name='filtroPers_id']"),
-		filtroPersNuevo: document.querySelector("#filtroPers input[name='filtroPersNuevo']"),
+		configActual_id: document.querySelector("#filtroPers select[name='configActual_id']"),
+		configNuevaNombre: document.querySelector("#filtroPers #configNueva input[name='nombre']"),
 		// Filtro Personalizado - Íconos de la botonera
 		nuevo: document.querySelector("#filtroPers i#nuevo"),
 		deshacer: document.querySelector("#filtroPers i#deshacer"),
@@ -14,12 +14,13 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		hayCambios: false,
-		filtroPersCabecera:FN.obtiene.cabeceraFiltroPers(DOM)
+		configActual_id: DOM.configActual_id.value,
+		prefsDeCabecera: FN.obtiene.prefsDeCabecera(DOM),
 	};
-	v={
+	v = {
 		...v,
-		filtroDeUsuario: !!v.filtroPersCabecera.usuario_id
-	}
+		filtroDeUsuario: !!v.filtroPersCabecera.usuario_id,
+	};
 	// filtroPers:{
 	// 			cabecera=
 	// 		}
@@ -30,6 +31,6 @@ window.addEventListener("load", async () => {
 	botoneraActivaInactiva({filtroDeUsuario, hayCambios, DOM});
 });
 
-// Obtiene el filtroPers_id
+// Obtiene el configActual_id
 // Actualiza las preferencias
 // Actualiza la botonera

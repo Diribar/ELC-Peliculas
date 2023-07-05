@@ -228,14 +228,14 @@ window.addEventListener("load", async () => {
 	let filtroPers = {
 		impactosDeFiltroPers: async function () {
 			// Variables
-			const filtroPers_id = DOM.filtroPers.value;
-			if (!filtroPers_id) return;
+			const configActual_id = DOM.filtroPers.value;
+			if (!configActual_id) return;
 
-			// Actualiza el filtroPers_id en la cookie y el usuario (session y BD)
-			fetch(rutas.guardaFiltroID + filtroPers_id);
+			// Actualiza el configActual_id en la cookie y el usuario (session y BD)
+			fetch(rutas.guardaFiltroID + configActual_id);
 
 			// Obtiene las opciones de la BD
-			const opciones = await fetch(rutas.opcionesFiltroPers + filtroPers_id).then((n) => n.json());
+			const opciones = await fetch(rutas.opcionesFiltroPers + configActual_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
 			for (let prefSimple of DOM.prefsSimples)
@@ -436,9 +436,9 @@ window.addEventListener("load", async () => {
 		else filtroPers.statusInicialBotonera();
 
 		// Variables
-		const filtroPers_id = DOM.filtroPers.value;
-		if (!filtroPers_id) return;
-		let objeto = {...elegibles, filtroPers_id};
+		const configActual_id = DOM.filtroPers.value;
+		if (!configActual_id) return;
+		let objeto = {...elegibles, configActual_id};
 		delete objeto.codigo;
 
 		// Guarda los cambios en el filtro personalizado
