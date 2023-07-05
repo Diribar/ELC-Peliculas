@@ -6,8 +6,6 @@ const rutas = {
 	obtiene: {
 		prefsDeCabecera: ruta + "obtiene-las-preferencias-de-cabecera/?configActual_id=",
 		prefsDeCampos: ruta + "obtiene-las-preferencias-de-campos/?configActual_id=", // opcionesFiltroPers
-		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
-		diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
 	},
 
 	guarda: {
@@ -97,3 +95,5 @@ let FN = {
 		},
 	},
 };
+// layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
+// diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
