@@ -11,6 +11,11 @@ window.addEventListener("load", async () => {
 		guardar: document.querySelector("#filtroPers i#guardar"),
 		edicion: document.querySelector("#filtroPers i#edicion"),
 		eliminar: document.querySelector("#filtroPers i#eliminar"),
+
+		// Preferencias
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
+		ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
+
 	};
 	let v = {
 		hayCambios: false,

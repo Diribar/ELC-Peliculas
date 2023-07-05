@@ -29,7 +29,10 @@ const rutas = {
 let FN = {
 	obtiene: {
 		prefsDeCabecera: (DOM) => {
+			// Variables
 			const configActual_id = DOM.configActual_id.value;
+
+			// Fin
 			return fetch(rutas.obtiene.prefsDeCabecera + configActual_id).then((n) => n.json());
 		},
 	},
@@ -65,12 +68,9 @@ let FN = {
 			// Fin
 			return;
 		},
-		valorDePrefs: async (configActual_id) => {
+		valorDePrefs: async (DOM) => {
 			// Variables
-			let DOM = {
-				prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
-				ascDesInputs: document.querySelectorAll("#encabezado #ascDes input"),
-			};
+			const configActual_id = DOM.configActual_id.value;
 			const prefsDeCampos = await fetch(rutas.obtiene.prefsDeCampos + configActual_id).then((n) => n.json());
 
 			// Actualiza las preferencias simples (Encabezado + Filtros)
@@ -81,10 +81,9 @@ let FN = {
 			for (let ascDesInput of DOM.ascDesInputs)
 				ascDesInput.checked = prefsDeCampos.ascDes && ascDesInput.value == prefsDeCampos.ascDes;
 		},
-		sessionCookieUsuarioCon_configActual_id: (configActual_id) => {
+		sessionCookieUsuarioCon_configActual_id: (DOM) => {
 			// Variables
-			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='configActual_id']")};
-			const configActual_id = DOM.filtroPers.value;
+			const configActual_id = DOM.configActual_id.value;
 
 			// Actualiza el configActual_id en la session, cookie y el usuario
 			if (configActual_id) fetch(rutas.actualiza.configActual_id + configActual_id);
