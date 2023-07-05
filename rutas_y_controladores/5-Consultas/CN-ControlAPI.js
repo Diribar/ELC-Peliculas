@@ -48,7 +48,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Guarda el registro de cabecera
-			const objeto = {usuario_id, nombre: configuracion.configNuevaNombre};
+			const objeto = {usuario_id, nombre: configuracion.nombre};
 			const {id: cabecera_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
 
 			// Guarda los registros de las preferencias
