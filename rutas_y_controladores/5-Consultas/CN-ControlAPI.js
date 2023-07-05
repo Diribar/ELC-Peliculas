@@ -70,12 +70,12 @@ module.exports = {
 			const configActual_id = req.query.configActual_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
-			// Guarda session y cookie
-			if (userID) req.session.usuario.configActual_id = configActual_id;
+			// Guarda cookie
 			res.cookie("configActual_id", configActual_id, {maxAge: unDia});
-
-			// Actualiza el usuario
-			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {configActual_id});
+			if (userID) {
+				req.session.usuario.configActual_id = configActual_id; // actualiza session
+				BD_genericas.actualizaPorId("usuarios", userID, {configActual_id}); // actualiza el usuario
+			}
 
 			// Fin
 			return res.json();
