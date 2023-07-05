@@ -53,7 +53,7 @@ module.exports = {
 
 			// Guarda los registros de las preferencias
 			for (let campo in configuracion) {
-				if (campo == "configNuevaNombre") continue; // Si el campo es 'configNuevaNombre', saltea la rutina
+				if (campo == "nombre") continue; // Si el campo es 'nombre', saltea la rutina
 
 				// Crea el registro
 				const objeto = {cabecera_id, campo, valor: configuracion[campo]};
