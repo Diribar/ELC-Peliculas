@@ -6,13 +6,13 @@ const API = require("./CN-ControlAPI");
 const vista = require("./CN-ControlVista");
 
 // API - Startup
-router.get("/api/layouts-y-ordenes", API.layoutsOrdenes);
-router.get("/api/opciones-de-filtro-personalizado", API.opcionesFiltro);
+router.get("/api/layouts-y-ordenes", API.layoutsMasOrdenes);
+router.get("/api/opciones-de-filtro-personalizado", API.opcionesFiltrosCampo);
 router.get("/api/dias-del-ano", API.diasDelAno);
 
 // API - Filtros personalizados
-router.get("/api/guarda-filtro_id", API.guardaFiltro_id);
-router.get("/api/fp-actualiza", API.fpActualiza);
+router.get("/api/guarda-filtro_id", API.guardaFiltroPers_id);
+router.get("/api/fp-actualiza", API.actualizaFiltroPers);
 
 // API - Consultas
 router.get("/api/momento-del-ano", API.momentoDelAno);

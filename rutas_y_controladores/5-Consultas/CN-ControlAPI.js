@@ -6,11 +6,11 @@ const variables = require("../../funciones/1-Procesos/Variables");
 const procesos = require("./CN-Procesos");
 
 module.exports = {
-	// API - Startup
-	layoutsOrdenes: async (req, res) => {
+	// Startup
+	layoutsMasOrdenes: async (req, res) => {
 		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 	},
-	opcionesFiltro: async (req, res) => {
+	opcionesFiltrosCampo: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
 		const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
@@ -26,8 +26,8 @@ module.exports = {
 		return res.json(diasDelAno);
 	},
 
-	// API - Filtros personalizados
-	guardaFiltro_id: (req, res) => {
+	// Filtros personalizados
+	guardaFiltroPers_id: (req, res) => {
 		// Variables
 		const filtro_id = req.query.filtro_id;
 		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
@@ -42,7 +42,7 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
-	fpActualiza: async (req, res) => {
+	actualizaFiltroPers: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		const cabecera_id = datos.filtro_id;
@@ -63,7 +63,7 @@ module.exports = {
 		return res.json();
 	},
 
-	// API - Consultas
+	// Consultas
 	momentoDelAno: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
