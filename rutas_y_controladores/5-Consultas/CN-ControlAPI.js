@@ -29,6 +29,30 @@ module.exports = {
 	},
 
 	// Filtros personalizados
+	guarda: {
+		nuevoFiltroPers: async (req, res) => {
+			// Variables
+			const datos = JSON.parse(req.query.datos);
+			const usuario_id = req.session.usuario.id;
+
+			// Guarda el registro de cabecera
+			const objeto = {usuario_id, nombre: datos.nuevoFiltroPers};
+			const {id: cabecera_id} = await BD_genericas.agregaRegistro("filtrosCabecera", objeto);
+
+			// Guarda los registros de las preferencias
+			for (let campo in datos) {
+				// Si el campo es 'nuevoFiltroPers', saltea la rutina
+				if (campo == "nuevoFiltroPers") continue;
+				
+				// Crea el registro
+				const objeto = {cabecera_id, campo, valor: datos[campo]};
+				BD_genericas.agregaRegistro("filtrosCampos", objeto);
+			}
+
+			// Fin
+			return res.json();
+		},
+	},
 	actualiza: {
 		filtroPers_id: (req, res) => {
 			// Variables
