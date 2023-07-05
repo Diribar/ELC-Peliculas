@@ -15,7 +15,7 @@ const rutas = {
 	// Actualiza
 	actualiza: {
 		configActual_id: ruta + "actualiza-configActual_id/?configActual_id=", // guardaFiltroID
-		prefsDeCampos: ruta + "actualiza-prefs-filtroPers/?datos=", // actualiza
+		prefsDeCampos: ruta + "actualiza-prefs-de-campo/?datos=", // actualiza
 	},
 
 	// Resultados
