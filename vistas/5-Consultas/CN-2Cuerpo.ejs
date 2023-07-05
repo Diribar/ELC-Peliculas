@@ -1,12 +1,12 @@
 <!-- Zona de Filtros -->
 <section id="filtros">
-	<%- include('CN-CU-2Filtros') %>
+	<%- include('CN-2Filtros') %>
 </section>
 <!-- Encabezado + Productos -->
 <section id="encabMasPelis" class="flexCol grow">
 	<!-- Encabezado -->
 	<section id="encabezado" class="flexRow">
-		<%- include('CN-CU-1Encabezado') %>
+		<%- include('CN-1Encabezado') %>
 	</section>
 	<!-- Zona de Productos -->
 	<section id="zona_de_prods">
@@ -19,10 +19,8 @@
 			</button>
 		</div>
 		<div id="vistaProds" class="oculta">
-			<%- include("CN-ZP-1Listado") %>
-			<%- include("CN-ZP-2Personajes") %>
-			<%- include("CN-ZP-3Hechos") %>
-			<%- include("CN-ZP-4Valores") %>
+			<%- include("CN-ZP-1TodasLasPelis") %>
+			<%- include("CN-ZP-2PelisPor") %>
 		</div>
 	</section>
 </section>
