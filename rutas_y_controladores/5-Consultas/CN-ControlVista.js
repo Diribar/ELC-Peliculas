@@ -24,7 +24,7 @@ module.exports = {
 				: 1;
 
 		// Obtiene las preferencias personales
-		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
+		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosPorCampo", {cabecera_id: filtroPers_id});
 		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
 
 		// Va a la vista

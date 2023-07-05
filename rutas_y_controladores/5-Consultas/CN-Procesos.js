@@ -23,28 +23,28 @@ module.exports = {
 	},
 	filtrosPorCampo: function () {
 		// Variable 'filtros'
-		let filtrosCampos = {...variables.filtrosConsultas};
+		let filtrosPorCampo = {...variables.filtrosConsultas};
 
 		// Agrega los campos de código y opciones
-		for (let campo in filtrosCampos) {
+		for (let campo in filtrosPorCampo) {
 			// Le agrega el nombre del campo a cada método
-			filtrosCampos[campo].codigo = campo;
+			filtrosPorCampo[campo].codigo = campo;
 
 			// Si no tiene opciones, le agrega las de la BD
-			if (!filtrosCampos[campo].opciones) {
+			if (!filtrosPorCampo[campo].opciones) {
 				if (campo == "epocasOcurrencia")
-					filtrosCampos.epocasOcurrencia.opciones = epocas
+					filtrosPorCampo.epocasOcurrencia.opciones = epocas
 						.filter((n) => !n.varias)
 						.map((n) => ({id: n.id, nombre: n.consulta}));
-				else filtrosCampos[campo].opciones = global[campo];
+				else filtrosPorCampo[campo].opciones = global[campo];
 			}
 		}
 
 		// Quita el método de "sin preferencia"
-		filtrosCampos.ppp_opciones.opciones = filtrosCampos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
+		filtrosPorCampo.ppp_opciones.opciones = filtrosPorCampo.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 		// Fin
-		return filtrosCampos;
+		return filtrosPorCampo;
 	},
 	momento: {
 		obtieneRCLVs: async (datos) => {
