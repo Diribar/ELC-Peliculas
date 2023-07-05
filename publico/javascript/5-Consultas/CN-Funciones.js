@@ -37,7 +37,7 @@ let FN = {
 		},
 	},
 	actualiza: {
-		botoneraActivaInactiva: ({filtroPropio, hayCambios, DOM}) => {
+		botoneraActivaInactiva: ({v, DOM}) => {
 			// Variables
 			let claseNuevo = DOM.configNuevaNombre.className.includes("nuevo");
 			let claseEdicion = DOM.configNuevaNombre.className.includes("edicion");
@@ -46,22 +46,22 @@ let FN = {
 			!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Deshacer
-			!claseNuevo && !claseEdicion && hayCambios
+			!claseNuevo && !claseEdicion && v.hayCambios
 				? DOM.deshacer.classList.remove("inactivo")
 				: DOM.deshacer.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Guardar
-			claseNuevo || (filtroPropio && (claseEdicion || hayCambios))
+			claseNuevo || (v.filtroPropio && (claseEdicion || v.hayCambios))
 				? DOM.guardar.classList.remove("inactivo")
 				: DOM.guardar.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Edición
-			!claseNuevo && filtroPropio && !hayCambios
+			!claseNuevo && v.filtroPropio && !v.hayCambios
 				? DOM.edicion.classList.remove("inactivo")
 				: DOM.edicion.classList.add("inactivo");
 
 			// Activa / Inactiva ícono Eliminar
-			!claseNuevo && !claseEdicion && filtroPropio && !hayCambios
+			!claseNuevo && !claseEdicion && v.filtroPropio && !v.hayCambios
 				? DOM.elimina.classList.remove("inactivo")
 				: DOM.elimina.classList.add("inactivo");
 
