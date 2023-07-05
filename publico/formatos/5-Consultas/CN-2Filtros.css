@@ -10,7 +10,7 @@
 #filtros #filtroPers {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
 #filtros #filtroPers :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 /* Filtros Personalizados - Input */
-#filtroPers input {padding-left: 5px; height: 20.8px; width: 100%;}
+#filtroPers #configNueva input {padding-left: 5px; height: 20.8px; width: 100%;}
 #filtroPers #configNueva :not(:is(.nuevo, .edicion)) {display: none;}
 /* Filtros Personalizados - Select */
 #filtroPers select {font-weight: bold;}
