@@ -18,23 +18,23 @@ module.exports = {
 		// Variable 'filtros'
 		let filtros = {...variables.filtrosConsultas};
 
-		// Agrega campos
+		// Agrega los campos de código y opciones
 		for (let campo in filtros) {
 			// Le agrega el nombre del campo a cada método
 			filtros[campo].codigo = campo;
 
 			// Si no tiene opciones, le agrega las de la BD
 			if (!filtros[campo].opciones) {
-				if (campo == "epocasSinVarias")
-					filtros.epocasSinVarias.opciones = epocas.map((n) => ({id: n.id, nombre: n.consulta}));
+				if (campo == "epocasOcurrencia")
+					filtros.epocasOcurrencia.opciones = epocas
+						.filter((n) => !n.varias)
+						.map((n) => ({id: n.id, nombre: n.consulta}));
 				else filtros[campo].opciones = global[campo];
 			}
 		}
 
-		// Cambia el método a 'epocas'
-		filtros.epocas = filtros.epocasSinVarias;
-		filtros.epocas.codigo = "epocas";
-		delete filtros.epocasSinVarias;
+		// Quita el método de "sin preferencia"
+		filtros.ppp_opciones.opciones = filtros.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 		// Agrega las opciones grupales para los RCLV
 		// if (filtros[entidad])

@@ -100,6 +100,7 @@ app.set("views", [
 		feValores: BD_genericas.obtieneTodos("feValores", "orden"),
 		entretiene: BD_genericas.obtieneTodos("entretiene", "orden"),
 		calidadTecnica: BD_genericas.obtieneTodos("calidadTecnica", "orden"),
+		epocasEstreno: BD_genericas.obtieneTodos("epocasEstreno", "orden"),
 
 		// Variables de RCLVs
 		epocas: BD_genericas.obtieneTodos("epocas", "orden"),
@@ -150,7 +151,7 @@ app.set("views", [
 	global.st_ident_a_validar_id = statusRegistrosUs.find((n) => n.ident_a_validar).id;
 	global.st_ident_validada_id = statusRegistrosUs.find((n) => n.ident_validada).id;
 
-	// Interés en el producto
+	// Preferencia por producto
 	laQuieroVer = ppp_opciones.find((n) => n.laQuieroVer);
 	yaLaVi = ppp_opciones.find((n) => n.yaLaVi);
 	noMeInteresa = ppp_opciones.find((n) => n.noMeInteresa);

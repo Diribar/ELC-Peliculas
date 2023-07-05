@@ -37,7 +37,7 @@ module.exports = (sequelize, dt) => {
 		epocaDelAno_id: {type: dt.INTEGER},
 
 		epoca_id: {type: dt.STRING(3)},
-
+		epocaEstreno_id: {type: dt.INTEGER},
 		castellano: {type: dt.INTEGER},
 		subtitulos: {type: dt.INTEGER},
 		linksGeneral: {type: dt.INTEGER},
@@ -90,6 +90,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.eventos, {as: "evento", foreignKey: "evento_id"});
 		entidad.belongsTo(n.epocasDelAno, {as: "epocaDelAno", foreignKey: "epocaDelAno_id"});
 		entidad.belongsTo(n.epocas, {as: "epoca", foreignKey: "epoca_id"});
+		entidad.belongsTo(n.epocasEstreno, {as: "epocaEstreno", foreignKey: "epocaEstreno_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creadoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_revisada_por", foreignKey: "altaRevisadaPor_id"});

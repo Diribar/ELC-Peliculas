@@ -36,21 +36,12 @@ module.exports = {
 
 	// Consulta de Productos
 	filtrosConsultas: {
-		// Producto
+		// Se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
-				{id: "CFC", nombre: "Fe Católica"},
-				{id: "VPC", nombre: "Sin Fe Católica"},
-			],
-		},
-		ocurrio: {
-			titulo: "Hechos Reales / Ficción",
-			opciones: [
-				{id: "pers", nombre: "Con Personaje Histórico"},
-				{id: "hecho", nombre: "Con Hecho Histórico"},
-				{id: "SI", nombre: "Ocurrió"},
-				{id: "NO", nombre: "Ficción"},
+				{id: "CFC", nombre: "Con relac. c/Fe Católica"},
+				{id: "VPC", nombre: "Sin relac. c/Fe Católica"},
 			],
 		},
 		publicos: {
@@ -58,20 +49,18 @@ module.exports = {
 		},
 		epocasEstreno: {
 			titulo: "Época de Estreno",
-			opciones: [
-				{id: "1969", nombre: "Antes de 1970", desde: "0", hasta: "1969"},
-				{id: "1999", nombre: "1970 - 1999", desde: "1970", hasta: "1999"},
-				{id: "2015", nombre: "2000 - 2015", desde: "2000", hasta: "2015"},
-				{id: "2016", nombre: "2016 - Presente", desde: "2016", hasta: "3000"},
-			],
+		},
+		epocasOcurrencia: {
+			titulo: "Epoca de Ocurrencia",
+		},
+		ppp_opciones:{
+			titulo:"Preferencia por Película"
 		},
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
 				{id: "gratis", nombre: "Links gratuitos"},
-				{id: "todos", nombre: "Links de cualquier tipo"},
 				{id: "soloPagos", nombre: "Solamente links con pago"},
-				{id: "sin", nombre: "Sin Links"},
 			],
 		},
 		castellano: {
@@ -93,23 +82,19 @@ module.exports = {
 				{id: "NO", nombre: "No es un musical"},
 			],
 		},
-		// RCLVs
-		epocasSinVarias: {
-			titulo: "Epoca",
+		// Se muestran ocasionalmente
+		ocurrio: {
+			titulo: "Basado en Hechos Reales",
+			opciones: [
+				{id: "SI", nombre: "Hechos Reales"},
+				{id: "NO", nombre: "Ficción"},
+			],
 		},
 		apMar: {
 			titulo: "Aparición Mariana",
 			opciones: [
 				{id: "SI", nombre: "Aparición Mariana"},
 				{id: "NO", nombre: "Sin Aparición Mariana"},
-			],
-		},
-		canons: {
-			titulo: "Proceso de Canonización",
-			opciones: [
-				{id: "sb", nombre: "Santos y Beatos"},
-				{id: "vs", nombre: "Vener. y Siervos de Dios"},
-				{id: "nn", nombre: "Sin proceso de canonizac."},
 			],
 		},
 		rolesIglesia: {
@@ -121,6 +106,14 @@ module.exports = {
 				{id: "pp", nombre: "Papas"},
 				{id: "ap", nombre: "Apóstoles"},
 				{id: "sf", nombre: "Sagrada Familia"},
+			],
+		},
+		canons: {
+			titulo: "Proceso de Canonización",
+			opciones: [
+				{id: "sb", nombre: "Santos y Beatos"},
+				{id: "vs", nombre: "Vener. y Siervos de Dios"},
+				{id: "nn", nombre: "Sin proceso de canonizac."},
 			],
 		},
 	},

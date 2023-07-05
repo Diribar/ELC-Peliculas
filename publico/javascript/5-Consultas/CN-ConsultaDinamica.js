@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 		canonsSelect: document.querySelector("#filtros #campos #canons select"),
 		rolesIglSector: document.querySelector("#filtros #campos #rolesIglesia"),
 		rolesIglesiaSelect: document.querySelector("#filtros #campos #rolesIglesia select"),
-		demasElegibles: document.querySelectorAll("#filtros #campos .demasElegibles .input"),
+		mostrarSiempre: document.querySelectorAll("#filtros #campos .mostrarSiempre .input"),
 		palabrasClave: document.querySelector("#filtros #campos #palabrasClave"),
 
 		// Zona de Productos
@@ -232,7 +232,7 @@ window.addEventListener("load", async () => {
 		},
 		// Impactos de Demás Elegibles
 		impactosDeDemasElegibles: function () {
-			for (let elegible of DOM.demasElegibles) if (elegible.value) elegibles[elegible.name] = elegible.value;
+			for (let preferencia of DOM.mostrarSiempre) if (preferencia.value) elegibles[preferencia.name] = preferencia.value;
 
 			apoyo.limpiaLineasConsecutivas();
 
