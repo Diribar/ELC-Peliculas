@@ -7,7 +7,7 @@ const vista = require("./CN-ControlVista");
 
 // API - Startup
 router.get("/api/obtiene-layouts-y-ordenes", API.obtiene.layoutsMasOrdenes);
-router.get("/api/obtiene-las-preferencias-del-filtroPers", API.obtiene.prefsFP);
+router.get("/api/obtiene-las-preferencias-del-filtroPers", API.obtiene.prefsFiltroPers);
 router.get("/api/obtiene-los-dias-del-ano", API.obtiene.diasDelAno);
 
 // API - Filtros personalizados
