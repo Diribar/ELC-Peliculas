@@ -11,7 +11,7 @@ module.exports = {
 		layoutsMasOrdenes: async (req, res) => {
 			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 		},
-		prefsFP: async (req, res) => {
+		prefsFiltroPers: async (req, res) => {
 			// Obtiene las opciones
 			const {filtroPers_id} = req.query;
 			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
