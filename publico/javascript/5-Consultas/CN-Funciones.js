@@ -1,4 +1,28 @@
 "use strict";
+// Variables de start-up
+const ruta = "/consultas/api/";
+const rutas = {
+	// Startup
+	layoutsOrdenes: ruta + "obtiene-layouts-y-ordenes",
+	prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=",
+	diasDelAno: ruta + "obtiene-los-dias-del-ano",
+
+	// Actualiza filtros personalizados
+	actualizaFP_id: ruta + "actualiza-fp_id/?filtro_id=",
+	actualizaPrefsFP: ruta + "actualiza-prefs-fp/?datos=",
+
+	// Consultas
+	obtieneProds: ruta + "obtiene-los-productos/?datos=",
+	obtieneRCLVs: ruta + "obtiene-los-rclvs/?datos=",
+};
+
+// Funciones de start-up
+let statusInicialPrefs = async (producto) => {};
+
+// Ejecuta las funciones de start-up
+window.addEventListener("load", () => {
+});
+
 let botonPelicula = async (producto) => {
 	// Crea el elemento 'boton'. El 'true' es para incluir también a los hijos
 	const botonPelicula = document.querySelector("#vistaProds #botonPelicula");

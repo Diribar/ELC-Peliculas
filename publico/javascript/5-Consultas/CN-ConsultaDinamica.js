@@ -47,21 +47,6 @@ window.addEventListener("load", async () => {
 		vistaProds: document.querySelector("#zona_de_prods #vistaProds"),
 		listado: document.querySelector("#zona_de_prods #vistaProds #listado"),
 	};
-	let rutas = {
-		// Startup
-		layoutsOrdenes: "/consultas/api/layouts-y-ordenes",
-		opcionesFiltroPers: "/consultas/api/opciones-de-filtro-personalizado/?filtro_id=",
-		diasDelAno: "/consultas/api/dias-del-ano",
-
-		// API - Filtros personalizados
-		guardaFiltroID: "/consultas/api/guarda-filtro_id/?filtro_id=",
-		actualiza: "/consultas/api/fp-actualiza/?datos=",
-
-		// API - Consultas
-		momento: "/consultas/api/momento-del-ano/?datos=",
-		productos: "/consultas/api/obtiene-los-productos/?datos=",
-		rclvs: "/consultas/api/obtiene-los-rclvs/?datos=",
-	};
 	let varias = {
 		comencemos: true,
 		...(await fetch(rutas.layoutsOrdenes).then((n) => n.json())),

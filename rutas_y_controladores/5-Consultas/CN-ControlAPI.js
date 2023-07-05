@@ -10,7 +10,7 @@ module.exports = {
 	layoutsMasOrdenes: async (req, res) => {
 		return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 	},
-	opcionesFiltrosCampo: async (req, res) => {
+	prefsFP: async (req, res) => {
 		// Obtiene las opciones
 		const {filtro_id} = req.query;
 		const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
@@ -27,7 +27,7 @@ module.exports = {
 	},
 
 	// Filtros personalizados
-	guardaFiltroPers_id: (req, res) => {
+	actualizaFP_id: (req, res) => {
 		// Variables
 		const filtro_id = req.query.filtro_id;
 		const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
@@ -42,7 +42,7 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
-	actualizaFiltroPers: async (req, res) => {
+	actualizaPrefsFP: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		const cabecera_id = datos.filtro_id;
@@ -64,20 +64,7 @@ module.exports = {
 	},
 
 	// Consultas
-	momentoDelAno: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
-
-		// Obtiene los RCLVs (sin repeticiones)
-		const rclvs = await procesos.momento.obtieneRCLVs(datos);
-
-		// Obtiene los productos
-		const productos = procesos.momento.obtieneProds(rclvs);
-
-		// Fin
-		return res.json(productos);
-	},
-	obtieneProductos: async (req, res) => {
+	obtieneProds: async (req, res) => {
 		// Variables
 		const datos = JSON.parse(req.query.datos);
 		let productos = [];
@@ -150,4 +137,18 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+};
+
+let momentoDelAno = async (req, res) => {
+	// Variables
+	const datos = JSON.parse(req.query.datos);
+
+	// Obtiene los RCLVs (sin repeticiones)
+	const rclvs = await procesos.momento.obtieneRCLVs(datos);
+
+	// Obtiene los productos
+	const productos = procesos.momento.obtieneProds(rclvs);
+
+	// Fin
+	return res.json(productos);
 };
