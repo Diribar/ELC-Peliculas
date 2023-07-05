@@ -10,6 +10,8 @@
 #filtros #filtroPers {background: var(--gris-oscuro); padding: 20px; display: flex; flex-direction: column;}
 #filtros #filtroPers :is(select, option, input) {color: var(--azul-oscuro); background: var(--amarillo-claro);}
 /* Filtros Personalizados - Input */
+#filtroPers #nuevoFiltroPers {display: none;}
+#filtroPers :is(#nuevoFiltroPers.nuevo, #nuevoFiltroPers.editar) {display: block;}
 #filtroPers input {padding-left: 5px; height: 20.8px; width: 100%;}
 /* Filtros Personalizados - Select */
 #filtroPers select {font-weight: bold;}
