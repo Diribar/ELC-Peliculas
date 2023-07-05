@@ -3,17 +3,17 @@
 const ruta = "/consultas/api/";
 const rutas = {
 	// Startup
-	layoutsOrdenes: ruta + "obtiene-layouts-y-ordenes",
-	prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=",
-	diasDelAno: ruta + "obtiene-los-dias-del-ano",
+	layoutsOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
+	prefsFP: ruta + "obtiene-las-preferencias-del-fp/?filtro_id=", // opcionesFiltroPers
+	diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
 
 	// Actualiza filtros personalizados
-	actualizaFP_id: ruta + "actualiza-fp_id/?filtro_id=",
-	actualizaPrefsFP: ruta + "actualiza-prefs-fp/?datos=",
+	actualizaFP_id: ruta + "actualiza-fp_id/?filtro_id=", // guardaFiltroID
+	actualizaPrefsFP: ruta + "actualiza-prefs-fp/?datos=", // actualiza
 
 	// Consultas
-	obtieneProds: ruta + "obtiene-los-productos/?datos=",
-	obtieneRCLVs: ruta + "obtiene-los-rclvs/?datos=",
+	obtieneProds: ruta + "obtiene-los-productos/?datos=", // productos
+	obtieneRCLVs: ruta + "obtiene-los-rclvs/?datos=", // rclvs
 };
 
 // Funciones de start-up
