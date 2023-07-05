@@ -20,7 +20,7 @@ module.exports = (sequelize, dt) => {
 		avatar: {type: dt.STRING(100)},
 
 		cfc: {type: dt.BOOLEAN},
-		ocurrio: {type: dt.BOOLEAN},
+		bhr: {type: dt.BOOLEAN},
 		musical: {type: dt.BOOLEAN},
 		color: {type: dt.BOOLEAN},
 		tipoActuacion_id: {type: dt.INTEGER},

@@ -214,7 +214,7 @@ module.exports = {
 			let epocaEstreno;
 
 			// Arma el filtro
-			let campos = ["cfc", "ocurrio", "publicos", "epocasEstreno", "tiposLink"];
+			let campos = ["cfc", "bhr", "publicos", "epocasEstreno", "tiposLink"];
 			campos.push("castellano", "tiposActuacion", "musical", "palabrasClave");
 			for (let campo of campos) if (datos[campo]) filtros[campo] = datos[campo];
 
@@ -225,9 +225,9 @@ module.exports = {
 			}
 
 			// Ocurrió
-			if (filtros.ocurrio) condics.ocurrio = filtros.ocurrio != "NO";
-			if (filtros.ocurrio == "pers") condics.personaje_id = {[Op.ne]: 1};
-			if (filtros.ocurrio == "hecho") condics.hecho_id = {[Op.ne]: 1};
+			if (filtros.bhr) condics.bhr = filtros.bhr != "NO";
+			if (filtros.bhr == "pers") condics.personaje_id = {[Op.ne]: 1};
+			if (filtros.bhr == "hecho") condics.hecho_id = {[Op.ne]: 1};
 
 			// Conversión de filtros de Producto
 			if (filtros.cfc) condics.cfc = filtros.cfc == "CFC";
@@ -303,9 +303,9 @@ module.exports = {
 
 			// Obtiene las entidades
 			const entidades =
-				datos.ocurrio == "pers"
+				datos.bhr == "pers"
 					? ["personajes"]
-					: datos.ocurrio == "hecho"
+					: datos.bhr == "hecho"
 					? ["hechos"]
 					: ["personajes", "hechos", "temas"];
 			// Obtiene los registros de RCLV
