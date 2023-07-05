@@ -16,15 +16,15 @@ module.exports = {
 		let opcionesElegidas = {};
 
 		// Filtro elegido
-		const filtro_id =
-			userID && usuario.filtro_id ? usuario.filtro_id : req.cookies && req.cookies.filtro_id ? req.cookies.filtro_id : 1;
+		const filtroPers_id =
+			userID && usuario.filtroPers_id ? usuario.filtroPers_id : req.cookies && req.cookies.filtroPers_id ? req.cookies.filtroPers_id : 1;
 
 		// Opciones elegidas
 		// Obtiene la información de la BD
 		const aux =
-			filtro_id == 1
+			filtroPers_id == 1
 				? filtroEstandarCampos
-				: await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
+				: await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
 		// Convierte el array en objeto literal
 		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
 
@@ -32,7 +32,7 @@ module.exports = {
 		// return res.send(filtros)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{filtro_id, opcionesElegidas, filtrosPers, filtros},
+			...{filtroPers_id, opcionesElegidas, filtrosPers, filtros},
 		});
 	},
 };

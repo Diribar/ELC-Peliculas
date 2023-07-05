@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		cuerpo: document.querySelector("#cuerpo"),
 		asegurate: document.querySelector("#cuerpo #comencemos button#rojo"),
 		comencemos: document.querySelector("#cuerpo #comencemos button#verde"),
-		elegiblesSimple: document.querySelectorAll("#cuerpo .elegibleSimple .input"),
+		prefsSimples: document.querySelectorAll("#cuerpo .prefSimple .input"),
 
 		// Filtro personalizado
 		filtroPers: document.querySelector("#filtrosPers select[name='filtrosPers']"),
@@ -228,18 +228,18 @@ window.addEventListener("load", async () => {
 	let filtrosPers = {
 		impactosDeFiltroPers: async function () {
 			// Variables
-			const filtro_id = DOM.filtroPers.value;
-			if (!filtro_id) return;
+			const filtroPers_id = DOM.filtroPers.value;
+			if (!filtroPers_id) return;
 
-			// Actualiza el filtro_id en la cookie y el usuario (session y BD)
-			fetch(rutas.guardaFiltroID + filtro_id);
+			// Actualiza el filtroPers_id en la cookie y el usuario (session y BD)
+			fetch(rutas.guardaFiltroID + filtroPers_id);
 
 			// Obtiene las opciones de la BD
-			const opciones = await fetch(rutas.opcionesFiltroPers + filtro_id).then((n) => n.json());
+			const opciones = await fetch(rutas.opcionesFiltroPers + filtroPers_id).then((n) => n.json());
 
 			// Actualiza los elegibles simples (Encabezado + Filtros)
-			for (let elegibleSimple of DOM.elegiblesSimple)
-				elegibleSimple.value = opciones[elegibleSimple.name] ? opciones[elegibleSimple.name] : "";
+			for (let prefSimple of DOM.prefsSimples)
+				prefSimple.value = opciones[prefSimple.name] ? opciones[prefSimple.name] : "";
 
 			// Actualiza los elegibles 'AscDes'
 			for (let input of DOM.ascDesInputs) input.checked = opciones.ascDes && input.value == opciones.ascDes;
@@ -436,9 +436,9 @@ window.addEventListener("load", async () => {
 		else filtrosPers.statusInicialBotonera();
 
 		// Variables
-		const filtro_id = DOM.filtroPers.value;
-		if (!filtro_id) return;
-		let objeto = {...elegibles, filtro_id};
+		const filtroPers_id = DOM.filtroPers.value;
+		if (!filtroPers_id) return;
+		let objeto = {...elegibles, filtroPers_id};
 		delete objeto.codigo;
 
 		// Guarda los cambios en el filtro personalizado

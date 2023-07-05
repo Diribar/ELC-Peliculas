@@ -13,8 +13,8 @@ module.exports = {
 		},
 		prefsFP: async (req, res) => {
 			// Obtiene las opciones
-			const {filtro_id} = req.query;
-			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtro_id});
+			const {filtroPers_id} = req.query;
+			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
 
 			// Convierte el array en objeto literal
 			let opciones = {};
@@ -32,15 +32,15 @@ module.exports = {
 	actualiza: {
 		filtroPers_id: (req, res) => {
 			// Variables
-			const filtro_id = req.query.filtro_id;
+			const filtroPers_id = req.query.filtroPers_id;
 			const userID = req.session && req.session.usuario ? req.session.usuario.id : null;
 
 			// Guarda session y cookie
-			if (userID) req.session.usuario.filtro_id = filtro_id;
-			res.cookie("filtro_id", filtro_id, {maxAge: unDia});
+			if (userID) req.session.usuario.filtroPers_id = filtroPers_id;
+			res.cookie("filtroPers_id", filtroPers_id, {maxAge: unDia});
 
 			// Actualiza el usuario
-			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {filtro_id});
+			if (userID) BD_genericas.actualizaPorId("usuarios", userID, {filtroPers_id});
 
 			// Fin
 			return res.json();
@@ -48,15 +48,15 @@ module.exports = {
 		prefsFiltroPers: async (req, res) => {
 			// Variables
 			const datos = JSON.parse(req.query.datos);
-			const cabecera_id = datos.filtro_id;
+			const cabecera_id = datos.filtroPers_id;
 
 			// Elimina la información guardada
 			await BD_genericas.eliminaTodosPorCondicion("filtrosCampos", {cabecera_id});
 
 			// Guarda la nueva información
 			for (let campo in datos) {
-				// Si el campo es 'filtro_id', saltea la rutina
-				if (campo == "filtro_id") continue;
+				// Si el campo es 'filtroPers_id', saltea la rutina
+				if (campo == "filtroPers_id") continue;
 				// Crea el registro
 				let objeto = {cabecera_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosCampos", objeto);
