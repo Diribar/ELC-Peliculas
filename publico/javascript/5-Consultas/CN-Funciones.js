@@ -4,8 +4,9 @@ const ruta = "/consultas/api/";
 const rutas = {
 	// Obtiene
 	obtiene: {
-		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
+		cabeceraFiltrosPers: ruta + "obtiene-la-cabecera-de-filtrosPers/",
 		prefsFiltroPers: ruta + "obtiene-las-preferencias-del-filtroPers/?filtroPers_id=", // opcionesFiltroPers
+		layoutsMasOrdenes: ruta + "obtiene-layouts-y-ordenes", // layoutsOrdenes
 		diasDelAno: ruta + "obtiene-los-dias-del-ano", // diasDelAno
 	},
 
@@ -28,20 +29,43 @@ const rutas = {
 
 // Funciones
 let FN = {
-	actualizaBotonera: ({}) => {
+	actualizaBotonera: ({filtroDeUsuario, hayCambios}) => {
+		// Variables
 		let DOM = {
-			
-			filtroPers: document.querySelector("#filtroPers select[name='filtroPers']"),
+			// div del input 'nuevoFiltroPers'
+			nuevoFiltroPers: document.querySelector("#filtroPers #nuevoFiltroPers"),
+			// Íconos
 			nuevo: document.querySelector("#filtroPers i#nuevo"),
-			reinicio: document.querySelector("#filtroPers i#reinicio"),
-			actualiza: document.querySelector("#filtroPers i#actualiza"),
-			modificaNombre: document.querySelector("#filtroPers i#modificaNombre"),
-			elimina: document.querySelector("#filtroPers i#elimina"),
-			iconos: document.querySelectorAll("#filtroPers #iconos i"),
+			deshacer: document.querySelector("#filtroPers i#deshacer"),
+			guardar: document.querySelector("#filtroPers i#guardar"),
+			edicion: document.querySelector("#filtroPers i#edicion"),
+			eliminar: document.querySelector("#filtroPers i#eliminar"),
 		};
+		let claseNuevo = DOM.nuevoFiltroPers.className.includes("nuevo");
+		let claseEdicion = DOM.nuevoFiltroPers.className.includes("edicion");
 
-		// Quita las clases crear y editar en el input
+		// Activa / Inactiva ícono Nuevo
+		!claseEdicion ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 
+		// Activa / Inactiva ícono Deshacer
+		!claseNuevo && !claseEdicion && hayCambios
+			? DOM.deshacer.classList.remove("inactivo")
+			: DOM.deshacer.classList.add("inactivo");
+
+		// Activa / Inactiva ícono Guardar
+		claseNuevo || (filtroDeUsuario && (claseEdicion || hayCambios))
+			? DOM.guardar.classList.remove("inactivo")
+			: DOM.guardar.classList.add("inactivo");
+
+		// Activa / Inactiva ícono Edición
+		!claseNuevo && filtroDeUsuario && !hayCambios
+			? DOM.edicion.classList.remove("inactivo")
+			: DOM.edicion.classList.add("inactivo");
+
+		// Activa / Inactiva ícono Eliminar
+		!claseNuevo && !claseEdicion && filtroDeUsuario && !hayCambios
+			? DOM.elimina.classList.remove("inactivo")
+			: DOM.elimina.classList.add("inactivo");
 
 		// Fin
 		return;
@@ -57,10 +81,12 @@ let FN = {
 		const prefsFiltroPers = await fetch(rutas.obtiene.prefsFiltroPers + filtroPers_id).then((n) => n.json());
 
 		// Actualiza las preferencias simples (Encabezado + Filtros)
-		for (let prefSimple of DOM.prefsSimples) prefSimple.value = prefsFiltroPers[prefSimple.name] ? prefsFiltroPers[prefSimple.name] : "";
+		for (let prefSimple of DOM.prefsSimples)
+			prefSimple.value = prefsFiltroPers[prefSimple.name] ? prefsFiltroPers[prefSimple.name] : "";
 
 		// Actualiza las preferencias 'AscDes'
-		for (let ascDesInput of DOM.ascDesInputs) ascDesInput.checked = prefsFiltroPers.ascDes && ascDesInput.value == prefsFiltroPers.ascDes;
+		for (let ascDesInput of DOM.ascDesInputs)
+			ascDesInput.checked = prefsFiltroPers.ascDes && ascDesInput.value == prefsFiltroPers.ascDes;
 	},
 	nuevoFiltroPers: (filtroPers_id) => {
 		// Variables

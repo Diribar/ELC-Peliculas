@@ -8,20 +8,29 @@ const procesos = require("./CN-Procesos");
 module.exports = {
 	// Startup
 	obtiene: {
-		layoutsMasOrdenes: async (req, res) => {
-			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
+		cabeceraFiltrosPers: async (req, res) => {
+			// Variables
+			const usuario_id = req.session && req.session.usuario ? req.session.usuario.id : null;
+
+			// Condiciones - los predeterminados más los del usuario
+			let condiciones = {usuario_id: [usuario_id, null]};
 		},
 		prefsFiltroPers: async (req, res) => {
-			// Obtiene las opciones
+			// Variables
 			const {filtroPers_id} = req.query;
+
+			// Obtiene las preferencias
 			const aux = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
 
 			// Convierte el array en objeto literal
-			let opciones = {};
-			aux.map((m) => (opciones[m.campo] = m.valor));
+			let preferencias = {};
+			aux.map((m) => (preferencias[m.campo] = m.valor));
 
 			// Fin
-			return res.json(opciones);
+			return res.json(preferencias);
+		},
+		layoutsMasOrdenes: async (req, res) => {
+			return res.json({cn_layouts, opcionesOrdenBD: cn_ordenes});
 		},
 		diasDelAno: (req, res) => {
 			return res.json(diasDelAno);
@@ -43,7 +52,7 @@ module.exports = {
 			for (let campo in datos) {
 				// Si el campo es 'nuevoFiltroPers', saltea la rutina
 				if (campo == "nuevoFiltroPers") continue;
-				
+
 				// Crea el registro
 				const objeto = {cabecera_id, campo, valor: datos[campo]};
 				BD_genericas.agregaRegistro("filtrosCampos", objeto);
