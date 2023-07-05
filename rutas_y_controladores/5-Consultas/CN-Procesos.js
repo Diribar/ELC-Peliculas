@@ -38,8 +38,8 @@ module.exports = {
 
 		// Agrega las opciones grupales para los RCLV
 		// if (filtros[entidad])
-		for (let entidad in this.gruposConsultasRCLV)
-			filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
+		// for (let entidad in this.gruposConsultasRCLV)
+		// 	filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
 
 		// Fin
 		return filtros;
@@ -160,52 +160,52 @@ module.exports = {
 			return productos;
 		},
 	},
-	gruposConsultasRCLV: {
-		personajes: () => {
-			// Época de nacimiento
-			let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
-			// Proceso de canonización
-			let canonsCons = canons.filter((n) => n.id.endsWith("N"));
-			canonsCons = preparaCampos(canonsCons, "CFC canons");
-			// Roles Iglesia
-			let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.endsWith("N"));
-			rolesIglesiaCons = preparaCampos(rolesIglesiaCons, "CFC roles_iglesia");
-			// Consolidación
-			let resultado = {
-				grupo_personajes: [
-					{nombre: "Época de vida", clase: "CFC VPC"},
-					{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
-					...epocasCons,
-					{nombre: "Proceso de Canonización", clase: "CFC"},
-					...canonsCons,
-					{nombre: "Rol en la Iglesia", clase: "CFC"},
-					...rolesIglesiaCons,
-				],
-			};
-			// Fin
-			return resultado;
-		},
-		hechos: () => {
-			// Epoca de ocurrencia
-			let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
-			// Apariciones Marianas
+	// gruposConsultasRCLV: {
+	// 	personajes: () => {
+	// 		// Época de nacimiento
+	// 		let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+	// 		// Proceso de canonización
+	// 		let canonsCons = canons.filter((n) => n.id.endsWith("N"));
+	// 		canonsCons = preparaCampos(canonsCons, "CFC canons");
+	// 		// Roles Iglesia
+	// 		let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.endsWith("N"));
+	// 		rolesIglesiaCons = preparaCampos(rolesIglesiaCons, "CFC roles_iglesia");
+	// 		// Consolidación
+	// 		let resultado = {
+	// 			grupo_personajes: [
+	// 				{nombre: "Época de vida", clase: "CFC VPC"},
+	// 				{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
+	// 				...epocasCons,
+	// 				{nombre: "Proceso de Canonización", clase: "CFC"},
+	// 				...canonsCons,
+	// 				{nombre: "Rol en la Iglesia", clase: "CFC"},
+	// 				...rolesIglesiaCons,
+	// 			],
+	// 		};
+	// 		// Fin
+	// 		return resultado;
+	// 	},
+	// 	hechos: () => {
+	// 		// Epoca de ocurrencia
+	// 		let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
+	// 		// Apariciones Marianas
 
-			// Específico de la Iglesia Católica
-			// Consolidación
-			let resultado = {
-				grupo_hechos: [
-					{nombre: "Criterios Particulares", clase: "CFC"},
-					{id: "ama", nombre: "Apariciones Marianas", clase: "CFC VPC ama"},
-					{id: "solo_cfc1", nombre: "Historia de la Iglesia Católica", clase: "CFC VPC solo_cfc1"},
-					{id: "solo_cfc0", nombre: "Historia General", clase: "CFC VPC solo_cfc0"},
-					{nombre: "Época de ocurrencia", clase: "CFC VPC"},
-					...epocasCons,
-				],
-			};
-			// Fin
-			return resultado;
-		},
-	},
+	// 		// Específico de la Iglesia Católica
+	// 		// Consolidación
+	// 		let resultado = {
+	// 			grupo_hechos: [
+	// 				{nombre: "Criterios Particulares", clase: "CFC"},
+	// 				{id: "ama", nombre: "Apariciones Marianas", clase: "CFC VPC ama"},
+	// 				{id: "solo_cfc1", nombre: "Historia de la Iglesia Católica", clase: "CFC VPC solo_cfc1"},
+	// 				{id: "solo_cfc0", nombre: "Historia General", clase: "CFC VPC solo_cfc0"},
+	// 				{nombre: "Época de ocurrencia", clase: "CFC VPC"},
+	// 				...epocasCons,
+	// 			],
+	// 		};
+	// 		// Fin
+	// 		return resultado;
+	// 	},
+	// },
 	API: {
 		filtrosProd: (datos) => {
 			// Variables
