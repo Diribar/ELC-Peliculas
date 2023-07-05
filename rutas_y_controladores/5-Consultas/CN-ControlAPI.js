@@ -9,9 +9,6 @@ module.exports = {
 	// Startup
 	obtiene: {
 		cabeceraFiltrosPers: async (req, res) => {
-			// Variables
-			const usuario_id = req.session && req.session.usuario ? req.session.usuario.id : null;
-
 			// Condiciones - los predeterminados más los del usuario
 			let condiciones = {usuario_id: [usuario_id, null]};
 

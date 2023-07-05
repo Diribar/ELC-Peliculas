@@ -6,7 +6,7 @@
 	<select name="filtroPers_id">
 		<option value="">Filtros Guardados...</option>
 		<optgroup label="Propios">
-			<% for (filtroPers of filtrosCabeceraPersMasELC.propios) { %>
+			<% for (filtroPers of filtrosDeCabecera.propios) { %>
 				<option 
 					value="<%= filtroPers.id %>"
 					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
@@ -14,7 +14,7 @@
 			<% } %>
 		</optgroup>
 		<optgroup label="Predeterminados">
-			<% for (filtroPers of filtrosCabeceraPersMasELC.elc) { %>
+			<% for (filtroPers of filtrosDeCabecera.elc) { %>
 				<option 
 					value="<%= filtroPers.id %>"
 					<% if (filtroPers.id == filtroPers_id) { %>selected<% } %>
@@ -40,37 +40,37 @@
 		<nav class="ocultar flexCol">
 			<!-- PRIORITARIOS -->
 			<!-- Relación con la Iglesia Católica -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.cfc, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.cfc, mostrarSiempre: true}) %>
 			<!-- Epoca de Ocurrencia -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.epocasOcurrencia, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.epocasOcurrencia, mostrarSiempre: true}) %>
 			<hr>
 
 			<!-- EVENTUALES -->
 			<!-- Basado en Hechos Reales -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
 			<!-- Aparición Mariana -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.apMar, mostrarSiempre: false, class: "apMar ocultar"}) %>
 			<!-- Roles Iglesia -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.rolesIglesia, mostrarSiempre: false, class: "rolesIglesia ocultar"}) %>
 			<!-- Proceso de Canonización -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.canons, mostrarSiempre: false, class: "canons ocultar"}) %>
 			<hr>
 
 			<!-- COLA DE PREFERENCIAS -->
 			<!-- Público Recomendado -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.publicos, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.publicos, mostrarSiempre: true}) %>
 			<!-- Época de Estreno -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.epocasEstreno, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.epocasEstreno, mostrarSiempre: true}) %>
 			<!-- Preferencia por Película -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.ppp_opciones, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.ppp_opciones, mostrarSiempre: true}) %>
 			<!-- Tipos de Link -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.tiposLink, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.tiposLink, mostrarSiempre: true}) %>
 			<!-- Idioma Castellano -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.castellano, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.castellano, mostrarSiempre: true}) %>
 			<!-- Tipo de Actuación -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.tiposActuacion, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.tiposActuacion, mostrarSiempre: true}) %>
 			<!-- Musical -->
-			<%- include('CN-FL-Selects', {asunto: filtrosCamposTodos.musical, mostrarSiempre: true}) %>
+			<%- include('CN-FL-Selects', {asunto: filtrosPorCampo.musical, mostrarSiempre: true}) %>
 			<hr>
 
 			<!-- Búsqueda -->

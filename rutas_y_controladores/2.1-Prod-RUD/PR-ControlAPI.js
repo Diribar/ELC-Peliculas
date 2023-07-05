@@ -125,7 +125,7 @@ module.exports = {
 		},
 	},
 
-	prefsPers: {
+	prefsDeCampo: {
 		obtieneOpciones: (req, res) => {
 			return res.json(ppp_opciones);
 		},

@@ -10,29 +10,28 @@ module.exports = {
 		const tema = "consultas";
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
-		const userID = req.session.usuario ? usuario.id : "";
-		const filtrosPers = await procesos.filtrosPers(userID);
-		const filtros = procesos.filtros();
-		let opcionesElegidas = {};
+		const userID = req.session.usuario ? usuario.id : null;
+		const filtrosDeCabecera = await procesos.filtrosDeCabecera(userID);
+		const filtrosPorCampo = procesos.filtrosPorCampo();
+		let prefsDeCampo = {};
 
-		// Filtro elegido
+		// Obtiene el ID del filtro personal elegido
 		const filtroPers_id =
-			userID && usuario.filtroPers_id ? usuario.filtroPers_id : req.cookies && req.cookies.filtroPers_id ? req.cookies.filtroPers_id : 1;
+			userID && usuario.filtroPers_id
+				? usuario.filtroPers_id
+				: req.cookies && req.cookies.filtroPers_id
+				? req.cookies.filtroPers_id
+				: 1;
 
-		// Opciones elegidas
-		// Obtiene la información de la BD
-		const aux =
-			filtroPers_id == 1
-				? filtroEstandarCampos
-				: await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
-		// Convierte el array en objeto literal
-		aux.map((m) => (opcionesElegidas[m.campo] = m.valor));
+		// Obtiene las preferencias personales
+		const registros = await BD_genericas.obtieneTodosPorCondicion("filtrosCampos", {cabecera_id: filtroPers_id});
+		registros.map((m) => (prefsDeCampo[m.campo] = m.valor));
 
 		// Va a la vista
-		// return res.send(filtros)
+		// return res.send(filtrosPorCampo)
 		return res.render("CMP-0Estructura", {
 			...{tema, titulo},
-			...{filtroPers_id, opcionesElegidas, filtrosPers, filtros},
+			...{filtroPers_id, prefsDeCampo, filtrosDeCabecera, filtrosPorCampo},
 		});
 	},
 };

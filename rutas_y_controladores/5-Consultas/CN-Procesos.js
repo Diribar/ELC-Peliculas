@@ -5,44 +5,46 @@ const comp = require("../../funciones/1-Procesos/Compartidas");
 const variables = require("../../funciones/1-Procesos/Variables");
 
 module.exports = {
-	filtrosPers: async (userID) => {
-		// Obtiene los filtros personales
-		let resultado = userID ? await BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: userID}) : [];
-		if (resultado.length > 1) resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
-		// Le agrega el filtro estándar
-		resultado.push(filtroEstandarCabecera);
+	filtrosDeCabecera: async (userID) => {
+		// Variables
+		let propios = [];
+
+		// Obtiene los filtros personalizados propios y de ELC
+		if (userID) propios = BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: userID});
+		let elc = BD_genericas.obtieneTodosPorCondicion("filtrosCabecera", {usuario_id: null});
+		[propios, elc] = await Promise.all([propios, elc]);
+
+		// Los ordena alfabéticamente
+		if (propios.length > 1) propios.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+		if (elc.length > 1) elc.sort((a, b) => (a.nombre < b.nombre ? -1 : 1));
+
 		// Fin
-		return resultado;
+		return {propios, elc};
 	},
-	filtros: function () {
+	filtrosPorCampo: function () {
 		// Variable 'filtros'
-		let filtros = {...variables.filtrosConsultas};
+		let filtrosCampos = {...variables.filtrosConsultas};
 
 		// Agrega los campos de código y opciones
-		for (let campo in filtros) {
+		for (let campo in filtrosCampos) {
 			// Le agrega el nombre del campo a cada método
-			filtros[campo].codigo = campo;
+			filtrosCampos[campo].codigo = campo;
 
 			// Si no tiene opciones, le agrega las de la BD
-			if (!filtros[campo].opciones) {
+			if (!filtrosCampos[campo].opciones) {
 				if (campo == "epocasOcurrencia")
-					filtros.epocasOcurrencia.opciones = epocas
+					filtrosCampos.epocasOcurrencia.opciones = epocas
 						.filter((n) => !n.varias)
 						.map((n) => ({id: n.id, nombre: n.consulta}));
-				else filtros[campo].opciones = global[campo];
+				else filtrosCampos[campo].opciones = global[campo];
 			}
 		}
 
 		// Quita el método de "sin preferencia"
-		filtros.ppp_opciones.opciones = filtros.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
-
-		// Agrega las opciones grupales para los RCLV
-		// if (filtros[entidad])
-		// for (let entidad in this.gruposConsultasRCLV)
-		// 	filtros[entidad] = {...filtros[entidad], ...this.gruposConsultasRCLV[entidad]()};
+		filtrosCampos.ppp_opciones.opciones = filtrosCampos.ppp_opciones.opciones.filter((n) => n.id != sinPreferencia.id);
 
 		// Fin
-		return filtros;
+		return filtrosCampos;
 	},
 	momento: {
 		obtieneRCLVs: async (datos) => {
@@ -160,52 +162,6 @@ module.exports = {
 			return productos;
 		},
 	},
-	// gruposConsultasRCLV: {
-	// 	personajes: () => {
-	// 		// Época de nacimiento
-	// 		let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
-	// 		// Proceso de canonización
-	// 		let canonsCons = canons.filter((n) => n.id.endsWith("N"));
-	// 		canonsCons = preparaCampos(canonsCons, "CFC canons");
-	// 		// Roles Iglesia
-	// 		let rolesIglesiaCons = roles_iglesia.filter((n) => n.personaje && n.id.endsWith("N"));
-	// 		rolesIglesiaCons = preparaCampos(rolesIglesiaCons, "CFC roles_iglesia");
-	// 		// Consolidación
-	// 		let resultado = {
-	// 			grupo_personajes: [
-	// 				{nombre: "Época de vida", clase: "CFC VPC"},
-	// 				{id: "JSS", nombre: "Jesús", clase: "CFC VPC epoca"},
-	// 				...epocasCons,
-	// 				{nombre: "Proceso de Canonización", clase: "CFC"},
-	// 				...canonsCons,
-	// 				{nombre: "Rol en la Iglesia", clase: "CFC"},
-	// 				...rolesIglesiaCons,
-	// 			],
-	// 		};
-	// 		// Fin
-	// 		return resultado;
-	// 	},
-	// 	hechos: () => {
-	// 		// Epoca de ocurrencia
-	// 		let epocasCons = epocas.map((n) => ({id: n.id, nombre: n.consulta, clase: "CFC VPC epoca"}));
-	// 		// Apariciones Marianas
-
-	// 		// Específico de la Iglesia Católica
-	// 		// Consolidación
-	// 		let resultado = {
-	// 			grupo_hechos: [
-	// 				{nombre: "Criterios Particulares", clase: "CFC"},
-	// 				{id: "ama", nombre: "Apariciones Marianas", clase: "CFC VPC ama"},
-	// 				{id: "solo_cfc1", nombre: "Historia de la Iglesia Católica", clase: "CFC VPC solo_cfc1"},
-	// 				{id: "solo_cfc0", nombre: "Historia General", clase: "CFC VPC solo_cfc0"},
-	// 				{nombre: "Época de ocurrencia", clase: "CFC VPC"},
-	// 				...epocasCons,
-	// 			],
-	// 		};
-	// 		// Fin
-	// 		return resultado;
-	// 	},
-	// },
 	API: {
 		filtrosProd: (datos) => {
 			// Variables
@@ -303,11 +259,7 @@ module.exports = {
 
 			// Obtiene las entidades
 			const entidades =
-				datos.bhr == "pers"
-					? ["personajes"]
-					: datos.bhr == "hecho"
-					? ["hechos"]
-					: ["personajes", "hechos", "temas"];
+				datos.bhr == "pers" ? ["personajes"] : datos.bhr == "hecho" ? ["hechos"] : ["personajes", "hechos", "temas"];
 			// Obtiene los registros de RCLV
 			for (let entidad of entidades) {
 				// Obtiene los filtros
