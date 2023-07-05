@@ -25,7 +25,7 @@
 #filtros #campos {flex-grow: 1; height: 0; justify-content: flex-start;}
 #filtros #campos nav > * {order: 2;}
 #filtros #campos hr {border-top: var(--gris-oscuro) 1px dashed;}
-#filtros #campos .ocurrioSI {display: none;}
+#filtros #campos .bhrSI {display: none;}
 
 /* Filtros - Campos - Select e Input */
 #filtros #campos .filtro {padding: 7.5px 20px;}

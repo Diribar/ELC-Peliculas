@@ -90,7 +90,7 @@ module.exports = {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			const {direccion, guion, musica, actores, produccion} = datosCol;
-			// const {cfc, ocurrio, musical, color, tipoActuacion_id} = datosCol;
+			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
 			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 			// Genera la información a guardar
@@ -98,7 +98,7 @@ module.exports = {
 				...{coleccion_id: datosCol.id, temporada: 1, capitulo: indice},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
-				// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
+				// ...{cfc, bhr, musical, color, tipoActuacion_id},
 				// ...{personaje_id, hecho_id, tema_id},
 				...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
 			};
@@ -145,7 +145,7 @@ module.exports = {
 			// Toma los datos de la colección
 			const {paises_id, idiomaOriginal_id} = datosCol;
 			let {direccion, guion, musica, actores, produccion} = datosCol;
-			// const {cfc, ocurrio, musical, color, tipoActuacion_id} = datosCol;
+			// const {cfc, bhr, musical, color, tipoActuacion_id} = datosCol;
 			// const {personaje_id, hecho_id, tema_id} = datosCol;
 
 			// Genera la información a guardar
@@ -153,7 +153,7 @@ module.exports = {
 				...{fuente: "TMDB", coleccion_id: datosCol.id},
 				...{paises_id, idiomaOriginal_id},
 				...{direccion, guion, musica, actores, produccion},
-				// ...{cfc, ocurrio, musical, color, tipoActuacion_id},
+				// ...{cfc, bhr, musical, color, tipoActuacion_id},
 				// ...{personaje_id, hecho_id, tema_id},
 				...{creadoPor_id: 2, statusSugeridoPor_id: usAutom_id},
 			};

@@ -29,9 +29,9 @@ window.addEventListener("load", async () => {
 		camposTitulo: document.querySelector("#filtros #campos div:has(h2)"),
 		camposNav: document.querySelector("#filtros #campos div nav"),
 		cfcSelect: document.querySelector("#filtros #campos div nav #cfc select"),
-		ocurrioSector: document.querySelector("#filtros #campos #ocurrio"),
-		ocurrioSelect: document.querySelector("#filtros #campos #ocurrio select"),
-		ocurrioSISectores: document.querySelectorAll("#filtros #campos .ocurrioSI"),
+		bhrSector: document.querySelector("#filtros #campos #bhr"),
+		bhrSelect: document.querySelector("#filtros #campos #bhr select"),
+		bhrSISectores: document.querySelectorAll("#filtros #campos .bhrSI"),
 		epocasSector: document.querySelector("#filtros #campos #epocas"),
 		epocasSelect: document.querySelector("#filtros #campos #epocas select"),
 		apMarSector: document.querySelector("#filtros #campos #apMar"),
@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 			const SI = !!DOM.layout_idSelect.value;
 			varias.layout = SI ? varias.cn_layouts.find((n) => n.id == DOM.layout_idSelect.value) : null;
 			elegibles.codigo = SI ? varias.layout.codigo : null;
-			varias.ocurrio = SI ? varias.layout.ocurrio : null;
+			varias.bhr = SI ? varias.layout.bhr : null;
 			if (SI) elegibles.layout_id = DOM.layout_idSelect.value;
 
 			// Siguiente rutina
@@ -154,21 +154,21 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		// Impactos en/de ocurrio
+		// Impactos en/de bhr
 		impactosEnDeOcurrio: function () {
 			// IMPACTOS EN
-			varias.ocurrio ? DOM.ocurrioSector.classList.add("ocultar") : DOM.ocurrioSector.classList.remove("ocultar");
+			varias.bhr ? DOM.bhrSector.classList.add("ocultar") : DOM.bhrSector.classList.remove("ocultar");
 
 			// IMPACTOS DE
-			// 1. Actualiza el valor de 'ocurrio'
-			if (!varias.ocurrio && DOM.ocurrioSelect.value) varias.ocurrio = DOM.ocurrioSelect.value;
+			// 1. Actualiza el valor de 'bhr'
+			if (!varias.bhr && DOM.bhrSelect.value) varias.bhr = DOM.bhrSelect.value;
 			// 2. Muestra/Oculta los sectores dependientes
-			for (let ocurrioSISector of DOM.ocurrioSISectores)
-				varias.ocurrio && varias.ocurrio != "NO"
-					? ocurrioSISector.classList.remove("ocurrioSI")
-					: ocurrioSISector.classList.add("ocurrioSI");
-			// 3. Asigna el valor para 'ocurrio'
-			if (varias.ocurrio) elegibles.ocurrio = varias.ocurrio;
+			for (let bhrSISector of DOM.bhrSISectores)
+				varias.bhr && varias.bhr != "NO"
+					? bhrSISector.classList.remove("bhrSI")
+					: bhrSISector.classList.add("bhrSI");
+			// 3. Asigna el valor para 'bhr'
+			if (varias.bhr) elegibles.bhr = varias.bhr;
 
 			this.impactosEnDeEpoca();
 
@@ -211,7 +211,7 @@ window.addEventListener("load", async () => {
 			// Sólo se muestra el sector si ocurrió != 'NO' - resuelto en impactosEnDeOcurrio
 			// Sólo se muestra el sector si codigo='personajes' y CFC='SI'
 			let sectorVisible;
-			const SI = elegibles.ocurrio == "pers" && elegibles.cfc == "CFC";
+			const SI = elegibles.bhr == "pers" && elegibles.cfc == "CFC";
 
 			// Oculta/Muestra sectores
 			SI ? DOM.canonsSector.classList.remove("ocultarCanons") : DOM.canonsSector.classList.add("ocultarCanons");

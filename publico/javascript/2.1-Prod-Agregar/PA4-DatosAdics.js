@@ -17,12 +17,12 @@ window.addEventListener("load", async () => {
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 
 		// CFC
-		cfcSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
-		cfcNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+		cfcSI: document.querySelector("input[name='bhr']#bhrSI"),
+		cfcNO: document.querySelector("input[name='bhr']#bhrNO"),
 
 		// Ocurrió
-		ocurrioSI: document.querySelector("input[name='ocurrio']#ocurrioSI"),
-		ocurrioNO: document.querySelector("input[name='ocurrio']#ocurrioNO"),
+		bhrSI: document.querySelector("input[name='bhr']#bhrSI"),
+		bhrNO: document.querySelector("input[name='bhr']#bhrNO"),
 
 		// RCLV
 		inputsRCLV: document.querySelectorAll("#RCLV .inputError .input"),
@@ -80,7 +80,7 @@ window.addEventListener("load", async () => {
 			let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
 			// Acción
 			datosUrl += radioSI.name + "=" + respuesta + "&";
-			if (radioSI.name == "ocurrio" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
+			if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
 		});
 		//Busca todos los valores 'tipoActuacion'
 		let respuesta = "";
@@ -184,18 +184,18 @@ window.addEventListener("load", async () => {
 				return;
 			}
 		},
-		ocurrio: () => {
+		bhr: () => {
 			// Averigua si es verdadero o falso
-			const ocurrioSI = DOM.ocurrioSI.checked && !DOM.ocurrioNO.checked;
-			const ocurrioNO = DOM.ocurrioNO.checked && !DOM.ocurrioSI.checked;
+			const bhrSI = DOM.bhrSI.checked && !DOM.bhrNO.checked;
+			const bhrNO = DOM.bhrNO.checked && !DOM.bhrSI.checked;
 
 			// Oculta o muestra el sector de RCLVs
-			ocurrioSI || ocurrioNO
+			bhrSI || bhrNO
 				? DOM.sectorRCLV.classList.remove("ocultaOcurrio")
 				: DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
-			if (ocurrioSI) {
+			if (bhrSI) {
 				// Muestra 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.remove("ocultar");
 				DOM.sectorHecho.classList.remove("ocultar");
@@ -204,7 +204,7 @@ window.addEventListener("load", async () => {
 				DOM.ayudaRCLV[1].classList.add("ocultaAyudaRCLV");
 			}
 			// Acciones si no ocurrió
-			if (ocurrioNO) {
+			if (bhrNO) {
 				// Oculta 'personaje_id' y 'hecho_id'
 				DOM.sectorPers.classList.add("ocultar");
 				DOM.sectorHecho.classList.add("ocultar");
@@ -259,7 +259,7 @@ window.addEventListener("load", async () => {
 	};
 	let urlRCLV = (campo) => {
 		// Variables
-		let ocurrio = DOM.ocurrioSI.checked ? "1" : DOM.ocurrioNO.checked ? "0" : "";
+		let bhr = DOM.bhrSI.checked ? "1" : DOM.bhrNO.checked ? "0" : "";
 		let checkRCLV = DOM.checkRCLV.checked;
 
 		// Agrega el valor del campo 'sin' o de los demás campos
@@ -269,7 +269,7 @@ window.addEventListener("load", async () => {
 			: v.camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
 
 		// Agrega 'ocurrió'
-		if (ocurrio) url += "ocurrio=" + ocurrio;
+		if (bhr) url += "bhr=" + bhr;
 
 		// Fin
 		return url;
@@ -292,7 +292,7 @@ window.addEventListener("load", async () => {
 
 		// Particularidades
 		// 1. Para campos 'cfc', 'ocurrió', 'sinRCLV'
-		if (campo == "cfc" || campo == "ocurrio" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
+		if (campo == "cfc" || campo == "bhr" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
 		if (campo == "cfc") {
 			// Le asigna a los selects un valor estandar
 			DOM.selectPers.value = "1";
@@ -304,7 +304,7 @@ window.addEventListener("load", async () => {
 		if (campo == "sinRCLV" || v.camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...v.camposRCLV, "sinRCLV", "ocurrio"].includes(campo)) datosUrl += urlRCLV(campo);
+		if ([...v.camposRCLV, "sinRCLV", "bhr"].includes(campo)) datosUrl += urlRCLV(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores

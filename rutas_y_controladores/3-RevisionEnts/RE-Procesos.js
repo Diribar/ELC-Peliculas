@@ -816,7 +816,7 @@ let valoresParaMostrar = async (registro, relacInclude, campoRevisar, esEdicion)
 		: registro[campo]; // Muestra el valor 'simple'
 
 	// Casos especiales
-	if (["cfc", "ocurrio", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
+	if (["cfc", "bhr", "musical", "color", "fechaMovil", "solo_cfc", "ama"].includes(campo))
 		resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 	else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 

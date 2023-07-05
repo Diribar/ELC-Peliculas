@@ -128,7 +128,7 @@ module.exports = {
 	datosAdics: (campos, datos) => {
 		// Definir variables
 		let errores = {};
-		let camposPosibles = ["cfc", "ocurrio", "musical", "color", "tipoActuacion_id"];
+		let camposPosibles = ["cfc", "bhr", "musical", "color", "tipoActuacion_id"];
 		// Datos generales
 		for (let campo of camposPosibles)
 			if (campos.includes(campo))

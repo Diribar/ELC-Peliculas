@@ -83,7 +83,7 @@ module.exports = {
 			],
 		},
 		// Se muestran ocasionalmente
-		ocurrio: {
+		bhr: {
 			titulo: "Basado en Hechos Reales",
 			opciones: [
 				{id: "SI", nombre: "Hechos Reales"},
@@ -145,7 +145,7 @@ module.exports = {
 	],
 	camposDA: [
 		{nombre: "cfc"},
-		{nombre: "ocurrio"},
+		{nombre: "bhr"},
 		{nombre: "color"},
 		{nombre: "musical"},
 		{nombre: "tipoActuacion_id"},
@@ -177,7 +177,7 @@ module.exports = {
 		};
 		return [
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", siNo: true},
-			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", siNo: true},
+			{titulo: "Basada en Hechos Reales", nombre: "bhr", siNo: true},
 			{titulo: "Es a color", nombre: "color", siNo: true},
 			{titulo: "Es un musical", nombre: "musical", siNo: true},
 			{titulo: "Tipo de Actuación", nombre: "tipoActuacion_id", valores: tiposActuacion},
@@ -316,7 +316,7 @@ module.exports = {
 			{titulo: "Avatar", nombre: "avatar", productos: true},
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
 			{titulo: "Relación con la Iglesia Católica", nombre: "cfc", productos: true},
-			{titulo: "Basada en Hechos Reales", nombre: "ocurrio", productos: true},
+			{titulo: "Basada en Hechos Reales", nombre: "bhr", productos: true},
 			{titulo: "Es un musical", nombre: "musical", productos: true},
 			{titulo: "Es a color", nombre: "color", productos: true},
 			{
