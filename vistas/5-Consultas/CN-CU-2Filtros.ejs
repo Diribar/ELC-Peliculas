@@ -28,12 +28,14 @@
 	</div>
 	<div class="sectorConDesplV">
 		<nav class="ocultar flexCol">
+			<!-- PRIORITARIOS -->
 			<!-- Relación con la Iglesia Católica -->
 			<%- include('CN-FL-Selects', {asunto: filtros.cfc, mostrarSiempre: true}) %>
 			<!-- Epoca de Ocurrencia -->
 			<%- include('CN-FL-Selects', {asunto: filtros.epocasOcurrencia, mostrarSiempre: true}) %>
 			<hr>
 
+			<!-- EVENTUALES -->
 			<!-- Basado en Hechos Reales -->
 			<%- include('CN-FL-Selects', {asunto: filtros.bhr, mostrarSiempre: false, class: "bhr ocultar"}) %>
 			<!-- Aparición Mariana -->
