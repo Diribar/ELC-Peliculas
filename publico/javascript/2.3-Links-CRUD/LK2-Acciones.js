@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	let activos = document.querySelector("#tabla #tags #activo");
 	let pasivos = document.querySelector("#tabla #tags #inactivo");
 	// Botones
-	let botonesEditar = document.querySelectorAll("tbody .yaExistentes .editar");
+	let botonesEditar = document.querySelectorAll("tbody .yaExistentes .edicion");
 	let botonesRecuperar = document.querySelectorAll("tbody .yaExistentes .in");
 	let botonesDeshacer = document.querySelectorAll("tbody .yaExistentes .deshacer");
 	let botonesGuardar = document.querySelectorAll("tbody tr button");

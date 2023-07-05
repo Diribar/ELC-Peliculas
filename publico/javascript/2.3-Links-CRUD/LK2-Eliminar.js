@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
 			}
 			// Inactivar
 			else {
-				// Ocultar el botón de editar
+				// Ocultar el botón de edicion
 				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
 				// Reemplazar por el tacho
 				botonOut.classList.remove("fa-circle-xmark");

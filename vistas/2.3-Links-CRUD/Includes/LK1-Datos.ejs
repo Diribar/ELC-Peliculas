@@ -65,7 +65,7 @@
 		<% if (link.cond.rud) { %>
 			<!-- Status creado y propio, o status aprobado -> EDICION -->
 			<% mostrar = link.cond.creadoPropio || link.cond.aprobado %>
-			<i class="fa-solid fa-pen editar <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+			<i class="fa-solid fa-pen edicion <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 
 			<!-- Status provisorio y propio -> DESHACER -->
 			<% mostrar = link.cond.provPropio %>
