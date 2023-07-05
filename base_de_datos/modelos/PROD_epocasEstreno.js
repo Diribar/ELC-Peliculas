@@ -3,8 +3,8 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(15)},
-		min: {type: dt.INTEGER},
-		max: {type: dt.INTEGER},
+		desde: {type: dt.INTEGER},
+		hasta: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "prod_epocas_estreno",
