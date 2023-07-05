@@ -36,7 +36,7 @@ module.exports = {
 
 	// Consulta de Productos
 	filtrosConsultas: {
-		// Producto
+		// Preferencias que se muestran siempre
 		cfc: {
 			titulo: "Relación con la Fe Católica",
 			opciones: [
@@ -44,34 +44,23 @@ module.exports = {
 				{id: "VPC", nombre: "Sin Fe Católica"},
 			],
 		},
-		ocurrio: {
-			titulo: "Hechos Reales / Ficción",
-			opciones: [
-				{id: "pers", nombre: "Con Personaje Histórico"},
-				{id: "hecho", nombre: "Con Hecho Histórico"},
-				{id: "SI", nombre: "Ocurrió"},
-				{id: "NO", nombre: "Ficción"},
-			],
-		},
 		publicos: {
 			titulo: "Público Recomendado",
 		},
 		epocasEstreno: {
 			titulo: "Época de Estreno",
-			opciones: [
-				{id: "1969", nombre: "Antes de 1970", desde: "0", hasta: "1969"},
-				{id: "1999", nombre: "1970 - 1999", desde: "1970", hasta: "1999"},
-				{id: "2015", nombre: "2000 - 2015", desde: "2000", hasta: "2015"},
-				{id: "2016", nombre: "2016 - Presente", desde: "2016", hasta: "3000"},
-			],
+		},
+		epocasOcurrencia: {
+			titulo: "Epoca de Ocurrencia",
+		},
+		ppp_opciones:{
+			titulo:"Preferencia por Película"
 		},
 		tiposLink: {
 			titulo: "Tipos de link",
 			opciones: [
 				{id: "gratis", nombre: "Links gratuitos"},
-				{id: "todos", nombre: "Links de cualquier tipo"},
 				{id: "soloPagos", nombre: "Solamente links con pago"},
-				{id: "sin", nombre: "Sin Links"},
 			],
 		},
 		castellano: {
@@ -93,10 +82,16 @@ module.exports = {
 				{id: "NO", nombre: "No es un musical"},
 			],
 		},
-		// RCLVs
-		epocasSinVarias: {
-			titulo: "Epoca",
+		// Se muestran ocasionalmente
+		ocurrio: {
+			titulo: "Basado en Hechos Reales",
+			opciones: [
+				{id: "SI", nombre: "Hechos Reales"},
+				{id: "NO", nombre: "Ficción"},
+			],
 		},
+
+		// RCLVs
 		apMar: {
 			titulo: "Aparición Mariana",
 			opciones: [
