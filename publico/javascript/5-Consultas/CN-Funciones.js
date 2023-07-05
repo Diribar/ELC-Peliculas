@@ -85,7 +85,7 @@ let FN = {
 		},
 		sessionCookieUsuarioConFiltroPers_id_: (filtroPers_id) => {
 			// Variables
-			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers']")};
+			let DOM = {filtroPers: document.querySelector("#filtroPers select[name='filtroPers_id']")};
 			const filtroPers_id = DOM.filtroPers.value;
 
 			// Actualiza el filtroPers_id en la session, cookie y el usuario
